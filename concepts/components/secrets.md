@@ -70,4 +70,10 @@ spec:
       key: connectionString
 ```
 
+Finally, apply the component to the Kubernetes cluster:
+
+```
+kubectl apply -f ./eventhubs.yaml
+```
+
 All done!
