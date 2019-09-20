@@ -46,7 +46,7 @@ The above example tells Actions to use the `kubernetes` secret store, extract a 
 
 ### Creating a secret and referencing it in a Component
 
-The following example will show you how to create a Kubernetes secret to hold the connection string for an Event Hubs binding.
+The following example shows you how to create a Kubernetes secret to hold the connection string for an Event Hubs binding.
 
 First, create the Kubernetes secret:
 
