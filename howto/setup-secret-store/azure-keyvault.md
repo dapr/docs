@@ -103,7 +103,7 @@ Now, your service principal can access to keyvault
 
 This section walks you through how to enable an Azure Key Vault secret store to store a password to securely access a Redis state store in Standalone mode.
 
-1. Create components directory in your app root
+1. Create a `components` directory in your app root
 
 ```bash
 mkdir components
