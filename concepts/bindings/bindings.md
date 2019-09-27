@@ -31,6 +31,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [AWS DynamoDB](./specs/dynamodb.md) | | V | Experimental |
 | [AWS S3](./specs/s3.md) | | V | Experimental |
 | [Azure Blob Storage](./specs/blobstorage.md) | | V | Experimental |
+| [Azure Service Bus Queues](./specs/servicebusqueues.md) | V | V | Experimental |
 
 ## Input Bindings
 
