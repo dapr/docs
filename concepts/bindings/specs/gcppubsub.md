@@ -41,7 +41,7 @@ spec:
 `private_key_id` is the GCP private key id.
 `client_email` is the GCP client email.
 `client_id` is the GCP client id.
-`auth_uri` is Google account oauth endpoint.
+`auth_uri` is Google account OAuth endpoint.
 `token_uri` is Google account token uri.
 `auth_provider_x509_cert_url` is the GCP credentials cert url.
 `client_x509_cert_url` is the GCP credentials project x509 cert url.
