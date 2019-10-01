@@ -32,6 +32,8 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [AWS S3](./specs/s3.md) | | V | Experimental |
 | [Azure Blob Storage](./specs/blobstorage.md) | | V | Experimental |
 | [Azure Service Bus Queues](./specs/servicebusqueues.md) | V | V | Experimental |
+| [GCP Cloud Pub/Sub](./specs/gcppubsub.md) | V | V | Experimental |
+| [Kubernetes Events](./specs/kubernetes.md) | V |  | Experimental |
 
 ## Input Bindings
 
