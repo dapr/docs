@@ -9,7 +9,7 @@ spec:
   type: bindings.azure.blobstorage
   metadata:
   - name: storageAccount
-    value: https://******.documents.azure.com:443/
+    value: myStorageAccountName
   - name: storageAccessKey
     value: ***********
   - name: container
