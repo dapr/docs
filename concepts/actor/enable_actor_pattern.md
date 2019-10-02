@@ -1,17 +1,16 @@
 # Enabling the Actor Pattern
-The Actor Pattern has been broadly used in modeling complex distributed systems in which a large number of individual agents work together. For example, in many IoT solutions, actors are often used as digital presences of physical devices. Actions supports the Actor Pattern by offering key characteristics of an actor. This document introduces architecturally how Actions enables the Actor Pattern. To learn about how to use the Actor Pattern with Actions, please read [this document](../concepts/actor/actor_pattern.md).
+The Actor Pattern has been broadly used in modeling complex distributed systems in which a large number of individual agents work together. For example, in many IoT solutions, actors are often used as digital presences of physical devices. Dapr supports the Actor Pattern by offering key characteristics of an actor. This document introduces architecturally how Dapr enables the Actor Pattern. To learn about how to use the Actor Pattern with Dapr, please read [this document](../concepts/actor/actor_pattern.md).
 
 ## Overview
-Actions uses an off-path **partition table** to assign actor ids to service instances so that requests to the same actor id is always routed to the same instance. The partition table is dynamically adjusted when re-partitioning or failover happens. Changes to the table are broadcasted to Actions sidecars to update their own settings to match with the global table. 
+Dapr uses an off-path **partition table** to assign actor ids to service instances so that requests to the same actor id is always routed to the same instance. The partition table is dynamically adjusted when re-partitioning or failover happens. Changes to the table are broadcasted to Dapr sidecars to update their own settings to match with the global table. 
 
 A client can talk to an actor through either reliable messaging or direct invocation, as illustrated by the following diagram:
 ![actor pattern](../imgs/actor_pattern.png)
 
 ### Calling an actor through messaging
-1. When a process pair of user code and Actions sidecar comes up, the sidecar registers the pair (such as a Pod on Kubernetes) with a **partition table** hosted on the Actions control plane.
-2. The partition table updates itself to reflect the topology change. 
-Then, it broadcasts a change notification to all Actions sidecars.
-3. The Actions sidecar updates its own settings to poll messages from corresponding partitions of a reliable queue.
+1. When a process pair of user code and Dapr sidecar comes up, the sidecar registers the pair (such as a Pod on Kubernetes) with a **partition table** hosted on the Dapr control plane.
+2. The partition table updates itself to reflect the topology change.Then, it broadcasts a change notification to all Dapr sidecars.
+3. The Dapr sidecar updates its own settings to poll messages from corresponding partitions of a reliable queue.
 4. The client code sends requests to the reliable queue, which puts the requests in corresponding partitions based on the associated contextual ids. Then, the messages are picked up and consumed during the next poll.
 
 ### Calling an actor through direct invocation
@@ -20,29 +19,29 @@ Then, it broadcasts a change notification to all Actions sidecars.
 
 ## Messaging
 
-When enabled, each Actions sidecar has a designated reliable message queue. This allows the sidecar to sequentialize requests to a specific actor id. Actions supports at-least-once delivery and exact-once delivery within a configurable time window. Please see [reliable messaging](TBD) for more details.
+When enabled, each Dapr sidecar has a designated reliable message queue. This allows the sidecar to sequentialize requests to a specific actor id. Dapr supports at-least-once delivery and exact-once delivery within a configurable time window. Please see [reliable messaging](TBD) for more details.
 
 Reliable messing is not used for direct invocations. In such a case, user code is expected to handle response errors and retry the request as needed.
 
 ## State Management
 
-All state access are encapsulated in a **state provider**. Actions expects a state provider to offer state partitioning for scale and replication for high availability and reliability. 
+All state access are encapsulated in a **state provider**. Dapr expects a state provider to offer state partitioning for scale and replication for high availability and reliability. 
 
-Because all requests to an actor instance are routed to the same Actions service instance, the user code can use local variables as local caches of its state.
+Because all requests to an actor instance are routed to the same Dapr service instance, the user code can use local variables as local caches of its state.
 
-When Actions routes an actor instance to a new Actions service instance, it invokes the **/state** endpoint so that the actor instance can restore state from the state store.
+When Dapr routes an actor instance to a new Dapr service instance, it invokes the **/state** endpoint so that the actor instance can restore state from the state store.
 
 ## Partition Table
 
-Actions uses different strategies to mange and use the partition table for different scenarios. Although partition table doesn’t sit on active data path, Actions tries to employ any possible optimizations to minimize the overheads of table management and lookups.
+Dapr uses different strategies to manage and use the partition table for different scenarios. Although partition table doesn’t sit on active data path, Dapr tries to employ any possible optimizations to minimize the overheads of table management and lookups.
 
 ### Skipping the table
 
-If an Actions service is stateless, and if only direct invocation is needed, the partition table is skipped. In this case, requests to actor instances are distributed by the service load balancer.
+If an Dapr service is stateless, and if only direct invocation is needed, the partition table is skipped. In this case, requests to actor instances are distributed by the service load balancer.
 
-If an Actions service is stateless, and is known to have light traffic so that messaging system partition is not needed, the table can also be skipped even when reliable messaging is used, because all Actions instances will simply compete for the latest messages from the same partition.
+If an Dapr service is stateless, and is known to have light traffic so that messaging system partition is not needed, the table can also be skipped even when reliable messaging is used, because all Dapr instances will simply compete for the latest messages from the same partition.
 
-If Actions services have stable identifiers (i.e. doesn’t change when restarted or relocated), and both the possible range of actor Ids and all Actions service ids are known, a predefined algorithm can be used to decide actor partitions instead of looking up the partition table. However, in such a case, dynamic partitioning is not allowed.
+If Dapr services have stable identifiers (i.e. doesn’t change when restarted or relocated), and both the possible range of actor Ids and all Dapr service ids are known, a predefined algorithm can be used to decide actor partitions instead of looking up the partition table. However, in such a case, dynamic partitioning is not allowed.
 
 ### Range-only table
 
@@ -64,9 +63,9 @@ In the above discussion, it's been assumed that service instances have stable id
 
 ## Sequential Access
 
-When configured to run as actors, Actions sidecar dispatches messages to user code. The user code is free to use whatever threading model of choice to handle these messages. When the user code tries to preserve state, the state write requests are again dispatched to the underlying state store sequentially.
+When configured to run as actors, Dapr sidecar dispatches messages to user code. The user code is free to use whatever threading model of choice to handle these messages. When the user code tries to preserve state, the state write requests are again dispatched to the underlying state store sequentially.
 
-Actions allows read-only requests (signified by the GET verb) to be routed to any service instances. This allows the single-writer-multiple-reader pattern, in which readers get eventual consistent (but almost always up-to-date - the delta is the single in-flight transaction) reads on actor states.
+Dapr allows read-only requests (signified by the GET verb) to be routed to any service instances. This allows the single-writer-multiple-reader pattern, in which readers get eventual consistent (but almost always up-to-date - the delta is the single in-flight transaction) reads on actor states.
 
 Such sequential access pattern is broken when multiple activations occur. For example, due to network partition, two service instances get different partition table data and try to poll data from the same partition. One message for an actor goes to intance A and the subsquent message for the same actor goes to instance B. This may lead to consistency issues. 
 
@@ -74,4 +73,4 @@ One way to partially mitigate this is to add a auto-increment version tag on sta
 
 ## Summary
 
-Actions can be used as building blocks to build a complete Actor framework but itself isn’t one. As a developer, you should be aware that when you use Actions by itself, you can configure it to offer some characteristics of an Actor, but you should not assume it gives a complete feature set as a complete Actor framework.
+Dapr can be used as building blocks to build a complete Actor framework but itself isn’t one. As a developer, you should be aware that when you use Dapr by itself, you can configure it to offer some characteristics of an Actor, but you should not assume it gives a complete feature set as a complete Actor framework.
