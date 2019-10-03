@@ -10,7 +10,7 @@ Bindings allow for on-demand, event-driven compute scenarios, and dapr bindings 
 * Switch between bindings at runtime time
 * Enable portable applications where environment-specific bindings are set-up and no code changes are required
 
-Bindings are developed independently of dapr runtime. You can view and contribute to the bindings [here](https://github.com/actionscore/components-contrib/tree/master/bindings). 
+Bindings are developed independently of Dapr runtime. You can view and contribute to the bindings [here](https://github.com/dapr/components-contrib/tree/master/bindings). 
 
 ## Supported Bindings and Specs
 
@@ -37,24 +37,24 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 ## Input Bindings
 
-Input bindings are used to trigger your app when an event from an external system has occured.
+Input bindings are used to trigger your application when an event from an external resource has occured.
 An optional payload and metadata might be sent with the request.
 
 In order to receive events from an input binding:
 
-1. Define the component YAML that describes the type of bindings and its metadata (connection info, etc.)
+1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
 2. Listen on an HTTP endpoint for the incoming event, or use the gRPC proto library to get incoming events.
 
 Read the [How To](../../howto) section to get started with input bindings.
 
 ## Output Bindings
 
-Output bindings allow users to invoke external systems
+Output bindings allow users to invoke external resources
 An optional payload and metadata can be sent with the invocation request.
 
 In order to invoke an output binding:
 
-1. Define the component YAML that describes the type of bindings and its metadata (connection info, etc.)
+1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
 2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload
 
  Read the [How To](../../howto) section to get started with output bindings.
