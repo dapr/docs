@@ -78,3 +78,6 @@ In order to tell Dapr that the event wasn't processed correctly in your applicat
 ```
 res.status(500).send()
 ```
+
+### Event delivery Guarantees
+Event delivery guarantees are controlled by the binding implementation. Depending on the binding implementation, the event delivery can be exactly once or at least once.
