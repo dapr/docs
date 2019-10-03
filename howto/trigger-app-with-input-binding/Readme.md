@@ -1,6 +1,6 @@
 # Create an event-driven app using Input Bindings
 
-Using bindings, you can author an app that gets triggered with incoming events from different event sources.
+Using bindings, you can author an app that gets triggered with incoming events from different event sources which can be anything: a queue, messaging pipeline, cloud-service, filesystem etc.
 
 This is ideal for event-driven processing, data pipeplines or just generally reacting to events and doing further processing.
 
