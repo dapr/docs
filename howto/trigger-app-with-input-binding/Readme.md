@@ -10,7 +10,7 @@ Dapr bindings allow you to:
 * Replace bindings without changing your code
 * Focus on business logic and not the event resource implementation
 
-For more info on bindings, read [this](../concepts/bindings/bindings.md) link.<br>
+For more info on bindings, read [this](../concepts/bindings/Readme.md) link.<br>
 For a complete sample showing bindings, visit this [link](<PLACEHOLDER>).
 
 ## 1. Create a binding
