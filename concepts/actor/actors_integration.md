@@ -31,7 +31,7 @@ The following diagram illustrates two possible execution paths. ![Actors server]
 At a high level, the Actor API shall contain the following methods:
 
 * Dispatch to Actor when possible
-* Call method on an Actor now
+* Call method on an Actor
 * Load/save state
 * Create/remove
 * Locate & send message to an Actor 
