@@ -1,7 +1,7 @@
 # Use Pub/Sub to publish a message to a topic
 
 Pub/Sub is a very common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
-Using Pub/Sub, you can enable scnearios where event consumers are decoupled from event producers.
+Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.
 
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
