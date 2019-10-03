@@ -4,6 +4,12 @@ Using bindings, you can author an app that gets triggered with incoming events f
 
 This is ideal for event-driven processing, data pipeplines or just generally reacting to events and doing further processing.
 
+Dapr bindings allow you to:
+
+* Receive events without bringins in specific SDKs or libraries
+* Replace bindings without changing code
+* Focus on business logic and not the event source implementation
+
 For more info on bindings, visit [this](../concepts/bindings/bindings.md) link.<br>
 For a complete sample showing bindings, visit this [link](<PLACEHOLDER>).
 
