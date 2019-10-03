@@ -6,7 +6,7 @@ Dapr can be run as a standalone and kubernetes modes. Running Dapr runtime as a 
 
 For Kubernetes mode, you can deploy Dapr to Kubernetes clusters via Dapr CLI and Helm.
 
-With Dapr installed, you can try out [dapr samples](https://github.com/dapr/samples)  and [howtos](../howto/) and explore dpar features.
+With Dapr installed, you can try out Dapr features with [dapr samples](https://github.com/dapr/samples) and [howtos](../howto/).
 
 ## Contents
 
