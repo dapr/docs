@@ -1,4 +1,4 @@
-# Invoke remote services using well known IDs
+# Invoke remote services
 
 In many environments with multiple services that need to communicate with each other, developers often ask themselves the following questions:
 
@@ -35,7 +35,7 @@ spec:
         app: python-app
       annotations:
         dapr.io/enabled: "true"
-        <b>dapr.io/id: "cart"<b>
+        <b>dapr.io/id: "cart"</b>
         dapr.io/port: "5000"
 ...
 </pre>
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 ```
 
 This Python app exposes an `add()` method via the `/add` endpoint.
-Next we'll use Dapr to
+Next we'll use Dapr to invoke the service.
 
 ### Invoke with curl
 
@@ -76,7 +76,7 @@ Next we'll use Dapr to
 curl http://localhost:3500/v1.0/invoke/cart/add -X POST
 ```
 
-Since the aoo endpoint is a 'POST' method, we used `-X POST` in the curl command.
+Since the `/add` endpoint is a 'POST' method, we used `-X POST` in the curl command.
 
 To invoke a 'GET' endpoint:
 
