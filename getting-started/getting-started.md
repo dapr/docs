@@ -2,9 +2,11 @@
 
 This descirbes how to setup the cluster and install Dapr to local environment and Kubernetes cluster.
 
-Dapr can be run as a standalone and kubernetes modes. Running dapr runtime as a standalone mode helps you develop dapr app in your local development environment and run it in any environments by using Dapr CLI. You can deploy Dapr to any Kubernetes clusters via Dapr CLI and Helm.
+Dapr can be run as a standalone and kubernetes modes. Running Dapr runtime as a standalone mode helps you develop Dapr app in your local development environment and run it in any environments by using Dapr CLI.
 
-Once Dapr is installed, you can try out [dapr samples](https://github.com/dapr/samples)  and [howtos](../howto/) and explore dpar features.
+For Kubernetes mode, you can also deploy Dapr to Kubernetes clusters via Dapr CLI and Helm.
+
+With Dapr installed, you can try out [dapr samples](https://github.com/dapr/samples)  and [howtos](../howto/) and explore dpar features.
 
 ## Contents
 
