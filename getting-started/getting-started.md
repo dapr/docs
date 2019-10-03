@@ -2,7 +2,7 @@
 
 This article describes how to install Dapr to a local standalone developer machine or to a Kubernetes cluster.
 
-Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster. 
+Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster.
 
 Once Dapr is installed, you can try out the [dapr samples](https://github.com/dapr/samples) and [howtos](../howto/)
 
@@ -15,7 +15,7 @@ Once Dapr is installed, you can try out the [dapr samples](https://github.com/da
 ## Prerequisites
 Download the [Dapr CLI](https://github.com/dapr/cli/releases), unpack it and move it to your desired location.
  
-> For Mac/Linux - `/usr/local/bin`. 
+> For Mac/Linux - `/usr/local/bin`.
 
 > For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
@@ -68,8 +68,8 @@ You can install Dapr to Kubernetes using the CLI. This method should be used for
 ```bash
 $ dapr init --kubernetes
 ⌛  Making the jump to hyperspace...
-✅  Deploying the Actions Operator to your cluster...
-✅  Success! Actions is up and running. To verify, run 'kubectl get pods -n dapr-system' in your terminal
+✅  Deploying the Dapr Operator to your cluster...
+✅  Success! Dapr has been installed. To verify, run 'kubectl get pods' in your terminal.
 ```
 
 #### Uninstall Dapr on Kubernetes
@@ -99,7 +99,7 @@ helm install actionscore/dapr-operator --name dapr --namespace dapr-system
 
 #### Verify installation
 
-Once the chart installation is complete, verify the Dapr operator, placement and sidecar-injector pods are running in the `dapr-system` namespace:
+Once the chart installation is complete, verify the dapr-operator, dapr-placement and dapr-sidecar-injector pods are running in the `dapr-system` namespace:
 
 ```bash
 $ kubectl get pods -n dapr-system -w
