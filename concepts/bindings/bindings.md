@@ -10,7 +10,7 @@ Bindings allow for on-demand, event-driven compute scenarios, and dapr bindings 
 * Switch between bindings at runtime time
 * Enable portable applications where environment-specific bindings are set-up and no code changes are required
 
-Bindings are developed independently of dapr runtime. You can view and contribute to the bindings [here](https://github.com/actionscore/components-contrib/tree/master/bindings). 
+Bindings are developed independently of dapr runtime. You can view and contribute to the bindings [here](https://github.com/dapr/components-contrib/tree/master/bindings). 
 
 ## Supported Bindings and Specs
 

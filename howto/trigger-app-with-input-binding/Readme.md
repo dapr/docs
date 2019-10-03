@@ -10,14 +10,14 @@ Dapr bindings allow you to:
 * Replace bindings without changing your code
 * Focus on business logic and not the event resource implementation
 
-For more info on bindings, read [this](../concepts/bindings/bindings.md) link.<br>
+For more info on bindings, read [this](../../concepts/bindings/bindings.md) link.<br>
 For a complete sample showing bindings, visit this [link](<PLACEHOLDER>).
 
 ## 1. Create a binding
 
 An input binding represents an event resource that Dapr uses to read events from and push to your application.
 
-For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of the different binding specs [here](../concepts/bindings/specs).
+For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of the different binding specs [here](../../concepts/bindings/specs).
 
 Create the following YAML file, named binding.yaml, and save this to the /components sub-folder in your application directory:
 
