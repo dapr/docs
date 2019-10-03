@@ -34,7 +34,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/id: "nodesubscriber"
         dapr.io/port: "3000"
-        <b>dapr.io/max-concurrency: "1"<b>
+        <b>dapr.io/max-concurrency: "1"</b>
 ...
 </pre>
 
