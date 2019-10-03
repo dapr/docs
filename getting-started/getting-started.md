@@ -19,7 +19,7 @@ Download the [Dapr CLI](https://github.com/dapr/cli/releases), unpack it and mov
 
 > For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
-## Running Dapr in standalone mode
+## Installing Dapr in standalone mode
 
 ### Install Dapr runtime using the CLI
 Install Dapr by running `dapr init` from a command prompt
@@ -52,7 +52,7 @@ cli version: v0.2.0-alpha.2
 runtime version: v0.4.0-alpha.4
 ```
 
-## Running Dapr on a Kubernetes cluster
+## Installing Dapr on a Kubernetes cluster
 When setting up Kubernetes you can do this either via the Dapr CLI or Helm
 
 ### Setup Cluster
