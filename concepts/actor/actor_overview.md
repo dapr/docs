@@ -18,11 +18,11 @@ Although the actor design pattern can be a good fit to a number of distributed s
 * You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
 * Your actor instances won't block callers with unpredictable delays by issuing I/O operations.
 
-# Actors in Dapr
+## Actors in Dapr
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
-# Actor Lifetime
+## Actor Lifetime
 
 Dapr actors are virtual, meaning that their lifetime is not tied to their in-memory representation. As a result, they do not need to be explicitly created or destroyed. The Dapr Actors runtime automatically activates an actor the first time it receives a request for that actor ID. If an actor is not used for a period of time, the Dapr Actors runtime garbage-collects the in-memory object. It will also maintain knowledge of the actor's existence should it need to be reactivated later. For more details, see Actor lifecycle and garbage collection.
 
@@ -30,7 +30,7 @@ This virtual actor lifetime abstraction carries some caveats as a result of the 
 
 An actor is automatically activated (causing an actor object to be constructed) the first time a message is sent to its actor ID. After some period of time, the actor object is garbage collected. In the future, using the actor ID again, causes a new actor object to be constructed. An actor's state outlives the object's lifetime as state is stored in configured state provider for Dapr runtime.
 
-# Distribution and failover
+## Distribution and failover
 To provide scalability and reliability, actors instances are distributed throughout the cluster and automatically migrates them from failed nodes to healthy ones as required.
 
 Actors are distributed across the pods of the Actor Service, and those pods are distributed across the nodes in a cluster. Each service instance contains a set of actors.
@@ -40,7 +40,7 @@ The Dapr Actor runtime manages distribution scheme and key range settings for yo
 * By default, actors are randomly placed into pods resulting in uniform distribution.
 * Because actors are randomly placed, it should be expected that actor operations will always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
 
-# Actor communication
+## Actor communication
 
 You can interact with Dapr to invoke the actor method by calling Http/gRPC endpoint
 
