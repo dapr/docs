@@ -1,29 +1,34 @@
 # Getting Started
 
-This descirbes how to setup the cluster and install Dapr to local environment and Kubernetes cluster.
+This article describes how to install Dapr to a local standalone developer machine or to a Kubernetes cluster.
 
-Dapr can be run as a standalone and kubernetes modes. Running Dapr runtime as a standalone mode helps you develop Dapr app in your local development environment and run it in any environments by using Dapr CLI.
+Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster. 
 
-For Kubernetes mode, you can deploy Dapr to Kubernetes clusters via Dapr CLI and Helm.
-
-With Dapr installed, you can try out Dapr features with [dapr samples](https://github.com/dapr/samples) and [howtos](../howto/).
+Once Dapr is installed, you can try out the [dapr samples](https://github.com/dapr/samples) and [howtos](../howto/)
 
 ## Contents
 
  - [Prerequsites](#prerequisites)
- - [Running Dapr as a standalone mode](#running-dapr-as-a-standalone-mode)
+ - [Running Dapr in standalone mode](#running-dapr-as-a-standalone-mode)
  - [Running Dapr on Kubernetes cluster](#running-dapr-on-kubernetes-cluster)
 
 ## Prerequisites
+Download the [Dapr CLI](https://github.com/dapr/cli/releases), unpack it and move it to your desired location.
+ 
+> For Mac/Linux - `/usr/local/bin`. 
 
- - [Dapr CLI](https://github.com/dapr/cli/releases) - download the Dapr CLI, unpack it and move it to your desired location (for Mac/Linux - `/usr/local/bin`. for Windows, add the executable to your System PATH. (e.g. `c:\dapr`)
+> For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
-> For Windows users, run the cmd terminal in administrator mode
-> For Linux users, if you run docker cmds with sudo, you need to use "**sudo dapr init**"
+## Running Dapr in standalone mode
 
-## Running Dapr as a standalone mode
+### Install Dapr runtime using the CLI
+Install Dapr by running `dapr init` from a command prompt
 
-### Install Dapr
+> For Linux users, if you run your docker cmds with sudo, you need to use "**sudo dapr init**"
+
+> For Windows users, make sure that you run the cmd terminal in administrator mode
+
+> **Note:** See [Dapr CLI](https://github.com/dapr/cli) for details on the usage of Dapr CLI
 
 ```bash
 $ dapr init
@@ -32,11 +37,10 @@ Downloading binaries and setting up components
 ✅  Success! Dapr is up and running
 ```
 
-To see that Dapr has been installed successful, from a command prompt run `docker ps` command and see that `actionscore.azurecr.io/dapr:latest` and `redis` container images are both running.
+To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `actionscore.azurecr.io/dapr:latest` and `redis` container images are both running.
 
-> **Note:** See [Dapr CLI](https://github.com/dapr/cli) for details on the usage of Dapr CLI
-
-### Install specific version of dapr runtime
+### Install a specific runtime version
+You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`
 
 ```bash
 # Install v0.4.0-alpha.4 runtime
@@ -48,14 +52,16 @@ cli version: v0.2.0-alpha.2
 runtime version: v0.4.0-alpha.4
 ```
 
-## Running Dapr on Kubernetes cluster
+## Running Dapr on a Kubernetes cluster
+When setting up Kubernetes you can do this either via the Dapr CLI or Helm
 
 ### Setup Cluster
 
 * [Setup Minikube Cluster](./cluster/setup-minikube.md)
 * [Setup Azure Kubernetes Service Cluster](./cluster/setup-aks.md)
 
-### Using Dapr CLI
+### Using the Dapr CLI
+You can install Dapr to Kubernetes using the CLI. This method should be used for **testing purposes only**. For production deployments use the Helm installer (see below)
 
 #### Install Dapr to Kubernetes
 
@@ -73,12 +79,13 @@ $ dapr uninstall --kubernetes
 ```
 
 ### Using Helm (Advanced)
+You can install Dapr to Kubernetes using a Helm chart. This method should be used for production deployments.
 
 #### Install Dapr to Kubernetes
 
-1. Make sure helm is initialized in your running kubernetes cluster.
+1. Make sure Helm is initialized in your running Kubernetes cluster.
 
-2. Add Azure Container Registry as an helm repo
+2. Add Azure Container Registry as a Helm repo
 ```bash
 helm repo add dapr https://actionscore.azurecr.io/helm/v1/repo \
 --username 390401a7-d7a6-46da-b10f-3ceff7a1cdd5 \
@@ -92,7 +99,7 @@ helm install actionscore/dapr-operator --name dapr --namespace dapr-system
 
 #### Verify installation
 
-Once the chart installation is done, verify the Dapr operator pods are running in the `dapr-system` namespace:
+Once the chart installation is complete, verify the Dapr operator, placement and sidecar-injector pods are running in the `dapr-system` namespace:
 
 ```bash
 $ kubectl get pods -n dapr-system -w
