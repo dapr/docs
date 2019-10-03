@@ -61,7 +61,8 @@ When setting up Kubernetes you can do this either via the Dapr CLI or Helm
 * [Setup Azure Kubernetes Service Cluster](./cluster/setup-aks.md)
 
 ### Using the Dapr CLI
-You can install Dapr to Kubernetes using the CLI. This method should be used for **testing purposes only**. For production deployments use the Helm installer (see below)
+
+You can install Dapr to Kubernetes cluster using CLI.
 
 #### Install Dapr to Kubernetes
 
@@ -72,6 +73,8 @@ $ dapr init --kubernetes
 ✅  Success! Dapr has been installed. To verify, run 'kubectl get pods' in your terminal.
 ```
 
+Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster.
+
 #### Uninstall Dapr on Kubernetes
 
 ```bash
@@ -79,20 +82,23 @@ $ dapr uninstall --kubernetes
 ```
 
 ### Using Helm (Advanced)
-You can install Dapr to Kubernetes using a Helm chart. This method should be used for production deployments.
+
+You can install Dapr to Kubernetes cluster using a Helm chart.
 
 #### Install Dapr to Kubernetes
 
 1. Make sure Helm is initialized in your running Kubernetes cluster.
 
 2. Add Azure Container Registry as a Helm repo
+
 ```bash
 helm repo add dapr https://actionscore.azurecr.io/helm/v1/repo \
 --username 390401a7-d7a6-46da-b10f-3ceff7a1cdd5 \
 --password 485b3522-59bb-4152-8938-ca8b90108af6
 ```
 
-3. Install the Dapr chart on your cluster in the dapr-system namespace:
+3. Install the Dapr chart on your cluster in the `dapr-system` namespace
+
 ```bash
 helm install actionscore/dapr-operator --name dapr --namespace dapr-system
 ```
