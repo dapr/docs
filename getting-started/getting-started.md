@@ -2,7 +2,7 @@
 
 This article describes how to install Dapr to a local standalone developer machine or to a Kubernetes cluster.
 
-Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster.
+Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster.
 
 Once Dapr is installed, you can try out the [dapr samples](https://github.com/dapr/samples) and [howtos](../howto/)
 
