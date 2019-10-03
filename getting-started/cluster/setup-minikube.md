@@ -11,11 +11,13 @@
 
 ## Start the Minikube Cluster
 
-1. (optional) Set the default hypervisor
+1. (optional) Set the default VM driver
 
 ```bash
-minikube config set vm-driver [hypervisor]
+minikube config set vm-driver [driver_name]
 ```
+
+> Note: See [DRIVERS](https://minikube.sigs.k8s.io/docs/reference/drivers/) for details on supported drivers and how to install plugins.
 
 2. Start the cluster
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
