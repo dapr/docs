@@ -21,6 +21,8 @@ For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of
 
 Create the following YAML file, named binding.yaml, and save this to the /components sub-folder in your application directory:
 
+*Note: When running in Kubernetes, apply this file to your cluster using `kubectl apply -f binding.yaml`*
+
 ```
 apiVersion: actions.io/v1alpha1
 kind: Component
