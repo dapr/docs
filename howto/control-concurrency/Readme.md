@@ -38,9 +38,9 @@ spec:
 ...
 </pre>
 
-### Setting max-concurrency using the Actions CLI
+### Setting max-concurrency using the Dapr CLI
 
-To set max-concurrency with the Actions CLI for running on your local dev machine, add the `max-concurrency` flag:
+To set max-concurrency with the Dapr CLI for running on your local dev machine, add the `max-concurrency` flag:
 
 `dapr run --max-concurrency 1 --app-port 5000 python ./app.py`.
 
