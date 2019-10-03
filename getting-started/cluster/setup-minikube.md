@@ -9,7 +9,7 @@
 
 > Note: For Windows, enable Virtualization in BIOS and [install Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
 
-## Start the Minikube Cluster
+## Start the Minikube cluster
 
 1. (optional) Set the default VM driver
 
@@ -40,7 +40,7 @@ minikube addons enable ingress
 
 1. [Install Helm client](https://helm.sh/docs/using_helm/#installing-the-helm-client)
 
-2. Create the tiller service account
+2. Create the Tiller service account
 
 ```bash
 kubectl create serviceaccount -n kube-system tiller
