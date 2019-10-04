@@ -1,13 +1,13 @@
 # Tracing
 
-Dapr integrates seamlessly with Open Census for telemtry and tracing.
+Dapr integrates with Open Census for telemtry and tracing.
 
 It is recommended to run Dapr with tracing enabled for any production scenario.
 Since Dapr uses Open Census, you can configure various exporters for tracing and telemtry data based on your environment, whether it is running in the cloud or on-premises.
 
 ## Distributed Tracing with Zipkin on Kubernetes
 
-The following steps will show you how to configure Dapr to send distributed tracing data to Zipkin running as a container in your Kubernetes cluster, and how to view them.
+The following steps show you how to configure Dapr to send distributed tracing data to Zipkin running as a container in your Kubernetes cluster, and how to view them.
 
 
 ### Setup
@@ -53,11 +53,11 @@ annotations:
   dapr.io/config: "zipkin"
 ```
 
-That's it! your sidecar is now configured for use with Open Census and Zipkin.
+That's it! Your sidecar is now configured for use with Open Census and Zipkin.
 
 ### Viewing Tracing Data
 
-To view traces, connect to the Zipkin Service and open the UI:
+To view traces, connect to the Zipkin service and open the UI:
 
 ```
 kubectl port-forward svc/zipkin 9411:9411
@@ -68,8 +68,10 @@ On your browser, go to ```http://localhost:9411``` and you should see the Zipkin
 ![zipkin](../imgs/zipkin_ui.png)
 
 ## Distributed Tracing with Zipkin - Standalone Mode
+The following steps show you how to configure Dapr to send distributed tracing data to Zipkin running as a container on your local machine and view them.
 
-For standalone mode, create an Dapr Configuration CRD file locally and reference it with the Dapr CLI.
+
+For Standalone mode, create a Dapr configuration file locally and reference it with the Dapr CLI.
 
 1. Create the following YAML file:
 
