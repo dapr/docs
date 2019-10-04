@@ -1,7 +1,7 @@
 # AWS DynamoDB Binding Spec
 
 ```
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <name>

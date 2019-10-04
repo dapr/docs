@@ -9,7 +9,7 @@ When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes s
 Using plain text:
 
 ```
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
@@ -25,7 +25,7 @@ spec:
 Using a Kubernetes secret:
 
 ```
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
@@ -42,7 +42,7 @@ auth:
   secretStore: kubernetes
 ```
 
-The above example tells Actions to use the `kubernetes` secret store, extract a secret named `redis-secret` and assign the value of the `redis-password` key in the secret to the `redisPassword` field in the Component.
+The above example tells Dapr to use the `kubernetes` secret store, extract a secret named `redis-secret` and assign the value of the `redis-password` key in the secret to the `redisPassword` field in the Component.
 
 ### Creating a secret and referencing it in a Component
 
@@ -57,7 +57,7 @@ kubectl create secret generic eventhubs-secret --from-literal=connectionString=*
 Next, reference the secret in your binding:
 
 ```
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: eventhubs
