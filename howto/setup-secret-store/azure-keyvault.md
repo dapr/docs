@@ -267,12 +267,12 @@ auth:
 
 7. Deploy your app to Kubernetes
 
-Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprrt` sidecar log
+Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprd` sidecar log
 
 Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/daprcore/dapr/tree/master/samples/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
 
 ```bash
-$ kubectl logs nodeapp-f7b7576f4-4pjrj daprrt
+$ kubectl logs nodeapp-f7b7576f4-4pjrj daprd
 
 time="2019-09-26T20:34:23Z" level=info msg="starting Dapr Runtime -- version 0.4.0-alpha.4 -- commit 876474b-dirty"
 time="2019-09-26T20:34:23Z" level=info msg="log level set to: info"

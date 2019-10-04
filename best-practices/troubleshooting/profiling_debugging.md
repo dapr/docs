@@ -81,12 +81,12 @@ Profiling allocated objects:
 go tool pprof http://localhost:7777/debug/pprof/heap
 > exit
 
-Saved profile in /Users/myusername/pprof/pprof.daprrt.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz
+Saved profile in /Users/myusername/pprof/pprof.daprd.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz
 ```
 
 To analyze, grab the file path above (its a dynamic file path, so pay attention to note paste this one), and execute:
 
-`go tool pprof -alloc_objects --pdf /Users/myusername/pprof/pprof.daprrt.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz > alloc-objects.pdf`
+`go tool pprof -alloc_objects --pdf /Users/myusername/pprof/pprof.daprd.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz > alloc-objects.pdf`
 
 ![alloc](../imgs/alloc.png)
 

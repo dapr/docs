@@ -64,7 +64,7 @@ Visit [here](../components/redis.md) for more details.
 If everything's set up correctly, make sure you got the credentials right.
 Search the Dapr runtime logs and look for any state store errors:
 
-`kubectl logs <name-of-pod> daprrt`.
+`kubectl logs <name-of-pod> daprd`.
 
 ### I am unable to publish and receive events
 
@@ -80,7 +80,7 @@ Visit [here](../components/redis.md#configuring-redis-for-pubsub) for more detai
 If everything's set up correctly, make sure you got the credentials right.
 Search the Dapr runtime logs and look for any pub-sub errors:
 
-`kubectl logs <name-of-pod> daprrt`.
+`kubectl logs <name-of-pod> daprd`.
 
 ### The Dapr Operator pod keeps crashing
 
@@ -94,7 +94,7 @@ If two pods appear, delete the redundant Dapr installation.
 This means there are some internal issue inside the Dapr runtime.
 To diagnose, view the logs of the sidecar:
 
-`kubectl logs <name-of-pod> daprrt`.
+`kubectl logs <name-of-pod> daprd`.
 
 ### I'm getting 404 Not Found responses when calling Dapr
 

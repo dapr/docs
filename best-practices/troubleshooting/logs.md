@@ -16,7 +16,7 @@ error produces the minimum amount of output, where debug produces the maximum am
 
 To set the output level, you can use the `--log-level` command-line option. For example:
 
-`./daprrt --log-level error` <br>
+`./daprd --log-level error` <br>
 `./placement --log-level debug`
 
 This will start the Dapr runtime binary with a log level of `error` and the Dapr Actor Placement Service with a log level of `debug`.
@@ -97,7 +97,7 @@ This section will guide you on how to view logs for Dapr system components as we
 
 ### Sidecar Logs
 
-When deployed in Kubernetes, the Dapr sidecar injector will inject an Dapr container named `daprrt` into your annotated pod.
+When deployed in Kubernetes, the Dapr sidecar injector will inject an Dapr container named `daprd` into your annotated pod.
 In order to view logs for the sidecar, simply find the pod in question by running `kubectl get pods`:
 
 ```
@@ -107,7 +107,7 @@ addapp-74b57fb78c-67zm6                     2/2       Running   0          40h
 
 Next, get the logs for the Dapr sidecar container:
 
-`kubectl logs addapp-74b57fb78c-67zm6 -c daprrt`
+`kubectl logs addapp-74b57fb78c-67zm6 -c daprd`
 ```
 time="2019-09-04T02:52:27Z" level=info msg="starting Dapr Runtime -- version 0.3.0-alpha -- commit b6f2810-dirty"
 time="2019-09-04T02:52:27Z" level=info msg="log level set to: info"
