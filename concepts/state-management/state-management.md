@@ -54,30 +54,31 @@ Dapr allows you to attach a retry policy to any write request. A policy is descr
 
 Dapr supports two types of bulk operations - **bulk** or **multi**. You can group several requests of the same type into a bulk (or a batch). Dapr submits requests in the bulk as individual requests to the underlying data store. In other words, bulk operations are not transactional. On the other hand, you can group requests of different types into a multi-operation, which is handled as an atomic transaction.
 
-## Querying state stores directly
+## Querying state store directly
 
-Dapr saves and retrieves state values without any transformation. You can easily query and aggregate states directly from the underlying state store. For example, to get all state keys associated with an application ID "myApp" in Redis, use:
+Dapr saves and retrieves state values without any transformation. You can query and aggregate state directly from the underlying state store. For example, to get all state keys associated with an application ID "myApp" in Redis, use:
 
 ```bash
 KEYS "myApp*"
 ```
 
-> **NOTE:** Please see [How to query Redis store](../../howto/query-state-store/query-redis-store.md) for details on how to query Redis store.
+> **NOTE:** See [How to query Redis store](../../howto/query-state-store/query-redis-store.md) for details on how to query a Redis store.
 > 
+### Querying actor state
 
-Conceptually, to query for an acotr's state, you can use SQL queries like (assuming the data store supports SQL queries):
+If the data store supports SQL queries, you can query an actor's state using SQL queries. For example use:
 
-```Sql
+```sql
 SELECT * FROM StateTable WHERE Id='<dapr-id>-<actor-type>-<actor-id>-<key>'
 ```
 
-You can also perform rapid aggregations across actor instances, avoiding the common turn-based concurrency limitations of Actor frameworks. For example, to calculate average temperature of all therometers, use:
+You can also perform aggregate queries across actor instances, avoiding the common turn-based concurrency limitations of actor frameworks. For example, to calculate the average temperature of all therometer actors, use:
 
 ```sql
 SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>-<therometer>-*-temperature'
 ```
 
-> **NOTE:** Direct queries are not governed by Dapr concurrency control. What you get are snapshots of committed data.
+> **NOTE:** Direct queries of the state store are not governed by Dapr concurrency control, since you are not calling through the Dapr runtime. What you see are snapshots of committed data which are acceptable for read-only queries across multiple actors, however writes should be done via the actor instances.
 
 ## References
 * [Spec: Dapr state managment specification](https://github.com/dapr/spec/blob/master/state.md)
