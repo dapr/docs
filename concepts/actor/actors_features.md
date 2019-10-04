@@ -1,11 +1,11 @@
 # Dapr Actors Runtime 
 
-Dapr Actors runtime provides capability to use Actor pattern features.
+Dapr Actors runtime provides following capabilities:
 
 ## Actor State Management
- Actors are single-threaded objects that can encapsulate both logic and state. Because Dapr provides the state management, so Actors can maintain state reliably by using the same persistence and replication mechanisms. This way, actors don't lose their state after failures, upon reactivation after garbage collection, or when they are moved around between pods in a cluster due to resource balancing or upgrades.
+ Actors can save state reliably using state management capability.
 
- You can interact with Dapr Actors runtime through Http/gRPC endpoints for state management.
+ You can interact with Dapr through Http/gRPC endpoints for state management.
 
  ### Save the Actor State
 
