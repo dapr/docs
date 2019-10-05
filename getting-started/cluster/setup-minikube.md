@@ -22,6 +22,8 @@ minikube config set vm-driver [driver_name]
 2. Start the cluster
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 
+> **Note:** [1.16.x Kubernetes doesn't work with helm < 2.15.0](https://github.com/helm/helm/issues/6374#issuecomment-537185486)
+
 ```bash
 minikube start --cpus=4 --memory=4096 --kubernetes-version=1.14.6 --extra-config=apiserver.authorization-mode=RBAC
 ```

@@ -14,9 +14,8 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 ## Actors
 
-* [Enabling Actor pattern](./actor/enable_actor_pattern.md)
-* [Actor pattern with Dapr](./actor/actor_pattern.md)
-* [Integration with Actor frameworks](./actor/actors_integration.md)
+* [Overview](./actor/actor_overview.md)
+* [Features](./actor/actors_features.md)
 
 ## Extensibility
 

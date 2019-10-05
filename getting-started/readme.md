@@ -100,7 +100,7 @@ helm repo add dapr https://daprcore.azurecr.io/helm/v1/repo \
 3. Install the Dapr chart on your cluster in the `dapr-system` namespace
 
 ```bash
-helm install daprcore/dapr-operator --name dapr --namespace dapr-system
+helm install dapr/dapr-operator --name dapr --namespace dapr-system
 ```
 
 #### Verify installation
