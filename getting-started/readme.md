@@ -37,7 +37,7 @@ Downloading binaries and setting up components
 ✅  Success! Dapr is up and running
 ```
 
-To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `actionscore.azurecr.io/dapr:latest` and `redis` container images are both running.
+To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `daprcore.azurecr.io/dapr:latest` and `redis` container images are both running.
 
 ### Install a specific runtime version
 You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`
@@ -92,7 +92,7 @@ You can install Dapr to Kubernetes cluster using a Helm chart.
 2. Add Azure Container Registry as a Helm repo
 
 ```bash
-helm repo add dapr https://actionscore.azurecr.io/helm/v1/repo \
+helm repo add dapr https://daprcore.azurecr.io/helm/v1/repo \
 --username 390401a7-d7a6-46da-b10f-3ceff7a1cdd5 \
 --password 485b3522-59bb-4152-8938-ca8b90108af6
 ```

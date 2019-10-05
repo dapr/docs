@@ -1,6 +1,6 @@
 # Secret Store for Azure Key Vault
 
-This document shows how to enable Azure Key Vault secret store using [Actions Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode. The Actions secret store component uses Service Principal using certificate authorization to authenticate Key Vault. 
+This document shows how to enable Azure Key Vault secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode. The Dapr secret store component uses Service Principal using certificate authorization to authenticate Key Vault. 
 
 > **Note:** Managed Identity for Azure Key Vault is not currently supported.
 
@@ -105,7 +105,7 @@ This section walks you through how to enable an Azure Key Vault secret store to 
 
 1. Create a components directory in your application root
 
-All Actions components are stored in a directory called 'components' below at application root. Create this directory.
+All Dapr components are stored in a directory called 'components' below at application root. Create this directory.
 
 ```bash
 mkdir components
@@ -115,10 +115,10 @@ mkdir components
 
 3. Create a file called azurekeyvault.yaml in the components directory
 
-Now create an Actions azurekeyvault component. Create a file called azurekeyvault.yaml in the components directory with the content below
+Now create an Dapr azurekeyvault component. Create a file called azurekeyvault.yaml in the components directory with the content below
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
@@ -146,7 +146,7 @@ az keyvault secret set --name redisPassword --vault-name [your_keyvault_name] --
 Create a statestore component file. This Redis component yaml shows how to use the `redisPassword` secret stored in an Azure Key Vault called azurekeyvault as a Redis connection password.
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
@@ -164,24 +164,24 @@ auth:
 
 6. Run your app
 
-You can check that `secretstores.azure.keyvault` component is loaded and redis server connects successfully by looking at the log output when using the actions `run` command
+You can check that `secretstores.azure.keyvault` component is loaded and redis server connects successfully by looking at the log output when using the dapr `run` command
 
-Here is the log when you run [HelloWorld sample](https://github.com/actionscore/actions/tree/master/samples/1.hello-world) with Azure Key Vault secret store.
+Here is the log when you run [HelloWorld sample](https://github.com/daprcore/dapr/tree/master/samples/1.hello-world) with Azure Key Vault secret store.
 
 ```bash
-$ actions run --app-id mynode --app-port 3000 --port 3500 node app.js
+$ dapr run --app-id mynode --app-port 3000 --port 3500 node app.js
 
-ℹ️  Starting Actions with id mynode on port 3500
-✅  You're up and running! Both Actions and your app logs will appear here.
+ℹ️  Starting Dapr with id mynode on port 3500
+✅  You're up and running! Both Dapr and your app logs will appear here.
 
 ...
-== ACTIONS == time="2019-09-25T17:57:37-07:00" level=info msg="loaded component azurekeyvault (secretstores.azure.keyvault)"
+== DAPR == time="2019-09-25T17:57:37-07:00" level=info msg="loaded component azurekeyvault (secretstores.azure.keyvault)"
 == APP == Node App listening on port 3000!
-== ACTIONS == time="2019-09-25T17:57:38-07:00" level=info msg="loaded component statestore (state.redis)"
-== ACTIONS == time="2019-09-25T17:57:38-07:00" level=info msg="loaded component messagebus (pubsub.redis)"
+== DAPR == time="2019-09-25T17:57:38-07:00" level=info msg="loaded component statestore (state.redis)"
+== DAPR == time="2019-09-25T17:57:38-07:00" level=info msg="loaded component messagebus (pubsub.redis)"
 ...
-== ACTIONS == 2019/09/25 17:57:38 redis: connecting to [redis]:6379
-== ACTIONS == 2019/09/25 17:57:38 redis: connected to [redis]:6379 (localAddr: x.x.x.x:62137, remAddr: x.x.x.x:6379)
+== DAPR == 2019/09/25 17:57:38 redis: connecting to [redis]:6379
+== DAPR == 2019/09/25 17:57:38 redis: connected to [redis]:6379 (localAddr: x.x.x.x:62137, remAddr: x.x.x.x:6379)
 ...
 ```
 
@@ -204,7 +204,7 @@ kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[pfx_certif
 The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the certificate stored in Kubernetes secret store.
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
@@ -243,7 +243,7 @@ az keyvault secret set --name redisPassword --vault-name [your_keyvault_name] --
 This redis state store component refers to `azurekeyvault` component as a secretstore and uses the secret for `redisPassword` stored in Azure Key Vault.
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
@@ -267,14 +267,14 @@ auth:
 
 7. Deploy your app to Kubernetes
 
-Make sure that `secretstores.azure.keyvault` is loaded successfully in `actionsrt` sidecar log
+Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprd` sidecar log
 
-Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/actionscore/actions/tree/master/samples/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
+Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/daprcore/dapr/tree/master/samples/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
 
 ```bash
-$ kubectl logs nodeapp-f7b7576f4-4pjrj actionsrt
+$ kubectl logs nodeapp-f7b7576f4-4pjrj daprd
 
-time="2019-09-26T20:34:23Z" level=info msg="starting Actions Runtime -- version 0.4.0-alpha.4 -- commit 876474b-dirty"
+time="2019-09-26T20:34:23Z" level=info msg="starting Dapr Runtime -- version 0.4.0-alpha.4 -- commit 876474b-dirty"
 time="2019-09-26T20:34:23Z" level=info msg="log level set to: info"
 time="2019-09-26T20:34:23Z" level=info msg="kubernetes mode configured"
 time="2019-09-26T20:34:23Z" level=info msg="action id: nodeapp"
