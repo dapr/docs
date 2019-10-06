@@ -84,4 +84,4 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>-<therometer>-*-temper
 * [Spec: Dapr state managment specification](https://github.com/dapr/spec/blob/master/state.md)
 * [Spec: Dapr actors specification](https://github.com/dapr/spec/blob/master/actors.md)
 * [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md) 
-* [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-redis-store.md) 
+* [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md) 
