@@ -4,7 +4,14 @@ Dapr doesn't transform state values while saving and retriving states. Dapr requ
 
 >**NOTE:** The following examples uses Redis CLI against a Redis store using the default Dapr state store implementation. 
 
-## 1. List keys by Dapr id
+## 1. Connect to Redis
+
+You can use the official [redis-cli](https://redis.io/topics/rediscli) or any other Redis compatible tools to connect to the Redis state store to directly query Dapr states. If you are running Redis in a container, the easiest way to use redis-cli is to use a container:
+
+```bash
+docker run --rm -it --link <name of the Redis container> redis redis-cli -h <name of the Redis container>
+```
+## 2. List keys by Dapr id
 
 To get all state keys associated with application "myapp", use the command:
 
@@ -18,7 +25,7 @@ The above command returns a list of existing keys, for example:
 2) "myapp-amount"
 ```
 
-## 2. Get specific state data
+## 3. Get specific state data
 
 Dapr saves state values as hash values. Each hash value contains a "data" field, which contains the state data and a "version" field, which contains an ever-incrementing version serving as the ETag.
 
@@ -32,7 +39,7 @@ To get the state version/ETag, use the command:
 ```bash
 HGET myapp-balance version
 ```
-## 3. Read actor state
+## 4. Read actor state
 
 To get all the state keys associated with an actor with the instance ID "leroy" of actor type "cat" belonging to the application with ID "mypets", use the command:
 
