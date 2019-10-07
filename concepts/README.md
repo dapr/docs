@@ -18,7 +18,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * [**Pub-sub**](./publish-subscribe-messaging/pub-sub-messaging.md)
   
-  Pub-sub is a loosely coupled messaing pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub-sub pattern.
+  Pub-sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub-sub pattern.
 
 * [**Secrets**](./components/secrets.md)
 
