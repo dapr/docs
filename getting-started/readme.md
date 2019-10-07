@@ -119,7 +119,7 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 #### Uninstall Dapr on Kubernetes
 
 ```bash
-helm del -n dapr
+helm del --purge -n dapr
 ```
 
 > **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr-operator/README.md) for details on Dapr helm charts.
