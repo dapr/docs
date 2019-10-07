@@ -14,7 +14,7 @@ In addition Dapr is platform agnostic meaning you can run your applications loca
 
 In summary, you can use Dapr to build microservice applications using any language, any framework, and run them anywhere.
 
-## What buidling block capabilities does Dapr provide?
+## What capabilities does Dapr provide?
 
 There are many considerations when architecting and building microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks
 
@@ -32,6 +32,8 @@ Each of these building blocks are independent, meaning that you can use one, som
 
 •**Distributed tracing between services** to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard.
 
-![State management](../images/state_management.png)
+## Dapr distributed system building blocks 
 
-![Image](https://github.com/msfussell/docs/blob/overview/images/overview.png)
+The diagram below shows the distributed system building blocks provides by Dapr, exposed with standard APIs. These APIs can be used from any developer code over http or gRPC. Dapr integrates with any hosting platform to enable application portability including across cloud and edge.
+
+![Dapr overview](images/overview.png)
