@@ -33,4 +33,4 @@ Each of these building blocks are independent, meaning that you can use one, som
 •**Distributed tracing between services** to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard. 
 
 
-![](../../images/overview.png)
+![](../images/overview.png)
