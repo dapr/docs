@@ -2,7 +2,7 @@
 
 Dapr doesn't transform state values while saving and retriving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [Dapr state management spec](https://github.com/dapr/spec/blob/master/state.md)). You can directly interact with the underlying store to manipulate the state data, such querying states, creating aggregated views and making backups.
 
-> **NOTE:** Azure Cosmos DB is a multi-modal database that supports multiple APIs. The default Dapr Cosmos DB state store implementation uses the [MongoDB API](https://docs.microsoft.com/en-us/azure/cosmos-db/mongodb-introduction).
+> **NOTE:** Azure Cosmos DB is a multi-modal database that supports multiple APIs. The default Dapr Cosmos DB state store implementation uses the [Azure Cosmos DB SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-getting-started).
 
 ## 1. Connect to Azure Cosmos DB
 
