@@ -16,7 +16,7 @@ In summary, you can use Dapr to build microservice applications using any langua
 
 ## What capabilities does Dapr provide?
 
-There are many considerations when architecting and building microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks
+There are many considerations when architecting and building microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
 Each of these building blocks are independent, meaning that you can use one, some or all of them in your application.  In this first release of Dapr, the following building blocks are provided;
 
@@ -24,11 +24,11 @@ Each of these building blocks are independent, meaning that you can use one, som
 
 • **State Management** With state management for key/value pairs, long running, highly available, stateful services as well as shorter lived, stateless services can be easily written in the same application. The state store is pluggable and can include Azure Cosmos, AWS DynamoDB or Redis among  others.
 
-• **Publish and subscribe messaging between services** Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. 
+• **Publish and subscribe messaging between services** Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at least once message delivery guarantee.
 
 • **Event driven resource bindings**. Resource bindings and triggers further builds on event-driven architectures for scale and resiliency by receiving and sending events to and from any external resource such as databases, queues, file systems, etc.
 
-• **Actors** as the simple pattern for stateless and stateful objects that make concurrency simple with method and state encapsulation.
+• **Actors** as the pattern for stateless and stateful objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake up actors. Dapr also includes language specific actor SDKs built on this runtime for improved usability. And because these SDK share a common actor runtime, you even get cross-language actor support.  
 
 •**Distributed tracing between services** to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard.
 
