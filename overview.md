@@ -30,7 +30,7 @@ Each of these building blocks are independent, meaning that you can use one, som
 
 • **Actors** as the simple pattern for stateless and stateful objects that make concurrency simple with method and state encapsulation.
 
-•**Distributed tracing between services** to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard. 
+•**Distributed tracing between services** to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard.
 
 
 ![](../images/overview.png)
