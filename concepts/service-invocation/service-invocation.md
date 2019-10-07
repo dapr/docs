@@ -6,7 +6,7 @@ User applications running with Dapr can communicate with other user applications
 
 
 
-1. Service makes a http/gRPC call meant for Service B.  The call goes to the local Dapr sidecar.
+1. Service A makes a http/gRPC call meant for Service B.  The call goes to the local Dapr sidecar.
 2. Dapr discovers Service B's location and forwards the message to Service B's Dapr sidecar
 3. Service B's Dapr sidecar forwards the request to Service B.  Service B performs its corresponding business logic.
 4. Service B sends a response for Service A.  The response goes to Service B's sidecar.
