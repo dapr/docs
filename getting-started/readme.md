@@ -9,8 +9,8 @@ Once Dapr is installed, you can try out the [dapr samples](https://github.com/da
 ## Contents
 
  - [Prerequsites](#prerequisites)
- - [Running Dapr in standalone mode](#running-dapr-as-a-standalone-mode)
- - [Running Dapr on Kubernetes cluster](#running-dapr-on-kubernetes-cluster)
+ - [Installing Dapr in standalone mode](#installing-dapr-in-standalone-mode)
+ - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
 Download the [Dapr CLI](https://github.com/dapr/cli/releases), unpack it and move it to your desired location.
