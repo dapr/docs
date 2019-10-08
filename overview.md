@@ -28,9 +28,9 @@ Each of these building blocks are independent, meaning that you can use one, som
 
 • **Event driven resource bindings**. Resource bindings and triggers further builds on event-driven architectures for scale and resiliency by receiving and sending events to and from any external resource such as databases, queues, file systems, etc.
 
-• **Actors** as the pattern for stateless and stateful objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake up actors. Dapr also includes language specific actor SDKs built on this runtime for improved usability. And because these SDK share a common actor runtime, you even get cross-language actor support.  
+• **Actors** Actors are the pattern for stateless and stateful objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake up actors. Dapr also includes language specific actor SDKs built on this runtime for improved usability. And because these SDK share a common actor runtime, you even get cross-language actor support.  
 
-•**Distributed tracing between services** to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard.
+•**Distributed tracing between services** Dapr supports distributed tracing to easily diagnose and observe inter-service calls in production using the W3C Trace Context standard.
 
 ## Dapr distributed system building blocks 
 
