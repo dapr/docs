@@ -93,3 +93,36 @@ newState = '[{ "key": "k1", "value": "New Data", "etag": {}, "options": { "concu
 requests.post("http://localhost:3500/v1.0/state/key1", json=newState)
 response = requests.delete("http://localhost:3500/v1.0/state/key1", headers={"If-Match": "{}".format(etag)})
 ```
+
+### Handling version mismatch failures
+
+In this example, we'll see how to retry a save state operation when the version has changed:
+
+```python
+import requests
+import json
+
+# This method saves the state and returns false if failed to save state
+def save_state(data):
+    try:
+        response = requests.post("http://localhost:3500/v1.0/state/key1", json=data)
+        if response.status_code == 200:
+            return True
+    except:
+        return False
+    return False
+
+# This method gets the state and returns the response, with the ETag in the header -->
+def get_state(key):
+    response = requests.get("http://localhost:3500/v1.0/state/{}".format(key), headers={"concurrency":"first-write"})
+    return response
+
+# Exit when save state is successful. success will be False if there's an ETag mismatch -->
+success = False
+while success != True:
+    response = get_state("key1")
+    etag = response.headers['ETag']
+    newState = '[{ "key": "key1", "value": "New Data", "etag": {}, "options": { "concurrency": "first-write" }}]'.format(etag)
+
+    success = save_state(newState)
+```
