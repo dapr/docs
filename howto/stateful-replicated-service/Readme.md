@@ -72,10 +72,11 @@ First-Write-Wins is useful in situations where you have multiple instances of an
 
 The default mode for Dapr is Last-write-wins.
 
-Dapr utilizes ETags to determine the state's version number.
-ETags are returned from state requests in an `ETag` header.
+Dapr uses version numbers to determine whether a specific key has been updated. Clients retain the version number when reading the data for a key and then use the version number during updates such as writes and deletes. If the version information has changed since the client retrieved, an error is thrown, which then requires the client to perform a read again to get the latest version information and state. 
 
-Using ETags, clients will know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch. 
+Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header.
+
+Using ETags, clients know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch. 
 
 The following example shows how to get an ETag, and then use it to save state and then delete the state:
 
