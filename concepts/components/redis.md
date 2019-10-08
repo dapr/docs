@@ -1,13 +1,13 @@
-# Redis and Actions
+# Redis and Dapr
 
-Actions can use Redis in two ways:
+Dapr can use Redis in two ways:
 
 1. For state persistence and restoration
 2. For enabling pub-sub async style message delivery
 
 ## Creating a Redis Store
 
-Actions can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. If you already have a Redis store, move on to the [Configuration](#configuration) section.
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. If you already have a Redis store, move on to the [Configuration](#configuration) section.
 
 ### Creating an Azure Managed Redis Cache
 
@@ -17,13 +17,14 @@ Actions can use any Redis instance - containerized, running on your local dev ma
 2. Fill out necessary information and **check the "Unblock port 6379" box**, which will allow us to persist state without SSL.
 3. Click "Create" to kickoff deployment of your Redis instance.
 4. Once your instance is created, you'll need to grab your access key. Navigate to "Access Keys" under "Settings" and copy your key.
-5. Finally, we need to add our key and our host to a `redis.yaml` file that Actions can apply to our cluster. If you're running a sample, you'll add the host and key to the provided `redis.yaml`. If you're creating a project from the ground up, you'll create a `redis.yaml` file as specified in [Configuration](#configuration). Set the `redisHost` key to `actions-redis.redis.cache.windows.net:6379` and the `redisPassword` key to the key you copied in step 4. **Note:** In a production-grade application, follow [secret management](https://github.com/actionscore/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
+5. Run `kubectl get svc` and copy the cluster IP of your `redis-master`.
+6. Finally, we need to add our key and our host to a `redis.yaml` file that Dapr can apply to our cluster. If you're running a sample, you'll add the host and key to the provided `redis.yaml`. If you're creating a project from the ground up, you'll create a `redis.yaml` file as specified in [Configuration](#configuration). Set the `redisHost` key to `[IP FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you copied in step 4. **Note:** In a production-grade application, follow [secret management](https://github.com/daprcore/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
 
 ### Creating a Redis Cache in your Kubernetes Cluster using Helm
 
 We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
-1. Install Redis into your cluster: `helm install stable/redis --name redis --set image.tag=5.0.5-debian-9-r104`. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Actions' pub-sub functionality requires. If you're intending on using Redis as just a state store (and not for pub-sub), you do not have to set the image version.
+1. Install Redis into your cluster: `helm install stable/redis --name redis --set image.tag=5.0.5-debian-9-r104`. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub-sub functionality requires. If you're intending on using Redis as just a state store (and not for pub-sub), you do not have to set the image version.
 2. Run `kubectl get pods` to see the Redis containers now running in your cluster.
 3. Run `kubectl get svc` and copy the cluster IP of your `redis-master`. Add this IP as the `redisHost` in your redis.yaml file, followed by ":6379". For example:
     ```yaml
@@ -46,14 +47,14 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 ## Configuration
 
-Actions can use Redis as a `statestore` component (for state persistence and retrieval) or as a `messagebus` component (for pub-sub). The following yaml files demonstrates how to define each. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](https://github.com/actionscore/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
+Dapr can use Redis as a `statestore` component (for state persistence and retrieval) or as a `messagebus` component (for pub-sub). The following yaml files demonstrates how to define each. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](https://github.com/daprcore/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
 
 ### Configuring Redis for State Persistence and Retrieval
 
 Create a file called redis.yaml, and paste the following:
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
@@ -69,7 +70,7 @@ spec:
 Create a file called redis.yaml, and paste the following:
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
@@ -90,4 +91,4 @@ kubectl apply -f redis.yaml
 
 ### Standalone
 
-By default the Actions CLI creates a local Redis instance when you run `actions init`. However, if you want to configure a different Redis instance, create a directory named `eventsources` in the root path of your Action binary and then copy your `redis.yaml` into that directory.
+By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a directory named `eventsources` in the root path of your Action binary and then copy your `redis.yaml` into that directory.

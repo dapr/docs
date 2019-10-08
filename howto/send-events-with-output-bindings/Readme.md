@@ -14,7 +14,7 @@ Create the following YAML file, named binding.yaml, and save this to the /compon
 *Note: When running in Kubernetes, apply this file to your cluster using `kubectl apply -f binding.yaml`*
 
 ```
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: myEvent
