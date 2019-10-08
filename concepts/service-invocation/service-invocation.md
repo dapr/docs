@@ -1,9 +1,8 @@
 # Service Invocation 
 
-User applications running with Dapr can communicate with other user applications using Dapr through well-known endpoints in the form of http or gRPC messages.
+Dapr-enabled apps can communicate with each other through well-known endpoints in the form of http or gRPC messages.
 
 ![Service Invocation Diagram](../../images/service-invocation.png)
-
 
 
 1. Service A makes a http/gRPC call meant for Service B.  The call goes to the local Dapr sidecar.
