@@ -6,11 +6,11 @@ Dapr is a portable, event-driven runtime that makes it easy for enterprise devel
 
 ## Any language, any framework, anywhere
 
-Today we are experiencing a wave of cloud adoption. Developers are comfortable with web + database application architectures (for example classic 3-tier designs), but not with microservice application architectures which are inherently distributed. It’s hard to become a distributed systems expert, nor should you have to. Developers want to focus on business logic, while leaning on he platforms to imbue their applications with scale, resiliency, maintainability, elasticity and the other attributes of cloud-native architectures.
+Today we are experiencing a wave of cloud adoption. Developers are comfortable with web + database application architectures (for example classic 3-tier designs), but not with microservice application architectures which are inherently distributed. It’s hard to become a distributed systems expert, nor should you have to. Developers want to focus on business logic, while leaning on the platforms to imbue their applications with scale, resiliency, maintainability, elasticity and the other attributes of cloud-native architectures.
 
-This is where Dapr comes in. Darp codifies the *best practices* for building microservice applications into open, independent building blocks that enable you to build portable applications with the language and framework of your choice. Each building block is completely independent and you can use one, some or all of them in your application.
+This is where Dapr comes in. Dapr codifies the *best practices* for building microservice applications into open, independent building blocks that enable you to build portable applications with the language and framework of your choice. Each building block is completely independent and you can use one, some, or all of them in your application.
 
-In addition Dapr is platform agnostic meaning you can run your applications locally, on any Kubernetes cluster and other hosting environments that Dapr integrates with. This enables you to build microservice applications that can run on both the cloud and edge. 
+In addition Dapr is platform agnostic meaning you can run your applications locally, on any Kubernetes cluster, and other hosting environments that Dapr integrates with. This enables you to build microservice applications that can run on both the cloud and edge. 
 
 In summary, you can use Dapr to build microservice applications using any language, any framework, and run them anywhere.
 
