@@ -13,6 +13,9 @@ Once Dapr is installed, you can try out the [dapr samples](https://github.com/da
  - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
+
+* [Docker](https://docs.docker.com/v17.09/engine/installation/)
+
 Download the [Dapr CLI](https://github.com/dapr/cli/releases), unpack it and move it to your desired location.
  
 > For Mac/Linux - `/usr/local/bin`.
