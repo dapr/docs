@@ -20,8 +20,7 @@ The burden of dealing with concepts like consumer groups and multiple instances 
 
 Dapr has the concept of an `id`. Dapr requires a single ID to be assigned to every application instance
 
-When an app with multiple instances subscribes to a topic, Dapr will invoke only one instance for that app id.
-If two apps with different IDs subscribe to a topic, at least one consumer in each app will get a copy of the same message.
+When multiple instances of the same application type, each with their own ID, subscribe to a topic, Dapr invokes only one message instance for each application id. If two different applications with different IDs subscribe to a topic, at least one consumer in each application receives a copy of the same message.
 
 ## Cloud Events
 
