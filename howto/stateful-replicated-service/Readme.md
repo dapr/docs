@@ -1,12 +1,12 @@
 # Create a stateful replicated service
 
-In this guide we'll show you how you can create a stateful service which can be safely horizontally scaled, using opt-in concurrency and consistency models.
+In this HowTo we'll show you how you can create a stateful service which can be horizontally scaled, using opt-in concurrency and consistency models.
 
 This frees developers from difficult state coordination, conflict resolution and failure handling, and allows them instead to consume these capabilities as APIs from Dapr.
 
 ## 1. Setup a state store
 
-A state store component represents a resource that Dapr will use communicate with a database.
+A state store component represents a resource that Dapr uses to communicate with a database.
 For the purpose of this guide, we'll use a Redis state store.
 
 See a list of supported state stores [here](../setup-state-store/supported-state-stores.md)
@@ -63,13 +63,14 @@ import json
 
 response = requests.delete("http://localhost:3500/v1.0/state/key1", headers={"consistency":"strong"})
 ```
+Last-write concurrency is the default concurrency mode if the `concurrency` option is not specified.
 
 ## First-write-wins and Last-write-wins
 
-Dapr allows for opt-in for two common concurrency patterns when working with data stores: First-Write-Wins and Last-Write-Wins.
+Dapr allows for opt-in for two common concurrency patterns when working with data stores: First-write-wins and Last-write-wins.
 First-Write-Wins comes in useful in situations where you have multiple instances of an application, all writing to the same key concurrently.
 
-The default mode for Dapr is Last-Write-Wins.
+The default mode for Dapr is Last-write-wins.
 
 Dapr utilizes ETags to determine the state's version number.
 ETags are returned from state requests in an `ETag` header.
@@ -78,6 +79,7 @@ Using ETags, clients will know that a resource has been updated since the last t
 
 The following example shows how to get an ETag, and then use it to save state and then delete the state:
 
+*The following example is written in Python, but is applicable to any programming language*
 
 ```python
 import requests
