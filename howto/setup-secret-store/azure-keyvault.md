@@ -166,7 +166,7 @@ auth:
 
 You can check that `secretstores.azure.keyvault` component is loaded and redis server connects successfully by looking at the log output when using the dapr `run` command
 
-Here is the log when you run [HelloWorld sample](https://github.com/daprcore/dapr/tree/master/samples/1.hello-world) with Azure Key Vault secret store.
+Here is the log when you run [HelloWorld sample](https://github.com/dapr/dapr/tree/master/samples/1.hello-world) with Azure Key Vault secret store.
 
 ```bash
 $ dapr run --app-id mynode --app-port 3000 --port 3500 node app.js
@@ -269,7 +269,7 @@ auth:
 
 Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprd` sidecar log
 
-Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/daprcore/dapr/tree/master/samples/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
+Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/dapr/dapr/tree/master/samples/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
 
 ```bash
 $ kubectl logs nodeapp-f7b7576f4-4pjrj daprd

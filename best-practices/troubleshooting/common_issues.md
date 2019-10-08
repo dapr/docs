@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: daprcore.azurecr.io/samples/nodeapp
+        image: actionscore.azurecr.io/samples/nodeapp
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
@@ -99,7 +99,7 @@ To diagnose, view the logs of the sidecar:
 ### I'm getting 404 Not Found responses when calling Dapr
 
 This means you're trying to call an Dapr API endpoint that either doesn't exist or the URL is malformed.
-Look at the Dapr API spec [here](https://github.com/daprcore/spec) and make sure you're calling the right endpoint.
+Look at the Dapr API spec [here](https://github.com/dapr/spec) and make sure you're calling the right endpoint.
 
 ### I don't see any incoming events or calls from other services
 
