@@ -24,7 +24,7 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 • **State Management** With state management for key/value pairs, long running, highly available, stateful services as well as shorter lived, stateless services can be written easily in the same application. The state store is pluggable and can include Azure Cosmos, AWS DynamoDB or Redis among  others.
 
-• **Publish and subscribe messaging between services** Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at least one message delivery guarantee.
+• **Publish and subscribe messaging between services** Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at least once message delivery guarantee.
 
 • **Event driven resource bindings**. Resource bindings and triggers further builds on event-driven architectures for scale and resiliency by receiving and sending events to and from any external resource such as databases, queues, file systems, etc.
 
