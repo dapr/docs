@@ -18,11 +18,11 @@ In summary, you can use Dapr to build microservice applications using any langua
 
 There are many considerations when architecting and building microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
-Each of these building blocks are independent, meaning that you can use one, some or all of them in your application.  In this first release of Dapr, the following building blocks are provided;
+Each of these building blocks is independent, meaning that you can use one, some or all of them in your application.  In this first release of Dapr, the following building blocks are provided;
 
 • **Service invocation** Resilent service-to-service invocaton enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
 
-• **State Management** With state management for key/value pairs, long running, highly available, stateful services as well as shorter lived, stateless services can be easily written in the same application. The state store is pluggable and can include Azure Cosmos, AWS DynamoDB or Redis among  others.
+• **State Management** With state management for key/value pairs, long running, highly available, stateful services as well as shorter lived, stateless services can be written easily in the same application. The state store is pluggable and can include Azure Cosmos, AWS DynamoDB or Redis among  others.
 
 • **Publish and subscribe messaging between services** Publishing events and subscribing to topics between services enables event-driven architectures to simplify horizontal scalability and make them resilient to failure. Dapr provides at least once message delivery guarantee.
 
