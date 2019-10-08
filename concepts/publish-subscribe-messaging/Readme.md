@@ -18,9 +18,11 @@ That is, when an application publishes a message to a topic using the Publish/Su
 
 The burden of dealing with concepts like consumer groups and multiple instances inside consumer groups is all catered for by Dapr.
 
-Dapr has the concept of an `id`. Dapr requires a single ID to be assigned to every application instance
+### App ID
 
-When multiple instances of the same application type, each with their own ID, subscribe to a topic, Dapr invokes only one message instance for each application id. If two different applications with different IDs subscribe to a topic, at least one consumer in each application receives a copy of the same message.
+Dapr has the concept of an `id`. This is specified in Kubernetes using the `dapr.io/id` annotation and with the `app-id` flag using the Dapr CLI. Dapr requires an ID to be assigned to every application.
+
+When multiple instances of the same application ID subscribe to a topic, Dapr will make sure to deliver the message to only one instance. If two different applications with different IDs subscribe to a topic, at least one instance in each application receives a copy of the same message.
 
 ## Cloud Events
 
