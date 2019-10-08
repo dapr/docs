@@ -68,7 +68,7 @@ Last-write concurrency is the default concurrency mode if the `concurrency` opti
 ## First-write-wins and Last-write-wins
 
 Dapr allows for opt-in for two common concurrency patterns when working with data stores: First-write-wins and Last-write-wins.
-First-Write-Wins comes in useful in situations where you have multiple instances of an application, all writing to the same key concurrently.
+First-Write-Wins is useful in situations where you have multiple instances of an application, all writing to the same key concurrently.
 
 The default mode for Dapr is Last-write-wins.
 
