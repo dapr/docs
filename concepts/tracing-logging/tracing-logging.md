@@ -21,7 +21,7 @@ For HTTP requests, Dapr injects a **X-Correlation-ID** header to requests. For g
 Dapr tracing is configured by a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, to define a Zipkin exporter, define the following configuration object:
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: zipkin
