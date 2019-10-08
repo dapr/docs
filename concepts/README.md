@@ -7,7 +7,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * [Terminology](./terminology/terminology.md)
 * [Bindings](./bindings/Readme.md)
-* [Pub-sub](./publish-subscribe-messaging/pub-sub-messaging.md)
+* [Pub-sub](./publish-subscribe-messaging/Readme.md)
 * [Secrets](./components/secrets.md)
 * [State](./state-management/state-management.md)
 * [Tracing](./tracing-logging/tracing-logging.md)
