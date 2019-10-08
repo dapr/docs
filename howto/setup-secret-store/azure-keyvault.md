@@ -166,7 +166,7 @@ auth:
 
 You can check that `secretstores.azure.keyvault` component is loaded and redis server connects successfully by looking at the log output when using the dapr `run` command
 
-Here is the log when you run [HelloWorld sample](https://github.com/dapr/dapr/tree/master/samples/1.hello-world) with Azure Key Vault secret store.
+Here is the log when you run [HelloWorld sample](https://github.com/dapr/samples/tree/master/1.hello-world) with Azure Key Vault secret store.
 
 ```bash
 $ dapr run --app-id mynode --app-port 3000 --port 3500 node app.js
@@ -269,7 +269,7 @@ auth:
 
 Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprd` sidecar log
 
-Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/dapr/dapr/tree/master/samples/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
+Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
 
 ```bash
 $ kubectl logs nodeapp-f7b7576f4-4pjrj daprd
@@ -277,7 +277,7 @@ $ kubectl logs nodeapp-f7b7576f4-4pjrj daprd
 time="2019-09-26T20:34:23Z" level=info msg="starting Dapr Runtime -- version 0.4.0-alpha.4 -- commit 876474b-dirty"
 time="2019-09-26T20:34:23Z" level=info msg="log level set to: info"
 time="2019-09-26T20:34:23Z" level=info msg="kubernetes mode configured"
-time="2019-09-26T20:34:23Z" level=info msg="action id: nodeapp"
+time="2019-09-26T20:34:23Z" level=info msg="dapr id: nodeapp"
 time="2019-09-26T20:34:24Z" level=info msg="loaded component azurekeyvault (secretstores.azure.keyvault)"
 time="2019-09-26T20:34:25Z" level=info msg="loaded component statestore (state.redis)"
 ...
