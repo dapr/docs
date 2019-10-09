@@ -71,7 +71,7 @@ kubectl describe deployment tiller-deploy --namespace kube-system
 
 2. The external IP address of load balancer is not shown from `kubectl get svc`
 
-In Minikube, `kubectl get svc` shows `<pending>` state in EXTERNAL-IP. You can run `minikube serivce [service_name]` to access the service with your browser.
+In Minikube, EXTERNAL-IP in `kubectl get svc` shows `<pending>` state for your service. In this case, you can run `minikube serivce [service_name]` to open your service without external IP address.
 
 ```
 $ kubectl get svc
