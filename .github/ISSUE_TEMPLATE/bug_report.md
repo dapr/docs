@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug in Dapr
+about: Report a bug in Dapr docs
 title: ''
 labels: kind/bug
 assignees: ''
