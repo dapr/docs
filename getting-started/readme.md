@@ -2,7 +2,7 @@
 
 Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks. 
 
-To build and run your Dapr applications, you will need to setup your environments and install Dapr:
+To build and run your Dapr applications, you will need to [setup your environment](./environment-setup.md) and install Dapr:
 
 1. [Setup local development](./environment-setup.md#prerequisites)
 2. [Setup Kubernetes environment](./environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
