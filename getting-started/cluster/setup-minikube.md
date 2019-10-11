@@ -63,8 +63,29 @@ kubectl get pods -n kube-system
 
 ### Troubleshooting
 
-If Tiller is not running properly, get the logs from `tiller-deploy` deployment to understand the problem:
+1. If Tiller is not running properly, get the logs from `tiller-deploy` deployment to understand the problem:
 
 ```bash
 kubectl describe deployment tiller-deploy --namespace kube-system
+```
+
+2. The external IP address of load balancer is not shown from `kubectl get svc`
+
+In Minikube, EXTERNAL-IP in `kubectl get svc` shows `<pending>` state for your service. In this case, you can run `minikube serivce [service_name]` to open your service without external IP address.
+
+```
+$ kubectl get svc
+NAME                        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)            AGE
+...
+calculator-front-end        LoadBalancer   10.103.98.37     <pending>     80:30534/TCP       25h
+calculator-front-end-dapr   ClusterIP      10.107.128.226   <none>        80/TCP,50001/TCP   25h
+...
+
+$ minikube service calculator-front-end
+|-----------|----------------------|-------------|---------------------------|
+| NAMESPACE |         NAME         | TARGET PORT |            URL            |
+|-----------|----------------------|-------------|---------------------------|
+| default   | calculator-front-end |             | http://192.168.64.7:30534 |
+|-----------|----------------------|-------------|---------------------------|
+🎉  Opening kubernetes service  default/calculator-front-end in default browser...
 ```
