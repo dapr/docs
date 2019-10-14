@@ -1,6 +1,6 @@
 # Dapr API reference
 
-This repository holds the API reference for the Dapr runtime.
+This documentation contains the API reference for the Dapr runtime.
 
 Dapr is an open source runtime that provides a set of building blocks for building scalable distributed apps.
 Building blocks include pub-sub, state management, bindings, messaging and invocation, actor runtime capabilities, and more.
