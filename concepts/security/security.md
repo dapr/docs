@@ -26,7 +26,7 @@ Authentication with a binding target is configured by the binding’s configurat
 
 ## State store security
 
-Dapr doesn’t transform the state data from applications. This means Dapr doesn’t attempt to encrypt/decrypt state data. However, your application can adopt encryption/description methods of your choice, and the state data remains opaque to Dapr. 
+Dapr doesn’t transform the state data from applications. This means Dapr doesn’t attempt to encrypt/decrypt state data. However, your application can adopt encryption/decryption methods of your choice, and the state data remains opaque to Dapr. 
 
 Dapr uses the configured authentication method to authenticate with the underlying state store. And many state store implementations use official client libraries that generally use secured communication channels with the servers.
 
