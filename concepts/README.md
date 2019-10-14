@@ -8,6 +8,10 @@ This directory contains various Dapr concepts. The goal of these documents is to
   
   A binding provides defines a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the standard Dapr binding API, and it allows your application to be triggered by events snet by the connected service.
 
+* [**Building blocks**](./architecture/building_blocks.md)
+
+  A building block is a single-purposed API surface backed by one or more Dapr components. Dapr consists of a set of building blocks, with extensibility to add new building blocks.
+
 * **Components**
   
   Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub-sub](./components/redis.md) and [secrets](./components/secrets.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
