@@ -1,37 +1,20 @@
-# Getting Started
+# Getting started
 
 Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks. 
 
-To get started with Dapr, we recommend the following steps:
+## Core concepts
 
-#### 1. Setup Dapr on your local machine or Kubernetes cluster
+* **Building blocks** are a collection of components that implement distributed system capabilities, such as pub/sub, state management, resource bindings, and distributed tracing.
 
-To build and run your Dapr applications, you will need to [setup your environment](./environment-setup.md) and install Dapr:
+* **Components** encapsulate the implementation for a building block API. Example implementations for the state building block may include Redis, Azure Storage, Azure Cosmos DB, and AWS DynamoDB. Many of the components are pluggable so that one implementation can be swapped out for another.
 
-1. [Setup local development](./environment-setup.md#prerequisites)
-2. [Setup Kubernetes environment](./environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
+To learn more, see [Dapr Concepts](../concepts/README.md).
 
-
-Once you have Dapr installed, you can continue to our [Hello World sample](https://github.com/dapr/samples/tree/master/1.hello-world) or continue reading for further guidance.
-
-#### 2. Setup a state store and pub-sub (Optional)
-
-Some features of Dapr, mainly [Pub/Sub](https://github.com/dapr/docs/tree/master/concepts/publish-subscribe-messaging) and [State Management](https://github.com/dapr/docs/blob/master/concepts/state-management/state-management.md), require that you set up a Dapr components for them.
+## Setup the development environment
+Dapr can be run locally or in Kubernetes. We recommend starting with a local setup to explore the core Dapr concepts and familiarize yourself with the Dapr CLI. Follow these instructions to [configure Dapr locally](./environment-setup.md#prerequisites).
 
 
-Using the Dapr CLI, these components are set-up automatically for you when running on a local machine.<br><br>
-The following links will help you setup a state store and pub/sub components on Kubernetes:
-
-* [Setup State Management on Kubernetes](../howto/setup-state-store)
-* [Setup Pub/Sub on Kubernetes](../howto/setup-pub-sub-message-broker)
-
-#### 3. Run through concepts and how-to guides (Optional)
-
-Dapr has many concepts, which can be found [here](../concepts).
-The concepts provide a deeper understanding of the core features of Dapr and how they work.
-
-Reading the [How To](../howto) guides, you can walk through specific tasks, for example, how to create a [rate limited app](../howto/control-concurrency) using Dapr.
-
-#### 4. Run samples
-
-The best way to learn is through experience! The Dapr [samples repo](https://github.com/dapr/samples) contains many samples that will walk you through end-to-end scenarios of building applications with Dapr involving service invocation, using pub/sub, handling state and more.
+## Next steps
+1. Once Dapr is installed, continue to the [Hello World sample](https://github.com/dapr/samples/tree/master/1.hello-world).
+2. Explore additional [samples](https://github.com/dapr/samples) for more advanced concepts, such as service invocation, pub/sub, and state management.
+3. Follow [How To guides](../howto) to understand how Dapr solves specific problems, such as creating a [rate limited app](../howto/control-concurrency).
