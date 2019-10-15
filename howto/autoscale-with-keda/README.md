@@ -15,7 +15,7 @@ For this example, we'll be using Kafka.<br>
 You can install Kafka in your cluster by using Helm:
 
 ```
-# helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+$ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 $ helm install --name my-kafka incubator/kafka
 ```
 
