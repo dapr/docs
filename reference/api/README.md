@@ -21,9 +21,8 @@ Any changes/proposals to the Dapr API should adhere to the following:
 
 ## Table of Contents
 
-  1. [Messaging](service_invocation.md)
+  1. [Service Invocation](service_invocation.md)
   2. [Bindings](bindings.md)
   3. [Pub Sub/Broadcast](pubsub.md)
   4. [State Management](state.md)
   5. [Actors](actors.md)
-  6. [Metadata](metadata.md)

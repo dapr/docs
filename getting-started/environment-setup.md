@@ -5,17 +5,51 @@ Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime i
 ## Contents
 
  - [Prerequsites](#prerequisites)
+ - [Installing Dapr CLI](#installing-dapr-cli)
  - [Installing Dapr in standalone mode](#installing-dapr-in-standalone-mode)
  - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
 
 * Install [Docker](https://docs.docker.com/install/)
-* Download the [Dapr CLI](https://github.com/dapr/cli/releases), unpack it and move it to your desired location.
- 
-> For Mac/Linux - `/usr/local/bin`.
 
-> For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
+## Installing Dapr CLI
+
+### Using script to install the latest release
+
+**Windows**
+
+Install the latest windows Dapr cli to `c:\dapr` and add this directory to User PATH environment variable.
+
+```powershell
+powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
+```
+
+**Linux**
+
+Install the latest linux Dapr CLI to `/usr/local/bin`
+
+```bash
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+```
+
+**MacOS**
+
+Install the latest darwin Dapr CLI to `/usr/local/bin`
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
+```
+
+### From the Binary Releases
+
+Each release of Dapr CLI includes various OSes and architectures. These binary versions can be manually downloaded and installed.
+
+1. Download the [Dapr CLI](https://github.com/dapr/cli/releases)
+2. Unpack it (e.g. dapr_linux_amd64.tar.gz, dapr_windows_amd64.zip)
+3. Move it to your desired location.
+   * For Linux/MacOS - `/usr/local/bin`
+   * For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
 ## Installing Dapr in standalone mode
 
@@ -42,13 +76,21 @@ To see that Dapr has been installed successful, from a command prompt run the `d
 You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases).
 
 ```bash
-# Install v0.4.0-alpha.4 runtime
-$ dapr init --runtime-version v0.4.0-alpha.4
+# Install v0.1.0 runtime
+$ dapr init --runtime-version 0.1.0
 
 # Check the versions of cli and runtime
 $ dapr --version
-cli version: v0.2.0-alpha.2
-runtime version: v0.4.0-alpha.4
+cli version: v0.1.0
+runtime version: v0.1.0
+```
+
+### Uninstall Dapr in a standalone mode
+
+Remove placement docker container.
+
+```bash
+$ dapr uninstall
 ```
 
 ## Installing Dapr on a Kubernetes cluster
