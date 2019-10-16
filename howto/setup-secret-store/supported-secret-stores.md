@@ -1,4 +1,4 @@
 ## Supported Secret Stores
 
-* Kubernetes
+* [Kubernetes](./kubernetes.md)
 * [Azure Key Vault](./azure-keyvault.md)
