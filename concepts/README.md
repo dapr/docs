@@ -14,7 +14,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * **Components**
   
-  Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub-sub](./components/redis.md) and [secrets](./components/secrets.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
+  Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub-sub](./publish-subscribe-messaging/Readme.md) and [secrets](./state-management/state-management.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
 
 * [**Distributed Tracing**](./tracing-logging/tracing-logging.md)
 
@@ -39,4 +39,4 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 ## Extensibility
 
-* [Redis](./components/redis.md)
+* [Components Contrib](https://github.com/dapr/components-contrib)

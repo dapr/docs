@@ -21,4 +21,3 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
      - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/samples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
  
 > Note: Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/Readme.md) in addition to the protobuf clients.
-
