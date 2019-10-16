@@ -68,9 +68,11 @@ You can install Dapr to Kubernetes cluster using CLI.
 
 ```bash
 $ dapr init --kubernetes
+ℹ️  Note: this installation is recommended for testing purposes. For production environments, please use Helm
+
 ⌛  Making the jump to hyperspace...
 ✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods' in your terminal.
+✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
 ```
 
 Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster.
