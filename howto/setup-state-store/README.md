@@ -42,6 +42,6 @@ kubectl apply -f statestore.yaml
 
 ## Reference
 
-[Setup Redis](./setup-redis.md)
-[Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
-[Supported State Stores](./supported-state-stores.md)
+* [Setup Redis](./setup-redis.md)
+* [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
+* [Supported State Stores](./supported-state-stores.md)
