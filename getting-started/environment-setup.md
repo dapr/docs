@@ -85,6 +85,14 @@ cli version: v0.1.0
 runtime version: v0.1.0
 ```
 
+### Uninstall Dapr in a standalone mode
+
+Remove placement docker container.
+
+```bash
+$ dapr uninstall
+```
+
 ## Installing Dapr on a Kubernetes cluster
 
 When setting up Kubernetes you can do this either via the Dapr CLI or Helm
