@@ -1,3 +1,74 @@
-# documentation 
+# Setup Redis Streams
 
-Content for this file to be added
+## Creating a Redis instance
+
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later. If you already have a Redis instance > 5.0.0 installed, move on to the [Configuration](#configuration) section.
+
+### Running locally
+
+The Dapr CLI will automatically create and setup a Redis Streams instance for you when you.
+The Redis instance will be installed via Docker when you run `dapr init`, and the component file will be setup with `dapr run`.
+
+### Creating a Redis instance in your Kubernetes Cluster using Helm
+
+We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
+
+1. Install Redis into your cluster: `helm install stable/redis --name redis --set image.tag=5.0.5-debian-9-r104`. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub-sub functionality requires.
+2. Run `kubectl get pods` to see the Redis containers now running in your cluster.
+3. Run `kubectl get svc` and copy the cluster IP of your `redis-master`. Add this IP as the `redisHost` in your redis.yaml file, followed by ":6379". For example:
+    ```yaml
+        metadata:
+        - name: redisHost
+          value: "10.0.125.130:6379"
+    ```
+4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
+    - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
+
+    - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
+
+    Add this password as the `redisPassword` value in your redis.yaml file. For example:
+    ```yaml
+        - name: redisHost
+          value: "lhDOkwTlp0"
+    ```
+
+### Other ways to create a Redis Database
+
+- [AWS Redis](https://aws.amazon.com/redis/)
+- [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
+
+## Configuration
+
+To setup Redis, you need to create a component for `pubsub.redis`. 
+<br>
+The following yaml files demonstrates how to define each. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/components/secrets.md) instructions to securely manage your secrets.
+
+### Configuring Redis Streams for Pub/Sub
+
+Create a file called pubsub.yaml, and paste the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.redis
+  metadata:
+  - name: redisHost
+    value: <HOST>
+  - name: redisPassword
+    value: <PASSWORD>
+```
+
+## Apply the configuration
+
+### Kubernetes
+
+```
+kubectl apply -f pubsub.yaml
+```
+
+### Standalone
+
+By default the Dapr CLI creates a local Redis instance when you run `dapr init`. When you run an app using `dapr run`, the component file will automatically be created for you in a `components` dir in your current working directory.
