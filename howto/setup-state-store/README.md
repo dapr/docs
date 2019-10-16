@@ -23,7 +23,7 @@ spec:
 ```
 
 The type of database is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a s[ecret store](../../concepts/components/secrets.md).
+Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/components/secrets.md).
 
 ## Running locally
 
@@ -34,7 +34,7 @@ You can make changes to this file the way you see fit, whether to change connect
 ## Running in Kubernetes
 
 Dapr uses a Kubernetes Operator to update the sidecars running in the cluster with different components.
-To setup a state store to Kubernetes, use `kubectl` to apply the component file:
+To setup a state store in Kubernetes, use `kubectl` to apply the component file:
 
 ```
 kubectl apply -f statestore.yaml
