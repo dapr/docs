@@ -15,11 +15,11 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 1. Install Redis into your cluster: `helm install stable/redis --name redis --set image.tag=5.0.5-debian-9-r104`. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub-sub functionality requires. If you're intending on using Redis as just a state store (and not for pub-sub), you do not have to set the image version.
 2. Run `kubectl get pods` to see the Redis containers now running in your cluster.
-3. Run `kubectl get svc` and copy the cluster IP of your `redis-master`. Add this IP as the `redisHost` in your [redis.yaml](#configuration) file, followed by ":6379". For example:
+3. Add `redis-master:6379` as the `redisHost` in your [redis.yaml](#configuration) file. For example:
     ```yaml
         metadata:
         - name: redisHost
-          value: 10.0.125.130:6379
+          value: redis-master:6379
     ```
 4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
     - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
