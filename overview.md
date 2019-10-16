@@ -13,7 +13,7 @@ In addition Dapr is platform agnostic meaning you can run your applications loca
 
 Using Dapr you can easily build microservice applications using any language, any framework, and run them anywhere.
 
-## What capabilities does Dapr provide?
+## Microservice building blocks for cloud and edge
 
 There are many considerations when architecting microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
@@ -31,15 +31,12 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 •**Actors** A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
 
-•**Distributed tracing between services** To easily diagnose and observe inter-service calls in production using the W3C Trace Context standard.
+•**Distributed tracing between services** To easily diagnose and observe inter-service calls in production using the W3C Trace Context standard and push events to tracing and monitoring systems.
 
-
-## Dapr distributed system building blocks 
 
 The diagram below shows the distributed system building blocks provides by Dapr, exposed with standard APIs. These APIs can be used from any developer code over http or gRPC. Dapr integrates with any hosting platform, for example Kubernetes, to enable application portability including across cloud and edge.
 
 ![Dapr overview](images/overview.png)
-
 
 ## Sidecar architecture
 
@@ -55,4 +52,26 @@ In container hosting environments such a Kubernetes, Dapr runs as a side-car con
 
 To make using Dapr more natural for different languages, it also includes language specific SDKs for Go, Java, JavaScript, .NET and Python. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
-Furthermore, Dapr can also be integrated with any developer framework.  For example, in the Dapr .NET SDK you find ASP.NET Core integration, which brings stateful routing controllers that can respond to pub/sub events from other services.
+Furthermore, Dapr can be integrated with any developer framework. For example, in the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services.
+
+## Running Dapr on a local developer machine in Standalone mode
+
+Dapr can be configured to run on your local developer machine in [Standalone mode](./getting-started). Each running service has a Dapr runtime process which is configured to use state stores, pub/sub and binding components.  
+
+You can use the [Dapr CLI](https://github.com/dapr/cli) to run services locally.
+
+![Dapr overview](images/overview_standalone.png)
+
+## Running Dapr in Kubernetes mode 
+
+Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the *dapr-sidecar-injector* and *dapr-operator* services provide first class integration to launch Dapr as a sidecar container in the same pod as the service and provides notifications of Dapr component updates provisioned into the cluster.
+ 
+
+![Dapr overview](images/overview_kubernetes.png)
+
+In order to give your service an id and port known to Dapr and launch the Dapr sidecar container, you simply annotate your deployment like this.
+
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/id: "nodeapp"
+        dapr.io/port: "3000"
