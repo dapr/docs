@@ -7,7 +7,7 @@ For a compelete sample showing output bindings, visit this [link](<PLACEHOLDER>)
 
 An output binding represents a resource that Dapr will use invoke and send messages to.
 
-For the purpose of this guide, we'll use a Kafka binding. You can find a list of the different binding specs [here](../concepts/bindings//specs).
+For the purpose of this guide, we'll use a Kafka binding. You can find a list of the different binding specs [here](../../concepts/bindings/Readme.md).
 
 Create the following YAML file, named binding.yaml, and save this to the /components sub-folder in your application directory.
 

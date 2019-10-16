@@ -45,7 +45,7 @@ You can remove state permanently from the saved Actor state by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
 ```
 
-Refer [dapr spec](/dapr/spec/blob/master/actors.md) for more details.
+Refer [dapr spec](../../reference/api/actors.md) for more details.
 
 ## Actor Timers and Reminders
 Actors can schedule periodic work on themselves by registering either timers or reminders.
@@ -77,7 +77,7 @@ You can remove the actor timer  by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Refer [dapr spec](/dapr/spec/blob/master/actors.md) for more details.
+Refer [dapr spec](../../reference/api/actors.md) for more details.
 
 ### Actor reminders
 
@@ -107,7 +107,7 @@ You can remove the actor reminder by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-Refer [dapr spec](/dapr/spec/blob/master/actors.md) for more details.
+Refer [dapr spec](../../reference/api/actors.md) for more details.
 
 
 

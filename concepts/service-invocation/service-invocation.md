@@ -13,5 +13,5 @@ Dapr-enabled apps can communicate with each other through well-known endpoints i
 6. Service A receives the response.
 
 For more information, see:
-- The [Service Invocation Spec](https://github.com/dapr/spec/blob/master/service_invocation.md)
+- The [Service Invocation Spec](../../reference/api/service_invocation.md)
 - A [HowTo]() on Service Invocation
