@@ -78,16 +78,15 @@ When deploying Dapr to your cluster using Helm, you can individually set the log
 
 #### Setting the Operator log level
 
-`helm install actionscore/dapr-operator -n dapr --namespace dapr-system --set dapr_operator.logLevel=error`
+`helm install dapr/dapr --name dapr --namespace dapr-system --set dapr_operator.logLevel=error`
 
 #### Setting the Placement Service log level
 
-`helm install actionscore/dapr-placement -n dapr --namespace dapr-system --set dapr_placement.logLevel=error`
+`helm install dapr/dapr --name dapr --namespace dapr-system --set dapr_placement.logLevel=error`
 
 #### Setting the Sidecar Injector log level
 
-`helm install actionscore/dapr-sidecar-injector -n dapr --namespace dapr-system --set dapr_sidecar_injector.logLevel=error`
-
+`helm install dapr/dapr --name dapr --namespace dapr-system --set dapr_sidecar_injector.logLevel=error`
 
 
 ## Viewing Logs on Kubernetes

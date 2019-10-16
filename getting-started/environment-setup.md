@@ -35,7 +35,7 @@ Downloading binaries and setting up components
 ✅  Success! Dapr is up and running
 ```
 
-To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `actionscore.azurecr.io/dapr:latest` and `redis` container images are both running.
+To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
 
 ### Install a specific runtime version
 
@@ -68,9 +68,11 @@ You can install Dapr to Kubernetes cluster using CLI.
 
 ```bash
 $ dapr init --kubernetes
+ℹ️  Note: this installation is recommended for testing purposes. For production environments, please use Helm
+
 ⌛  Making the jump to hyperspace...
 ✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods' in your terminal.
+✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
 ```
 
 Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster.
@@ -92,15 +94,14 @@ You can install Dapr to Kubernetes cluster using a Helm chart.
 2. Add Azure Container Registry as a Helm repo
 
 ```bash
-helm repo add dapr https://actionscore.azurecr.io/helm/v1/repo \
---username 390401a7-d7a6-46da-b10f-3ceff7a1cdd5 \
---password 485b3522-59bb-4152-8938-ca8b90108af6
+helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
+helm repo update
 ```
 
 3. Install the Dapr chart on your cluster in the `dapr-system` namespace
 
 ```bash
-helm install dapr/dapr-operator --name dapr --namespace dapr-system
+helm install dapr/dapr --name dapr --namespace dapr-system
 ```
 
 #### Verify installation
