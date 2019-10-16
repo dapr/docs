@@ -22,7 +22,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
-id | the Action ID associated with the remote app
+id | the App ID associated with the remote app
 method-name | the name of the method or url to invoke on the remote app
 
 ```shell
