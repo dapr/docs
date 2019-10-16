@@ -20,4 +20,5 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
     - **[Getting Started with .NET Actors](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)** - Tutorial for developing actor applications using the Dapr .NET SDK including  **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/samples/Actor)**
      - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/samples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
  
-> Note: Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api) in addition to the protobuf clients.
+> Note: Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/Readme.md) in addition to the protobuf clients.
+

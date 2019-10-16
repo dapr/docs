@@ -25,5 +25,5 @@ Steps 4-5 are the same as the list above.
 
 
 For more information, see:
-- The [Service Invocation Spec](https://github.com/dapr/spec/blob/master/service_invocation.md)
+- The [Service Invocation Spec](../../reference/api/service_invocation.md)
 - A [HowTo]() on Service Invocation

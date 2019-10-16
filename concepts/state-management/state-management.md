@@ -14,7 +14,7 @@ Dapr data stores are pluggable. Dapr ships with [Redis](https://redis.io
 ), [GCP Cloud Spanner](https://cloud.google.com/spanner
 ) and [Cassandra](http://cassandra.apache.org/).
 
-See the Dapr API specification for details on [state manangement API](https://github.com/dapr/spec/blob/master/state.md)
+See the Dapr API specification for details on [state manangement API](../../reference/api/state.md))
 
 > **NOTE:** Dapr prefixes state keys with the ID of the current Dapr instance/sidecar. This allows multiple Dapr instances to share the same state store.
 
@@ -81,8 +81,8 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>-<therometer>-*-temper
 > **NOTE:** Direct queries of the state store are not governed by Dapr concurrency control, since you are not calling through the Dapr runtime. What you see are snapshots of committed data which are acceptable for read-only queries across multiple actors, however writes should be done via the actor instances.
 
 ## References
-* [Spec: Dapr state managment specification](https://github.com/dapr/spec/blob/master/state.md)
-* [Spec: Dapr actors specification](https://github.com/dapr/spec/blob/master/actors.md)
+* [Spec: Dapr state managment specification](../../reference/api/state.md)
+* [Spec: Dapr actors specification](../../reference/api/actors.md)
 * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
 * [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md) 
 * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)

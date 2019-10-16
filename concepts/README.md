@@ -1,6 +1,6 @@
 # Dapr concepts
 
-This directory contains various Dapr concepts. The goal of these documents is to expand your knowledge on the [Dapr spec](https://github.com/dapr/spec). 
+This directory contains various Dapr concepts. The goal of these documents is to expand your knowledge on the [Dapr spec](../reference/api/README.md).
 
 ## Core Concepts
 
