@@ -30,7 +30,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * [**State**](./state-management/state-management.md)
 
-  Application state is anything an application wants to perserve beyond a single session. Dapr allows pluggable state stores behind a key/value-based state API.
+  Application state is anything an application wants to preserve beyond a single session. Dapr allows pluggable state stores behind a key/value-based state API.
 
 ## Actors
 
