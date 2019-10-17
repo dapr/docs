@@ -6,7 +6,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * [**Bindings**](./bindings/Readme.md)
   
-  A binding provides defines a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the standard Dapr binding API, and it allows your application to be triggered by events snet by the connected service.
+  A binding provides defines a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the standard Dapr binding API, and it allows your application to be triggered by events sent by the connected service.
 
 * [**Building blocks**](./architecture/building_blocks.md)
 
