@@ -5,7 +5,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 ## Core Concepts
 
 * [**Bindings**](./bindings/Readme.md)
-  
+
   A binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the standard Dapr binding API, and it allows your application to be triggered by events sent by the connected service.
 
 * [**Building blocks**](./architecture/building_blocks.md)
@@ -14,13 +14,13 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * **Components**
   
-  Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub-sub](./publish-subscribe-messaging/Readme.md) and [secrets](./state-management/state-management.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
+  Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub-sub](./publish-subscribe-messaging/Readme.md) and [secrets](./components/secrets.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
 
 * [**Distributed Tracing**](./tracing-logging/tracing-logging.md)
 
   Distirbuted tracing collects and aggregates trace events by transactions. It allows you to trace the entire call chain across multiple services. Dapr integrates with [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection. 
 
-* [**Pub-sub**](./publish-subscribe-messaging/pub-sub-messaging.md)
+* [**Pub-sub**](./publish-subscribe-messaging/Readme.md)
   
   Pub-sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub-sub pattern.
 

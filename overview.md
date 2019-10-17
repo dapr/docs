@@ -31,8 +31,6 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 •**Actors** A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
 
-•**Distributed tracing between services** To easily diagnose and observe inter-service calls in production using the W3C Trace Context standard and push events to tracing and monitoring systems.
-
 
 The diagram below shows the distributed system building blocks provides by Dapr, exposed with standard APIs. These APIs can be used from any developer code over http or gRPC. Dapr integrates with any hosting platform, for example Kubernetes, to enable application portability including across cloud and edge.
 
