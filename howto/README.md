@@ -6,7 +6,7 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Invoke other services in your cluster or environment](./invoke-and-discover-services)
 * [Create a gRPC enabled app, and invoke Dapr over gRPC](./create-grpc-app)
 
-### Sate Management
+### State Management
 * [Setup Dapr state store](./setup-state-store)
 * [Create a service that performs stateful CRUD operations](./create-stateful-service)
 * [Query the underlying state store](./query-state-store)
