@@ -7,7 +7,7 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 - **[Quickstarts and samples](./quickstart)** - Quickstart guides and samples for developing applications
 - **[Concepts](./concepts)** - Dapr concepts explained
 - **[How-Tos](./howto)** - Guides explaining how to accomplish specific tasks
-- **[Best practices](./howto)** - Guides explaining best practices  using Dapr including [debugging and troublingshooting](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting)
+- **[Best practices](./howto)** - Guides explaining best practices  using Dapr including [debugging and troubleshooting](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting)
 - **[Reference](./reference)** - Detailed reference documentation
 
  ### SDKs
