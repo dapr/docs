@@ -59,7 +59,7 @@ Dapr can use Redis as a `statestore` component (for state persistence and retrie
 
 ### Configuring Redis for State Persistence and Retrieval
 
-Create a file called redis.yaml, and paste the following:
+Create a file called redis-state.yaml, and paste the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -77,15 +77,15 @@ spec:
 
 ### Configuring Redis for Pub/Sub
 
-Create a file called redis.yaml, and paste the following:
+Create a file called redis-pubsub.yaml, and paste the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: statestore
+  name: messagebus
 spec:
-  type: state.redis
+  type: pubsub.redis
   metadata:
   - name: redisHost
     value: <HOST>
@@ -98,7 +98,9 @@ spec:
 ### Kubernetes
 
 ```
-kubectl apply -f redis.yaml
+kubectl apply -f redis-state.yaml
+
+kubectl apply -f redis-pubsub.yaml
 ```
 
 ### Standalone
