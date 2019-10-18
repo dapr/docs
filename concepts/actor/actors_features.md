@@ -31,7 +31,7 @@ POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state
 
 ### Retrieve the Actor State
 
-Once you have saved the actor state, you can retrived the saved state by calling 
+Once you have saved the actor state, you can retrieve the saved state by calling 
 
 ```
 GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
@@ -52,8 +52,7 @@ Actors can schedule periodic work on themselves by registering either timers or 
 
 ### Actor timers
 
-You can register a callback on actor to be executed based on 
-timer.
+You can register a callback on actor to be executed based on timer.
 
 Dapr Actor runtime ensures that the callback methods respect the turn-based concurrency guarantees.This means that no other actor methods or timer/reminder callbacks will be in progress until this callback completes execution.
 
@@ -71,7 +70,7 @@ POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 
 You can provide the timer due time and callback in the request body.
 
-You can remove the actor timer  by calling
+You can remove the actor timer by calling
 
 ```
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
@@ -86,7 +85,7 @@ Reminders are a mechanism to trigger persistent callbacks on an actor at specifi
 You can create a persistent reminder for an actor by calling the Http/gRPC request to Darp.
 
 ```
-POST,PUT POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
+POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
 You can provide the reminder due time and period in the request body.
