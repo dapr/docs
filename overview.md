@@ -17,7 +17,7 @@ Using Dapr you can easily build microservice applications using any language, an
 
 There are many considerations when architecting microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
-Each of these building blocks is independent, meaning that you can use one, some or all of them in your application.  In this initial release of Dapr, the following building blocks are provided;
+Each of these building blocks is independent, meaning that you can use one, some or all of them in your application. In this initial release of Dapr, the following building blocks are provided:
 
 • **Service invocation** Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
 

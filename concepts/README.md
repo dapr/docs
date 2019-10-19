@@ -4,7 +4,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 ## Core Concepts
 
-* [**Bindings**](./bindings/Readme.md)
+* [**Bindings**](./bindings/README.md)
 
   A binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the standard Dapr binding API, and it allows your application to be triggered by events sent by the connected service.
 

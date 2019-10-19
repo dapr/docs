@@ -3,8 +3,8 @@
 Using bindings, you can trigger your app with events coming in from external systems, or invoke external systems.
 Bindings allow for on-demand, event-driven compute scenarios, and dapr bindings help developers with the following:
 
-* Remove the complexities of connecting to, and polling from, messaging systems such as queues, message buses etc
-* Focus on business logic and not the implementation details of how interact with a system.
+* Remove the complexities of connecting to, and polling from, messaging systems such as queues, message buses, etc.
+* Focus on business logic and not the implementation details of how interact with a system
 * Keep the code free from SDKs or libraries
 * Handles retries and failure recovery
 * Switch between bindings at runtime time
@@ -43,7 +43,7 @@ An optional payload and metadata might be sent with the request.
 In order to receive events from an input binding:
 
 1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
-2. Listen on an HTTP endpoint for the incoming event, or use the gRPC proto library to get incoming events.
+2. Listen on an HTTP endpoint for the incoming event, or use the gRPC proto library to get incoming events
 
 Read the [How To](../../howto) section to get started with input bindings.
 
