@@ -1,4 +1,4 @@
-# Distributed tracing 
+# Distributed Tracing 
 
 Dapr uses OpenTelemetry (previously known as OpenCensus) for distributed traces and metrics collection. OpenTelemetry supports various backends including [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor/), [Datadog](https://www.datadoghq.com), [Instana](https://www.instana.com), [Jaeger](https://www.jaegertracing.io/), [SignalFX](https://www.signalfx.com/), [Stackdriver](https://cloud.google.com/stackdriver), [Zipkin](https://zipkin.io) and others. 
 
@@ -6,7 +6,7 @@ Dapr uses OpenTelemetry (previously known as OpenCensus) for distributed traces 
 
 # Tracing Design
 
-Dapr adds a HTTP/grPC middleware to the Dapr sidecar. The middleware intercepts all Dapr and application traffic and automatically injects correlation IDs to trace distributed transactions. This design has several benifits:
+Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts all Dapr and application traffic and automatically injects correlation IDs to trace distributed transactions. This design has several benefits:
 
 * No need for code instrumentation. All traffic is automatically traced (with configurable tracing levels).
 * Consistent tracing behavior across microservices. Tracing a configured and managed on Dapr sidecar so that it remains consistent across services made by different teams and potentially written in different programming languages.
@@ -37,5 +37,5 @@ spec:
 Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
 # References
-* [How-to: set up distributed tracing](../../howto/diagnose-with-tracing/readme.md)
+* [How-To: Set Up Distributed Tracing](../../howto/diagnose-with-tracing/readme.md)
 
