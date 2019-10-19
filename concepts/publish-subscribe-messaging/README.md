@@ -1,6 +1,6 @@
-# Publish/Subcribe message broker
+# Publish/Subcribe Messaging
 
-Dapr enables  developers to design their application using the pub/sub pattern using a message broker, where event consumers and producers are decoupled from one another, and communicate by sending and receiving messages that are associated with a namespace, usually in the form of topics.
+Dapr enables developers to design their application with a pub/sub pattern using a message broker, where event consumers and producers are decoupled from one another, and communicate by sending and receiving messages that are associated with a namespace, usually in the form of topics.
 
 This allows event producers to send messages to consumers that aren't running, and consumers to receive messages based on subscriptions to topics.
 
@@ -11,7 +11,7 @@ These implementations are pluggable, and developed outside of the Dapr runtime i
 
 The API for Publish/Subcribe can be found in the [spec repo](../../reference/api/pubsub.md).
 
-## Behavior and guarantees
+## Behavior and Guarantees
 
 Dapr guarantees At-Least-Once semantics for message delivery.
 That is, when an application publishes a message to a topic using the Publish/Subcribe API, it can assume the message is delivered at least once to any subscriber when the response status code from that endpoint is `200`, or returns no error if using the gRPC client.
@@ -26,7 +26,7 @@ When multiple instances of the same application ID subscribe to a topic, Dapr wi
 
 ## Cloud Events
 
-Dapr follows the [Cloud Events 0.3 spec](https://github.com/cloudevents/spec/tree/v0.3) and wraps any payload sent to a topic inside a Cloud Events envelope.
+Dapr follows the [Cloud Events 0.3 Spec](https://github.com/cloudevents/spec/tree/v0.3) and wraps any payload sent to a topic inside a Cloud Events envelope.
 
 The following fields from the Cloud Events spec are implemented with Dapr:
 

@@ -1,17 +1,17 @@
-# Use Pub Sub to consume messages from topics
+# Use Pub/Sub to consume messages from topics
 
-Pub-Sub is a very common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
-Using Pub-Sub, you can enable scnearios where event consumers are decoupled from event producers.
+Pub/Sub is a very common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
+Using Pub/Sub, you can enable scnearios where event consumers are decoupled from event producers.
 
-Dapr provides an extensible Pub-Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
+Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
 ## Setup the Pub Sub component
 
-The first step is to setup the Pub-Sub component.
+The first step is to setup the Pub/Sub component.
 For this guide, we'll use Redis Streams, which is also installed by default on a local machine when running `dapr init`.
 
-*Note: When running Dapr locally, a pub-sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
+*Note: When running Dapr locally, a pub/sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
 
 ```
 apiVersion: dapr.io/v1alpha1

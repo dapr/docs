@@ -3,7 +3,7 @@
 A common scenario in distributed computing is to only allow for a given number of requests to execute concurrently.
 Using Dapr, you can control how many requests and events will invoke your application simultaneously.
 
-*Note that this rate limiting is guaranteed for every event that's coming from Dapr, meaning Pub-Sub events, direct invocation from other services, bindings events etc. Dapr can't enforce the concurrency policy on requests that are coming to your app externally.*
+*Note that this rate limiting is guaranteed for every event that's coming from Dapr, meaning Pub/Sub events, direct invocation from other services, bindings events etc. Dapr can't enforce the concurrency policy on requests that are coming to your app externally.*
 
 ## Setting max-concurrency
 

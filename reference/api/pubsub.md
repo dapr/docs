@@ -123,4 +123,4 @@ A JSON encoded payload.
 
 ## Message Envelope
 
-Dapr Pub-Sub adheres to version 0.3 of Cloud Events.
+Dapr Pub/Sub adheres to version 0.3 of Cloud Events.
