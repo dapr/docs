@@ -65,7 +65,7 @@ kubectl port-forward svc/zipkin 9411:9411
 
 On your browser, go to ```http://localhost:9411``` and you should see the Zipkin UI.
 
-![zipkin](../imgs/zipkin_ui.png)
+![zipkin](../../images/zipkin_ui.png)
 
 ## Distributed Tracing with Zipkin - Standalone Mode
 The following steps show you how to configure Dapr to send distributed tracing data to Zipkin running as a container on your local machine and view them.
