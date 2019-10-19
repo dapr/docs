@@ -13,6 +13,8 @@ Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime i
 
 * Install [Docker](https://docs.docker.com/install/)
 
+> For Windows user, ensure that `Docker Desktop For Windows` uses Linux containers.
+
 ## Installing Dapr CLI
 
 ### Using script to install the latest release
@@ -165,4 +167,4 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 helm del --purge -n dapr
 ```
 
-> **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr-operator/README.md) for details on Dapr helm charts.
+> **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
