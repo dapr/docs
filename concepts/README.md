@@ -14,15 +14,15 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * **Components**
   
-  Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub-sub](./publish-subscribe-messaging/Readme.md) and [secrets](./components/secrets.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
+  Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub/sub](./publish-subscribe-messaging/README.md) and [secrets](./components/secrets.md). Many of the components are pluggable so that you can swap out the default implemenation with your custom implementations. 
 
 * [**Distributed Tracing**](./distributed-tracing/README.md)
 
   Distirbuted tracing collects and aggregates trace events by transactions. It allows you to trace the entire call chain across multiple services. Dapr integrates with [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection. 
 
-* [**Pub-sub**](./publish-subscribe-messaging/Readme.md)
+* [**Publish/Subscribe Messaging**](./publish-subscribe-messaging/README.md)
   
-  Pub-sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub-sub pattern.
+  Pub/Sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub/sub pattern.
 
 * [**Secrets**](./components/secrets.md)
 

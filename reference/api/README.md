@@ -3,7 +3,7 @@
 This documentation contains the API reference for the Dapr runtime.
 
 Dapr is an open source runtime that provides a set of building blocks for building scalable distributed apps.
-Building blocks include pub-sub, state management, bindings, messaging and invocation, actor runtime capabilities, and more.
+Building blocks include pub/sub, state management, bindings, messaging and invocation, actor runtime capabilities, and more.
 
 Dapr aims to provide an open, community driven approach to solving real world problems at scale.
 

@@ -74,11 +74,11 @@ To check, use kubectl get a list of components:
 
 `kubectl get components`
 
-If there isn't a pub-sub component, it means you need to set one up.
+If there isn't a pub/sub component, it means you need to set one up.
 Visit [here](../../howto/setup-pub-sub-message-broker/README.md) for more details.
 
 If everything's set up correctly, make sure you got the credentials right.
-Search the Dapr runtime logs and look for any pub-sub errors:
+Search the Dapr runtime logs and look for any pub/sub errors:
 
 `kubectl logs <name-of-pod> daprd`.
 
