@@ -73,7 +73,7 @@ For memory related issues, you can profile the heap:
 
 `go tool pprof --pdf your-binary-file http://localhost:7777/debug/pprof/heap > heap.pdf`
 
-![heap](../imgs/heap.png)
+![heap](../../images/heap.png)
 
 Profiling allocated objects:
 
@@ -88,7 +88,7 @@ To analyze, grab the file path above (its a dynamic file path, so pay attention 
 
 `go tool pprof -alloc_objects --pdf /Users/myusername/pprof/pprof.daprd.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz > alloc-objects.pdf`
 
-![alloc](../imgs/alloc.png)
+![alloc](../../images/alloc.png)
 
 
 ### Standalone
