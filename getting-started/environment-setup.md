@@ -13,6 +13,8 @@ Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime i
 
 * Install [Docker](https://docs.docker.com/install/)
 
+> For Windows user, ensure that `Docker Desktop For Windows` uses Linux containers.
+
 ## Installing Dapr CLI
 
 ### Using script to install the latest release
