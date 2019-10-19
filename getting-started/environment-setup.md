@@ -165,4 +165,4 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 helm del --purge -n dapr
 ```
 
-> **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr-operator/README.md) for details on Dapr helm charts.
+> **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
