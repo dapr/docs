@@ -1,9 +1,9 @@
 # Tracing
 
-Dapr integrates with Open Census for telemtry and tracing.
+Dapr integrates with Open Census for telemetry and tracing.
 
 It is recommended to run Dapr with tracing enabled for any production scenario.
-Since Dapr uses Open Census, you can configure various exporters for tracing and telemtry data based on your environment, whether it is running in the cloud or on-premises.
+Since Dapr uses Open Census, you can configure various exporters for tracing and telemetry data based on your environment, whether it is running in the cloud or on-premises.
 
 ## Distributed Tracing with Zipkin on Kubernetes
 
