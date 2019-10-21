@@ -152,8 +152,8 @@ key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#state-operation-options)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#state-operation-options)
 retryInterval | (optional) retry interval, in milliseconds, see [retry policy](#retry-policy)
-retryPattern | (optional) retyr pattern, can be either *linear* or *exponential*, see [retry policy](#retry-policy)
-retryThreshold | (optinal) number of retries, see [retry policy](#retry-policy)
+retryPattern | (optional) retry pattern, can be either *linear* or *exponential*, see [retry policy](#retry-policy)
+retryThreshold | (optional) number of retries, see [retry policy](#retry-policy)
 
 #### Request Headers
 
@@ -192,7 +192,7 @@ A Dapr-compatible state store shall use the following key scheme:
 ### Concurrency
 Dapr uses Optimized Concurrency Control (OCC) with ETags. Dapr imposes the following requirements on state stores: 
 * An Dapr-compatible state store shall support optimistic concurrency control using ETags. When an ETag is associated with an *save* or *delete*  request, the store shall allow the update only if the attached ETag matches with the latest ETag in the database. 
-* When ETag is mssing in the write requests, the state store shall handle the reuqests in a last-write-wins fashion. This is to allow optimizations for high-throughput write scenarios in which data contingency is low or has no negative effects. 
+* When ETag is missing in the write requests, the state store shall handle the requests in a last-write-wins fashion. This is to allow optimizations for high-throughput write scenarios in which data contingency is low or has no negative effects. 
 * A store shall **always** return ETags when returning states to callers. 
 
 ### Consistency
@@ -209,7 +209,7 @@ Dapr assumes data stores are eventually consistent by default. A state should:
   
 When a strong consistency hint is attached, a state store should:
 
-* For read requests, the state store should return the most up-to-date data consistently acorss replicas.
+* For read requests, the state store should return the most up-to-date data consistently across replicas.
 * For write/delete requests, the state store should synchronisely replicate updated data to configured quorum before completing the write request.
 
 ### Retry Policy
