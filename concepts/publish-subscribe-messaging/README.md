@@ -1,4 +1,4 @@
-# Publish/Subcribe Messaging
+# Publish/Subscribe Messaging
 
 Dapr enables developers to design their application with a pub/sub pattern using a message broker, where event consumers and producers are decoupled from one another, and communicate by sending and receiving messages that are associated with a namespace, usually in the form of topics.
 
@@ -7,14 +7,14 @@ This allows event producers to send messages to consumers that aren't running, a
 Dapr provides At-Least-Once messaging guarantees, and integrates with various message brokers implementations.
 These implementations are pluggable, and developed outside of the Dapr runtime in [components-contrib](https://github.com/dapr/components-contrib/tree/master/pubsub).
 
-## Publish/Subcribe API
+## Publish/Subscribe API
 
-The API for Publish/Subcribe can be found in the [spec repo](../../reference/api/pubsub.md).
+The API for Publish/Subscribe can be found in the [spec repo](../../reference/api/pubsub.md).
 
 ## Behavior and Guarantees
 
 Dapr guarantees At-Least-Once semantics for message delivery.
-That is, when an application publishes a message to a topic using the Publish/Subcribe API, it can assume the message is delivered at least once to any subscriber when the response status code from that endpoint is `200`, or returns no error if using the gRPC client.
+That is, when an application publishes a message to a topic using the Publish/Subscribe API, it can assume the message is delivered at least once to any subscriber when the response status code from that endpoint is `200`, or returns no error if using the gRPC client.
 
 The burden of dealing with concepts like consumer groups and multiple instances inside consumer groups is all catered for by Dapr.
 

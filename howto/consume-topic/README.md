@@ -1,7 +1,7 @@
 # Use Pub/Sub to consume messages from topics
 
 Pub/Sub is a very common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
-Using Pub/Sub, you can enable scnearios where event consumers are decoupled from event producers.
+Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.
 
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
@@ -31,7 +31,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 
 ## Subscribe to topics
 
-To subscribe to topics, start a web server in the programming langauge of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
+To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
 The Dapr instance will call into your app, and expect a JSON value of an array of topics.
 
 *Note: The following example is written in node, but can be in any programming language*
@@ -68,9 +68,9 @@ app.post('/topic1', (req, res) => {
 })
 ```
 
-### Acking a message
+### ACK-ing a message
 
-In order to tell Dapr that a message was processed succesfully, return a `200 OK` response:
+In order to tell Dapr that a message was processed successfully, return a `200 OK` response:
 
 ```
 res.status(200).send()

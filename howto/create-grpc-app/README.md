@@ -154,7 +154,7 @@ func (s *server) GetBindingsSubscriptions(ctx context.Context, in *empty.Empty) 
 	}, nil
 }
 
-// This method gets invoked every time a new event is fired from a registerd binding. The message carries the binding name, a payload and optional metadata
+// This method gets invoked every time a new event is fired from a registered binding. The message carries the binding name, a payload and optional metadata
 func (s *server) OnBindingEvent(ctx context.Context, in *pb.BindingEventEnvelope) (*pb.BindingResponseEnvelope, error) {
 	fmt.Println("Invoked from binding")
 	return &pb.BindingResponseEnvelope{}, nil
@@ -172,7 +172,7 @@ func (s *server) OnTopicEvent(ctx context.Context, in *pb.CloudEventEnvelope) (*
 
 ```go
 func main() {
-	// create listiner
+	// create listener
 	lis, err := net.Listen("tcp", ":4000")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

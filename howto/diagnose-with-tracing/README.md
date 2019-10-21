@@ -1,6 +1,6 @@
 # Set up distributed tracing
 
-Dapr integrates seamlessly with OpenTelemetry for telemetry and tracing. It is recommended to run Dapr with tracing enabled for any production scenario. Since Dapr uses OpenTelemetry, you can configure various exporters for tracing and telemtry data based on your environment, whether it is running in the cloud or on-premises.
+Dapr integrates seamlessly with OpenTelemetry for telemetry and tracing. It is recommended to run Dapr with tracing enabled for any production scenario. Since Dapr uses OpenTelemetry, you can configure various exporters for tracing and telemetry data based on your environment, whether it is running in the cloud or on-premises.
 
 ## How to configure distributed tracing with Zipkin on Kubernetes
 
@@ -93,7 +93,7 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 3. Launch Dapr with the `--config` param:
 
 ```
-dapr run --app-id mynode --app-port 3000 --config ./cofig.yaml node app.js
+dapr run --app-id mynode --app-port 3000 --config ./config.yaml node app.js
 ```
 
 ## Tracing Configuration

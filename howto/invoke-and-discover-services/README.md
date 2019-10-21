@@ -88,7 +88,7 @@ To invoke a 'DELETE' endpoint:
 curl http://localhost:3500/v1.0/invoke/cart/add -X DELETE
 ```
 
-Dapr puts any payload return by ther called service in the HTTP response's body.
+Dapr puts any payload return by their called service in the HTTP response's body.
 
 
 ## Overview

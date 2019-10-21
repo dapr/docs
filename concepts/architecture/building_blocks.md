@@ -1,6 +1,6 @@
 # Building blocks
 
-Dapr consists of a set of building blocks that can be called from any programming language through Dapr HTTP or gRPC APIs. These building blocks address common challenges in building resilient, microservices applications. And they catpure and share best practices and patterns that empower distributed application developers. 
+Dapr consists of a set of building blocks that can be called from any programming language through Dapr HTTP or gRPC APIs. These building blocks address common challenges in building resilient, microservices applications. And they capture and share best practices and patterns that empower distributed application developers. 
 
 ![Dapr building blocks](../../images/overview.png)
 

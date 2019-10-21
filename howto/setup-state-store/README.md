@@ -1,6 +1,6 @@
 # Setup a Dapr state store
 
-Dapr integrates with existing databases to provide apps with state management capabilities for CRUD oprations, transactions and more.
+Dapr integrates with existing databases to provide apps with state management capabilities for CRUD operations, transactions and more.
 Currently, Dapr supports the configuration of one state store per cluster.
 
 State stores are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
