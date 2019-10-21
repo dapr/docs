@@ -76,7 +76,7 @@ az ad sp show --id [service_principal_app_id]
 az keyvault set-policy --name [your_keyvault] --object-id [your_service_principal_object_id] --secret-permissions get
 ```
 
-Now, your service principal has access to your keyvault,  you are ready to configure the secret store component to use secrets stored in your keyvault to access other compoents securely. 
+Now, your service principal has access to your keyvault,  you are ready to configure the secret store component to use secrets stored in your keyvault to access other components securely. 
 
 5. Download PFX cert from your Azure Keyvault
 
@@ -220,7 +220,7 @@ spec:
   - name: spnCertificate
     secretKeyRef:
       name: [your_k8s_spn_secret_name]
-      key: [pfx_certficiate_file_local_name]
+      key: [pfx_certificate_file_local_name]
 auth:
     secretStore: kubernetes
 ```

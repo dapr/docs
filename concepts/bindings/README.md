@@ -37,7 +37,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 ## Input Bindings
 
-Input bindings are used to trigger your application when an event from an external resource has occured.
+Input bindings are used to trigger your application when an event from an external resource has occurred.
 An optional payload and metadata might be sent with the request.
 
 In order to receive events from an input binding:

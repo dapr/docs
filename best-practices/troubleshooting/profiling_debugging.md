@@ -29,7 +29,7 @@ Note that `profile-port` is not required, and Dapr will pick an available port.
 
 ## Debug a profiling session
 
-After profiloing is enabled, we can start a profiling session to investigate what's going on with the Dapr runtime.
+After profiling is enabled, we can start a profiling session to investigate what's going on with the Dapr runtime.
 
 ### Kubernetes
 
@@ -101,7 +101,7 @@ APP ID           DAPR PORT  APP PORT  COMMAND      AGE  CREATED              PID
 node-subscriber  3500          3000      node app.js  12s  2019-09-09 15:11.24  896
 ```
 
-Grab the DAPR PORT, and if profiling has been enabled as desribed above, you can now start using `pprof` to profile Dapr.
+Grab the DAPR PORT, and if profiling has been enabled as described above, you can now start using `pprof` to profile Dapr.
 Look at the Kubernetes examples above for some useful commands to profile Dapr.
 
 More info on pprof can be found [here](https://github.com/google/pprof).

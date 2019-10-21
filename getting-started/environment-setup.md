@@ -4,7 +4,7 @@ Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime i
 
 ## Contents
 
- - [Prerequsites](#prerequisites)
+ - [Prerequisites](#prerequisites)
  - [Installing Dapr CLI](#installing-dapr-cli)
  - [Installing Dapr in standalone mode](#installing-dapr-in-standalone-mode)
  - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)

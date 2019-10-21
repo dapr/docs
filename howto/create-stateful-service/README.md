@@ -9,7 +9,7 @@ In this guide we'll start of with the basics: Using the key/value state API to a
 ## 1. Setup a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
-For the purpose of this howto, we'll use a Redis state store.
+For the purpose of this how to, we'll use a Redis state store.
 
 See a list of supported state stores [here](../setup-state-store/supported-state-stores.md)
 

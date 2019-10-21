@@ -98,7 +98,7 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 3. Launch Dapr with the `--config` param:
 
 ```
-dapr run --app-id mynode --app-port 3000 --config ./cofig.yaml node app.js
+dapr run --app-id mynode --app-port 3000 --config ./config.yaml node app.js
 ```
 
 ## Tracing Configuration

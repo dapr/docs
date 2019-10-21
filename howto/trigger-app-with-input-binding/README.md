@@ -2,7 +2,7 @@
 
 Using bindings, your code can be triggered with incoming events from different resources which can be anything: a queue, messaging pipeline, cloud-service, filesystem etc.
 
-This is ideal for event-driven processing, data pipeplines or just generally reacting to events and doing further processing.
+This is ideal for event-driven processing, data pipelines or just generally reacting to events and doing further processing.
 
 Dapr bindings allow you to:
 
@@ -44,7 +44,7 @@ Inside the `metadata` section, configure the Kafka related properties such as th
 
 ## 2. Listen for incoming events
 
-Now configure your applicaiton to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specifiied in `metadata.name` in the file.  In this example, this is `myEvent`.
+Now configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specified in `metadata.name` in the file.  In this example, this is `myEvent`.
 
 *The following example shows how you would listen for the event in Node.js, but this is applicable to any programming language*
 
@@ -64,7 +64,7 @@ app.post('/myEvent', (req, res) => {
 app.listen(port, () => console.log(`Kafka consumer app listening on port ${port}!`))
 ```
 
-#### Acknowleding an event
+#### ACK-ing an event
 
 In order to tell Dapr that you successfully processed an event in your application, return a `200 OK` response from your HTTP handler.
 
