@@ -3,7 +3,7 @@
 Dapr is a programming model that's being installed and operated using a sidecar, and thus leaves autoscaling to the hosting layer, for example Kubernetes.
 Many of Dapr's [bindings](../../concepts/bindings#supported-bindings-and-specs) overlap with those of [KEDA](https://github.com/kedacore/keda), an Event Driven Autoscaler for Kubernetes.
 
-For apps that use these bindings, its easy to configure a KEDA autoscaler.
+For apps that use these bindings, it is easy to configure a KEDA autoscaler.
 
 ## Install KEDA
 
