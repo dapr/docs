@@ -62,7 +62,7 @@ The Dapr Actors runtime saves changes made to the actor's state when the callbac
 
 All timers are stopped when the actor is deactivated as part of garbage collection. No timer callbacks are invoked after that. Also, the Dapr Actors runtime does not retain any information about the timers that were running before deactivation. It is up to the actor to register any timers that it needs when it is reactivated in the future.
 
-You can create a timer for an actor by calling the Http/gRPC request to Darp.
+You can create a timer for an actor by calling the Http/gRPC request to Dapr.
 
 ```
 POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
@@ -82,7 +82,7 @@ Refer [dapr spec](../../reference/api/actors.md) for more details.
 
 Reminders are a mechanism to trigger persistent callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr Actors runtime persists information about the actor's reminders using Dapr actor state provider. 
 
-You can create a persistent reminder for an actor by calling the Http/gRPC request to Darp.
+You can create a persistent reminder for an actor by calling the Http/gRPC request to Dapr.
 
 ```
 POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
