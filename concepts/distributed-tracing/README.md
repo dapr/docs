@@ -11,6 +11,7 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 * No need for code instrumentation. All traffic is automatically traced (with configurable tracing levels).
 * Consistent tracing behavior across microservices. Tracing a configured and managed on Dapr sidecar so that it remains consistent across services made by different teams and potentially written in different programming languages.
 * Configurable and extensible. By leveraging OpenTelemetry, Dapr tracing can be configured to work with popular tracing backends, including custom backends a customer may have.
+* OpenTelemetry exporters are defined as first-class Dapr components. You can define and enable multiple exporters at the same time.
 
 # Correlation ID
 
@@ -18,24 +19,38 @@ For HTTP requests, Dapr injects a **X-Correlation-ID** header to requests. For g
 
 # Configuration
 
-Dapr tracing is configured by a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, to define a Zipkin exporter, define the following configuration object:
+Dapr tracing is configured by a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object enables distributed tracing:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: zipkin
+  name: tracing
 spec:
   tracing:
     enabled: true
-    exporterType: zipkin
-    exporterAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
     expandParams: true
     includeBody: true
 ```
 
 Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
+Dapr supports pluggable exporters, defined by configuration files (in local mode) or a Kubernetes custom resource object (in Kubernetes mode). For example, the following manifest defines a Zipkin exporter:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: zipkin
+spec:
+  type: exporters.zipkin
+  metadata:
+  - name: enabled
+    value: "true"
+  - name: exporterAddress
+    value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
+```
+
 # References
-* [How-To: Set Up Distributed Tracing](../../howto/diagnose-with-tracing/readme.md)
+* [How-To: Set Up Distributed Tracing](../../howto/diagnose-with-tracing/README.md)
 
