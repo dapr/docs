@@ -387,6 +387,18 @@ curl -X GET http://localhost:5001/v1.0/dapr/config \
 	-H "Content-Type: application/json"
 ```
 
+> The above command returns the config (all fields are optional):
+
+```json
+{
+  "entities":["actorType1", "actorType2"],
+  "actorIdleTimeout": "1h",
+  "actorScanInterval": "30s",
+  "drainOngoingCallTimeout": "30s",
+  "drainRebalancedActors": true
+}
+```
+
 ### Activate the Actors
 
 This endpoint lets you activate the actor.
