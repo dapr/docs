@@ -11,43 +11,58 @@ The following steps will show you how to configure Dapr to send distributed trac
 
 First, deploy Zipkin:
 
-```
+```bash
 kubectl run zipkin --image openzipkin/zipkin --port 9411
 ```
 
 Create a Kubernetes Service for the Zipkin pod:
 
-```
+```bash
 kubectl expose deploy zipkin --type ClusterIP --port 9411
 ```
 
-Next, create the following YAML file locally:
+Next, create the following YAML files locally:
 
-```
+* zipkin.yaml
+
+```yaml
 apiVersion: dapr.io/v1alpha1
-kind: Configuration
+kind: Component
 metadata:
   name: zipkin
 spec:
+  type: exporters.zipkin
+  metadata:
+  - name: enabled
+    value: "true"
+  - name: exporterAddress
+    value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
+```
+* tracing.yaml
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: tracing
+spec:
   tracing:
     enabled: true
-    exporterType: zipkin
-    exporterAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
     expandParams: true
     includeBody: true
 ```
 
-Finally, deploy the Dapr configuration:
+Finally, deploy the Dapr configurations:
 
-```
+```bash
 kubectl apply -f config.yaml
+kubectl apply -f zipkin.yaml
 ```
 
 In order to enable this configuration for your Dapr sidecar, add the following annotation to your pod spec template:
 
 ```
 annotations:
-  dapr.io/config: "zipkin"
+  dapr.io/config: "tracing"
 ```
 
 That's it! your sidecar is now configured for use with Open Census and Zipkin.
@@ -68,21 +83,36 @@ On your browser, go to ```http://localhost:9411``` and you should see the Zipkin
 
 For standalone mode, create an Dapr Configuration CRD file locally and reference it with the Dapr CLI.
 
-1. Create the following YAML file:
+1. Create the following YAML files:
 
-```
+* zipkin.yaml
+
+```yaml
 apiVersion: dapr.io/v1alpha1
-kind: Configuration
+kind: Component
 metadata:
   name: zipkin
 spec:
+  type: exporters.zipkin
+  metadata:
+  - name: enabled
+    value: "true"
+  - name: exporterAddress
+    value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
+```
+* tracing.yaml
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: tracing
+spec:
   tracing:
     enabled: true
-    exporterType: zipkin
-    exporterAddress: "http://localhost:9411/api/v2/spans"
     expandParams: true
     includeBody: true
 ```
+
 
 2. Launch Zipkin using Docker:
 
@@ -93,7 +123,7 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 3. Launch Dapr with the `--config` param:
 
 ```
-dapr run --app-id mynode --app-port 3000 --config ./config.yaml node app.js
+dapr run --app-id mynode --app-port 3000 --config ./tracing.yaml node app.js
 ```
 
 ## Tracing Configuration
@@ -103,8 +133,6 @@ The `tracing` section under the `Configuration` spec contains the following prop
 ```
 tracing:
     enabled: true
-    exporterType: zipkin
-    exporterAddress: ""
     expandParams: true
     includeBody: true
 ```
@@ -114,7 +142,5 @@ The following table lists the different properties.
 Property | Type | Description
 ---- | ------- | -----------
 enabled  | bool | Set tracing to be enabled or disabled
-exporterType  | string | Name of the Open Census exporter to use. For example: Zipkin, Azure Monitor, etc
-exporterAddress  | string | URL of the exporter
 expandParams  | bool | When true, expands parameters passed to HTTP endpoints
 includeBody  | bool | When true, includes the request body in the tracing event
