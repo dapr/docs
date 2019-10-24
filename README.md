@@ -10,7 +10,15 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 - **[Best practices](./howto)** - Guides explaining best practices  using Dapr including [debugging and troubleshooting](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting)
 - **[Reference](./reference)** - Detailed reference documentation
 
- ### SDKs
+## Document versions
+
+Dapr is currently under community development in preview phase and master branch could include breaking changes. Therefore, please ensure that you refer to the right version of the documents for your Dapr runtime version.
+
+|    Document Version  | Dapr Runtime Version |
+|:--------------------:|:--------------------:|
+| [v0.1.0](https://github.com/dapr/docs/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
+
+## SDKs
 
  - **[Go SDK](https://github.com/dapr/go-sdk)** - Get started with the Dapr proto client for Go
  - **[Java SDK](https://github.com/dapr/java-sdk)** - Get started with the Dapr proto client for Java
