@@ -37,5 +37,5 @@ spec:
 Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
 # References
-* [How-To: Set Up Distributed Tracing](../../howto/diagnose-with-tracing/readme.md)
+* [How-To: Set Up Distributed Tracing](../../howto/diagnose-with-tracing/README.md)
 
