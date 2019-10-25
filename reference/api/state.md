@@ -72,7 +72,7 @@ None.
 ### Example
 ```shell
 curl -X POST http://localhost:3500/v1.0/state \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '[
         {
           "key": "weapon",
@@ -226,7 +226,7 @@ The following is a sample *set* request with a complete operation option definit
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '[
         {
           "key": "weapon",
