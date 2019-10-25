@@ -64,7 +64,7 @@ This endpoint lets you invoke an Dapr output binding.
 
 ### HTTP Request
 
-`POST/GET/PUT/DELETE http://localhost:3500/v1.0/bindings/<name>`
+`POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/bindings/<name>`
 
 ### HTTP Response codes
 
@@ -93,6 +93,7 @@ The metadata is an array of key/value pairs and allows to set binding specific m
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 name | the name of the binding to invoke
 
 ```shell

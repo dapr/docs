@@ -7,13 +7,20 @@ Dapr guarantees at least once semantics for this endpoint.
 
 ### HTTP Request
 
-```POST http://localhost:3500/v1.0/publish/<topic>```
+```POST http://localhost:<daprPort>/v1.0/publish/<topic>```
 ### HTTP Response codes
 
 Code | Description
 ---- | -----------
 200  | Message delivered
 500  | Delivery failed
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+topic | the name of the topic
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/deathStarStatus \
@@ -30,7 +37,7 @@ The list of recipients may include the unique identifiers of other apps (used by
 
 ### HTTP Request
 
-```POST http://localhost:3500/v1.0/publish/<topic>```
+```POST http://localhost:<daprPort>/v1.0/publish/<topic>```
 
 ### HTTP Response codes
 
@@ -38,6 +45,13 @@ Code | Description
 ---- | -----------
 200  | Message delivered
 500  | Delivery failed
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+topic | the name of the topic
 
 > Example of publishing a message to another Dapr app:
 
@@ -95,7 +109,13 @@ In order to receive topic subscriptions, Dapr will invoke the following endpoint
 
 ### HTTP Request
 
-```GET http://<address>/dapr/subscribe```
+`GET http://localhost:<appPort>/dapr/subscribe`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | the application port
 
 ### HTTP Response body
 
@@ -103,9 +123,9 @@ A json encoded array of strings.
 
 Example:
 
-`
+```json
 "["TopicA","TopicB"]"
-`
+```
 
 ## Delivering events to subscribers
 
@@ -115,7 +135,13 @@ The following example illustrates this point, considering a subscription for top
 
 ### HTTP Request
 
-```POST http://<address>/TopicA```
+`POST http://localhost:<appPort>/TopicA`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | the application port
 
 ### HTTP Response body
 
