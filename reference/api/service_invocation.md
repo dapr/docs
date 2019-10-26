@@ -9,7 +9,7 @@ This endpoint lets you invoke a method in another Dapr enabled app.
 
 ### HTTP Request
 
-`POST/GET/PUT/DELETE http://localhost:3500/v1.0/invoke/<id>/method/<method-name>`
+`POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appId>/method/<method-name>`
 
 ### HTTP Response codes
 
@@ -22,7 +22,8 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
-id | the App ID associated with the remote app
+daprPort | the Dapr port
+appId | the App ID associated with the remote app
 method-name | the name of the method or url to invoke on the remote app
 
 ```shell

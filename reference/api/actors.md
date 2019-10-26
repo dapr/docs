@@ -11,7 +11,7 @@ This endpoint lets you invoke a method on a remote Actor.
 
 #### HTTP Request
 
-`POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/method/<method>`
+`POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/method/<method>`
 
 #### HTTP Response codes
 
@@ -25,6 +25,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 method | the name of the method to invoke on the remote actor
@@ -54,7 +55,7 @@ This endpoint lets you save state for a given actor for a given key.
 
 #### HTTP Request
 
-`POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>`
+`POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>`
 
 #### HTTP Response codes
 
@@ -68,6 +69,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 key | key for the state value
@@ -88,7 +90,7 @@ This endpoint lets you save an actor's state as a multi item transaction.
 
 #### HTTP Request
 
-`POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state`
+`POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state`
 
 #### HTTP Response codes
 
@@ -102,6 +104,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 
@@ -131,7 +134,7 @@ This endpoint lets you get the state of a given actor for a given key.
 
 #### HTTP Request
 
-`GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>`
+`GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>`
 
 #### HTTP Response codes
 
@@ -145,6 +148,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 key | key for the state value
@@ -168,7 +172,7 @@ This endpoint lets you delete the state of a given actor for a given key.
 
 #### HTTP Request
 
-`DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>`
+`DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>`
 
 #### HTTP Response codes
 
@@ -182,6 +186,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 key | key for the state value
@@ -197,7 +202,7 @@ This endpoint lets you create a persistent reminder for an actor.
 
 #### HTTP Request
 
-`POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>`
+`POST,PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>`
 
 #### HTTP Response codes
 
@@ -211,6 +216,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 name | the name of the reminder
@@ -231,7 +237,7 @@ This endpoint lets get a reminder for an actor
 
 #### HTTP Request
 
-`GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>`
+`GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>`
 
 #### HTTP Response codes
 
@@ -245,6 +251,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 name | the name of the reminder to get
@@ -270,7 +277,7 @@ This endpoint lets delete a reminder for an actor
 
 #### HTTP Request
 
-`DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>`
+`DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>`
 
 #### HTTP Response codes
 
@@ -284,6 +291,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 name | the name of the reminder to delete
@@ -299,7 +307,7 @@ This endpoint lets you create a timer for an actor.
 
 #### HTTP Request
 
-`POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>`
+`POST,PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>`
 
 #### HTTP Response codes
 
@@ -313,6 +321,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 name | the name of the timer
@@ -334,7 +343,7 @@ This endpoint lets delete a timer for an actor
 
 #### HTTP Request
 
-`DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>`
+`DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>`
 
 #### HTTP Response codes
 
@@ -348,6 +357,7 @@ Code | Description
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 actorType | the actor type
 actorId | the actor id
 name | the name of the timer to delete
@@ -365,7 +375,7 @@ This endpoint lets you get the registered actors in Dapr.
 
 #### HTTP Request
 
-`GET http://localhost:<appPort>/v1.0/dapr/config`
+`GET http://localhost:<appPort>/dapr/config`
 
 #### HTTP Response codes
 
@@ -383,7 +393,7 @@ appPort | the application port
 > Example of getting the registered actors:
 
 ```shell
-curl -X GET http://localhost:5001/v1.0/dapr/config \
+curl -X GET http://localhost:3000/dapr/config \
 	-H "Content-Type: application/json"
 ```
 
@@ -405,7 +415,7 @@ This endpoint lets you activate the actor.
 
 #### HTTP Request
 
-`POST http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>`
+`POST http://localhost:<appPort>/actors/<actorType>/<actorId>`
 
 #### HTTP Response codes
 
@@ -426,7 +436,7 @@ actorId | the actor id
 > Example of activating the actor:
 
 ```shell
-curl -X POST http://localhost:5001/v1.0/actors/stormtrooper/50 \
+curl -X POST http://localhost:3000/actors/stormtrooper/50 \
 	-H "Content-Type: application/json"
 ```
 
@@ -436,7 +446,7 @@ This endpoint lets you deactivate the actor.
 
 #### HTTP Request
 
-`DELETE http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>`
+`DELETE http://localhost:<appPort>/actors/<actorType>/<actorId>`
 
 #### HTTP Response codes
 
@@ -457,7 +467,7 @@ actorId | the actor id
 > Example of deactivating the actor:
 
 ```shell
-curl -X DELETE http://localhost:5001/v1.0/actors/stormtrooper/50 \
+curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
 	-H "Content-Type: application/json"
 ```
 
@@ -467,7 +477,7 @@ This endpoint lets you invokes the actor reminders.
 
 #### HTTP Request
 
-`PUT http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>/method/remind/<reminderName>`
+`PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/remind/<reminderName>`
 
 #### HTTP Response codes
 
@@ -489,7 +499,7 @@ reminderName | the name of the reminder
 > Example of invoking the actor reminder:
 
 ```shell
-curl -X POST http://localhost:5001/v1.0/actors/stormtrooper/50/method/remind/checkRebels \
+curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkRebels \
 	-H "Content-Type: application/json"
 ```
 
@@ -499,7 +509,7 @@ This endpoint lets you invokes the actor timers.
 
 #### HTTP Request
 
-`PUT http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>/method/timer/<timerName>`
+`PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/timer/<timerName>`
 
 #### HTTP Response codes
 
@@ -521,7 +531,7 @@ timerName | the name of the timer
 > Example of invoking the actor timer:
 
 ```shell
-curl -X POST http://localhost:5001/v1.0/actors/stormtrooper/50/method/timer/checkRebels \
+curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebels \
 	-H "Content-Type: application/json"
 ```
 

@@ -42,7 +42,13 @@ This endpoint lets you save an array of state objects.
 
 ### HTTP Request
 
-`POST http://localhost:3500/v1.0/state`
+`POST http://localhost:<daprPort>/v1.0/state`
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
 
 #### Request Body
 A JSON array of state objects. Each state object is comprised with the following fields:
@@ -93,12 +99,13 @@ This endpoint lets you get the state for a specific key.
 
 ### HTTP Request
 
-`GET http://localhost:3500/v1.0/state/<key>`
+`GET http://localhost:<daprPor>/v1.0/state/<key>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#state-operation-options)
 
@@ -142,12 +149,13 @@ This endpoint lets you delete the state for a specific key.
 
 ### HTTP Request
 
-`DELETE http://localhost:3500/v1.0/state/<key>`
+`DELETE http://localhost:<daprPort>/v1.0/state/<key>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#state-operation-options)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#state-operation-options)
