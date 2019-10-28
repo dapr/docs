@@ -39,11 +39,11 @@ To provide scalability and reliability, actors instances are distributed through
 
 Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
 
-The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor Placement service. When a new instance of a service is created, the corresponding Dapr runtime register the actor types it can create and the Placement service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and store in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
+The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor Placement service. When a new instance of a service is created, the corresponding Dapr runtime register the actor types it can create and the Placement service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
 
 ![Placement service registration](../../images/actors_placement_service_registration.png)
 
-When a client calls an actor with a particular id (for example, actor id 123), the Dapr instance for the client hashes the actor type and id, and uses the information to call onto the corresponding Dapr instance that can create a new or is hosting an already create actor with that id. In this way the same partition is always called for any given actor id. This is shown in the diagram below.
+When a client calls an actor with a particular id (for example, actor id 123), the Dapr instance for the client hashes the actor type and id, and uses the information to call onto the corresponding Dapr instance that can serve the requests for that particular actor id. As a result, the same partition (or service instance) is always called for any given actor id. This is shown in the diagram below.
 
 ![Actor ID creation and calling](../../images/actors_id_hashing_calling.png)
 
