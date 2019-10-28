@@ -1,6 +1,7 @@
 # Supported state stores 
-<br>
+
+
 | Name  | CRUD | Transactional
 | ------------- | -------|------ |
-| Redis  | V  | V
-| Azure CosmosDB | V | X  |
+| Redis  | :white_check_mark:  | :white_check_mark:
+| Azure CosmosDB | :white_check_mark: | :x: |
