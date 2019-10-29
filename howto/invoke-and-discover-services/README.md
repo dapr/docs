@@ -8,6 +8,8 @@ In many environments with multiple services that need to communicate with each o
 
 Dapr allows developers to overcome these challenges by providing an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
 
+For more info on service invocation, read the [conceptional documentation](../../concepts/service-invocation/service-invocation.md).
+
 ## 1. Choose an ID for your service
 
 Dapr allows you to assign a global, unique ID for your app.<br>
