@@ -43,5 +43,8 @@ kubectl apply -f statestore.yaml
 ## Reference
 
 * [Setup Redis](./setup-redis.md)
+* [Setup Cassandra](./setup-cassandra.md)
+* [Setup etcd](./setup-etcd.md)
+* [Setup Consul](./setup-consul.md)
 * [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
 * [Supported State Stores](./supported-state-stores.md)
