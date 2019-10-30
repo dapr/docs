@@ -2,7 +2,7 @@
 
 ## Creating an Azure CosmosDB account
 
-[Follow the instructions](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.
+[Follow the instructions](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr consumes it.  The partition key must be "/id".
 
 In order to setup CosmosDB as a state store, you will need the following properties:
 
