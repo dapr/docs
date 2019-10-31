@@ -2,7 +2,7 @@
 
 ## Locally
 
-You can run Cassandra locally with th Datastax Docker image:
+You can run Cassandra locally with the Datastax Docker image:
 
 ```
 docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server -g -s -k
