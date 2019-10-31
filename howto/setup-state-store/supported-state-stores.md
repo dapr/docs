@@ -8,3 +8,4 @@
 | Cassandra | :white_check_mark: | :x: |
 | Hashicorp Consul | :white_check_mark: | :x: |
 | etcd | :white_check_mark: | :x: |
+| Memcached | :white_check_mark: | :x: |

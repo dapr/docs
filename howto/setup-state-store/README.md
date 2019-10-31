@@ -46,5 +46,6 @@ kubectl apply -f statestore.yaml
 * [Setup Cassandra](./setup-cassandra.md)
 * [Setup etcd](./setup-etcd.md)
 * [Setup Consul](./setup-consul.md)
+* [Setup Memcached](./setup-memcached.md)
 * [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
 * [Supported State Stores](./supported-state-stores.md)

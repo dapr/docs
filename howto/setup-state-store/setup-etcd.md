@@ -16,7 +16,8 @@ The easiest way to install etcd on Kubernetes is by using the [Helm chart](https
 
 ```
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-helm install --name etcd incubator/etcd```
+helm install --name etcd incubator/etcd
+```
 
 This will install etcd into the `default` namespace.
 To interact with etcd, find the service with: `kubectl get svc etcd-etcd`.
