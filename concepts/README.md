@@ -24,6 +24,10 @@ This directory contains various Dapr concepts. The goal of these documents is to
   
   Pub/Sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub/sub pattern.
 
+* [**Service Invocation**](./service-invocation/service-invocation.md)
+  
+  Service invocation enables applications to communicate with each other through well-known endpoints in the form of http or gRPC messages. Dapr provides an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
+
 * [**Secrets**](./components/secrets.md)
 
   In Dapr, a secret is any piece of private information that you want to guard against unwanted users. Dapr offers a simple secret API and integrates with secret stores such as Azure Key Vault and Kubernetes secret stores to store the secrets.
