@@ -1,4 +1,4 @@
-# Service Invocation 
+# Service Invocation
 
 Dapr-enabled apps can communicate with each other through well-known endpoints in the form of http or gRPC messages.
 
@@ -26,4 +26,4 @@ Steps 4-5 are the same as the list above.
 
 For more information, see:
 - The [Service Invocation Spec](../../reference/api/service_invocation.md)
-- A [HowTo]() on Service Invocation
+- A [HowTo](../../howto/invoke-and-discover-services/README.md) on Service Invocation
