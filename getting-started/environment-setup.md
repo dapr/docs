@@ -116,6 +116,9 @@ When setting up Kubernetes you can do this either via the Dapr CLI or Helm
 
 You can install Dapr to Kubernetes cluster using CLI.
 
+> Please note, that using the CLI does not support non-default namespaces.  
+> If you need a non-default namespace, Helm has to be used (see below).
+
 #### Install Dapr to Kubernetes
 
 ```bash
