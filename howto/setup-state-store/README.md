@@ -49,4 +49,5 @@ kubectl apply -f statestore.yaml
 * [Setup Memcached](./setup-memcached.md)
 * [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
 * [Setup MongoDB](./setup-mongodb.md)
+* [Setup Zookeeper](./setup-zookeeper.md)
 * [Supported State Stores](./supported-state-stores.md)
