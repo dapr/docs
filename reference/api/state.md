@@ -59,7 +59,7 @@ key | state key
 value | state value, which can be any byte array
 etag | (optional) state ETag
 metadata | (optional) additional key-value pairs to be passed to the state store
-options | (optional) state operation options, see [state operation options](#state-operation-options)
+options | (optional) state operation options, see [state operation options](#optional-behaviors)
 
 > **ETag format** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store. 
 
@@ -107,7 +107,7 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 key | the key of the desired state
-consistency | (optional) read consistency mode, see [state operation options](#state-operation-options)
+consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 
 ### HTTP Response
 
@@ -157,8 +157,8 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 key | the key of the desired state
-concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#state-operation-options)
-consistency | (optional) either *strong* or *eventual*, see [state operation options](#state-operation-options)
+concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
+consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
 retryInterval | (optional) retry interval, in milliseconds, see [retry policy](#retry-policy)
 retryPattern | (optional) retry pattern, can be either *linear* or *exponential*, see [retry policy](#retry-policy)
 retryThreshold | (optional) number of retries, see [retry policy](#retry-policy)
@@ -188,7 +188,7 @@ None.
 curl -X "DELETE" http://localhost:3500/v1.0/state/planet -H "ETag: xxxxxxx"
 ```
 
-## Expected state store behaviors
+## Optional behaviors
 
 ### Key scheme
 
