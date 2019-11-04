@@ -198,8 +198,8 @@ A Dapr-compatible state store shall use the following key scheme:
 * *\<Dapr id>-\<Actor type>-\<Actor id>-\<state key>* key format for Actor states. 
 
 ### Concurrency
-Dapr uses Optimized Concurrency Control (OCC) with ETags. Dapr imposes the following requirements on state stores: 
-* An Dapr-compatible state store shall support optimistic concurrency control using ETags. When an ETag is associated with an *save* or *delete*  request, the store shall allow the update only if the attached ETag matches with the latest ETag in the database. 
+Dapr uses Optimized Concurrency Control (OCC) with ETags. Dapr makes optional the following requirements on state stores: 
+* An Dapr-compatible state store may support optimistic concurrency control using ETags. When an ETag is associated with an *save* or *delete*  request, the store shall allow the update only if the attached ETag matches with the latest ETag in the database. 
 * When ETag is missing in the write requests, the state store shall handle the requests in a last-write-wins fashion. This is to allow optimizations for high-throughput write scenarios in which data contingency is low or has no negative effects. 
 * A store shall **always** return ETags when returning states to callers. 
 
