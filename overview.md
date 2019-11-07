@@ -60,7 +60,7 @@ You can use the [Dapr CLI](https://github.com/dapr/cli) to run services locally.
 
 ![Dapr overview](images/overview_standalone.png)
 
-For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor-overview.md#distribution-and-failover) 
+For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover) 
 
 ## Running Dapr in Kubernetes mode 
 
@@ -68,7 +68,7 @@ Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dap
  
 ![Dapr overview](images/overview_kubernetes.png)
 
-For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor-overview.md#distribution-and-failover) 
+For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover) 
 
 In order to give your service an id and port known to Dapr and launch the Dapr sidecar container, you simply annotate your deployment like this.
 
