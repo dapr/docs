@@ -37,7 +37,7 @@ All that's left now is to invoke the bindings endpoint on a running Dapr instanc
 We can do so using HTTP:
 
 ```
-curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ data: { "message": "Hi!" } }'
+curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ "data": { "message": "Hi!" } }'
 ```
 
 As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myEvent`.<br>
