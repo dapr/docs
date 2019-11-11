@@ -81,3 +81,13 @@ res.status(500).send()
 
 ### Event delivery Guarantees
 Event delivery guarantees are controlled by the binding implementation. Depending on the binding implementation, the event delivery can be exactly once or at least once.
+
+## 3. Triggering the Event 
+
+Now you can trigger the event from within your code using the DAPR bindings endpoint, which is structured like this:
+
+```
+POST http://localhost:[DAPR-port-number]/v1.0/bindings/[event-name]
+```
+
+The [bindings example](https://github.com/dapr/samples/tree/master/5.bindings) demonstrates this process.
