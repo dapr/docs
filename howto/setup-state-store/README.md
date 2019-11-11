@@ -48,6 +48,7 @@ kubectl apply -f statestore.yaml
 * [Setup Consul](./setup-consul.md)
 * [Setup Memcached](./setup-memcached.md)
 * [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
+* [Setup Google Cloud Firestore (Datastore mode)](./setup-firestore.md)
 * [Setup MongoDB](./setup-mongodb.md)
 * [Setup Zookeeper](./setup-zookeeper.md)
 * [Supported State Stores](./supported-state-stores.md)
