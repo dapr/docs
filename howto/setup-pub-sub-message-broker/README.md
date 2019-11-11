@@ -44,3 +44,4 @@ kubectl apply -f pubsub.yaml
 
 [Setup Redis Streams](./setup-redis.md)
 [Setup NATS](./setup-nats.md)
+[Setup Azure Service bus](./setup-azure-servicebus.md)
