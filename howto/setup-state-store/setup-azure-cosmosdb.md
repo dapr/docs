@@ -2,7 +2,9 @@
 
 ## Creating an Azure CosmosDB account
 
-[Follow the instructions](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr consumes it.  The partition key must be "/id".
+[Follow the instructions](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr consumes it.  
+
+**Note : The partition key for the collection must be "/id".**
 
 In order to setup CosmosDB as a state store, you will need the following properties:
 
@@ -77,7 +79,8 @@ To use CosmosDB, replace the redis.yaml file with cosmos.yaml file above.
 ## Partition keys
 
 The Azure CosmosDB state store will use the `key` property provided in the requests to the Dapr API to determine the partition key.
-For example, the following operation will use the key `nihilus` as the partition key:
+
+For example, the following operation will use the partition key `nihilus` as the partition key value sent to CosmosDB:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state \
