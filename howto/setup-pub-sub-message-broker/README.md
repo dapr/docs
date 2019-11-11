@@ -43,3 +43,4 @@ kubectl apply -f pubsub.yaml
 ## Reference
 
 [Setup Redis Streams](./setup-redis.md)
+[Setup NATS](./setup-nats.md)
