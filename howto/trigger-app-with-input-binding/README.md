@@ -81,3 +81,7 @@ res.status(500).send()
 
 ### Event delivery Guarantees
 Event delivery guarantees are controlled by the binding implementation. Depending on the binding implementation, the event delivery can be exactly once or at least once.
+
+## 3. (Optional) Trigger the Event
+
+With the input binding established, if you want to trigger the event from within your code, you can [Invoke an Output Binding](https://github.com/jocko-wowza/docs/blob/connect-input-output-bindings/howto/send-events-with-output-bindings).
