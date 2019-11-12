@@ -22,10 +22,8 @@ minikube config set vm-driver [driver_name]
 2. Start the cluster
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 
-> **Note:** [1.16.x Kubernetes doesn't work with helm < 2.15.0](https://github.com/helm/helm/issues/6374#issuecomment-537185486)
-
 ```bash
-minikube start --cpus=4 --memory=4096 --kubernetes-version=1.14.6 --extra-config=apiserver.authorization-mode=RBAC
+minikube start --cpus=4 --memory=4096 --kubernetes-version=1.16.2 --extra-config=apiserver.authorization-mode=RBAC
 ```
 
 3. Enable dashboard and ingress addons
@@ -41,6 +39,7 @@ minikube addons enable ingress
 ## (optional) Install Helm and deploy Tiller
 
 1. [Install Helm client](https://helm.sh/docs/using_helm/#installing-the-helm-client)
+> **Note:** [1.16.x Kubernetes doesn't work with helm < 2.16.0, so use latest version of Helm](https://github.com/helm/helm/issues/6374#issuecomment-537185486)
 
 2. Create the Tiller service account
 

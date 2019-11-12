@@ -9,8 +9,7 @@ Dapr makes it simple for you to store key/value data in a store of your choice.
 Dapr brings reliable state management to applications through a simple state API. Developers can use this API to retrieve, save and delete states by keys.
 
 Dapr data stores are pluggable. Dapr ships with [Redis](https://redis.io
-) out-of-box. And it allows you to plug in other data stores such as [Azure CosmosDB](https://azure.microsoft.com/Databases/Cosmos_DB
-), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
+) out-of-box. And it allows you to plug in other data stores such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
 ), [GCP Cloud Spanner](https://cloud.google.com/spanner
 ) and [Cassandra](http://cassandra.apache.org/).
 

@@ -42,7 +42,13 @@ This endpoint lets you save an array of state objects.
 
 ### HTTP Request
 
-`POST http://localhost:3500/v1.0/state`
+`POST http://localhost:<daprPort>/v1.0/state`
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
 
 #### Request Body
 A JSON array of state objects. Each state object is comprised with the following fields:
@@ -53,7 +59,7 @@ key | state key
 value | state value, which can be any byte array
 etag | (optional) state ETag
 metadata | (optional) additional key-value pairs to be passed to the state store
-options | (optional) state operation options, see [state operation options](#state-operation-options)
+options | (optional) state operation options, see [state operation options](#optional-behaviors)
 
 > **ETag format** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store. 
 
@@ -72,7 +78,7 @@ None.
 ### Example
 ```shell
 curl -X POST http://localhost:3500/v1.0/state \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '[
         {
           "key": "weapon",
@@ -93,14 +99,15 @@ This endpoint lets you get the state for a specific key.
 
 ### HTTP Request
 
-`GET http://localhost:3500/v1.0/state/<key>`
+`GET http://localhost:<daprPor>/v1.0/state/<key>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 key | the key of the desired state
-consistency | (optional) read consistency mode, see [state operation options](#state-operation-options)
+consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 
 ### HTTP Response
 
@@ -142,15 +149,16 @@ This endpoint lets you delete the state for a specific key.
 
 ### HTTP Request
 
-`DELETE http://localhost:3500/v1.0/state/<key>`
+`DELETE http://localhost:<daprPort>/v1.0/state/<key>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
+daprPort | the Dapr port
 key | the key of the desired state
-concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#state-operation-options)
-consistency | (optional) either *strong* or *eventual*, see [state operation options](#state-operation-options)
+concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
+consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
 retryInterval | (optional) retry interval, in milliseconds, see [retry policy](#retry-policy)
 retryPattern | (optional) retry pattern, can be either *linear* or *exponential*, see [retry policy](#retry-policy)
 retryThreshold | (optional) number of retries, see [retry policy](#retry-policy)
@@ -180,7 +188,7 @@ None.
 curl -X "DELETE" http://localhost:3500/v1.0/state/planet -H "ETag: xxxxxxx"
 ```
 
-## Expected state store behaviors
+## Optional behaviors
 
 ### Key scheme
 
@@ -190,8 +198,8 @@ A Dapr-compatible state store shall use the following key scheme:
 * *\<Dapr id>-\<Actor type>-\<Actor id>-\<state key>* key format for Actor states. 
 
 ### Concurrency
-Dapr uses Optimized Concurrency Control (OCC) with ETags. Dapr imposes the following requirements on state stores: 
-* An Dapr-compatible state store shall support optimistic concurrency control using ETags. When an ETag is associated with an *save* or *delete*  request, the store shall allow the update only if the attached ETag matches with the latest ETag in the database. 
+Dapr uses Optimized Concurrency Control (OCC) with ETags. Dapr makes optional the following requirements on state stores: 
+* An Dapr-compatible state store may support optimistic concurrency control using ETags. When an ETag is associated with an *save* or *delete*  request, the store shall allow the update only if the attached ETag matches with the latest ETag in the database. 
 * When ETag is missing in the write requests, the state store shall handle the requests in a last-write-wins fashion. This is to allow optimizations for high-throughput write scenarios in which data contingency is low or has no negative effects. 
 * A store shall **always** return ETags when returning states to callers. 
 
@@ -226,7 +234,7 @@ The following is a sample *set* request with a complete operation option definit
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '[
         {
           "key": "weapon",
