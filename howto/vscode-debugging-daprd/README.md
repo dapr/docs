@@ -60,7 +60,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
 * -dapr-grpc-port -- the grpc port for the dapr api
 * -placement-address -- the location of the placement service (this should be running in docker as it was created when you installed dapr and ran ```dapr init```)
 
-Note: You will need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you will run into port conflicts when you attempt to launch the second configuration.
+>**Note: You will need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you will run into port conflicts when you attempt to launch the second configuration.**
 
 ```json
 {
