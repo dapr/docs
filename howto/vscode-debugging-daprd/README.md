@@ -144,3 +144,7 @@ Note: You will need to ensure that you specify different http/grpc (-dapr-http-p
     ]
 }
 ```
+
+## Wrapping up
+
+Once you have made the required changes, you should be able to switch to the debug view in VSCode and launch your "daprized" configurations by clicking the "play" button. If everything was configured correctly, you should see daprd launch in the VSCode terminal window and the debugger should attach to your application (you should see it's output in the debug window). Happy debugging!
