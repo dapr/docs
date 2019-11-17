@@ -21,7 +21,9 @@ spec:
 
 The ```metadata.name``` is the name of the binding. A developer who wants to trigger her app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.
 
-the ```metadata``` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the implementation.
+On startup Dapr sends a ```OPTIONS``` request to the ```metadata.name``` endpoint and expects a different status code as ```NOT FOUND (404)``` if this application wants to subscribe to the binding.
+
+The ```metadata``` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the implementation.
 
 For example, here's how a Python application subscribes for events from ```Kafka``` using an Dapr API compliant platform:
 
