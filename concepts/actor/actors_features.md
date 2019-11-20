@@ -7,6 +7,10 @@ Dapr Actors runtime provides following capabilities:
 
  You can interact with Dapr through Http/gRPC endpoints for state management.
 
+ To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The following state stores implement this interface:
+ - Redis
+ - MongoDB
+
  ### Save the Actor State
 
 You can save the Actor state of a given key of actorId of type actorType by calling
