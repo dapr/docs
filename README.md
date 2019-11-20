@@ -9,6 +9,7 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 - **[How-Tos](./howto)** - Guides explaining how to accomplish specific tasks
 - **[Best practices](./best-practices)** - Guides explaining best practices  using Dapr including [debugging and troubleshooting](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting)
 - **[Reference](./reference)** - Detailed reference documentation
+- **[FAQ](FAQ.md)** - Frequently asked questions, mostly around differentiation to existing frameworks
 
 ## Document versions
 
