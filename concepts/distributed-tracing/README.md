@@ -52,5 +52,5 @@ spec:
 ```
 
 # References
-* [How-To: Set Up Distributed Tracing](../../howto/diagnose-with-tracing/README.md)
-
+* [How-To: Set up Distributed Tracing with Azure Monitor](../../howto/diagnose-with-tracing/azure-monitor.md)
+* [How-To: Set Up Distributed Tracing with Zipkin](../../howto/diagnose-with-tracing/zipkin.md)

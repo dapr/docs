@@ -9,6 +9,7 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 - **[How-Tos](./howto)** - Guides explaining how to accomplish specific tasks
 - **[Best practices](./best-practices)** - Guides explaining best practices  using Dapr including [debugging and troubleshooting](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting)
 - **[Reference](./reference)** - Detailed reference documentation
+- **[FAQ](FAQ.md)** - Frequently asked questions, mostly around differentiation to existing frameworks
 
 ## Document versions
 
@@ -16,6 +17,7 @@ Dapr is currently under community development in preview phase and master branch
 
 |    Document Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v0.2.0](https://github.com/dapr/docs/tree/v0.2.0) | [v0.2.0](https://github.com/dapr/dapr/tree/v0.2.0) |
 | [v0.1.0](https://github.com/dapr/docs/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
 
 ## SDKs
