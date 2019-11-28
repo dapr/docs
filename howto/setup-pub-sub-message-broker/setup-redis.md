@@ -28,7 +28,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
     Add this password as the `redisPassword` value in your redis.yaml file. For example:
     ```yaml
-        - name: redisHost
+        - name: redisPassword
           value: "lhDOkwTlp0"
     ```
 
