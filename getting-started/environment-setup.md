@@ -156,7 +156,8 @@ helm repo update
 3. Install the Dapr chart on your cluster in the `dapr-system` namespace
 
 ```bash
-helm install dapr/dapr --name dapr --namespace dapr-system
+kubectl create namespace dapr-system
+helm install dapr dapr/dapr --namespace dapr-system
 ```
 
 #### Verify installation
@@ -175,7 +176,7 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 #### Uninstall Dapr on Kubernetes
 
 ```bash
-helm del --purge -n dapr
+helm uninstall dapr --namespace dapr-system
 ```
 
 > **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
