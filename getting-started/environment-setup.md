@@ -142,7 +142,7 @@ $ dapr uninstall --kubernetes
 
 You can install Dapr to Kubernetes cluster using a Helm chart.
 
-#### Install Dapr to Kubernetes
+#### Install Dapr to Kubernetes with Helm 2.x
 
 1. Make sure Helm is initialized in your running Kubernetes cluster.
 
@@ -156,7 +156,29 @@ helm repo update
 3. Install the Dapr chart on your cluster in the `dapr-system` namespace
 
 ```bash
+helm install dapr/dapr --name dapr --namespace dapr-system
+```
+
+#### Install Dapr to Kubernetes with Helm 3.x
+
+1. Make sure Helm is initialized in your running Kubernetes cluster.
+
+2. Add Azure Container Registry as a Helm repo
+
+```bash
+helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
+helm repo update
+```
+
+3. Create the `dapr-system` namespace
+
+```bash
 kubectl create namespace dapr-system
+```
+
+4. Install the Dapr chart on your cluster in the `dapr-system` namespace
+
+```bash
 helm install dapr dapr/dapr --namespace dapr-system
 ```
 
@@ -173,7 +195,13 @@ dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 ```
 
-#### Uninstall Dapr on Kubernetes
+#### Uninstall Dapr on Kubernetes with Helm 2.x
+
+```bash
+helm del --purge -n dapr
+```
+
+#### Uninstall Dapr on Kubernetes with Helm 3.x
 
 ```bash
 helm uninstall dapr --namespace dapr-system
