@@ -54,7 +54,7 @@ spec:
 Finally, deploy the Dapr configurations:
 
 ```bash
-kubectl apply -f config.yaml
+kubectl apply -f tracing.yaml
 kubectl apply -f zipkin.yaml
 ```
 
