@@ -1,14 +1,24 @@
 # Configuring Visual Studio Code for debugging with daprd
 
-While developing locally in VSCode, you might find it useful to be able to attach the debugger to your code that is utilizing Dapr. To do this, you can run the daprd process separately and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
+When developing Dapr applications, you typically use the dapr cli to start your daprized service similar to this:
 
-Using the ***tasks.json*** and ***launch.json*** files in Visual Studio Code, we can simplify the process and request that VSCode kick off the daprd process prior to launching the debugger.
+```bash
+dapr run --app-id nodeapp --app-port 3000 --port 3500 app.js
+```
+
+This will generate the components yaml files (if they don't exist) so that your service can interact with the local redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this. 
+
+>Note: The dapr runtime (daprd) will not automatically generate the components yaml files for Redis. These will need to be created manually or you will need to run the dapr cli (dapr) once in order to have them created automatically.
+
+One approach to attaching the debugger to your service is to first run daprd with the correct arguments from the command line and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
+
+Using the [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) and [launch.json](https://code.visualstudio.com/Docs/editor/debugging) files in Visual Studio Code, you can simplify the process and request that VS Code kick off the daprd process prior to launching the debugger.
 
 Let's get started!
 
 ## Modifying launch.json configurations to include a preLaunchTask
 
-In your ***launch.json*** file add a **preLaunchTask** for each configuration that you want daprd launched. The **preLaunchTask** will reference tasks that you define in your tasks.json file. Here is an example for both Node and .NET Core. Notice the **preLaunchTask**s referenced: daprd-web and daprd-leaderboard.
+In your [launch.json](https://code.visualstudio.com/Docs/editor/debugging) file add a [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) for each configuration that you want daprd launched. The [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) will reference tasks that you define in your tasks.json file. Here is an example for both Node and .NET Core. Notice the [preLaunchTasks](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) referenced: daprd-web and daprd-leaderboard.
 
 ```json
 {
@@ -50,7 +60,7 @@ In your ***launch.json*** file add a **preLaunchTask** for each configuration th
 
 ## Adding daprd tasks to tasks.json
 
-You will need to define a task and problem matcher for daprd in your ***tasks.json*** file. Here are two examples (both referenced via the **preLaunchTask** members above). Notice that in the case of the .NET Core daprd task (daprd-leaderboard) there is also a **dependsOn** member that references the build task to ensure the latest code is being run/debugged. The **problemMatcher** is used so that VSCode can understand when the daprd process is up and running.
+You will need to define a task and problem matcher for daprd in your [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) file. Here are two examples (both referenced via the [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) members above). Notice that in the case of the .NET Core daprd task (daprd-leaderboard) there is also a [dependsOn](https://code.visualstudio.com/Docs/editor/tasks#_compound-tasks) member that references the build task to ensure the latest code is being run/debugged. The [problemMatcher](https://code.visualstudio.com/Docs/editor/tasks#_defining-a-problem-matcher) is used so that VSCode can understand when the daprd process is up and running.
 
 Let's take a quick look at the args that are being passed to the daprd command.
 
@@ -60,7 +70,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
 * -dapr-grpc-port -- the grpc port for the dapr api
 * -placement-address -- the location of the placement service (this should be running in docker as it was created when you installed dapr and ran ```dapr init```)
 
->**Note: You will need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you will run into port conflicts when you attempt to launch the second configuration.**
+>Note: You will need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you will run into port conflicts when you attempt to launch the second configuration.
 
 ```json
 {
@@ -147,4 +157,8 @@ Let's take a quick look at the args that are being passed to the daprd command.
 
 ## Wrapping up
 
-Once you have made the required changes, you should be able to switch to the debug view in VSCode and launch your "daprized" configurations by clicking the "play" button. If everything was configured correctly, you should see daprd launch in the VSCode terminal window and the debugger should attach to your application (you should see it's output in the debug window). Happy debugging!
+Once you have made the required changes, you should be able to switch to the [debug](https://code.visualstudio.com/Docs/editor/debugging) view in VSCode and launch your daprized configurations by clicking the "play" button. If everything was configured correctly, you should see daprd launch in the VSCode terminal window and the [debugger](https://code.visualstudio.com/Docs/editor/debugging) should attach to your application (you should see it's output in the debug window). 
+
+>Note: Since you didn't launch the service(s) using the **dapr** ***run*** cli command, but instead by running **daprd**, the **dapr** ***list*** command will not show a list of apps that are currently running.
+
+Happy debugging!
