@@ -24,6 +24,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [AWS SNS](./specs/sns.md) |  | V | Experimental |
 | [Azure EventHubs](./specs/eventhubs.md) | V | V | Experimental |
 | [Azure CosmosDB](./specs/cosmosdb.md) | | V | Experimental |
+| [Azure SignalR](./specs/signalr.md) | | V | Experimental |
 | [GCP Storage Bucket](./specs/gcpbucket.md)  | | V | Experimental |
 | [HTTP](./specs/http.md) |  | V | Experimental |
 | [MQTT](./specs/mqtt.md) | V | V | Experimental |
