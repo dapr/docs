@@ -9,7 +9,7 @@ When launched, a Dapr sidecar contructs a processing pipeline. The pipeline cons
 
 > **NOTE:** Dapr provides a **middleware.http.uppercase** middleware that doesn't need any configurations. The middleware changes all texts in a request body to uppercase. You can use it to test/verify if your custom pipeline is in place.
 
-The following configuration defines a custom pipeline that uses a OAuth 2.0 middleware and an uppercase middleware. In this case, all requests are authenticated with OAuth 2.0, and transformed to uppercase texts, before they are forwarded to user code.
+The following configuration defines a custom pipeline that uses a OAuth 2.0 middleware and an uppercase middleware. In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase texts, before they are forwarded to user code.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
