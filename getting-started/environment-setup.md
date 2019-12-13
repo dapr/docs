@@ -184,7 +184,7 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 
 Helm 3
 ```bash
-helm del dapr -n dapr-system
+helm uninstall dapr -n dapr-system
 ```
 
 Helm 2
