@@ -17,8 +17,7 @@ First, the Dapr CLI creates the `\components` directory if it does not not alrea
 
 *Note as of this writing (Dec 2019) the names have been changed to `statestore.yaml` and `messagebus.yaml` in the master branch, but this change is not in the latest release, 0.3.0*.  
 
-
-Components describe configuration (e.g. how the Dapr runtime should communicate to the pub/sub).  The pub/sub itself must be created prior.  For example, Redis is launched as a container when running `dapr init`.  If these component files already exist, they are not overwritten.  This means you could overwrite `statestore.yaml`, which by default uses Redis, with a content for a different statestore (e.g. Mongo) and the latter would be what gets used.  If you did this and ran `dapr run` again, the Dapr runtime would use the specified Mongo state store.
+yaml files in components directory contains configuration for various Dapr components (e.g. statestore, pubsub, bindings etc.). The components must be created prior to using them with Dapr, for example, redis is launched as a container when running dapr init. If these component files already exist, they are not overwritten.  This means you could overwrite `statestore.yaml`, which by default uses Redis, with a content for a different statestore (e.g. Mongo) and the latter would be what gets used.  If you did this and ran `dapr run` again, the Dapr runtime would use the specified Mongo state store.
 
 Then, the Dapr CLI will [launch](https://github.com/dapr/cli/blob/d585612185a4a525c05fb62b86e288ccad510006/pkg/standalone/run.go#L290) two proceses: the Dapr runtime and your app (in this sample `node app.js`). 
 
