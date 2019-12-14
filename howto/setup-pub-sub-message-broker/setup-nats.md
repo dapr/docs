@@ -59,4 +59,4 @@ kubectl apply -f nats.yaml
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use NATS, replace the redis_messagebus.yaml file with nats.yaml above.
+To use NATS, replace the contents of `messagebus.yaml` file with the contents of `nats.yaml` above (Don't change the filename).
