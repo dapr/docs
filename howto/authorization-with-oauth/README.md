@@ -90,7 +90,7 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         ...
-        dapr.io/config: "tracing"
+        dapr.io/config: "pipeline"
 ...
 ```
 ## Accessing the access token

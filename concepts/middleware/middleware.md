@@ -5,7 +5,7 @@ Dapr allows custom processing pipelines to be defined by chaining a series of cu
 ![Middleware](../../images/middleware.png)
 
 ## Customize processing pipeline
-When launched, a Dapr sidecar contructs a processing pipeline. The pipeline consists of a [tracing middleware](../distributed-tracing/README.md) (when tracing is enabled) and a CORS middleware by default. Additional middleware, configured by a Dapr [configuration](../configuration/README.md), are added to the pipeline in the order as they are defined.
+When launched, a Dapr sidecar contructs a processing pipeline. The pipeline consists of a [tracing middleware](../distributed-tracing/README.md) (when tracing is enabled) and a CORS middleware by default. Additional middleware, configured by a Dapr [configuration](../configuration/README.md), are added to the pipeline in the order as they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, direct messaging, bindings and others.
 
 > **NOTE:** Dapr provides a **middleware.http.uppercase** middleware that doesn't need any configurations. The middleware changes all texts in a request body to uppercase. You can use it to test/verify if your custom pipeline is in place.
 
