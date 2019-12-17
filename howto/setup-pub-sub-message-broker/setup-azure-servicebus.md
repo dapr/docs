@@ -48,4 +48,4 @@ kubectl apply -f azuresb.yaml
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use Azure Service Bus, replace the redis_messagebus.yaml file with azuresb.yaml above.
+To use Azure Service Bus, replace the contents of `messagebus.yaml` file with the contents of `azuresb.yaml` above (Don't change the filename).
