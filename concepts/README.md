@@ -18,7 +18,7 @@ This directory contains various Dapr concepts. The goal of these documents is to
 
 * [**Configuration**](./configuration/README.md)
 
-  Dapr configuration defines a policy that affects how a Dapr sidecar hebavies, such as [distributed tracing](distributed-tracing/README.md) and [custom pipeline](middleware/middleware.md).
+  Dapr configuration defines a policy that affects how a Dapr sidecar behaves, such as [distributed tracing](distributed-tracing/README.md) and [custom pipeline](middleware/middleware.md).
 
 * [**Distributed Tracing**](./distributed-tracing/README.md)
 
