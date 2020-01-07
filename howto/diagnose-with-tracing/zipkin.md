@@ -113,7 +113,7 @@ spec:
     includeBody: true
 ```
 
-2. Copy *tracing.yaml* to a *components* folder under the same folder where you run you application.
+2. Copy *zipkin.yaml* to a *components* folder under the same folder where you run you application.
    
 3. Launch Zipkin using Docker:
 
