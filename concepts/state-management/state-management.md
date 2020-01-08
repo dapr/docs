@@ -9,7 +9,7 @@ Dapr makes it simple for you to store key/value data in a store of your choice.
 Dapr brings reliable state management to applications through a simple state API. Developers can use this API to retrieve, save and delete states by keys.
 
 Dapr data stores are pluggable. Dapr ships with [Redis](https://redis.io
-) out-of-box. And it allows you to plug in other data stores such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
+) out-of-box. And it allows you to plug in other data stores such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
 ), [GCP Cloud Spanner](https://cloud.google.com/spanner
 ) and [Cassandra](http://cassandra.apache.org/).
 
@@ -31,6 +31,7 @@ Store | Strong consistent write | Strong consistent read | ETag|
 Cosmos DB | Yes | Yes | Yes
 Redis | Yes | Yes | Yes
 Redis (clustered)| Yes | No | Yes
+SQL Server | Yes | Yes | Yes
 
 ## Concurrency
 Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the database.
@@ -83,6 +84,8 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>-<thermometer>-*-tempe
 * [Spec: Dapr state management specification](../../reference/api/state.md)
 * [Spec: Dapr actors specification](../../reference/api/actors.md)
 * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
-* [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md) 
+* [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
 * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)
-* [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md) 
+* [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md)
+* [How-to: Set up SQL Server store](../../howto/setup-state-store/setup-sqlserver.md)
+* [How-to: Query SQL Server store](../../howto/query-state-store/query-sqlserver-store.md)

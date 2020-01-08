@@ -12,3 +12,4 @@
 | Memcached | :white_check_mark: | :x: |
 | MongoDB | :white_check_mark: | :white_check_mark: |
 | Zookeeper | :white_check_mark: | :x: |
+| SQL Server  | :white_check_mark:  | :white_check_mark: |
