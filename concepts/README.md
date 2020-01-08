@@ -16,21 +16,29 @@ This directory contains various Dapr concepts. The goal of these documents is to
   
   Dapr uses a modular design, in which functionalities are grouped and delivered by a number of *components*, such as  [pub/sub](./publish-subscribe-messaging/README.md) and [secrets](./components/secrets.md). Many of the components are pluggable so that you can swap out the default implementation with your custom implementations. 
 
+* [**Configuration**](./configuration/README.md)
+
+  Dapr configuration defines a policy that affects how a Dapr sidecar behaves, such as [distributed tracing](distributed-tracing/README.md) and [custom pipeline](middleware/middleware.md).
+
 * [**Distributed Tracing**](./distributed-tracing/README.md)
 
   Distributed tracing collects and aggregates trace events by transactions. It allows you to trace the entire call chain across multiple services. Dapr integrates with [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection. 
+
+* [**Middleware**](./middleware/middleware.md)
+  
+  Dapr allows custom middleware to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client.
 
 * [**Publish/Subscribe Messaging**](./publish-subscribe-messaging/README.md)
   
   Pub/Sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr natively supports the pub/sub pattern.
 
-* [**Service Invocation**](./service-invocation/service-invocation.md)
-  
-  Service invocation enables applications to communicate with each other through well-known endpoints in the form of http or gRPC messages. Dapr provides an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
-
 * [**Secrets**](./components/secrets.md)
 
   In Dapr, a secret is any piece of private information that you want to guard against unwanted users. Dapr offers a simple secret API and integrates with secret stores such as Azure Key Vault and Kubernetes secret stores to store the secrets.
+
+* [**Service Invocation**](./service-invocation/service-invocation.md)
+  
+  Service invocation enables applications to communicate with each other through well-known endpoints in the form of http or gRPC messages. Dapr provides an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
 
 * [**State**](./state-management/state-management.md)
 
