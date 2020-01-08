@@ -153,8 +153,16 @@ helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
 helm repo update
 ```
 
-3. Install the Dapr chart on your cluster in the `dapr-system` namespace
+3. Install the Dapr chart on your cluster in the `dapr-system` namespace.
 
+Helm 3 is the latest stable major release and is preferred. The installation command differs slightly between Helm 2 and Helm 3. You can determine the version of Helm you are using by running the `helm version` command.
+
+Use the following command to install the dapr chart using Helm 3.
+```bash
+helm install dapr dapr/dapr --namespace dapr-system
+```
+
+Use the following command to install the dapr chart using Helm 2.
 ```bash
 helm install dapr/dapr --name dapr --namespace dapr-system
 ```
@@ -174,6 +182,12 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 
 #### Uninstall Dapr on Kubernetes
 
+Helm 3
+```bash
+helm uninstall dapr -n dapr-system
+```
+
+Helm 2
 ```bash
 helm del --purge -n dapr
 ```

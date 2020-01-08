@@ -30,3 +30,6 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 
 ### Autoscaling
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
+
+### Configuring Visual Studio Code
+* [Debugging with daprd](./vscode-debugging-daprd)
