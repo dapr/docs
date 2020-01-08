@@ -28,11 +28,11 @@ the ```spec/metadata``` section is an open key value pair metadata that allows a
 ## Key scheme
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
 ```bash
-<Dapr id>-<state key>
+<Dapr id>__delim__<state key>
 ```
 For Actor states, the key format is:
 ```bash
-<Dapr id>-<Actor type>-<Actor id>-<state key>
+<Dapr id>__delim__<Actor type>__delim__<Actor id>__delim__<state key>
 ```
 
 
@@ -194,8 +194,8 @@ curl -X "DELETE" http://localhost:3500/v1.0/state/planet -H "ETag: xxxxxxx"
 
 A Dapr-compatible state store shall use the following key scheme:
 
-* *\<Dapr id>-\<state key>* key format for general states
-* *\<Dapr id>-\<Actor type>-\<Actor id>-\<state key>* key format for Actor states. 
+* *\<Dapr id>__delim__\<state key>* key format for general states
+* *\<Dapr id>__delim__\<Actor type>__delim__\<Actor id>__delim__\<state key>* key format for Actor states. 
 
 ### Concurrency
 Dapr uses Optimized Concurrency Control (OCC) with ETags. Dapr makes optional the following requirements on state stores: 

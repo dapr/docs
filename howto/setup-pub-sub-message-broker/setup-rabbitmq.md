@@ -79,4 +79,4 @@ kubectl apply -f rabbitmq.yaml
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use RabbitMQ, replace the redis_messagebus.yaml file with rabbitmq.yaml above.
+To use RabbitMQ, replace the contents of `messagebus.yaml` file with the contents of `rabbitmq.yaml` above (Don't change the filename).

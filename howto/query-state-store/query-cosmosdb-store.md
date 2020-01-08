@@ -15,7 +15,7 @@ The easiest way to connect to your Cosmos DB instance is to use the Data Explore
 To get all state keys associated with application "myapp", use the query:
 
 ```sql
-SELECT * FROM states WHERE CONTAINS(states.id, 'myapp-')
+SELECT * FROM states WHERE CONTAINS(states.id, 'myapp__delim__')
 ```
 
 The above query returns all documents with id containing "myapp-", which is the prefix of the state keys.
@@ -25,25 +25,25 @@ The above query returns all documents with id containing "myapp-", which is the 
 To get the state data by a key "balance" for the application "myapp", use the query:
 
 ```bash
-SELECT * FROM states WHERE states.id = 'myapp-balance'
+SELECT * FROM states WHERE states.id = 'myapp__delim__balance'
 ```
 Then, read the **value** field of the returned document.
 
 To get the state version/ETag, use the command:
 ```bash
-SELECT states._etag FROM states WHERE states.id = 'myapp-balance'
+SELECT states._etag FROM states WHERE states.id = 'myapp__delim__balance'
 ```
 ## 4. Read actor state
 
 To get all the state keys associated with an actor with the instance ID "leroy" of actor type "cat" belonging to the application with ID "mypets", use the command:
 
 ```bash
-SELECT * FROM states WHERE CONTAINS(states.id, 'mypets-cat-leroy-')
+SELECT * FROM states WHERE CONTAINS(states.id, 'mypets__delim__cat__delim__leroy__delim__')
 ```
 And to get a specific actor state such as "food", use the command:
 
 ```bash
-SELECT * FROM states WHERE states.id = 'mypets-cat-leroy-food'
+SELECT * FROM states WHERE states.id = 'mypets__delim__cat__delim__leroy__delim__food'
 ```
 
 > **WARNING:** You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime.

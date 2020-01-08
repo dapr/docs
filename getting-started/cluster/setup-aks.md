@@ -42,9 +42,15 @@ az aks create --resource-group [your_resource_group] --name [your_aks_cluster_na
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
-## (optional) Install Helm and deploy Tiller
+## (optional) Install Helm
 
-1. [Install Helm client](https://helm.sh/docs/using_helm/#installing-the-helm-client)
+### Helm 3 installation (prefered)
+
+1. [Install Helm 3 client](https://helm.sh/docs/intro/install/)
+
+### Helm 2 installation
+
+1. [Install Helm 2 client](https://v2.helm.sh/docs/using_helm/#installing-helm)
 
 2. Create the Tiller service account
 ```bash
