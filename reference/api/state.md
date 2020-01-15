@@ -25,6 +25,11 @@ The ```metadata.name``` is the name of the state store.
 
 the ```spec/metadata``` section is an open key value pair metadata that allows a binding to define connection properties.
 
+With the upcoming release of Dapr runtime 0.4, there will be a support for multiple state stores. This is a breaking change as the state APIs will be changed to support this new scenario.
+
+Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/API-008-multi-state-store-api-design.md for more details.
+
+
 ## Key scheme
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
 ```bash
@@ -42,13 +47,14 @@ This endpoint lets you save an array of state objects.
 
 ### HTTP Request
 
-`POST http://localhost:<daprPort>/v1.0/state`
+`POST http://localhost:<daprPort>/v1.0/state/<storename>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
+storename | ```metadata.name``` field which is the name of the state store
 
 #### Request Body
 A JSON array of state objects. Each state object is comprised with the following fields:
@@ -77,7 +83,7 @@ None.
 
 ### Example
 ```shell
-curl -X POST http://localhost:3500/v1.0/state \
+curl -X POST http://localhost:3500/v1.0/state/starwars \
   -H "Content-Type: application/json" \
   -d '[
         {
@@ -99,13 +105,14 @@ This endpoint lets you get the state for a specific key.
 
 ### HTTP Request
 
-`GET http://localhost:<daprPor>/v1.0/state/<key>`
+`GET http://localhost:<daprPor>/v1.0/state/<storename>/<key>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
+storename | ```metadata.name``` field which is the name of the state store
 key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 
@@ -132,7 +139,7 @@ JSON-encoded value
 ### Example 
 
 ```shell
-curl http://localhost:3500/v1.0/state/planet \
+curl http://localhost:3500/v1.0/state/starwars/planet \
   -H "Content-Type: application/json"
 ```
 
@@ -149,13 +156,14 @@ This endpoint lets you delete the state for a specific key.
 
 ### HTTP Request
 
-`DELETE http://localhost:<daprPort>/v1.0/state/<key>`
+`DELETE http://localhost:<daprPort>/v1.0/state/<storename>/<key>`
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
+storename | ```metadata.name``` field which is the name of the state store
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
@@ -185,7 +193,7 @@ None.
 ### Example
 
 ```shell
-curl -X "DELETE" http://localhost:3500/v1.0/state/planet -H "ETag: xxxxxxx"
+curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
 ```
 
 ## Optional behaviors
@@ -233,7 +241,7 @@ retryThreshold | Maximum number of retries.
 The following is a sample *set* request with a complete operation option definition:
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/state \
+curl -X POST http://localhost:3500/v1.0/state/starwars \
   -H "Content-Type: application/json" \
   -d '[
         {
