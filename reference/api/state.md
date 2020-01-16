@@ -54,7 +54,7 @@ This endpoint lets you save an array of state objects.
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-storename | ```metadata.name``` field which is the name of the state store
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 
 #### Request Body
 A JSON array of state objects. Each state object is comprised with the following fields:
@@ -112,7 +112,7 @@ This endpoint lets you get the state for a specific key.
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-storename | ```metadata.name``` field which is the name of the state store
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 
@@ -163,7 +163,7 @@ This endpoint lets you delete the state for a specific key.
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-storename | ```metadata.name``` field which is the name of the state store
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
