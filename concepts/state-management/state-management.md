@@ -20,7 +20,7 @@ See the Dapr API specification for details on [state management API](../../refer
 ## State store behaviors
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirement, consistency requirement, and retry policy to any state operation requests.
 
-By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store or fulfil the requests.
+By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfil the requests.
 
 Not all stores are created equal. To ensure portability of your application, you can query the capabilities of the store and make your code adaptive to different store capabilities.
 
