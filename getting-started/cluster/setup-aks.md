@@ -42,27 +42,8 @@ az aks create --resource-group [your_resource_group] --name [your_aks_cluster_na
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
-## (optional) Install Helm
-
-### Helm 3 installation (prefered)
+## (optional) Install Helm 3
 
 1. [Install Helm 3 client](https://helm.sh/docs/intro/install/)
 
-### Helm 2 installation
-
-1. [Install Helm 2 client](https://v2.helm.sh/docs/using_helm/#installing-helm)
-
-2. Create the Tiller service account
-```bash
-kubectl apply -f https://raw.githubusercontent.com/Azure/helm-charts/master/docs/prerequisities/helm-rbac-config.yaml
-```
-
-3. Run the following to install Tiller into the cluster
-```bash
-helm init --service-account tiller --history-max 200
-```
-
-4. Ensure that Tiller is deployed and running
-```bash
-kubectl get pods -n kube-system
-```
+> **Note:** The latest Dapr helm chart no longer supports Helm 3
