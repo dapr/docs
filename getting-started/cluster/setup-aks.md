@@ -42,8 +42,8 @@ az aks create --resource-group [your_resource_group] --name [your_aks_cluster_na
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
-## (optional) Install Helm 3
+## (optional) Install Helm v3
 
-1. [Install Helm 3 client](https://helm.sh/docs/intro/install/)
+1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
 
-> **Note:** The latest Dapr helm chart no longer supports Helm 3
+> **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
