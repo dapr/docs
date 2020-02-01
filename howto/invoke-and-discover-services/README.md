@@ -76,7 +76,7 @@ This Python app exposes an `add()` method via the `/add` endpoint.
 curl http://localhost:3500/v1.0/invoke/cart/method/add -X POST
 ```
 
-Since the aoo endpoint is a 'POST' method, we used `-X POST` in the curl command.
+Since the add endpoint is a 'POST' method, we used `-X POST` in the curl command.
 
 To invoke a 'GET' endpoint:
 
