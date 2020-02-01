@@ -16,7 +16,7 @@ The easiest way to install Zookeeper on Kubernetes is by using the [Helm chart](
 
 ```
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-helm install --name zookeeper incubator/zookeeper
+helm install zookeeper incubator/zookeeper
 ```
 
 This will install Zookeeper into the `default` namespace.

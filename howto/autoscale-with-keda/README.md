@@ -16,7 +16,7 @@ You can install Kafka in your cluster by using Helm:
 
 ```
 $ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-$ helm install --name my-kafka incubator/kafka
+$ helm install my-kafka incubator/kafka
 ```
 
 Next, we'll create the Dapr Kafka binding for Kubernetes.<br>
