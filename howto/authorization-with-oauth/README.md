@@ -71,7 +71,8 @@ metadata:
 spec:
   httpPipeline:
     handlers:
-    - name: middleware.http.oauth2
+    - name: oauth2
+      type: middleware.http.oauth2
 ```
 
 ## Apply the configuration

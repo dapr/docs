@@ -18,22 +18,23 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name  | Input Binding | Output Binding | Status
 | ------------- | -------------- | -------------  | ------------- |
-| [Kafka](./specs/kafka.md) | ✅ | ✅ | Experimental |
-| [RabbitMQ](./specs/rabbitmq.md) | ✅  | ✅ | Experimental |
-| [AWS SQS](./specs/sqs.md) | ✅ | ✅ | Experimental |
-| [AWS SNS](./specs/sns.md) |  | ✅ | Experimental |
-| [Azure EventHubs](./specs/eventhubs.md) | ✅ | ✅ | Experimental |
-| [Azure CosmosDB](./specs/cosmosdb.md) | | ✅ | Experimental |
-| [GCP Storage Bucket](./specs/gcpbucket.md)  | | ✅ | Experimental |
-| [HTTP](./specs/http.md) |  | ✅ | Experimental |
-| [MQTT](./specs/mqtt.md) | ✅ | ✅ | Experimental |
-| [Redis](./specs/redis.md) |  | ✅ | Experimental |
-| [AWS DynamoDB](./specs/dynamodb.md) | | ✅ | Experimental |
-| [AWS S3](./specs/s3.md) | | ✅ | Experimental |
-| [Azure Blob Storage](./specs/blobstorage.md) | | ✅ | Experimental |
-| [Azure Service Bus Queues](./specs/servicebusqueues.md) | ✅ | ✅ | Experimental |
-| [GCP Cloud Pub/Sub](./specs/gcppubsub.md) | ✅ | ✅ | Experimental |
-| [Kubernetes Events](./specs/kubernetes.md) | ✅ |  | Experimental |
+| [Kafka](./specs/kafka.md) | V | V | Experimental |
+| [RabbitMQ](./specs/rabbitmq.md) | V  | V | Experimental |
+| [AWS SQS](./specs/sqs.md) | V | V | Experimental |
+| [AWS SNS](./specs/sns.md) |  | V | Experimental |
+| [Azure EventHubs](./specs/eventhubs.md) | V | V | Experimental |
+| [Azure CosmosDB](./specs/cosmosdb.md) | | V | Experimental |
+| [Azure SignalR](./specs/signalr.md) | | V | Experimental |
+| [GCP Storage Bucket](./specs/gcpbucket.md)  | | V | Experimental |
+| [HTTP](./specs/http.md) |  | V | Experimental |
+| [MQTT](./specs/mqtt.md) | V | V | Experimental |
+| [Redis](./specs/redis.md) |  | V | Experimental |
+| [AWS DynamoDB](./specs/dynamodb.md) | | V | Experimental |
+| [AWS S3](./specs/s3.md) | | V | Experimental |
+| [Azure Blob Storage](./specs/blobstorage.md) | | V | Experimental |
+| [Azure Service Bus Queues](./specs/servicebusqueues.md) | V | V | Experimental |
+| [GCP Cloud Pub/Sub](./specs/gcppubsub.md) | V | V | Experimental |
+| [Kubernetes Events](./specs/kubernetes.md) | V |  | Experimental |
 
 ## Input Bindings
 

@@ -11,7 +11,7 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 ### Creating a Redis Cache in your Kubernetes Cluster using Helm
 
-We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
+We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm v3](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster: `helm install redis stable/redis`.
 > Note that you need a Redis version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), also a lower version can be used.
