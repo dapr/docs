@@ -30,8 +30,6 @@ az group create --name [your_resource_group] --location [region]
 4. Create an Azure Kubernetes Service cluster
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 
-> **Note:** [1.16.x Kubernetes doesn't work with helm < 2.15.0](https://github.com/helm/helm/issues/6374#issuecomment-537185486)
-
 ```bash
 az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --kubernetes-version 1.14.6 --enable-addons http_application_routing --enable-rbac --generate-ssh-keys
 ```
@@ -42,27 +40,8 @@ az aks create --resource-group [your_resource_group] --name [your_aks_cluster_na
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
-## (optional) Install Helm
+## (optional) Install Helm v3
 
-### Helm 3 installation (prefered)
+1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
 
-1. [Install Helm 3 client](https://helm.sh/docs/intro/install/)
-
-### Helm 2 installation
-
-1. [Install Helm 2 client](https://v2.helm.sh/docs/using_helm/#installing-helm)
-
-2. Create the Tiller service account
-```bash
-kubectl apply -f https://raw.githubusercontent.com/Azure/helm-charts/master/docs/prerequisities/helm-rbac-config.yaml
-```
-
-3. Run the following to install Tiller into the cluster
-```bash
-helm init --service-account tiller --history-max 200
-```
-
-4. Ensure that Tiller is deployed and running
-```bash
-kubectl get pods -n kube-system
-```
+> **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).

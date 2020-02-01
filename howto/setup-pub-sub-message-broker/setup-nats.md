@@ -15,7 +15,7 @@ You can then interact with the server using the client port: `localhost:4222`.
 The easiest way to install NATS on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/nats):
 
 ```
-helm install --name nats stable/nats
+helm install nats stable/nats
 ```
 
 This will install NATS into the `default` namespace.
