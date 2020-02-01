@@ -34,7 +34,7 @@ Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --kubernetes-version 1.14.6 --enable-addons http_application_routing --enable-rbac --generate-ssh-keys
 ```
 
-1. Get the access credentials for the Azure Kubernetes cluster
+5. Get the access credentials for the Azure Kubernetes cluster
 
 ```bash
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
