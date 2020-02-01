@@ -15,7 +15,7 @@ You can then interact with the server using `localhost:11211`.
 The easiest way to install Memcached on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/memcached):
 
 ```
-helm install --name memcached stable/memcached
+helm install memcached stable/memcached
 ```
 
 This will install Memcached into the `default` namespace.

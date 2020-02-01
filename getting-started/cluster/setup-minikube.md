@@ -36,39 +36,15 @@ minikube addons enable dashboard
 minikube addons enable ingress
 ```
 
-## (optional) Install Helm and deploy Tiller
+## (optional) Install Helm v3
 
-1. [Install Helm client](https://helm.sh/docs/using_helm/#installing-the-helm-client)
-> **Note:** [1.16.x Kubernetes doesn't work with helm < 2.16.0, so use latest version of Helm](https://github.com/helm/helm/issues/6374#issuecomment-537185486)
+1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
 
-2. Create the Tiller service account
-
-```bash
-kubectl create serviceaccount -n kube-system tiller
-kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-```
-
-3. Install Tiller to the minikube
-
-```bash
-helm init --service-account tiller --history-max 200
-```
-
-4. Ensure that Tiller is deployed and running
-
-```bash
-kubectl get pods -n kube-system
-```
+> **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
 
 ### Troubleshooting
 
-1. If Tiller is not running properly, get the logs from `tiller-deploy` deployment to understand the problem:
-
-```bash
-kubectl describe deployment tiller-deploy --namespace kube-system
-```
-
-2. The external IP address of load balancer is not shown from `kubectl get svc`
+1. The external IP address of load balancer is not shown from `kubectl get svc`
 
 In Minikube, EXTERNAL-IP in `kubectl get svc` shows `<pending>` state for your service. In this case, you can run `minikube service [service_name]` to open your service without external IP address.
 
