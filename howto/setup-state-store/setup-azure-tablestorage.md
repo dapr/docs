@@ -1,6 +1,6 @@
 # Setup Azure Table Storage 
 
-## Creating an Azure CosmosDB account
+## Creating Azure Storage account
 
 [Follow the instructions](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account. 
 
@@ -60,16 +60,16 @@ spec:
 
 ### In Kubernetes
 
-To apply the CosmosDB state store to Kubernetes, use the `kubectl` CLI:
+To apply Azure Table Storage state store to Kubernetes, use the `kubectl` CLI:
 
 ```
-kubectl apply -f cosmos.yaml
+kubectl apply -f azuretable.yaml
 ```
 
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use CosmosDB, replace the redis.yaml file with azuretable.yaml file above.
+To use Azure Table Storage, replace the redis.yaml file with azuretable.yaml file above.
 
 ## Partitioning
 
