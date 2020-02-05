@@ -15,7 +15,7 @@ You can then interact with the server using the client port: `localhost:5672`.
 The easiest way to install RabbitMQ on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/rabbitmq):
 
 ```
-helm install --name rabbitmq stable/rabbitmq
+helm install rabbitmq stable/rabbitmq
 ```
 
 Look at the chart output and get the username and password.

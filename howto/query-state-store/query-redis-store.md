@@ -21,8 +21,8 @@ KEYS myapp*
 
 The above command returns a list of existing keys, for example:
 ```bash
-1) "myapp__delim__balance"
-2) "myapp__delim__amount"
+1) "myapp||balance"
+2) "myapp||amount"
 ```
 
 ## 3. Get specific state data
@@ -32,24 +32,24 @@ Dapr saves state values as hash values. Each hash value contains a "data" field,
 For example, to get the state data by a key "balance" for the application "myapp", use the command:
 
 ```bash
-HGET myapp__delim__balance data
+HGET myapp||balance data
 ```
 
 To get the state version/ETag, use the command:
 ```bash
-HGET myapp__delim__balance version
+HGET myapp||balance version
 ```
 ## 4. Read actor state
 
 To get all the state keys associated with an actor with the instance ID "leroy" of actor type "cat" belonging to the application with ID "mypets", use the command:
 
 ```bash
-KEYS mypets__delim__cat__delim__leroy*
+KEYS mypets||cat||leroy*
 ```
 And to get a specific actor state such as "food", use the command:
 
 ```bash
-HGET mypets__delim__cat__delim__leroy__delim__food value
+HGET mypets||cat||leroy||food value
 ```
 
 > **WARNING:** You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime.

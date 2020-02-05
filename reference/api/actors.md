@@ -49,42 +49,10 @@ curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
 
 > The response from the remote endpoint will be returned in the request body.
 
-### Save Actor State
 
-Saves the state for an actor using a specified key.
+### Actor State Changes - Transaction
 
-#### HTTP Request
-
-`POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>`
-
-#### HTTP Response Codes
-
-Code | Description
----- | -----------
-201  | Request successful
-500  | Request failed
-404  | Actor not found
-
-#### URL Parameters
-
-Parameter | Description
---------- | -----------
-daprPort | The Dapr port.
-actorType | The actor type.
-actorId | The actor ID.
-key | The key for the state value.
-
-```shell
-curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state/location \
-	-H "Content-Type: application/json"
-  -d '{
-        "location": "Alderaan"
-      }'
-```
-
-### Save Actor State - Transaction
-
-Saves the state for an actor as a multi-item transaction.
+Persists the changed to the state for an actor as a multi-item transaction.
 
 ***Note that this operation is dependant on a state store that supports multi-item transactions.***
 
@@ -164,36 +132,6 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/state/location \
 {
   "location": "Alderaan"
 }
-```
-
-### Delete Actor State
-
-Deletes the state for an actor using a specified key.
-
-#### HTTP Request
-
-`DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>`
-
-#### HTTP Response Codes
-
-Code | Description
----- | -----------
-200  | Request successful
-500  | Request failed
-404  | Actor not found
-
-#### URL Parameters
-
-Parameter | Description
---------- | -----------
-daprPort | The Dapr port.
-actorType | The actor type.
-actorId | The actor ID.
-key | The key for the state value.
-
-```shell
-curl http://localhost:3500/v1.0/actors/stormtrooper/50/state/location \
-	-X "Content-Type: application/json"
 ```
 
 ### Create Actor Reminder
@@ -468,6 +406,38 @@ actorId | The actor ID.
 
 ```shell
 curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
+	-H "Content-Type: application/json"
+```
+
+### Invoke Actor method
+
+Invokes a method for an actor.
+
+#### HTTP Request
+
+`PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/<methodName>`
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | Request successful
+500  | Request failed
+404  | Actor not found
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | The application port.
+actorType | The actor type.
+actorId | The actor ID.
+methodName | The name of the method to invoke.
+
+> Example of invoking a method for an actor:
+
+```shell
+curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
 	-H "Content-Type: application/json"
 ```
 

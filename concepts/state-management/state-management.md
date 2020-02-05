@@ -20,7 +20,7 @@ See the Dapr API specification for details on [state management API](../../refer
 ## State store behaviors
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirement, consistency requirement, and retry policy to any state operation requests.
 
-By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store or full fill the requests.
+By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfil the requests.
 
 Not all stores are created equal. To ensure portability of your application, you can query the capabilities of the store and make your code adaptive to different store capabilities.
 
@@ -69,13 +69,13 @@ KEYS "myApp*"
 If the data store supports SQL queries, you can query an actor's state using SQL queries. For example use:
 
 ```sql
-SELECT * FROM StateTable WHERE Id='<dapr-id>__delim__<actor-type>__delim__<actor-id>__delim__<key>'
+SELECT * FROM StateTable WHERE Id='<dapr-id>||<actor-type>||<actor-id>||<key>'
 ```
 
 You can also perform aggregate queries across actor instances, avoiding the common turn-based concurrency limitations of actor frameworks. For example, to calculate the average temperature of all thermometer actors, use:
 
 ```sql
-SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>__delim__<thermometer>__delim__*__delim__temperature'
+SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>||<thermometer>||*||temperature'
 ```
 
 > **NOTE:** Direct queries of the state store are not governed by Dapr concurrency control, since you are not calling through the Dapr runtime. What you see are snapshots of committed data which are acceptable for read-only queries across multiple actors, however writes should be done via the actor instances.
