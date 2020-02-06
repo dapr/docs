@@ -25,7 +25,7 @@ The ```metadata.name``` is the name of the state store.
 
 the ```spec/metadata``` section is an open key value pair metadata that allows a binding to define connection properties.
 
-With the upcoming release of Dapr runtime 0.4, there will be a support for multiple state stores. This is a breaking change as the state APIs will be changed to support this new scenario.
+Starting with 0.4.0 release, support for multiple state stores was added. This is a breaking change from previous releases as the state APIs were changed to support this new scenario.
 
 Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/API-008-multi-state-store-api-design.md for more details.
 
@@ -194,6 +194,27 @@ None.
 
 ```shell
 curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
+```
+
+## Configuring State Store for Actors
+Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently mongodb and redis implement the transactional state store interface.
+To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
+Example: Following components yaml will configure redis to be used as the state store for Actors.
+```
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  metadata:
+  - name: redisHost
+    value: <redis host>
+  - name: redisPassword
+    value: ""
+  - name: actorStateStore
+    value: "true"
+
 ```
 
 ## Optional behaviors
