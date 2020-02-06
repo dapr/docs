@@ -52,4 +52,5 @@ kubectl apply -f statestore.yaml
 * [Setup Google Cloud Firestore (Datastore mode)](./setup-firestore.md)
 * [Setup MongoDB](./setup-mongodb.md)
 * [Setup Zookeeper](./setup-zookeeper.md)
+* [Setup Aerospike](./setup-aerospike.md)
 * [Supported State Stores](./supported-state-stores.md)
