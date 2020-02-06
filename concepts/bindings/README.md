@@ -35,6 +35,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Azure Service Bus Queues](./specs/servicebusqueues.md) | V | V | Experimental |
 | [GCP Cloud Pub/Sub](./specs/gcppubsub.md) | V | V | Experimental |
 | [Kubernetes Events](./specs/kubernetes.md) | V |  | Experimental |
+| [Twilio SMS](./specs/twilio.md) | | V | Experimental |
 
 ## Input Bindings
 
