@@ -14,3 +14,4 @@
 | Zookeeper | :white_check_mark: | :x: |
 | SQL Server  | :white_check_mark:  | :white_check_mark: |
 | Aerospike  | :white_check_mark:  | :x: |
+| Hazelcast  | :white_check_mark:  | :x: |
