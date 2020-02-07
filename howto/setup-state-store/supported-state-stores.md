@@ -16,3 +16,4 @@
 | Aerospike  | :white_check_mark:  | :x: |
 | Hazelcast  | :white_check_mark:  | :x: |
 | Couchbase  | :white_check_mark:  | :x: |
+| Azure Table Storage  | :white_check_mark:  | :x: |
