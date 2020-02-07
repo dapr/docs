@@ -53,4 +53,5 @@ kubectl apply -f statestore.yaml
 * [Setup MongoDB](./setup-mongodb.md)
 * [Setup Zookeeper](./setup-zookeeper.md)
 * [Setup Aerospike](./setup-aerospike.md)
+* [Setup Hazelcast](./setup-hazelcast.md)
 * [Supported State Stores](./supported-state-stores.md)
