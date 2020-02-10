@@ -6,13 +6,20 @@ Dapr sidecar runs close to the application through **localhost**. Dapr assumes i
 
 ## Dapr-to-Dapr communication
 
-Dapr is designed for inter-component communications within an application. Dapr assumes these application components reside within the same trust boundary. Hence, Dapr doesn't secure across-Dapr communications by default.
+Dapr includes an on by default, automatic mutual TLS that provides in-transit encryption for traffic between Dapr instances.
+To achieve this, Dapr leverages a system component named `Sentry` which acts as a Certificate Authority and signs workload certificate requests originating from the Dapr sidecars.
 
-However, in a multi-tenant environment, a secured communication channel among Dapr sidecars becomes necessary. Supporting TLS and other authentication, authorization, and encryption methods is on the Dapr roadmap.
+Dapr also manages workload certificate rotation, and does so with zero downtime to the application.
 
-An alternative is to use service mesh technologies such as [Istio]( https://istio.io/) to provide secured communications among your application components. Dapr works well with popular service meshes.
+Sentry, the CA component, will automatically create and persist self signed root certificates valid for one year, unless existing root certs have been provided by the user.
 
-By default, Dapr supports Cross-Origin Resource Sharing (CORS) from all origins. You can configure Dapr runtime to allow only specific origins.  
+When root certs are replaced (Secret in Kubernetes mode and filesystem for self hosted mode), Sentry will pick them up and re-build the trust bundle without needing to restart, again with zero downtime to Sentry.
+
+When a new Dapr sidecar inits, it will first check if mTLS is enabled. if it is, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain cert, which is injected to each Dapr sidecar by the Dapr sidecar injector.
+
+The secret that hold the root certificates are scoped to the namespace in which the Dapr components are deployed to and are only accessible by the Dapr system pods.
+
+Dapr also support strong identities when deployed on Kubernetes, relying on a pod's Service Account token which is sent as part of the CSR request to Sentry.
 
 ## Network security
 
