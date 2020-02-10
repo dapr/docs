@@ -31,14 +31,13 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 •**Actors** A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
 
-
 The diagram below shows the distributed system building blocks provides by Dapr, exposed with standard APIs. These APIs can be used from any developer code over http or gRPC. Dapr integrates with any hosting platform, for example Kubernetes, to enable application portability including across cloud and edge.
 
 ![Dapr overview](images/overview.png)
 
 ## Sidecar architecture
 
-Dapr exposes its APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability. 
+Dapr exposes its APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
 
 ![Dapr overview](images/overview-sidecar.png)
 
@@ -46,7 +45,7 @@ In container hosting environments such a Kubernetes, Dapr runs as a side-car con
 
 ![Dapr overview](images/overview-sidecar-kubernetes.png)
 
-## Developer language SDKs and frameworks 
+## Developer language SDKs and frameworks
 
 To make using Dapr more natural for different languages, it also includes language specific SDKs for Go, Java, JavaScript, .NET and Python. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
@@ -60,19 +59,21 @@ You can use the [Dapr CLI](https://github.com/dapr/cli) to run services locally.
 
 ![Dapr overview](images/overview_standalone.png)
 
-For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover) 
+For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover)
 
-## Running Dapr in Kubernetes mode 
+## Running Dapr in Kubernetes mode
 
 Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the *dapr-sidecar-injector* and *dapr-operator* services provide first class integration to launch Dapr as a sidecar container in the same pod as the service and provides notifications of Dapr component updates provisioned into the cluster.
- 
+
 ![Dapr overview](images/overview_kubernetes.png)
 
-For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover) 
+For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover)
 
 In order to give your service an id and port known to Dapr and launch the Dapr sidecar container, you simply annotate your deployment like this.
 
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/id: "nodeapp"
-        dapr.io/port: "3000"
+```yml
+  annotations:
+    dapr.io/enabled: "true"
+    dapr.io/id: "nodeapp"
+    dapr.io/port: "3000"
+```

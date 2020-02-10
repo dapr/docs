@@ -8,7 +8,7 @@ The next step is to create a Dapr component for Azure Service Bus.
 
 Create the following YAML file named `azuresb.yaml`:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -34,18 +34,17 @@ spec:
 
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/components/secrets.md)
 
-
 ## Apply the configuration
 
 ### In Kubernetes
 
 To apply the Azure Service Bus pub/sub to Kubernetes, use the `kubectl` CLI:
 
-```
+```bash
 kubectl apply -f azuresb.yaml
 ```
 
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use Azure Service Bus, replace the redis_messagebus.yaml file with azuresb.yaml above.
+To use Azure Service Bus, replace the contents of `messagebus.yaml` file with the contents of `azuresb.yaml` above (Don't change the filename).

@@ -25,7 +25,9 @@ annotations:
 To enable profiling in Standalone mode, pass the `enable-profiling` and the `profile-port` flags to the Dapr CLI:
 Note that `profile-port` is not required, and Dapr will pick an available port.
 
-`dapr run --enable-profiling true --profile-port 7777 python myapp.py`
+```bash
+dapr run --enable-profiling true --profile-port 7777 python myapp.py
+```
 
 ## Debug a profiling session
 
@@ -35,7 +37,7 @@ After profiling is enabled, we can start a profiling session to investigate what
 
 First, find the pod containing the Dapr runtime. If you don't already know the the pod name, type `kubectl get pods`:
 
-```
+```bash
 NAME                                        READY     STATUS    RESTARTS   AGE
 divideapp-6dddf7dc74-6sq4l                  2/2       Running   0          2d23h
 ```
@@ -47,7 +49,7 @@ In this case, we want to start a session with the Dapr runtime inside of pod `di
 
 We can do so by connecting to the pod via port forwarding:
 
-```
+```bash
 kubectl port-forward divideapp-6dddf7dc74-6sq4 7777:7777
 Forwarding from 127.0.0.1:7777 -> 7777
 Forwarding from [::1]:7777 -> 7777
@@ -57,27 +59,34 @@ Handling connection for 7777
 Now that the connection has been established, we can use `pprof` to profile the Dapr runtime.
 
 The following example will create a `cpu.pprof` file containing samples from a profile session that lasts 120 seconds:
-`curl "http://localhost:7777/debug/pprof/profile?seconds=120" > cpu.pprof`
+
+```bash
+curl "http://localhost:7777/debug/pprof/profile?seconds=120" > cpu.pprof
+```
 
 Analyze the file with pprof:
 
-```
+```bash
 pprof cpu.pprof
 ```
 
 You can also save the results in a visualized way inside a PDF:
 
-`go tool pprof --pdf your-binary-file http://localhost:7777/debug/pprof/profile?seconds=120 > profile.pdf`
+```bash
+go tool pprof --pdf your-binary-file http://localhost:7777/debug/pprof/profile?seconds=120 > profile.pdf
+```
 
 For memory related issues, you can profile the heap:
 
-`go tool pprof --pdf your-binary-file http://localhost:7777/debug/pprof/heap > heap.pdf`
+```bash
+go tool pprof --pdf your-binary-file http://localhost:7777/debug/pprof/heap > heap.pdf
+```
 
 ![heap](../../images/heap.png)
 
 Profiling allocated objects:
 
-```
+```bash
 go tool pprof http://localhost:7777/debug/pprof/heap
 > exit
 
@@ -86,16 +95,17 @@ Saved profile in /Users/myusername/pprof/pprof.daprd.alloc_objects.alloc_space.i
 
 To analyze, grab the file path above (its a dynamic file path, so pay attention to note paste this one), and execute:
 
-`go tool pprof -alloc_objects --pdf /Users/myusername/pprof/pprof.daprd.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz > alloc-objects.pdf`
+```bash
+go tool pprof -alloc_objects --pdf /Users/myusername/pprof/pprof.daprd.alloc_objects.alloc_space.inuse_objects.inuse_space.003.pb.gz > alloc-objects.pdf
+```
 
 ![alloc](../../images/alloc.png)
-
 
 ### Standalone
 
 For Standalone mode, locate the Dapr instance that you want to profile:
 
-```
+```bash
 dapr list
 APP ID           DAPR PORT  APP PORT  COMMAND      AGE  CREATED              PID
 node-subscriber  3500          3000      node app.js  12s  2019-09-09 15:11.24  896

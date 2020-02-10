@@ -7,7 +7,7 @@ State stores are extensible and can be found in the [components-contrib repo](ht
 
 A state store in Dapr is described using a `Component` file:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -36,19 +36,24 @@ You can make changes to this file the way you see fit, whether to change connect
 Dapr uses a Kubernetes Operator to update the sidecars running in the cluster with different components.
 To setup a state store in Kubernetes, use `kubectl` to apply the component file:
 
-```
+```bash
 kubectl apply -f statestore.yaml
 ```
 
 ## Reference
 
-* [Setup Redis](./setup-redis.md)
+* [Setup Aerospike](./setup-aerospike.md)
 * [Setup Cassandra](./setup-cassandra.md)
+* [Setup Couchbase](./setup-couchbase.md)
 * [Setup etcd](./setup-etcd.md)
-* [Setup Consul](./setup-consul.md)
+* [Setup Hashicorp Consul](./setup-consul.md)
+* [Setup Hazelcast](./setup-hazelcast.md)
 * [Setup Memcached](./setup-memcached.md)
-* [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
-* [Setup Google Cloud Firestore (Datastore mode)](./setup-firestore.md)
 * [Setup MongoDB](./setup-mongodb.md)
+* [Setup Redis](./setup-redis.md)
 * [Setup Zookeeper](./setup-zookeeper.md)
+* [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
+* [Setup Azure SQL Server](./setup-sqlserver.md)
+* [Setup Azure Table Storage](./setup-azure-tablestorage.md)
+* [Setup Google Cloud Firestore (Datastore mode)](./setup-firestore.md)
 * [Supported State Stores](./supported-state-stores.md)

@@ -7,19 +7,21 @@ For apps that use these bindings, it is easy to configure a KEDA autoscaler.
 
 ## Install KEDA
 
-To install KEDA, follow [these instructions](https://github.com/dapr/docs/tree/master/concepts/bindings#supported-bindings-and-specs) on the KEDA Github page.
+To install KEDA, follow the [Deploying KEDA](https://keda.sh/deploy/) instructions on the KEDA website.
 
 ## Create KEDA enabled Dapr binding
 
-For this example, we'll be using Kafka.<br>
+For this example, we'll be using Kafka.
+
 You can install Kafka in your cluster by using Helm:
 
-```
+```bash
 $ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-$ helm install --name my-kafka incubator/kafka
+$ helm install my-kafka incubator/kafka
 ```
 
-Next, we'll create the Dapr Kafka binding for Kubernetes.<br>
+Next, we'll create the Dapr Kafka binding for Kubernetes.
+
 Paste the following in a file named kafka.yaml:
 
 ```yaml
@@ -42,7 +44,7 @@ The following YAML defines a Kafka component that listens for the topic `myTopic
 
 Deploy the binding to the cluster:
 
-```
+```bash
 $ kubectl apply -f kafka.yaml
 ```
 
@@ -76,7 +78,7 @@ spec:
 
 Deploy the KEDA scaler to Kubernetes:
 
-```
+```bash
 $ kubectl apply -f kafka_scaler.yaml
 ```
 

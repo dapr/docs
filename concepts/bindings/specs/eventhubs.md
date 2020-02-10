@@ -1,6 +1,6 @@
 # Azure EventHubs Binding Spec
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -9,7 +9,7 @@ spec:
   type: bindings.azure.eventhubs
   metadata:
   - name: connectionString
-    value: https://<address>
+    value: Endpoint=sb://*****************
   - name: consumerGroup  # Optional
     value: group1
   - name: messageAge

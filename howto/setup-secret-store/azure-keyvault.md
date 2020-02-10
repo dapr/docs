@@ -1,21 +1,21 @@
 # Secret Store for Azure Key Vault
 
-This document shows how to enable Azure Key Vault secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode. The Dapr secret store component uses Service Principal using certificate authorization to authenticate Key Vault. 
+This document shows how to enable Azure Key Vault secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode. The Dapr secret store component uses Service Principal using certificate authorization to authenticate Key Vault.
 
-> **Note:** Managed Identity for Azure Key Vault is not currently supported.
+> **Note:** Find the Managed Identity for Azure Key Vault instructions [here](azure-keyvault-managed-identity.md).
 
 ## Contents
 
-  - [Prerequisites](#prerequisites)
-  - [Create Azure Key Vault and Service principal](#create-azure-key-vault-and-service-principal)
-  - [Use Azure Key Vault secret store in Standalone mode](#use-azure-key-vault-secret-store-in-standalone-mode)
-  - [Use Azure Key Vault secret store in Kubernetes mode](#use-azure-key-vault-secret-store-in-kubernetes-mode)
-  - [References](#references)
+- [Prerequisites](#prerequisites)
+- [Create Azure Key Vault and Service principal](#create-azure-key-vault-and-service-principal)
+- [Use Azure Key Vault secret store in Standalone mode](#use-azure-key-vault-secret-store-in-standalone-mode)
+- [Use Azure Key Vault secret store in Kubernetes mode](#use-azure-key-vault-secret-store-in-kubernetes-mode)
+- [References](#references)
 
 ## Prerequisites
 
-* [Azure Subscription](https://azure.microsoft.com/en-us/free/)
-* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+- [Azure Subscription](https://azure.microsoft.com/en-us/free/)
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 
 ## Create an Azure Key Vault and a service principal
 
@@ -76,14 +76,15 @@ az ad sp show --id [service_principal_app_id]
 az keyvault set-policy --name [your_keyvault] --object-id [your_service_principal_object_id] --secret-permissions get
 ```
 
-Now, your service principal has access to your keyvault,  you are ready to configure the secret store component to use secrets stored in your keyvault to access other components securely. 
+Now, your service principal has access to your keyvault,  you are ready to configure the secret store component to use secrets stored in your keyvault to access other components securely.
 
 5. Download PFX cert from your Azure Keyvault
 
-* **Using Azure Portal**
+- **Using Azure Portal**
   Go to your keyvault on Portal and download [certificate_name] pfx cert from certificate vault
-* **Using Azure CLI**
+- **Using Azure CLI**
    For Linux/MacOS
+
    ```bash
    # Download base64 encoded cert
    az keyvault secret download --vault-name [your_keyvault] --name [certificate_name] --file [certificate_name].txt
@@ -93,6 +94,7 @@ Now, your service principal has access to your keyvault,  you are ready to confi
    ```
 
    For Windows, on powershell
+
    ```powershell
    # Decode base64 encoded cert to pfx cert for linux/macos
    $EncodedText = Get-Content -Path [certificate_name].txt -Raw
@@ -191,9 +193,9 @@ In Kubernetes mode, you store the certificate for the service principal into the
 
 1. Create a kubernetes secret using the following command
 
-* **[pfx_certificate_file_local_path]** is the path of PFX cert file you downloaded from [Create Azure Key Vault and Service principal](#create-azure-key-vault-and-service-principal)
+- **[pfx_certificate_file_local_path]** is the path of PFX cert file you downloaded from [Create Azure Key Vault and Service principal](#create-azure-key-vault-and-service-principal)
 
-* **[your_k8s_spn_secret_name]** is secret name in Kubernetes secret store
+- **[your_k8s_spn_secret_name]** is secret name in Kubernetes secret store
 
 ```bash
 kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[pfx_certificate_file_local_path]
@@ -269,7 +271,7 @@ auth:
 
 Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprd` sidecar log
 
-Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance. 
+Here is the nodeapp log of [HelloWorld Kubernetes sample](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). Note: use the nodeapp name for your deployed container instance.
 
 ```bash
 $ kubectl logs nodeapp-f7b7576f4-4pjrj daprd
@@ -288,6 +290,6 @@ time="2019-09-26T20:34:25Z" level=info msg="loaded component statestore (state.r
 
 ## References
 
-* [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
-* [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
-* [Secrets Component](../../concepts/components/secrets.md)
+- [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
+- [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
+- [Secrets Component](../../concepts/components/secrets.md)
