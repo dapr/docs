@@ -21,6 +21,10 @@ The secret that hold the root certificates are scoped to the namespace in which 
 
 Dapr also support strong identities when deployed on Kubernetes, relying on a pod's Service Account token which is sent as part of the CSR request to Sentry.
 
+Mutual TLS can be turned off by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
+
+By default, a workload cert is valid for 24 hours and the clock skew is set to 15 minutes.
+
 ## Network security
 
 You can adopt common network security technologies such as network security groups (NSGs), demilitarized zones (DMZs) and firewalls to provide layers of protections over your networked resources.
