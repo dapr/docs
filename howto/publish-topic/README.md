@@ -13,7 +13,7 @@ For this guide, we'll use Redis Streams, which is also installed by default on a
 
 *Note: When running Dapr locally, a pub/sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -33,12 +33,12 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 
 To publish a message to a topic, invoke the following endpoint on a Dapr instance:
 
-```
+```bash
 curl -X POST http://localhost:3500/v1.0/publish/deathStarStatus \
-	-H "Content-Type: application/json" \
-	-d '{
-       	     "status": "completed"
-      	}'
+ -H "Content-Type: application/json" \
+ -d '{
+      "status": "completed"
+    }'
 ```
 
 The above example publishes a JSON payload to a `deathStartStatus` topic.

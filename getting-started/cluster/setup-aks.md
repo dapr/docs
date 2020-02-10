@@ -12,11 +12,13 @@
 This guide walks you through installing an Azure Kubernetes Service cluster. If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough)
 
 1. Login to Azure
+
 ```bash
 az login
 ```
 
 2. Set the default subscription
+
 ```bash
 az account set -s [your_subscription_id]
 ```
@@ -28,6 +30,7 @@ az group create --name [your_resource_group] --location [region]
 ```
 
 4. Create an Azure Kubernetes Service cluster
+
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 
 ```bash

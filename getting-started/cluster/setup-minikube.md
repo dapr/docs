@@ -48,7 +48,7 @@ minikube addons enable ingress
 
 In Minikube, EXTERNAL-IP in `kubectl get svc` shows `<pending>` state for your service. In this case, you can run `minikube service [service_name]` to open your service without external IP address.
 
-```
+```bash
 $ kubectl get svc
 NAME                        TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)            AGE
 ...

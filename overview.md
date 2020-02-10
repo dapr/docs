@@ -71,7 +71,9 @@ For more information on the actor *Placement* service see [actor overview](/conc
 
 In order to give your service an id and port known to Dapr and launch the Dapr sidecar container, you simply annotate your deployment like this.
 
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/id: "nodeapp"
-        dapr.io/port: "3000"
+```yml
+  annotations:
+    dapr.io/enabled: "true"
+    dapr.io/id: "nodeapp"
+    dapr.io/port: "3000"
+```

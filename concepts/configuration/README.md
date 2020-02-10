@@ -6,4 +6,3 @@ A Dapr configuration configures:
 
 * [distributed tracing](../distributed-tracing/README.md)
 * [custom pipeline](../middleware/middleware.md)
-

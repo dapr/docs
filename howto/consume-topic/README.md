@@ -13,7 +13,7 @@ For this guide, we'll use Redis Streams, which is also installed by default on a
 
 *Note: When running Dapr locally, a pub/sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -72,7 +72,7 @@ app.post('/topic1', (req, res) => {
 
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response:
 
-```
+```javascript
 res.status(200).send()
 ```
 

@@ -24,25 +24,29 @@ The above query returns all documents with id containing "myapp-", which is the 
 
 To get the state data by a key "balance" for the application "myapp", use the query:
 
-```bash
+```sql
 SELECT * FROM states WHERE states.id = 'myapp||balance'
 ```
+
 Then, read the **value** field of the returned document.
 
 To get the state version/ETag, use the command:
-```bash
+
+```sql
 SELECT states._etag FROM states WHERE states.id = 'myapp||balance'
 ```
+
 ## 4. Read actor state
 
 To get all the state keys associated with an actor with the instance ID "leroy" of actor type "cat" belonging to the application with ID "mypets", use the command:
 
-```bash
+```sql
 SELECT * FROM states WHERE CONTAINS(states.id, 'mypets||cat||leroy||')
 ```
+
 And to get a specific actor state such as "food", use the command:
 
-```bash
+```sql
 SELECT * FROM states WHERE states.id = 'mypets||cat||leroy||food'
 ```
 

@@ -8,7 +8,7 @@ The next step is to create a Dapr component for Azure Service Bus.
 
 Create the following YAML file named `azuresb.yaml`:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -34,14 +34,13 @@ spec:
 
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/components/secrets.md)
 
-
 ## Apply the configuration
 
 ### In Kubernetes
 
 To apply the Azure Service Bus pub/sub to Kubernetes, use the `kubectl` CLI:
 
-```
+```bash
 kubectl apply -f azuresb.yaml
 ```
 

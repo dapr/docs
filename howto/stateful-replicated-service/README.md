@@ -63,6 +63,7 @@ import json
 
 response = requests.delete("http://localhost:3500/v1.0/state/key1", headers={"consistency":"strong"})
 ```
+
 Last-write concurrency is the default concurrency mode if the `concurrency` option is not specified.
 
 ## First-write-wins and Last-write-wins
@@ -72,11 +73,11 @@ First-Write-Wins is useful in situations where you have multiple instances of an
 
 The default mode for Dapr is Last-write-wins.
 
-Dapr uses version numbers to determine whether a specific key has been updated. Clients retain the version number when reading the data for a key and then use the version number during updates such as writes and deletes. If the version information has changed since the client retrieved, an error is thrown, which then requires the client to perform a read again to get the latest version information and state. 
+Dapr uses version numbers to determine whether a specific key has been updated. Clients retain the version number when reading the data for a key and then use the version number during updates such as writes and deletes. If the version information has changed since the client retrieved, an error is thrown, which then requires the client to perform a read again to get the latest version information and state.
 
 Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header.
 
-Using ETags, clients know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch. 
+Using ETags, clients know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch.
 
 The following example shows how to get an ETag, and then use it to save state and then delete the state:
 

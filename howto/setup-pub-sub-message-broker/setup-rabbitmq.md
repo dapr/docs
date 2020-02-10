@@ -1,10 +1,10 @@
-# Setup RabbitMQ 
+# Setup RabbitMQ
 
 ## Locally
 
 You can run a RabbitMQ server locally using Docker:
 
-```
+```bash
 docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
 ```
 
@@ -14,7 +14,7 @@ You can then interact with the server using the client port: `localhost:5672`.
 
 The easiest way to install RabbitMQ on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/rabbitmq):
 
-```
+```bash
 helm install rabbitmq stable/rabbitmq
 ```
 
@@ -33,7 +33,7 @@ The next step is to create a Dapr component for RabbitMQ.
 
 Create the following YAML file named `rabbitmq.yaml`:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -65,14 +65,13 @@ spec:
 
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/components/secrets.md)
 
-
 ## Apply the configuration
 
 ### In Kubernetes
 
 To apply the RabbitMQ pub/sub to Kubernetes, use the `kubectl` CLI:
 
-```
+```bash
 kubectl apply -f rabbitmq.yaml
 ```
 

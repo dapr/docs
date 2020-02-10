@@ -7,7 +7,7 @@ Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs`
 
 An Dapr Binding has the following structure:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -66,7 +66,9 @@ This endpoint lets you invoke an Dapr output binding.
 
 ### HTTP Request
 
-`POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/bindings/<name>`
+```http
+POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/bindings/<name>
+```
 
 ### HTTP Response codes
 
@@ -79,7 +81,7 @@ Code | Description
 
 The bindings endpoint receives the following JSON payload:
 
-```
+```json
 {
   "data": "",
   "metadata": [
@@ -100,8 +102,8 @@ name | the name of the binding to invoke
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
-	-H "Content-Type: application/json" \
-	-d '{
+  -H "Content-Type: application/json" \
+  -d '{
         "data": {
           "message": "Hi"
         },
