@@ -1,6 +1,6 @@
 # RabbitMQ Binding Spec
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:

@@ -27,6 +27,7 @@ Issues are used as the primary method for tracking anything to do with the Dapr 
 ### Issue Types
 
 There are 4 types of issues (each with their own corresponding [label](#labels)):
+
 - Discussion: These are support or functionality inquiries that we want to have a record of for
 future reference. Depending on the discussion, these can turn into "Spec Change" issues.
 - Proposal: Used for items that propose a new ideas or functionality that require
@@ -41,6 +42,7 @@ from "Proposal" and "Discussion" items, or can be submitted individually dependi
 
 The issue lifecycle is mainly driven by the core maintainers, but is good information for those
 contributing to Helm. All issue types follow the same general lifecycle. Differences are noted below.
+
 1. Issue creation
 2. Triage
     - The maintainer in charge of triaging will apply the proper labels for the issue. This
@@ -58,7 +60,7 @@ contributing to Helm. All issue types follow the same general lifecycle. Differe
 ## How to Contribute a Patch
 
 1. Fork the repo, modify the specification to address the issue.
-1. Submit a pull request.
+2. Submit a pull request.
 
 The next section contains more information on the workflow followed for Pull Requests.
 
@@ -80,7 +82,7 @@ Like any good open source project, we use Pull Requests (PRs) to track code chan
     include at least a size label, a milestone, and `awaiting review` once all labels are applied.
     See the [Labels section](#labels) for full details on the definitions of labels.
 3. Assigning reviews
-    - All PRs require at least 2 review approvals before it can be merged. 
+    - All PRs require at least 2 review approvals before it can be merged.
 4. Reviewing/Discussion
     - All reviews will be completed using Github review tool.
     - A "Comment" review should be used when there are questions about the spec that should be
@@ -88,14 +90,14 @@ Like any good open source project, we use Pull Requests (PRs) to track code chan
     - A "Changes Requested" review indicates that changes to the spec need to be made before they will be
     merged.
     - Reviewers should update labels as needed (such as `needs rebase`).
-    - When a review is approved, the reviewer should add `LGTM` as a comment. 
+    - When a review is approved, the reviewer should add `LGTM` as a comment.
     - Final approval is required by a designated owner (see `.github/CODEOWNERS` file). Merging is blocked without this final approval. Approvers will factor reviews from all other reviewers into their approval process.
 5. PR owner should try to be responsive to comments by answering questions or changing text. Once all comments have been addressed,
    the PR is ready to be merged.
 6. Merge or close
-    - A PR should stay open until a Final Approver (see above) has marked the PR approved. 
+    - A PR should stay open until a Final Approver (see above) has marked the PR approved.
     - PRs can be closed by the author without merging
-    - PRs may be closed by a Final Approver if the decision is made that the PR is not going to be merged 
+    - PRs may be closed by a Final Approver if the decision is made that the PR is not going to be merged
 
 ## The Triager
 

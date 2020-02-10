@@ -1,11 +1,12 @@
-# Middleware 
+# Middleware
 
 Dapr allows custom processing pipelines to be defined by chaining a series of custom middleware. A request goes through all defined middleware before it's routed to user code, and it goes through the defined middleware (in reversed order) before it's returned to the client, as shown in the following diagram.
 
 ![Middleware](../../images/middleware.png)
 
 ## Customize processing pipeline
-When launched, a Dapr sidecar contructs a processing pipeline. The pipeline consists of a [tracing middleware](../distributed-tracing/README.md) (when tracing is enabled) and a CORS middleware by default. Additional middleware, configured by a Dapr [configuration](../configuration/README.md), are added to the pipeline in the order as they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, direct messaging, bindings and others.
+
+When launched, a Dapr sidecar constructs a processing pipeline. The pipeline consists of a [tracing middleware](../distributed-tracing/README.md) (when tracing is enabled) and a CORS middleware by default. Additional middleware, configured by a Dapr [configuration](../configuration/README.md), are added to the pipeline in the order as they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, direct messaging, bindings and others.
 
 > **NOTE:** Dapr provides a **middleware.http.uppercase** middleware that doesn't need any configurations. The middleware changes all texts in a request body to uppercase. You can use it to test/verify if your custom pipeline is in place.
 
@@ -31,22 +32,22 @@ Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement it's HTTP
 
 ```go
 type Middleware interface {
-	GetHandler(metadata Metadata) (func(h fasthttp.RequestHandler) fasthttp.RequestHandler, error)
+  GetHandler(metadata Metadata) (func(h fasthttp.RequestHandler) fasthttp.RequestHandler, error)
 }
 ```
-Your handler implementation can include any inboud logic, outbound logic, or both:
+
+Your handler implementation can include any inbound logic, outbound logic, or both:
 
 ```go
 func GetHandler(metadata Metadata) fasthttp.RequestHandler {
-	return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
-		return func(ctx *fasthttp.RequestCtx) {
-			//inboud logic
+  return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
+    return func(ctx *fasthttp.RequestCtx) {
+      //inboud logic
             h(ctx)  //call the downstream handler
             //outbound logic
-		}
     }
+  }
 }
 ```
+
 Your code should be contributed to the https://github.com/dapr/components-contrib repository, under the */middleware* folder. Then, you'll need to submit another pull request against the https://github.com/dapr/dapr repository to register the new middleware type. You'll need to modify the **Load()** method under https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/loader.go to register your middleware using the **RegisterMiddleware** method.
-
-

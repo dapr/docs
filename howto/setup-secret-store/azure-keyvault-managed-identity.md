@@ -4,10 +4,10 @@ This document shows how to enable Azure Key Vault secret store using [Dapr Secre
 
 ## Contents
 
-  - [Prerequisites](#prerequisites)
-  - [Setup Kubernetes to use managed identities and Azure Key Vault](#setup-kubernetes-to-use-managed-identities-and-azure-key-vault)
-  - [Use Azure Key Vault secret store in Kubernetes mode with managed identities](#use-azure-key-vault-secret-store-in-kubernetes-mode-with-managed-identities)
-  - [References](#references)
+- [Prerequisites](#prerequisites)
+- [Setup Kubernetes to use managed identities and Azure Key Vault](#setup-kubernetes-to-use-managed-identities-and-azure-key-vault)
+- [Use Azure Key Vault secret store in Kubernetes mode with managed identities](#use-azure-key-vault-secret-store-in-kubernetes-mode-with-managed-identities)
+- [References](#references)
 
 ## Prerequisites
 
@@ -75,7 +75,7 @@ This document shows how to enable Azure Key Vault secret store using [Dapr Secre
     spec:
       type: 0
       ResourceID: [you managed identity id]
-      ClientID: [you managed identity Cliend ID]
+      ClientID: [you managed identity Client ID]
     ---
     apiVersion: "aadpodidentity.k8s.io/v1"
     kind: AzureIdentityBinding
@@ -231,10 +231,10 @@ In Kubernetes mode, you store the certificate for the service principal into the
     2020-02-05 09:15:04.639435 I | redis: connected to redis-master:6379 (localAddr: 10.244.0.11:38294, remAddr: 10.0.74.145:6379)
     ...
     ```
-    
+
 ## References
 
-* [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
-* [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
-* [AAD Pod Identity](https://github.com/Azure/aad-pod-identity)
-* [Secrets Component](../../concepts/components/secrets.md)
+- [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
+- [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/-reate-an-azure-service-principal-azure-cli?view=azure-cli-latest)
+- [AAD Pod Identity](https://github.com/Azure/aad-pod-identity)
+- [Secrets Component](../../concepts/components/secrets.md)

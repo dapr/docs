@@ -1,6 +1,6 @@
 # Twilio SMS Binding Spec
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -20,5 +20,5 @@ spec:
 
 `toNumber` is the target number to send the sms to.
 `fromNumber` is the sender phone number.
-`accountSid` is the twilio account SID.
-`authToken` is the twilio auth token.
+`accountSid` is the Twilio account SID.
+`authToken` is the Twilio auth token.

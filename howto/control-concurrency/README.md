@@ -42,6 +42,8 @@ spec:
 
 To set max-concurrency with the Dapr CLI for running on your local dev machine, add the `max-concurrency` flag:
 
-`dapr run --max-concurrency 1 --app-port 5000 python ./app.py`.
+```bash
+dapr run --max-concurrency 1 --app-port 5000 python ./app.py
+```
 
 The above examples will effectively turn your app into a single concurrent service.

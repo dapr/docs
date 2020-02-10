@@ -1,6 +1,6 @@
 # Getting started
 
-Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks. 
+Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
 ## Core concepts
 
@@ -11,10 +11,11 @@ Dapr is a portable, event-driven runtime that makes it easy for enterprise devel
 To learn more, see [Dapr Concepts](../concepts/README.md).
 
 ## Setup the development environment
+
 Dapr can be run locally or in Kubernetes. We recommend starting with a local setup to explore the core Dapr concepts and familiarize yourself with the Dapr CLI. Follow these instructions to [configure Dapr locally](./environment-setup.md#prerequisites) or [in Kubernetes](./environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 
-
 ## Next steps
+
 1. Once Dapr is installed, continue to the [Hello World sample](https://github.com/dapr/samples/tree/master/1.hello-world).
 2. Explore additional [samples](https://github.com/dapr/samples) for more advanced concepts, such as service invocation, pub/sub, and state management.
 3. Follow [How To guides](../howto) to understand how Dapr solves specific problems, such as creating a [rate limited app](../howto/control-concurrency).

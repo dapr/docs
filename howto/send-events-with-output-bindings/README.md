@@ -13,7 +13,7 @@ Create the following YAML file, named binding.yaml, and save this to the /compon
 
 *Note: When running in Kubernetes, apply this file to your cluster using `kubectl apply -f binding.yaml`*
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -27,7 +27,8 @@ spec:
     value: topic1
 ```
 
-Here, we create a new binding component with the name of `myEvent`.<br>
+Here, we create a new binding component with the name of `myEvent`.
+
 Inside the `metadata` section, we configure Kafka related properties such as the topic to publish the message to and the broker.
 
 ## 2. Send an event
@@ -36,9 +37,10 @@ All that's left now is to invoke the bindings endpoint on a running Dapr instanc
 
 We can do so using HTTP:
 
-```
+```bash
 curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ "data": { "message": "Hi!" } }'
 ```
 
-As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myEvent`.<br>
+As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myEvent`.
+
 The payload goes inside the `data` field.

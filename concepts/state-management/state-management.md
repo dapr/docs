@@ -1,4 +1,4 @@
-# State management 
+# State management
 
 Dapr makes it simple for you to store key/value data in a store of your choice.
 
@@ -18,6 +18,7 @@ See the Dapr API specification for details on [state management API](../../refer
 > **NOTE:** Dapr prefixes state keys with the ID of the current Dapr instance/sidecar. This allows multiple Dapr instances to share the same state store.
 
 ## State store behaviors
+
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirement, consistency requirement, and retry policy to any state operation requests.
 
 By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfil the requests.
@@ -34,6 +35,7 @@ Redis (clustered)| Yes | No | Yes
 SQL Server | Yes | Yes | Yes
 
 ## Concurrency
+
 Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the database.
 
 Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags. It's recommended that you use a [Retry Policy](#Retry-Policies) to compensate for such conflicts when using ETags.
@@ -43,12 +45,14 @@ If your application omits ETags in writing requests, Dapr skips ETag checks whil
 > **NOTE:** For stores that don't natively support ETags, it's expected that the corresponding Dapr state store implementation simulates ETags and follows the Dapr state management API specification when handling states. Because Dapr state store implementations are technically clients to the underlying data store, such simulation should be straightforward using the concurrency control mechanisms provided by the store.
 
 ## Consistency
+
 Dapr supports both **strong consistency** and **eventual consistency**, with eventual consistency as the default behavior.
 
-When strong consistency is used, Dapr waits for all replicas (or designated quorums) to acknowledge before it acknowledges a write request. When eventual consistency is used, Dapr returns as soon as the write request is accepted by the underlying data store, even if this is a single replica. 
+When strong consistency is used, Dapr waits for all replicas (or designated quorums) to acknowledge before it acknowledges a write request. When eventual consistency is used, Dapr returns as soon as the write request is accepted by the underlying data store, even if this is a single replica.
 
 ## Retry policies
-Dapr allows you to attach a retry policy to any write request. A policy is described by an **retryInterval**, a **retryPattern** and a **retryThreshold**. Dapr keeps retrying the request at the given interval up to the specified threshold. You can choose between a **linear** retry pattern or an **exponential** (backoff) pattern. When the **exponential** pattern is used, the retry interval is doubled after each attempt. 
+
+Dapr allows you to attach a retry policy to any write request. A policy is described by an **retryInterval**, a **retryPattern** and a **retryThreshold**. Dapr keeps retrying the request at the given interval up to the specified threshold. You can choose between a **linear** retry pattern or an **exponential** (backoff) pattern. When the **exponential** pattern is used, the retry interval is doubled after each attempt.
 
 ## Bulk operations
 
@@ -63,7 +67,8 @@ KEYS "myApp*"
 ```
 
 > **NOTE:** See [How to query Redis store](../../howto/query-state-store/query-redis-store.md) for details on how to query a Redis store.
-> 
+>
+
 ### Querying actor state
 
 If the data store supports SQL queries, you can query an actor's state using SQL queries. For example use:
@@ -81,6 +86,7 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>||<thermometer>||*||te
 > **NOTE:** Direct queries of the state store are not governed by Dapr concurrency control, since you are not calling through the Dapr runtime. What you see are snapshots of committed data which are acceptable for read-only queries across multiple actors, however writes should be done via the actor instances.
 
 ## References
+
 * [Spec: Dapr state management specification](../../reference/api/state.md)
 * [Spec: Dapr actors specification](../../reference/api/actors.md)
 * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)

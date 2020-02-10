@@ -1,14 +1,16 @@
 # Secrets
 
-Components can reference secrets for the `spec.metadata` section.<br>
-In order to reference a secret, you need to set the `auth.secretStore` field to specify the name of the secret store that holds the secrets.<br><br>
+Components can reference secrets for the `spec.metadata` section.
+
+In order to reference a secret, you need to set the `auth.secretStore` field to specify the name of the secret store that holds the secrets.
+
 When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes secret store is assumed.
 
 ## Examples
 
 Using plain text:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -24,7 +26,7 @@ spec:
 
 Using a Kubernetes secret:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -50,13 +52,13 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 First, create the Kubernetes secret:
 
-```
+```bash
 kubectl create secret generic eventhubs-secret --from-literal=connectionString=*********
 ```
 
 Next, reference the secret in your binding:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -72,7 +74,7 @@ spec:
 
 Finally, apply the component to the Kubernetes cluster:
 
-```
+```bash
 kubectl apply -f ./eventhubs.yaml
 ```
 

@@ -6,7 +6,7 @@ This document shows how to enable Hashicorp Vault secret store using [Dapr Secre
 
 Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
 
-For Kubernetes, you can use the Helm Chart: https://github.com/hashicorp/vault-helm.
+For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm.>
 
 ## Create the Vault component
 
@@ -38,7 +38,7 @@ spec:
 
 To deploy in Kubernetes, save the file above to `vault.yaml` and then run:
 
-```
+```bash
 kubectl apply -f vault.yaml
 ```
 

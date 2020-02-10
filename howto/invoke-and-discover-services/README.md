@@ -12,14 +12,17 @@ For more info on service invocation, read the [conceptional documentation](../..
 
 ## 1. Choose an ID for your service
 
-Dapr allows you to assign a global, unique ID for your app.<br>
+Dapr allows you to assign a global, unique ID for your app.
+
 This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
 ### Setup an ID using the Dapr CLI
 
 In Standalone mode, set the `--app-id` flag:
 
-`dapr run --app-id cart --app-port 5000 python app.py`
+```bash
+dapr run --app-id cart --app-port 5000 python app.py
+```
 
 ### Setup an ID using Kubernetes
 
@@ -72,7 +75,7 @@ This Python app exposes an `add()` method via the `/add` endpoint.
 
 ### Invoke with curl
 
-```
+```bash
 curl http://localhost:3500/v1.0/invoke/cart/method/add -X POST
 ```
 
@@ -80,18 +83,17 @@ Since the add endpoint is a 'POST' method, we used `-X POST` in the curl command
 
 To invoke a 'GET' endpoint:
 
-```
+```bash
 curl http://localhost:3500/v1.0/invoke/cart/method/add
 ```
 
 To invoke a 'DELETE' endpoint:
 
-```
+```bash
 curl http://localhost:3500/v1.0/invoke/cart/method/add -X DELETE
 ```
 
 Dapr puts any payload return by their called service in the HTTP response's body.
-
 
 ## Overview
 

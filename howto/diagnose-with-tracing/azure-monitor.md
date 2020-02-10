@@ -1,8 +1,8 @@
 # Set up distributed tracing with Azure Monitor
 
-Dapr integrates with Application Monitor through OpenTelemetry's default exporter along with a dedicated agent knwon as [Local Forwarder](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder).
+Dapr integrates with Application Monitor through OpenTelemetry's default exporter along with a dedicated agent known as [Local Forwarder](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder).
 
-## How to configure distributed tracing with Azure Monitor 
+## How to configure distributed tracing with Azure Monitor
 
 The following steps will show you how to configure Dapr to send distributed tracing data to Azure Monitor.
 
@@ -13,8 +13,8 @@ The following steps will show you how to configure Dapr to send distributed trac
 
 ### Setup the Local Forwarder
 
-The Local Forwarder listens to OpenTelemetry's traces through 
-Please follow the insturctions [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder) to setup Local Forwarder as a local service or daemon. 
+The Local Forwarder listens to OpenTelemetry's traces through
+Please follow the insturctions [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder) to setup Local Forwarder as a local service or daemon.
 
 > **NOTE**: At the time of writing, there's no official guidance on packaging and running the Local Forwarder as a Docker container. To use Local Forwarder on Kubernetes, you'll need to package the Local Forwarder as a Docker container and register a *ClusterIP* service. Then, you should set the service as the export target of the native exporter.
 
@@ -63,9 +63,10 @@ kubectl apply -f native.yaml
 
 3. When running in the local mode, you need to launch Dapr with the `--config` parameter:
 
-```
+```bash
 dapr run --app-id mynode --app-port 3000 --config ./tracing.yaml node app.js
 ```
+
 When running in the Kubernetes model, you need to add a `dapr.io/config` annotation to your container that you want to participate in the distributed tracing, as shown in the following example:
 
 ```yaml
@@ -85,7 +86,7 @@ spec:
         dapr.io/config: "tracing"
 ```
 
-That's it! There's no need include any SDKs or instrument your application code in anyway. Dapr automatically handles distributed tracing for you. 
+That's it! There's no need include any SDKs or instrument your application code in anyway. Dapr automatically handles distributed tracing for you.
 
 > **NOTE**: You can register multiple exporters at the same time, and tracing logs will be forwarded to all registered exporters.
 
@@ -97,7 +98,7 @@ Generate some workloads. And after a few minutes, you should see tracing logs ap
 
 The `tracing` section under the `Configuration` spec contains the following properties:
 
-```
+```yml
 tracing:
     enabled: true
     expandParams: true
@@ -111,4 +112,3 @@ Property | Type | Description
 enabled  | bool | Set tracing to be enabled or disabled
 expandParams  | bool | When true, expands parameters passed to HTTP endpoints
 includeBody  | bool | When true, includes the request body in the tracing event
-
