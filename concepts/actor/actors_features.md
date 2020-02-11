@@ -75,7 +75,23 @@ You can create a timer for an actor by calling the Http/gRPC request to Dapr.
 POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-You can provide the timer due time and callback in the request body.
+The timer due time and callback are specified in the request body.  The due time represents when the timer will first fire after registration.  The period represents how often the timer will fire after that.  A due time of 0 means to fire immediately.  Negative due times and periods are invalid.
+
+The following request body configures a timer with a `dueTime` of 9 seconds and a `period` of 3 seconds.  This means it will first fire after 9 seconds, then every 3 seconds after that.
+```json
+{
+  "dueTime":"0h0m9s0ms",
+  "period":"0h0m3s0ms"
+}
+```
+
+The following request body configures a timer with a `dueTime` 0 seconds and a `period` of 3 seconds.  This means it will fire immediately after registration, then every 3 seconds after that.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"0h0m3s0ms"
+}
+```
 
 You can remove the actor timer by calling
 
@@ -95,7 +111,31 @@ You can create a persistent reminder for an actor by calling the Http/gRPC reque
 POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-You can provide the reminder due time and period in the request body.
+The reminder due time and callback can be specified in the request body.  The due time represents when the reminder will first fire after registration.  The period represents how often the reminder will fire after that.  A due time of 0 means to fire immediately.  Negative due times and periods are invalid.  To register a reminder that fires only once, set the period to an empty string.
+
+The following request body configures a reminder with a `dueTime` 9 seconds and a `period` of 3 seconds.  This means it will first fire after 9 seconds, then every 3 seconds after that.
+```json
+{
+  "dueTime":"0h0m9s0ms",
+  "period":"0h0m3s0ms"
+}
+```
+
+The following request body configures a reminder with a `dueTime` 0 seconds and a `period` of 3 seconds.  This means it will fire immediately after registration, then every 3 seconds after that.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"0h0m3s0ms"
+}
+```
+
+The following request body configures a reminder with a `dueTime` 15 seconds and a `period` of empty string.  This means it will first fire after 15 seconds, then never fire again.
+```json
+{
+  "dueTime":"0h0m15s0ms",
+  "period":""
+}
+```
 
 #### Retrieve Actor Reminder
 

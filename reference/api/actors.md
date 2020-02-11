@@ -147,6 +147,32 @@ Creates a persistent reminder for an actor.
 POST,PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
+Body:
+
+The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
+```json
+{
+  "dueTime":"0h0m3s0ms",
+  "period":"0h0m7s0ms"
+}
+```
+
+A `dueTime` of 0 means to fire immediately.  The following body means to fire immediately, then every 9 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"0h0m9s0ms"
+}
+```
+
+To configure the reminder to fire once only, the period should be set to empty string.  The following specifies a `dueTime` of 3 seconds with a period of empty string, which means the reminder will fire in 3 seconds and then never fire again. 
+```json
+{
+  "dueTime":"0h0m3s0ms",
+  "period":""
+}
+```
+
 #### HTTP Response Codes
 
 Code | Description
