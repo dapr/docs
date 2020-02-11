@@ -24,9 +24,7 @@ Dapr also supports strong identities when deployed on Kubernetes, relying on a p
 By default, a workload cert is valid for 24 hours and the clock skew is set to 15 minutes.
 
 Mutual TLS can be turned off/on by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
-
 This can be done for both Kubernetes and self hosted modes.
-
 Specific details for how to do that can be found [here](../../howto/configure-mtls).
 
 ### mTLS in Kubernetes
