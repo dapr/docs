@@ -45,7 +45,7 @@ The following example uses the Kubernetes secret store to retrieve the secrets:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <store_name>
 spec:
   type: state.azure.cosmosdb
   metadata:
@@ -83,7 +83,7 @@ The Azure CosmosDB state store will use the `key` property provided in the reque
 For example, the following operation will use the partition key `nihilus` as the partition key value sent to CosmosDB:
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/state \
+curl -X POST http://localhost:3500/v1.0/state/<store_name> \
   -H "Content-Type: application/json"
   -d '[
         {
