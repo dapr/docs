@@ -15,7 +15,7 @@ In Self Hosted mode, the certs will be persisted to disk. More information on th
 mTLS settings reside in a Dapr configuration file.
 The following file shows all the available settings for mTLS in a configuration resource:
 
-```yaml
+```
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
@@ -24,7 +24,7 @@ spec:
   mtls:
     enabled: true
     workloadCertTTL: "24h"
-	allowedClockSkew: "15m"
+    allowedClockSkew: "15m"
 ```
 
 The file here shows the default configuration settings. The examples below will show you how to change and apply this configuration to Sentry in Kubernetes and Self hosted modes.
