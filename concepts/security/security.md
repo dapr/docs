@@ -13,7 +13,7 @@ Dapr also manages workload certificate rotation, and does so with zero downtime 
 
 Sentry, the CA component, automatically creates and persists self signed root certificates valid for one year, unless existing root certs have been provided by the user.
 
-When root certs are replaced (secret in Kubernetes mode and filesystem for self hosted mode), Sentry will pick them up and re-builds the trust chain without needing to restart, again with zero downtime to Sentry.
+When root certs are replaced (secret in Kubernetes mode and filesystem for self hosted mode), Sentry will pick them up and re-build the trust chain without needing to restart, with zero downtime to Sentry.
 
 When a new Dapr sidecar initializes, it first checks if mTLS is enabled. If it is, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain cert, which is injected into each Dapr instance by the Dapr sidecar injector.
 
