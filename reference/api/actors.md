@@ -284,6 +284,24 @@ Creates a timer for an actor.
 POST,PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
+Body:
+
+The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
+```json
+{
+  "dueTime":"0h0m3s0ms",
+  "period":"0h0m7s0ms"
+}
+```
+
+A `dueTime` of 0 means to fire immediately.  The following body means to fire immediately, then every 9 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"0h0m9s0ms"
+}
+```
+
 #### HTTP Response Codes
 
 Code | Description
