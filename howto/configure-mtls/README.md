@@ -4,7 +4,7 @@ Dapr supports in-transit encryption of communication between Dapr instances usin
 
 Dapr allows operators and developers to bring in their own certificates, or let Dapr automatically create and persist self signed root and issuer certificates.
 
-For detailed information on mTLS, visit the concepts section [here](../../concepts/security/security.md).
+For detailed information on mTLS, go to the concepts section [here](../../concepts/security/security.md).
 
 If custom certificates have not been provided, Dapr will automaically create and persist self signed certs valid for one year.
 In Kubernetes, the certs will be persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
