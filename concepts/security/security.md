@@ -31,11 +31,11 @@ Specific details for how to do that can be found [here](../../howto/configure-mt
 
 ### mTLS in Kubernetes
 
-<a href="https://ibb.co/LpyLv7g"><img src="https://i.ibb.co/bdVS79v/Screen-Shot-2020-02-10-at-7-51-51-PM.png" alt="Screen-Shot-2020-02-10-at-7-51-51-PM" border="0"></a>
+<a href="https://ibb.co/Ythdhyn"><img src="https://i.ibb.co/nDj1jnd/Screen-Shot-2020-02-10-at-8-14-57-PM.png" alt="Screen-Shot-2020-02-10-at-8-14-57-PM" border="0"></a>
 
 ### mTLS Self Hosted
 
-<a href="https://ibb.co/Btny30B"><img src="https://i.ibb.co/t4LqKVD/Screen-Shot-2020-02-10-at-7-56-19-PM.png" alt="Screen-Shot-2020-02-10-at-7-56-19-PM" border="0"></a>
+<a href="https://ibb.co/bmS8LXp"><img src="https://i.ibb.co/02gdZrP/Screen-Shot-2020-02-10-at-8-16-43-PM.png" alt="Screen-Shot-2020-02-10-at-8-16-43-PM" border="0"></a>
 
 ## Network security
 
