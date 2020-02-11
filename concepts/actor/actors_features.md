@@ -18,7 +18,7 @@ To use actors, your state store must support multi-item transactions.  This mean
 You can save the Actor state of a given key of actorId of type actorType by calling
 
 ```http
-POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<stateStoreName>/<key>
+POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
 ```
 
 Value of the key is passed as request body.
@@ -32,7 +32,7 @@ Value of the key is passed as request body.
 If you want to save multiple items in a single transaction, you can call 
 
 ```http
-POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<stateStoreName>
+POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state
 ```
 
 ### Retrieve the Actor State
@@ -40,7 +40,7 @@ POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<stateSto
 Once you have saved the actor state, you can retrieve the saved state by calling 
 
 ```http
-GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<stateStoreName>/<key>
+GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
 ```
 
 ### Remove the Actor State
@@ -48,7 +48,7 @@ GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<stateStoreNam
 You can remove state permanently from the saved Actor state by calling
 
 ```http
-DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<stateStoreName>/<key>
+DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
 ```
 
 Refer [dapr spec](../../reference/api/actors.md) for more details.
