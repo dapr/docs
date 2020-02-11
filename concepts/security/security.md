@@ -23,48 +23,11 @@ Dapr also supports strong identities when deployed on Kubernetes, relying on a p
 
 By default, a workload cert is valid for 24 hours and the clock skew is set to 15 minutes.
 
-Mutual TLS can be turned off by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
+Mutual TLS can be turned off/on by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
 
-### Kubernetes configuration
+This can be done for both Kubernetes and self hosted modes.
 
-In Kubernetes, you can find the default configuration with `kubectl get configurations/default --namespace <DAPR_NAMESPACE>`.
-
-The `DAPR_NAMESPACE` is the namespace where the Dapr system pods are deployed to. This is `default` if using the Dapr CLI, and `dapr-system` if deployed using Helm.
-
-### Self-hosted configuration
-
-First, make sure you built the Sentry binary using `make build` in the Dapr repo.
-Second, create a directory for Sentry to create the root certs:
-
-```
-mkdir -p $HOME/.dapr/certs
-```
-
-Run Sentry locally with the following command:
-
-```
-./sentry --issuer-credentials $HOME/.dapr/certs --trust-domain cluster.local
-```
-
-If successful, sentry will run and create the root certs in the give directory.
-
-When running Dapr in self hosted mode, mTLS is disabled by default. you can enable it by creating the following configuration file:
-
-```
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: default
-spec:
-  mtls:
-    enabled: true
-```
-
-If using the Dapr CLI, point Dapr to the config file:
-
-```
-dapr run --app-id myapp --config ./config.yaml node myapp.js
-```
+Specific details for how to do that can be found [here](../../howto/configure-mtls).
 
 ## Network security
 
