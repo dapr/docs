@@ -4,6 +4,7 @@
 | ------------- | -------|------ |
 | Aerospike  | :white_check_mark:  | :x: |
 | Cassandra | :white_check_mark: | :x: |
+| Cloudstate | :white_check_mark: | :x: |
 | Couchbase  | :white_check_mark:  | :x: |
 | etcd | :white_check_mark: | :x: |
 | Hashicorp Consul | :white_check_mark: | :x: |

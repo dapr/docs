@@ -12,6 +12,7 @@ To use actors, your state store must support multi-item transactions.  This mean
 
 - Redis
 - MongoDB
+- SQL Server
 
 ### Save the Actor State
 
