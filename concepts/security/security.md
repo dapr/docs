@@ -29,6 +29,14 @@ This can be done for both Kubernetes and self hosted modes.
 
 Specific details for how to do that can be found [here](../../howto/configure-mtls).
 
+### mTLS in Kubernetes
+
+<a href="https://ibb.co/LpyLv7g"><img src="https://i.ibb.co/bdVS79v/Screen-Shot-2020-02-10-at-7-51-51-PM.png" alt="Screen-Shot-2020-02-10-at-7-51-51-PM" border="0"></a>
+
+### mTLS Self Hosted
+
+<a href="https://ibb.co/Btny30B"><img src="https://i.ibb.co/t4LqKVD/Screen-Shot-2020-02-10-at-7-56-19-PM.png" alt="Screen-Shot-2020-02-10-at-7-56-19-PM" border="0"></a>
+
 ## Network security
 
 You can adopt common network security technologies such as network security groups (NSGs), demilitarized zones (DMZs) and firewalls to provide layers of protections over your networked resources.
