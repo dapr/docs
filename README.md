@@ -25,6 +25,7 @@ Dapr is currently under community development in preview phase and master branch
 
 - **[Go SDK](https://github.com/dapr/go-sdk)** - Get started with the Dapr proto client for Go
 - **[Java SDK](https://github.com/dapr/java-sdk)** - Get started with the Dapr proto client for Java
+  - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http)** - Example for developing an actor application using the Java SDK.
 - **[Javascript SDK](https://github.com/dapr/js-sdk)** - Get started with the Dapr proto client for Javascript
 - **[Python SDK](https://github.com/dapr/python-sdk)** - Get started with the Dapr proto client for Python
 - **[.NET SDK](https://github.com/dapr/dotnet-sdk)** - Get started with the Dapr proto client for .NET Core
