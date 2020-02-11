@@ -30,6 +30,10 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
 
+## Mutual TLS
+
+* [Setup and Configure Mutual TLS](./configure-mtls)
+
 ## Secrets
 
 * [Configure secrets using Dapr secret stores](./setup-secret-store)
