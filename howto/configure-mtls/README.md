@@ -27,7 +27,7 @@ spec:
     allowedClockSkew: "15m"
 ```
 
-The file here shows the default configuration settings. The examples below will show you how to change and apply this configuration to Sentry in Kubernetes and Self hosted modes.
+The file here shows the default configuration settings. The examples below show you how to change and apply this configuration to Sentry in Kubernetes and Self hosted modes.
 
 
 ## Kubernetes
@@ -35,6 +35,7 @@ The file here shows the default configuration settings. The examples below will 
 ### Setting up mTLS with the configuration resource
 
 In Kubernetes, Dapr creates a default configuration resource with mTLS enabled.
+Sentry, the certificate authority system pod, is installed both with Helm and with the Dapr CLI using `dapr init --kubernetes`. 
 
 Depending on how you install Dapr, this resource may reside in the `default` namespace if you installed Dapr using the Dapr CLI, or the `dapr-system` namespace if deployed using Helm.
 
@@ -65,9 +66,9 @@ kubectl logs --selector=app=dapr-sentry --namespace <DAPR_NAMESPACE>
 
 ### Bringing your own certificates
 
-Using Helm, you can provide the PEM encoded root cert, issuer cert and private key that will be populated in the Kubernetes secret.
+Using Helm, you can provide the PEM encoded root cert, issuer cert and private key that will be populated into the Kubernetes secret.
 
-*Note: This examples uses step to create the certificates. You can install step [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+*Note: This example uses the step tool to create the certificates. You can install step [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
 
 Create the root certificate:
 
@@ -81,7 +82,7 @@ Create the issuer certificate:
 step certificate create cluster.local issuer.crt issuer.key --ca ca.crt --ca-key ca.key --profile intermediate-ca --not-after 8760h --no-password --insecure
 ```
 
-This will create the root and issuer certs and keys.
+This creates the root and issuer certs and keys.
 
 Install Helm and pass the root cert, issuer cert and issuer key to Sentry via configuration:
 
@@ -99,7 +100,7 @@ helm install \
 
 ## Self-hosted
 
-### Running Sentry
+### Running Sentry System Service
 
 In order to run Sentry, you can either build from source, or download a release binary from [here](https://github.com/dapr/dapr/releases).
 
@@ -118,7 +119,7 @@ Run Sentry locally with the following command:
 ```
 
 If successful, sentry will run and create the root certs in the given directory.
-This command will use default configuration values as no custom config file was given. See below on how to start Sentry with a custom configuration.
+This command uses default configuration values as no custom config file was given. See below on how to start Sentry with a custom configuration.
 
 ### Setting up mTLS with the configuration resource
 
@@ -176,7 +177,7 @@ Tell Sentry where to load the certificates from using the `--issuer-credentials`
 
 The next examples creates root and issuer certs and loads them with Sentry.
 
-*Note: This examples uses step to create the certificates. You can install step [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+*Note: This example uses the step tool to create the certificates. You can install step [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
 
 Create the root certificate:
 
@@ -190,7 +191,7 @@ Create the issuer certificate:
 step certificate create cluster.local issuer.crt issuer.key --ca ca.crt --ca-key ca.key --profile intermediate-ca --not-after 8760h --no-password --insecure
 ```
 
-This will create the root and issuer certs and keys.
+This creates the root and issuer certs and keys.
 Place `ca.crt`, `issuer.crt` and `issuer.key` in a desired path (`$HOME/.dapr/certs` in the example below), and launch Sentry:
 
 ```
