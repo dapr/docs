@@ -45,3 +45,7 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 ## Configuring Visual Studio Code
 
 * [Debugging with daprd](./vscode-debugging-daprd)
+
+## SDKs
+
+* [Serialize objects](./serialize)
