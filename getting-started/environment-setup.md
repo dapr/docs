@@ -70,6 +70,12 @@ Downloading binaries and setting up components
 ✅  Success! Dapr is up and running
 ```
 
+If you prefer you can also install to an alternate location by using `--install-path`:
+
+```
+$ dapr init --install-path /home/user123/mydaprinstall
+```
+
 To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
 
 ### Install a specific runtime version
@@ -104,7 +110,13 @@ You should always run a `dapr uninstall` before running another `dapr init`.
 
 ## Installing Dapr on a Kubernetes cluster
 
-When setting up Kubernetes you can do this either via the Dapr CLI or Helm
+When setting up Kubernetes you can do this either via the Dapr CLI or Helm.
+Dapr will install the following pods:
+
+* dapr-operator: manages components and k8s services endpoints for Dapr (state stores, pub-subs, etc.)
+* dapr-sidecar-injector: injects Dapr into annotated pods
+* dapr-placement: used for actors only. creates mapping tables that map actor instances to pods
+* dapr-sentry: manages mTLS and acts as a certificate authority
 
 ### Setup Cluster
 
@@ -168,7 +180,7 @@ helm install dapr dapr/dapr --namespace dapr-system
 
 #### Verify installation
 
-Once the chart installation is complete, verify the dapr-operator, dapr-placement and dapr-sidecar-injector pods are running in the `dapr-system` namespace:
+Once the chart installation is complete, verify the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
 
 ```bash
 $ kubectl get pods -n dapr-system -w
@@ -177,6 +189,7 @@ NAME                                     READY     STATUS    RESTARTS   AGE
 dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
 dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
+dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ```
 
 #### Uninstall Dapr on Kubernetes

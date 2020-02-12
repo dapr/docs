@@ -6,13 +6,34 @@ Dapr sidecar runs close to the application through **localhost**. Dapr assumes i
 
 ## Dapr-to-Dapr communication
 
-Dapr is designed for inter-component communications within an application. Dapr assumes these application components reside within the same trust boundary. Hence, Dapr doesn't secure across-Dapr communications by default.
+Dapr includes an on by default, automatic mutual TLS that provides in-transit encryption for traffic between Dapr instances.
+To achieve this, Dapr leverages a system component named `Sentry` which acts as a Certificate Authority (CA) and signs workload certificate requests originating from the Dapr instances.
 
-However, in a multi-tenant environment, a secured communication channel among Dapr sidecars becomes necessary. Supporting TLS and other authentication, authorization, and encryption methods is on the Dapr roadmap.
+Dapr also manages workload certificate rotation, and does so with zero downtime to the application.
 
-An alternative is to use service mesh technologies such as [Istio]( https://istio.io/) to provide secured communications among your application components. Dapr works well with popular service meshes.
+Sentry, the CA component, automatically creates and persists self signed root certificates valid for one year, unless existing root certs have been provided by the user.
 
-By default, Dapr supports Cross-Origin Resource Sharing (CORS) from all origins. You can configure Dapr runtime to allow only specific origins.  
+When root certs are replaced (secret in Kubernetes mode and filesystem for self hosted mode), Sentry will pick them up and re-build the trust chain without needing to restart, with zero downtime to Sentry.
+
+When a new Dapr sidecar initializes, it first checks if mTLS is enabled. If it is, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain cert, which is injected into each Dapr instance by the Dapr sidecar injector.
+
+In a Kubernetes cluster, the secret that holds the root certificates is scoped to the namespace in which the Dapr components are deployed to and is only accessible by the Dapr system pods.
+
+Dapr also supports strong identities when deployed on Kubernetes, relying on a pod's Service Account token which is sent as part of the certificate signing request (CSR) to Sentry.
+
+By default, a workload cert is valid for 24 hours and the clock skew is set to 15 minutes.
+
+Mutual TLS can be turned off/on by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
+This can be done for both Kubernetes and self hosted modes.
+Specific details for how to do that can be found [here](../../howto/configure-mtls).
+
+### mTLS in Kubernetes
+
+<a href="https://ibb.co/4VXWJ3d"><img src="https://i.ibb.co/rwzkvNs/Screen-Shot-2020-02-10-at-8-35-59-PM.png" alt="Screen-Shot-2020-02-10-at-8-35-59-PM" border="0"></a>
+
+### mTLS Self Hosted
+
+<a href="https://ibb.co/XWFYsfY"><img src="https://i.ibb.co/rQ5d6Kd/Screen-Shot-2020-02-10-at-8-34-33-PM.png" alt="Screen-Shot-2020-02-10-at-8-34-33-PM" border="0"></a>
 
 ## Network security
 

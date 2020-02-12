@@ -44,6 +44,7 @@ kubectl apply -f statestore.yaml
 
 * [Setup Aerospike](./setup-aerospike.md)
 * [Setup Cassandra](./setup-cassandra.md)
+* [Setup Cloudstate](./setup-cloudstate.md)
 * [Setup Couchbase](./setup-couchbase.md)
 * [Setup etcd](./setup-etcd.md)
 * [Setup Hashicorp Consul](./setup-consul.md)

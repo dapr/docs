@@ -51,29 +51,31 @@ To make using Dapr more natural for different languages, it also includes langua
 
 Furthermore, Dapr can be integrated with any developer framework. For example, in the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services.
 
-## Running Dapr on a local developer machine in Standalone mode
+## Running Dapr on a local developer machine in self hosted mode
 
-Dapr can be configured to run on your local developer machine in [Standalone mode](./getting-started). Each running service has a Dapr runtime process which is configured to use state stores, pub/sub and binding components.  
+Dapr can be configured to run on your local developer machine in [self hosted mode](./getting-started). Each running service has a Dapr runtime process which is configured to use state stores, pub/sub, binding components and the other building block. 
 
-You can use the [Dapr CLI](https://github.com/dapr/cli) to run services locally.
+In self hosted mode, Redis running locally in a container, is installed as default a state store and pub/sub message bus components.  
+
+The `dapr-placement` service is responsible for managing the actor distribution scheme and key range settings. For more information on the actor `Placement` service read [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover)
 
 ![Dapr overview](images/overview_standalone.png)
 
-For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover)
-
 ## Running Dapr in Kubernetes mode
 
-Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the *dapr-sidecar-injector* and *dapr-operator* services provide first class integration to launch Dapr as a sidecar container in the same pod as the service and provides notifications of Dapr component updates provisioned into the cluster.
+Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service and provide notifications of Dapr component updates provisioned into the cluster. 
+
+The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](/concepts/security/security.md#dapr-to-dapr-communication)
 
 ![Dapr overview](images/overview_kubernetes.png)
 
-For more information on the actor *Placement* service see [actor overview](/concepts/actor/actor_overview.md#distribution-and-failover)
 
-In order to give your service an id and port known to Dapr and launch the Dapr sidecar container, you simply annotate your deployment like this.
-
+Deploying a Dapr enabled application into your kubernetes cluster is a simple as adding a few annotations to the deployment schemes. To give your service an id and port known to Dapr, turn on tracing information and launch the Dapr sidecar container, you annotate your deployment like this. 
 ```yml
   annotations:
     dapr.io/enabled: "true"
     dapr.io/id: "nodeapp"
     dapr.io/port: "3000"
+    dapr.io/config: "tracing"
 ```
+You can see some examples [here](https://github.com/dapr/samples/tree/master/2.hello-kubernetes/deploy) in the kubernetes getting started guide.
