@@ -46,6 +46,10 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 
 * [Debugging with daprd](./vscode-debugging-daprd)
 
+## Configuring IntelliJ
+
+* [Debugging with daprd](./intellij-debugging-daprd)
+
 ## SDKs
 
 * [Serialize objects](./serialize)
