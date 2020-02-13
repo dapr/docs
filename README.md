@@ -17,6 +17,7 @@ Dapr is currently under community development in preview phase and master branch
 
 |    Document Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v0.4.0](https://github.com/dapr/docs/tree/v0.4.0) | [v0.4.0](https://github.com/dapr/dapr/tree/v0.4.0) |
 | [v0.3.0](https://github.com/dapr/docs/tree/v0.3.0) | [v0.3.0](https://github.com/dapr/dapr/tree/v0.3.0) |
 | [v0.2.0](https://github.com/dapr/docs/tree/v0.2.0) | [v0.2.0](https://github.com/dapr/dapr/tree/v0.2.0) |
 | [v0.1.0](https://github.com/dapr/docs/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
