@@ -148,7 +148,7 @@ $ dapr init --kubernetes
 ✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
 ```
 
-Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster.
+Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster using [this](https://daprreleases.blob.core.windows.net/manifest/dapr-operator.yaml) manifest.
 
 #### Uninstall Dapr on Kubernetes
 
