@@ -12,7 +12,7 @@ To learn more, see [Dapr Concepts](../concepts/README.md).
 
 ## Setup the development environment
 
-Dapr can be run locally or in Kubernetes. We recommend starting with a local setup to explore the core Dapr concepts and familiarize yourself with the Dapr CLI. Follow these instructions to [configure Dapr locally](./environment-setup.md#prerequisites) or [in Kubernetes](./environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
+Dapr can be run locally or in Kubernetes. We recommend starting with a local setup to explore the core Dapr concepts and familiarize yourself with the Dapr CLI. Follow these instructions to [configure Dapr locally and on Kubernetes](./environment-setup.md).
 
 ## Next steps
 
