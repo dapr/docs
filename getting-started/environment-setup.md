@@ -120,8 +120,12 @@ Dapr will install the following pods:
 
 ### Setup Cluster
 
+You can install Dapr on any Kubernetes cluster. Here are some helpful links:
+
 - [Setup Minikube Cluster](./cluster/setup-minikube.md)
 - [Setup Azure Kubernetes Service Cluster](./cluster/setup-aks.md)
+- [Setup Google Cloud Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs/quickstart)
+- [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
 ### Using the Dapr CLI
 
