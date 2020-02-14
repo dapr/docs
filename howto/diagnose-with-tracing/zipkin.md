@@ -6,7 +6,6 @@ Dapr integrates seamlessly with OpenTelemetry for telemetry and tracing. It is r
 
 The following steps will show you how to configure Dapr to send distributed tracing data to Zipkin running as a container in your Kubernetes cluster, and how to view them.
 
-
 ### Setup
 
 First, deploy Zipkin:
@@ -38,7 +37,9 @@ spec:
   - name: exporterAddress
     value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
+
 * tracing.yaml
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
@@ -54,13 +55,13 @@ spec:
 Finally, deploy the Dapr configurations:
 
 ```bash
-kubectl apply -f config.yaml
+kubectl apply -f tracing.yaml
 kubectl apply -f zipkin.yaml
 ```
 
 In order to enable this configuration for your Dapr sidecar, add the following annotation to your pod spec template:
 
-```
+```yml
 annotations:
   dapr.io/config: "tracing"
 ```
@@ -71,7 +72,7 @@ That's it! your sidecar is now configured for use with Open Census and Zipkin.
 
 To view traces, connect to the Zipkin Service and open the UI:
 
-```
+```bash
 kubectl port-forward svc/zipkin 9411:9411
 ```
 
@@ -100,7 +101,9 @@ spec:
   - name: exporterAddress
     value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
+
 * tracing.yaml
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
@@ -113,17 +116,17 @@ spec:
     includeBody: true
 ```
 
-2. Copy *tracing.yaml* to a *components* folder under the same folder where you run you application.
-   
+2. Copy *zipkin.yaml* to a *components* folder under the same folder where you run you application.
+
 3. Launch Zipkin using Docker:
 
-```
+```bash
 docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
 3. Launch Dapr with the `--config` param:
 
-```
+```bash
 dapr run --app-id mynode --app-port 3000 --config ./tracing.yaml node app.js
 ```
 
@@ -131,7 +134,7 @@ dapr run --app-id mynode --app-port 3000 --config ./tracing.yaml node app.js
 
 The `tracing` section under the `Configuration` spec contains the following properties:
 
-```
+```yml
 tracing:
     enabled: true
     expandParams: true

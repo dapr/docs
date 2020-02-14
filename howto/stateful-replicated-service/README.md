@@ -37,8 +37,10 @@ The following examples illustrates using strong consistency:
 import requests
 import json
 
+store_name = "redis-store" # name of the state store as specified in state store component yaml file
+dapr_state_url = "http://localhost:3500/v1.0/state/{}".format(store_name)
 stateReq = '[{ "key": "k1", "value": "Some Data", "options": { "consistency": "strong" }}]'
-response = requests.post("http://localhost:3500/v1.0/state/key1", json=stateReq)
+response = requests.post(dapr_state_url, json=stateReq)
 ```
 
 ### Getting state
@@ -49,7 +51,9 @@ response = requests.post("http://localhost:3500/v1.0/state/key1", json=stateReq)
 import requests
 import json
 
-response = requests.get("http://localhost:3500/v1.0/state/key1", headers={"consistency":"strong"})
+store_name = "redis-store" # name of the state store as specified in state store component yaml file
+dapr_state_url = "http://localhost:3500/v1.0/state/{}".format(store_name)
+response = requests.get(dapr_state_url + "/key1", headers={"consistency":"strong"})
 print(response.headers['ETag'])
 ```
 
@@ -61,8 +65,11 @@ print(response.headers['ETag'])
 import requests
 import json
 
-response = requests.delete("http://localhost:3500/v1.0/state/key1", headers={"consistency":"strong"})
+store_name = "redis-store" # name of the state store as specified in state store component yaml file
+dapr_state_url = "http://localhost:3500/v1.0/state/{}".format(store_name)
+response = requests.delete(dapr_state_url + "/key1", headers={"consistency":"strong"})
 ```
+
 Last-write concurrency is the default concurrency mode if the `concurrency` option is not specified.
 
 ## First-write-wins and Last-write-wins
@@ -72,11 +79,11 @@ First-Write-Wins is useful in situations where you have multiple instances of an
 
 The default mode for Dapr is Last-write-wins.
 
-Dapr uses version numbers to determine whether a specific key has been updated. Clients retain the version number when reading the data for a key and then use the version number during updates such as writes and deletes. If the version information has changed since the client retrieved, an error is thrown, which then requires the client to perform a read again to get the latest version information and state. 
+Dapr uses version numbers to determine whether a specific key has been updated. Clients retain the version number when reading the data for a key and then use the version number during updates such as writes and deletes. If the version information has changed since the client retrieved, an error is thrown, which then requires the client to perform a read again to get the latest version information and state.
 
 Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header.
 
-Using ETags, clients know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch. 
+Using ETags, clients know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch.
 
 The following example shows how to get an ETag, and then use it to save state and then delete the state:
 
@@ -86,12 +93,14 @@ The following example shows how to get an ETag, and then use it to save state an
 import requests
 import json
 
-response = requests.get("http://localhost:3500/v1.0/state/key1", headers={"concurrency":"first-write"})
+store_name = "redis-store" # name of the state store as specified in state store component yaml file
+dapr_state_url = "http://localhost:3500/v1.0/state/{}".format(store_name)
+response = requests.get(dapr_state_url + "/key1", headers={"concurrency":"first-write"})
 etag = response.headers['ETag']
 newState = '[{ "key": "k1", "value": "New Data", "etag": {}, "options": { "concurrency": "first-write" }}]'.format(etag)
 
-requests.post("http://localhost:3500/v1.0/state/key1", json=newState)
-response = requests.delete("http://localhost:3500/v1.0/state/key1", headers={"If-Match": "{}".format(etag)})
+requests.post(dapr_state_url, json=newState)
+response = requests.delete(dapr_state_url + "/key1", headers={"If-Match": "{}".format(etag)})
 ```
 
 ### Handling version mismatch failures
@@ -105,7 +114,9 @@ import json
 # This method saves the state and returns false if failed to save state
 def save_state(data):
     try:
-        response = requests.post("http://localhost:3500/v1.0/state/key1", json=data)
+        store_name = "redis-store" # name of the state store as specified in state store component yaml file
+        dapr_state_url = "http://localhost:3500/v1.0/state/{}".format(store_name)
+        response = requests.post(dapr_state_url, json=data)
         if response.status_code == 200:
             return True
     except:
@@ -114,7 +125,7 @@ def save_state(data):
 
 # This method gets the state and returns the response, with the ETag in the header -->
 def get_state(key):
-    response = requests.get("http://localhost:3500/v1.0/state/{}".format(key), headers={"concurrency":"first-write"})
+    response = requests.get("http://localhost:3500/v1.0/state/<state_store_name>/{}".format(key), headers={"concurrency":"first-write"})
     return response
 
 # Exit when save state is successful. success will be False if there's an ETag mismatch -->

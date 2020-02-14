@@ -10,7 +10,8 @@ Dapr bindings allow you to:
 * Replace bindings without changing your code
 * Focus on business logic and not the event resource implementation
 
-For more info on bindings, read [this](../../concepts/bindings/README.md) link.<br>
+For more info on bindings, read [this](../../concepts/bindings/README.md) link.
+
 For a complete sample showing bindings, visit this [link](https://github.com/dapr/samples/tree/master/5.bindings).
 
 ## 1. Create a binding
@@ -23,7 +24,7 @@ Create the following YAML file, named binding.yaml, and save this to the /compon
 
 *Note: When running in Kubernetes, apply this file to your cluster using `kubectl apply -f binding.yaml`*
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
@@ -39,7 +40,8 @@ spec:
     value: group1
 ```
 
-Here, you create a new binding component with the name of `myEvent`.<br>
+Here, you create a new binding component with the name of `myEvent`.
+
 Inside the `metadata` section, configure the Kafka related properties such as the topics to listen on, the brokers and more.
 
 ## 2. Listen for incoming events
@@ -48,7 +50,7 @@ Now configure your application to receive incoming events. If using HTTP, you ne
 
 *The following example shows how you would listen for the event in Node.js, but this is applicable to any programming language*
 
-```
+```javascript
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -64,18 +66,19 @@ app.post('/myEvent', (req, res) => {
 app.listen(port, () => console.log(`Kafka consumer app listening on port ${port}!`))
 ```
 
-#### ACK-ing an event
+### ACK-ing an event
 
 In order to tell Dapr that you successfully processed an event in your application, return a `200 OK` response from your HTTP handler.
 
-```
+```javascript
 res.status(200).send()
 ```
-#### Rejecting an event
+
+### Rejecting an event
 
 In order to tell Dapr that the event wasn't processed correctly in your application and schedule it for redelivery, return any response different from `200 OK`. For example, a `500 Error`.
 
-```
+```javascript
 res.status(500).send()
 ```
 
