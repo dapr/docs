@@ -17,7 +17,9 @@ passed through the HTTP pipeline.
 
 ## Prometheus
 To consume these metrics you'll need to install Prometheus or something compatible with scraping Prometheus
-metrics. Once installed, you can add your Dapr metrics endpoint as a target and it will start collecting the data.
+metrics.
+
+For more detailed instructions on installing and configuring Prometheus to work with Dapr, please refer to the [Observe Metrics with Prometheus](../../howto/observe-metrics-with-prometheus/README.md) article.
 
 ## References
 
