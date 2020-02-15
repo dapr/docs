@@ -111,6 +111,9 @@ You should always run a `dapr uninstall` before running another `dapr init`.
 ## Installing Dapr on a Kubernetes cluster
 
 When setting up Kubernetes you can do this either via the Dapr CLI or Helm.
+
+*Note that installing Dapr using the CLI is recommended for testing purposes only.*
+
 Dapr will install the following pods:
 
 * dapr-operator: manages components and k8s services endpoints for Dapr (state stores, pub-subs, etc.)
