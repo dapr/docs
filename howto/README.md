@@ -26,6 +26,10 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Trigger a service from different resources with input bindings](./trigger-app-with-input-binding)
 * [Invoke different resources using output bindings](./send-events-with-output-bindings)
 
+## Middleware
+
+* [Authorization with oAuth](./authorization-with-oauth)
+
 ## Distributed Tracing
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
