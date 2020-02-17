@@ -77,6 +77,7 @@ You can then add the services DNS to your Prometheus configuration.
 scrape_configs:
   ...
   - job_name: 'nodeapp-dapr'
+    metrics_path: /
     static_configs:
       - targets: ['nodeapp-dapr.<namespace>.svc.cluster.local:9090'] # Replace with Dapr metrics port if not default
     ...
