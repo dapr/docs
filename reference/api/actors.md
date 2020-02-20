@@ -396,6 +396,15 @@ curl -X GET http://localhost:3000/dapr/config \
 
 > The above command returns the config (all fields are optional):
 
+
+Parameter | Description
+----------|------------
+entities  | The actor types this app supports.
+actorIdleTimeout | Specifies how long to wait before deactivating an idle actor.  An actor is idle if no actor method calls and no reminders have fired on it.
+actorScanInterval | A duration which specifies how often to scan for actors to deactivate idle actors.  Actors that have been idle longer than the actorIdleTimeout will be deactivated.
+drainOngoingCallTimeout | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.
+drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTimeout` to allow a current actor call to complete before trying to deactivate an actor.  If false, do not wait.
+
 ```json
 {
   "entities":["actorType1", "actorType2"],
