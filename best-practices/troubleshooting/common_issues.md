@@ -141,3 +141,17 @@ kubectl logs <pod-name> <name-of-your-container>
 ```
 
 If running in Standalone mode, you should see the stderr and stdout outputs from your app displayed in the main console session.
+
+### I'm getting timeout/connection errors when running Actors locally
+
+Each Dapr instance reports it's host address to the placement service. The placement service then distributes a table of nodes and their addresses to all Dapr instances. If that host address is unreachable, you are likely to encounter socket timeout errors or other variants of failing request errors.
+
+Unless the host name has been specified by setting an environment variable named `DAPR_HOST_IP` to a reachable, pingable address, Dapr will loop over the network interfaces and select the first non-loopback address it finds.
+
+As described above, in order to tell Dapr what the host name should be used, simply set an environment variable with the name of `DAPR_HOST_IP`.
+
+The following example shows how to set the Host IP env var to `127.0.0.1`:
+
+```bash
+export DAPR_HOST_IP=127.0.0.1
+```
