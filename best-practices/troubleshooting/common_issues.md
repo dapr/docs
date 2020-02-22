@@ -152,6 +152,8 @@ As described above, in order to tell Dapr what the host name should be used, sim
 
 The following example shows how to set the Host IP env var to `127.0.0.1`:
 
+**Note: for versions <= 0.4.0 use `HOST_IP`**
+
 ```bash
 export DAPR_HOST_IP=127.0.0.1
 ```
