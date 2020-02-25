@@ -41,7 +41,7 @@ Dapr exposes its APIs as a sidecar architecture, either as a container or as a p
 
 ![Dapr overview](images/overview-sidecar.png)
 
-In container hosting environments such a Kubernetes, Dapr runs as a side-car container with the application container in the same pod.
+In container hosting environments such as Kubernetes, Dapr runs as a side-car container with the application container in the same pod.
 
 ![Dapr overview](images/overview-sidecar-kubernetes.png)
 
