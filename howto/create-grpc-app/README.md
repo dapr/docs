@@ -66,6 +66,8 @@ import (
 
 2. Create the client
 
+If mTLS is disabled:
+
 ```go
   // Get the Dapr port and create a connection
   daprPort := os.Getenv("DAPR_GRPC_PORT")
@@ -78,6 +80,25 @@ import (
 
   // Create the client
   client := pb.NewDaprClient(conn)
+```
+
+If mTLS is enabled:
+
+```go
+tlsConfig := &tls.Config{
+   InsecureSkipVerify: true,
+}
+
+creds := credentials.NewTLS(tlsConfig)
+conn, err := grpc.Dial(daprAddress, grpc.WithTransportCredentials(creds))
+
+if err != nil {
+   fmt.Println(err)
+}
+defer conn.Close()
+
+// Create the client
+client := pb.NewDaprClient(conn)
 ```
 
 3. Invoke the Save State method
