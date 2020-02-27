@@ -31,7 +31,7 @@ Create or edit the file in `$HOME/.IdeaIC2019.3/config/tools/External\ Tools.xml
       <!-- 2. For Linux or MacOS use: /usr/local/bin/daprd -->
       <option name="COMMAND" value="C:\dapr\daprd.exe" />
       <!-- 3. Choose app, http and grpc ports that do not conflict with other daprd command entries (placement address should not change). -->
-      <option name="PARAMETERS" value="-dapr-id demoservice -app-port 3000 -dapr-http-port 3005 -dapr-grpc-port 52000 -placement-address localhost:50005" />
+      <option name="PARAMETERS" value="-app-id demoservice -app-port 3000 -dapr-http-port 3005 -dapr-grpc-port 52000 -placement-address localhost:50005" />
       <!-- 4. Use the folder where the `components` folder is located -->
       <option name="WORKING_DIRECTORY" value="C:/Code/dapr/java-sdk/examples" />
     </exec>
