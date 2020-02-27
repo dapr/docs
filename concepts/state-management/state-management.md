@@ -74,13 +74,13 @@ KEYS "myApp*"
 If the data store supports SQL queries, you can query an actor's state using SQL queries. For example use:
 
 ```sql
-SELECT * FROM StateTable WHERE Id='<dapr-id>||<actor-type>||<actor-id>||<key>'
+SELECT * FROM StateTable WHERE Id='<app-id>||<actor-type>||<actor-id>||<key>'
 ```
 
 You can also perform aggregate queries across actor instances, avoiding the common turn-based concurrency limitations of actor frameworks. For example, to calculate the average temperature of all thermometer actors, use:
 
 ```sql
-SELECT AVG(value) FROM StateTable WHERE Id LIKE '<dapr-id>||<thermometer>||*||temperature'
+SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||temperature'
 ```
 
 > **NOTE:** Direct queries of the state store are not governed by Dapr concurrency control, since you are not calling through the Dapr runtime. What you see are snapshots of committed data which are acceptable for read-only queries across multiple actors, however writes should be done via the actor instances.
