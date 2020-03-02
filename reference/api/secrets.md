@@ -1,9 +1,9 @@
 # Secrets
 
 Dapr offers developers a consistent way to extract application secrets, without needing to know the specifics of the secret store being used.
-Secret stores are components in Dapr, and allow users to write new secret stores implementations that can be used both to hold secrets for Dapr components as well as serving the application with a dedicated API.
+Secret stores are components in Dapr. Dapr allows users to write new secret stores implementations that can be used both to hold secrets for other Dapr components (for example secrets used by a state store to read/write state) as well as serving the application with a dedicated secret API. Using the secrets API, you can easily read secrets that can be used by the application from the a named secrets store. 
 
-Examples for secret stores include `Kubernetes`, `Hashicorp Vault`, `Azure KeyVault` to name a few.
+Some examples for secret stores include `Kubernetes`, `Hashicorp Vault`, `Azure KeyVault`. See [secret stores](https://github.com/dapr/components-contrib/tree/master/secretstores)
 
 ## Get secret
 
@@ -32,12 +32,14 @@ GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<key>?metadata.
 ```
 
 ##### GCP Secret Manager
+The following meta needs to be provided to the GCP Secret Manager component
 
 Query Parameter | Description
 --------- | -----------
 metadata.version_id | version for the given secret key
 
-##### AWS Secrets Manager
+##### AWS Secret Manager
+The following meta needs to be provided to the AWS Secret Manager component
 
 Query Parameter | Description
 --------- | -----------
@@ -59,9 +61,14 @@ Code | Description
 400  | Secret store is missing or misconfigured
 500  | Failed to get secret
 
-### Example
+### Examples
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret \
+  -H "Content-Type: application/json"
+```
+
+```shell
+curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&metadata.version_stage=AAA \
   -H "Content-Type: application/json"
 ```
