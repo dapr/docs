@@ -1,13 +1,34 @@
-# Actors
+# Dapr Actors API Reference
 
 Dapr provides native, cross-platform and cross-language virtual actor capabilities.
 Besides the language specific Dapr SDKs, a developer can invoke an actor using the API endpoints below.
 
-## Specifications for user service code calling to Dapr
+## Endpoints
+
+- [Service Code Calling to Dapr](#specifications-for-user-service-code-calling-to-dapr)
+  - [Invoke Actor Method](#invoke-actor-method)
+  - [Save Actor State](#save-actor-state)
+  - [Actor State Transactions](#actor-state-transactions)
+  - [Get Actor State](#get-actor-state)
+  - [Create Actor Reminder](#create-actor-reminder)
+  - [Get Actor Reminder](#get-actor-reminder)
+  - [Delete Actor Reminder](#delete-actor-reminder)
+  - [Create Actor Timer](#create-actor-timer)
+  - [Delete Actor Timer](#delete-actor-timer)
+- [Dapr Calling to Service Code](#specifications-for-dapr-calling-to-user-service-code)
+  - [Get Registered Actors](#get-registered-actors)
+  - [Activate Actor](#activate-actor)
+  - [Deactivate Actor](#deactivate-actor)
+  - [Invoke Actor Method](#invoke-actor-method-1)
+  - [Invoke Reminder](#invoke-reminder)
+  - [Invoke Timer](#invoke-timer)
+- [Querying Actor State Externally](#querying-actor-state-externally)
+
+## User Service Code Calling to Dapr
 
 ### Invoke Actor Method
 
-Invokes a method on an actor.
+Invoke an actor method through Dapr.
 
 #### HTTP Request
 
@@ -32,14 +53,16 @@ actorType | The actor type.
 actorId | The actor ID.
 method | The name of the method to invoke.
 
-> Example of invoking a method on an actor:
+#### Examples
+
+Example of invoking a method on an actor:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/method/shoot \
   -H "Content-Type: application/json"
 ```
 
-> Example of invoking a method on an actor with a payload:
+Example of invoking a method on an actor with a payload:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
@@ -49,17 +72,17 @@ curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
       }'
 ```
 
-> The response from the remote endpoint will be returned in the request body.
+The response from the remote endpoint will be returned in the request body.
 
-### Actor State Changes - Transaction
+### Save Actor State
 
-Persists the changed to the state for an actor as a multi-item transaction.
-
-***Note that this operation is dependant on a state store that supports multi-item transactions.***
+Persists the changed to the state for an actor
 
 #### HTTP Request
 
-`POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state`
+```http
+POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
+```
 
 #### HTTP Response Codes
 
@@ -76,6 +99,43 @@ Parameter | Description
 daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
+
+Value of the key is passed as request body:
+```shell
+{
+  "key": "value"
+}
+```
+
+### Actor State Transactions
+
+Persists the changed to the state for an actor as a multi-item transaction.
+
+***Note that this operation is dependant on a state store that supports multi-item transactions.***
+
+#### HTTP Request
+
+```http
+POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+201  | Request successful
+500  | Request failed
+404  | Actor not found
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | The Dapr port.
+actorType | The actor type.
+actorId | The actor ID.
+
+#### Examples
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
@@ -124,12 +184,14 @@ actorType | The actor type.
 actorId | The actor ID.
 key | The key for the state value.
 
+#### Examples
+
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/state/location \
   -H "Content-Type: application/json"
 ```
 
-> The above command returns the state:
+The above command returns the state:
 
 ```json
 {
@@ -190,6 +252,8 @@ actorType | The actor type.
 actorId | The actor ID.
 name | The name of the reminder to create.
 
+#### Examples
+
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
   -H "Content-Type: application/json"
@@ -227,12 +291,14 @@ actorType | The actor type.
 actorId | The actor ID.
 name | The name of the reminder to get.
 
+#### Examples
+
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
   "Content-Type: application/json"
 ```
 
-> The above command returns the reminder:
+The above command returns the reminder:
 
 ```json
 {
@@ -268,6 +334,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 name | The name of the reminder to delete.
+
+#### Examples
 
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
@@ -318,6 +386,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 name | The name of the timer to create.
+
+#### Examples
 
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
@@ -387,14 +457,16 @@ Parameter | Description
 --------- | -----------
 appPort | The application port.
 
-> Example of getting the registered actors:
+#### Examples
+
+Example of getting the registered actors:
 
 ```shell
 curl -X GET http://localhost:3000/dapr/config \
   -H "Content-Type: application/json"
 ```
 
-> The above command returns the config (all fields are optional):
+The above command returns the config (all fields are optional):
 
 
 Parameter | Description
@@ -441,7 +513,9 @@ appPort | The application port.
 actorType | The actor type.
 actorId | The actor ID.
 
-> Example of activating an actor:
+#### Examples:
+
+Example of activating an actor:
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50 \
@@ -474,7 +548,9 @@ appPort | The application port.
 actorType | The actor type.
 actorId | The actor ID.
 
-> Example of deactivating an actor:
+#### Examples
+
+Example of deactivating an actor:
 
 ```shell
 curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
@@ -508,7 +584,9 @@ actorType | The actor type.
 actorId | The actor ID.
 methodName | The name of the method to invoke.
 
-> Example of invoking a method for an actor:
+#### Examples
+
+Example of invoking a method for an actor:
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
@@ -542,7 +620,9 @@ actorType | The actor type.
 actorId | The actor ID.
 reminderName | The name of the reminder to invoke.
 
-> Example of invoking a reminder for an actor:
+#### Examples
+
+Example of invoking a reminder for an actor:
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkRebels \
@@ -576,7 +656,9 @@ actorType | The actor type.
 actorId | The actor ID.
 timerName | The name of the timer to invoke.
 
-> Example of invoking a timer for an actor:
+#### Examples
+
+Example of invoking a timer for an actor:
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebels \

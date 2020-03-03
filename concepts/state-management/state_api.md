@@ -1,11 +1,17 @@
-# State management
+# State Management API Specification
 
-Dapr offers a reliable state endpoint that allows developers to save and retrieve state via an API.
-Dapr has a pluggable architecture and allows binding to a multitude of cloud/on-premises state stores.
+## Endpoints 
+- [Component File](#component-file)
+- [Key Scheme](#key-scheme)
+- [Save State](#save-state)
+- [Get State](#get-state)
+- [Delete State](#delete-state)
+- [Configuring State Store for Actors](#configuring-state-store-for-actors)
+- [Optional Behaviors](#optional-behaviors)
 
-Examples for state stores include ```Redis```, ```Azure CosmosDB```, ```AWS DynamoDB```, ```GCP Cloud Spanner```, ```Cassandra``` to name a few.
+## Component File
 
-An Dapr State Store has the following structure:
+A Dapr State Store component yaml file has the following structure:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -29,21 +35,21 @@ Starting with 0.4.0 release, support for multiple state stores was added. This i
 
 Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/API-008-multi-state-store-api-design.md for more details.
 
-## Key scheme
+## Key Scheme
 
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
 
-```bash
+```
 <Dapr id>||<state key>
 ```
 
 For Actor states, the key format is:
 
-```bash
+```
 <Dapr id>||<Actor type>||<Actor id>||<state key>
 ```
 
-## Save state
+## Save State
 
 This endpoint lets you save an array of state objects.
 
@@ -107,7 +113,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
       ]'
 ```
 
-## Get state
+## Get State
 
 This endpoint lets you get the state for a specific key.
 
@@ -162,7 +168,7 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 }
 ```
 
-## Delete state
+## Delete State
 
 This endpoint lets you delete the state for a specific key.
 
@@ -233,7 +239,7 @@ spec:
 
 ```
 
-## Optional behaviors
+## Optional Behaviors
 
 ### Key scheme
 

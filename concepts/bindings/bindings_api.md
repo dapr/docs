@@ -5,7 +5,15 @@ Developers can invoke output bindings using the Dapr API, and have the Dapr runt
 
 Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs```, ```AWS SQS```, ```GCP Storage``` to name a few.
 
-An Dapr Binding has the following structure:
+## Contents
+
+- [Bindings Structure](#bindings-structure)
+- [Invoking Service Code Through Input Bindings](#invoking-service-code-through-input-bindings)
+- [Sending Messages to Output Bindings](#sending-messages-to-output-bindings)
+
+## Bindings Structure
+
+An Dapr Binding yaml file has the following structure:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -19,11 +27,20 @@ spec:
     value: <VALUE>
 ```
 
-The ```metadata.name``` is the name of the binding. A developer who wants to trigger her app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.
+The ```metadata.name``` is the name of the binding.
+
+If running place this file in your `components` folder next to your state store and message queue yml configurations.
+If running on kubernetes apply the component to your cluster.
+
+## Invoking Service Code Through Input Bindings
+
+A developer who wants to trigger her app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.
 
 On startup Dapr sends a ```OPTIONS``` request to the ```metadata.name``` endpoint and expects a different status code as ```NOT FOUND (404)``` if this application wants to subscribe to the binding.
 
 The ```metadata``` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the implementation.
+
+### Examples
 
 For example, here's how a Python application subscribes for events from ```Kafka``` using an Dapr API compliant platform:
 
@@ -60,7 +77,7 @@ def incoming():
     return "Kafka Event Processed!"
 ```
 
-## Sending messages to output bindings
+## Sending Messages to Output Bindings
 
 This endpoint lets you invoke an Dapr output binding.
 
@@ -99,6 +116,8 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 name | the name of the binding to invoke
+
+### Examples
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
