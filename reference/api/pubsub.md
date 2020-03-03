@@ -58,29 +58,3 @@ Example:
 ```json
 "["TopicA","TopicB"]"
 ```
-
-## Delivering events to subscribers
-
-In order to deliver events to a subscribed application, a `POST` call should be made to user code with the name of the topic as the URL path.
-
-The following example illustrates this point, considering a subscription for topic `TopicA`:
-
-### HTTP Request
-
-```http
-POST http://localhost:<appPort>/TopicA
-```
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-appPort | the application port
-
-### HTTP Response body
-
-A JSON encoded payload.
-
-## Message Envelope
-
-Dapr Pub/Sub adheres to version 0.3 of Cloud Events.
