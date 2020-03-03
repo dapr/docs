@@ -2,13 +2,11 @@
 
 Welcome to the Dapr documentation repository. You can learn more about Dapr from the links below.
 
-- **[Overview](./overview.md)** - An overview of Dapr and how it enables you to build distributed applications
+- **[Overview](./overview/README.md)** - An overview of Dapr and how it enables you to build distributed applications
 - **[Getting Started](./getting-started)** - Set up your environment
-- **[Quickstarts and samples](./quickstart)** - Quickstart guides and samples for developing applications
 - **[Concepts](./concepts)** - Dapr concepts explained
 - **[How-Tos](./howto)** - Guides explaining how to accomplish specific tasks
 - **[Best practices](./best-practices)** - Guides explaining best practices  using Dapr including [debugging and troubleshooting](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting)
-- **[Reference](./reference)** - Detailed reference documentation
 - **[FAQ](FAQ.md)** - Frequently asked questions, mostly around differentiation to existing frameworks
 
 ## Document versions

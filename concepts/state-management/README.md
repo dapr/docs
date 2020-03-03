@@ -4,20 +4,31 @@ Dapr makes it simple for you to store key/value data in a store of your choice.
 
 ![State management](../../images/state_management.png)
 
-## State management API
+## Contents:
 
-Dapr brings reliable state management to applications through a simple state API. Developers can use this API to retrieve, save and delete states by keys.
+- [State Management API](#state-management-api)
+- [State Store Behaviors](#state-store-behaviors)
+- [Concurrency](#concurrency)
+- [Consistency](#consistency)
+- [Retry Policies](#retry-policies)
+- [Bulk Operations](#bulk-operations)
+- [Querying State Store Directly](#querying-state-store-directly)
+- [References](#references)
+
+## State Management API
+
+Dapr brings reliable state management to applications through a simple state API. Developers can use this API to retrieve, save and delete states by keys. 
 
 Dapr data stores are pluggable. Dapr ships with [Redis](https://redis.io
 ) out-of-box. And it allows you to plug in other data stores such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
 ), [GCP Cloud Spanner](https://cloud.google.com/spanner
 ) and [Cassandra](http://cassandra.apache.org/).
 
-See the Dapr API specification for details on [state management API](../../reference/api/state.md))
+Visit [State API](./state_api.md) for more information.
 
 > **NOTE:** Dapr prefixes state keys with the ID of the current Dapr instance/sidecar. This allows multiple Dapr instances to share the same state store.
 
-## State store behaviors
+## State Store Behaviors
 
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirement, consistency requirement, and retry policy to any state operation requests.
 
@@ -50,15 +61,15 @@ Dapr supports both **strong consistency** and **eventual consistency**, with eve
 
 When strong consistency is used, Dapr waits for all replicas (or designated quorums) to acknowledge before it acknowledges a write request. When eventual consistency is used, Dapr returns as soon as the write request is accepted by the underlying data store, even if this is a single replica.
 
-## Retry policies
+## Retry Policies
 
 Dapr allows you to attach a retry policy to any write request. A policy is described by an **retryInterval**, a **retryPattern** and a **retryThreshold**. Dapr keeps retrying the request at the given interval up to the specified threshold. You can choose between a **linear** retry pattern or an **exponential** (backoff) pattern. When the **exponential** pattern is used, the retry interval is doubled after each attempt.
 
-## Bulk operations
+## Bulk Operations
 
 Dapr supports two types of bulk operations - **bulk** or **multi**. You can group several requests of the same type into a bulk (or a batch). Dapr submits requests in the bulk as individual requests to the underlying data store. In other words, bulk operations are not transactional. On the other hand, you can group requests of different types into a multi-operation, which is handled as an atomic transaction.
 
-## Querying state store directly
+## Querying State Store Directly
 
 Dapr saves and retrieves state values without any transformation. You can query and aggregate state directly from the underlying state store. For example, to get all state keys associated with an application ID "myApp" in Redis, use:
 
@@ -69,7 +80,7 @@ KEYS "myApp*"
 > **NOTE:** See [How to query Redis store](../../howto/query-state-store/query-redis-store.md) for details on how to query a Redis store.
 >
 
-### Querying actor state
+### Querying Actor State
 
 If the data store supports SQL queries, you can query an actor's state using SQL queries. For example use:
 

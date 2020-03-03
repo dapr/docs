@@ -2,57 +2,33 @@
 
 Dapr Actors runtime provides following capabilities:
 
+- [Method Invocation](#actor-method-invocation)
+- [State Management](#actor-state-management)
+- [Timers and Reminders](#actor-timers-and-reminders)
+
+## Actor Method Invocation
+
+You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint
+
+```bash
+POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/method/<method>
+```
+
+You can provide any data for actor method in the request body and response for the request would be in response body which is data from actor call.
+
+Refer [api spec](./actors_api.md#invoke-actor-method) for more details.
+
 ## Actor State Management
 
 Actors can save state reliably using state management capability.
 
-You can interact with Dapr through Http/gRPC endpoints for state management.
+You can interact with Dapr through HTTP/gRPC endpoints for state management.
 
 To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The following state stores implement this interface:
 
 - Redis
 - MongoDB
 - SQL Server
-
-### Save the Actor State
-
-You can save the Actor state of a given key of actorId of type actorType by calling
-
-```http
-POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
-```
-
-Value of the key is passed as request body.
-
-```json
-{
-  "key": "value"
-}
-```
-
-If you want to save multiple items in a single transaction, you can call 
-
-```http
-POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state
-```
-
-### Retrieve the Actor State
-
-Once you have saved the actor state, you can retrieve the saved state by calling 
-
-```http
-GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
-```
-
-### Remove the Actor State
-
-You can remove state permanently from the saved Actor state by calling
-
-```http
-DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/state/<key>
-```
-
-Refer [dapr spec](../../reference/api/actors.md) for more details.
 
 ## Actor Timers and Reminders
 
@@ -73,7 +49,7 @@ All timers are stopped when the actor is deactivated as part of garbage collecti
 You can create a timer for an actor by calling the Http/gRPC request to Dapr.
 
 ```http
-POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
+POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
 The timer due time and callback are specified in the request body.  The due time represents when the timer will first fire after registration.  The period represents how often the timer will fire after that.  A due time of 0 means to fire immediately.  Negative due times and periods are invalid.
@@ -100,16 +76,16 @@ You can remove the actor timer by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Refer [dapr spec](../../reference/api/actors.md) for more details.
+Refer [api spec](./actors_api.md#invoke-timer) for more details.
 
-### Actor reminders
+### Actor Reminders
 
 Reminders are a mechanism to trigger persistent callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr Actors runtime persists information about the actor's reminders using Dapr actor state provider.
 
 You can create a persistent reminder for an actor by calling the Http/gRPC request to Dapr.
 
 ```http
-POST,PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
+POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
 The reminder due time and callback can be specified in the request body.  The due time represents when the reminder will first fire after registration.  The period represents how often the reminder will fire after that.  A due time of 0 means to fire immediately.  Negative due times and periods are invalid.  To register a reminder that fires only once, set the period to an empty string.
@@ -154,4 +130,4 @@ You can remove the actor reminder by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-Refer [dapr spec](../../reference/api/actors.md) for more details.
+Refer [api spec](./actors_api.md#invoke-reminder) for more details.

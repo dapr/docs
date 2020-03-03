@@ -2,6 +2,11 @@
 
 Dapr runtime provides an actor implementation which is based on Virtual Actor pattern. The Dapr actors API provides a single-threaded programming model leveraging the scalability and reliability guarantees provided by underlying platform on which Dapr is running.
 
+## Quick Links
+
+- [Dapr Actor Features](./actors_features.md)
+- [Dapr Actor API Spec](./actors_api.md)
+
 ## Understanding actors
 
 An actor is an isolated, independent unit of compute and state with single-threaded execution.
@@ -55,17 +60,17 @@ When a client calls an actor with a particular id (for example, actor id 123), t
 
 Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all environments (Standalone, Kubernetes etc)
 
-## Actor communication
+## Actor Communication
 
 You can interact with Dapr to invoke the actor method by calling Http/gRPC endpoint
 
 ```bash
-POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/method/<method>
+POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<method/state/timers/reminders>
 ```
 
 You can provide any data for actor method in the request body and response for the request would be in response body which is data from actor call.
 
-Refer [dapr spec](../../reference/api/actors.md) for more details.
+Refer to [Dapr Actor Features](./actors_features.md) for more details.
 
 ### Concurrency
 
