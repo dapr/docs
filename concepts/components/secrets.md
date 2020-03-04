@@ -10,7 +10,7 @@ When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes s
 
 If your Dapr enabled apps are using components that fetch secrets from non-default namespaces, apply the following resource to the namespace:
 
-```
+```yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
