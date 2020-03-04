@@ -99,7 +99,7 @@ spec:
   - name: enabled
     value: "true"
   - name: exporterAddress
-    value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
+    value: "http://localhost:9411/api/v2/spans"
 ```
 
 * tracing.yaml
