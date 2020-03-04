@@ -6,6 +6,25 @@ In order to reference a secret, you need to set the `auth.secretStore` field to 
 
 When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes secret store is assumed.
 
+## Non default namespaces
+
+If your Dapr enabled apps are using components that fetch secrets from non-default namespaces, apply the following resource to the namespace:
+
+```
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dapr-secret-reader
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: <YOUR-NAMESPACE-HERE>
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
 ## Examples
 
 Using plain text:
