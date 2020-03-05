@@ -84,9 +84,9 @@ The bindings endpoint receives the following JSON payload:
 ```json
 {
   "data": "",
-  "metadata": [
+  "metadata": {
     "": ""
-  ]
+  }
 }
 ```
 
@@ -107,8 +107,8 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
         "data": {
           "message": "Hi"
         },
-        "metadata": [
+        "metadata": {
           "key": "redis-key-1"
-        ]
+        }
       }'
 ```
