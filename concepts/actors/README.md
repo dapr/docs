@@ -7,7 +7,15 @@ Dapr runtime provides an actor implementation which is based on Virtual Actor pa
 - [Dapr Actor Features](./actors_features.md)
 - [Dapr Actor API Spec](./actors_api.md)
 
-## Understanding actors
+## Contents
+
+- [Understanding Actors](#understanding-actors)
+- [Actors in Dapr](#actors-in-dapr)
+- [Actor Lifetime](#actor-lifetime)
+- [Distribution and Failover](#distribution-and-failover)
+- [Actor Communication](#actor-communication)
+
+## Understanding Actors
 
 An actor is an isolated, independent unit of compute and state with single-threaded execution.
 
@@ -41,7 +49,7 @@ This virtual actor lifetime abstraction carries some caveats as a result of the 
 
 An actor is automatically activated (causing an actor object to be constructed) the first time a message is sent to its actor ID. After some period of time, the actor object is garbage collected. In the future, using the actor ID again, causes a new actor object to be constructed. An actor's state outlives the object's lifetime as state is stored in configured state provider for Dapr runtime.
 
-## Distribution and failover
+## Distribution and Failover
 
 To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr  automatically migrates them from failed nodes to healthy ones as required.
 
