@@ -20,8 +20,10 @@ spec:
     value: message
 ```
 
-`url` is the CosmosDB url.
-`masterKey` is the CosmosDB account master key.
-`database` is the name of the CosmosDB database.
-`collection` is name of the collection inside the database.
-`partitionKey` is the name of the partitionKey to extract from the payload.
+- `url` is the CosmosDB url.
+- `masterKey` is the CosmosDB account master key.
+- `database` is the name of the CosmosDB database.
+- `collection` is name of the collection inside the database.
+- `partitionKey` is the name of the partitionKey to extract from the payload.
+
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)

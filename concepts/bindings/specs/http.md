@@ -14,5 +14,5 @@ spec:
     value: GET
 ```
 
-`url` is the HTTP url to invoke.
-`method` is the HTTP verb to use for the request.
+- `url` is the HTTP url to invoke.
+- `method` is the HTTP verb to use for the request.

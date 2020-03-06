@@ -18,7 +18,7 @@ spec:
     value: false
 ```
 
-`queueName` is the RabbitMQ queue name.
-`host` is the RabbitMQ host address.
-`durable` tells RabbitMQ to persist message in storage.
-`deleteWhenUnused` enables or disables auto-delete.
+- `queueName` is the RabbitMQ queue name.
+- `host` is the RabbitMQ host address.
+- `durable` tells RabbitMQ to persist message in storage.
+- `deleteWhenUnused` enables or disables auto-delete.

@@ -12,4 +12,4 @@ spec:
     value: default
 ```
 
-`namespace` is the Kubernetes namespace to read events from. Default is `default`.
+- `namespace` is the Kubernetes namespace to read events from. Default is `default`.

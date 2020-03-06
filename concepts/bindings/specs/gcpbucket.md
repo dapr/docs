@@ -32,14 +32,16 @@ spec:
     value: PRIVATE KEY
 ```
 
-`bucket` is the bucket name.
-`type` is the GCP credentials type.
-`project_id` is the GCP project id.
-`private_key_id` is the GCP private key id.
-`client_email` is the GCP client email.
-`client_id` is the GCP client id.
-`auth_uri` is Google account oauth endpoint.
-`token_uri` is Google account token uri.
-`auth_provider_x509_cert_url` is the GCP credentials cert url.
-`client_x509_cert_url` is the GCP credentials project x509 cert url.
-`private_key` is the GCP credentials private key.
+- `bucket` is the bucket name.
+- `type` is the GCP credentials type.
+- `project_id` is the GCP project id.
+- `private_key_id` is the GCP private key id.
+- `client_email` is the GCP client email.
+- `client_id` is the GCP client id.
+- `auth_uri` is Google account oauth endpoint.
+- `token_uri` is Google account token uri.
+- `auth_provider_x509_cert_url` is the GCP credentials cert url.
+- `client_x509_cert_url` is the GCP credentials project x509 cert url.
+- `private_key` is the GCP credentials private key.
+
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)

@@ -32,6 +32,8 @@ The ```metadata.name``` is the name of the binding.
 If running place this file in your `components` folder next to your state store and message queue yml configurations.
 If running on kubernetes apply the component to your cluster.
 
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+
 ## Invoking Service Code Through Input Bindings
 
 A developer who wants to trigger her app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.

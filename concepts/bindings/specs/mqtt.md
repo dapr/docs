@@ -14,5 +14,5 @@ spec:
     value: topic1
 ```
 
-`url` is the MQTT broker url.
-`topic` is the topic to listen on or send events to.
+- `url` is the MQTT broker url.
+- `topic` is the topic to listen on or send events to.
