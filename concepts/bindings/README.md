@@ -53,6 +53,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Azure CosmosDB](./specs/cosmosdb.md)                   |    | ✅ | Experimental |
 | [Azure Service Bus Queues](./specs/servicebusqueues.md) | ✅ | ✅ | Experimental |
 | [Azure SignalR](./specs/signalr.md)                     |    | ✅ | Experimental |
+| [Azure Storage Queues](./specs/storagequeues.md)        | ✅ | ✅ | Experimental |
 
 ## Input Bindings
 
