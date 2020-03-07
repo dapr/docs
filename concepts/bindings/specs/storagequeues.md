@@ -18,4 +18,4 @@ spec:
 
 `storageAccount` is the Azure Storage account name.
 `storageAccessKey` is the Azure Storage access key.
-`queue` is the name of the Azure Storage Queue.
+`queue` is the name of the Azure Storage queue.
