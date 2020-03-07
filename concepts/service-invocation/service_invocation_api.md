@@ -3,7 +3,7 @@
 Dapr provides users with the ability to call other applications that have unique ids.
 This functionality allows apps to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
 
-## Endpoints
+## Contents
 
 - [Invoke a Method on a Remote Dapr App](#invoke-a-method-on-a-remote-dapr-app)
 
@@ -52,14 +52,36 @@ Within the body of the request place the data you want to send to the service:
 }
 ```
 
+### Request received by invoked service
+
+Once your service code invokes a method in another Dapr enabled app, Dapr will send the request, along with the headers and body, to the app on the `<method-name>` endpoint.
+
+The Dapr app being invoked will need to be listening for and responding to requests on that endpoint.
+
 ### Examples
 
-You can invoke the `calculate` method on the countService service by sending the following:
+You can invoke the `add` method on the `mathService` service by sending the following:
 
 ```shell
-curl http://localhost:3500/v1.0/invoke/countService/method/calculate \
+curl http://localhost:3500/v1.0/invoke/mathService/method/add \
   -H "Content-Type: application/json"
-  -d '{ "arg1": 10, "arg2": 23, "operator": "+" }'
+  -d '{ "arg1": 10, "arg2": 23}'
+```
+
+The `mathService` service will need to be listening on the `/add` endpoint to receive and process the request.
+
+For a Node app this would look like:
+
+```js
+app.post('/add', (req, res) => {
+  let args = req.body;
+  const [operandOne, operandTwo] = [Number(args['arg1']), Number(args['arg2'])];
+  
+  let result = operandOne / operandTwo;
+  res.send(result.toString());
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}!`));
 ```
 
 > The response from the remote endpoint will be returned in the request body.
