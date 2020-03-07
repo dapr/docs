@@ -13,7 +13,7 @@ Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs`
 
 ## Bindings Structure
 
-An Dapr Binding yaml file has the following structure:
+A Dapr Binding yaml file has the following structure:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -29,22 +29,23 @@ spec:
 
 The ```metadata.name``` is the name of the binding.
 
-If running place this file in your `components` folder next to your state store and message queue yml configurations.
+If running self hosted locally, place this file in your `components` folder next to your state store and message queue yml configurations.
+
 If running on kubernetes apply the component to your cluster.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
 ## Invoking Service Code Through Input Bindings
 
-A developer who wants to trigger her app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.
+A developer who wants to trigger their app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.
 
 On startup Dapr sends a ```OPTIONS``` request to the ```metadata.name``` endpoint and expects a different status code as ```NOT FOUND (404)``` if this application wants to subscribe to the binding.
 
-The ```metadata``` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the implementation.
+The ```metadata``` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the component implementation.
 
 ### Examples
 
-For example, here's how a Python application subscribes for events from ```Kafka``` using an Dapr API compliant platform:
+For example, here's how a Python application subscribes for events from ```Kafka``` using a Dapr API compliant platform. Note how the metadata.name value `kafkaevent` in the components matches the POST route name in the Python code.
 
 #### Kafka Component
 
