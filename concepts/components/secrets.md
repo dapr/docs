@@ -6,6 +6,10 @@ In order to reference a secret, you need to set the `auth.secretStore` field to 
 
 When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes secret store is assumed.
 
+### Supported secret stores
+
+Go to [this](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/supported-secret-stores.md) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
+
 ## Non default namespaces
 
 If your Dapr enabled apps are using components that fetch secrets from non-default namespaces, apply the following resource to the namespace:
