@@ -12,7 +12,7 @@ Bindings allow for on-demand, event-driven compute scenarios, and dapr bindings 
 
 Bindings are developed independently of Dapr runtime. You can view and contribute to the bindings [here](https://github.com/dapr/components-contrib/tree/master/bindings).
 
-## Supported Bindings and Specs
+## Supported bindings and specs
 
 Every binding has its own unique set of properties. Click the name link to see the component YAML for each binding.
 
@@ -55,7 +55,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Azure SignalR](./specs/signalr.md)                     |    | ✅ | Experimental |
 | [Azure Storage Queues](./specs/storagequeues.md)        | ✅ | ✅ | Experimental |
 
-## Input Bindings
+## Input bindings
 
 Input bindings are used to trigger your application when an event from an external resource has occurred.
 An optional payload and metadata might be sent with the request.
@@ -69,7 +69,7 @@ In order to receive events from an input binding:
 
 Read the [How To](../../howto/trigger-app-with-input-binding) section to get started with input bindings.
 
-## Output Bindings
+## Output bindings
 
 Output bindings allow users to invoke external resources
 An optional payload and metadata can be sent with the invocation request.

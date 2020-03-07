@@ -7,7 +7,7 @@ This functionality allows apps to interact with one another via named identifier
 
 - [Invoke a Method on a Remote Dapr App](#invoke-a-method-on-a-remote-dapr-app)
 
-## Invoke a Method on a Remote Dapr App
+## Invoke a method on a remote dapr app
 
 This endpoint lets you invoke a method in another Dapr enabled app.
 

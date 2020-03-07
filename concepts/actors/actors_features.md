@@ -1,4 +1,4 @@
-# Dapr Actors Runtime
+# Dapr actors runtime
 
 The Dapr actors runtime provides following capabilities:
 
@@ -6,7 +6,7 @@ The Dapr actors runtime provides following capabilities:
 - [State Management](#actor-state-management)
 - [Timers and Reminders](#actor-timers-and-reminders)
 
-## Actor Method Invocation
+## Actor method invocation
 
 You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint
 
@@ -18,7 +18,7 @@ You can provide any data for the actor method in the request body and the respon
 
 Refer [api spec](./actors_api.md#invoke-actor-method) for more details.
 
-## Actor State Management
+## Actor state management
 
 Actors can save state reliably using state management capability.
 
@@ -30,7 +30,7 @@ To use actors, your state store must support multi-item transactions.  This mean
 - MongoDB
 - SQL Server
 
-## Actor Timers and Reminders
+## Actor timers and reminders
 
 Actors can schedule periodic work on themselves by registering either timers or reminders.
 
@@ -78,7 +78,7 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 
 Refer [api spec](./actors_api.md#invoke-timer) for more details.
 
-### Actor Reminders
+### Actor reminders
 
 Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actors runtime persists the information about the actors' reminders using Dapr actor state provider.
 

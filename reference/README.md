@@ -1,4 +1,4 @@
-# Dapr References
+# Dapr references
 
 - **[Dapr CLI](https://github.com/dapr/cli)**: The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernetes cluster, provides debugging support, launches and manages Dapr instances.
 - **Dapr APIs**: Dapr provides a variety of APIs to allow developers to access building block capabilities:

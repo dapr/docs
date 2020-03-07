@@ -11,7 +11,7 @@ Dapr uses OpenTelemetry (previously known as OpenCensus) for distributed traces 
 - [Configuration](#configuration)
 - [References](#references)
 
-## Tracing Design
+## Tracing design
 
 Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts all Dapr and application traffic and automatically injects correlation IDs to trace distributed transactions. This design has several benefits:
 

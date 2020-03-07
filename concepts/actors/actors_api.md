@@ -1,4 +1,4 @@
-# Dapr Actors API Reference
+# Dapr actors API reference
 
 Dapr provides native, cross-platform and cross-language virtual actor capabilities.
 Besides the language specific Dapr SDKs, a developer can invoke an actor using the API endpoints below.
@@ -24,9 +24,9 @@ Besides the language specific Dapr SDKs, a developer can invoke an actor using t
   - [Invoke Timer](#invoke-timer)
 - [Querying Actor State Externally](#querying-actor-state-externally)
 
-## User Service Code Calling Dapr
+## User service code calling dapr
 
-### Invoke Actor Method
+### Invoke actor method
 
 Invoke an actor method through Dapr.
 
@@ -81,7 +81,7 @@ curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
 ```
 The response (the method return) from the remote endpoint is returned in the request body.
 
-### Save Actor State
+### Save actor state
 
 Persists the changed to the state for an actor
 
@@ -114,7 +114,7 @@ Value of the key is passed as request body:
 }
 ```
 
-### Actor State Transactions
+### Actor state transactions
 
 Persists the changed to the state for an actor as a multi-item transaction.
 
@@ -164,7 +164,7 @@ curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
       ]'
 ```
 
-### Get Actor State
+### Get actor state
 
 Gets the state for an actor using a specified key.
 
@@ -206,7 +206,7 @@ The above command returns the state:
 }
 ```
 
-### Create Actor Reminder
+### Create actor reminder
 
 Creates a persistent reminder for an actor.
 
@@ -271,7 +271,7 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
     }'
 ```
 
-### Get Actor Reminder
+### Get actor reminder
 
 Gets a reminder for an actor.
 
@@ -315,7 +315,7 @@ The above command returns the reminder:
 }
 ```
 
-### Delete Actor Reminder
+### Delete actor reminder
 
 Deletes a reminder for an actor.
 
@@ -349,7 +349,7 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
   -X "Content-Type: application/json"
 ```
 
-### Create Actor Timer
+### Create actor timer
 
 Creates a timer for an actor.
 
@@ -407,7 +407,7 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
     }'
 ```
 
-### Delete Actor Timer
+### Delete actor timer
 
 Deletes a timer for an actor.
 
@@ -439,9 +439,9 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
   -X "Content-Type: application/json"
 ```
 
-## Dapr calling to User Service Code
+## Dapr calling to user service code
 
-### Get Registered Actors
+### Get registered actors
 
 Gets the registered actors types for this app and the Dapr actor configuration settings.
 
@@ -494,7 +494,7 @@ drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTi
 }
 ```
 
-### Activate Actor
+### Activate actor
 
 Activates an actor by creating an instance of the actor with the specified actorId
 
@@ -529,7 +529,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50 \
   -H "Content-Type: application/json"
 ```
 
-### Deactivate Actor
+### Deactivate actor
 
 Deactivates an actor by persisting the instance of the actor to the state store with the specified actorId
 
@@ -564,7 +564,7 @@ curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
   -H "Content-Type: application/json"
 ```
 
-### Invoke Actor method
+### Invoke actor method
 
 Invokes a method for an actor with the specified methodName where parameters to the method are passed in the body of the request message and return values are provided in the body of the response message 
 
@@ -600,7 +600,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
   -H "Content-Type: application/json"
 ```
 
-### Invoke Reminder
+### Invoke reminder
 
 Invokes a reminder for an actor with the specified reminderName
 
@@ -636,7 +636,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
   -H "Content-Type: application/json"
 ```
 
-### Invoke Timer
+### Invoke timer
 
 Invokes a timer for an acto rwith the specified timerName
 
@@ -672,7 +672,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebe
   -H "Content-Type: application/json"
 ```
 
-## Querying Actor State Externally
+## Querying actor state externally
 
 In order to enable visibility into the state of an actor and allow for complex scenarios such as state aggregation, Dapr saves actor state in external state stores such as databases. As such, it is possible to query for an actor state externally by composing the correct key or query.
 

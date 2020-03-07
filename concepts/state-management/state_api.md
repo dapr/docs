@@ -9,7 +9,7 @@
 - [Configuring State Store for Actors](#configuring-state-store-for-actors)
 - [Optional Behaviors](#optional-behaviors)
 
-## Component File
+## Component file
 
 A Dapr State Store component yaml file has the following structure:
 
@@ -35,7 +35,7 @@ Starting with 0.4.0 release, support for multiple state stores was added. This i
 
 Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/API-008-multi-state-store-api-design.md for more details.
 
-## Key Scheme
+## Key scheme
 
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
 
@@ -49,7 +49,7 @@ For Actor states, the key format is:
 <Dapr id>||<Actor type>||<Actor id>||<state key>
 ```
 
-## Save State
+## Save state
 
 This endpoint lets you save an array of state objects.
 
@@ -113,7 +113,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
       ]'
 ```
 
-## Get State
+## Get state
 
 This endpoint lets you get the state for a specific key.
 
@@ -168,7 +168,7 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 }
 ```
 
-## Delete State
+## Delete state
 
 This endpoint lets you delete the state for a specific key.
 
@@ -216,7 +216,7 @@ None.
 curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
 ```
 
-## Configuring State Store for Actors
+## Configuring state store for actors
 
 Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently mongodb and redis implement the transactional state store interface.
 To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
@@ -239,7 +239,7 @@ spec:
 
 ```
 
-## Optional Behaviors
+## Optional behaviors
 
 ### Key scheme
 

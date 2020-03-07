@@ -1,8 +1,8 @@
-# Introduction to Actors
+# Introduction to actors
 
 Dapr runtime provides an actor implementation which is based on Virtual Actor pattern. The Dapr actors API provides a single-threaded programming model leveraging the scalability and reliability guarantees provided by underlying platform on which Dapr is running.
 
-## Quick Links
+## Quick links
 
 - [Dapr Actor Features](./actors_features.md)
 - [Dapr Actor API Spec](./actors_api.md)
@@ -15,13 +15,13 @@ Dapr runtime provides an actor implementation which is based on Virtual Actor pa
 - [Distribution and Failover](#distribution-and-failover)
 - [Actor Communication](#actor-communication)
 
-## Understanding Actors
+## Understanding actors
 
 An actor is an isolated, independent unit of compute and state with single-threaded execution.
 
 The [actor pattern](https://en.wikipedia.org/wiki/Actor_model) is a computational model for concurrent or distributed systems in which a large number of these actors can execute simultaneously and independently of each other. Actors can communicate with each other and they can create more actors.
 
-### When to use Actors
+### When to use actors
 
 Dapr actors is an implementation of the actor design pattern. As with any software design pattern, the decision whether to use a specific pattern is made based on whether or not a software design problem fits the pattern.
 
@@ -31,13 +31,13 @@ Although the actor design pattern can be a good fit to a number of distributed s
 * You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
 * Your actor instances won't block callers with unpredictable delays by issuing I/O operations.
 
-## Actors in Dapr
+## Actors in dapr
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
 <img src="../../images/actor_game_example.png" width=400>
 
-## Actor Lifetime
+## Actor lifetime
 
 Dapr actors are virtual, meaning that their lifetime is not tied to their in-memory representation. As a result, they do not need to be explicitly created or destroyed. The Dapr actors runtime automatically activates an actor the first time it receives a request for that actor ID. If an actor is not used for a period of time, the Dapr Actors runtime garbage-collects the in-memory object. It will also maintain knowledge of the actor's existence should it need to be reactivated later.
 
@@ -49,13 +49,13 @@ This virtual actor lifetime abstraction carries some caveats as a result of the 
 
 An actor is automatically activated (causing an actor object to be constructed) the first time a message is sent to its actor ID. After some period of time, the actor object is garbage collected. In the future, using the actor ID again, causes a new actor object to be constructed. An actor's state outlives the object's lifetime as state is stored in configured state provider for Dapr runtime.
 
-## Distribution and Failover
+## Distribution and failover
 
 To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr  automatically migrates them from failed nodes to healthy ones as required.
 
 Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
 
-### Actor Placement Service
+### Actor placement service
 The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor `Placement` service. When a new instance of a service is created, the corresponding Dapr runtime register the actor types it can create and the `Placement` service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
 
 ![Placement service registration](../../images/actors_placement_service_registration.png)
@@ -71,7 +71,7 @@ When a client calls an actor with a particular id (for example, actor id 123), t
 
 Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all hosting environments for example, self hosted, Kubernetes
 
-## Actor Communication
+## Actor communication
 
 You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint
 

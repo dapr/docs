@@ -1,4 +1,4 @@
-# Dapr Concepts
+# Dapr concepts
 
 This directory contains Dapr concepts. The goal of these documents provide an understanding of the key concepts used in the Dapr documentation.
 
@@ -10,7 +10,7 @@ This directory contains Dapr concepts. The goal of these documents provide an un
 - [Secrets](#secrets)
 - [Hosting Environments](#hosting-environments)
 
-## Building Blocks
+## Building blocks
 
 A [building block](./architecture/building_blocks.md) is as an HTTP or gRPC API that can be called from user code and uses one or more Dapr components. Dapr consists of a set of building blocks, with extensibility to add new building blocks.
 
@@ -64,7 +64,7 @@ Dapr [Configuration](./configuration/README.md) defines a policy that affects ho
 
  You can get a list of current configurations available in the current the hosting environment using the `dapr configuration` CLI command.
   
-## Hosting Environments
+## Hosting environments
 
 Dapr can run on multiple hosting platforms. The supported hosting platforms are:
 

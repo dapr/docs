@@ -1,4 +1,4 @@
-# 📖 Dapr Documentation
+# 📖 Dapr documentation
 
 Welcome to the Dapr documentation repository. You can learn more about Dapr from the links below.
 
@@ -12,7 +12,7 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 |**[Reference](./reference)** | Detailed reference documentation
 |**[FAQ](FAQ.md)** | Frequently asked questions, mostly around differentiation to existing frameworks
 
-## Further Documentation
+## Further documentation
 
 | Area | Description |
 |------|-------------|
@@ -21,7 +21,7 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 | **[Componenets Contribution](https://github.com/dapr/components-contrib)** | Open, community driven reusable components for building distributed applications.
 | **SDKs** | - [Go SDK](https://github.com/dapr/go-sdk)<br>- [Java SDK](https://github.com/dapr/java-sdk)<br>- [Javascript SDK](https://github.com/dapr/js-sdk)<br>- [Python SDK](https://github.com/dapr/python-sdk)<br>- [.NET SDK](https://github.com/dapr/dotnet-sdk)<br><br>**Note:** Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/README.md) in addition to the protobuf clients.
 
-## Document Versions
+## Document versions
 
 Dapr is currently under community development in preview phase and master branch could include breaking changes. Therefore, please ensure that you refer to the right version of the documents for your Dapr runtime version.
 
