@@ -24,7 +24,7 @@ Besides the language specific Dapr SDKs, a developer can invoke an actor using t
   - [Invoke Timer](#invoke-timer)
 - [Querying Actor State Externally](#querying-actor-state-externally)
 
-## User Service Code Calling to Dapr
+## User Service Code Calling Dapr
 
 ### Invoke Actor Method
 
@@ -62,7 +62,8 @@ curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/method/shoot \
   -H "Content-Type: application/json"
 ```
 
-Example of invoking a method on an actor with a payload:
+Example of invoking a method on an actor that takes parameters: You can provided the method parameters and values in the body of the request, for example in curl using -d "{\"param\":\"value\"}"
+ 
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
@@ -71,8 +72,14 @@ curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
         "destination": "Hoth"
       }'
 ```
+or
 
-The response from the remote endpoint will be returned in the request body.
+```shell
+curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
+  -H "Content-Type: application/json"
+  -d "{\"destination\":\"Hoth\"}"
+```
+The response (the method return) from the remote endpoint is returned in the request body.
 
 ### Save Actor State
 
@@ -111,7 +118,7 @@ Value of the key is passed as request body:
 
 Persists the changed to the state for an actor as a multi-item transaction.
 
-***Note that this operation is dependant on a state store that supports multi-item transactions.***
+***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
 
 #### HTTP Request
 
@@ -432,11 +439,11 @@ curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
   -X "Content-Type: application/json"
 ```
 
-## Specifications for Dapr calling to user service code
+## Dapr calling to User Service Code
 
 ### Get Registered Actors
 
-Gets the registered actors in Dapr.
+Gets the registered actors types for this app and the Dapr actor configuration settings.
 
 #### HTTP Request
 
@@ -489,7 +496,7 @@ drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTi
 
 ### Activate Actor
 
-Activates an actor.
+Activates an actor by creating an instance of the actor with the specified actorId
 
 #### HTTP Request
 
@@ -515,7 +522,7 @@ actorId | The actor ID.
 
 #### Examples:
 
-Example of activating an actor:
+Example of activating an actor: The example creates an actor of type stormtrooper with an actorId of 50
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50 \
@@ -524,7 +531,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50 \
 
 ### Deactivate Actor
 
-Deactivates an actor.
+Deactivates an actor by persisting the instance of the actor to the state store with the specified actorId
 
 #### HTTP Request
 
@@ -550,7 +557,7 @@ actorId | The actor ID.
 
 #### Examples
 
-Example of deactivating an actor:
+Example of deactivating an actor: The example deactives the actor type stormtrooper that has actorId of 50
 
 ```shell
 curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
@@ -559,7 +566,7 @@ curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
 
 ### Invoke Actor method
 
-Invokes a method for an actor.
+Invokes a method for an actor with the specified methodName where parameters to the method are passed in the body of the request message and return values are provided in the body of the response message 
 
 #### HTTP Request
 
@@ -586,7 +593,7 @@ methodName | The name of the method to invoke.
 
 #### Examples
 
-Example of invoking a method for an actor:
+Example of invoking a method for an actor: The example calls the performAction method on the actor type stormtrooper that has actorId of 50 
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
@@ -595,7 +602,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
 
 ### Invoke Reminder
 
-Invokes a reminder for an actor.
+Invokes a reminder for an actor with the specified reminderName
 
 #### HTTP Request
 
@@ -622,7 +629,7 @@ reminderName | The name of the reminder to invoke.
 
 #### Examples
 
-Example of invoking a reminder for an actor:
+Example of invoking a reminder for an actor: The example calls the checkRebels reminder method on the actor type stormtrooper that has actorId of 50 
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkRebels \
@@ -631,7 +638,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
 
 ### Invoke Timer
 
-Invokes a timer for an actor.
+Invokes a timer for an acto rwith the specified timerName
 
 #### HTTP Request
 
@@ -658,7 +665,7 @@ timerName | The name of the timer to invoke.
 
 #### Examples
 
-Example of invoking a timer for an actor:
+Example of invoking a timer for an actor: The example calls the checkRebels timer method on the actor type stormtrooper that has actorId of 50 
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebels \
@@ -667,9 +674,8 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebe
 
 ## Querying Actor State Externally
 
-In order to promote visibility into the state of an actor and allow for complex scenarios such as state aggregation, Dapr saves actor state in external databases.
+In order to enable visibility into the state of an actor and allow for complex scenarios such as state aggregation, Dapr saves actor state in external state stores such as databases. As such, it is possible to query for an actor state externally by composing the correct key or query.
 
-As such, it is possible to query for an actor state externally by composing the correct key or query.
 The state namespace created by Dapr for actors is composed of the following items:
 
 * Dapr ID - Represents the unique ID given to the Dapr application.
