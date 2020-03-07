@@ -8,7 +8,7 @@ This directory contains Dapr concepts. The goal of these documents provide an un
 - [Components](#components)
 - [Configuration](#configuration)
 - [Secrets](#secrets)
-- [Hosting Environments](#hosting-environmnets)
+- [Hosting Environments](#hosting-environments)
 
 ## Building Blocks
 
@@ -62,7 +62,7 @@ Dapr [Configuration](./configuration/README.md) defines a policy that affects ho
   
 ## Secrets
 
-In Dapr, a [**Secret**](./secrets/README.md) is any piece of private information that you want to guard against unwanted users. Dapr offers a simple secret API and integrates with secret stores such as Azure Key Vault and Kubernetes secret stores to store the secrets. Secretstores, used to store secrets, are Dapr components.
+In Dapr, a [**secret**](./secrets/README.md) is any piece of private information that you want to guard against unwanted users. Dapr offers a simple secret API and integrates with secret stores such as Azure Key Vault and Kubernetes secret stores to store the secrets. Secretstores, used to store secrets, are Dapr components.
 
 ## Hosting Environments
 
