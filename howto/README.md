@@ -40,7 +40,8 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 
 ## Secrets
 
-* [Configure secrets using Dapr secret stores](./setup-secret-store)
+* [Configure components secrets using Dapr secret stores](./setup-secret-store)
+* [Using the Secrets API to get application secrets](./get-secrets)
 
 ## Autoscaling
 
