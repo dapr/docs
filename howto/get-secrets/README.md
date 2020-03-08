@@ -26,16 +26,6 @@ For a full API reference, go [here](../../reference/api/secrets.md).
 
 Here are a few examples in different programming languages:
 
-### C#
-
-```csharp
-var client = new HttpClient();
-var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/my-secret");
-response.EnsureSuccessStatusCode();
-
-string secret = await response.Content.ReadAsStringAsync();
-Console.WriteLine(secret);
-```
 ### Go
 
 ```Go
@@ -101,3 +91,13 @@ async fn main() -> Result<(), reqwest::Error> {
 }
 ```
 
+### C#
+
+```csharp
+var client = new HttpClient();
+var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/my-secret");
+response.EnsureSuccessStatusCode();
+
+string secret = await response.Content.ReadAsStringAsync();
+Console.WriteLine(secret);
+```
