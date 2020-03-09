@@ -21,10 +21,14 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Use Pub/Sub to publish messages to a given topic](./publish-topic)
 * [Use Pub/Sub to consume events from a topic](./consume-topic)
 
-## Resources Bindings
+## Bindings and Triggers
 
 * [Trigger a service from different resources with input bindings](./trigger-app-with-input-binding)
 * [Invoke different resources using output bindings](./send-events-with-output-bindings)
+
+## Middleware
+
+* [Authorization with oAuth](./authorization-with-oauth)
 
 ## Distributed Tracing
 
@@ -36,7 +40,8 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 
 ## Secrets
 
-* [Configure secrets using Dapr secret stores](./setup-secret-store)
+* [Configure component secrets using Dapr secret stores](./setup-secret-store)
+* [Using the Secrets API to get application secrets](./get-secrets)
 
 ## Autoscaling
 

@@ -33,6 +33,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Azure CosmosDB](./specs/cosmosdb.md) | | V | Experimental |
 | [Azure EventHubs](./specs/eventhubs.md) | V | V | Experimental |
 | [Azure Service Bus Queues](./specs/servicebusqueues.md) | V | V | Experimental |
+| [Azure Storage Queues](./specs/storagequeues.md) | V | V | Experimental |
 | [Azure SignalR](./specs/signalr.md) | | V | Experimental |
 | [GCP Cloud Pub/Sub](./specs/gcppubsub.md) | V | V | Experimental |
 | [GCP Storage Bucket](./specs/gcpbucket.md)  | | V | Experimental |

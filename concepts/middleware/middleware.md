@@ -10,7 +10,7 @@ When launched, a Dapr sidecar constructs a processing pipeline. The pipeline con
 
 > **NOTE:** Dapr provides a **middleware.http.uppercase** middleware that doesn't need any configurations. The middleware changes all texts in a request body to uppercase. You can use it to test/verify if your custom pipeline is in place.
 
-The following configuration defines a custom pipeline that uses a OAuth 2.0 middleware and an uppercase middleware. In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase texts, before they are forwarded to user code.
+The following configuration defines a custom pipeline that uses a [OAuth 2.0 middleware](../../howto/authorization-with-oauth/README.md) and an uppercase middleware. In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase texts, before they are forwarded to user code.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -50,4 +50,4 @@ func GetHandler(metadata Metadata) fasthttp.RequestHandler {
 }
 ```
 
-Your code should be contributed to the https://github.com/dapr/components-contrib repository, under the */middleware* folder. Then, you'll need to submit another pull request against the https://github.com/dapr/dapr repository to register the new middleware type. You'll need to modify the **Load()** method under https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/loader.go to register your middleware using the **RegisterMiddleware** method.
+Your code should be contributed to the https://github.com/dapr/components-contrib repository, under the */middleware* folder. Then, you'll need to submit another pull request against the https://github.com/dapr/dapr repository to register the new middleware type. You'll need to modify the **Load()** method under https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/registry.go to register your middleware using the **Register** method.
