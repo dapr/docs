@@ -8,7 +8,7 @@ When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes s
 
 ### Supported secret stores
 
-Go to [this](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/supported-secret-stores.md) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
+Go to [this](../../howto/setup-secret-store/README.md) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
 
 ## Non default namespaces
 
