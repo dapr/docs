@@ -33,9 +33,11 @@ curl -X POST http://localhost:3500/v1.0/publish/deathStarStatus \
      }'
 ```
 
-## Handling topic subscriptions
+# Required Application (User Code) Routes
 
-In order to receive topic subscriptions, Dapr will invoke the following endpoint on user code:
+## Provide a route for Dapr to discover topic subscriptions
+
+Dapr will invoke the following endpoint on user code to discover topic subscriptions:
 
 ### HTTP Request
 
@@ -59,9 +61,9 @@ Example:
 "["TopicA","TopicB"]"
 ```
 
-## Delivering events to subscribers
+## Provide route(s) for Dapr to deliver topic events
 
-In order to deliver events to a subscribed application, a `POST` call should be made to user code with the name of the topic as the URL path.
+In order to deliver topic events, a `POST` call will be made to user code with the name of the topic as the URL path.
 
 The following example illustrates this point, considering a subscription for topic `TopicA`:
 
