@@ -43,4 +43,11 @@ curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ "data": { "me
 
 As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myEvent`.
 
-The payload goes inside the `data` field.
+The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+
+
+## References
+
+* Binding [API](https://github.com/dapr/docs/blob/master/reference/api/bindings.md)
+* Binding [Components](https://github.com/dapr/docs/blob/master/reference/api/bindings.md)
+* Binding [Detailed specifications](https://github.com/dapr/docs/tree/master/concepts/bindings/specs) 
