@@ -1,6 +1,6 @@
-# Secret Store for AWS Secret Manager
+# Secret store for AWS Secret Manager
 
-This document shows how to enable AWS Secret Manager secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode.
+This document shows how to enable AWS Secret Manager secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for self hosted and Kubernetes mode.
 
 ## Create an AWS Secret Manager instance
 
@@ -32,11 +32,11 @@ To deploy in Kubernetes, save the file above to `aws_secret_manager.yaml` and th
 kubectl apply -f aws_secret_manager.yaml
 ```
 
-When running in self hosted mode, place this file in a `components` directory from the Dapr working directory.
+When running in self hosted mode, place this file in a `components` directory under the Dapr working directory.
 
 ## AWS Secret Manager reference example
 
-This example shows you how to take the Redis password from the AWS Secret Manager secret store.
+This example shows you how to set the Redis password from the AWS Secret Manager secret store.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
