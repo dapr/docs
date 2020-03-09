@@ -6,6 +6,7 @@ First, Dapr components are namespaced. That means a Dapr runtime instance can on
 Although namespace sounds like a Kubernetes term, this is true for Dapr not only on Kubernetes.
 
 ## Namespaces
+Namespaces can be used to limit component access to particular Dapr instances.
 
 ### Example of component namespacing in Kubernetes
 
@@ -24,11 +25,11 @@ spec:
     value: redis-master:6379
 ```
 
-This component will only be accessible to Dapr instances running inside the `production` namespace.
+In this example, the Redis component is only accessible to Dapr instances running inside the `production` namespace.
 
 ### Example of component namsespacing in self-hosted mode
 
-In self hosed, a developer can specify the namespace to a Dapr instance by setting the `NAMESPACE` environment variable.
+In self hosted mode, a developer can specify the namespace to a Dapr instance by setting the `NAMESPACE` environment variable.
 If the `NAMESPACE` environment variable is set, Dapr will not load any component that does not specify the same namespace in its metadata.
 
 Considering the example above, to tell Dapr which namespace it is deployed to, set the environment variable:
@@ -39,14 +40,14 @@ export NAMESPACE=production
 # run Dapr as usual
 ```
 
-When Dapr will run, it will match it's own configured namespace with the namespace of the components that it loads and init the matching ones.
+When Dapr runs, it matches it's own configured namespace with the namespace of the components that it loads and initializes only the the one matching its namespaces. All other components in a different namespace are not loaded.
 
-## Scopes
+## Application access to components with scopes
 
-Developers and operators might want to limit access for one database to a certain application, or a number of applications.
-To achieve that, Dapr allows to specify `scopes` on the component YAML.
+Developers and operators might want to limit access for one database to a certain application, or a specific set of applications.
+To achieve this, Dapr allows you to specify `scopes` on the component YAML. Application scopes added to a component limit only the applications with specific IDs to be able to use the component.
 
-The following example shows how to give access to the Redis component to two Dapr-enabled apps, with the IDs of `app1` and `app2`.
+The following example shows how to give access to two Dapr enabled apps, with the app IDs of `app1` and `app2` to the Redis component named `statestore` which itself is in the `production` namespace 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
