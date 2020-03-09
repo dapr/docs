@@ -1,6 +1,6 @@
 # Secret Store for GCP Secret Manager
 
-This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode.
+This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for self hosted and Kubernetes mode.
 
 ## Create an GCP Secret Manager instance
 
@@ -44,7 +44,7 @@ To deploy in Kubernetes, save the file above to `gcp_secret_manager.yaml` and th
 kubectl apply -f gcp_secret_manager.yaml
 ```
 
-When running in self hosted mode, place this file in a `components` directory from the Dapr working directory.
+When running in self hosted mode, place this file in a `components` directory under the Dapr working directory.
 
 ## GCP Secret Manager reference example
 
