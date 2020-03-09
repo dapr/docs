@@ -1,4 +1,6 @@
-# Supported Secret Stores
+# Setup a Secret Store
+
+The following table lists the supported secret stores for Dapr:
 
 * [Kubernetes](./kubernetes.md)
 * [AWS Secret Manager](./aws-secretmanager.md)
