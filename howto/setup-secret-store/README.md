@@ -1,6 +1,6 @@
 # How To: Setup Secret Stores
 
-The following list shows the supported secret stores supported by Dapr. The links here will walk you through setting up and using the secret store with Dapr.
+The following list shows the supported secret stores by Dapr. The links here will walk you through setting up and using the secret store.
 
 * [AWS Secret Manager](./aws-secret-manager.md)
 * [Azure Key Vault](./azure-keyvault.md)
