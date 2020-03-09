@@ -20,40 +20,40 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [HTTP](./specs/http.md)           |    | ✅ | Experimental |
-| [Kafka](./specs/kafka.md)         | ✅ | ✅ | Experimental |
-| [Kubernetes Events](./kubernetes) | ✅ |    | Experimental |
-| [MQTT](./specs/mqtt.md)           | ✅ | ✅ | Experimental |
-| [RabbitMQ](./specs/rabbitmq.md)   | ✅ | ✅ | Experimental |
-| [Redis](./specs/redis.md)         |    | ✅ | Experimental |
-| [Twilio](./specs/twilio.md)       |    | ✅ | Experimental |
+| [HTTP](../../reference/specs/bindings/http.md)           |    | ✅ | Experimental |
+| [Kafka](../../reference/specs/bindings/kafka.md)         | ✅ | ✅ | Experimental |
+| [Kubernetes Events](../../reference/specs/bindings/kubernetes) | ✅ |    | Experimental |
+| [MQTT](../../reference/specs/bindings/mqtt.md)           | ✅ | ✅ | Experimental |
+| [RabbitMQ](../../reference/specs/bindings/rabbitmq.md)   | ✅ | ✅ | Experimental |
+| [Redis](../../reference/specs/bindings/redis.md)         |    | ✅ | Experimental |
+| [Twilio](../../reference/specs/bindings/twilio.md)       |    | ✅ | Experimental |
 
 ### Amazon Web Service (AWS)
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [AWS DynamoDB](./specs/dynamodb.md) |    | ✅ | Experimental |
-| [AWS S3](./specs/s3.md)             |    | ✅ | Experimental |
-| [AWS SNS](./specs/sns.md)           |    | ✅ | Experimental |
-| [AWS SQS](./specs/sqs.md)           | ✅ | ✅ | Experimental |
+| [AWS DynamoDB](../../reference/specs/bindings/dynamodb.md) |    | ✅ | Experimental |
+| [AWS S3](../../reference/specs/bindings/s3.md)             |    | ✅ | Experimental |
+| [AWS SNS](../../reference/specs/bindings/sns.md)           |    | ✅ | Experimental |
+| [AWS SQS](../../reference/specs/bindings/sqs.md)           | ✅ | ✅ | Experimental |
 
 ### Google Cloud Platform (GCP)
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [GCP Cloud Pub/Sub](./specs/gcppubsub.md)  | ✅ | ✅ | Experimental |
-| [GCP Storage Bucket](./specs/gcpbucket.md) |     | ✅ | Experimental |
+| [GCP Cloud Pub/Sub](../../reference/specs/bindings/gcppubsub.md)  | ✅ | ✅ | Experimental |
+| [GCP Storage Bucket](../../reference/specs/bindings/gcpbucket.md) |     | ✅ | Experimental |
 
 ### Microsoft Azure
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [Azure Blob Storage](./specs/blobstorage.md)            |    | ✅ | Experimental |
-| [Azure EventHubs](./specs/eventhubs.md)                 | ✅ | ✅ | Experimental |
-| [Azure CosmosDB](./specs/cosmosdb.md)                   |    | ✅ | Experimental |
-| [Azure Service Bus Queues](./specs/servicebusqueues.md) | ✅ | ✅ | Experimental |
-| [Azure SignalR](./specs/signalr.md)                     |    | ✅ | Experimental |
-| [Azure Storage Queues](./specs/storagequeues.md)        | ✅ | ✅ | Experimental |
+| [Azure Blob Storage](../../reference/specs/bindings/blobstorage.md)            |    | ✅ | Experimental |
+| [Azure EventHubs](../../reference/specs/bindings/eventhubs.md)                 | ✅ | ✅ | Experimental |
+| [Azure CosmosDB](../../reference/specs/bindings/cosmosdb.md)                   |    | ✅ | Experimental |
+| [Azure Service Bus Queues](../../reference/specs/bindings/servicebusqueues.md) | ✅ | ✅ | Experimental |
+| [Azure SignalR](../../reference/specs/bindings/signalr.md)                     |    | ✅ | Experimental |
+| [Azure Storage Queues](../../reference/specs/bindings/storagequeues.md)        | ✅ | ✅ | Experimental |
 
 ## Input bindings
 
