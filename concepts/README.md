@@ -1,42 +1,36 @@
 # Dapr concepts
 
-This directory contains Dapr concepts. The goal of these documents provide an understanding of the key concepts used in the Dapr documentation and the [Dapr spec](../reference/api/README.md).
+This directory contains Dapr concepts. The goal of these documents provide an understanding of the key concepts used in the Dapr documentation.
+
+## Contents
+
+- [Building Blocks](#building-blocks)
+- [Components](#components)
+- [Configuration](#configuration)
+- [Secrets](#secrets)
+- [Hosting Environments](#hosting-environments)
 
 ## Building blocks
 
-A [building block](./architecture/building_blocks.md) is as an Http or gRPC API that can be called from user code and uses one or more Dapr components. Dapr consists of a set of building blocks, with extensibility to add new building blocks.
+A [building block](./architecture/building_blocks.md) is as an HTTP or gRPC API that can be called from user code and uses one or more Dapr components. Dapr consists of a set of building blocks, with extensibility to add new building blocks.
+
+<img src="../images/building_blocks.png" width=800>
 
 The diagram below shows how building blocks expose a public API that is called from your code, using components to implement the building blocks capability.
-  
-![Dapr Building Blocks and Components](../images/concepts-building-blocks.png)
+
+<img src="../images/concepts-building-blocks.png" width=250>
   
 The following are the building blocks provided by Dapr:
 
-* [**Resource Bindings**](./bindings/README.md)
-
-  A binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the  Dapr binding API, and it allows your application to be triggered by events sent by the connected service.
-
-* [**Distributed Tracing**](./distributed-tracing/README.md)
-
-  Distributed tracing collects and aggregates trace events, metrics and performance numbers between Dapr instances. It allows you to trace the entire call chain across multiple services, or see call metrics on a user service. Dapr currently integrates with  [Open Census](https://opencensus.io/) and when ready [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection.
-
-* [**Publish/Subscribe Messaging**](./publish-subscribe-messaging/README.md)
-  
-  Pub/Sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr supports the pub/sub pattern between applications.
-
-* [**Service Invocation**](./service-invocation/service-invocation.md)
-  
-  Service invocation enables applications to communicate with each other through well-known endpoints in the form of http or gRPC messages. Dapr provides an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
-
-* [**State Management**](./state-management/state-management.md)
-
-  Application state is anything an application wants to preserve beyond a single session. Dapr provides a key/value-based state API with pluggable state stores for persistence.
-
-* [**Actors**](./actor/actor_overview.md)
-
-  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use.
-  * [Actor Overview](./actor/actor_overview.md)
-  * [Actor Features](./actor/actors_features.md)
+| Building Block | Endpoint | Description |
+|----------------|----------|-------------|
+| [**Resource Bindings**](./bindings/README.md)| `/v1.0/bindings` | A binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the  Dapr binding API, and it allows your application to be triggered by events sent by the connected service.
+| [**Publish/Subscribe Messaging**](./publish-subscribe-messaging/README.md) | `/v1.0/publish` |  Pub/Sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr supports the pub/sub pattern between applications.
+| [**Service Invocation**](./service-invocation/README.md) | `/v1.0/invoke` | Service invocation enables applications to communicate with each other through well-known endpoints in the form of http or gRPC messages. Dapr provides an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
+| [**State Management**](./state-management/README.md) | `/v1.0/state` | Application state is anything an application wants to preserve beyond a single session. Dapr provides a key/value-based state API with pluggable state stores for persistence.
+| [**Secrets**](./secrets/README.md) | `/v1.0/secrets` | Service code can call the secrets API to retrieve secrets out of the Dapr supported secret store.
+| [**Distributed Tracing**](./distributed-tracing/README.md) | `TBD` |  Distributed tracing collects and aggregates trace events, metrics and performance numbers between Dapr instances. It allows you to trace the entire call chain across multiple services, or see call metrics on a user service. Dapr currently integrates with  [Open Census](https://opencensus.io/) and when ready [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection.
+| [**Actors**](./actors/README.md) | `/v1.0/actors` |  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use. See * [Actor Overview](./actor/actor_overview.md)
 
 ## Components
  
@@ -49,30 +43,30 @@ Dapr uses a modular design where functionality is delivered as a component. Each
  The following are the component types provided by Dapr:
 
 * Bindings
-* Tracing exporters
-* Middleware
 * Pub/sub
-* Secret store
 * Service discovery
+* Middleware
 * State
+* Secret store
+* Tracing exporters
+
+### Middleware components
+
+Dapr allows custom [**middleware**](./middleware/README.md) to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components is used with the Service Invocation building block.
+
+## Secrets
+
+In Dapr, a [**secret**](./secrets/README.md) is any piece of private information that you want to guard against unwanted users. Dapr offers a secrets building block API and integrates with secret stores such as Azure Key Vault and Kubernetes to store the secrets. Secretstores, used to store secrets, are Dapr components.
 
 ## Configuration
 
-Dapr [Configuration](./configuration/README.md) defines a policy that affects how any Dapr sidecar instance behaves, such as using [distributed tracing](distributed-tracing/README.md) or a [custom pipeline](middleware/middleware.md). Configuration can be applied to Dapr sidecar instances dynamically.
+Dapr [Configuration](./configuration/README.md) defines a policy that affects how any Dapr sidecar instance behaves, such as using [distributed tracing](distributed-tracing/README.md) or a [custom pipeline](./middleware/middleware.md). Configuration can be applied to Dapr sidecar instances dynamically.
 
  You can get a list of current configurations available in the current the hosting environment using the `dapr configuration` CLI command.
-
-## Middleware
-
-Dapr allows custom [**middleware**](./middleware/middleware.md) to be plugged into the request processing pipeline. Middleware are components. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client.
   
-## Secrets
-
-In Dapr, a [**Secret**](./components/secrets.md) is any piece of private information that you want to guard against unwanted users. Dapr offers a simple secret API and integrates with secret stores such as Azure Key Vault and Kubernetes secret stores to store the secrets. Secretstores, used to store secrets, are Dapr components.
-
 ## Hosting environments
 
 Dapr can run on multiple hosting platforms. The supported hosting platforms are:
 
-* [**Self hosted**](../overview.md#running-dapr-on-a-local-developer-machine-in-standalone-mode). Dapr runs on a single machine either as a process or in a container. Used for local development or running on a single machine execution 
-* [**Kubernetes**](../overview.md#running-dapr-in-kubernetes-mode). Dapr runs on any Kubernetes cluster either from a cloud provider or on-premises.
+* [**Self hosted**](../overview/README.md#running-dapr-on-a-local-developer-machine-in-standalone-mode). Dapr runs on a single machine either as a process or in a container. Used for local development or running on a single machine execution 
+* [**Kubernetes**](../overview/README.md#running-dapr-in-kubernetes-mode). Dapr runs on any Kubernetes cluster either from a cloud provider or on-premises.

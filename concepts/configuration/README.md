@@ -5,4 +5,4 @@ Dapr configuration is a configuration file (in local mode) or a Kubernetes confi
 A Dapr configuration configures:
 
 * [distributed tracing](../distributed-tracing/README.md)
-* [custom pipeline](../middleware/middleware.md)
+* [custom pipeline](../middleware/README.md)
