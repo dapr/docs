@@ -41,7 +41,7 @@ export NAMESPACE=production
 
 When Dapr will run, it will match it's own configured namespace with the namespace of the components that it loads and init the matching ones.
 
-## Scoping
+## Scopes
 
 Developers and operators might want to limit access for one database to a certain application, or a number of applications.
 To achieve that, Dapr allows to specify `scopes` on the component YAML.
