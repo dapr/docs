@@ -34,11 +34,22 @@ If the `NAMESPACE` environment variable is set, Dapr will not load any component
 
 Considering the example above, to tell Dapr which namespace it is deployed to, set the environment variable:
 
+MacOS/Linux:
+
 ```bash
 export NAMESPACE=production
 
 # run Dapr as usual
 ```
+
+Windows:
+
+```powershell
+setx NAMESPACE "production"
+
+# run Dapr as usual
+```
+
 
 When Dapr runs, it matches it's own configured namespace with the namespace of the components that it loads and initializes only the the one matching its namespaces. All other components in a different namespace are not loaded.
 
