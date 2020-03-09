@@ -43,6 +43,10 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Configure component secrets using Dapr secret stores](./setup-secret-store)
 * [Using the Secrets API to get application secrets](./get-secrets)
 
+## Components
+
+* [Limit components for one or more applications using scopes](./components-scopes)
+
 ## Autoscaling
 
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
