@@ -64,7 +64,7 @@ You will need to define a task and problem matcher for daprd in your [tasks.json
 
 Let's take a quick look at the args that are being passed to the daprd command.
 
-* -dapr-id -- the id (how you will locate it via service invocation) of your microservice
+* -app-id -- the id (how you will locate it via service invocation) of your microservice
 * -app-port -- the port number that your application code is listening on
 * -dapr-http-port -- the http port for the dapr api
 * -dapr-grpc-port -- the grpc port for the dapr api
@@ -92,7 +92,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
             "label": "daprd-web",
             "command": "daprd",
             "args": [
-                "-dapr-id",
+                "-app-id",
                 "whac-a-mole--web",
                 "-app-port",
                 "3000",
@@ -123,7 +123,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
             "label": "daprd-leaderboard",
             "command": "daprd",
             "args": [
-                "-dapr-id",
+                "-app-id",
                 "whac-a-mole--leaderboard",
                 "-app-port",
                 "5000",

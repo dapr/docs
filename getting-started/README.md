@@ -1,14 +1,14 @@
-# Getting started
+# Getting Started
 
 Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
-## Core concepts
+## Core Concepts
 
 * **Building blocks** are a collection of components that implement distributed system capabilities, such as pub/sub, state management, resource bindings, and distributed tracing.
 
 * **Components** encapsulate the implementation for a building block API. Example implementations for the state building block may include Redis, Azure Storage, Azure Cosmos DB, and AWS DynamoDB. Many of the components are pluggable so that one implementation can be swapped out for another.
 
-To learn more, see [Dapr Concepts](../concepts/README.md).
+To learn more, see [Dapr Concepts](../concepts).
 
 ## Setup the development environment
 

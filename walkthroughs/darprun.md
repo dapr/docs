@@ -26,7 +26,7 @@ Then, the Dapr CLI will [launch](https://github.com/dapr/cli/blob/d585612185a4a5
 If you inspect the command lines of the Dapr runtime and the app, observe that the Dapr runtime has these args:
 
 ```bash
-daprd.exe --dapr-id mynode --dapr-http-port 3500 --dapr-grpc-port 43693 --log-level info --max-concurrency -1 --protocol http --app-port 3000 --placement-address localhost:50005
+daprd.exe --app-id mynode --dapr-http-port 3500 --dapr-grpc-port 43693 --log-level info --max-concurrency -1 --protocol http --app-port 3000 --placement-address localhost:50005
 ```
 
 And the app has these args, which are not modified from what was passed in via the CLI:
@@ -37,7 +37,7 @@ node app.js
 
 ### Dapr runtime
 
-The daprd process is started with the args above.  `--app-id`, "nodeapp", which is the dapr app id, is forwarded from the Dapr CLI into `daprd` as the `--dapr-id` arg.  Similarly:
+The daprd process is started with the args above.  `--app-id`, "nodeapp", which is the dapr app id, is forwarded from the Dapr CLI into `daprd` as the `--app-id` arg.  Similarly:
 
 - the `--app-port` from the CLI, which represents the port on the app that `daprd` will use to communicate with it has been passed into the `--app-port` arg.  
 - the `--port` arg  from the CLI, which represents the http port that daprd is listening on is passed into the `--dapr-http-port` arg.  (Note to specify grpc instead you can use `--grpc-port`).  If it's not specified, it will be -1 which means the Dapr CLI will chose a random free port.  Below, it's 43693, yours will vary.
