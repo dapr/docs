@@ -11,4 +11,4 @@ Instead of including credentials within a Dapr component, you can place the cred
 
 ## Retrieving Secrets
 
-Service code can call the secrets building block API to retrieve secrets out of the Dapr supported secret store. Read [Secrets API Specification](./secrets_api.md) for more information.
+Service code can call the secrets building block API to retrieve secrets out of the Dapr supported secret store. Read [Secrets API Specification](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md) for more information.
