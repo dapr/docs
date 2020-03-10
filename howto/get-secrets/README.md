@@ -22,7 +22,7 @@ Follow the instructions [here](../setup-secret-store) to set up the secret store
 
 Now that the secret store is set up, you can call Dapr to get the secrets for a given key for a specific secret store.
 
-For a full API reference, go [here](../../reference/api/secrets.md).
+For a full API reference, go [here](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
 
 Here are a few examples in different programming languages:
 
