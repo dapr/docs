@@ -21,7 +21,6 @@ POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appId>/method/<meth
 
 Code | Description
 ---- | -----------
-200  | Request successful
 500  | Request failed
 
 ### URL Parameters
