@@ -4,7 +4,7 @@ a greater understanding of how Dapr is behaving and to setup alerts for specific
 
 ## Configuration
 The metrics endpoint is enabled by default, you can disable it by passing the command line argument
-`--enable-metrics false` to daprd.
+`--enable-metrics=false` to daprd.
 
 The default metrics port is `9090`. This can be overridden by passing the command line argument
 `--metrics-port` to darpd.
