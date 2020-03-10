@@ -19,6 +19,11 @@ POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appId>/method/<meth
 
 ### HTTP Response codes
 
+When a service invokes another service with Dapr, the status code of the called service will be returned to the caller.
+If there's a network error or other transient error, Dapr will return a `500` error with the detailed error message.
+
+In case a user invokes Dapr over HTTP to talk to a gRPC enabled service, an error from the called gRPC service will return as `500` and a successful response will return as `200OK`.
+
 Code | Description
 ---- | -----------
 500  | Request failed
