@@ -31,14 +31,14 @@ GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<key>?metadata.
 ```
 
 ##### GCP Secret Manager
-The following meta needs to be provided to the GCP Secret Manager component
+The following optional meta can be provided to the GCP Secret Manager component
 
 Query Parameter | Description
 --------- | -----------
 metadata.version_id | version for the given secret key
 
 ##### AWS Secret Manager
-The following meta needs to be provided to the AWS Secret Manager component
+The following optional meta can be provided to the AWS Secret Manager component
 
 Query Parameter | Description
 --------- | -----------
