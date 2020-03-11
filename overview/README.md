@@ -38,7 +38,7 @@ Each of these building blocks is independent, meaning that you can use one, some
 |  **[State Management](../concepts/state)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, AWS DynamoDB or Redis among others.
 | **[Publish and Subscribe Messaging](../concepts/publish-subscribe-messaging)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
 | **[Resource Bindings](../concepts/bindings)** | Resource bindings with triggers builds further on event-driven | chitectures for scale and resiliency by receiving and sending events to and from any external | source such as databases, queues, file systems, etc.
-| **[Distributed Tracing](../concepts/distributed-tracing)** | Dapr supports distributed tracing to easily diagnose and | serve inter-service calls in production using the W3C Trace Context standard.
+| **[Distributed Tracing](../concepts/observability/traces.md)** | Dapr supports distributed tracing to easily diagnose and | serve inter-service calls in production using the W3C Trace Context standard.
 | **[Actors](../concepts/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
 
 ## Sidecar architecture
@@ -70,7 +70,7 @@ To make using Dapr more natural for different languages, it also includes langua
 - **[Python SDK](https://github.com/dapr/python-sdk)**
 - **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
 
-> Note: Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/README.md) in addition to the protobuf clients.
+> Note: Dapr is language agnostic and provides a [RESTful HTTP API](../reference/api/README.md) in addition to the protobuf clients.
 
 ### Developer frameworks
 
@@ -92,7 +92,7 @@ You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app)
 
 Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
 
-The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](../concepts/security/readme.md#dapr-to-dapr-communication)
+The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](../concepts/security/README.md#dapr-to-dapr-communication)
 
 <img src="../images/overview_kubernetes.png" width=800>
 

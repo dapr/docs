@@ -23,7 +23,7 @@ spec:
 ```
 
 The type of database is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/components/secrets.md).
+Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/secrets/README.md).
 
 ## Running locally
 

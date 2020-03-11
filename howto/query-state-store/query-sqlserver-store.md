@@ -1,6 +1,6 @@
 # Query SQL Server state store
 
-Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [Dapr state management spec](../../reference/api/state.md). You can directly interact with the underlying store to manipulate the state data, such querying states, creating aggregated views and making backups.
+Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [Dapr state management spec](../../reference/api/state_api.md). You can directly interact with the underlying store to manipulate the state data, such querying states, creating aggregated views and making backups.
 
 ## 1. Connect to SQL Server
 

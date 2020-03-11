@@ -44,7 +44,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 To setup Redis, you need to create a component for `pubsub.redis`.
 
-The following yaml files demonstrates how to define each. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/components/secrets.md) instructions to securely manage your secrets.
+The following yaml files demonstrates how to define each. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
 
 ### Configuring Redis Streams for Pub/Sub
 

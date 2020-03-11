@@ -1,6 +1,6 @@
 # Secret Store for Azure Key Vault
 
-This document shows how to enable Azure Key Vault secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode. The Dapr secret store component uses Service Principal using certificate authorization to authenticate Key Vault.
+This document shows how to enable Azure Key Vault secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Standalone and Kubernetes mode. The Dapr secret store component uses Service Principal using certificate authorization to authenticate Key Vault.
 
 > **Note:** Find the Managed Identity for Azure Key Vault instructions [here](azure-keyvault-managed-identity.md).
 
@@ -292,4 +292,4 @@ time="2019-09-26T20:34:25Z" level=info msg="loaded component statestore (state.r
 
 - [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 - [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
-- [Secrets Component](../../concepts/components/secrets.md)
+- [Secrets Component](../../concepts/secrets/README.md)

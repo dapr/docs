@@ -1,6 +1,6 @@
 # Secret Store for Hashicorp Vault
 
-This document shows how to enable Hashicorp Vault secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode.
+This document shows how to enable Hashicorp Vault secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Standalone and Kubernetes mode.
 
 ## Create a Hashicorp Vault instance
 
