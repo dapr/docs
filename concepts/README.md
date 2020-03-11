@@ -30,13 +30,13 @@ The following are the building blocks provided by Dapr:
 | [**State Management**](./state-management/README.md) | `/v1.0/state` | Application state is anything an application wants to preserve beyond a single session. Dapr provides a key/value-based state API with pluggable state stores for persistence.
 | [**Secrets**](./secrets/README.md) | `/v1.0/secrets` | Service code can call the secrets API to retrieve secrets out of the Dapr supported secret store.
 | [**Distributed Tracing**](./observability/traces.md) | `TBD` |  Distributed tracing collects and aggregates trace events, metrics and performance numbers between Dapr instances. It allows you to trace the entire call chain across multiple services, or see call metrics on a user service. Dapr currently integrates with  [Open Census](https://opencensus.io/) and when ready [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection.
-| [**Actors**](./actors/README.md) | `/v1.0/actors` |  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use. See * [Actor Overview](./actor/actor_overview.md)
+| [**Actors**](./actors/README.md) | `/v1.0/actors` |  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use. See * [Actor Overview](./actors#understanding-actors)
 
 ## Components
  
 Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition.  All of the components are pluggable so that you can swap out one component with the same interface for another. The [components contrib repo](https://github.com/dapr/components-contrib) is where you can contribute implementations for the component interfaces and extends Dapr's capabilities.
   
- A building block can use any combination of components. For example the [actors](./actor/actor_overview.md) building block and the state management building block both use state  components.  As another example, the pub/sub building block uses [pub/sub](./publish-subscribe-messaging/README.md) components.
+ A building block can use any combination of components. For example the [actors](./actors) building block and the state management building block both use state  components.  As another example, the pub/sub building block uses [pub/sub](./publish-subscribe-messaging/README.md) components.
 
  You can get a list of current components available in the current hosting environment using the `dapr components` CLI command.
 
