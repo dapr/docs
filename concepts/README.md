@@ -60,7 +60,7 @@ In Dapr, a [**secret**](./secrets/README.md) is any piece of private information
 
 ## Configuration
 
-Dapr [Configuration](./configuration/README.md) defines a policy that affects how any Dapr sidecar instance behaves, such as using [distributed tracing](./observability/traces.md) or a [custom pipeline](./middleware/middleware.md). Configuration can be applied to Dapr sidecar instances dynamically.
+Dapr [Configuration](./configuration/README.md) defines a policy that affects how any Dapr sidecar instance behaves, such as using [distributed tracing](./observability/traces.md) or a [custom pipeline](./middleware/README.md). Configuration can be applied to Dapr sidecar instances dynamically.
 
  You can get a list of current configurations available in the current the hosting environment using the `dapr configuration` CLI command.
   
