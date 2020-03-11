@@ -30,7 +30,7 @@ The following are the building blocks provided by Dapr:
 | [**State Management**](./state-management/README.md) | `/v1.0/state` | Application state is anything an application wants to preserve beyond a single session. Dapr provides a key/value-based state API with pluggable state stores for persistence.
 | [**Secrets**](./secrets/README.md) | `/v1.0/secrets` | Service code can call the secrets API to retrieve secrets out of the Dapr supported secret store.
 | [**Distributed Tracing**](./observability/traces.md) | `TBD` |  Distributed tracing collects and aggregates trace events, metrics and performance numbers between Dapr instances. It allows you to trace the entire call chain across multiple services, or see call metrics on a user service. Dapr currently integrates with  [Open Census](https://opencensus.io/) and when ready [OpenTelemetry](https://opentelemetry.io/) for distributed tracing and metrics collection.
-| [**Actors**](./actors/README.md) | `/v1.0/actors` |  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use. See * [Actor Overview](./actor/actor_overview.md)
+| [**Actors**](./actors/README.md) | `/v1.0/actors` |  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use. See * [Actor Overview](./actors#understanding-actors)
 
 ## Components
  
