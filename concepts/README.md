@@ -36,7 +36,7 @@ The following are the building blocks provided by Dapr:
  
 Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition.  All of the components are pluggable so that you can swap out one component with the same interface for another. The [components contrib repo](https://github.com/dapr/components-contrib) is where you can contribute implementations for the component interfaces and extends Dapr's capabilities.
   
- A building block can use any combination of components. For example the [actors](./actor/actor_overview.md) building block and the state management building block both use state  components.  As another example, the pub/sub building block uses [pub/sub](./publish-subscribe-messaging/README.md) components.
+ A building block can use any combination of components. For example the [actors](./actors) building block and the state management building block both use state  components.  As another example, the pub/sub building block uses [pub/sub](./publish-subscribe-messaging/README.md) components.
 
  You can get a list of current components available in the current hosting environment using the `dapr components` CLI command.
 
