@@ -63,7 +63,7 @@ spec:
     value: <REPLACE-WITH-REQUEUE-IN-FAILURE> # Optional. Default: "false".
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/components/secrets.md)
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
 
 ## Apply the configuration
 

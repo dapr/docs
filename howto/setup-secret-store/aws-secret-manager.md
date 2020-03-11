@@ -1,6 +1,6 @@
 # Secret store for AWS Secret Manager
 
-This document shows how to enable AWS Secret Manager secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for self hosted and Kubernetes mode.
+This document shows how to enable AWS Secret Manager secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for self hosted and Kubernetes mode.
 
 ## Create an AWS Secret Manager instance
 

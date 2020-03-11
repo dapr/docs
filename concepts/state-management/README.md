@@ -24,7 +24,7 @@ Dapr data stores are components. Dapr ships with [Redis](https://redis.io
 ), [GCP Cloud Spanner](https://cloud.google.com/spanner
 ) and [Cassandra](http://cassandra.apache.org/).
 
-Visit [State API](./state_api.md) for more information.
+Visit [State API](../../reference/api/state_api.md) for more information.
 
 > **NOTE:** Dapr prefixes state keys with the ID of the current Dapr instance. This allows multiple Dapr instances to share the same state store.
 
@@ -98,8 +98,8 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 
 ## References
 
-* [Spec: Dapr state management specification](../../reference/api/state.md)
-* [Spec: Dapr actors specification](../../reference/api/actors.md)
+* [Spec: Dapr state management specification](../../reference/api/state_api.md)
+* [Spec: Dapr actors specification](../../reference/api/actors_api.md)
 * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
 * [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
 * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)

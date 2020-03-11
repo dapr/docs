@@ -1,6 +1,6 @@
 # Authorization with oAuth
 
-Dapr OAuth 2.0 [middleware](../../concepts/middleware/middleware.md) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs, using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1). When the middleware is enabled, any method invocation through Dapr needs to be authorized before getting passed to the user code.
+Dapr OAuth 2.0 [middleware](../../concepts/middleware/README.md) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs, using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1). When the middleware is enabled, any method invocation through Dapr needs to be authorized before getting passed to the user code.
 
 ## Register your application with a authorization server
 
@@ -61,7 +61,7 @@ spec:
 
 ## Define a custom pipeline
 
-To use the OAuth middleware, you should create a [custom pipeline](../../concepts/middleware/middleware.md) using [Dapr configuration](../../concets/../concepts/configuration/README.md), as shown in the following sample:
+To use the OAuth middleware, you should create a [custom pipeline](../../concepts/middleware/README.md) using [Dapr configuration](../../concepts/configuration/README.md), as shown in the following sample:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
