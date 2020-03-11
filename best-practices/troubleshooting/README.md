@@ -8,4 +8,4 @@ This section describes different tools, techniques and common problems to help u
 4. [Common issues](common_issues.md)
 
 Please open a new Bug or Feature Request item on our [issues section](https://github.com/dapr/dapr/issues) if you've encountered a problem running Dapr.
-If a security vulnerability has been found, contact the [Dapr team](daprct@microsoft.com).
+If a security vulnerability has been found, contact the [Dapr team](mailto:daprct@microsoft.com).

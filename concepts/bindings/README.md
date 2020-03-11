@@ -22,7 +22,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 |------|:----------------:|:-----------------:|--------|
 | [HTTP](../../reference/specs/bindings/http.md)           |    | ✅ | Experimental |
 | [Kafka](../../reference/specs/bindings/kafka.md)         | ✅ | ✅ | Experimental |
-| [Kubernetes Events](../../reference/specs/bindings/kubernetes) | ✅ |    | Experimental |
+| [Kubernetes Events](../../reference/specs/bindings/kubernetes.md) | ✅ |    | Experimental |
 | [MQTT](../../reference/specs/bindings/mqtt.md)           | ✅ | ✅ | Experimental |
 | [RabbitMQ](../../reference/specs/bindings/rabbitmq.md)   | ✅ | ✅ | Experimental |
 | [Redis](../../reference/specs/bindings/redis.md)         |    | ✅ | Experimental |

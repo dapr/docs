@@ -25,5 +25,5 @@ Steps 4-5 are the same as the list above.
 
 For more information, see:
 
-- The [Service Invocation API Spec](.service_invocation_api.md)
+- The [Service Invocation API Spec](../../reference/api/service_invocation_api.md)
 - A [HowTo](../../howto/invoke-and-discover-services/README.md) on Service Invocation

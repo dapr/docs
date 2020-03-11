@@ -67,4 +67,4 @@ When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Dire
 
 ## Component secrets
 
-Dapr components uses Dapr's built-in secret management capability to manage secrets. Please see the [secret topic](../components/secrets.md) for more details.
+Dapr components uses Dapr's built-in secret management capability to manage secrets. Please see the [secret topic](../secrets/README.md) for more details.
