@@ -2,11 +2,12 @@
 
 - [Dapr-to-App Communication](#dapr-to-app-communication)
 - [Dapr-to-Dapr Communication](#dapr-to-dapr-communication)
+- [Component namespace scopes and secrets](#Component-namespace-scopes-and-secrets)
 - [Network Security](#network-security)
 - [Bindings Security](#bindings-security)
 - [State Store Security](#state-store-security)
 - [Management Security](#management-security)
-- [Component Secrets](#component-secets)
+
 
 ## Dapr-to-app communication
 
@@ -43,6 +44,12 @@ Specific details for how to do that can be found [here](../../howto/configure-mt
 
 <a href="https://ibb.co/XWFYsfY"><img src="https://i.ibb.co/rQ5d6Kd/Screen-Shot-2020-02-10-at-8-34-33-PM.png" alt="Screen-Shot-2020-02-10-at-8-34-33-PM" border="0"></a>
 
+## Component namespace scopes and secrets
+
+Dapr components are namespaced. That means a Dapr runtime sidecar instance can only access the components that have been deployed to the same namespace. See the [components scope topic](../../howto/components-scopes) for more details.
+
+Dapr components uses Dapr's built-in secret management capability to manage secrets. See the [secret topic](../secrets/README.md) for more details.
+
 ## Network security
 
 You can adopt common network security technologies such as network security groups (NSGs), demilitarized zones (DMZs) and firewalls to provide layers of protections over your networked resources.
@@ -64,7 +71,3 @@ Dapr uses the configured authentication method to authenticate with the underlyi
 When deploying on Kubernetes, you can use regular [Kubernetes RBAC]( https://kubernetes.io/docs/reference/access-authn-authz/rbac/) to control access to management activities.
 
 When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
-
-## Component secrets
-
-Dapr components uses Dapr's built-in secret management capability to manage secrets. Please see the [secret topic](../secrets/README.md) for more details.
