@@ -3,16 +3,16 @@
 Here you'll find a list of How To guides that walk you through accomplishing specific tasks.
 
 ## Contents
- - [Service invocation](#service-invocation)
- - [State Management](#state-management)
- - [Pub/Sub](#Pub/Sub)
- - [Bindings and Triggers](#bindings-and-triggers)
- - [Actors](#actors)
- - [Observerability](#observerability)
- - [Security](#security)
- - [Components](#components)
- - [Developer Tooling](#developer-experience)
- - [Infrastructure integration](#Infrastructure-integration)
+- [Service invocation](#service-invocation)
+- [State Management](#state-management)
+- [Pub/Sub](#Pub/Sub)
+- [Bindings and Triggers](#bindings-and-triggers)
+- [Actors](#actors)
+- [Observerability](#observerability)
+- [Security](#security)
+- [Components](#components)
+- [Developer Tooling](#developer-experience)
+- [Infrastructure integration](#Infrastructure-integration)
 
 ## Service invocation
 
