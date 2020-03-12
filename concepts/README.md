@@ -1,6 +1,6 @@
 # Dapr concepts
 
-This directory contains Dapr concepts. The goal of these documents provide an understanding of the key concepts used in the Dapr documentation.
+This directory contains Dapr concepts. The goal of these topics is to provide an understanding of the key concepts used in the Dapr documentation.
 
 ## Contents
 
@@ -47,12 +47,13 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 * Service discovery
 * Middleware
 * State
-* Secret store
+* Secrets
 * Tracing exporters
 
 ### Middleware components
 
-Dapr allows custom [**middleware**](./middleware/README.md) to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components is used with the Service Invocation building block.
+Dapr allows custom [**middleware**](./middleware/README.md) to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client.
+ The middleware components are used with the [Service Invocation](./service-invocation/README.md) building block.
 
 ## Secrets
 
