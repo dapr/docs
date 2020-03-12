@@ -135,7 +135,7 @@ Refer [here](../../reference/dashboard/README.md) for details.
 
 ![upload json](./img/grafana-uploadjson.png)
 
-9. Find the dashboard that you imports and enjoy!
+9. Find the dashboard that you imported and enjoy!
 
 ![upload json](../../reference/dashboard/img/system-service-dashboard.png)
 
