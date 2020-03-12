@@ -1,4 +1,6 @@
-# Azure EventHubs Binding Spec
+# Azure Event Hubs Binding Spec
+
+See (this)[https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dotnet-framework-getstarted-send] for instructions on how to set up an Event Hub.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
