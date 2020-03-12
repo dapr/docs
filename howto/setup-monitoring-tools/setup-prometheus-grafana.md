@@ -117,13 +117,13 @@ So you need to provide `http://dapr-prom-prometheus-server.dapr-monitoring` in t
 
 7. Import Dapr dashboards.
 
-You can now import built-in [Grafana dashboard templates](https://github.com/dapr/docs/tree/master/monitoring/grafana/dashboards). 
+You can now import built-in [Grafana dashboard templates](../../reference/dashboard/README.md). 
 
-Refer [here](https://github.com/dapr/docs/tree/master/monitoring/grafana) for details.
+Refer [here](../../reference/dashboard/README.md) for details.
 
 ![upload json](./img/grafana-uploadjson.png)
 
-You can find screenshots of Dapr dashboards [here](https://github.com/dapr/docs/tree/master/monitoring/grafana/img).
+You can find screenshots of Dapr dashboards [here](../../reference/dashboard/img/).
 
 # References
 
