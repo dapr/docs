@@ -67,7 +67,7 @@ In order to receive events from an input binding:
 
 > On startup Dapr sends a ```OPTIONS``` request for all defined input bindings to the application and expects a different status code as ```NOT FOUND (404)``` if this application wants to subscribe to the binding.
 
-Read the [How To](../../howto/trigger-app-with-input-binding) section to get started with input bindings.
+Read the [Create an event-driven app using input bindings](../../howto/trigger-app-with-input-binding) section to get started with input bindings.
 
 ## Output bindings
 
@@ -79,4 +79,10 @@ In order to invoke an output binding:
 1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
 2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload
 
- Read the [How To](../../howto/send-events-with-output-bindings) section to get started with output bindings.
+ Read the [Send events to external systems using Output Bindings](../../howto/send-events-with-output-bindings) section to get started with output bindings.
+
+ ## Related Topics
+* [Implementing a new binding](https://github.com/dapr/docs/tree/master/reference/specs/bindings)
+* [Trigger a service from different resources with input bindings](./trigger-app-with-input-binding)
+* [Invoke different resources using output bindings](./send-events-with-output-bindings)
+

@@ -39,6 +39,9 @@ To setup a state store in Kubernetes, use `kubectl` to apply the component file:
 ```bash
 kubectl apply -f statestore.yaml
 ```
+ ## Related Topics
+*  [State management concepts](../../concepts/state-management/README.md)
+* [State management API specification](../../reference/api/state_api.md)
 
 ## Reference
 

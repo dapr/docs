@@ -101,3 +101,7 @@ The example above showed you how to directly invoke a different service running 
 Dapr outputs metrics and tracing information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
 
 For more information on tracing, visit [this link](../../best-practices/troubleshooting/tracing.md).
+
+ ## Related Topics
+*  [Service invocation concepts](../../concepts/service-invocation/README.md)
+* [Service invocation API specification](../../reference/api/service_invocation_api.md)
