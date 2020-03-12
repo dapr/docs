@@ -30,9 +30,12 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 
 * [Authorization with oAuth](./authorization-with-oauth)
 
-## Distributed Tracing
+## Observability
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
+* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
+* [Set up Prometheus and Grafana for metrics](./setup-monitoring-tools/setup-prometheus-grafana.md)
 
 ## Mutual Transport Layer Security (TLS)
 
