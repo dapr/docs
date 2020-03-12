@@ -86,7 +86,7 @@ fluentd-sdrld                 1/1     Running   0          14s
 1. Install Dapr with enabling JSON-formatted logs
 
 ```bash
-helm install dapr dapr/dapr --namespace dapr-system --set global.LogAsJSON=true
+helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 ```
 
 2. Enable JSON formatted log in Dapr sidecar

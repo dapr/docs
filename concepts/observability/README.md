@@ -1,6 +1,6 @@
 # Observability
 
-Observability is a term from control theory. Observability means you can answer questions about what’s happening on the inside of a system by observing the outside of the system, without having to ship new code to answer new questions. Observability is critical in production environments and services to debug, operate and monitor Dapr system services, components and user applications. 
+Observability is a term from control theory. Observability means you can answer questions about what's happening on the inside of a system by observing the outside of the system, without having to ship new code to answer new questions. Observability is critical in production environments and services to debug, operate and monitor Dapr system services, components and user applications.
 
 The observability capabilities enable users to monitor the Dapr system services, their interaction with user applications and understand how these monitored services behave. The observability capabilities are divided into three main areas;
 
@@ -17,8 +17,9 @@ The table below shows the current status of each of the observabilty capabilites
 |Tracing  | Yes     | N/A      | N/A      | *Planned* | N/A    |
 |Logs     | Yes     | Yes      | Yes      | Yes       | Yes    |
 
-## Supported monitoring tools
-The observability tools listed below are ones that have been tested to work with Dapr
+## Monitoring tools
+
+The observability tools listed below are ones that have been tested to work with Dapr. 
 
 ### Metrics
 

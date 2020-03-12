@@ -59,7 +59,7 @@ kubectl apply -f ./azm-config.map.yaml
 1. Install Dapr with enabling JSON-formatted logs
 
 ```bash
-helm install dapr dapr/dapr --namespace dapr-system --set global.LogAsJSON=true
+helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 ```
 
 2. Enable JSON formatted log in Dapr sidecar and add Prometheus annotations.
