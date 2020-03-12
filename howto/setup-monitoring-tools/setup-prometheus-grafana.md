@@ -30,7 +30,7 @@ helm install dapr-prom stable/prometheus -n dapr-monitoring
    If you are minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command.
 
 ```bash
-helm install prometheus stable/prometheus -n dapr-monitoring --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
+helm install dapr-prom stable/prometheus -n dapr-monitoring --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
 ```
 
 3. Install Grafana
@@ -41,11 +41,20 @@ helm install grafana stable/grafana -n dapr-monitoring
 
    If you are minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command.
 
-   ```bash
+```bash
 helm install grafana stable/grafana -n dapr-monitoring --set persistence.enabled=false
 ```
 
-4. Validation
+4. Retrieve admin password for Grafana Login
+
+> Note: remove `%` character from the password that this command returns. The admin password is `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1`.
+
+```
+kubernetes get secret --namespace dapr-monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1%
+```
+
+5. Validation
 
 Ensure Prometheus and Grafana are running in your cluster.
 
@@ -77,15 +86,17 @@ Handling connection for 8080
 
 2. Browse `http://localhost:8080`
 
-3. Click Configuration Settings -> Data Sources
+3. Login with admin and password
+
+4. Click Configuration Settings -> Data Sources
 
       ![data source](./img/grafana-datasources.png)
 
-4. Add Prometheus as a data soruce.
+5. Add Prometheus as a data soruce.
 
       ![add data source](./img/grafana-datasources.png)
 
-5. Enter Promethesus server address in your cluster.
+6. Enter Promethesus server address in your cluster.
 
 You can get the prometheus server address by running following command.
 
@@ -104,17 +115,17 @@ kibana-kibana                        ClusterIP   10.0.188.224   <none>        56
 
 ```
 
-In this set up tutorial, the server is `dapr-prom-prometheus-server`.
+In this howto, the server is `dapr-prom-prometheus-server`.
 
 So you need to provide `http://dapr-prom-prometheus-server.dapr-monitoring` in the URL field.
 
-![prometheus server](./img/grafana-prometheus-server-url.png)
+![prometheus server](./img/grafana-prometheus-dapr-server-url.png)
 
-6. Click Save & Test button to verify that connected succeeded.
+1. Click `Save & Test` button to verify that connected succeeded.
 
-7. Import Dapr dashboards.
+2. Import Dapr dashboards.
 
-You can now import built-in [Grafana dashboard templates](../../reference/dashboard/README.md). 
+You can now import built-in [Grafana dashboard templates](../../reference/dashboard/README.md).
 
 Refer [here](../../reference/dashboard/README.md) for details.
 
@@ -125,9 +136,6 @@ You can find screenshots of Dapr dashboards [here](../../reference/dashboard/img
 # References
 
 * [Prometheus Installation](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
-
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
-
 * [Prometheus Kubernetes Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
-
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
