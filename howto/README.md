@@ -3,26 +3,16 @@
 Here you'll find a list of How To guides that walk you through accomplishing specific tasks.
 
 ## Contents
-- [How Tos](#how-tos)
-  - [Contents](#contents)
-  - [Service invocation](#service-invocation)
-    - [Middleware](#middleware)
-  - [State Management](#state-management)
-  - [Pub/Sub](#pubsub)
-  - [Bindings and Triggers](#bindings-and-triggers)
-  - [Actors](#actors)
-  - [Observerability](#observerability)
-    - [Metric and logs](#metric-and-logs)
-    - [Distributed Tracing](#distributed-tracing)
-  - [Security](#security)
-    - [Mutual Transport Layer Security (TLS)](#mutual-transport-layer-security-tls)
-    - [Secrets](#secrets)
-  - [Components](#components)
-  - [Developer experience](#developer-experience)
-    - [Using Visual Studio Code](#using-visual-studio-code)
-    - [Using IntelliJ](#using-intellij)
-    - [SDKs](#sdks)
-  - [Infrastructure integration](#infrastructure-integration)
+ - [Service invocation](#service-invocation)
+ - [State Management](#state-management)
+ - [Pub/Sub](#Pub/Sub)
+ - [Bindings and Triggers](#bindings-and-triggers)
+ - [Actors](#actors)
+ - [Observerability](#observerability)
+ - [Security](#security)
+ - [Components](#components)
+ - [Developer Tooling](#developer-experience)
+ - [Infrastructure integration](#Infrastructure-integration)
 
 ## Service invocation
 
