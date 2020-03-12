@@ -44,10 +44,10 @@ The following steps describe how to configure JSON formatted logs for Kubernetes
 
 ### Install Dapr to your cluster using the Helm chart
 
-You can enable JSON formatted logs for Dapr system services by adding `--set global.LogASJSON=true` option to Helm command.
+You can enable JSON formatted logs for Dapr system services by adding `--set global.logAsJson=true` option to Helm command.
 
 ```bash
-helm install dapr dapr/dapr --namespace dapr-system --set global.LogAsJSON=true
+helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 ```
 
 ### Enable JSON formatted log for Dapr sidecars 
