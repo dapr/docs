@@ -228,3 +228,7 @@ On Kubernetes, set the required `dapr.io/protocol: "grpc"` and `dapr.io/port: "4
 
 You can use Dapr with any language supported by Protobuf, and not just with the currently available generated SDKs.
 Using the [protoc](https://developers.google.com/protocol-buffers/docs/downloads) tool you can generate the Dapr clients for other languages like Ruby, C++, Rust and others.
+
+ ## Related Topics
+*  [Service invocation concepts](../../concepts/service-invocation/README.md)
+* [Service invocation API specification](../../reference/api/service_invocation_api.md)
