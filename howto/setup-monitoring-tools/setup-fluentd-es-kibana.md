@@ -1,6 +1,6 @@
-# Set up Fleuntd, Elastic search, and Kibana
+# Set up Fleuntd, Elastic search, and Kibana in Kubernetes
 
-This document shows how to install fluentd, elastic search, and Kibana to search logs.
+This document descriebs how to install Fluentd, Elastic Search, and Kibana to search logs in Kubernetes
 
 ## Prerequisites
 
@@ -10,14 +10,14 @@ This document shows how to install fluentd, elastic search, and Kibana to search
 
 ## Contents
 
-  - [Install Fluentd, Elastic search, and Kibana](#install-fluentd-elastic-search-and-kibana)
+  - [Install Fluentd, Elastic Search, and Kibana](#install-fluentd-elastic-search-and-kibana)
   - [Install Fluentd](#install-fluentd)
-  - [Install Dapr with JSON-formatted logs](#install-dapr-with-json-formatted-logs)
+  - [Install Dapr with JSON formatted logs](#install-dapr-with-json-formatted-logs)
   - [Search logs](#search-logs)
 
-## Install Fluentd, Elastic search, and Kibana
+## Install Elastic search and Kibana
 
-1.  Create namespace for monitoring tool and add helm repo for elastic
+1.  Create namespace for monitoring tool and add Helm repo for Elastic Search
 
 ```bash
 kubectl create namespace dapr-monitoring
@@ -30,18 +30,18 @@ helm repo add elastic https://helm.elastic.co
 helm repo update
 ```
 
-3. Install Elastic search using helm
+3. Install Elastic Search using Helm
 
 ```bash
 helm install elasticsearch elastic/elasticsearch -n dapr-monitoring
 ```
 
-If you are minikube user or want to disable persistent volume for development purpose, you can disable it by using the below command.
+If you are using minikube or want to disable persistent volumes for development purposes, you can disable it by using the following command.
 ```bash
 helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set persistence.enabled=false --replicas=1
 ```
 
-1. Install Kibana
+4. Install Kibana
 
 ```bash
 helm install kibana elastic/kibana -n dapr-monitoring
@@ -49,7 +49,7 @@ helm install kibana elastic/kibana -n dapr-monitoring
 
 5. Validation
 
-Ensure elastic search and kibana are running in your cluster.
+Ensure Elastic Search and Kibana are running in your Kubernetes cluster.
 
 ```bash
 kubectl get pods -n dapr-monitoring
@@ -60,16 +60,16 @@ kibana-kibana-95bc54b89-zqdrk   1/1     Running   0          4m21s
 
 ## Install Fluentd
 
-1. Install config map and fluentd as a daemonset
+1. Install config map and Fluentd as a daemonset
 
-> Note: If you are running fluentd in your cluster, please enable the nested json parser to parse JSON formatted log from Dapr.
+> Note: If you are running Fluentd in your cluster, please enable the nested json parser to parse JSON formatted log from Dapr.
 
 ```bash
 kubectl apply -f ./fluentd-config-map.yaml
 kubectl apply -f ./fluentd-dapr-with-rbac.yaml
 ```
 
-2. Ensure that fluentd is running as a daemonset
+2. Ensure that Fluentd is running as a daemonset
 
 ```bash
 kubectl get pods -n kube-system -w
@@ -81,7 +81,7 @@ fluentd-sdrld                 1/1     Running   0          14s
 ```
 
 
-## Install Dapr with JSON-formatted logs
+## Install Dapr with JSON formatted logs
 
 1. Install Dapr with enabling JSON-formatted logs
 
@@ -89,7 +89,7 @@ fluentd-sdrld                 1/1     Running   0          14s
 helm install dapr dapr/dapr --namespace dapr-system --set global.LogAsJSON=true
 ```
 
-2. Enable JSON-formatted log in Dapr sidecar
+2. Enable JSON formatted log in Dapr sidecar
 
 Add `dapr.io/log-as-json: "true"` annotation to your deployment yaml.
 
@@ -119,7 +119,7 @@ spec:
 
 ## Search logs
 
-> Note: Elastic search takes a time to index the logs that Fluentd sends. 
+> Note: Elastic Search takes a time to index the logs that Fluentd sends. 
 
 1. Port-forward to svc/kibana-kibana
 
