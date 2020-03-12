@@ -117,13 +117,17 @@ kibana-kibana                        ClusterIP   10.0.188.224   <none>        56
 
 In this howto, the server is `dapr-prom-prometheus-server`.
 
-So you need to provide `http://dapr-prom-prometheus-server.dapr-monitoring` in the URL field.
+So you need to set up Prometheus data source with the below settings:
+
+- Name: `Dapr`
+- HTTP URL: `http://dapr-prom-prometheus-server.dapr-monitoring`
+- Default: On
 
 ![prometheus server](./img/grafana-prometheus-dapr-server-url.png)
 
-1. Click `Save & Test` button to verify that connected succeeded.
+7. Click `Save & Test` button to verify that connected succeeded.
 
-2. Import Dapr dashboards.
+8. Import Dapr dashboards.
 
 You can now import built-in [Grafana dashboard templates](../../reference/dashboard/README.md).
 
@@ -131,7 +135,11 @@ Refer [here](../../reference/dashboard/README.md) for details.
 
 ![upload json](./img/grafana-uploadjson.png)
 
-You can find screenshots of Dapr dashboards [here](../../reference/dashboard/img/).
+9. Find the dashboard that you imports and enjoy!
+
+![upload json](../../reference/dashboard/img/system-service-dashboard.png)
+
+You can find more screenshots of Dapr dashboards [here](../../reference/dashboard/img/).
 
 # References
 
