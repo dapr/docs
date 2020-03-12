@@ -18,15 +18,15 @@ Observability is one of the critical properties of production-ready services to 
 
 ### Metrics
 
-* Prometheus + grafana
-* Azure monitor
+* [Prometheus + Grafana](../../howto/observe-metrics-with-prometheus/README.md)
+* [Azure monitor](../../howto/setup-monitoring-tools/setup-azure-monitor.md)
 
 ### Logs
 
-* Fluentd + Elastic search + Kibana
-* Azure Monitor
+* [Fluentd + Elastic search + Kibana](../../howto/setup-monitoring-tools/setup-fluentd-es-kibana.md)
+* [Azure monitor](../../howto/setup-monitoring-tools/setup-azure-monitor.md)
 
 ### Traces
 
-* Zipkin
-* Application insight
+* [Zipkin](../../howto/diagnose-with-tracing/zipkin.md)
+* [Application insight](../../howto/diagnose-with-tracing/azure-monitor.md)
