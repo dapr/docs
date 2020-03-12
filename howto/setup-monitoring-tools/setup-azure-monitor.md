@@ -1,6 +1,6 @@
 # Set up azure monitor to search logs and collect metrics for Dapr
 
-This document shows how to enable Dapr metrics and logs on Azure monitor for Azure Kubernetes Service.
+This document describes how to enable Dapr metrics and logs with Azure Monitor for Azure Kubernetes Service (AKS).
 
 ## Prerequisites
 
@@ -11,11 +11,11 @@ This document shows how to enable Dapr metrics and logs on Azure monitor for Azu
 
 ## Contents
 
-  - [Enable prometheus metric scrape using config map](#enable-prometheus-metric-scrape-using-config-map)
-  - [Install Dapr with JSON-formatted logs](#install-dapr-with-json-formatted-logs)
-  - [Search logs](#search-logs)
+  - [Enable Prometheus metric scrape using config map](#enable-prometheus-metric-scrape-using-config-map)
+  - [Install Dapr with JSON formatted logs](#install-dapr-with-json-formatted-logs)
+  - [Search metrics and logs with Azure Monitor](#Search-metrics-and-logs-with-azure-monitor)
 
-## Enable prometheus metric scrape using config map
+## Enable Prometheus metric scrape using config map
 
 1. Make sure that omsagnets are running
 
@@ -30,11 +30,11 @@ omsagent-smtk7                                                    1/1     Runnin
 ...
 ```
 
-2. Apply config map to enable prometheus metrics endpoint scrape.
+2. Apply config map to enable Prometheus metrics endpoint scrape.
 
 You can use [azm-config-map.yaml](./azm-config-map.yaml) to enable prometheus metrics endpoint scrape.
 
-If you install dapr to the different namespace, you need to change `monitor_kubernetes_pod_namespaces` array values.
+If you installed Dapr to the different namespace, you need to change the `monitor_kubernetes_pod_namespaces` array values. For example;
 
 ```yaml
 ...
@@ -54,7 +54,7 @@ Apply config map:
 kubectl apply -f ./azm-config.map.yaml
 ```
 
-## Install Dapr with JSON-formatted logs
+## Install Dapr with JSON formatted logs
 
 1. Install Dapr with enabling JSON-formatted logs
 
@@ -62,9 +62,9 @@ kubectl apply -f ./azm-config.map.yaml
 helm install dapr dapr/dapr --namespace dapr-system --set global.LogAsJSON=true
 ```
 
-2. Enable JSON-formatted log in Dapr sidecar and add prometheus annotation.
+2. Enable JSON formatted log in Dapr sidecar and add Prometheus annotations.
 
-> Note: OMS Agent scrapes the metrics only if replicaset has prometheus annotations.
+> Note: OMS Agent scrapes the metrics only if replicaset has Prometheus annotations.
 
 Add `dapr.io/log-as-json: "true"` annotation to your deployment yaml.
 
@@ -96,13 +96,13 @@ spec:
 ...
 ```
 
-## Search metrics and logs on azure monitor
+## Search metrics and logs with Azure Monitor
 
 1. Go to Azure Monitor
 
-2. Search dapr logs
+2. Search Dapr logs
 
-Parse JSON formatted logs and query logs from dapr system processes.
+Here is an example query, to parse JSON formatted logs and query logs from dapr system processes. 
 
 ```
 ContainerLog
@@ -114,7 +114,7 @@ ContainerLog
 
 3. Search metrics
 
-Query process_resident_memory_bytes prometheus metrics by dapr system processes and render timecharts
+This query, queries process_resident_memory_bytes Prometheus metrics for Dapr system processes and renders timecharts
 
 ```
 InsightsMetrics
