@@ -30,10 +30,7 @@ helm install dapr-prom stable/prometheus -n dapr-monitoring
    If you are minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command.
 
 ```bash
-helm install prometheus stable/prometheus -n dapr-monitoring
---set alertmanager.persistentVolume.enable=false
---set pushgateway.persistentVolume.enabled=false
---set server.persistentVolume.enabled=false
+helm install prometheus stable/prometheus -n dapr-monitoring --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
 ```
 
 3. Install Grafana
