@@ -104,7 +104,7 @@ spec:
   - name: enabled
     value: "true"
   - name: agentEndpoint
-    value: "<Local forwarder address, e.g. local env: localhost:5001, kubernetes env: dapr-localforwarder.default.svc.cluster.local:50001>"
+    value: "<Local forwarder address, e.g. dapr-localforwarder.default.svc.cluster.local:50001>"
 ```
 
 * tracing.yaml
