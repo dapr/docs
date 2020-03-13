@@ -17,6 +17,7 @@ For more information read [Referencing Secret Stores in Components](./component-
 ## Using secrets in your application
 
 Application code can call the secrets building block API to retrieve secrets from Dapr supported secret stores that can be used in your code.
+Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=1818) for an example of how the secrets API can be used in your application.
 
 For example, the diagram below shows an application requesting the secret called "mysecret" from a secret store called "vault" from a configured cloud secret store.
 

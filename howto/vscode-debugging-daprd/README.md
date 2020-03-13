@@ -3,7 +3,7 @@
 ## Visual Studio Code Dapr extension
 It is recommended to use the *preview* of the [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) available in the Visual Studio marketplace for local development and debugging of your Dapr applications.
 
-Watch this [20 min video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=85) on how to use the Dapr VS Code extension.
+Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=85) on how to use the Dapr VS Code extension.
 
 ### Debugging multiple Dapr applications at the same time
 Using the VS Code extension you can debug multiple Dapr applications at the same time with [Multi-target debugging](https://code.visualstudio.com/docs/editor/debugging#_multitarget-debugging)
