@@ -4,13 +4,13 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 
 | Topic | Description |
 |-------|-------------|
-|**[Overview](./overview)** | An overview of Dapr and how it enables you to build distributed |applications
-|**[Getting Started](./getting-started)** | Set up your environment
+|**[Overview](./overview)** | An overview of Dapr and how it enables you to build event driven, distributed applications
+|**[Getting Started](./getting-started)** | Set up your development environment
 |**[Concepts](./concepts)** | Dapr concepts explained
 |**[How-Tos](./howto)** | Guides explaining how to accomplish specific tasks
-|**[Best practices](./best-practices)** | Guides explaining best practices  using Dapr including |[debugging and troubleshooting](https://github.com/dapr/docs/tree/master/best-practices/|troubleshooting)
-|**[Reference](./reference)** | Detailed reference documentation
-|**[FAQ](FAQ.md)** | Frequently asked questions, mostly around differentiation to existing frameworks
+|**[Best Practices](./best-practices)** | Guides explaining best practices when using Dapr
+|**[Reference](./reference)** | API and bindings reference documentation
+|**[FAQ](FAQ.md)** | Frequently asked questions
 
 ## Further documentation
 
@@ -18,8 +18,8 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 |------|-------------|
 | **[Command Line Interface (CLI)](https://github.com/dapr/cli)** | The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernetes cluster, provides debugging support, launches and manages Dapr instances.
 | **[Dapr Runtime](https://github.com/dapr/dapr)** | Dapr runtime code and overview documentation.
-| **[Componenets Contribution](https://github.com/dapr/components-contrib)** | Open, community driven reusable components for building distributed applications.
-| **SDKs** | - [Go SDK](https://github.com/dapr/go-sdk)<br>- [Java SDK](https://github.com/dapr/java-sdk)<br>- [Javascript SDK](https://github.com/dapr/js-sdk)<br>- [Python SDK](https://github.com/dapr/python-sdk)<br>- [.NET SDK](https://github.com/dapr/dotnet-sdk)<br><br>**Note:** Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/README.md) in addition to the protobuf clients.
+| **[Components Contribution](https://github.com/dapr/components-contrib)** | Open, community driven reusable components for building distributed applications.
+| **SDKs** | - [Go SDK](https://github.com/dapr/go-sdk)<br>- [Java SDK](https://github.com/dapr/java-sdk)<br>- [Javascript SDK](https://github.com/dapr/js-sdk)<br>- [Python SDK](https://github.com/dapr/python-sdk)<br>- [.NET SDK](https://github.com/dapr/dotnet-sdk)<br>- [C++ SDK](https://github.com/dapr/cpp-sdk)<br>- [RUST SDK](https://github.com/dapr/rust-sdk)<br>**Note:** Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/README.md) in addition to the protobuf clients.
 
 ## Document versions
 
