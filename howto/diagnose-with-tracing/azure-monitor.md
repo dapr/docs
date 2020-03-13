@@ -1,28 +1,55 @@
-# Set up distributed tracing with Azure Monitor
+# Set up distributed tracing with Application insights
 
-Dapr integrates with Application Monitor through OpenTelemetry's default exporter along with a dedicated agent known as [Local Forwarder](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder).
+Dapr integrates with Application Insights through OpenTelemetry's default exporter along with a dedicated agent known as [Local Forwarder](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder).
 
-## How to configure distributed tracing with Azure Monitor
+## How to configure distributed tracing wit Application insights
 
-The following steps will show you how to configure Dapr to send distributed tracing data to Azure Monitor.
+The following steps will show you how to configure Dapr to send distributed tracing data to Application insights.
 
-### Setup Azure Monitor
+### Setup Application insights
 
 1. First, you'll need an Azure account. Please see instructions [here](https://azure.microsoft.com/free/) to apply for a **free** Azure account.
 2. Follow instructions [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource) to create a new Application Insights resource.
+3. Get Application insights Intrumentation key from your application insights page
+4. Go to `Configure -> API Access`
+5. Click `Create API Key`
+6. Select all checkboxes under `Choose what this API key will allow apps to do:`
+   - Read telemetry
+   - Write annotations
+   - Authenticate SDK control channel
+7. Generate Key and get API key
 
 ### Setup the Local Forwarder
 
-The Local Forwarder listens to OpenTelemetry's traces through
-Please follow the insturctions [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder) to setup Local Forwarder as a local service or daemon.
+#### Local environment
 
-> **NOTE**: At the time of writing, there's no official guidance on packaging and running the Local Forwarder as a Docker container. To use Local Forwarder on Kubernetes, you'll need to package the Local Forwarder as a Docker container and register a *ClusterIP* service. Then, you should set the service as the export target of the native exporter.
+```bash
+docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 50001:50001 daprio/dapr-localforwarder:0.1-beta1
+```
 
-### How to configure distributed tracing with Azure Monitor
+#### Kubernetes
+
+1. Download [dapr-localforwarder.yaml](./localforwarder/dapr-localforwarder.yaml)
+2. Replace `<APPINSIGHT INSTRUMENTATIONKEY>` with your Instrumentation Key and `<APPINSIGHT API KEY>` with the generated key in the file
+
+```yaml
+          - name: APPINSIGHTS_INSTRUMENTATIONKEY
+            value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
+          - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+            value: <APPINSIGHT API KEY> # Replace with your generated api key
+```
+
+3. Deploy dapr-localfowarder.yaml
+
+```bash
+kubectl apply -f ./dapr-localforwarder.yaml
+```
+
+### How to configure distributed tracing with Application insights
 
 You'll need two YAML files - a Dapr configuration file that enables tracing, and a native export configuration file that configures the native exporter.
 
-1. Create the following YAML files:
+1. Create the following YAML files
 
 * native.yaml
 
@@ -37,7 +64,7 @@ spec:
   - name: enabled
     value: "true"
   - name: agentEndpoint
-    value: "<Local forwarder address, for example: 50.140.60.170:6789>"
+    value: "<Local forwarder address, for example: dapr-localforwarder.monitoring.svc.cluster.local:50001>"
 ```
 
 * tracing.yaml
@@ -54,7 +81,7 @@ spec:
     includeBody: true
 ```
 
-2. When running under local mode, copy *tracing.yaml* to a *components* folder under the same folder where you run you application. When running under Kubernetes model, use kubectl to apply the above CRD files:
+1. When running under local mode, copy *tracing.yaml* to a *components* folder under the same folder where you run you application. When running under Kubernetes model, use kubectl to apply the above CRD files:
 
 ```bash
 kubectl apply -f tracing.yaml

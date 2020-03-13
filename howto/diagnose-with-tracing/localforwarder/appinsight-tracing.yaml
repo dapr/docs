@@ -19,5 +19,5 @@ spec:
   - name: enabled
     value: "true"
   - name: agentEndpoint
-    value: "dapr-localforwarder.monitoring.svc.cluster.local:6789"
+    value: "dapr-localforwarder.monitoring.svc.cluster.local:50001"
 ---
