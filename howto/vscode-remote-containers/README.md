@@ -16,4 +16,3 @@ These are the steps to use Dapr Remote Containers
 
 <img src="../../images/vscode_remote_containers.png" width=800>
 
-

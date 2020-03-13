@@ -1,4 +1,5 @@
-# Observe Metrics with Prometheus
+# Observe Metrics with Prometheus locally
+
 Dapr exposes a Prometheus metrics endpoint you can use to collect time-series
 data relating to the execution of the Dapr runtime itself.
 
@@ -55,36 +56,3 @@ docker run \
 `--net=host` ensures that the Prometheus instance will be able to connect to any Dapr instances running on the host machine. If you plan to run your Dapr apps in containers as well, you'll need to run them on a shared Docker network and update the configuration with the correct target address.
 
 Once Prometheus is running, you'll be able to visit its dashboard by visiting `http://localhost:8080`.
-
-## Setup Prometheus on Kubernetes
-
-Prometheus can be installed onto a Kubernetes cluster in a number of different ways. These are documented comprehensively [here](https://github.com/coreos/kube-prometheus).
-
-Once you have installed Prometheus on your Kubernetes cluster, you can add your Dapr sidecars' service address to your Prometheus configuration.
-
-The Dapr sidecar addresses can be fetched by using
-```
-$ kubectl get svc
-
-NAME          TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)
-nodeapp-dapr  ClusterIP  10.0.163.251  <none>       80/TCP,50001/TCP,9090/TCP
-...
-```
-
-You can then add the services DNS to your Prometheus configuration.
-```yaml
-...
-scrape_configs:
-  ...
-  - job_name: 'nodeapp-dapr'
-    metrics_path: /
-    static_configs:
-      - targets: ['nodeapp-dapr.<namespace>.svc.cluster.local:9090'] # Replace with Dapr metrics port if not default
-    ...
-```
-
-To see you Prometheus dashboard in Kubernetes, you'll need to port forward to your Prometheus pod and then hit the local endpoint `http://localhost:9090`.
-
-```
-kubectl port-forward <prometheus-pod-name> 9090:9090
-```

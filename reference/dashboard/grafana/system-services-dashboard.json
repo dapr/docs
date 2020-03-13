@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 18,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -1514,7 +1514,7 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1534,5 +1534,5 @@
   "timezone": "",
   "title": "Dapr System Services Dashboard",
   "uid": "RHSwiHXWk",
-  "version": 29
+  "version": 2
 }

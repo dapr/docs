@@ -9,3 +9,4 @@
   - [Service Invocation](./api/service_invocation_api.md)
   - [State Management](./api/state_api.md)
 - **[Dapr Binding Specs](./specs/bindings)**: Bindings provide triggers and interactions with external resources and services
+- **[Monitoring Dashboard templates](./dashboard/README.md)**: Monitoring dashboard templates help Dapr user to monitor Dapr services by importing templates to their monitoring tools

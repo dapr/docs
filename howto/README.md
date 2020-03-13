@@ -51,6 +51,13 @@ For Actors How Tos see the SDK documentation
 * [Java Actors](https://github.com/dapr/java-sdk)
 
 ## Observerability
+
+### Metric and logs
+
+* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
+* [Set up Prometheus and Grafana for metrics](./setup-monitoring-tools/setup-prometheus-grafana.md)
+
 ### Distributed Tracing
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
