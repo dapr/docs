@@ -27,7 +27,7 @@ The following steps will show you how to configure Dapr to send distributed trac
 docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 50001:50001 daprio/dapr-localforwarder:0.1-beta1
 ```
 
-#### Kubernetes
+#### Kubernetes environment
 
 1. Download [dapr-localforwarder.yaml](./localforwarder/dapr-localforwarder.yaml)
 2. Replace `<APPINSIGHT INSTRUMENTATIONKEY>` with your Instrumentation Key and `<APPINSIGHT API KEY>` with the generated key in the file
@@ -64,7 +64,7 @@ spec:
   - name: enabled
     value: "true"
   - name: agentEndpoint
-    value: "<Local forwarder address, for example: dapr-localforwarder.monitoring.svc.cluster.local:50001>"
+    value: "<Local forwarder address, e.g. local env: localhost:5001, kubernetes env: dapr-localforwarder.default.svc.cluster.local:50001>"
 ```
 
 * tracing.yaml
@@ -81,7 +81,7 @@ spec:
     includeBody: true
 ```
 
-1. When running under local mode, copy *tracing.yaml* to a *components* folder under the same folder where you run you application. When running under Kubernetes model, use kubectl to apply the above CRD files:
+2. When running under local mode, copy *tracing.yaml* to a *components* folder under the same folder where you run you application. When running under Kubernetes model, use kubectl to apply the above CRD files:
 
 ```bash
 kubectl apply -f tracing.yaml
@@ -119,7 +119,7 @@ That's it! There's no need include any SDKs or instrument your application code 
 
 Generate some workloads. And after a few minutes, you should see tracing logs appearing in your Application Insights resource. And you can also use **Application map** to examine the topology of your services, as shown below:
 
-![Azure Monitor screen](../../images/azure-monitor.png)
+![Application map](../../images/azure-monitor.png)
 
 ## Tracing Configuration
 
