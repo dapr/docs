@@ -23,7 +23,7 @@ The observability tools listed below are ones that have been tested to work with
 
 ### Metrics
 
-* [Prometheus + Grafana](../../howto/observe-metrics-with-prometheus/README.md)
+* [Prometheus + Grafana](../../howto/setup-monitoring-tools/setup-prometheus-grafana.md)
 * [Azure Monitor](../../howto/setup-monitoring-tools/setup-azure-monitor.md)
 
 ### Logs
