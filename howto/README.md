@@ -11,7 +11,7 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 - [Observerability](#observerability)
 - [Security](#security)
 - [Components](#components)
-- [Developer Tooling](#developer-experience)
+- [Developer tooling](#developer-tooling)
 - [Infrastructure integration](#Infrastructure-integration)
 
 ## Service invocation
@@ -56,7 +56,7 @@ For Actors How Tos see the SDK documentation
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
 
 ## Security
-### Mutual Transport Layer Security (TLS)
+### Mutual Transport Layer Security (mTLS)
 
 * [Setup and configure mutual TLS between Dapr instances](./configure-mtls)
 
@@ -69,10 +69,10 @@ For Actors How Tos see the SDK documentation
 
 * [Limit components for one or more applications using scopes](./components-scopes)
 
-## Developer experience
+## Developer tooling
 ### Using Visual Studio Code
 
-* [Using Remote Containers for application development](./vscode-remote-containers-daprd)
+* [Using Remote Containers for application development](./vscode-remote-containers)
 * [Developing and debugging  Dapr applications](./vscode-debugging-daprd)
 
 * [Setup development environment for Dapr runtime development ](https://github.com/dapr/dapr/blob/master/docs/development/setup-dapr-development-using-vscode.md)
