@@ -9,10 +9,9 @@ spec:
     app: dapr-localforwarder
   ports:
   - protocol: TCP
-    port: 50001
-    targetPort: 50001
+    port: 55678
+    targetPort: 55678
   type: ClusterIP
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,7 +33,7 @@ spec:
       - name: dapr-localforwarder
         image: docker.io/daprio/dapr-localforwarder:0.1-beta1
         ports:
-        - containerPort: 50001
+        - containerPort: 55678
         imagePullPolicy: Always
         env:
           - name: APPINSIGHTS_INSTRUMENTATIONKEY

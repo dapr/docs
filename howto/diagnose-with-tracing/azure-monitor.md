@@ -28,7 +28,7 @@ The following steps will show you how to configure Dapr to send distributed trac
 1. Run localfowarder
 
 ```bash
-docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 50001:50001 daprio/dapr-localforwarder:0.1-beta1
+docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678 daprio/dapr-localforwarder:0.1-beta1
 ```
 
 > Note: dapr-localforwarder is created by using [0.1-beta1 release](https://github.com/microsoft/ApplicationInsights-LocalForwarder/releases/tag/v0.1-beta1). If you want to create your own image, please use [this dockerfile](./localforwarder/Dockerfile).
@@ -48,7 +48,7 @@ spec:
   - name: enabled
     value: "true"
   - name: agentEndpoint
-    value: "localhost:5001"
+    value: "localhost:55678"
 ```
 
 * tracing.yaml
@@ -104,7 +104,7 @@ spec:
   - name: enabled
     value: "true"
   - name: agentEndpoint
-    value: "<Local forwarder address, e.g. dapr-localforwarder.default.svc.cluster.local:50001>"
+    value: "<Local forwarder address, e.g. dapr-localforwarder.default.svc.cluster.local:55678>"
 ```
 
 * tracing.yaml
