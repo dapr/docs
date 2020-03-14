@@ -61,6 +61,7 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
+      name: redisPassword
 auth:
     secretStore: vault
 ```

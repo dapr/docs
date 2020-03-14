@@ -49,6 +49,7 @@ When running in self hosted mode, place this file in a `components` directory un
 ## GCP Secret Manager reference example
 
 This example shows you how to take the Redis password from the GCP Secret Manager secret store.
+Here, you created a secret named `redisPassword` in GCP Secret Manager. Note its important to set it both as the `name` and `key` properties.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -62,6 +63,7 @@ spec:
     value: "[redis]:6379"
   - name: redisPassword
     secretKeyRef:
+      name: redisPassword
       name: redisPassword
 auth:
     secretStore: gcpsecretmanager
