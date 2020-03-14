@@ -64,7 +64,7 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
-      name: redisPassword
+      key: redisPassword
 auth:
     secretStore: gcpsecretmanager
 ```
