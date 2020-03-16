@@ -160,6 +160,7 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
+      key: redisPassword
 auth:
     secretStore: azurekeyvault
 ```
@@ -257,6 +258,7 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
+      key: redisPassword
 auth:
     secretStore: azurekeyvault
 ```
