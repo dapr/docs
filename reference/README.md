@@ -8,4 +8,5 @@
   - [Secrets](./api/secrets_api.md)
   - [Service Invocation](./api/service_invocation_api.md)
   - [State Management](./api/state_api.md)
+- [Error Codes](./api/error-codes.md) returned by Dapr APIs.
 - **[Dapr Binding Specs](./specs/bindings)**: Bindings provide triggers and interactions with external resources and services
