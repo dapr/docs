@@ -9,7 +9,7 @@ These implementations are pluggable, and developed outside of the Dapr runtime i
 
 ## Publish/Subscribe API
 
-The API for Publish/Subscribe can be found in the [spec repo](../../reference/api/pubsub.md).
+The API for Publish/Subscribe can be found in the [spec repo](../../reference/api/pubsub_api.md).
 
 ## Behavior and guarantees
 
