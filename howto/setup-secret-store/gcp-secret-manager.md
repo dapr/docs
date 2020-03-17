@@ -1,6 +1,6 @@
 # Secret Store for GCP Secret Manager
 
-This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for self hosted and Kubernetes mode.
+This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for self hosted and Kubernetes mode.
 
 ## Create an GCP Secret Manager instance
 
@@ -49,6 +49,7 @@ When running in self hosted mode, place this file in a `components` directory un
 ## GCP Secret Manager reference example
 
 This example shows you how to take the Redis password from the GCP Secret Manager secret store.
+Here, you created a secret named `redisPassword` in GCP Secret Manager. Note its important to set it both as the `name` and `key` properties.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -63,6 +64,7 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
+      key: redisPassword
 auth:
     secretStore: gcpsecretmanager
 ```

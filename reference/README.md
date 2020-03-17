@@ -10,3 +10,4 @@
   - [State Management](./api/state_api.md)
 - [Error Codes](./api/error-codes.md) returned by Dapr APIs.
 - **[Dapr Binding Specs](./specs/bindings)**: Bindings provide triggers and interactions with external resources and services
+- **[Monitoring Dashboard templates](./dashboard/README.md)**: Monitoring dashboard templates help Dapr user to monitor Dapr services by importing templates to their monitoring tools

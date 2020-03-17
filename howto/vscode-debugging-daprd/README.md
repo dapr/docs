@@ -1,4 +1,16 @@
-# Configuring Visual Studio Code for debugging with daprd
+# Application development with Visual Studio Code
+
+## Visual Studio Code Dapr extension
+It is recommended to use the *preview* of the [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) available in the Visual Studio marketplace for local development and debugging of your Dapr applications.
+
+Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=85) on how to use the Dapr VS Code extension.
+
+### Debugging multiple Dapr applications at the same time
+Using the VS Code extension you can debug multiple Dapr applications at the same time with [Multi-target debugging](https://code.visualstudio.com/docs/editor/debugging#_multitarget-debugging)
+
+
+## Manually configuring Visual Studio Code for debugging with daprd
+If instead of using the Dapr VS Code extension you wish to configure a project to use Dapr in the [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) and [launch.json](https://code.visualstudio.com/Docs/editor/debugging) files these are the manual steps.
 
 When developing Dapr applications, you typically use the dapr cli to start your daprized service similar to this:
 
@@ -16,7 +28,7 @@ Using the [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) and [lau
 
 Let's get started!
 
-## Modifying launch.json configurations to include a preLaunchTask
+### Modifying launch.json configurations to include a preLaunchTask
 
 In your [launch.json](https://code.visualstudio.com/Docs/editor/debugging) file add a [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) for each configuration that you want daprd launched. The [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) will reference tasks that you define in your tasks.json file. Here is an example for both Node and .NET Core. Notice the [preLaunchTasks](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) referenced: daprd-web and daprd-leaderboard.
 
@@ -155,10 +167,9 @@ Let's take a quick look at the args that are being passed to the daprd command.
 }
 ```
 
-## Wrapping up
+### Wrapping up
 
 Once you have made the required changes, you should be able to switch to the [debug](https://code.visualstudio.com/Docs/editor/debugging) view in VSCode and launch your daprized configurations by clicking the "play" button. If everything was configured correctly, you should see daprd launch in the VSCode terminal window and the [debugger](https://code.visualstudio.com/Docs/editor/debugging) should attach to your application (you should see it's output in the debug window).
 
 >Note: Since you didn't launch the service(s) using the **dapr** ***run*** cli command, but instead by running **daprd**, the **dapr** ***list*** command will not show a list of apps that are currently running.
 
-Happy debugging!

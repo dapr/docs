@@ -5,7 +5,7 @@ Dapr runtime provides an actor implementation which is based on Virtual Actor pa
 ## Quick links
 
 - [Dapr Actor Features](./actors_features.md)
-- [Dapr Actor API Spec](./actors_api.md)
+- [Dapr Actor API Spec](../../reference/api/actors_api.md)
 
 ## Contents
 
