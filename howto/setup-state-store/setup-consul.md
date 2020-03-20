@@ -51,7 +51,7 @@ spec:
     value: <REPLACE-WITH-TABLE> # Optional. default: ""
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/components/secrets.md)
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
 
 The following example uses the Kubernetes secret store to retrieve the acl token:
 

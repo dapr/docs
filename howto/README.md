@@ -2,10 +2,26 @@
 
 Here you'll find a list of How To guides that walk you through accomplishing specific tasks.
 
+## Contents
+- [Service invocation](#service-invocation)
+- [State Management](#state-management)
+- [Pub/Sub](#Pub/Sub)
+- [Bindings and Triggers](#bindings-and-triggers)
+- [Actors](#actors)
+- [Observerability](#observerability)
+- [Security](#security)
+- [Components](#components)
+- [Developer tooling](#developer-tooling)
+- [Infrastructure integration](#Infrastructure-integration)
+
 ## Service invocation
 
 * [Invoke other services in your cluster or environment](./invoke-and-discover-services)
 * [Create a gRPC enabled app, and invoke Dapr over gRPC](./create-grpc-app)
+
+### Middleware
+
+* [Authorization with oAuth](./authorization-with-oauth)
 
 ## State Management
 
@@ -14,47 +30,68 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Query the underlying state store](./query-state-store)
 * [Create a stateful, replicated service with different consistency/concurrency levels](./stateful-replicated-service)
 * [Control your app's throttling using rate limiting features](./control-concurrency)
+* [Configuring Redis for state management ](./configure-redis)
+
 
 ## Pub/Sub
 
 * [Setup Dapr Pub/Sub](./setup-pub-sub-message-broker)
 * [Use Pub/Sub to publish messages to a given topic](./publish-topic)
 * [Use Pub/Sub to consume events from a topic](./consume-topic)
+* [Configuring Redis for pub/sub ](./configure-redis)
 
 ## Bindings and Triggers
-
+* [Implementing a new binding](https://github.com/dapr/docs/tree/master/reference/specs/bindings)
 * [Trigger a service from different resources with input bindings](./trigger-app-with-input-binding)
 * [Invoke different resources using output bindings](./send-events-with-output-bindings)
 
-## Middleware
+## Actors
+For Actors How Tos see the SDK documentation
+* [.NET Actors](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)
+* [Java Actors](https://github.com/dapr/java-sdk)
 
-* [Authorization with oAuth](./authorization-with-oauth)
+## Observerability
 
-## Distributed Tracing
+### Metric and logs
+
+* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
+* [Set up Prometheus and Grafana for metrics](./setup-monitoring-tools/setup-prometheus-grafana.md)
+
+### Distributed Tracing
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
 
-## Mutual Transport Layer Security (TLS)
+## Security
+### Mutual Transport Layer Security (mTLS)
 
 * [Setup and configure mutual TLS between Dapr instances](./configure-mtls)
 
-## Secrets
+### Secrets
 
 * [Configure component secrets using Dapr secret stores](./setup-secret-store)
 * [Using the Secrets API to get application secrets](./get-secrets)
 
-## Autoscaling
+## Components
+
+* [Limit components for one or more applications using scopes](./components-scopes)
+
+## Developer tooling
+### Using Visual Studio Code
+
+* [Using Remote Containers for application development](./vscode-remote-containers)
+* [Developing and debugging  Dapr applications](./vscode-debugging-daprd)
+
+* [Setup development environment for Dapr runtime development ](https://github.com/dapr/dapr/blob/master/docs/development/setup-dapr-development-using-vscode.md)
+
+### Using IntelliJ
+
+* [Developing and debugging with daprd](./intellij-debugging-daprd)
+
+### SDKs
+
+* [Serialization in Dapr's SDKs](./serialize)
+
+## Infrastructure integration
 
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
-
-## Configuring Visual Studio Code
-
-* [Debugging with daprd](./vscode-debugging-daprd)
-
-## Configuring IntelliJ
-
-* [Debugging with daprd](./intellij-debugging-daprd)
-
-## SDKs
-
-* [Serialize objects](./serialize)

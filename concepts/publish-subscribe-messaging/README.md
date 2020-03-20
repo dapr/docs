@@ -9,9 +9,9 @@ These implementations are pluggable, and developed outside of the Dapr runtime i
 
 ## Publish/Subscribe API
 
-The API for Publish/Subscribe can be found in the [spec repo](../../reference/api/pubsub.md).
+The API for Publish/Subscribe can be found in the [spec repo](../../reference/api/pubsub_api.md).
 
-## Behavior and Guarantees
+## Behavior and guarantees
 
 Dapr guarantees At-Least-Once semantics for message delivery.
 That is, when an application publishes a message to a topic using the Publish/Subscribe API, it can assume the message is delivered at least once to any subscriber when the response status code from that endpoint is `200`, or returns no error if using the gRPC client.
@@ -24,7 +24,7 @@ Dapr has the concept of an `id`. This is specified in Kubernetes using the `dapr
 
 When multiple instances of the same application ID subscribe to a topic, Dapr will make sure to deliver the message to only one instance. If two different applications with different IDs subscribe to a topic, at least one instance in each application receives a copy of the same message.
 
-## Cloud Events
+## Cloud events
 
 Dapr follows the [Cloud Events 0.3 Spec](https://github.com/cloudevents/spec/tree/v0.3) and wraps any payload sent to a topic inside a Cloud Events envelope.
 

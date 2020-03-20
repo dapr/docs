@@ -8,7 +8,7 @@ In many environments with multiple services that need to communicate with each o
 
 Dapr allows developers to overcome these challenges by providing an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
 
-For more info on service invocation, read the [conceptional documentation](../../concepts/service-invocation/service-invocation.md).
+For more info on service invocation, read the [conceptional documentation](../../concepts/service-invocation/README.md).
 
 ## 1. Choose an ID for your service
 
@@ -101,3 +101,7 @@ The example above showed you how to directly invoke a different service running 
 Dapr outputs metrics and tracing information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
 
 For more information on tracing, visit [this link](../../best-practices/troubleshooting/tracing.md).
+
+ ## Related Topics
+*  [Service invocation concepts](../../concepts/service-invocation/README.md)
+* [Service invocation API specification](../../reference/api/service_invocation_api.md)

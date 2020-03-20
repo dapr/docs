@@ -1,12 +1,12 @@
 # Secret Store for Hashicorp Vault
 
-This document shows how to enable Hashicorp Vault secret store using [Dapr Secrets Component](../../concepts/components/secrets.md) for Standalone and Kubernetes mode.
+This document shows how to enable Hashicorp Vault secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Standalone and Kubernetes mode.
 
 ## Create a Hashicorp Vault instance
 
 Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
 
-For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm.>
+For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
 
 ## Create the Vault component
 
@@ -61,6 +61,7 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
+      key: redisPassword
 auth:
     secretStore: vault
 ```
