@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dapr-localforwarder
+  labels:
+    app: dapr-localforwarder
+spec:
+  selector:
+    app: dapr-localforwarder
+  ports:
+  - protocol: TCP
+    port: 55678
+    targetPort: 55678
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dapr-localforwarder
+  labels:
+    app: dapr-localforwarder
+spec:
+  replicas: 3 # Adjust replica # based on your telemetry volume
+  selector:
+    matchLabels:
+      app: dapr-localforwarder
+  template:
+    metadata:
+      labels:
+        app: dapr-localforwarder
+    spec:
+      containers:
+      - name: dapr-localforwarder
+        image: docker.io/daprio/dapr-localforwarder:0.1-beta1
+        ports:
+        - containerPort: 55678
+        imagePullPolicy: Always
+        env:
+          - name: APPINSIGHTS_INSTRUMENTATIONKEY
+            value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
+          - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+            value: <APPINSIGHT API KEY> # Replace with your generated api key
