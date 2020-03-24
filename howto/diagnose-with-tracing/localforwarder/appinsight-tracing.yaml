@@ -1,0 +1,23 @@
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: tracing
+spec:
+  tracing:
+    enabled: true
+    expandParams: true
+    includeBody: true
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: native
+spec:
+  type: exporters.native
+  metadata:
+  - name: enabled
+    value: "true"
+  - name: agentEndpoint
+    value: dapr-localforwarder.default.svc.cluster.local:55678
+---
