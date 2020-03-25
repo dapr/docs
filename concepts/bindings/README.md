@@ -36,6 +36,8 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [AWS S3](../../reference/specs/bindings/s3.md)             |    | ✅ | Experimental |
 | [AWS SNS](../../reference/specs/bindings/sns.md)           |    | ✅ | Experimental |
 | [AWS SQS](../../reference/specs/bindings/sqs.md)           | ✅ | ✅ | Experimental |
+| [AWS Kinesis](../../reference/specs/bindings/kinesis.md)   | ✅ | ✅ | Experimental |
+
 
 ### Google Cloud Platform (GCP)
 
