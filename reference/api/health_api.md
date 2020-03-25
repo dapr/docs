@@ -29,6 +29,5 @@ daprPort | The Dapr port.
 
 ```shell
 curl http://localhost:3500/v1.0/healthz
-  -H "Content-Type: application/json"
 ```
 
