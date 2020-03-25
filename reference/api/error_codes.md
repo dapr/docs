@@ -36,3 +36,4 @@ ERR_DIRECT_INVOKE | Error in direct invocation.
 ERR_DESERIALIZE_HTTP_BODY | Error deserializing an HTTP request body.
 ERR_SECRET_STORE_NOT_CONFIGURED| Error that no secret store is configured.
 ERR_SECRET_STORE_NOT_FOUND | Error that specified secret store is not found.
+ERR_HEALTH_NOT_READY | Error that Dapr is not ready.
