@@ -31,4 +31,4 @@ spec:
 - `storageContainerName` Is the name of the container in the Azure Storage account to persist checkpoints data on.
 - `partitionID` (Optional) ID of the partition to send and receive events.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
