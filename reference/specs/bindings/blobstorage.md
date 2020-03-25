@@ -20,7 +20,7 @@ spec:
 - `storageAccessKey` is the Blob Storage access key.
 - `container` is the name of the Blob Storage container to write to.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
 ## Additional information
 

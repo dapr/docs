@@ -32,4 +32,4 @@ spec:
 - `saslUsername` is the SASL username for authentication. Only used if `authRequired` is set to - `"true"`.
 - `saslPassword` is the SASL password for authentication. Only used if `authRequired` is set to - `"true"`.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
