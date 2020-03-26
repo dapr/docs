@@ -84,3 +84,10 @@ res.status(500).send()
 
 ### Event delivery Guarantees
 Event delivery guarantees are controlled by the binding implementation. Depending on the binding implementation, the event delivery can be exactly once or at least once.
+
+
+## References
+
+* Binding [API](https://github.com/dapr/docs/blob/master/reference/api/bindings_api.md)
+* Binding [Components](https://github.com/dapr/docs/tree/master/concepts/bindings)
+* Binding [Detailed specifications](https://github.com/dapr/docs/tree/master/reference/specs/bindings)
