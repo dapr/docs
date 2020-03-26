@@ -47,3 +47,4 @@ kubectl apply -f pubsub.yaml
 - [Setup Azure Service bus](./setup-azure-servicebus.md)
 - [Setup RabbitMQ](./setup-rabbitmq.md)
 - [Setup GCP Pubsub](./setup-gcp.md)
+- [Setup Hazelcast Pubsub](./setup-hazelcast.md)

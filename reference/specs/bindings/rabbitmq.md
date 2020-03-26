@@ -11,7 +11,7 @@ spec:
   - name: queueName
     value: queue1
   - name: host
-    value: amqp://guest:guest@localhost:5672
+    value: amqp://[username][:password]@host.domain[:port]
   - name: durable
     value: true
   - name: deleteWhenUnused
@@ -22,3 +22,5 @@ spec:
 - `host` is the RabbitMQ host address.
 - `durable` tells RabbitMQ to persist message in storage.
 - `deleteWhenUnused` enables or disables auto-delete.
+
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)

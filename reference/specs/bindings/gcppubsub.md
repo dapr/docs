@@ -47,4 +47,4 @@ spec:
 - `client_x509_cert_url` is the GCP credentials project x509 cert url.
 - `private_key` is the GCP credentials private key.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
