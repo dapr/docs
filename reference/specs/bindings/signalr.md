@@ -17,7 +17,7 @@ spec:
 - The metadata `connectionString` contains the Azure SignalR connection string.
 - The optional `hub` metadata value defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub").
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
 ## Additional information
 

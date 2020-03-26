@@ -23,4 +23,4 @@ spec:
 - `accountSid` is the Twilio account SID.
 - `authToken` is the Twilio auth token.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securly storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
