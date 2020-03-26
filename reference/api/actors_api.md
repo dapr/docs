@@ -666,7 +666,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
 
 ### Invoke timer
 
-Invokes a timer for an acto rwith the specified timerName
+Invokes a timer for an actor rwith the specified timerName
 
 #### HTTP Request
 
@@ -698,6 +698,39 @@ Example of invoking a timer for an actor: The example calls the checkRebels time
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebels \
   -H "Content-Type: application/json"
+```
+
+### Health check
+
+Probes the application for a response to signal to Dapr that the app is healthy and running.
+Any other response status code other than `200` will be considered as an unhealthy response.
+
+A response body is not required.
+
+#### HTTP Request
+
+```http
+GET http://localhost:<appPort>/healthz
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+200  | App is healthy
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | The application port.
+
+#### Examples
+
+Example of getting a health check response from the app:
+
+```shell
+curl -X GET http://localhost:3000/healthz \
 ```
 
 ## Querying actor state externally
