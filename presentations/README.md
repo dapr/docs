@@ -11,6 +11,6 @@ Here you can find past dapr presentations, as well as a PowerPoint & guidance on
 
 ## Giving a Dapr Presentation
 
-Begin by downloading the [Dapr Presentation Deck](./Dapr-Presentation-Deck.pptx). This will contain the slides and diagrams needed to give a Dapr presentation.
+Begin by downloading the [Dapr Presentation Deck](./Dapr%20Presentation%20Deck.pptx). This will contain the slides and diagrams needed to give a Dapr presentation.
 
 Next, review the [Docs Docs](../README.md) to make sure you understand the [concepts](../concepts) and [best-practices](../best-practices).
