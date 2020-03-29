@@ -1,16 +1,20 @@
-# Dapr Presentations
+# Dapr presentations
 
-Here you can find past dapr presentations, as well as a PowerPoint & guidance on how you can give your own dapr presentation.
+Here you can find previous Dapr presentations, as well as a PowerPoint & guidance on how you can give your own Dapr presentation.
 
-## Previous Dapr Presentations
+## Previous Dapr presentations
 
 | Presentation | Recording | Deck |
 |--------------|-----------|------|
 | Ignite 2019: Mark Russinovich Presents the Future of Cloud Native Applications | [Link](https://myignite.techcommunity.microsoft.com/sessions/82059?source=sessions) | [Link](./PastPresentations/2019IgniteCloudNativeApps.pdf)
-| Ready 2019: Mark Russinovich Presents the Future of Cloud Native Applications | [Link](https://myready.microsoft.com/winter2020/Sessions/Details/AZT337P?catalogmode=ondemand) | [Link](./PastPresentations/2020ReadyCloudNativeApps.pdf)
+| Azure Community Live: Build microservice applications using DAPR with Mark Fussell | [Link](https://www.youtube.com/watch?v=CgqI7nen-Ng) | N/A
 
-## Giving a Dapr Presentation
+There are other Dapr resources on the [community](https://github.com/dapr/dapr#community) page.
 
-Begin by downloading the [Dapr Presentation Deck](./Dapr%20Presentation%20Deck.pptx). This will contain the slides and diagrams needed to give a Dapr presentation.
+## Giving a Dapr oresentation
 
-Next, review the [Docs Docs](../README.md) to make sure you understand the [concepts](../concepts) and [best-practices](../best-practices).
+- Begin by downloading the [Dapr Presentation Deck](./Dapr%20Presentation%20Deck.pptx). This contains the slides and diagrams needed to give a Dapr presentation.
+
+- Next, review the [Docs](../README.md) to make sure you understand the [concepts](../concepts) and [best-practices](../best-practices).
+
+- Use the Dapr [samples](https://github.com/dapr/samples) repo to show demos of how to use Dapr
