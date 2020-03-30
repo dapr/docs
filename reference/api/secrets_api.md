@@ -91,10 +91,8 @@ Code | Description
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret \
-  -H "Content-Type: application/json"
 ```
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&metadata.version_stage=AAA \
-  -H "Content-Type: application/json"
 ```
