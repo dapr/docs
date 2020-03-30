@@ -43,22 +43,16 @@ spec:
   metadata:
   - name: host
     value: <REPLACE-WITH-HOST> # Required. Example: "rabbitmq.default.svc.cluster.local:5672"
-  metadata:
   - name: consumerID
     value: <REPLACE-WITH-CONSUMER-ID> # Required. Any unique ID. Example: "myConsumerID"
-  metadata:
   - name: durable
     value: <REPLACE-WITH-DURABLE> # Optional. Default: "false"
-  metadata:
   - name: deletedWhenUnused
     value: <REPLACE-WITH-DELETE-WHEN-UNUSED> # Optional. Default: "false"
-  metadata:
   - name: autoAck
     value: <REPLACE-WITH-AUTO-ACK> # Optional. Default: "false"
-  metadata:
   - name: deliveryMode
     value: <REPLACE-WITH-DELIVERY-MODE> # Optional. Default: "0". Values between 0 - 2.
-  metadata:
   - name: requeueInFailure
     value: <REPLACE-WITH-REQUEUE-IN-FAILURE> # Optional. Default: "false".
 ```

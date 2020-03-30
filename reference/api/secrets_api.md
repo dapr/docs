@@ -6,12 +6,12 @@
 
 ## Get Secret
 
-This endpoint lets you get the key-identified value of secret for a given secret store.
+This endpoint lets you get the value of a secret for a given secret store.
 
 ### HTTP Request
 
 ```http
-GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<key>
+GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>
 ```
 
 #### URL Parameters
@@ -20,14 +20,14 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 secret-store-name | the name of the secret store to get the secret from
-key | the key identifying the name of the secret to get
+name | the name of the secret to get
 
 #### Query Parameters
 
 Some secret stores have **optional** metadata properties. metadata is populated using query parameters:
 
 ```http
-GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<key>?metadata.version_id=15
+GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata.version_id=15
 ```
 
 ##### GCP Secret Manager
@@ -45,11 +45,38 @@ Query Parameter | Description
 metadata.version_id | version for the given secret key
 metadata.version_stage | version stage for the given secret key
 
-#### Request Body
-
-JSON-encoded value
-
 ### HTTP Response
+
+#### Response Body
+
+If a secret store has support for multiple keys in a secret, a JSON payload is returned with the key names as fields and their respective values.
+
+In case of a secret store that only has name/value semantics, a JSON payload is returned with the name of the secret as the field and the value of the secret as the value.
+
+##### Response with multiple keys in a secret (eg. Kubernetes): 
+
+```shell
+curl http://localhost:3500/v1.0/secrets/kubernetes/db-secret
+```
+
+```json
+{
+  "key1": "value1",
+  "key2": "value2"
+}
+```
+
+##### Response with no keys in a secret:
+
+```shell
+curl http://localhost:3500/v1.0/secrets/vault/db-secret
+```
+
+```json
+{
+  "db-secret": "value1"
+}
+```
 
 #### Response Codes
 
@@ -64,10 +91,8 @@ Code | Description
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret \
-  -H "Content-Type: application/json"
 ```
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&metadata.version_stage=AAA \
-  -H "Content-Type: application/json"
 ```
