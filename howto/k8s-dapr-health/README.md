@@ -5,7 +5,9 @@ With that capability, Dapr process or side car can be probed for its readiness a
 
 Refer Dapr for health API spec [here](../../reference/api/health_api.md)
 
-In this document, you will read about readiness/liveness in Kubernetes and how the Dapr side car is
+Dapr `/healthz` endpoint can be used for health probes with any orchestrator and it is not tied to kubernetes only.
+
+However in this document, you will read about readiness/liveness in Kubernetes and how the Dapr side car is
 injected with that kubernetes probe configuration using the Dapr health endpoint.
 
 ## Kubernetes Liveness and Readiness
