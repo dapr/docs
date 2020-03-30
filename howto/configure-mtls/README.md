@@ -1,4 +1,4 @@
-# Setup and Configure Mututal TLS
+# Setup and Configure Mutual TLS
 
 Dapr supports in-transit encryption of communication between Dapr instances using Sentry, a central Certificate Authority.
 
@@ -68,7 +68,7 @@ kubectl logs --selector=app=dapr-sentry --namespace <DAPR_NAMESPACE>
 
 Using Helm, you can provide the PEM encoded root cert, issuer cert and private key that will be populated into the Kubernetes secret.
 
-*Note: This example uses the step tool to create the certificates. You can install step [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
 
 Create the root certificate:
 
@@ -177,7 +177,7 @@ Tell Sentry where to load the certificates from using the `--issuer-credentials`
 
 The next examples creates root and issuer certs and loads them with Sentry.
 
-*Note: This example uses the step tool to create the certificates. You can install step [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
 
 Create the root certificate:
 
