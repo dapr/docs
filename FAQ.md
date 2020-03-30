@@ -35,10 +35,9 @@ Also Dapr is about more than just actors. It provides you with a set of best pra
 
 Virtual actors capabilities are one of the building blocks that Dapr provides in its runtime. With Dapr because it is programming language agnostic with an http/gRPC API, the actors can be called from any language. This allows actors written in one language to invoke actors written in a different language.
 
-Creating a new actor follows a local call like http://localhost:3500/v1.0/actors/<actorType>/<actorId>/meth...
-for example http://localhost:3500/v1.0/actors/myactor/50/method/getData to call the getData method on myactor with id=50
+Creating a new actor follows a local call like `http://localhost:3500/v1.0/actors/<actorType>/<actorId>/…`, for example `http://localhost:3500/v1.0/actors/myactor/50/method/getData` to call the `getData` method on the newly created `myactor` with id `50`.
 
-The Dapr runtime SDKs have language specific actor frameworks. The the .NET SDK for example has C# actors. You will see all the SDKs have an actor framework that fits with the language
+The Dapr runtime SDKs have language specific actor frameworks. The .NET SDK for example has C# actors. The goal is for all the Dapr language SDKs to have an actor framework.
 
 ## Developer language SDKs and frameworks
 
