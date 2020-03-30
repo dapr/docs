@@ -80,6 +80,73 @@ def incoming():
     return "Kafka Event Processed!"
 ```
 
+### Binding subscription
+
+On startup Dapr will invoke the following endpoint on user code to discover binding subscriptions:
+ 
+#### HTTP Request
+
+```http
+OPTIONS http://localhost:<appPort>/<name>
+```
+
+#### HTTP Response codes
+
+Code | Description
+---- | -----------
+404  | Application does not want to subscribe to the binding
+all others  | Application wants to subscribe to the binding
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | the application port
+name | the name of the binding to subscribe
+
+### Binding payload
+
+In order to deliver binding inputs, a POST call will be made to user code with the name of the binding as the URL path.
+ 
+#### HTTP Request
+
+```http
+POST http://localhost:<appPort>/<name>
+```
+
+#### HTTP Response codes
+
+Code | Description
+---- | -----------
+200  | Application processed the input binding successfully
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | the application port
+name | the name of the binding
+
+#### HTTP Response body (optional)
+
+Optionally, a response body can be used to directly glue input bindings with state stores or output bindings.
+
+**Example:**
+Dapr will store ```stateDataToStore``` into a state store named "stateStore".
+Dapr will also send ```jsonObject``` to the output bindings named "storage" and "queue" in parallel.
+If ```concurrency``` is not send, it will be send out sequential.
+
+```json
+{
+    "storeName": "stateStore",
+    "state": stateDataToStore,
+    
+    "to": ['storage', 'queue'],
+    "concurrency": "parallel",
+    "data": jsonObject,
+}
+```
+
 ## Sending Messages to Output Bindings
 
 This endpoint lets you invoke an Dapr output binding.
