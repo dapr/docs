@@ -20,7 +20,7 @@ The next step is to create a Dapr component for Hazelcast.
 
 Create the following YAML file named `hazelcast.yaml`:
 
-```
+```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
