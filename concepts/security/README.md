@@ -9,11 +9,11 @@
 - [Management Security](#management-security)
 
 
-## Dapr-to-app communication
+## Dapr-to-App communication
 
 Dapr sidecar runs close to the application through **localhost**. Dapr assumes it runs in the same security domain of the application. So, there are no authentication, authorization or encryption between a Dapr sidecar and the application.
 
-## Dapr-to-dapr communication
+## Dapr-to-Dapr communication
 
 Dapr includes an on by default, automatic mutual TLS that provides in-transit encryption for traffic between Dapr instances.
 To achieve this, Dapr leverages a system component named `Sentry` which acts as a Certificate Authority (CA) and signs workload certificate requests originating from the Dapr instances.
