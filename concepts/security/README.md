@@ -9,11 +9,11 @@
 - [Management Security](#management-security)
 
 
-## Dapr-to-App communication
+## Sidecar-to-App communication
 
 Dapr sidecar runs close to the application through **localhost**. Dapr assumes it runs in the same security domain of the application. So, there are no authentication, authorization or encryption between a Dapr sidecar and the application.
 
-## Dapr-to-Dapr communication
+## Sidecar-to-Sidecar communication
 
 Dapr includes an on by default, automatic mutual TLS that provides in-transit encryption for traffic between Dapr instances.
 To achieve this, Dapr leverages a system component named `Sentry` which acts as a Certificate Authority (CA) and signs workload certificate requests originating from the Dapr instances.
@@ -36,19 +36,39 @@ Mutual TLS can be turned off/on by editing the default configuration that is dep
 This can be done for both Kubernetes and self hosted modes.
 Specific details for how to do that can be found [here](../../howto/configure-mtls).
 
+## Sidecar to Control Plane communication
+
+In addition to automatic TLS between Dapr sidecars, Dapr offers mandatory TLS between the Dapr sidecar and the system services (Control Plane), namely Sentry (Certificate Authority), Placement Service and the Kubernetes Operator.
+
+When mTLS is enabled, Sentry will write the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed in.
+On self hosted mode, Sentry writes the certificates to a configurable filesystem path.
+
+In Kubernetes, when the Dapr system services start, they will automatically mount the secret containing the root and issuer certs and use those to secure the gRPC server that is used by the Dapr sidecar.  
+
+In self hosted mode, each system service can be configured with the filesystem path to mount the credentials from.
+
+When the Dapr sidecars init, they will authenticate with the system services using the workload cert that was issued to them by Sentry, the Certificate Authority.
+
 ### mTLS in Kubernetes
 
-<a href="https://ibb.co/4VXWJ3d"><img src="https://i.ibb.co/rwzkvNs/Screen-Shot-2020-02-10-at-8-35-59-PM.png" alt="Screen-Shot-2020-02-10-at-8-35-59-PM" border="0"></a>
+<a href="https://ibb.co/NN1Ycsj"><img src="https://i.ibb.co/s15382w/Screen-Shot-2020-03-30-at-6-22-04-PM.png" alt="Screen-Shot-2020-03-30-at-6-22-04-PM" border="0"></a>
 
 ### mTLS self hosted
 
-<a href="https://ibb.co/XWFYsfY"><img src="https://i.ibb.co/rQ5d6Kd/Screen-Shot-2020-02-10-at-8-34-33-PM.png" alt="Screen-Shot-2020-02-10-at-8-34-33-PM" border="0"></a>
+<a href="https://ibb.co/Twc7P82"><img src="https://i.ibb.co/x2hBzjL/Screen-Shot-2020-03-30-at-6-21-54-PM.png" alt="Screen-Shot-2020-03-30-at-6-21-54-PM" border="0"></a>
+
+### TLS overview
+
+<a href="https://ibb.co/bXSj4y1"><img src="https://i.ibb.co/yqwmzM0/Screen-Shot-2020-03-30-at-6-35-32-PM.png" alt="Screen-Shot-2020-03-30-at-6-35-32-PM" border="0"></a>
 
 ## Component namespace scopes and secrets
 
 Dapr components are namespaced. That means a Dapr runtime sidecar instance can only access the components that have been deployed to the same namespace. See the [components scope topic](../../howto/components-scopes) for more details.
 
 Dapr components uses Dapr's built-in secret management capability to manage secrets. See the [secret topic](../secrets/README.md) for more details.
+
+In addition, Dapr offers application-level scoping for components by allowins users to specify which applications can consume given components.
+For more information about application level scoping, see [here](../../howto/components-scopes#application-access-to-components-with-scopes)
 
 ## Network security
 
@@ -63,6 +83,8 @@ Authentication with a binding target is configured by the binding’s configurat
 ## State store security
 
 Dapr doesn't transform the state data from applications. This means Dapr doesn't attempt to encrypt/decrypt state data. However, your application can adopt encryption/decryption methods of your choice, and the state data remains opaque to Dapr.
+
+Dapr does not store any data at rest.
 
 Dapr uses the configured authentication method to authenticate with the underlying state store. And many state store implementations use official client libraries that generally use secured communication channels with the servers.
 
