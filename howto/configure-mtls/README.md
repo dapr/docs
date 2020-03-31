@@ -1,4 +1,4 @@
-# Setup and Configure Mutual TLS
+# Setup and configure mutual TLS
 
 Dapr supports in-transit encryption of communication between Dapr instances using Sentry, a central Certificate Authority.
 
@@ -10,7 +10,7 @@ If custom certificates have not been provided, Dapr will automatically create an
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
 In Self Hosted mode, the certs are persisted to disk. More information on that is shown below.
 
-## Sentry Configuration
+## Sentry configuration
 
 mTLS settings reside in a Dapr configuration file.
 The following file shows all the available settings for mTLS in a configuration resource:
@@ -137,7 +137,7 @@ kubectl rollout restart deploy/myapp
 
 ## Self-hosted
 
-### Running Sentry System Service
+### Running Sentry system service
 
 In order to run Sentry, you can either build from source, or download a release binary from [here](https://github.com/dapr/dapr/releases).
 
