@@ -11,20 +11,20 @@
 
 ## Sidecar-to-App communication
 
-Dapr sidecar runs close to the application through **localhost**. Dapr assumes it runs in the same security domain of the application. So, there are no authentication, authorization or encryption between a Dapr sidecar and the application.
+The Dapr sidecar runs close to the application through **localhost**. Dapr assumes it runs in the same security domain of the application. As a result, there are no authentication, authorization or encryption between a Dapr sidecar and the application.
 
 ## Sidecar-to-Sidecar communication
 
-Dapr includes an on by default, automatic mutual TLS that provides in-transit encryption for traffic between Dapr instances.
-To achieve this, Dapr leverages a system component named `Sentry` which acts as a Certificate Authority (CA) and signs workload certificate requests originating from the Dapr instances.
+Dapr includes an "on by default", automatic mutual TLS that provides in-transit encryption for traffic between Dapr sidecars.
+To achieve this, Dapr leverages a system service named `Sentry` which acts as a Certificate Authority (CA) and signs workload (app) certificate requests originating from the Dapr sidecar.
 
 Dapr also manages workload certificate rotation, and does so with zero downtime to the application.
 
-Sentry, the CA component, automatically creates and persists self signed root certificates valid for one year, unless existing root certs have been provided by the user.
+Sentry, the CA service, automatically creates and persists self signed root certificates valid for one year, unless existing root certs have been provided by the user.
 
-When root certs are replaced (secret in Kubernetes mode and filesystem for self hosted mode), Sentry will pick them up and re-build the trust chain without needing to restart, with zero downtime to Sentry.
+When root certs are replaced (secret in Kubernetes mode and filesystem for self hosted mode), the Sentry picks them up and re-builds the trust chain without needing to restart, with zero downtime to Sentry.
 
-When a new Dapr sidecar initializes, it first checks if mTLS is enabled. If it is, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain cert, which is injected into each Dapr instance by the Dapr sidecar injector.
+When a new Dapr sidecar initializes, it first checks if mTLS is enabled. If it is, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain cert, which is injected into each Dapr instance by the Dapr Sidecar Injector system service.
 
 In a Kubernetes cluster, the secret that holds the root certificates is scoped to the namespace in which the Dapr components are deployed to and is only accessible by the Dapr system pods.
 
@@ -33,21 +33,19 @@ Dapr also supports strong identities when deployed on Kubernetes, relying on a p
 By default, a workload cert is valid for 24 hours and the clock skew is set to 15 minutes.
 
 Mutual TLS can be turned off/on by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
-This can be done for both Kubernetes and self hosted modes.
-Specific details for how to do that can be found [here](../../howto/configure-mtls).
+This can be done for both Kubernetes and self hosted modes. Details for how to do this can be found [here](../../howto/configure-mtls).
 
 ## Sidecar to Control Plane communication
 
-In addition to automatic TLS between Dapr sidecars, Dapr offers mandatory TLS between the Dapr sidecar and the system services (Control Plane), namely Sentry (Certificate Authority), Placement Service and the Kubernetes Operator.
+In addition to automatic mTLS between Dapr sidecars, Dapr offers mandatory mTLS between the Dapr sidecar and the Dapr system services (Control Plane), namely Sentry service (Certificate Authority), Placement service (actor placement) and the Kubernetes Operator.
 
-When mTLS is enabled, Sentry will write the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed in.
-On self hosted mode, Sentry writes the certificates to a configurable filesystem path.
+When mTLS is enabled, Sentry writes the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed in. In self hosted mode, Sentry writes the certificates to a configurable filesystem path.
 
-In Kubernetes, when the Dapr system services start, they will automatically mount the secret containing the root and issuer certs and use those to secure the gRPC server that is used by the Dapr sidecar.  
+In Kubernetes, when the Dapr system services start, they automatically mount the secret containing the root and issuer certs and use those to secure the gRPC server that is used by the Dapr sidecar.  
 
 In self hosted mode, each system service can be configured with the filesystem path to mount the credentials from.
 
-When the Dapr sidecars init, they will authenticate with the system services using the workload cert that was issued to them by Sentry, the Certificate Authority.
+When the Dapr sidecars initialize, they authenticate with the system services using the workload cert that was issued to them by Sentry, the Certificate Authority.
 
 ### mTLS in Kubernetes
 
@@ -67,14 +65,13 @@ Dapr components are namespaced. That means a Dapr runtime sidecar instance can o
 
 Dapr components uses Dapr's built-in secret management capability to manage secrets. See the [secret topic](../secrets/README.md) for more details.
 
-In addition, Dapr offers application-level scoping for components by allowins users to specify which applications can consume given components.
-For more information about application level scoping, see [here](../../howto/components-scopes#application-access-to-components-with-scopes)
+In addition, Dapr offers application-level scoping for components by allowing users to specify which applications can consume given components.For more information about application level scoping, see [here](../../howto/components-scopes#application-access-to-components-with-scopes)
 
 ## Network security
 
 You can adopt common network security technologies such as network security groups (NSGs), demilitarized zones (DMZs) and firewalls to provide layers of protections over your networked resources.
 
-For example, unless configured to talk to an external binding target, Dapr sidecars don’t open connections to the Internet. And most binding implementations use outbound connections only. You can design your firewall rules to allow outbound connections only through designated ports.
+For example, unless configured to talk to an external binding target, Dapr sidecars don’t open connections to the internet. And most binding implementations use outbound connections only. You can design your firewall rules to allow outbound connections only through designated ports.
 
 ## Bindings security
 
