@@ -80,9 +80,9 @@ def incoming():
     return "Kafka Event Processed!"
 ```
 
-### Binding subscription
+### Binding endpoints
 
-On startup Dapr invokes the following endpoint on user code to discover binding subscriptions:
+Bindings are discovered from component yaml files. Dapr calls this endpoint on startup to ensure that app can handle this call. If the app doesn't have the endpoint, Dapr ignores it.
  
 #### HTTP Request
 
@@ -94,15 +94,15 @@ OPTIONS http://localhost:<appPort>/<name>
 
 Code | Description
 ---- | -----------
-404  | Application does not want to subscribe to the binding
-all others  | Application wants to subscribe to the binding
+404  | Application does not want to bind to the binding
+all others  | Application wants to bind to the binding
 
 #### URL Parameters
 
 Parameter | Description
 --------- | -----------
 appPort | the application port
-name | the name of the binding to subscribe
+name | the name of the binding
 
 ### Binding payload
 
