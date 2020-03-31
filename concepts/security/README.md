@@ -50,11 +50,11 @@ The diagram below shows how the Sentry system service issues certificates for ap
 
 In addition to automatic mTLS between Dapr sidecars, Dapr offers mandatory mTLS between the Dapr sidecar and the Dapr system services, namely the Sentry service (Certificate Authority), Placement service (actor placement) and the Kubernetes Operator.
 
-When mTLS is enabled, Sentry writes the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed in. In self hosted mode, Sentry writes the certificates to a configurable filesystem path.
+When mTLS is enabled, Sentry writes the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed. In self hosted mode, Sentry writes the certificates to a configurable filesystem path.
 
 In Kubernetes, when the Dapr system services start, they automatically mount the secret containing the root and issuer certs and use those to secure the gRPC server that is used by the Dapr sidecar.  
 
-In self hosted mode, each system service can be configured with the filesystem path to mount the credentials from.
+In self hosted mode, each system service can be mounted to a filesystem path to get the credentials.
 
 When the Dapr sidecars initialize, they authenticate with the system services using the workload cert that was issued to them by Sentry, the Certificate Authority.
 
