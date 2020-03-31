@@ -82,7 +82,7 @@ def incoming():
 
 ### Binding subscription
 
-On startup Dapr will invoke the following endpoint on user code to discover binding subscriptions:
+On startup Dapr invokes the following endpoint on user code to discover binding subscriptions:
  
 #### HTTP Request
 
@@ -106,7 +106,7 @@ name | the name of the binding to subscribe
 
 ### Binding payload
 
-In order to deliver binding inputs, a POST call will be made to user code with the name of the binding as the URL path.
+In order to deliver binding inputs, a POST call is made to user code with the name of the binding as the URL path.
  
 #### HTTP Request
 
@@ -129,12 +129,12 @@ name | the name of the binding
 
 #### HTTP Response body (optional)
 
-Optionally, a response body can be used to directly glue input bindings with state stores or output bindings.
+Optionally, a response body can be used to directly bind input bindings with state stores or output bindings.
 
 **Example:**
-Dapr will store ```stateDataToStore``` into a state store named "stateStore".
-Dapr will also send ```jsonObject``` to the output bindings named "storage" and "queue" in parallel.
-If ```concurrency``` is not send, it will be send out sequential.
+Dapr stores ```stateDataToStore``` into a state store named "stateStore".
+Dapr sends ```jsonObject``` to the output bindings named "storage" and "queue" in parallel.
+If ```concurrency``` is not set, it is sent out sequential (the example below shows these operations are done in parallel)
 
 ```json
 {
@@ -178,14 +178,14 @@ The bindings endpoint receives the following JSON payload:
 ```
 
 The `data` field takes any JSON serializable value and acts as the payload to be sent to the output binding.
-The metadata is an array of key/value pairs and allows to set binding specific metadata for each call.
+The metadata is an array of key/value pairs and allows you to set binding specific metadata for each call.
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-name | the name of the binding to invoke
+name | the name of the output binding to invoke
 
 ### Examples
 
