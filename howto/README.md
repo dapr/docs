@@ -38,7 +38,8 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Setup Dapr Pub/Sub](./setup-pub-sub-message-broker)
 * [Use Pub/Sub to publish messages to a given topic](./publish-topic)
 * [Use Pub/Sub to consume events from a topic](./consume-topic)
-* [Configuring Redis for pub/sub ](./configure-redis)
+* [Configuring Redis for pub/sub](./configure-redis)
+* [Limit the Pub/Sub topics used or scope them to one or more applications](./pubsub-scopes)
 
 ## Bindings and Triggers
 * [Implementing a new binding](https://github.com/dapr/docs/tree/master/reference/specs/bindings)
