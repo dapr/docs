@@ -80,6 +80,73 @@ def incoming():
     return "Kafka Event Processed!"
 ```
 
+### Binding endpoints
+
+Bindings are discovered from component yaml files. Dapr calls this endpoint on startup to ensure that app can handle this call. If the app doesn't have the endpoint, Dapr ignores it.
+ 
+#### HTTP Request
+
+```http
+OPTIONS http://localhost:<appPort>/<name>
+```
+
+#### HTTP Response codes
+
+Code | Description
+---- | -----------
+404  | Application does not want to bind to the binding
+all others  | Application wants to bind to the binding
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | the application port
+name | the name of the binding
+
+### Binding payload
+
+In order to deliver binding inputs, a POST call is made to user code with the name of the binding as the URL path.
+ 
+#### HTTP Request
+
+```http
+POST http://localhost:<appPort>/<name>
+```
+
+#### HTTP Response codes
+
+Code | Description
+---- | -----------
+200  | Application processed the input binding successfully
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+appPort | the application port
+name | the name of the binding
+
+#### HTTP Response body (optional)
+
+Optionally, a response body can be used to directly bind input bindings with state stores or output bindings.
+
+**Example:**
+Dapr stores ```stateDataToStore``` into a state store named "stateStore".
+Dapr sends ```jsonObject``` to the output bindings named "storage" and "queue" in parallel.
+If ```concurrency``` is not set, it is sent out sequential (the example below shows these operations are done in parallel)
+
+```json
+{
+    "storeName": "stateStore",
+    "state": stateDataToStore,
+    
+    "to": ['storage', 'queue'],
+    "concurrency": "parallel",
+    "data": jsonObject,
+}
+```
+
 ## Sending Messages to Output Bindings
 
 This endpoint lets you invoke an Dapr output binding.
@@ -111,14 +178,14 @@ The bindings endpoint receives the following JSON payload:
 ```
 
 The `data` field takes any JSON serializable value and acts as the payload to be sent to the output binding.
-The metadata is an array of key/value pairs and allows to set binding specific metadata for each call.
+The metadata is an array of key/value pairs and allows you to set binding specific metadata for each call.
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-name | the name of the binding to invoke
+name | the name of the output binding to invoke
 
 ### Examples
 

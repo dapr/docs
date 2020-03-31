@@ -4,7 +4,7 @@ Dapr integrates with Application Insights through OpenTelemetry's default export
 
 > Note: Local forwarder is still under preview, but being deprecated. Application insights team recommends to use [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector) (which is in alpha state) for the future so that we're working on moving from local forwarder to [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector).
 
-## How to configure distributed tracing wit Application insights
+## How to configure distributed tracing with Application insights
 
 The following steps will show you how to configure Dapr to send distributed tracing data to Application insights.
 
