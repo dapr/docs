@@ -8,7 +8,12 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
-1. Install Redis into your cluster: `helm install redis stable/redis`. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
+1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
+    ```bash
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm install redis bitnami/redis
+    ```
+
 2. Run `kubectl get pods` to see the Redis containers now running in your cluster.
 3. Add `redis-master:6379` as the `redisHost` in your [redis.yaml](#configuration) file. For example:
     ```yaml
