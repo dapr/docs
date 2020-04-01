@@ -20,12 +20,11 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install redis bitnami/redis
 ```
 
-
 > Note that you need a Redis version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), also a lower version can be used.
 
-1. Run `kubectl get pods` to see the Redis containers now running in your cluster.
+2. Run `kubectl get pods` to see the Redis containers now running in your cluster.
 
-2. Add `redis-master:6379` as the `redisHost` in your [redis.yaml](#configuration) file. For example:
+3. Add `redis-master:6379` as the `redisHost` in your [redis.yaml](#configuration) file. For example:
 
   ```yaml
       metadata:
