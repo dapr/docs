@@ -7,7 +7,6 @@ This document briefly describes scenarios that Dapr enables for your microservic
 Dapr provides a uniform API that your microservice can use to find and reliably communicate with other microservices in your system. By using this API, your code can seamlessly take advantage of several built-in features:
 
 - HTTP and [gRPC](https://grpc.io) support
-- Robust retry logic
 - Intelligent error handling
 - Distributed tracing
 
@@ -19,7 +18,11 @@ Visit the following documents to learn more:
 
 ## State management
 
-Dapr provides an abstraction API that abstracts over [many different databases](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md). Your microservice can leverage these APIs to utilize any supported database without finding or adding a third party SDK to your codebase.
+Dapr provides an abstraction API that abstracts over [many different databases](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md). Your microservice can leverage these APIs to utilize any supported database without finding or adding a third party SDK to your codebase. The Dapr state management system also gives your app some features for free that are otherwise complicated and error-prone to build yourself:
+
+- Distributed concurrency and data consistency
+- Retry policies
+- Bulk [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations
 
 Visit the following documents to learn more:
 
