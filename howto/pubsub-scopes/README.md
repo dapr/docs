@@ -48,7 +48,7 @@ The table below shows which application is allowed to publish into the topics:
 | topic2     |      |   X  |      |
 | topic3     |      |   X  |      |
 
-The table below shows can see which application is allowed to subscribe to the topics:
+The table below shows which application is allowed to subscribe to the topics:
 | Subscription | app1 | app2 | app3 |
 |--------------|------|------|------|
 | topic1       |   X  |      |   X  |
@@ -61,9 +61,9 @@ The table below shows can see which application is allowed to subscribe to the t
 
 A topic is created if a Dapr application sends a message to it. In some scenarios this topic creation should be governed. For example;
 - a bug in a Dapr application on generating the topic name can lead to an unlimited amount of topics created
-- streamline the topics names and total count and prevent a unlimited growth of topics
+- streamline the topics names and total count and prevent an unlimited growth of topics
 
-In these situations ```allowedTopics``` can be used.
+In these situations, ```allowedTopics``` can be used.
 
 Here is an example of three allowed topics:
 ```yaml
@@ -82,7 +82,7 @@ spec:
     value: "topic1,topic2,topic3"
 ```
 
-All applications can use these topics, but only those topic, no others are allowed.
+All applications can use these topics, but only those topics, no others are allowed.
 
 ## Scenario 3: Combine both allowed topics allowed applications that can publish and subscribe
 
@@ -109,7 +109,7 @@ spec:
     value: "app1=;app2=A"
 ```
 
-> Note: The third application is not listed, because if an app is not specified inside the scopes, its allowed to use all topics.
+> Note: The third application is not listed, because if an app is not specified inside the scopes, it is allowed to use all topics.
 
 The table below shows which application is allowed to publish into the topics:
 | Publishing | app1 | app2 | app3 |
