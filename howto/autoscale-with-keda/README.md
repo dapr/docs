@@ -70,8 +70,8 @@ spec:
       direction: in
       name: event
       topic: myTopic
-      brokers:  my-kafka:9092
-      consumerGroup: group2
+      bootstrapServers:  my-kafka:9092
+      consumerGroup: group1
       dataType: binary
       lagThreshold: '5'
 ```
