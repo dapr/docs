@@ -23,6 +23,7 @@ Besides the language specific Dapr SDKs, a developer can invoke an actor using t
   - [Invoke Actor Method](#invoke-actor-method-1)
   - [Invoke Reminder](#invoke-reminder)
   - [Invoke Timer](#invoke-timer)
+  - [Health Checks](#health-check)
 - [Querying Actor State Externally](#querying-actor-state-externally)
 
 ## User service code calling dapr
