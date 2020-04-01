@@ -16,10 +16,9 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 1. Install Redis into your cluster:
 
 ```bash
-helm install redis stable/redis
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install redis bitnami/redis
 ```
-
-> This chart comes from the `stable` repository, which is no longer included by default as of Helm v3. You may need to add the stable repo if this is your first time using Helm - documented [here](https://helm.sh/docs/intro/quickstart/#initialize-a-helm-chart-repository).
 
 > Note that you need a Redis version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), also a lower version can be used.
 
