@@ -51,7 +51,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 To setup Redis, you need to create a component for `state.redis`. 
 <br>
-The following yaml files demonstrates how to define each. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
+The following yaml files demonstrates how to define each. If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS in the yaml. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
 
 ### Configuring Redis for State Persistence and Retrieval
 
@@ -69,6 +69,8 @@ spec:
     value: <HOST>
   - name: redisPassword
     value: <PASSWORD>
+  - name: enableTLS
+    value: <bool>
 ```
 
 ## Apply the configuration
