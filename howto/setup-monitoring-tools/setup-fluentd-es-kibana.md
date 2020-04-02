@@ -73,7 +73,7 @@ kibana-kibana-95bc54b89-zqdrk   1/1     Running   0          4m21s
 Navigate to the following path if you're not already there (the one this document is in):
 
 ```
-docs\howto\setup-monitoring-tools
+docs/howto/setup-monitoring-tools
 ```
 
 > Note: If you already have Fluentd running in your cluster, please enable the nested json parser to parse JSON formatted log from Dapr.
