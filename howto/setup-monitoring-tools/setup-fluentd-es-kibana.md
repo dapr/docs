@@ -1,4 +1,4 @@
-# Set up Fleuntd, Elastic search, and Kibana in Kubernetes
+# Set up Fluentd, Elastic search, and Kibana in Kubernetes
 
 This document descriebs how to install Fluentd, Elastic Search, and Kibana to search logs in Kubernetes
 
@@ -32,6 +32,14 @@ helm repo update
 
 3. Install Elastic Search using Helm
 
+By default the chart creates 3 replicas which must be on different nodes.  If your cluster has less than 3 nodes, specify a lower number of replicas.  For example, this sets it to 1:
+
+```
+helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set replicas=1
+```
+
+Otherwise:
+
 ```bash
 helm install elasticsearch elastic/elasticsearch -n dapr-monitoring
 ```
@@ -62,14 +70,20 @@ kibana-kibana-95bc54b89-zqdrk   1/1     Running   0          4m21s
 
 1. Install config map and Fluentd as a daemonset
 
-> Note: If you are running Fluentd in your cluster, please enable the nested json parser to parse JSON formatted log from Dapr.
+Navigate to the following path if you're not already there (the one this document is in):
+
+```
+docs/howto/setup-monitoring-tools
+```
+
+> Note: If you already have Fluentd running in your cluster, please enable the nested json parser to parse JSON formatted log from Dapr.
 
 ```bash
 kubectl apply -f ./fluentd-config-map.yaml
 kubectl apply -f ./fluentd-dapr-with-rbac.yaml
 ```
 
-2. Ensure that Fluentd is running as a daemonset
+2. Ensure that Fluentd is running as a daemonset; the number of instances should be the same as the number of cluster nodes.  In the example below we only have 1 node.
 
 ```bash
 kubectl get pods -n kube-system -w
@@ -86,6 +100,8 @@ fluentd-sdrld                 1/1     Running   0          14s
 1. Install Dapr with enabling JSON-formatted logs
 
 ```bash
+helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
+helm repo update
 helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 ```
 
