@@ -43,6 +43,12 @@ Install the latest darwin Dapr CLI to `/usr/local/bin`
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
 
+Or install via [Homebrew](https://brew.sh)
+
+```bash
+brew install dapr/tap/dapr-cli
+```
+
 ### From the Binary Releases
 
 Each release of Dapr CLI includes various OSes and architectures. These binary versions can be manually downloaded and installed.
