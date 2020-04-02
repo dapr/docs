@@ -24,6 +24,8 @@ kubectl create namespace dapr-monitoring
 2. Install Prometheus
 
 ```bash
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+helm repo update
 helm install dapr-prom stable/prometheus -n dapr-monitoring
 ```
 
@@ -50,7 +52,7 @@ helm install grafana stable/grafana -n dapr-monitoring --set persistence.enabled
 > Note: remove `%` character from the password that this command returns. The admin password is `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1`.
 
 ```
-kubernetes get secret --namespace dapr-monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+kubectl get secret --namespace dapr-monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1%
 ```
 
@@ -129,9 +131,9 @@ So you need to set up Prometheus data source with the below settings:
 
 8. Import Dapr dashboards.
 
-You can now import built-in [Grafana dashboard templates](../../reference/dashboard/README.md).
+In the upper left, click the "+" then "Import". 
 
-Refer [here](../../reference/dashboard/README.md) for details.
+You can now import built-in [Grafana dashboard templates](../../reference/dashboard/README.md).  Please see the link for the templates.
 
 ![upload json](./img/grafana-uploadjson.png)
 
