@@ -40,13 +40,13 @@ Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
 
 ```
-<Dapr id>||<state key>
+<App ID>||<state key>
 ```
 
 For Actor states, the key format is:
 
 ```
-<Dapr id>||<Actor type>||<Actor id>||<state key>
+<App ID>||<Actor type>||<Actor id>||<state key>
 ```
 
 ## Save state
@@ -245,8 +245,8 @@ spec:
 
 A Dapr-compatible state store shall use the following key scheme:
 
-* *\<Dapr id>||\<state key>* key format for general states
-* *\<Dapr id>||\<Actor type>||\<Actor id>||\<state key>* key format for Actor states.
+* *\<App ID>||\<state key>* key format for general states
+* *\<App ID>||\<Actor type>||\<Actor id>||\<state key>* key format for Actor states.
 
 ### Concurrency
 

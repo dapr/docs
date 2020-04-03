@@ -220,7 +220,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     time="2020-02-05T09:15:03Z" level=info msg="starting Dapr Runtime -- version edge -- commit v0.3.0-rc.0-58-ge540a71-dirty"
     time="2020-02-05T09:15:03Z" level=info msg="log level set to: info"
     time="2020-02-05T09:15:03Z" level=info msg="kubernetes mode configured"
-    time="2020-02-05T09:15:03Z" level=info msg="dapr id: nodeapp"
+    time="2020-02-05T09:15:03Z" level=info msg="app id: nodeapp"
     time="2020-02-05T09:15:03Z" level=info msg="mTLS enabled. creating sidecar authenticator"
     time="2020-02-05T09:15:03Z" level=info msg="trust anchors extracted successfully"
     time="2020-02-05T09:15:03Z" level=info msg="authenticator created"
