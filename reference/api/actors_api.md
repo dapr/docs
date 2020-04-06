@@ -740,12 +740,12 @@ In order to enable visibility into the state of an actor and allow for complex s
 
 The state namespace created by Dapr for actors is composed of the following items:
 
-* Dapr ID - Represents the unique ID given to the Dapr application.
+* App ID - Represents the unique ID given to the Dapr application.
 * Actor Type - Represents the type of the actor.
 * Actor ID - Represents the unique ID of the actor instance for an actor type.
 * Key - A key for the specific state value. An actor ID can hold multiple state keys.
 
-The following example shows how to construct a key for the state of an actor instance under the `myapp` Dapr ID namespace:
+The following example shows how to construct a key for the state of an actor instance under the `myapp` App ID namespace:
 `myapp-cat-hobbit-food`
 
-In the example above, we are getting the value for the state key `food`, for the actor ID `hobbit` with an actor type of `cat`, under the Dapr ID namespace of `myapp`.
+In the example above, we are getting the value for the state key `food`, for the actor ID `hobbit` with an actor type of `cat`, under the App ID namespace of `myapp`.

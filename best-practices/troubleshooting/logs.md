@@ -51,7 +51,7 @@ dapr run node myapp.js
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="starting Dapr Runtime -- version 0.3.0-alpha -- commit b6f2810-dirty"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="log level set to: info"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="standalone mode configured"
-== DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="dapr id: Trackgreat-Lancer"
+== DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="app id: Trackgreat-Lancer"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="loaded component statestore (state.redis)"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="loaded component messagebus (pubsub.redis)"
 == DAPR == 2019/09/05 12:26:43 redis: connecting to localhost:6379
@@ -123,7 +123,7 @@ kubectl logs addapp-74b57fb78c-67zm6 -c daprd
 time="2019-09-04T02:52:27Z" level=info msg="starting Dapr Runtime -- version 0.3.0-alpha -- commit b6f2810-dirty"
 time="2019-09-04T02:52:27Z" level=info msg="log level set to: info"
 time="2019-09-04T02:52:27Z" level=info msg="kubernetes mode configured"
-time="2019-09-04T02:52:27Z" level=info msg="dapr id: addapp"
+time="2019-09-04T02:52:27Z" level=info msg="app id: addapp"
 time="2019-09-04T02:52:27Z" level=info msg="application protocol: http. waiting on port 6000"
 time="2019-09-04T02:52:27Z" level=info msg="application discovered on port 6000"
 time="2019-09-04T02:52:27Z" level=info msg="actor runtime started. actor idle timeout: 1h0m0s. actor scan interval: 30s"
