@@ -5,7 +5,7 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 ## Contents
 - [Service invocation](#service-invocation)
 - [State Management](#state-management)
-- [Pub/Sub](#Pub/Sub)
+- [Pub/Sub](#pubsub)
 - [Bindings and Triggers](#bindings-and-triggers)
 - [Actors](#actors)
 - [Observerability](#observerability)
