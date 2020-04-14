@@ -11,8 +11,8 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 - [Observerability](#observerability)
 - [Security](#security)
 - [Components](#components)
+- [Hosting Platforms](#hosting-platforms)
 - [Developer tooling](#developer-tooling)
-- [Infrastructure integration](#Infrastructure-integration)
 
 ## Service invocation
 
@@ -31,7 +31,6 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Create a stateful, replicated service with different consistency/concurrency levels](./stateful-replicated-service)
 * [Control your app's throttling using rate limiting features](./control-concurrency)
 * [Configuring Redis for state management ](./configure-redis)
-
 
 ## Pub/Sub
 
@@ -77,6 +76,12 @@ For Actors How Tos see the SDK documentation
 
 * [Limit components for one or more applications using scopes](./components-scopes)
 
+## Hosting Platforms
+### Kubernetes Configuration
+
+* [Sidecar configuration on Kubernetes](./configure-k8s)
+* [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
+
 ## Developer tooling
 ### Using Visual Studio Code
 
@@ -92,7 +97,3 @@ For Actors How Tos see the SDK documentation
 ### SDKs
 
 * [Serialization in Dapr's SDKs](./serialize)
-
-## Infrastructure integration
-
-* [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
