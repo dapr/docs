@@ -11,6 +11,7 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 - [Observerability](#observerability)
 - [Security](#security)
 - [Components](#components)
+- [Kubernetes Configuration](#kubernetes-configuration)
 - [Developer tooling](#developer-tooling)
 - [Infrastructure integration](#Infrastructure-integration)
 
@@ -31,7 +32,6 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Create a stateful, replicated service with different consistency/concurrency levels](./stateful-replicated-service)
 * [Control your app's throttling using rate limiting features](./control-concurrency)
 * [Configuring Redis for state management ](./configure-redis)
-
 
 ## Pub/Sub
 
@@ -76,6 +76,10 @@ For Actors How Tos see the SDK documentation
 ## Components
 
 * [Limit components for one or more applications using scopes](./components-scopes)
+
+## Kubernetes Configuration
+
+* [Sidecar configuration on Kubernetes](./configure-k8s)
 
 ## Developer tooling
 ### Using Visual Studio Code
