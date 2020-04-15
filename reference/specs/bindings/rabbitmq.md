@@ -24,7 +24,7 @@ spec:
 - `host` is the RabbitMQ host address.
 - `durable` tells RabbitMQ to persist message in storage.
 - `deleteWhenUnused` enables or disables auto-delete.
-- `ttlInSeconds` is a optional parameter to set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed.
+- `ttlInSeconds` is an optional parameter to set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
