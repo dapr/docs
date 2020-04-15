@@ -18,7 +18,7 @@ spec:
 
 - `connectionString` is the Service Bus connection string.
 - `queueName` is the Service Bus queue name.
-- `ttlInSeconds` is a optional paramater to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this option is omitted, messages will expire after 14 days.
+- `ttlInSeconds` is an optional parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
