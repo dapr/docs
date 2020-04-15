@@ -9,7 +9,7 @@ spec:
   type: bindings.azure.servicebusqueues
   metadata:
   - name: connectionString
-    value: sb://************
+    value: "sb://************"
   - name: queueName
     value: queue1
   - name: ttlInSeconds
