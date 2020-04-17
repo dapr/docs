@@ -205,6 +205,10 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ```
 
+#### Sidecar annotations
+
+To see all the supported annotations for the Dapr sidecar on Kubernetes, visit [this](../howto/configure-k8s/README.md) how to guide.
+
 #### Uninstall Dapr on Kubernetes
 
 Helm 3
