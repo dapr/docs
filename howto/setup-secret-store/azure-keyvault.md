@@ -281,7 +281,7 @@ $ kubectl logs nodeapp-f7b7576f4-4pjrj daprd
 time="2019-09-26T20:34:23Z" level=info msg="starting Dapr Runtime -- version 0.4.0-alpha.4 -- commit 876474b-dirty"
 time="2019-09-26T20:34:23Z" level=info msg="log level set to: info"
 time="2019-09-26T20:34:23Z" level=info msg="kubernetes mode configured"
-time="2019-09-26T20:34:23Z" level=info msg="dapr id: nodeapp"
+time="2019-09-26T20:34:23Z" level=info msg="app id: nodeapp"
 time="2019-09-26T20:34:24Z" level=info msg="loaded component azurekeyvault (secretstores.azure.keyvault)"
 time="2019-09-26T20:34:25Z" level=info msg="loaded component statestore (state.redis)"
 ...

@@ -8,7 +8,7 @@ The easiest way to connect to your SQL Server instance is to use the [Azure Data
 
 > **NOTE:** The following samples use Azure SQL. When you configure an Azure SQL database for Dapr, you need to specify the exact table name to use. The follow samples assume you've already connected to the right database with a table named "states".
 
-## 2. List keys by Dapr id
+## 2. List keys by App ID
 
 To get all state keys associated with application "myapp", use the query:
 

@@ -12,7 +12,7 @@ You can use the official [redis-cli](https://redis.io/topics/rediscli) or any ot
 docker run --rm -it --link <name of the Redis container> redis redis-cli -h <name of the Redis container>
 ```
 
-## 2. List keys by Dapr id
+## 2. List keys by App ID
 
 To get all state keys associated with application "myapp", use the command:
 
