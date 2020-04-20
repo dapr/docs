@@ -15,7 +15,7 @@ spec:
   - name: queue
     value: "myqueue"
   - name: ttlInSeconds
-    value: 60
+    value: "60"
 ```
 
 - `storageAccount` is the Azure Storage account name.
