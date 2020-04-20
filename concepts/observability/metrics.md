@@ -12,7 +12,7 @@ The default metrics port is `9090`. This can be overridden by passing the comman
 
 Each Dapr system process emits Go runtime/process metrics by default and have their own metrics:
 
-- [Dapr runtime metric list](https://github.com/dapr/dapr/blob/master/pkg/diagnostics/README.md)
+- [Dapr metric list](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
 
 ## References
 
