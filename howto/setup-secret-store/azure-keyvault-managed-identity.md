@@ -69,6 +69,7 @@ This document shows how to enable Azure Key Vault secret store using [Dapr Secre
     Save the following yaml as azure-identity-config.yaml:
 
     ```yaml
+    apiVersion: "aadpodidentity.k8s.io/v1"
     kind: AzureIdentity
     metadata:
       name: [you managed identity name]
@@ -108,10 +109,10 @@ In Kubernetes mode, you store the certificate for the service principal into the
     spec:
       type: secretstores.azure.keyvault
       metadata:
-        - name: vaultName
-          value: [your_keyvault_name]
-        - name: spnClientId
-          value: [your_managed_identity_client_id]
+      - name: vaultName
+        value: [your_keyvault_name]
+      - name: spnClientId
+        value: [your_managed_identity_client_id]
     ```
 
 2. Apply azurekeyvault.yaml component
