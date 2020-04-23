@@ -33,7 +33,7 @@ docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPIN
 
 > Note: dapr-localforwarder is created by using [0.1-beta1 release](https://github.com/microsoft/ApplicationInsights-LocalForwarder/releases/tag/v0.1-beta1). If you want to create your own image, please use [this dockerfile](./localforwarder/Dockerfile).
 
-1. Copy *tracing.yaml* to a *components* folder under the same folder where you run you application. 
+1. Copy native.yaml and tracing.yaml to a *components/* sub-folder under the same folder where you run you application. 
 
 * native.yaml
 
@@ -68,7 +68,7 @@ spec:
 3. When running in the local mode, you need to launch Dapr with the `--config` parameter:
 
 ```bash
-dapr run --app-id mynode --app-port 3000 --config ./tracing.yaml node app.js
+dapr run --app-id mynode --app-port 3000 --config ./components/tracing.yaml node app.js
 ```
 
 #### Kubernetes environment
