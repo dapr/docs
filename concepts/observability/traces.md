@@ -60,6 +60,5 @@ spec:
 
 ## References
 
-* [How-To: Set up Distributed Tracing with Azure Monitor](../../howto/diagnose-with-tracing/azure-monitor.md)
-
-* [How-To: Set Up Distributed Tracing with Zipkin](../../howto/diagnose-with-tracing/zipkin.md)
+* [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
+* [How-To: Set up Zipkin for distributed tracingn](../../howto/diagnose-with-tracing/zipkin.md)
