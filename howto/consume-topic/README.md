@@ -34,7 +34,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
 The Dapr instance will call into your app, and expect a JSON value of an array of topics.
 
-*Note: The following example is written in node, but can be in any programming language*
+*Note: The following example is written in node (express.js < 4.16), but can be in any programming language*
 
 <pre>
 const express = require('express')
@@ -53,6 +53,24 @@ const port = 3000
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 </pre>
 
+**NOTE:** For node/express > 4.16 you will need to add the following:
+1. ```app.use(express.json())``` as ```body-parser``` has been added back into express.js > v.4.16
+2. You must add ```{type: ["application/json", "application/cloudevents+json"]}``` into the above ```express.json()``` to properly accept the pub/sub ```content-type``` that Dapr will POST to you your endpoint (e.g. ```POST /topic1```) when receiving a pub/sub
+3. Depending on how you expect/know what is being recieved you may want to add a middleware call that will check the content type and add mutate ```req.body = req.body.data``` as this would be the expected data payload from the message.  Dapr conforms/leverages [CloudEvents Spec](https://cloudevents.io) and will also deliver additional useful properties as part of the original ```req.body``` and may/may not be what you expect.
+
+<pre>
+// Example - presuming app.js is your entry point add the following in your middleware calls:
+// ...
+app.use(express.json({type: ["application/json", "application/cloudevents+json"]}));
+app.use(function(req, res, next){
+    if(req.headers["content-type"] == "application/cloudevents+json") {
+        req.body = req.body.data
+    }
+    next();
+});
+//...
+</pre>
+
 ## Consume messages
 
 To consume messages from a topic, start a web server in the programming language of your choice and listen on a `POST` endpoint with the route name that corresponds to the topic.
@@ -67,6 +85,8 @@ app.post('/topic1', (req, res) => {
     res.status(200).send()
 })
 ```
+
+NOTE: Express
 
 ### ACK-ing a message
 
