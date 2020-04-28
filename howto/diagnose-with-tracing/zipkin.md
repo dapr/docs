@@ -11,7 +11,7 @@ The following steps will show you how to configure Dapr to send distributed trac
 First, deploy Zipkin:
 
 ```bash
-kubectl run zipkin --image openzipkin/zipkin --port 9411
+kubectl create deployment zipkin --image openzipkin/zipkin
 ```
 
 Create a Kubernetes Service for the Zipkin pod:
