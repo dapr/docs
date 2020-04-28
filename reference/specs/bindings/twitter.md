@@ -9,15 +9,15 @@ spec:
   type: bindings.twitter
   metadata:
   - name: consumerKey
-    value: ''
+    value: ""
   - name: consumerSecret
-    value: ''
+    value: ""
   - name: accessToken
-    value: ''
+    value: ""
   - name: accessSecret
-    value: ''
+    value: ""
   - name: query
-    value: ''
+    value: ""
 ```
 
 
