@@ -25,4 +25,4 @@ spec:
 - `consumerSecret` (required) is the Twitter API consumer secret
 - `accessToken` (required) is the Twitter API access token
 - `accessSecret` (required) is the Twitter API access secret
-- `query` (required) is the Twitter API consumer key
+- `query` (required) is the Twitter search query (e.g. `dapr`)
