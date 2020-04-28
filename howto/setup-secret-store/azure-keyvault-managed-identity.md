@@ -47,7 +47,7 @@ This document shows how to enable Azure Key Vault secret store using [Dapr Secre
 5. Assign the Managed Identity Operator role to the AKS Service Principal
 
     ```bash
-    $aks = az aks show  -g [your resource group]  -n [your AKS name] | ConvertFrom-Json
+    $aks = az aks show  -g [your resource group]  -n [your AKS name] -o json | ConvertFrom-Json
 
     az role assignment create  --role "Managed Identity Operator"  --assignee $aks.servicePrincipalProfile.clientId  --scope $identity.id
     ```
