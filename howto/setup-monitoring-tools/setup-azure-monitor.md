@@ -1,4 +1,4 @@
-# Set up azure monitor to search logs and collect metrics for Dapr
+# Set up Azure Monitor to search logs and collect metrics
 
 This document describes how to enable Dapr metrics and logs with Azure Monitor for Azure Kubernetes Service (AKS).
 

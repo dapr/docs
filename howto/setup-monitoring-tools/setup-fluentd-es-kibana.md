@@ -1,4 +1,4 @@
-# Set up Fluentd, Elastic search, and Kibana in Kubernetes
+# Set up Fluentd, Elastic search and Kibana in Kubernetes
 
 This document descriebs how to install Fluentd, Elastic Search, and Kibana to search logs in Kubernetes
 
