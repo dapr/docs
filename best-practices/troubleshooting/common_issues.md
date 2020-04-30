@@ -14,6 +14,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nodeapp
+  namespace: default
   labels:
     app: node
 spec:

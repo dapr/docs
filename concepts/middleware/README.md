@@ -17,6 +17,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: pipeline
+  namespace: default
 spec:
   httpPipeline:
     handlers:

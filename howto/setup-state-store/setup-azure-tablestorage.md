@@ -18,7 +18,7 @@ The next step is to create a Dapr component for Azure Table Storage.
 
 Create the following YAML file named `azuretable.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:

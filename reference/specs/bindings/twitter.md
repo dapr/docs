@@ -1,23 +1,24 @@
 # Kubernetes Events Binding Spec
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.twitter
   metadata:
   - name: consumerKey
-    value: ''
+    value: ""
   - name: consumerSecret
-    value: ''
+    value: ""
   - name: accessToken
-    value: ''
+    value: ""
   - name: accessSecret
-    value: ''
+    value: ""
   - name: query
-    value: ''
+    value: ""
 ```
 
 
