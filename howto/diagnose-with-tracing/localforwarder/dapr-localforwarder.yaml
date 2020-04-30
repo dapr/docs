@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: dapr-localforwarder
+  namespace: default
   labels:
     app: dapr-localforwarder
 spec:
@@ -17,6 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dapr-localforwarder
+  namespace: default
   labels:
     app: dapr-localforwarder
 spec:

@@ -35,7 +35,8 @@ Create the following YAML file named `consul.yaml`:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.consul
   metadata:
@@ -55,11 +56,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 The following example uses the Kubernetes secret store to retrieve the acl token:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.consul
   metadata:

@@ -29,6 +29,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: myEvent
+  namespace: default
 spec:
   type: bindings.kafka
   metadata:

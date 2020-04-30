@@ -74,6 +74,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pythonapp
+  namespace: default
   labels:
     app: python
 spec:

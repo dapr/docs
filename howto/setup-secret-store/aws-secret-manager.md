@@ -13,6 +13,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: awssecretmanager
+  namespace: default
 spec:
   type: secretstores.aws.secretmanager
   metadata:
@@ -44,6 +45,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:

@@ -18,6 +18,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: zipkin
+  namespace: default
 spec:
   type: exporters.zipkin
   metadata:
@@ -34,6 +35,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
     samplingRate: "1"
@@ -82,6 +84,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: zipkin
+  namespace: default
 spec:
   type: exporters.zipkin
   metadata:
@@ -98,6 +101,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
     samplingRate: "1"
