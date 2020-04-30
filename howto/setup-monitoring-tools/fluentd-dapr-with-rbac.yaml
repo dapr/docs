@@ -27,6 +27,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: fluentd
+  namespace: default
 roleRef:
   kind: ClusterRole
   name: fluentd

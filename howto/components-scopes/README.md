@@ -17,7 +17,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: production
+  namespace: default
 spec:
   type: state.redis
   metadata:
@@ -65,7 +65,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: production
+  namespace: default
 spec:
   type: state.redis
   metadata:

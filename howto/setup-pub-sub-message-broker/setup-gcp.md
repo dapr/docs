@@ -8,11 +8,12 @@ The next step is to create a Dapr component for Google Cloud Pub/Sub
 
 Create the following YAML file named `messagebus.yaml`:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.gcp.pubsub
   metadata:

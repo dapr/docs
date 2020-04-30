@@ -47,6 +47,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: native
+  namespace: default
 spec:
   type: exporters.native
   metadata:
@@ -63,6 +64,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
     enabled: true
@@ -103,6 +105,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: native
+  namespace: default
 spec:
   type: exporters.native
   metadata:
@@ -119,6 +122,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
     enabled: true
