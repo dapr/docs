@@ -12,8 +12,8 @@ Create the following YAML file named `azuresb.yaml`:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
-  namespace: <namespace>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.azure.servicebus
   metadata:

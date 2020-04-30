@@ -93,6 +93,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: myappconfig
+  namespace: default
 spec:
   tracing:
     enabled: true
@@ -121,11 +122,12 @@ workloadCertTTL  | string | Time a certificate is valid for. Default is 24 hours
 
 Example control plane configuration
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: default
+  namespace: default
 spec:
   mtls:
     enabled: true

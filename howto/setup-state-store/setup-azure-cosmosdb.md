@@ -19,7 +19,7 @@ The next step is to create a Dapr component for CosmosDB.
 
 Create the following YAML file named `cosmos.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:

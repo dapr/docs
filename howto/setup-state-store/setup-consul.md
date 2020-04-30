@@ -31,7 +31,7 @@ The next step is to create a Dapr component for Consul.
 
 Create the following YAML file named `consul.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
