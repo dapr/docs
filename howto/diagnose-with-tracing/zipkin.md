@@ -36,9 +36,7 @@ metadata:
   name: tracing
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 2. Copy `zipkin.yaml` to a `/components` subfolder under the same folder where you run your application.
@@ -102,9 +100,7 @@ metadata:
   name: tracing
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 Finally, deploy the the Dapr component and configuration files:
@@ -141,15 +137,16 @@ The `tracing` section under the `Configuration` spec contains the following prop
 
 ```yml
 tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 The following table lists the different properties.
 
 Property | Type | Description
 ---- | ------- | -----------
-enabled  | bool | Set tracing to be enabled or disabled
-expandParams  | bool | When true, expands parameters passed to HTTP endpoints
-includeBody  | bool | When true, includes the request body in the tracing event
+samplingRate  | string | Set sampling rate for tracing to be enabled or disabled. 
+
+
+`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
+set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces.By default, the sampling rate is 1 in 10,000
+                         
