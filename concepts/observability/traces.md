@@ -22,7 +22,7 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 
 ## Correlation ID
 
-For HTTP requests, Dapr injects a **X-Correlation-ID** header to requests. For gRPC calls, Dapr inserts a **X-Correlation-ID** as a field of a **header** metadata. When a request arrives without an correlation ID, Dapr creates a new one. Otherwise, it passes the correlation ID along the call chain.
+Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `traceparent` header.For gRPC requests, Dapr uses `grpc-trace-bin` header.When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
 
 ## Configuration
 
@@ -35,10 +35,11 @@ metadata:
   name: tracing
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
+
+`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
+set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based. By default, the sampling rate is 1 in 10,000.
 
 Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
