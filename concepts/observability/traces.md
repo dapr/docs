@@ -26,7 +26,9 @@ Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `
 
 ## Configuration
 
-Dapr tracing is configured by a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object enables distributed tracing:
+Dapr uses [probalistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probaility a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
+
+To change the default tracing behavior, use a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -38,8 +40,7 @@ spec:
     samplingRate: "1"
 ```
 
-`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
-set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces.By default, the sampling rate is 1 in 10,000
+Similarly, changing `samplingRate` to 0 will disable tracing altogether.
 
 Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
@@ -62,4 +63,4 @@ spec:
 ## References
 
 * [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
-* [How-To: Set up Zipkin for distributed tracingn](../../howto/diagnose-with-tracing/zipkin.md)
+* [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
