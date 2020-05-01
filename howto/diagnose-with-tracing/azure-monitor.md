@@ -5,8 +5,8 @@ Dapr integrates with Application Insights through OpenTelemetry's default export
 > Note: The local forwarder is still under preview, but being deprecated. The Application Insights team recommends using [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector) (which is in alpha state) for the future so we're working on moving from local forwarder to [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector).
 
 
-- [How to configure distributed tracing with Application insights](#How-to-configure-distributed-tracing-with-Application-insights)
-- [Tracing configuration](#Tracing-configuration)
+ - [How to configure distributed tracing with Application insights](#How-to-configure-distributed-tracing-with-Application-insights)
+ - [Tracing configuration](#Tracing-configuration)
 
 ## How to configure distributed tracing with Application insights
 
@@ -33,10 +33,10 @@ This is for running the local forwarder on your machine.
 1. Run the local fowarder
 
 ```bash
-docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678 daprio/dapr-localforwarder:0.1-beta1
+docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678 daprio/dapr-localforwarder:latest
 ```
 
-> Note: dapr-localforwarder is created by using [0.1-beta1 release](https://github.com/microsoft/ApplicationInsights-LocalForwarder/releases/tag/v0.1-beta1). If you want to create your own image, use [this dockerfile](./localforwarder/Dockerfile).
+> Note: [dapr-localforwarder](https://github.com/dapr/ApplicationInsights-LocalForwarder) is the forked version of  [ApplicationInsights Localforwarder](https://github.com/microsoft/ApplicationInsights-LocalForwarder/), that includes the minor changes for Dapr. We're working on migrating to [opentelemetry-sdk and opentelemetry collector](https://opentelemetry.io/).
 
 1. Create the following YAML files. Copy the native.yaml component file and tracing.yaml configuration file  to the *components/* sub-folder under the same folder where you run your application. 
 

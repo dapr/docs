@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: dapr-localforwarder
-        image: docker.io/daprio/dapr-localforwarder:0.1-beta1
+        image: docker.io/daprio/dapr-localforwarder:latest
         ports:
         - containerPort: 55678
         imagePullPolicy: Always
