@@ -1,4 +1,4 @@
-# Kubernetes Events Binding Spec
+# Twitter Binding Spec
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
