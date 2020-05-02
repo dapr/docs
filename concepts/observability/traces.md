@@ -28,7 +28,7 @@ Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `
 
 Dapr uses [probalistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probaility a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
 
-To change the default tracing behavior, use a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled):
+To change the default tracing behavior, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -43,9 +43,9 @@ spec:
 
 Similarly, changing `samplingRate` to 0 will disable tracing altogether.
 
-Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
+See the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
-Dapr supports pluggable exporters, defined by configuration files (in local mode) or a Kubernetes custom resource object (in Kubernetes mode). For example, the following manifest defines a Zipkin exporter:
+Dapr supports pluggable exporters, defined by configuration files (in self hosted mode) or a Kubernetes custom resource object (in Kubernetes mode). For example, the following manifest defines a Zipkin exporter:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
