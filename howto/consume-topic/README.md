@@ -13,11 +13,12 @@ For this guide, we'll use Redis Streams, which is also installed by default on a
 
 *Note: When running Dapr locally, a pub/sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
+  namespace: default
 spec:
   type: pubsub.redis
   metadata:

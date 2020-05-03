@@ -16,11 +16,12 @@ The next step is to create a Dapr component for Firestore.
 
 Create the following YAML file named `firestore.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.gcp.firestore
   metadata:
