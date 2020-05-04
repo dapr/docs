@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### In Kubernetes
 
-To apply the Azure Service Bus pub/sub to Kubernetes, use the `kubectl` CLI:
+To apply the Azure Event Hubs pub/sub to Kubernetes, use the `kubectl` CLI:
 
 ```bash
 kubectl apply -f eventhubs.yaml
@@ -43,4 +43,4 @@ kubectl apply -f eventhubs.yaml
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use Azure Service Bus, replace the contents of `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the contents of `eventhubs.yaml` above (Don't change the filename).
+To use Azure Event Hubs, replace the contents of `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the contents of `eventhubs.yaml` above (Don't change the filename).
