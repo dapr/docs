@@ -35,11 +35,12 @@ The next step is to create a Dapr component for MongoDB.
 
 Create the following YAML file named `mongodb.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.mongodb
   metadata:
@@ -65,11 +66,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 The following example uses the Kubernetes secret store to retrieve the username and password:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.mondodb
   metadata:

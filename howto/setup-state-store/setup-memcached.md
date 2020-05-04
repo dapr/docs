@@ -31,11 +31,12 @@ The next step is to create a Dapr component for Memcached.
 
 Create the following YAML file named `memcached.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.memcached
   metadata:

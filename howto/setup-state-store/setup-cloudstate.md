@@ -21,11 +21,12 @@ The next step is to create a Dapr component for Cloudstate.
 
 Create the following YAML file named `cloudstate.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: cloudstate
+  namespace: default
 spec:
   type: state.cloudstate
   metadata:
@@ -61,6 +62,7 @@ kind: Deployment
 metadata:
   annotations:
   name: test-dapr-app
+  namespace: default
   labels:
     app: test-dapr-app
 spec:
@@ -125,6 +127,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cloudstate-pod-reader
+  namespace: default
 rules:
 - apiGroups:
   - ""
@@ -140,6 +143,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cloudstate-read-pods-default
+  namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role

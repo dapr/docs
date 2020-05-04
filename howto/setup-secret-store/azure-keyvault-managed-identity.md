@@ -106,6 +106,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kind: Component
     metadata:
       name: azurekeyvault
+      namespace: default
     spec:
       type: secretstores.azure.keyvault
       metadata:
@@ -138,6 +139,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kind: Component
     metadata:
       name: statestore
+      namespace: default
     spec:
       type: state.redis
       metadata:
@@ -163,6 +165,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     apiVersion: v1
     metadata:
       name: nodeapp
+      namespace: default
       labels:
         app: node
     spec:
@@ -179,6 +182,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kind: Deployment
     metadata:
       name: nodeapp
+      namespace: default
       labels:
         app: node
     spec:

@@ -31,11 +31,12 @@ The next step is to create a Dapr component for NATS.
 
 Create the following YAML file named `nats.yaml`:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.nats
   metadata:

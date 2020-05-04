@@ -115,6 +115,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
+  namespace: default
 spec:
   type: secretstores.azure.keyvault
   metadata:
@@ -143,6 +144,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:
@@ -202,6 +204,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
+  namespace: default
 spec:
   type: secretstores.azure.keyvault
   metadata:
@@ -241,6 +244,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:

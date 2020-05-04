@@ -7,11 +7,12 @@ Pub/Sub message buses are extensible and can be found in the [components-contrib
 
 A pub/sub in Dapr is described using a `Component` file:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
+  namespace: default
 spec:
   type: pubsub.<NAME>
   metadata:
