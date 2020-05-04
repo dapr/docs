@@ -1,53 +1,57 @@
 # Setup Kafka
 
-## Installing kafka with existing make target for development
+## Locally
 
-Dapr already has a neat way to install kafka into your preferred kubernetes cluster.
+You can run Kafka locally using [this](https://github.com/wurstmeister/kafka-docker) Docker image.
+To run without Docker, see the getting started guide [here](https://kafka.apache.org/quickstart).
 
-Follow the instructions in the [prerequisites](https://github.com/dapr/dapr/blob/master/tests/docs/running-e2e-test.md#prerequisites) section regarding installing kafka.
+## Kubernetes
 
-Kafka should now be available in your cluster at `dapr-kafka.dapr-tests.svc.cluster.local:9092`
+To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm/charts/tree/master/incubator/kafka#installing-the-chart).
 
-This method of kafka setup is especially suitable if you're running a local development cluster.
+## Create a Dapr component
 
-It applies this configuration located in dapr/tests/config/kafka_override.yaml which works better for smaller footprint deployments.
+The next step is to create a Dapr component for Kafka.
 
-```yaml
-# Install 1 replica for e2e test
-replicas: 1
-
-# Disable persistent storage
-persistence:
-  enabled: false
-
-# Topic creation and configuration for dapr test
-topics:
-  - name: dapr-test
-    partitions: 1
-    replicationFactor: 1
-```
-
-## Running Kafka locally
-Follow the instructions at https://kafka.apache.org/quickstart to run kafka locally and get access to some extra debugging tools for kafka.
-
-## Deploy Kafka component for dapr
-
-Here's an example component that references the broker installed by the make target in the first section. 
+Create the following YAML file named `kafka.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.kafka
   metadata:
-    # Kafka broker connection setting
+      # Kafka broker connection setting
     - name: brokers
       # Comma separated list of kafka brokers
       value: "dapr-kafka.dapr-tests.svc.cluster.local:9092"
+      # Enable auth. Default is "false"
     - name: authRequired
       value: "false"
+      # Only available is authRequired is set to true
+    - name: saslUsername
+      value: <username>
+      # Only available is authRequired is set to true
+    - name: saslPassword
+      value: <password>
 ```
 
-Use `kubectl apply` to add this component to your cluster.
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+
+## Apply the configuration
+
+### In Kubernetes
+
+To apply the Kafka component to Kubernetes, use the `kubectl`:
+
+```
+kubectl apply -f kafka.yaml
+```
+
+### Running locally
+
+The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
+To use Kafka, replace the `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the kafka.yaml above.
