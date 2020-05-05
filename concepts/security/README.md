@@ -1,5 +1,14 @@
 # Security
 
+End-to-end encryption for communication between microservices is generally a best practice, but it's also hard to set up. This feature is often called [mutual TLS (mTLS)](https://www.codeproject.com/articles/326574/an-introduction-to-mutual-ssl-authentication). `mTLS` offers a few key features for network traffic inside your app:
+
+- Two way authentication - the client proving its identify to the server, and vice-versa
+- An encrypted channel for all in-flight communication, after two-way authentication is established  
+
+Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
+
+Dapr supports mTLS in your application with a variety of different deployments, all without adding any code to your application, and usually without complex configuration inside your production systems:
+
 - [Sidecar-to-App Communication](#sidecar-to-app-communication)
 - [Sidecar-to-Sidecar Communication](#sidecar-to-sidecar-communication)
 - [Sidecar-to-system-services-communication](#Sidecar-to-system-services-communication)
@@ -8,7 +17,6 @@
 - [Bindings Security](#bindings-security)
 - [State Store Security](#state-store-security)
 - [Management Security](#management-security)
-
 
 ## Sidecar-to-App communication
 

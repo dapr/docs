@@ -27,16 +27,3 @@ Visit the following documents to learn more:
 - [Getting started with actors on the .Net platform](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)
 - [Getting started with actors with the Java SDK](https://github.com/dapr/java-sdk)
 
-## Mutual TLS
-
-Dapr enables code-free end-to-end encryption in communication between microservices, called [mutual TLS (mTLS)](https://www.codeproject.com/articles/326574/an-introduction-to-mutual-ssl-authentication). In short, mTLS is a commonly-used security mechanism that provides the following features:
-
-- Two way authentication - the client proving its identify to the server, and vice-versa
-- An encrypted channel for all in-flight communication, after two-way authentication is established  
-
-Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
-
-Visit the following documents to learn more:
-
-- [More details on mTLS](https://github.com/dapr/docs/blob/master/concepts/security/README.md)
-- [How to set up mTLS](https://github.com/dapr/docs/tree/master/howto/configure-mtls)
