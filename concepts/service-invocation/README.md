@@ -1,8 +1,6 @@
 # Service Invocation
 
-Dapr-enabled apps can communicate with each other through well-known endpoints in the form of http or gRPC messages.
-
-Using the service invocation API, your microservice can find and reliably communicate with other microservices in your system. 
+Using the service invocation API, your microservice can find and reliably communicate with other microservices in your system using standard protocols ([gRPC](https://grpc.io) or HTTP are currently supported). 
 
 Below is a high level overview of how Dapr's service invocation system works.
 
