@@ -57,6 +57,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Azure Service Bus Queues](../../reference/specs/bindings/servicebusqueues.md) | ✅ | ✅ | Experimental |
 | [Azure SignalR](../../reference/specs/bindings/signalr.md)                     |    | ✅ | Experimental |
 | [Azure Storage Queues](../../reference/specs/bindings/storagequeues.md)        | ✅ | ✅ | Experimental |
+| [Azure Event Grid](../../reference/specs/bindings/eventgrid.md)                | ✅ | ✅ | Experimental |
 
 ## Input bindings
 
