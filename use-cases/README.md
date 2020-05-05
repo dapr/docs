@@ -40,13 +40,3 @@ Visit the following documents to learn more:
 
 - [More details on mTLS](https://github.com/dapr/docs/blob/master/concepts/security/README.md)
 - [How to set up mTLS](https://github.com/dapr/docs/tree/master/howto/configure-mtls)
-
-## Secrets storage
-
-Dapr provides a consistent, secure API for accessing sensitive data, such as private keys for cloud services or database passwords, that your business logic needs. Using secret stores, you can remove secrets from your source code repositories and replace them with references to secrets in a Dapr secret store. Not only is doing so more secure, it also enables best security practices such as [key rotation](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-key-rotation-log-monitoring).
-
-Visit the following documents to learn more:
-
-- [More details on secrets storage](https://github.com/dapr/docs/tree/master/concepts/secrets)
-- [How to set up secrets storage](https://github.com/dapr/docs/tree/master/howto/setup-secret-store)
-

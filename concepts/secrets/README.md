@@ -1,7 +1,13 @@
 # Dapr secrets management
 
-Dapr offers developers a consistent way to extract application secrets, without needing to know the specifics of the secret store being used.
-Secret stores are components in Dapr. Dapr allows users to write new secret stores component implementations that can be used both to hold secrets for other Dapr components (for example secrets used by a state store components to read/write state) as well as serving the application with a dedicated secret building block API. Using the secrets building block API, you can easily read secrets that can be used by the application from a named secrets store. 
+Almost all non-trivial applications need to _securely_ store secret data like API keys, database passwords, and more. By nature, these secrets cannot be checked into the version control system, but they also need to be accessible to code running in production. This is generally a hard problem, but it's critical to get it right. Otherwise, critical production systems can be compromised.
+
+Dapr's solution to this problem is the secrets API and secrets stores.
+
+Here's how it works:
+
+- Dapr is set up to use a **secret store** - a place to securely store secret data
+- Application code uses the standard Dapr secrets API to retrieve secrets.
 
 Some examples for secret stores include `Kubernetes`, `Hashicorp Vault`, `Azure KeyVault`. See [secret stores](https://github.com/dapr/components-contrib/tree/master/secretstores) for the list of supported stores.
 
