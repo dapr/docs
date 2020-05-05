@@ -1,6 +1,12 @@
 # Introduction to actors
 
-Dapr runtime provides an actor implementation which is based on Virtual Actor pattern. The Dapr actors API provides a single-threaded programming model leveraging the scalability and reliability guarantees provided by underlying platform on which Dapr is running.
+The [actor pattern](https://en.wikipedia.org/wiki/Actor_model) describes **actors** as the lowest-level "unit of computation". In other words, you write your code in a self-contained unit (called an actor) that receives messages and processes them one at a time, without any kind of concurrency or threading.
+
+While your code processes a message, it can send one or more messages to other actors, or create new actors. An underlying **runtime** manages how, when and where each actor runs, and also routes messages between actors.
+
+A large number of actors can execute simultaneously, and actors execute independently from each other.
+
+Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/en-us/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the Actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
 
 ## Quick links
 
@@ -9,23 +15,16 @@ Dapr runtime provides an actor implementation which is based on Virtual Actor pa
 
 ## Contents
 
-- [Understanding Actors](#understanding-actors)
 - [Actors in Dapr](#actors-in-dapr)
 - [Actor Lifetime](#actor-lifetime)
 - [Distribution and Failover](#distribution-and-failover)
 - [Actor Communication](#actor-communication)
 
-## Understanding actors
-
-An actor is an isolated, independent unit of compute and state with single-threaded execution.
-
-The [actor pattern](https://en.wikipedia.org/wiki/Actor_model) is a computational model for concurrent or distributed systems in which a large number of these actors can execute simultaneously and independently of each other. Actors can communicate with each other and they can create more actors.
-
 ### When to use actors
 
-Dapr actors is an implementation of the actor design pattern. As with any software design pattern, the decision whether to use a specific pattern is made based on whether or not a software design problem fits the pattern.
+As with any other technology decision, you should decide whether to use actors based on the problem you're trying to solve.
 
-Although the actor design pattern can be a good fit to a number of distributed systems problems and scenarios, careful consideration of the constraints of the pattern and the framework implementing it must be made. As general guidance, consider the actor pattern to model your problem or scenario if:
+The actor design pattern can be a good fit to a number of distributed systems problems and scenarios, but the first thing you should consider are the constraings of the pattern. Generally speaking, consider the actor pattern to model your problem or scenario if:
 
 * Your problem space involves a large number (thousands or more) of small, independent, and isolated units of state and logic.
 * You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
