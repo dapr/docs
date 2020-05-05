@@ -5,7 +5,6 @@ Welcome to the Dapr documentation repository. You can learn more about Dapr from
 | Topic | Description |
 |-------|-------------|
 |**[Overview](./overview)** | An overview of Dapr and how it enables you to build event driven, distributed applications
-|**[Use cases](./use-cases)** | Common use cases that Dapr enables
 |**[Getting Started](./getting-started)** | Set up your development environment
 |**[Concepts](./concepts)** | Dapr concepts explained
 |**[How-Tos](./howto)** | Guides explaining how to accomplish specific tasks
