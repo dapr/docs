@@ -1,6 +1,14 @@
 # State management
 
-Dapr makes it simple for you to store key/value data in a store of your choice.
+Dapr comes with APIs for a key/value storage system, called "state management" in Dapr terminology. If your microservice uses state management, it automatically gets access to any of the [supported databases](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
+
+State management requires that you build your application with several rules in mind, and if you follow those rules, your app will also be able to leverage several other features that would otherwise be complicated and error-prone to build yourself:
+
+- Distributed concurrency and data consistency
+- Retry policies
+- Bulk [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations
+
+See below for a diagram of state management's high level architecture.
 
 ![State management](../../images/state_management.png)
 
@@ -17,7 +25,7 @@ Dapr makes it simple for you to store key/value data in a store of your choice.
 
 ## State management API
 
-Dapr provides reliable state management to applications through a state management buidling block API. Developers can use this API to retrieve, save and delete state values by providing keys.  
+Developers can use the state managment API to retrieve, save and delete state values by providing keys. 
 
 Dapr data stores are components. Dapr ships with [Redis](https://redis.io
 ) out-of-box for local development in self hosted mode. Dapr allows you to plug in other data stores as components such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
@@ -32,7 +40,7 @@ Visit [State API](../../reference/api/state_api.md) for more information.
 
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirements, consistency requirements, and retry policy to any state operation requests.
 
-By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfil the requests.
+By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfill the requests.
 
 Not all stores are created equal. To ensure portability of your application, you can query the capabilities of the store and make your code adaptive to different store capabilities.
 
