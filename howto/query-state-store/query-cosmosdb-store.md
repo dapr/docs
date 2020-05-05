@@ -10,7 +10,7 @@ The easiest way to connect to your Cosmos DB instance is to use the Data Explore
 
 > **NOTE:** The following samples use Cosmos DB [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-getting-started). When you configure an Azure Cosmos DB for Dapr, you need to specify the exact database and collection to use. The follow samples assume you've already connected to the right database and a collection named "states".
 
-## 2. List keys by Dapr id
+## 2. List keys by App ID
 
 To get all state keys associated with application "myapp", use the query:
 

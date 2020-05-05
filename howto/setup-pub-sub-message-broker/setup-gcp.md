@@ -8,11 +8,12 @@ The next step is to create a Dapr component for Google Cloud Pub/Sub
 
 Create the following YAML file named `messagebus.yaml`:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.gcp.pubsub
   metadata:
@@ -69,4 +70,4 @@ kubectl apply -f messagebus.yaml
 
 ### Running locally
 
-The Dapr CLI will automatically create a directory named `components` in your current working directory. To use Cloud Pubsub, replace the contents of `messagebus.yaml` file with the contents of yaml above.
+The Dapr CLI will automatically create a directory named `components` in your current working directory. To use Cloud Pubsub, replace the contents of `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the contents of yaml above.

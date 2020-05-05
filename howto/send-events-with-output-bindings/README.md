@@ -13,11 +13,12 @@ Create the following YAML file, named binding.yaml, and save this to the /compon
 
 *Note: When running in Kubernetes, apply this file to your cluster using `kubectl apply -f binding.yaml`*
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: myEvent
+  namespace: default
 spec:
   type: bindings.kafka
   metadata:

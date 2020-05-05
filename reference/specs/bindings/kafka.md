@@ -1,10 +1,11 @@
 # Kafka Binding Spec
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.kafka
   metadata:
@@ -33,3 +34,24 @@ spec:
 - `saslPassword` is the SASL password for authentication. Only used if `authRequired` is set to - `"true"`.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+
+## Specifying a partition key
+
+When invoking the Kafka binding, its possible to provide an optional partition key by using the `metadata` section in the request body.
+
+The field name is `partitionKey`.
+
+Example:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        },
+        "metadata": {
+          "partitionKey": "key1"
+        }
+      }'
+```

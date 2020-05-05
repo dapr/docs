@@ -38,6 +38,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:
@@ -54,6 +55,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:
@@ -81,11 +83,12 @@ kubectl create secret generic eventhubs-secret --from-literal=connectionString=*
 
 Next, reference the secret in your binding:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: eventhubs
+  namespace: default
 spec:
   type: bindings.azure.eventhubs
   metadata:

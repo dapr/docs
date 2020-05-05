@@ -1,43 +1,40 @@
 # How Tos
 
-Here you'll find a list of How To guides that walk you through accomplishing specific tasks.
+Here you'll find a list of "How To" guides that walk you through accomplishing specific tasks.
 
 ## Contents
 - [Service invocation](#service-invocation)
-- [State Management](#state-management)
-- [Pub/Sub](#Pub/Sub)
-- [Bindings and Triggers](#bindings-and-triggers)
+- [State management](#state-management)
+- [Pub/Sub](#pubsub)
+- [Bindings](#bindings-and-triggers)
 - [Actors](#actors)
 - [Observerability](#observerability)
 - [Security](#security)
+- [Middleware](#middleware)
 - [Components](#components)
+- [Hosting platforms](#hosting-platforms)
 - [Developer tooling](#developer-tooling)
-- [Infrastructure integration](#Infrastructure-integration)
 
 ## Service invocation
 
 * [Invoke other services in your cluster or environment](./invoke-and-discover-services)
 * [Create a gRPC enabled app, and invoke Dapr over gRPC](./create-grpc-app)
 
-### Middleware
-
-* [Authorization with oAuth](./authorization-with-oauth)
-
 ## State Management
 
-* [Setup Dapr state store](./setup-state-store)
+* [Setup a state store](./setup-state-store)
 * [Create a service that performs stateful CRUD operations](./create-stateful-service)
 * [Query the underlying state store](./query-state-store)
 * [Create a stateful, replicated service with different consistency/concurrency levels](./stateful-replicated-service)
 * [Control your app's throttling using rate limiting features](./control-concurrency)
 * [Configuring Redis for state management ](./configure-redis)
 
-
 ## Pub/Sub
 
 * [Setup Dapr Pub/Sub](./setup-pub-sub-message-broker)
 * [Use Pub/Sub to publish messages to a given topic](./publish-topic)
 * [Use Pub/Sub to consume events from a topic](./consume-topic)
+* [Use Pub/Sub across multiple namespaces](./pubsub-namespaces)
 * [Configuring Redis for pub/sub](./configure-redis)
 * [Limit the Pub/Sub topics used or scope them to one or more applications](./pubsub-scopes)
 
@@ -73,9 +70,19 @@ For Actors How Tos see the SDK documentation
 * [Configure component secrets using Dapr secret stores](./setup-secret-store)
 * [Using the Secrets API to get application secrets](./get-secrets)
 
+## Middleware
+
+* [Configure API authorization with OAuth](./authorization-with-oauth)
+
 ## Components
 
 * [Limit components for one or more applications using scopes](./components-scopes)
+
+## Hosting Platforms
+### Kubernetes Configuration
+
+* [Sidecar configuration on Kubernetes](./configure-k8s)
+* [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
 
 ## Developer tooling
 ### Using Visual Studio Code
@@ -92,7 +99,3 @@ For Actors How Tos see the SDK documentation
 ### SDKs
 
 * [Serialization in Dapr's SDKs](./serialize)
-
-## Infrastructure integration
-
-* [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)

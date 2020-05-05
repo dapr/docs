@@ -17,8 +17,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1584033425621,
+  "id": 15,
+  "iteration": 1585841779452,
   "links": [],
   "panels": [
     {
@@ -157,8 +157,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"($dapr_app_id).*\", namespace=\"$namespace\"}[5m])) by (pod)",
-          "legendFormat": "{{pod}}",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod_name=~\"($dapr_app_id).*\", namespace=\"$namespace\"}[5m])) by (pod_name)",
+          "legendFormat": "{{pod_name}}",
           "refId": "A"
         }
       ],
@@ -244,7 +244,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(go_goroutines{kubernetes_name=~\"($dapr_app_id)-dapr\", kubernetes_namespace=\"$namespace\"}) by (kubernetes_name)",
+          "expr": "sum(go_goroutines{kubernetes_name=~\"($dapr_app_id)-dapr.*\", kubernetes_namespace=\"$namespace\"}) by (kubernetes_name)",
           "legendFormat": "{{kubernetes_name}}",
           "refId": "A"
         }
@@ -332,7 +332,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(process_resident_memory_bytes{kubernetes_name=~\"($dapr_app_id)-dapr\", kubernetes_namespace=\"$namespace\"}) by (kubernetes_name)",
+          "expr": "sum(process_resident_memory_bytes{kubernetes_name=~\"($dapr_app_id)-dapr\", kubernetes_namespace=\"$namespace\"}) by (kubernetes_name)",
           "legendFormat": "{{kubernetes_name}}",
           "refId": "A"
         }
@@ -420,7 +420,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(process_virtual_memory_bytes{kubernetes_name=~\"($dapr_app_id)-dapr\", kubernetes_namespace=\"$namespace\"}) by (kubernetes_name)",
+          "expr": "sum(process_virtual_memory_bytes{kubernetes_name=~\"($dapr_app_id)-dapr\", kubernetes_namespace=\"$namespace\"}) by (kubernetes_name)",
           "legendFormat": "{{kubernetes_name}}",
           "refId": "A"
         }
@@ -468,7 +468,7 @@
       }
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": null,
       "gridPos": {
         "h": 1,
@@ -477,402 +477,403 @@
         "y": 14
       },
       "id": 21,
-      "panels": [],
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Dapr",
+          "description": "This charts shows the turn-around latency when user app calls Dapr API. For example, you can understand each statestore and service invocation performance.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 7
+          },
+          "hiddenSeries": false,
+          "id": 19,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": 150,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pluginVersion": "6.6.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(dapr_http_server_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "[95p] {{method}} {{path}} ({{app_id}})",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.75, sum(rate(dapr_http_server_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "[75p] {{method}} {{path}} ({{app_id}})",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Outbound request latency (App->Dapr) (95p, 75p)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "ms",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Dapr",
+          "description": "This charts shows completed request rate (rps) when User app calls Dapr.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 7
+          },
+          "hiddenSeries": false,
+          "id": 31,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": 150,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pluginVersion": "6.6.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum by (app_id, method, path) (rate(dapr_http_server_response_count{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m]))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{method}} {{path}} ({{app_id}})",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Outbound request rate (App -> Dapr) (RPS)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "reqps",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Dapr",
+          "description": "This charts shows the inbound request latency from Dapr to App. You can analyze App's API endpoint performance.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 15
+          },
+          "hiddenSeries": false,
+          "id": 18,
+          "legend": {
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": 150,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pluginVersion": "6.6.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(dapr_http_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "[95p] {{method}} /{{path}} ({{app_id}})",
+              "refId": "A"
+            },
+            {
+              "expr": "histogram_quantile(0.75, sum(rate(dapr_http_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "[75p] {{method}} /{{path}} ({{app_id}})",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Inbound request latency (Dapr -> App) (95p, 75p)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "ms",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Dapr",
+          "description": "This charts shows request rate (rps) when Dapr runtime calls User app HTTP endpoints.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 15
+          },
+          "hiddenSeries": false,
+          "id": 32,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": 150,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pluginVersion": "6.6.2",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum by (app_id, method, path) (rate(dapr_http_client_completed_count{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m]))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{method}} {{path}} ({{app_id}})",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Inbound request rate (Dapr -> App) (RPS)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "reqps",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
       "title": "Throughput/Latency - HTTP",
       "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Dapr",
-      "description": "This charts shows the turn-around latency when user app calls Dapr API. For example, you can understand each statestore and service invocation performance.",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 15
-      },
-      "hiddenSeries": false,
-      "id": 19,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "sideWidth": 150,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pluginVersion": "6.6.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.95, sum(rate(dapr_http_server_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "[95p] {{method}} {{path}} ({{app_id}})",
-          "refId": "A"
-        },
-        {
-          "expr": "histogram_quantile(0.75, sum(rate(dapr_http_server_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "[75p] {{method}} {{path}} ({{app_id}})",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Outbound request latency (App->Dapr) (95p, 75p)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "ms",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Dapr",
-      "description": "This charts shows completed request rate (rps) when User app calls Dapr.",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "hiddenSeries": false,
-      "id": 31,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "sideWidth": 150,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pluginVersion": "6.6.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (app_id, method, path) (rate(dapr_http_server_response_count{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m]))",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "{{method}} {{path}} ({{app_id}})",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Outbound request rate (App -> Dapr) (RPS)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "reqps",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Dapr",
-      "description": "This charts shows the inbound request latency from Dapr to App. You can analyze App's API endpoint performance.",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 23
-      },
-      "hiddenSeries": false,
-      "id": 18,
-      "legend": {
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "sideWidth": 150,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pluginVersion": "6.6.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.95, sum(rate(dapr_http_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "[95p] {{method}} /{{path}} ({{app_id}})",
-          "refId": "A"
-        },
-        {
-          "expr": "histogram_quantile(0.75, sum(rate(dapr_http_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, method, path))",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "[75p] {{method}} /{{path}} ({{app_id}})",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Inbound request latency (Dapr -> App) (95p, 75p)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "ms",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Dapr",
-      "description": "This charts shows request rate (rps) when Dapr runtime calls User app HTTP endpoints.",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 23
-      },
-      "hiddenSeries": false,
-      "id": 32,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "sideWidth": 150,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pluginVersion": "6.6.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (app_id, method, path) (rate(dapr_http_client_completed_count{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m]))",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "{{method}} {{path}} ({{app_id}})",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Inbound request rate (Dapr -> App) (RPS)",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "reqps",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     },
     {
       "collapsed": true,
@@ -881,7 +882,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 15
       },
       "id": 34,
       "panels": [
@@ -891,14 +892,14 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "Dapr",
-          "description": "",
+          "description": "This charts shows the turn-around latency when user app calls Dapr API. For example, you can understand each statestore and service invocation performance.",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 8
           },
           "hiddenSeries": false,
           "id": 36,
@@ -927,13 +928,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "histogram_quantile(0.95, sum(rate(dapr_grpc_io_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", grpc_client_method=~\"dapr.Dapr/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_client_method))",
-              "legendFormat": "[95p] - {{grpc_client_method}} ({{app_id}})",
+              "expr": "histogram_quantile(0.95, sum(rate(dapr_grpc_io_server_server_latency_bucket{app_id=~\"$dapr_app_id\", grpc_server_method=~\"dapr.Dapr/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_server_method))",
+              "legendFormat": "[95p] - {{grpc_server_method}} ({{app_id}})",
               "refId": "A"
             },
             {
-              "expr": "histogram_quantile(0.75, sum(rate(dapr_grpc_io_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", grpc_client_method=~\"dapr.Dapr/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_client_method))",
-              "legendFormat": "[75p] {{grpc_client_method}} ({{app_id}})",
+              "expr": "histogram_quantile(0.75, sum(rate(dapr_grpc_io_server_server_latency_bucket{app_id=~\"$dapr_app_id\", grpc_server_method=~\"dapr.Dapr/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_server_method))",
+              "legendFormat": "[75p] {{grpc_server_method}} ({{app_id}})",
               "refId": "B"
             }
           ],
@@ -984,14 +985,14 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "Dapr",
-          "description": "",
+          "description": "This charts shows completed request rate (rps) when User app calls Dapr.",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 32
+            "y": 8
           },
           "hiddenSeries": false,
           "id": 38,
@@ -1020,8 +1021,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (app_id, grpc_client_method, grpc_client_status) (rate(dapr_grpc_io_client_completed_rpcs{app_id=~\"$dapr_app_id\", grpc_client_method=~\"dapr.Dapr/.*\"}[5m]))",
-              "legendFormat": "{{grpc_client_status}} {{grpc_client_method}} ({{app_id}})",
+              "expr": "sum by (app_id, grpc_server_method, grpc_server_status) (rate(dapr_grpc_io_server_completed_rpcs{app_id=~\"$dapr_app_id\", grpc_server_method=~\"dapr.Dapr/.*\"}[5m]))",
+              "legendFormat": "{{grpc_server_status}} {{grpc_server_method}} ({{app_id}})",
               "refId": "B"
             }
           ],
@@ -1072,14 +1073,14 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "Dapr",
-          "description": "",
+          "description": "This charts shows the inbound request latency from Dapr to App. You can analyze App's API endpoint performance.",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 40
+            "y": 16
           },
           "hiddenSeries": false,
           "id": 40,
@@ -1108,13 +1109,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "histogram_quantile(0.95, sum(rate(dapr_grpc_io_server_server_latency_bucket{app_id=~\"$dapr_app_id\", grpc_server_method=~\"daprclient.DaprClient/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_server_method))",
-              "legendFormat": "[95p] {{grpc_server_method}} ({{app_id}})",
+              "expr": "histogram_quantile(0.95, sum(rate(dapr_grpc_io_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", grpc_client_method=~\"daprclient.DaprClient/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_client_method))",
+              "legendFormat": "[95p] {{grpc_client_method}} ({{app_id}})",
               "refId": "A"
             },
             {
-              "expr": "histogram_quantile(0.75, sum(rate(dapr_grpc_io_server_server_latency_bucket{app_id=~\"$dapr_app_id\", grpc_server_method=~\"daprclient.DaprClient/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_server_method))",
-              "legendFormat": "[75p] {{grpc_server_method}} ({{app_id}})",
+              "expr": "histogram_quantile(0.75, sum(rate(dapr_grpc_io_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", grpc_client_method=~\"daprclient.DaprClient/.*\", kubernetes_namespace=\"$namespace\"}[5m])) by (le, app_id, grpc_client_method))",
+              "legendFormat": "[75p] {{grpc_client_method}} ({{app_id}})",
               "refId": "B"
             }
           ],
@@ -1172,7 +1173,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 40
+            "y": 16
           },
           "hiddenSeries": false,
           "id": 42,
@@ -1201,8 +1202,8 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (app_id, grpc_server_method, grpc_server_status) (rate(dapr_grpc_io_server_completed_rpcs{app_id=~\"$dapr_app_id\", grpc_server_method=~\"daprclient.DaprClient/.*\", kubernetes_namespace=\"$namespace\"}[5m]))",
-              "legendFormat": "{{grpc_server_status}} {{grpc_server_method}} ({{app_id}})",
+              "expr": "sum by (app_id, grpc_client_method, grpc_client_status) (rate(dapr_grpc_io_client_roundtrip_latency_bucket{app_id=~\"$dapr_app_id\", grpc_client_method=~\"daprclient.DaprClient/.*\", kubernetes_namespace=\"$namespace\"}[5m]))",
+              "legendFormat": "{{grpc_client_status}} {{grpc_client_method}} ({{app_id}})",
               "refId": "B"
             }
           ],
@@ -1252,740 +1253,224 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 16
       },
       "id": 52,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": null,
+          "description": "This shows the number of configured components. For example, it will shows \"2\" if you configure redis statestore and redis pubsub components. ",
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 0,
+            "y": 9
+          },
+          "id": 56,
+          "options": {
+            "colorMode": "value",
+            "fieldOptions": {
+              "calcs": [
+                "last"
+              ],
+              "defaults": {
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": [],
+              "values": false
+            },
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal"
+          },
+          "pluginVersion": "6.6.2",
+          "targets": [
+            {
+              "expr": "sum(dapr_runtime_component_loaded{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id)",
+              "legendFormat": "{{app_id}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Loaded component configurations",
+          "type": "stat"
+        },
+        {
+          "cacheTimeout": null,
+          "datasource": null,
+          "description": "This shows the number of initialized components. This number must be the same as loaded components. Otherwise, Daprd fails to initialize some of components.",
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 6,
+            "y": 9
+          },
+          "id": 54,
+          "links": [],
+          "options": {
+            "colorMode": "value",
+            "fieldOptions": {
+              "calcs": [
+                "last"
+              ],
+              "defaults": {
+                "mappings": [
+                  {
+                    "id": 0,
+                    "op": "=",
+                    "text": "N/A",
+                    "type": 1,
+                    "value": "null"
+                  }
+                ],
+                "nullValueMode": "connected",
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": [],
+              "values": false
+            },
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal"
+          },
+          "pluginVersion": "6.6.2",
+          "targets": [
+            {
+              "expr": "sum(dapr_runtime_component_init_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id)",
+              "legendFormat": "{{app_id}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Initialized components",
+          "type": "stat"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "This chart shows the number component initialization failures with the reasons.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 9
+          },
+          "hiddenSeries": false,
+          "id": 58,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(dapr_runtime_component_init_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id, reason)",
+              "legendFormat": "{{app_id}} - {{reason}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Component failures",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
       "title": "Components",
       "type": "row"
-    },
-    {
-      "datasource": null,
-      "description": "",
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 0,
-        "y": 33
-      },
-      "id": 56,
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "last"
-          ],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "pluginVersion": "6.6.2",
-      "targets": [
-        {
-          "expr": "sum(dapr_runtime_component_loaded{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id)",
-          "legendFormat": "{{app_id}}",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Loaded component configurations",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": null,
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 33
-      },
-      "id": 54,
-      "links": [],
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "last"
-          ],
-          "defaults": {
-            "mappings": [
-              {
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": [],
-          "values": false
-        },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "pluginVersion": "6.6.2",
-      "targets": [
-        {
-          "expr": "sum(dapr_runtime_component_init_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id)",
-          "legendFormat": "{{app_id}}",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Initialized components",
-      "type": "stat"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 33
-      },
-      "hiddenSeries": false,
-      "id": 58,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(dapr_runtime_component_init_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id, reason)",
-          "legendFormat": "{{app_id}} - {{reason}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Component failures",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 41
-      },
-      "id": 44,
-      "panels": [],
-      "title": "Actor",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 42
-      },
-      "hiddenSeries": false,
-      "id": 64,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "count (rate(dapr_runtime_actor_activated_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (actor_type) -1",
-          "legendFormat": "OK {{actor_type}}",
-          "refId": "A"
-        },
-        {
-          "expr": "count (rate(dapr_runtime_actor_activated_failed_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (actor_type) -1",
-          "legendFormat": "Error {{actor_type}}",
-          "refId": "C"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Actor Activation",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 42
-      },
-      "hiddenSeries": false,
-      "id": 65,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "count (rate(dapr_runtime_actor_deactivated_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (actor_type) -1",
-          "legendFormat": "OK {{actor_type}}",
-          "refId": "A"
-        },
-        {
-          "expr": "count (rate(dapr_runtime_actor_deactivated_failed_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (actor_type) -1",
-          "legendFormat": "Error {{actor_type}}",
-          "refId": "C"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Actor Deactivation",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 42
-      },
-      "hiddenSeries": false,
-      "id": 63,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "count (rate(dapr_runtime_actor_rebalanced_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (app_id) -1",
-          "intervalFactor": 1,
-          "legendFormat": "{{app_id}}",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Actor table rebalancing",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 9,
-        "x": 0,
-        "y": 49
-      },
-      "hiddenSeries": false,
-      "id": 46,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(dapr_runtime_actor_status_report_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id)",
-          "legendFormat": "OK ({{app_id}})",
-          "refId": "A"
-        },
-        {
-          "expr": "sum(dapr_runtime_actor_status_report_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id)",
-          "legendFormat": "Error ({{app_id}})",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Report status to placement",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": null,
-      "gridPos": {
-        "h": 7,
-        "w": 5,
-        "x": 9,
-        "y": 49
-      },
-      "id": 59,
-      "links": [],
-      "options": {
-        "displayMode": "basic",
-        "fieldOptions": {
-          "calcs": [
-            "max"
-          ],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 10
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
-        "orientation": "horizontal",
-        "showUnfilled": true
-      },
-      "pluginVersion": "6.6.2",
-      "targets": [
-        {
-          "expr": "sum(dapr_runtime_actor_status_report_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id, operation)",
-          "legendFormat": "{{operation}} ({{app_id}})",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Report status error reasons",
-      "type": "bargauge"
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 14,
-        "y": 49
-      },
-      "hiddenSeries": false,
-      "id": 61,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 1,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "count (rate(dapr_runtime_actor_table_operation_recv_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (app_id, operation) -1",
-          "format": "time_series",
-          "intervalFactor": 3,
-          "legendFormat": "{{operation}} ({{app_id}})",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Placement table operation",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
     },
     {
       "collapsed": true,
@@ -1994,9 +1479,9 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 17
       },
-      "id": 50,
+      "id": 44,
       "panels": [
         {
           "aliasColors": {},
@@ -2004,16 +1489,17 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": null,
+          "description": "This chart shows how many actors are activated.",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
-            "h": 8,
-            "w": 7,
+            "h": 7,
+            "w": 8,
             "x": 0,
-            "y": 35
+            "y": 10
           },
           "hiddenSeries": false,
-          "id": 48,
+          "id": 64,
           "legend": {
             "avg": false,
             "current": false,
@@ -2030,32 +1516,30 @@
             "dataLinks": []
           },
           "percentage": false,
-          "pointradius": 2,
+          "pointradius": 1,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "stack": false,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "count (rate(dapr_runtime_mtls_init_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (app_id) - 1",
-              "intervalFactor": 2,
-              "legendFormat": "OK {{app_id}}",
+              "expr": "dapr_runtime_actor_activated_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}",
+              "legendFormat": "OK {{actor_type}}",
               "refId": "A"
             },
             {
-              "expr": "count (rate(dapr_runtime_mtls_init_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (app_id) - 1",
-              "intervalFactor": 2,
-              "legendFormat": "Error {{app_id}}",
-              "refId": "B"
+              "expr": "dapr_runtime_actor_activated_failed_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}",
+              "legendFormat": "Error {{actor_type}}",
+              "refId": "C"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "mTLS initialization",
+          "title": "Actor Activation",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -2093,13 +1577,541 @@
           }
         },
         {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "This chart shows how many actors are deactivated.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 8,
+            "y": 10
+          },
+          "hiddenSeries": false,
+          "id": 65,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "dapr_runtime_actor_deactivated_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}",
+              "legendFormat": "OK {{actor_type}}",
+              "refId": "A"
+            },
+            {
+              "expr": "dapr_runtime_actor_deactivated_failed_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}",
+              "legendFormat": "Error {{actor_type}}",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Actor Deactivation",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "This shows when actor is rebalanced. This operation can make the activated actors deactivated and move actor to the other hosts.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 10
+          },
+          "hiddenSeries": false,
+          "id": 63,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "dapr_runtime_actor_rebalanced_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}",
+              "intervalFactor": 1,
+              "legendFormat": "{{app_id}}",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Actor table rebalancing",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "This shows when Daprd reports host status to placement service. Non-Actor service reports host status in the beginning. Actor service reports host status to placement periodically. If there is a failure, virtual actors will not be distributed properly.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 0,
+            "y": 17
+          },
+          "hiddenSeries": false,
+          "id": 46,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "expr": "rate(dapr_runtime_actor_status_report_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])",
+              "legendFormat": "OK ({{app_id}})",
+              "refId": "A"
+            },
+            {
+              "expr": "rate(dapr_runtime_actor_status_report_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])",
+              "legendFormat": "Error ({{app_id}})",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Status report status",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "cacheTimeout": null,
+          "datasource": null,
+          "description": "This shows the failures when Daprd reports host status to placement.",
+          "gridPos": {
+            "h": 7,
+            "w": 5,
+            "x": 9,
+            "y": 17
+          },
+          "id": 59,
+          "links": [],
+          "options": {
+            "displayMode": "basic",
+            "fieldOptions": {
+              "calcs": [
+                "max"
+              ],
+              "defaults": {
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 10
+                    }
+                  ]
+                }
+              },
+              "overrides": [],
+              "values": false
+            },
+            "orientation": "horizontal",
+            "showUnfilled": true
+          },
+          "pluginVersion": "6.6.2",
+          "targets": [
+            {
+              "expr": "sum(dapr_runtime_actor_status_report_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id, operation)",
+              "legendFormat": "{{operation}} ({{app_id}})",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Report status error reasons",
+          "type": "bargauge"
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "This shows the placement table update status based on the response from placement service. Daprd maintains the actor placement table in its memory. This table is periodically updated.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 10,
+            "x": 14,
+            "y": 17
+          },
+          "hiddenSeries": false,
+          "id": 61,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(dapr_runtime_actor_table_operation_recv_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}) by (app_id, operation)",
+              "format": "time_series",
+              "intervalFactor": 3,
+              "legendFormat": "{{operation}} ({{app_id}})",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Placement table operation",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Actor",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 50,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "This chart  shows when mTLS is initialized, which means root cert is loaded and workload cert is issued from sentry, when runtime starts.",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 7,
+            "x": 0,
+            "y": 11
+          },
+          "hiddenSeries": false,
+          "id": 48,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": false,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(dapr_runtime_mtls_init_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "OK {{app_id}}",
+              "refId": "A"
+            },
+            {
+              "expr": "rate(dapr_runtime_mtls_init_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Error {{app_id}}",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "mTLS initialization status",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
           "cacheTimeout": null,
           "datasource": null,
           "gridPos": {
             "h": 8,
             "w": 5,
             "x": 7,
-            "y": 35
+            "y": 11
           },
           "id": 67,
           "links": [],
@@ -2150,13 +2162,14 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": null,
+          "description": "This chart shows when workload certificate is rotated.",
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 7,
             "x": 12,
-            "y": 35
+            "y": 11
           },
           "hiddenSeries": false,
           "id": 66,
@@ -2176,6 +2189,7 @@
             "dataLinks": []
           },
           "percentage": false,
+          "pluginVersion": "6.6.2",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -2185,13 +2199,15 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "count (rate(dapr_runtime_mtls_workload_cert_rotated_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (app_id) - 1",
+              "expr": "rate(dapr_runtime_mtls_workload_cert_rotated_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])",
+              "format": "time_series",
+              "instant": false,
               "intervalFactor": 2,
               "legendFormat": "OK {{app_id}}",
               "refId": "A"
             },
             {
-              "expr": "count (rate(dapr_runtime_mtls_workload_cert_rotated_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])) by (app_id) - 1",
+              "expr": "rate(dapr_runtime_mtls_workload_cert_rotated_fail_total{app_id=~\"$dapr_app_id\", kubernetes_namespace=\"$namespace\"}[5m])",
               "intervalFactor": 2,
               "legendFormat": "Error {{app_id}}",
               "refId": "B"
@@ -2201,7 +2217,7 @@
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Workload certificate rotation",
+          "title": "Workload certificate rotation status",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -2222,7 +2238,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             },
             {
               "format": "short",
@@ -2230,7 +2246,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ],
           "yaxis": {
@@ -2245,7 +2261,7 @@
             "h": 8,
             "w": 5,
             "x": 19,
-            "y": 35
+            "y": 11
           },
           "id": 68,
           "links": [],
@@ -2304,9 +2320,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "default",
-          "value": "default"
+          "text": "longhaul-test",
+          "value": "longhaul-test"
         },
         "datasource": "Dapr",
         "definition": "label_values(dapr_runtime_component_loaded,kubernetes_namespace)",
@@ -2330,9 +2345,12 @@
       {
         "allValue": null,
         "current": {
-          "text": "",
+          "text": "feed-generator + hashtag-actor + hashtag-counter + message-analyzer",
           "value": [
-            ""
+            "feed-generator",
+            "hashtag-actor",
+            "hashtag-counter",
+            "message-analyzer"
           ]
         },
         "datasource": "Dapr",
@@ -2357,7 +2375,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -2377,5 +2395,5 @@
   "timezone": "",
   "title": "Dapr Sidecar Dashboard",
   "uid": "Ym9RqIuWk",
-  "version": 2
+  "version": 39
 }

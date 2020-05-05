@@ -43,6 +43,12 @@ Install the latest darwin Dapr CLI to `/usr/local/bin`
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
 
+Or install via [Homebrew](https://brew.sh)
+
+```bash
+brew install dapr/tap/dapr-cli
+```
+
 ### From the Binary Releases
 
 Each release of Dapr CLI includes various OSes and architectures. These binary versions can be manually downloaded and installed.
@@ -198,6 +204,10 @@ dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ```
+
+#### Sidecar annotations
+
+To see all the supported annotations for the Dapr sidecar on Kubernetes, visit [this](../howto/configure-k8s/README.md) how to guide.
 
 #### Uninstall Dapr on Kubernetes
 

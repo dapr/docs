@@ -15,11 +15,12 @@ Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs`
 
 A Dapr Binding yaml file has the following structure:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.<TYPE>
   metadata:
@@ -54,6 +55,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafkaevent
+  namespace: default
 spec:
   type: bindings.kafka
   metadata:
@@ -201,3 +203,11 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
         }
       }'
 ```
+
+### Common metadata values
+
+There are common metadata properties which are support accross multiple binding components. The list below illustrates them:
+
+|Property|Description|Binding definition|Available in
+|-|-|-|-|
+|ttlInSeconds|Defines the time to live in seconds for the message|If set in the binding definition will cause all messages to have a default time to live. The message ttl overrides any value in the binding definition.|RabbitMQ, Azure Service Bus, Azure Storage Queue|

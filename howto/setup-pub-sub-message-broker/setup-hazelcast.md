@@ -20,11 +20,12 @@ The next step is to create a Dapr component for Hazelcast.
 
 Create the following YAML file named `hazelcast.yaml`:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.hazelcast
   metadata:
@@ -48,4 +49,4 @@ kubectl apply -f hazelcast.yaml
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use Hazelcast, replace the redis.yaml file with the hazelcast.yaml above.
+To use Hazelcast, replace the `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the hazelcast.yaml above.

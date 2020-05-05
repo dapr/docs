@@ -33,11 +33,12 @@ The next step is to create a Dapr component for RabbitMQ.
 
 Create the following YAML file named `rabbitmq.yaml`:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: pubsub.rabbitmq
   metadata:
@@ -72,4 +73,4 @@ kubectl apply -f rabbitmq.yaml
 ### Running locally
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use RabbitMQ, replace the contents of `messagebus.yaml` file with the contents of `rabbitmq.yaml` above (Don't change the filename).
+To use RabbitMQ, replace the contents of `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the contents of `rabbitmq.yaml` above (Don't change the filename).

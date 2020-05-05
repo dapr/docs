@@ -13,11 +13,12 @@
 
 A Dapr State Store component yaml file has the following structure:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.<TYPE>
   metadata:
@@ -40,13 +41,13 @@ Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
 
 ```
-<Dapr id>||<state key>
+<App ID>||<state key>
 ```
 
 For Actor states, the key format is:
 
 ```
-<Dapr id>||<Actor type>||<Actor id>||<state key>
+<App ID>||<Actor type>||<Actor id>||<state key>
 ```
 
 ## Save state
@@ -222,11 +223,12 @@ Actors don't support multiple state stores and require a transactional state sto
 To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
 Example: Following components yaml will configure redis to be used as the state store for Actors.
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:
@@ -245,8 +247,8 @@ spec:
 
 A Dapr-compatible state store shall use the following key scheme:
 
-* *\<Dapr id>||\<state key>* key format for general states
-* *\<Dapr id>||\<Actor type>||\<Actor id>||\<state key>* key format for Actor states.
+* *\<App ID>||\<state key>* key format for general states
+* *\<App ID>||\<Actor type>||\<Actor id>||\<state key>* key format for Actor states.
 
 ### Concurrency
 

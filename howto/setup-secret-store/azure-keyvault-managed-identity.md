@@ -47,7 +47,7 @@ This document shows how to enable Azure Key Vault secret store using [Dapr Secre
 5. Assign the Managed Identity Operator role to the AKS Service Principal
 
     ```bash
-    $aks = az aks show  -g [your resource group]  -n [your AKS name] | ConvertFrom-Json
+    $aks = az aks show  -g [your resource group]  -n [your AKS name] -o json | ConvertFrom-Json
 
     az role assignment create  --role "Managed Identity Operator"  --assignee $aks.servicePrincipalProfile.clientId  --scope $identity.id
     ```
@@ -69,6 +69,7 @@ This document shows how to enable Azure Key Vault secret store using [Dapr Secre
     Save the following yaml as azure-identity-config.yaml:
 
     ```yaml
+    apiVersion: "aadpodidentity.k8s.io/v1"
     kind: AzureIdentity
     metadata:
       name: [you managed identity name]
@@ -105,13 +106,14 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kind: Component
     metadata:
       name: azurekeyvault
+      namespace: default
     spec:
       type: secretstores.azure.keyvault
       metadata:
-        - name: vaultName
-          value: [your_keyvault_name]
-        - name: spnClientId
-          value: [your_managed_identity_client_id]
+      - name: vaultName
+        value: [your_keyvault_name]
+      - name: spnClientId
+        value: [your_managed_identity_client_id]
     ```
 
 2. Apply azurekeyvault.yaml component
@@ -137,6 +139,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kind: Component
     metadata:
       name: statestore
+      namespace: default
     spec:
       type: state.redis
       metadata:
@@ -162,6 +165,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     apiVersion: v1
     metadata:
       name: nodeapp
+      namespace: default
       labels:
         app: node
     spec:
@@ -178,6 +182,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kind: Deployment
     metadata:
       name: nodeapp
+      namespace: default
       labels:
         app: node
     spec:
@@ -220,7 +225,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
     time="2020-02-05T09:15:03Z" level=info msg="starting Dapr Runtime -- version edge -- commit v0.3.0-rc.0-58-ge540a71-dirty"
     time="2020-02-05T09:15:03Z" level=info msg="log level set to: info"
     time="2020-02-05T09:15:03Z" level=info msg="kubernetes mode configured"
-    time="2020-02-05T09:15:03Z" level=info msg="dapr id: nodeapp"
+    time="2020-02-05T09:15:03Z" level=info msg="app id: nodeapp"
     time="2020-02-05T09:15:03Z" level=info msg="mTLS enabled. creating sidecar authenticator"
     time="2020-02-05T09:15:03Z" level=info msg="trust anchors extracted successfully"
     time="2020-02-05T09:15:03Z" level=info msg="authenticator created"

@@ -60,6 +60,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
+  namespace: default
 spec:
   type: pubsub.redis
   metadata:

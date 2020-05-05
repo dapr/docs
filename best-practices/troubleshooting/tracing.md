@@ -30,6 +30,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: zipkin
+  namespace: default
 spec:
   tracing:
     enabled: true
@@ -74,11 +75,12 @@ For Standalone mode, create a Dapr configuration file locally and reference it w
 
 1. Create the following YAML file:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: zipkin
+  namespace: default
 spec:
   tracing:
     enabled: true
