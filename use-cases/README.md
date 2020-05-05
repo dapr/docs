@@ -11,20 +11,6 @@ Visit the following documents to learn more:
 - [More details on pub/sub](https://github.com/dapr/docs/blob/master/concepts/publish-subscribe-messaging/README.md)
 - [How to get started with pub/sub](https://github.com/dapr/docs/tree/master/howto/setup-pub-sub-message-broker)
 
-## Bindings
-
-Similar to pub/sub, Dapr provides a mechanism that can trigger your app in response to an event. Dapr provides bindings to enable your app to respond to events that come from external (outside your system) sources, while pub/sub events come from internal sources.
-
-For example, your microservice can respond to incoming Twilio/SMS messages using bindings. Your app can focus on the business logic to _responds_ to the incoming SMS event rather than adding and configuring a third party Twilio SDK.
-
-Similarly, your application can _send_ messages to external destinations using the bindings feature. In the Twilio example, your application would send an SMS, again without adding or configuring a third party Twilio SDK.
-
-Visit the following documents to learn more:
-
-- [More details on bindings](https://github.com/dapr/docs/tree/master/concepts/bindings)
-- [How to get started with receiving events using bindings](https://github.com/dapr/docs/tree/master/howto/trigger-app-with-input-binding)
-- [How to get started with sending events using bindings](https://github.com/dapr/docs/tree/master/howto/send-events-with-output-bindings)
-
 ## Actors
 
 Dapr provides an API and runtime that allows you to write your business logic as an isolated unit, without worrying about concurrency or other actors. Dapr calls this single isolated unit an "actor". Your running actors can send a message to another actor or can request to create a new actor. In the former case, Dapr manages routing the message to the proper destination. In the latter case, Dapr manages all the state management, synchronization, and concurrency involved with starting the new actor.
