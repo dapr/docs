@@ -1,28 +1,22 @@
-# Kubernetes Events Binding Spec
+# Twitter Binding Spec
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.twitter
   metadata:
   - name: consumerKey
-    value: ''
+    value: "****" # twitter api consumer key, required
   - name: consumerSecret
-    value: ''
+    value: "****" # twitter api consumer secret, required
   - name: accessToken
-    value: ''
+    value: "****" # twitter api access token, required
   - name: accessSecret
-    value: ''
+    value: "****" # twitter api access secret, required
   - name: query
-    value: ''
+    value: "dapr" # your search query, required 
 ```
-
-
-- `consumerKey` (required) is the Twitter API consumer key
-- `consumerSecret` (required) is the Twitter API consumer secret
-- `accessToken` (required) is the Twitter API access token
-- `accessSecret` (required) is the Twitter API access secret
-- `query` (required) is the Twitter search query (e.g. `dapr`)

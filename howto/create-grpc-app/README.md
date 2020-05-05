@@ -16,11 +16,12 @@ To do that, the app simply needs to host a gRPC server and implement the [Dapr c
 
 On Kubernetes, set the following annotations in your deployment YAML:
 
-<pre>
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp
+  namespace: default
   labels:
     app: myapp
 spec:
@@ -38,7 +39,7 @@ spec:
         <b>dapr.io/protocol: "grpc"
         dapr.io/port: "5005"</b>
 ...
-</pre>
+```
 
 This tells Dapr to communicate with your app via gRPC over port `5005`.
 

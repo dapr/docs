@@ -22,33 +22,37 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 
 ## Correlation ID
 
-For HTTP requests, Dapr injects a **X-Correlation-ID** header to requests. For gRPC calls, Dapr inserts a **X-Correlation-ID** as a field of a **header** metadata. When a request arrives without an correlation ID, Dapr creates a new one. Otherwise, it passes the correlation ID along the call chain.
+Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `traceparent` header.For gRPC requests, Dapr uses `grpc-trace-bin` header.When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
 
 ## Configuration
 
-Dapr tracing is configured by a configuration file (in local mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object enables distributed tracing:
+Dapr uses [probalistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probaility a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
+
+To change the default tracing behavior, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
-Please see the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
+Similarly, changing `samplingRate` to 0 will disable tracing altogether.
 
-Dapr supports pluggable exporters, defined by configuration files (in local mode) or a Kubernetes custom resource object (in Kubernetes mode). For example, the following manifest defines a Zipkin exporter:
+See the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
+
+Dapr supports pluggable exporters, defined by configuration files (in self hosted mode) or a Kubernetes custom resource object (in Kubernetes mode). For example, the following manifest defines a Zipkin exporter:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: zipkin
+  namespace: default
 spec:
   type: exporters.zipkin
   metadata:
@@ -61,4 +65,4 @@ spec:
 ## References
 
 * [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
-* [How-To: Set up Zipkin for distributed tracingn](../../howto/diagnose-with-tracing/zipkin.md)
+* [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)

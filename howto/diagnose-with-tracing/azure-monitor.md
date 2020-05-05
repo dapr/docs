@@ -5,8 +5,8 @@ Dapr integrates with Application Insights through OpenTelemetry's default export
 > Note: The local forwarder is still under preview, but being deprecated. The Application Insights team recommends using [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector) (which is in alpha state) for the future so we're working on moving from local forwarder to [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector).
 
 
-- [How to configure distributed tracing with Application insights](#How-to-configure-distributed-tracing-with-Application-insights)
-- [Tracing configuration](#Tracing-configuration)
+ - [How to configure distributed tracing with Application insights](#How-to-configure-distributed-tracing-with-Application-insights)
+ - [Tracing configuration](#Tracing-configuration)
 
 ## How to configure distributed tracing with Application insights
 
@@ -33,10 +33,10 @@ This is for running the local forwarder on your machine.
 1. Run the local fowarder
 
 ```bash
-docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678 daprio/dapr-localforwarder:0.1-beta1
+docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678 daprio/dapr-localforwarder:latest
 ```
 
-> Note: dapr-localforwarder is created by using [0.1-beta1 release](https://github.com/microsoft/ApplicationInsights-LocalForwarder/releases/tag/v0.1-beta1). If you want to create your own image, use [this dockerfile](./localforwarder/Dockerfile).
+> Note: [dapr-localforwarder](https://github.com/dapr/ApplicationInsights-LocalForwarder) is the forked version of  [ApplicationInsights Localforwarder](https://github.com/microsoft/ApplicationInsights-LocalForwarder/), that includes the minor changes for Dapr. We're working on migrating to [opentelemetry-sdk and opentelemetry collector](https://opentelemetry.io/).
 
 1. Create the following YAML files. Copy the native.yaml component file and tracing.yaml configuration file  to the *components/* sub-folder under the same folder where you run your application. 
 
@@ -47,6 +47,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: native
+  namespace: default
 spec:
   type: exporters.native
   metadata:
@@ -63,11 +64,10 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 3. When running in the local self hosted mode, you need to launch Dapr with the `--config` parameter:
@@ -103,6 +103,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: native
+  namespace: default
 spec:
   type: exporters.native
   metadata:
@@ -119,11 +120,10 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
+  namespace: default
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 5. Use kubectl to apply the above CRD files:
@@ -168,15 +168,15 @@ The `tracing` section under the `Configuration` spec contains the following prop
 
 ```yml
 tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 The following table lists the different properties.
 
 Property | Type | Description
 ---- | ------- | -----------
-enabled  | bool | Set tracing to be enabled or disabled
-expandParams  | bool | When true, expands parameters passed to HTTP endpoints
-includeBody  | bool | When true, includes the request body in the tracing event
+samplingRate  | string | Set sampling rate for tracing to be enabled or disabled. 
+
+
+`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
+set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces.By default, the sampling rate is 1 in 10,000

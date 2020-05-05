@@ -32,11 +32,12 @@ The next step is to create a Dapr component for Aerospike.
 
 Create the following YAML file named `aerospike.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.Aerospike
   metadata:
