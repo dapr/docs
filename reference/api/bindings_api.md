@@ -15,11 +15,12 @@ Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs`
 
 A Dapr Binding yaml file has the following structure:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.<TYPE>
   metadata:
@@ -54,6 +55,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafkaevent
+  namespace: default
 spec:
   type: bindings.kafka
   metadata:

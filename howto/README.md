@@ -1,17 +1,18 @@
 # How Tos
 
-Here you'll find a list of How To guides that walk you through accomplishing specific tasks.
+Here you'll find a list of "How To" guides that walk you through accomplishing specific tasks.
 
 ## Contents
 - [Service invocation](#service-invocation)
-- [State Management](#state-management)
+- [State management](#state-management)
 - [Pub/Sub](#pubsub)
-- [Bindings and Triggers](#bindings-and-triggers)
+- [Bindings](#bindings-and-triggers)
 - [Actors](#actors)
 - [Observerability](#observerability)
 - [Security](#security)
+- [Middleware](#middleware)
 - [Components](#components)
-- [Hosting Platforms](#hosting-platforms)
+- [Hosting platforms](#hosting-platforms)
 - [Developer tooling](#developer-tooling)
 
 ## Service invocation
@@ -19,13 +20,9 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Invoke other services in your cluster or environment](./invoke-and-discover-services)
 * [Create a gRPC enabled app, and invoke Dapr over gRPC](./create-grpc-app)
 
-### Middleware
-
-* [Authorization with oAuth](./authorization-with-oauth)
-
 ## State Management
 
-* [Setup Dapr state store](./setup-state-store)
+* [Setup a state store](./setup-state-store)
 * [Create a service that performs stateful CRUD operations](./create-stateful-service)
 * [Query the underlying state store](./query-state-store)
 * [Create a stateful, replicated service with different consistency/concurrency levels](./stateful-replicated-service)
@@ -37,6 +34,7 @@ Here you'll find a list of How To guides that walk you through accomplishing spe
 * [Setup Dapr Pub/Sub](./setup-pub-sub-message-broker)
 * [Use Pub/Sub to publish messages to a given topic](./publish-topic)
 * [Use Pub/Sub to consume events from a topic](./consume-topic)
+* [Use Pub/Sub across multiple namespaces](./pubsub-namespaces)
 * [Configuring Redis for pub/sub](./configure-redis)
 * [Limit the Pub/Sub topics used or scope them to one or more applications](./pubsub-scopes)
 
@@ -71,6 +69,10 @@ For Actors How Tos see the SDK documentation
 
 * [Configure component secrets using Dapr secret stores](./setup-secret-store)
 * [Using the Secrets API to get application secrets](./get-secrets)
+
+## Middleware
+
+* [Configure API authorization with OAuth](./authorization-with-oauth)
 
 ## Components
 

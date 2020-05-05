@@ -28,6 +28,7 @@ Dapr is currently under community development in preview phase and master branch
 
 | Version | Repo |
 |:-------:|:----:|
+| v0.7.0 | [Docs](https://github.com/dapr/docs/tree/v0.7.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.7.0) - [CLI](https://github.com/dapr/cli/tree/release-0.7)
 | v0.6.0 | [Docs](https://github.com/dapr/docs/tree/v0.6.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.6.0) - [CLI](https://github.com/dapr/cli/tree/release-0.6)
 | v0.5.0 | [Docs](https://github.com/dapr/docs/tree/v0.5.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.5.0) - [CLI](https://github.com/dapr/cli/tree/release-0.5)
 | v0.4.0 | [Docs](https://github.com/dapr/docs/tree/v0.4.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.4.0) - [CLI](https://github.com/dapr/cli/tree/release-0.4)

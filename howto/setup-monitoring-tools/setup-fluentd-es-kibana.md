@@ -1,4 +1,4 @@
-# Set up Fluentd, Elastic search, and Kibana in Kubernetes
+# Set up Fluentd, Elastic search and Kibana in Kubernetes
 
 This document descriebs how to install Fluentd, Elastic Search, and Kibana to search logs in Kubernetes
 
@@ -115,6 +115,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pythonapp
+  namespace: default
   labels:
     app: python
 spec:

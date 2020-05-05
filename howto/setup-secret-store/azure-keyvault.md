@@ -57,7 +57,7 @@ az ad sp create-for-rbac --name [your_service_principal_name] --create-cert --ce
 
 **Save the both the appId and tenant from the output which will be used in the next step**
 
-3. Get the Object Id for [your_service_principal_name]
+4. Get the Object Id for [your_service_principal_name]
 
 ```bash
 az ad sp show --id [service_principal_app_id]
@@ -70,7 +70,7 @@ az ad sp show --id [service_principal_app_id]
 }
 ```
 
-4. Grant the service principal the GET permission to your Azure Key Vault
+5. Grant the service principal the GET permission to your Azure Key Vault
 
 ```bash
 az keyvault set-policy --name [your_keyvault] --object-id [your_service_principal_object_id] --secret-permissions get
@@ -78,27 +78,18 @@ az keyvault set-policy --name [your_keyvault] --object-id [your_service_principa
 
 Now, your service principal has access to your keyvault,  you are ready to configure the secret store component to use secrets stored in your keyvault to access other components securely.
 
-5. Download PFX cert from your Azure Keyvault
+6. Download the certificate in PFX format from your Azure Key Vault either using the Azure portal or the Azure CLI:
 
-- **Using Azure Portal**
-  Go to your keyvault on Portal and download [certificate_name] pfx cert from certificate vault
-- **Using Azure CLI**
-   For Linux/MacOS
+- **Using the Azure portal:**
+
+  Go to your key vault on the Azure portal and navigate to the *Certificates* tab under *Settings*. Find the certificate that was created during the service principal creation, named [certificate_name] and click on it.
+
+  Click *Download in PFX/PEM format* to download the certificate.
+
+- **Using the Azure CLI:**
 
    ```bash
-   # Download base64 encoded cert
-   az keyvault secret download --vault-name [your_keyvault] --name [certificate_name] --file [certificate_name].txt
-
-   # Decode base64 encoded cert to pfx cert for linux/macos
-   base64 --decode [certificate_name].txt > [certificate_name].pfx
-   ```
-
-   For Windows, on powershell
-
-   ```powershell
-   # Decode base64 encoded cert to pfx cert for linux/macos
-   $EncodedText = Get-Content -Path [certificate_name].txt -Raw
-   [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($EncodedText)) | Set-Content -Path [certificate_name].pfx -Encoding Byte
+   az keyvault secret download --vault-name [your_keyvault] --name [certificate_name] --encoding base64 --file [certificate_name].pfx
    ```
 
 ## Use Azure Key Vault secret store in Standalone mode
@@ -124,6 +115,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
+  namespace: default
 spec:
   type: secretstores.azure.keyvault
   metadata:
@@ -152,6 +144,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:
@@ -211,6 +204,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
+  namespace: default
 spec:
   type: secretstores.azure.keyvault
   metadata:
@@ -250,6 +244,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.redis
   metadata:

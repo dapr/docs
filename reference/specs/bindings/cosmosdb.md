@@ -1,10 +1,11 @@
 # Azure CosmosDB Binding Spec
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.azure.cosmosdb
   metadata:

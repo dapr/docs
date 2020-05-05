@@ -7,11 +7,12 @@ State stores are extensible and can be found in the [components-contrib repo](ht
 
 A state store in Dapr is described using a `Component` file:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: default
 spec:
   type: state.<DATABASE>
   metadata:
