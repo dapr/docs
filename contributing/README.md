@@ -32,6 +32,7 @@ See [this template](./howto-template.md) for `How To` articles.
 - `How To` articles are meant to provide step-by-step practical guidance on to readers who wish to enable a feature, integrate a technology or use Dapr in a specific scenario.
 - Location - `How To` articles should all be under the [howto](../howto) directory in a relevant sub directories - make sure to see if the article you are contributed should be included in an existing sub directory.
 - Sub directory naming - the directory name should be descriptive and if referring to specific component or concept should begin with the relevant name. Example *pubsub-namespaces*.
+- When adding a new article make sure to add a link in the main [How To README.md](../README.md) as well as other articles or samples that may be relevant.
 - Do not assume the reader is using a specific environment unless the article itself is specific to an environment. This include OS (Windows/Linux/MacOS), deployment target (Kubernetes, IoT etc.) or programming language. If instructions vary between operating systems, provide guidance for all.
 - How to articles should include the following sub sections:
     - **Pre-requesties**
