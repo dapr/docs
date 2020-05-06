@@ -34,7 +34,7 @@
 >
 >Name each step section in a clear descriptive way which allows readers to understand what this section covers. Example: **Create a configuration file**
 >
->If using terminal commands, make sure to allow easy copy/paste by having each terminal command in a separate line with the markdown (indented as needed when appearing in bullets or numbered lists). If Windows/Linux/MacOS instructions defer, make sure to include instructions for each.
+>If using terminal commands, make sure to allow easy copy/paste by having each terminal command in a separate line with the markdown (indented as needed when appearing in bullets or numbered lists). If Windows/Linux/MacOS instructions differ, make sure to include instructions for each.
 >
 >Example (note the indentation of the commands):
 >
@@ -53,7 +53,7 @@
 ## Cleanup
 
 >
-> If possible, provide steps that undo the steps above. These should bring the user environment back to the pre-requisites stage. If using terminal commands, make sure to allow easy copy/paste by having each terminal command in a separate line with the markdown (indented as needed when appearing in bullets or numbered lists). If Windows/Linux/MacOS instructions defer, make sure to include instructions for each.
+> If possible, provide steps that undo the steps above. These should bring the user environment back to the pre-requisites stage. If using terminal commands, make sure to allow easy copy/paste by having each terminal command in a separate line with the markdown (indented as needed when appearing in bullets or numbered lists). If Windows/Linux/MacOS instructions differ, make sure to include instructions for each.
 >
 >Example:
 >
