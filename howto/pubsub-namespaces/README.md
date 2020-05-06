@@ -31,11 +31,12 @@ Install Redis (master and slave) on `namespace-a`, following [these instructions
 
 Now, configure `deploy/redis.yaml`, paying attention to the hostname containing `namespace-a`.
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
+  namespace: default
 spec:
   type: pubsub.redis
   metadata:

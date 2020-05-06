@@ -1,10 +1,11 @@
 # Redis Binding Spec
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: bindings.redis
   metadata:
@@ -12,9 +13,12 @@ spec:
     value: <address>:6379
   - name: redisPassword
     value: **************
+  - name: enableTLS
+    value: <bool>
 ```
 
 - `redisHost` is the Redis host address.
 - `redisPassword` is the Redis password.
+- `enableTLS` - If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)

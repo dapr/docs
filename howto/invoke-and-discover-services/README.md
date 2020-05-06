@@ -28,11 +28,12 @@ dapr run --app-id cart --app-port 5000 python app.py
 
 In Kubernetes, set the `dapr.io/id` annotation on your pod:
 
-<pre>
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: python-app
+  namespace: default
   labels:
     app: python-app
 spec:
@@ -49,7 +50,7 @@ spec:
         <b>dapr.io/id: "cart"</b>
         dapr.io/port: "5000"
 ...
-</pre>
+```
 
 ## Invoke a service in code
 

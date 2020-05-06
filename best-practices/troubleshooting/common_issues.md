@@ -9,11 +9,12 @@ First, check your Deployment or Pod YAML file, and check that you have the follo
 
 Sample deployment:
 
-<pre>
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nodeapp
+  namespace: default
   labels:
     app: node
 spec:
@@ -36,7 +37,7 @@ spec:
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
-</pre>
+```
 
 If your pod spec template is annotated correctly and you still don't see the sidecar injected, make sure Dapr was deployed to the cluster before your deployment or pod were deployed.
 

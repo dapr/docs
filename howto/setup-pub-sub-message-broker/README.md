@@ -7,11 +7,12 @@ Pub/Sub message buses are extensible and can be found in the [components-contrib
 
 A pub/sub in Dapr is described using a `Component` file:
 
-```yml
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
+  namespace: default
 spec:
   type: pubsub.<NAME>
   metadata:
@@ -48,3 +49,4 @@ kubectl apply -f pubsub.yaml
 - [Setup RabbitMQ](./setup-rabbitmq.md)
 - [Setup GCP Pubsub](./setup-gcp.md)
 - [Setup Hazelcast Pubsub](./setup-hazelcast.md)
+- [Setup Azure Event Hubs](./setup-azure-eventhubs.md)

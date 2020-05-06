@@ -18,11 +18,12 @@ The next step is to create a Dapr component for Azure Table Storage.
 
 Create the following YAML file named `azuretable.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.azure.tablestorage
   metadata:
@@ -38,11 +39,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 The following example uses the Kubernetes secret store to retrieve the secrets:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.azure.tablestorage
   metadata:

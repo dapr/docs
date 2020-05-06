@@ -32,11 +32,12 @@ The next step is to create a Dapr component for etcd.
 
 Create the following YAML file named `etcd.yaml`:
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <name>
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.etcd
   metadata:
