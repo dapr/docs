@@ -91,3 +91,8 @@ A JSON encoded payload.
 ## Message Envelope
 
 Dapr Pub/Sub adheres to version 1.0 of Cloud Events.
+
+## Related links
+
+* [How to consume topics](https://github.com/dapr/docs/tree/master/howto/consume-topic)
+* [Sample for pub/sub](https://github.com/dapr/samples/tree/master/4.pub-sub) 
