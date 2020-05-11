@@ -33,7 +33,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 ## Subscribe to topics
 
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
-The Dapr instance will call into your app, and expect a JSON value of an array of topics.
+The Dapr instance will call into your app, and expect a JSON response for the topic subscriptions.
 
 *Note: The following example is written in node, but can be in any programming language*
 
@@ -47,23 +47,37 @@ const port = 3000
 
 <b>app.get('/dapr/subscribe', (req, res) => {
     res.json([
-        'topic1'
-    ])
+        {
+            topic: "newOrder",
+            route: "orders"
+        }
+    ]);
 })</b>
+
+app.post('/orders', (req, res) => {
+    res.sendStatus(200);
+});
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 </pre>
 
 ## Consume messages
 
-To consume messages from a topic, start a web server in the programming language of your choice and listen on a `POST` endpoint with the route name that corresponds to the topic.
-
-For example, in order to receive messages for  `topic1`, have your endpoint listen on `/topic1`.
+To consume messages from a topic, start a web server in the programming language of your choice and listen on a `POST` endpoint with the route path you specified when subscribing.
 
 *Note: The following example is written in node, but can be in any programming language*
 
 ```javascript
-app.post('/topic1', (req, res) => {
+app.get('/dapr/subscribe', (req, res) => {
+    res.json([
+        {
+            topic: "onCreated",
+            route: "custom/path"
+        }
+    ]);
+})
+
+app.post('/custom/path', (req, res) => {
     console.log(req.body)
     res.status(200).send()
 })
