@@ -58,19 +58,24 @@ A json encoded array of strings.
 Example:
 
 ```json
-"["TopicA","TopicB"]"
+[
+  {
+    "topic": "newOrder",
+    "route": "/orders"
+  }
+]
 ```
 
 ## Provide route(s) for Dapr to deliver topic events
 
-In order to deliver topic events, a `POST` call will be made to user code with the name of the topic as the URL path.
+In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response.
 
-The following example illustrates this point, considering a subscription for topic `TopicA`:
+The following example illustrates this point, considering a subscription for topic `TopicA` with route `orders`:
 
 ### HTTP Request
 
 ```http
-POST http://localhost:<appPort>/TopicA
+POST http://localhost:<appPort>/orders/TopicA
 ```
 
 ### URL Parameters
@@ -85,4 +90,9 @@ A JSON encoded payload.
 
 ## Message Envelope
 
-Dapr Pub/Sub adheres to version 0.3 of Cloud Events.
+Dapr Pub/Sub adheres to version 1.0 of Cloud Events.
+
+## Related links
+
+* [How to consume topics](https://github.com/dapr/docs/tree/master/howto/consume-topic)
+* [Sample for pub/sub](https://github.com/dapr/samples/tree/master/4.pub-sub) 
