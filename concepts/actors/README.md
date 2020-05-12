@@ -24,7 +24,7 @@ Dapr includes a runtime that specifically implements the [Virtual Actor pattern]
 
 As with any other technology decision, you should decide whether to use actors based on the problem you're trying to solve.
 
-The actor design pattern can be a good fit to a number of distributed systems problems and scenarios, but the first thing you should consider are the constraings of the pattern. Generally speaking, consider the actor pattern to model your problem or scenario if:
+The actor design pattern can be a good fit to a number of distributed systems problems and scenarios, but the first thing you should consider are the constraints of the pattern. Generally speaking, consider the actor pattern to model your problem or scenario if:
 
 * Your problem space involves a large number (thousands or more) of small, independent, and isolated units of state and logic.
 * You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
