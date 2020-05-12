@@ -1,6 +1,6 @@
 # Dapr secrets management
 
-Almost all non-trivial applications need to _securely_ store secret data like API keys, database passwords, and more. By nature, these secrets cannot be checked into the version control system, but they also need to be accessible to code running in production. This is generally a hard problem, but it's critical to get it right. Otherwise, critical production systems can be compromised.
+Almost all non-trivial applications need to _securely_ store secret data like API keys, database passwords, and more. By nature, these secrets should not be checked into the version control system, but they also need to be accessible to code running in production. This is generally a hard problem, but it's critical to get it right. Otherwise, critical production systems can be compromised.
 
 Dapr's solution to this problem is the secrets API and secrets stores.
 
