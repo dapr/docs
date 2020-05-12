@@ -1,6 +1,6 @@
 # State management
 
-Dapr comes with APIs for a key/value storage system, called "state management" in Dapr terminology. If your microservice uses state management, it automatically gets access to any of the [supported databases](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
+Dapr comes with APIs for a key/value storage system, called "state management" in Dapr terminology. If your microservice uses state management, it automatically gets access to any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
 
 State management requires that you build your application with several rules in mind, and if you follow those rules, your app will also be able to leverage several other features that would otherwise be complicated and error-prone to build yourself:
 
@@ -55,7 +55,7 @@ SQL Server | Yes | Yes | Yes
 
 ## Concurrency
 
-Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the database.
+Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the state store.
 
 Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags. It's recommended that you use a [Retry Policy](#Retry-Policies) to compensate for such conflicts when using ETags.
 
