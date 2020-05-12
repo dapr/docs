@@ -1,6 +1,6 @@
 # Security
 
-End-to-end encryption for communication between microservices is generally a best practice, but it's also hard to set up. This feature is often called [mutual TLS (mTLS)](https://www.codeproject.com/articles/326574/an-introduction-to-mutual-ssl-authentication). `mTLS` offers a few key features for network traffic inside your app:
+End-to-end encryption for communication between microservices is generally a best practice, but it's also hard to set up. A common way to secure microservice inter-communication is to use [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. `mTLS` offers a few key features for network traffic inside your app:
 
 - Two way authentication - the client proving its identify to the server, and vice-versa
 - An encrypted channel for all in-flight communication, after two-way authentication is established  
