@@ -22,6 +22,8 @@ When connecting with a dedicated user (not `sa`), these authorizations are requi
 
 ## Create a Dapr component
 
+> currently this component does not support state management for actors
+
 The next step is to create a Dapr component for SQL Server.
 
 Create the following YAML file named `sqlserver.yaml`:
