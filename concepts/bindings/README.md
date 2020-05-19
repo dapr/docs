@@ -1,13 +1,13 @@
 # Bindings
 
 Using bindings, you can trigger your app with events coming in from external systems, or invoke external systems.
-Bindings allow for on-demand, event-driven compute scenarios, and dapr bindings help developers with the following:
+Bindings allow for on-demand, event-driven compute scenarios, and help developers with the following:
 
 * Remove the complexities of connecting to, and polling from, messaging systems such as queues, message buses, etc.
-* Focus on business logic and not the implementation details of how interact with a system
+* Focus on business logic and not the implementation details of how to interact with a system
 * Keep the code free from SDKs or libraries
 * Handles retries and failure recovery
-* Switch between bindings at runtime time
+* Switch between bindings at run time
 * Enable portable applications where environment-specific bindings are set-up and no code changes are required
 
 Bindings are developed independently of Dapr runtime. You can view and contribute to the bindings [here](https://github.com/dapr/components-contrib/tree/master/bindings).
