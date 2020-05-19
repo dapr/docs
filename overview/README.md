@@ -47,7 +47,7 @@ Dapr exposes its APIs as a sidecar architecture, either as a container or as a p
 
 ### Standalone
 
-In standaline mode dapr runs as a separate process from which your service code can call via HTTP or gRPC.
+In standalone mode dapr runs as a separate process from which your service code can call via HTTP or gRPC.
 
 <img src="../images/overview-sidecar.png" width=600>
 
