@@ -17,8 +17,7 @@ Besides the language specific Dapr SDKs, a developer can invoke an actor using t
   - [Create Actor Timer](#create-actor-timer)
   - [Delete Actor Timer](#delete-actor-timer)
 - [Dapr Calling to Service Code](#specifications-for-dapr-calling-to-user-service-code)
-  - [Get Registered Actors](#get-registered-actors)
-  - [Activate Actor](#activate-actor)
+  - [Get Registered Actors](#get-registered-actors)  
   - [Deactivate Actor](#deactivate-actor)
   - [Invoke Actor Method](#invoke-actor-method-1)
   - [Invoke Reminder](#invoke-reminder)
@@ -521,41 +520,6 @@ drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTi
   "drainOngoingCallTimeout": "30s",
   "drainRebalancedActors": true
 }
-```
-
-### Activate actor
-
-Activates an actor by creating an instance of the actor with the specified actorId
-
-#### HTTP Request
-
-```http
-POST http://localhost:<appPort>/actors/<actorType>/<actorId>
-```
-
-#### HTTP Response Codes
-
-Code | Description
----- | -----------
-200  | Request successful
-500  | Request failed
-404  | Actor not found
-
-#### URL Parameters
-
-Parameter | Description
---------- | -----------
-appPort | The application port.
-actorType | The actor type.
-actorId | The actor ID.
-
-#### Examples:
-
-Example of activating an actor: The example creates an actor of type stormtrooper with an actorId of 50
-
-```shell
-curl -X POST http://localhost:3000/actors/stormtrooper/50 \
-  -H "Content-Type: application/json"
 ```
 
 ### Deactivate actor
