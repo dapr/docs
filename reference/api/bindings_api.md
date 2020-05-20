@@ -34,7 +34,7 @@ If running self hosted locally, place this file in your `components` folder next
 
 If running on kubernetes apply the component to your cluster.
 
-> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store](../../../howto/get-secrets/README.md)
+> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store](../../howto/setup-secret-store)
 
 ## Invoking Service Code Through Input Bindings
 
