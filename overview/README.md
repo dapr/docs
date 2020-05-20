@@ -1,7 +1,7 @@
 
 # Dapr Overview
 
-Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
+Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, stateless and stateful microservice applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
 ## Contents:
 
@@ -47,7 +47,7 @@ Dapr exposes its APIs as a sidecar architecture, either as a container or as a p
 
 ### Standalone
 
-In standaline mode dapr runs as a separate process from which your service code can call via HTTP or gRPC.
+In standalone mode dapr runs as a separate process from which your service code can call via HTTP or gRPC.
 
 <img src="../images/overview-sidecar.png" width=600>
 
