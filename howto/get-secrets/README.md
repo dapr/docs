@@ -35,7 +35,7 @@ import (
 )
 
 func main() {
-  url := "http://localhost:3500/v1.0/secrets/kubernetes/my-secret"
+  url := "http://localhost:3500/v1.0/secrets/kubernetes/my-secret?metadata.namespace=default"
 
   res, err := http.Get(url)
   if err != nil {
@@ -69,7 +69,7 @@ fetch(`${secretsUrl}/kubernetes/my-secret`)
 ```python
 import requests as req
 
-resp = req.get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret")
+resp = req.get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret?metadata.namespace=default")
 print(resp.text)
 ```
 
@@ -81,7 +81,7 @@ use std::{thread};
 
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
-    let res = reqwest::get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret").await?;
+    let res = reqwest::get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret?metadata.namespace=default").await?;
     let body = res.text().await?;
     println!("Secret:{}", body);
 
@@ -95,7 +95,7 @@ async fn main() -> Result<(), reqwest::Error> {
 
 ```csharp
 var client = new HttpClient();
-var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/my-secret");
+var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/my-secret?metadata.namespace=default");
 response.EnsureSuccessStatusCode();
 
 string secret = await response.Content.ReadAsStringAsync();
