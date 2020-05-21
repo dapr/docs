@@ -55,4 +55,4 @@ func GetHandler(metadata Metadata) fasthttp.RequestHandler {
 Your middleware component can be contributed to the https://github.com/dapr/components-contrib repository, under the */middleware* folder. Then submit another pull request against the https://github.com/dapr/dapr repository to register the new middleware type. You'll need to modify the **Load()** method under https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/registry.go to register your middleware using the **Register** method.
 
 ## References
-* [How-To: Configure API authorization with OAuth](../../howto/authorization-with-oauth/readme.md)
+* [How-To: Configure API authorization with OAuth](https://github.com/dapr/docs/tree/master/howto/authorization-with-oauth/readme.md)
