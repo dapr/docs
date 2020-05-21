@@ -559,7 +559,7 @@ curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
 
 ### Invoke actor method
 
-Invokes a method for an actor with the specified methodName where parameters to the method are passed in the body of the request message and return values are provided in the body of the response message 
+Invokes a method for an actor with the specified methodName where parameters to the method are passed in the body of the request message and return values are provided in the body of the response message.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.  
 
 #### HTTP Request
 
@@ -595,7 +595,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
 
 ### Invoke reminder
 
-Invokes a reminder for an actor with the specified reminderName
+Invokes a reminder for an actor with the specified reminderName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.  
 
 #### HTTP Request
 
@@ -631,7 +631,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
 
 ### Invoke timer
 
-Invokes a timer for an actor rwith the specified timerName
+Invokes a timer for an actor rwith the specified timerName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.  
 
 #### HTTP Request
 
@@ -697,6 +697,10 @@ Example of getting a health check response from the app:
 ```shell
 curl -X GET http://localhost:3000/healthz \
 ```
+
+## Activating an Actor
+
+Conceptually, activating an actor  means creating the actor's object and adding the actor to a tracking table.  Here is an [example](https://github.com/dapr/dotnet-sdk/blob/6c271262231c41b21f3ca866eb0d55f7ce8b7dbc/src/Dapr.Actors/Runtime/ActorManager.cs#L199) from the .NET SDK.
 
 ## Querying actor state externally
 
