@@ -2,7 +2,7 @@
 
 ### Images
 There are published docker images for each of the Dapr components available on [Docker Hub](https://hub.docker.com/u/daprio).
-- [daprio/dapr](https://hub.docker.com/r/daprio/dapr) // All binaries
+- [daprio/dapr](https://hub.docker.com/r/daprio/dapr) (contains all dapr binaries)
 - [daprio/daprd](https://hub.docker.com/r/daprio/daprd)
 - [daprio/placement](https://hub.docker.com/r/daprio/placement)
 - [daprio/sentry](https://hub.docker.com/r/daprio/sentry)
@@ -72,7 +72,7 @@ If you have multiple instances of dapr running in docker containers and want the
 communicate with each other i.e. for service invocation, then you'll need to create a docker network
 and make sure those dapr containers are attached to it.
 
-You can create a simple docker networking using
+You can create a simple docker network using
 ```
 docker network create my-dapr-network
 ```
@@ -133,12 +133,12 @@ services:
       - hello-dapr
 ```
 
-To get hands on with this we recommend you head over the [dapr samples](https://github.com/dapr/samples) and try out
+To get hands on with dapr and docker compose, head over to the [dapr samples](https://github.com/dapr/samples) and try out
 the docker compose sample for yourself.
 
 ### With Kubernetes
-If your deployment target is Kubernetes then you're probably better of running your applicaiton and sidecars directly on
-a Kubernetes. Running dapr on Kubernetes is a first class experience and is heavily documented. Please refer to the
+If your deployment target is Kubernetes then you're probably better of running your applicaiton and dapr sidecars directly on
+a Kubernetes platform. Running dapr on Kubernetes is a first class experience and is heavily documented. Please refer to the
 following references:
 - [Setup Dapr on a Kubernetes cluster](https://github.com/dapr/docs/blob/ea5b1918778a47555dbdccff0ed6c5b987ed10cf/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
 - [Hello Kubernetes Sample](https://github.com/dapr/samples/tree/master/2.hello-kubernetes)
