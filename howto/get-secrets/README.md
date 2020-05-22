@@ -24,7 +24,7 @@ Now that the secret store is set up, you can call Dapr to get the secrets for a 
 
 For a full API reference, go [here](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
 
-Here are a few examples in different programming languages:
+Here are a few examples in different programming languages. Note that the code snippets below are fetching the secret from the "default" namespace.
 
 ### Go
 
@@ -101,3 +101,9 @@ response.EnsureSuccessStatusCode();
 string secret = await response.Content.ReadAsStringAsync();
 Console.WriteLine(secret);
 ```
+
+## Related Links
+- Setting up secret stores: https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md
+- Secrets API:https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md
+- Working Sample: https://github.com/dapr/samples/blob/master/9.secretstore/README.md
+
