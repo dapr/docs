@@ -2,11 +2,11 @@
 
 ### Images
 There are published docker images for each of the Dapr components available on [Docker Hub](https://hub.docker.com/u/daprio).
-- [Dapr All](https://hub.docker.com/r/daprio/dapr)
-- [Dapr Runtime](https://hub.docker.com/r/daprio/daprd)
-- [Dapr Placement](https://hub.docker.com/r/daprio/placement)
-- [Dapr Sentry](https://hub.docker.com/r/daprio/sentry)
-- [Dapr Dev Environment](https://hub.docker.com/r/daprio/dapr-dev)
+- [daprio/dapr](https://hub.docker.com/r/daprio/dapr) // All binaries
+- [daprio/daprd](https://hub.docker.com/r/daprio/daprd)
+- [daprio/placement](https://hub.docker.com/r/daprio/placement)
+- [daprio/sentry](https://hub.docker.com/r/daprio/sentry)
+- [daprio/dapr-dev](https://hub.docker.com/r/daprio/dapr-dev)
 
 ### Archs
 Currently supported OS/ARCH include:
@@ -15,11 +15,11 @@ Currently supported OS/ARCH include:
 
 ### Tags
 - latest: The latest release, ONLY use for development purposes
-- edge: // TODO: Is this different to edge?!
+- edge: // TODO: Is this different to latests?!
 - major.minor.patch: A released version of Dapr
 - major.minor.patch-rc.iteration: A release candidate
 
-## Running the Runtime
+## Running Dapr in Docker
 
 ###  With a Separate App Process
 The dapr runtime and your app communicate over the localhost interface, therefore, you need to ensure that
