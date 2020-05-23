@@ -1,0 +1,36 @@
+{
+  "name": "dapr-typescript-example-app",
+  "version": "1.0.0",
+  "description": "Dapr example application written in TypeScript",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "dapr run --app-id ${npm_config_app_id:=dapr-typescript-example-app} ts-node src/main.ts",
+    "debug": "dapr run --app-id ${npm_config_app_id:=dapr-typescript-example-app} -- node -r ts-node/register --inspect-brk=${npm_config_inspect_brk} --inspect src/main.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint -c .eslintrc.json --ext .ts src",
+    "dist": "tsc"
+  },
+  "keywords": [
+    "Dapr",
+    "TypeScript"
+  ],
+  "author": "dapr project",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "eslint": "^7.0.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "@types/google-protobuf": "^3.7.2",
+    "dapr-client": "^0.4.0-preview01",
+    "grpc": "^1.24.2"
+  }
+}

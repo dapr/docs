@@ -1,0 +1,16 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.enable": true,
+    "eslint.format.enable": true,
+    "eslint.validate": [
+        "typescript"
+    ],
+    "javascript.validate.enable": false,
+    "typescript.validate.enable": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "[javascript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    }
+}
