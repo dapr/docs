@@ -8,3 +8,4 @@ The following list shows the supported secret stores by Dapr. The links here wil
 * [GCP Secret Manager](./gcp-secret-manager.md)
 * [Hashicorp Vault](./hashicorp-vault.md)
 * [Kubernetes](./kubernetes.md)
+* [JSON Secret Store](./json-secret-store.md)
