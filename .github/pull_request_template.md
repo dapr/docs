@@ -1,25 +1,15 @@
 Thank you for helping make the Dapr documentaion better!
 
-Please note all documentation contributions must be in accordance with the [official contribution guidance](https://github.com/dapr/docs/blob/master/contributing/README.md).
+If you are a new contributor, please see the [this contribution guidance](https://github.com/dapr/docs/blob/master/contributing/README.md) which helps keep the Dapr documentation readable, consistent and useful for Dapr users.
 
-# Description
+If you are contributing a new authored "How To" article, [this template](https://github.com/dapr/docs/blob/master/contributing/howto-template.md) was created to assist you.
+
+In addition, please fill out the following to help reviewers understand this pull request:
+
+## Description
 
 _Please explain the changes you've made_
 
 ## Issue reference
 
-We strive to have all PR being opened based on an issue, where the problem or feature have been discussed prior to implementation.
-
-Please reference the issue this PR will close: #_[issue number]_
-
-## Checklist
-
-Please make sure you've completed the relevant tasks for this PR.
-
-For all contributions:
-* [ ] [Style and tone](https://github.com/dapr/docs/blob/master/contributing/README.md#style-and-tone) are consistent with guidance
-
-For new documentation:
-* [ ] Links to the new documentation are added to make it discoverable
-* [ ] New "Concepts" articles follow [this guidance](https://github.com/dapr/docs/blob/master/contributing/README.md#contributing-to-concepts)
-* [ ] New "How To" articles follow [this guidance](https://github.com/dapr/docs/blob/master/contributing/README.md#contributing-to-how-tos) and use [this template](https://github.com/dapr/docs/blob/master/contributing/howto-template.md)
+_Please reference the issue this PR will close: #[issue number]_
