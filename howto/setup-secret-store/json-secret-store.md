@@ -1,6 +1,8 @@
-# Secret Store for JSON (Development)
+# Local JSON secret store (for Development)
 
 This document shows how to enable JSON secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Development scenarios in Standalone mode. This Dapr secret store component reads plain text JSON from a given file and does not use authentication.
+
+> The JSON secret store is in no way recommended for production environments and therefore is disabled by default. Using the `--enable-json-secretstore` flag sets the **DAPR_ENABLE_JSON_SECRET_STORE** environmnet variable to **1** so the store is enabled in your developemnt or demo box.
 
 ## Contents
 
@@ -24,17 +26,9 @@ This creates new JSON file to hold the secrets.
 
 This section walks you through how to enable an JSON secret store to store a password to access a Redis state store in Standalone mode.
 
-1. Create a components directory in your application root
+1. Create a file called jsonsecretstore.yaml in the components directory
 
-All Dapr components are stored in a directory called 'components' below at application root. Create this directory.
-
-```bash
-mkdir components
-```
-
-2. Create a file called jsonsecretstore.yaml in the components directory
-
-Now create an Dapr jsonsecretstore component. Create a file called jsonsecretstore.yaml in the components directory with the content below
+Now create a Dapr jsonsecretstore component. Create a file called jsonsecretstore.yaml and add it to your components directory with the following content
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -51,7 +45,7 @@ spec:
     value: ":"
 ```
 
-3. Create redis.yaml in the components directory with the content below
+2. Create redis.yaml in the components directory with the content below
 
 Create a statestore component file. This Redis component yaml shows how to use the `redisPassword` secret stored in a JSON secret store called jsonsecretstore as a Redis connection password.
 
@@ -74,11 +68,9 @@ auth:
     secretStore: jsonsecretstore
 ```
 
-4. Run your app
+3. Run your app
 
 You can check that `secretstores.json.jsonsecretstore` component is loaded and redis server connects successfully by looking at the log output when using the dapr `run` command with the `--enable-json-secretstore` flag.
-
-> The JSON secret store is in no way recommended for production environments and therefore is disabled by default. Using the `--enable-json-secretstore` flag sets the **DAPR_ENABLE_JSON_SECRET_STORE** environmnet variable to **1** so the store is enabled in your developemnt or demo box.
 
 Here is the log when you run [HelloWorld sample](https://github.com/dapr/samples/tree/master/1.hello-world) with JSON Secret secret store.
 
@@ -99,6 +91,8 @@ $ dapr run --enable-json-secretstore --app-id mynode --app-port 3000 --port 3500
 ...
 ```
 
-## References
+## Related Links
 
 - [Secrets Component](../../concepts/secrets/README.md)
+- [Secrets API](../../reference/api/secrets_api.md)
+- [Secrets API Samples](https://github.com/dapr/samples/blob/master/9.secretstore/README.md)
