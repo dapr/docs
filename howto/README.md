@@ -64,11 +64,12 @@ For Actors How Tos see the SDK documentation
 ### Mutual Transport Layer Security (mTLS)
 
 * [Setup and configure mutual TLS between Dapr instances](./configure-mtls)
+* [Setup and configure mutual TLS between Dapr instances](./configure-mtls)
 
 ### Secrets
 
 * [Configure component secrets using Dapr secret stores](./setup-secret-store)
-* [Using the Secrets API to get application secrets](./get-secrets)
+* [Enable Dapr APIs token-based authentication](./enable-dapr-api-token-based-authentication)
 
 ## Middleware
 
