@@ -61,15 +61,19 @@ For Actors How Tos see the SDK documentation
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
 
 ## Security
+
+### Dapr APIs Authentication
+
+* [Enable Dapr APIs token-based authentication](./enable-dapr-api-token-based-authentication)
+
 ### Mutual Transport Layer Security (mTLS)
 
-* [Setup and configure mutual TLS between Dapr instances](./configure-mtls)
 * [Setup and configure mutual TLS between Dapr instances](./configure-mtls)
 
 ### Secrets
 
 * [Configure component secrets using Dapr secret stores](./setup-secret-store)
-* [Enable Dapr APIs token-based authentication](./enable-dapr-api-token-based-authentication)
+* [Using the Secrets API to get application secrets](./get-secrets)
 
 ## Middleware
 
