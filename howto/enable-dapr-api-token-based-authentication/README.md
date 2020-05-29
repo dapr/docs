@@ -2,7 +2,7 @@
 
 By default, Dapr relies on the network boundary to limit access to its public API. If you plan on exposing the Dapr API outside of that boundary, or if your deployment demands an additional level of security, consider enabling the token authentication for Dapr APIs. This will cause Dapr to require every incoming gRPC and HTTP request for its APIs for to include authentication token, before allowing that request to pass through. 
 
-## Creation of token
+## Create a token
 
 Dapr uses [JWT](https://jwt.io/) tokens for API authentication. 
 
@@ -45,8 +45,16 @@ annotations:
 ```
 
 When deployed, Dapr sidecar injector will automatically create a secret reference and inject the actual value into `DAPR_API_TOKEN` environment variable.
+ 
+## Rotate a token 
 
-To rotate the configured token, update the Kubernates secret with the new token in each namespace. You can do that using `kubectl patch` command, but the easiest way to update to these secrets in each namespace is using manifest:
+### Self-hosted 
+
+To rotate the configured token in self-hosted, simply set the `DAPR_API_TOKEN` environment variable to the new value and restart the `daprd` process. 
+
+### Kubernetes 
+
+To rotate the configured token in Kubernates, update the previously created secret with the new token in each namespace. You can do that using `kubectl patch` command, but the easiest way to update these in each namespace is by using manifest:
 
 ```yaml
 apiVersion: v1
@@ -58,20 +66,21 @@ data:
   token: <your-new-token>
 ```
 
-And then apply it to each namespace :
+And then apply it to each namespace:
 
 ```shell
 kubectl apply --file token-secret.yaml --namespace <namespace-name>
 ```
 
-To cause Dapr to start using the new token, trigger a rolling upgrade to each one of your deployments: 
+To tell Dapr to start using the new token, trigger a rolling upgrade to each one of your deployments: 
 
 ```shell
 kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name>
 ```
 
 > Note, assuming your service is configured with more than one replica, the key rotation process does not result in any downtime. 
- 
+
+
 ## Adding JWT token to client API invocations 
 
 Once token authentication is configured in Dapr, all clients invoking Dapr API will have to append the JWT token to every request:
@@ -91,3 +100,7 @@ When using gRPC protocol, Dapr will inspect the incoming calls for the API token
 ```shell
 dapr-api-token[0].
 ```
+
+## Related Links
+
+* [Other security related topics](https://github.com/dapr/docs/blob/master/concepts/security/README.md)
