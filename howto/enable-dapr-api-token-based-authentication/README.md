@@ -65,7 +65,7 @@ kubectl rollout restart deployment/<your-deployment-name>
 
 > Note, assuming your service is configured with more than one replica, the key rotation process does not result in any downtime. 
  
-## Providing client with JWT token 
+## Adding JWT token to client API invocations 
 
 Once token authentication is configured in Dapr, the clients invoking its API will have to append the JWT token to each request.
 
