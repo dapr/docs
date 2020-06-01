@@ -34,7 +34,7 @@ az group create --name [your_resource_group] --location [region]
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 
 ```bash
-az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --kubernetes-version 1.14.6 --enable-addons http_application_routing --enable-rbac --generate-ssh-keys
+az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --kubernetes-version 1.14.7 --enable-addons http_application_routing --enable-rbac --generate-ssh-keys
 ```
 
 5. Get the access credentials for the Azure Kubernetes cluster
@@ -43,8 +43,15 @@ az aks create --resource-group [your_resource_group] --name [your_aks_cluster_na
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
+
 ## (optional) Install Helm v3
 
 1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
 
 > **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+
+2. In case you need permissions  the kubernetes dashboard (i.e. configmaps is forbidden: User "system:serviceaccount:kube-system:kubernetes-dashboard" cannot list configmaps in the namespace "default", etc.) execute this command
+
+```bash
+kubectl create clusterrolebinding kubernetes-dashboard -n kube-system --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+```
