@@ -118,3 +118,9 @@ kubectl apply -f kafka.yaml
 
 The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
 To use SNS/SQS, replace the `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the snssqs.yaml above.
+
+
+## Related Links
+- https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html
+- https://docs.aws.amazon.com/sns/latest/api/Welcome.html
+- https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html
