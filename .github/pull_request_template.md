@@ -1,4 +1,4 @@
-Thank you for helping make the Dapr documentaion better!
+Thank you for helping make the Dapr documentation better!
 
 If you are a new contributor, please see the [this contribution guidance](https://github.com/dapr/docs/blob/master/contributing/README.md) which helps keep the Dapr documentation readable, consistent and useful for Dapr users.
 
