@@ -36,8 +36,8 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/id: "myapp"
-        <b>dapr.io/protocol: "grpc"
-        dapr.io/port: "5005"</b>
+        dapr.io/protocol: "grpc"
+        dapr.io/port: "5005"
 ...
 ```
 
