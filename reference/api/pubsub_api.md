@@ -2,7 +2,7 @@
 
 ## Publish a message to a given topic
 
-This endpoint lets you publish a payload to multiple consumers who are listening on a ```topic```.
+This endpoint lets you publish data to multiple consumers who are listening on a ```topic```.
 Dapr guarantees at least once semantics for this endpoint.
 
 ### HTTP Request
