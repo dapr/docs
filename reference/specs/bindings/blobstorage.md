@@ -34,9 +34,7 @@ By default the Azure Blob Storage output binding will auto generate a UUID as bl
 Applications publishing to an Azure Blob Storage output binding should send a message with the following contract:
 ```json
 {
-    "data": {
-        "message": "Hi"
-    },
+    "data": "file content",
     "metadata": {
         "blobName"           : "filename.txt",
         "ContentType"        : "text/plain",
