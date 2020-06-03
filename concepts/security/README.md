@@ -56,7 +56,7 @@ In Kubernetes, when the Dapr system services start, they automatically mount the
 
 In self hosted mode, each system service can be mounted to a filesystem path to get the credentials.
 
-When the Dapr sidecars initialize, they authenticate with the system services using the mounted leaf certificates and issuer private key which are mounted as environment variables to the sidecar container.
+When the Dapr sidecar initializes, it authenticates with the system pods using the mounted leaf certificates and issuer private key. these are mounted as environment variables on the sidecar container.
 
 ### mTLS to system services in Kubernetes
 The diagram below shows secure communication between the Dapr sidecar and the Dapr Sentry (Certificate Authority), Placement (actor placement) and the Kubernetes Operator system services
