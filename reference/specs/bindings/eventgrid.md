@@ -59,6 +59,10 @@ spec:
 
 - `eventSubscriptionName` (Optional) is the name of the event subscription. Event subscription names must be between 3 and 64 characters in length and should use alphanumeric letters only.
 
+## Output Binding Supported Operations
+
+* create
+
 ## Output Binding Metadata
 - `accessKey` is the Access Key to be used for publishing an Event Grid Event to a custom topic
 

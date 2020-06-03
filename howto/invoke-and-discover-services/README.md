@@ -47,7 +47,7 @@ spec:
         app: python-app
       annotations:
         dapr.io/enabled: "true"
-        <b>dapr.io/id: "cart"</b>
+        dapr.io/id: "cart"
         dapr.io/port: "5000"
 ...
 ```
