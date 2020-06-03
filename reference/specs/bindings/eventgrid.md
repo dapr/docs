@@ -112,7 +112,7 @@ controller:
       dapr.io/port: "80"
 ```
 
-Then install NGINX ingress controller to your k8s cluster with Helm3 using the annotations
+Then install NGINX ingress controller to your Kubernetes cluster with Helm 3 using the annotations
 
 ```bash
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
@@ -126,9 +126,10 @@ If deploying to Azure Kubernetes Service, you can follow [the official MS docume
 - Install cert-manager
 - Create a CA cluster issuer
 
-Final step for enabling communication between Event Grid and Dapr is to define `http` and custom port to your app's service and an `ingress` in k8s. This example uses .NET Core web api and Dapr default ports and custom port 9000 for handshakes.
+Final step for enabling communication between Event Grid and Dapr is to define `http` and custom port to your app's service and an `ingress` in Kubernetes. This example uses .NET Core web api and Dapr default ports and custom port 9000 for handshakes.
 
 ```yaml
+# dotnetwebapi.yaml
 kind: Service
 apiVersion: v1
 metadata:
@@ -200,4 +201,35 @@ spec:
         imagePullPolicy: Always
 ```
 
-> **Note:** This manifest deploys everything to k8s default namespace.
+Deploy binding and app (including ingress) to Kubernetes
+
+```bash
+# Deploy Dapr components
+kubectl apply -f eventgrid.yaml
+# Deploy your app and Nginx ingress
+kubectl apply -f dotnetwebapi.yaml
+```
+
+> **Note:** This manifest deploys everything to Kubernetes default namespace.
+
+**Troubleshooting possible issues with Nginx controller**
+
+After initial deployment the "Daprized" Nginx controller can malfunction. To check logs and fix issue (if it exists) follow these steps.
+
+```bash
+$ kubectl get pods -l app=nginx-ingress
+
+NAME                                                   READY   STATUS    RESTARTS   AGE
+nginx-nginx-ingress-controller-649df94867-fp6mg        2/2     Running   0          51m
+nginx-nginx-ingress-default-backend-6d96c457f6-4nbj5   1/1     Running   0          55m
+
+$ kubectl logs nginx-nginx-ingress-controller-649df94867-fp6mg nginx-ingress-controller
+
+# If you see 503s logged from calls to webhook endpoint '/api/events' restart the pod
+# .."OPTIONS /api/events HTTP/1.1" 503..
+
+$ kubectl delete pod nginx-nginx-ingress-controller-649df94867-fp6mg
+
+# Check the logs again - it should start returning 200
+# .."OPTIONS /api/events HTTP/1.1" 200.. 
+```
