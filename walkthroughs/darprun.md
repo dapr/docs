@@ -7,7 +7,7 @@ Terminology used below:
 - Dapr CLI - the Dapr command line tool.  The binary name is dapr (dapr.exe on Windows)
 - Dapr runtime - this runs alongside each app.  The binary name is daprd (daprd.exe on Windows)
 
-In self hosting mode, running `dapr init` copies the Dapr runtime onto your box and starts the placement service (used for actors) and Redis in containers.  These must be present before running `dapr run`.
+In self hosting mode, running `dapr init` copies the Dapr runtime onto your box and starts the placement service (used for actors) and Redis in containers.  These must be present before running `dapr run`. The Dapr CLI also creates the default components directory under `~\.dapr\components` if it does not already exist.
 
 What happens when `dapr run` is executed?  
 
@@ -15,7 +15,7 @@ What happens when `dapr run` is executed?
 dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
 ```
 
-First, the Dapr CLI creates the `\components` directory if it does not not already exist, and writes two component files representing the default state store and the default message bus: `redis.yaml` and `redis_messagebus.yaml`, respectively.  [Code](https://github.com/dapr/cli/blob/d585612185a4a525c05fb62b86e288ccad510006/pkg/standalone/run.go#L254-L288).
+First, the Dapr CLI uses the default components directory under `~\.dapr\components` to write two component files representing the default state store and the default message bus: `redis.yaml` and `redis_messagebus.yaml`, respectively.  [Code](https://github.com/dapr/cli/blob/d585612185a4a525c05fb62b86e288ccad510006/pkg/standalone/run.go#L254-L288).
 
 *Note as of this writing (Dec 2019) the names have been changed to `statestore.yaml` and `messagebus.yaml` in the master branch, but this change is not in the latest release, 0.3.0*.  
 
