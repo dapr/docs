@@ -33,8 +33,6 @@ spec:
   metadata:
   - name: host
     value: <REPLACE WITH PULSAR URL> #default is localhost:6650
-  - name: subscriptionName
-    value: <REPLACE WITH SUBSCRIPTION NAME>
   - name: enableTLS
     value: <TRUE/FALSE>
 
