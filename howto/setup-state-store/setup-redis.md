@@ -90,4 +90,4 @@ kubectl apply -f redis.yaml
 
 ### Standalone
 
-By default the Dapr CLI creates a local Redis instance when you run `dapr init`. When you run an app using `dapr run`, the component file will automatically be created for you in a `components` dir in your current working directory.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.

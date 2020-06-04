@@ -70,4 +70,4 @@ kubectl apply -f messagebus.yaml
 
 ### Running locally
 
-The Dapr CLI will automatically create a directory named `components` in your current working directory. To use Cloud Pubsub, replace the contents of `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the contents of yaml above.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
