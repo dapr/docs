@@ -76,7 +76,7 @@ Read the [Create an event-driven app using input bindings](../../howto/trigger-a
 
 ## Output bindings
 
-Output bindings allow users to invoke external resources
+Output bindings allow users to invoke external resources.
 An optional payload and metadata can be sent with the invocation request.
 
 In order to invoke an output binding:

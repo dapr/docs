@@ -48,6 +48,11 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         },
         "metadata": {
           "ttlInSeconds": "60"
-        }
+        },
+        "operation": "create"
       }'
 ```
+
+## Output Binding Supported Operations
+
+* create

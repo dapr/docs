@@ -39,11 +39,14 @@ All that's left now is to invoke the bindings endpoint on a running Dapr instanc
 We can do so using HTTP:
 
 ```bash
-curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ "data": { "message": "Hi!" } }'
+curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ "data": { "message": "Hi!" }, "operation": "create" }'
 ```
 
 As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myEvent`.
 The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+
+You'll also notice that there's an `operation` field that tells the binding what we need it to do.
+You can check [here](../../reference/specs/bindings) which operations are supported for every output binding.
 
 
 ## References
