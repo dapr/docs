@@ -67,5 +67,4 @@ kubectl apply -f sqlserver.yaml
 
 ### Running locally
 
-The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use SQL Server, replace the redis.yaml file with sqlserver.yaml file above.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.

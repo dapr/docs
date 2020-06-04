@@ -11,7 +11,7 @@ Dapr provides different implementation of the underlying system, and allows oper
 The first step is to setup the Pub/Sub component.
 For this guide, we'll use Redis Streams, which is also installed by default on a local machine when running `dapr init`.
 
-*Note: When running Dapr locally, a pub/sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
+*Note: When running Dapr locally, a pub/sub component YAML is automatically created for you locally. To override, create a `components` directory containing the filea and use the flag `--components-path` with the `dapr run` CLI command.*
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

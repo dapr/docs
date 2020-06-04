@@ -126,4 +126,5 @@ kubectl apply -f redis-pubsub.yaml
 
 ### Standalone
 
-By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a directory named `components` in the root path of your Dapr binary and then copy your `redis.yaml` into that directory.
+By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+

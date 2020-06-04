@@ -26,7 +26,8 @@ This creates new JSON file to hold the secrets.
 
 This section walks you through how to enable an JSON secret store to store a password to access a Redis state store in Standalone mode.
 
-1. Create a file called jsonsecretstore.yaml in the components directory
+1. Create a components directory
+2. Create a file called jsonsecretstore.yaml in the components directory
 
 Now create a Dapr jsonsecretstore component. Create a file called jsonsecretstore.yaml and add it to your components directory with the following content
 
@@ -75,7 +76,7 @@ You can check that `secretstores.json.jsonsecretstore` component is loaded and r
 Here is the log when you run [HelloWorld sample](https://github.com/dapr/samples/tree/master/1.hello-world) with JSON Secret secret store.
 
 ```bash
-$ dapr run --enable-json-secretstore --app-id mynode --app-port 3000 --port 3500 node app.js
+$ dapr run --enable-json-secretstore --app-id mynode --app-port 3000 --port 3500 --components-path ./components node app.js
 
 ℹ️  Starting Dapr with id mynode on port 3500
 ✅  You're up and running! Both Dapr and your app logs will appear here.
