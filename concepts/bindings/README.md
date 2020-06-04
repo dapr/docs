@@ -27,6 +27,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [RabbitMQ](../../reference/specs/bindings/rabbitmq.md)   | ✅ | ✅ | Experimental |
 | [Redis](../../reference/specs/bindings/redis.md)         |    | ✅ | Experimental |
 | [Twilio](../../reference/specs/bindings/twilio.md)       |    | ✅ | Experimental |
+| [Twitter](../../reference/specs/bindings/twitter.md)       | ✅ |  | Experimental |
 | [SendGrid](../../reference/specs/bindings/sendgrid.md)       |    | ✅ | Experimental |
 
 ### Amazon Web Service (AWS)
@@ -75,7 +76,7 @@ Read the [Create an event-driven app using input bindings](../../howto/trigger-a
 
 ## Output bindings
 
-Output bindings allow users to invoke external resources
+Output bindings allow users to invoke external resources.
 An optional payload and metadata can be sent with the invocation request.
 
 In order to invoke an output binding:

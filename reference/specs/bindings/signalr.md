@@ -42,8 +42,13 @@ Applications publishing to an Azure SignalR output binding should send a message
     },
     "metadata": {
         "group": "chat123"
-    }
+    },
+    "operation": "create"
 }
 ```
 
 For more information on integration Azure SignalR into a solution check the [documentation](https://docs.microsoft.com/en-us/azure/azure-signalr/)
+
+## Output Binding Supported Operations
+
+* create
