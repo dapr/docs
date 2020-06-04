@@ -1,9 +1,9 @@
-# Setup SNS/SQS
+# Setup AWS SNS/SQS for pub/sub
+
+This article describes configuring Dapr to use AWS SNS/SQS for pub/sub on local and Kubernetes environments. For local development, the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS.
+Follow the instructions [here](https://github.com/localstack/localstack#installing) to install the localstack CLI.
 
 ## Locally
-
-The localstack project is a good resource for developing against SNS/SQS locally.
-Follow the instructions here to get the localstack CLI: https://github.com/localstack/localstack#installing
 
 In order to use localstack with your pubsub binding, you need to provide the `awsEndpoint` configuration 
 in the component metadata. The `awsEndpoint` is unncessary when running against production AWS.
@@ -108,7 +108,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### In Kubernetes
 
-To apply the SNS/SQS component to Kubernetes, use the `kubectl`:
+To apply the SNS/SQS component to Kubernetes, use the `kubectl` command:
 
 ```
 kubectl apply -f kafka.yaml
@@ -116,11 +116,10 @@ kubectl apply -f kafka.yaml
 
 ### Running locally
 
-The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use SNS/SQS, replace the `pubsub.yaml` (or `messagebus.yaml` for Dapr < 0.6.0) file with the snssqs.yaml above.
+Place the above components file `snssqs.yaml` in the local components directory (either the default directory or in a path you define when running the CLI command `dapr run`)
 
 
 ## Related Links
-- https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html
-- https://docs.aws.amazon.com/sns/latest/api/Welcome.html
-- https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html
+- [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
+- [AWS SNS API refernce](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
+- [AWS SQS API refernce](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)
