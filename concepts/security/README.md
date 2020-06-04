@@ -12,7 +12,7 @@
 
 ## Sidecar-to-App communication
 
-The Dapr sidecar runs close to the application through **localhost**. Dapr assumes it runs in the same security domain of the application. As a result, there are no authentication, authorization or encryption between a Dapr sidecar and the application.
+The Dapr sidecar runs close to the application through **localhost**, and is recommended to run under the same network boundary as the app. While many cloud-native systems today consider the pod level (on Kubernetes, for example) as a trusted security boundary, Dapr provides user with API level authentication using tokens. This feature guarantees that even on localhost, only an authenticated caller may call into Dapr.
 
 ## Sidecar-to-Sidecar communication
 
@@ -56,7 +56,7 @@ In Kubernetes, when the Dapr system services start, they automatically mount the
 
 In self hosted mode, each system service can be mounted to a filesystem path to get the credentials.
 
-When the Dapr sidecars initialize, they authenticate with the system services using the workload cert that was issued to them by Sentry, the Certificate Authority.
+When the Dapr sidecar initializes, it authenticates with the system pods using the mounted leaf certificates and issuer private key. these are mounted as environment variables on the sidecar container.
 
 ### mTLS to system services in Kubernetes
 The diagram below shows secure communication between the Dapr sidecar and the Dapr Sentry (Certificate Authority), Placement (actor placement) and the Kubernetes Operator system services
