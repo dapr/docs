@@ -9,7 +9,8 @@ An output binding represents a resource that Dapr will use invoke and send messa
 
 For the purpose of this guide, we'll use a Kafka binding. You can find a list of the different binding specs [here](../../concepts/bindings/README.md).
 
-Create the following YAML file, named binding.yaml, and save this to the /components sub-folder in your application directory.
+Create the following YAML file, named binding.yaml, and save this to a `components` sub-folder in your application directory.
+(Use the `--components-path` flag with `dapr run` to point to your custom components dir)
 
 *Note: When running in Kubernetes, apply this file to your cluster using `kubectl apply -f binding.yaml`*
 
