@@ -19,7 +19,7 @@ spec:
   type: pubsub.azure.eventhubs
   metadata:
   - name: connectionString
-    value: <REPLACE-WITH-CONNECTION-STRING> # Required.
+    value: <REPLACE-WITH-CONNECTION-STRING> # Required. "Endpoint=sb://****"
   - name: storageAccountName
     value: <REPLACE-WITH-STORAGE-ACCOUNT-NAME> # Required.
   - name: storageAccountKey
@@ -27,6 +27,8 @@ spec:
   - name: storageContainerName
     value: <REPLACE-WITH-CONTAINER-NAME > # Required.
 ```
+
+See [here](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature) on how to get the Event Hubs connection string. Note this is not the Event Hubs namespace.
 
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
 
