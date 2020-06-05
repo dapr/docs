@@ -98,8 +98,6 @@ This section walks you through how to enable an Azure Key Vault secret store to 
 
 1. Create a components directory in your application root
 
-All Dapr components are stored in a directory called 'components' below at application root. Create this directory.
-
 ```bash
 mkdir components
 ```
@@ -128,6 +126,8 @@ spec:
   - name: spnCertificateFile
     value : "[pfx_certificate_file_local_path]"
 ```
+
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
 
 4. Store redisPassword secret to keyvault
 

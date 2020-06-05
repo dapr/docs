@@ -121,7 +121,7 @@ This endpoint lets you get the state for a specific key.
 ### HTTP Request
 
 ```http
-GET http://localhost:<daprPor>/v1.0/state/<storename>/<key>
+GET http://localhost:<daprPort>/v1.0/state/<storename>/<key>
 
 ```
 
