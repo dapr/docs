@@ -1,5 +1,5 @@
 # Run with Docker
-This article provides guidance on running Dapr with Docker outside of Kubernetes.
+This article provides guidance on running Dapr with Docker outside of Kubernetes. There are a number of different configurations in which you may wish to run Dapr with Docker that are documented below.
 
 ## Prerequisites
 - [Docker](https://docs.docker.com/get-docker/)
