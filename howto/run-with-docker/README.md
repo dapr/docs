@@ -40,7 +40,7 @@ docker run --net="host" daprio/daprd:edge ./daprd -app-id <my-app-id> -app-port 
 Then you can run your app on the host and they should connect over the localhost network interface.
 
 However, if you are not running your Docker daemon on a Linux host, we recommend you follow the steps below to run
-both your app and the Dapr runtime in Docker containers using Docker Compose.
+both your app and the [Dapr runtime in Docker containers using Docker Compose](#run-dapr-in-a-docker-container-using-docker-compose).
 
 ### Run Dapr and an app in a single Docker container
 > For development purposes ONLY
