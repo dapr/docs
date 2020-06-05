@@ -39,21 +39,20 @@ docker run --net="host" daprio/daprd:edge ./daprd -app-id <my-app-id> -app-port 
 ```
 Then you can run your app on the host and they should connect over the localhost network interface.
 
-However, if you are not running your Docker daemon on a Linux host, we recommend you follow the steps below to run
+However, if you are not running your Docker daemon on a Linux host, it is recommended you follow the steps below to run
 both your app and the [Dapr runtime in Docker containers using Docker Compose](#run-dapr-in-a-docker-container-using-docker-compose).
 
 ## Run Dapr and an app in a single Docker container
 > For development purposes ONLY
 
-We do not publish images for or recommend running both the Dapr runtime and your application inside the same
-container. However, it is possible if you need to test something for development purposes.
-In order to do this, you'll need to write a Dockerfile that installs the Dapr runtime, Dapr cli and your app code.
-You can then invoke both the Dapr runtime and your app code using the Dapr cli.
+It is not recommended to run both the Dapr runtime and an application inside the same container. However, it is possible to do so for local development scenarios.
+In order to do this, you'll need to write a Dockerfile that installs the Dapr runtime, Dapr CLI and your app code.
+You can then invoke both the Dapr runtime and your app code using the Dapr CLI.
 
-Below is just an example on how you might do this
+Below is an example of a Dockerfile which achieves this:
 ```
 FROM python:3.7.1
-# Install dapr cli
+# Install dapr CLI
 RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 
 # Install daprd
@@ -89,17 +88,11 @@ Each container will receive a unique IP on that network and be able to communica
 
 ## Run Dapr in a Docker container using Docker-Compose
 [Docker Compose](https://docs.docker.com/compose/) can be used to define multi-container application
-configurations. If you wish to run multiple apps with Dapr sidecars locally without Kubernetes then we recommend you
-express it as a Docker Compose definition (`docker-compose.yml`).
+configurations. If you wish to run multiple apps with Dapr sidecars locally without Kubernetes then it is recommended to use a Docker Compose definition (`docker-compose.yml`).
 
-A wider discussion on the syntax and tooling of Docker Compose is outside the scope of this article,
-however, I recommend you refer to the [offical Docker documentation](https://docs.docker.com/compose/)
-if you need more details.
+The syntax and tooling of Docker Compose is outside the scope of this article, however, it is recommended you refer to the [offical Docker documentation](https://docs.docker.com/compose/) for further details.
 
-In order to run your applications using Dapr and Docker Compose you'll need to express the sidecar
-pattern in your `docker-compose.yml`.
-
-An example of how you can achieve this is documented below.
+In order to run your applications using Dapr and Docker Compose you'll need to define the sidecar pattern in your `docker-compose.yml`. For example:
 
 ```yaml
 version: '3'
@@ -138,8 +131,7 @@ services:
       - hello-dapr
 ```
 
-To get hands on with Dapr and Docker Compose, head over to the [Dapr samples](https://github.com/dapr/samples) and try out
-the Docker Compose sample for yourself.
+To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/10.hello-docker-compose).
 
 ## Run Dapr in a Docker container on Kubernetes
 If your deployment target is Kubernetes then you're probably better of running your applicaiton and Dapr sidecars directly on
