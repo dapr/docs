@@ -6,8 +6,8 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 ### Running locally
 
-The Dapr CLI will automatically create and setup a Redis Streams instance for you when you.
-The Redis instance will be installed via Docker when you run `dapr init`, and the component file will be setup with `dapr run`.
+The Dapr CLI will automatically create and setup a Redis Streams instance for you.
+The Redis instance will be installed via Docker when you run `dapr init`, and the component file will be created in default directory. (`$HOME/.dapr/components` directory (Mac/Linux) or `%USERPROFILE%\.dapr\components` on Windows).
 
 ### Creating a Redis instance in your Kubernetes Cluster using Helm
 
@@ -82,4 +82,4 @@ kubectl apply -f pubsub.yaml
 
 ### Standalone
 
-By default the Dapr CLI creates a local Redis instance when you run `dapr init`. When you run an app using `dapr run`, the component file will automatically be created for you in a `components` dir in your current working directory.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.

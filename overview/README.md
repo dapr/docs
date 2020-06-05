@@ -80,7 +80,8 @@ Furthermore, Dapr can be integrated with any developer framework. For example, i
 
 Dapr can be configured to run on your local developer machine in [self hosted mode](../getting-started). Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
 
-In self hosted mode, Redis running locally in a container, is installed as the both a default a state store and pub/sub message bus components. See the local Components folder for the yaml files.  
+In self hosted mode, Redis is running locally in a container and is configured to server as both the default state store and pub/sub.
+After running `dapr init`, see the `$HOME/.dapr/components` directory (Mac/Linux) or `%USERPROFILE%\.dapr\components` on Windows.
 
 The `dapr-placement` service is responsible for managing the actor distribution scheme and key range settings. This service is only required if you are using Dapr actors. For more information on the actor `Placement` service read [actor overview](../concepts/actors). 
 
