@@ -74,7 +74,7 @@ be made accessible to it.
 
 ### Run Dapr in a Docker container on a Docker network
 If you have multiple instances of Dapr running in Docker containers and want them to be able to
-communicate with each other i.e. for service invocation, then you'll need to create a sahred Docker network
+communicate with each other i.e. for service invocation, then you'll need to create a shared Docker network
 and make sure those Dapr containers are attached to it.
 
 You can create a simple Docker network using
