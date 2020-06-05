@@ -1,17 +1,15 @@
 # Bindings
 
-Using bindings, you can trigger your app with events coming in from external systems, or invoke external systems.
+Using bindings, you can trigger your app with events coming in from external systems, or invoke external systems. This feature provides several advantages for you and your code:
 
-Specifically, bindings give you some additional advantages:
+* You can remove the complexities of connecting to, and polling from, messaging systems such as queues, message buses, etc...
+* You can focus on business logic and not implementation details of how to interact with a system
+* You can keep your code free from SDKs or libraries
+* You can handle retries and failure recovery
+* You can switch between bindings at run time
+* You can build portable applications where environment-specific bindings are set-up and no code changes are required
 
-* Remove the complexities of connecting to, and polling from, messaging systems such as queues, message buses, etc.
-* Focus on business logic and not the implementation details of how to interact with a system
-* Keep the code free from SDKs or libraries
-* Handles retries and failure recovery
-* Switch between bindings at run time
-* Enable portable applications where environment-specific bindings are set-up and no code changes are required
-
-For a specific example, bindings allow your microservice to respond to incoming Twilio/SMS messages without adding/configuring a third-party Twilio SDK, worrying about polling from Twilio (or doing websockets, etc...).
+For a specific example, bindings would allow your microservice to respond to incoming Twilio/SMS messages without adding/configuring a third-party Twilio SDK, worrying about polling from Twilio (or doing websockets, etc...).
 
 Bindings are developed independently of Dapr runtime. You can view and contribute to the bindings [here](https://github.com/dapr/components-contrib/tree/master/bindings).
 
