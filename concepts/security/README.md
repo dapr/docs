@@ -1,13 +1,6 @@
 # Security
 
-End-to-end encryption for communication between microservices is generally a best practice, but it's also hard to set up. A common way to secure microservice inter-communication is to use [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. `mTLS` offers a few key features for network traffic inside your app:
-
-- Two way authentication - the client proving its identify to the server, and vice-versa
-- An encrypted channel for all in-flight communication, after two-way authentication is established  
-
-Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
-
-Dapr supports mTLS in your application with a variety of different deployments, all without adding any code to your application, and usually without complex configuration inside your production systems:
+Security is a general term in Dapr that encompasses several important features that your microservices automatically takes advantage of:
 
 - [Sidecar-to-App Communication](#sidecar-to-app-communication)
 - [Sidecar-to-Sidecar Communication](#sidecar-to-sidecar-communication)
@@ -17,6 +10,15 @@ Dapr supports mTLS in your application with a variety of different deployments, 
 - [Bindings Security](#bindings-security)
 - [State Store Security](#state-store-security)
 - [Management Security](#management-security)
+
+Many (but not all) of these security features centralize around encryption, which is a way to secure data. One of the security mechanisms that Dapr employs is called [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. `mTLS` offers a few key features for network traffic inside your app:
+
+- Two way authentication - the client proving its identify to the server, and vice-versa
+- An encrypted channel for all in-flight communication, after two-way authentication is established  
+
+Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
+
+Dapr enables mTLS and all the features described in this document in your application with little to no extra code or complex configuration inside your production systems
 
 ## Sidecar-to-App communication
 
