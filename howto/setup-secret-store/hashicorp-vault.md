@@ -43,7 +43,7 @@ To deploy in Kubernetes, save the file above to `vault.yaml` and then run:
 kubectl apply -f vault.yaml
 ```
 
-When running in self hosted mode, place this file in a `components` directory from the Dapr working directory.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
 
 ## Vault reference example
 

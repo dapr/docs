@@ -1,12 +1,15 @@
 # Bindings
 
-Dapr provides a mechanism that can either trigger your app with events coming in from external systems, or invoke external systems.
+Using bindings, you can trigger your app with events coming in from external systems, or invoke external systems.
 
-Bindings give you some additional advantages:
+Specifically, bindings give you some additional advantages:
 
-* Your code doesn't have to deal with the complexities of connecting to, and polling from, messaging systems such as queues, message buses, etc...
-* You can focus on business logic and not the implementation details of how interact with a system
-* You can keep your code free from SDKs or libraries
+* Remove the complexities of connecting to, and polling from, messaging systems such as queues, message buses, etc.
+* Focus on business logic and not the implementation details of how to interact with a system
+* Keep the code free from SDKs or libraries
+* Handles retries and failure recovery
+* Switch between bindings at run time
+* Enable portable applications where environment-specific bindings are set-up and no code changes are required
 
 For a specific example, bindings allow your microservice to respond to incoming Twilio/SMS messages without adding/configuring a third-party Twilio SDK, worrying about polling from Twilio (or doing websockets, etc...).
 
@@ -27,6 +30,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [RabbitMQ](../../reference/specs/bindings/rabbitmq.md)   | ✅ | ✅ | Experimental |
 | [Redis](../../reference/specs/bindings/redis.md)         |    | ✅ | Experimental |
 | [Twilio](../../reference/specs/bindings/twilio.md)       |    | ✅ | Experimental |
+| [Twitter](../../reference/specs/bindings/twitter.md)       | ✅ |  | Experimental |
 | [SendGrid](../../reference/specs/bindings/sendgrid.md)       |    | ✅ | Experimental |
 
 ### Amazon Web Service (AWS)
@@ -75,7 +79,7 @@ Read the [Create an event-driven app using input bindings](../../howto/trigger-a
 
 ## Output bindings
 
-Output bindings allow users to invoke external resources
+Output bindings allow users to invoke external resources.
 An optional payload and metadata can be sent with the invocation request.
 
 In order to invoke an output binding:

@@ -17,3 +17,7 @@ spec:
 
 - `url` is the HTTP url to invoke.
 - `method` is the HTTP verb to use for the request.
+
+## Output Binding Supported Operations
+
+* create

@@ -52,6 +52,11 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
         },
         "metadata": {
           "partitionKey": "key1"
-        }
+        },
+        "operation": "create"
       }'
 ```
+
+## Output Binding Supported Operations
+
+* create

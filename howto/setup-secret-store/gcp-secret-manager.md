@@ -45,7 +45,7 @@ To deploy in Kubernetes, save the file above to `gcp_secret_manager.yaml` and th
 kubectl apply -f gcp_secret_manager.yaml
 ```
 
-When running in self hosted mode, place this file in a `components` directory under the Dapr working directory.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
 
 ## GCP Secret Manager reference example
 

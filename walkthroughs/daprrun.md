@@ -7,7 +7,7 @@ Terminology used below:
 - Dapr CLI - the Dapr command line tool.  The binary name is dapr (dapr.exe on Windows)
 - Dapr runtime - this runs alongside each app.  The binary name is daprd (daprd.exe on Windows)
 
-In self hosting mode, running `dapr init` copies the Dapr runtime onto your box and starts the placement service (used for actors) and Redis in containers.  These must be present before running `dapr run`.
+In self hosting mode, running `dapr init` copies the Dapr runtime onto your box and starts the placement service (used for actors) and Redis in containers.  These must be present before running `dapr run`. The Dapr CLI also creates the default components directory which for Linux/MacOS is: `$HOME/.dapr/components` and for Windows: `%USERPROFILE%\.dapr\components` if it does not already exist.
 
 What happens when `dapr run` is executed?  
 
@@ -15,11 +15,12 @@ What happens when `dapr run` is executed?
 dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
 ```
 
-First, the Dapr CLI creates the `\components` directory if it does not not already exist, and writes two component files representing the default state store and the default message bus: `redis.yaml` and `redis_messagebus.yaml`, respectively.  [Code](https://github.com/dapr/cli/blob/d585612185a4a525c05fb62b86e288ccad510006/pkg/standalone/run.go#L254-L288).
+First, the Dapr CLI loads the components from the default directory (specified above) for the state store and pub/sub: `statestore.yaml` and `pubsub.yaml`, respectively.  [Code](https://github.com/dapr/cli/blob/51b99a988c4d1545fdc04909d6308be121a7fe0c/pkg/standalone/run.go#L196-L266).
 
-*Note as of this writing (Dec 2019) the names have been changed to `statestore.yaml` and `messagebus.yaml` in the master branch, but this change is not in the latest release, 0.3.0*.  
+You can either add components to the default directory or create your own `components` directory and provide the path to the CLI using the `--components-path` flag.
 
-yaml files in components directory contains configuration for various Dapr components (e.g. statestore, pubsub, bindings etc.). The components must be created prior to using them with Dapr, for example, redis is launched as a container when running dapr init. If these component files already exist, they are not overwritten.  This means you could overwrite `statestore.yaml`, which by default uses Redis, with a content for a different statestore (e.g. Mongo) and the latter would be what gets used.  If you did this and ran `dapr run` again, the Dapr runtime would use the specified Mongo state store.
+In order to switch components, simply replace or add the YAML files in the components directory and run `dapr run` again.
+For example, by default Dapr will use the Redis state store in the default components dir. You can either override it with a different YAML, or supply your own components path.
 
 Then, the Dapr CLI will [launch](https://github.com/dapr/cli/blob/d585612185a4a525c05fb62b86e288ccad510006/pkg/standalone/run.go#L290) two proceses: the Dapr runtime and your app (in this sample `node app.js`). 
 
