@@ -2,6 +2,8 @@
 
 This document shows how to install Prometheus and Grafana to view metrics.
 
+Watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=2580) for a demonstration of the Grafana metrics dashboard.
+
 ## Prerequisites
 
 - Kubernetes (> 1.14)

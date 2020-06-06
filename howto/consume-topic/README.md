@@ -6,6 +6,8 @@ Using Pub/Sub, you can enable scenarios where event consumers are decoupled from
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
+Watch this [video](https://www.youtube.com/watch?v=NLWukkHEwGA&feature=youtu.be&t=1052) on how to consume messages from topics.
+
 ## Setup the Pub Sub component
 
 The first step is to setup the Pub/Sub component.

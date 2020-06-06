@@ -75,3 +75,4 @@ scopes:
 - app1
 - app2
 ```
+Watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=1765) for an example on how to component scopes with secret components and the secrets API.
