@@ -35,7 +35,7 @@ If you are running Dapr in a Docker container and your app as a process on the h
 Docker to use the host network so that Dapr and the app can share a localhost network interface. Unfortunately, the host networking driver for Docker is only supported on Linux hosts.
 If you are running your Docker daemon on a Linux host, you should be able to run the following to launch Dapr.
 ```shell
-docker run --net="host" daprio/daprd:edge ./daprd -app-id <my-app-id> -app-port <my-app-port>
+docker run --net="host" --mount type=bind,source="$(pwd)"/components,target=/components daprio/daprd:edge ./daprd -app-id <my-app-id> -app-port <my-app-port>
 ```
 Then you can run your app on the host and they should connect over the localhost network interface.
 
