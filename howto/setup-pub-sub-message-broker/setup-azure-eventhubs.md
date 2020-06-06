@@ -19,7 +19,7 @@ spec:
   type: pubsub.azure.eventhubs
   metadata:
   - name: connectionString
-    value: <REPLACE-WITH-CONNECTION-STRING> # Required.
+    value: <REPLACE-WITH-CONNECTION-STRING> # Required. "Endpoint=sb://****"
   - name: storageAccountName
     value: <REPLACE-WITH-STORAGE-ACCOUNT-NAME> # Required.
   - name: storageAccountKey
@@ -28,7 +28,14 @@ spec:
     value: <REPLACE-WITH-CONTAINER-NAME > # Required.
 ```
 
+See [here](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature) on how to get the Event Hubs connection string. Note this is not the Event Hubs namespace.
+
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+
+## Create consumer groups for each subscriber
+
+For every Dapr app that wants to subscribe to events, create an Event Hubs consumer group with the name of the `dapr id`.
+For example, a Dapr app running on Kubernetes with `dapr.io/id: "myapp"` will need an Event Hubs consumer group named `myapp`.
 
 ## Apply the configuration
 

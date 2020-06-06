@@ -50,4 +50,6 @@ kubectl apply -f pubsub.yaml
 - [Setup GCP Pubsub](./setup-gcp.md)
 - [Setup Hazelcast Pubsub](./setup-hazelcast.md)
 - [Setup Azure Event Hubs](./setup-azure-eventhubs.md)
+- [Setup SNS/SQS](./setup-snssqs.md)
 - [Setup MQTT](./setup-mqtt.md)
+- [Setup Apache Pulsar](./setup-pulsar.md)
