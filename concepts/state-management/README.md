@@ -1,8 +1,8 @@
 # State management
 
-Dapr comes with APIs for a key/value storage system, called "state management" in Dapr terminology. If your microservice uses state management, it automatically gets access to any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
+Dapr offers key/value storage APIs for state management. If a microservice uses state management, it can use these APIs to leverage any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
 
-State management requires that you build your application with several rules in mind, and if you follow those rules, your app will also be able to leverage several other features that would otherwise be complicated and error-prone to build yourself:
+When using state management your application will also be able to leverage several other features that would otherwise be complicated and error-prone to build yourself such as:
 
 - Distributed concurrency and data consistency
 - Retry policies
@@ -25,7 +25,7 @@ See below for a diagram of state management's high level architecture.
 
 ## State management API
 
-Developers can use the state managment API to retrieve, save and delete state values by providing keys. 
+Developers can use the state management API to retrieve, save and delete state values by providing keys. 
 
 Dapr data stores are components. Dapr ships with [Redis](https://redis.io
 ) out-of-box for local development in self hosted mode. Dapr allows you to plug in other data stores as components such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
