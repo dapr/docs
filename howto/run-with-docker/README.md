@@ -138,6 +138,8 @@ services:
       - hello-dapr
 ```
 
+> For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.
+
 To get hands on with Dapr and Docker Compose, head over to the [Dapr samples](https://github.com/dapr/samples) and try out
 the Docker Compose sample for yourself.
 
