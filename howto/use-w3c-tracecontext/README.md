@@ -1,4 +1,4 @@
-# W3C TraceContext - Background
+# W3C Trace Context - Background
 
 Distributed tracing is a methodology implemented by tracing tools to follow, analyze and debug a transaction across multiple software components. Typically, a distributed trace traverses more than one component which requires it to be uniquely identifiable across all participating systems. Trace context propagation passes along this unique identification. Today, trace context propagation is implemented individually by each tracing vendor. In multi-vendor environments, this causes interoperability problems, like:
 
@@ -22,7 +22,7 @@ Please refer complete W3C context specifications [here](https://www.w3.org/TR/tr
 
 ## W3C Trace Headers
 
-###  Trace Context HTTP Headers Format
+### Trace Context HTTP Headers Format
 
 #### Traceparent Header
 
@@ -41,12 +41,12 @@ The tracestate header includes the parent in a potentially vendor-specific forma
 
 Please refer tracestate fields details [here](https://www.w3.org/TR/trace-context/#tracestate-header)
 
-###  Trace Context gRPC Headers Format
+### Trace Context gRPC Headers Format
 
-In the gRPC API calls, trace id is passed through `grpc-trace-bin` header.
+In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
 
-## Using TraceContext in Dapr
+## Using Trace Context in Dapr
 
 Dapr tracing is built on  [OpenCensus](https://opencensus.io/introduction/) specifications that supports official W3C HTTP tracing header.
 For the gRPC tracing , [here](https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/gRPC.md) is more details with OpenCensus.
@@ -57,7 +57,7 @@ W3C Context headers as outlined earlier.
 
 However if you choose to pass the trace context explictly, then Dapr will use the passed trace context and propagate all across the HTTP/gRPC call.
 
-## How to pass TraceContext
+## How to pass Trace Context
 
 Since Dapr tracing is built on OpenCensus, user needs to send trace context using OpenCensus SDK.
 OpenCensus supports majority of languages.
@@ -100,7 +100,7 @@ The returned `span` has the fields 'TraceID' and 'SpanID'.
 
 You can read more on these fields usage and details [here](https://opencensus.io/tracing/span/)
 
-When you call the Dapr API through HTTP/gRPC, you need to pass the tracecontext across process. For across the network, OpenCensus provides different propagation methods for different protocols. You can read about the propagation package [here](https://godoc.org/go.opencensus.io/trace/propagation).
+When you call the Dapr API through HTTP/gRPC, you need to pass the trace context across process. For across the network, OpenCensus provides different propagation methods for different protocols. You can read about the propagation package [here](https://godoc.org/go.opencensus.io/trace/propagation).
 
 In our example, we will use gRPC calls , for that OpenCensus’ binary propagation format is used.
 
@@ -173,9 +173,9 @@ That't it from Dapr side configuration.
 To view traces, you need to deploy OpenCensus supported exporters. This is independent of Dapr configuration.
 You can refer [how-to-diagnose-with-tracing](../diagnose-with-tracing) to set up trace exporters. 
 
-## Invoking Dapr With TraceContext
+## Invoking Dapr With Trace Context
 
-As mentioned earlier in the [section](#Using TraceContext in Dapr), you can create the trace context and pass it through when calling Dapr or Dapr can generate trace context passed it back to you. 
+As mentioned earlier in the [section](#Using-Trace-Context-in-Dapr), you can create the trace context and pass it through when calling Dapr or Dapr can generate trace context passed it back to you. 
 
 If you choose to pass the trace context explictly, then Dapr will use the passed trace context and propagate all across the HTTP/gRPC call.
 We are using the same [grpc app](../create-grpc-app), however listing out the complete code for putting it all together.
@@ -238,4 +238,6 @@ import (
 ```
 
 That's it !. Now you can correlate the calls in your app and in Dapr across services using the same trace context.
+
+To view traces, you can refer [how-to-diagnose-with-tracing](../diagnose-with-tracing) e.g Zipkin/Application Insights. 
 
