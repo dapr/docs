@@ -11,3 +11,6 @@ You can set up [Prometheus and Grafana](../../howto/setup-monitoring-tools/setup
 
 2. [Dapr Sidecar Dashboard](./grafana/sidecar-dashboard.json)
     - [Shows Dapr Sidecar status](./img/sidecar-dashboard.png) - sidecar health/resources, throughput/latency of HTTP and gRPC, Actor, mTLS, etc.
+
+3. [Dapr Actor Dashboard](./grafana/actor-dashboard.json)
+    - [Shows Dapr Sidecar status](./img/actor-dashboard.png) - actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrnecy.
