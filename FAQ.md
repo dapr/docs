@@ -14,11 +14,13 @@ Dapr can be used alongside any service mesh such as Istio and Linkerd. A service
 
 That is where Dapr comes in. Dapr is a language agnostic programming model built on http and gRPC that provides distributed system building blocks via open APIs for asynchronous pub-sub, stateful services, service discovery and invocation, actors and distributed tracing. Dapr introduces new functionality to an app’s runtime. Both service meshes and Dapr run as side-car services to your application, one giving network features and the other distributed application capabilities.
 
+Watch this [video](https://www.youtube.com/watch?v=xxU68ewRmz8&feature=youtu.be&t=140) on how Dapr and service meshes work together.
+
 ### Understanding how Dapr interoperates with the service mesh interface (SMI)
 
 SMI is an abstraction layer that provides a common API surface across different service mesh technology.  Dapr can leverage any service mesh technology including SMI.
 
-### Differences between Dapr and Istio
+### Differences between Dapr, Istio and Linkerd
 
 Read [How does Dapr work with service meshes?](https://github.com/dapr/dapr/wiki/FAQ#how-does-dapr-work-with-service-meshes) Istio is an open source service mesh implementation that focuses on Layer7 routing, traffic flow management and mTLS authentication between services. Istio uses a sidecar to intercept traffic going into and out of a container and enforces a set of network policies on them.
 

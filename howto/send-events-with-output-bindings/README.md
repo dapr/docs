@@ -3,6 +3,9 @@
 Using bindings, its possible to invoke external resources without tying in to special SDK or libraries.
 For a complete sample showing output bindings, visit this [link](https://github.com/dapr/samples/tree/master/5.bindings).
 
+Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
+
+
 ## 1. Create a binding
 
 An output binding represents a resource that Dapr will use invoke and send messages to.
