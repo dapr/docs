@@ -24,7 +24,7 @@ In the past, these problems did not have a significant impact as most applicatio
 
 This transformation of modern applications calls for a distributed tracing context propagation standard.
 
-[W3C Trace Context specification](https://www.w3.org/TR/trace-context/) defines a universally agreed-upon format for the exchange of trace context propagation data - referred to as trace context. Trace context solves the problems described above by
+[W3C trace context specification](https://www.w3.org/TR/trace-context/) defines a universally agreed-upon format for the exchange of trace context propagation data - referred to as trace context. Trace context solves the problems described above by
 
 * providing an unique identifier for individual traces and requests, allowing trace data of multiple providers to be linked together.
 * providing an agreed-upon mechanism to forward vendor-specific trace data and avoid broken traces when multiple tracing tools participate in a single transaction.
@@ -261,5 +261,5 @@ To view traces, you can refer [how-to-diagnose-with-tracing](../diagnose-with-tr
 * [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
 * [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
 * [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
-* [W3C Trace Context specification](https://www.w3.org/TR/trace-context/)
+* [W3C trace context specification](https://www.w3.org/TR/trace-context/)
 
