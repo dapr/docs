@@ -1,10 +1,18 @@
+# W3C Tracing Context
+
 ## Contents
 
-- [Background](#Background)
-- [Using Trace Context in Dapr](#Using-Trace-Context-in-Dapr)
-- [Related Links](#Related-Links)
+- [Background](#background)
+- [W3C trace headers](#w3c-trace-headers)
+	- [Trace context HTTP headers format](#trace-context-http-headers-format)
+	- [Trace context gRPC headers format](#trace-context-grpc-headers-format)
+- [Using trace context in Dapr](#using-trace-context-in-dapr)
+	- [How to pass a trace context](#how-to-pass-a-trace-context)
+	- [Configuring tracing in Dapr](#configuring-tracing-in-dapr)
+	- [Invoking Dapr with trace context](#invoking-dapr-with-trace-context)
+- [Related Links](#related-links)
 
-# Background
+## Background
 
 Distributed tracing is a methodology implemented by tracing tools to follow, analyze and debug a transaction across multiple software components. Typically, a distributed trace traverses more than one component which requires it to be uniquely identifiable across all participating systems. Trace context propagation passes along this unique identification. Today, trace context propagation is implemented individually by each tracing vendor. In multi-vendor environments, this causes interoperability problems, like:
 
@@ -16,7 +24,7 @@ In the past, these problems did not have a significant impact as most applicatio
 
 This transformation of modern applications calls for a distributed tracing context propagation standard.
 
-W3C trace context specification defines a universally agreed-upon format for the exchange of trace context propagation data - referred to as trace context. Trace context solves the problems described above by
+[W3C trace context specification](https://www.w3.org/TR/trace-context/) defines a universally agreed-upon format for the exchange of trace context propagation data - referred to as trace context. Trace context solves the problems described above by
 
 * providing an unique identifier for individual traces and requests, allowing trace data of multiple providers to be linked together.
 * providing an agreed-upon mechanism to forward vendor-specific trace data and avoid broken traces when multiple tracing tools participate in a single transaction.
@@ -24,11 +32,9 @@ W3C trace context specification defines a universally agreed-upon format for the
 
 A unified approach for propagating trace data improves visibility into the behavior of distributed applications, facilitating problem and performance analysis. The interoperability provided by trace context is a prerequisite to manage modern micro-service based applications.
 
-Please refer complete [W3C trace context](https://www.w3.org/TR/trace-context/) specifications here.
+## W3C trace headers
 
-## W3C Trace Headers
-
-### Trace Context HTTP Headers Format
+### Trace context HTTP headers format
 
 #### Traceparent Header
 
@@ -47,23 +53,23 @@ The tracestate header includes the parent in a potentially vendor-specific forma
 
 Please refer tracestate fields details [here](https://www.w3.org/TR/trace-context/#tracestate-header)
 
-### Trace Context gRPC Headers Format
+### Trace context gRPC headers format
 
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
 
-# Using Trace Context in Dapr
+## Using trace context in Dapr
 
 Dapr tracing is built on  [OpenCensus](https://opencensus.io/introduction/) specifications that supports official W3C HTTP tracing header.
 For the gRPC tracing , [here](https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/gRPC.md) is more details with OpenCensus.
 
 Dapr provides in built support of OpenCensus instrmentation of services when tracing configuration is enabled through Dapr annotation.
 Once the tracing configuration is applied, you will get full instrumentation of traces and you can retrieve the trace correlation id from the standard
-W3C Context headers as outlined earlier.
+W3C context headers as outlined earlier.
 
 However if you choose to pass the trace context explictly, then Dapr will use the passed trace context and propagate all across the HTTP/gRPC call.
 
-## How to pass Trace Context
+### How to pass a trace context
 
 Since Dapr tracing is built on OpenCensus, user needs to send trace context using OpenCensus SDK.
 OpenCensus supports majority of languages.
@@ -79,7 +85,7 @@ OpenCensus supports majority of languages.
 
 Same [grpc app](../create-grpc-app) based on Go SDK is used for the purpose of the example.
 
-### Get the OpenCensus Go SDK 
+#### Get the OpenCensus Go SDK 
 
 Prerequisites: OpenCensus Go libraries require Go 1.8 or later. For details on installation and prerequisties, refer [here](https://pkg.go.dev/go.opencensus.io?tab=overview).
 
@@ -112,7 +118,7 @@ In our example, since gRPC calls are used , so for that OpenCensus’ binary pro
 
 3. Passing the trace context to Dapr 
 
-#### gRPC calls
+##### gRPC calls
 You need to import the package 'go.opencensus.io/trace/propagation'. 
 Once imported, get the span context from the generated span (as mentioned in above step 2), and convert it to OpenCensus binary propagation format.
 
@@ -129,7 +135,7 @@ ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContex
 
 You can then pass this context `ctx` in Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
 
-#### HTTP calls
+##### HTTP calls
 
 HTTP integrations use Zipkin’s [B3](https://github.com/openzipkin/b3-propagation) by default but can be configured to use a custom propagation method by setting another propagation.HTTPFormat.
 
@@ -146,7 +152,7 @@ f.SpanContextToRequest(traceContext, req)
 
 Please go here for [Dapr API reference](https://github.com/dapr/docs/tree/master/reference/api).
 
-## Configuring Tracing in Dapr
+### Configuring tracing in Dapr
 As mentioned earlier, same [grpc app](../create-grpc-app) based on Go SDK is used for the purpose of the example.
 
 So to enable tracing in Dapr, you need to first configure tracing in Dapr. 
@@ -179,7 +185,7 @@ That't it from Dapr side configuration.
 To view traces, you need to deploy OpenCensus supported exporters. This is independent of Dapr configuration.
 You can refer [how-to-diagnose-with-tracing](../diagnose-with-tracing) to set up trace exporters. 
 
-## Invoking Dapr With Trace Context
+### Invoking Dapr With trace context
 
 As mentioned earlier in the [section](#Using-Trace-Context-in-Dapr), you can create the trace context and pass it through when calling Dapr or Dapr can generate trace context passed it back to you. 
 
@@ -248,12 +254,12 @@ That's it !. Now you can correlate the calls in your app and in Dapr across serv
 
 To view traces, you can refer [how-to-diagnose-with-tracing](../diagnose-with-tracing) e.g Zipkin/Application Insights. 
 
-# Related Links
+## Related Links
 
 * [Observability Concepts](../../concepts/observability/traces.md)
 * [Observability Sample](https://github.com/dapr/samples/tree/master/8.observability)
 * [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
 * [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
 * [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
-
+* [W3C trace context specification](https://www.w3.org/TR/trace-context/)
 
