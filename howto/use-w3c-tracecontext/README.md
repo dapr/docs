@@ -135,6 +135,25 @@ ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContex
 
 You can then pass this context `ctx` in Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
 
+To retrieve the trace context header when the gRPC call  is returned, you can pass the response header reference as gRPC call option which contains response headers: 
+
+```go
+var responseHeader metadata.MD
+
+// Call the InvokeService with call option
+// grpc.Header(&responseHeader)
+
+client.InvokeService(ctx, &pb.InvokeServiceRequest{
+		Id: "client",
+		Message: &commonv1pb.InvokeRequest{
+			Method:      "MyMethod",
+			ContentType: "text/plain; charset=UTF-8",
+			Data:        &any.Any{Value: []byte("Hello")},
+		},
+	},
+	grpc.Header(&responseHeader))
+```
+
 ##### HTTP calls
 
 HTTP integrations use Zipkin’s [B3](https://github.com/openzipkin/b3-propagation) by default but can be configured to use a custom propagation method by setting another propagation.HTTPFormat.
@@ -148,6 +167,12 @@ req, _ := http.NewRequest("GET", "http://localhost:3500/v1.0/invoke/mathService/
 
 traceContext := span.SpanContext()
 f.SpanContextToRequest(traceContext, req)
+```
+
+To retrieve the trace context when the HTTP request is returned, you can use :
+
+```go
+sc, ok := f.SpanContextFromRequest(req)
 ```
 
 Please go here for [Dapr API reference](https://github.com/dapr/docs/tree/master/reference/api).
