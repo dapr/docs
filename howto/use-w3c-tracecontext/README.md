@@ -185,7 +185,7 @@ That't it from Dapr side configuration.
 To view traces, you need to deploy OpenCensus supported exporters. This is independent of Dapr configuration.
 You can refer [how-to-diagnose-with-tracing](../diagnose-with-tracing) to set up trace exporters. 
 
-### Invoking Dapr With trace context
+### Invoking Dapr with trace context
 
 As mentioned earlier in the [section](#Using-Trace-Context-in-Dapr), you can create the trace context and pass it through when calling Dapr or Dapr can generate trace context passed it back to you. 
 
