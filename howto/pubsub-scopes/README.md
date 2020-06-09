@@ -9,6 +9,8 @@ In addition to this general component scope, the following can be limited for pu
 
 This is called pub/sub topic scoping.
 
+Watch this [video](https://www.youtube.com/watch?v=7VdWBBGcbHQ&feature=youtu.be&t=513) on how to use pub/sub topic scoping.
+
 To use this topic scoping, three metadata properties can be set for a pub/sub component:
 - ```spec.metadata.publishingScopes```: the list of applications to topic scopes to allow publishing, separated by semicolons. If an app is not specified in ```publishingScopes```, its allowed to publish to all topics.
 - ```spec.metadata.subscriptionScopes```: the list of applications to topic scopes to allow subscription, separated by semicolons. If an app is not specified in ```subscriptionScopes```, its allowed to subscribe to all topics.

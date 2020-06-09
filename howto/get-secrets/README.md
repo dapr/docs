@@ -18,6 +18,8 @@ The second step is to configure the secret store with Dapr.
 
 Follow the instructions [here](../setup-secret-store) to set up the secret store of your choice.
 
+Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&feature=youtu.be&t=1818) for an example on how to use the secrets API. Or watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=1765) for an example on how to component scopes with secret components and the secrets API.
+
 ## Calling the secrets API
 
 Now that the secret store is set up, you can call Dapr to get the secrets for a given key for a specific secret store.
