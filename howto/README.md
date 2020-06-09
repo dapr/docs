@@ -59,7 +59,7 @@ For Actors How Tos see the SDK documentation
 ### Distributed Tracing
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
-* [Use W3C trace context for distributed tracing](./use-w3c-tracecontext)
+* [Trace calls across services](./use-w3c-tracecontext)
 
 ## Security
 
