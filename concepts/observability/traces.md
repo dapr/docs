@@ -20,9 +20,11 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 * Configurable and extensible. By leveraging OpenTelemetry, Dapr tracing can be configured to work with popular tracing backends, including custom backends a customer may have.
 * OpenTelemetry exporters are defined as first-class Dapr components. You can define and enable multiple exporters at the same time.
 
-## Correlation ID
+## W3C Correlation ID
 
-Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `traceparent` header.For gRPC requests, Dapr uses `grpc-trace-bin` header.When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
+Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `traceparent` header. For gRPC requests, Dapr uses `grpc-trace-bin` header.   When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
+
+Read [W3C Tracing Context for distributed tracing](./W3C-traces.md) for more background on W3C Trace Context.
 
 ## Configuration
 

@@ -8,7 +8,9 @@ The observability capabilities enable users to monitor the Dapr system services,
 * **[Logs](./logs.md)**: are records of events that occur occur that can be used to determine failures or other status. Logs events contain warning, error, info and debug messages produced by Dapr system services. Each log event includes metadata such as message type, hostname, component name, App ID, ip address, etc.
 * **[Distributed tracing](./traces.md)**: is used to profile and monitor Dapr system services and user apps. Distributed tracing helps pinpoint where failures occur and what causes poor performance. Distributed tracing is particularly well-suited to debugging and monitoring distributed software architectures, such as microservices.
 
-     You can use distributed tracing to help debug and optimize application code. Distributed tracing contains trace spans between the Dapr runtime, Dapr system services, and user apps across process, nodes, network, and security boundaries. It provides a detailed understanding of service invocations (call flows) and service dependencies.
+    You can use distributed tracing to help debug and optimize application code. Distributed tracing contains trace spans between the Dapr runtime, Dapr system services, and user apps across process, nodes, network, and security boundaries. It provides a detailed understanding of service invocations (call flows) and service dependencies.
+
+    Dapr uses [W3C tracing context for distributed tracing](./W3C-traces.md)
 
     It is generally recommended to run Dapr in production with tracing.
 
