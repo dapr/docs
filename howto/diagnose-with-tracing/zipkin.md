@@ -66,13 +66,13 @@ The following steps shows you how to configure Dapr to send distributed tracing 
 First, deploy Zipkin:
 
 ```bash
-kubectl run zipkin --image openzipkin/zipkin --port 9411
+kubectl create deployment zipkin --image openzipkin/zipkin
 ```
 
 Create a Kubernetes service for the Zipkin pod:
 
 ```bash
-kubectl expose deploy zipkin --type ClusterIP --port 9411
+kubectl expose deployment zipkin --type ClusterIP --port 9411
 ```
 
 Next, create the following YAML files locally:
