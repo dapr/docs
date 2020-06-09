@@ -70,12 +70,12 @@ Example:
 
 In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response.
 
-The following example illustrates this point, considering a subscription for topic `TopicA` with route `orders`:
+The following example illustrates this point, considering a subscription for topic `newOrder` with route `orders`:
 
 ### HTTP Request
 
 ```http
-POST http://localhost:<appPort>/orders/TopicA
+POST http://localhost:<appPort>/orders
 ```
 
 ### URL Parameters
