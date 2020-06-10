@@ -53,3 +53,4 @@ kubectl apply -f pubsub.yaml
 - [Setup SNS/SQS](./setup-snssqs.md)
 - [Setup MQTT](./setup-mqtt.md)
 - [Setup Apache Pulsar](./setup-pulsar.md)
+- [Setup Kafka](./setup-kafka.md)
