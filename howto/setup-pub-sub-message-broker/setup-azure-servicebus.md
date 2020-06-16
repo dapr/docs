@@ -30,7 +30,7 @@ spec:
   - name: lockDurationInSec
     value: <REPLACE-WITH-LOCK-DURATION-IN-SEC> # Optional. Defines the length in seconds that a message will be locked for before expiring.
   - name: lockRenewalInSec
-    value: <REPLACE-WITH-LOCK-RENEWAL-IN-SEC> # Optional. Default: "60". Defines the frequency at which buffered message locks will be renewed.
+    value: <REPLACE-WITH-LOCK-RENEWAL-IN-SEC> # Optional. Default: "20". Defines the frequency at which buffered message locks will be renewed.
   - name: maxActiveMessages
     value: <REPLACE-WITH-MAX-ACTIVE-MESSAGES> # Optional. Default: "10000". Defines the maximum number of messages to be buffered or processing at once.
   - name: maxActiveMessagesRecoveryInSec
