@@ -45,6 +45,8 @@ spec:
     value: <REPLACE-WITH-AUTO-DELETE-ON-IDLE-IN-SEC> # Optional.
 ```
 
+> __NOTE:__ The above settings are shared across all topics that use this component.
+
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
 
 ## Apply the configuration
