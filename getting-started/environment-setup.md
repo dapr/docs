@@ -106,7 +106,7 @@ Uninstalling will remove the placement container.
 $ dapr uninstall
 ```
 
-It won't remove the redis container by default in case you were using it for other purposes.  To remove both the placement and redis container:
+It won't remove the redis or zipkin containers by default in case you were using it for other purposes. To remove Redis, Zipkin containers in addition to actor placement container and remove the default dapr dir located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\` run:
 
 ```bash
 $ dapr uninstall --all

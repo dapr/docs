@@ -7,7 +7,7 @@ Terminology used below:
 - Dapr CLI - the Dapr command line tool.  The binary name is dapr (dapr.exe on Windows)
 - Dapr runtime - this runs alongside each app.  The binary name is daprd (daprd.exe on Windows)
 
-In self hosting mode, running `dapr init` copies the Dapr runtime onto your box and starts the placement service (used for actors) and Redis in containers.  These must be present before running `dapr run`. The Dapr CLI also creates the default components directory which for Linux/MacOS is: `$HOME/.dapr/components` and for Windows: `%USERPROFILE%\.dapr\components` if it does not already exist.
+In self hosting mode, running `dapr init` copies the Dapr runtime onto your box and starts the placement service (used for actors) Redis and Zipkin in containers.  The Redis and placement service must be present before running `dapr run`. The Dapr CLI also creates the default components directory which for Linux/MacOS is: `$HOME/.dapr/components` and for Windows: `%USERPROFILE%\.dapr\components` if it does not already exist. The CLI creates a default `config.yaml` in `$HOME/.dapr` for Linux/MacOS or `%USERPROFILE%\.dapr` in Windows to enable tracing by default.
 
 What happens when `dapr run` is executed?  
 
