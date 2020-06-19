@@ -3,10 +3,10 @@ Dapr configurations are settings that enable you to change the behavior of indiv
 
 An example of a per Dapr sidecar setting is configuring trace settings. An example of a control plane setting is mutual TLS which is a global setting on the Sentry system service.   
 
-- [Self hosted sidecar configuration](#Self-hosted-sidecar-configuration)
-- [Kubernetes sidecar configuration](#Kubernetes-sidecar-configuration)
+- [Self hosted sidecar configuration](#self-hosted-sidecar-configuration)
+- [Kubernetes sidecar configuration](#kubernetes-sidecar-configuration)
 - [Sidecar Configuration settings](#sidecar-configuration-settings)
-- [Kubernetes control plane configuration](#Kubernetes-control-plane-configuration)
+- [Kubernetes control plane configuration](#kubernetes-control-plane-configuration)
 - [Control plane configuration settings](#control-plane-configuration-settings)
 
 ## Self hosted sidecar configuration  
@@ -36,7 +36,7 @@ A Dapr sidecar can apply a specific configuration by using a ```dapr.io/config``
     dapr.io/port: "3000"
     dapr.io/config: "myappconfig"
 ```
-Note: There are more [Kubernetes annotations](../../howto/configure-k8s/readme.md) available to configure the Dapr sidecar on activation by sidecar Injector system service.
+Note: There are more [Kubernetes annotations](../../howto/configure-k8s/README.md) available to configure the Dapr sidecar on activation by sidecar Injector system service.
 
 ## Sidecar configuration settings
 
@@ -111,7 +111,7 @@ There is a single configuration file called `default` installed with the control
 
 A Dapr control plane configuration can configure the following settings:
 
-* [Mutual TLS](../../howto/configure-mtls/readme.md). Also see [security concepts](../security/readme.md) 
+* [Mutual TLS](../../howto/configure-mtls/README.md). Also see [security concepts](../security/README.md) 
 
 
 Property | Type | Description
@@ -138,5 +138,5 @@ spec:
 ## References
 * [Distributed tracing](../observability/traces.md)
 * [Middleware pipelines](../middleware/README.md)
-* [Security](../security/readme.md) 
-* [How-To: Configuring the Dapr sidecar on Kubernetes](../../howto/configure-k8s/readme.md)
+* [Security](../security/README.md) 
+* [How-To: Configuring the Dapr sidecar on Kubernetes](../../howto/configure-k8s/README.md)
