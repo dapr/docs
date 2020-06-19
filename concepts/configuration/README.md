@@ -62,7 +62,7 @@ samplingRate  | string | Set sampling rate for tracing to be enabled or disabled
 
 
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
-set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces.By default, the sampling rate is 1 in 10,000
+set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
 ### Middleware configuration
 
