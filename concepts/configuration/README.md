@@ -10,7 +10,7 @@ An example of a per Dapr sidecar setting is configuring trace settings. An examp
 - [Control plane configuration settings](#control-plane-configuration-settings)
 
 ## Self hosted sidecar configuration
-In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default Dapr side looks in the default dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
+In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default Dapr sidecar looks in the default Dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
 
 A Dapr sidecar can also apply a configuration by using a ```--config``` flag to the file path with ```dapr run``` CLI command.
 
