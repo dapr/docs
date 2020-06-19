@@ -1,6 +1,6 @@
 # Environment Setup
 
-Dapr can be run in either Self Hosted or Kubernetes modes. Running Dapr runtime in Self Hosted mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in Self Hosted mode and then deploy them to any Kubernetes cluster.
+Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime in self hosted mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in self hosted mode and then deploy them to any Kubernetes cluster.
 
 ## Contents
 
@@ -59,7 +59,7 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
    - For Linux/MacOS - `/usr/local/bin`
    - For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
-## Installing Dapr in Self Hosted mode
+## Installing Dapr in self hosted mode
 
 ### Install Dapr runtime using the CLI
 
