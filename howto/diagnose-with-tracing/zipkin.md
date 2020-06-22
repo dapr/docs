@@ -7,9 +7,9 @@
 
 ## Configure self hosted mode
 
-For self hosted mode, create a Dapr configuration file locally and reference it with the Dapr CLI.
+For self hosted mode, on running `dapr init` the following YAML files are created by default and they are referenced by default on `dapr run` calls unless otherwise overridden.
 
-1. Create the following YAML files:
+1. The following file in `$HOME/dapr/components/zipkin.yaml` or `%USERPROFILE%\dapr\components\zipkin.yaml`:
 
 * zipkin.yaml
 
@@ -27,32 +27,33 @@ spec:
   - name: exporterAddress
     value: "http://localhost:9411/api/v2/spans"
 ```
+2. The following file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml`:
 
-* tracing.yaml
+* config.yaml
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: tracing
+  name: daprConfig
   namespace: default
 spec:
   tracing:
     samplingRate: "1"
 ```
 
-2. Copy `zipkin.yaml` to a `/components` subfolder under the same folder where you run your application.
+3. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init` or it can be launched with the following code.
 
-3. Launch Zipkin using Docker:
+Launch Zipkin using Docker:
 
 ```bash
 docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
-3. Launch your application with Dapr CLI using the `--config` param:
+4. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
 
 ```bash
-dapr run --app-id mynode --app-port 3000 --config ./tracing.yaml node app.js
+dapr run --app-id mynode --app-port 3000 node app.js
 ```
 ### Viewing Traces
 To view traces, in your browser go to http://localhost:9411 and you will see the Zipkin UI.
@@ -135,25 +136,6 @@ In your browser, go to ```http://localhost:9411``` and you will see the Zipkin U
 
 ![zipkin](../../images/zipkin_ui.png)
 
-## Tracing configuration
-
-The `tracing` section under the `Configuration` spec contains the following properties:
-
-```yml
-tracing:
-    samplingRate: "1"
-```
-
-The following table lists the different properties.
-
-Property | Type | Description
----- | ------- | -----------
-samplingRate  | string | Set sampling rate for tracing to be enabled or disabled. 
-
-
-`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
-set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces.By default, the sampling rate is 1 in 10,000
-                         
 ## References
 
 * [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
