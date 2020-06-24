@@ -72,12 +72,12 @@ curl http://localhost:3500/v1.0/invoke/mathService/method/add \
   -d '{ "arg1": 10, "arg2": 23}'
 ```
 
-The `mathService` service will need to be listening on the `/add` endpoint to receive and process the request.
+The `mathService` service will need to be listening on the `/v1.0/add` endpoint to receive and process the request.
 
 For a Node app this would look like:
 
 ```js
-app.post('/add', (req, res) => {
+app.post('/v1.0/add', (req, res) => {
   let args = req.body;
   const [operandOne, operandTwo] = [Number(args['arg1']), Number(args['arg2'])];
   

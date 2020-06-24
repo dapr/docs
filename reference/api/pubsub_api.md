@@ -42,7 +42,7 @@ Dapr will invoke the following endpoint on user code to discover topic subscript
 ### HTTP Request
 
 ```http
-GET http://localhost:<appPort>/dapr/subscribe
+GET http://localhost:<appPort>/v1.0/dapr/subscribe
 ```
 
 ### URL Parameters
@@ -75,7 +75,7 @@ The following example illustrates this point, considering a subscription for top
 ### HTTP Request
 
 ```http
-POST http://localhost:<appPort>/orders
+POST http://localhost:<appPort>/v1.0/orders
 ```
 
 ### URL Parameters

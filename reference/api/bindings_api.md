@@ -89,7 +89,7 @@ Bindings are discovered from component yaml files. Dapr calls this endpoint on s
 #### HTTP Request
 
 ```http
-OPTIONS http://localhost:<appPort>/<name>
+OPTIONS http://localhost:<appPort>/v1.0/<name>
 ```
 
 #### HTTP Response codes
@@ -113,7 +113,7 @@ In order to deliver binding inputs, a POST call is made to user code with the na
 #### HTTP Request
 
 ```http
-POST http://localhost:<appPort>/<name>
+POST http://localhost:<appPort>/v1.0/<name>
 ```
 
 #### HTTP Response codes

@@ -476,7 +476,7 @@ Gets the registered actors types for this app and the Dapr actor configuration s
 #### HTTP Request
 
 ```http
-GET http://localhost:<appPort>/dapr/config
+GET http://localhost:<appPort>/v1.0/dapr/config
 ```
 
 #### HTTP Response Codes
@@ -497,7 +497,7 @@ appPort | The application port.
 Example of getting the registered actors:
 
 ```shell
-curl -X GET http://localhost:3000/dapr/config \
+curl -X GET http://localhost:3000/v1.0/dapr/config \
   -H "Content-Type: application/json"
 ```
 
@@ -529,7 +529,7 @@ Deactivates an actor by persisting the instance of the actor to the state store 
 #### HTTP Request
 
 ```http
-DELETE http://localhost:<appPort>/actors/<actorType>/<actorId>
+DELETE http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>
 ```
 
 #### HTTP Response Codes
@@ -553,7 +553,7 @@ actorId | The actor ID.
 Example of deactivating an actor: The example deactives the actor type stormtrooper that has actorId of 50
 
 ```shell
-curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
+curl -X DELETE http://localhost:3000/v1.0/actors/stormtrooper/50 \
   -H "Content-Type: application/json"
 ```
 
@@ -564,7 +564,7 @@ Invokes a method for an actor with the specified methodName where parameters to 
 #### HTTP Request
 
 ```http
-PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/<methodName>
+PUT http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>/method/<methodName>
 ```
 
 #### HTTP Response Codes
@@ -589,7 +589,7 @@ methodName | The name of the method to invoke.
 Example of invoking a method for an actor: The example calls the performAction method on the actor type stormtrooper that has actorId of 50 
 
 ```shell
-curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
+curl -X POST http://localhost:3000/v1.0/actors/stormtrooper/50/method/performAction \
   -H "Content-Type: application/json"
 ```
 
@@ -600,7 +600,7 @@ Invokes a reminder for an actor with the specified reminderName.  If the actor i
 #### HTTP Request
 
 ```http
-PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/remind/<reminderName>
+PUT http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>/method/remind/<reminderName>
 ```
 
 #### HTTP Response Codes
@@ -625,7 +625,7 @@ reminderName | The name of the reminder to invoke.
 Example of invoking a reminder for an actor: The example calls the checkRebels reminder method on the actor type stormtrooper that has actorId of 50 
 
 ```shell
-curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkRebels \
+curl -X POST http://localhost:3000/v1.0/actors/stormtrooper/50/method/remind/checkRebels \
   -H "Content-Type: application/json"
 ```
 
@@ -636,7 +636,7 @@ Invokes a timer for an actor rwith the specified timerName.  If the actor is not
 #### HTTP Request
 
 ```http
-PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/timer/<timerName>
+PUT http://localhost:<appPort>/v1.0/actors/<actorType>/<actorId>/method/timer/<timerName>
 ```
 
 #### HTTP Response Codes
@@ -661,7 +661,7 @@ timerName | The name of the timer to invoke.
 Example of invoking a timer for an actor: The example calls the checkRebels timer method on the actor type stormtrooper that has actorId of 50 
 
 ```shell
-curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebels \
+curl -X POST http://localhost:3000/v1.0/actors/stormtrooper/50/method/timer/checkRebels \
   -H "Content-Type: application/json"
 ```
 
