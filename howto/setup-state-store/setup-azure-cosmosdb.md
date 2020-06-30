@@ -108,7 +108,7 @@ To run locally, create a YAML file described above and provide the path to the `
 
 For non-actor state operations, the Azure CosmosDB state store will use the `key` property provided in the requests to the Dapr API to determine the partition key.  This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
 
-For actor state operations, the partition key will be generated using the appId, the actor type, and the actor id, so that data for the same actor will always end up under the same partition.  The reason for this is because actor state operations must use transactions, and in CosmosDB transactions must be on the same partition.
+For actor state operations, the partition key will be generated using the appId, the actor type, and the actor id, so that data for the same actor will always end up under the same partition.  This is because actor state operations must use transactions, and in CosmosDB transactions must be on the same partition.
 
 The following non-actor operation will use the partition key `nihilus` as the partition key value sent to CosmosDB:
 
