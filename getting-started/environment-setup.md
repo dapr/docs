@@ -6,7 +6,7 @@ Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime 
 
 - [Prerequisites](#prerequisites)
 - [Installing Dapr CLI](#installing-dapr-cli)
-- [Installing Dapr in standalone mode](#installing-dapr-in-standalone-mode)
+- [Installing Dapr in standalone mode](#installing-dapr-in-self-hosted-mode)
 - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
@@ -61,7 +61,7 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 
 ## Installing Dapr in self hosted mode
 
-### Install Dapr runtime using the CLI
+### Install Dapr runtime using the CLI (with docker)
 
 Install Dapr by running `dapr init` from a command prompt
 
@@ -82,7 +82,33 @@ If you prefer you can also install to an alternate location by using `--install-
 $ dapr init --install-path /home/user123/mydaprinstall
 ```
 
-To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
+To see that Dapr has been installed successfully, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
+
+### Install Dapr runtime using the CLI (without docker)
+
+For installing Dapr without docker dependency, run `dapr init --slim` from a command prompt.
+
+```bash
+$ dapr init --slim
+```
+
+This command installs the Dapr runtime binary and the placement binary in the default location which for Linux/MacOS is `/usr/local/bin` and for Windows is `c:\dapr`. 
+
+If you prefer you can also install to an alternate location by using `--install-path`:
+
+```
+$ dapr init --slim --install-path /home/user123/mydaprinstall
+```
+
+To see that Dapr has been installed successfully, from a command prompt run the command (example command is for default installation path)
+
+```bash
+$ ls -l /usr/local/bin/daprd
+-rwxrwxrwx  1 user  group  90111112 Jun 29 17:37 /usr/local/bin/daprd
+
+$ ls -l /usr/local/bin/placement
+-rwxrwxrwx  1 user  group  12996256 Jun 29 17:37 /usr/local/bin/placement
+```
 
 ### Install a specific runtime version
 
