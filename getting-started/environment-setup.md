@@ -124,7 +124,7 @@ cli version: v0.1.0
 runtime version: v0.1.0
 ```
 
-### Uninstall Dapr in a standalone mode
+### Uninstall Dapr in a self hosted mode
 
 Uninstalling removes the Placement service container.  
 
@@ -138,6 +138,26 @@ $ dapr uninstall --all
 ```
 
 You should always run `dapr uninstall` before running another `dapr init`.
+
+### Uninstall Dapr in self hosted mode (without docker)
+
+Uninstall removes the `daprd` binary and the `placement` binary from the installed path. 
+
+```bash
+$ dapr uninstall --slim 
+```
+
+To specify a custom install path from which you have to uninstall run:
+
+```bash
+$ dapr uninstall --slim --install-path /path/to/binary
+```
+
+To remove the `.dapr` default folder also run:
+
+```bash
+$ dapr uninstall --slim --all
+```
 
 ## Installing Dapr on a Kubernetes cluster
 

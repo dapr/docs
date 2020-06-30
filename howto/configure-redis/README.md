@@ -124,7 +124,19 @@ kubectl apply -f redis-state.yaml
 kubectl apply -f redis-pubsub.yaml
 ```
 
-### Standalone
+### Self Hosted Mode
 
 By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+
+### Self Hosted Mode without Docker
+
+In this mode, the Dapr CLI does not create a Redis instance. 
+
+#### Option 1: Local Redis Setup
+
+
+
+#### Option 2: Azure manger Redis Service
+
+Follow [instructions](#option-2-creating-an-managed-azure-cache-for-redis-service) to create an Azure managed Redis Service or one of the [other options](#Other-options-to-create-a-Redis-Database). Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
 
