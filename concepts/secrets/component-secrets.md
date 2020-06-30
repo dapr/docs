@@ -12,19 +12,31 @@ Go to [this](../../howto/setup-secret-store/README.md) link to see all the secre
 
 ## Non default namespaces
 
-If your Dapr enabled apps are using components that fetch secrets from non-default namespaces, apply the following resource to the namespace:
+If your Dapr enabled apps are using components that fetch secrets from non-default namespaces, apply the following resources to the namespace:
 
 ```yaml
-kind: ClusterRoleBinding
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-reader
+  namespace: <NAMESPACE>
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: dapr-secret-reader
+  namespace: <NAMESPACE>
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: <YOUR-NAMESPACE-HERE>
 roleRef:
-  kind: ClusterRole
+  kind: Role
   name: secret-reader
   apiGroup: rbac.authorization.k8s.io
 ```
