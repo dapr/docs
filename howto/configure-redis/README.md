@@ -46,7 +46,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
      value: lhDOkwTlp0
    ```
 
-### Option 2: Creating an managed Azure Cache for Redis service
+### Option 2: Creating an Azure Cache for Redis service
 
 > **Note**: This approach requires having an Azure Subscription.
 
@@ -136,7 +136,7 @@ In this mode, the Dapr CLI does not create a Redis instance.
 
 
 
-#### Option 2: Azure manger Redis Service
+#### Option 2: Creating an Azure Cache for Redis service
 
 Follow [instructions](#option-2-creating-an-managed-azure-cache-for-redis-service) to create an Azure managed Redis Service or one of the [other options](#Other-options-to-create-a-Redis-Database). Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
 
