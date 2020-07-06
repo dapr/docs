@@ -12,15 +12,15 @@ In this mode two different binaries are installed `daprd` and `placement`. The `
 In this mode only limited functionality of Dapr is available out of box. Namely [Service Invocation](../../concepts/service-invocation/README.md) and Actor based Service Invocation.
 
 ## Service Invocation
-Samples [repo](https://github.com/dapr/samples/tree/master/11.hello-dapr-slim) has a complete sample on how to perform simple service invocation in this mode. 
+Samples [repo](https://github.com/dapr/samples/tree/master/11.hello-dapr-slim) has a complete sample on how to perform service invocation in this mode. 
 
 ## Enabling Statestore
 
-See configuring redis in self hosted mode [without docker](../../howto/configure-redis/README.md) to enable state store. 
+See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md) to enable state store. 
 
 ## Enabling Actors
 
-Run the placement service locally to enable actor placement. Also a [state store](#Enabling-Statestore) must be enabled for actors. 
+Run the Placement service locally to enable actor placement. Also a [transactoinal state store](#Enabling-Statestore) must be enabled for actors. 
 
 By default for Linux/MacOS the `placement` binary is installed in `/usr/local/bin` or for Windows at `c:\dapr`.
 
@@ -37,9 +37,9 @@ INFO[0000] Healthz server is listening on :8080          instance=host.localhost
 
 From here on you can follow the sample example created for the [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http) for running an application with Actors enabled. 
 
-Update the [redis component](https://github.com/dapr/java-sdk/blob/master/examples/components/redis.yaml) host and password to match the statestore setup that you have.
+Update the [Redis component](https://github.com/dapr/java-sdk/blob/master/examples/components/redis.yaml) host and password to match the statestore setup that you have.
 
-The logs of the placement service will be updated whenever a host that uses actors is added or removed similar to the following output: 
+The logs of the Placement service are updated whenever a host that uses actors is added or removed similar to the following output: 
 
 ```
 INFO[0446] host added: 192.168.1.6                       instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
