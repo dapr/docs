@@ -11,14 +11,14 @@ In this mode two different binaries are installed `daprd` and `placement`. The `
 
 In this mode only limited functionality of Dapr is available out of box. Namely [Service Invocation](../../concepts/service-invocation/README.md) and Actor based Service Invocation.
 
-## Service Invocation
+## Service invocation
 Samples [repo](https://github.com/dapr/samples/tree/master/11.hello-dapr-slim) has a complete sample on how to perform service invocation in this mode. 
 
-## Enabling Statestore
+## Enabling state management or pub/sub
 
-See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md) to enable state store. 
+See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md) to enable a local state store or pub/sub broker for messaging. 
 
-## Enabling Actors
+## Enabling actors
 
 Run the Placement service locally to enable actor placement. Also a [transactoinal state store](#Enabling-Statestore) must be enabled for actors. 
 
