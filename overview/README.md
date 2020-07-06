@@ -91,7 +91,7 @@ You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app)
 
 ## Running Dapr in Kubernetes mode
 
-Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
+Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. Additionally, the `dapr-sidecar-injector` also injects the environment variables `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` into **all** the containers in the pod to enable user defined applications to easily communicate with Dapr without hardcoding Dapr port values. 
 
 The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](../concepts/security/README.md#dapr-to-dapr-communication)
 
