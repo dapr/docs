@@ -113,7 +113,7 @@ Dapr uses the same trace context and pass it to other services. This is Dapr tea
 2. You can use any vendor SDK that provides a way to generate W3C trace headers such as DynaTrace SDK and pass these trace headers to Dapr enabled service. Dapr uses the same trace context and propagate the trace headers to other services.
 3. You can craft trace context following [W3C trace context specification](https://www.w3.org/TR/trace-context/) and pass these trace headers to Dapr enabled service. Dapr uses the same trace context and pass it to other services.
 
-In case of multiple service calls from single source, steps to extract and attach trace headers are same as menioned in earlier section.
+In case of multiple service calls from single source, steps to extract and attach trace headers are same as mentioned in earlier section.
 
 Go to [how to use w3c tracecontext](../../howto/use-w3c-tracecontext/README.md) and refer 
 `How to create trace context` section to know how to create trace headers using OpenCensus SDK which is recommended way to create your own trace headers.
