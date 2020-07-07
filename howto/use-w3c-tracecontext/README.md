@@ -21,7 +21,10 @@
 
 ### How to create trace context
 
-Go through [Observability concepts](../../concepts/observability/traces.md) as when you need to create your own trace context.
+Go through `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) to know that Dapr covers generating trace context and you do
+not need to explicitly create trace context.
+
+If you choose to create your own trace context, then please read further as how to create trace context otherwise you can skip this section.
 
 You create a trace context using recommended OpenCensus SDK. OpenCensus supports several different programming languages.
 
