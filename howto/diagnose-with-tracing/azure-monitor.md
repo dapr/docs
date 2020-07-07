@@ -162,7 +162,7 @@ Deploy and run some applications. After a few minutes, you should see tracing lo
 
 ![Application map](../../images/azure-monitor.png)
 
-> **NOTE**: For **Application Map** to display the correct topology - and with that rendering `requests` and `dependencies` item types correctly - all apps or services which invoke methods over Dapr need to be operated with a Dapr sidecar. Dapr client invocations from an outside app or service (not operated with a sidecar), are not captured.
+> **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) will be displayed in Application Map topology. Direct service invocations (not going through the Dapr API) will not be shown.
 
 ## Tracing configuration
 
