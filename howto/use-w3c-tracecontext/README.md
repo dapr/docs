@@ -4,17 +4,19 @@
 - [How to create trace context](#how-to-create-trace-context)
 
     [Go](#create-trace-context-in-go)
+    [Java](#create-trace-context-in-java)
+    [Python](#create-trace-context-in-python)
+    [NodeJS](#create-trace-context-in-nodejs)
+    [C++](#create-trace-context-in-c++)
     [C#](#create-trace-context-in-c#)
 
 - [How to pass trace context in Dapr request](#how-to-pass-trace-context-in-dapr-request)
 
     [Go](#pass-trace-context-in-go)
-    [C#](#pass-trace-context-in-c#)
 
 - [How to retrieve trace context from Dapr response](#how-to-retrieve-trace-context-from-dapr-response)
 
     [Go](#retrieve-trace-context-in-go)
-    [C#](#retrieve-trace-context-in-c#)
 
 - [Putting it all together with Go Sample](#putting-it-all-together-with-go-sample)
 - [Related Links](#related-links)
@@ -54,6 +56,40 @@ defer span.End()
 // Do work to get from cache.
 ```
 
+##### Create trace context in Java
+
+```java
+try (Scope ss = TRACER.spanBuilder("cache.Get").startScopedSpan()) {
+}
+```
+
+##### Create trace context in Python
+
+```python
+with tracer.span(name="cache.get") as span:
+    pass
+```
+
+##### Create trace context in NodeJS
+
+```nodejs
+tracer.startRootSpan({name: 'cache.Get'}, rootSpan => {
+});
+```
+
+##### Create trace context in C++
+
+```cplusplus
+opencensus::trace::Span span = opencensus::trace::Span::StartSpan(
+                                            "cache.Get", nullptr, {&sampler});
+```
+
+##### Create trace context in C#
+
+```csharp
+var span = tracer.SpanBuilder("cache.Get").StartScopedSpan();
+```
+
 ### How to pass trace context in Dapr request
 
 `Note: Currently there are no helper methods exposed in Dapr SDKs to pass and retrieve trace context. You need to use raw http/gRPC clients to pass and retrieve trace headers through http headers and gRPC metadata.`
@@ -91,7 +127,7 @@ f.SpanContextToRequest(traceContext, req)
 
 `Note: Currently there are no helper methods exposed in Dapr SDKs to pass and retrieve trace context. You need to use raw http/gRPC clients to pass and retrieve trace headers through http headers and gRPC metadata.`
 
-#### Retrieve trace context in Go
+##### Retrieve trace context in Go
 ##### For gRPC calls
 To retrieve the trace context header when the gRPC call  is returned, you can pass the response header reference as gRPC call option which contains response headers: 
 
@@ -121,7 +157,7 @@ sc, ok := f.SpanContextFromRequest(req)
 
 ### Putting it all together with Go Sample
 
-#### Configure tracing in Dapr
+##### Configure tracing in Dapr
 First you need to enable tracing configuration in Dapr. This step is mentioned for completeness from enabling tracing to invoking Dapr with trace context.
 Create a deployment config yaml e.g. `appconfig.yaml` with following configuration.
 
@@ -147,7 +183,7 @@ You then set the following tracing annotation in your deployment YAML. You can a
 dapr.io/config: "appconfig"
 ```
 
-#### Invoking Dapr with trace context
+##### Invoking Dapr with trace context
 
 As mentioned in `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) that Dapr covers generating trace context and you do not need to explicitly create trace context.
 
