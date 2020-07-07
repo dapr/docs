@@ -1,4 +1,4 @@
-# Trace calls across services 
+# How to use Trace Context
 
 ## Contents
 - [How to create trace context](#how-to-create-trace-context)
@@ -57,6 +57,8 @@ defer span.End()
 
 ### How to pass trace context in Dapr request
 
+`Note: Currently there are no helper methods exposed in Dapr SDKs to pass and retrieve trace context. You need to use raw http/gRPC clients to pass and retrieve trace headers through http headers and gRPC metadata.`
+
 #### Pass trace context in Go
 
 ##### For gRPC calls
@@ -89,6 +91,8 @@ f.SpanContextToRequest(traceContext, req)
 ```
 
 ### How to retrieve trace context from Dapr response
+
+`Note: Currently there are no helper methods exposed in Dapr SDKs to pass and retrieve trace context. You need to use raw http/gRPC clients to pass and retrieve trace headers through http headers and gRPC metadata.`
 
 #### Retrieve trace context in Go
 ##### For gRPC calls
