@@ -95,12 +95,12 @@ trace headers and propagating trace headers.
     In this case, when service A first calls service B, Dapr generates trace headers in service A, and these trace headers are propagated to service B. These trace headers are returned in response of call to service B as part of response headers.
 
 Go to [how to use w3c tracecontext](../../howto/use-w3c-tracecontext/README.md) and refer 
-`How to retrieve trace context from Dapr response` section as how to extract the trace headers from response. 
+`How to retrieve trace context from Dapr response` section to know how to extract the trace headers from response. 
 
 For the subsequent call to service C, you can attach the same trace headers to service C call and so on to call service D.
 
 Go to [how to use w3c tracecontext](../../howto/use-w3c-tracecontext/README.md) and refer 
-`How to pass trace context in Dapr request` section as how to attach the trace headers in request. 
+`How to pass trace context in Dapr request` section to know how to attach the trace headers in request. 
 
 ### What Dapr does not cover
 
@@ -116,15 +116,15 @@ Dapr uses the same trace context and pass it to other services. This is Dapr tea
 In case of multiple service calls from single source, steps to extract and attach trace headers are same as menioned in earlier section.
 
 Go to [how to use w3c tracecontext](../../howto/use-w3c-tracecontext/README.md) and refer 
-`How to create trace context` section as how to create trace headers using OpenCensus SDK as recommended way to create your own trace headers.
+`How to create trace context` section to know how to create trace headers using OpenCensus SDK which is recommended way to create your own trace headers.
 
 Go to [how to use w3c tracecontext](../../howto/use-w3c-tracecontext/README.md) and refer 
-`How to retrieve trace context from Dapr response` section as how to extract the trace headers from response. 
+`How to retrieve trace context from Dapr response` section to know how to extract the trace headers from response. 
 
 For the subsequent call to service C, you can attach the same trace headers to service C call and so on to call service D.
 
 Go to [how to use w3c tracecontext](../../howto/use-w3c-tracecontext/README.md) and refer 
-`How to pass trace context in Dapr request` section as how to attach the trace headers in request. 
+`How to pass trace context in Dapr request` section to know how to attach the trace headers in request. 
 
 ## Related Links
 
