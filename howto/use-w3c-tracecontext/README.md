@@ -1,25 +1,29 @@
 # Trace calls across services 
 
 ## Contents
-- [Using trace context in Dapr](#using-trace-context-in-dapr)
-- [How to pass a trace context](#how-to-pass-a-trace-context)
-- [Configuring tracing in Dapr](#configuring-tracing-in-dapr)
-- [Invoking Dapr with trace context](#invoking-dapr-with-trace-context)
+- [How to create trace context](#how-to-create-trace-context)
+
+    [Go](#create-trace-context-in-go)
+    [C#](#create-trace-context-in-c#)
+
+- [How to pass trace context in Dapr request](#how-to-pass-trace-context-in-dapr-request)
+
+    [Go](#pass-trace-context-in-go)
+    [C#](#pass-trace-context-in-c#)
+
+- [How to retrieve trace context from Dapr response](#how-to-retrieve-trace-context-from-dapr-response)
+
+    [Go](#retrieve-trace-context-in-go)
+    [C#](#retrieve-trace-context-in-c#)
+
+- [Putting it all together with Go Sample](#putting-it-all-together-with-go-sample)
 - [Related Links](#related-links)
 
-## Using trace context in Dapr
+### How to create trace context
 
-Dapr tracing is built on [OpenCensus](https://opencensus.io/introduction/) specification that supports official W3C HTTP tracing header.
+Go through [Observability concepts](../../concepts/observability/traces.md) as when you need to create your own trace context.
 
-For the gRPC tracing with OpenCensus, the details are [here](https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/gRPC.md)
-
-Dapr supports OpenCensus instrumentation of services when tracing configuration is enabled through a Dapr annotation. Once the tracing configuration is applied, you get instrumentation of traces and you can retrieve the trace correlation id from the standard W3C context headers.
-
-You can also choose to pass the trace context explicitly, then Dapr uses the supplied  trace context and propagates this all across the HTTP/gRPC call.
-
-### How to pass a trace context
-
-Since Dapr tracing uses OpenCensus, you set the trace context using OpenCensus SDK. OpenCensus supports several different programming languages.
+You create a trace context using recommended OpenCensus SDK. OpenCensus supports several different programming languages.
 
 | Language | SDK |
 |:-------:|:----:|
@@ -30,7 +34,90 @@ Since Dapr tracing uses OpenCensus, you set the trace context using OpenCensus S
 | Node.js | [Link](https://github.com/census-instrumentation/opencensus-node)
 | Python | [Link](https://census-instrumentation.github.io/opencensus-python/trace/api/index.html)
 
-### Let's go through an example using the [grpc app](../create-grpc-app) using the Go SDK.
+#### Create trace context in Go
+
+##### 1. Get the OpenCensus Go SDK 
+
+Prerequisites: OpenCensus Go libraries require Go 1.8 or later. For details on installation go [here](https://pkg.go.dev/go.opencensus.io?tab=overview).
+
+##### 2. Import the package "go.opencensus.io/trace"
+`$ go get -u go.opencensus.io`
+
+##### 3. Create trace context
+
+```go
+ctx, span := trace.StartSpan(ctx, "cache.Get")
+defer span.End()
+
+// Do work to get from cache.
+```
+
+### How to pass trace context in Dapr request
+
+#### Pass trace context in Go
+
+##### For gRPC calls
+
+```go
+traceContext := span.SpanContext()
+traceContextBinary := propagation.Binary(traceContext)
+ ```
+
+You can then pass the trace context through [gRPC metadata]("google.golang.org/grpc/metadata") through `grpc-trace-bin` header.
+
+```go
+ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContextBinary))
+```
+
+You can then pass this context `ctx` in Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
+
+##### For HTTP calls
+
+HTTP integration uses [Zipkin’s B3](https://github.com/openzipkin/b3-propagation) by default, but can be configured to use a custom propagation method by setting another `propagation.HTTPFormat`.
+
+In this example, [net/http](net/http) is used for HTTP calls. 
+
+```go
+f := &HTTPFormat{}
+req, _ := http.NewRequest("GET", "http://localhost:3500/v1.0/invoke/mathService/method/api/v1/add", nil)
+
+traceContext := span.SpanContext()
+f.SpanContextToRequest(traceContext, req)
+```
+
+### How to retrieve trace context from Dapr response
+
+#### Retrieve trace context in Go
+##### For gRPC calls
+To retrieve the trace context header when the gRPC call  is returned, you can pass the response header reference as gRPC call option which contains response headers: 
+
+```go
+var responseHeader metadata.MD
+
+// Call the InvokeService with call option
+// grpc.Header(&responseHeader)
+
+client.InvokeService(ctx, &pb.InvokeServiceRequest{
+		Id: "client",
+		Message: &commonv1pb.InvokeRequest{
+			Method:      "MyMethod",
+			ContentType: "text/plain; charset=UTF-8",
+			Data:        &any.Any{Value: []byte("Hello")},
+		},
+	},
+	grpc.Header(&responseHeader))
+```
+##### For HTTP calls
+
+To retrieve the trace context when the HTTP request is returned, you can use :
+
+```go
+sc, ok := f.SpanContextFromRequest(req)
+```
+
+### Putting it all together with Go Sample
+
+Let's go through an example using the [grpc app](../create-grpc-app) with Go SDK.
 
 #### 1. Get the OpenCensus Go SDK 
 
