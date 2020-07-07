@@ -75,12 +75,15 @@ trace headers and propagating trace headers.
 1. Single Service Invocation call within Dapr to Dapr (`service A -> service B` )
 
     Dapr generates the trace headers in service A and these trace headers are propagated from service A to service B.
+
 2. Multiple Sequential Service Calls within Dapr to Dapr ( `service A -> service B -> service C`)
 
     Dapr generates the trace heades in the beginning of the request in service A and these trace headers are propagated from `service A-> service B -> service C` and so on to further Dapr enabled services.
+
 3. Request is from outside Dapr ( e.g. gateway service ) to Dapr enabled service A
 
     Dapr generates trace headers in service A and these trace headers are propagated from service A to further Dapr enabled services `service  A-> service B -> service C`. This is similar to above case 2.
+
 4. Mutiple Service calls chained from single source
 
     When you are calling multiple services from single source, for example, all the calls to services are continuing from service A:
@@ -108,9 +111,12 @@ If you choose to generate your own trace context, Dapr does not provide a way to
 You need to create trace headers and pass the trace headers to the service calls.
 
 There are three ways to create trace headers : 
+
 1. You can use industry standard OpenCensus/OpenTelemetry SDK to generate trace headers and pass these trace headers to Dapr enabled service. 
 Dapr uses the same trace context and pass it to other services. This is Dapr team recommendation.
+
 2. You can use any vendor SDK that provides a way to generate W3C trace headers such as DynaTrace SDK and pass these trace headers to Dapr enabled service. Dapr uses the same trace context and propagate the trace headers to other services.
+
 3. You can craft trace context following [W3C trace context specification](https://www.w3.org/TR/trace-context/) and pass these trace headers to Dapr enabled service. Dapr uses the same trace context and pass it to other services.
 
 In case of multiple service calls from single source, steps to extract and attach trace headers are same as mentioned in earlier section.

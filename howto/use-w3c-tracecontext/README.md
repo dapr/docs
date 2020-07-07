@@ -21,8 +21,7 @@
 
 ### How to create trace context
 
-Go through `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) to know that Dapr covers generating trace context and you do
-not need to explicitly create trace context.
+Go through `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) to know that Dapr covers generating trace context and you do not need to explicitly create trace context.
 
 If you choose to create your own trace context, then please read further as how to create trace context otherwise you can skip this section.
 
@@ -74,16 +73,14 @@ You can then pass the trace context through [gRPC metadata]("google.golang.org/g
 ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContextBinary))
 ```
 
-You can then pass this context `ctx` in Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
+You can then continuing passing this go context `ctx` in subsequent Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
 
 ##### For HTTP calls
 
-HTTP integration uses [Zipkin’s B3](https://github.com/openzipkin/b3-propagation) by default, but can be configured to use a custom propagation method by setting another `propagation.HTTPFormat`.
-
-In this example, [net/http](net/http) is used for HTTP calls. 
+OpenCensus Go SDK provides [ochttp](https://pkg.go.dev/go.opencensus.io/plugin/ochttp/propagation/tracecontext?tab=doc) package provides methods to attach trace context to the http request and also retrieve trace context from http response.
 
 ```go
-f := &HTTPFormat{}
+f := tracecontext.HTTPFormat{}
 req, _ := http.NewRequest("GET", "http://localhost:3500/v1.0/invoke/mathService/method/api/v1/add", nil)
 
 traceContext := span.SpanContext()
@@ -124,99 +121,9 @@ sc, ok := f.SpanContextFromRequest(req)
 
 ### Putting it all together with Go Sample
 
-Let's go through an example using the [grpc app](../create-grpc-app) with Go SDK.
-
-#### 1. Get the OpenCensus Go SDK 
-
-Prerequisites: OpenCensus Go libraries require Go 1.8 or later. For details on installation go [here](https://pkg.go.dev/go.opencensus.io?tab=overview).
-
-#### 2. Import the package "go.opencensus.io/trace"
-`$ go get -u go.opencensus.io`
-
-#### 3. Create trace context
-
-When you want to pass the trace context, you are starting the trace spans. Since a distributed trace tracks the progression of a single user request as it is handled by the services and processes that make up an application, each step is called a `span` in the trace. Spans include metadata about the step, including the time spent in the step, called the span’s latency.
-
-Span is the unit step in a trace. Each span has a name, latency, status and additional metadata.
-
-The code belows shows starting a span for a cache read and ending it when done:
-
-```go
-ctx, span := trace.StartSpan(ctx, "cache.Get")
-defer span.End()
-
-// Do work to get from cache.
-```
-
-The `StartSpan` call returns two values. If you want to propagate trace context within your calls in the same process, you can use `context.Context` to propagate spans. The returned `span` has the fields 'TraceID' and 'SpanID'.  You can read more on these fields usage [here](https://opencensus.io/tracing/span/)
-
-When you call the Dapr API through HTTP/gRPC, you need to pass the trace context across processes or services. Across the network, OpenCensus provides different propagation methods for different protocols. You can read about the propagation package [here](https://godoc.org/go.opencensus.io/trace/propagation).
-
-In our example, since these are gRPC calls, the OpenCensus binary propagation format is used.
-
-#### 4. Passing the trace context to Dapr 
-
-##### For gRPC calls
-First import the package 'go.opencensus.io/trace/propagation'. 
-Once imported, get the span context from the generated span (as mentioned in above step 3), and convert it to OpenCensus binary propagation format.
-
-```go
-traceContext := span.SpanContext()
-traceContextBinary := propagation.Binary(traceContext)
- ```
-
-You can then pass the trace context through [gRPC metadata]("google.golang.org/grpc/metadata") through `grpc-trace-bin` header.
-
-```go
-ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContextBinary))
-```
-
-You can then pass this context `ctx` in Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
-
-To retrieve the trace context header when the gRPC call  is returned, you can pass the response header reference as gRPC call option which contains response headers: 
-
-```go
-var responseHeader metadata.MD
-
-// Call the InvokeService with call option
-// grpc.Header(&responseHeader)
-
-client.InvokeService(ctx, &pb.InvokeServiceRequest{
-		Id: "client",
-		Message: &commonv1pb.InvokeRequest{
-			Method:      "MyMethod",
-			ContentType: "text/plain; charset=UTF-8",
-			Data:        &any.Any{Value: []byte("Hello")},
-		},
-	},
-	grpc.Header(&responseHeader))
-```
-
-##### HTTP calls
-
-HTTP integration uses [Zipkin’s B3](https://github.com/openzipkin/b3-propagation) by default, but can be configured to use a custom propagation method by setting another `propagation.HTTPFormat`.
-
-For control over HTTP client headers, redirect policy, and other settings, you  create a client. In this example, [net/http](net/http) is used for HTTP calls. 
-
-```go
-f := &HTTPFormat{}
-req, _ := http.NewRequest("GET", "http://localhost:3500/v1.0/invoke/mathService/method/api/v1/add", nil)
-
-traceContext := span.SpanContext()
-f.SpanContextToRequest(traceContext, req)
-```
-
-To retrieve the trace context when the HTTP request is returned, you can use :
-
-```go
-sc, ok := f.SpanContextFromRequest(req)
-```
-
-See the [Dapr API reference](https://github.com/dapr/docs/tree/master/reference/api).
-
-### Configuring tracing in Dapr
-To enable tracing in Dapr, you need to first configure tracing. 
-Create adeployment config yaml e.g. `appconfig.yaml` with following configuration.
+#### Configure tracing in Dapr
+First you need to enable tracing configuration in Dapr. This step is mentioned for completeness from enabling tracing to invoking Dapr with trace context.
+Create a deployment config yaml e.g. `appconfig.yaml` with following configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -240,22 +147,17 @@ You then set the following tracing annotation in your deployment YAML. You can a
 dapr.io/config: "appconfig"
 ```
 
-### Viewing traces
+#### Invoking Dapr with trace context
 
-To view traces, you need to deploy OpenCensus supported exporters. This is independent of Dapr configuration.
-Read [how-to-diagnose-with-tracing](../diagnose-with-tracing) to set up trace exporters. 
+As mentioned in `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) that Dapr covers generating trace context and you do not need to explicitly create trace context.
 
-### Invoking Dapr with trace context
+However if you choose to pass the trace context explicitly, then Dapr will use the passed trace context and propagate all across the HTTP/gRPC call.
 
-As mentioned earlier in the [section](#Using-Trace-Context-in-Dapr), you can create the trace context and pass it when calling Dapr, or Dapr can generate trace context and pass it back to you. 
-
-If you choose to pass the trace context explicitly, then Dapr will use the passed trace context and propagate all across the HTTP/gRPC call.
-
-Using the [grpc app](../create-grpc-app) in the example and putting this all together, the following steps show you how to create a Dapr client and call the Save State operation passing the trace context:
+Using the [grpc app](../create-grpc-app) in the example and putting this all together, the following steps show you how to create a Dapr client and call the InvokeService method passing the trace context:
 
 The Rest code snippet and details, refer to the [grpc app](../create-grpc-app).
 
-#### 1. Import the package
+##### 1. Import the package
 
 ```go
 package main
@@ -269,7 +171,7 @@ import (
 )
 ```
 
-#### 2. Create the client
+##### 2. Create the client
 
 ```go
   // Get the Dapr port and create a connection
@@ -285,7 +187,7 @@ import (
   client := pb.NewDaprClient(conn)
 ```
 
-#### 3. Invoke the InvokeService method With Trace Context
+##### 3. Invoke the InvokeService method With Trace Context
 
 ```go
   // Create the Trace Context
