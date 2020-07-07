@@ -1,6 +1,6 @@
 # Environment Setup
 
-Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster.
+Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime in self hosted mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in self hosted mode and then deploy them to any Kubernetes cluster.
 
 ## Contents
 
@@ -59,7 +59,7 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
    - For Linux/MacOS - `/usr/local/bin`
    - For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
-## Installing Dapr in standalone mode
+## Installing Dapr in self hosted mode
 
 ### Install Dapr runtime using the CLI
 
@@ -73,7 +73,7 @@ Install Dapr by running `dapr init` from a command prompt
 $ dapr init
 ⌛  Making the jump to hyperspace...
 Downloading binaries and setting up components
-✅  Success! Dapr is up and running
+✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
 If you prefer you can also install to an alternate location by using `--install-path`:
@@ -100,32 +100,31 @@ runtime version: v0.1.0
 
 ### Uninstall Dapr in a standalone mode
 
-Uninstalling will remove the placement container.  
+Uninstalling removes the Placement service container.  
 
 ```bash
 $ dapr uninstall
 ```
-
-It won't remove the redis container by default in case you were using it for other purposes.  To remove both the placement and redis container:
+It won't remove the Redis or Zipkin containers by default in case you were using them for other purposes. To remove Redis, Zipkin and actor Placement container as well as remove the default Dapr dir located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\` run:
 
 ```bash
 $ dapr uninstall --all
 ```
 
-You should always run a `dapr uninstall` before running another `dapr init`.
+You should always run `dapr uninstall` before running another `dapr init`.
 
 ## Installing Dapr on a Kubernetes cluster
 
-When setting up Kubernetes you can do this either via the Dapr CLI or Helm.
+When setting up Kubernetes, you can do this either via the Dapr CLI or Helm.
 
 *Note that installing Dapr using the CLI is recommended for testing purposes only.*
 
-Dapr will install the following pods:
+Dapr installs the following pods:
 
-* dapr-operator: manages components and k8s services endpoints for Dapr (state stores, pub-subs, etc.)
-* dapr-sidecar-injector: injects Dapr into annotated pods
-* dapr-placement: used for actors only. creates mapping tables that map actor instances to pods
-* dapr-sentry: manages mTLS and acts as a certificate authority
+* dapr-operator: Manages component updates and kubernetes services endpoints for Dapr (state stores, pub-subs, etc.)
+* dapr-sidecar-injector: Injects Dapr into annotated deployment pods
+* dapr-placement: Used for actors only. Creates mapping tables that map actor instances to pods
+* dapr-sentry: Manages mTLS between services and acts as a certificate authority
 
 ### Setup Cluster
 
@@ -138,10 +137,10 @@ You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 
 ### Using the Dapr CLI
 
-You can install Dapr to Kubernetes cluster using CLI.
+You can install Dapr to a Kubernetes cluster using CLI.
 
-> Please note, that using the CLI does not support non-default namespaces.  
-> If you need a non-default namespace, Helm has to be used (see below).
+> **Note:** that using the CLI does not support non-default namespaces.  
+> If you need a non-default namespace, Helm installation has to be used (see below).
 
 #### Install Dapr to Kubernetes
 
@@ -151,7 +150,7 @@ $ dapr init --kubernetes
 
 ⌛  Making the jump to hyperspace...
 ✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
+✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
 Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster using [this](https://daprreleases.blob.core.windows.net/manifest/dapr-operator.yaml) manifest.

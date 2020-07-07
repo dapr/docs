@@ -3,14 +3,14 @@ Dapr configurations are settings that enable you to change the behavior of indiv
 
 An example of a per Dapr sidecar setting is configuring trace settings. An example of a control plane setting is mutual TLS which is a global setting on the Sentry system service.   
 
-- [Self hosted sidecar configuration](#Self-hosted-sidecar-configuration)
-- [Kubernetes sidecar configuration](#Kubernetes-sidecar-configuration)
+- [Self hosted sidecar configuration](#self-hosted-sidecar-configuration)
+- [Kubernetes sidecar configuration](#kubernetes-sidecar-configuration)
 - [Sidecar Configuration settings](#sidecar-configuration-settings)
-- [Kubernetes control plane configuration](#Kubernetes-control-plane-configuration)
+- [Kubernetes control plane configuration](#kubernetes-control-plane-configuration)
 - [Control plane configuration settings](#control-plane-configuration-settings)
 
-## Self hosted sidecar configuration  
-In self hosted mode the Dapr configuration is a configuration file, for example `myappconfig.yaml`. By default Dapr side looks in the `components/` sub-folder under the folder where you run your application for a configuration file.
+## Self hosted sidecar configuration
+In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default Dapr sidecar looks in the default Dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
 
 A Dapr sidecar can also apply a configuration by using a ```--config``` flag to the file path with ```dapr run``` CLI command.
 
@@ -36,7 +36,7 @@ A Dapr sidecar can apply a specific configuration by using a ```dapr.io/config``
     dapr.io/port: "3000"
     dapr.io/config: "myappconfig"
 ```
-Note: There are more [Kubernetes annotations](../../howto/configure-k8s/readme.md) available to configure the Dapr sidecar on activation by sidecar Injector system service.
+Note: There are more [Kubernetes annotations](../../howto/configure-k8s/README.md) available to configure the Dapr sidecar on activation by sidecar Injector system service.
 
 ## Sidecar configuration settings
 
@@ -51,22 +51,22 @@ The `tracing` section under the `Configuration` spec contains the following prop
 
 ```yml
 tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 The following table lists the different properties.
 
 Property | Type | Description
 ---- | ------- | -----------
-enabled  | bool | Set tracing to be enabled or disabled
-expandParams  | bool | When true, expands parameters passed to HTTP endpoints
-includeBody  | bool | When true, includes the request body in the tracing event
+samplingRate  | string | Set sampling rate for tracing to be enabled or disabled. 
+
+
+`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
+set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
 ### Middleware configuration
 
-The `middleware` section under the `Configuration` spec contains the following properties:
+The `httpPipeline` section under the `Configuration` spec contains the following properties:
 
 ```yml
 httpPipeline:
@@ -96,9 +96,7 @@ metadata:
   namespace: default
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
   httpPipeline:
     - name: oauth2
       type: middleware.http.oauth2
@@ -111,7 +109,7 @@ There is a single configuration file called `default` installed with the control
 
 A Dapr control plane configuration can configure the following settings:
 
-* [Mutual TLS](../../howto/configure-mtls/readme.md). Also see [security concepts](../security/readme.md) 
+* [Mutual TLS](../../howto/configure-mtls/README.md). Also see [security concepts](../security/README.md) 
 
 
 Property | Type | Description
@@ -138,5 +136,5 @@ spec:
 ## References
 * [Distributed tracing](../observability/traces.md)
 * [Middleware pipelines](../middleware/README.md)
-* [Security](../security/readme.md) 
-* [How-To: Configuring the Dapr sidecar on Kubernetes](../../howto/configure-k8s/readme.md)
+* [Security](../security/README.md) 
+* [How-To: Configuring the Dapr sidecar on Kubernetes](../../howto/configure-k8s/README.md)
