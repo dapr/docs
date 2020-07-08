@@ -49,6 +49,7 @@ The following table summarizes the capabilities of existing data store implement
 Store | Strong consistent write | Strong consistent read | ETag|
 ----|----|----|----
 Cosmos DB | Yes | Yes | Yes
+PostgreSQL | Yes | Yes | Yes
 Redis | Yes | Yes | Yes
 Redis (clustered)| Yes | No | Yes
 SQL Server | Yes | Yes | Yes
@@ -110,6 +111,8 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 * [Spec: Dapr actors specification](../../reference/api/actors_api.md)
 * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
 * [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
+* [How-to: Set up PostgreSQL store](../../howto/setup-state-store/setup-postgresql.md)
+* [How-to: Query PostgreSQL store](../../howto/query-state-store/query-postgresql-store.md)
 * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)
 * [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md)
 * [How-to: Set up SQL Server store](../../howto/setup-state-store/setup-sqlserver.md)

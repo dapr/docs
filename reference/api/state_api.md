@@ -219,7 +219,7 @@ curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxx
 
 ## Configuring state store for actors
 
-Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently mongodb and redis implement the transactional state store interface.
+Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently mongodb, Azure SQL Server, redis, and PostgreSQL implement the transactional state store interface.
 To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
 Example: Following components yaml will configure redis to be used as the state store for Actors.
 
