@@ -61,7 +61,7 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 
 ## Installing Dapr in self hosted mode
 
-### Install Dapr runtime using the CLI (with docker)
+### Install Dapr runtime using the CLI (with containers)
 
 Install Dapr by running `dapr init` from a command prompt
 
@@ -84,7 +84,7 @@ $ dapr init --install-path /home/user123/mydaprinstall
 
 To see that Dapr has been installed successfully, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
 
-### Install Dapr runtime using the CLI (without docker)
+### Install Dapr runtime using the CLI (without containers)
 
 For installing Dapr without docker dependency, run `dapr init --slim` from a command prompt.
 
@@ -126,7 +126,7 @@ runtime version: v0.1.0
 
 ### Uninstall Dapr in a self hosted mode
 
-Uninstalling removes the Placement service container.  
+Uninstalling removes the Placement service container or the Placement service binary.  
 
 ```bash
 $ dapr uninstall
@@ -137,26 +137,12 @@ It won't remove the Redis or Zipkin containers by default in case you were using
 $ dapr uninstall --all
 ```
 
-You should always run `dapr uninstall` before running another `dapr init`.
-
-### Uninstall Dapr in self hosted mode (without docker)
-
-Uninstall removes the `daprd` binary and the `placement` binary from the installed path. 
-
-```bash
-$ dapr uninstall --slim 
-```
+**You should always run `dapr uninstall` before running another `dapr init`.**
 
 To specify a custom install path from which you have to uninstall run:
 
 ```bash
-$ dapr uninstall --slim --install-path /path/to/binary
-```
-
-To remove the `.dapr` default folder also run:
-
-```bash
-$ dapr uninstall --slim --all
+$ dapr uninstall --install-path /path/to/binary
 ```
 
 ## Installing Dapr on a Kubernetes cluster
