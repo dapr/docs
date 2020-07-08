@@ -40,3 +40,6 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 * `@every 15s` where `s` is seconds, `m` minutes, and `h` hours
 * `@daily` or `@hourly` which runs at that period from the time the binding is initialized  
 
+## Programmability 
+
+The Dapr cron binding also supports `Invoke` method with `Delete` operation as an output binding which can be used to cancel existing schedule programmatically. For more about sending events see the [Output Bindings docs](https://github.com/dapr/docs/tree/master/howto/send-events-with-output-bindings).
