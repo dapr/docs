@@ -35,9 +35,14 @@ INFO[0000] Healthz server is listening on :8080          instance=host.localhost
 
 ```
 
-From here on you can follow the sample example created for the [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http) for running an application with Actors enabled. 
+From here on you can follow the sample example created for the [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http), [python-sdk](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor) or [dotnet-sdk](https://github.com/dapr/dotnet-sdk/tree/master/samples/Actor) for running an application with Actors enabled. 
 
-Update the [Redis component](https://github.com/dapr/java-sdk/blob/master/examples/components/redis.yaml) host and password to match the statestore setup that you have.
+Update the State Store configuration files to have the Redis host and password match the setup that you have. Additionally to enable it as a actor state store have the metadata piece added similar to the [sample Java Redis component](https://github.com/dapr/java-sdk/blob/master/examples/components/redis.yaml) definition.
+
+```yaml
+  - name: actorStateStore
+    value: "true"
+```
 
 The logs of the Placement service are updated whenever a host that uses actors is added or removed similar to the following output: 
 
