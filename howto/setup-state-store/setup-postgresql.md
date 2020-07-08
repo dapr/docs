@@ -3,7 +3,7 @@
 This article provides guidance on configuring a PostgreSQL state store.
 
 ## Create a PostgreSQL Store
-Dapr can use any PostgreSQL instance. If you already have a running instance of PostgreSQL, move on to the [Configuration](#configuration) section.
+Dapr can use any PostgreSQL instance. If you already have a running instance of PostgreSQL, move on to the [Create a Dapr component](#create-a-dapr-component) section.
 
 1. Run an instance of PostgreSQL
 You can run a local instance of PostgreSQL in Docker CE with the following command:
