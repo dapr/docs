@@ -1,135 +1,33 @@
-# How to use Trace Context
+# How to use trace context
+Dapr uses W3C tracing context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propogating the trace context information and there are very few cases where you need to either propogate or create a trace context. First read scenarios in the [W3C trace context for distributed tracing](../../concepts/observability/W3C-traces.md) article to understand whether you need to.
+
+To view traces, read the [how to diagnose with tracing](../diagnose-with-tracing) article.
 
 ## Contents
+- [How to retrieve trace context from a response](#how-to-retrieve-trace-context-from-a-response)
+- [How to propogate trace context in a request](#how-to-propogate-trace-context-in-a-request)
 - [How to create trace context](#how-to-create-trace-context)
-
-    [Go](#create-trace-context-in-go)
-    [Java](#create-trace-context-in-java)
-    [Python](#create-trace-context-in-python)
-    [NodeJS](#create-trace-context-in-nodejs)
-    [C++](#create-trace-context-in-c++)
-    [C#](#create-trace-context-in-c#)
-
-- [How to pass trace context in Dapr request](#how-to-pass-trace-context-in-dapr-request)
-
-    [Go](#pass-trace-context-in-go)
-
-- [How to retrieve trace context from Dapr response](#how-to-retrieve-trace-context-from-dapr-response)
-
-    [Go](#retrieve-trace-context-in-go)
-
-- [Putting it all together with Go Sample](#putting-it-all-together-with-go-sample)
+    - [Go](#create-trace-context-in-go)
+    - [Java](#create-trace-context-in-java)
+    - [Python](#create-trace-context-in-python)
+    - [NodeJS](#create-trace-context-in-nodejs)
+    - [C++](#create-trace-context-in-c++)
+    - [C#](#create-trace-context-in-c#)
+- [Putting it all together with a Go Sample](#putting-it-all-together-with-a-go-sample)
 - [Related Links](#related-links)
 
-### How to create trace context
+## How to retrieve trace context from a response
+`Note: There are no helper methods exposed in Dapr SDKs to propogate and retrieve trace context. You need to use http/gRPC clients to propogate and retrieve trace headers through http headers and gRPC metadata.`
 
-Go through `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) to know that Dapr covers generating trace context and you do not need to explicitly create trace context.
-
-If you choose to create your own trace context, then please read further as how to create trace context otherwise you can skip this section.
-
-You create a trace context using recommended OpenCensus SDK. OpenCensus supports several different programming languages.
-
-| Language | SDK |
-|:-------:|:----:|
-| Go | [Link](https://pkg.go.dev/go.opencensus.io?tab=overview)
-| Java | [Link](https://www.javadoc.io/doc/io.opencensus/opencensus-api/latest/index.html)
-| C# | [Link](https://github.com/census-instrumentation/opencensus-csharp/)
-| C++ | [Link](https://github.com/census-instrumentation/opencensus-cpp)
-| Node.js | [Link](https://github.com/census-instrumentation/opencensus-node)
-| Python | [Link](https://census-instrumentation.github.io/opencensus-python/trace/api/index.html)
-
-#### Create trace context in Go
-
-##### 1. Get the OpenCensus Go SDK 
-
-Prerequisites: OpenCensus Go libraries require Go 1.8 or later. For details on installation go [here](https://pkg.go.dev/go.opencensus.io?tab=overview).
-
-##### 2. Import the package "go.opencensus.io/trace"
-`$ go get -u go.opencensus.io`
-
-##### 3. Create trace context
+### Retrieve trace context in Go
+#### For HTTP calls
+To retrieve the trace context when the HTTP request is returned, you can use :
 
 ```go
-ctx, span := trace.StartSpan(ctx, "cache.Get")
-defer span.End()
-
-// Do work to get from cache.
+sc, ok := f.SpanContextFromRequest(req)
 ```
-
-##### Create trace context in Java
-
-```java
-try (Scope ss = TRACER.spanBuilder("cache.Get").startScopedSpan()) {
-}
-```
-
-##### Create trace context in Python
-
-```python
-with tracer.span(name="cache.get") as span:
-    pass
-```
-
-##### Create trace context in NodeJS
-
-```nodejs
-tracer.startRootSpan({name: 'cache.Get'}, rootSpan => {
-});
-```
-
-##### Create trace context in C++
-
-```cplusplus
-opencensus::trace::Span span = opencensus::trace::Span::StartSpan(
-                                            "cache.Get", nullptr, {&sampler});
-```
-
-##### Create trace context in C#
-
-```csharp
-var span = tracer.SpanBuilder("cache.Get").StartScopedSpan();
-```
-
-### How to pass trace context in Dapr request
-
-`Note: Currently there are no helper methods exposed in Dapr SDKs to pass and retrieve trace context. You need to use raw http/gRPC clients to pass and retrieve trace headers through http headers and gRPC metadata.`
-
-#### Pass trace context in Go
-
-##### For gRPC calls
-
-```go
-traceContext := span.SpanContext()
-traceContextBinary := propagation.Binary(traceContext)
- ```
-
-You can then pass the trace context through [gRPC metadata]("google.golang.org/grpc/metadata") through `grpc-trace-bin` header.
-
-```go
-ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContextBinary))
-```
-
-You can then continuing passing this go context `ctx` in subsequent Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
-
-##### For HTTP calls
-
-OpenCensus Go SDK provides [ochttp](https://pkg.go.dev/go.opencensus.io/plugin/ochttp/propagation/tracecontext?tab=doc) package provides methods to attach trace context to the http request and also retrieve trace context from http response.
-
-```go
-f := tracecontext.HTTPFormat{}
-req, _ := http.NewRequest("GET", "http://localhost:3500/v1.0/invoke/mathService/method/api/v1/add", nil)
-
-traceContext := span.SpanContext()
-f.SpanContextToRequest(traceContext, req)
-```
-
-### How to retrieve trace context from Dapr response
-
-`Note: Currently there are no helper methods exposed in Dapr SDKs to pass and retrieve trace context. You need to use raw http/gRPC clients to pass and retrieve trace headers through http headers and gRPC metadata.`
-
-##### Retrieve trace context in Go
-##### For gRPC calls
-To retrieve the trace context header when the gRPC call  is returned, you can pass the response header reference as gRPC call option which contains response headers: 
+#### For gRPC calls
+To retrieve the trace context header when the gRPC call is returned, you can pass the response header reference as gRPC call option which contains response headers: 
 
 ```go
 var responseHeader metadata.MD
@@ -147,17 +45,104 @@ client.InvokeService(ctx, &pb.InvokeServiceRequest{
 	},
 	grpc.Header(&responseHeader))
 ```
-##### For HTTP calls
 
-To retrieve the trace context when the HTTP request is returned, you can use :
+## How to propogate trace context in a request
+`Note: There are no helper methods exposed in Dapr SDKs to propogate and retrieve trace context. You need to use http/gRPC clients to propogate and retrieve trace headers through http headers and gRPC metadata.`
+
+### Pass trace context in Go
+#### For HTTP calls
+OpenCensus Go SDK provides [ochttp](https://pkg.go.dev/go.opencensus.io/plugin/ochttp/propagation/tracecontext?tab=doc) package provides methods to attach trace context to the http request and also retrieve trace context from http response.
 
 ```go
-sc, ok := f.SpanContextFromRequest(req)
+f := tracecontext.HTTPFormat{}
+req, _ := http.NewRequest("GET", "http://localhost:3500/v1.0/invoke/mathService/method/api/v1/add", nil)
+
+traceContext := span.SpanContext()
+f.SpanContextToRequest(traceContext, req)
 ```
 
-### Putting it all together with Go Sample
+#### For gRPC calls
 
-##### Configure tracing in Dapr
+```go
+traceContext := span.SpanContext()
+traceContextBinary := propagation.Binary(traceContext)
+ ```
+ 
+You can then pass the trace context through [gRPC metadata]("google.golang.org/grpc/metadata") through `grpc-trace-bin` header.
+
+```go
+ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContextBinary))
+```
+
+You can then continuing passing this go context `ctx` in subsequent Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
+
+## How to create trace context
+You can create a trace context using the recommended OpenCensus SDKs. OpenCensus supports several different programming languages.
+
+| Language | SDK |
+|:-------:|:----:|
+| Go | [Link](https://pkg.go.dev/go.opencensus.io?tab=overview)
+| Java | [Link](https://www.javadoc.io/doc/io.opencensus/opencensus-api/latest/index.html)
+| C# | [Link](https://github.com/census-instrumentation/opencensus-csharp/)
+| C++ | [Link](https://github.com/census-instrumentation/opencensus-cpp)
+| Node.js | [Link](https://github.com/census-instrumentation/opencensus-node)
+| Python | [Link](https://census-instrumentation.github.io/opencensus-python/trace/api/index.html)
+
+### Create trace context in Go
+
+#### 1. Get the OpenCensus Go SDK 
+
+Prerequisites: OpenCensus Go libraries require Go 1.8 or later. For details on installation go [here](https://pkg.go.dev/go.opencensus.io?tab=overview).
+
+#### 2. Import the package "go.opencensus.io/trace"
+`$ go get -u go.opencensus.io`
+
+#### 3. Create trace context
+
+```go
+ctx, span := trace.StartSpan(ctx, "cache.Get")
+defer span.End()
+
+// Do work to get from cache.
+```
+
+### Create trace context in Java
+
+```java
+try (Scope ss = TRACER.spanBuilder("cache.Get").startScopedSpan()) {
+}
+```
+
+### Create trace context in Python
+
+```python
+with tracer.span(name="cache.get") as span:
+    pass
+```
+
+### Create trace context in NodeJS
+
+```nodejs
+tracer.startRootSpan({name: 'cache.Get'}, rootSpan => {
+});
+```
+
+### Create trace context in C++
+
+```cplusplus
+opencensus::trace::Span span = opencensus::trace::Span::StartSpan(
+                                            "cache.Get", nullptr, {&sampler});
+```
+
+### Create trace context in C#
+
+```csharp
+var span = tracer.SpanBuilder("cache.Get").StartScopedSpan();
+```
+
+## Putting it all together with a Go Sample
+
+### Configure tracing in Dapr
 First you need to enable tracing configuration in Dapr. This step is mentioned for completeness from enabling tracing to invoking Dapr with trace context.
 Create a deployment config yaml e.g. `appconfig.yaml` with following configuration.
 
@@ -183,7 +168,7 @@ You then set the following tracing annotation in your deployment YAML. You can a
 dapr.io/config: "appconfig"
 ```
 
-##### Invoking Dapr with trace context
+### Invoking Dapr with trace context
 
 As mentioned in `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) that Dapr covers generating trace context and you do not need to explicitly create trace context.
 
@@ -193,7 +178,7 @@ Using the [grpc app](../create-grpc-app) in the example and putting this all tog
 
 The Rest code snippet and details, refer to the [grpc app](../create-grpc-app).
 
-##### 1. Import the package
+### 1. Import the package
 
 ```go
 package main
@@ -207,7 +192,7 @@ import (
 )
 ```
 
-##### 2. Create the client
+### 2. Create the client
 
 ```go
   // Get the Dapr port and create a connection
@@ -223,7 +208,7 @@ import (
   client := pb.NewDaprClient(conn)
 ```
 
-##### 3. Invoke the InvokeService method With Trace Context
+### 3. Invoke the InvokeService method With Trace Context
 
 ```go
   // Create the Trace Context
@@ -247,16 +232,15 @@ import (
 	})
 ```
 
-That's it !. Now you can correlate the calls in your app and across services with Dapr using the same trace context.
-
-To view traces, you can refer [how-to-diagnose-with-tracing](../diagnose-with-tracing) 
+You can now correlate the calls in your app and across services with Dapr using the same trace context.
 
 ## Related Links
 
 * [Observability concepts](../../concepts/observability/traces.md)
-* [Observability sample](https://github.com/dapr/samples/tree/master/8.observability)
 * [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md)
-* [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
-* [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
+* [How to set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
+* [How to set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
+* [Observability sample](https://github.com/dapr/samples/tree/master/8.observability)
+
 
