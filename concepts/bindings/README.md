@@ -21,6 +21,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
+| [Cron (Scheduler)](../../reference/specs/bindings/cron.md) | ✅ | ✅ | Experimental |
 | [HTTP](../../reference/specs/bindings/http.md)           |    | ✅ | Experimental |
 | [Kafka](../../reference/specs/bindings/kafka.md)         | ✅ | ✅ | Experimental |
 | [Kubernetes Events](../../reference/specs/bindings/kubernetes.md) | ✅ |    | Experimental |
