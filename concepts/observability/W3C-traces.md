@@ -1,11 +1,11 @@
-# W3C tracing context for distributed tracing
+# W3C trace context for distributed tracing
 
 - [Background](#background)
 - [Trace scenarios](#scenarios)
 - [W3C trace headers](#w3c-trace-headers)
 
 ## Introduction
-Dapr uses W3C tracing context for distributed tracing for both service invocation and pub/sub messaging. Largely Dapr does all the heavy lifting of generating and propogating the trace context information and this can be sent to many different diagnostics tools for visualization and querying. There are only a very few cases where you, as a developer, need to either propagate a trace header or generate one. 
+Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Largely Dapr does all the heavy lifting of generating and propogating the trace context information and this can be sent to many different diagnostics tools for visualization and querying. There are only a very few cases where you, as a developer, need to either propagate a trace header or generate one. 
 
 ## Background
 Distributed tracing is a methodology implemented by tracing tools to follow, analyze and debug a transaction across multiple software components. Typically, a distributed trace traverses more than one service which requires it to be uniquely identifiable. Trace context propagation passes along this unique identification. 
