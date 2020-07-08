@@ -1,11 +1,11 @@
 # How to use trace context
-Dapr uses W3C tracing context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propogating the trace context information and there are very few cases where you need to either propogate or create a trace context. First read scenarios in the [W3C trace context for distributed tracing](../../concepts/observability/W3C-traces.md) article to understand whether you need to.
+Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propagating the trace context information and there are very few cases where you need to either propagate or create a trace context. First read scenarios in the [W3C trace context for distributed tracing](../../concepts/observability/W3C-traces.md) article to understand whether you need to propagate or create a trace context.
 
 To view traces, read the [how to diagnose with tracing](../diagnose-with-tracing) article.
 
 ## Contents
 - [How to retrieve trace context from a response](#how-to-retrieve-trace-context-from-a-response)
-- [How to propogate trace context in a request](#how-to-propogate-trace-context-in-a-request)
+- [How to propagate trace context in a request](#how-to-propagate-trace-context-in-a-request)
 - [How to create trace context](#how-to-create-trace-context)
     - [Go](#create-trace-context-in-go)
     - [Java](#create-trace-context-in-java)
@@ -17,13 +17,16 @@ To view traces, read the [how to diagnose with tracing](../diagnose-with-tracing
 - [Related Links](#related-links)
 
 ## How to retrieve trace context from a response
-`Note: There are no helper methods exposed in Dapr SDKs to propogate and retrieve trace context. You need to use http/gRPC clients to propogate and retrieve trace headers through http headers and gRPC metadata.`
+`Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`
 
 ### Retrieve trace context in Go
 #### For HTTP calls
-To retrieve the trace context when the HTTP request is returned, you can use :
+OpenCensus Go SDK provides [ochttp](https://pkg.go.dev/go.opencensus.io/plugin/ochttp/propagation/tracecontext?tab=doc) package that provides methods to retrieve trace context from http response.
+
+To retrieve the trace context from HTTP response, you can use :
 
 ```go
+f := tracecontext.HTTPFormat{}
 sc, ok := f.SpanContextFromRequest(req)
 ```
 #### For gRPC calls
@@ -46,12 +49,44 @@ client.InvokeService(ctx, &pb.InvokeServiceRequest{
 	grpc.Header(&responseHeader))
 ```
 
-## How to propogate trace context in a request
-`Note: There are no helper methods exposed in Dapr SDKs to propogate and retrieve trace context. You need to use http/gRPC clients to propogate and retrieve trace headers through http headers and gRPC metadata.`
+### Retrieve trace context in C#
+#### For HTTP calls
+To retrieve the trace context from HTTP response, you can use [.NET API](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.headers.httpresponseheaders?view=netcore-3.1) :
+
+```csharp
+// client is HttpClient. req is HttpRequestMessage
+HttpResponseMessage response = await client.SendAsync(req);
+IEnumerable<string> values1, values2;
+string traceparentValue = "";
+string tracestateValue = "";
+if (response.Headers.TryGetValues("traceparent", out values1))
+{
+    traceparentValue = values1.FirstOrDefault();
+}
+if (response.Headers.TryGetValues("tracestate", out values2))
+{
+    tracestateValue = values2.FirstOrDefault();
+}
+```
+
+#### For gRPC calls
+To retrieve the trace context from gRPC response, you can use [Grpc.Net.Client](https://www.nuget.org/packages/Grpc.Net.Client) ResponseHeadersAsync method.
+
+```csharp
+// client is Dapr proto client
+using var call = client.InvokeServiceAsync(req);
+var response = await call.ResponseAsync;
+var headers = await call.ResponseHeadersAsync();
+var tracecontext = headers.First(e => e.Key == "grpc-trace-bin");
+```
+Additional general details on calling gRPC services with .NET client [here](https://docs.microsoft.com/en-us/aspnet/core/grpc/client?view=aspnetcore-3.1).
+
+## How to propagate trace context in a request
+`Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`
 
 ### Pass trace context in Go
 #### For HTTP calls
-OpenCensus Go SDK provides [ochttp](https://pkg.go.dev/go.opencensus.io/plugin/ochttp/propagation/tracecontext?tab=doc) package provides methods to attach trace context to the http request and also retrieve trace context from http response.
+OpenCensus Go SDK provides [ochttp](https://pkg.go.dev/go.opencensus.io/plugin/ochttp/propagation/tracecontext?tab=doc) package that provides methods to attach trace context in http request.
 
 ```go
 f := tracecontext.HTTPFormat{}
@@ -75,6 +110,28 @@ ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContex
 ```
 
 You can then continuing passing this go context `ctx` in subsequent Dapr gRPC calls as first parameter. For example `InvokeService`, context is passed in first parameter.
+
+### Pass trace context in C#
+#### For HTTP calls
+To pass trace context in HTTP request, you can use [.NET API](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.headers.httprequestheaders?view=netcore-3.1) :
+
+```csharp
+// client is HttpClient. req is HttpRequestMessage
+req.Headers.Add("traceparent", traceparentValue);
+req.Headers.Add("tracestate", tracestateValue);
+HttpResponseMessage response = await client.SendAsync(req);
+```
+
+#### For gRPC calls
+To pass the trace context in gRPC call metadata, you can use [Grpc.Net.Client](https://www.nuget.org/packages/Grpc.Net.Client) ResponseHeadersAsync method.
+
+```csharp
+// client is Dapr.Client.Autogen.Grpc.v1
+var headers = new Metadata();
+headers.Add("grpc-trace-bin", tracecontext);
+using var call = client.InvokeServiceAsync(req, headers);
+```
+Additional general details on calling gRPC services with .NET client [here](https://docs.microsoft.com/en-us/aspnet/core/grpc/client?view=aspnetcore-3.1).
 
 ## How to create trace context
 You can create a trace context using the recommended OpenCensus SDKs. OpenCensus supports several different programming languages.

@@ -5,7 +5,7 @@
 - [W3C trace headers](#w3c-trace-headers)
 
 ## Introduction
-Dapr uses W3C tracing context for distributed tracing for both service invocation and pub/sub messaging. Largely Dapr does all the heavy lifting of generating and propogating the trace context information and this can be sent to many different diagnostics tools for visualization and querying. There are only a very few cases where you, as a developer, need to either propogate a trace header or generate one. 
+Dapr uses W3C tracing context for distributed tracing for both service invocation and pub/sub messaging. Largely Dapr does all the heavy lifting of generating and propogating the trace context information and this can be sent to many different diagnostics tools for visualization and querying. There are only a very few cases where you, as a developer, need to either propagate a trace header or generate one. 
 
 ## Background
 Distributed tracing is a methodology implemented by tracing tools to follow, analyze and debug a transaction across multiple software components. Typically, a distributed trace traverses more than one service which requires it to be uniquely identifiable. Trace context propagation passes along this unique identification. 
@@ -50,12 +50,12 @@ In these scenarios Dapr does all work for you. You do not need to create and pro
 4. Pub/sub messages
      Dapr generates the trace headers in the published message topic and these trace headers are propagated to any services listening on that topic.
 
-### You need to propogate or generate trace context between services
+### You need to propagate or generate trace context between services
 In these scenarios Dapr does some of the work for you and you need to either create or propagate trace headers. 
 
 1. Multiple service calls to different services from single service
      
-   When you are calling multiple services from a single service, for example from service A like this, you need to propogate the trace headers;
+   When you are calling multiple services from a single service, for example from service A like this, you need to propagate the trace headers;
 
         service A -> service B
         [ .. some code logic ..]
@@ -64,12 +64,12 @@ In these scenarios Dapr does some of the work for you and you need to either cre
         service A -> service D
         [ .. some code logic ..]
     
-    In this case, when service A first calls service B, Dapr generates the trace headers in service A, and these trace headers are then propagated to service B. These trace headers are returned in the response from service B as part of response headers. However you need to propogate the returned trace context to the next services, service C and Service D, as Dapr does not know you want to reuse the same header.
+    In this case, when service A first calls service B, Dapr generates the trace headers in service A, and these trace headers are then propagated to service B. These trace headers are returned in the response from service B as part of response headers. However you need to propagate the returned trace context to the next services, service C and Service D, as Dapr does not know you want to reuse the same header.
 
      To understand how to extract the trace headers from a response and add the trace headers into a request, see the [how to use trace context](../../howto/use-w3c-tracecontext/README.md) article.
 
 2. You have chosen to generate your own trace context headers. 
-This is much more unusual. There may be occassions where you specifically chose to add W3C trace headers into a service call, for example if you have an existing application that does not currently use Dapr. In this case Dapr still propogates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done : 
+This is much more unusual. There may be occassions where you specifically chose to add W3C trace headers into a service call, for example if you have an existing application that does not currently use Dapr. In this case Dapr still propagates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done : 
 
      1. You can use the industry standard OpenCensus/OpenTelemetry SDKs to generate trace headers and pass these trace headers to a Dapr enabled service. This is the preferred recommendation.  
 
@@ -78,7 +78,7 @@ This is much more unusual. There may be occassions where you specifically chose 
      3. You can handcraft a trace context following [W3C trace context specification](https://www.w3.org/TR/trace-context/) and pass these trace headers to Dapr enabled service. 
 
 ## W3C trace headers
-Theses are the specific trace context headers that are generated and propogated by Dapr for HTTP and gRPC. 
+Theses are the specific trace context headers that are generated and propagated by Dapr for HTTP and gRPC. 
 
 ### Trace context HTTP headers format
 When propogating a trace context header from an HTTP response to an HTTP request, these are the headers that you need to copy.
