@@ -9,23 +9,23 @@ Dapr CLI provide command line arguments to initialize Dapr [without dependency](
 
 In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors](../../concepts/actors/README.md) in Dapr. 
 
-In this mode only limited functionality of Dapr is available out of box. Namely [Service Invocation](../../concepts/service-invocation/README.md) and Actor based Service Invocation.
+In this mode only limited functionality of Dapr is available out of box since Redis is not installed for state managment or pub/sub. Namely [Service Invocation](../../concepts/service-invocation/README.md). Actor based Service Invocation is possible is a statestore is configured as explained in the following sections.
 
 ## Service invocation
 Samples [repo](https://github.com/dapr/samples/tree/master/11.hello-dapr-slim) has a complete sample on how to perform service invocation in this mode. 
 
 ## Enabling state management or pub/sub
 
-See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md) to enable a local state store or pub/sub broker for messaging. 
+See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md#Self-Hosted-Mode-without-Docker) to enable a local state store or pub/sub broker for messaging. 
 
 ## Enabling actors
 
-Run the Placement service locally to enable actor placement. Also a [transactoinal state store](#Enabling-Statestore) must be enabled for actors. 
+The Placement service must be run locally to enable actor placement. Also a [transactoinal state store](#Enabling-state-management-or-pub/sub) must be enabled for actors. 
 
 By default for Linux/MacOS the `placement` binary is installed in `/usr/local/bin` or for Windows at `c:\dapr`.
 
 ```bash
-$ placement
+$ /usr/local/bin/placement
 
 INFO[0000] starting Dapr Placement Service -- version 0.8.0 -- commit 74db927  instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
 INFO[0000] log level set to: info                        instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0

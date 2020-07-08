@@ -131,12 +131,5 @@ By default the Dapr CLI creates a local Redis instance when you run `dapr init`.
 ### Self Hosted Mode without Docker
 
 In this mode, the Dapr CLI does not create a Redis instance. 
-
-#### Option 1: Local Redis Setup
-
-
-
-#### Option 2: Creating an Azure Cache for Redis service
-
-Follow [instructions](#option-2-creating-an-managed-azure-cache-for-redis-service) to create an Azure managed Redis Service or one of the [other options](#Other-options-to-create-a-Redis-Database). Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
+Follow [instructions](#Creating-a-Redis-Store) to create a Redis store. Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
 
