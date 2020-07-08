@@ -1,11 +1,11 @@
-# Self hosted mode without Docker
+# Self hosted mode without Containers
 This article provides guidance on running Dapr in self-hosted mode without Docker. 
 
 ## Prerequisites
 - [Dapr CLI](../../getting-started/environment-setup.md#installing-dapr-cli)
 
-## Initialize Dapr without docker
-Dapr CLI provide command line arguments to initialize Dapr [without dependency](../../getting-started/environment-setup.md#Install-Dapr-runtime-using-the-CLI-(without-docker)) on Docker. 
+## Initialize Dapr without containers
+Dapr CLI provide command line arguments to initialize Dapr [without dependency](../../getting-started/environment-setup.md#Install-Dapr-runtime-using-the-CLI-(without-containers)) on Docker. 
 
 In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors](../../concepts/actors/README.md) in Dapr. 
 
@@ -16,7 +16,7 @@ Samples [repo](https://github.com/dapr/samples/tree/master/11.hello-dapr-slim) h
 
 ## Enabling state management or pub/sub
 
-See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md#Self-Hosted-Mode-without-Docker) to enable a local state store or pub/sub broker for messaging. 
+See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md#Self-Hosted-Mode-without-Containers) to enable a local state store or pub/sub broker for messaging. 
 
 ## Enabling actors
 
