@@ -101,7 +101,7 @@ The tracestate fields are detailed [here](https://www.w3.org/TR/trace-context/#t
 ### Trace context gRPC headers formatIn the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
 ## Related Links
-* [How To set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor)
+* [How To set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
 * [How To set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
 * [How to use Trace Context](../../howto/use-w3c-tracecontext)
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
