@@ -98,7 +98,8 @@ The tracestate header includes the parent in a potentially vendor-specific forma
 
 The tracestate fields are detailed [here](https://www.w3.org/TR/trace-context/#tracestate-header)
 
-### Trace context gRPC headers formatIn the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
+### Trace context gRPC headers format
+In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
 ## Related Links
 * [How To set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
