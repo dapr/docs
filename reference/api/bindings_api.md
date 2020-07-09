@@ -159,7 +159,7 @@ See the [different specs](../specs/bindings) on each binding to see the list of 
 ### HTTP Request
 
 ```http
-POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/bindings/<name>
+POST/PUT http://localhost:<daprPort>/v1.0/bindings/<name>
 ```
 
 ### HTTP Response codes
