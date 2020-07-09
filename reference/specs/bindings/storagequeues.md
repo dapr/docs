@@ -24,7 +24,7 @@ spec:
 - `queue` is the name of the Azure Storage queue.
 - `ttlInSeconds` is an optional parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store) *If you place the storageAccessKey parameter (under the spec/metadata path) into the secret store, it needs to be Base64 encoded AGAIN in the yaml manifest file, (even though it is already in a base64 encoded format).*
 
 ## Specifying a time to live on message level
 
