@@ -8,7 +8,7 @@ Here you'll find a list of "How To" guides that walk you through accomplishing s
 - [Pub/Sub](#pubsub)
 - [Bindings](#bindings-and-triggers)
 - [Actors](#actors)
-- [Observerability](#observerability)
+- [Observability](#observability)
 - [Security](#security)
 - [Middleware](#middleware)
 - [Components](#components)
@@ -48,7 +48,7 @@ For Actors How Tos see the SDK documentation
 * [.NET Actors](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)
 * [Java Actors](https://github.com/dapr/java-sdk)
 
-## Observerability
+## Observability
 
 ### Metric and logs
 
@@ -59,7 +59,7 @@ For Actors How Tos see the SDK documentation
 ### Distributed Tracing
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
-* [Trace calls across services](./use-w3c-tracecontext)
+* [Use W3C Trace Context](./use-w3c-tracecontext)
 
 ## Security
 
