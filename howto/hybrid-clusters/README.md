@@ -3,7 +3,7 @@
 ## Installing the Dapr Control Plane
 
 If you are installing using the Dapr CLI or via helm chart, you can simply follow our normal deployment procedures:
-[Installing Dapr on a Kubernetes cluster](../environment-setup.md#installing-Dapr-on-a-kubernetes-cluster)
+[Installing Dapr on a Kubernetes cluster](../../getting-started/environment-setup.md#installing-Dapr-on-a-kubernetes-cluster)
 
 Affinity will be automatically set for kubernetes.io/os=linux. If you need to override linux to another value, you can do so by setting:
 ```

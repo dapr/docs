@@ -138,7 +138,7 @@ You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 > **Note:** The dapr control plane containers are curently only distributed on linux containers.
 > Your kubernetes cluser must contain available Linux capable nodes.
 > Both the dapr cli, and the dapr helm chart will automatically deploy with affinity for nodes with the label kubernetes.io/os=linux.
-> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](./cluster/hybrid-clusters.md)
+> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/hybrid-clusters/)
 
 ### Using the Dapr CLI
 
