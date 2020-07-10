@@ -34,8 +34,22 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
 
-   - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
+   - **Windows**: Run below commands
+   ```powershell
+   # Create a file with your encoded password. 
+   kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64
+   # put your redis password in a text file called `password.txt`.
+   certutil -decode encoded.b64 password.txt
+   # Copy the password and delete the two files.
+   ```
 
+   - **Windows**: If you are using Powershell, it would be even easier. 
+   ```powershell
+   PS C:\> $base64pwd=kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}"
+   PS C:\> $redispassword=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($base64pwd))
+   PS C:\> $base64pwd=""
+   PS C:\> $redispassword
+   ```
    - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
 
    Add this password as the `redisPassword` value in your [redis.yaml](#configuration) file. For example:
