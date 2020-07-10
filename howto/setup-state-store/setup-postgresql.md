@@ -24,7 +24,7 @@ Either the default "postgres" database can be used, or create a new database for
 
 ## Create a Dapr component
 
-Create a file called `postgres.yaml`, and paste the following and replace the `<CONNECTION STRING>` value with your connection string. If you want to also configure PostgreSQL to store actors, add the `actorStateStore` configuration element shown below.
+Create a file called `postgres.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. If you want to also configure PostgreSQL to store actors, add the `actorStateStore` configuration element shown below.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
