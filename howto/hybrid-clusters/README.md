@@ -12,7 +12,8 @@ helm install dapr dapr/dapr --set global.daprControlPlaneOs=YOUR_OS
 Dapr control plane container images are only provided for Linux, so you shouldn't need to do this unless you really know what you are doing.
 
 ## Installing Dapr Apps
-The Dapr sidecar container is currently linux only. For this reason, if you are writing a Dapr application, you must run it in a Linux container. You can track the progress of Dapr sidecar support for windows containers via [dapr/dapr#842](https://github.com/dapr/dapr/issues/842).
+The Dapr sidecar container is currently Linux only. For this reason, if you are writing a Dapr application, you must run it in a Linux container. 
+> **Note:** Windows support for dapr applications is in progress. Please see: [dapr/dapr#842](https://github.com/dapr/dapr/issues/842).
 
 When deploying to a hybrid cluster, you must configure your apps to be deployed to only Linux available nodes. One of the simplest ways to do this is to add kubernetes.io/os=linux to your app's nodeSelector.
 
