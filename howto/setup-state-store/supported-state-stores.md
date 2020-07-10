@@ -14,7 +14,7 @@
 | PostgreSQL | :white_check_mark:  | :white_check_mark: |
 | Redis | :white_check_mark:  | :white_check_mark: |
 | Zookeeper | :white_check_mark: | :x: |
-| Azure CosmosDB | :white_check_mark: | :x: |
+| Azure CosmosDB | :white_check_mark: | :white_check_mark: |
 | Azure SQL Server  | :white_check_mark:  | :white_check_mark: |
 | Azure Table Storage  | :white_check_mark:  | :x: |
 | Google Cloud Firestore | :white_check_mark: | :x: |
