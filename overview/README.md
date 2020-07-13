@@ -37,8 +37,8 @@ Each of these building blocks is independent, meaning that you can use one, some
 | **[Service Invocation](../concepts/service-invocation)** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
 |  **[State Management](../concepts/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, AWS DynamoDB or Redis among others.
 | **[Publish and Subscribe Messaging](../concepts/publish-subscribe-messaging)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
-| **[Resource Bindings](../concepts/bindings)** | Resource bindings with triggers builds further on event-driven | chitectures for scale and resiliency by receiving and sending events to and from any external | source such as databases, queues, file systems, etc.
-| **[Distributed Tracing](../concepts/observability/traces.md)** | Dapr supports distributed tracing to easily diagnose and | serve inter-service calls in production using the W3C Trace Context standard.
+| **[Resource Bindings](../concepts/bindings)** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
+| **[Distributed Tracing](../concepts/observability/traces.md)** | Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard.
 | **[Actors](../concepts/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
 
 ## Sidecar architecture
@@ -47,7 +47,7 @@ Dapr exposes its APIs as a sidecar architecture, either as a container or as a p
 
 ### Standalone
 
-In standalone mode dapr runs as a separate process from which your service code can call via HTTP or gRPC.
+In standalone mode Dapr runs as a separate process from which your service code can call via HTTP or gRPC.
 
 <img src="../images/overview-sidecar.png" width=600>
 
