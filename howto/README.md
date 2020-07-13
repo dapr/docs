@@ -89,6 +89,7 @@ For Actors How Tos see the SDK documentation
 
 * [Sidecar configuration on Kubernetes](./configure-k8s)
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
+* [Deploy to hybrid Linux/Windows Kubernetes clusters](./hybrid-clusters) 
 
 ## Developer tooling
 ### Using Visual Studio Code

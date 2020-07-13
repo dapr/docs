@@ -60,7 +60,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
      value: lhDOkwTlp0
    ```
 
-### Option 2: Creating an managed Azure Cache for Redis service
+### Option 2: Creating an Azure Cache for Redis service
 
 > **Note**: This approach requires having an Azure Subscription.
 
@@ -138,7 +138,9 @@ kubectl apply -f redis-state.yaml
 kubectl apply -f redis-pubsub.yaml
 ```
 
-### Standalone
+### Self Hosted Mode
 
 By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+
+If you initialized Dapr using `dapr init --slim`, the Dapr CLI did not create a Redis instance or a default configuration file for it. Follow [these instructions](#Creating-a-Redis-Store) to create a Redis store. Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
 
