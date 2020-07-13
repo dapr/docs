@@ -6,10 +6,12 @@ Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime 
 
 - [Prerequisites](#prerequisites)
 - [Installing Dapr CLI](#installing-dapr-cli)
-- [Installing Dapr in standalone mode](#installing-dapr-in-standalone-mode)
+- [Installing Dapr in self-hosted mode](#installing-dapr-in-self-hosted-mode)
 - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
+
+On default Dapr will install with a developer environment using Docker containers to get you started easily. However, Dapr does not depend on Docker to run (see [here](https://github.com/dapr/cli/blob/master/README.md) for instructions on installing Dapr locally without Docker using slim init). This getting started guide assumes Dapr is installed along with this developer environment.
 
 - Install [Docker](https://docs.docker.com/install/)
 
@@ -61,9 +63,11 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 
 ## Installing Dapr in self hosted mode
 
-### Install Dapr runtime using the CLI
+### Initialize Dapr using the CLI
 
-Install Dapr by running `dapr init` from a command prompt
+On default, during initialization the Dapr CLI will install the Dapr binaries as well as setup a developer environment to help you get started easily with Dapr. This environment uses Docker containers, therefore Docker is listed as a prerequisite. 
+
+>If you prefer to run Dapr without this environment and no dependency on Docker, see the CLI documentation for usage of the `--slim` flag with the init CLI command [here](https://github.com/dapr/cli/blob/master/README.md). Note, if you are a new user, it is strongly recommended to intall Docker and use the regular init command.
 
 > For Linux users, if you run your docker cmds with sudo, you need to use "**sudo dapr init**"
 > For Windows users, make sure that you run the cmd terminal in administrator mode
@@ -82,7 +86,7 @@ If you prefer you can also install to an alternate location by using `--install-
 $ dapr init --install-path /home/user123/mydaprinstall
 ```
 
-To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
+To see that Dapr has been installed successfully, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
 
 ### Install a specific runtime version
 
@@ -98,9 +102,9 @@ cli version: v0.1.0
 runtime version: v0.1.0
 ```
 
-### Uninstall Dapr in a standalone mode
+### Uninstall Dapr in a self hosted mode
 
-Uninstalling removes the Placement service container.  
+Uninstalling removes the Placement service container or the Placement service binary.  
 
 ```bash
 $ dapr uninstall
@@ -111,7 +115,13 @@ It won't remove the Redis or Zipkin containers by default in case you were using
 $ dapr uninstall --all
 ```
 
-You should always run `dapr uninstall` before running another `dapr init`.
+**You should always run `dapr uninstall` before running another `dapr init`.**
+
+To specify a custom install path from which you have to uninstall run:
+
+```bash
+$ dapr uninstall --install-path /path/to/binary
+```
 
 ## Installing Dapr on a Kubernetes cluster
 
