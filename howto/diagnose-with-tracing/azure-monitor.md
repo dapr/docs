@@ -162,6 +162,8 @@ Deploy and run some applications. After a few minutes, you should see tracing lo
 
 ![Application map](../../images/azure-monitor.png)
 
+> **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) will be displayed in Application Map topology. Direct service invocations (not going through the Dapr API) will not be shown.
+
 ## Tracing configuration
 
 The `tracing` section under the `Configuration` spec contains the following properties:
