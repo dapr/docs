@@ -34,8 +34,22 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
 
-   - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
+   - **Windows**: Run below commands
+   ```powershell
+   # Create a file with your encoded password. 
+   kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64
+   # put your redis password in a text file called `password.txt`.
+   certutil -decode encoded.b64 password.txt
+   # Copy the password and delete the two files.
+   ```
 
+   - **Windows**: If you are using Powershell, it would be even easier. 
+   ```powershell
+   PS C:\> $base64pwd=kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}"
+   PS C:\> $redispassword=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($base64pwd))
+   PS C:\> $base64pwd=""
+   PS C:\> $redispassword
+   ```
    - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
 
    Add this password as the `redisPassword` value in your [redis.yaml](#configuration) file. For example:
@@ -46,7 +60,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
      value: lhDOkwTlp0
    ```
 
-### Option 2: Creating an managed Azure Cache for Redis service
+### Option 2: Creating an Azure Cache for Redis service
 
 > **Note**: This approach requires having an Azure Subscription.
 
@@ -124,7 +138,9 @@ kubectl apply -f redis-state.yaml
 kubectl apply -f redis-pubsub.yaml
 ```
 
-### Standalone
+### Self Hosted Mode
 
 By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+
+If you initialized Dapr using `dapr init --slim`, the Dapr CLI did not create a Redis instance or a default configuration file for it. Follow [these instructions](#Creating-a-Redis-Store) to create a Redis store. Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
 

@@ -28,7 +28,9 @@ To use actors, your state store must support multi-item transactions.  This mean
 
 - Redis
 - MongoDB
+- PostgreSQL
 - SQL Server
+- Azure CosmosDB
 
 ## Actor timers and reminders
 

@@ -55,6 +55,7 @@ kubectl apply -f statestore.yaml
 * [Setup Hazelcast](./setup-hazelcast.md)
 * [Setup Memcached](./setup-memcached.md)
 * [Setup MongoDB](./setup-mongodb.md)
+* [Setup PostgreSQL](./setup-postgresql.md)
 * [Setup Redis](./setup-redis.md)
 * [Setup Zookeeper](./setup-zookeeper.md)
 * [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
