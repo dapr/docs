@@ -109,6 +109,9 @@ Uninstalling removes the Placement service container or the Placement service bi
 ```bash
 $ dapr uninstall
 ```
+
+> For Linux users, if you run your docker cmds with sudo or the install path is the default `/usr/local/bin`, you need to use "**sudo dapr uninstall**" to remove dapr binaries and/or the containers.
+
 It won't remove the Redis or Zipkin containers by default in case you were using them for other purposes. To remove Redis, Zipkin and actor Placement container as well as remove the default Dapr dir located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\` run:
 
 ```bash
