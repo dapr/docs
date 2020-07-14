@@ -10,6 +10,7 @@ This article addresses multiple security considerations when using Dapr in a dis
 - [Bindings Security](#bindings-security)
 - [State Store Security](#state-store-security)
 - [Management Security](#management-security)
+- [Threat Model](#threat-model)
 
 Several of the areas above are addressed through encryption of data in transit. One of the security mechanisms that Dapr employs for encrypting data in transit is [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. mTLS offers a few key features for network traffic inside your application:
 
@@ -106,5 +107,6 @@ When deploying on Kubernetes, you can use regular [Kubernetes RBAC]( https://kub
 When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
 
 ## Threat Model
+Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized. The Dapr threat model is below.
 
 ![Threat Model](../../images/threat_model.png)
