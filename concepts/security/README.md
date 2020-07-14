@@ -104,3 +104,7 @@ Dapr uses the configured authentication method to authenticate with the underlyi
 When deploying on Kubernetes, you can use regular [Kubernetes RBAC]( https://kubernetes.io/docs/reference/access-authn-authz/rbac/) to control access to management activities.
 
 When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
+
+## Threat Model
+
+![Threat Model](../../images/threat_model.png)
