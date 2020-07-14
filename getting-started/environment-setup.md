@@ -69,7 +69,7 @@ On default, during initialization the Dapr CLI will install the Dapr binaries as
 
 >If you prefer to run Dapr without this environment and no dependency on Docker, see the CLI documentation for usage of the `--slim` flag with the init CLI command [here](https://github.com/dapr/cli/blob/master/README.md). Note, if you are a new user, it is strongly recommended to intall Docker and use the regular init command.
 
-> For Linux users, if you run your docker cmds with sudo or the install path is the default `/usr/local/bin`, you need to use "**sudo dapr init**"
+> For Linux users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use "**sudo dapr init**"
 > For Windows users, make sure that you run the cmd terminal in administrator mode
 > **Note:** See [Dapr CLI](https://github.com/dapr/cli) for details on the usage of Dapr CLI
 
@@ -110,7 +110,7 @@ Uninstalling removes the Placement service container or the Placement service bi
 $ dapr uninstall
 ```
 
-> For Linux users, if you run your docker cmds with sudo or the install path is the default `/usr/local/bin`, you need to use "**sudo dapr uninstall**" to remove dapr binaries and/or the containers.
+> For Linux users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use "**sudo dapr uninstall**" to remove dapr binaries and/or the containers.
 
 It won't remove the Redis or Zipkin containers by default in case you were using them for other purposes. To remove Redis, Zipkin and actor Placement container as well as remove the default Dapr dir located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\` run:
 
