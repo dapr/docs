@@ -103,6 +103,12 @@ kubectl apply -f cosmos.yaml
 
 To run locally, create a YAML file described above and provide the path to the `dapr run` command with the flag `--components-path`.  See [this](https://github.com/dapr/cli#use-non-default-components-path) or run `dapr run --help` for more information on the path.
 
+## Data format
+
+To use the cosmos state store, your data must be sent to Dapr in json format.  Having it just json *serializable* but not json will not work.
+
+If you are using the Dapr SDKs (e.g. https://github.com/dapr/dotnet-sdk) the SDK will serialize your data to json.
+
 ## Partition keys
 
 
