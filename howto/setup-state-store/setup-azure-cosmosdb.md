@@ -105,9 +105,11 @@ To run locally, create a YAML file described above and provide the path to the `
 
 ## Data format
 
-To use the cosmos state store, your data must be sent to Dapr in json format.  Having it just json *serializable* but not json will not work.
+To use the cosmos state store, your data must be sent to Dapr in json-serialized.  Having it just json *serializable* will not work.
 
 If you are using the Dapr SDKs (e.g. https://github.com/dapr/dotnet-sdk) the SDK will serialize your data to json.
+
+For examples see the curl operations in the [Partition keys](#partition-keys) section.
 
 ## Partition keys
 
