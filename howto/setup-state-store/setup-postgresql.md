@@ -47,7 +47,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### In Kubernetes
 
-To apply the SQL Server state store to Kubernetes, use the `kubectl` CLI:
+To apply the PostgreSQL state store to Kubernetes, use the `kubectl` CLI:
 
 ```yaml
 kubectl apply -f postgres.yaml
