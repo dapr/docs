@@ -1,15 +1,17 @@
 # Environment Setup
 
-Dapr can be run in either Standalone or Kubernetes modes. Running Dapr runtime in Standalone mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in Standalone mode and then deploy them to any Kubernetes cluster.
+Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime in self hosted mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in self hosted mode and then deploy them to any Kubernetes cluster.
 
 ## Contents
 
 - [Prerequisites](#prerequisites)
 - [Installing Dapr CLI](#installing-dapr-cli)
-- [Installing Dapr in standalone mode](#installing-dapr-in-standalone-mode)
+- [Installing Dapr in self-hosted mode](#installing-dapr-in-self-hosted-mode)
 - [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
+
+On default Dapr will install with a developer environment using Docker containers to get you started easily. However, Dapr does not depend on Docker to run (see [here](https://github.com/dapr/cli/blob/master/README.md) for instructions on installing Dapr locally without Docker using slim init). This getting started guide assumes Dapr is installed along with this developer environment.
 
 - Install [Docker](https://docs.docker.com/install/)
 
@@ -59,13 +61,15 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
    - For Linux/MacOS - `/usr/local/bin`
    - For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
-## Installing Dapr in standalone mode
+## Installing Dapr in self hosted mode
 
-### Install Dapr runtime using the CLI
+### Initialize Dapr using the CLI
 
-Install Dapr by running `dapr init` from a command prompt
+On default, during initialization the Dapr CLI will install the Dapr binaries as well as setup a developer environment to help you get started easily with Dapr. This environment uses Docker containers, therefore Docker is listed as a prerequisite. 
 
-> For Linux users, if you run your docker cmds with sudo, you need to use "**sudo dapr init**"
+>If you prefer to run Dapr without this environment and no dependency on Docker, see the CLI documentation for usage of the `--slim` flag with the init CLI command [here](https://github.com/dapr/cli/blob/master/README.md). Note, if you are a new user, it is strongly recommended to intall Docker and use the regular init command.
+
+> For Linux users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use "**sudo dapr init**"
 > For Windows users, make sure that you run the cmd terminal in administrator mode
 > **Note:** See [Dapr CLI](https://github.com/dapr/cli) for details on the usage of Dapr CLI
 
@@ -73,7 +77,7 @@ Install Dapr by running `dapr init` from a command prompt
 $ dapr init
 ⌛  Making the jump to hyperspace...
 Downloading binaries and setting up components
-✅  Success! Dapr is up and running
+✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
 If you prefer you can also install to an alternate location by using `--install-path`:
@@ -82,7 +86,7 @@ If you prefer you can also install to an alternate location by using `--install-
 $ dapr init --install-path /home/user123/mydaprinstall
 ```
 
-To see that Dapr has been installed successful, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
+To see that Dapr has been installed successfully, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
 
 ### Install a specific runtime version
 
@@ -98,34 +102,42 @@ cli version: v0.1.0
 runtime version: v0.1.0
 ```
 
-### Uninstall Dapr in a standalone mode
+### Uninstall Dapr in a self hosted mode
 
-Uninstalling will remove the placement container.  
+Uninstalling removes the Placement service container or the Placement service binary.  
 
 ```bash
 $ dapr uninstall
 ```
 
-It won't remove the redis container by default in case you were using it for other purposes.  To remove both the placement and redis container:
+> For Linux users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use "**sudo dapr uninstall**" to remove dapr binaries and/or the containers.
+
+It won't remove the Redis or Zipkin containers by default in case you were using them for other purposes. To remove Redis, Zipkin and actor Placement container as well as remove the default Dapr dir located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\` run:
 
 ```bash
 $ dapr uninstall --all
 ```
 
-You should always run a `dapr uninstall` before running another `dapr init`.
+**You should always run `dapr uninstall` before running another `dapr init`.**
+
+To specify a custom install path from which you have to uninstall run:
+
+```bash
+$ dapr uninstall --install-path /path/to/binary
+```
 
 ## Installing Dapr on a Kubernetes cluster
 
-When setting up Kubernetes you can do this either via the Dapr CLI or Helm.
+When setting up Kubernetes, you can do this either via the Dapr CLI or Helm.
 
 *Note that installing Dapr using the CLI is recommended for testing purposes only.*
 
-Dapr will install the following pods:
+Dapr installs the following pods:
 
-* dapr-operator: manages components and k8s services endpoints for Dapr (state stores, pub-subs, etc.)
-* dapr-sidecar-injector: injects Dapr into annotated pods
-* dapr-placement: used for actors only. creates mapping tables that map actor instances to pods
-* dapr-sentry: manages mTLS and acts as a certificate authority
+* dapr-operator: Manages component updates and kubernetes services endpoints for Dapr (state stores, pub-subs, etc.)
+* dapr-sidecar-injector: Injects Dapr into annotated deployment pods
+* dapr-placement: Used for actors only. Creates mapping tables that map actor instances to pods
+* dapr-sentry: Manages mTLS between services and acts as a certificate authority
 
 ### Setup Cluster
 
@@ -136,12 +148,17 @@ You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 - [Setup Google Cloud Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
+> **Note:** The Dapr control plane containers are currently only distributed on linux containers.
+> Your Kubernetes cluster must contain available Linux capable nodes.
+> Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`.
+> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/hybrid-clusters/)
+
 ### Using the Dapr CLI
 
-You can install Dapr to Kubernetes cluster using CLI.
+You can install Dapr to a Kubernetes cluster using CLI.
 
-> Please note, that using the CLI does not support non-default namespaces.  
-> If you need a non-default namespace, Helm has to be used (see below).
+> **Note:** that using the CLI does not support non-default namespaces.  
+> If you need a non-default namespace, Helm installation has to be used (see below).
 
 #### Install Dapr to Kubernetes
 
@@ -151,7 +168,7 @@ $ dapr init --kubernetes
 
 ⌛  Making the jump to hyperspace...
 ✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
+✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
 Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster using [this](https://daprreleases.blob.core.windows.net/manifest/dapr-operator.yaml) manifest.

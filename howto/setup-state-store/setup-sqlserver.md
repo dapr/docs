@@ -4,7 +4,7 @@
 
 [Follow the instructions](https://docs.microsoft.com/azure/sql-database/sql-database-single-database-get-started?tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
 
-**Note: SQL Server state store also supports SQL Server running on  VMs.**
+**Note: SQL Server state store also supports SQL Server running on VMs.**
 
 In order to setup SQL Server as a state store, you will need the following properties:
 
@@ -13,7 +13,16 @@ In order to setup SQL Server as a state store, you will need the following prope
 * **Table Name**: The database table name. Will be created if not exists
 * **Indexed Properties**: Optional properties from json data which will be indexed and persisted as individual column
 
+### Create a dedicated user
+
+When connecting with a dedicated user (not `sa`), these authorizations are required for the user - even when the user is owner of the desired database schema:
+
+- `CREATE TABLE`
+- `CREATE TYPE`
+
 ## Create a Dapr component
+
+> currently this component does not support state management for actors
 
 The next step is to create a Dapr component for SQL Server.
 
@@ -67,5 +76,4 @@ kubectl apply -f sqlserver.yaml
 
 ### Running locally
 
-The Dapr CLI will automatically create a directory named `components` in your current working directory with a Redis component.
-To use SQL Server, replace the redis.yaml file with sqlserver.yaml file above.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.

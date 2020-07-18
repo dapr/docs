@@ -34,7 +34,7 @@ If running self hosted locally, place this file in your `components` folder next
 
 If running on kubernetes apply the component to your cluster.
 
-> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store](../../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store](../../howto/setup-secret-store)
 
 ## Invoking Service Code Through Input Bindings
 
@@ -149,14 +149,17 @@ If ```concurrency``` is not set, it is sent out sequential (the example below sh
 }
 ```
 
-## Sending Messages to Output Bindings
+## Invoking Output Bindings
 
-This endpoint lets you invoke an Dapr output binding.
+This endpoint lets you invoke a Dapr output binding.
+Dapr bindings support various operations, such as `create`.
+
+See the [different specs](../specs/bindings) on each binding to see the list of supported operations.
 
 ### HTTP Request
 
 ```http
-POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/bindings/<name>
+POST/PUT http://localhost:<daprPort>/v1.0/bindings/<name>
 ```
 
 ### HTTP Response codes
@@ -175,12 +178,14 @@ The bindings endpoint receives the following JSON payload:
   "data": "",
   "metadata": {
     "": ""
-  }
+  },
+  "operation": ""
 }
 ```
 
 The `data` field takes any JSON serializable value and acts as the payload to be sent to the output binding.
-The metadata is an array of key/value pairs and allows you to set binding specific metadata for each call.
+The `metadata` field is an array of key/value pairs and allows you to set binding specific metadata for each call.
+The `operation` field tells the Dapr binding which operation it should perform.
 
 ### URL Parameters
 
@@ -200,7 +205,8 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
         },
         "metadata": {
           "key": "redis-key-1"
-        }
+        },
+        "operation": "create"
       }'
 ```
 

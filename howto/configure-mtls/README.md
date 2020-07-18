@@ -19,7 +19,7 @@ The following file shows all the available settings for mTLS in a configuration 
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: default
+  name: daprsystem
   namespace: default
 spec:
   mtls:
@@ -28,7 +28,7 @@ spec:
     allowedClockSkew: "15m"
 ```
 
-The file here shows the default configuration settings. The examples below show you how to change and apply this configuration to Sentry in Kubernetes and Self hosted modes.
+The file here shows the default `daprsystem` configuration settings. The examples below show you how to change and apply this configuration to Sentry in Kubernetes and Self hosted modes.
 
 ## Kubernetes
 
@@ -41,12 +41,12 @@ Depending on how you install Dapr, this resource may reside in the `default` nam
 
 You can view the configuration resource with the following command:
 
-`kubectl get configurations/default --namespace <DAPR_NAMESPACE> -o yaml`.
+`kubectl get configurations/daprsystem --namespace <DAPR_NAMESPACE> -o yaml`.
 
 To make changes to the configuration resource, you can run the following command to edit it:
 
 ```
-kubectl edit configurations/default --namespace <DAPR_NAMESPACE>
+kubectl edit configurations/daprsystem --namespace <DAPR_NAMESPACE>
 ```
 
 Once the changes are saved, perform a rolling update to the control plane:
@@ -169,7 +169,7 @@ When running Dapr in self hosted mode, mTLS is disabled by default. you can enab
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: default
+  name: daprsystem
   namespace: default
 spec:
   mtls:
@@ -196,7 +196,7 @@ Here's an example of a configuration for Sentry that changes the workload cert T
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: default
+  name: daprsystem
   namespace: default
 spec:
   mtls:

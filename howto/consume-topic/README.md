@@ -6,12 +6,14 @@ Using Pub/Sub, you can enable scenarios where event consumers are decoupled from
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
+Watch this [video](https://www.youtube.com/watch?v=NLWukkHEwGA&feature=youtu.be&t=1052) on how to consume messages from topics.
+
 ## Setup the Pub Sub component
 
 The first step is to setup the Pub/Sub component.
 For this guide, we'll use Redis Streams, which is also installed by default on a local machine when running `dapr init`.
 
-*Note: When running Dapr locally, a pub/sub component YAML will automatically be created if it doesn't exist in a directory called `components` in your current working directory.*
+*Note: When running Dapr locally, a pub/sub component YAML is automatically created for you locally. To override, create a `components` directory containing the file and use the flag `--components-path` with the `dapr run` CLI command.*
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -33,7 +35,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 ## Subscribe to topics
 
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
-The Dapr instance will call into your app, and expect a JSON value of an array of topics.
+The Dapr instance will call into your app, and expect a JSON response for the topic subscriptions.
 
 *Note: The following example is written in node (express.js < 4.16), but can be in any programming language*
 
@@ -47,9 +49,16 @@ const port = 3000
 
 <b>app.get('/dapr/subscribe', (req, res) => {
     res.json([
-        'topic1'
-    ])
+        {
+            topic: "newOrder",
+            route: "orders"
+        }
+    ]);
 })</b>
+
+app.post('/orders', (req, res) => {
+    res.sendStatus(200);
+});
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 </pre>
@@ -74,14 +83,21 @@ app.use(function(req, res, next){
 
 ## Consume messages
 
-To consume messages from a topic, start a web server in the programming language of your choice and listen on a `POST` endpoint with the route name that corresponds to the topic.
-
-For example, in order to receive messages for  `topic1`, have your endpoint listen on `/topic1`.
+To consume messages from a topic, start a web server in the programming language of your choice and listen on a `POST` endpoint with the route path you specified when subscribing.
 
 *Note: The following example is written in node, but can be in any programming language*
 
 ```javascript
-app.post('/topic1', (req, res) => {
+app.get('/dapr/subscribe', (req, res) => {
+    res.json([
+        {
+            topic: "onCreated",
+            route: "custom/path"
+        }
+    ]);
+})
+
+app.post('/custom/path', (req, res) => {
     console.log(req.body)
     res.status(200).send()
 })

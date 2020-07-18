@@ -1,18 +1,17 @@
 # Configuring IntelliJ Community Edition for debugging with daprd
 
-When developing Dapr applications, you typically use the Dapr cli to start your 'Daprized' service similar to this:
+When developing Dapr applications, you typically use the Dapr CLI to start your 'Daprized' service similar to this:
 
 ```bash
 dapr run --app-id nodeapp --app-port 3000 --port 3500 app.js
 ```
 
-This will generate the components yaml files (if they don't exist) so that your service can interact with the local redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this.
+This uses the default components yaml files (created on `dapr init`) so that your service can interact with the local Redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this.
 
->Note: The Dapr runtime (daprd) will not automatically generate the components yaml files for Redis. These will need to be created manually or you will need to run the dapr cli (dapr) once in order to have them created automatically.
 
 One approach to attaching the debugger to your service is to first run `daprd` or `dapr` with the correct arguments from the command line and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
 
-This document will explain how to use `daprd` directly from IntelliJ. As a pre-requisite, make sure you have initialized the Dapr's dev environment via `dapr init`.
+This document explains how to use `daprd` directly from IntelliJ. As a pre-requisite, make sure you have initialized the Dapr's dev environment via `dapr init`.
 
 Let's get started!
 
@@ -70,6 +69,6 @@ Once the one-time config above is done, there are two steps required to debug a 
 After debugging, make sure you stop both `daprd` and your app in IntelliJ.
 
 
->Note: Since you didn't launch the service(s) using the **dapr** ***run*** cli command, but instead by running **daprd**, the **dapr** ***list*** command will not show a list of apps that are currently running.
+>Note: Since you didn't launch the service(s) using the **dapr** ***run*** CLI command, but instead by running **daprd**, the **dapr** ***list*** command does not show a list of apps that are currently running.
 
 Happy debugging!

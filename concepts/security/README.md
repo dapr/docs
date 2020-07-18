@@ -1,18 +1,29 @@
 # Security
 
+This article addresses multiple security considerations when using Dapr in a distributed application including:
+
 - [Sidecar-to-App Communication](#sidecar-to-app-communication)
 - [Sidecar-to-Sidecar Communication](#sidecar-to-sidecar-communication)
-- [Sidecar-to-system-services-communication](#Sidecar-to-system-services-communication)
-- [Component namespace scopes and secrets](#Component-namespace-scopes-and-secrets)
+- [Sidecar-to-system-services-communication](#sidecar-to-system-services-communication)
+- [Component namespace scopes and secrets](#component-namespace-scopes-and-secrets)
 - [Network Security](#network-security)
 - [Bindings Security](#bindings-security)
 - [State Store Security](#state-store-security)
 - [Management Security](#management-security)
+- [Threat Model](#threat-model)
 
+Several of the areas above are addressed through encryption of data in transit. One of the security mechanisms that Dapr employs for encrypting data in transit is [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. mTLS offers a few key features for network traffic inside your application:
+
+- Two way authentication - the client proving its identify to the server, and vice-versa
+- An encrypted channel for all in-flight communication, after two-way authentication is established  
+
+Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
+
+Dapr enables mTLS and all the features described in this document in your application with little to no extra code or complex configuration inside your production systems
 
 ## Sidecar-to-App communication
 
-The Dapr sidecar runs close to the application through **localhost**. Dapr assumes it runs in the same security domain of the application. As a result, there are no authentication, authorization or encryption between a Dapr sidecar and the application.
+The Dapr sidecar runs close to the application through **localhost**, and is recommended to run under the same network boundary as the app. While many cloud-native systems today consider the pod level (on Kubernetes, for example) as a trusted security boundary, Dapr provides user with API level authentication using tokens. This feature guarantees that even on localhost, only an authenticated caller may call into Dapr.
 
 ## Sidecar-to-Sidecar communication
 
@@ -56,7 +67,7 @@ In Kubernetes, when the Dapr system services start, they automatically mount the
 
 In self hosted mode, each system service can be mounted to a filesystem path to get the credentials.
 
-When the Dapr sidecars initialize, they authenticate with the system services using the workload cert that was issued to them by Sentry, the Certificate Authority.
+When the Dapr sidecar initializes, it authenticates with the system pods using the mounted leaf certificates and issuer private key. these are mounted as environment variables on the sidecar container.
 
 ### mTLS to system services in Kubernetes
 The diagram below shows secure communication between the Dapr sidecar and the Dapr Sentry (Certificate Authority), Placement (actor placement) and the Kubernetes Operator system services
@@ -94,3 +105,8 @@ Dapr uses the configured authentication method to authenticate with the underlyi
 When deploying on Kubernetes, you can use regular [Kubernetes RBAC]( https://kubernetes.io/docs/reference/access-authn-authz/rbac/) to control access to management activities.
 
 When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
+
+## Threat Model
+Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized. The Dapr threat model is below.
+
+![Threat Model](../../images/threat_model.png)

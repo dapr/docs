@@ -22,3 +22,7 @@ spec:
 - `enableTLS` - If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+
+## Output Binding Supported Operations
+
+* create

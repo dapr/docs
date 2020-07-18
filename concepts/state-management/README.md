@@ -1,6 +1,14 @@
 # State management
 
-Dapr makes it simple for you to store key/value data in a store of your choice.
+Dapr offers key/value storage APIs for state management. If a microservice uses state management, it can use these APIs to leverage any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
+
+When using state management your application will also be able to leverage several other features that would otherwise be complicated and error-prone to build yourself such as:
+
+- Distributed concurrency and data consistency
+- Retry policies
+- Bulk [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations
+
+See below for a diagram of state management's high level architecture.
 
 ![State management](../../images/state_management.png)
 
@@ -17,7 +25,7 @@ Dapr makes it simple for you to store key/value data in a store of your choice.
 
 ## State management API
 
-Dapr provides reliable state management to applications through a state management buidling block API. Developers can use this API to retrieve, save and delete state values by providing keys.  
+Developers can use the state management API to retrieve, save and delete state values by providing keys. 
 
 Dapr data stores are components. Dapr ships with [Redis](https://redis.io
 ) out-of-box for local development in self hosted mode. Dapr allows you to plug in other data stores as components such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
@@ -32,7 +40,7 @@ Visit [State API](../../reference/api/state_api.md) for more information.
 
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirements, consistency requirements, and retry policy to any state operation requests.
 
-By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfil the requests.
+By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern. On the other hand, if you do attach metadata to your requests, Dapr passes the metadata along with the requests to the state store and expects the data store to fulfill the requests.
 
 Not all stores are created equal. To ensure portability of your application, you can query the capabilities of the store and make your code adaptive to different store capabilities.
 
@@ -41,13 +49,14 @@ The following table summarizes the capabilities of existing data store implement
 Store | Strong consistent write | Strong consistent read | ETag|
 ----|----|----|----
 Cosmos DB | Yes | Yes | Yes
+PostgreSQL | Yes | Yes | Yes
 Redis | Yes | Yes | Yes
 Redis (clustered)| Yes | No | Yes
 SQL Server | Yes | Yes | Yes
 
 ## Concurrency
 
-Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the database.
+Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the state store.
 
 Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags. It's recommended that you use a [Retry Policy](#Retry-Policies) to compensate for such conflicts when using ETags.
 
@@ -102,6 +111,7 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 * [Spec: Dapr actors specification](../../reference/api/actors_api.md)
 * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
 * [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
+* [How-to: Set up PostgreSQL store](../../howto/setup-state-store/setup-postgresql.md)
 * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)
 * [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md)
 * [How-to: Set up SQL Server store](../../howto/setup-state-store/setup-sqlserver.md)
