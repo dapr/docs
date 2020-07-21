@@ -110,3 +110,25 @@ When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Dire
 Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized. The Dapr threat model is below.
 
 ![Threat Model](../../images/threat_model.png)
+
+## Security Audit - June 2020
+
+In June 2020, Dapr has undergone a security audit from Cure53, a CNCF approved cybersecurity firm.
+The test focused on the following:
+
+* Dapr runtime code base evaluation
+* Dapr components code base evaluation
+* Dapr CLI code base evaluation
+* Privilege escalation
+* Traffic spoofing
+* Secrets management
+* RBAC
+* Validating base assumptions: mTLS, scopes, API authentication
+* Orchestration hardening (Kubernetes)
+* DoS attacks
+* Penetration testing
+
+The full report can be found [here](./audits/DAP-01-report.pdf).
+
+Two issues, one critical and one high, were fixed during the test.
+As of July 21st 2020, Dapr has 0 criticals, 2 highs, 2 mediums, 1 low, 1 info.
