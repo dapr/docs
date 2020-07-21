@@ -11,6 +11,7 @@ This article addresses multiple security considerations when using Dapr in a dis
 - [State Store Security](#state-store-security)
 - [Management Security](#management-security)
 - [Threat Model](#threat-model)
+- [Security Audit June 2020](#security-audit-june-2020)
 
 Several of the areas above are addressed through encryption of data in transit. One of the security mechanisms that Dapr employs for encrypting data in transit is [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. mTLS offers a few key features for network traffic inside your application:
 
@@ -111,7 +112,7 @@ Threat modeling is a process by which potential threats, such as structural vuln
 
 ![Threat Model](../../images/threat_model.png)
 
-## Security Audit - June 2020
+## Security Audit June 2020
 
 In June 2020, Dapr has undergone a security audit from Cure53, a CNCF approved cybersecurity firm.
 The test focused on the following:
