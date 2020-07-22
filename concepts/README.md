@@ -42,7 +42,7 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
  The following are the component types provided by Dapr:
 
-* [Service discovery](https://github.com/dapr/components-contrib/tree/master/servicediscovery)
+* [Service discovery](https://github.com/dapr/components-contrib/tree/master/nameresolution)
 * [State](https://github.com/dapr/components-contrib/tree/master/state)
 * [Pub/sub](https://github.com/dapr/components-contrib/tree/master/pubsub)
 * [Bindings](https://github.com/dapr/components-contrib/tree/master/bindings)
@@ -63,7 +63,7 @@ In Dapr, a [**secret**](./secrets/README.md) is any piece of private information
 
 Dapr [Configuration](./configuration/README.md) defines a policy that affects how any Dapr sidecar instance behaves, such as using [distributed tracing](./observability/traces.md) or a [middleware component](./middleware/README.md). Configuration can be applied to Dapr sidecar instances dynamically.
 
- You can get a list of current configurations available in the current the hosting environment using the `dapr configuration` CLI command.
+ You can get a list of current configurations available in the current the hosting environment using the `dapr configurations` CLI command.
   
 ## Hosting environments
 
