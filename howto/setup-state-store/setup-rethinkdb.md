@@ -34,9 +34,9 @@ spec:
   type: state.rethinkdb
   metadata:
   - name: address
-    value: <REPLACE-RETHINKDB-ADDRESS> # Required. For example: 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).
+    value: <REPLACE-RETHINKDB-ADDRESS> # Required, e.g. 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).
   - name: database
-    value: <REPLACE-RETHINKDB-DB-NAME> # Required. For example: dapr (alpha-numerics only)
+    value: <REPLACE-RETHINKDB-DB-NAME> # Required, e.g. dapr (alpha-numerics only)
 ```
 
 
