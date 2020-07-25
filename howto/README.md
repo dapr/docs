@@ -87,6 +87,7 @@ For Actors How Tos see the SDK documentation
 ## Hosting Platforms
 ### Kubernetes Configuration
 
+* [Production deployment and upgrade guidelines](./deploy-k8s-prod)
 * [Sidecar configuration on Kubernetes](./configure-k8s)
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
 * [Deploy to hybrid Linux/Windows Kubernetes clusters](./hybrid-clusters) 
