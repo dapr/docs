@@ -43,4 +43,4 @@ curl -X POST http://localhost:3500/v1.0/publish/deathStarStatus \
 ```
 
 The above example publishes a JSON payload to a `deathStartStatus` topic.
-Dapr will wrap the user payload in a Cloud Events v0.3 compliant envelope.
+Dapr will wrap the user payload in a Cloud Events v1.0 compliant envelope.
