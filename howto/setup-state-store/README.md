@@ -61,5 +61,6 @@ kubectl apply -f statestore.yaml
 * [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
 * [Setup Azure SQL Server](./setup-sqlserver.md)
 * [Setup Azure Table Storage](./setup-azure-tablestorage.md)
+* [Setup Azure Blob Storage](./setup-azure-blobstorage.md)
 * [Setup Google Cloud Firestore (Datastore mode)](./setup-firestore.md)
 * [Supported State Stores](./supported-state-stores.md)
