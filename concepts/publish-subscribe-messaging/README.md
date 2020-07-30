@@ -25,7 +25,7 @@ When multiple instances of the same application ID subscribe to a topic, Dapr wi
 
 ## Cloud events
 
-Dapr follows the [Cloud Events 0.3 Spec](https://github.com/cloudevents/spec/tree/v0.3) and wraps any payload sent to a topic inside a Cloud Events envelope.
+Dapr follows the [Cloud Events 1.0 Spec](https://github.com/cloudevents/spec/tree/v1.0) and wraps any payload sent to a topic inside a Cloud Events envelope.
 
 The following fields from the Cloud Events spec are implemented with Dapr:
 
