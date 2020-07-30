@@ -1,6 +1,6 @@
-# Guidelines for production-ready deployments on Kubernetes
+# Guidelines for production ready deployments on Kubernetes
 
-This section outlines recommendations and practices for deploying Dapr to a Kubernetes cluster in a production-ready configuration.
+This section outlines recommendations and practices for deploying Dapr to a Kubernetes cluster in a production ready configuration.
 
 ## Contents
 
@@ -11,10 +11,10 @@ This section outlines recommendations and practices for deploying Dapr to a Kube
 - [Recommended security configuration](#recommended-security-configuration)
 - [Tracing and metrics configuration](#tracing-and-metrics-configuration)
 
-## Cluster Capacity Requirements
+## Cluster capacity requirements
 
 For a production ready Kubernetes cluster deployment, it is recommended you run a cluster of 3 nodes to support a highly-available setup of the control plane.
-The Dapr control plane pods are designed to be very lightweight and require the following resources in a production-ready setup:
+The Dapr control plane pods are designed to be lightweight and require the following resources in a production-ready setup:
 
 | Deployment  | CPU | Memory
 | ------------| ---- | ------
@@ -24,16 +24,17 @@ The Dapr control plane pods are designed to be very lightweight and require the 
 | Placement | Limit: 1, Request: 250m  | Limit: 500Mi, Request: 100Mi
 | Dashboard  | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
 
+For more details on configuring resource in Kubernetes see [Assign Memory Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/) and [Assign CPU Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
 
 ### Optional components
 
-The following control plane deployments are optional:
+The following Dapr control plane deployments are optional:
 
 * Placement - Needed for Dapr Actors
 * Sentry - Needed for mTLS for service to service invocation
 * Dashboard - Needed for operational view of the cluster
 
-## Sidecar Resource Requirements
+## Sidecar resource requirements
 
 The Dapr sidecar requires the following resources in a production-ready setup:
 
@@ -41,14 +42,14 @@ The Dapr sidecar requires the following resources in a production-ready setup:
 | --------- | --------- |
 | Limit: 4, Request: 100m | Limit: 4000Mi, Request: 250Mi
 
-*Note: Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr will enable you to drastically reduce the resoure allocations for the app*
+*Note: Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr enable you to drastically reduce the resource allocations for the application*
 
-The CPU and Memory limits above account for the fact that Dapr is intended to do a lot of high performant I/O bound operations. Based on your app needs, you can increase or decrease those limits accordingly.
+The CPU and memory limits above account for the fact that Dapr is intended to do a lot of high performant I/O bound operations. Based on your app needs, you can increase or decrease those limits accordingly.
 
 ## Deploying Dapr with Helm
 
 When deploying to a production cluster, it's recommended to use Helm. The Dapr CLI installation into a Kubernetes cluster is for a development and test only setup.
-You can find information [here](../../getting-started/environment-setup.md#using-helm-(advanced)) about how to deploy Dapr using Helm.
+You can find information [here](../../getting-started/environment-setup.md#using-helm-(advanced)) on how to deploy Dapr using Helm.
 
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
 
@@ -56,15 +57,15 @@ When deploying Dapr in a production-ready configuration, it's recommended to dep
 helm install dapr dapr/dapr --namespace dapr-system --set global.ha.enabled=true
 ```
 
-This command will run 3 replicas of each control plane pod with the exception of the Placement pod.
+This command will run 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace.
 
 ## Upgrading Dapr with Helm
 
 Dapr supports zero downtime upgrades. The upgrade path includes the following steps:
 
 1. Upgrading a CLI version (optional but recommended)
-2. Updating the control plane
-3. Updating the data plane (sidecars)
+2. Updating the Dapr control plane
+3. Updating the data plane (Dapr sidecars)
 
 ### 1. Upgrading the CLI
 
@@ -77,9 +78,9 @@ After you downloaded the binary, it's recommended you put the CLI binary in your
 
 #### Saving the current certificates
 
-When upgrading to a new version of Dapr, it is recommended we carry over our Root and Issuer certificates instead of re-generating them, which might cause a downtime for applications that make use of service invocation or actors.
+When upgrading to a new version of Dapr, it is recommended you carry over the root and issuer certificates instead of re-generating them, which might cause a downtime for applications that make use of service invocation or actors.
 
-To get the current certificates, run the following command:
+To get the current root and issuer certificates, run the following command:
 
 ```
 kubectl get secret dapr-trust-bundle -o yaml -n dapr-system
@@ -92,9 +93,9 @@ data:
 kind: Secret
 ```
 
-Copy the contents of `ca.crt`, `issuer.crt` and `issuer.key` and base64 decode them.
+Copy the contents of `ca.crt`, `issuer.crt` and `issuer.key` and base64 decode them. Save these certificates as files.
 
-Finally, you should have the following files saved on your disk:, containing the base64 decoded text from the secret:
+You should have the following files saved on your disk:, containing the base64 decoded text from the secret:
 
 1. ca.crt
 2. issuer.crt
@@ -102,7 +103,7 @@ Finally, you should have the following files saved on your disk:, containing the
 
 #### Updating the control plane pods
 
-Next, we need to find a Helm Chart version that installs our desired version of Dapr and perform a `helm upgrade` operation.
+Next, you need to find a Helm chart version that installs the new desired version of Dapr and perform a `helm upgrade` operation.
 
 First, update the Helm Chart repos:
 
@@ -122,14 +123,13 @@ dapr/dapr	0.4.2        	0.8.0      	A Helm chart for Dapr on Kubernetes
 
 The APP VERSION column tells us which Dapr runtime version is installed by the chart.
 
-Use the following command to upgrade Dapr to your desired version:
+Use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved:
 
 ```bash
 helm upgrade dapr dapr/dapr --version <CHART-VERSION> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
 ```
 
-Kubernetes will now issue a rolling update.
-Wait until all the new pods appear as running:
+Kubernetes now performs a rolling update. Wait until all the new pods appear as running:
 
 ```bash
 kubectl get po -n dapr-system -w
@@ -154,7 +154,7 @@ dapr-sidecar-injector  dapr-system    True     Running  0.9.0    12s  2020-07-24
 dapr-sentry            dapr-system    True     Running  0.9.0    12s  2020-07-24 15:38.15
 ```
 
-*Note: If new fields have been added to the target Helm Chart being upgraded to, the `helm upgrade` command will fail. If that happens, you will need to find which new fields have been added in the new chart and add them as parameters to the upgrade command, for example: `--set <field-name>=<value>`.*
+*Note: If new fields have been added to the target Helm Chart being upgraded to, the `helm upgrade` command will fail. If that happens, you need to find which new fields have been added in the new chart and add them as parameters to the upgrade command, for example: `--set <field-name>=<value>`.*
 
 #### Updating the data plane (sidecars)
 
@@ -167,20 +167,19 @@ kubectl rollout restart deploy/<DEPLOYMENT-NAME>
 
 ## Recommended security configuration
 
-Properly configured, Dapr will not only be secured with regards to it's control plane and sidecars, but can also make your application more secure with a number of built-in features.
+Properly configured, Dapr not only be secured with regards to it's control plane and sidecars communication, but can also make your application more secure with a number of built-in features.
 
-It is recommended that a production-ready deployment includes the following:
+It is recommended that a production-ready deployment includes the following settings:
 
 1. Mutual Authentication (mTLS) should be enabled. Note that Dapr has mTLS on by default. For details on how to bring your own certificates, see [here](../configure-mtls/README.md#bringing-your-own-certificates)
 
-2. Dapr API authentication is enabled. To secure the Dapr API from unauthorized access, it is recommended to enable Dapr's token based auth. See [here](../enable-dapr-api-token-based-authentication/README.md) for details
+2. Dapr API authentication is enabled (this is the between your application and the Dapr sidecar). To secure the Dapr API from unauthorized access, it is recommended to enable Dapr's token based auth. See [here](../enable-dapr-api-token-based-authentication/README.md) for details
 
 3. All component YAMLs should have secret data configured in a secret store and not hard-coded in the YAML file. See [here](../../concepts/secrets/component-secrets.md) on how to use secrets with Dapr components
 
-4. Dapr control plane is installed on a separate namespace such as `dapr-system`, and never into the `default` namespace
+4. The Dapr control plane is installed on a separate namespace such as `dapr-system`, and never into the `default` namespace
 
-Dapr also supports scoping components for certain applications.
-This is not a required practice, and can be enabled according to your Sec-Ops needs. See [here](../components-scopes/README.md) for more info.
+Dapr also supports scoping components for certain applications. This is not a required practice, and can be enabled according to your Sec-Ops needs. See [here](../components-scopes/README.md) for more info.
 
 ## Tracing and metrics configuration
 
