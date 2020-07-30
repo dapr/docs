@@ -13,8 +13,10 @@ This section outlines recommendations and practices for deploying Dapr to a Kube
 
 ## Cluster capacity requirements
 
-For a production ready Kubernetes cluster deployment, it is recommended you run a cluster of 3 nodes to support a highly-available setup of the control plane.
+For a production ready Kubernetes cluster deployment, it is recommended you run a cluster of 3 worker nodes to support a highly-available setup of the control plane.
 The Dapr control plane pods are designed to be lightweight and require the following resources in a production-ready setup:
+
+*Note: For more info on CPU and Memory resource units and their meaning, see [this](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes) link*
 
 | Deployment  | CPU | Memory
 | ------------| ---- | ------
@@ -23,6 +25,14 @@ The Dapr control plane pods are designed to be lightweight and require the follo
 | Sentry  | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 20Mi
 | Placement | Limit: 1, Request: 250m  | Limit: 500Mi, Request: 100Mi
 | Dashboard  | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
+
+To change the resource assignments for the Dapr sidecar, see the annotations [here](../configure-k8s/).
+The specific annotations related to resource constraints are:
+
+* `dapr.io/sidecar-cpu-limit`
+* `dapr.io/sidecar-memory-limit`
+* `dapr.io/sidecar-cpu-request`
+* `dapr.io/sidecar-memory-request`
 
 For more details on configuring resource in Kubernetes see [Assign Memory Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/) and [Assign CPU Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
 
@@ -95,7 +105,7 @@ kind: Secret
 
 Copy the contents of `ca.crt`, `issuer.crt` and `issuer.key` and base64 decode them. Save these certificates as files.
 
-You should have the following files saved on your disk:, containing the base64 decoded text from the secret:
+You should have the following files containing the base64 decoded text from the secret saved on your disk:
 
 1. ca.crt
 2. issuer.crt
@@ -165,6 +175,15 @@ To do that, simply issue a rollout restart command for any deployment that has t
 kubectl rollout restart deploy/<DEPLOYMENT-NAME>
 ```
 
+To see a list of all your Dapr enabled deployments, you can either use the [Dapr Dashboard](https://github.com/dapr/dashboard) or run the following command using the Dapr CLI:
+
+```bash
+dapr list -k
+
+APP ID     APP PORT  AGE  CREATED
+nodeapp    3000      16h  2020-07-29 17:16.22
+```
+
 ## Recommended security configuration
 
 Properly configured, Dapr not only be secured with regards to it's control plane and sidecars communication, but can also make your application more secure with a number of built-in features.
@@ -183,4 +202,12 @@ Dapr also supports scoping components for certain applications. This is not a re
 
 ## Tracing and metrics configuration
 
-TBD
+Dapr has tracing and metrics enabled by default.
+To configure a tracing backend for Dapr visit [this](../diagnose-with-tracing) link.
+
+For metrics, Dapr exposes a Prometheus endpoint listening on port 9090 which can be scraped by Prometheus.
+
+It is *recommended* that you set up distributed tracing and metrics for your applications and the Dapr control plane in production.
+If you already have your own observability set-up, you can disable tracing and metrics for Dapr.
+
+To setup Prometheus, Grafana and other monitoring tools with Dapr, visit [this](../setup-monitoring-tools) link.
