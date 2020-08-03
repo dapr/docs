@@ -14,9 +14,6 @@ To connect to the admin UI:
 open "http://$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' rethinkdb):8080"
 ```
 
-## Kubernetes 
-
-> TODO: provide instructions on setting up secured RethinkDB cluster (e.g. https://github.com/jmckind/rethinkdb-operator) 
 
 ## Create a Dapr component
 
@@ -37,21 +34,14 @@ spec:
     value: <REPLACE-RETHINKDB-ADDRESS> # Required, e.g. 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).
   - name: database
     value: <REPLACE-RETHINKDB-DB-NAME> # Required, e.g. dapr (alpha-numerics only)
+  - name: username
+    value: # Optional
+  - name: password
+    value: # Optional
+  - name: archive
+    value: # Optional (whether or not store should keep archive table of all the state changes)
 ```
 
+RethinkDB state store supports transactions so it can be used to persist Dapr Actor state. By default, the state will be stored in table name `daprstate` in the specified database. 
 
-Additionally, the RethinkDB state component supports optional connection parameters [here](https://godoc.org/gopkg.in/gorethink/gorethink.v3#ConnectOpts) (note, use the `gorethink` names, e.g. `authkey` for `AuthKey`)
-
-## Apply the configuration
-
-### In Kubernetes
-
-To apply the RethinkDB state store to Kubernetes, use the `kubectl` CLI:
-
-```
-kubectl apply -f rethinkdb.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+Additionally, if the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr. 
