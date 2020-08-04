@@ -188,9 +188,6 @@ storename | ```metadata.name``` field in the user configured state store compone
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
-retryInterval | (optional) retry interval, in milliseconds, see [retry policy](#retry-policy)
-retryPattern | (optional) retry pattern, can be either *linear* or *exponential*, see [retry policy](#retry-policy)
-retryThreshold | (optional) number of retries, see [retry policy](#retry-policy)
 
 #### Request Headers
 
@@ -276,16 +273,6 @@ When a strong consistency hint is attached, a state store should:
 * For read requests, the state store should return the most up-to-date data consistently across replicas.
 * For write/delete requests, the state store should synchronisely replicate updated data to configured quorum before completing the write request.
 
-### Retry Policy
-
-Dapr allows clients to attach retry policies to *set* and *delete* operations. A retry policy is described by three fields:
-
-Field | Description
----- | -----------
-retryInterval | Initial delay between retries, in milliseconds. The interval remains constant for *linear* retry pattern. The interval is doubled after each retry for *exponential* retry pattern. So, for *exponential* pattern, the delay after attempt *n* will be interval*2^(n-1).
-retryPattern | Retry pattern, can be either *linear* or *exponential*.
-retryThreshold | Maximum number of retries.
-
 ### Example
 
 The following is a sample *set* request with a complete operation option definition:
@@ -301,11 +288,6 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
           "options": {
             "concurrency": "first-write",
             "consistency": "strong",
-            "retryPolicy": {
-              "interval": 100,
-              "threshold" : 3,
-              "pattern": "exponential"
-            }
           }
         }
       ]'
