@@ -4,6 +4,8 @@ This document shows how to enable Local secret store using [Dapr Secrets Compone
 
 > The Local secret store is in no way recommended for production environments.
 
+> The Local secret store works with key value pairs. 
+
 ## Contents
 
 - [Create JSON file to hold the secrets](#create-json-file-to-hold-the-secrets)
@@ -24,7 +26,7 @@ This creates new JSON file to hold the secrets.
 
 ## Use Local secret store in Standalone mode
 
-This section walks you through how to enable an Local secret store to store a password to access a Redis state store in Standalone mode.
+This section walks you through how to enable a Local secret store to store a password to access a Redis state store in Standalone mode.
 
 1. Create a file called localsecretstore.yaml in the components directory
 
@@ -45,6 +47,28 @@ spec:
     value: ":"
 ```
 
+The `nestedSeparator` parameter, is not required (default value is ':') and it's used by the store when flattening the json hierarchy to a map. So given the following json:
+
+```json
+{
+    "redis": "your redis password",
+    "connectionStrings": {
+        "sql": "your sql connection string",
+        "mysql": "your mysql connection string"
+    }
+}
+```
+
+the store will load the file and create a map with the following key value pairs:
+
+| flattened key           | value                           |
+| ---                     | ---                             |
+|"redis"                  | "your redis password"           |
+|"connectionStrings:sql"  | "your sql connection string"    |
+|"connectionStrings:mysql"| "your mysql connection string"  |
+
+> Use the flattened key to access the secret.
+
 2. Create redis.yaml in the components directory with the content below
 
 Create a statestore component file. This Redis component yaml shows how to use the `redisPassword` secret stored in a Local secret store called localsecretstore as a Redis connection password.
@@ -63,10 +87,11 @@ spec:
   - name: redisPassword
     secretKeyRef:
       name: redisPassword
-      key: redisPassword
 auth:
     secretStore: localsecretstore
 ```
+
+> Note that the `secretKeyRef` uses the `name` to get the secret.
 
 3. Run your app
 
