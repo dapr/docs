@@ -81,14 +81,14 @@ app.post('/add', (req, res) => {
   let args = req.body;
   const [operandOne, operandTwo] = [Number(args['arg1']), Number(args['arg2'])];
   
-  let result = operandOne / operandTwo;
+  let result = operandOne + operandTwo;
   res.send(result.toString());
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
 ```
 
-> The response from the remote endpoint will be returned in the request body.
+> The response from the remote endpoint will be returned in the response body.
 
 In case when your service listens on a more nested path (e.g. `/api/v1/add`), Dapr implements a full reverse proxy so you can append all the necessary path fragments to your request URL like this: 
 
