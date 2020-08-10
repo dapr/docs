@@ -81,7 +81,7 @@ app.post('/add', (req, res) => {
   let args = req.body;
   const [operandOne, operandTwo] = [Number(args['arg1']), Number(args['arg2'])];
   
-  let result = operandOne / operandTwo;
+  let result = operandOne + operandTwo;
   res.send(result.toString());
 });
 
