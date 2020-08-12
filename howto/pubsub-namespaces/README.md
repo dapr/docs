@@ -2,7 +2,7 @@
 
 In some scenarios, applications can be spread across namespaces and share a queue or topic via PubSub. In this case, the PubSub component must be provisioned on each namespace.
 
-In this example, we will use the [PubSub sample](https://github.com/dapr/samples/tree/master/4.pub-sub). Redis installation and the subscribers will be in `namespace-a` while the publisher UI will be on `namespace-b`. This solution should also work if Redis was installed on another namespace or if we used a managed cloud service like Azure ServiceBus.
+In this example, we will use the [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub). Redis installation and the subscribers will be in `namespace-a` while the publisher UI will be on `namespace-b`. This solution should also work if Redis was installed on another namespace or if we used a managed cloud service like Azure ServiceBus.
 
 The table below shows which resources are deployed to which namespaces:
 | Resource | namespace-a | namespace-b |
@@ -17,7 +17,7 @@ The table below shows which resources are deployed to which namespaces:
 ## Pre-requisites
 
 * [Dapr installed](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md.) on any namespace since Dapr works at the cluster level.
-* Checkout and cd into directory for [PubSub sample](https://github.com/dapr/samples/tree/master/4.pub-sub).
+* Checkout and cd into directory for [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub).
 
 ## Setup `namespace-a`
 

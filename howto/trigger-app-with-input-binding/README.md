@@ -12,7 +12,7 @@ Dapr bindings allow you to:
 
 For more info on bindings, read [this](../../concepts/bindings/README.md) link.
 
-For a complete sample showing bindings, visit this [link](https://github.com/dapr/samples/tree/master/5.bindings).
+For a complete sample showing bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
 ## 1. Create a binding
 
