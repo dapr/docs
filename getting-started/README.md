@@ -16,6 +16,6 @@ Dapr can be run locally or in Kubernetes. We recommend starting with a local set
 
 ## Next steps
 
-1. Once Dapr is installed, continue to the [Hello World quickstart](https://github.com/dapr/quickstarts/tree/master/1.hello-world).
+1. Once Dapr is installed, continue to the [Hello World quickstart](https://github.com/dapr/quickstarts/tree/master/hello-world).
 2. Explore additional [quickstarts](https://github.com/dapr/quickstarts) for more advanced concepts, such as service invocation, pub/sub, and state management.
 3. Follow [How To guides](../howto) to understand how Dapr solves specific problems, such as creating a [rate limited app](../howto/control-concurrency).
