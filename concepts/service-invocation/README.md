@@ -13,7 +13,7 @@ Below is a high level overview of how Dapr's service invocation system works.
 5. Dapr forwards the response to Service A's Dapr sidecar.
 6. Service A receives the response.
 
-As an example for all the above, suppose we have the collection of apps described in the following sample, where a python app invokes a Node.js app: https://github.com/dapr/samples/blob/master/2.hello-kubernetes/README.md
+As an example for all the above, suppose we have the collection of apps described in the following sample, where a python app invokes a Node.js app: https://github.com/dapr/quickstarts/blob/master/hello-kubernetes/README.md
 
 In such a scenario, the python app would be "Service A" above, and the Node.js app would be "Service B".
 

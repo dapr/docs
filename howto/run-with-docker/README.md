@@ -133,16 +133,16 @@ services:
 
 > For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.
 
-To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/10.hello-docker-compose).
+To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/hello-docker-compose).
 
 ## Run Dapr in a Docker container on Kubernetes
 If your deployment target is Kubernetes then you're probably better of running your applicaiton and Dapr sidecars directly on
 a Kubernetes platform. Running Dapr on Kubernetes is a first class experience and is documented separately. Please refer to the
 following references:
 - [Setup Dapr on a Kubernetes cluster](https://github.com/dapr/docs/blob/ea5b1918778a47555dbdccff0ed6c5b987ed10cf/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
-- [Hello Kubernetes Sample](https://github.com/dapr/samples/tree/master/2.hello-kubernetes)
+- [Hello Kubernetes Sample](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)
 - [Configuring the Dapr sidecar on Kubernetes](https://github.com/dapr/docs/blob/c88d247a2611d6824d41bb5b6adfeb38152dbbc6/howto/configure-k8s/README.md)
 - [Running Dapr in Kubernetes mode](https://github.com/dapr/docs/blob/a7668cab5e16d12f364a42d2fe7d75933c6398e9/overview/README.md#running-dapr-in-kubernetes-mode)
 
 ## Related links
-- [Docker-Compose Sample](https://github.com/dapr/samples/10.hello-docker-compose)
+- [Docker-Compose Sample](https://github.com/dapr/samples/hello-docker-compose)
