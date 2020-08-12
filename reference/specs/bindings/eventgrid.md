@@ -99,7 +99,7 @@ ngrok http -host-header=localhost 9000
 
 ```bash
 # Using default ports for .NET core web api and Dapr as an example
-dapr run --app-id dotnetwebapi --app-port 5000 --port 3500 dotnet run
+dapr run --app-id dotnetwebapi --app-port 5000 --dapr-http-port 3500 dotnet run
 ```
 
 ### Testing from Kubernetes cluster
@@ -112,8 +112,8 @@ To get started, first create `dapr-annotations.yaml` for Dapr annotations
 controller:
     podAnnotations:
       dapr.io/enabled: "true"
-      dapr.io/id: "nginx-ingress"
-      dapr.io/port: "80"
+      dapr.io/app-id: "nginx-ingress"
+      dapr.io/app-port: "80"
 ```
 
 Then install NGINX ingress controller to your Kubernetes cluster with Helm 3 using the annotations
@@ -194,8 +194,8 @@ spec:
         app: dotnetwebapi
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "dotnetwebapi"
-        dapr.io/port: "5000"
+        dapr.io/app-id: "dotnetwebapi"
+        dapr.io/app-port: "5000"
     spec:
       containers:
       - name: webapi

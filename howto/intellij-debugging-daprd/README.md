@@ -3,7 +3,7 @@
 When developing Dapr applications, you typically use the Dapr CLI to start your 'Daprized' service similar to this:
 
 ```bash
-dapr run --app-id nodeapp --app-port 3000 --port 3500 app.js
+dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 app.js
 ```
 
 This uses the default components yaml files (created on `dapr init`) so that your service can interact with the local Redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this.
@@ -30,7 +30,7 @@ Create or edit the file in `$HOME/.IdeaIC2019.3/config/tools/External\ Tools.xml
       <!-- 2. For Linux or MacOS use: /usr/local/bin/daprd -->
       <option name="COMMAND" value="C:\dapr\daprd.exe" />
       <!-- 3. Choose app, http and grpc ports that do not conflict with other daprd command entries (placement address should not change). -->
-      <option name="PARAMETERS" value="-app-id demoservice -app-port 3000 -dapr-http-port 3005 -dapr-grpc-port 52000 -placement-address localhost:50005" />
+      <option name="PARAMETERS" value="-app-id demoservice -app-port 3000 -dapr-http-port 3005 -dapr-grpc-port 52000 -placement-host-address localhost:50005" />
       <!-- 4. Use the folder where the `components` folder is located -->
       <option name="WORKING_DIRECTORY" value="C:/Code/dapr/java-sdk/examples" />
     </exec>

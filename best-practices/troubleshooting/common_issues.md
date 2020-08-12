@@ -28,8 +28,8 @@ spec:
         app: node
       annotations:
         <b>dapr.io/enabled: "true"</b>
-        <b>dapr.io/id: "nodeapp"</b>
-        <b>dapr.io/port: "3000"</b>
+        <b>dapr.io/app-id: "nodeapp"</b>
+        <b>dapr.io/app-port: "3000"</b>
     spec:
       containers:
       - name: node
@@ -119,13 +119,13 @@ Look at the Dapr API reference [here](../../reference/api/README.md) and make su
 ### I don't see any incoming events or calls from other services
 
 Have you specified the port your app is listening on?
-In Kubernetes, make sure the `dapr.io/port` annotation is specified:
+In Kubernetes, make sure the `dapr.io/app-port` annotation is specified:
 
 <pre>
 annotations:
     dapr.io/enabled: "true"
-    dapr.io/id: "nodeapp"
-    <b>dapr.io/port: "3000"</b>
+    dapr.io/app-id: "nodeapp"
+    <b>dapr.io/app-port: "3000"</b>
 </pre>
 
 If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` flag to the `dapr run` command.

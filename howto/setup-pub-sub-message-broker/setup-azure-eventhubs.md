@@ -35,7 +35,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 ## Create consumer groups for each subscriber
 
 For every Dapr app that wants to subscribe to events, create an Event Hubs consumer group with the name of the `dapr id`.
-For example, a Dapr app running on Kubernetes with `dapr.io/id: "myapp"` will need an Event Hubs consumer group named `myapp`.
+For example, a Dapr app running on Kubernetes with `dapr.io/app-id: "myapp"` will need an Event Hubs consumer group named `myapp`.
 
 ## Apply the configuration
 

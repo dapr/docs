@@ -100,7 +100,7 @@ You can check that `secretstores.local.localsecretstore` component is loaded and
 Here is the log when you run [HelloWorld sample](https://github.com/dapr/samples/tree/master/1.hello-world) with Local Secret secret store.
 
 ```bash
-$ dapr run --app-id mynode --app-port 3000 --port 3500 node app.js
+$ dapr run --app-id mynode --app-port 3000 --dapr-http-port 3500 node app.js
 
 ℹ️  Starting Dapr with id mynode on port 3500
 ✅  You're up and running! Both Dapr and your app logs will appear here.

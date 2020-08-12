@@ -32,8 +32,8 @@ Deploying and running a Dapr enabled application into your Kubernetes cluster is
 ```yml
   annotations:
     dapr.io/enabled: "true"
-    dapr.io/id: "nodeapp"
-    dapr.io/port: "3000"
+    dapr.io/app-id: "nodeapp"
+    dapr.io/app-port: "3000"
     dapr.io/config: "tracing"
 ```
 You can see some examples [here](https://github.com/dapr/samples/tree/master/2.hello-kubernetes/deploy) in the Kubernetes getting started sample.

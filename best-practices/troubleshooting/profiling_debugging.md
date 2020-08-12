@@ -16,8 +16,8 @@ To enable profiling in Kubernetes, simply add the following annotation to your D
 <pre>
 annotations:
     dapr.io/enabled: "true"
-    dapr.io/id: "rust-app"
-    <b>dapr.io/profiling: "true"</b>
+    dapr.io/app-id: "rust-app"
+    <b>dapr.io/enable-profiling: "true"</b>
 </pre>
 
 ### Standalone
