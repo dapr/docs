@@ -5,6 +5,7 @@
 - [Key Scheme](#key-scheme)
 - [Save State](#save-state)
 - [Get State](#get-state)
+- [Get Bulk State](#get-bulk-state)
 - [Delete State](#delete-state)
 - [Configuring State Store for Actors](#configuring-state-store-for-actors)
 - [Optional Behaviors](#optional-behaviors)
@@ -167,6 +168,65 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 {
   "name": "Tatooine"
 }
+```
+
+## Get bulk state
+
+This endpoint lets you get a list of values for a given list of keys.
+
+### HTTP Request
+
+```http
+POST http://localhost:<daprPort>/v1.0/state/<storename>/bulk
+```
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
+
+### HTTP Response
+
+#### Response Codes
+
+Code | Description
+---- | -----------
+200  | Get state successful
+400  | State store is missing or misconfigured
+500  | Get bulk state failed
+
+#### Response Body
+An array of JSON-encoded values
+
+### Example 
+
+```shell
+curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
+  -H "Content-Type: application/json"
+  -d '{
+          "keys": [ "key1", "key2" ],
+          "parallelism": 10,
+      }'
+```
+
+> The above command returns an array of key/value objects:
+
+```json
+[
+  {
+    "key": "key1",
+    "data": "value1",
+    "etag": "1"
+  },
+  {
+    "key": "key2",
+    "data": "value2",
+    "etag": "1"
+  },
+]
 ```
 
 ## Delete state
