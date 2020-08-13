@@ -90,6 +90,18 @@ After you downloaded the binary, it's recommended you put the CLI binary in your
 
 When upgrading to a new version of Dapr, it is recommended you carry over the root and issuer certificates instead of re-generating them, which might cause a downtime for applications that make use of service invocation or actors.
 
+#### Exporting certs with the Dapr CLI
+
+To get your current certs with the Dapr CLI, run the following command:
+
+```
+dapr mtls export -o ./certs
+```
+
+This will save any existing root cert, issuer cert and issuer key in the output dir of your choice.
+
+### Exporting certs manually
+
 To get the current root and issuer certificates, run the following command:
 
 ```
