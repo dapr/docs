@@ -1,6 +1,17 @@
 # Configure API authorization with OAuth
 
-Dapr OAuth 2.0 [middleware](../../concepts/middleware/README.md) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs, using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1). When the middleware is enabled, any method invocation through Dapr needs to be authorized before getting passed to the user code.
+Dapr OAuth 2.0 [middleware](../../concepts/middleware/README.md) allows you to enable [OAuth](https://oauth.net/2/)
+authorization on Dapr endpoints for your web APIs,
+using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
+As well as injecting authorization tokens into your APIs which can be used for authorization towards external APIs
+called by your APIs,
+using the [Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4).
+When the middleware is enabled,
+any method invocation through Dapr needs to be authorized before getting passed to the user code.
+
+The main difference between the two flows is that the
+`Authorization Code Grant flow` needs user interaction and authorizes a user,
+the `Client Credentials Grant flow` doesn't need a user interaction and authorizes a service/application.
 
 ## Register your application with a authorization server
 
@@ -26,14 +37,16 @@ Authorization/Token URLs of some of the popular authorization servers:
 
 |Server|Authorization URL|Token URL|
 |--------|--------|--------|
-|Azure AAD|https://login.microsoftonline.com/{tenant}/oauth2/authorize|https://login.microsoftonline.com/{tenant}/oauth2/token|
-|GitHub|https://github.com/login/oauth/authorize|https://github.com/login/oauth/access_token|
-|Google|https://accounts.google.com/o/oauth2/v2/auth|https://accounts.google.com/o/oauth2/token https://www.googleapis.com/oauth2/v4/token|
-|Twitter|https://api.twitter.com/oauth/authorize|https://api.twitter.com/oauth2/token|
+|Azure AAD|<https://login.microsoftonline.com/{tenant}/oauth2/authorize>|<https://login.microsoftonline.com/{tenant}/oauth2/token>|
+|GitHub|<https://github.com/login/oauth/authorize>|<https://github.com/login/oauth/access_token>|
+|Google|<https://accounts.google.com/o/oauth2/v2/auth>|<https://accounts.google.com/o/oauth2/token> <https://www.googleapis.com/oauth2/v4/token>|
+|Twitter|<https://api.twitter.com/oauth/authorize>|<https://api.twitter.com/oauth2/token>|
 
 ## Define the middleware component definition
 
-An OAuth middleware is defined by a component:
+### Define an Authorization Code Grant component
+
+An OAuth middleware (Authorization Code) is defined by a component:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -51,7 +64,7 @@ spec:
   - name: scopes
     value: "<comma-separated scope names>"
   - name: authURL
-    value: "<authroziation URL>"
+    value: "<authorization URL>"
   - name: tokenURL
     value: "<token exchange URL>"
   - name: redirectURL
@@ -60,9 +73,10 @@ spec:
     value: "<header name under which the secret token is saved>"
 ```
 
-## Define a custom pipeline
+### Define a custom pipeline for an Authorization Code Grant
 
-To use the OAuth middleware, you should create a [custom pipeline](../../concepts/middleware/README.md) using [Dapr configuration](../../concepts/configuration/README.md), as shown in the following sample:
+To use the OAuth middleware (Authorization Code), you should create a [custom pipeline](../../concepts/middleware/README.md)
+using [Dapr configuration](../../concepts/configuration/README.md), as shown in the following sample:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -77,9 +91,67 @@ spec:
       type: middleware.http.oauth2
 ```
 
+### Define a Client Credentials Grant component
+
+An OAuth (Client Credentials) middleware is defined by a component:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: myComponent
+spec:
+  type: middleware.http.oauth2clientcredentials
+  metadata:
+  - name: clientId
+    value: "<your client ID>"
+  - name: clientSecret
+    value: "<your client secret>"
+  - name: scopes
+    value: "<comma-separated scope names>"
+  - name: tokenURL
+    value: "<token issuing URL>"
+  - name: headerName
+    value: "<header name under which the secret token is saved>"
+  - name: endpointParamsQuery
+    value: "<list of additional key=value settings separated by ampersands or semicolons forwarded to the token issuing service>"
+    # authStyle:
+    # "0" means to auto-detect which authentication
+    # style the provider wants by trying both ways and caching
+    # the successful way for the future.
+
+    # "1" sends the "client_id" and "client_secret"
+    # in the POST body as application/x-www-form-urlencoded parameters.
+
+    # "2" sends the client_id and client_password
+    # using HTTP Basic Authorization. This is an optional style
+    # described in the OAuth2 RFC 6749 section 2.3.1.
+  - name: authStyle
+    value: "<see comment>"
+```
+
+### Define a custom pipeline for a Client Credentials Grant
+
+To use the OAuth middleware (Client Credentials), you should create a [custom pipeline](../../concepts/middleware/README.md)
+using [Dapr configuration](../../concepts/configuration/README.md), as shown in the following sample:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: pipeline
+  namespace: default
+spec:
+  httpPipeline:
+    handlers:
+    - name: myComponent
+      type: middleware.http.oauth2clientcredentials
+```
+
 ## Apply the configuration
 
-To apply the above configuration to your Dapr sidecar, add a ```dapr.io/config``` annotation to your pod spec:
+To apply the above configuration (regardless of grant type)
+to your Dapr sidecar, add a ```dapr.io/config``` annotation to your pod spec:
 
 ```yaml
 apiVersion: apps/v1
@@ -99,4 +171,17 @@ spec:
 
 ## Accessing the access token
 
-Once everything is in place, whenever a client tries to invoke an API method through Dapr sidecar (such as calling the *v1.0/invoke/* endpoint), it will be reidrected to the authorization's consent page if an access token is not found. Otherwise, the access token is written to the **authHeaderName** header and made available to the app code.
+### Authorization Code Grant
+
+Once everything is in place, whenever a client tries to invoke an API method through Dapr sidecar
+(such as calling the *v1.0/invoke/* endpoint),
+it will be redirected to the authorization's consent page if an access token is not found.
+Otherwise, the access token is written to the **authHeaderName** header and made available to the app code.
+
+### Client Credentials Grant
+
+Once everything is in place, whenever a client tries to invoke an API method through Dapr sidecar
+(such as calling the *v1.0/invoke/* endpoint),
+it will retrieve a new access token if an existing valid one is not found.
+The access token is written to the **headerName** header and made available to the app code.
+In that way the app can forward the token in the authorization header in calls towards the external API requesting that token.
