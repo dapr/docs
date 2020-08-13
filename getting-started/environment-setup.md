@@ -130,8 +130,6 @@ $ dapr uninstall --install-path /path/to/binary
 
 When setting up Kubernetes, you can do this either via the Dapr CLI or Helm.
 
-*Note that installing Dapr using the CLI is recommended for testing purposes only.*
-
 Dapr installs the following pods:
 
 * dapr-operator: Manages component updates and kubernetes services endpoints for Dapr (state stores, pub-subs, etc.)
