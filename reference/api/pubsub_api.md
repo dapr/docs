@@ -8,7 +8,7 @@ Dapr guarantees at least once semantics for this endpoint.
 ### HTTP Request
 
 ```http
-POST http://localhost:<daprPort>/v1.0/publish/<topic>
+POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
 ```
 
 ### HTTP Response codes
@@ -23,10 +23,11 @@ Code | Description
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
+pubsubname | the name of pubsub component.
 topic | the name of the topic
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/publish/deathStarStatus \
+curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
   -H "Content-Type: application/json" \
  -d '{
        "status": "completed"
