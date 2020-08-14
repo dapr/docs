@@ -29,10 +29,10 @@ See configuring Redis in self hosted mode [without docker](../../howto/configure
 
 The placement service must be run locally to enable actor placement. Also a [transactional state store](#Enabling-state-management-or-pub/sub) must be enabled for actors. 
 
-By default for Linux/MacOS the `placement` binary is installed in `/usr/local/bin` or for Windows at `c:\dapr`.
+By default for Linux/MacOS the `placement` binary is installed in `/$HOME/.dapr/bin` or for Windows at `%USERPROFILE%\.dapr\bin`.
 
 ```bash
-$ /usr/local/bin/placement
+$ $HOME/.dapr/bin/placement
 
 INFO[0000] starting Dapr Placement Service -- version 0.8.0 -- commit 74db927  instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
 INFO[0000] log level set to: info                        instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
