@@ -45,7 +45,7 @@ Optionally, you may also create a new entry for a sidecar tool that can be reuse
 <toolSet name="External Tools">
   ...
   <!-- 1. Reusable entry for apps with app port. -->
-  <tool name="daprd with app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+  <tool name="dapr with app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
     <exec>
       <!-- 2. For Linux or MacOS use: /usr/bin/dapr -->
       <option name="COMMAND" value="c:\dapr\dapr.exe" />
@@ -56,7 +56,7 @@ Optionally, you may also create a new entry for a sidecar tool that can be reuse
     </exec>
   </tool>
   <!-- 1. Reusable entry for apps without app port. -->
-  <tool name="daprd without app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+  <tool name="dapr without app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
     <exec>
       <!-- 2. For Linux or MacOS use: /usr/bin/dapr -->
       <option name="COMMAND" value="c:\dapr\dapr.exe" />
