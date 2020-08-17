@@ -35,7 +35,7 @@ Now, configure `deploy/redis.yaml`, paying attention to the hostname containing 
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub
   namespace: default
 spec:
   type: pubsub.redis

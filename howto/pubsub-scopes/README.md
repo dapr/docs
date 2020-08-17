@@ -29,7 +29,7 @@ Here is an example of three applications and three topics:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub
   namespace: default
 spec:
   type: pubsub.redis
@@ -73,7 +73,7 @@ Here is an example of three allowed topics:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub
   namespace: default
 spec:
   type: pubsub.redis
@@ -97,7 +97,7 @@ Here is an example of three applications and two topics:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub
   namespace: default
 spec:
   type: pubsub.redis
@@ -129,3 +129,5 @@ The table below shows which application is allowed to subscribe to the topics:
 | B            |      |      |   X  |
 
 No other topics can be used, only A and B.
+
+Pub/sub scopes are per pub/sub.  You may have pub/sub component named `pubsub` that has one set of scopes, and another `pubsub2` with a different set.  The name is the `metadata.name` field in the yaml.
