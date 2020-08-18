@@ -302,15 +302,30 @@ Parameter | Description
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 
+#### Request Body
+
+Field | Description
+---- | -----------
+operations | A JSON array of state operation
+metadata | (optional) the metadata for transaction that applies to all operations
+
+Each state operation is comprised with the following fields:
+
+Field | Description
+---- | -----------
+key | state key
+value | state value, which can be any byte array
+etag | (optional) state ETag
+metadata | (optional) additional key-value pairs to be passed to the state store
+options | (optional) state operation options, see [state operation options](#optional-behaviors)
+
+
 #### Examples
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
   -H "Content-Type: application/json"
   -d '{
-        "metadata": {
-          "partitionKey": "partition1",
-        }
         "operations": [
           {
             "operation": "upsert",
@@ -325,7 +340,10 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
               "key": "key2"
             }
           }
-        ]
+        ],
+        "metadata": {
+          "partitionKey": "planet"
+        }
       }'
 ```
 
