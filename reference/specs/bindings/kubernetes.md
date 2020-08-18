@@ -61,7 +61,7 @@ For consuming `events` from Kubernetes, permissions need to be assigned to a Use
 
 ### Role
 
-One of the rules need to be of the form as below to give permissions to `get, watch` and `list` `events`. API Groups can be as restritive as needed.
+One of the rules need to be of the form as below to give permissions to `get, watch` and `list` `events`. API Groups can be as restrictive as needed.
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
