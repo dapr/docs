@@ -277,7 +277,7 @@ curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxx
 
 ## State transactions
 
-Persists the changes to the state for an actor as a multi-item transaction.
+Persists the changes to the state store as a multi-item transaction.
 
 ***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
 
