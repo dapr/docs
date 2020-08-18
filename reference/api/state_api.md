@@ -7,6 +7,7 @@
 - [Get State](#get-state)
 - [Get Bulk State](#get-bulk-state)
 - [Delete State](#delete-state)
+- [State transactions](#state-transactions)
 - [Configuring State Store for Actors](#configuring-state-store-for-actors)
 - [Optional Behaviors](#optional-behaviors)
 
@@ -273,6 +274,61 @@ None.
 ```shell
 curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
 ```
+
+## State transactions
+
+Persists the changed to the state for an actor as a multi-item transaction.
+
+***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
+
+#### HTTP Request
+
+```http
+POST/PUT http://localhost:<daprPort>/v1.0/v1.0/state/<storename>/transaction
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+201  | Request successful
+400  | State store is missing or misconfigured
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+
+#### Examples
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json"
+  -d '{
+        "metadata": {
+          "partitionKey": "partition1",
+        }
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "myData"
+            }
+          },
+          {
+            "operation": "delete",
+            "request": {
+              "key": "key2"
+            }
+          }
+        ]
+      }'
+```
+
 
 ## Configuring state store for actors
 
