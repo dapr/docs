@@ -16,27 +16,50 @@ spec:
 ```
 
 - `namespace` (required) is the Kubernetes namespace to read events from.
-- `resyncPeriodInSec` (option, default `10`) the period of time to refresh event list from Kubernetes API server.
+- `resyncPeriodInSec` (optional, default `10`) the period of time to refresh event list from Kubernetes API server.
 
 Output received from the binding is of format `bindings.ReadResponse` with the `Data` field populated with the following structure: 
 
-```go
-type EventResponse struct {
-	Event  string   `json:"event"`
-	OldVal v1.Event `json:"oldVal"`
-	NewVal v1.Event `json:"newVal"`
-}
+```json
+ {
+   "event": "",
+   "oldVal": {
+     "metadata": {
+       "name": "hello-node.162c2661c524d095",
+       "namespace": "kube-events",
+       "selfLink": "/api/v1/namespaces/kube-events/events/hello-node.162c2661c524d095",
+       ...
+     },
+     "involvedObject": {
+       "kind": "Deployment",
+       "namespace": "kube-events",
+       ...
+     },
+     "reason": "ScalingReplicaSet",
+     "message": "Scaled up replica set hello-node-7bf657c596 to 1",
+     ...
+   },
+   "newVal": {
+     "metadata": { "creationTimestamp": "null" },
+     "involvedObject": {},
+     "source": {},
+     "firstTimestamp": "null",
+     "lastTimestamp": "null",
+     "eventTime": "null",
+     ...
+   }
+ }
 ```
 Three different event types are available: 
-- Add : Only the NewVal field is populated, OldVal field is an empty `v1.Event`, Event is `add`
-- Delete : Only the OldVal field is populated, NewVal field is an empty `v1.Event`, Event is `delete`
-- Update : Both the OldVal and NewVal fields are populated,  Event is `update`
+- Add : Only the `newVal` field is populated, `oldVal` field is an empty `v1.Event`, `event` is `add`
+- Delete : Only the `oldVal` field is populated, `newVal` field is an empty `v1.Event`, `event` is `delete`
+- Update : Both the `oldVal` and `newVal` fields are populated,  `event` is `update`
 
 ## Required permisiions
 
 For consuming `events` from Kubernetes, permissions need to be assigned to a User/Group/ServiceAccount using [RBAC Auth] mechanism of Kubernetes.
 
-### For Role
+### Role
 
 One of the rules need to be of the form as below to give permissions to `get, watch` and `list` `events`. API Groups can be as restritive as needed.
 
@@ -52,13 +75,13 @@ rules:
   verbs: ["get", "watch", "list"]
 ```
 
-### For RoleBinding
+### RoleBinding
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: <BINDINGNAME>
+  name: <NAME>
   namespace: <NAMESPACE> # same as above
 subjects:
 - kind: ServiceAccount
