@@ -69,6 +69,8 @@ helm install dapr dapr/dapr --namespace dapr-system --set global.ha.enabled=true
 
 This command will run 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace.
 
+*Note: The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../windows-k8s/)*
+
 ## Upgrading Dapr with Helm
 
 Dapr supports zero downtime upgrades. The upgrade path includes the following steps:

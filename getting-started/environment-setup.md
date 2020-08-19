@@ -146,10 +146,8 @@ You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 - [Setup Google Cloud Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
-> **Note:** The Dapr control plane containers are currently only distributed on linux containers.
-> Your Kubernetes cluster must contain available Linux capable nodes.
-> Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`.
-> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/hybrid-clusters/)
+> **Note:** Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes, but most users should not need to.
+> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/windows-k8s/)
 
 ### Using the Dapr CLI
 
