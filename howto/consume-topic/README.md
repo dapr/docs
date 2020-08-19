@@ -52,7 +52,8 @@ const port = 3000
         {
             pubsubname: "pubsub",
             topic: "newOrder",
-            route: "orders"
+            route: "orders",
+            pubsubName: "messagebus"
         }
     ]);
 })</b>
@@ -63,6 +64,8 @@ app.post('/orders', (req, res) => {
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 </pre>
+
+In the payload returned to Dapr, `topic` tells Dapr which topic to subscribe to, `route` tells Dapr which endpoint to call on when a message comes to that topic, and `pubsubName` tells Dapr which pub/sub component it should use. In this example this is `messagebus` as this is the name of the component we outlined above.
 
 ## Consume messages
 
@@ -76,7 +79,8 @@ app.get('/dapr/subscribe', (req, res) => {
         {
             pubsubname: "pubsub",
             topic: "onCreated",
-            route: "custom/path"
+            route: "custom/path",
+            pubsubName: "messagebus"
         }
     ]);
 })
