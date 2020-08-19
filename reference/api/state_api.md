@@ -281,6 +281,14 @@ Persists the changes to the state store as a multi-item transaction.
 
 ***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
 
+List of state stores that support transactions:
+
+* Redis
+* MongoDB
+* PostgreSQL
+* SQL Server
+* Azure CosmosDB
+
 #### HTTP Request
 
 ```http
