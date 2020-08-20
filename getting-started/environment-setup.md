@@ -114,12 +114,6 @@ $ dapr uninstall --all
 
 **You should always run `dapr uninstall` before running another `dapr init`.**
 
-To specify a custom install path from which you have to uninstall run:
-
-```bash
-$ dapr uninstall --install-path /path/to/binary
-```
-
 ## Installing Dapr on a Kubernetes cluster
 
 When setting up Kubernetes, you can do this either via the Dapr CLI or Helm.
