@@ -35,9 +35,9 @@ spec:
         app: myapp
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "myapp"
-        dapr.io/protocol: "grpc"
-        dapr.io/port: "5005"
+        dapr.io/app-id: "myapp"
+        dapr.io/app-protocol: "grpc"
+        dapr.io/app-port: "5005"
 ...
 ```
 
@@ -45,10 +45,10 @@ This tells Dapr to communicate with your app via gRPC over port `5005`.
 
 ### Standalone
 
-When running in standalone mode, use the `--protocol` flag to tell Dapr to use gRPC to talk to the app:
+When running in standalone mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app:
 
 ```bash
-dapr run --protocol grpc --app-port 5005 -- node app.js
+dapr run --app-protocol grpc --app-port 5005 node app.js
 ```
 
 ## Invoking Dapr - Go example
@@ -213,10 +213,10 @@ This creates a gRPC server for your app on port 4000.
 To run locally, use the Dapr CLI:
 
 ```
-dapr run --app-id goapp --app-port 4000 --protocol grpc -- go run main.go
+dapr run --app-id goapp --app-port 4000 --app-protocol grpc go run main.go
 ```
 
-On Kubernetes, set the required `dapr.io/protocol: "grpc"` and `dapr.io/port: "4000` annotations in your pod spec template as mentioned above.
+On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "4000` annotations in your pod spec template as mentioned above.
 
 ## Other languages
 

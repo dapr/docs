@@ -112,7 +112,7 @@ services:
       "./daprd",
      "-app-id", "nodeapp",
      "-app-port", "3000",
-     "-placement-address", "placement:50006" # Dapr's placement service can be reach via the docker DNS entry
+     "-placement-host-address", "placement:50006" # Dapr's placement service can be reach via the docker DNS entry
      ]
     volumes:
         - "./components/:/components" # Mount our components folder for the runtime to use

@@ -149,8 +149,8 @@ spec:
       ...
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "calculator-front-end"
-        dapr.io/port: "8080"
+        dapr.io/app-id: "calculator-front-end"
+        dapr.io/app-port: "8080"
         dapr.io/config: "tracing"
 ```
 

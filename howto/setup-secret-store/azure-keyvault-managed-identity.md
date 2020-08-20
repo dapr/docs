@@ -228,8 +228,8 @@ In Kubernetes mode, you store the certificate for the service principal into the
             aadpodidbinding: [you managed identity selector]
           annotations:
             dapr.io/enabled: "true"
-            dapr.io/id: "nodeapp"
-            dapr.io/port: "3000"
+            dapr.io/app-id: "nodeapp"
+            dapr.io/app-port: "3000"
         spec:
           containers:
             - name: node

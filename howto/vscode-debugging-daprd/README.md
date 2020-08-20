@@ -15,7 +15,7 @@ If instead of using the Dapr VS Code extension you wish to configure a project t
 When developing Dapr applications, you typically use the dapr cli to start your daprized service similar to this:
 
 ```bash
-dapr run --app-id nodeapp --app-port 3000 --port 3500 app.js
+dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 app.js
 ```
 
 This will generate the components yaml files (if they don't exist) so that your service can interact with the local redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this.
@@ -80,7 +80,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
 * -app-port -- the port number that your application code is listening on
 * -dapr-http-port -- the http port for the dapr api
 * -dapr-grpc-port -- the grpc port for the dapr api
-* -placement-address -- the location of the placement service (this should be running in docker as it was created when you installed dapr and ran ```dapr init```)
+* -placement-host-address -- the location of the placement service (this should be running in docker as it was created when you installed dapr and ran ```dapr init```)
 
 >Note: You will need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you will run into port conflicts when you attempt to launch the second configuration.
 
@@ -112,7 +112,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
                 "51000",
                 "-dapr-grpc-port",
                 "52000",
-                "-placement-address",
+                "-placement-host-address",
                 "localhost:50005"
             ],
             "isBackground": true,
@@ -143,7 +143,7 @@ Let's take a quick look at the args that are being passed to the daprd command.
                 "51001",
                 "-dapr-grpc-port",
                 "52001",
-                "-placement-address",
+                "-placement-host-address",
                 "localhost:50005"
             ],
             "isBackground": true,

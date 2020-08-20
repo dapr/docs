@@ -26,7 +26,7 @@ dapr run --app-id cart --app-port 5000 python app.py
 
 ### Setup an ID using Kubernetes
 
-In Kubernetes, set the `dapr.io/id` annotation on your pod:
+In Kubernetes, set the `dapr.io/app-id` annotation on your pod:
 
 ```yaml
 apiVersion: apps/v1
@@ -47,8 +47,8 @@ spec:
         app: python-app
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "cart"
-        dapr.io/port: "5000"
+        dapr.io/app-id: "cart"
+        dapr.io/app-port: "5000"
 ...
 ```
 
