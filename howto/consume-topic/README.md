@@ -19,7 +19,7 @@ For this guide, we'll use Redis Streams, which is also installed by default on a
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub
   namespace: default
 spec:
   type: pubsub.redis
@@ -50,6 +50,7 @@ const port = 3000
 <b>app.get('/dapr/subscribe', (req, res) => {
     res.json([
         {
+            pubsubname: "pubsub",
             topic: "newOrder",
             route: "orders",
             pubsubName: "messagebus"
@@ -76,6 +77,7 @@ To consume messages from a topic, start a web server in the programming language
 app.get('/dapr/subscribe', (req, res) => {
     res.json([
         {
+            pubsubname: "pubsub",
             topic: "onCreated",
             route: "custom/path",
             pubsubName: "messagebus"
