@@ -17,4 +17,4 @@ There are other Dapr resources on the [community](https://github.com/dapr/dapr#c
 
 - Next, review the [Docs](../README.md) to make sure you understand the [concepts](../concepts) and [best-practices](../best-practices).
 
-- Use the Dapr [samples](https://github.com/dapr/samples) repo to show demos of how to use Dapr
+- Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo and [samples](https://github.com/dapr/samples) repo to show demos of how to use Dapr

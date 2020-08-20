@@ -69,6 +69,8 @@ helm install dapr dapr/dapr --namespace dapr-system --set global.ha.enabled=true
 
 This command will run 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace.
 
+*Note: The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../windows-k8s/)*
+
 ## Upgrading Dapr with Helm
 
 Dapr supports zero downtime upgrades. The upgrade path includes the following steps:
@@ -89,6 +91,18 @@ After you downloaded the binary, it's recommended you put the CLI binary in your
 #### Saving the current certificates
 
 When upgrading to a new version of Dapr, it is recommended you carry over the root and issuer certificates instead of re-generating them, which might cause a downtime for applications that make use of service invocation or actors.
+
+#### Exporting certs with the Dapr CLI
+
+To get your current certs with the Dapr CLI, run the following command:
+
+```
+dapr mtls export -o ./certs
+```
+
+This will save any existing root cert, issuer cert and issuer key in the output dir of your choice.
+
+### Exporting certs manually
 
 To get the current root and issuer certificates, run the following command:
 

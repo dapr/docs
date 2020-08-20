@@ -62,7 +62,7 @@ spec:
       name: websocket
       protocol: TCP
 ```
-You can then interact with the server using the client port: `mqtt://mqtt-broker.default.svc.cluster.local:1883`
+You can then interact with the server using the client port: `tcp://mqtt-broker.default.svc.cluster.local:1883`
 
 ## Create a Dapr component
 
@@ -80,7 +80,7 @@ spec:
   type: pubsub.mqtt
   metadata:
   - name: url
-    value: "mqtt://[username][:password]@host.domain[:port]"
+    value: "tcp://[username][:password]@host.domain[:port]"
   - name: qos
     value: 1
   - name: retain
@@ -89,11 +89,34 @@ spec:
     value: "false"
 ```
 
+To configure communication using TLS, ensure mosquitto broker is configured to support certificates.
+Pre-requisite includes `certficate authority certificate`, `ca issued client certificate`, `client private key`.
+Make following additional changes to mqtt pubsub components for supporting TLS.
+```yaml
+...
+spec:
+  type: pubsub.mqtt
+  metadata:
+  - name: url
+    value: "tcps://host.domain[:port]"
+  - name: caCert
+    value: ''
+  - name: clientCert
+    value: ''
+  - name: clientKey
+    value: ''
+```
+
 Where:
 * **url** (required) is the address of the MQTT broker.
+    - use **tcp://** scheme for non-TLS communication.
+    - use **tcps://** scheme for TLS communication.
 * **qos** (optional) indicates the Quality of Service Level (QoS) of the message. (Default 0)
 * **retain** (optional) defines whether the message is saved by the broker as the last known good value for a specified topic. (Default false)
 * **cleanSession** (optional) will set the "clean session" in the connect message when client connects to an MQTT broker . (Default true)
+* **caCert** (required for using TLS) is the certificate authority certificate.
+* **clientCert** (required for using TLS) is the client certificate.
+* **clientKey** (required for using TLS) is the client key.
 
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
 

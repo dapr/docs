@@ -1,4 +1,4 @@
-# Configuring IntelliJ Community Edition for debugging with daprd
+# Configuring IntelliJ Community Edition for debugging with Dapr
 
 When developing Dapr applications, you typically use the Dapr CLI to start your 'Daprized' service similar to this:
 
@@ -6,16 +6,16 @@ When developing Dapr applications, you typically use the Dapr CLI to start your 
 dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 app.js
 ```
 
-This uses the default components yaml files (created on `dapr init`) so that your service can interact with the local Redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this.
+This uses the default components yaml files (created on `dapr init`) so that your service can interact with the local Redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr cli without invoking an app.
 
 
-One approach to attaching the debugger to your service is to first run `daprd` or `dapr` with the correct arguments from the command line and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
+One approach to attaching the debugger to your service is to first run `dapr run --` from the command line and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps (like switching between terminal and IDE) and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
 
-This document explains how to use `daprd` directly from IntelliJ. As a pre-requisite, make sure you have initialized the Dapr's dev environment via `dapr init`.
+This document explains how to use `dapr` directly from IntelliJ. As a pre-requisite, make sure you have initialized the Dapr's dev environment via `dapr init`.
 
 Let's get started!
 
-## Add daprd as an 'External Tool'
+## Add Dapr as an 'External Tool'
 
 First, quit IntelliJ.
 
@@ -25,7 +25,7 @@ Create or edit the file in `$HOME/.IdeaIC2019.3/config/tools/External\ Tools.xml
 <toolSet name="External Tools">
   ...
   <!-- 1. Each tool has its own app-id, so create one per application to be debugged -->
-  <tool name="daprd for DemoService in examples" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+  <tool name="dapr for DemoService in examples" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
     <exec>
       <!-- 2. For Linux or MacOS use: /usr/local/bin/daprd -->
       <option name="COMMAND" value="C:\dapr\daprd.exe" />
@@ -33,6 +33,37 @@ Create or edit the file in `$HOME/.IdeaIC2019.3/config/tools/External\ Tools.xml
       <option name="PARAMETERS" value="-app-id demoservice -app-port 3000 -dapr-http-port 3005 -dapr-grpc-port 52000 -placement-host-address localhost:50005" />
       <!-- 4. Use the folder where the `components` folder is located -->
       <option name="WORKING_DIRECTORY" value="C:/Code/dapr/java-sdk/examples" />
+    </exec>
+  </tool>
+  ...
+</toolSet>
+```
+
+Optionally, you may also create a new entry for a sidecar tool that can be reused accross many projects:
+
+```xml
+<toolSet name="External Tools">
+  ...
+  <!-- 1. Reusable entry for apps with app port. -->
+  <tool name="dapr with app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+    <exec>
+      <!-- 2. For Linux or MacOS use: /usr/bin/dapr -->
+      <option name="COMMAND" value="c:\dapr\dapr.exe" />
+      <!-- 3. Prompts user 4 times (in order): app id, app port, Dapr's http port, Dapr's grpc port. -->
+      <option name="PARAMETERS" value="run --app-id $Prompt$ --app-port $Prompt$ --dapr-http-port $Prompt$ --dapr-grpc-port $Prompt$" />
+      <!-- 4. Use the folder where the `components` folder is located -->
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+  <!-- 1. Reusable entry for apps without app port. -->
+  <tool name="dapr without app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+    <exec>
+      <!-- 2. For Linux or MacOS use: /usr/bin/dapr -->
+      <option name="COMMAND" value="c:\dapr\dapr.exe" />
+      <!-- 3. Prompts user 3 times (in order): app id, Dapr's http port, Dapr's grpc port. -->
+      <option name="PARAMETERS" value="run --app-id $Prompt$ --dapr-http-port $Prompt$ --dapr-grpc-port $Prompt$" />
+      <!-- 4. Use the folder where the `components` folder is located -->
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
     </exec>
   </tool>
   ...
@@ -48,7 +79,7 @@ Now, create or edit the run configuration for the application to be debugged. It
 Now, add the program arguments and environment variables. These need to match the ports defined in the entry in 'External Tool' above.
 
 * Command line arguments for this example: `-p 3000`
-* Environment variables for this example: `DAPR_HTTP_PORT=3005;DAPR_GRPC_PORT=5200`
+* Environment variables for this example: `DAPR_HTTP_PORT=3005;DAPR_GRPC_PORT=52000`
 
 ![Edit run configuration](../../images/intellij_edit_run_configuration.png)
 
@@ -56,9 +87,9 @@ Now, add the program arguments and environment variables. These need to match th
 
 Once the one-time config above is done, there are two steps required to debug a Java application with Dapr in IntelliJ:
 
-1. Start `daprd` via `Tools` -> `External Tool` in IntelliJ.
+1. Start `dapr` via `Tools` -> `External Tool` in IntelliJ.
 
-![Run daprd as 'External Tool'](../../images/intellij_start_daprd.png)
+![Run dapr as 'External Tool'](../../images/intellij_start_dapr.png)
 
 2. Start your application in debug mode.
 
@@ -66,9 +97,8 @@ Once the one-time config above is done, there are two steps required to debug a 
 
 ## Wrapping up
 
-After debugging, make sure you stop both `daprd` and your app in IntelliJ.
+After debugging, make sure you stop both `dapr` and your app in IntelliJ.
 
-
->Note: Since you didn't launch the service(s) using the **dapr** ***run*** CLI command, but instead by running **daprd**, the **dapr** ***list*** command does not show a list of apps that are currently running.
+>Note: Since you launched the service(s) using the **dapr** ***run*** CLI command, the **dapr** ***list*** command will show runs from IntelliJ in the list of apps that are currently running with Dapr.
 
 Happy debugging!

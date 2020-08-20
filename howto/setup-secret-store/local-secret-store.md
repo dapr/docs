@@ -97,7 +97,7 @@ auth:
 
 You can check that `secretstores.local.localsecretstore` component is loaded and redis server connects successfully by looking at the log output when using the dapr `run` command.
 
-Here is the log when you run [HelloWorld sample](https://github.com/dapr/samples/tree/master/1.hello-world) with Local Secret secret store.
+Here is the log when you run [HelloWorld sample](https://github.com/dapr/quickstarts/tree/master/hello-world) with Local Secret secret store.
 
 ```bash
 $ dapr run --app-id mynode --app-port 3000 --dapr-http-port 3500 node app.js
@@ -120,4 +120,4 @@ $ dapr run --app-id mynode --app-port 3000 --dapr-http-port 3500 node app.js
 
 - [Secrets Component](../../concepts/secrets/README.md)
 - [Secrets API](../../reference/api/secrets_api.md)
-- [Secrets API Samples](https://github.com/dapr/samples/blob/master/9.secretstore/README.md)
+- [Secrets API Samples](https://github.com/dapr/quickstarts/blob/master/secretstore/README.md)

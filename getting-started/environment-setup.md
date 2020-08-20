@@ -130,8 +130,6 @@ $ dapr uninstall --install-path /path/to/binary
 
 When setting up Kubernetes, you can do this either via the Dapr CLI or Helm.
 
-*Note that installing Dapr using the CLI is recommended for testing purposes only.*
-
 Dapr installs the following pods:
 
 * dapr-operator: Manages component updates and kubernetes services endpoints for Dapr (state stores, pub-subs, etc.)
@@ -148,30 +146,44 @@ You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 - [Setup Google Cloud Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
-> **Note:** The Dapr control plane containers are currently only distributed on linux containers.
-> Your Kubernetes cluster must contain available Linux capable nodes.
-> Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`.
-> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/hybrid-clusters/)
+> **Note:** Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes, but most users should not need to.
+> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/windows-k8s/)
 
 ### Using the Dapr CLI
 
 You can install Dapr to a Kubernetes cluster using CLI.
 
-> **Note:** that using the CLI does not support non-default namespaces.  
-> If you need a non-default namespace, Helm installation has to be used (see below).
-
 #### Install Dapr to Kubernetes
 
-```bash
-$ dapr init --kubernetes
-ℹ️  Note: this installation is recommended for testing purposes. For production environments, please use Helm
+*Note: The default namespace is dapr-system*
+
+```
+$ dapr init -k
 
 ⌛  Making the jump to hyperspace...
-✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
+ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
+
+✅  Deploying the Dapr control plane to your cluster...
+✅  Success! Dapr has been installed to namespace dapr-system. To verify, run "dapr status -k" in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
-Dapr CLI installs Dapr to `default` namespace of Kubernetes cluster using [this](https://daprreleases.blob.core.windows.net/manifest/dapr-operator.yaml) manifest.
+Install to a custom namespace:
+
+```
+dapr init -k -n mynamespace
+```
+
+Installing in highly available mode:
+
+```
+dapr init -k --enable-ha=true
+```
+
+Disable mTLS:
+
+```
+dapr init -k --enable-mtls=false
+```
 
 #### Uninstall Dapr on Kubernetes
 

@@ -106,4 +106,4 @@ In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 * [How To set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
 * [How to use Trace Context](../../howto/use-w3c-tracecontext)
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
-* [Observability sample](https://github.com/dapr/samples/tree/master/8.observability)
+* [Observability sample](https://github.com/dapr/quickstarts/tree/master/observability)

@@ -16,10 +16,10 @@ dapr init --slim
 
 In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors](../../concepts/actors/README.md) in a Dapr self-hosted installation. 
 
-In this mode no default components such as Redis are installed for state managment or pub/sub. This means, that aside from [Service Invocation](../../concepts/service-invocation/README.md), no other building block functionality is availble on install out of the box. Users are free to setup their own environemnt and custom components. Furthermore, actor based service invocation is possible if a statestore is configured as explained in the following sections.
+In this mode no default components such as Redis are installed for state management or pub/sub. This means, that aside from [Service Invocation](../../concepts/service-invocation/README.md), no other building block functionality is available on install out of the box. Users are free to setup their own environment and custom components. Furthermore, actor based service invocation is possible if a state store is configured as explained in the following sections.
 
 ## Service invocation
-See [this sample](https://github.com/dapr/samples/tree/master/11.hello-dapr-slim) for an example on how to perform service invocation in this mode. 
+See [this sample](https://github.com/dapr/samples/tree/master/hello-dapr-slim) for an example on how to perform service invocation in this mode. 
 
 ## Enabling state management or pub/sub
 
@@ -27,12 +27,12 @@ See configuring Redis in self hosted mode [without docker](../../howto/configure
 
 ## Enabling actors
 
-The placement service must be run locally to enable actor placement. Also a [transactoinal state store](#Enabling-state-management-or-pub/sub) must be enabled for actors. 
+The placement service must be run locally to enable actor placement. Also a [transactional state store](#Enabling-state-management-or-pub/sub) must be enabled for actors. 
 
-By default for Linux/MacOS the `placement` binary is installed in `/usr/local/bin` or for Windows at `c:\dapr`.
+By default for Linux/MacOS the `placement` binary is installed in `/$HOME/.dapr/bin` or for Windows at `%USERPROFILE%\.dapr\bin`.
 
 ```bash
-$ /usr/local/bin/placement
+$ $HOME/.dapr/bin/placement
 
 INFO[0000] starting Dapr Placement Service -- version 0.8.0 -- commit 74db927  instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
 INFO[0000] log level set to: info                        instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0

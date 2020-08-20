@@ -7,6 +7,7 @@
 - [Get State](#get-state)
 - [Get Bulk State](#get-bulk-state)
 - [Delete State](#delete-state)
+- [State transactions](#state-transactions)
 - [Configuring State Store for Actors](#configuring-state-store-for-actors)
 - [Optional Behaviors](#optional-behaviors)
 
@@ -273,6 +274,87 @@ None.
 ```shell
 curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
 ```
+
+## State transactions
+
+Persists the changes to the state store as a multi-item transaction.
+
+***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
+
+List of state stores that support transactions:
+
+* Redis
+* MongoDB
+* PostgreSQL
+* SQL Server
+* Azure CosmosDB
+
+#### HTTP Request
+
+```http
+POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/transaction
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+201  | Request successful
+400  | State store is missing or misconfigured
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+
+#### Request Body
+
+Field | Description
+---- | -----------
+operations | A JSON array of state operation
+metadata | (optional) the metadata for transaction that applies to all operations
+
+Each state operation is comprised with the following fields:
+
+Field | Description
+---- | -----------
+key | state key
+value | state value, which can be any byte array
+etag | (optional) state ETag
+metadata | (optional) additional key-value pairs to be passed to the state store
+options | (optional) state operation options, see [state operation options](#optional-behaviors)
+
+
+#### Examples
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json"
+  -d '{
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "myData"
+            }
+          },
+          {
+            "operation": "delete",
+            "request": {
+              "key": "key2"
+            }
+          }
+        ],
+        "metadata": {
+          "partitionKey": "planet"
+        }
+      }'
+```
+
 
 ## Configuring state store for actors
 
