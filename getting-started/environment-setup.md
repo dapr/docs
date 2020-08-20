@@ -80,12 +80,6 @@ Downloading binaries and setting up components
 ✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
-If you prefer you can also install to an alternate location by using `--install-path`:
-
-```
-$ dapr init --install-path /home/user123/mydaprinstall
-```
-
 To see that Dapr has been installed successfully, from a command prompt run the `docker ps` command and check that the `daprio/dapr:latest` and `redis` container images are both running.
 
 ### Install a specific runtime version
