@@ -1,10 +1,8 @@
-# Local secret store (for Development)
+# Local secret store using file (for Development)
 
-This document shows how to enable Local secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Development scenarios in Standalone mode. This Dapr secret store component reads plain text JSON from a given file and does not use authentication.
+This document shows how to enable file-based secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Development scenarios in Standalone mode. This Dapr secret store component reads plain text JSON from a given file and does not use authentication.
 
-> The Local secret store is in no way recommended for production environments.
-
-> The Local secret store works with key value pairs. 
+> Note, this approach to secret management is not recommended for production environments.
 
 ## Contents
 
@@ -24,25 +22,23 @@ This creates new JSON file to hold the secrets.
 }
 ```
 
-## Use Local secret store in Standalone mode
+## Use file-based secret store in Standalone mode
 
 This section walks you through how to enable a Local secret store to store a password to access a Redis state store in Standalone mode.
 
-1. Create a file called localsecretstore.yaml in the components directory
-
-Now create a Dapr localsecretstore component. Create a file called localsecretstore.yaml and add it to your components directory with the following content
+1. Create a JSON file in components directory with following content. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: localsecretstore
+  name: local-secret-store
   namespace: default
 spec:
-  type: secretstores.local.localsecretstore
+  type: secretstores.local.file
   metadata:
   - name: secretsFile
-    value: [path to the secrets.json you created in the previous section]
+    value: [path to the JSON file]
   - name: nestedSeparator
     value: ":"
 ```
@@ -51,7 +47,7 @@ The `nestedSeparator` parameter, is not required (default value is ':') and it's
 
 ```json
 {
-    "redis": "your redis password",
+    "redisPassword": "your redis password",
     "connectionStrings": {
         "sql": "your sql connection string",
         "mysql": "your mysql connection string"
@@ -69,9 +65,9 @@ the store will load the file and create a map with the following key value pairs
 
 > Use the flattened key to access the secret.
 
-2. Create redis.yaml in the components directory with the content below
+2. Use secrets in other components
 
-Create a statestore component file. This Redis component yaml shows how to use the `redisPassword` secret stored in a Local secret store called localsecretstore as a Redis connection password.
+To use the previously created secrets for example in a Redis state store component you can replace the `value` with `secretKeyRef` and a nested name of the key like this:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -88,16 +84,12 @@ spec:
     secretKeyRef:
       name: redisPassword
 auth:
-    secretStore: localsecretstore
+    secretStore: local-secret-store
 ```
 
-> Note that the `secretKeyRef` uses the `name` to get the secret.
+# Confirm the secrets are being used
 
-3. Run your app
-
-You can check that `secretstores.local.localsecretstore` component is loaded and redis server connects successfully by looking at the log output when using the dapr `run` command.
-
-Here is the log when you run [HelloWorld sample](https://github.com/dapr/quickstarts/tree/master/hello-world) with Local Secret secret store.
+To confirm the secrets are being used you can check the logs output by `dapr run` command. Here is the log when you run [HelloWorld sample](https://github.com/dapr/quickstarts/tree/master/hello-world) with Local Secret secret store.
 
 ```bash
 $ dapr run --app-id mynode --app-port 3000 --dapr-http-port 3500 node app.js
@@ -106,7 +98,7 @@ $ dapr run --app-id mynode --app-port 3000 --dapr-http-port 3500 node app.js
 ✅  You're up and running! Both Dapr and your app logs will appear here.
 
 ...
-== DAPR == time="2019-09-25T17:57:37-07:00" level=info msg="loaded component localsecretstore (secretstores.local.localsecretstore)"
+== DAPR == time="2019-09-25T17:57:37-07:00" level=info msg="loaded component local-secret-store (secretstores.local.file)"
 == APP == Node App listening on port 3000!
 == DAPR == time="2019-09-25T17:57:38-07:00" level=info msg="loaded component statestore (state.redis)"
 == DAPR == time="2019-09-25T17:57:38-07:00" level=info msg="loaded component messagebus (pubsub.redis)"
