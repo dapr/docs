@@ -145,6 +145,7 @@ GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>
 Code | Description
 ---- | -----------
 200  | Request successful
+204  | Key not found, and the response will be empty
 500  | Request failed
 404  | Actor not found
 
