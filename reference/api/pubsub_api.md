@@ -61,6 +61,7 @@ Example:
 ```json
 [
   {
+    "pubsubname": "pubsub",
     "topic": "newOrder",
     "route": "/orders"
   }
