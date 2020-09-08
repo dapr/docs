@@ -97,8 +97,10 @@ POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
 Code | Description
 ---- | -----------
 201  | Request successful
+400  | Actor not found
 500  | Request failed
-404  | Actor not found
+
+
 
 #### URL Parameters
 
@@ -146,8 +148,9 @@ Code | Description
 ---- | -----------
 200  | Request successful
 204  | Key not found, and the response will be empty
+400  | Actor not found
 500  | Request failed
-404  | Actor not found
+
 
 #### URL Parameters
 
