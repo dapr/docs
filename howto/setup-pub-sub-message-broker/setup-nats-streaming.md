@@ -27,7 +27,7 @@ To interact with NATS, find the service with: `kubectl get svc stan`.
 
 For example, if installing using the example above, the NATS Streaming address would be:
 
-`<YOUR-HOST>:7777`
+`<YOUR-HOST>:4222`
 
 ## Create a Dapr component
 
@@ -45,7 +45,7 @@ spec:
   type: pubsub.natsstreaming
   metadata:
   - name: natsURL
-    value: <REPLACE-WITH-NATS-SERVER-ADDRESS> # Required. example nats://localhost:7777
+    value: <REPLACE-WITH-NATS-SERVER-ADDRESS> # Required. example nats://localhost:4222
   - name: natsStreamingClusterID
     value: <REPLACE-WITH-NATS-CLUSTERID> # Required.
     # blow are subscription configuration.
