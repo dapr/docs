@@ -25,9 +25,9 @@ kubectl apply -f https://raw.githubusercontent.com/nats-io/k8s/master/nats-strea
 This will install a single NATS-Streaming and Nats into the `default` namespace.
 To interact with NATS, find the service with: `kubectl get svc stan`.
 
-For example, if installing using the example above, the NATS server client address would be:
+For example, if installing using the example above, the NATS Streaming address would be:
 
-`<YOUR-HOST>:4222`
+`<YOUR-HOST>:7777`
 
 ## Create a Dapr component
 
@@ -45,12 +45,12 @@ spec:
   type: pubsub.natsstreaming
   metadata:
   - name: natsURL
-    value: <REPLACE-WITH-NATS-SERVER-ADDRESS> # Required. example nats://localhost:4222
+    value: <REPLACE-WITH-NATS-SERVER-ADDRESS> # Required. example nats://localhost:7777
   - name: natsStreamingClusterID
     value: <REPLACE-WITH-NATS-CLUSTERID> # Required.
     # blow are subscription configuration.
   - name: subscriptionType
-    value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. example topic
+    value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
 
 # following subscription options - only one can be used
   # - name: consumerID
