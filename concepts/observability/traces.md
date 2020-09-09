@@ -70,5 +70,5 @@ spec:
 
 * [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
 * [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
+* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)
 
