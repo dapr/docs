@@ -185,4 +185,4 @@ set `samplingRate : "0"` in the configuration. The valid range of samplingRate i
 
 ## References
 
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
+* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)
