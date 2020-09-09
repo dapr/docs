@@ -74,7 +74,7 @@ spec:
     metadata:
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "testapp"
+        dapr.io/app-id: "testapp"
       labels:
         app: test-dapr-app
     spec:

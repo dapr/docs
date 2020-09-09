@@ -111,7 +111,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 To apply the SNS/SQS component to Kubernetes, use the `kubectl` command:
 
 ```
-kubectl apply -f kafka.yaml
+kubectl apply -f snssqs.yaml
 ```
 
 ### Running locally

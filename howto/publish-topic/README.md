@@ -35,7 +35,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 To publish a message to a topic, invoke the following endpoint on a Dapr instance:
 
 ```bash
-curl -X POST http://localhost:3500/v1.0/publish/deathStarStatus \
+curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
  -H "Content-Type: application/json" \
  -d '{
       "status": "completed"

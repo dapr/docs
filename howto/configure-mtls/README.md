@@ -35,9 +35,7 @@ The file here shows the default `daprsystem` configuration settings. The example
 ### Setting up mTLS with the configuration resource
 
 In Kubernetes, Dapr creates a default configuration resource with mTLS enabled.
-Sentry, the certificate authority system pod, is installed both with Helm and with the Dapr CLI using `dapr init --kubernetes`. 
-
-Depending on how you install Dapr, this resource may reside in the `default` namespace if you installed Dapr using the Dapr CLI, or the `dapr-system` namespace if deployed using Helm.
+Sentry, the certificate authority system pod, is installed both with Helm and with the Dapr CLI using `dapr init --kubernetes`.
 
 You can view the configuration resource with the following command:
 
@@ -69,6 +67,12 @@ helm install \
   --namespace dapr-system \
   dapr \
   dapr/dapr
+```
+
+### Disabling mTLS with the CLI
+
+```
+dapr init --kubernetes --enable-mtls=false
 ```
 
 ### Viewing logs

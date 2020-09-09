@@ -1,6 +1,6 @@
 # Sequence of Events on a dapr run in Self Hosting Mode
 
-The doc describes the sequence of events that occur when `dapr run` is executed in self hosting mode.  It uses [sample 1](https://github.com/dapr/samples/tree/master/1.hello-world) as an example.
+The doc describes the sequence of events that occur when `dapr run` is executed in self hosting mode.  It uses [sample 1](https://github.com/dapr/quickstarts/tree/master/hello-world) as an example.
 
 Terminology used below:
 
@@ -12,7 +12,7 @@ In self hosting mode, running `dapr init` copies the Dapr runtime onto your mach
 What happens when `dapr run` is executed?  
 
 ```bash
-dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
+dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
 ```
 
 First, the Dapr CLI loads the components from the default directory (specified above) for the state store and pub/sub: `statestore.yaml` and `pubsub.yaml`, respectively.  [Code](https://github.com/dapr/cli/blob/51b99a988c4d1545fdc04909d6308be121a7fe0c/pkg/standalone/run.go#L196-L266).
@@ -27,7 +27,7 @@ Then, the Dapr CLI [launches](https://github.com/dapr/cli/blob/d585612185a4a525c
 If you inspect the command line of the Dapr runtime and the app, observe that the Dapr runtime has these args:
 
 ```bash
-daprd.exe --app-id mynode --dapr-http-port 3500 --dapr-grpc-port 43693 --log-level info --max-concurrency -1 --protocol http --app-port 3000 --placement-address localhost:50005
+daprd.exe --app-id mynode --dapr-http-port 3500 --dapr-grpc-port 43693 --log-level info --app-max-concurrency -1 --app-protocol http --app-port 3000 --placement-host-address localhost:50005
 ```
 
 And the app has these args, which are not modified from what was passed in via the CLI:
@@ -41,7 +41,7 @@ node app.js
 The daprd process is started with the args above.  `--app-id`, "nodeapp", which is the Dapr app id, is forwarded from the Dapr CLI into `daprd` as the `--app-id` arg.  Similarly:
 
 - the `--app-port` from the CLI, which represents the port on the app that `daprd` will use to communicate with it has been passed into the `--app-port` arg.  
-- the `--port` arg  from the CLI, which represents the http port that daprd is listening on is passed into the `--dapr-http-port` arg.  (Note to specify grpc instead you can use `--grpc-port`).  If it's not specified, it will be -1 which means the Dapr CLI will chose a random free port.  Below, it's 43693, yours will vary.
+- the `--dapr-http-port` arg  from the CLI, which represents the http port that daprd is listening on is passed into the `--dapr-http-port` arg.  (Note to specify grpc instead you can use `--dapr-grpc-port`).  If it's not specified, it will be -1 which means the Dapr CLI will chose a random free port.  Below, it's 43693, yours will vary.
 
 ### The app
 

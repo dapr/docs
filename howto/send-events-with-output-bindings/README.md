@@ -1,7 +1,7 @@
 # Send events to external systems using Output Bindings
 
 Using bindings, its possible to invoke external resources without tying in to special SDK or libraries.
-For a complete sample showing output bindings, visit this [link](https://github.com/dapr/samples/tree/master/5.bindings).
+For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 

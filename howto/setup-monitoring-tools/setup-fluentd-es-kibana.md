@@ -129,7 +129,7 @@ spec:
         app: python
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "pythonapp"
+        dapr.io/app-id: "pythonapp"
         dapr.io/log-as-json: "true"
 ...
 ```
