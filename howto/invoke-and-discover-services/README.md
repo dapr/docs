@@ -98,7 +98,7 @@ Dapr puts any payload return by their called service in the HTTP response's body
 
 ### Namespaces
 
-When running on [namespace supported platforms](../../reference/api/service_invocation_api.md#namespace-supported-platforms), you can add the namespace of your choice to the app ID:
+When running on [namespace supported platforms](../../reference/api/service_invocation_api.md#namespace-supported-platforms), you include the namespace of the target app in the app ID:
 
 ```
 myApp.production

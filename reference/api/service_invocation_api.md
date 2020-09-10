@@ -111,4 +111,4 @@ In case you are invoking `mathService` on a different namespace, you can use the
 
 `http://localhost:3500/v1.0/invoke/mathService.testing/method/api/v1/add`
 
-In this URI, `testing` is the namespace that `mathService` is running in.
+In this URL, `testing` is the namespace that `mathService` is running in.
