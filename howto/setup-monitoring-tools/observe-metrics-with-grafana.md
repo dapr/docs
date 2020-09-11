@@ -1,8 +1,8 @@
-# Observe Metrics with Grafana
+# Observe metrics with Grafana
 
-This document shows how to view Dapr metrics in Grafana dashboard.
+This document describes how to view Dapr metrics in a Grafana dashboard. You can see example screenshots of the Dapr dashboards [here](../../reference/dashboard/img/).
 
-Watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=2580) for a demonstration of the Grafana metrics dashboard.
+Or watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=2580) for a demonstration of the Grafana Dapr metrics dashboard.
 
 ## Prerequisites
 
@@ -13,7 +13,9 @@ Watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&
 - [Configure Prometheus as Data Source](#configure-prometheus-as-data-source)
 - [Import Dashboards in Grafana](#import-dashboards-in-grafana)
 
-### Configure Prometheus as Data Source
+### Configure Prometheus as data source
+First you need to connect Prometheus as a data source to Grafana.
+
 1. Port-forward to svc/grafana
 
 ```
@@ -38,10 +40,11 @@ Handling connection for 8080
 
 6. Enter Promethesus server address in your cluster.
 
-You can get the prometheus server address by running following command.
+      You can get the Prometheus server address by running the following command.
 
 ```bash
 kubectl get svc -n dapr-monitoring
+
 NAME                                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
 dapr-prom-kube-state-metrics         ClusterIP   10.0.174.177   <none>        8080/TCP            7d9h
 dapr-prom-prometheus-alertmanager    ClusterIP   10.0.255.199   <none>        80/TCP              7d9h
@@ -55,9 +58,9 @@ kibana-kibana                        ClusterIP   10.0.188.224   <none>        56
 
 ```
 
-In this howto, the server is `dapr-prom-prometheus-server`.
+In this Howto, the server is `dapr-prom-prometheus-server`.
 
-So you need to set up Prometheus data source with the below settings:
+You now need to set up Prometheus data source with the following settings:
 
 - Name: `Dapr`
 - HTTP URL: `http://dapr-prom-prometheus-server.dapr-monitoring`
@@ -65,24 +68,23 @@ So you need to set up Prometheus data source with the below settings:
 
 ![prometheus server](./img/grafana-prometheus-dapr-server-url.png)
 
-7. Click `Save & Test` button to verify that connected succeeded.
+7. Click `Save & Test` button to verify that the connection succeeded.
 
-### Import Dashboards in Grafana
+### Import dashboards in Grafana
+Next you import the Dapr dashboards into Grafana. 
 
 In the upper left, click the "+" then "Import". 
 
 You can now import built-in [Grafana dashboard templates](https://github.com/dapr/dapr/tree/master/grafana).
 
-Starting from Dapr 0.10.0, Grafana dashboards are now part of [release assets](https://github.com/dapr/dapr/releases/tag/v0.10.0). 
-You can find grafana-actor-dashboard.json, grafana-sidecar-dashboard.json, grafana-system-services-dashboard.json in release assets.
+The Grafana dashboards are part of [release assets](https://github.com/dapr/dapr/releases) with this URL https://github.com/dapr/dapr/releases/ 
+You can find `grafana-actor-dashboard.json`, `grafana-sidecar-dashboard.json` and `grafana-system-services-dashboard.json` in release assets location.
 
 ![upload json](./img/grafana-uploadjson.png)
 
-9. Find the dashboard that you imported and enjoy!
+8. Find the dashboard that you imported and enjoy!
 
 ![upload json](../../reference/dashboard/img/system-service-dashboard.png)
-
-You can find more screenshots of Dapr dashboards [here](../../reference/dashboard/img/).
 
 # References
 
