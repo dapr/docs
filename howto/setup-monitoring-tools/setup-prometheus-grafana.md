@@ -1,4 +1,4 @@
-# Set up Prometheus and Grafana on Kubernetes
+# Set up Prometheus and Grafana in Kubernetes
 
 This document describes how to install Prometheus and Grafana on a Kubernetes cluster which can then be used to view the Dapr metrics dashboards.
 
