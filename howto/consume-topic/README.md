@@ -95,7 +95,7 @@ The following example shows how to point the Dapr CLI to a components path:
 dapr run --app-id myapp --components-path ./myComponents -- python3 myapp.py
 ```
 
-*Note: By default, Dapr loads components from $HOME/.dapr/components on MacOS/Linux and %USERPROFILE%\.dapr\components on Windows. If place the subscription in a custom components path, make sure the Pub/Sub component is present also.*
+*Note: By default, Dapr loads components from $HOME/.dapr/components on MacOS/Linux and %USERPROFILE%\.dapr\components on Windows. If you place the subscription in a custom components path, make sure the Pub/Sub component is present also.*
 
 ### Programmatic subscriptions 
 
