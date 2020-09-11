@@ -34,6 +34,50 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 
 ## Subscribe to topics
 
+Dapr allows two methods by which you can subscribe to topics: programatically and declaratively.
+
+### Declarative subscriptions
+
+You can subscribe to a topic using the following CRD:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: myevent-subscription
+spec:
+  topic: newOrder
+  route: /orders
+  pubsubname: kafka
+scopes:
+- app1
+- app2
+```
+
+The example above shows an event subscription to topic `newOrder`, for the pubsub component `kafka`.
+The `route` field tells Dapr to send all topic messages to the `/orders` endpoint in the app.
+
+The `scopes` field enables this subscription for apps with IDs `app1` and `app2`.
+
+An example of a node.js app that receives events from the subscription:
+
+```javascript
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+app.use(bodyParser.json())
+
+const port = 3000
+
+app.post('/orders', (req, res) => {
+    res.sendStatus(200);
+});
+
+app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
+```
+
+### Programmatic subscriptions 
+
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
 The Dapr instance will call into your app, and expect a JSON response for the topic subscriptions.
 
@@ -52,7 +96,8 @@ const port = 3000
         {
             pubsubname: "pubsub",
             topic: "newOrder",
-            route: "orders"        }
+            route: "orders"        
+        }
     ]);
 })</b>
 
@@ -65,27 +110,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 
 In the payload returned to Dapr, `topic` tells Dapr which topic to subscribe to, `route` tells Dapr which endpoint to call on when a message comes to that topic, and `pubsubName` tells Dapr which pub/sub component it should use. In this example this is `pubsub` as this is the name of the component we outlined above.
 
-## Consume messages
-
-To consume messages from a topic, start a web server in the programming language of your choice and listen on a `POST` endpoint with the route path you specified when subscribing.
-
-*Note: The following example is written in node, but can be in any programming language*
-
-```javascript
-app.get('/dapr/subscribe', (req, res) => {
-    res.json([
-        {
-            pubsubname: "pubsub",
-            topic: "onCreated",
-            route: "custom/path"        }
-    ]);
-})
-
-app.post('/custom/path', (req, res) => {
-    console.log(req.body)
-    res.status(200).send()
-})
-```
+The `/orders` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
 
 ### ACK-ing a message
 

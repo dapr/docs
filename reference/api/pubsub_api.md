@@ -34,7 +34,7 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
      }'
 ```
 
-# Required Application (User Code) Routes
+# Optional Application (User Code) Routes
 
 ## Provide a route for Dapr to discover topic subscriptions
 
