@@ -52,9 +52,9 @@ For Actors How Tos see the SDK documentation
 
 ### Metrics and Logs
 
-* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Azure Monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
 * [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
-* [Set up Prometheus and Grafana on Kubernetes](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Set up Prometheus and Grafana in Kubernetes](./setup-monitoring-tools/setup-prometheus-grafana.md)
 * [Observe metrics with Grafana](./setup-monitoring-tools/observe-metrics-with-grafana.md)
 
 ### Distributed Tracing
