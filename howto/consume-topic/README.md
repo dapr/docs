@@ -76,6 +76,27 @@ app.post('/orders', (req, res) => {
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```
 
+#### Subscribing on Kubernetes
+
+In Kubernetes, save the CRD to a file and apply it to the cluster:
+
+```
+kubectl apply -f subscription.yaml
+```
+
+#### Subscribing in Self Hosted
+
+When running Dapr in Self-Hosted, either locally or on a VM, put the CRD in your `./components` directory.
+When Dapr starts up, it will load subscriptions along with components.
+
+The following example shows how to point the Dapr CLI to a components path:
+
+```
+dapr run --app-id myapp --components-path ./myComponents -- python3 myapp.py
+```
+
+*Note: By default, Dapr loads components from $HOME/.dapr/components on MacOS/Linux and %USERPROFILE%\.dapr\components on Windows. If place the subscription in a custom components path, make sure the Pub/Sub component is present also.*
+
 ### Programmatic subscriptions 
 
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
