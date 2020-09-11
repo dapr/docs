@@ -38,7 +38,7 @@ Dapr allows two methods by which you can subscribe to topics: programatically, w
 
 ### Declarative subscriptions
 
-You can subscribe to a topic using the following CRD:
+You can subscribe to a topic using the following Custom Resources Definition (CRD):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -86,7 +86,7 @@ kubectl apply -f subscription.yaml
 
 #### Subscribing in Self Hosted
 
-When running Dapr in Self-Hosted, either locally or on a VM, put the CRD in your `./components` directory.
+When running Dapr in Self-hosted, either locally or on a VM, put the CRD in your `./components` directory.
 When Dapr starts up, it will load subscriptions along with components.
 
 The following example shows how to point the Dapr CLI to a components path:
