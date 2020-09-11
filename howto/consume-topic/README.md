@@ -34,7 +34,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 
 ## Subscribe to topics
 
-Dapr allows two methods by which you can subscribe to topics: programatically and declaratively.
+Dapr allows two methods by which you can subscribe to topics: programatically, where subscriptions are defined in user code and declaratively, where subscriptions are are defined in an external file.
 
 ### Declarative subscriptions
 
