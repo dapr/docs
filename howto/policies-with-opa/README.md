@@ -14,14 +14,17 @@ spec:
   metadata:
     # `includedHeaders` is a comma-seperated set of case-insensitive headers to include in the request input.
     # By default, request headers are not passed to the policy. To use an incoming header to make an authz decision, you must include it.
-    # includedHeaders: "x-my-custom-header, x-jwt-header"
+    - name: includedHeaders
+      value: "x-my-custom-header, x-jwt-header"
 
     # `defaultStatus` is the status code to return for denied responses if not specified in the `allow` result.
-    # defaultStatus: 403
+    - name: defaultStatus
+      value: 403
 
     # `rego` is the open policy agent policy to evaluate. required
     # The policy package must be http and the policy must set data.http.allow
-    rego: |
+    - name: rego
+      value: |
         package http
 
         default allow = true
