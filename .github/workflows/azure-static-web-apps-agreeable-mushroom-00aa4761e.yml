@@ -30,6 +30,7 @@ jobs:
           app_location: "/daprdocs" # App source code path
           api_location: "api" # Api source code path - optional
           app_artifact_location: "public" # Built app content directory - optional
+          app_build_command: "cd daprdocs/themes/docsy && git submodule update -f --init && cd ../.. && hugo"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
