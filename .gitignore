@@ -1,2 +1,4 @@
 # Visual Studio 2015/2017/2019 cache/options directory
 .vs/
+package-lock.json
+node_modules/

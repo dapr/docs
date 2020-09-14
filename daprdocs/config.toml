@@ -1,0 +1,11 @@
+baseURL = "https://docs.dapr.io"
+languageCode = "en-us"
+contentDir = "content/en"
+defaultContentLanguage = "en"
+title = "Dapr Docs"
+theme = "docsy"
+
+
+[params.ui]
+sidebar_menu_compact = true
+navbar_logo = true

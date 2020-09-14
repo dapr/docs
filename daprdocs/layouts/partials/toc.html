@@ -1,0 +1,10 @@
+<br /><br />
+<h3><b>Table of Contents:</b></h3>
+{{ partial "page-meta-links.html" . }}
+{{ if not .Params.notoc }}
+{{ with .TableOfContents }}
+{{ if ge (len .) 200 }}
+{{ . }}
+{{ end }}
+{{ end }}
+{{ end }}
