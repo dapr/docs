@@ -138,4 +138,4 @@ In your browser, go to ```http://localhost:9411``` and you will see the Zipkin U
 
 ## References
 
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
+* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)

@@ -19,13 +19,13 @@ The burden of dealing with concepts like consumer groups and multiple instances 
 
 ### App ID
 
-Dapr has the concept of an `id`. This is specified in Kubernetes using the `dapr.io/id` annotation and with the `app-id` flag using the Dapr CLI. Dapr requires an ID to be assigned to every application.
+Dapr has the concept of an `id`. This is specified in Kubernetes using the `dapr.io/app-id` annotation and with the `app-id` flag using the Dapr CLI. Dapr requires an ID to be assigned to every application.
 
 When multiple instances of the same application ID subscribe to a topic, Dapr will make sure to deliver the message to only one instance. If two different applications with different IDs subscribe to a topic, at least one instance in each application receives a copy of the same message.
 
 ## Cloud events
 
-Dapr follows the [Cloud Events 0.3 Spec](https://github.com/cloudevents/spec/tree/v0.3) and wraps any payload sent to a topic inside a Cloud Events envelope.
+Dapr follows the [Cloud Events 1.0 Spec](https://github.com/cloudevents/spec/tree/v1.0) and wraps any payload sent to a topic inside a Cloud Events envelope.
 
 The following fields from the Cloud Events spec are implemented with Dapr:
 

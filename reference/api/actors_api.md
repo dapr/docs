@@ -7,8 +7,6 @@ Besides the language specific Dapr SDKs, a developer can invoke an actor using t
 
 - [Service Code Calling to Dapr](#specifications-for-user-service-code-calling-to-dapr)
   - [Invoke Actor Method](#invoke-actor-method)
-  - [Save Actor State](#save-actor-state)
-  - [Delete Actor State](#delete-actor-state)
   - [Actor State Transactions](#actor-state-transactions)
   - [Get Actor State](#get-actor-state)
   - [Create Actor Reminder](#create-actor-reminder)
@@ -82,66 +80,6 @@ curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
 ```
 The response (the method return) from the remote endpoint is returned in the request body.
 
-### Delete actor state
-
-Deletes the state key of an actor
-
-#### HTTP Request
-
-```http
-DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>
-```
-
-#### HTTP Response Codes
-
-Code | Description
----- | -----------
-200  | Request successful
-500  | Request failed
-404  | Actor not found
-
-#### URL Parameters
-
-Parameter | Description
---------- | -----------
-daprPort | The Dapr port.
-actorType | The actor type.
-actorId | The actor ID.
-key | the key of the state to delete
-
-### Save actor state
-
-Persists the changed to the state for an actor
-
-#### HTTP Request
-
-```http
-POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
-```
-
-#### HTTP Response Codes
-
-Code | Description
----- | -----------
-201  | Request successful
-500  | Request failed
-404  | Actor not found
-
-#### URL Parameters
-
-Parameter | Description
---------- | -----------
-daprPort | The Dapr port.
-actorType | The actor type.
-actorId | The actor ID.
-
-Value of the key is passed as request body:
-```shell
-{
-  "key": "value"
-}
-```
-
 ### Actor state transactions
 
 Persists the changed to the state for an actor as a multi-item transaction.
@@ -159,8 +97,10 @@ POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
 Code | Description
 ---- | -----------
 201  | Request successful
+400  | Actor not found
 500  | Request failed
-404  | Actor not found
+
+
 
 #### URL Parameters
 
@@ -207,8 +147,10 @@ GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>
 Code | Description
 ---- | -----------
 200  | Request successful
+204  | Key not found, and the response will be empty
+400  | Actor not found
 500  | Request failed
-404  | Actor not found
+
 
 #### URL Parameters
 

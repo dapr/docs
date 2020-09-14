@@ -29,7 +29,7 @@ The following are the building blocks provided by Dapr:
 | [**Publish and Subscribe**](./publish-subscribe-messaging/README.md) | `/v1.0/publish` `/v1.0/subscribe`|  Pub/Sub is a loosely coupled messaging pattern where senders (or publishers) publishes messages to a topic, to which subscribers subscribe. Dapr supports the pub/sub pattern between applications.
 | [**Resource Bindings**](./bindings/README.md)| `/v1.0/bindings` | A binding provides a bi-directional connection to an external cloud/on-premise service or system. Dapr allows you to invoke the external service through the  Dapr binding API, and it allows your application to be triggered by events sent by the connected service.
 | [**Actors**](./actors/README.md) | `/v1.0/actors` |  An actor is an isolated, independent unit of compute and state with single-threaded execution. Dapr provides an actor implementation based on the Virtual Actor pattern which provides a single-threaded programming model and where actors are garbage collected when not in use. See * [Actor Overview](./actors#understanding-actors)
-| [**Observability**](./observability/README.md) | `NA` |  Dapr system components and runtime emit metrics, logs, and traces to debug, operate and monitor Dapr system services, components and user applications.
+| [**Observability**](./observability/README.md) | `N/A` |  Dapr system components and runtime emit metrics, logs, and traces to debug, operate and monitor Dapr system services, components and user applications.
 | [**Secrets**](./secrets/README.md) | `/v1.0/secrets` | Dapr offers a secrets building block API and integrates with secret stores such as Azure Key Vault and Kubernetes to store the secrets. Service code can call the secrets API to retrieve secrets out of the Dapr supported secret stores.
 
 ## Components
@@ -42,7 +42,7 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
  The following are the component types provided by Dapr:
 
-* [Service discovery](https://github.com/dapr/components-contrib/tree/master/servicediscovery)
+* [Service discovery](https://github.com/dapr/components-contrib/tree/master/nameresolution)
 * [State](https://github.com/dapr/components-contrib/tree/master/state)
 * [Pub/sub](https://github.com/dapr/components-contrib/tree/master/pubsub)
 * [Bindings](https://github.com/dapr/components-contrib/tree/master/bindings)
@@ -63,11 +63,11 @@ In Dapr, a [**secret**](./secrets/README.md) is any piece of private information
 
 Dapr [Configuration](./configuration/README.md) defines a policy that affects how any Dapr sidecar instance behaves, such as using [distributed tracing](./observability/traces.md) or a [middleware component](./middleware/README.md). Configuration can be applied to Dapr sidecar instances dynamically.
 
- You can get a list of current configurations available in the current the hosting environment using the `dapr configuration` CLI command.
+ You can get a list of current configurations available in the current the hosting environment using the `dapr configurations` CLI command.
   
 ## Hosting environments
 
 Dapr can run on multiple hosting platforms. The supported hosting platforms are:
 
-* [**Self hosted**](../overview/README.md#running-dapr-on-a-local-developer-machine-in-standalone-mode). Dapr runs on a single machine either as a process or in a container. Used for local development or running on a single machine execution 
-* [**Kubernetes**](../overview/README.md#running-dapr-in-kubernetes-mode). Dapr runs on any Kubernetes cluster either from a cloud provider or on-premises.
+* [**Self hosted**](./hosting/README.md#running-dapr-on-a-local-developer-machine-in-standalone-mode). Dapr runs on a single machine either as a process or in a container. Used for local development or running on a single machine execution 
+* [**Kubernetes**](./hosting/README.md#running-dapr-in-kubernetes-mode). Dapr runs on any Kubernetes cluster either from a cloud provider or on-premises.

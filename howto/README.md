@@ -50,11 +50,12 @@ For Actors How Tos see the SDK documentation
 
 ## Observability
 
-### Metric and logs
+### Metrics and Logs
 
-* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Azure Monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
 * [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
-* [Set up Prometheus and Grafana for metrics](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Set up Prometheus and Grafana in Kubernetes](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Observe metrics with Grafana](./setup-monitoring-tools/observe-metrics-with-grafana.md)
 
 ### Distributed Tracing
 
@@ -87,8 +88,10 @@ For Actors How Tos see the SDK documentation
 ## Hosting Platforms
 ### Kubernetes Configuration
 
+* [Production deployment and upgrade guidelines](./deploy-k8s-prod)
 * [Sidecar configuration on Kubernetes](./configure-k8s)
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
+* [Deploy to hybrid Linux/Windows Kubernetes clusters](./windows-k8s)
 
 ## Developer tooling
 ### Using Visual Studio Code

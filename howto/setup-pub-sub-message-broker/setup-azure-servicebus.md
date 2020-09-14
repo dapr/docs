@@ -36,7 +36,7 @@ spec:
   - name: maxActiveMessagesRecoveryInSec
     value: <REPLACE-WITH-MAX-ACTIVE-MESSAGES-RECOVERY-IN-SEC> # Optional. Default: "2". Defines the number of seconds to wait once the maximum active message limit is reached.
   - name: maxConcurrentHandlers
-    valye: <REPLACE-WITH-MAX-CONCURRENT-HANDLERS> # Optional. Defines the maximum number of concurrent message handlers
+    value: <REPLACE-WITH-MAX-CONCURRENT-HANDLERS> # Optional. Defines the maximum number of concurrent message handlers
   - name: prefetchCount
     value: <REPLACE-WITH-PREFETCH-COUNT> # Optional. Defines the number of prefetched messages (use for high throughput / low latency scenarios)
   - name: defaultMessageTimeToLiveInSec

@@ -1,5 +1,5 @@
 
-# Dapr Overview
+# Dapr overview
 
 Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, stateless and stateful microservice applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
@@ -9,8 +9,10 @@ Dapr is a portable, event-driven runtime that makes it easy for enterprise devel
 - [Microservice building blocks for cloud and edge](#microservice-building-blocks-for-cloud-and-edge)
 - [Sidecar architecture](#sidecar-architecture)
 - [Developer language SDKs and frameworks](#developer-language-sdks-and-frameworks)
-- [Running Dapr on a local developer machine in self hosted mode](#running-dapr-on-a-local-developer-machine-in-self-hosted-mode)
-- [Running Dapr in Kubernetes mode](#running-dapr-in-kubernetes-mode)
+- [Designed for operations](#designed-for-operations)
+- [Run anywhere](#Run-anywhere)
+    - [Running Dapr on a local developer machine in self hosted mode](#running-dapr-on-a-local-developer-machine-in-self-hosted-mode)
+  - [Running Dapr in Kubernetes mode](#running-dapr-in-kubernetes-mode)
 
 ## Any language, any framework, anywhere
 
@@ -35,23 +37,27 @@ Each of these building blocks is independent, meaning that you can use one, some
 | Building Block | Description |
 |----------------|-------------|
 | **[Service Invocation](../concepts/service-invocation)** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
-|  **[State Management](../concepts/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, AWS DynamoDB or Redis among others.
+|  **[State Management](../concepts/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
 | **[Publish and Subscribe Messaging](../concepts/publish-subscribe-messaging)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
-| **[Resource Bindings](../concepts/bindings)** | Resource bindings with triggers builds further on event-driven | chitectures for scale and resiliency by receiving and sending events to and from any external | source such as databases, queues, file systems, etc.
-| **[Distributed Tracing](../concepts/observability/traces.md)** | Dapr supports distributed tracing to easily diagnose and | serve inter-service calls in production using the W3C Trace Context standard.
+| **[Resource Bindings](../concepts/bindings)** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | **[Actors](../concepts/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
+| **[Observability](../concepts/observability)** | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
+| **[Secrets](../concepts/secrets)** | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 
 ## Sidecar architecture
 
 Dapr exposes its APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
 
-### Standalone
+## Hosting Environments
+Dapr can be hosted in multiple environments, including self hosted for local development or to deploy to a group of VMs, Kubernetes and edge environments such as Azure IoT Edge.
 
-In standalone mode dapr runs as a separate process from which your service code can call via HTTP or gRPC.
+### Self hosted
+
+In self hosted mode Dapr runs as a separate side-car process which your service code can call via HTTP or gRPC. In self hosted mode, you can  also deploy Dapr onto a set of VMs.
 
 <img src="../images/overview-sidecar.png" width=600>
 
-### Kubernetes
+### Kubernetes hosted
 
 In container hosting environments such as Kubernetes, Dapr runs as a side-car container with the application container in the same pod.
 
@@ -73,37 +79,47 @@ To make using Dapr more natural for different languages, it also includes langua
 > Note: Dapr is language agnostic and provides a [RESTful HTTP API](../reference/api/README.md) in addition to the protobuf clients.
 
 ### Developer frameworks
+Dapr can be used from  any developer framework. Here are some that have been integrated with Dapr.
 
-Furthermore, Dapr can be integrated with any developer framework. For example, in the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services. And in the Dapr [Java SDK](https://github.com/dapr/java-sdk) you can find Spring Boot integration. Others are planned for the future including Django for Python, Azure Functions runtime, Azure LogicApps runtime and server side Blazor.
+#### Web
+ In the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services. 
+ 
+ In the Dapr [Java SDK](https://github.com/dapr/java-sdk) you can find [Spring Boot](https://spring.io/) integration.
+ 
+Dapr integrates easily with Python [Flask](https://pypi.org/project/Flask/) and node [Express](http://expressjs.com/), which you can find in the [getting started samples](https://github.com/dapr/docs/tree/master/getting-started)
 
-## Running Dapr on a local developer machine in self hosted mode
+#### Actors
+Dapr SDKs support for [virtual actors](../concepts/actors) which are stateful objects that make concurrency simple, have method and state encapsulation, and are designed for scalable, distributed applications.
 
-Dapr can be configured to run on your local developer machine in [self hosted mode](../getting-started). Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
+#### Azure Functions
+Dapr integrates with the Azure Functions runtime via an extension that lets a function seamlessly interact with Dapr. Azure Functions provides an event-driven programming model and Dapr provides cloud-native building blocks. With this  extension, you can bring both together for serverless and event-driven apps. For more information read
+[Azure Functions extension for Dapr](https://cloudblogs.microsoft.com/opensource/2020/07/01/announcing-azure-functions-extension-for-dapr/) and visit the [Azure Functions extension](https://github.com/dapr/azure-functions-extension) repo to try out the samples.
 
-In self hosted mode, Redis is running locally in a container and is configured to server as both the default state store and pub/sub.
-After running `dapr init`, see the `$HOME/.dapr/components` directory (Mac/Linux) or `%USERPROFILE%\.dapr\components` on Windows.
+#### Dapr workflows
+To enable developers to easily build workflow applications that use Dapr’s capabilities including diagnostics and multi-language support, you can use Dapr workflows. Dapr integrates with workflow engines such as Logic Apps.  For more information read
+[cloud-native workflows using Dapr and Logic Apps](https://cloudblogs.microsoft.com/opensource/2020/05/26/announcing-cloud-native-workflows-dapr-logic-apps/) and visit the [Dapr workflow](https://github.com/dapr/workflows) repo to try out the samples.
 
-The `dapr-placement` service is responsible for managing the actor distribution scheme and key range settings. This service is only required if you are using Dapr actors. For more information on the actor `Placement` service read [actor overview](../concepts/actors). 
+## Designed for Operations
+Dapr is designed for operations. The [services dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs and more for the Dapr sidecars.
+
+The [monitoring dashboard](../reference/dashboard/README.md) provides deeper visibility into the Dapr system services and side-cars and the [observability capabilities](../concepts/observability) of Dapr provide insights into your application such as tracing and metrics.
+
+## Run anywhere
+
+### Running Dapr on a local developer machine in self hosted mode
+
+Dapr can be configured to run on your local developer machine in [self hosted mode](../concepts/hosting/). Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
+
+You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples](../getting-started). 
 
 <img src="../images/overview_standalone.png" width=800>
 
-You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine.
+### Running Dapr in Kubernetes mode
 
-## Running Dapr in Kubernetes mode
-
-Dapr can be configured to run on any [Kubernetes cluster](https://github.com/dapr/samples/tree/master/2.hello-kubernetes). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. Additionally, the `dapr-sidecar-injector` also injects the environment variables `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` into **all** the containers in the pod to enable user defined applications to easily communicate with Dapr without hardcoding Dapr port values. 
+Dapr can be configured to run on any [Kubernetes cluster](../concepts/hosting/). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
 
 The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](../concepts/security/README.md#dapr-to-dapr-communication)
 
 <img src="../images/overview_kubernetes.png" width=800>
 
-Deploying and running a Dapr enabled application into your kubernetes cluster is a simple as adding a few annotations to the deployment schemes. To give your service an id and port known to Dapr, turn on tracing information and launch the Dapr sidecar container, you annotate your Kubernetes deployment like this. 
-
-```yml
-  annotations:
-    dapr.io/enabled: "true"
-    dapr.io/id: "nodeapp"
-    dapr.io/port: "3000"
-    dapr.io/config: "tracing"
-```
-You can see some examples [here](https://github.com/dapr/samples/tree/master/2.hello-kubernetes/deploy) in the kubernetes getting started guide.
+Deploying and running a Dapr enabled application into your Kubernetes cluster is a simple as adding a few annotations to the deployment schemes. You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/deploy) in the Kubernetes getting started sample. Try this out with the [Kubernetes getting started sample](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)

@@ -6,10 +6,12 @@ Dapr uses OpenTelemetry (previously known as OpenCensus) for distributed traces 
 
 ## Contents
 
-- [Tracing Design](#tracing-design)
-- [Correlation ID](#correlation-id)
-- [Configuration](#configuration)
-- [References](#references)
+- [Distributed Tracing](#distributed-tracing)
+  - [Contents](#contents)
+  - [Tracing design](#tracing-design)
+  - [W3C Correlation ID](#w3c-correlation-id)
+  - [Configuration](#configuration)
+  - [References](#references)
 
 ## Tracing design
 
@@ -28,7 +30,7 @@ Read [W3C Tracing Context for distributed tracing](./W3C-traces.md) for more bac
 
 ## Configuration
 
-Dapr uses [probalistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probaility a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
+Dapr uses [probabilistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probability a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
 
 To change the default tracing behavior, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled):
 
@@ -68,5 +70,5 @@ spec:
 
 * [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
 * [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/readme.md)
+* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)
 
