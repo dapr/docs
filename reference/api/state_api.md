@@ -194,7 +194,6 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
-consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 metadata | (optional) metadata as query parameters to the state store
 
 ### HTTP Response
