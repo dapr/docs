@@ -61,6 +61,7 @@ The following yaml files demonstrates how to define each. If the Redis instance 
 
 ### Configuring Redis for State Persistence and Retrieval
 
+**Failover feature:** when enabled the failover feature with setting true. the redisHost should be the sentinel host address. [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
 Create a file called redis.yaml, and paste the following:
 
 ```yaml
@@ -78,6 +79,8 @@ spec:
     value: <PASSWORD>
   - name: enableTLS
     value: <bool>
+  - name: failover
+    value: <REPLACE-WITH-Whether-Enable-Failover> # Optional. Allowed: true, false.
 ```
 
 ## Apply the configuration
