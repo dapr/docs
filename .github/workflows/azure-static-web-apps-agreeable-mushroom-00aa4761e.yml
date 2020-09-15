@@ -18,8 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Show Directory
-        run: cd daprdocs/themes/docsy && git submodule update -f --init && cd ../.. & ls -l
+      - name: Setup Docsy
+        run: cd daprdocs && ls -l
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
