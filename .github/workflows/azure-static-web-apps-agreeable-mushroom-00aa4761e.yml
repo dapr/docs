@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Docsy
-        run: cd daprdocs && ls -l
+        run: cd daprdocs/themes && ls -l
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
