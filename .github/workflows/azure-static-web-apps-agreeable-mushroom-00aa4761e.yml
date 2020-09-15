@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: recursive
       - name: Show Directory
-        run: cd daprdocs/themes/docsy && git submodule update -f --init && cd ../.. & ls /themes/docsy
+        run: cd daprdocs/themes/docsy && git submodule update -f --init && cd ../.. & ls -l
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
