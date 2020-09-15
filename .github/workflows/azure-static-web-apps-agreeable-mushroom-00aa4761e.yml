@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Docsy
-        run: cd daprdocs && git submodule add https://github.com/google/docsy.git themes/docsy && git submodule update --init --recursive && npm install -g postcss-cli
+        run: cd daprdocs && git submodule add https://github.com/google/docsy.git themes/docsy && git submodule update --init --recursive && sudo npm install -g postcss-cli
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
