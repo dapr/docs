@@ -23,6 +23,7 @@ jobs:
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        continue-on-error: true
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_MUSHROOM_00AA4761E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
@@ -34,6 +35,8 @@ jobs:
           app_artifact_location: '/bin/staticsites/ss-oryx/app/daprdocs' # Built app content directory - optional
           app_build_command: hugo
           ###### End of Repository/Build Configurations ######
+      - name: Test
+        run: ls -l daprdocs/publish && ls -l /bin/staticsites/ss-oryx/app
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
