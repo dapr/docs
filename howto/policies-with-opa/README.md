@@ -1,6 +1,6 @@
 # Apply Open Policy Agent Polices
 
-The Dapr Open Policy Agent (OPA) [middleware](https://github.com/dapr/docs/blob/master/concepts/middleware/README.md) allows applying [OPA Policies](https://www.openpolicyagent.org/) to Dapr requests. This can be used to apply reusable authorization policies to app endpoints. 
+The Dapr Open Policy Agent (OPA) [HTTP middleware](https://github.com/dapr/docs/blob/master/concepts/middleware/README.md) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
 ## Middleware Component Definition
 ```yaml
@@ -59,6 +59,89 @@ spec:
 ```
 
 You can prototype and experiment with policies using the [official opa playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
+
+## Input
+
+This middleware supplies a [`HTTPRequest`](#httprequest) as input.
+
+### HTTPRequest
+
+The `HTTPRequest` input contains all the revelant information about an incoming HTTP Request except it's body.
+
+```go
+type Input struct {
+  request HTTPRequest
+}
+
+type HTTPRequest struct {
+  // The request method (e.g. GET,POST,etc...)
+  method string
+  // The raw request path (e.g. "/v2/my-path/")
+  path string
+  // The path broken down into parts for easy consumption (e.g. ["v2", "my-path"])
+  path_parts string[]
+  // The raw query string (e.g. "?a=1&b=2")
+  raw_query string
+  // The query broken down into keys and their values
+  query map[string][]string
+  // The request headers
+  headers map[string]string
+  // The request scheme (e.g. http, https)
+  scheme string
+}
+```
+
+## Result
+
+The policy must set `data.http.allow` with either a `boolean` value, or an `object` value with an `allow` boolean property. A `true` `allow` will allow the request through, while a `false` value will reject the request with a `403` status. So for example, the following policy would return a `403 - Forbidden` for all requests:
+
+```go
+package http
+
+default allow = false
+```
+
+which is the same as:
+
+```go
+package http
+
+default allow = {
+  "allow": false
+}
+```
+
+### Changing the Rejected Response Status Code
+
+When rejecting a request, you can override the status code the that gets returned. For example, if you wanted to return a `401` instead of a `403`, you could do the following:
+
+```go
+package http
+
+default allow = {
+  "allow": false,
+  "status_code": 401
+}
+```
+
+### Adding Response Headers
+
+What if you you wanted to do a redirect instead? You can accomplish this using the ability to add headers to the returned result like so:
+
+```go
+package http
+
+default allow = {
+  "allow": false,
+  "status_code": 301,
+  "additional_headers": {
+    "Location": "https://my.redirect.site"
+  }
+}
+```
+
+
+
 
 ## Related links
 
