@@ -85,6 +85,8 @@ type HTTPRequest struct {
   // The query broken down into keys and their values
   query map[string][]string
   // The request headers
+  // NOTE: By default, no headers are included. You must specify what headers
+  // you want to recieve via `spec.metadata.includedHeaders` (see above)
   headers map[string]string
   // The request scheme (e.g. http, https)
   scheme string
@@ -140,7 +142,21 @@ default allow = {
 }
 ```
 
+### Adding Request Headers
 
+You can also set additional headers to allowed ongoing request via the the same method:
+
+```go
+package http
+
+default allow = false
+
+allow = { "allow": true, "additional_headers": { "X-JWT-Payload": payload } } {
+  not input.path[0] == "forbidden"
+  # Where `jwt` is the result of another rule
+  payload := base64.encode(json.marshal(jwt.payload))
+}
+```
 
 
 ## Related links
