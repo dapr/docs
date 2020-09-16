@@ -1,17 +1,11 @@
 ---
-title: "Environment Options for Hosting Dapr"
-linkTitle: "Hosting Environments"
-weight: 50
+title: "Deploying Dapr"
+linkTitle: "Deploying"
+weight: 40
+description: "Hosting options, best-practices, and other guides and running your application on Dapr."
 ---
 
-
-# Hosting environments
-
 Dapr can run on multiple hosting platforms.
-
-## Contents
-- [Running Dapr on a local developer machine in self hosted mode](#running-dapr-on-a-local-developer-machine-in-self-hosted-mode)
-- [Running Dapr in Kubernetes mode](#running-dapr-in-kubernetes-mode)
 
 ## Running Dapr on a local developer machine in self hosted mode
 

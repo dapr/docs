@@ -7,39 +7,6 @@ description: >
   Docs, references, and best-practices for the Dapr project.
 ---
 
-# 📖 Dapr documentation
-
-Welcome to the Dapr documentation repository. You can learn more about Dapr from the links below.
-
-
-## Document versions
-
-Dapr is currently under community development in preview phase and master branch could include breaking changes. Therefore, please ensure that you refer to the right version of the documents for your Dapr runtime version.
-
-| Version | Repo |
-|:-------:|:----:|
-| v0.10.0 | [Docs](https://github.com/dapr/docs/tree/v0.10.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.10.0) - [CLI](https://github.com/dapr/cli/tree/release-0.10)
-| v0.9.0  | [Docs](https://github.com/dapr/docs/tree/v0.9.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.9.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.9)
-| v0.8.0  | [Docs](https://github.com/dapr/docs/tree/v0.8.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.8.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.8)
-| v0.7.0  | [Docs](https://github.com/dapr/docs/tree/v0.7.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.7.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.7)
-| v0.6.0  | [Docs](https://github.com/dapr/docs/tree/v0.6.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.6.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.6)
-| v0.5.0  | [Docs](https://github.com/dapr/docs/tree/v0.5.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.5.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.5)
-| v0.4.0  | [Docs](https://github.com/dapr/docs/tree/v0.4.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.4.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.4)
-| v0.3.0  | [Docs](https://github.com/dapr/docs/tree/v0.3.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.3.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.3)
-| v0.2.0  | [Docs](https://github.com/dapr/docs/tree/v0.2.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.2.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.2)
-| v0.1.0  | [Docs](https://github.com/dapr/docs/tree/v0.1.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.1.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.1)
-
-## Contents
-
-| Topic | Description |
-|-------|-------------|
-|**[Overview](./overview)** | An overview of Dapr and how it enables you to build event driven, distributed applications
-|**[Getting Started](./getting-started)** | Set up your development environment
-|**[Concepts](./concepts)** | Dapr concepts explained
-|**[How-Tos](./howto)** | Guides explaining how to accomplish specific tasks
-|**[Best Practices](./best-practices)** | Guides explaining best practices when using Dapr
-|**[Reference](./reference)** | API and bindings reference documentation
-|**[FAQ](FAQ.md)** | Frequently asked questions
 
 ## Further documentation
 

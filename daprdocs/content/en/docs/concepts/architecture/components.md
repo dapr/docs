@@ -1,7 +1,7 @@
 ---
 title: "Dapr Components"
 linkTitle: "Components"
-weight: 10
+weight: 100
 description: "Modular pieces of functionality used in Dapr."
 ---
 

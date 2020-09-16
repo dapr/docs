@@ -1,7 +1,7 @@
 ---
 title: "Middleware Pipeline"
 linkTitle: "Middleware"
-weight: 50
+weight: 300
 ---
 
 # Middleware pipeline

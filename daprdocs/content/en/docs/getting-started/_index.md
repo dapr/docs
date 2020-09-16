@@ -1,7 +1,7 @@
 ---
 title: "Getting Started with Dapr"
 linkTitle: "Getting Started"
-weight: 1
+weight: 20
 description: >
   How to get up and running with Dapr
 ---

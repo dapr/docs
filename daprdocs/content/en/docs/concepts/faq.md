@@ -1,8 +1,10 @@
-# FAQ
-
-- **[Networking and service meshes](#networking-and-service-meshes)**
-- **[Actors](#actors)**
-- **[Developer language SDKs and frameworks](#developer-language-sdks-and-frameworks)**
+---
+title: "Frequently Asked Questions and Answers"
+linkTitle: "FAQs"
+weight: 60
+description: >
+  Common questions we get asked about Dapr
+---
 
 ## Networking and service meshes
 

@@ -1,7 +1,7 @@
 ---
 title: "Dapr Security"
 linkTitle: "Security"
-weight: 60
+weight: 30
 description: >
   How Dapr is designed with security in mind for your enterprise deployments.
 ---
