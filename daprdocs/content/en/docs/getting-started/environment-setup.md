@@ -1,21 +1,12 @@
 ---
-title: "Setup a local Dapr environment"
-linkTitle: "Local Environment"
+title: "Setup Dapr Environment"
+linkTitle: "Install Dapr"
 weight: 10
 description: >
-  How to setup Dapr in a local environment
+  How to setup Dapr in a local environment or in a Kubernetes cluster
 ---
 
-# Environment Setup
-
 Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime in self hosted mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in self hosted mode and then deploy them to any Kubernetes cluster.
-
-## Contents
-
-- [Prerequisites](#prerequisites)
-- [Installing Dapr CLI](#installing-dapr-cli)
-- [Installing Dapr in self-hosted mode](#installing-dapr-in-self-hosted-mode)
-- [Installing Dapr on Kubernetes cluster](#installing-dapr-on-a-kubernetes-cluster)
 
 ## Prerequisites
 
