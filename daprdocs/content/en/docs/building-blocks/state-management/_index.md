@@ -1,7 +1,7 @@
 ---
 title: "Dapr State Management"
 linkTitle: "State Management"
-weight: 20
+weight: 100
 ---
 
 # State management
