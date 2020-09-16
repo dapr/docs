@@ -1,4 +1,8 @@
-# Sequence of Events on a dapr run in Self Hosting Mode
+---
+title: "Sequence of Events on a dapr run in Self Hosting Mode"
+linkTitle: "Dapr Run"
+weight: 1000
+---
 
 The doc describes the sequence of events that occur when `dapr run` is executed in self hosting mode.  It uses [sample 1](https://github.com/dapr/quickstarts/tree/master/hello-world) as an example.
 
