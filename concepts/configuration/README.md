@@ -44,6 +44,7 @@ The following configuration settings can be applied to Dapr sidecars;
 
 * [Observability distributed tracing](../observability/traces.md)
 * [Middleware pipelines](../middleware/README.md)
+* [Scoping secrets](../../howto/secrets-scopes/README.md)
 
 ### Tracing configuration
 
@@ -101,6 +102,35 @@ spec:
     - name: oauth2
       type: middleware.http.oauth2
 ```
+
+### Scoping secrets
+
+Along with defining which secret store can be accessed from an application, based on an `allowedSecrets` and a `deniedSecrets` list, the specific secret that an application has access to can also be configured.
+
+The `secrets` section under the `Configuration` spec contains the following properties:
+
+```yml
+secrets:
+  scopes:
+    - storeName: kubernetes
+      defaultAcess: allow
+      allowedSecrets: ["redis-password"]
+    - storeName: localstore
+      defaultAccess: allow
+      deniedSecrets: ["redis-password"]
+```
+
+The following table lists the different properties.
+
+Property | Type | Description
+---- | ------- | -----------
+storeName  | string | name of the secret store component
+defaultAccess  | string | access modifier. Accepted values "allow"(default) or "deny".
+allowedSecrets | list   | list of secret keys that can be accessed. 
+deniedSecrets  | list   | list of secret keys that cannot be accessed.
+
+When an `allowedSecrets` list is present with at least one element, only those secrets defined in the list can be accessed by the application.
+
 
 ## Kubernetes control plane configuration
 There is a single configuration file called `default` installed with the control plane system services that applies global settings.  
