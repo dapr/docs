@@ -59,6 +59,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
    - name: redisPassword
      value: lhDOkwTlp0
    ```
+    > **Note:** the `redis.yaml` file provided in here takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets/) instructions to securely manage your secrets.
 
 ### Option 2: Creating an Azure Cache for Redis service
 
