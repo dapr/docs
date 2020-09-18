@@ -124,7 +124,7 @@ The following table lists the different properties.
 
 Property | Type | Description
 ---- | ------- | -----------
-storeName  | string | name of the secret store component
+storeName  | string | name of the secret store component. storeName must be unique within the list.
 defaultAccess  | string | access modifier. Accepted values "allow"(default) or "deny".
 allowedSecrets | list   | list of secret keys that can be accessed. 
 deniedSecrets  | list   | list of secret keys that cannot be accessed.
