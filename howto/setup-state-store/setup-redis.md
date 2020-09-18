@@ -57,11 +57,16 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 To setup Redis, you need to create a component for `state.redis`. 
 <br>
-The following yaml files demonstrates how to define each. If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS in the yaml. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
+
+The following yaml file demonstrates how to define each.
 
 ### Configuring Redis for State Persistence and Retrieval
+**TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`. 
 
-**Failover feature:** when enabled the failover feature with setting true. the redisHost should be the sentinel host address. [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
+**Failover:** When set to `true` enables the failover feature. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
+
+**Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
+
 Create a file called redis.yaml, and paste the following:
 
 ```yaml
@@ -78,9 +83,9 @@ spec:
   - name: redisPassword
     value: <PASSWORD>
   - name: enableTLS
-    value: <bool>
+    value: <bool> # Optional. Allowed: true, false.
   - name: failover
-    value: <REPLACE-WITH-Whether-Enable-Failover> # Optional. Allowed: true, false.
+    value: <bool> # Optional. Allowed: true, false.
 ```
 
 ## Apply the configuration
