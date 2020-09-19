@@ -105,7 +105,7 @@ spec:
 
 ### Scoping secrets
 
-Along with defining which secret store can be accessed from an application, based on an `allowedSecrets` and a `deniedSecrets` list, the specific secret that an application has access to can also be configured.
+In addition to scoping which application can access given secret store component, the secret store component itself can be scoped to one or more secrets. By defining `allowedSecrets` and/or `deniedSecrets` list, applications can be restricted access to specific secrets.
 
 The `secrets` section under the `Configuration` spec contains the following properties:
 

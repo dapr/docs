@@ -1,14 +1,14 @@
 # Limit the secrets that can be read from secret stores 
 
-Secret stores can be configured for an app following the instructions [here](../setup-secret-store). At the same time once a secret store is configured, any secret defined within the store can be accessed by the Dapr application. 
+Follow [these instructions](../setup-secret-store) to configure secret store for an application. Once configured, any secret defined within that store will be accessible from the Dapr application.
 
-To limit the secrets that the Dapr application has access to, you can define scopes for secrets. For this the existing configuration CRD can by augmented with restrictive permissions for secret stores. 
+To limit the secrets to which the Dapr application has access, users can define secret scopes by augmenting existing configuration CRD with restrictive permissions.
 
-The configuration CRD is defined following the instructions [here](../../concepts/configuration/README.md).
+Follow [these instructions](../../concepts/configuration/README.md) to define a configuration CRD.
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 
-Kubernetes secret store is by default added to a Dapr application, when the application is run in a Kubernetes cluster. In the scenario where it would be preferrable to deny access to the secret store for the application, either because no secrets are going to be accessed or for other security reasons, the following steps can be taken. 
+In Kubernetes cluster, the native Kubernetes secret store is added to Dapr application by default. In some scenarios it may be necessary to deny access to Dapr secrets for a given application. To add this configuration follow the steps below:
 
 Define the following `appconfig.yaml` and apply it to the Kubernetes cluster using the command `kubectl apply -f appconfig.yaml`.
 
@@ -24,7 +24,7 @@ spec:
         defaultAcess: deny
 ```
 
-Following the instructions [here](../configure-k8s/README.md), for the application that needs to be deined access to the Kubernetes secret store, add the following annotation. 
+For applications that need to be deined access to the Kubernetes secret store, follow [these instructions](../configure-k8s/README.md), and add the following annotation to the application pod. 
 
 ```yaml
 dapr.io/config: appconfig
@@ -34,7 +34,7 @@ With this defined, the application no longer has access to Kubernetes secret sto
 
 ## Scenario 2 : Allow access to only certain secrets in a secret store
 
-Define the following `config.yaml`:
+To allow a Dapr application to have access to only certain secrets, define the following `config.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -49,7 +49,7 @@ spec:
         allowedSecrets: ["secret1", "secret2"]
 ```
 
-Here the example configuration defines scope for a vault secret store. The default access to the secret store is "deny" whereas based on the `allowedSecrets` list, a couple of secrets can be accessed by the application. The configuration can be applied to the sidecar following the instructions [here](../../concepts/configuration/README.md). 
+This example defines configuration for secret store named vault. The default access to the secret store is `deny`, whereas some secrets are accessible by the application based on the `allowedSecrets` list. Follow [these instructions](../../concepts/configuration/README.md) to apply configuration to the sidecar.
 
 ## Scenario 3: Deny access to certain senstive secrets in a secret store
 
@@ -68,7 +68,7 @@ spec:
         deniedSecrets: ["secret1", "secret2"]
 ```
 
-The configuration specifically denies access to `secret1` and `secret2` from the secret store named `vault`. All the other secrets can be queried from the secret store. The configuration can be applied to the sidecar following the instructions [here](../../concepts/configuration/README.md). 
+The above configuration explicitly denies access to `secret1` and `secret2` from the secret store named vault while allowing access to all other secrets. Follow [these instructions](../../concepts/configuration/README.md) to apply configuration to the sidecar.
 
 ## Permission priority
 
