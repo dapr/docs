@@ -13,11 +13,12 @@ spec:
   type: middleware.http.opa
   metadata:
     # `includedHeaders` is a comma-seperated set of case-insensitive headers to include in the request input.
-    # By default, request headers are not passed to the policy. To use an incoming header to make an authz decision, you must include it.
+    # Request headers are not passed to the policy by default. Include to recieve incoming request headers in
+    # the input
     - name: includedHeaders
       value: "x-my-custom-header, x-jwt-header"
 
-    # `defaultStatus` is the status code to return for denied responses if not specified in the `allow` result.
+    # `defaultStatus` is the status code to return for denied responses
     - name: defaultStatus
       value: 403
 
@@ -95,7 +96,7 @@ type HTTPRequest struct {
 
 ## Result
 
-The policy must set `data.http.allow` with either a `boolean` value, or an `object` value with an `allow` boolean property. A `true` `allow` will allow the request through, while a `false` value will reject the request with a `403` status. So for example, the following policy would return a `403 - Forbidden` for all requests:
+The policy must set `data.http.allow` with either a `boolean` value, or an `object` value with an `allow` boolean property. A `true` `allow` will allow the request, while a `false` value will reject the request with the status specified by `defaultStatus`. The following policy, with defaults, demonstrates a `403 - Forbidden` for all requests:
 
 ```go
 package http
@@ -128,7 +129,7 @@ default allow = {
 
 ### Adding Response Headers
 
-What if you you wanted to do a redirect instead? You can accomplish this using the ability to add headers to the returned result like so:
+To redirect, add headers and set the `status_code` to the returned result:
 
 ```go
 package http
@@ -144,7 +145,7 @@ default allow = {
 
 ### Adding Request Headers
 
-You can also set additional headers to allowed ongoing request via the the same method:
+You can also set additional headers on the allowed request:
 
 ```go
 package http
@@ -158,6 +159,19 @@ allow = { "allow": true, "additional_headers": { "X-JWT-Payload": payload } } {
 }
 ```
 
+### Result Structure
+```go
+type Result bool
+// or
+type Result struct {
+  // Whether to allow or deny the incoming request
+  allow bool
+  // Overrides denied response status code; Optional
+  status_code int  
+  // Sets headers on allowed request or denied response; Optional
+  additional_headers map[string]string
+}
+```
 
 ## Related links
 
