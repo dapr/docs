@@ -80,6 +80,7 @@ For Actors How Tos see the SDK documentation
 ## Middleware
 
 * [Configure API authorization with OAuth](./authorization-with-oauth)
+* [Apply Open Policy Agent Polices](./policies-with-opa)
 
 ## Components
 
