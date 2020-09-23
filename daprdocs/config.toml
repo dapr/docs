@@ -14,6 +14,12 @@ github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
 
+# Markdown Engine - Allow inline html
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
 # Top Nav Bar
 [[menu.main]]
     name = "Home"
