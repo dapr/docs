@@ -45,6 +45,7 @@ The following configuration settings can be applied to Dapr sidecars;
 * [Observability distributed tracing](../observability/traces.md)
 * [Middleware pipelines](../middleware/README.md)
 * [Scoping secrets](../../howto/secrets-scopes/README.md)
+* [Allow lists for service invocation](../../howto/allowlists-serviceinvocation/README.md)
 
 ### Tracing configuration
 
@@ -131,6 +132,40 @@ deniedSecrets  | list   | list of secret keys that cannot be accessed.
 
 When an `allowedSecrets` list is present with at least one element, only those secrets defined in the list can be accessed by the application.
 
+### Allow lists for Service Invocation
+
+An access control policy can be specified under the Configuration CRD and be applied to DAPR. This policy spec would look as below and access to the target app would be based on the matched policy action. If no access policy is specified, the current behavior to allow all apps is unchanged.
+
+```
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  accessControl:
+    defaultAction: deny --> Global default action in case no other policy is matched
+    trustDomain: "public" --> Trust domain for the target app
+    policies:
+    - app: app1 --> Src App ID to allow/deny service invocation from
+      defaultAction: deny --> App level default action in case the app is found but no specific policy is matched
+      trustDomain: 'public' --> Trust domain of the src app
+      namespace: "default" --> Namespace of the src app
+      operations:
+      - name: /op1 --> operations
+        httpVerb: ['POST', 'GET'] --> specific http verbs, unused for grpc invocation
+        action: deny --> allow/deny access
+      - name: /op2/* --> operation with a postfix
+        httpVerb: ["*"] --> wildcards can be used to match any http verb
+        action: allow
+    - app: app2
+      defaultAction: allow
+      trustDomain: "public"
+      namespace: "default"
+      operations:
+      - name: /op3
+        httpVerb: ['POST', 'PUT']
+        action: deny
+```
 
 ## Kubernetes control plane configuration
 There is a single configuration file called `default` installed with the control plane system services that applies global settings.  
