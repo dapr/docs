@@ -2,7 +2,7 @@
 title: "Building Blocks"
 linkTitle: "Building Blocks"
 weight: 30
-description: "HTTP or gRPC API that can be called from user code and uses one or more Dapr components."
+description: "HTTP or gRPC APIs that can be called from user code and uses one or more Dapr components."
 ---
 
 A [building block](./architecture/building_blocks.md) is as an HTTP or gRPC API that can be called from user code and uses one or more Dapr components. Dapr consists of a set of building blocks, with extensibility to add new building blocks.

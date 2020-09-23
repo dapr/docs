@@ -23,7 +23,7 @@ Dapr is a portable, event-driven runtime that makes it easy for enterprise devel
 
 ## Any language, any framework, anywhere
 
-<img src="../images/overview.png" width=800>
+<img src="/images/overview.png" width=1000>
 
 Today we are experiencing a wave of cloud adoption. Developers are comfortable with web + database application architectures (for example classic 3-tier designs) but not with microservice application architectures which are inherently distributed. It’s hard to become a distributed systems expert, nor should you have to. Developers want to focus on business logic, while leaning on the platforms to imbue their applications with scale, resiliency, maintainability, elasticity and the other attributes of cloud-native architectures.
 
@@ -35,7 +35,7 @@ Using Dapr you can easily build microservice applications using any language, an
 
 ## Microservice building blocks for cloud and edge
 
-<img src="../images/building_blocks.png" width=800>
+<img src="/images/building_blocks.png" width=800>
 
 There are many considerations when architecting microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
@@ -43,13 +43,13 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 | Building Block | Description |
 |----------------|-------------|
-| **[Service Invocation](../concepts/service-invocation)** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
-|  **[State Management](../concepts/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
-| **[Publish and Subscribe Messaging](../concepts/publish-subscribe-messaging)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
-| **[Resource Bindings](../concepts/bindings)** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
-| **[Actors](../concepts/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
-| **[Observability](../concepts/observability)** | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
-| **[Secrets](../concepts/secrets)** | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
+| **[Service Invocation]({{< ref "/docs/building-blocks/service-invocation" >}})** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
+|  **[State Management](/building-blocks/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
+| **[Publish and Subscribe Messaging](/building-blocks/pubsub)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
+| **[Resource Bindings](/building-blocks/bindings)** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
+| **[Actors](/building-blocks/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
+| **[Observability](/building-blocks/observability)** | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
+| **[Secrets](/building-blocks/secrets)** | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 
 ## Sidecar architecture
 
@@ -62,7 +62,7 @@ Dapr can be hosted in multiple environments, including self hosted for local dev
 
 In self hosted mode Dapr runs as a separate side-car process which your service code can call via HTTP or gRPC. In self hosted mode, you can  also deploy Dapr onto a set of VMs.
 
-<img src="../images/overview-sidecar.png" width=600>
+<img src="/images/overview-sidecar.png" width=600>
 
 ### Kubernetes hosted
 

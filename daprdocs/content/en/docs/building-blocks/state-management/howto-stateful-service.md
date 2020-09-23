@@ -1,6 +1,6 @@
 ---
 title: "Create a stateful replicated service"
-linkTitle: "Guide: Stateful Service"
+linkTitle: "How-To: Stateful Service"
 weight: 300
 ---
 

@@ -2,8 +2,7 @@
 title: "Getting Started with Dapr"
 linkTitle: "Getting Started"
 weight: 20
-description: >
-  How to get up and running with Dapr
+description: "Get up and running with Dapr to start Daperizing your apps"
 ---
 
 # Getting Started

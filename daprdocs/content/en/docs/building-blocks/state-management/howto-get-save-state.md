@@ -1,6 +1,6 @@
 ---
-title: "Guide: Save and Get State Using Dapr"
-linkTitle: "Guide: Save/Get State"
+title: "Save and Get State Using Dapr"
+linkTitle: "How-To: Save/Get State"
 weight: 200
 ---
 

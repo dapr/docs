@@ -1,6 +1,6 @@
 ---
-title: "Guide: Invoke & Discover Services"
-linkTitle: "Guide: Invoke & Discover Services"
+title: "Invoke & Discover Services"
+linkTitle: "How-To: Invoke & Discover Services"
 description: "This guide will walk you through configuring and invoking services using dapr"
 weight: 100
 ---

@@ -1,6 +1,6 @@
 ---
-title: "Guide: Input Bindings"
-linkTitle: "State Management"
+title: "Trigger your app with input bindings"
+linkTitle: "How-To: Triggers"
 weight: 1000
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: "Guide: Use Pub/Sub to consume messages from topics"
-linkTitle: "Guide: Publish"
+title: "Use Pub/Sub to consume messages from topics"
+linkTitle: "How-To: Publish"
 weight: 3000
 ---
 

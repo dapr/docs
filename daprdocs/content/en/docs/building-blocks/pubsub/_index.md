@@ -4,8 +4,6 @@ linkTitle: "Pub/Sub"
 weight: 30
 ---
 
-# Publish/Subscribe Messaging
-
 The [publish/subscribe pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) allows your microservices to communicate with each other purely by sending messages. In this system, the **producer** of a message sends it to a **topic**, with no knowledge of what service will receive the message. A messages can even be sent if there's no consumer for it.
 
 Similarly, a **consumer** will receive messages from a topic without knowledge of what producer sent it. This pattern is especially useful when you need to decouple microservices from one another.

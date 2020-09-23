@@ -1,5 +1,5 @@
 ---
 title: "Query Backend State Store"
-linkTitle: "Query State Store"
-weight: 100
+linkTitle: "How-To: Query State Store"
+weight: 400
 ---

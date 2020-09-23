@@ -1,6 +1,6 @@
 ---
-title: "Guide: Interface with external resource using bindings"
-linkTitle: "State Management"
+title: "Interface with external resource using bindings"
+linkTitle: "How-To: Bindings"
 weight: 2000
 ---
 
