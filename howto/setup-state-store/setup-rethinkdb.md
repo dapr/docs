@@ -34,6 +34,8 @@ spec:
     value: <REPLACE-RETHINKDB-ADDRESS> # Required, e.g. 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).
   - name: database
     value: <REPLACE-RETHINKDB-DB-NAME> # Required, e.g. dapr (alpha-numerics only)
+  - name: table
+    value: # Optional
   - name: username
     value: # Optional
   - name: password
