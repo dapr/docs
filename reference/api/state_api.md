@@ -5,7 +5,9 @@
 - [Key Scheme](#key-scheme)
 - [Save State](#save-state)
 - [Get State](#get-state)
+- [Get Bulk State](#get-bulk-state)
 - [Delete State](#delete-state)
+- [State transactions](#state-transactions)
 - [Configuring State Store for Actors](#configuring-state-store-for-actors)
 - [Optional Behaviors](#optional-behaviors)
 
@@ -122,7 +124,6 @@ This endpoint lets you get the state for a specific key.
 
 ```http
 GET http://localhost:<daprPort>/v1.0/state/<storename>/<key>
-
 ```
 
 #### URL Parameters
@@ -133,6 +134,7 @@ daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
+metadata | (optional) metadata as query parameters to the state store
 
 ### HTTP Response
 
@@ -169,6 +171,77 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 }
 ```
 
+To pass metadata as query parammeter:
+
+```http
+GET http://localhost:3500/v1.0/state/starwars/planet?metadata.partitionKey=mypartitionKey
+```
+
+## Get bulk state
+
+This endpoint lets you get a list of values for a given list of keys.
+
+### HTTP Request
+
+```http
+POST http://localhost:<daprPort>/v1.0/state/<storename>/bulk
+```
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+metadata | (optional) metadata as query parameters to the state store
+
+### HTTP Response
+
+#### Response Codes
+
+Code | Description
+---- | -----------
+200  | Get state successful
+400  | State store is missing or misconfigured
+500  | Get bulk state failed
+
+#### Response Body
+An array of JSON-encoded values
+
+### Example 
+
+```shell
+curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
+  -H "Content-Type: application/json" \
+  -d '{
+          "keys": [ "key1", "key2" ],
+          "parallelism": 10,
+      }'
+```
+
+> The above command returns an array of key/value objects:
+
+```json
+[
+  {
+    "key": "key1",
+    "data": "value1",
+    "etag": "1"
+  },
+  {
+    "key": "key2",
+    "data": "value2",
+    "etag": "1"
+  },
+]
+```
+To pass metadata as query parammeter:
+
+```http
+POST http://localhost:3500/v1.0/state/myRedisStore/bulk?metadata.partitionKey=mypartitionKey
+```
+
+
 ## Delete state
 
 This endpoint lets you delete the state for a specific key.
@@ -188,9 +261,6 @@ storename | ```metadata.name``` field in the user configured state store compone
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
-retryInterval | (optional) retry interval, in milliseconds, see [retry policy](#retry-policy)
-retryPattern | (optional) retry pattern, can be either *linear* or *exponential*, see [retry policy](#retry-policy)
-retryThreshold | (optional) number of retries, see [retry policy](#retry-policy)
 
 #### Request Headers
 
@@ -217,9 +287,90 @@ None.
 curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
 ```
 
+## State transactions
+
+Persists the changes to the state store as a multi-item transaction.
+
+***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
+
+List of state stores that support transactions:
+
+* Redis
+* MongoDB
+* PostgreSQL
+* SQL Server
+* Azure CosmosDB
+
+#### HTTP Request
+
+```http
+POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/transaction
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+201  | Request successful
+400  | State store is missing or misconfigured
+500  | Request failed
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+
+#### Request Body
+
+Field | Description
+---- | -----------
+operations | A JSON array of state operation
+metadata | (optional) the metadata for transaction that applies to all operations
+
+Each state operation is comprised with the following fields:
+
+Field | Description
+---- | -----------
+key | state key
+value | state value, which can be any byte array
+etag | (optional) state ETag
+metadata | (optional) additional key-value pairs to be passed to the state store
+options | (optional) state operation options, see [state operation options](#optional-behaviors)
+
+
+#### Examples
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
+  -H "Content-Type: application/json" \
+  -d '{
+        "operations": [
+          {
+            "operation": "upsert",
+            "request": {
+              "key": "key1",
+              "value": "myData"
+            }
+          },
+          {
+            "operation": "delete",
+            "request": {
+              "key": "key2"
+            }
+          }
+        ],
+        "metadata": {
+          "partitionKey": "planet"
+        }
+      }'
+```
+
+
 ## Configuring state store for actors
 
-Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently mongodb and redis implement the transactional state store interface.
+Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently Mongodb, Redis, PostgreSQL, SQL Server, and Azure CosmosDB implement the transactional state store interface.
 To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
 Example: Following components yaml will configure redis to be used as the state store for Actors.
 
@@ -276,16 +427,6 @@ When a strong consistency hint is attached, a state store should:
 * For read requests, the state store should return the most up-to-date data consistently across replicas.
 * For write/delete requests, the state store should synchronisely replicate updated data to configured quorum before completing the write request.
 
-### Retry Policy
-
-Dapr allows clients to attach retry policies to *set* and *delete* operations. A retry policy is described by three fields:
-
-Field | Description
----- | -----------
-retryInterval | Initial delay between retries, in milliseconds. The interval remains constant for *linear* retry pattern. The interval is doubled after each retry for *exponential* retry pattern. So, for *exponential* pattern, the delay after attempt *n* will be interval*2^(n-1).
-retryPattern | Retry pattern, can be either *linear* or *exponential*.
-retryThreshold | Maximum number of retries.
-
 ### Example
 
 The following is a sample *set* request with a complete operation option definition:
@@ -301,11 +442,6 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
           "options": {
             "concurrency": "first-write",
             "consistency": "strong",
-            "retryPolicy": {
-              "interval": 100,
-              "threshold" : 3,
-              "pattern": "exponential"
-            }
           }
         }
       ]'

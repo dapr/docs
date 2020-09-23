@@ -8,7 +8,7 @@ Here you'll find a list of "How To" guides that walk you through accomplishing s
 - [Pub/Sub](#pubsub)
 - [Bindings](#bindings-and-triggers)
 - [Actors](#actors)
-- [Observerability](#observerability)
+- [Observability](#observability)
 - [Security](#security)
 - [Middleware](#middleware)
 - [Components](#components)
@@ -48,18 +48,19 @@ For Actors How Tos see the SDK documentation
 * [.NET Actors](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)
 * [Java Actors](https://github.com/dapr/java-sdk)
 
-## Observerability
+## Observability
 
-### Metric and logs
+### Metrics and Logs
 
-* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Azure Monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
 * [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
-* [Set up Prometheus and Grafana for metrics](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Set up Prometheus and Grafana in Kubernetes](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Observe metrics with Grafana](./setup-monitoring-tools/observe-metrics-with-grafana.md)
 
 ### Distributed Tracing
 
 * [Diagnose your services with distributed tracing](./diagnose-with-tracing)
-* [Trace calls across services](./use-w3c-tracecontext)
+* [Use W3C Trace Context](./use-w3c-tracecontext)
 
 ## Security
 
@@ -79,6 +80,7 @@ For Actors How Tos see the SDK documentation
 ## Middleware
 
 * [Configure API authorization with OAuth](./authorization-with-oauth)
+* [Apply Open Policy Agent Polices](./policies-with-opa)
 
 ## Components
 
@@ -87,8 +89,10 @@ For Actors How Tos see the SDK documentation
 ## Hosting Platforms
 ### Kubernetes Configuration
 
+* [Production deployment and upgrade guidelines](./deploy-k8s-prod)
 * [Sidecar configuration on Kubernetes](./configure-k8s)
 * [Autoscale on Kubernetes using KEDA and Dapr bindings](./autoscale-with-keda)
+* [Deploy to hybrid Linux/Windows Kubernetes clusters](./windows-k8s)
 
 ## Developer tooling
 ### Using Visual Studio Code

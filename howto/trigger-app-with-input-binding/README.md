@@ -12,7 +12,7 @@ Dapr bindings allow you to:
 
 For more info on bindings, read [this](../../concepts/bindings/README.md) link.
 
-For a complete sample showing bindings, visit this [link](https://github.com/dapr/samples/tree/master/5.bindings).
+For a complete sample showing bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
 ## 1. Create a binding
 
@@ -29,7 +29,7 @@ Create the following YAML file, named binding.yaml, and save this to a `componen
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: myEvent
+  name: myevent
   namespace: default
 spec:
   type: bindings.kafka
@@ -42,13 +42,13 @@ spec:
     value: group1
 ```
 
-Here, you create a new binding component with the name of `myEvent`.
+Here, you create a new binding component with the name of `myevent`.
 
 Inside the `metadata` section, configure the Kafka related properties such as the topics to listen on, the brokers and more.
 
 ## 2. Listen for incoming events
 
-Now configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specified in `metadata.name` in the file.  In this example, this is `myEvent`.
+Now configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specified in `metadata.name` in the file.  In this example, this is `myevent`.
 
 *The following example shows how you would listen for the event in Node.js, but this is applicable to any programming language*
 
@@ -60,7 +60,7 @@ app.use(bodyParser.json())
 
 const port = 3000
 
-app.post('/myEvent', (req, res) => {
+app.post('/myevent', (req, res) => {
     console.log(req.body)
     res.status(200).send()
 })

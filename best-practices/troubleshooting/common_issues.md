@@ -28,8 +28,8 @@ spec:
         app: node
       annotations:
         <b>dapr.io/enabled: "true"</b>
-        <b>dapr.io/id: "nodeapp"</b>
-        <b>dapr.io/port: "3000"</b>
+        <b>dapr.io/app-id: "nodeapp"</b>
+        <b>dapr.io/app-port: "3000"</b>
     spec:
       containers:
       - name: node
@@ -50,6 +50,39 @@ In order to further diagnose any issue, check the logs of the Dapr sidecar injec
 ```
 
 *Note: If you installed Dapr to a different namespace, replace dapr-system above with the desired namespace*
+
+### My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar 
+
+If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes. 
+
+If your pod is in a failed state you should check this:
+
+```bash
+kubectl describe pod <name-of-pod>
+```
+
+You might see a table like the following at the end of the command output:
+
+```txt
+  Normal   Created    7m41s (x2 over 8m2s)   kubelet, aks-agentpool-12499885-vmss000000  Created container daprd
+  Normal   Started    7m41s (x2 over 8m2s)   kubelet, aks-agentpool-12499885-vmss000000  Started container daprd
+  Warning  Unhealthy  7m28s (x5 over 7m58s)  kubelet, aks-agentpool-12499885-vmss000000  Readiness probe failed: Get http://10.244.1.10:3500/v1.0/healthz: dial tcp 10.244.1.10:3500: connect: connection refused
+  Warning  Unhealthy  7m25s (x6 over 7m55s)  kubelet, aks-agentpool-12499885-vmss000000  Liveness probe failed: Get http://10.244.1.10:3500/v1.0/healthz: dial tcp 10.244.1.10:3500: connect: connection refused
+  Normal   Killing    7m25s (x2 over 7m43s)  kubelet, aks-agentpool-12499885-vmss000000  Container daprd failed liveness probe, will be restarted
+  Warning  BackOff    3m2s (x18 over 6m48s)  kubelet, aks-agentpool-12499885-vmss000000  Back-off restarting failed container
+```
+
+The message `Container daprd failed liveness probe, will be restarted` indicates at the Dapr sidecar has failed its health checks and will be restarted. The messages `Readiness probe failed: Get http://10.244.1.10:3500/v1.0/healthz: dial tcp 10.244.1.10:3500: connect: connection refused` and `Liveness probe failed: Get http://10.244.1.10:3500/v1.0/healthz: dial tcp 10.244.1.10:3500: connect: connection refused` show that the health check failed because no connection could be made to the sidecar.
+
+The most common cause of this failure is that a component (such as a state store) is misconfigured and is causing initialization to take too long. When initialization takes a long time, it's possible that the health check could terminate the sidecar before anything useful is logged by the sidecar.
+
+To diagnose the root cause:
+
+- Significantly increase the liveness probe delay - [link](../../howto/configure-k8s/README.md)
+- Set the log level of the sidecar to debug - [link](./logs.md#setting-the-sidecar-log-level)
+- Watch the logs for meaningful information - [link](./logs.md#viewing-logs-on-kubernetes)
+
+> :bulb: Remember to configure the liveness check delay and log level back to your desired values after solving the problem.
 
 ### I am unable to save state or get state
 
@@ -119,13 +152,13 @@ Look at the Dapr API reference [here](../../reference/api/README.md) and make su
 ### I don't see any incoming events or calls from other services
 
 Have you specified the port your app is listening on?
-In Kubernetes, make sure the `dapr.io/port` annotation is specified:
+In Kubernetes, make sure the `dapr.io/app-port` annotation is specified:
 
 <pre>
 annotations:
     dapr.io/enabled: "true"
-    dapr.io/id: "nodeapp"
-    <b>dapr.io/port: "3000"</b>
+    dapr.io/app-id: "nodeapp"
+    <b>dapr.io/app-port: "3000"</b>
 </pre>
 
 If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` flag to the `dapr run` command.

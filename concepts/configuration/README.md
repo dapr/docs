@@ -32,8 +32,8 @@ A Dapr sidecar can apply a specific configuration by using a ```dapr.io/config``
 ```yml
   annotations:
     dapr.io/enabled: "true"
-    dapr.io/id: "nodeapp"
-    dapr.io/port: "3000"
+    dapr.io/app-id: "nodeapp"
+    dapr.io/app-port: "3000"
     dapr.io/config: "myappconfig"
 ```
 Note: There are more [Kubernetes annotations](../../howto/configure-k8s/README.md) available to configure the Dapr sidecar on activation by sidecar Injector system service.
@@ -44,6 +44,7 @@ The following configuration settings can be applied to Dapr sidecars;
 
 * [Observability distributed tracing](../observability/traces.md)
 * [Middleware pipelines](../middleware/README.md)
+* [Scoping secrets](../../howto/secrets-scopes/README.md)
 
 ### Tracing configuration
 
@@ -101,6 +102,35 @@ spec:
     - name: oauth2
       type: middleware.http.oauth2
 ```
+
+### Scoping secrets
+
+In addition to scoping which application can access given secret store component, the secret store component itself can be scoped to one or more secrets. By defining `allowedSecrets` and/or `deniedSecrets` list, applications can be restricted access to specific secrets.
+
+The `secrets` section under the `Configuration` spec contains the following properties:
+
+```yml
+secrets:
+  scopes:
+    - storeName: kubernetes
+      defaultAcess: allow
+      allowedSecrets: ["redis-password"]
+    - storeName: localstore
+      defaultAccess: allow
+      deniedSecrets: ["redis-password"]
+```
+
+The following table lists the different properties.
+
+Property | Type | Description
+---- | ------- | -----------
+storeName  | string | name of the secret store component. storeName must be unique within the list.
+defaultAccess  | string | access modifier. Accepted values "allow"(default) or "deny".
+allowedSecrets | list   | list of secret keys that can be accessed. 
+deniedSecrets  | list   | list of secret keys that cannot be accessed.
+
+When an `allowedSecrets` list is present with at least one element, only those secrets defined in the list can be accessed by the application.
+
 
 ## Kubernetes control plane configuration
 There is a single configuration file called `default` installed with the control plane system services that applies global settings.  

@@ -21,6 +21,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
+| [Cron (Scheduler)](../../reference/specs/bindings/cron.md) | ✅ | ✅ | Experimental |
 | [HTTP](../../reference/specs/bindings/http.md)           |    | ✅ | Experimental |
 | [Kafka](../../reference/specs/bindings/kafka.md)         | ✅ | ✅ | Experimental |
 | [Kubernetes Events](../../reference/specs/bindings/kubernetes.md) | ✅ |    | Experimental |
@@ -28,8 +29,9 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [RabbitMQ](../../reference/specs/bindings/rabbitmq.md)   | ✅ | ✅ | Experimental |
 | [Redis](../../reference/specs/bindings/redis.md)         |    | ✅ | Experimental |
 | [Twilio](../../reference/specs/bindings/twilio.md)       |    | ✅ | Experimental |
-| [Twitter](../../reference/specs/bindings/twitter.md)       | ✅ |  | Experimental |
+| [Twitter](../../reference/specs/bindings/twitter.md)       | ✅ | ✅ | Experimental |
 | [SendGrid](../../reference/specs/bindings/sendgrid.md)       |    | ✅ | Experimental |
+| [InfluxDB](../../reference/specs/bindings/influxdb.md)       |    | ✅ | Experimental |
 
 ### Amazon Web Service (AWS)
 
@@ -89,6 +91,6 @@ In order to invoke an output binding:
 
  ## Related Topics
 * [Implementing a new binding](https://github.com/dapr/docs/tree/master/reference/specs/bindings)
-* [Trigger a service from different resources with input bindings](./trigger-app-with-input-binding)
-* [Invoke different resources using output bindings](./send-events-with-output-bindings)
+* [Trigger a service from different resources with input bindings](../../howto/trigger-app-with-input-binding)
+* [Invoke different resources using output bindings](../../howto/send-events-with-output-bindings)
 

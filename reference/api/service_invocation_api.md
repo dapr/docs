@@ -62,6 +62,19 @@ Once your service code invokes a method in another Dapr enabled app, Dapr will s
 
 The Dapr app being invoked will need to be listening for and responding to requests on that endpoint.
 
+### Cross namespace invocation
+
+On hosting platforms that support namespaces, Dapr app IDs conform to a valid FQDN format that includes the target namespace.
+For example, the following string contains the app ID (`myApp`) in addition to the namespace the app runs in (`production`).
+
+```
+myApp.production
+```
+
+#### Namespace supported platforms
+
+* Kubernetes
+
 ### Examples
 
 You can invoke the `add` method on the `mathService` service by sending the following:
@@ -81,16 +94,21 @@ app.post('/add', (req, res) => {
   let args = req.body;
   const [operandOne, operandTwo] = [Number(args['arg1']), Number(args['arg2'])];
   
-  let result = operandOne / operandTwo;
+  let result = operandOne + operandTwo;
   res.send(result.toString());
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
 ```
 
-> The response from the remote endpoint will be returned in the request body.
+> The response from the remote endpoint will be returned in the response body.
 
 In case when your service listens on a more nested path (e.g. `/api/v1/add`), Dapr implements a full reverse proxy so you can append all the necessary path fragments to your request URL like this: 
 
 `http://localhost:3500/v1.0/invoke/mathService/method/api/v1/add`
 
+In case you are invoking `mathService` on a different namespace, you can use the following URL:
+
+`http://localhost:3500/v1.0/invoke/mathService.testing/method/api/v1/add`
+
+In this URL, `testing` is the namespace that `mathService` is running in.

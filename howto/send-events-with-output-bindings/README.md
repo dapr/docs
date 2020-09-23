@@ -1,7 +1,7 @@
 # Send events to external systems using Output Bindings
 
 Using bindings, its possible to invoke external resources without tying in to special SDK or libraries.
-For a complete sample showing output bindings, visit this [link](https://github.com/dapr/samples/tree/master/5.bindings).
+For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 
@@ -21,7 +21,7 @@ Create the following YAML file, named binding.yaml, and save this to a `componen
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: myEvent
+  name: myevent
   namespace: default
 spec:
   type: bindings.kafka
@@ -32,7 +32,7 @@ spec:
     value: topic1
 ```
 
-Here, we create a new binding component with the name of `myEvent`.
+Here, we create a new binding component with the name of `myevent`.
 
 Inside the `metadata` section, we configure Kafka related properties such as the topic to publish the message to and the broker.
 
@@ -43,10 +43,10 @@ All that's left now is to invoke the bindings endpoint on a running Dapr instanc
 We can do so using HTTP:
 
 ```bash
-curl -X POST -H  http://localhost:3500/v1.0/bindings/myEvent -d '{ "data": { "message": "Hi!" }, "operation": "create" }'
+curl -X POST -H  http://localhost:3500/v1.0/bindings/myevent -d '{ "data": { "message": "Hi!" }, "operation": "create" }'
 ```
 
-As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myEvent`.
+As seen above, we invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `myevent`.
 The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
 
 You'll also notice that there's an `operation` field that tells the binding what we need it to do.
