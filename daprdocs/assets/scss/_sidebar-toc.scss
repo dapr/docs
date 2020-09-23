@@ -25,7 +25,7 @@
     li {
         list-style: none;
         display: block;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     li li {
@@ -44,7 +44,7 @@
         > ul > li > ul > li > a {}
 
         a {
-            color: $gray-600;
+            color: rgb(68, 68, 68);
             &:hover {
                 color: $blue;
                 text-decoration: none;
