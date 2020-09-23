@@ -18,6 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Setup Docsy
+        run: cd daprdocs && git submodule add https://github.com/google/docsy.git themes/docsy && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
