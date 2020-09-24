@@ -24,7 +24,7 @@ spec:
 ```
 
 The type of message bus is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/components/secrets.md).
+Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/secrets).
 
 ## Running locally
 
@@ -44,7 +44,7 @@ kubectl apply -f pubsub.yaml
 ## Reference
 
 - [Setup Redis Streams](./setup-redis.md)
-- [Setup NATS](./setup-nats.md)
+- [Setup NATS Streaming](./setup-nats-streaming.md)
 - [Setup Azure Service bus](./setup-azure-servicebus.md)
 - [Setup RabbitMQ](./setup-rabbitmq.md)
 - [Setup GCP Pubsub](./setup-gcp.md)

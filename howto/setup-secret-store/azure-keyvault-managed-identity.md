@@ -271,6 +271,6 @@ In Kubernetes mode, you store the certificate for the service principal into the
 ## References
 
 - [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
-- [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/-reate-an-azure-service-principal-azure-cli?view=azure-cli-latest)
+- [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
 - [AAD Pod Identity](https://github.com/Azure/aad-pod-identity)
 - [Secrets Component](../../concepts/secrets/README.md)
