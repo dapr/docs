@@ -192,7 +192,7 @@ You can install Dapr to Kubernetes cluster using a Helm 3 chart.
 2. Add Azure Container Registry as a Helm repo
 
 ```bash
-helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
+helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 ```
 
