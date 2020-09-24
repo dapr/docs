@@ -96,6 +96,16 @@ curl http://localhost:3500/v1.0/invoke/cart/method/add -X DELETE
 
 Dapr puts any payload return by their called service in the HTTP response's body.
 
+### Namespaces
+
+When running on [namespace supported platforms](../../reference/api/service_invocation_api.md#namespace-supported-platforms), you include the namespace of the target app in the app ID:
+
+```
+myApp.production
+```
+
+See the [Cross namesapce API spec](../../reference/api/service_invocation_api.md#cross-namespace-invocation) for more information on namespaces.
+
 ## Overview
 
 The example above showed you how to directly invoke a different service running in our environment, locally or in Kubernetes.
@@ -104,5 +114,5 @@ Dapr outputs metrics and tracing information allowing you to visualize a call gr
 For more information on tracing, visit [this link](../../best-practices/troubleshooting/tracing.md).
 
  ## Related Topics
-*  [Service invocation concepts](../../concepts/service-invocation/README.md)
+* [Service invocation concepts](../../concepts/service-invocation/README.md)
 * [Service invocation API specification](../../reference/api/service_invocation_api.md)

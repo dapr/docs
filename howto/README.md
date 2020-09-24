@@ -50,11 +50,12 @@ For Actors How Tos see the SDK documentation
 
 ## Observability
 
-### Metric and logs
+### Metrics and Logs
 
-* [Set up Azure monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
+* [Set up Azure Monitor to search logs and collect metrics for Dapr](./setup-monitoring-tools/setup-azure-monitor.md)
 * [Set up Fleuntd, Elastic search, and Kibana in Kubernetes](./setup-monitoring-tools/setup-fluentd-es-kibana.md)
-* [Set up Prometheus and Grafana for metrics](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Set up Prometheus and Grafana in Kubernetes](./setup-monitoring-tools/setup-prometheus-grafana.md)
+* [Observe metrics with Grafana](./setup-monitoring-tools/observe-metrics-with-grafana.md)
 
 ### Distributed Tracing
 
@@ -79,6 +80,7 @@ For Actors How Tos see the SDK documentation
 ## Middleware
 
 * [Configure API authorization with OAuth](./authorization-with-oauth)
+* [Apply Open Policy Agent Polices](./policies-with-opa)
 
 ## Components
 

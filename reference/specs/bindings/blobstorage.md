@@ -15,11 +15,14 @@ spec:
     value: ***********
   - name: container
     value: container1
+  - name: decodeBase64
+    value: true
 ```
 
 - `storageAccount` is the Blob Storage account name.
 - `storageAccessKey` is the Blob Storage access key.
 - `container` is the name of the Blob Storage container to write to.
+- `decodeBase64` optional configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). "true" is the only allowed positive value. Other positive variations like "True" are not acceptable.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 

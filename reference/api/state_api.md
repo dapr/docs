@@ -124,7 +124,6 @@ This endpoint lets you get the state for a specific key.
 
 ```http
 GET http://localhost:<daprPort>/v1.0/state/<storename>/<key>
-
 ```
 
 #### URL Parameters
@@ -135,6 +134,7 @@ daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
+metadata | (optional) metadata as query parameters to the state store
 
 ### HTTP Response
 
@@ -171,6 +171,12 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 }
 ```
 
+To pass metadata as query parammeter:
+
+```http
+GET http://localhost:3500/v1.0/state/starwars/planet?metadata.partitionKey=mypartitionKey
+```
+
 ## Get bulk state
 
 This endpoint lets you get a list of values for a given list of keys.
@@ -187,7 +193,7 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
-consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
+metadata | (optional) metadata as query parameters to the state store
 
 ### HTTP Response
 
@@ -206,7 +212,7 @@ An array of JSON-encoded values
 
 ```shell
 curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '{
           "keys": [ "key1", "key2" ],
           "parallelism": 10,
@@ -229,6 +235,12 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
   },
 ]
 ```
+To pass metadata as query parammeter:
+
+```http
+POST http://localhost:3500/v1.0/state/myRedisStore/bulk?metadata.partitionKey=mypartitionKey
+```
+
 
 ## Delete state
 
@@ -332,7 +344,7 @@ options | (optional) state operation options, see [state operation options](#opt
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '{
         "operations": [
           {
