@@ -19,6 +19,8 @@ spec:
     value: false
   - name: ttlInSeconds
     value: 60
+  - name: prefetchCount
+    value: 0
 ```
 
 - `queueName` is the RabbitMQ queue name.
@@ -26,6 +28,7 @@ spec:
 - `durable` tells RabbitMQ to persist message in storage.
 - `deleteWhenUnused` enables or disables auto-delete.
 - `ttlInSeconds` is an optional parameter to set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed.
+- `prefetchCount` is an optional parameter to set the [Channel Prefetch Setting (QoS)](https://www.rabbitmq.com/confirms.html#channel-qos-prefetch). If this parameter is omiited, QoS would set value to 0 as no limit.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
