@@ -69,6 +69,8 @@ Parameter | Description
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Request Body
 
 A JSON array of state objects. Each state object is comprised with the following fields:
@@ -136,6 +138,8 @@ key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 metadata | (optional) metadata as query parameters to the state store
 
+> Note, all URL parameters are case-sensitive.
+
 ### HTTP Response
 
 #### Response Codes
@@ -194,6 +198,8 @@ Parameter | Description
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 metadata | (optional) metadata as query parameters to the state store
+
+> Note, all URL parameters are case-sensitive.
 
 ### HTTP Response
 
@@ -262,6 +268,8 @@ key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
 
+> Note, all URL parameters are case-sensitive.
+
 #### Request Headers
 
 Header | Description
@@ -321,6 +329,8 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+
+> Note, all URL parameters are case-sensitive.
 
 #### Request Body
 

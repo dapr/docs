@@ -26,6 +26,8 @@ daprPort | the Dapr port
 pubsubname | the name of pubsub component.
 topic | the name of the topic
 
+> Note, all URL parameters are case-sensitive.
+
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
   -H "Content-Type: application/json" \
@@ -68,6 +70,8 @@ Example:
 ]
 ```
 
+> Note, all subscription parameters are case-sensitive.
+
 ## Provide route(s) for Dapr to deliver topic events
 
 In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response.
@@ -79,6 +83,8 @@ The following example illustrates this point, considering a subscription for top
 ```http
 POST http://localhost:<appPort>/orders
 ```
+
+> Note, all URL parameters are case-sensitive.
 
 ### URL Parameters
 
