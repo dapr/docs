@@ -1,0 +1,21 @@
+# ------------------------------------------------------------
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+# ------------------------------------------------------------
+
+name: "Stale PR monitor"
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v3
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-pr-message: 'Stale PR, paging all reviewers'
+        stale-pr-label: 'stale'
+        exempt-pr-labels: 'question,"help wanted"'
+        days-before-stale: 5
