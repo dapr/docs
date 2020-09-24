@@ -1,0 +1,21 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - master
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - release-*
+
+jobs:
+  build:
+    name: Check Markdown links
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: gaurav-nelson/github-action-markdown-link-check@v1
