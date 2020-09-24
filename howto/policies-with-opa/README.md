@@ -175,5 +175,5 @@ type Result struct {
 
 ## Related links
 
-- Open Policy Agent: https://www.openpolicyagent.com
+- Open Policy Agent: https://www.openpolicyagent.org
 - HTTP API Example: https://www.openpolicyagent.org/docs/latest/http-api-authorization/
