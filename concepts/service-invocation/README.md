@@ -80,7 +80,7 @@ For more information read the [service-to-service security](../security#mtls-sel
 ![Self Hosted service to service security](../../images/security-mTLS-sentry-selfhosted.png)
 
 ### Service access security
-Applications can control which other applications are allowed to call them and what they are authorized to do via access policies. This enables you to restrict sensitive applications, that say have personnel information, from being accessed by unauthorized applications and, combined with service-to-service secure communication, provides for soft multi-tenancy deployments.
+Applications can control which other applications are allowed to call them and what they are authorized to do via access policies. This enables you to restrict sensitive applications, that say have personnel information, from being accessed by unauthorized applications, and combined with service-to-service secure communication, provides for soft multi-tenancy deployments.
 
 For more information read the [access control allow lists for service invocation](../configuration#access-control-allow-lists-for-service-invocation) article.
 
