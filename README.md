@@ -42,3 +42,7 @@ Dapr is currently under community development in preview phase and master branch
 | **SDKs** | - [Go SDK](https://github.com/dapr/go-sdk)<br>- [Java SDK](https://github.com/dapr/java-sdk)<br>- [Javascript SDK](https://github.com/dapr/js-sdk)<br>- [Python SDK](https://github.com/dapr/python-sdk)<br>- [.NET SDK](https://github.com/dapr/dotnet-sdk)<br>- [C++ SDK](https://github.com/dapr/cpp-sdk)<br>- [RUST SDK](https://github.com/dapr/rust-sdk)<br><br>**Note:** Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/README.md) in addition to the protobuf clients.
 | **Frameworks** | - [Workflows](https://github.com/dapr/workflows)<br>- [Azure Functions extension](https://github.com/dapr/azure-functions-extension)<br>
 | **[Dapr Presentations](./presentations)** | Previous Dapr presentations and information on how to give your own Dapr presentation.
+
+## Code of Conduct
+
+Please refer to our [Dapr Community Code of Conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md)
