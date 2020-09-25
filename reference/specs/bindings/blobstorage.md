@@ -48,7 +48,9 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 Example:
 
 ```bash
-curl -XPOST http://localhost:<dapr-port>/v1.0/bindings/<binding-name> -d '{ "operation": "create", "data": { "field1": "value1" }}'
+
+curl -d '{ "operation": "create", "data": { "field1": "value1" }}' \
+      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 
 ### Response
@@ -78,7 +80,8 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 Example:
 
 ```bash
-curl -XPOST http://localhost:<dapr-port>/v1.0/bindings/<binding-name> -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}'
+curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \
+      http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
 ```
 
 ### Response
