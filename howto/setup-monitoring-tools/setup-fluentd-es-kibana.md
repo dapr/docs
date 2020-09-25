@@ -100,7 +100,7 @@ fluentd-sdrld                 1/1     Running   0          14s
 1. Install Dapr with enabling JSON-formatted logs
 
 ```bash
-helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
+helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 ```
