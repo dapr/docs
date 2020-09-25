@@ -1,14 +1,6 @@
-# Invoke remote services
+# Get started with service invocation
 
-In many environments with multiple services that need to communicate with each other, developers often ask themselves the following questions:
-
-* How do I discover and invoke different services?
-* How do I handle retries and transient errors?
-* How do I use distributed tracing correctly to see a call graph?
-
-Dapr allows developers to overcome these challenges by providing an endpoint that acts as a combination of a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing and error handling.
-
-For more info on service invocation, read the [conceptional documentation](../../concepts/service-invocation/README.md).
+This article describe how to deploy services each with an unique application ID, so that other services can discover and call endpoints on them using service invocation API.
 
 ## 1. Choose an ID for your service
 
@@ -18,7 +10,7 @@ This ID encapsulates the state for your application, regardless of the number of
 
 ### Setup an ID using the Dapr CLI
 
-In Standalone mode, set the `--app-id` flag:
+In self hosted mode, set the `--app-id` flag:
 
 ```bash
 dapr run --app-id cart --app-port 5000 python app.py
@@ -52,9 +44,9 @@ spec:
 ...
 ```
 
-## Invoke a service in code
+## 2. Invoke a service
 
-Dapr uses a sidecar, decentralized architecture. To invoke an applications using Dapr, you can use the `invoke` endpoint on any Dapr instance in your cluster/environment.
+Dapr uses a sidecar, decentralized architecture. To invoke an application using Dapr, you can use the `invoke` API on any Dapr instance.
 
 The sidecar programming model encourages each applications to talk to its own instance of Dapr. The Dapr instances discover and communicate with one another.
 
@@ -74,7 +66,7 @@ if __name__ == '__main__':
 
 This Python app exposes an `add()` method via the `/add` endpoint.
 
-### Invoke with curl
+### Invoke with curl over HTTP
 
 ```bash
 curl http://localhost:3500/v1.0/invoke/cart/method/add -X POST
@@ -94,7 +86,7 @@ To invoke a 'DELETE' endpoint:
 curl http://localhost:3500/v1.0/invoke/cart/method/add -X DELETE
 ```
 
-Dapr puts any payload return by their called service in the HTTP response's body.
+Dapr puts any payload returned by the called service in the HTTP response's body.
 
 ### Namespaces
 
@@ -104,15 +96,21 @@ When running on [namespace supported platforms](../../reference/api/service_invo
 myApp.production
 ```
 
-See the [Cross namesapce API spec](../../reference/api/service_invocation_api.md#cross-namespace-invocation) for more information on namespaces.
+For example to invoke the example python service with a namespace would be;
 
-## Overview
+```bash
+curl http://localhost:3500/v1.0/invoke/cart.production/method/add -X POST
+```
 
-The example above showed you how to directly invoke a different service running in our environment, locally or in Kubernetes.
-Dapr outputs metrics and tracing information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
+See the [Cross namespace API spec](../../reference/api/service_invocation_api.md#cross-namespace-invocation) for more information on namespaces.
 
-For more information on tracing, visit [this link](../../best-practices/troubleshooting/tracing.md).
+## 3. View traces and logs
+
+The example above showed you how to directly invoke a different service running locally or in Kubernetes. Dapr outputs metrics, tracing and logging information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
+
+For more information on tracing and logs see the [observability](../../concepts/observability) article.
 
  ## Related Topics
+ 
 * [Service invocation concepts](../../concepts/service-invocation/README.md)
 * [Service invocation API specification](../../reference/api/service_invocation_api.md)
