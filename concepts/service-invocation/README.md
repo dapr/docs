@@ -94,6 +94,8 @@ Dapr can run on any [hosting platform](../concepts/hosting). For the supported h
 
 ## Next steps
 
-* Follow this guide on [How-to: Get started with service invocation](../../howto/invoke-and-discover-services)
+* Follow these guide on
+    * [How-to: Get started with HTTP service invocation](../../howto/invoke-and-discover-services)
+    * [How-to: Get started with Dapr and gRPC](../../howto/create-grpc-app)
 * Try out the [hello world sample](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or visit the samples in each of the [Dapr SDKs](https://github.com/dapr/docs#further-documentation)
 * Read the [service invocation API specification](../../reference/api/service_invocation_api.md)

@@ -1,4 +1,4 @@
-# Get started with service invocation
+# Get started with HTTP service invocation
 
 This article describe how to deploy services each with an unique application ID, so that other services can discover and call endpoints on them using service invocation API.
 
