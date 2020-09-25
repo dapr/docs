@@ -96,7 +96,7 @@ When running on [namespace supported platforms](../../reference/api/service_invo
 myApp.production
 ```
 
-For example to invoke the example python service with a namespace would be;
+For example, invoking the example python service with a namespace would be;
 
 ```bash
 curl http://localhost:3500/v1.0/invoke/cart.production/method/add -X POST
