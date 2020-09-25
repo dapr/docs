@@ -28,9 +28,64 @@ spec:
 
 ## Output Binding Supported Operations
 
-* create
+* [create](#create-blob)
+* [get](#get-blob)
 
-## Additional information
+
+## Create Blob
+
+To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "create",
+  "data": {
+    "field1": "value1"
+  }
+}
+```
+
+Example:
+
+```bash
+curl -XPOST http://localhost:<dapr-port>/v1.0/bindings/<binding-name> -d '{ "operation": "create", "data": { "field1": "value1" }}'
+```
+
+### Response
+
+The response body will contain the following JSON:
+
+```json
+{
+   "blobURL": "https://<your account name>. blob.core.windows.net/<your container name>/<filename>"
+}
+
+```
+
+## Get Blob
+
+To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "get",
+  "metadata": {
+    "blobName": "myblob"
+  }
+}
+```
+
+Example:
+
+```bash
+curl -XPOST http://localhost:<dapr-port>/v1.0/bindings/<binding-name> -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}'
+```
+
+### Response
+
+The response body will contain the value stored in the blob object.
+
+## Metadata information
 
 By default the Azure Blob Storage output binding will auto generate a UUID as blob filename and not assign any system or custom metadata to it. It is configurable in the Metadata property of the message (all optional).
 
