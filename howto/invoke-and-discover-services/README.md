@@ -110,7 +110,7 @@ The example above showed you how to directly invoke a different service running 
 
 For more information on tracing and logs see the [observability](../../concepts/observability) article.
 
- ## Related Topics
+ ## Related Links
  
 * [Service invocation concepts](../../concepts/service-invocation/README.md)
 * [Service invocation API specification](../../reference/api/service_invocation_api.md)
