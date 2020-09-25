@@ -25,7 +25,7 @@ The diagram below is an overview of how Dapr's service invocation works.
 1. Service A makes an http/gRPC call meant for Service B.  The call goes to the local Dapr sidecar.  
 2. Dapr discovers Service B's location using the [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) installed for the given hosting platform.
 3. Dapr forwards the message to Service B's Dapr sidecar 
-    * Note: All calls between Dapr sidecars go over gRPC for performance. Only calls from services to Dapr sidecars are either HTTP or gRPC
+    * Note: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars are either HTTP or gRPC
 4. Service B's Dapr sidecar forwards the request to the specified endpoint (or method) on Service B.  Service B the runs its business logic code.
 5. Service B sends a response to Service A.  The response goes to Service B's sidecar.
 6. Dapr forwards the response to Service A's Dapr sidecar.
