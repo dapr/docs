@@ -70,7 +70,14 @@ localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
 This is especially useful in cross namespace calls in a Kubernetes cluster. Watch this [video](https://youtu.be/LYYV_jouEuA?t=495) for a demo on how to use namespaces with service invocation.
 
 ### Retries
-Service invocation performs automatic retries with backoff time periods in the event of call failures and transient errors. 
+Service invocation performs automatic retries with backoff time periods in the event of call failures and transient errors.
+Errors that cause retries are:
+
+* Network errors including endpoint unavailability and refused connections
+* Authentication errors due to a renewing certificate on the calling/callee dapr sidecars
+
+Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.
+Connection establishment via gRPC to the target sidecar has a timeout of 5 seconds. 
 
 ### Service-to-service security
 All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service. The diagram below shows this for self hosted applications.
