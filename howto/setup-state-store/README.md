@@ -2,7 +2,7 @@
 
 Dapr integrates with existing databases to provide apps with state management capabilities for CRUD operations, transactions and more.
 
-Dapr supports the configuration of multiple, named state stores components per application.
+Dapr supports the configuration of multiple, named, state store components *per application*.
 
 State stores are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 

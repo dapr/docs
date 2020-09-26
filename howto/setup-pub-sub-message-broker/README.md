@@ -2,7 +2,7 @@
 
 Dapr integrates with pub/sub message buses to provide apps with the ability to create event-driven, loosely coupled architectures where producers send events to consumers via topics.
 
-Dapr supports the configuration of multiple, named pub/sub components per application.
+Dapr supports the configuration of multiple, named, pub/sub components *per application*. Each pub/sub component has a name and this name is used when publishing a message topic
 
 Pub/Sub message buses are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 
