@@ -1,7 +1,8 @@
-# Setup a Dapr pub/sub
+# Setup a pub/sub component
 
-Dapr integrates with existing message buses to provide apps with the ability to create event-driven, loosely coupled architectures where producers send events to consumers via topics.
-Currently, Dapr supports the configuration of one message bus per cluster.
+Dapr integrates with pub/sub message buses to provide apps with the ability to create event-driven, loosely coupled architectures where producers send events to consumers via topics.
+
+Dapr supports the configuration of multiple, named pub/sub components per application.
 
 Pub/Sub message buses are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 
@@ -11,7 +12,7 @@ A pub/sub in Dapr is described using a `Component` file:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub
   namespace: default
 spec:
   type: pubsub.<NAME>
@@ -23,12 +24,12 @@ spec:
 ...
 ```
 
-The type of message bus is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/secrets).
+The type of pub/sub is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
+Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/secrets) using a `secretKeyRef`
 
 ## Running locally
 
-When running locally with the Dapr CLI, a component file for a Redis Streams pub/sub will be automatically created in a `components` directory in your current working directory.
+When running locally with the Dapr CLI, a component file for a Redis pub/sub is  created in a `components` directory, which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`. See [Environment Setup](../getting-started/environment-setup.md#installing-dapr-in-self-hosted-mode)
 
 You can make changes to this file the way you see fit, whether to change connection values or replace it with a different pub/sub.
 
@@ -41,7 +42,7 @@ To setup a pub/sub in Kubernetes, use `kubectl` to apply the component file:
 kubectl apply -f pubsub.yaml
 ```
 
-## Reference
+## Related links
 
 - [Setup Redis Streams](./setup-redis.md)
 - [Setup NATS Streaming](./setup-nats-streaming.md)
