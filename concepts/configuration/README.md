@@ -124,7 +124,7 @@ See the [Scoping secrets](../../howto/secrets-scopes/README.md) HowTo for exampl
 
 ### Access Control allow lists for service invocation
 Access control enables the configuration of policies that restrict what operations *calling* applications can perform, via service invocation, on the *called* application. 
-An access control policy is specified in configuration and be applied to Dapr sidecar. Example policies are shownn below and access to the called app is based on the matched policy action. You can provide a default global action for all calling application and if no access control policy is specified, the default behavior is to allow all calling applicatons to allowed access to the called app.
+An access control policy is specified in configuration and be applied to Dapr sidecar for the *called* application. Example policies are shown below and access to the called app is based on the matched policy action. You can provide a default global action for all calling applications and if no access control policy is specified, the default behavior is to allow all calling applicatons to access to the called app.
 
 ```
 apiVersion: dapr.io/v1alpha1
@@ -134,17 +134,17 @@ metadata:
 spec:
   accessControl:
     defaultAction: deny --> Global default action in case no other policy is matched
-    trustDomain: "public" --> Trust domain for the target app
+    trustDomain: "public" --> The called application is assigned a trust domain here and is used to generate the identity of this app in the TLS certificate.
     policies:
     - app: app1 --> AppId of the calling app to allow/deny service invocation from
       defaultAction: deny --> App level default action in case the app is found but no specific operation is matched
-      trustDomain: 'public' --> Trust domain of the calling app
-      namespace: "default" --> Namespace of the calling app
+      trustDomain: 'public' --> Trust domain of the calling app is matched against the specified value here.
+      namespace: "default" --> Namespace of the calling app is matched against the specified value here.
       operations:
-      - name: /op1 --> operation allowed on the called app
+      - name: /op1 --> operation name on the called app
         httpVerb: ['POST', 'GET'] --> specific http verbs, unused for grpc invocation
         action: deny --> allow/deny access
-      - name: /op2/* --> operation with a postfix
+      - name: /op2/* --> operation name with a postfix
         httpVerb: ["*"] --> wildcards can be used to match any http verb
         action: allow
     - app: app2
@@ -163,15 +163,15 @@ Access Control
 Property | Type | Description
 ---- | ------- | -----------
 defaultAction  | string | Global default action when no other policy is matched
-trustDomain  | string | ???Global trust domain for the target app???
+trustDomain  | string | Trust domain assigned to the called application.
 policies | string   | Policies to determine what operations the calling app can do on the called app
 
 Policies 
 Property | Type | Description
 ---- | ------- | -----------
 app  | string   | AppId of the calling app to allow/deny service invocation from
-namespace  | string |  Namespace of the calling app
-trustDomain  | string | Trust domain of the calling app
+namespace  | string |  Namespace value that needs to be matched with the namespace of the calling app
+trustDomain  | string | Trust domain that needs to be matched with the trust domain of the calling app
 defaultAction  | string | App level default action in case the app is found but no specific operation is matched
 operations | string   | operations that are allowed from the calling app
 
@@ -206,8 +206,8 @@ spec:
         defaultAccess: allow
         deniedSecrets: ["redis-password"]
   accessControl:
-    defaultAction: deny --> Global default action in case no other policy is matched
-    trustDomain: "public" --> Trust domain for the target app
+    defaultAction: deny
+    trustDomain: "public"
     policies:
     - app: app1
       defaultAction: deny 
