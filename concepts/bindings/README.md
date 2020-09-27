@@ -23,15 +23,17 @@ Every binding has its own unique set of properties. Click the name link to see t
 |------|:----------------:|:-----------------:|--------|
 | [Cron (Scheduler)](../../reference/specs/bindings/cron.md) | ✅ | ✅ | Experimental |
 | [HTTP](../../reference/specs/bindings/http.md)           |    | ✅ | Experimental |
+| [InfluxDB](../../reference/specs/bindings/influxdb.md)       |    | ✅ | Experimental |
 | [Kafka](../../reference/specs/bindings/kafka.md)         | ✅ | ✅ | Experimental |
 | [Kubernetes Events](../../reference/specs/bindings/kubernetes.md) | ✅ |    | Experimental |
 | [MQTT](../../reference/specs/bindings/mqtt.md)           | ✅ | ✅ | Experimental |
+| [PostgreSql](../../reference/specs/bindings/postgres.md)       |    | ✅ | Experimental |
 | [RabbitMQ](../../reference/specs/bindings/rabbitmq.md)   | ✅ | ✅ | Experimental |
 | [Redis](../../reference/specs/bindings/redis.md)         |    | ✅ | Experimental |
 | [Twilio](../../reference/specs/bindings/twilio.md)       |    | ✅ | Experimental |
 | [Twitter](../../reference/specs/bindings/twitter.md)       | ✅ | ✅ | Experimental |
 | [SendGrid](../../reference/specs/bindings/sendgrid.md)       |    | ✅ | Experimental |
-| [InfluxDB](../../reference/specs/bindings/influxdb.md)       |    | ✅ | Experimental |
+
 
 ### Amazon Web Service (AWS)
 

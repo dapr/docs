@@ -22,6 +22,8 @@ daprPort | the Dapr port
 secret-store-name | the name of the secret store to get the secret from
 name | the name of the secret to get
 
+> Note, all URL parameters are case-sensitive.
+
 #### Query Parameters
 
 Some secret stores have **optional** metadata properties. metadata is populated using query parameters:

@@ -106,6 +106,8 @@ Parameter | Description
 appPort | the application port
 name | the name of the binding
 
+> Note, all URL parameters are case-sensitive. 
+
 ### Binding payload
 
 In order to deliver binding inputs, a POST call is made to user code with the name of the binding as the URL path.
@@ -128,6 +130,8 @@ Parameter | Description
 --------- | -----------
 appPort | the application port
 name | the name of the binding
+
+> Note, all URL parameters are case-sensitive.
 
 #### HTTP Response body (optional)
 
@@ -183,6 +187,8 @@ The bindings endpoint receives the following JSON payload:
 }
 ```
 
+> Note, all URL parameters are case-sensitive.
+
 The `data` field takes any JSON serializable value and acts as the payload to be sent to the output binding.
 The `metadata` field is an array of key/value pairs and allows you to set binding specific metadata for each call.
 The `operation` field tells the Dapr binding which operation it should perform.
@@ -193,6 +199,8 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 name | the name of the output binding to invoke
+
+> Note, all URL parameters are case-sensitive.
 
 ### Examples
 
@@ -212,7 +220,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
 
 ### Common metadata values
 
-There are common metadata properties which are support accross multiple binding components. The list below illustrates them:
+There are common metadata properties which are support across multiple binding components. The list below illustrates them:
 
 |Property|Description|Binding definition|Available in
 |-|-|-|-|

@@ -36,6 +36,8 @@ daprPort | the Dapr port
 appId | the App ID associated with the remote app
 method-name | the name of the method or url to invoke on the remote app
 
+> Note, all URL parameters are case-sensitive.
+
 ### Request Contents
 
 In the request you can pass along headers:
