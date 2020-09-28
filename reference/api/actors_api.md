@@ -52,6 +52,8 @@ actorType | The actor type.
 actorId | The actor ID.
 method | The name of the method to invoke.
 
+> Note, all URL parameters are case-sensitive. 
+
 #### Examples
 
 Example of invoking a method on an actor:
@@ -110,6 +112,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Examples
 
 ```shell
@@ -160,6 +164,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 key | The key for the state value.
+
+> Note, all URL parameters are case-sensitive.
 
 #### Examples
 
@@ -229,6 +235,8 @@ actorType | The actor type.
 actorId | The actor ID.
 name | The name of the reminder to create.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Examples
 
 ```shell
@@ -267,6 +275,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 name | The name of the reminder to get.
+
+> Note, all URL parameters are case-sensitive.
 
 #### Examples
 
@@ -311,6 +321,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 name | The name of the reminder to delete.
+
+> Note, all URL parameters are case-sensitive.
 
 #### Examples
 
@@ -364,6 +376,8 @@ actorType | The actor type.
 actorId | The actor ID.
 name | The name of the timer to create.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Examples
 
 ```shell
@@ -403,6 +417,8 @@ daprPort | The Dapr port.
 actorType | The actor type.
 actorId | The actor ID.
 name | The name of the timer to delete.
+
+> Note, all URL parameters are case-sensitive.
 
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
@@ -490,6 +506,8 @@ appPort | The application port.
 actorType | The actor type.
 actorId | The actor ID.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Examples
 
 Example of deactivating an actor: The example deactives the actor type stormtrooper that has actorId of 50
@@ -525,6 +543,8 @@ appPort | The application port.
 actorType | The actor type.
 actorId | The actor ID.
 methodName | The name of the method to invoke.
+
+> Note, all URL parameters are case-sensitive.
 
 #### Examples
 
@@ -562,6 +582,8 @@ actorType | The actor type.
 actorId | The actor ID.
 reminderName | The name of the reminder to invoke.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Examples
 
 Example of invoking a reminder for an actor: The example calls the checkRebels reminder method on the actor type stormtrooper that has actorId of 50 
@@ -597,6 +619,8 @@ appPort | The application port.
 actorType | The actor type.
 actorId | The actor ID.
 timerName | The name of the timer to invoke.
+
+> Note, all URL parameters are case-sensitive.
 
 #### Examples
 
