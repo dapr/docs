@@ -23,4 +23,4 @@ spec:
     value: <REPLACE-RETHINKDB-DB-NAME> # Required, e.g. dapr (alpha-numerics only)
 ```
 
-For example how to combine this binding with Dapr Pub/Sub to stream state changes to a topic see [here](https://github.com/mchmarny/dapr-state-store-change-handler).
+For example on how to combine this binding with Dapr Pub/Sub to stream state changes to a topic see [here](https://github.com/mchmarny/dapr-state-store-change-handler).
