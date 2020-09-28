@@ -74,7 +74,7 @@ Service invocation performs automatic retries with backoff time periods in the e
 Errors that cause retries are:
 
 * Network errors including endpoint unavailability and refused connections
-* Authentication errors due to a renewing certificate on the calling/callee dapr sidecars
+* Authentication errors due to a renewing certificate on the calling/callee Dapr sidecars
 
 Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.
 Connection establishment via gRPC to the target sidecar has a timeout of 5 seconds. 
