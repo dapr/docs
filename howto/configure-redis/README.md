@@ -55,7 +55,7 @@ Add `redis` with the key `redis-password` as the `redisPassword` secretKeyRef in
    ```
 That's it! Now go to the [Configuration](#configuration) section
 
-4. b Its **not recommended**, however you can use a hard coded password instead. First we'll get our Redis password, which is slightly different depending on the OS we're using:
+5. (Alternative) Its **not recommended**, however you can use a hard coded password instead of secretKeyRef. First we'll get the Redis password, which is slightly different depending on the OS you're using:
 
    - **Windows**: Run below commands
    ```powershell
