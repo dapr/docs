@@ -124,7 +124,12 @@ See the [Scoping secrets](../../howto/secrets-scopes/README.md) HowTo for exampl
 
 ### Access Control allow lists for service invocation
 Access control enables the configuration of policies that restrict what operations *calling* applications can perform, via service invocation, on the *called* application. 
-An access control policy is specified in configuration and be applied to Dapr sidecar for the *called* application. Example policies are shown below and access to the called app is based on the matched policy action. You can provide a default global action for all calling applications and if no access control policy is specified, the default behavior is to allow all calling applicatons to access to the called app.
+An access control policy is specified in configuration and be applied to Dapr sidecar for the *called* application. Example access policies are shown below and access to the called app is based on the matched policy action. You can provide a default global action for all calling applications and if no access control policy is specified, the default behavior is to allow all calling applicatons to access to the called app.
+
+## Concepts
+TrustDomain - A "trust domain" is a logical group to manage trust relationships. Every application is assigned a trust domain which can be specified in the access control list policy spec. If no policy spec is defined or an empty trust domain is specified, then a default value "public" is used. This trust domain is used to generate the identity of the application in the TLS cert.
+
+App Identity - Dapr generates a [SPIFFE](https://spiffe.io/) id for all applications which is attached in the TLS cert. The SPIFFE id is of the format: **spiffe://\<trustdomain>/ns/\<namespace\>/\<appid\>**. For matching policies, the trust domain, namespace and app ID values of the calling app are extracted from the SPIFFE id in the TLS cert of the calling app. These values are matched against the trust domain, namespace and app ID values specified in the policy spec. If all three of these match, then more specific policies are further matched.
 
 ```
 apiVersion: dapr.io/v1alpha1
@@ -134,7 +139,7 @@ metadata:
 spec:
   accessControl:
     defaultAction: deny --> Global default action in case no other policy is matched
-    trustDomain: "public" --> The called application is assigned a trust domain here and is used to generate the identity of this app in the TLS certificate.
+    trustDomain: "public" --> The called application is assigned a trust domain and is used to generate the identity of this app in the TLS certificate.
     policies:
     - app: app1 --> AppId of the calling app to allow/deny service invocation from
       defaultAction: deny --> App level default action in case the app is found but no specific operation is matched
