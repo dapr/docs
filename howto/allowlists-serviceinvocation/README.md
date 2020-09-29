@@ -5,7 +5,7 @@ Access control enables the configuration of policies that restrict what operatio
 ## Concepts
 TrustDomain - A "trust domain" is a logical group to manage trust relationships. Every application is assigned a trust domain which can be specified in the access control list policy spec. If no policy spec is defined or an empty trust domain is specified, then a default value "default" is used. This trust domain is used to generate the identity of the application in the TLS cert.
 
-App Identity - We generate a SPIFFE id for all applications which is attached in the TLS cert. The SPIFFE id is of the format: spiffe://<trustdomain>/ns/<namespace>/<appid>. For matching policies, the trust domain, namespace and app ID values of the calling app are extracted from the SPIFFE id in the TLS cert of the calling app. These values are matched against the trust domain, namespace and app ID values specified in the policy spec. If all three of these match, then more specific policies are further matched.
+App Identity - Dapr generates a SPIFFE id for all applications which is attached in the TLS cert. The SPIFFE id is of the format: spiffe://\<trustdomain>/ns/\<namespace\>/\<appid\>. For matching policies, the trust domain, namespace and app ID values of the calling app are extracted from the SPIFFE id in the TLS cert of the calling app. These values are matched against the trust domain, namespace and app ID values specified in the policy spec. If all three of these match, then more specific policies are further matched.
 
 Below are some example scenarios for using access control list for service invocation. See [configuration guidance](../../concepts/configuration/README.md) to understand the available configuration settings for an application sidecar.
 
