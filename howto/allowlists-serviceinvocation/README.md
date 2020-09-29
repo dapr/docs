@@ -23,7 +23,7 @@ spec:
     defaultAction: deny
     trustDomain: "public"
     policies:
-    - app: app1
+    - appId: app1
       defaultAction: allow
       trustDomain: 'public'
       namespace: "default"
@@ -42,7 +42,7 @@ spec:
     defaultAction: deny
     trustDomain: "public"
     policies:
-    - app: app1
+    - appId: app1
       defaultAction: deny
       trustDomain: 'public'
       namespace: "default"
@@ -69,7 +69,7 @@ spec:
     defaultAction: deny
     trustDomain: "public"
     policies:
-    - app: app1
+    - appId: app1
       defaultAction: deny
       trustDomain: 'public'
       namespace: "default"
@@ -77,7 +77,7 @@ spec:
       - name: /op1
         httpVerb: ['POST', 'PUT']
         action: allow
-    - app: app2
+    - appId: app2
       defaultAction: deny
       trustDomain: 'myDomain'
       namespace: "ns1"
@@ -86,7 +86,7 @@ spec:
         action: allow
 ```
 
-## Scenario 4 : Allow access to all methods except trustDomain = public, namespace = default, appID = app1, operation = /op1/*, all http verbs
+## Scenario 4 : Allow access to all methods except trustDomain = public, namespace = default, appId = app1, operation = /op1/*, all http verbs
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -98,7 +98,7 @@ spec:
     defaultAction: allow
     trustDomain: "public"
     policies:
-    - app: app1
+    - appId: app1
       defaultAction: allow
       trustDomain: 'public'
       namespace: "default"
@@ -108,7 +108,7 @@ spec:
         action: deny
 ```
 
-## Scenario 5 : Allow access to all methods for trustDomain = public, namespace = ns1, appID = app1 and deny access to all methods for trustDomain = public, namespace = ns2, appID = app1
+## Scenario 5 : Allow access to all methods for trustDomain = public, namespace = ns1, appId = app1 and deny access to all methods for trustDomain = public, namespace = ns2, appId = app1
 
 This scenario shows how applications with the same app ID but belonging to different namespaces can be specified
 
@@ -122,11 +122,11 @@ spec:
     defaultAction: allow
     trustDomain: "public"
     policies:
-    - app: app1
+    - appId: app1
       defaultAction: allow
       trustDomain: 'public'
       namespace: "ns1"
-    - app: app1
+    - appId: app1
       defaultAction: deny
       trustDomain: 'public'
       namespace: "ns2"
