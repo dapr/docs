@@ -163,7 +163,7 @@ Access Control
 Property | Type | Description
 ---- | ------- | -----------
 defaultAction  | string | Global default action when no other policy is matched
-trustDomain  | string | Trust domain assigned to the called application.
+trustDomain  | string | Trust domain assigned to the application. Default is "public".
 policies | string   | Policies to determine what operations the calling app can do on the called app
 
 Policies 
@@ -171,7 +171,7 @@ Property | Type | Description
 ---- | ------- | -----------
 app  | string   | AppId of the calling app to allow/deny service invocation from
 namespace  | string |  Namespace value that needs to be matched with the namespace of the calling app
-trustDomain  | string | Trust domain that needs to be matched with the trust domain of the calling app
+trustDomain  | string | Trust domain that needs to be matched with the trust domain of the calling app. Default is "public"
 defaultAction  | string | App level default action in case the app is found but no specific operation is matched
 operations | string   | operations that are allowed from the calling app
 
