@@ -21,7 +21,7 @@ spec:
   secrets:
     scopes:
       - storeName: kubernetes
-        defaultAcess: deny
+        defaultAccess: deny
 ```
 
 For applications that need to be deined access to the Kubernetes secret store, follow [these instructions](../configure-k8s/README.md), and add the following annotation to the application pod. 
@@ -45,7 +45,7 @@ spec:
   secrets:
     scopes:
       - storeName: vault
-        defaultAcess: deny
+        defaultAccess: deny
         allowedSecrets: ["secret1", "secret2"]
 ```
 
@@ -64,7 +64,7 @@ spec:
   secrets:
     scopes:
       - storeName: vault
-        defaultAcess: allow # this is the default value, line can be omitted
+        defaultAccess: allow # this is the default value, line can be omitted
         deniedSecrets: ["secret1", "secret2"]
 ```
 

@@ -102,7 +102,7 @@ The `secrets` section under the `Configuration` spec contains the following prop
 secrets:
   scopes:
     - storeName: kubernetes
-      defaultAcess: allow
+      defaultAccess: allow
       allowedSecrets: ["redis-password"]
     - storeName: localstore
       defaultAccess: allow
