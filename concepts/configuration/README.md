@@ -141,7 +141,7 @@ spec:
     defaultAction: deny --> Global default action in case no other policy is matched
     trustDomain: "public" --> The called application is assigned a trust domain and is used to generate the identity of this app in the TLS certificate.
     policies:
-    - app: app1 --> AppId of the calling app to allow/deny service invocation from
+    - appId: app1 --> AppId of the calling app to allow/deny service invocation from
       defaultAction: deny --> App level default action in case the app is found but no specific operation is matched
       trustDomain: 'public' --> Trust domain of the calling app is matched against the specified value here.
       namespace: "default" --> Namespace of the calling app is matched against the specified value here.
@@ -152,7 +152,7 @@ spec:
       - name: /op2/* --> operation name with a postfix
         httpVerb: ["*"] --> wildcards can be used to match any http verb
         action: allow
-    - app: app2
+    - appId: app2
       defaultAction: allow
       trustDomain: "public"
       namespace: "default"
@@ -214,7 +214,7 @@ spec:
     defaultAction: deny
     trustDomain: "public"
     policies:
-    - app: app1
+    - appId: app1
       defaultAction: deny 
       trustDomain: 'public'
       namespace: "default" 
