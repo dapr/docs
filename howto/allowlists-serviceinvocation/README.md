@@ -146,3 +146,7 @@ The action corresponding to the most specific policy matched takes effect as ord
 1. Specific HTTP verbs in the case of HTTP or the operation level action in the case of GRPC.
 2. The default action at the app level
 3. The default action at the global level
+
+## Related Links
+ 
+* [Configuration concepts](../../concepts/configuration/README.md)
