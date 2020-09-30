@@ -174,7 +174,7 @@ spec:
     defaultAction: allow
     trustDomain: "public"
     policies:
-    - app-id: pythonapp
+    - appId: pythonapp
       defaultAction: allow
       trustDomain: 'myDomain'
       namespace: "default"
