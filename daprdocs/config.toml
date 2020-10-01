@@ -85,3 +85,7 @@ archived_version = false
 	url = "https://github.com/dapr/"
 	icon = "fab fa-github"
         desc = "Development takes place here!"
+
+# Algolia
+algolia_docsearch = true
+sidebar_search_disable = true
