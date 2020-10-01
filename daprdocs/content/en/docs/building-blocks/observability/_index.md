@@ -45,13 +45,3 @@ The observability tools listed below are ones that have been tested to work with
 
 * [How-To: Set up Zipkin](../../howto/diagnose-with-tracing/zipkin.md)
 * [How-To: Set up Application Insights](../../howto/diagnose-with-tracing/azure-monitor.md)
-
-
-##  Implementation Status
-The table below shows the current status of each of the observabilty capabilites for the Dapr runtime and system services. N/A means not applicable.
-
-|         | Runtime | Operator | Injector | Placement | Sentry|
-|---------|---------|----------|----------|-----------|--------|
-|Metrics  | Yes     | Yes      | Yes      | Yes       | Yes    |
-|Tracing  | Yes     | N/A      | N/A      | *Planned* | N/A    |
-|Logs     | Yes     | Yes      | Yes      | Yes       | Yes    |

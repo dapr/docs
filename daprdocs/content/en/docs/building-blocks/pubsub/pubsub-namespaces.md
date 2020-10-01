@@ -20,7 +20,7 @@ The table below shows which resources are deployed to which namespaces:
 
 ## Pre-requisites
 
-* [Dapr installed](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md.) on any namespace since Dapr works at the cluster level.
+* [Dapr installed](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) on any namespace since Dapr works at the cluster level.
 * Checkout and cd into directory for [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub).
 
 ## Setup `namespace-a`

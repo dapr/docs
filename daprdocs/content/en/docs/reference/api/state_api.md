@@ -69,6 +69,8 @@ Parameter | Description
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Request Body
 
 A JSON array of state objects. Each state object is comprised with the following fields:
@@ -124,7 +126,6 @@ This endpoint lets you get the state for a specific key.
 
 ```http
 GET http://localhost:<daprPort>/v1.0/state/<storename>/<key>
-
 ```
 
 #### URL Parameters
@@ -136,6 +137,8 @@ storename | ```metadata.name``` field in the user configured state store compone
 key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 metadata | (optional) metadata as query parameters to the state store
+
+> Note, all URL parameters are case-sensitive.
 
 ### HTTP Response
 
@@ -196,6 +199,8 @@ daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 metadata | (optional) metadata as query parameters to the state store
 
+> Note, all URL parameters are case-sensitive.
+
 ### HTTP Response
 
 #### Response Codes
@@ -213,7 +218,7 @@ An array of JSON-encoded values
 
 ```shell
 curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '{
           "keys": [ "key1", "key2" ],
           "parallelism": 10,
@@ -262,6 +267,8 @@ storename | ```metadata.name``` field in the user configured state store compone
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
+
+> Note, all URL parameters are case-sensitive.
 
 #### Request Headers
 
@@ -323,6 +330,8 @@ Parameter | Description
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 
+> Note, all URL parameters are case-sensitive.
+
 #### Request Body
 
 Field | Description
@@ -345,7 +354,7 @@ options | (optional) state operation options, see [state operation options](#opt
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '{
         "operations": [
           {

@@ -191,7 +191,7 @@ You can install Dapr to Kubernetes cluster using a Helm 3 chart.
 2. Add Azure Container Registry as a Helm repo
 
 ```bash
-helm repo add dapr https://daprio.azurecr.io/helm/v1/repo
+helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 ```
 
@@ -234,3 +234,6 @@ helm uninstall dapr -n dapr-system
 ```
 
 > **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
+
+### Installing Redis on Kubernetes 
+To install Redis as a state store or as a pub/sub message bus into your Kubernetes cluster. See [Configure Redis for state management or pub/sub](../howto/configure-redis/readme.md)

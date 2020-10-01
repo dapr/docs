@@ -23,7 +23,7 @@ For this guide, we'll use Redis Streams, which is also installed by default on a
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: messagebus
+  name: pubsub-name
   namespace: default
 spec:
   type: pubsub.redis
@@ -32,7 +32,11 @@ spec:
     value: localhost:6379
   - name: redisPassword
     value: ""
+  - name: allowedTopics
+    value: "deathStartStatus"
 ```
+
+Using the `allowedTopics` you can specify that only the `deathStartStatus` topic should be supported.
 
 To deploy this into a Kubernetes cluster, fill in the `metadata` connection details in the yaml, and run `kubectl apply -f pubsub.yaml`.
 
@@ -41,7 +45,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 To publish a message to a topic, invoke the following endpoint on a Dapr instance:
 
 ```bash
-curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
+curl -X POST http://localhost:3500/v1.0/publish/pubsub-name/deathStarStatus \
  -H "Content-Type: application/json" \
  -d '{
       "status": "completed"
@@ -49,4 +53,4 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
 ```
 
 The above example publishes a JSON payload to a `deathStartStatus` topic.
-Dapr will wrap the user payload in a Cloud Events v1.0 compliant envelope.
+Dapr wraps the user payload in a Cloud Events v1.0 compliant envelope.

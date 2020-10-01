@@ -29,7 +29,7 @@ When multiple instances of the same application ID subscribe to a topic, Dapr wi
 
 ## Cloud events
 
-Dapr follows the [Cloud Events 1.0 Spec](https://github.com/cloudevents/spec/tree/v1.0) and wraps any payload sent to a topic inside a Cloud Events envelope.
+Dapr follows the [CloudEvents 1.0 Spec](https://github.com/cloudevents/spec/tree/v1.0) and wraps any payload sent to a topic inside a Cloud Events envelope.
 
 The following fields from the Cloud Events spec are implemented with Dapr:
 
@@ -38,3 +38,22 @@ The following fields from the Cloud Events spec are implemented with Dapr:
 * `specversion`
 * `type`
 * `datacontenttype` (Optional)
+
+
+> Starting with Dapr v0.9, Dapr no longer wraps published content into CloudEvent if the published payload itself is already in CloudEvent format. 
+
+The following example shows an XML content in CloudEvent v1.0 serialized as JSON:
+
+
+```json
+{
+    "specversion" : "1.0",
+    "type" : "xml.message",
+    "source" : "https://example.com/message",
+    "subject" : "Test XML Message",
+    "id" : "id-1234-5678-9101",
+    "time" : "2020-09-23T06:23:21Z",
+    "datacontenttype" : "text/xml",
+    "data" : "<note><to>User1</to><from>user2</from><message>hi</message></note>"
+}
+```

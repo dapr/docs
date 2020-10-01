@@ -38,10 +38,10 @@ az group create --name [your_resource_group] --location [region]
 
 4. Create an Azure Kubernetes Service cluster
 
-Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
+> **Note:** To use a specific version of Kubernetes use `--kubernetes-version` (1.13.x or newer version required)
 
 ```bash
-az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --kubernetes-version 1.14.7 --enable-addons http_application_routing --enable-rbac --generate-ssh-keys
+az aks create --resource-group [your_resource_group] --name [your_aks_cluster_name] --node-count 2 --enable-addons http_application_routing --generate-ssh-keys
 ```
 
 5. Get the access credentials for the Azure Kubernetes cluster
@@ -49,7 +49,6 @@ az aks create --resource-group [your_resource_group] --name [your_aks_cluster_na
 ```bash
 az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
-
 
 ## (optional) Install Helm v3
 

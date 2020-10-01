@@ -16,17 +16,17 @@ The default metrics port is `9090`. This can be overridden by passing the comman
 
 To disable the metrics in the Dapr side car, you can use the `metric` spec configuration and set `enabled: false` to disable the metrics in the Dapr runtime.
 
-```
+```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-name: tracing
-namespace: default
+  name: tracing
+  namespace: default
 spec:
-tracing:
-samplingRate: "1"
-metric:
-enabled: false
+  tracing:
+    samplingRate: "1"
+  metric:
+    enabled: false
 ```
 
 ## Metrics

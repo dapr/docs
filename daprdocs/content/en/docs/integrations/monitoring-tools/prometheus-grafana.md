@@ -98,11 +98,11 @@ dapr-prom-prometheus-pushgateway-688665d597-h4xx2   1/1     Running   0         
 dapr-prom-prometheus-server-694fd8d7c-q5d59         2/2     Running   0          4m58s
 grafana-c49889cff-x56vj                             1/1     Running   0          5m10s 
 ```
-Next steps are to [observe metrics with Grafana](../observe-metrics-with-grafana.md)
+Next steps are to [observe metrics with Grafana](./observe-metrics-with-grafana.md)
 
 # References
 
-* [Observe metrics with Grafana](../observe-metrics-with-grafana.md)
+* [Observe metrics with Grafana](./observe-metrics-with-grafana.md)
 * [Prometheus Installation](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
 * [Prometheus Kubernetes Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator)

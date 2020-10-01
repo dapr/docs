@@ -8,7 +8,12 @@ weight: 20
 
 Dapr offers key/value storage APIs for state management. If a microservice uses state management, it can use these APIs to leverage any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
 
-When using state management your application will also be able to leverage several other features that would otherwise be complicated and error-prone to build yourself such as:
+- [Overview](#overview)
+- [Features](#features)
+- [Next Steps](#next-steps)
+
+## Overview 
+When using state management your application can leverage several features that would otherwise be complicated and error-prone to build yourself such as:
 
 - Distributed concurrency and data consistency
 - Retry policies
@@ -18,7 +23,7 @@ See below for a diagram of state management's high level architecture.
 
 ![State management](../../images/state_management.png)
 
-## Contents:
+## Features
 
 - [State Management API](#state-management-api)
 - [State Store Behaviors](#state-store-behaviors)
@@ -27,7 +32,6 @@ See below for a diagram of state management's high level architecture.
 - [Retry Policies](#retry-policies)
 - [Bulk Operations](#bulk-operations)
 - [Querying State Store Directly](#querying-state-store-directly)
-- [References](#references)
 
 ## State management API
 
@@ -111,14 +115,15 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 
 > **NOTE:** Direct queries of the state store are not governed by Dapr concurrency control, since you are not calling through the Dapr runtime. What you see are snapshots of committed data which are acceptable for read-only queries across multiple actors, however writes should be done via the actor instances.
 
-## References
+## Next steps
 
-* [Spec: Dapr state management specification](../../reference/api/state_api.md)
-* [Spec: Dapr actors specification](../../reference/api/actors_api.md)
-* [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
-* [How-to: Query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
-* [How-to: Set up PostgreSQL store](../../howto/setup-state-store/setup-postgresql.md)
-* [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)
-* [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md)
-* [How-to: Set up SQL Server store](../../howto/setup-state-store/setup-sqlserver.md)
-* [How-to: Query SQL Server store](../../howto/query-state-store/query-sqlserver-store.md)
+* Follow these guides on
+    * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
+    * [How-to: query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
+    * [How-to: Set up PostgreSQL store](../../howto/setup-state-store/setup-postgresql.md)
+    * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)
+    * [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md)
+    * [How-to: Set up SQL Server store](../../howto/setup-state-store/setup-sqlserver.md)
+    * [How-to: Query SQL Server store](../../howto/query-state-store/query-sqlserver-store.md)
+* Read the [state management API specification](../../reference/api/state_api.md)
+* Read the [actors API specification](../../reference/api/actors_api.md)

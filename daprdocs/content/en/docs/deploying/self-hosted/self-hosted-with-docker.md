@@ -139,7 +139,7 @@ services:
 
 > For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.
 
-To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/hello-docker-compose).
+To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sample](https://github.com/dapr/samples/tree/master/hello-docker-compose).
 
 ## Run Dapr in a Docker container on Kubernetes
 If your deployment target is Kubernetes then you're probably better of running your applicaiton and Dapr sidecars directly on
