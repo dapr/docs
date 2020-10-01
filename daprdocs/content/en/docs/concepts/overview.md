@@ -6,20 +6,7 @@ description: >
   Introduction to the Distributed Application Runtime
 ---
 
-# Dapr overview
-
 Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, stateless and stateful microservice applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
-
-## Contents:
-
-- [Any language, any framework, anywhere](#any-language-any-framework-anywhere)
-- [Microservice building blocks for cloud and edge](#microservice-building-blocks-for-cloud-and-edge)
-- [Sidecar architecture](#sidecar-architecture)
-- [Developer language SDKs and frameworks](#developer-language-sdks-and-frameworks)
-- [Designed for operations](#designed-for-operations)
-- [Run anywhere](#Run-anywhere)
-    - [Running Dapr on a local developer machine in self hosted mode](#running-dapr-on-a-local-developer-machine-in-self-hosted-mode)
-  - [Running Dapr in Kubernetes mode](#running-dapr-in-kubernetes-mode)
 
 ## Any language, any framework, anywhere
 
@@ -43,13 +30,13 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 | Building Block | Description |
 |----------------|-------------|
-| **[Service Invocation]({{< ref "/docs/building-blocks/service-invocation" >}})** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
-|  **[State Management](/building-blocks/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
-| **[Publish and Subscribe Messaging](/building-blocks/pubsub)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
-| **[Resource Bindings](/building-blocks/bindings)** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
-| **[Actors](/building-blocks/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
-| **[Observability](/building-blocks/observability)** | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
-| **[Secrets](/building-blocks/secrets)** | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
+| **[Service Invocation](/docs/building-blocks/service-invocation)** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
+|  **[State Management](/docs/building-blocks/state-management)** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
+| **[Publish and Subscribe Messaging](/docs/building-blocks/pubsub)** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
+| **[Resource Bindings](/docs/building-blocks/bindings)** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
+| **[Actors](/docs/building-blocks/actors)** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
+| **[Observability](/docs/building-blocks/observability)** | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
+| **[Secrets](/docs/building-blocks/secrets)** | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 
 ## Sidecar architecture
 
@@ -68,7 +55,7 @@ In self hosted mode Dapr runs as a separate side-car process which your service 
 
 In container hosting environments such as Kubernetes, Dapr runs as a side-car container with the application container in the same pod.
 
-<img src="../images/overview-sidecar-kubernetes.png" width=600>
+<img src="/images/overview-sidecar-kubernetes.png" width=600>
 
 ## Developer language SDKs and frameworks
 
@@ -119,7 +106,7 @@ Dapr can be configured to run on your local developer machine in [self hosted mo
 
 You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples](../getting-started). 
 
-<img src="../images/overview_standalone.png" width=800>
+<img src="/images/overview_standalone.png" width=800>
 
 ### Running Dapr in Kubernetes mode
 
@@ -127,6 +114,6 @@ Dapr can be configured to run on any [Kubernetes cluster](../concepts/hosting/).
 
 The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](../concepts/security/README.md#dapr-to-dapr-communication)
 
-<img src="../images/overview_kubernetes.png" width=800>
+<img src="/images/overview_kubernetes.png" width=800>
 
 Deploying and running a Dapr enabled application into your Kubernetes cluster is a simple as adding a few annotations to the deployment schemes. You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/deploy) in the Kubernetes getting started sample. Try this out with the [Kubernetes getting started sample](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)

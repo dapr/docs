@@ -2,9 +2,8 @@
 title: "Middleware Pipeline"
 linkTitle: "Middleware"
 weight: 300
+description: "Custom processing pipelines of chained middleware components"
 ---
-
-# Middleware pipeline
 
 Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. A request goes through all defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
 

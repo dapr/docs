@@ -10,7 +10,7 @@ Using the service invocation API, your microservice can find and reliably commun
 
 Below is a high level overview of how Dapr's service invocation system works.
 
-![Service Invocation Diagram](../../images/service-invocation.png)
+![Service Invocation Diagram](/images/service-invocation.png)
 
 1. Service A makes a http/gRPC call meant for Service B.  The call goes to the local Dapr sidecar.  
 2. Dapr discovers Service B's location and forwards the message to Service B's Dapr sidecar
