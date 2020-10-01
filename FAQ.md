@@ -53,10 +53,10 @@ To make using Dapr more natural for different languages, it includes language sp
 
 These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
-### What Frameworks has Dapr integrated with?
+### What frameworks does Dapr integrated with?
 Dapr can be integrated with any developer framework. For example, in the Dapr .NET SDK you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services.
 
-Dapr is also integrated with;
+Dapr is integrated with the following frameworks;
 
 - Logic Apps with Dapr [Workflows](https://github.com/dapr/workflows)
 - Functions with Dapr [Azure Functions Extension](https://github.com/dapr/azure-functions-extension)
