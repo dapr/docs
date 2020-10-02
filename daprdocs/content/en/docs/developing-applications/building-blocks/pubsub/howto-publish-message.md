@@ -1,5 +1,5 @@
 ---
-title: "Publish Message to a Topic with Dapr"
+title: "Publish message to a topic with Dapr"
 linkTitle: "How-To: Publish"
 weight: 4000
 ---
