@@ -6,8 +6,6 @@ description: >
   How Dapr is designed with security in mind for your enterprise deployments.
 ---
 
-# Security
-
 This article addresses multiple security considerations when using Dapr in a distributed application including:
 
 - [Sidecar-to-App Communication](#sidecar-to-app-communication)
