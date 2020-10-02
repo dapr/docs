@@ -28,7 +28,7 @@ Read [How does Dapr work with service meshes?](https://github.com/dapr/dapr/wiki
 Istio is not a programming model and does not focus on application level features such as state management, pub-sub, bindings etc. That is where Dapr comes in.
 
 ## Performance Benchmarks
-The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. This [performance benchmark video](https://youtu.be/4kV3SHs1j2k?t=783) discusses and demos the work that has been done so far. The performance benchmark data is planned to be published on a regular basis along with the tests that you can run in your own test environment.
+The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. This [performance benchmark video](https://youtu.be/4kV3SHs1j2k?t=783) discusses and demos the work that has been done so far. The performance benchmark data is planned to be published on a regular basis. You can also run the perf tests in your own environment to get perf numbers. 
 
 ## Actors
 
