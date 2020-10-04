@@ -14,13 +14,13 @@ spec:
   - name: host
     value: amqp://[username][:password]@host.domain[:port]
   - name: durable
-    value: true
+    value: "true"
   - name: deleteWhenUnused
-    value: false
+    value: "false"
   - name: ttlInSeconds
-    value: 60
+    value: "60"
   - name: prefetchCount
-    value: 0
+    value: "0"
 ```
 
 - `queueName` is the RabbitMQ queue name.
