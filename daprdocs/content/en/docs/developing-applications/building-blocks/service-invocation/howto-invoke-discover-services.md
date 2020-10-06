@@ -2,7 +2,7 @@
 title: "Invoke & Discover Services"
 linkTitle: "How-To: Invoke & Discover Services"
 description: "This guide will walk you through configuring and invoking services using dapr"
-weight: 100
+weight: 200
 ---
 
 # Invoke remote services
