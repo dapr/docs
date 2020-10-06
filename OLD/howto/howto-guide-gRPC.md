@@ -1,7 +1,7 @@
 ---
 title: "Guide: Use gRPC Interface"
 linkTitle: "Referencing Secrets"
-weight: 2000
+weight: 5000
 ---
 
 # Dapr and gRPC

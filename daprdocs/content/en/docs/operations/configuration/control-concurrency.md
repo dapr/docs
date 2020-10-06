@@ -1,10 +1,9 @@
 ---
-title: "Control Concurrency and Rate Limit Applications"
-linkTitle: "Concurrency"
+title: "Control concurrency and rate limit applications"
+linkTitle: "Concurrency & rate limits"
 weight: 1000
+description: "Control how many requests and events will invoke your application simultaneously"
 ---
-
-# Rate limiting an application
 
 A common scenario in distributed computing is to only allow for a given number of requests to execute concurrently.
 Using Dapr, you can control how many requests and events will invoke your application simultaneously.

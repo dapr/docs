@@ -1,19 +1,9 @@
 ---
 title: "Guidelines for production ready deployments on Kubernetes"
-linkTitle: "Production"
-weight: 1000
+linkTitle: "Production guidelines"
+weight: 10000
+description: "Recommendations and practices for deploying Dapr to a Kubernetes cluster in a production ready configuration"
 ---
-
-This section outlines recommendations and practices for deploying Dapr to a Kubernetes cluster in a production ready configuration.
-
-## Contents
-
-- [Cluster capacity requirements](#cluster-capacity-requirements)
-- [Sidecar resource requirements](#sidecar-resource-requirements)
-- [Deploying Dapr with Helm](#deploying-dapr-with-helm)
-- [Upgrading Dapr with Helm](#upgrading-dapr-with-helm)
-- [Recommended security configuration](#recommended-security-configuration)
-- [Tracing and metrics configuration](#tracing-and-metrics-configuration)
 
 ## Cluster capacity requirements
 

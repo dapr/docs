@@ -2,6 +2,7 @@
 title: "Setup & configure mutual TLS"
 linkTitle: "mTLS"
 weight: 1000
+description: "Encrypt communication between Dapr instances"
 ---
 
 Dapr supports in-transit encryption of communication between Dapr instances using Sentry, a central Certificate Authority.

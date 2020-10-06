@@ -1,7 +1,8 @@
 ---
-title: "Dapr Logs"
+title: "Configure and view Dapr Logs"
 linkTitle: "Logs"
 weight: 2000
+description: "Understand how logging works in Dapr and how to configure and view logs"
 ---
 
 This section will assist you in understanding how logging works in Dapr, configuring and viewing logs.
@@ -27,13 +28,7 @@ To set the output level, you can use the `--log-level` command-line option. For 
 
 This will start the Dapr runtime binary with a log level of `error` and the Dapr Actor Placement Service with a log level of `debug`.
 
-## Configuring logs on Standalone Mode
-
-As outlined above, every Dapr binary takes a `--log-level` argument. For example, to launch the placement service with a log level of warning:
-
-```bash
-./placement --log-level warning
-```
+## Logs in stand-alone mode
 
 To set the log level when running your app with the Dapr CLI, pass the `log-level` param:
 
@@ -41,7 +36,13 @@ To set the log level when running your app with the Dapr CLI, pass the `log-leve
 dapr run --log-level warning node myapp.js
 ```
 
-## Viewing Logs on Standalone Mode
+As outlined above, every Dapr binary takes a `--log-level` argument. For example, to launch the placement service with a log level of warning:
+
+```bash
+./placement --log-level warning
+```
+
+### Viewing Logs on Standalone Mode
 
 When running Dapr with the Dapr CLI, both your app's log output and the runtime's output will be redirected to the same session, for easy debugging.
 For example, this is the output when running Dapr:
@@ -49,7 +50,7 @@ For example, this is the output when running Dapr:
 ```bash
 dapr run node myapp.js
 ℹ️  Starting Dapr with id Trackgreat-Lancer on port 56730
-✅  You're up and running! Both Dapr and your app logs will appear here.
+✅  You are up and running! Both Dapr and your app logs will appear here.
 
 == APP == App listening on port 3000!
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="starting Dapr Runtime -- version 0.3.0-alpha -- commit b6f2810-dirty"
@@ -69,11 +70,7 @@ dapr run node myapp.js
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="actors: established connection to placement service at localhost:50005"
 ```
 
-## Configuring Logs on Kubernetes
-
-This section shows you how to configure the log levels for Dapr system pods and the Dapr sidecar running on Kubernetes.
-
-### Setting the sidecar log level
+## Logs in Kubernetes mode
 
 You can set the log level individually for every sidecar by providing the following annotation in your pod spec template:
 
@@ -84,32 +81,29 @@ annotations:
 
 ### Setting system pods log level
 
-When deploying Dapr to your cluster using Helm 3.x, you can individually set the log level for every Dapr system component.
+When deploying Dapr to your cluster using Helm 3.x, you can individually set the log level for every Dapr system component:
 
-#### Setting the Operator log level
+```bash
+helm install dapr dapr/dapr --namespace dapr-system --set <COMPONENT>.logLevel=<LEVEL>
+```
+
+Components:
+- dapr_operator
+- dapr_placement
+- dapr_sidecar_injector
+
+Example:
 
 ```bash
 helm install dapr dapr/dapr --namespace dapr-system --set dapr_operator.logLevel=error
 ```
 
-#### Setting the Placement Service log level
-
-```bash
-helm install dapr dapr/dapr --namespace dapr-system --set dapr_placement.logLevel=error
-```
-
-#### Setting the Sidecar Injector log level
-
-```bash
-helm install dapr dapr/dapr --namespace dapr-system --set dapr_sidecar_injector.logLevel=error
-```
-
-## Viewing Logs on Kubernetes
+### Viewing Logs on Kubernetes
 
 Dapr logs are written to stdout and stderr.
 This section will guide you on how to view logs for Dapr system components as well as the Dapr sidecar.
 
-### Sidecar Logs
+#### Sidecar Logs
 
 When deployed in Kubernetes, the Dapr sidecar injector will inject an Dapr container named `daprd` into your annotated pod.
 In order to view logs for the sidecar, simply find the pod in question by running `kubectl get pods`:
@@ -138,7 +132,7 @@ time="2019-09-04T02:52:27Z" level=info msg="dapr initialized. Status: Running. I
 time="2019-09-04T02:52:27Z" level=info msg="actors: established connection to placement service at dapr-placement.dapr-system.svc.cluster.local:80"
 ```
 
-### System Logs
+#### System Logs
 
 Dapr runs the following system pods:
 
@@ -146,7 +140,7 @@ Dapr runs the following system pods:
 * Dapr sidecar injector
 * Dapr placement service
 
-#### Viewing Operator Logs
+#### Operator Logs
 
 ```Bash
 kubectl logs -l app=dapr-operator -n dapr-system
@@ -157,7 +151,7 @@ time="2019-09-05T19:03:43Z" level=info msg="Dapr Operator is started"
 
 *Note: If Dapr is installed to a different namespace than dapr-system, simply replace the namespace to the desired one in the command above*
 
-#### Viewing Sidecar Injector Logs
+#### Sidecar Injector Logs
 
 ```Bash
 kubectl logs -l app=dapr-sidecar-injector -n dapr-system

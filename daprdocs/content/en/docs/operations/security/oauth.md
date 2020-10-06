@@ -1,21 +1,15 @@
 ---
-title: "Configure API Authention with OAUTH"
+title: "Configure API authention with OAUTH"
 linkTitle: "OAuth"
 weight: 2000
+description: "Enable OAUTH authorization on Dapr endpoints for your web APIs"
 ---
 
-Dapr OAuth 2.0 [middleware](../../concepts/middleware/README.md) allows you to enable [OAuth](https://oauth.net/2/)
-authorization on Dapr endpoints for your web APIs,
-using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
-As well as injecting authorization tokens into your APIs which can be used for authorization towards external APIs
-called by your APIs,
-using the [Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4).
-When the middleware is enabled,
-any method invocation through Dapr needs to be authorized before getting passed to the user code.
+Dapr OAuth 2.0 [middleware](../../concepts/middleware/README.md) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
+You can also inject authorization tokens into your APIs which can be used for authorization towards external APIs called by your APIs using the [Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4).
+When the middleware is enabled any method invocation through Dapr needs to be authorized before getting passed to the user code.
 
-The main difference between the two flows is that the
-`Authorization Code Grant flow` needs user interaction and authorizes a user,
-the `Client Credentials Grant flow` doesn't need a user interaction and authorizes a service/application.
+The main difference between the two flows is that the `Authorization Code Grant flow` needs user interaction and authorizes a user where the `Client Credentials Grant flow` doesn't need a user interaction and authorizes a service/application.
 
 ## Register your application with a authorization server
 
@@ -39,8 +33,8 @@ To figure the Dapr OAuth middleware, you'll need to collect the following inform
 
 Authorization/Token URLs of some of the popular authorization servers:
 
-|Server|Authorization URL|Token URL|
-|--------|--------|--------|
+| Server  | Authorization URL | Token URL |
+|---------|-------------------|-----------|
 |Azure AAD|<https://login.microsoftonline.com/{tenant}/oauth2/authorize>|<https://login.microsoftonline.com/{tenant}/oauth2/token>|
 |GitHub|<https://github.com/login/oauth/authorize>|<https://github.com/login/oauth/access_token>|
 |Google|<https://accounts.google.com/o/oauth2/v2/auth>|<https://accounts.google.com/o/oauth2/token> <https://www.googleapis.com/oauth2/v4/token>|

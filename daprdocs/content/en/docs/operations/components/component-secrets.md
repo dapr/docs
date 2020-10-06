@@ -1,10 +1,11 @@
 ---
-title: "Referencing Secret Stores in Components"
-linkTitle: "Referencing Secrets"
+title: "Referencing secret stores in components"
+linkTitle: "Reference secrets"
 weight: 2000
+description: "How to securly reference secrets from a component definition"
 ---
 
-Components can reference secrets for the `spec.metadata` section.
+Components can reference secrets for the `spec.metadata` section within the components definition.
 
 In order to reference a secret, you need to set the `auth.secretStore` field to specify the name of the secret store that holds the secrets.
 

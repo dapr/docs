@@ -1,10 +1,9 @@
 ---
-title: "Run Dapr in Self Hosted Mode Without Docker"
-linkTitle: "Without Docker"
-weight: 2000
+title: "Run Dapr in self-hosted mode without Docker"
+linkTitle: "Run without Docker"
+weight: 30000
+description: "How to deploy and run Dapr in self-hosted mode without Docker installed on the local machine"
 ---
-
-# Self hosted mode without containers
 
 This article provides guidance on running Dapr in self-hosted mode without Docker.
 
