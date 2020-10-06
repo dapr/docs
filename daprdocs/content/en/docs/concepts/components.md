@@ -1,24 +1,24 @@
 ---
-title: "Dapr Components"
+title: "Components"
 linkTitle: "Components"
-weight: 100
-description: "Modular pieces of functionality used in Dapr."
+weight: 300
+description: "Modular functionality used by building blocks and applications"
 ---
 
 Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition.  All of the components are pluggable so that you can swap out one component with the same interface for another. The [components contrib repo](https://github.com/dapr/components-contrib) is where you can contribute implementations for the component interfaces and extends Dapr's capabilities.
   
- A building block can use any combination of components. For example the [actors](./actors) building block and the state management building block both use state  components.  As another example, the pub/sub building block uses [pub/sub](./publish-subscribe-messaging/README.md) components.
+ A building block can use any combination of components. For example the [actors]({{<ref "service-invocation-overview.md">}}) building block and the [state management]({{<ref "service-invocation-overview.md">}}) building block both use [state components](https://github.com/dapr/components-contrib/tree/master/state).  As another example, the [pub/sub]({{<ref "service-invocation-overview.md">}}) building block uses [pub/sub](https://github.com/dapr/components-contrib/tree/master/pubsub) components.
 
  You can get a list of current components available in the current hosting environment using the `dapr components` CLI command.
 
  The following are the component types provided by Dapr:
 
-* [Service discovery](https://github.com/dapr/components-contrib/tree/master/nameresolution)
-* [State](https://github.com/dapr/components-contrib/tree/master/state)
-* [Pub/sub](https://github.com/dapr/components-contrib/tree/master/pubsub)
 * [Bindings](https://github.com/dapr/components-contrib/tree/master/bindings)
+* [Pub/sub](https://github.com/dapr/components-contrib/tree/master/pubsub)
 * [Middleware](https://github.com/dapr/components-contrib/tree/master/middleware)
+* [Service discovery name resolution](https://github.com/dapr/components-contrib/tree/master/nameresolution)
 * [Secret stores](https://github.com/dapr/components-contrib/tree/master/secretstores)
+* [State](https://github.com/dapr/components-contrib/tree/master/state)
 * [Tracing exporters](https://github.com/dapr/components-contrib/tree/master/exporters)
 
 ### Service invocation and service discovery components

@@ -1,7 +1,7 @@
 ---
-title: "Dapr Overview"
+title: "Overview"
 linkTitle: "Overview"
-weight: 10
+weight: 100
 description: >
   Introduction to the Distributed Application Runtime
 ---
@@ -22,7 +22,7 @@ Using Dapr you can easily build microservice applications using any language, an
 
 ## Microservice building blocks for cloud and edge
 
-<img src="/images/building_blocks.png" width=800>
+<img src="/images/building_blocks.png" width=1000>
 
 There are many considerations when architecting microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
@@ -49,13 +49,13 @@ Dapr can be hosted in multiple environments, including self hosted for local dev
 
 In self hosted mode Dapr runs as a separate side-car process which your service code can call via HTTP or gRPC. In self hosted mode, you can  also deploy Dapr onto a set of VMs.
 
-<img src="/images/overview-sidecar.png" width=600>
+<img src="/images/overview-sidecar.png" width=1000>
 
 ### Kubernetes hosted
 
 In container hosting environments such as Kubernetes, Dapr runs as a side-car container with the application container in the same pod.
 
-<img src="/images/overview-sidecar-kubernetes.png" width=600>
+<img src="/images/overview-sidecar-kubernetes.png" width=1000>
 
 ## Developer language SDKs and frameworks
 
@@ -68,6 +68,7 @@ To make using Dapr more natural for different languages, it also includes langua
 - **[Java SDK](https://github.com/dapr/java-sdk)**
 - **[Javascript SDK](https://github.com/dapr/js-sdk)**
 - **[Python SDK](https://github.com/dapr/python-sdk)**
+- **[RUST SDK](https://github.com/dapr/rust-sdk)**
 - **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
 
 > Note: Dapr is language agnostic and provides a [RESTful HTTP API](../reference/api/README.md) in addition to the protobuf clients.

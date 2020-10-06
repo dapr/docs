@@ -1,9 +1,8 @@
 ---
-title: "Frequently Asked Questions and Answers"
+title: "Frequently asked Questions and Answers"
 linkTitle: "FAQs"
-weight: 60
-description: >
-  Common questions we get asked about Dapr
+weight: 1000
+description: "Common questions asked about Dapr"
 ---
 
 ## Networking and service meshes

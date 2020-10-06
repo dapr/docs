@@ -1,17 +1,12 @@
 ---
-title: "Dapr Configurations"
+title: "Configuration"
 linkTitle: "Configuration"
-weight: 30
+weight: 400
+description: "Change the behavior of Dapr sidecars or globally on Dapr system services"
 ---
 
 Dapr configurations are settings that enable you to change the behavior of individual Dapr application sidecars or globally on the system services in the Dapr control plane.
 An example of a per Dapr application sidecar setting is configuring trace settings. An example of a Dapr control plane setting is mutual TLS which is a global setting on the Sentry system service.   
-
-- [Setting self hosted sidecar configuration](#setting-self-hosted-sidecar-configuration)
-- [Setting Kubernetes sidecar configuration](#setting-kubernetes-sidecar-configuration)
-- [Sidecar configuration settings](#sidecar-configuration-settings)
-- [Setting Kubernetes control plane configuration](#kubernetes-control-plane-configuration)
-- [Control plane configuration settings](#control-plane-configuration-settings)
 
 ## Setting self hosted sidecar configuration
 In self hosted mode the Dapr configuration is a configuration file, for example `config.yaml`. By default the Dapr sidecar looks in the default Dapr folder for the runtime configuration eg: `$HOME/.dapr/config.yaml` in Linux/MacOS and `%USERPROFILE%\.dapr\config.yaml` in Windows.
