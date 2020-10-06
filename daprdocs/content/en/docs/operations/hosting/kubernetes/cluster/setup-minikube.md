@@ -1,9 +1,9 @@
 ---
 title: "Setup an Minikube cluster"
 linkTitle: "Minikube"
-weight: 20
+weight: 2000
 description: >
-  How to setup Dapr on an Azure Kubernetes Cluster.
+  How to setup Dapr on a Minikube cluster.
 ---
 
 # Set up a Minikube cluster

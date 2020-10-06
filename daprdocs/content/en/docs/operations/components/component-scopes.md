@@ -1,13 +1,11 @@
 ---
 title: "Scope components to one or more applications"
-linkTitle: "Scoping"
+linkTitle: "Scope component access"
 weight: 1000
+description: "How to limit component access to particular Dapr instances"
 ---
 
-There are two things to know about Dapr components in terms of security and access.
-First, Dapr components are namespaced. That means a Dapr runtime instance can only access components that have been deployed to the same namespace.
-
-Although namespace sounds like a Kubernetes term, this is true for Dapr not only on Kubernetes.
+Dapr components are namespaced (separate from the Kubernetes namespace concept), meaning a Dapr runtime instance can only access components that have been deployed to the same namespace.
 
 ## Namespaces
 Namespaces can be used to limit component access to particular Dapr instances.

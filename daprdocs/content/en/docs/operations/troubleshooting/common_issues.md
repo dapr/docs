@@ -1,12 +1,11 @@
 ---
-title: "Common Issues"
+title: "Common issues when running Dapr"
 linkTitle: "Common Issues"
 weight: 1000
+description: "Common issues and problems faced when running Dapr applications"
 ---
 
-This section will walk you through some common issues and problems.
-
-### I don't see the Dapr sidecar injected to my pod
+## I don't see the Dapr sidecar injected to my pod
 
 There could be several reasons to why a sidecar will not be injected into a pod.
 First, check your Deployment or Pod YAML file, and check that you have the following annotations in the right place:
@@ -55,7 +54,7 @@ In order to further diagnose any issue, check the logs of the Dapr sidecar injec
 
 *Note: If you installed Dapr to a different namespace, replace dapr-system above with the desired namespace*
 
-### My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar 
+## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar 
 
 If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes. 
 
@@ -88,7 +87,7 @@ To diagnose the root cause:
 
 > :bulb: Remember to configure the liveness check delay and log level back to your desired values after solving the problem.
 
-### I am unable to save state or get state
+## I am unable to save state or get state
 
 Have you installed an Dapr State store in your cluster?
 
@@ -108,7 +107,7 @@ Search the Dapr runtime logs and look for any state store errors:
 kubectl logs <name-of-pod> daprd
 ```
 
-### I am unable to publish and receive events
+## I am unable to publish and receive events
 
 Have you installed an Dapr Message Bus in your cluster?
 
@@ -128,7 +127,7 @@ Search the Dapr runtime logs and look for any pub/sub errors:
 kubectl logs <name-of-pod> daprd
 ```
 
-### The Dapr Operator pod keeps crashing
+## The Dapr Operator pod keeps crashing
 
 Check that there's only one installation of the Dapr Operator in your cluster.
 Find out by running
@@ -139,7 +138,7 @@ kubectl get pods -l app=dapr-operator --all-namespaces
 
 If two pods appear, delete the redundant Dapr installation.
 
-### I'm getting 500 Error responses when calling Dapr
+## I'm getting 500 Error responses when calling Dapr
 
 This means there are some internal issue inside the Dapr runtime.
 To diagnose, view the logs of the sidecar:
@@ -148,12 +147,12 @@ To diagnose, view the logs of the sidecar:
 kubectl logs <name-of-pod> daprd
 ```
 
-### I'm getting 404 Not Found responses when calling Dapr
+## I'm getting 404 Not Found responses when calling Dapr
 
 This means you're trying to call an Dapr API endpoint that either doesn't exist or the URL is malformed.
 Look at the Dapr API reference [here](../../reference/api/README.md) and make sure you're calling the right endpoint.
 
-### I don't see any incoming events or calls from other services
+## I don't see any incoming events or calls from other services
 
 Have you specified the port your app is listening on?
 In Kubernetes, make sure the `dapr.io/app-port` annotation is specified:
@@ -167,7 +166,7 @@ annotations:
 
 If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` flag to the `dapr run` command.
 
-### My Dapr-enabled app isn't behaving correctly
+## My Dapr-enabled app isn't behaving correctly
 
 The first thing to do is inspect the HTTP error code returned from the Dapr API, if any.
 If you still can't find the issue, try enabling `debug` log levels for the Dapr runtime. See [here](logs.md) how to do so.
@@ -180,7 +179,7 @@ kubectl logs <pod-name> <name-of-your-container>
 
 If running in Standalone mode, you should see the stderr and stdout outputs from your app displayed in the main console session.
 
-### I'm getting timeout/connection errors when running Actors locally
+## I'm getting timeout/connection errors when running Actors locally
 
 Each Dapr instance reports it's host address to the placement service. The placement service then distributes a table of nodes and their addresses to all Dapr instances. If that host address is unreachable, you are likely to encounter socket timeout errors or other variants of failing request errors.
 

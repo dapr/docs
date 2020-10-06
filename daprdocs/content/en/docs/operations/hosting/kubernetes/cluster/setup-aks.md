@@ -1,7 +1,7 @@
 ---
 title: "Setup an Azure Kubernetes Service cluster"
 linkTitle: "Azure Kubernetes Service"
-weight: 20
+weight: 2000
 description: >
   How to setup Dapr on an Azure Kubernetes Cluster.
 ---

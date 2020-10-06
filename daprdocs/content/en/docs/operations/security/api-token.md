@@ -1,7 +1,8 @@
 ---
-title: "Enable API Token Based Authentication"
+title: "Enable API token based authentication"
 linkTitle: "API Token Auth"
 weight: 3000
+description: "Require every incoming API request to include an authentication token before allowing that request to pass through"
 ---
 
 By default, Dapr relies on the network boundary to limit access to its public API. If you plan on exposing the Dapr API outside of that boundary, or if your deployment demands an additional level of security, consider enabling the token authentication for Dapr APIs. This will cause Dapr to require every incoming gRPC and HTTP request for its APIs for to include authentication token, before allowing that request to pass through. 

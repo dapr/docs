@@ -1,4 +1,9 @@
-# Apply access control list for service invocation
+---
+title: "Apply access control list configuration for service invocation"
+linkTitle: "Service Invocation access control"
+weight: 2000
+description: "Restrict what operations *calling* applications can perform, via service invocation, on the *called* application"
+---
 
 Access control enables the configuration of policies that restrict what operations *calling* applications can perform, via service invocation, on the *called* application. To limit access to a called applications from specific operations and HTTP verbs from the calling applications, you can define an access control policy specification in configuration.
 

@@ -1,5 +1,6 @@
 ---
-title: "Dapr Configuration"
+title: "Manage Dapr configuration"
 linkTitle: "Configuration"
-weight: 400
+weight: 200
+description: "How to set your Dapr configuration and manage your deployment"
 ---
