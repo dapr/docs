@@ -1,10 +1,9 @@
 ---
-title: "Dapr Logs"
+title: "Logs"
 linkTitle: "Logs"
-weight: 1
+weight: 3000
+description: "Understand Dapr logging"
 ---
-
-# Logs
 
 Dapr produces structured logs to stdout either as a plain text or JSON formatted. By default, all Dapr processes (runtime and system services) write to console out in plain text. To enable JSON formatted logs, you need to add the `--log-as-json` command flag when running Dapr processes. 
 

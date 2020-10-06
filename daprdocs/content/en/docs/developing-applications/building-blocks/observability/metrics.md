@@ -1,10 +1,9 @@
 ---
-title: "Dapr Metrics"
+title: "Metrics"
 linkTitle: "Metrics"
-weight: 1
+weight: 4000
+description: "Observing Dapr metrics"
 ---
-
-# Metrics
 
 Dapr exposes a [Prometheus](https://prometheus.io/) metrics endpoint that you can scrape to gain a greater understanding of how Dapr is behaving and to setup alerts for specific conditions.
 

@@ -1,14 +1,9 @@
 ---
-title: "Dapr W3C Traces"
+title: "W3C trace context for distributed tracing"
 linkTitle: "W3C Traces"
-weight: 1
+weight: 2000
+description: Using W3C tracing standard with Dapr
 ---
-
-# W3C trace context for distributed tracing
-
-- [Background](#background)
-- [Trace scenarios](#scenarios)
-- [W3C trace headers](#w3c-trace-headers)
 
 ## Introduction
 Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Largely Dapr does all the heavy lifting of generating and propogating the trace context information and this can be sent to many different diagnostics tools for visualization and querying. There are only a very few cases where you, as a developer, need to either propagate a trace header or generate one. 

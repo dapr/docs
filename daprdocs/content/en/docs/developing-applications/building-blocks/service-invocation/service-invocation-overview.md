@@ -1,8 +1,8 @@
 ---
-title: "Service invocation"
-linkTitle: "Overview"
-description: "An overview of the features and capabilities of the service invocation building block"
-weight: 100
+title: "Service invocation overview"
+linkTitle: "Service invocation overview"
+weight: 1000
+description: "Overview of the service invocation building block"
 ---
 
 Using service invocation, your application can discover and reliably and securely communicate with other applications using the standard protocols of [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/). 
@@ -21,7 +21,7 @@ Dapr uses a sidecar, decentralized architecture. To invoke an application using 
 
 The diagram below is an overview of how Dapr's service invocation works.
 
-![Service Invocation Diagram](/images/service-invocation.png)
+<img src="/images/service-invocation-overview.png" width=800>
 
 1. Service A makes an http/gRPC call meant for Service B.  The call goes to the local Dapr sidecar.  
 2. Dapr discovers Service B's location using the [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) installed for the given hosting platform.
@@ -39,7 +39,7 @@ In such a scenario, the python app would be "Service A" above, and the Node.js a
 
 The diagram below shows sequence 1-7 again on a local machine showing the API call:
 
-![Service Invocation Diagram](../../images/service-invocation-example.png)
+<img src="/images/service-invocation-overview-example.png" width=800>
 
 1. Suppose the Node.js app has a Dapr app ID of `nodeapp`, as in the sample.  The python app invokes the Node.js app's `neworder` method by posting `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`, which first goes to the python app's local Dapr sidecar.
 2. Dapr discovers the Node.js app's location using multicast DNS component which runs on your local machine.
@@ -85,7 +85,7 @@ All calls between Dapr applications can be made secure with mutual (mTLS) authen
 
 For more information read the [service-to-service security](../security#mtls-self-hosted) article.
 
-![Self Hosted service to service security](../../images/security-mTLS-sentry-selfhosted.png)
+<img src="/images/security-mTLS-sentry-selfhosted.png" width=800>
 
 ### Service access security
 Applications can control which other applications are allowed to call them and what they are authorized to do via access policies. This enables you to restrict sensitive applications, that say have personnel information, from being accessed by unauthorized applications, and combined with service-to-service secure communication, provides for soft multi-tenancy deployments.

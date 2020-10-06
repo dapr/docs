@@ -1,7 +1,8 @@
 ---
-title: "Configuring IntelliJ Community Edition for debugging with Dapr"
+title: "IntelliJ"
 linkTitle: "IntelliJ"
 weight: 1000
+description: "Configuring IntelliJ community edition for debugging with Dapr"
 ---
 
 When developing Dapr applications, you typically use the Dapr CLI to start your 'Daprized' service similar to this:

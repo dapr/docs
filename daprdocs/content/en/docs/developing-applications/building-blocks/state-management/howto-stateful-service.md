@@ -1,10 +1,11 @@
 ---
-title: "Create a stateful replicated service"
-linkTitle: "How-To: Stateful Service"
+title: "How-To: Build a stateful service"
+linkTitle: "How-To: Build a stateful service"
 weight: 300
+description: "Use state management with a scaled, replicated service"
 ---
 
-In this HowTo we'll show you how you can create a stateful service which can be horizontally scaled, using opt-in concurrency and consistency models.
+In this article you'll learn how you can create a stateful service which can be horizontally scaled, using opt-in concurrency and consistency models.
 
 This frees developers from difficult state coordination, conflict resolution and failure handling, and allows them instead to consume these capabilities as APIs from Dapr.
 

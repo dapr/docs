@@ -1,12 +1,9 @@
 ---
-title: "Introduction to Actors"
-linkTitle: "Actor Background"
-weight: 51
-description: >
-  Information on virtual actors in Dapr.
+title: "Introduction to actors"
+linkTitle: "Introduction to actors"
+weight: 100
+description: Learn more about the actor pattern
 ---
-
-# Introduction to actors
 
 The [actor pattern](https://en.wikipedia.org/wiki/Actor_model) describes **actors** as the lowest-level "unit of computation". In other words, you write your code in a self-contained unit (called an actor) that receives messages and processes them one at a time, without any kind of concurrency or threading.
 
@@ -20,13 +17,6 @@ Dapr includes a runtime that specifically implements the [Virtual Actor pattern]
 
 - [Dapr Actor Features](./actors_features.md)
 - [Dapr Actor API Spec](../../reference/api/actors_api.md)
-
-## Contents
-
-- [Actors in Dapr](#actors-in-dapr)
-- [Actor Lifetime](#actor-lifetime)
-- [Distribution and Failover](#distribution-and-failover)
-- [Actor Communication](#actor-communication)
 
 ### When to use actors
 
@@ -42,7 +32,7 @@ The actor design pattern can be a good fit to a number of distributed systems pr
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
-<img src="../../images/actor_game_example.png" width=400>
+<img src="/images/actor_background_game_example.png" width=400>
 
 ## Actor lifetime
 
@@ -65,11 +55,11 @@ Actors are distributed across the instances of the actor service, and those inst
 ### Actor placement service
 The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor `Placement` service. When a new instance of a service is created, the corresponding Dapr runtime register the actor types it can create and the `Placement` service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
 
-![Placement service registration](../../images/actors_placement_service_registration.png)
+<img src="/images/actors_background_placement_service_registration.png" width=600>
 
 When a client calls an actor with a particular id (for example, actor id 123), the Dapr instance for the client hashes the actor type and id, and uses the information to call onto the corresponding Dapr instance that can serve the requests for that particular actor id. As a result, the same partition (or service instance) is always called for any given actor id. This is shown in the diagram below.
 
-![Actor ID creation and calling](../../images/actors_id_hashing_calling.png)
+<img src="/images/actors_background_id_hashing_calling.png" width=600>
 
  This simplifies some choices but also carries some consideration:
 
@@ -98,7 +88,8 @@ A single actor instance cannot process more than one request at a time. An actor
 
 Actors can deadlock on each other if there is a circular request between two actors while an external request is made to one of the actors simultaneously. The Dapr actor runtime automatically times out on actor calls and throw an exception to the caller to interrupt possible deadlock situations.
 
-!["Actor concurrency"](../../images/actors_communication.png)
+<img src="/images/actors_background_communication.png" width=600>
+
 
 ### Turn-based access
 
@@ -108,4 +99,5 @@ The Dapr actors runtime enforces turn-based concurrency by acquiring a per-actor
 
 The following example illustrates the above concepts. Consider an actor type that implements two asynchronous methods (say, Method1 and Method2), a timer, and a reminder. The diagram below shows an example of a timeline for the execution of these methods and callbacks on behalf of two actors (ActorId1 and ActorId2) that belong to this actor type.
 
-![""](../../images/actors_concurrency.png)
+<img src="/images/actors_background_concurrency.png" width=600>
+

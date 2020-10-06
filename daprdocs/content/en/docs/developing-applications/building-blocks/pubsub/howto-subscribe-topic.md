@@ -1,7 +1,8 @@
 ---
-title: "Use Pub/Sub to consume messages from topics"
-linkTitle: "How-To: Publish"
+title: "How-To: Subscribe to a topic"
+linkTitle: "How-To: Subscribe"
 weight: 3000
+description: "Consume messages from topics"
 ---
 
 Pub/Sub is a very common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.

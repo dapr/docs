@@ -1,5 +1,6 @@
 ---
-title: "SDKs & Integrations"
+title: "Integrations"
+linkTitle: "Integrations"
 weight: 50
-description: "Information on ways you can build and develop with Dapr using your favorite languages and frameworks."
+description: "Dapr integrations with other technologies"
 ---

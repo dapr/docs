@@ -1,7 +1,8 @@
 ---
-title: "Trigger your app with input bindings"
+title: "How-To: Trigger your application with input bindings"
 linkTitle: "How-To: Triggers"
-weight: 1000
+description: "Use Dapr input bindings to trigger event driven applications"
+weight: 200
 ---
 
 Using bindings, your code can be triggered with incoming events from different resources which can be anything: a queue, messaging pipeline, cloud-service, filesystem etc.

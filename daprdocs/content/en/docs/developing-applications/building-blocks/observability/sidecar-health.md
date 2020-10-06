@@ -1,10 +1,9 @@
 ---
-title: "Dapr Health"
-linkTitle: "Health"
-weight: 1
+title: "Sidecar health"
+linkTitle: "Sidecar health"
+weight: 5000
+description: Dapr sidecar health checks.
 ---
-
-# Health
 
 Dapr provides a way to determine it's health using an HTTP /healthz endpoint.
 With this endpoint, the Dapr process, or sidecar, can be probed for its health and hence determine its readiness and liveness. See [health API ](../../reference/api/health_api.md)
@@ -26,7 +25,7 @@ The kubelet uses readiness probes to know when a container is ready to start acc
 
 When integrating with Kubernetes, the Dapr sidecar is injected with a Kubernetes probe configuration telling it to use the Dapr healthz endpoint. This is done by the `Sidecar Injector` system service. The integration with the kubelet  is shown in the diagram below. 
 
-![mTLS System Services on Kubernetes](../../images/security-mTLS-dapr-system-services.png)
+<img src="/images/security-mTLS-dapr-system-services.png" width=600>
 
 ### How to configure a liveness probe in Kubernetes
 

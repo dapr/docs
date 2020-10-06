@@ -1,7 +1,8 @@
 ---
-title: "Get Secrets with the Dapr Secrets API"
-linkTitle: "How-To: Secrets"
-weight: 1000
+title: "How To: Retrieve a secret"
+linkTitle: "How To: Retrieve a secret"
+weight: 2000
+description: "Use the secret store building block to securely retrieve a secret"
 ---
 
 It's common for applications to store sensitive information such as connection strings, keys and tokens that are used to authenticate with databases, services and external systems in secrets by using a dedicated secret store.

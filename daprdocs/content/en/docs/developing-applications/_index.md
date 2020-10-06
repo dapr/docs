@@ -1,5 +1,6 @@
 ---
 title: "Developing applications with Dapr"
-shortTitle: "Developing"
+linkTitle: "Developing applications"
 description: "Tools, tips, and information on how to build your application with Dapr"
+weight: 30
 ---
