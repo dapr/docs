@@ -6,7 +6,6 @@
     {{ else if $parent.Params.simple_list }}
     {{/* If simple_list is true we show a bulleted list of subpages */}}
     <hr class="panel-line">    
-    <h3><b>Read Next:</b></h3>
         <ul>
             {{ range $pages }}
                 {{ if eq .Parent $parent }}
