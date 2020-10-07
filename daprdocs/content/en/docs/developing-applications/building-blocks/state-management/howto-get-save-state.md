@@ -1,10 +1,9 @@
 ---
-title: "Save and Get State Using Dapr"
-linkTitle: "How-To: Save/Get State"
+title: "How-To: Save and get state"
+linkTitle: "How-To: Save and get state"
 weight: 200
+description: "Use key value pairs to persist a state"
 ---
-
-# Create a stateful service
 
 State management is one of the most common needs of any application: new or legacy, monolith or microservice.
 Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.

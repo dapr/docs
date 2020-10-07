@@ -1,11 +1,9 @@
 ---
-title: "Invoke & Discover Services"
-linkTitle: "How-To: Invoke & Discover Services"
-description: "This guide will walk you through configuring and invoking services using dapr"
-weight: 200
+title: "How-To: Invoke and discover services"
+linkTitle: "How-To: Invoke and discover services"
+description: "Use service invocation in a distributed application"
+weight: 2000
 ---
-
-# Invoke remote services
 
 This article describe how to deploy services each with an unique application ID, so that other services can discover and call endpoints on them using service invocation API.
 

@@ -1,7 +1,8 @@
 ---
-title: "Application development and debugging with Visual Studio Code rmeote containers"
-linkTitle: "VSCode Remote Containers"
+title: "VS Code remote containers"
+linkTitle: "VS Code remote containers"
 weight: 3000
+description: "Application development and debugging with Visual Studio Code remote containers"
 ---
 
 ## Using remote containers for your application development

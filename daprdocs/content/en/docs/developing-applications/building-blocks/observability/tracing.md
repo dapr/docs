@@ -1,23 +1,13 @@
 ---
-title: "Dapr Health"
-linkTitle: "Traces"
-weight: 1
+title: "Distributed tracing"
+linkTitle: "Distributed tracing"
+weight: 1000
+description: "Use Dapr tracing to get visibility for distributed application"
 ---
-
-# Distributed Tracing
 
 Dapr uses OpenTelemetry (previously known as OpenCensus) for distributed traces and metrics collection. OpenTelemetry supports various backends including [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor/), [Datadog](https://www.datadoghq.com), [Instana](https://www.instana.com), [Jaeger](https://www.jaegertracing.io/), [SignalFX](https://www.signalfx.com/), [Stackdriver](https://cloud.google.com/stackdriver), [Zipkin](https://zipkin.io) and others.
 
-![Tracing](../../images/tracing.png)
-
-## Contents
-
-- [Distributed Tracing](#distributed-tracing)
-  - [Contents](#contents)
-  - [Tracing design](#tracing-design)
-  - [W3C Correlation ID](#w3c-correlation-id)
-  - [Configuration](#configuration)
-  - [References](#references)
+<img src="/images/tracing.png" width=600>
 
 ## Tracing design
 

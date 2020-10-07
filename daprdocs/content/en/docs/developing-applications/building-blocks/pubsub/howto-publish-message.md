@@ -1,10 +1,9 @@
 ---
-title: "Publish message to a topic with Dapr"
+title: "How-To: Publish message to a topic"
 linkTitle: "How-To: Publish"
-weight: 4000
+weight: 2000
+description: "Send messages to subscribes through topics"
 ---
-
-# Use Pub/Sub to publish a message to a topic
 
 Pub/Sub is a common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
 Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.

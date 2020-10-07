@@ -1,7 +1,8 @@
 ---
-title: "Application development and debugging with Visual Studio Code"
-linkTitle: "VSCode Debugging"
+title: "VS Code"
+linkTitle: "VS Code"
 weight: 2000
+description:  "Application development and debugging with Visual Studio Code"
 ---
 
 ## Visual Studio Code Dapr extension

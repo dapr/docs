@@ -1,7 +1,8 @@
 ---
-title: "Limit Application Pub/Sub Topics with Scopes"
-linkTitle: "State Management"
-weight: 2000
+title: "How To: Scope Pub/Sub topics"
+linkTitle: "How To: Scope topics"
+weight: 5000
+description: "Use scopes to limit Pub/Sub topics to specific applications" 
 ---
 
 [Namespaces or component scopes](../components-scopes/README.md) can be used to limit component access to particular applications. These application scopes added to a component limit only the applications with specific IDs to be able to use the component.

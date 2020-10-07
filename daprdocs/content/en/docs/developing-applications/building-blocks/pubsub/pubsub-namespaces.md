@@ -1,7 +1,8 @@
 ---
-title: "Use Dapr PubSub with Multiple Namespaces"
-linkTitle: "Multiple Namespaces"
-weight: 1000
+title: "Pub/Sub and namespaces"
+linkTitle: "Pub/Sub and namespaces"
+weight: 4000
+description: "Use Dapr Pub/Sub with multiple namespaces"
 ---
 
 In some scenarios, applications can be spread across namespaces and share a queue or topic via PubSub. In this case, the PubSub component must be provisioned on each namespace.
