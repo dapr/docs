@@ -23,19 +23,19 @@ Here you'll find a list of "How To" guides that walk you through accomplishing s
 ## State Management
 
 * [Setup a state store](./setup-state-store)
+* [Configuring Redis for state management ](./configure-redis)
 * [Create a service that performs stateful CRUD operations](./create-stateful-service)
 * [Query the underlying state store](./query-state-store)
 * [Create a stateful, replicated service with different consistency/concurrency levels](./stateful-replicated-service)
 * [Control your app's throttling using rate limiting features](./control-concurrency)
-* [Configuring Redis for state management ](./configure-redis)
 
 ## Pub/Sub
 
-* [Setup Dapr Pub/Sub](./setup-pub-sub-message-broker)
+* [Setup a Pub/Sub component](./setup-pub-sub-message-broker)
+* [Configuring Redis for pub/sub](./configure-redis)
 * [Use Pub/Sub to publish messages to a given topic](./publish-topic)
 * [Use Pub/Sub to consume events from a topic](./consume-topic)
 * [Use Pub/Sub across multiple namespaces](./pubsub-namespaces)
-* [Configuring Redis for pub/sub](./configure-redis)
 * [Limit the Pub/Sub topics used or scope them to one or more applications](./pubsub-scopes)
 
 ## Bindings and Triggers

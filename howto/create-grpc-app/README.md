@@ -1,4 +1,4 @@
-# Get started with Dapr and gRPC
+# Create a gRPC enabled app, and invoke Dapr over gRPC
 
 Dapr implements both an HTTP and a gRPC API for local calls.gRPC is useful for low-latency, high performance scenarios and has language integration using the proto clients.
 
