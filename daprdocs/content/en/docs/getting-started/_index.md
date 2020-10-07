@@ -5,8 +5,6 @@ weight: 20
 description: "Get up and running with Dapr to start Daperizing your apps"
 ---
 
-# Getting started
-
 Dapr is a portable, event-driven runtime that makes it easy for enterprise developers to build resilient, microservice stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
 ## Core concepts
