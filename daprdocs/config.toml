@@ -1,7 +1,9 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io"
+baseURL = "https://docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
+
+enableRobotsTXT = true
 
 # Language Configuration
 languageCode = "en-us"
@@ -13,6 +15,10 @@ enableGitInfo = true
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
+
+# Algolia
+# algolia_docsearch = true
+# sidebar_search_disable = true
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -34,28 +40,25 @@ github_subdir = "daprdocs"
     weight = 60
     url = "https://dapr.io/#download"
 [[menu.main]]
-    name = "Docs"
+    name = "Blog"
     weight = 70
-    url = "#"
+    url = "https://blog.dapr.io/blog"
 [[menu.main]]
     name = "Community"
     weight = 80
     url = "https://dapr.io/#community"
 
 [params]
+copyright = "Dapr"
 #privacy_policy = "https://policies.google.com/privacy"
-
-# UI Customization
-[params.ui]
-sidebar_menu_compact = true
-navbar_logo = true
 
 # Versioning
 version_menu = "Releases"
-version = "v0.10"
+version = "v0.11"
 archived_version = false
+
 [[params.versions]]
-  version = "Latest"
+  version = "v0.11"
   url = "#"
 [[params.versions]]
   version = "v0.10"
@@ -67,25 +70,41 @@ archived_version = false
   version = "v0.8"
   url = "https://github.com/dapr/docs/tree/v0.8.0"
 
+# UI Customization
+[params.ui]
+sidebar_menu_compact = true
+navbar_logo = true
+
 # Links
 ## End user relevant links. These will show up on left side of footer and in the community page if you have one.
 [[params.links.user]]
 	name ="Twitter"
 	url = "https://twitter.com/daprdev"
 	icon = "fab fa-twitter"
-        desc = "Follow us on Twitter to get the latest updates!"
- [[params.links.user]]
+  desc = "Follow us on Twitter to get the latest updates!"
+[[params.links.user]]
 	name = "YouTube"
 	url = "https://www.youtube.com/channel/UCtpSQ9BLB_3EXdWAUQYwnRA"
 	icon = "fab fa-youtube"
-        desc = "Community call recordings and other cool demos"
+  desc = "Community call recordings and other cool demos"
+[[params.links.user]]
+	name = "Blog"
+	url = "https://blog.dapr.io/posts"
+	icon = "fas fa-blog"
+  desc = "Community call recordings and other cool demos"
 ## Developer relevant links. These will show up on right side of footer and in the community page if you have one.
 [[params.links.developer]]
 	name = "GitHub"
 	url = "https://github.com/dapr/"
 	icon = "fab fa-github"
-        desc = "Development takes place here!"
-
-# Algolia
-algolia_docsearch = true
-sidebar_search_disable = true
+  desc = "Development takes place here!"
+[[params.links.developer]]
+	name = "Gitter"
+	url = "https://gitter.im/Dapr/community"
+	icon = "fab fa-gitter"
+  desc = "Conversations happen here!"
+[[params.links.developer]]
+	name = "Zoom"
+	url = "https://aka.ms/dapr-community-call"
+	icon = "fas fa-video"
+  desc = "Meetings happen here!"
