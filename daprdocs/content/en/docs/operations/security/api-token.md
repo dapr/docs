@@ -1,6 +1,6 @@
 ---
 title: "Enable API token based authentication"
-linkTitle: "API Token Auth"
+linkTitle: "API token auth"
 weight: 3000
 description: "Require every incoming API request to include an authentication token before allowing that request to pass through"
 ---

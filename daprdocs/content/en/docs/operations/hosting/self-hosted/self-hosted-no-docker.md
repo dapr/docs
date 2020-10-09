@@ -19,9 +19,9 @@ The Dapr CLI provides an option to initialize Dapr using slim init, without the 
 dapr init --slim
 ```
 
-In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors](../../concepts/actors/README.md) in a Dapr self-hosted installation. 
+In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors]({{< ref "actors-overview.md" >}}) in a Dapr self-hosted installation. 
 
-In this mode no default components such as Redis are installed for state management or pub/sub. This means, that aside from [Service Invocation](../../concepts/service-invocation/README.md), no other building block functionality is available on install out of the box. Users are free to setup their own environment and custom components. Furthermore, actor based service invocation is possible if a state store is configured as explained in the following sections.
+In this mode no default components such as Redis are installed for state management or pub/sub. This means, that aside from [Service Invocation]({{< ref "service-invocation-overview.md" >}}), no other building block functionality is available on install out of the box. Users are free to setup their own environment and custom components. Furthermore, actor based service invocation is possible if a state store is configured as explained in the following sections.
 
 ## Service invocation
 See [this sample](https://github.com/dapr/samples/tree/master/hello-dapr-slim) for an example on how to perform service invocation in this mode. 
@@ -65,4 +65,4 @@ INFO[0450] host removed: 192.168.1.6                     instance=host.localhost
 
 ## Cleanup
 
-Follow the uninstall [instructions](../../getting-started/environment-setup.md#Uninstall-Dapr-in-self-hosted-mode-(without-docker)) to remove the binaries.
+Follow the uninstall [instructions]({{< ref "install-dapr.md#uninstall-dapr-in-a-self-hosted-mode" >}}) to remove the binaries.

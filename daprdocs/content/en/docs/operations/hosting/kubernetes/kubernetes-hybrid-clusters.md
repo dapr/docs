@@ -33,7 +33,7 @@ akswin000001                        Ready    agent   6d      v1.17.9   10.240.0.
 ## Installing the Dapr Control Plane
 
 If you are installing using the Dapr CLI or via a helm chart, simply follow the normal deployment procedures:
-[Installing Dapr on a Kubernetes cluster](../../getting-started/environment-setup.md#installing-Dapr-on-a-kubernetes-cluster)
+[Installing Dapr on a Kubernetes cluster]({{< ref "install-dapr.md#installing-Dapr-on-a-kubernetes-cluster" >}})
 
 Affinity will be automatically set for kubernetes.io/os=linux. This will be sufficient for most users, as Kubernetes requires at least one Linux node pool.
 
@@ -157,8 +157,8 @@ helm uninstall dapr
 ```
 ## Related links
 
- - See the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) for examples of more advanced configuration via node affinity
- - [Get started: Prep Windows for containers](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment)
+- See the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) for examples of more advanced configuration via node affinity
+- [Get started: Prep Windows for containers](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment)
 - [Setting up a Windows enabled Kubernetes cluster on Azure AKS](https://docs.microsoft.com/en-us/azure/aks/windows-container-cli)
 - [Setting up a Windows enabled Kubernetes cluster on AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html)
 - [Setting up Windows on Google Cloud GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows)
