@@ -81,11 +81,11 @@ The most common cause of this failure is that a component (such as a state store
 
 To diagnose the root cause:
 
-- Significantly increase the liveness probe delay - [link](../../howto/configure-k8s/README.md)
-- Set the log level of the sidecar to debug - [link](./logs.md#setting-the-sidecar-log-level)
-- Watch the logs for meaningful information - [link](./logs.md#viewing-logs-on-kubernetes)
+- Significantly increase the liveness probe delay - [link]{{< ref "kubernetes-overview.md" >}})
+- Set the log level of the sidecar to debug - [link]({{< ref "logs.md#setting-the-sidecar-log-level" >}})
+- Watch the logs for meaningful information - [link]({{< ref "logs.md#viewing-logs-on-kubernetes" >}})
 
-> :bulb: Remember to configure the liveness check delay and log level back to your desired values after solving the problem.
+> Remember to configure the liveness check delay and log level back to your desired values after solving the problem.
 
 ## I am unable to save state or get state
 
@@ -98,7 +98,7 @@ kubectl get components
 ```
 
 If there isn't a state store component, it means you need to set one up.
-Visit [here](../../howto/setup-state-store/setup-redis.md) for more details.
+Visit [here]({{< ref "state-management" >}}) for more details.
 
 If everything's set up correctly, make sure you got the credentials right.
 Search the Dapr runtime logs and look for any state store errors:
@@ -118,7 +118,7 @@ kubectl get components
 ```
 
 If there isn't a pub/sub component, it means you need to set one up.
-Visit [here](../../howto/setup-pub-sub-message-broker/README.md) for more details.
+Visit [here]({{< ref "pubsub" >}}) for more details.
 
 If everything is set up correctly, make sure you got the credentials right.
 Search the Dapr runtime logs and look for any pub/sub errors:
@@ -150,26 +150,26 @@ kubectl logs <name-of-pod> daprd
 ## I'm getting 404 Not Found responses when calling Dapr
 
 This means you're trying to call an Dapr API endpoint that either doesn't exist or the URL is malformed.
-Look at the Dapr API reference [here](../../reference/api/README.md) and make sure you're calling the right endpoint.
+Look at the Dapr API reference [here]({{< ref "api" >}}) and make sure you're calling the right endpoint.
 
 ## I don't see any incoming events or calls from other services
 
 Have you specified the port your app is listening on?
 In Kubernetes, make sure the `dapr.io/app-port` annotation is specified:
 
-<pre>
+```yaml
 annotations:
     dapr.io/enabled: "true"
     dapr.io/app-id: "nodeapp"
-    <b>dapr.io/app-port: "3000"</b>
-</pre>
+    dapr.io/app-port: "3000"
+```
 
 If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` flag to the `dapr run` command.
 
 ## My Dapr-enabled app isn't behaving correctly
 
 The first thing to do is inspect the HTTP error code returned from the Dapr API, if any.
-If you still can't find the issue, try enabling `debug` log levels for the Dapr runtime. See [here](logs.md) how to do so.
+If you still can't find the issue, try enabling `debug` log levels for the Dapr runtime. See [here]({{< ref "logs.md" >}}) how to do so.
 
 You might also want to look at error logs from your own process. If running on Kubernetes, find the pod containing your app, and execute the following:
 

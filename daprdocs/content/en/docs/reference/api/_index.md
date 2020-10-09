@@ -1,4 +1,7 @@
-# Dapr API reference
+---
+title: Dapr API reference
+linkTitle: "Dapr API"
+---
 
 Dapr is language agnostic and provides a RESTful HTTP & gRPC API.
 

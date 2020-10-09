@@ -1,7 +1,7 @@
 ---
 title: "Control concurrency and rate limit applications"
 linkTitle: "Concurrency & rate limits"
-weight: 1000
+weight: 2000
 description: "Control how many requests and events will invoke your application simultaneously"
 ---
 

@@ -13,14 +13,14 @@ The Dapr control plane pods are designed to be lightweight and require the follo
 *Note: For more info on CPU and Memory resource units and their meaning, see [this](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes) link*
 
 | Deployment  | CPU | Memory
-| ------------| ---- | ------
-| Operator | Limit: 1, Request: 100m | Limit: 200Mi, Request: 20Mi
+|-------------|-----|-------
+| Operator    | Limit: 1, Request: 100m | Limit: 200Mi, Request: 20Mi
 | Sidecar Injector  | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 20Mi
-| Sentry  | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 20Mi
-| Placement | Limit: 1, Request: 250m  | Limit: 500Mi, Request: 100Mi
-| Dashboard  | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
+| Sentry      | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 20Mi
+| Placement   | Limit: 1, Request: 250m  | Limit: 500Mi, Request: 100Mi
+| Dashboard   | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
 
-To change the resource assignments for the Dapr sidecar, see the annotations [here](../configure-k8s/).
+To change the resource assignments for the Dapr sidecar, see the annotations [here]({{< ref "kubernetes-annotations.md" >}}).
 The specific annotations related to resource constraints are:
 
 * `dapr.io/sidecar-cpu-limit`
@@ -42,8 +42,8 @@ The following Dapr control plane deployments are optional:
 
 The Dapr sidecar requires the following resources in a production-ready setup:
 
-| CPU | Memory
-| --------- | --------- |
+| CPU | Memory |
+|-----|--------|
 | Limit: 4, Request: 100m | Limit: 4000Mi, Request: 250Mi
 
 *Note: Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr enable you to drastically reduce the resource allocations for the application*
@@ -53,7 +53,7 @@ The CPU and memory limits above account for the fact that Dapr is intended to do
 ## Deploying Dapr with Helm
 
 When deploying to a production cluster, it's recommended to use Helm. The Dapr CLI installation into a Kubernetes cluster is for a development and test only setup.
-You can find information [here](../../getting-started/environment-setup.md#using-helm-(advanced)) on how to deploy Dapr using Helm.
+You can find information [here]({{< ref "install-dapr.md#using-helm-advanced" >}}) on how to deploy Dapr using Helm.
 
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
 
@@ -63,7 +63,7 @@ helm install dapr dapr/dapr --namespace dapr-system --set global.ha.enabled=true
 
 This command will run 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace.
 
-*Note: The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../windows-k8s/)*
+*Note: The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref "kubernetes-hybrid-clusters.md" >}})*
 
 ## Upgrading Dapr with Helm
 
@@ -73,7 +73,7 @@ Dapr supports zero downtime upgrades. The upgrade path includes the following st
 2. Updating the Dapr control plane
 3. Updating the data plane (Dapr sidecars)
 
-### 1. Upgrading the CLI
+### Upgrading the CLI
 
 To upgrade the Dapr CLI, [download a release version](https://github.com/dapr/cli/releases) of the CLI that matches the Dapr runtime version.
 For example, if upgrading to Dapr 0.9.0, download a CLI version of 0.9.x.
@@ -198,24 +198,24 @@ Properly configured, Dapr not only be secured with regards to it's control plane
 
 It is recommended that a production-ready deployment includes the following settings:
 
-1. Mutual Authentication (mTLS) should be enabled. Note that Dapr has mTLS on by default. For details on how to bring your own certificates, see [here](../configure-mtls/README.md#bringing-your-own-certificates)
+1. Mutual Authentication (mTLS) should be enabled. Note that Dapr has mTLS on by default. For details on how to bring your own certificates, see [here]({{< ref "mtls.md#bringing-your-own-certificates" >}})
 
-2. Dapr API authentication is enabled (this is the between your application and the Dapr sidecar). To secure the Dapr API from unauthorized access, it is recommended to enable Dapr's token based auth. See [here](../enable-dapr-api-token-based-authentication/README.md) for details
+2. Dapr API authentication is enabled (this is the between your application and the Dapr sidecar). To secure the Dapr API from unauthorized access, it is recommended to enable Dapr's token based auth. See [here]({{< ref "api-token.md" >}}) for details
 
-3. All component YAMLs should have secret data configured in a secret store and not hard-coded in the YAML file. See [here](../../concepts/secrets/component-secrets.md) on how to use secrets with Dapr components
+3. All component YAMLs should have secret data configured in a secret store and not hard-coded in the YAML file. See [here]({{< ref "component-secrets.md" >}}) on how to use secrets with Dapr components
 
 4. The Dapr control plane is installed on a separate namespace such as `dapr-system`, and never into the `default` namespace
 
-Dapr also supports scoping components for certain applications. This is not a required practice, and can be enabled according to your Sec-Ops needs. See [here](../components-scopes/README.md) for more info.
+Dapr also supports scoping components for certain applications. This is not a required practice, and can be enabled according to your Sec-Ops needs. See [here]({{< ref "component-scopes.md" >}}) for more info.
 
 ## Tracing and metrics configuration
 
 Dapr has tracing and metrics enabled by default.
-To configure a tracing backend for Dapr visit [this](../diagnose-with-tracing) link.
+To configure a tracing backend for Dapr visit [this]({{< ref "setup-tracing.md" >}}) link.
 
 For metrics, Dapr exposes a Prometheus endpoint listening on port 9090 which can be scraped by Prometheus.
 
 It is *recommended* that you set up distributed tracing and metrics for your applications and the Dapr control plane in production.
 If you already have your own observability set-up, you can disable tracing and metrics for Dapr.
 
-To setup Prometheus, Grafana and other monitoring tools with Dapr, visit [this](../setup-monitoring-tools) link.
+To setup Prometheus, Grafana and other monitoring tools with Dapr, visit [this]({{< ref "monitoring" >}}) link.

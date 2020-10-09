@@ -12,12 +12,6 @@ description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernet
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Helm 3](https://helm.sh/)
 
-## Contents
-
-  - [Enable Prometheus metric scrape using config map](#enable-prometheus-metric-scrape-using-config-map)
-  - [Install Dapr with JSON formatted logs](#install-dapr-with-json-formatted-logs)
-  - [Search metrics and logs with Azure Monitor](#Search-metrics-and-logs-with-azure-monitor)
-
 ## Enable Prometheus metric scrape using config map
 
 1. Make sure that omsagnets are running
@@ -35,9 +29,9 @@ omsagent-smtk7                                                    1/1     Runnin
 
 2. Apply config map to enable Prometheus metrics endpoint scrape.
 
-You can use [azm-config-map.yaml](./azm-config-map.yaml) to enable prometheus metrics endpoint scrape.
+You can use [azm-config-map.yaml](/docs/azm-config-map.yaml) to enable prometheus metrics endpoint scrape.
 
-If you installed Dapr to the different namespace, you need to change the `monitor_kubernetes_pod_namespaces` array values. For example;
+If you installed Dapr to the different namespace, you need to change the `monitor_kubernetes_pod_namespaces` array values. For example:
 
 ```yaml
 ...
@@ -53,7 +47,7 @@ If you installed Dapr to the different namespace, you need to change the `monito
 
 Apply config map:
 
-```
+```bash
 kubectl apply -f ./azm-config.map.yaml
 ```
 
