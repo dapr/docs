@@ -77,4 +77,7 @@ scopes:
 - app1
 - app2
 ```
-Watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=1765) for an example on how to component scopes with secret components and the secrets API.
+
+## Example
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=1763" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

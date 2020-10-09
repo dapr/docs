@@ -5,6 +5,8 @@ weight: 2000
 description: "How to securly reference secrets from a component definition"
 ---
 
+## Overview
+
 Components can reference secrets for the `spec.metadata` section within the components definition.
 
 In order to reference a secret, you need to set the `auth.secretStore` field to specify the name of the secret store that holds the secrets.
@@ -13,7 +15,7 @@ When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes s
 
 ### Supported secret stores
 
-Go to [this](../../howto/setup-secret-store/README.md) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
+Go to [this]({{< ref "howto-secrets.md" >}}) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
 
 ## Non default namespaces
 
