@@ -1,4 +1,8 @@
-# Secret Store for Hashicorp Vault
+---
+title: "HashiCorp Vault"
+linkTitle: "HashiCorp Vault"
+type: docs
+---
 
 This document shows how to enable Hashicorp Vault secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Standalone and Kubernetes mode.
 

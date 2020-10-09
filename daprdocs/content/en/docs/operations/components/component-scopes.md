@@ -1,8 +1,8 @@
 ---
-title: "Scope components to one or more applications"
-linkTitle: "Scope component access"
-weight: 1000
-description: "How to limit component access to particular Dapr instances"
+title: "How-To: Scope components to one or more applications"
+linkTitle: "How-To: Set component scopes"
+weight: 6000
+description: "Limit component access to particular Dapr instances"
 ---
 
 Dapr components are namespaced (separate from the Kubernetes namespace concept), meaning a Dapr runtime instance can only access components that have been deployed to the same namespace.

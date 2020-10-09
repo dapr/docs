@@ -1,4 +1,8 @@
-# Local secret store using environment variable (for Development)
+---
+title: "Local environment variables (for Development)"
+linkTitle: "Local environment variables"
+type: docs
+---
 
 This document shows how to enable [environment variable](https://en.wikipedia.org/wiki/Environment_variable) secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Development scenarios in Standalone mode. This Dapr secret store component locally defined environment variable and does not use authentication.
 

@@ -1,4 +1,8 @@
-# Setup RethinkDB  
+---
+title: "RethinkDB"
+linkTitle: "RethinkDB"
+type: docs
+---
 
 ## Locally 
 

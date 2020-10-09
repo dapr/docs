@@ -1,7 +1,7 @@
 ---
-title: "Referencing secret stores in components"
-linkTitle: "Reference secrets"
-weight: 2000
+title: "How-To: Reference secret stores in components"
+linkTitle: "How-To: Reference secrets"
+weight: 7000
 description: "How to securly reference secrets from a component definition"
 ---
 

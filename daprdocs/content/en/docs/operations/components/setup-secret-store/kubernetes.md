@@ -1,4 +1,8 @@
-# Secret Store for Kubernetes
+---
+title: "Kubernetes Secrets"
+linkTitle: "Kubernetes Secrets"
+type: docs
+---
 
 Kubernetes has a built-in state store which Dapr components can use to fetch secrets from.
 No special configuration is needed to setup the Kubernetes state store.

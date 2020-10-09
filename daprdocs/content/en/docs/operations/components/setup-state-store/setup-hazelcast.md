@@ -1,4 +1,8 @@
-# Setup Hazelcast 
+---
+title: "Hazelcast"
+linkTitle: "Hazelcast"
+type: docs
+---
 
 ## Locally
 

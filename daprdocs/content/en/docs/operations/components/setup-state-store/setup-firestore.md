@@ -1,4 +1,8 @@
-# Setup Google Cloud Firestore (Datastore mode) 
+---
+title: "GCP Firestore (Datastore mode)"
+linkTitle: "GCP Firestore"
+type: docs
+---
 
 ## Locally
 

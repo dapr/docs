@@ -1,15 +1,10 @@
-# Use Azure Key Vault secret store in Kubernetes mode using Managed Identities
+---
+title: "Azure Key Vault (Managed identities)"
+linkTitle: "Azure Key Vault (Managed identities)"
+type: docs
+---
 
-This document shows how to enable Azure Key Vault secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Kubernetes mode using Managed Identities to authenticate to a Key Vault.
-
-## Contents
-
-- [Use Azure Key Vault secret store in Kubernetes mode using Managed Identities](#use-azure-key-vault-secret-store-in-kubernetes-mode-using-managed-identities)
-  - [Contents](#contents)
-  - [Prerequisites](#prerequisites)
-  - [Setup Kubernetes to use Managed identities and Azure Key Vault](#setup-kubernetes-to-use-managed-identities-and-azure-key-vault)
-  - [Use Azure Key Vault secret store in Kubernetes mode with managed identities](#use-azure-key-vault-secret-store-in-kubernetes-mode-with-managed-identities)
-  - [References](#references)
+This document shows how to enable Azure Key Vault secret store using [Dapr secrets component](../../concepts/secrets/README.md) for Kubernetes mode using Managed Identities to authenticate to a Key Vault.
 
 ## Prerequisites
 

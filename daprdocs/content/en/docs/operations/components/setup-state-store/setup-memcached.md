@@ -1,4 +1,8 @@
-# Setup Memcached 
+---
+title: "Memcached"
+linkTitle: "Memcached"
+type: docs
+---
 
 ## Locally
 

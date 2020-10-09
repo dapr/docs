@@ -1,4 +1,8 @@
-# Setup PostgreSQL
+---
+title: "PostgreSQL"
+linkTitle: "PostgreSQL"
+type: docs
+---
 
 This article provides guidance on configuring a PostgreSQL state store.
 

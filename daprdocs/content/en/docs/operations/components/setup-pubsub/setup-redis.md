@@ -1,4 +1,8 @@
-# Setup Redis Streams
+---
+title: "Redis streams"
+linkTitle: "Redis streams"
+type: docs
+---
 
 ## Creating a Redis instance
 

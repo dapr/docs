@@ -1,14 +1,12 @@
-# Local secret store using file (for Development)
+---
+title: "Local file (for Development)"
+linkTitle: "Local file"
+type: docs
+---
 
 This document shows how to enable file-based secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Development scenarios in Standalone mode. This Dapr secret store component reads plain text JSON from a given file and does not use authentication.
 
 > Note, this approach to secret management is not recommended for production environments.
-
-## Contents
-
-- [Create JSON file to hold the secrets](#create-json-file-to-hold-the-secrets)
-- [Use Local secret store in Standalone mode](#use-local-secret-store-in-standalone-mode)
-- [References](#references)
 
 ## Create JSON file to hold the secrets
 

@@ -1,4 +1,8 @@
-# Setup Zookeeper 
+---
+title: "Zookeeper"
+linkTitle: "Zookeeper"
+type: docs
+---
 
 ## Locally
 

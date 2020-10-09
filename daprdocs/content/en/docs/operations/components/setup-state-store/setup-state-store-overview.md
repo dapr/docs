@@ -1,4 +1,10 @@
-# Setup a state store component
+---
+title: "Overview"
+linkTitle: "Overview"
+description: "Guidance on set up for state management components"
+weight: 10000
+type: docs
+---
 
 Dapr integrates with existing databases to provide apps with state management capabilities for CRUD operations, transactions and more.
 

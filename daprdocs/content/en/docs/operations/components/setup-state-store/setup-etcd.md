@@ -1,4 +1,8 @@
-# Setup etcd 
+---
+title: "etcd"
+linkTitle: "etcd"
+type: docs
+---
 
 ## Locally
 

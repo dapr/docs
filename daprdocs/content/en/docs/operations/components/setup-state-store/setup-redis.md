@@ -1,4 +1,8 @@
-# Setup Redis
+---
+title: "Redis"
+linkTitle: "Redis"
+type: docs
+---
 
 ## Creating a Redis Store
 

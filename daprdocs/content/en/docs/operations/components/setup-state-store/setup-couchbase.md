@@ -1,4 +1,8 @@
-# Setup Couchbase 
+---
+title: "Couchbase"
+linkTitle: "Couchbase"
+type: docs
+---
 
 ## Locally
 

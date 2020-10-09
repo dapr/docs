@@ -1,4 +1,8 @@
-# Setup MongoDB 
+---
+title: "MongoDB"
+linkTitle: "MongoDB"
+type: docs
+---
 
 ## Locally
 

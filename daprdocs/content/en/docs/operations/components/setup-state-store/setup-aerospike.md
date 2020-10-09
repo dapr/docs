@@ -1,4 +1,8 @@
-# Setup Aerospike 
+---
+title: "Aerospike"
+linkTitle: "Aerospike"
+type: docs
+---
 
 ## Locally
 

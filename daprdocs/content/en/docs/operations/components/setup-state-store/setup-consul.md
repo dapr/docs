@@ -1,4 +1,8 @@
-# Setup Consul 
+---
+title: "HashiCorp Consul"
+linkTitle: "HashiCorp Consul"
+type: docs
+--- 
 
 ## Locally
 

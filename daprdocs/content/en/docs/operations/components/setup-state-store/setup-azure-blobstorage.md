@@ -1,4 +1,8 @@
-# Setup Azure Blob Storage 
+---
+title: "Azure Blob Storage"
+linkTitle: "Azure Blob Storage"
+type: docs
+---
 
 ## Creating Azure Storage account
 

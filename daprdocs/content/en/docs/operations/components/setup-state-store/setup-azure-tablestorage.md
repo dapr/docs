@@ -1,4 +1,8 @@
-# Setup Azure Table Storage 
+---
+title: "Azure Table Storage "
+linkTitle: "Azure Table Storage "
+type: docs
+---
 
 ## Creating Azure Storage account
 

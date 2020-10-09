@@ -1,4 +1,8 @@
-# Setup SQL Server
+---
+title: "SQL Server"
+linkTitle: "SQL Server"
+type: docs
+---
 
 ## Creating an Azure SQL instance
 

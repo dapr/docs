@@ -1,4 +1,8 @@
-# Setup Cassandra 
+---
+title: "Cassandra"
+linkTitle: "Cassandra"
+type: docs
+--- 
 
 ## Locally
 
