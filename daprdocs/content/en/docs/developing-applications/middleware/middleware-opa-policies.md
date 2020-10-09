@@ -1,4 +1,10 @@
-# Apply Open Policy Agent Polices
+---
+title: "How-To: Apply OPA policies"
+linkTitle: "How-To: Apply OPA policies"
+weight: 1000
+description: "Use Dapr middleware to apply Open Policy Agent (OPA) policies on incoming requests"
+type: docs
+---
 
 The Dapr Open Policy Agent (OPA) [HTTP middleware](https://github.com/dapr/docs/blob/master/concepts/middleware/README.md) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 

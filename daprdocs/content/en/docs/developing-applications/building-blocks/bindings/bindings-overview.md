@@ -1,6 +1,6 @@
 ---
 title: "Bindings overview"
-linkTitle: "Bindings overview"
+linkTitle: "Overview"
 weight: 100
 description: Overview of the Dapr bindings building block
 ---

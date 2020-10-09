@@ -1,4 +1,10 @@
-# Limit the secrets that can be read from secret stores 
+---
+title: "How To: Use secret scoping"
+linkTitle: "How To: Use secret scoping"
+weight: 3000
+description: "Use scoping to limit the secrets that can be read from secret stores"
+type: docs
+---
 
 Follow [these instructions](../setup-secret-store) to configure secret store for an application. Once configured, any secret defined within that store will be accessible from the Dapr application.
 
