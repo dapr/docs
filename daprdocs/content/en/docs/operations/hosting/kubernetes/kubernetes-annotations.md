@@ -7,8 +7,8 @@ description: "The available annotations available when configuring Dapr in your 
 
 The following table shows all the supported pod Spec annotations supported by Dapr.
 
-| Annotation                                        | Description 
-|---------------------------------------------------|-------|
+| Annotation                                        | Description |
+|---------------------------------------------------|-------------|
 | `dapr.io/enabled`                                 | Setting this paramater to `true` injects the Dapr sidecar into the pod
 | `dapr.io/app-port`                                | This parameter tells Dapr which port your application is listening on
 | `dapr.io/app-id`                                  | The unique ID of the application. Used for service discovery, state encapsulation and the pub/sub consumer ID
