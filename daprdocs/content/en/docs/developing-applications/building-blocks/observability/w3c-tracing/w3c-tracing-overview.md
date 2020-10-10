@@ -1,8 +1,9 @@
 ---
-title: "W3C trace context for distributed tracing"
-linkTitle: "W3C Traces"
-weight: 2000
-description: Using W3C tracing standard with Dapr
+title: "W3C trace context overview"
+linkTitle: "Overview"
+weight: 10000
+description: Background and scenarios for using W3C tracing with Dapr
+type: docs
 ---
 
 ## Introduction

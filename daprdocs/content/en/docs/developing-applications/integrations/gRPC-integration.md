@@ -1,12 +1,14 @@
 ---
-title: "Guide: Use gRPC Interface"
-linkTitle: "Referencing Secrets"
-weight: 5000
+title: "Dapr's gRPC Interface"
+linkTitle: "gRPC"
+weight: 1000
+description: "Use the Dapr gRPC API in your application"
+type: docs
 ---
 
 # Dapr and gRPC
 
-Dapr implements both an HTTP and a gRPC API for local calls.gRPC is useful for low-latency, high performance scenarios and has language integration using the proto clients.
+Dapr implements both an HTTP and a gRPC API for local calls. gRPC is useful for low-latency, high performance scenarios and has language integration using the proto clients.
 
 You can find a list of auto-generated clients [here](https://github.com/dapr/docs#sdks).
 

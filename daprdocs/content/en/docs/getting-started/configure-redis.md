@@ -1,3 +1,11 @@
+---
+title: "How-To: Setup Redis"
+linkTitle: "How-To: Setup Redis"
+weight: 30
+description: "Configure Redis for Dapr state management or Pub/Sub"
+type: docs
+---
+
 # Configure Redis for state management or pub/sub
 
 Dapr can use Redis in two ways:

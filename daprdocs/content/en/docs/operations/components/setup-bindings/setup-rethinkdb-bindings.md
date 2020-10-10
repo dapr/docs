@@ -1,4 +1,10 @@
-# How to track RethinkDB state store changes 
+---
+title: "RethinkDB binding"
+linkTitle: "RethinkDB"
+description: "Use bindings to RethinkDB for tracking state store changes"
+weight: 4000
+type: docs
+---
 
 The RethinkDB state store supports transactions which means it can be used to support Dapr actors. Dapr persists only the actor's current state which doesn't allow the users to track how actor's state may have changed over time.
 

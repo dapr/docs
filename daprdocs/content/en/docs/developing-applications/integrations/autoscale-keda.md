@@ -1,7 +1,7 @@
 ---
 title: "Autoscaling a Dapr app with KEDA"
 linkTitle: "Autoscale"
-weight: 3000
+weight: 2000
 ---
 
 Dapr, with its modular building-block approach, along with the 10+ different [pub/sub components](../../concepts/publish-subscribe-messaging), make it easy to write message processing applications. Since Dapr can run in many environments (e.g. VM, bare-metal, Cloud, or Edge) the autoscaling of Dapr applications is managed by the hosting later.

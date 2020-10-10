@@ -1,4 +1,10 @@
-# Set up Application Insights for distributed tracing
+---
+title: "Set up Application Insights for distributed tracing"
+linkTitle: "Application Insights"
+weight: 3000
+description: "Enable Application Insights to visualize Dapr tracing and application map"
+type: docs
+---
 
 Dapr integrates with Application Insights through OpenTelemetry's default exporter along with a dedicated agent known as the [Local Forwarder](https://docs.microsoft.com/en-us/azure/azure-monitor/app/opencensus-local-forwarder).
 
@@ -78,7 +84,55 @@ dapr run --app-id mynode --app-port 3000 --config ./components/tracing.yaml node
 
 #### Kubernetes environment
 
-1. Download [dapr-localforwarder.yaml](./localforwarder/dapr-localforwarder.yaml)
+1. Create a file named `dapr-localforwarder.yaml` with the following contents:
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: dapr-localforwarder
+  namespace: default
+  labels:
+    app: dapr-localforwarder
+spec:
+  selector:
+    app: dapr-localforwarder
+  ports:
+  - protocol: TCP
+    port: 55678
+    targetPort: 55678
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dapr-localforwarder
+  namespace: default
+  labels:
+    app: dapr-localforwarder
+spec:
+  replicas: 3 # Adjust replica # based on your telemetry volume
+  selector:
+    matchLabels:
+      app: dapr-localforwarder
+  template:
+    metadata:
+      labels:
+        app: dapr-localforwarder
+    spec:
+      containers:
+      - name: dapr-localforwarder
+        image: docker.io/daprio/dapr-localforwarder:latest
+        ports:
+        - containerPort: 55678
+        imagePullPolicy: Always
+        env:
+          - name: APPINSIGHTS_INSTRUMENTATIONKEY
+            value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
+          - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+            value: <APPINSIGHT API KEY> # Replace with your generated api key
+```
+
 2. Replace `<APPINSIGHT INSTRUMENTATIONKEY>` with your Instrumentation Key and `<APPINSIGHT API KEY>` with the generated key in the file
 
 ```yaml

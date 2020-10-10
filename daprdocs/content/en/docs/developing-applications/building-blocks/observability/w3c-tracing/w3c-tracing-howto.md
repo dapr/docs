@@ -1,3 +1,11 @@
+---
+title: "How-To: Use W3C trace context with Dapr"
+linkTitle: "Overview"
+weight: 20000
+description: Using W3C tracing standard with Dapr
+type: docs
+---
+
 # How to use trace context
 Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propagating the trace context information and there are very few cases where you need to either propagate or create a trace context. First read scenarios in the [W3C trace context for distributed tracing](../../concepts/observability/W3C-traces.md) article to understand whether you need to propagate or create a trace context.
 
