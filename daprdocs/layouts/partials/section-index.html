@@ -1,11 +1,14 @@
 <div class="section-index">
     {{ $pages := (where .Site.Pages "Section" .Section).ByWeight }}
+    {{ if .IsHome }}
+    {{ $pages = .Site.Pages.ByWeight }}
+    {{ end }}
     {{ $parent := .Page }}
     {{ if $parent.Params.no_list }}
     {{/* If no_list is true we don't show a list of subpages */}}
     {{ else if $parent.Params.simple_list }}
     {{/* If simple_list is true we show a bulleted list of subpages */}}
-    <hr class="panel-line">    
+    <hr class="panel-line">  
         <ul>
             {{ range $pages }}
                 {{ if eq .Parent $parent }}
