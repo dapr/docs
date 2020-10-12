@@ -16,6 +16,7 @@ github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
 
+# Disable categories & tags
 disableKinds = ["taxonomy", "term"]
 
 # Algolia
