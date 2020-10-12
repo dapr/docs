@@ -16,6 +16,8 @@ github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
 
+disableKinds = ["taxonomy", "term"]
+
 # Algolia
 # algolia_docsearch = true
 # sidebar_search_disable = true
