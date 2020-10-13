@@ -50,15 +50,14 @@ id = "UA-149338238-3"
 copyright = "Dapr"
 #privacy_policy = "https://policies.google.com/privacy"
 
+# Algolia
+algolia_docsearch = true
+
 # GitHub Information
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
 github_branch = "hugo-docs"
-
-# Algolia
-algolia_docsearch = true
-sidebar_search_disable = true
 
 # Versioning
 version_menu = "Releases"
@@ -82,6 +81,7 @@ archived_version = false
 [params.ui]
 sidebar_menu_compact = true
 navbar_logo = true
+sidebar_search_disable = true
 
 # Links
 ## End user relevant links. These will show up on left side of footer and in the community page if you have one.
