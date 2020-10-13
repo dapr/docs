@@ -52,6 +52,7 @@ copyright = "Dapr"
 
 # Algolia
 algolia_docsearch = true
+offlineSearch = false
 
 # GitHub Information
 github_repo = "https://github.com/dapr/docs"
