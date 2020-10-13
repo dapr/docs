@@ -4,24 +4,19 @@ title = "Dapr Docs"
 theme = "docsy"
 
 enableRobotsTXT = true
+enableGitInfo = true
 
 # Language Configuration
 languageCode = "en-us"
 contentDir = "content/en"
 defaultContentLanguage = "en"
 
-# GitHub Information
-enableGitInfo = true
-github_repo = "https://github.com/dapr/docs"
-github_project_repo = "https://github.com/dapr/dapr"
-github_subdir = "daprdocs"
-
 # Disable categories & tags
 disableKinds = ["taxonomy", "term"]
 
-# Algolia
-# algolia_docsearch = true
-# sidebar_search_disable = true
+# Google Analytics
+[services.googleAnalytics]
+id = "UA-149338238-3"
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -54,6 +49,16 @@ disableKinds = ["taxonomy", "term"]
 [params]
 copyright = "Dapr"
 #privacy_policy = "https://policies.google.com/privacy"
+
+# GitHub Information
+github_repo = "https://github.com/dapr/docs"
+github_project_repo = "https://github.com/dapr/dapr"
+github_subdir = "daprdocs"
+github_branch = "hugo-docs"
+
+# Algolia
+algolia_docsearch = true
+sidebar_search_disable = true
 
 # Versioning
 version_menu = "Releases"
