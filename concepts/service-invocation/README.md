@@ -97,7 +97,7 @@ By default, all calls between applications are traced and metrics are gathered t
 For more information read the [observability](../concepts/observability) article.
 
 ### Pluggable service discovery
-Dapr can run on any [hosting platform](../concepts/hosting). For the supported hosting platforms this means they have a [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) developed for them that enables service discovery. For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster.
+Dapr can run on any [hosting platform](../hosting). For the supported hosting platforms this means they have a [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) developed for them that enables service discovery. For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster.
 
 ## Next steps
 
