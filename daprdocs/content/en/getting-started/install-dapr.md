@@ -17,49 +17,46 @@ On default Dapr will install with a developer environment using Docker container
 
 > For Windows user, ensure that `Docker Desktop For Windows` uses Linux containers.
 
-## Installing Dapr CLI
+## Install the Dapr CLI
 
-### Using script to install the latest release
+{{< tabs Windows Linux MacOS Binaries>}}
 
-**Windows**
-
-Install the latest windows Dapr cli to `c:\dapr` and add this directory to User PATH environment variable.
-
+{{% codetab %}}
+This command will install the latest windows Dapr cli to `c:\dapr` and add this directory to User PATH environment variable:
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
+{{% /codetab %}}
 
-**Linux**
-
-Install the latest linux Dapr CLI to `/usr/local/bin`
-
+{{% codetab %}}
+This command will install the latest linux Dapr CLI to `/usr/local/bin`:
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
+{{% /codetab %}}
 
-**MacOS**
-
-Install the latest darwin Dapr CLI to `/usr/local/bin`
-
+{{% codetab %}}
+This command will install the latest darwin Dapr CLI to `/usr/local/bin`:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
 
-Or install via [Homebrew](https://brew.sh)
-
+Or you can install via [Homebrew](https://brew.sh):
 ```bash
 brew install dapr/tap/dapr-cli
 ```
+{{% /codetab %}}
 
-### From the Binary Releases
-
+{{% codetab %}}
 Each release of Dapr CLI includes various OSes and architectures. These binary versions can be manually downloaded and installed.
 
-1. Download the [Dapr CLI](https://github.com/dapr/cli/releases)
+1. Download the desired Dapr CLI from the latest [Dapr Release](https://github.com/dapr/cli/releases)
 2. Unpack it (e.g. dapr_linux_amd64.tar.gz, dapr_windows_amd64.zip)
 3. Move it to your desired location.
    - For Linux/MacOS - `/usr/local/bin`
    - For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
+{{% /codetab %}}
+{{< /tabs >}}
 
 ## Installing Dapr in self hosted mode
 
