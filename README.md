@@ -32,3 +32,6 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 1. Commit and push changes to content
 1. Submit pull request to `master`
 1. Staging site will automatically get created and linked to PR to review and test
+
+## Authoring guide
+Read the [authoring guide](./authoring-guide.md) for info on how to write docs and be consistent.
