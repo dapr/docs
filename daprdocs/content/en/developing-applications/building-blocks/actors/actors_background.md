@@ -16,8 +16,8 @@ Dapr includes a runtime that specifically implements the [Virtual Actor pattern]
 
 ## Quick links
 
-- [Dapr Actor Features]({{< actors-overview.md >}})
-- [Dapr Actor API Spec]({{< actors_api.md >}} )
+- [Dapr Actor Features]({{< ref actors-overview.md >}})
+- [Dapr Actor API Spec]({{< ref actors_api.md >}} )
 
 ### When to use actors
 
@@ -79,7 +79,7 @@ POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<met
 
 You can provide any data for the actor method in the request body, and the response for the request would be in the response body which is the data from actor call.
 
-Refer to [Dapr Actor Features]({{< actors-overview.md >}}) for more details.
+Refer to [Dapr Actor Features]({{< ref actors-overview.md >}}) for more details.
 
 ### Concurrency
 
