@@ -1,4 +1,9 @@
-# Kubernetes Events Binding Spec
+---
+type: docs
+title: "Kubernetes Events binding spec"
+linkTitle: "Kubernetes Events"
+description: "Detailed documentation on the Kubernetes Events binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

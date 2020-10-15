@@ -1,4 +1,10 @@
-# Binding component specs
+---
+type: docs
+title: "Binding component specs"
+linkTitle: "Bindings"
+weight: 300
+description: "Detailed documentation on the various binding component specs"
+---
 
 The files within this directory contain the detailed information for each binding component, including the applicable fields, structure, and explanation.
 

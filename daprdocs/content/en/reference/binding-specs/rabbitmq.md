@@ -1,4 +1,9 @@
-# RabbitMQ Binding Spec
+---
+type: docs
+title: "RabbitMQ binding spec"
+linkTitle: "RabbitMQ"
+description: "Detailed documentation on the RabbitMQ binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

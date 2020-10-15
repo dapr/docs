@@ -1,4 +1,9 @@
-# Azure Blob Storage Binding Spec
+---
+type: docs
+title: "Azure Blob Storage binding spec"
+linkTitle: "Azure Blob Storage"
+description: "Detailed documentation on the Azure Blob Storage binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

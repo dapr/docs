@@ -1,4 +1,9 @@
-# Twilio SMS Binding Spec
+---
+type: docs
+title: "AWS SQS binding spec"
+linkTitle: "AWS SQS"
+description: "Detailed documentation on the AWS SQS binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -7,22 +12,22 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: bindings.twilio.sms
+  type: bindings.aws.sqs
   metadata:
-  - name: toNumber # required.
-    value: 111-111-1111
-  - name: fromNumber # required.
-    value: 222-222-2222
-  - name: accountSid # required.
+  - name: region
+    value: us-west-2
+  - name: accessKey
     value: *****************
-  - name: authToken # required.
+  - name: secretKey
     value: *****************
+  - name: queueName
+    value: items
 ```
 
-- `toNumber` is the target number to send the sms to.
-- `fromNumber` is the sender phone number.
-- `accountSid` is the Twilio account SID.
-- `authToken` is the Twilio auth token.
+- `region` is the AWS region.
+- `accessKey` is the AWS access key.
+- `secretKey` is the AWS secret key.
+- `queueName` is the SQS queue name.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 

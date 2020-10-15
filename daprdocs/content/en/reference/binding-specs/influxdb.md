@@ -1,4 +1,9 @@
-# InfluxDB Binding Spec
+---
+type: docs
+title: "InfluxDB binding spec"
+linkTitle: "InfluxDB"
+description: "Detailed documentation on the InfluxDB binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

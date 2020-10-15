@@ -1,4 +1,9 @@
-# AWS Kinesis Binding Spec
+---
+type: docs
+title: "AWS Kinesis binding spec"
+linkTitle: "AWS Kinesis"
+description: "Detailed documentation on the AWS Kinesis binding component"
+---
 
 See [this](https://aws.amazon.com/kinesis/data-streams/getting-started/) for instructions on how to set up an AWS Kinesis data streams
 

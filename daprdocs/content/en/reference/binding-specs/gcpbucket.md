@@ -1,4 +1,9 @@
-# GCP Storage Bucket Spec
+---
+type: docs
+title: "GCP Storage Bucket binding spec"
+linkTitle: "GCP Storage Bucket"
+description: "Detailed documentation on the GCP Storage Bucket binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

@@ -1,4 +1,9 @@
-# HTTP Binding Spec
+---
+type: docs
+title: "HTTP binding spec"
+linkTitle: "HTTP"
+description: "Detailed documentation on the HTTP binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

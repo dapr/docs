@@ -1,4 +1,9 @@
-# Azure SignalR Binding Spec
+---
+type: docs
+title: "Azure SignalR binding spec"
+linkTitle: "Azure SignalR"
+description: "Detailed documentation on the Azure SignalR binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

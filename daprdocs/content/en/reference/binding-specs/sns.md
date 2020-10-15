@@ -1,4 +1,9 @@
-# AWS SNS Binding Spec
+---
+type: docs
+title: "AWS SNS binding spec"
+linkTitle: "AWS SNS"
+description: "Detailed documentation on the AWS SNS binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

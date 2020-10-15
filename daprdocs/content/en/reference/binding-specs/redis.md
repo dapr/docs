@@ -1,4 +1,9 @@
-# Redis Binding Spec
+---
+type: docs
+title: "Redis binding spec"
+linkTitle: "Redis"
+description: "Detailed documentation on the Redis binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

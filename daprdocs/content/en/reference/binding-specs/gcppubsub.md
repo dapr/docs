@@ -1,4 +1,9 @@
-# GCP Cloud Pub/Sub Binding Spec
+---
+type: docs
+title: "GCP Pub/Sub binding spec"
+linkTitle: "GCP Pub/Sub"
+description: "Detailed documentation on the GCP Pub/Sub binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

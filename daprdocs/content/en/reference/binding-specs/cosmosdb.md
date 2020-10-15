@@ -1,4 +1,9 @@
-# Azure CosmosDB Binding Spec
+---
+type: docs
+title: "Azure CosmosDB binding spec"
+linkTitle: "Azure CosmosDB"
+description: "Detailed documentation on the Azure CosmosDB binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

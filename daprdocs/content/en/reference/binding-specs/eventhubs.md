@@ -1,4 +1,9 @@
-# Azure Event Hubs Binding Spec
+---
+type: docs
+title: "Azure Event Hubs binding spec"
+linkTitle: "Azure Event Hubs"
+description: "Detailed documentation on the Azure Event Hubs binding component"
+---
 
 See [this](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dotnet-framework-getstarted-send) for instructions on how to set up an Event Hub.
 

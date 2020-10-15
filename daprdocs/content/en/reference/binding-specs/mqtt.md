@@ -1,4 +1,9 @@
-# AWS DynamoDB Binding Spec
+---
+type: docs
+title: "MQTT binding spec"
+linkTitle: "MQTT"
+description: "Detailed documentation on the MQTT binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -7,22 +12,16 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: bindings.aws.dynamodb
+  type: bindings.mqtt
   metadata:
-  - name: region
-    value: us-west-2
-  - name: accessKey
-    value: *****************
-  - name: secretKey
-    value: *****************
-  - name: table
-    value: items
+  - name: url
+    value: mqtt[s]://[username][:password]@host.domain[:port]
+  - name: topic
+    value: topic1
 ```
 
-- `region` is the AWS region.
-- `accessKey` is the AWS access key.
-- `secretKey` is the AWS secret key.
-- `table` is the DynamoDB table name.
+- `url` is the MQTT broker url.
+- `topic` is the topic to listen on or send events to.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 

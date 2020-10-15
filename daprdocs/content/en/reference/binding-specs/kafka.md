@@ -1,4 +1,9 @@
-# Kafka Binding Spec
+---
+type: docs
+title: "Cron binding spec"
+linkTitle: "Cron"
+description: "Detailed documentation on the cron binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

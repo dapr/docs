@@ -1,4 +1,9 @@
-# Azure Storage Queues Binding Spec
+---
+type: docs
+title: "Azure Service Bus Queues binding spec"
+linkTitle: "Azure Service Bus Queues"
+description: "Detailed documentation on the Azure Service Bus Queues binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -7,22 +12,19 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: bindings.azure.storagequeues
+  type: bindings.azure.servicebusqueues
   metadata:
-  - name: storageAccount
-    value: "account1"
-  - name: storageAccessKey
-    value: "***********"
-  - name: queue
-    value: "myqueue"
+  - name: connectionString
+    value: "sb://************"
+  - name: queueName
+    value: queue1
   - name: ttlInSeconds
-    value: "60"
+    value: 60
 ```
 
-- `storageAccount` is the Azure Storage account name.
-- `storageAccessKey` is the Azure Storage access key.
-- `queue` is the name of the Azure Storage queue.
-- `ttlInSeconds` is an optional parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes.
+- `connectionString` is the Service Bus connection string.
+- `queueName` is the Service Bus queue name.
+- `ttlInSeconds` is an optional parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days.
 
 > **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
 
@@ -37,7 +39,7 @@ The field name is `ttlInSeconds`.
 Example:
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/bindings/myStorageQueue \
+curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
   -H "Content-Type: application/json" \
   -d '{
         "data": {

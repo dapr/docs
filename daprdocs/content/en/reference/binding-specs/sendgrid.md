@@ -1,4 +1,9 @@
-# SendGrid Binding Spec
+---
+type: docs
+title: "Twilio SendGrid binding spec"
+linkTitle: "Twilio SendGrid"
+description: "Detailed documentation on the Twilio SendGrid binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

@@ -1,4 +1,9 @@
-# Azure Event Grid Binding Spec
+---
+type: docs
+title: "Azure Event Grid binding spec"
+linkTitle: "Azure Event Grid"
+description: "Detailed documentation on the Azure Event Grid binding component"
+---
 
 See [this](https://docs.microsoft.com/en-us/azure/event-grid/) for Azure Event Grid documentation.
 

@@ -1,4 +1,9 @@
-# PostgrSQL Binding Spec
+---
+type: docs
+title: "PostgrSQL binding spec"
+linkTitle: "PostgrSQL"
+description: "Detailed documentation on the PostgrSQL binding component"
+---
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

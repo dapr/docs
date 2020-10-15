@@ -1,4 +1,9 @@
-# Twitter Binding Spec
+---
+type: docs
+title: "Twitter binding spec"
+linkTitle: "Twitter"
+description: "Detailed documentation on the Twitter binding component"
+---
 
 The Twitter binding supports both `input` and `output` binding configuration. First the common part:
 
