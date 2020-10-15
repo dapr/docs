@@ -9,7 +9,7 @@ Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs`
 
 - [Bindings Structure](#bindings-structure)
 - [Invoking Service Code Through Input Bindings](#invoking-service-code-through-input-bindings)
-- [Sending Messages to Output Bindings](https://github.com/dapr/docs/blob/be9a77d4580ac925ed8461e3cc17173210c75c43/reference/api/bindings_api.md#invoking-output-bindings)
+- [Sending Messages to Output Bindings](#invoking-output-bindings)
 
 ## Bindings Structure
 
