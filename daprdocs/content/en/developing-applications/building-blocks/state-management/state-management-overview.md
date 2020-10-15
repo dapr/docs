@@ -8,7 +8,7 @@ description: "Overview of the state management building block"
 
 ## Introduction
 
-Dapr offers key/value storage APIs for state management. If a microservice uses state management, it can use these APIs to leverage any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
+Dapr offers key/value storage APIs for state management. If a microservice uses state management, it can use these APIs to leverage any of the [supported state stores]({{< ref supported-state-stores.md >}}), without adding or learning a third party SDK.
 
 When using state management your application can leverage several features that would otherwise be complicated and error-prone to build yourself such as:
 
@@ -18,7 +18,7 @@ When using state management your application can leverage several features that 
 
 See below for a diagram of state management's high level architecture.
 
-<img src="/images/state_management.png" width=900>
+<img src="/images/state-management-overview.png" width=900>
 
 ## Features
 
@@ -112,13 +112,6 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 
 ## Next steps
 
-* Follow these guides on
-    * [How-to: Set up Azure Cosmos DB store]({{< ref setup-azure-cosmosdb.md >}})
-    * [How-to: query Azure Cosmos DB store]({{< ref query-cosmosdb-store.md >}})
-    * [How-to: Set up PostgreSQL store]({{< ref setup-postgresql.md >}})
-    * [How-to: Set up Redis store]({{< ref configure-redis.md >}})
-    * [How-to: Query Redis store]({{< ref query-redis-store.md >}})
-    * [How-to: Set up SQL Server store]({{< ref setup-sqlserver.md >}})
-    * [How-to: Query SQL Server store]({{< ref query-sqlserver-store.md >}})
+* Follow the [state store setup guides]({{< ref setup-state-store >}})
 * Read the [state management API specification]({{< ref state_api.md >}})
 * Read the [actors API specification]({{< ref actors_api.md >}})
