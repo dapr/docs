@@ -6,9 +6,10 @@ weight: 1000
 description: "Overview of the service invocation building block"
 ---
 
+## Introduction
+
 Using service invocation, your application can discover and reliably and securely communicate with other applications using the standard protocols of [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/). 
 
-## Overview
 In many environments with multiple services that need to communicate with each other, developers often ask themselves the following questions:
 
 * How do I discover and invoke methods on different services?
