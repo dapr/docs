@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Pub/Sub"
-linkTitle: "Pub/Sub"
+title: "Publish & subscribe messaging"
+linkTitle: "Publish & subscribe"
 weight: 30
 description: Secure, scalable messaging between services
 ---
