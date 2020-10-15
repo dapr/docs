@@ -36,22 +36,6 @@ The diagram below is an overview of how Dapr's service invocation works.
 6. Dapr forwards the response to Service A's Dapr sidecar.
 7. Service A receives the response.
 
-### Example
-Following the above call sequence, suppose you have the applications as described in the [hello world sample](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
-
-The diagram below shows sequence 1-7 again on a local machine showing the API call:
-
-<img src="/images/service-invocation-overview-example.png" width=800>
-
-1. The Node.js app has a Dapr app ID of `nodeapp`. The python app invokes the Node.js app's `neworder` method by POSTing `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`, which first goes to the python app's local Dapr sidecar.
-2. Dapr discovers the Node.js app's location using name resolution component (in this case mDNS while self-hosted) which runs on your local machine.
-3. Dapr forwards the request to the Node.js app's sidecar using the location it just received.
-4. The Node.js app's sidecar forwards the request to the Node.js app. The Node.js app performs its business logic, logging the incoming message and then persist the order ID into Redis (not shown in the diagram)
-5. The Node.js app sends a response to the Python app through the Node.js sidecar.
-6. Dapr forwards the response to the Python Dapr sidecar
-7. The Python app receives the resposne.
-
-
 ## Features
 Service invocation provides several features to make it easy for you to call methods on remote applications.
 
@@ -109,6 +93,21 @@ For more information read the [observability]({{< ref observability-concept.md >
 ### Pluggable service discovery
 
 Dapr can run on any [hosting platform]({{< ref hosting >}}). For the supported hosting platforms this means they have a [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) developed for them that enables service discovery. For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster.
+
+## Example
+Following the above call sequence, suppose you have the applications as described in the [hello world sample](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
+
+The diagram below shows sequence 1-7 again on a local machine showing the API call:
+
+<img src="/images/service-invocation-overview-example.png" width=800>
+
+1. The Node.js app has a Dapr app ID of `nodeapp`. The python app invokes the Node.js app's `neworder` method by POSTing `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`, which first goes to the python app's local Dapr sidecar.
+2. Dapr discovers the Node.js app's location using name resolution component (in this case mDNS while self-hosted) which runs on your local machine.
+3. Dapr forwards the request to the Node.js app's sidecar using the location it just received.
+4. The Node.js app's sidecar forwards the request to the Node.js app. The Node.js app performs its business logic, logging the incoming message and then persist the order ID into Redis (not shown in the diagram)
+5. The Node.js app sends a response to the Python app through the Node.js sidecar.
+6. Dapr forwards the response to the Python Dapr sidecar
+7. The Python app receives the resposne.
 
 ## Next steps
 
