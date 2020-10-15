@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Pub/Sub and namespaces"
-linkTitle: "Pub/Sub and namespaces"
+linkTitle: "Kubernetes Namespaces"
 weight: 4000
 description: "Use Dapr Pub/Sub with multiple namespaces"
 ---
@@ -11,14 +11,15 @@ In some scenarios, applications can be spread across namespaces and share a queu
 In this example, we will use the [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub). Redis installation and the subscribers will be in `namespace-a` while the publisher UI will be on `namespace-b`. This solution should also work if Redis was installed on another namespace or if we used a managed cloud service like Azure ServiceBus.
 
 The table below shows which resources are deployed to which namespaces:
-| Resource | namespace-a | namespace-b |
-|-|-|-|
-| Redis master | X ||
-| Redis slave | X ||
-| Dapr's PubSub component | X | X |
-| Node subscriber | X ||
-| Python subscriber | X ||
-| React UI publisher | | X|
+
+| Resource                | namespace-a | namespace-b |
+|------------------------ |-------------|-------------|
+| Redis master            | X           |             |
+| Redis slave             | X           |             |
+| Dapr's PubSub component | X           | X           |
+| Node subscriber         | X           |             |
+| Python subscriber       | X           |             |
+| React UI publisher      |             | X           |
 
 ## Pre-requisites
 

@@ -1,32 +1,44 @@
 ---
 type: docs
-title: "How To: Scope Pub/Sub topics"
-linkTitle: "How To: Scope topics"
+title: "Scope Pub/Sub topic access"
+linkTitle: "Scope topic access"
 weight: 5000
 description: "Use scopes to limit Pub/Sub topics to specific applications" 
 ---
 
-[Namespaces or component scopes](../components-scopes/README.md) can be used to limit component access to particular applications. These application scopes added to a component limit only the applications with specific IDs to be able to use the component.
+## Introduction
+
+[Namespaces or component scopes]({{< ref component-scopes.md >}}) can be used to limit component access to particular applications. These application scopes added to a component limit only the applications with specific IDs to be able to use the component.
 
 In addition to this general component scope, the following can be limited for pub/sub components:
-- the topics which can be used (published or subscribed)
-- which applications are allowed to publish to specific topics
-- which applications are allowed to subscribe to specific topics
+- Which topics which can be used (published or subscribed)
+- Which applications are allowed to publish to specific topics
+- Which applications are allowed to subscribe to specific topics
 
-This is called pub/sub topic scoping.
+This is called **pub/sub topic scoping**.
 
-Watch this [video](https://www.youtube.com/watch?v=7VdWBBGcbHQ&feature=youtu.be&t=513) on how to use pub/sub topic scoping.
+Pub/sub scopes are defined for each pub/sub component.  You may have a pub/sub component named `pubsub` that has one set of scopes, and another `pubsub2` with a different set.
 
-To use this topic scoping, three metadata properties can be set for a pub/sub component:
-- ```spec.metadata.publishingScopes```: the list of applications to topic scopes to allow publishing, separated by semicolons. If an app is not specified in ```publishingScopes```, its allowed to publish to all topics.
-- ```spec.metadata.subscriptionScopes```: the list of applications to topic scopes to allow subscription, separated by semicolons. If an app is not specified in ```subscriptionScopes```, its allowed to subscribe to all topics.
-- ```spec.metadata.allowedTopics```: a comma-separated list for allowed topics for all applications.  ```publishingScopes``` or ```subscriptionScopes``` can be used in addition to add granular limitations. If ```allowedTopics``` is not set, all topics are valid and then ```subscriptionScopes``` and ```publishingScopes``` take place if present.
+To use this topic scoping three metadata properties can be set for a pub/sub component:
+- `spec.metadata.publishingScopes`
+  - A semicolon-separated list of applications & comma-separated topic lists, allowing that app to publish to that list of topics
+  - If nothing is specified in `publishingScopes` (default behavior), all apps can publish to all topics
+  - To deny an app the ability to publish to any topic, leave the topics list blank (`app1=;app2=topic2`)
+  - For example, `app1=topic1;app2=topic2,topic3;app3=` will allow app1 to publish to topic1 and nothing else, app2 to publish to topic2 and topic3 only, and app3 to publish to nothing.
+- `spec.metadata.subscriptionScopes`
+  - A semicolon-separated list of applications & comma-separated topic lists, allowing that app to subscribe to that list of topics
+  - If nothing is specified in `subscriptionScopes` (default behavior), all apps can subscribe to all topics
+  - For example, `app1=topic1;app2=topic2,topic3` will allow app1 to subscribe to topic1 only and app2 to subscribe to topic2 and topic3
+- `spec.metadata.allowedTopics`
+  - A comma-separated list of allowed topics for all applications.
+  - If `allowedTopics` is not set (default behavior), all topics are valid. `subscriptionScopes` and `publishingScopes` still take place if present.
+  - `publishingScopes` or `subscriptionScopes` can be used in conjuction with `allowedTopics` to add granular limitations
 
 These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component. 
 
-## Scenario 1: Limit which application can publish or subscribe to topics
+## Example 1: Scope topic access
 
-This can be useful, if you have topics which contain sensitive information and only a subset of your applications are allowed to publish or subscribe to these.
+Limiting which applications can publish/subscribe to topics can be useful if you have topics which contain sensitive information and only a subset of your applications are allowed to publish or subscribe to these.
 
 It can also be used for all topics to have always a "ground truth" for which applications are using which topics as publishers/subscribers.
 
@@ -50,29 +62,31 @@ spec:
     value: "app2=;app3=topic1"
 ```
 
-The table below shows which application is allowed to publish into the topics:
-| Publishing | app1 | app2 | app3 |
-|------------|------|------|------|
-| topic1     |   X  |      |      |
-| topic2     |      |   X  |      |
-| topic3     |      |   X  |      |
+The table below shows which applications are allowed to publish into the topics:
 
-The table below shows which application is allowed to subscribe to the topics:
-| Subscription | app1 | app2 | app3 |
-|--------------|------|------|------|
-| topic1       |   X  |      |   X  |
-| topic2       |   X  |      |      |
-| topic3       |   X  |      |      |
+|      | topic1 | topic2 | topic3 |
+|------|--------|--------|--------|
+| app1 | X      |        |        |
+| app2 |        | X      | X      |
+| app3 |        |        |        |
 
-> Note: If an application is not listed (e.g. app1 in subscriptionScopes), it is allowed to subscribe to all topics. Because ```allowedTopics``` (see below of examples) is not used and app1 does not have any subscription scopes, it can also use additional topics not listed above.
+The table below shows which applications are allowed to subscribe to the topics:
 
-## Scenario 2: Limit which topics can be used by all applications without granular limitations 
+|      | topic1 | topic2 | topic3 |
+|------|--------|--------|--------|
+| app1 | X      | X      | X      |
+| app2 |        |        |        |
+| app3 | X      |        |        |
 
-A topic is created if a Dapr application sends a message to it. In some scenarios this topic creation should be governed. For example;
-- a bug in a Dapr application on generating the topic name can lead to an unlimited amount of topics created
-- streamline the topics names and total count and prevent an unlimited growth of topics
+> Note: If an application is not listed (e.g. app1 in subscriptionScopes) it is allowed to subscribe to all topics. Because `allowedTopics` is not used and app1 does not have any subscription scopes, it can also use additional topics not listed above.
 
-In these situations, ```allowedTopics``` can be used.
+## Example 2: Limit allowed topics
+
+A topic is created if a Dapr application sends a message to it. In some scenarios this topic creation should be governed. For example:
+- A bug in a Dapr application on generating the topic name can lead to an unlimited amount of topics created
+- Streamline the topics names and total count and prevent an unlimited growth of topics
+
+In these situations `allowedTopics` can be used.
 
 Here is an example of three allowed topics:
 ```yaml
@@ -94,7 +108,7 @@ spec:
 
 All applications can use these topics, but only those topics, no others are allowed.
 
-## Scenario 3: Combine both allowed topics allowed applications that can publish and subscribe
+## Example 3: Combine `allowedTopics` and scopes
 
 Sometimes you want to combine both scopes, thus only having a fixed set of allowed topics and specify scoping to certain applications.
 
@@ -123,17 +137,22 @@ spec:
 > Note: The third application is not listed, because if an app is not specified inside the scopes, it is allowed to use all topics.
 
 The table below shows which application is allowed to publish into the topics:
-| Publishing | app1 | app2 | app3 |
-|------------|------|------|------|
-| A          |   X  |   X  |   X  |
-| B          |      |   X  |   X  |
+
+|      | A | B | C |
+|------|---|---|---|
+| app1 | X |   |   |
+| app2 | X | X |   |
+| app3 | X | X |   |
 
 The table below shows which application is allowed to subscribe to the topics:
-| Subscription | app1 | app2 | app3 |
-|--------------|------|------|------|
-| A            |      |   X  |   X  |
-| B            |      |      |   X  |
 
-No other topics can be used, only A and B.
+|      | A | B | C |
+|------|---|---|---|
+| app1 |   |   |   |
+| app2 | X |   |   |
+| app3 | X | X |   |
 
-Pub/sub scopes are per pub/sub.  You may have pub/sub component named `pubsub` that has one set of scopes, and another `pubsub2` with a different set.  The name is the `metadata.name` field in the yaml.
+
+## Demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7VdWBBGcbHQ?start=513" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

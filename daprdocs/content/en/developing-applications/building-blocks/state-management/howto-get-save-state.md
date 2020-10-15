@@ -6,6 +6,8 @@ weight: 200
 description: "Use key value pairs to persist a state"
 ---
 
+## Introduction
+
 State management is one of the most common needs of any application: new or legacy, monolith or microservice.
 Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.
 
@@ -42,6 +44,10 @@ Begin by ensuring a Dapr sidecar is running:
 ```bash
 dapr --app-id myapp --port 3500 run
 ```
+{{% alert title="Note" color="info" %}}
+It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
+
+{{% /alert %}}
 
 Then in a separate terminal run:
 ```bash
@@ -54,6 +60,11 @@ Begin by ensuring a Dapr sidecar is running:
 ```bash
 dapr --app-id myapp --port 3500 run
 ```
+
+{{% alert title="Note" color="info" %}}
+It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
+
+{{% /alert %}}
 
 Then in a separate terminal run:
 ```powershell
@@ -77,6 +88,12 @@ with DaprClient() as d:
 ```
 
 Run with `dapr run --app-id myapp run python state.py`
+
+{{% alert title="Note" color="info" %}}
+It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
+
+{{% /alert %}}
+
 {{% /codetab %}}
 
 {{< /tabs >}}
