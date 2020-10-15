@@ -1,15 +1,15 @@
-# Bindings
+---
+type: docs
+title: "Bindings API reference"
+linkTitle: "Bindings API"
+description: "Detailed documentation on the bindings API"
+weight: 400
+---
 
 Dapr provides bi-directional binding capabilities for applications and a consistent approach to interacting with different cloud/on-premise services or systems.
 Developers can invoke output bindings using the Dapr API, and have the Dapr runtime trigger an application with input bindings.
 
-Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs```, ```AWS SQS```, ```GCP Storage``` to name a few.
-
-## Contents
-
-- [Bindings Structure](#bindings-structure)
-- [Invoking Service Code Through Input Bindings](#invoking-service-code-through-input-bindings)
-- [Sending Messages to Output Bindings](#sending-messages-to-output-bindings)
+Examples for bindings include `Kafka`, `Rabbit MQ`, `Azure Event Hubs`, `AWS SQS`, `GCP Storage` to name a few.
 
 ## Bindings Structure
 
@@ -28,25 +28,25 @@ spec:
     value: <VALUE>
 ```
 
-The ```metadata.name``` is the name of the binding.
+The `metadata.name` is the name of the binding.
 
 If running self hosted locally, place this file in your `components` folder next to your state store and message queue yml configurations.
 
 If running on kubernetes apply the component to your cluster.
 
-> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store](../../howto/setup-secret-store)
+> **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store]({{< ref setup-secret-store >}})
 
 ## Invoking Service Code Through Input Bindings
 
-A developer who wants to trigger their app using an input binding can listen on a ```POST``` http endpoint with the route name being the same as ```metadata.name```.
+A developer who wants to trigger their app using an input binding can listen on a `POST` http endpoint with the route name being the same as `metadata.name`.
 
-On startup Dapr sends a ```OPTIONS``` request to the ```metadata.name``` endpoint and expects a different status code as ```NOT FOUND (404)``` if this application wants to subscribe to the binding.
+On startup Dapr sends a `OPTIONS` request to the `metadata.name` endpoint and expects a different status code as `NOT FOUND (404)` if this application wants to subscribe to the binding.
 
-The ```metadata``` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the component implementation.
+The `metadata` section is an open key/value metadata pair that allows a binding to define connection properties, as well as custom properties unique to the component implementation.
 
 ### Examples
 
-For example, here's how a Python application subscribes for events from ```Kafka``` using a Dapr API compliant platform. Note how the metadata.name value `kafkaevent` in the components matches the POST route name in the Python code.
+For example, here's how a Python application subscribes for events from `Kafka` using a Dapr API compliant platform. Note how the metadata.name value `kafkaevent` in the components matches the POST route name in the Python code.
 
 #### Kafka Component
 
@@ -88,7 +88,7 @@ Bindings are discovered from component yaml files. Dapr calls this endpoint on s
  
 #### HTTP Request
 
-```http
+```
 OPTIONS http://localhost:<appPort>/<name>
 ```
 
@@ -114,7 +114,7 @@ In order to deliver binding inputs, a POST call is made to user code with the na
  
 #### HTTP Request
 
-```http
+```
 POST http://localhost:<appPort>/<name>
 ```
 
@@ -138,9 +138,9 @@ name | the name of the binding
 Optionally, a response body can be used to directly bind input bindings with state stores or output bindings.
 
 **Example:**
-Dapr stores ```stateDataToStore``` into a state store named "stateStore".
-Dapr sends ```jsonObject``` to the output bindings named "storage" and "queue" in parallel.
-If ```concurrency``` is not set, it is sent out sequential (the example below shows these operations are done in parallel)
+Dapr stores `stateDataToStore` into a state store named "stateStore".
+Dapr sends `jsonObject` to the output bindings named "storage" and "queue" in parallel.
+If `concurrency` is not set, it is sent out sequential (the example below shows these operations are done in parallel)
 
 ```json
 {
@@ -162,7 +162,7 @@ See the [different specs](../specs/bindings) on each binding to see the list of 
 
 ### HTTP Request
 
-```http
+```
 POST/PUT http://localhost:<daprPort>/v1.0/bindings/<name>
 ```
 

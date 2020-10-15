@@ -1,27 +1,13 @@
-# Dapr actors API reference
+---
+type: docs
+title: "Actors API reference"
+linkTitle: "Actors API"
+description: "Detailed documentation on the actors API"
+weight: 500
+---
 
 Dapr provides native, cross-platform and cross-language virtual actor capabilities.
 Besides the language specific Dapr SDKs, a developer can invoke an actor using the API endpoints below.
-
-## Endpoints
-
-- [Service Code Calling to Dapr](#specifications-for-user-service-code-calling-to-dapr)
-  - [Invoke Actor Method](#invoke-actor-method)
-  - [Actor State Transactions](#actor-state-transactions)
-  - [Get Actor State](#get-actor-state)
-  - [Create Actor Reminder](#create-actor-reminder)
-  - [Get Actor Reminder](#get-actor-reminder)
-  - [Delete Actor Reminder](#delete-actor-reminder)
-  - [Create Actor Timer](#create-actor-timer)
-  - [Delete Actor Timer](#delete-actor-timer)
-- [Dapr Calling to Service Code](#specifications-for-dapr-calling-to-user-service-code)
-  - [Get Registered Actors](#get-registered-actors)  
-  - [Deactivate Actor](#deactivate-actor)
-  - [Invoke Actor Method](#invoke-actor-method-1)
-  - [Invoke Reminder](#invoke-reminder)
-  - [Invoke Timer](#invoke-timer)
-  - [Health Checks](#health-check)
-- [Querying Actor State Externally](#querying-actor-state-externally)
 
 ## User service code calling dapr
 
@@ -31,7 +17,7 @@ Invoke an actor method through Dapr.
 
 #### HTTP Request
 
-```http
+```
 POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/method/<method>
 ```
 
@@ -90,7 +76,7 @@ Persists the changed to the state for an actor as a multi-item transaction.
 
 #### HTTP Request
 
-```http
+```
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
 ```
 
@@ -142,7 +128,7 @@ Gets the state for an actor using a specified key.
 
 #### HTTP Request
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state/<key>
 ```
 
@@ -188,8 +174,8 @@ Creates a persistent reminder for an actor.
 
 #### HTTP Request
 
-```http
-POST,PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
+```
+POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
 Body:
@@ -255,7 +241,7 @@ Gets a reminder for an actor.
 
 #### HTTP Request
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
@@ -301,7 +287,7 @@ Deletes a reminder for an actor.
 
 #### HTTP Request
 
-```http
+```
 DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
@@ -337,8 +323,8 @@ Creates a timer for an actor.
 
 #### HTTP Request
 
-```http
-POST,PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
+```
+POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
 Body:
@@ -433,7 +419,7 @@ Gets the registered actors types for this app and the Dapr actor configuration s
 
 #### HTTP Request
 
-```http
+```
 GET http://localhost:<appPort>/dapr/config
 ```
 
@@ -486,7 +472,7 @@ Deactivates an actor by persisting the instance of the actor to the state store 
 
 #### HTTP Request
 
-```http
+```
 DELETE http://localhost:<appPort>/actors/<actorType>/<actorId>
 ```
 
@@ -523,7 +509,7 @@ Invokes a method for an actor with the specified methodName where parameters to 
 
 #### HTTP Request
 
-```http
+```
 PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/<methodName>
 ```
 
@@ -561,7 +547,7 @@ Invokes a reminder for an actor with the specified reminderName.  If the actor i
 
 #### HTTP Request
 
-```http
+```
 PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/remind/<reminderName>
 ```
 
@@ -599,7 +585,7 @@ Invokes a timer for an actor rwith the specified timerName.  If the actor is not
 
 #### HTTP Request
 
-```http
+```
 PUT http://localhost:<appPort>/actors/<actorType>/<actorId>/method/timer/<timerName>
 ```
 
@@ -640,7 +626,7 @@ A response body is not required.
 
 #### HTTP Request
 
-```http
+```
 GET http://localhost:<appPort>/healthz
 ```
 
@@ -673,11 +659,10 @@ Conceptually, activating an actor  means creating the actor's object and adding 
 In order to enable visibility into the state of an actor and allow for complex scenarios such as state aggregation, Dapr saves actor state in external state stores such as databases. As such, it is possible to query for an actor state externally by composing the correct key or query.
 
 The state namespace created by Dapr for actors is composed of the following items:
-
-* App ID - Represents the unique ID given to the Dapr application.
-* Actor Type - Represents the type of the actor.
-* Actor ID - Represents the unique ID of the actor instance for an actor type.
-* Key - A key for the specific state value. An actor ID can hold multiple state keys.
+- App ID - Represents the unique ID given to the Dapr application.
+- Actor Type - Represents the type of the actor.
+- Actor ID - Represents the unique ID of the actor instance for an actor type.
+- Key - A key for the specific state value. An actor ID can hold multiple state keys.
 
 The following example shows how to construct a key for the state of an actor instance under the `myapp` App ID namespace:
 `myapp-cat-hobbit-food`

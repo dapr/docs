@@ -1,13 +1,19 @@
-# Pub Sub
+---
+type: docs
+title: "Pub/sub API reference"
+linkTitle: "Pub/Sub API"
+description: "Detailed documentation on the pub/sub API"
+weight: 300
+---
 
 ## Publish a message to a given topic
 
-This endpoint lets you publish data to multiple consumers who are listening on a ```topic```.
+This endpoint lets you publish data to multiple consumers who are listening on a `topic`.
 Dapr guarantees at least once semantics for this endpoint.
 
 ### HTTP Request
 
-```http
+```
 POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
 ```
 
@@ -36,25 +42,25 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
      }'
 ```
 
-# Optional Application (User Code) Routes
+## Optional Application (User Code) Routes
 
-## Provide a route for Dapr to discover topic subscriptions
+### Provide a route for Dapr to discover topic subscriptions
 
 Dapr will invoke the following endpoint on user code to discover topic subscriptions:
 
-### HTTP Request
+#### HTTP Request
 
-```http
+```
 GET http://localhost:<appPort>/dapr/subscribe
 ```
 
-### URL Parameters
+#### URL Parameters
 
 Parameter | Description
 --------- | -----------
 appPort | the application port
 
-### HTTP Response body
+#### HTTP Response body
 
 A json encoded array of strings.
 
@@ -72,28 +78,28 @@ Example:
 
 > Note, all subscription parameters are case-sensitive.
 
-## Provide route(s) for Dapr to deliver topic events
+### Provide route(s) for Dapr to deliver topic events
 
 In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response.
 
 The following example illustrates this point, considering a subscription for topic `newOrder` with route `orders` on port 3000: `POST http://localhost:3000/orders`
 
-### HTTP Request
+#### HTTP Request
 
-```http
+```
 POST http://localhost:<appPort>/<path>
 ```
 
 > Note, all URL parameters are case-sensitive.
 
-### URL Parameters
+#### URL Parameters
 
 Parameter | Description
 --------- | -----------
 appPort | the application port
 path | route path from the subscription configuration
 
-### Expected HTTP Response
+#### Expected HTTP Response
 
 An HTTP 200 response with JSON encoded payload body with the processing status:
 
@@ -120,11 +126,11 @@ HTTP Status | Description
 other | warning is logged and message to be retried
 
 
-## Message Envelope
+## Message envelope
 
 Dapr Pub/Sub adheres to version 1.0 of Cloud Events.
 
 ## Related links
 
-* [How to consume topics](https://github.com/dapr/docs/tree/master/howto/consume-topic)
+* [How to publish to and consume topics]({{< ref howto-publish-subscribe.md >}})
 * [Sample for pub/sub](https://github.com/dapr/quickstarts/tree/master/pub-sub) 

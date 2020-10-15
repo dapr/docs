@@ -1,15 +1,10 @@
-# State Management API Specification
-
-## Endpoints 
-- [Component File](#component-file)
-- [Key Scheme](#key-scheme)
-- [Save State](#save-state)
-- [Get State](#get-state)
-- [Get Bulk State](#get-bulk-state)
-- [Delete State](#delete-state)
-- [State transactions](#state-transactions)
-- [Configuring State Store for Actors](#configuring-state-store-for-actors)
-- [Optional Behaviors](#optional-behaviors)
+---
+type: docs
+title: "State management API reference"
+linkTitle: "State management API"
+description: "Detailed documentation on the state management API"
+weight: 200
+---
 
 ## Component file
 
@@ -58,7 +53,7 @@ This endpoint lets you save an array of state objects.
 
 ### HTTP Request
 
-```http
+```
 POST http://localhost:<daprPort>/v1.0/state/<storename>
 ```
 
@@ -124,7 +119,7 @@ This endpoint lets you get the state for a specific key.
 
 ### HTTP Request
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/state/<storename>/<key>
 ```
 
@@ -177,7 +172,7 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 
 To pass metadata as query parammeter:
 
-```http
+```
 GET http://localhost:3500/v1.0/state/starwars/planet?metadata.partitionKey=mypartitionKey
 ```
 
@@ -187,7 +182,7 @@ This endpoint lets you get a list of values for a given list of keys.
 
 ### HTTP Request
 
-```http
+```
 POST http://localhost:<daprPort>/v1.0/state/<storename>/bulk
 ```
 
@@ -243,7 +238,7 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
 ```
 To pass metadata as query parammeter:
 
-```http
+```
 POST http://localhost:3500/v1.0/state/myRedisStore/bulk?metadata.partitionKey=mypartitionKey
 ```
 
@@ -254,7 +249,7 @@ This endpoint lets you delete the state for a specific key.
 
 ### HTTP Request
 
-```http
+```
 DELETE http://localhost:<daprPort>/v1.0/state/<storename>/<key>
 ```
 
@@ -311,7 +306,7 @@ List of state stores that support transactions:
 
 #### HTTP Request
 
-```http
+```
 POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/transaction
 ```
 
@@ -456,3 +451,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
         }
       ]'
 ```
+
+## Next Steps
+- [State management overview]({{< ref state-management-overview.md >}})
+- [How-To: Save & get state]({{< ref howto-get-save-state.md >}})

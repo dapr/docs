@@ -1,11 +1,13 @@
-# Service Invocation API Specification
+---
+type: docs
+title: "Service invocation API reference"
+linkTitle: "Service invocation API"
+description: "Detailed documentation on the service invocation API"
+weight: 100
+---
 
 Dapr provides users with the ability to call other applications that have unique ids.
 This functionality allows apps to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
-
-## Contents
-
-- [Invoke a Method on a Remote Dapr App](#invoke-a-method-on-a-remote-dapr-app)
 
 ## Invoke a method on a remote dapr app
 
@@ -13,7 +15,7 @@ This endpoint lets you invoke a method in another Dapr enabled app.
 
 ### HTTP Request
 
-```http
+```
 POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appId>/method/<method-name>
 ```
 
@@ -75,7 +77,7 @@ myApp.production
 
 #### Namespace supported platforms
 
-* Kubernetes
+- Kubernetes
 
 ### Examples
 
@@ -114,3 +116,6 @@ In case you are invoking `mathService` on a different namespace, you can use the
 `http://localhost:3500/v1.0/invoke/mathService.testing/method/api/v1/add`
 
 In this URL, `testing` is the namespace that `mathService` is running in.
+
+## Next Steps
+- [How-To: Invoke and discover services]({{< ref howto-invoke-discover-services.md >}})

@@ -1,8 +1,10 @@
-# Secrets API Specification
-
-## Endpoints
-
-- [Get Secret](#get-secret)
+---
+type: docs
+title: "Secrets API reference"
+linkTitle: "Secrets API"
+description: "Detailed documentation on the secrets API"
+weight: 700
+---
 
 ## Get Secret
 
@@ -10,7 +12,7 @@ This endpoint lets you get the value of a secret for a given secret store.
 
 ### HTTP Request
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>
 ```
 
@@ -28,7 +30,7 @@ name | the name of the secret to get
 
 Some secret stores have **optional** metadata properties. metadata is populated using query parameters:
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata.version_id=15
 ```
 
