@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Save and get state"
-linkTitle: "How-To: Save and get state"
+linkTitle: "How-To: Save & get state"
 weight: 200
 description: "Use key value pairs to persist a state"
 ---

@@ -1,18 +1,15 @@
 ---
 type: docs
 title: "State management overview"
-linkTitle: "State Management overview"
+linkTitle: "Overview"
 weight: 100
 description: "Overview of the state management building block"
 ---
 
+## Introduction
+
 Dapr offers key/value storage APIs for state management. If a microservice uses state management, it can use these APIs to leverage any of the [supported state stores](https://github.com/dapr/docs/blob/master/howto/setup-state-store/supported-state-stores.md), without adding or learning a third party SDK.
 
-- [Overview](#overview)
-- [Features](#features)
-- [Next Steps](#next-steps)
-
-## Overview 
 When using state management your application can leverage several features that would otherwise be complicated and error-prone to build yourself such as:
 
 - Distributed concurrency and data consistency
@@ -21,7 +18,7 @@ When using state management your application can leverage several features that 
 
 See below for a diagram of state management's high level architecture.
 
-![State management](../../images/state_management.png)
+<img src="/images/state_management.png" width=900>
 
 ## Features
 
@@ -33,20 +30,17 @@ See below for a diagram of state management's high level architecture.
 - [Bulk Operations](#bulk-operations)
 - [Querying State Store Directly](#querying-state-store-directly)
 
-## State management API
+### State management API
 
 Developers can use the state management API to retrieve, save and delete state values by providing keys. 
 
-Dapr data stores are components. Dapr ships with [Redis](https://redis.io
-) out-of-box for local development in self hosted mode. Dapr allows you to plug in other data stores as components such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB
-), [GCP Cloud Spanner](https://cloud.google.com/spanner
-) and [Cassandra](http://cassandra.apache.org/).
+Dapr data stores are components. Dapr ships with [Redis](https://redis.io) out-of-box for local development in self hosted mode. Dapr allows you to plug in other data stores as components such as [Azure CosmosDB](https://azure.microsoft.com/services/cosmos-db/), [SQL Server](https://azure.microsoft.com/services/sql-database/), [AWS DynamoDB](https://aws.amazon.com/DynamoDB), [GCP Cloud Spanner](https://cloud.google.com/spanner) and [Cassandra](http://cassandra.apache.org/).
 
-Visit [State API](../../reference/api/state_api.md) for more information.
+Visit [State API]({{< ref state_api.md >}}) for more information.
 
 > **NOTE:** Dapr prefixes state keys with the ID of the current Dapr instance. This allows multiple Dapr instances to share the same state store.
 
-## State store behaviors
+### State store behaviors
 
 Dapr allows developers to attach to a state operation request additional metadata that describes how the request is expected to be handled. For example, you can attach concurrency requirements, consistency requirements, and retry policy to any state operation requests.
 
@@ -56,15 +50,15 @@ Not all stores are created equal. To ensure portability of your application, you
 
 The following table summarizes the capabilities of existing data store implementations.
 
-Store | Strong consistent write | Strong consistent read | ETag|
-----|----|----|----
-Cosmos DB | Yes | Yes | Yes
-PostgreSQL | Yes | Yes | Yes
-Redis | Yes | Yes | Yes
-Redis (clustered)| Yes | No | Yes
-SQL Server | Yes | Yes | Yes
+| Store             | Strong consistent write | Strong consistent read | ETag |
+|-------------------|-------------------------|------------------------|------|
+| Cosmos DB         | Yes                     | Yes                    | Yes  |
+| PostgreSQL        | Yes                     | Yes                    | Yes  |
+| Redis             | Yes                     | Yes                    | Yes  |
+| Redis (clustered) | Yes                     | No                     | Yes  |
+| SQL Server        | Yes                     | Yes                    | Yes  |
 
-## Concurrency
+### Concurrency
 
 Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the state store.
 
@@ -74,32 +68,33 @@ If your application omits ETags in writing requests, Dapr skips ETag checks whil
 
 > **NOTE:** For stores that don't natively support ETags, it's expected that the corresponding Dapr state store implementation simulates ETags and follows the Dapr state management API specification when handling states. Because Dapr state store implementations are technically clients to the underlying data store, such simulation should be straightforward using the concurrency control mechanisms provided by the store.
 
-## Consistency
+### Consistency
 
 Dapr supports both **strong consistency** and **eventual consistency**, with eventual consistency as the default behavior.
 
 When strong consistency is used, Dapr waits for all replicas (or designated quorums) to acknowledge before it acknowledges a write request. When eventual consistency is used, Dapr returns as soon as the write request is accepted by the underlying data store, even if this is a single replica.
 
-## Retry policies
+### Retry policies
 
 Dapr allows you to attach a retry policy to any write request. A policy is described by an **retryInterval**, a **retryPattern** and a **retryThreshold**. Dapr keeps retrying the request at the given interval up to the specified threshold. You can choose between a **linear** retry pattern or an **exponential** (backoff) pattern. When the **exponential** pattern is used, the retry interval is doubled after each attempt.
 
-## Bulk operations
+### Bulk operations
 
 Dapr supports two types of bulk operations - **bulk** or **multi**. You can group several requests of the same type into a bulk (or a batch). Dapr submits requests in the bulk as individual requests to the underlying data store. In other words, bulk operations are not transactional. On the other hand, you can group requests of different types into a multi-operation, which is handled as an atomic transaction.
 
-## Querying state store directly
+### Querying state store directly
 
-Dapr saves and retrieves state values without any transformation. You can query and aggregate state directly from the underlying state store. For example, to get all state keys associated with an application ID "myApp" in Redis, use:
+Dapr saves and retrieves state values without any transformation. You can query and aggregate state directly from the [underlying state store]({{< ref query-state-store >}}).
+
+For example, to get all state keys associated with an application ID "myApp" in Redis, use:
 
 ```bash
 KEYS "myApp*"
 ```
 
-> **NOTE:** See [How to query Redis store](../../howto/query-state-store/query-redis-store.md) for details on how to query a Redis store.
->
+> **NOTE:** See [How to query Redis store]({{< ref query-redis-store.md >}} ) for details on how to query a Redis store.
 
-### Querying actor state
+#### Querying actor state
 
 If the data store supports SQL queries, you can query an actor's state using SQL queries. For example use:
 
@@ -118,12 +113,12 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 ## Next steps
 
 * Follow these guides on
-    * [How-to: Set up Azure Cosmos DB store](../../howto/setup-state-store/setup-azure-cosmosdb.md)
-    * [How-to: query Azure Cosmos DB store](../../howto/query-state-store/query-cosmosdb-store.md)
-    * [How-to: Set up PostgreSQL store](../../howto/setup-state-store/setup-postgresql.md)
-    * [How-to: Set up Redis store](../../howto/setup-state-store/setup-redis.md)
-    * [How-to: Query Redis store](../../howto/query-state-store/query-redis-store.md)
-    * [How-to: Set up SQL Server store](../../howto/setup-state-store/setup-sqlserver.md)
-    * [How-to: Query SQL Server store](../../howto/query-state-store/query-sqlserver-store.md)
-* Read the [state management API specification](../../reference/api/state_api.md)
-* Read the [actors API specification](../../reference/api/actors_api.md)
+    * [How-to: Set up Azure Cosmos DB store]({{< ref setup-azure-cosmosdb.md >}})
+    * [How-to: query Azure Cosmos DB store]({{< ref query-cosmosdb-store.md >}})
+    * [How-to: Set up PostgreSQL store]({{< ref setup-postgresql.md >}})
+    * [How-to: Set up Redis store]({{< ref configure-redis.md >}})
+    * [How-to: Query Redis store]({{< ref query-redis-store.md >}})
+    * [How-to: Set up SQL Server store]({{< ref setup-sqlserver.md >}})
+    * [How-to: Query SQL Server store]({{< ref query-sqlserver-store.md >}})
+* Read the [state management API specification]({{< ref state_api.md >}})
+* Read the [actors API specification]({{< ref actors_api.md >}})
