@@ -39,12 +39,9 @@ The diagram below is an overview of how Dapr's service invocation works.
 ## Features
 Service invocation provides several features to make it easy for you to call methods on remote applications.
 
-- [Namespaces scoping](#namespaces-scoping)
-- [Retries](#Retries)
-- [Service-to-service security](#service-to-service-security)
-- [Service access security](#service-access-security)
-- [Observability: Tracing, logging and metrics](#observability)
-- [Pluggable service discovery](#pluggable-service-discovery)
+### Service invocation API
+
+The API for Pservice invocation can be found in the [spec repo]({{< ref service_invocation_api.md >}}).
 
 ### Namespaces scoping
 
