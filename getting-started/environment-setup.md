@@ -210,12 +210,13 @@ helm install dapr dapr/dapr --namespace dapr-system
 
 #### Verify installation
 
-Once the chart installation is complete, verify the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
+Once the chart installation is complete, verify the dapr-dashboard, dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
 
 ```bash
 $ kubectl get pods -n dapr-system -w
 
 NAME                                     READY     STATUS    RESTARTS   AGE
+dapr-dashboard-757c6999fb-f2rw5          1/1       Running   0          40s 
 dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
 dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s

@@ -9,16 +9,17 @@ Dapr is currently under community development in preview phase and master branch
 
 | Version | Repo |
 |:-------:|:----:|
-| v0.10.0 | [Docs](https://github.com/dapr/docs/tree/v0.10.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.10.0) - [CLI](https://github.com/dapr/cli/tree/release-0.10)
-| v0.9.0  | [Docs](https://github.com/dapr/docs/tree/v0.9.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.9.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.9)
-| v0.8.0  | [Docs](https://github.com/dapr/docs/tree/v0.8.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.8.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.8)
-| v0.7.0  | [Docs](https://github.com/dapr/docs/tree/v0.7.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.7.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.7)
-| v0.6.0  | [Docs](https://github.com/dapr/docs/tree/v0.6.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.6.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.6)
-| v0.5.0  | [Docs](https://github.com/dapr/docs/tree/v0.5.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.5.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.5)
-| v0.4.0  | [Docs](https://github.com/dapr/docs/tree/v0.4.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.4.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.4)
-| v0.3.0  | [Docs](https://github.com/dapr/docs/tree/v0.3.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.3.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.3)
-| v0.2.0  | [Docs](https://github.com/dapr/docs/tree/v0.2.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.2.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.2)
-| v0.1.0  | [Docs](https://github.com/dapr/docs/tree/v0.1.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.1.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.1)
+| v0.11.0 | [Docs](https://github.com/dapr/docs/tree/v0.11.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.11.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.11.0) - [CLI](https://github.com/dapr/cli/tree/release-0.11)
+| v0.10.0 | [Docs](https://github.com/dapr/docs/tree/v0.10.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.10.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.10.0) - [CLI](https://github.com/dapr/cli/tree/release-0.10)
+| v0.9.0  | [Docs](https://github.com/dapr/docs/tree/v0.9.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.9.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.9.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.9)
+| v0.8.0  | [Docs](https://github.com/dapr/docs/tree/v0.8.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.8.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.8.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.8)
+| v0.7.0  | [Docs](https://github.com/dapr/docs/tree/v0.7.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.7.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.7.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.7)
+| v0.6.0  | [Docs](https://github.com/dapr/docs/tree/v0.6.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.6.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.6.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.6)
+| v0.5.0  | [Docs](https://github.com/dapr/docs/tree/v0.5.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.5.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.5.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.5)
+| v0.4.0  | [Docs](https://github.com/dapr/docs/tree/v0.4.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.4.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.4.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.4)
+| v0.3.0  | [Docs](https://github.com/dapr/docs/tree/v0.3.0)  - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.3.0) - [Runtime](https://github.com/dapr/dapr/tree/v0.3.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.3)
+| v0.2.0  | [Docs](https://github.com/dapr/docs/tree/v0.2.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.2.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.2.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.2)
+| v0.1.0  | [Docs](https://github.com/dapr/docs/tree/v0.1.0) - [Quickstarts](https://github.com/dapr/quickstarts/tree/v0.1.0)  - [Runtime](https://github.com/dapr/dapr/tree/v0.1.0)  - [CLI](https://github.com/dapr/cli/tree/release-0.1)
 
 ## Contents
 
@@ -42,3 +43,7 @@ Dapr is currently under community development in preview phase and master branch
 | **SDKs** | - [Go SDK](https://github.com/dapr/go-sdk)<br>- [Java SDK](https://github.com/dapr/java-sdk)<br>- [Javascript SDK](https://github.com/dapr/js-sdk)<br>- [Python SDK](https://github.com/dapr/python-sdk)<br>- [.NET SDK](https://github.com/dapr/dotnet-sdk)<br>- [C++ SDK](https://github.com/dapr/cpp-sdk)<br>- [RUST SDK](https://github.com/dapr/rust-sdk)<br><br>**Note:** Dapr is language agnostic and provides a [RESTful HTTP API](./reference/api/README.md) in addition to the protobuf clients.
 | **Frameworks** | - [Workflows](https://github.com/dapr/workflows)<br>- [Azure Functions extension](https://github.com/dapr/azure-functions-extension)<br>
 | **[Dapr Presentations](./presentations)** | Previous Dapr presentations and information on how to give your own Dapr presentation.
+
+## Code of Conduct
+
+Please refer to our [Dapr Community Code of Conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md)
