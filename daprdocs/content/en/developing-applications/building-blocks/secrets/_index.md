@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Secrets stores"
-linkTitle: "Secrets stores"
+title: "Secrets building block"
+linkTitle: "Secrets"
 weight: 70
-description: "Retrieve secrets securely from managed secret stores"
+description: Securely access secrets from your application
 ---
