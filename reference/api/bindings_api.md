@@ -9,7 +9,6 @@ Examples for bindings include ```Kafka```, ```Rabbit MQ```, ```Azure Event Hubs`
 
 - [Bindings Structure](#bindings-structure)
 - [Invoking Service Code Through Input Bindings](#invoking-service-code-through-input-bindings)
-- [Sending Messages to Output Bindings](#sending-messages-to-output-bindings)
 
 ## Bindings Structure
 
