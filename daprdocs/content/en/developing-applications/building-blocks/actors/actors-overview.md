@@ -6,7 +6,7 @@ weight: 10
 description: Overview of Dapr support for actors
 ---
 
-The Dapr actors runtime provides support for [virtual actors]({{< ref actors_background.md >}}) through following capabilities:
+The Dapr actors runtime provides support for [virtual actors]({{< ref actors-background.md >}}) through following capabilities:
 
 ## Actor method invocation
 
