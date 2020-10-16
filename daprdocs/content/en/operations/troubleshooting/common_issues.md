@@ -83,8 +83,8 @@ The most common cause of this failure is that a component (such as a state store
 To diagnose the root cause:
 
 - Significantly increase the liveness probe delay - [link]{{< ref "kubernetes-overview.md" >}})
-- Set the log level of the sidecar to debug - [link]({{< ref "logs.md#setting-the-sidecar-log-level" >}})
-- Watch the logs for meaningful information - [link]({{< ref "logs.md#viewing-logs-on-kubernetes" >}})
+- Set the log level of the sidecar to debug - [link]({{< ref "logs-troubleshooting.md#setting-the-sidecar-log-level" >}})
+- Watch the logs for meaningful information - [link]({{< ref "logs-troubleshooting.md#viewing-logs-on-kubernetes" >}})
 
 > Remember to configure the liveness check delay and log level back to your desired values after solving the problem.
 
