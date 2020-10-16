@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Building blocks"
-linkTitle: "Building Blocks"
+linkTitle: "Building blocks"
 weight: 200
 description: "Modular best practices accessible over standard HTTP or gRPC APIs"
 ---
