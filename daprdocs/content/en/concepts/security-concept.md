@@ -103,12 +103,14 @@ When deploying on Kubernetes, you can use regular [Kubernetes RBAC]( https://kub
 
 When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
 
-## Threat Model
+## Threat model
 Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized. The Dapr threat model is below.
 
 <img src="/images/security-threat-model.png" alt="Dapr threat model" width=1000>
 
-## Security Audit June 2020
+## Security audit
+
+### June 2020
 
 In June 2020, Dapr has undergone a security audit from Cure53, a CNCF approved cybersecurity firm.
 The test focused on the following:
