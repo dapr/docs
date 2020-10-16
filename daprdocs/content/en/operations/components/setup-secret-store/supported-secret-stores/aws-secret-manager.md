@@ -2,7 +2,7 @@
 type: docs
 title: "AWS Secrets Manager"
 linkTitle: "AWS Secrets Manager"
-type: docs
+description: Detailed information on the  decret store component
 ---
 
 ## Create an AWS Secrets Manager instance

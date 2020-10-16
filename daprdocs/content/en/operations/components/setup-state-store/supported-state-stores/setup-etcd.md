@@ -2,11 +2,14 @@
 type: docs
 title: "etcd"
 linkTitle: "etcd"
-type: docs
+description: Detailed information on the etcd state store component
 ---
 
-## Locally
+## Setup an etcd state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run etcd locally using Docker:
 
 ```
@@ -14,9 +17,9 @@ docker run -d --name etcd bitnami/etcd
 ```
 
 You can then interact with the server using `localhost:2379`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install etcd on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/incubator/etcd):
 
 ```
@@ -30,6 +33,9 @@ To interact with etcd, find the service with: `kubectl get svc etcd-etcd`.
 For example, if installing using the example above, the etcd host address would be:
 
 `etcd-etcd.default.svc.cluster.local:2379`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -54,8 +60,9 @@ spec:
     value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "10S"
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
-
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

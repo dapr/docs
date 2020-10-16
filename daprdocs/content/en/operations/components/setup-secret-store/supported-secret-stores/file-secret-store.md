@@ -3,6 +3,7 @@ type: docs
 title: "Local file (for Development)"
 linkTitle: "Local file"
 weight: 20
+description: Detailed information on the local file secret store component
 ---
 
 This Dapr secret store component reads plain text JSON from a given file and does not use authentication.

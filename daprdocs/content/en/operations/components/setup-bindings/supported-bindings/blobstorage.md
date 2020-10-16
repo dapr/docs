@@ -5,6 +5,8 @@ linkTitle: "Azure Blob Storage"
 description: "Detailed documentation on the Azure Blob Storage binding component"
 ---
 
+## Setup Dapr component
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -29,15 +31,13 @@ spec:
 - `container` is the name of the Blob Storage container to write to.
 - `decodeBase64` optional configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). "true" is the only allowed positive value. Other positive variations like "True" are not acceptable.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Output Binding Supported Operations
 
-* [create](#create-blob)
-* [get](#get-blob)
-
-
-## Create Blob
+### Create Blob
 
 To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
@@ -50,7 +50,7 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 }
 ```
 
-Example:
+#### Example:
 
 ```bash
 
@@ -58,7 +58,7 @@ curl -d '{ "operation": "create", "data": { "field1": "value1" }}' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 
-### Response
+#### Response
 
 The response body will contain the following JSON:
 
@@ -69,7 +69,7 @@ The response body will contain the following JSON:
 
 ```
 
-## Get Blob
+### Get Blob
 
 To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
@@ -82,14 +82,14 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 }
 ```
 
-Example:
+#### Example:
 
 ```bash
 curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
 ```
 
-### Response
+#### Response
 
 The response body will contain the value stored in the blob object.
 
@@ -114,3 +114,9 @@ Applications publishing to an Azure Blob Storage output binding should send a me
     "operation": "create"
 }
 ```
+
+## Related links
+- [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
+- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- [Bindings API reference]({{< ref bindings_api.md >}})

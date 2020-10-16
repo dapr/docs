@@ -5,6 +5,8 @@ linkTitle: "Kafka"
 description: "Detailed documentation on the kafka binding component"
 ---
 
+## Setup Dapr component
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -38,7 +40,9 @@ spec:
 - `saslUsername` is the SASL username for authentication. Only used if `authRequired` is set to - `"true"`.
 - `saslPassword` is the SASL password for authentication. Only used if `authRequired` is set to - `"true"`.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Specifying a partition key
 
@@ -65,3 +69,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
 ## Output Binding Supported Operations
 
 * create
+
+## Related links
+- [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
+- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- [Bindings API reference]({{< ref bindings_api.md >}})

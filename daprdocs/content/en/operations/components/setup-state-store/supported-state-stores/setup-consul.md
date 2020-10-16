@@ -2,11 +2,14 @@
 type: docs
 title: "HashiCorp Consul"
 linkTitle: "HashiCorp Consul"
-type: docs
+description: Detailed information on the HashiCorp Consul state store component
 --- 
 
-## Locally
+## Setup a HashiCorp Consul state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run Consul locally using Docker:
 
 ```
@@ -14,9 +17,9 @@ docker run -d --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 consul
 ```
 
 You can then interact with the server using `localhost:8500`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install Consul on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/consul):
 
 ```
@@ -29,6 +32,9 @@ To interact with Consul, find the service with: `kubectl get svc consul`.
 For example, if installing using the example above, the Consul host address would be:
 
 `consul.default.svc.cluster.local:8500`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -57,7 +63,11 @@ spec:
     value: <REPLACE-WITH-TABLE> # Optional. default: ""
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+### Example
 
 The following example uses the Kubernetes secret store to retrieve the acl token:
 

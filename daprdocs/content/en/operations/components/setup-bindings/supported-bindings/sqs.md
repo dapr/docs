@@ -5,6 +5,8 @@ linkTitle: "AWS SQS"
 description: "Detailed documentation on the AWS SQS binding component"
 ---
 
+## Setup Dapr component
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -29,8 +31,17 @@ spec:
 - `secretKey` is the AWS secret key.
 - `queueName` is the SQS queue name.
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
 
 ## Output Binding Supported Operations
 
 * create
+
+## Related links
+- [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
+- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- [Bindings API reference]({{< ref bindings_api.md >}})

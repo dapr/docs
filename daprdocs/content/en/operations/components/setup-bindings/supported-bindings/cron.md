@@ -5,6 +5,8 @@ linkTitle: "Cron"
 description: "Detailed documentation on the cron binding component"
 ---
 
+## Setup Dapr component
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -44,3 +46,9 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 
 * `@every 15s` where `s` is seconds, `m` minutes, and `h` hours
 * `@daily` or `@hourly` which runs at that period from the time the binding is initialized  
+
+## Related links
+- [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
+- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- [Bindings API reference]({{< ref bindings_api.md >}})

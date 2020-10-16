@@ -2,10 +2,10 @@
 type: docs
 title: "RethinkDB"
 linkTitle: "RethinkDB"
-type: docs
+description: Detailed information on the RethinkDB state store component
 ---
 
-## Locally 
+## Setup RethinkDB state store
 
 You can run [RethinkDB](https://rethinkdb.com/) locally using Docker:
 
@@ -18,7 +18,6 @@ To connect to the admin UI:
 ```shell
 open "http://$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' rethinkdb):8080"
 ```
-
 
 ## Create a Dapr component
 
@@ -48,6 +47,10 @@ spec:
   - name: archive
     value: # Optional (whether or not store should keep archive table of all the state changes)
 ```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 RethinkDB state store supports transactions so it can be used to persist Dapr Actor state. By default, the state will be stored in table name `daprstate` in the specified database. 
 

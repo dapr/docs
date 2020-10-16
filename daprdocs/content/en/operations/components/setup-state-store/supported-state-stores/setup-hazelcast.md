@@ -2,11 +2,14 @@
 type: docs
 title: "Hazelcast"
 linkTitle: "Hazelcast"
-type: docs
+description: Detailed information on the Hazelcast state store component
 ---
 
-## Locally
+## Setup a Hazelcast state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run Hazelcast locally using Docker:
 
 ```
@@ -14,10 +17,13 @@ docker run -e JAVA_OPTS="-Dhazelcast.local.publicAddress=127.0.0.1:5701" -p 5701
 ```
 
 You can then interact with the server using the `127.0.0.1:5701`.
+{{% /codetab %}}
 
-## Kubernetes
+{{% codetab %}}
+The easiest way to install Hazelcast on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/hazelcast).
+{{% /codetab %}}
 
-The easiest way to install Hazelcast on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/hazelcast):
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -40,8 +46,9 @@ spec:
     value: <REPLACE-WITH-MAP> # Required. Hazelcast map configuration.
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
-
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

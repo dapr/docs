@@ -2,11 +2,14 @@
 type: docs
 title: "Aerospike"
 linkTitle: "Aerospike"
-type: docs
+description: Detailed information on the Aerospike state store component
 ---
 
-## Locally
+## Setup Aerospike
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run Aerospike locally using Docker:
 
 ```
@@ -14,9 +17,9 @@ docker run -d --name aerospike -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:30
 ```
 
 You can then interact with the server using `localhost:3000`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install Aerospike on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/aerospike):
 
 ```
@@ -30,6 +33,9 @@ To interact with Aerospike, find the service with: `kubectl get svc aerospike -n
 For example, if installing using the example above, the Aerospike host address would be:
 
 `aerospike-my-aerospike.aerospike.svc.cluster.local:3000`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -54,8 +60,9 @@ spec:
     value: <REPLACE-WITH-SET> # Optional.
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
-
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

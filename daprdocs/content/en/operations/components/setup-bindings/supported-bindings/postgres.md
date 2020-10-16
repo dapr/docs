@@ -5,6 +5,8 @@ linkTitle: "PostgrSQL"
 description: "Detailed documentation on the PostgrSQL binding component"
 ---
 
+## Setup Dapr component
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -18,7 +20,9 @@ spec:
     value: <CONNECTION_STRING>
 ```
 
-> **Note:** In production never place passwords or secrets within Dapr components. For information on securely storing and retrieving secrets refer to [Setup Secret Store](../../../howto/setup-secret-store)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 The PostgrSQL binding uses [pgx connection pool](https://github.com/jackc/pgx) internally so the `url` parameter can be any valid connection string, either in a `DSN` or `URL` format:
 
@@ -36,17 +40,17 @@ postgres://dapr:secret@dapr.example.com:5432/dapr?sslmode=verify-ca
 
 Both methods also support connection pool configuration variables:
 
-* `pool_min_conns`: integer 0 or greater
-* `pool_max_conns`: integer greater than 0
-* `pool_max_conn_lifetime`: duration string
-* `pool_max_conn_idle_time`: duration string
-* `pool_health_check_period`: duration string
+- `pool_min_conns`: integer 0 or greater
+- `pool_max_conns`: integer greater than 0
+- `pool_max_conn_lifetime`: duration string
+- `pool_max_conn_idle_time`: duration string
+- `pool_health_check_period`: duration string
 
 ## Output Binding Supported Operations
 
-* `exec`
-* `query`
-* `close`
+- `exec`
+- `query`
+- `close`
 
 ### exec
 
@@ -127,4 +131,8 @@ Finally, the `close` operation can be used to explicitly close the DB connection
 
 > Note, the PostgreSql binding itself doesn't prevent SQL injection, like with any database application, validate the input before executing query.
 
-
+## Related links
+- [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
+- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- [Bindings API reference]({{< ref bindings_api.md >}})

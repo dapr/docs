@@ -2,7 +2,7 @@
 type: docs
 title: "Azure Blob Storage"
 linkTitle: "Azure Blob Storage"
-type: docs
+description: Detailed information on the Azure Blob Store state store component
 ---
 
 ## Creating Azure Storage account
@@ -12,10 +12,9 @@ type: docs
 If you wish to create a container for Dapr to use, you can do so beforehand. However, Blob Storage state provider will create one for you automatically if it doesn't exist.
 
 In order to setup Azure Blob Storage as a state store, you will need the following properties:
-
-* **AccountName**: The storage account name. For example: **mystorageaccount**. 
-* **AccountKey**: Primary or secondary storage key.
-* **ContainerName**: The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist.
+- **AccountName**: The storage account name. For example: **mystorageaccount**. 
+- **AccountKey**: Primary or secondary storage key.
+- **ContainerName**: The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist.
 
 ## Create a Dapr component
 
@@ -40,7 +39,11 @@ spec:
     value: <REPLACE-WITH-CONTAINER-NAME>
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+### Example
 
 The following example uses the Kubernetes secret store to retrieve the secrets:
 

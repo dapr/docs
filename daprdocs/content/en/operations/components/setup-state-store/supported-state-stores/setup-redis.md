@@ -2,15 +2,21 @@
 type: docs
 title: "Redis"
 linkTitle: "Redis"
-type: docs
+description: Detailed information on the Redis state store component
+weight: 10
 ---
 
-## Creating a Redis Store
+## Create a Redis Store
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. If you already have a Redis store, move on to the [Configuration](#configuration) section.
 
-### Creating a Redis Cache in your Kubernetes Cluster using Helm
+{{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
+{{% codetab %}}
+[Content for Tab1]
+{{% /codetab %}}
+
+{{% codetab %}}
 We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
@@ -37,9 +43,9 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
         - name: redisPassword
           value: lhDOkwTlp0
     ```
-    
-### Creating an Azure Managed Redis Cache
+{{% /codetab %}}
 
+{{% codetab %}}
 **Note**: this approach requires having an Azure Subscription.
 
 1. Open [this link](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Cache for Redis  creation flow. Log in if necessary.
@@ -51,26 +57,23 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 5. Finally, we need to add our key and our host to a `redis.yaml` file that Dapr can apply to our cluster. If you're running a sample, you'll add the host and key to the provided `redis.yaml`. If you're creating a project from the ground up, you'll create a `redis.yaml` file as specified in [Configuration](#configuration). Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you copied in step 4. **Note:** In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
 
 > **NOTE:** Dapr pub/sub uses [Redis Streams](https://redis.io/topics/streams-intro) that was introduced by Redis 5.0, which isn't currently available on Azure Managed Redis Cache. Consequently, you can use Azure Managed Redis Cache only for state persistence.
+{{% /codetab %}}
 
+{{% codetab %}}
+[AWS Redis](https://aws.amazon.com/redis/)
+{{% /codetab %}}
 
-### Other ways to create a Redis Database
+{{% codetab %}}
+[GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
+{{% /codetab %}}
 
-- [AWS Redis](https://aws.amazon.com/redis/)
-- [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
+{{< /tabs >}}
 
-## Configuration
+## Create a Dapr component
 
-To setup Redis, you need to create a component for `state.redis`. 
-<br>
-
-The following yaml file demonstrates how to define each.
-
-### Configuring Redis for State Persistence and Retrieval
 **TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`. 
 
 **Failover:** When set to `true` enables the failover feature. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
-
-**Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
 
 Create a file called redis.yaml, and paste the following:
 
@@ -92,6 +95,10 @@ spec:
   - name: failover
     value: <bool> # Optional. Allowed: true, false.
 ```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

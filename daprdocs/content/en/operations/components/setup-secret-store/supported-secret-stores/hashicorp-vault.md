@@ -2,7 +2,7 @@
 type: docs
 title: "HashiCorp Vault"
 linkTitle: "HashiCorp Vault"
-type: docs
+description: Detailed information on the HashiCorp Vault secret store component
 ---
 
 ## Setup Hashicorp Vault instance

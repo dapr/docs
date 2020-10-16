@@ -3,6 +3,7 @@ type: docs
 title: "Kubernetes Secrets"
 linkTitle: "Kubernetes Secrets"
 weight: 30
+description: Detailed information on the Kubernetes secret store component
 ---
 
 ## Summary

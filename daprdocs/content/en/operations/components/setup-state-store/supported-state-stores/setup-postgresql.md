@@ -2,12 +2,11 @@
 type: docs
 title: "PostgreSQL"
 linkTitle: "PostgreSQL"
-type: docs
+description: Detailed information on the PostgreSQL state store component
 ---
 
-This article provides guidance on configuring a PostgreSQL state store.
-
 ## Create a PostgreSQL Store
+
 Dapr can use any PostgreSQL instance. If you already have a running instance of PostgreSQL, move on to the [Create a Dapr component](#create-a-dapr-component) section.
 
 1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker CE with the following command:
@@ -46,7 +45,9 @@ spec:
   - name: actorStateStore
     value: "true"
 ```
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

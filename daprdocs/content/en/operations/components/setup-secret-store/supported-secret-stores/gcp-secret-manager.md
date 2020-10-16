@@ -2,6 +2,7 @@
 type: docs
 title: "GCP Secret Manager"
 linkTitle: "GCP Secret Manager"
+description: Detailed information on the GCP Secret Manager secret store component
 ---
 
 This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for self hosted and Kubernetes mode.

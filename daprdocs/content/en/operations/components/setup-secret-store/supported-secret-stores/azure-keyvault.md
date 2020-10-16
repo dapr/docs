@@ -2,6 +2,7 @@
 type: docs
 title: "Azure Key Vault secret store"
 linkTitle: "Azure Key Vault"
+description: Detailed information on the Azure Key Vault secret store component
 ---
 
 {{% alert title="Note" color="primary" %}}

@@ -5,6 +5,8 @@ linkTitle: "Kubernetes Events"
 description: "Detailed documentation on the Kubernetes Events binding component"
 ---
 
+## Setup Dapr component
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -97,3 +99,9 @@ roleRef:
   name: <ROLENAME> # same as the one above
   apiGroup: ""
 ```
+
+## Related links
+- [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
+- [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- [Bindings API reference]({{< ref bindings_api.md >}})

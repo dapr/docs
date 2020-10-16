@@ -2,11 +2,14 @@
 type: docs
 title: "Memcached"
 linkTitle: "Memcached"
-type: docs
+description: Detailed information on the Memcached state store component
 ---
 
-## Locally
+## Setup a Memcached state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run Memcached locally using Docker:
 
 ```
@@ -14,9 +17,9 @@ docker run --name my-memcache -d memcached
 ```
 
 You can then interact with the server using `localhost:11211`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install Memcached on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/memcached):
 
 ```
@@ -29,6 +32,9 @@ To interact with Memcached, find the service with: `kubectl get svc memcached`.
 For example, if installing using the example above, the Memcached host address would be:
 
 `memcached.default.svc.cluster.local:11211`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -53,8 +59,9 @@ spec:
     value: <REPLACE-WITH-TIMEOUT> # Optional. default: "1000ms"
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
-
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

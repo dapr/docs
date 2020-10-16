@@ -2,11 +2,14 @@
 type: docs
 title: "Cassandra"
 linkTitle: "Cassandra"
-type: docs
+description: Detailed information on the Cassandra state store component
 --- 
 
-## Locally
+## Create a Cassandra state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run Cassandra locally with the Datastax Docker image:
 
 ```
@@ -14,9 +17,9 @@ docker run -e DS_LICENSE=accept --memory 4g --name my-dse -d datastax/dse-server
 ```
 
 You can then interact with the server using `localhost:9042`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install Cassandra on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/incubator/cassandra):
 
 ```
@@ -30,6 +33,9 @@ To interact with Cassandra, find the service with: `kubectl get svc -n cassandra
 For example, if installing using the example above, the Cassandra DNS would be:
 
 `cassandra.cassandra.svc.cluster.local`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -64,7 +70,11 @@ spec:
     value: <REPLACE-WITH-REPLICATION-FACTOR> #  Optional. default: "1"
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+### Example
 
 The following example uses the Kubernetes secret store to retrieve the username and password:
 

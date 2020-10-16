@@ -2,11 +2,14 @@
 type: docs
 title: "MongoDB"
 linkTitle: "MongoDB"
-type: docs
+description: Detailed information on the MongoDB state store component
 ---
 
-## Locally
+## Setup a MongoDB state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run MongoDB locally using Docker:
 
 ```
@@ -14,9 +17,9 @@ docker run --name some-mongo -d mongo
 ```
 
 You can then interact with the server using `localhost:27017`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install MongoDB on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/mongodb):
 
 ```
@@ -33,6 +36,9 @@ For example, if installing using the example above, the MongoDB host address wou
 
 Follow the on-screen instructions to get the root password for MongoDB.
 The username will be `admin` by default.
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -67,7 +73,11 @@ spec:
     value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "5s"
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+### Example
 
 The following example uses the Kubernetes secret store to retrieve the username and password:
 

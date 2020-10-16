@@ -2,21 +2,20 @@
 type: docs
 title: "Azure Cosmos DB"
 linkTitle: "Azure Cosmos DB"
-type: docs
+description: Detailed information on the Azure CosmosDB state store component
 ---
 
-## Creating an Azure Cosmos DB account
+## Create a Azure Cosmos DB account
 
 [Follow the instructions](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr can use it.  
 
 **Note : The partition key for the collection must be named "/partitionKey".  Note: this is case-sensitive.**
 
 In order to setup CosmosDB as a state store, you need the following properties:
-
-* **URL**: the CosmosDB url. for example: https://******.documents.azure.com:443/
-* **Master Key**: The key to authenticate to the CosmosDB account
-* **Database**: The name of the database
-* **Collection**: The name of the collection
+- **URL**: the CosmosDB url. for example: https://******.documents.azure.com:443/
+- **Master Key**: The key to authenticate to the CosmosDB account
+- **Database**: The name of the database
+- **Collection**: The name of the collection
 
 ## Create a Dapr component
 
@@ -43,7 +42,11 @@ spec:
     value: <REPLACE-WITH-COLLECTION>
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+### Example
 
 Here is an example of what the values could look like:
 

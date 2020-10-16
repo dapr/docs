@@ -2,18 +2,24 @@
 type: docs
 title: "GCP Firestore (Datastore mode)"
 linkTitle: "GCP Firestore"
-type: docs
+description: Detailed information on the GCP Firestore state store component
 ---
 
-## Locally
+## Setup a GCP Firestone state store
 
+{{< tabs "Self-Hosted" "Google Cloud" >}}
+
+{{% codetab %}}
 You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
 
 You can then interact with the server using `localhost:8081`.
+{{% /codetab %}}
 
-## Google Cloud
-
+{{% codetab %}}
 Follow the instructions [here](https://cloud.google.com/datastore/docs/quickstart) to get started with setting up Firestore in Google Cloud.
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -54,8 +60,9 @@ spec:
     value: <REPLACE-WITH-ENTITY-KIND> # Optional. default: "DaprState"
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
-
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

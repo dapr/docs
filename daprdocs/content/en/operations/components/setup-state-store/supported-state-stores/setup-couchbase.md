@@ -2,11 +2,14 @@
 type: docs
 title: "Couchbase"
 linkTitle: "Couchbase"
-type: docs
+description: Detailed information on the Couchbase state store component
 ---
 
-## Locally
+## Create a Couchbase state store
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run Couchbase locally using Docker:
 
 ```
@@ -14,9 +17,9 @@ docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
 ```
 
 You can then interact with the server using `localhost:8091` and start the server setup.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install Couchbase on Kubernetes is by using the [Helm chart](https://github.com/couchbase-partners/helm-charts#deploying-for-development-quick-start):
 
 ```
@@ -24,6 +27,9 @@ helm repo add couchbase https://couchbase-partners.github.io/helm-charts/
 helm install couchbase/couchbase-operator
 helm install couchbase/couchbase-cluster
 ```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -50,8 +56,9 @@ spec:
     value: <REPLACE-WITH-BUCKET> # Required.
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
-
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 

@@ -2,20 +2,19 @@
 type: docs
 title: "Azure Table Storage "
 linkTitle: "Azure Table Storage "
-type: docs
+description: Detailed information on the Azure Table Storage state store component
 ---
 
-## Creating Azure Storage account
+## Create an Azure Storage account
 
 [Follow the instructions](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account. 
 
 If you wish to create a table for Dapr to use, you can do so beforehand. However, Table Storage state provider will create one for you automatically if it doesn't exist.
 
 In order to setup Azure Table Storage as a state store, you will need the following properties:
-
-* **AccountName**: The storage account name. For example: **mystorageaccount**. 
-* **AccountKey**: Primary or secondary storage key.
-* **TableName**: The name of the table to be used for Dapr state. The table will be created for you if it doesn't exist.
+ **AccountName**: The storage account name. For example: **mystorageaccount**. 
+ **AccountKey**: Primary or secondary storage key.
+- **TableName**: The name of the table to be used for Dapr state. The table will be created for you if it doesn't exist.
 
 ## Create a Dapr component
 
@@ -40,7 +39,11 @@ spec:
     value: <REPLACE-WITH-TABLE-NAME>
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+### Example
 
 The following example uses the Kubernetes secret store to retrieve the secrets:
 

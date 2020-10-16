@@ -3,6 +3,7 @@ type: docs
 title: "Local environment variables (for Development)"
 linkTitle: "Local environment variables"
 weight: 10
+description: Detailed information on the local environment secret store component
 ---
 
 This Dapr secret store component uses locally defined environment variable and does not use authentication.
