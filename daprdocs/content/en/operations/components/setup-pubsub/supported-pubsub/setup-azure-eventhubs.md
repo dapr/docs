@@ -2,8 +2,10 @@
 type: docs
 title: "Azure Events Hub"
 linkTitle: "Azure Events Hub"
-type: docs
+description: "Detailed documentation on the Azure Event Hubs pubsub component"
 ---
+
+## Setup Azure Event Hubs
 
 Follow the instructions [here](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create) on setting up Azure Event Hubs.
 Since this implementation uses the Event Processor Host, you will also need an [Azure Storage Account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal).
@@ -35,7 +37,9 @@ spec:
 
 See [here](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature) on how to get the Event Hubs connection string. Note this is not the Event Hubs namespace.
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Create consumer groups for each subscriber
 
@@ -44,14 +48,7 @@ For example, a Dapr app running on Kubernetes with `dapr.io/app-id: "myapp"` wil
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the Azure Event Hubs pub/sub to Kubernetes, use the `kubectl` CLI:
-
-```bash
-kubectl apply -f eventhubs.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

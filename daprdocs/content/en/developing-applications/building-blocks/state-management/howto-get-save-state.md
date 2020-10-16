@@ -17,12 +17,12 @@ In this guide we'll start of with the basics: Using the key/value state API to a
 ## Step 1: Setup a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
-For the purpose of this how to we'll use a Redis state store, but any state store from the [supported list]({{< ref supported-state-stores.md >}}) will work.
+For the purpose of this how to we'll use a Redis state store, but any state store from the [supported list]({{< ref supported-state-stores >}}) will work.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes>}}
 
 {{% codetab %}}
-When using `Dapr init` in Standalone mode, the Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML when running your app with `dapr run`.
+When using `Dapr init` in Standalone mode, the Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML in a `components` directory, which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`
 
 To change the state store being used, replace the YAML under `/components` with the file of your choice.
 {{% /codetab %}}

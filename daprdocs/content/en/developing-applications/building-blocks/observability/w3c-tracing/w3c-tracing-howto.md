@@ -8,22 +8,9 @@ type: docs
 ---
 
 # How to use trace context
-Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propagating the trace context information and there are very few cases where you need to either propagate or create a trace context. First read scenarios in the [W3C trace context for distributed tracing](../../concepts/observability/W3C-traces.md) article to understand whether you need to propagate or create a trace context.
+Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propagating the trace context information and there are very few cases where you need to either propagate or create a trace context. First read scenarios in the [W3C distributed tracing]({{< ref w3c-tracing >}}) article to understand whether you need to propagate or create a trace context.
 
 To view traces, read the [how to diagnose with tracing](../diagnose-with-tracing) article.
-
-## Contents
-- [How to retrieve trace context from a response](#how-to-retrieve-trace-context-from-a-response)
-- [How to propagate trace context in a request](#how-to-propagate-trace-context-in-a-request)
-- [How to create trace context](#how-to-create-trace-context)
-    - [Go](#create-trace-context-in-go)
-    - [Java](#create-trace-context-in-java)
-    - [Python](#create-trace-context-in-python)
-    - [NodeJS](#create-trace-context-in-nodejs)
-    - [C++](#create-trace-context-in-c++)
-    - [C#](#create-trace-context-in-c#)
-- [Putting it all together with a Go Sample](#putting-it-all-together-with-a-go-sample)
-- [Related Links](#related-links)
 
 ## How to retrieve trace context from a response
 `Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`

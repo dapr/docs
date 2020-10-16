@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Observe metrics with Grafana"
+title: "How-To: Observe metrics with Grafana"
 linkTitle: "Grafana"
 weight: 5000
 description: "How to view Dapr metrics in a Grafana dashboard."

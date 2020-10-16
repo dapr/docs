@@ -2,11 +2,14 @@
 type: docs
 title: "RabbitMQ"
 linkTitle: "RabbitMQ"
-type: docs
+description: "Detailed documentation on the RabbitMQ pubsub component"
 ---
 
-## Locally
+## Setup RabbitMQ
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
 You can run a RabbitMQ server locally using Docker:
 
 ```bash
@@ -14,9 +17,9 @@ docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
 ```
 
 You can then interact with the server using the client port: `localhost:5672`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 The easiest way to install RabbitMQ on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/rabbitmq):
 
 ```bash
@@ -31,6 +34,9 @@ To interact with RabbitMQ, find the service with: `kubectl get svc rabbitmq`.
 For example, if installing using the example above, the RabbitMQ server client address would be:
 
 `rabbitmq.default.svc.cluster.local:5672`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -63,18 +69,13 @@ spec:
     value: <REPLACE-WITH-REQUEUE-IN-FAILURE> # Optional. Default: "false".
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the RabbitMQ pub/sub to Kubernetes, use the `kubectl` CLI:
-
-```bash
-kubectl apply -f rabbitmq.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

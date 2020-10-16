@@ -5,13 +5,11 @@ linkTitle: "AWS Secrets Manager"
 type: docs
 ---
 
-This document shows how to enable AWS Secrets Manager secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for self hosted and Kubernetes mode.
-
 ## Create an AWS Secrets Manager instance
 
 Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
 
-## Create the component
+## Create the Dapr component
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -32,15 +30,11 @@ spec:
     value: "[aws_session_token]"
 ```
 
-To deploy in Kubernetes, save the file above to `aws_secret_manager.yaml` and then run:
+## Apply the configuration
 
-```bash
-kubectl apply -f aws_secret_manager.yaml
-```
+Read [this guide]({{< ref howto-secrets.md >}}) to learn how to apply a Dapr component.
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
-
-## AWS Secret Manager reference example
+## Example
 
 This example shows you how to set the Redis password from the AWS Secret Manager secret store.
 Here, you created a secret named `redisPassword` in AWS Secret Manager. Note its important to set it both as the `name` and `key` properties.
@@ -63,3 +57,13 @@ spec:
 auth:
     secretStore: awssecretmanager
 ```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+{{% /alert %}}
+
+## Related links
+- [Secrets building block]({{< ref secrets >}})
+- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
+- [Secrets API reference]({{< ref secrets_api.md >}})

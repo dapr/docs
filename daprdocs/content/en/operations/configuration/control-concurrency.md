@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Control concurrency and rate limit applications"
+title: "How-To: Control concurrency and rate limit applications"
 linkTitle: "Concurrency & rate limits"
 weight: 2000
 description: "Control how many requests and events will invoke your application simultaneously"

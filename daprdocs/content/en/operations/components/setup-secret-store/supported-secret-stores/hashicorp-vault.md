@@ -5,13 +5,20 @@ linkTitle: "HashiCorp Vault"
 type: docs
 ---
 
-This document shows how to enable Hashicorp Vault secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for Standalone and Kubernetes mode.
+## Setup Hashicorp Vault instance
 
-## Create a Hashicorp Vault instance
+{{< tabs "Self-Hosted" "Kubernetes" >}}
 
+{{% codetab %}}
 Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
+{{% /codetab %}}
 
+{{% codetab %}}
 For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 ## Create the Vault component
 
@@ -42,15 +49,24 @@ spec:
     value : "[vault_prefix]"
 ```
 
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+{{% /codetab %}}
+
+{{% codetab %}}
 To deploy in Kubernetes, save the file above to `vault.yaml` and then run:
 
 ```bash
 kubectl apply -f vault.yaml
 ```
+{{% /codetab %}}
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+{{< /tabs >}}
 
-## Vault reference example
+
+## Example
 
 This example shows you how to take the Redis password from the Vault secret store.
 
@@ -72,3 +88,9 @@ spec:
 auth:
     secretStore: vault
 ```
+
+## Related links
+- [Secrets building block]({{< ref secrets >}})
+- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
+- [Secrets API reference]({{< ref secrets_api.md >}})

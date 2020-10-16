@@ -2,11 +2,14 @@
 type: docs
 title: "NATS streaming"
 linkTitle: "NATS streaming"
-type: docs
+description: "Detailed documentation on the NATS pubsub component"
 ---
 
-## Locally
+## Setup NATS
 
+{{< tabs "Self-Hosted" "Kubernetes">}}
+
+{{% codetab %}}
 You can run a NATS server locally using Docker:
 
 ```bash
@@ -14,9 +17,9 @@ docker run -d -name nats-streaming -p 4222:4222 -p 8222:8222 nats-streaming
 ```
 
 You can then interact with the server using the client port: `localhost:4222`.
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 Install NATS on Kubernetes by using the [kubectl](https://docs.nats.io/nats-on-kubernetes/minimal-setup):
 
 ```bash
@@ -33,6 +36,9 @@ To interact with NATS, find the service with: `kubectl get svc stan`.
 For example, if installing using the example above, the NATS Streaming address would be:
 
 `<YOUR-HOST>:4222`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -78,19 +84,13 @@ spec:
   #   value: ""
 ```
 
-
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the NATS pub/sub to Kubernetes, use the `kubectl` CLI:
-
-```bash
-kubectl apply -f nats-stan.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

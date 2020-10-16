@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Run Dapr in self-hosted mode with Docker"
+title: "How-To: Run Dapr in self-hosted mode with Docker"
 linkTitle: "Run with Docker"
 weight: 20000
 description: "How to deploy and run Dapr in self-hosted mode using Docker"

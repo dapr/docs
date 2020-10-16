@@ -23,7 +23,7 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 
 Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `traceparent` header. For gRPC requests, Dapr uses `grpc-trace-bin` header.   When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
 
-Read [W3C Tracing Context for distributed tracing](./W3C-traces.md) for more background on W3C Trace Context.
+Read [W3C distributed tracing]({{< ref w3c-tracing >}}) for more background on W3C Trace Context.
 
 ## Configuration
 
@@ -65,7 +65,7 @@ spec:
 
 ## References
 
-* [How-To: Set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
-* [How-To: Set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)
+- [How-To: Set up Application Insights for distributed tracing]({{< ref azure-monitor.md >}})
+- [How-To: Set up Zipkin for distributed tracing]({{< ref zipkin.md >}})
+- [W3C distributed tracing]({{< ref w3c-tracing >}})
 

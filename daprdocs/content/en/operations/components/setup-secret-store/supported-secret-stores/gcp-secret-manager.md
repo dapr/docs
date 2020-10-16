@@ -2,18 +2,15 @@
 type: docs
 title: "GCP Secret Manager"
 linkTitle: "GCP Secret Manager"
-type: docs
 ---
-
-# Secret Store for GCP Secret Manager
 
 This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component](../../concepts/secrets/README.md) for self hosted and Kubernetes mode.
 
-## Create an GCP Secret Manager instance
+## Setup GCP Secret Manager instance
 
 Setup GCP Secret Manager using the GCP documentation: https://cloud.google.com/secret-manager/docs/quickstart.
 
-## Create the component
+## Setup Dapr component
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -46,15 +43,30 @@ spec:
     value: PRIVATE KEY
 ```
 
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+{{% /alert %}}
+
+## Apply the component
+
+{{< tabs "Self-Hosted" "Kubernetes">}}
+
+{{% codetab %}}
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+
+{{% /codetab %}}
+
+{{% codetab %}}
 To deploy in Kubernetes, save the file above to `gcp_secret_manager.yaml` and then run:
 
 ```bash
 kubectl apply -f gcp_secret_manager.yaml
 ```
+{{% /codetab %}}
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+{{< /tabs >}}
 
-## GCP Secret Manager reference example
+## Example
 
 This example shows you how to take the Redis password from the GCP Secret Manager secret store.
 Here, you created a secret named `redisPassword` in GCP Secret Manager. Note its important to set it both as the `name` and `key` properties.
@@ -77,3 +89,9 @@ spec:
 auth:
     secretStore: gcpsecretmanager
 ```
+
+## Related links
+- [Secrets building block]({{< ref secrets >}})
+- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
+- [Secrets API reference]({{< ref secrets_api.md >}})

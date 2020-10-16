@@ -1,18 +1,16 @@
 ---
 type: docs
-title: "Azure Key Vault (Managed identities)"
-linkTitle: "Azure Key Vault (Managed identities)"
-type: docs
+title: "Azure Key Vault with Managed Identities on Kubernetes"
+linkTitle: "Azure Key Vault w/ Managed Identity"
+description: How to configure Azure Key Vault and Kubernetes to use Azure Managed Identities to access secrets
 ---
-
-This document shows how to enable Azure Key Vault secret store using [Dapr secrets component](../../concepts/secrets/README.md) for Kubernetes mode using Managed Identities to authenticate to a Key Vault.
 
 ## Prerequisites
 
-* [Azure Subscription](https://azure.microsoft.com/en-us/free/)
-* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+- [Azure Subscription](https://azure.microsoft.com/en-us/free/)
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 
-## Setup Kubernetes to use Managed identities and Azure Key Vault
+## Setup Managed Identity and Azure Key Vault
 
 1. Login to Azure and set the default subscription
 
@@ -120,7 +118,7 @@ This document shows how to enable Azure Key Vault secret store using [Dapr secre
     kubectl apply -f azure-identity-config.yaml
     ```
 
-## Use Azure Key Vault secret store in Kubernetes mode with managed identities
+## Configure Dapr component
 
 In Kubernetes mode, you store the certificate for the service principal into the Kubernetes Secret Store and then enable Azure Key Vault secret store with this certificate in Kubernetes secretstore.
 
@@ -149,124 +147,11 @@ In Kubernetes mode, you store the certificate for the service principal into the
     kubectl apply -f azurekeyvault.yaml
     ```
 
-3. Store the redisPassword as a secret into your keyvault
-
-    Now store the redisPassword as a secret into your keyvault
-
-    ```bash
-    az keyvault secret set --name redisPassword --vault-name [your_keyvault_name] --value "your redis passphrase"
-    ```
-
-4. Create redis.yaml state store component
-
-    This redis state store component refers to `azurekeyvault` component as a secretstore and uses the secret for `redisPassword` stored in Azure Key Vault.
-
-    ```yaml
-    apiVersion: dapr.io/v1alpha1
-    kind: Component
-    metadata:
-      name: statestore
-      namespace: default
-    spec:
-      type: state.redis
-      metadata:
-      - name: redisHost
-        value: "[redis_url]:6379"
-      - name: redisPassword
-        secretKeyRef:
-          name: redisPassword
-    auth:
-        secretStore: azurekeyvault
-    ```
-
-5. Apply redis statestore component
-
-    ```bash
-    kubectl apply -f redis.yaml
-    ```
-
-6. Create node.yaml deployment
-
-    ```yaml
-    kind: Service
-    apiVersion: v1
-    metadata:
-      name: nodeapp
-      namespace: default
-      labels:
-        app: node
-    spec:
-      selector:
-        app: node
-      ports:
-        - protocol: TCP
-          port: 80
-          targetPort: 3000
-      type: LoadBalancer
-
-    ---
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: nodeapp
-      namespace: default
-      labels:
-        app: node
-    spec:
-      replicas: 1
-      selector:
-        matchLabels:
-          app: node
-      template:
-        metadata:
-          labels:
-            app: node
-            aadpodidbinding: [you managed identity selector]
-          annotations:
-            dapr.io/enabled: "true"
-            dapr.io/app-id: "nodeapp"
-            dapr.io/app-port: "3000"
-        spec:
-          containers:
-            - name: node
-              image: dapriosamples/hello-k8s-node
-              ports:
-                - containerPort: 3000
-              imagePullPolicy: Always
-
-    ```
-
-7. Apply the node app deployment
-
-    ```bash
-    kubectl apply -f redis.yaml
-    ```
-
-    Make sure that `secretstores.azure.keyvault` is loaded successfully in `daprd` sidecar log
-
-    Here is the nodeapp log of the sidecar. Note: use the nodeapp name for your deployed container instance.
-
-    ```bash
-    $ kubectl logs $(kubectl get po --selector=app=node -o jsonpath='{.items[*].metadata.name}') daprd
-
-    time="2020-02-05T09:15:03Z" level=info msg="starting Dapr Runtime -- version edge -- commit v0.3.0-rc.0-58-ge540a71-dirty"
-    time="2020-02-05T09:15:03Z" level=info msg="log level set to: info"
-    time="2020-02-05T09:15:03Z" level=info msg="kubernetes mode configured"
-    time="2020-02-05T09:15:03Z" level=info msg="app id: nodeapp"
-    time="2020-02-05T09:15:03Z" level=info msg="mTLS enabled. creating sidecar authenticator"
-    time="2020-02-05T09:15:03Z" level=info msg="trust anchors extracted successfully"
-    time="2020-02-05T09:15:03Z" level=info msg="authenticator created"
-    time="2020-02-05T09:15:03Z" level=info msg="loaded component azurekeyvault (secretstores.azure.keyvault)"
-    time="2020-02-05T09:15:04Z" level=info msg="loaded component statestore (state.redis)"
-    ...
-    2020-02-05 09:15:04.636348 I | redis: connecting to redis-master:6379
-    2020-02-05 09:15:04.639435 I | redis: connected to redis-master:6379 (localAddr: 10.244.0.11:38294, remAddr: 10.0.74.145:6379)
-    ...
-    ```
-
 ## References
-
 - [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 - [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
 - [AAD Pod Identity](https://github.com/Azure/aad-pod-identity)
-- [Secrets Component](../../concepts/secrets/README.md)
+- [Secrets building block]({{< ref secrets >}})
+- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
+- [Secrets API reference]({{< ref secrets_api.md >}})

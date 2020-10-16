@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "Pub/Sub and namespaces"
-linkTitle: "Kubernetes Namespaces"
-weight: 4000
+linkTitle: "Kubernetes namespaces"
+weight: 20000
 description: "Use Dapr Pub/Sub with multiple namespaces"
 ---
 

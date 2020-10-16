@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Set up Application Insights for distributed tracing"
+title: "How-To: Set up Application Insights for distributed tracing"
 linkTitle: "Application Insights"
 weight: 3000
 description: "Enable Application Insights to visualize Dapr tracing and application map"

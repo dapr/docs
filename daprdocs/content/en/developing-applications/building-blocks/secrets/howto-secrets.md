@@ -22,7 +22,13 @@ The first step involves setting up a secret store, either in the cloud or in the
 
 The second step is to configure the secret store with Dapr.
 
-Follow the instructions [here](../setup-secret-store) to set up the secret store of your choice.
+To deploy in Kubernetes, save the file above to `aws_secret_manager.yaml` and then run:
+
+```bash
+kubectl apply -f aws_secret_manager.yaml
+```
+
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
 
 Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&feature=youtu.be&t=1818) for an example on how to use the secrets API. Or watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=1765) for an example on how to component scopes with secret components and the secrets API.
 

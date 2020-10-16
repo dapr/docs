@@ -2,17 +2,22 @@
 type: docs
 title: "Apache Kafka"
 linkTitle: "Apache Kafka"
-type: docs
+description: "Detailed documentation on the Apache Kafka pubsub component"
 ---
 
-## Locally
+## Setup Kafka
+{{< tabs "Self-Hosted" "Kubernetes">}}
 
+{{% codetab %}}
 You can run Kafka locally using [this](https://github.com/wurstmeister/kafka-docker) Docker image.
 To run without Docker, see the getting started guide [here](https://kafka.apache.org/quickstart).
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm/charts/tree/master/incubator/kafka#installing-the-chart).
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -43,19 +48,13 @@ spec:
     - name: saslPassword
       value: <password>
 ```
-
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the Kafka component to Kubernetes, use the `kubectl`:
-
-```
-kubectl apply -f kafka.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

@@ -2,8 +2,10 @@
 type: docs
 title: "GCP Pub/Sub"
 linkTitle: "GCP Pub/Sub"
-type: docs
+description: "Detailed documentation on the GCP Pub/Sub component"
 ---
+
+## Setup GCP Pub/Sub
 
 Follow the instructions [here](https://cloud.google.com/pubsub/docs/quickstart-console) on setting up Google Cloud Pub/Sub system.
 
@@ -61,18 +63,13 @@ spec:
 - `private_key` is the GCP credentials private key.
 - `disableEntityManagement`  Optional. Default: false. When set to true, topics and subscriptions do not get created automatically.
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the Google Cloud pub/sub to Kubernetes, use the `kubectl` CLI:
-
-```bash
-kubectl apply -f messagebus.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

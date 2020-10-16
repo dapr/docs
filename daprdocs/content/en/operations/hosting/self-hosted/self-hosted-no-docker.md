@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Run Dapr in self-hosted mode without Docker"
+title: "How-To: Run Dapr in self-hosted mode without Docker"
 linkTitle: "Run without Docker"
 weight: 30000
 description: "How to deploy and run Dapr in self-hosted mode without Docker installed on the local machine"

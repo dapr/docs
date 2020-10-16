@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Limit the secrets that can be read from secret stores"
+title: "How-To: Limit the secrets that can be read from secret stores"
 linkTitle: "Limit secret store access"
 weight: 3000
 description: "To limit the secrets to which the Dapr application has access, users can define secret scopes by augmenting existing configuration CRD with restrictive permissions."

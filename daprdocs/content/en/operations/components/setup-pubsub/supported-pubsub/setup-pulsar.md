@@ -2,10 +2,14 @@
 type: docs
 title: "Pulsar"
 linkTitle: "Pulsar"
-type: docs
+description: "Detailed documentation on the Pulsar pubsub component"
 ---
 
-## Locally
+## Setup Pulsar
+
+{{< tabs "Self-Hosted" "Kubernetes">}}
+
+{{% codetab %}}
 ```
 docker run -it \
   -p 6650:6650 \
@@ -16,10 +20,13 @@ docker run -it \
   bin/pulsar standalone
 
 ```
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 Please refer to the following [Helm chart](https://pulsar.apache.org/docs/en/kubernetes-helm/) Documentation.
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -45,10 +52,7 @@ spec:
 
 ## Apply the configuration
 
-To apply the Pulsar pub/sub to Kubernetes, use the kubectl CLI:
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-`` kubectl apply -f pulsar.yaml ``
-
-### Running locally ###
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

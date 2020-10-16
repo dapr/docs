@@ -2,13 +2,17 @@
 type: docs
 title: "AWS SNS/SQS"
 linkTitle: "AWS SNS/SQS"
-type: docs
+description: "Detailed documentation on the AWS SNS/SQS pubsub component"
 ---
 
-This article describes configuring Dapr to use AWS SNS/SQS for pub/sub on local and Kubernetes environments. For local development, the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS.
-Follow the instructions [here](https://github.com/localstack/localstack#installing) to install the localstack CLI.
+This article describes configuring Dapr to use AWS SNS/SQS for pub/sub on local and Kubernetes environments. 
 
-## Locally
+## Setup SNS/SQS
+
+{{< tabs "Self-Hosted" "Kubernetes" "AWS" >}}
+
+{{% codetab %}}
+For local development the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow the instructions [here](https://github.com/localstack/localstack#installing) to install the localstack CLI.
 
 In order to use localstack with your pubsub binding, you need to provide the `awsEndpoint` configuration 
 in the component metadata. The `awsEndpoint` is unncessary when running against production AWS.
@@ -27,9 +31,9 @@ spec:
     - name: awsRegion
       value: us-east-1
 ```
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 To run localstack on Kubernetes, you can apply the configuration below. Localstack is then 
 reachable at the DNS name `http://localstack.default.svc.cluster.local:4566` 
 (assuming this was applied to the default namespace) and this should be used as the `awsEndpoint`
@@ -73,11 +77,15 @@ spec:
   type: LoadBalancer
 
 ```
+{{% /codetab %}}
 
-## Run in AWS
+{{% codetab %}}
 In order to run in AWS, you should create an IAM user with permissions to the SNS and SQS services. 
 Use the account ID and account secret and plug them into the `awsAccountID` and `awsAccountSecret`
 in the component metadata using kubernetes secrets.
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -107,24 +115,16 @@ spec:
       value: us-east-1
 ```
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md).
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the SNS/SQS component to Kubernetes, use the `kubectl` command:
-
-```
-kubectl apply -f snssqs.yaml
-```
-
-### Running locally
-
-Place the above components file `snssqs.yaml` in the local components directory (either the default directory or in a path you define when running the CLI command `dapr run`)
-
-
-## Related Links
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})
 - [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
 - [AWS SNS API refernce](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
 - [AWS SQS API refernce](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)

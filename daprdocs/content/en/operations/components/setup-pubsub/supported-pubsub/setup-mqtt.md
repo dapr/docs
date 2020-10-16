@@ -2,20 +2,23 @@
 type: docs
 title: "MQTT"
 linkTitle: "MQTT"
-type: docs
+description: "Detailed documentation on the MQTT pubsub component"
 ---
 
-## Locally
+## Setup MQTT
 
+{{< tabs "Self-Hosted" "Kubernetes">}}
+
+{{% codetab %}}
 You can run a MQTT broker [locally using Docker](https://hub.docker.com/_/eclipse-mosquitto):
 
 ```bash
 docker run -d -p 1883:1883 -p 9001:9001 --name mqtt eclipse-mosquitto:1.6.9
 ```
 You can then interact with the server using the client port: `mqtt://localhost:1883`
+{{% /codetab %}}
 
-## Kubernetes
-
+{{% codetab %}}
 You can run a MQTT broker in kubernetes using following yaml:
 
 ```yaml
@@ -68,6 +71,9 @@ spec:
       protocol: TCP
 ```
 You can then interact with the server using the client port: `tcp://mqtt-broker.default.svc.cluster.local:1883`
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
@@ -113,29 +119,23 @@ spec:
 ```
 
 Where:
-* **url** (required) is the address of the MQTT broker.
-    - use **tcp://** scheme for non-TLS communication.
-    - use **tcps://** scheme for TLS communication.
-* **qos** (optional) indicates the Quality of Service Level (QoS) of the message. (Default 0)
-* **retain** (optional) defines whether the message is saved by the broker as the last known good value for a specified topic. (Default false)
-* **cleanSession** (optional) will set the "clean session" in the connect message when client connects to an MQTT broker . (Default true)
-* **caCert** (required for using TLS) is the certificate authority certificate.
-* **clientCert** (required for using TLS) is the client certificate.
-* **clientKey** (required for using TLS) is the client key.
+- **url** (required) is the address of the MQTT broker.
+-   - use **tcp://** scheme for non-TLS communication.
+-   - use **tcps://** scheme for TLS communication.
+- **qos** (optional) indicates the Quality of Service Level (QoS) of the message. (Default 0)
+- **retain** (optional) defines whether the message is saved by the broker as the last known good value for a specified topic. (Default false)
+- **cleanSession** (optional) will set the "clean session" in the connect message when client connects to an MQTT broker . (Default true)
+- **caCert** (required for using TLS) is the certificate authority certificate.
+- **clientCert** (required for using TLS) is the client certificate.
+- **clientKey** (required for using TLS) is the client key.
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the MQTT pubsub to Kubernetes, use the `kubectl` CLI:
-
-```bash
-kubectl apply -f mqtt.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
-
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

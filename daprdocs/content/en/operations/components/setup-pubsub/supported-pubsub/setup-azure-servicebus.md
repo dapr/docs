@@ -1,9 +1,11 @@
 ---
 type: docs
 title: "Azure Service Bus"
-linkTitle: "Azure Events Hub"
-type: docs
+linkTitle: "Azure Service Bus"
+description: "Detailed documentation on the Azure Service Bus pubsub component"
 ---
+
+## Setup Azure Service Bus
 
 Follow the instructions [here](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
 
@@ -52,18 +54,13 @@ spec:
 
 > __NOTE:__ The above settings are shared across all topics that use this component.
 
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here](../../concepts/secrets/README.md)
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Apply the configuration
 
-### In Kubernetes
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-To apply the Azure Service Bus pub/sub to Kubernetes, use the `kubectl` CLI:
-
-```bash
-kubectl apply -f azuresb.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})

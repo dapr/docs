@@ -1,22 +1,24 @@
 ---
 type: docs
-title: "Redis streams"
-linkTitle: "Redis streams"
-type: docs
+title: "Redis Streams"
+linkTitle: "Redis Streams"
+description: "Detailed documentation on the Redis Streams pubsub component"
+weight: 100
 ---
 
-## Creating a Redis instance
+## Setup a Redis instance
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later. If you already have a Redis instance > 5.0.0 installed, move on to the [Configuration](#configuration) section.
 
-### Running locally
+{{< tabs "Self-Hosted" "Kubernetes" "AWS" "GCP" "Azure">}}
 
+{{% codetab %}}
 The Dapr CLI will automatically create and setup a Redis Streams instance for you.
 The Redis instance will be installed via Docker when you run `dapr init`, and the component file will be created in default directory. (`$HOME/.dapr/components` directory (Mac/Linux) or `%USERPROFILE%\.dapr\components` on Windows).
+{{% /codetab %}}
 
-### Creating a Redis instance in your Kubernetes Cluster using Helm
-
-We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
+{{% codetab %}}
+You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster.
     ```bash
@@ -44,19 +46,27 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
         - name: redisPassword
           value: "lhDOkwTlp0"
     ```
+{{% /codetab %}}
 
-### Other ways to create a Redis Database
+{{% codetab %}}
+[AWS Redis](https://aws.amazon.com/redis/)
+{{% /codetab %}}
 
-- [AWS Redis](https://aws.amazon.com/redis/)
-- [GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
+{{% codetab %}}
+[GCP Cloud MemoryStore](https://cloud.google.com/memorystore/)
+{{% /codetab %}}
 
-## Configuration
+{{% codetab %}}
+[Azure Redis](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/quickstart-create-redis)
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Create a Dapr component
 
 To setup Redis, you need to create a component for `pubsub.redis`.
 
-The following yaml files demonstrates how to define each. If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS in the yaml. **Note:** yaml files below illustrate secret management in plain text. In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
-
-### Configuring Redis Streams for Pub/Sub
+The following yaml files demonstrates how to define each. If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS in the yaml. 
 
 Create a file called pubsub.yaml, and paste the following:
 
@@ -77,14 +87,17 @@ spec:
     value: <bool>
 ```
 
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
 ## Apply the configuration
 
-### Kubernetes
+{{% alert title="Note" color="primary" %}}
+The Dapr CLI automatically deploys a redis instance and creates Dapr components as part of the `dapr init` command.
+{{% /alert %}}
 
-```bash
-kubectl apply -f pubsub.yaml
-```
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
-### Standalone
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Pub/Sub building block]({{< ref pubsub >}})
