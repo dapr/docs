@@ -4,20 +4,12 @@ title: "How-To: Setup Redis"
 linkTitle: "How-To: Setup Redis"
 weight: 30
 description: "Configure Redis for Dapr state management or Pub/Sub"
-type: docs
 ---
-
-# Configure Redis for state management or pub/sub
 
 Dapr can use Redis in two ways:
 
 1. As state store component (state.redis) for persistence and restoration
 2. As pub/sub component (pubsub.redis) for async style message delivery
-
-- [Option 1: Creating a Redis Cache in your Kubernetes cluster using Helm](#Option-1:-creating-a-Redis-Cache-in-your-Kubernetes-Cluster-using-Helm)
-- [Option 2: Creating an Azure Cache for Redis service](#Option-2:-Creating-an-Azure-Cache-for-Redis-service)
-- [Configuration](#configuration)
-
 
 ## Creating a Redis store
 
@@ -25,7 +17,7 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 
 ### Option 1: Creating a Redis Cache in your Kubernetes Cluster using Helm
 
-We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm v3](https://github.com/helm/helm#install).
+You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Kubernetes cluster. This approach requires [Installing Helm v3](https://github.com/helm/helm#install).
 
 1. Install Redis into your cluster:
 
@@ -52,7 +44,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
      value: redis-master.default.svc.cluster.local:6379
    ```
 
-4. Next, we'll get our Redis password using a `secretKeyRef` to a Kubernetes secret that has been configured into your cluster when Redis was installed. You can see the name of the secret key with `kubectl describe secret redis`
+4. Next, get the Redis password using a `secretKeyRef` to a Kubernetes secret that has been configured into your cluster when Redis was installed. You can see the name of the secret key with `kubectl describe secret redis`
 
 Add `redis` with the key `redis-password` as the `redisPassword` secretKeyRef in your [redis.yaml](#configuration) file. For example:
 
@@ -64,7 +56,7 @@ Add `redis` with the key `redis-password` as the `redisPassword` secretKeyRef in
    ```
 That's it! Now go to the [Configuration](#configuration) section
 
-5. (Alternative) Its **not recommended**, however you can use a hard coded password instead of secretKeyRef. First we'll get the Redis password, which is slightly different depending on the OS you're using:
+5. (Alternative) Its **not recommended**, however you can use a hard coded password instead of secretKeyRef. First you'll get the Redis password, which is slightly different depending on the OS you're using:
 
    - **Windows**: Run below commands
    ```powershell
@@ -95,14 +87,14 @@ That's it! Now go to the [Configuration](#configuration) section
 
 ### Option 2: Creating an Azure Cache for Redis service
 
-> **Note**: This approach requires having an Azure Subscription.
+> **Note**: This method requires having an Azure Subscription.
 
 1. Open the [Azure Portal](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Redis Cache creation flow. Log in if necessary.
 1. Fill out the necessary information
 1. Click "Create" to kickoff deployment of your Redis instance.
 1. Once your instance is created, you'll need to grab your access key. Navigate to "Access Keys" under "Settings" and copy your key.
-1. We  need the hostname of your Redis instance, which we can retrieve from the "Overview" in Azure. It should look like `xxxxxx.redis.cache.windows.net:6380`.
-1. Finally, we need to add our key and our host to a `redis.yaml` file that Dapr can apply to our cluster. If you're running a sample, you'll add the host and key to the provided `redis.yaml`. If you're creating a project from the ground up, you'll create a `redis.yaml` file as specified in [Configuration](#configuration).
+1. You'll need the hostname of your Redis instance, which you can retrieve from the "Overview" in Azure. It should look like `xxxxxx.redis.cache.windows.net:6380`.
+1. Finally, you'll need to add our key and our host to a `redis.yaml` file that Dapr can apply to our cluster. If you're running a sample, you'll add the host and key to the provided `redis.yaml`. If you're creating a project from the ground up, you'll create a `redis.yaml` file as specified in [Configuration](#configuration).
 
    As the connection to Azure is encrypted, make sure to add the following block to the `metadata` section of your `redis.yaml` file.
 
@@ -112,7 +104,7 @@ That's it! Now go to the [Configuration](#configuration) section
      value: "true"
    ```
 
-> **NOTE:** Dapr pub/sub uses [Redis Streams](https://redis.io/topics/streams-intro) that was introduced by Redis 5.0, which isn't currently available on Azure Managed Redis Cache. Consequently, you can use Azure Managed Redis Cache only for state persistence.
+> **NOTE:** Dapr pub/sub uses [Redis streams](https://redis.io/topics/streams-intro) that was introduced by Redis 5.0, which isn't currently available on Azure Cache for Redis. Consequently, you can use Azure Cache for Redis only for state persistence.
 
 ### Other options to create a Redis database
 
@@ -121,7 +113,7 @@ That's it! Now go to the [Configuration](#configuration) section
 
 ## Configuration
 
-Dapr can use Redis as a `statestore` component for state persistence (`state.redis`) or as a `pubsub` component (`pubsub.redis`). The following yaml files demonstrates how to define each component using either a secretKey reference (which is preferred) or a plain text password. **Note:** In a production-grade application, follow [secret management](../../concepts/secrets/README.md) instructions to securely manage your secrets.
+Dapr can use Redis as a `statestore` component for state persistence (`state.redis`) or as a `pubsub` component (`pubsub.redis`). The following yaml files demonstrates how to define each component using either a secretKey reference (which is preferred) or a plain text password. **Note:** In a production-grade application, follow [secret management]({{<ref "secrets-overview.md">}}) instructions to securely manage your secrets.
 
 ### Configuring Redis for state persistence using a secret key reference (preferred)
 
@@ -214,4 +206,4 @@ kubectl apply -f redis-pubsub.yaml
 
 By default the Dapr CLI creates a local Redis instance when you run `dapr init`. However, if you want to configure a different Redis instance, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
 
-If you initialized Dapr using `dapr init --slim`, the Dapr CLI did not create a Redis instance or a default configuration file for it. Follow [these instructions](#Creating-a-Redis-Store) to create a Redis store. Create the `redis.yaml` following the configuration [instructions](#Configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
+If you initialized Dapr using `dapr init --slim`, the Dapr CLI did not create a Redis instance or a default configuration file for it. Follow [these instructions](#creating-a-redis-store) to create a Redis store. Create the `redis.yaml` following the configuration [instructions](#configuration) in a `components` dir and provide the path to the `dapr run` command with the flag `--components-path`.
