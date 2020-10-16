@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Cron binding spec"
-linkTitle: "Cron"
-description: "Detailed documentation on the cron binding component"
+title: "Kafka binding spec"
+linkTitle: "Kafka"
+description: "Detailed documentation on the kafka binding component"
 ---
 
 ```yaml
