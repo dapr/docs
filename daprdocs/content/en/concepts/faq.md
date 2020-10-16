@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Frequently asked Questions and Answers"
+title: "Frequently asked questions and answers"
 linkTitle: "FAQs"
 weight: 1000
 description: "Common questions asked about Dapr"
