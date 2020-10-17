@@ -18,7 +18,7 @@ POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/meth
 
 You can provide any data for the actor method in the request body and the response for the request is in response body which is data from actor method call.
 
-Refer [api spec](../../reference/api/actors_api.md#invoke-actor-method) for more details.
+Refer [api spec]({{< ref "actors_api.md#invoke-actor-method" >}}) for more details.
 
 ## Actor state management
 
@@ -80,7 +80,7 @@ You can remove the actor timer by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Refer [api spec](../../reference/api/actors_api.md#invoke-timer) for more details.
+Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
 
 ### Actor reminders
 
@@ -134,4 +134,4 @@ You can remove the actor reminder by calling
 DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-Refer [api spec](../../reference/api/actors_api.md#invoke-reminder) for more details.
+Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.

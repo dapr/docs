@@ -14,11 +14,11 @@ Dapr is a portable, event-driven runtime that makes it easy for enterprise devel
 
 * **Components** encapsulate the implementation for a building block API. Example implementations for the state building block may include Redis, Azure Storage, Azure Cosmos DB, and AWS DynamoDB. Many of the components are pluggable so that one implementation can be swapped out for another.
 
-To learn more, see [Dapr Concepts](/docs/concepts).
+To learn more, see [Dapr Concepts]({{< ref concepts >}}).
 
 ## Setup the development environment
 
-Dapr can be run locally or in Kubernetes. We recommend starting with a local setup to explore the core Dapr concepts and familiarize yourself with the Dapr CLI. Follow these instructions to [configure Dapr locally and on Kubernetes](/docs/concepts/getting-started/install-dapr).
+Dapr can be run locally or in Kubernetes. We recommend starting with a local setup to explore the core Dapr concepts and familiarize yourself with the Dapr CLI. Follow these instructions to [configure Dapr locally and on Kubernetes]({{< ref install-dapr.md >}}).
 
 ## Next steps
 

@@ -23,10 +23,10 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 * [Tracing exporters](https://github.com/dapr/components-contrib/tree/master/exporters)
 
 ### Service invocation and service discovery components
-Service discovery components are used with the [Service Invocation](./service-invocation/README.md) building block to integrate with the hosting environment to provide service-to-service discovery. For example, the Kubernetes service discovery component integrates with the kubernetes DNS service and self hosted uses mDNS.
+Service discovery components are used with the [Service Invocation]({{< ref service-invocation >}}) building block to integrate with the hosting environment to provide service-to-service discovery. For example, the Kubernetes service discovery component integrates with the kubernetes DNS service and self hosted uses mDNS.
 
 ### Service invocation and middleware components  
-Dapr allows custom [**middleware**](./middleware/README.md) to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [Service Invocation](./service-invocation/README.md) building block.
+Dapr allows custom [**middleware**]({{< ref middleware-concept.md >}}) to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [Service Invocation]({{< ref service-invocation >}}) building block.
 
 ### Secret store components
-In Dapr, a [**secret**](./secrets/README.md) is any piece of private information that you want to guard against unwanted users. Secretstores, used to store secrets, are Dapr components and can be used by any of the building blocks.
+In Dapr, a [**secret**]({{< ref secrets >}}) is any piece of private information that you want to guard against unwanted users. Secretstores, used to store secrets, are Dapr components and can be used by any of the building blocks.

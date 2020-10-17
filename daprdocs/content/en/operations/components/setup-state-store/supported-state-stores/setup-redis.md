@@ -13,7 +13,7 @@ Dapr can use any Redis instance - containerized, running on your local dev machi
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
 {{% codetab %}}
-[Content for Tab1]
+A Redis instance is automatically created as a Docker container when you run `dapr init`
 {{% /codetab %}}
 
 {{% codetab %}}

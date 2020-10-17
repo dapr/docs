@@ -37,6 +37,6 @@ Each Dapr system process emits Go runtime/process metrics by default and have th
 
 ## References
 
-* [Howto: Run Prometheus locally](../../howto/setup-monitoring-tools/observe-metrics-with-prometheus-locally.md)
-* [Howto: Set up Prometheus and Grafana for metrics](../../howto/setup-monitoring-tools/setup-prometheus-grafana.md)
-* [Howto: Set up Azure monitor to search logs and collect metrics for Dapr](../../howto/setup-monitoring-tools/setup-azure-monitor.md)
+* [Howto: Run Prometheus locally]({{< ref prometheus.md >}})
+* [Howto: Set up Prometheus and Grafana for metrics]({{< ref grafana.md >}})
+* [Howto: Set up Azure monitor to search logs and collect metrics for Dapr]({{< ref azure-monitor.md >}})

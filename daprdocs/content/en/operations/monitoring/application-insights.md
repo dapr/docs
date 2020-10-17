@@ -215,7 +215,7 @@ That's it! There's no need include any SDKs or instrument your application code.
 
 Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use **Application Map** to examine the topology of your services, as shown below:
 
-![Application map](../../images/azure-monitor.png)
+![Application map](/images/azure-monitor.png)
 
 > **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) will be displayed in Application Map topology. Direct service invocations (not going through the Dapr API) will not be shown.
 
@@ -240,4 +240,4 @@ set `samplingRate : "0"` in the configuration. The valid range of samplingRate i
 
 ## References
 
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)
+* [How-To: Use W3C Trace Context for distributed tracing]({{< ref w3c-tracing-howto >}})

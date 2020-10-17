@@ -80,14 +80,14 @@ Optionally, you may also create a new entry for a sidecar tool that can be reuse
 
 Now, create or edit the run configuration for the application to be debugged. It can be found in the menu next to the `main()` function.
 
-![Edit run configuration menu](../../images/intellij_debug_menu.png)
+![Edit run configuration menu](/images/intellij_debug_menu.png)
 
 Now, add the program arguments and environment variables. These need to match the ports defined in the entry in 'External Tool' above.
 
 * Command line arguments for this example: `-p 3000`
 * Environment variables for this example: `DAPR_HTTP_PORT=3005;DAPR_GRPC_PORT=52000`
 
-![Edit run configuration](../../images/intellij_edit_run_configuration.png)
+![Edit run configuration](/images/intellij_edit_run_configuration.png)
 
 ## Start debugging
 
@@ -95,11 +95,11 @@ Once the one-time config above is done, there are two steps required to debug a 
 
 1. Start `dapr` via `Tools` -> `External Tool` in IntelliJ.
 
-![Run dapr as 'External Tool'](../../images/intellij_start_dapr.png)
+![Run dapr as 'External Tool'](/images/intellij_start_dapr.png)
 
 2. Start your application in debug mode.
 
-![Start application in debug mode](../../images/intellij_debug_app.png)
+![Start application in debug mode](/images/intellij_debug_app.png)
 
 ## Wrapping up
 

@@ -86,17 +86,17 @@ spec:
 
 ## Log collectors
 
-If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [json parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON formatted logs. This [how-to](../../howto/setup-monitoring-tools/setup-fluentd-es-kibana.md) shows how to configure the Fleuntd in your cluster.
+If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [json parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON formatted logs. This [how-to]({{< ref fluentd.md >}}) shows how to configure the Fleuntd in your cluster.
 
 If you are using the Azure Kubernetes Service, you can use the default OMS Agent to collect logs with Azure Monitor without needing to install Fluentd.
 
 ## Search engines
 
-If you use [Fluentd](https://www.fluentd.org/), we recommend to using Elastic Search and Kibana. This [how-to](../../howto/setup-monitoring-tools/setup-fluentd-es-kibana.md) shows how to set up Elastic Search and Kibana in your Kubernetes cluster.
+If you use [Fluentd](https://www.fluentd.org/), we recommend to using Elastic Search and Kibana. This [how-to]({{< ref fluentd.md >}}) shows how to set up Elastic Search and Kibana in your Kubernetes cluster.
 
 If you are using the Azure Kubernetes Service, you can use [Azure monitor for containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-overview) without indstalling any additional monitoring tools. Also read [How to enable Azure Monitor for containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-onboard)
 
 ## References
 
-- [How-to : Set up Fleuntd, Elastic search, and Kibana](../../howto/setup-monitoring-tools/setup-fluentd-es-kibana.md)
-- [How-to : Set up Azure Monitor in Azure Kubernetes Service](../../howto/setup-monitoring-tools/setup-azure-monitor.md)
+- [How-to : Set up Fleuntd, Elastic search, and Kibana]({{< ref fluentd.md >}})
+- [How-to : Set up Azure Monitor in Azure Kubernetes Service]({{< ref azure-monitor.md >}})

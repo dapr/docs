@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Use W3C trace context with Dapr"
-linkTitle: "Overview"
+linkTitle: "How-To: Use W3C trace context"
 weight: 20000
 description: Using W3C tracing standard with Dapr
 type: docs
@@ -10,7 +10,7 @@ type: docs
 # How to use trace context
 Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propagating the trace context information and there are very few cases where you need to either propagate or create a trace context. First read scenarios in the [W3C distributed tracing]({{< ref w3c-tracing >}}) article to understand whether you need to propagate or create a trace context.
 
-To view traces, read the [how to diagnose with tracing](../diagnose-with-tracing) article.
+To view traces, read the [how to diagnose with tracing]({{< ref tracing.md >}}) article.
 
 ## How to retrieve trace context from a response
 `Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`
@@ -215,7 +215,7 @@ In Kubernetes, you can apply the configuration as below :
 kubectl apply -f appconfig.yaml
 ```
 
-You then set the following tracing annotation in your deployment YAML. You can add the following annotaion in sample [grpc app](../create-grpc-app) deployment yaml.
+You then set the following tracing annotation in your deployment YAML. You can add the following annotaion in sample [grpc app]({{< ref grpc.md >}}) deployment yaml.
 
 ```yaml
 dapr.io/config: "appconfig"
@@ -223,13 +223,13 @@ dapr.io/config: "appconfig"
 
 ### Invoking Dapr with trace context
 
-As mentioned in `Scenarios` section in [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md) that Dapr covers generating trace context and you do not need to explicitly create trace context.
+Dapr covers generating trace context and you do not need to explicitly create trace context.
 
 However if you choose to pass the trace context explicitly, then Dapr will use the passed trace context and propagate all across the HTTP/gRPC call.
 
-Using the [grpc app](../create-grpc-app) in the example and putting this all together, the following steps show you how to create a Dapr client and call the InvokeService method passing the trace context:
+Using the [grpc app]({{< ref grpc.md >}}) in the example and putting this all together, the following steps show you how to create a Dapr client and call the InvokeService method passing the trace context:
 
-The Rest code snippet and details, refer to the [grpc app](../create-grpc-app).
+The Rest code snippet and details, refer to the [grpc app]({{< ref grpc >}}).
 
 ### 1. Import the package
 
@@ -289,10 +289,10 @@ You can now correlate the calls in your app and across services with Dapr using 
 
 ## Related Links
 
-* [Observability concepts](../../concepts/observability/traces.md)
-* [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md)
-* [How to set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
-* [How to set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
+* [Observability concepts]({{< ref observability-concept.md >}})
+* [W3C Trace Context for distributed tracing]({{< ref w3c-tracing >}})
+* [How to set up Application Insights for distributed tracing]({{< ref azure-monitor.md >}})
+* [How to set up Zipkin for distributed tracing]({{< ref zipkin.md >}})
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
 * [Observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability)
 

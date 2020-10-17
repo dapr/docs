@@ -231,5 +231,5 @@ You can use Dapr with any language supported by Protobuf, and not just with the 
 Using the [protoc](https://developers.google.com/protocol-buffers/docs/downloads) tool you can generate the Dapr clients for other languages like Ruby, C++, Rust and others.
 
  ## Related Topics
-*  [Service invocation concepts](../../concepts/service-invocation/README.md)
-* [Service invocation API specification](../../reference/api/service_invocation_api.md)
+- [Service invocation building block]({{< ref service-invocation >}})
+- [Service invocation API specification]({{< ref service_invocation_api.md >}})

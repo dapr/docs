@@ -126,13 +126,13 @@ Dapr installs the following pods:
 
 You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 
-- [Setup Minikube Cluster](./cluster/setup-minikube.md)
-- [Setup Azure Kubernetes Service Cluster](./cluster/setup-aks.md)
+- [Setup Minikube Cluster]({{< ref setup-minikube.md >}})
+- [Setup Azure Kubernetes Service Cluster]({{< ref setup-aks.md >}})
 - [Setup Google Cloud Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
 > **Note:** Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes, but most users should not need to.
-> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster](../howto/windows-k8s/)
+> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref kubernetes-hybrid-clusters >}})
 
 ### Using the Dapr CLI
 
@@ -221,7 +221,7 @@ dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 
 #### Sidecar annotations
 
-To see all the supported annotations for the Dapr sidecar on Kubernetes, visit [this](../howto/configure-k8s/README.md) how to guide.
+To see all the supported annotations for the Dapr sidecar on Kubernetes, visit [this]({{< ref kubernetes >}})  guide.
 
 #### Uninstall Dapr on Kubernetes
 
@@ -234,4 +234,4 @@ helm uninstall dapr -n dapr-system
 > **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
 
 ### Installing Redis on Kubernetes 
-To install Redis as a state store or as a pub/sub message bus into your Kubernetes cluster. See [Configure Redis for state management or pub/sub](../howto/configure-redis/readme.md)
+To install Redis as a state store or as a pub/sub message bus into your Kubernetes cluster. See [Configure Redis for state management or pub/sub]({{< ref setup-redis-pubsub.md >}})

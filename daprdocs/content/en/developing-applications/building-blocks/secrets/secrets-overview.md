@@ -23,7 +23,7 @@ See [Setup secret stores](https://github.com/dapr/docs/tree/master/howto/setup-s
 
 Instead of including credentials directly within a Dapr component file, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is preferred approach and is a recommended best practice especially in production environments. 
 
-For more information read [Referencing Secret Stores in Components](./component-secrets.md)
+For more information read [Referencing Secret Stores in Components]({{< ref component-secrets.md >}})
 
 
 ## Using secrets in your application

@@ -69,7 +69,7 @@ In these scenarios Dapr does some of the work for you and you need to either cre
     
     In this case, when service A first calls service B, Dapr generates the trace headers in service A, and these trace headers are then propagated to service B. These trace headers are returned in the response from service B as part of response headers. However you need to propagate the returned trace context to the next services, service C and Service D, as Dapr does not know you want to reuse the same header.
 
-     To understand how to extract the trace headers from a response and add the trace headers into a request, see the [how to use trace context](../../howto/use-w3c-tracecontext/README.md) article.
+     To understand how to extract the trace headers from a response and add the trace headers into a request, see the [how to use trace context]({{< ref w3c-tracing >}}) article.
 
 2. You have chosen to generate your own trace context headers. 
 This is much more unusual. There may be occassions where you specifically chose to add W3C trace headers into a service call, for example if you have an existing application that does not currently use Dapr. In this case Dapr still propagates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done : 
@@ -105,8 +105,7 @@ The tracestate fields are detailed [here](https://www.w3.org/TR/trace-context/#t
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
 ## Related Links
-* [How To set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
-* [How To set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
-* [How to use Trace Context](../../howto/use-w3c-tracecontext)
+* [How To set up Application Insights for distributed tracing]({{< ref azure-monitor.md >}})
+* [How To set up Zipkin for distributed tracing]({{< ref zipkin.md >}})
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
 * [Observability sample](https://github.com/dapr/quickstarts/tree/master/observability)

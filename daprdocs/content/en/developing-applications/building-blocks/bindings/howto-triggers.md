@@ -12,11 +12,9 @@ This is ideal for event-driven processing, data pipelines or just generally reac
 
 Dapr bindings allow you to:
 
-* Receive events without including specific SDKs or libraries
-* Replace bindings without changing your code
-* Focus on business logic and not the event resource implementation
-
-For more info on bindings, read [this](../../concepts/bindings/README.md) link.
+- Receive events without including specific SDKs or libraries
+- Replace bindings without changing your code
+- Focus on business logic and not the event resource implementation
 
 For a complete sample showing bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
@@ -24,7 +22,7 @@ For a complete sample showing bindings, visit this [link](https://github.com/dap
 
 An input binding represents an event resource that Dapr uses to read events from and push to your application.
 
-For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of the different binding specs [here](../../reference/specs/bindings/README.md).
+For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref supported-bindings >}}).
 
 Create the following YAML file, named binding.yaml, and save this to a `components` sub-folder in your application directory.
 (Use the `--components-path` flag with `dapr run` to point to your custom components dir)
