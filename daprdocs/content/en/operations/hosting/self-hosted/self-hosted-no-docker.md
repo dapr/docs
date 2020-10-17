@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Run Dapr in self-hosted mode without Docker"
+title: "How-To: Run Dapr in self-hosted mode without Docker"
 linkTitle: "Run without Docker"
 weight: 30000
 description: "How to deploy and run Dapr in self-hosted mode without Docker installed on the local machine"
@@ -10,7 +10,7 @@ This article provides guidance on running Dapr in self-hosted mode without Docke
 
 ## Prerequisites
 
-- [Dapr CLI](../../getting-started/environment-setup.md#installing-dapr-cli)
+- [Dapr CLI]({{< ref "install-dapr.md#installing-dapr-cli" >}})
 
 ## Initialize Dapr without containers
 
@@ -29,7 +29,7 @@ See [this sample](https://github.com/dapr/samples/tree/master/hello-dapr-slim) f
 
 ## Enabling state management or pub/sub
 
-See configuring Redis in self hosted mode [without docker](../../howto/configure-redis/README.md#Self-Hosted-Mode-without-Containers) to enable a local state store or pub/sub broker for messaging. 
+See configuring Redis in self hosted mode [without docker](https://redis.io/topics/quickstart) to enable a local state store or pub/sub broker for messaging. 
 
 ## Enabling actors
 

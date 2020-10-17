@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Observe metrics with Grafana"
+title: "How-To: Observe metrics with Grafana"
 linkTitle: "Grafana"
 weight: 5000
 description: "How to view Dapr metrics in a Grafana dashboard."
@@ -130,7 +130,7 @@ You can find `grafana-actor-dashboard.json`, `grafana-sidecar-dashboard.json` an
 
 ## References
 
-* [Set up Prometheus and Grafana](./setup-prometheus-grafana.md)
+* [Set up Prometheus and Grafana]({{< ref grafana.md >}})
 * [Prometheus Installation](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
 * [Prometheus Kubernetes Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator)

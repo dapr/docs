@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Configure Dapr to use gRPC"
+title: "How-To: Configure Dapr to use gRPC"
 linkTitle: "Use gRPC interface"
 weight: 5000
 description: "How to configure Dapr to use gRPC for low-latency, high performance scenarios"

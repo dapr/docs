@@ -113,7 +113,7 @@ That's it! Now go to the [Configuration](#configuration) section
 
 ## Configuration
 
-Dapr can use Redis as a `statestore` component for state persistence (`state.redis`) or as a `pubsub` component (`pubsub.redis`). The following yaml files demonstrates how to define each component using either a secretKey reference (which is preferred) or a plain text password. **Note:** In a production-grade application, follow [secret management]({{<ref "secrets-overview.md">}}) instructions to securely manage your secrets.
+Dapr can use Redis as a `statestore` component for state persistence (`state.redis`) or as a `pubsub` component (`pubsub.redis`). The following yaml files demonstrates how to define each component using either a secretKey reference (which is preferred) or a plain text password. **Note:** In a production-grade application, follow [secret management]({{<ref secrets-overview.md>}}) instructions to securely manage your secrets.
 
 ### Configuring Redis for state persistence using a secret key reference (preferred)
 

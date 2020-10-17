@@ -16,7 +16,7 @@ Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&
 
 An output binding represents a resource that Dapr will use invoke and send messages to.
 
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here](../../concepts/bindings/README.md).
+For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref bindings >}}).
 
 Create the following YAML file, named binding.yaml, and save this to a `components` sub-folder in your application directory.
 (Use the `--components-path` flag with `dapr run` to point to your custom components dir)
@@ -56,11 +56,11 @@ As seen above, you invoked the `/binding` endpoint with the name of the binding 
 The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
 
 You'll also notice that there's an `operation` field that tells the binding what you need it to do.
-You can check [here](../../reference/specs/bindings) which operations are supported for every output binding.
+You can check [here]({{< ref bindings >}}) which operations are supported for every output binding.
 
 
 ## References
 
-* Binding [API](https://github.com/dapr/docs/blob/master/reference/api/bindings_api.md)
-* Binding [Components](https://github.com/dapr/docs/tree/master/concepts/bindings)
-* Binding [Detailed specifications](https://github.com/dapr/docs/tree/master/reference/specs/bindings) 
+- [Binding API]({{< ref bindings_api.md >}})
+- [Binding components]({{< ref bindings >}})
+- [Binding detailed specifications]({{< ref supported-bindings >}}) 

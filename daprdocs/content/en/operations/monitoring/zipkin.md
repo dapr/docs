@@ -1,16 +1,11 @@
 ---
 type: docs
-title: "Set up Zipkin for distributed tracing"
+title: "How-To: Set up Zipkin for distributed tracing"
 linkTitle: "Zipkin"
 weight: 3000
 description: "Set up Zipkin for distributed tracing"
 type: docs
 ---
-
-- [Configure self hosted mode](#Configure-self-hosted-mode)
-- [Configure Kubernetes](#Configure-Kubernetes)
-- [Tracing configuration](#Tracing-Configuration)
-
 
 ## Configure self hosted mode
 
@@ -139,10 +134,9 @@ To view traces, connect to the Zipkin Service and open the UI:
 kubectl port-forward svc/zipkin 9411:9411
 ```
 
-In your browser, go to ```http://localhost:9411``` and you will see the Zipkin UI.
+In your browser, go to `http://localhost:9411` and you will see the Zipkin UI.
 
-![zipkin](../../images/zipkin_ui.png)
+![zipkin](/images/zipkin_ui.png)
 
 ## References
-
-* [How-To: Use W3C Trace Context for distributed tracing](../../howto/use-w3c-tracecontext/README.md)
+- [W3C distributed tracing]({{< ref w3c-tracing >}})

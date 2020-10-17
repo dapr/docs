@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Observe metrics with Prometheus"
+title: "How-To: Observe metrics with Prometheus"
 linkTitle: "Prometheus"
 weight: 4000
 description: "Use Prometheus to collect time-series data relating to the execution of the Dapr runtime itself"

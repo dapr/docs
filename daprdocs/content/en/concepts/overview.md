@@ -72,7 +72,7 @@ To make using Dapr more natural for different languages, it also includes langua
 - **[RUST SDK](https://github.com/dapr/rust-sdk)**
 - **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
 
-> Note: Dapr is language agnostic and provides a [RESTful HTTP API](/reference/api/) in addition to the protobuf clients.
+> Note: Dapr is language agnostic and provides a [RESTful HTTP API]({{< ref api >}}) in addition to the protobuf clients.
 
 ### Developer frameworks
 Dapr can be used from  any developer framework. Here are some that have been integrated with Dapr.
@@ -85,7 +85,7 @@ Dapr can be used from  any developer framework. Here are some that have been int
 Dapr integrates easily with Python [Flask](https://pypi.org/project/Flask/) and node [Express](http://expressjs.com/). See examples in the [Dapr quickstarts](https://github.com/dapr/quickstarts).
 
 #### Actors
-Dapr SDKs support for [virtual actors]({{<ref "actors-background.md">}}) which are stateful objects that make concurrency simple, have method and state encapsulation, and are designed for scalable, distributed applications.
+Dapr SDKs support for [virtual actors]({{< ref actors >}}) which are stateful objects that make concurrency simple, have method and state encapsulation, and are designed for scalable, distributed applications.
 
 #### Azure Functions
 Dapr integrates with the Azure Functions runtime via an extension that lets a function seamlessly interact with Dapr. Azure Functions provides an event-driven programming model and Dapr provides cloud-native building blocks. With this  extension, you can bring both together for serverless and event-driven apps. For more information read
@@ -104,17 +104,17 @@ The [monitoring tools support](/operations/monitoring/) provides deeper visibili
 
 ### Running Dapr on a local developer machine in self hosted mode
 
-Dapr can be configured to run on your local developer machine in [self hosted mode](/operations/hosting/self-hosted/). Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
+Dapr can be configured to run on your local developer machine in [self-hosted mode]({{< ref self-hosted >}}). Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
 
-You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine.
+You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples]({{< ref getting-started >}}). 
 
 <img src="/images/overview_standalone.png" width=800>
 
 ### Running Dapr in Kubernetes mode
 
-Dapr can be configured to run on any [Kubernetes cluster](/operations/hosting/kubernetes/). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
+Dapr can be configured to run on any [Kubernetes cluster]({{< ref kubernetes >}}). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
 
-The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview](../concepts/security/README.md#dapr-to-dapr-communication)
+The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview]({{< ref "security-concept.md#dapr-to-dapr-communication" >}})
 
 <img src="/images/overview_kubernetes.png" width=800>
 

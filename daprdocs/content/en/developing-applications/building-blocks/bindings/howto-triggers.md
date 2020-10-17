@@ -24,7 +24,7 @@ For a quickstart sample showing bindings, visit this [link](https://github.com/d
 
 An input binding represents an event resource that Dapr uses to read events from and push to your application.
 
-For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of the different binding specs [here](/operations/components/setup-bindings/).
+For the purpose of this HowTo, we'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref supported-bindings >}}).
 
 Create the following YAML file, named binding.yaml, and save this to a `components` sub-folder in your application directory.
 (Use the `--components-path` flag with `dapr run` to point to your custom components dir)

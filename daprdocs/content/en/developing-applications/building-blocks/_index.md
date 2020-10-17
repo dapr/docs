@@ -6,6 +6,6 @@ weight: 10
 description: "Dapr capabilities that solve common development challenges for distributed applications"
 ---
 
-Get a high-level [overview of Dapr building blocks]({{<ref "building-blocks-concept.md">}}) in the **Concepts** section.
+Get a high-level [overview of Dapr building blocks]({{< ref building-blocks-concept >}}) in the **Concepts** section.
 
 <img src="/images/buildingblocks-overview.png" alt="Diagram showing the different Dapr building blocks" width=1000>

@@ -15,7 +15,7 @@ The observability capabilities enable users to monitor the Dapr system services,
 
     You can use distributed tracing to help debug and optimize application code. Distributed tracing contains trace spans between the Dapr runtime, Dapr system services, and user apps across process, nodes, network, and security boundaries. It provides a detailed understanding of service invocations (call flows) and service dependencies.
 
-    Dapr uses [W3C tracing context for distributed tracing]({{<ref "w3c-tracing-overview.md">}})
+    Dapr uses [W3C tracing context for distributed tracing]({{<ref w3c-tracing>}})
 
     It is generally recommended to run Dapr in production with tracing.
 * **[Metrics]({{<ref "metrics.md">}})**: are the series of measured values and counts that are collected and stored over time. Dapr metrics provide monitoring and understanding of the behavior of Dapr system services and user apps. For example, the service metrics between Dapr sidecars and user apps show call latency, traffic failures, error rates of requests etc. Dapr system services metrics show side car injection failures, health of the system services including CPU usage, number of actor placement made etc.  

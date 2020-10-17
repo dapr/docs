@@ -7,13 +7,13 @@ description: Dapr sidecar health checks.
 ---
 
 Dapr provides a way to determine it's health using an HTTP /healthz endpoint.
-With this endpoint, the Dapr process, or sidecar, can be probed for its health and hence determine its readiness and liveness. See [health API ](../../reference/api/health_api.md)
+With this endpoint, the Dapr process, or sidecar, can be probed for its health and hence determine its readiness and liveness. See [health API ]({{< ref health_api.md >}})
 
 The Dapr `/healthz` endpoint can be used by health probes from the application hosting platform. This topic describes how Dapr integrates with probes from different hosting platforms. 
 
 As a user, when deploying Dapr to a hosting platform (for example Kubernetes), the Dapr health endpoint is automatically configured for you. There is nothing you need to configure. 
 
-Note: Dapr actors also have a health API endpoint where Dapr probes the application for a response to a signal from Dapr that the actor application is healthy and running. See [actor health API](../../reference/api/actors_api.md#health-check)
+Note: Dapr actors also have a health API endpoint where Dapr probes the application for a response to a signal from Dapr that the actor application is healthy and running. See [actor health API]({{< ref "actors_api.md#health-check" >}})
 
 ## Health endpoint: Integration with Kubernetes
 
@@ -84,6 +84,6 @@ readinessProbe:
 
 For more information refer to;
 
-- [ Endpoint health API](../../reference/api/health_api.md)
-- [Actor health API](../../reference/api/actors_api.md#health-check)
+- [ Endpoint health API]({{< ref health_api.md >}})
+- [Actor health API]({{< ref "actors_api.md#health-check" >}})
 - [Kubernetes probe configuration parameters](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)

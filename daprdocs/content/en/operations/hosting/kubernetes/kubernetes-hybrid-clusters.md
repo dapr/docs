@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Deploy to hybrid Linux/Windows Kubernetes clusters"
+title: "How-To: Deploy to hybrid Linux/Windows Kubernetes clusters"
 linkTitle: "Hybrid clusters"
 weight: 20000
 description: "How to run Dapr apps on kubernetes clusters with windows nodes"

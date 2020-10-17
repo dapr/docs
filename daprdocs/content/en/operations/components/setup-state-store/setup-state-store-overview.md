@@ -4,12 +4,9 @@ title: "Overview"
 linkTitle: "Overview"
 description: "Guidance on set up for state management components"
 weight: 10000
-type: docs
 ---
 
-Dapr integrates with existing databases to provide apps with state management capabilities for CRUD operations, transactions and more.
-
-Dapr supports the configuration of multiple, named, state store components *per application*.
+Dapr integrates with existing databases to provide apps with state management capabilities for CRUD operations, transactions and more. It also supports the configuration of multiple, named, state store components *per application*.
 
 State stores are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 
@@ -32,43 +29,11 @@ spec:
 ```
 
 The type of database is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a [secret store](../../concepts/secrets/README.md).
+Even though you can put plain text secrets in there, it is recommended you use a [secret store]({{< ref component-secrets.md >}}).
 
-## Running locally
+Visit [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to configure a state store component.
 
-When running locally with the Dapr CLI, a component file for a Redis state store will be automatically created in a `components` directory in your current working directory.
-
-You can make changes to this file the way you see fit, whether to change connection values or replace it with a different store.
-
-## Running in Kubernetes
-
-Dapr uses a Kubernetes Operator to update the sidecars running in the cluster with different components.
-To setup a state store in Kubernetes, use `kubectl` to apply the component file:
-
-```bash
-kubectl apply -f statestore.yaml
-```
- ## Related Topics
-*  [State management concepts](../../concepts/state-management/README.md)
-* [State management API specification](../../reference/api/state_api.md)
-
-## Reference
-
-* [Setup Aerospike](./setup-aerospike.md)
-* [Setup Cassandra](./setup-cassandra.md)
-* [Setup Cloudstate](./setup-cloudstate.md)
-* [Setup Couchbase](./setup-couchbase.md)
-* [Setup etcd](./setup-etcd.md)
-* [Setup Hashicorp Consul](./setup-consul.md)
-* [Setup Hazelcast](./setup-hazelcast.md)
-* [Setup Memcached](./setup-memcached.md)
-* [Setup MongoDB](./setup-mongodb.md)
-* [Setup PostgreSQL](./setup-postgresql.md)
-* [Setup Redis](./setup-redis.md)
-* [Setup Zookeeper](./setup-zookeeper.md)
-* [Setup Azure CosmosDB](./setup-azure-cosmosdb.md)
-* [Setup Azure SQL Server](./setup-sqlserver.md)
-* [Setup Azure Table Storage](./setup-azure-tablestorage.md)
-* [Setup Azure Blob Storage](./setup-azure-blobstorage.md)
-* [Setup Google Cloud Firestore (Datastore mode)](./setup-firestore.md)
-* [Supported State Stores](./supported-state-stores.md)
+## Related topics
+- [Component concept]({{< ref components-concept.md >}})
+- [State management overview]({{< ref state-management >}})
+- [State management API specification]({{< ref state_api.md >}})

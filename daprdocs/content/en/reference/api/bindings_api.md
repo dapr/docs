@@ -158,7 +158,7 @@ If `concurrency` is not set, it is sent out sequential (the example below shows 
 This endpoint lets you invoke a Dapr output binding.
 Dapr bindings support various operations, such as `create`.
 
-See the [different specs](../specs/bindings) on each binding to see the list of supported operations.
+See the [different specs]({{< ref supported-bindings >}}) on each binding to see the list of supported operations.
 
 ### HTTP Request
 

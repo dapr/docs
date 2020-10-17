@@ -125,13 +125,13 @@ Dapr installs the following pods:
 
 You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 
-- [Setup Minikube cluster]({{<ref "setup-minikube.md">}})
-- [Setup Azure Kubernetes Service cluster]({{<ref "setup-aks.md">}})
+- [Setup Minikube Cluster]({{< ref setup-minikube.md >}})
+- [Setup Azure Kubernetes Service Cluster]({{< ref setup-aks.md >}})
 - [Setup Google Cloud Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
 > **Note:** Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes, but most users should not need to.
-> For more information see [Deploying to a hybrid Linux/Windows Kubernetes cluster]({{<ref "kubernetes-hybrid-clusters.md">}})
+> For more information see [Deploying to a hybrid Linux/Windows Kubernetes cluster]({{<ref kubernetes-hybrid-clusters>}})
 
 ### Using the Dapr CLI
 
@@ -233,4 +233,4 @@ helm uninstall dapr -n dapr-system
 > **Note:** See [here](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
 
 ### Installing Redis on Kubernetes 
-To install Redis as a state store or as a pub/sub message bus into your Kubernetes cluster. See [Configure Redis for state management or pub/sub]({{<ref "configure-redis.md">}})
+To install Redis as a state store or as a pub/sub message bus into your Kubernetes cluster. See [Configure Redis for state management or pub/sub]({{< ref setup-redis-pubsub.md >}})
