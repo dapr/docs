@@ -99,7 +99,7 @@ traceContext := span.SpanContext()
 traceContextBinary := propagation.Binary(traceContext)
  ```
  
-You can then pass the trace context through [gRPC metadata]("google.golang.org/grpc/metadata") through `grpc-trace-bin` header.
+You can then pass the trace context through [gRPC metadata](https://google.golang.org/grpc/metadata) through `grpc-trace-bin` header.
 
 ```go
 ctx = metadata.AppendToOutgoingContext(ctx, "grpc-trace-bin", string(traceContextBinary))
