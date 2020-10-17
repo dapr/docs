@@ -15,7 +15,7 @@ This frees developers from difficult state coordination, conflict resolution and
 A state store component represents a resource that Dapr uses to communicate with a database.
 For the purpose of this guide, we'll use a Redis state store.
 
-See a list of supported state stores [here](../setup-state-store/supported-state-stores.md)
+See a list of supported state stores [here]({{<ref "supported-state-stores.md">}}).
 
 ### Using the Dapr CLI
 
@@ -24,7 +24,7 @@ To change the state store being used, replace the YAML under `/components` with 
 
 ### Kubernetes
 
-See the instructions [here](../setup-state-store) on how to setup different state stores on Kubernetes.
+See the instructions [here]({{<ref "setup-state-store-overview.md">}}) on how to setup different state stores on Kubernetes.
 
 ## Strong and Eventual consistency
 

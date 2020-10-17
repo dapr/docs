@@ -30,7 +30,9 @@ The diagram below is an overview of how Dapr's service invocation works.
 1. Service A makes an http/gRPC call targeting Service B. The call goes to the local Dapr sidecar.  
 2. Dapr discovers Service B's location using the [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) which is running on the given [hosting platform]({{< ref "hosting" >}}).
 3. Dapr forwards the message to Service B's Dapr sidecar 
-    * Note: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC
+
+    **Note**: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC
+
 4. Service B's Dapr sidecar forwards the request to the specified endpoint (or method) on Service B.  Service B then runs its business logic code.
 5. Service B sends a response to Service A.  The response goes to Service B's sidecar.
 6. Dapr forwards the response to Service A's Dapr sidecar.
@@ -53,7 +55,9 @@ For example, the following string contains the app ID `nodeapp` in addition to t
 localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
 ```
 
-This is especially useful in cross namespace calls in a Kubernetes cluster. Watch this [video](https://youtu.be/LYYV_jouEuA?t=495) for a demo on how to use namespaces with service invocation.
+This is especially useful in cross namespace calls in a Kubernetes cluster. Watch this video for a demo on how to use namespaces with service invocation.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LYYV_jouEuA?start=497" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Retries
 
@@ -92,7 +96,7 @@ For more information read the [observability]({{< ref observability-concept.md >
 Dapr can run on any [hosting platform]({{< ref hosting >}}). For the supported hosting platforms this means they have a [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) developed for them that enables service discovery. For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster.
 
 ## Example
-Following the above call sequence, suppose you have the applications as described in the [hello world sample](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
+Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
 
 The diagram below shows sequence 1-7 again on a local machine showing the API call:
 
@@ -111,5 +115,5 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 * Follow these guide on:
     * [How-to: Get started with HTTP service invocation]({{< ref howto-invoke-discover-services.md >}})
     * [How-to: Get started with Dapr and gRPC]({{< ref grpc >}})
-* Try out the [hello world sample](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or visit the samples in each of the [Dapr SDKs]({{< ref sdks >}})
+* Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or visit the samples in each of the [Dapr SDKs]({{< ref sdks >}})
 * Read the [service invocation API specification]({{< ref service_invocation_api.md >}})

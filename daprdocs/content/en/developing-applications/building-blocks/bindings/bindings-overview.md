@@ -45,7 +45,7 @@ In order to invoke an output binding:
 1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
 2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload
 
-Read the [Send events to external systems using Output Bindings]({{< ref howto-bindings.md >}}) page to get started with output bindings.
+Read the [Send events to external systems using output bindings]({{< ref howto-bindings.md >}}) page to get started with output bindings.
 
 ## Supported bindings
 
