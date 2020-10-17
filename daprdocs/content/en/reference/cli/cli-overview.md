@@ -50,21 +50,21 @@ Use "dapr [command] --help" for more information about a command.
 
 You can learn more about each Dapr command from the links below.
 
- - [`dapr components`](dapr-components.md)
- - [`dapr configurations`](dapr-configurations.md)
- - [`dapr help`](dapr-help.md)
- - [`dapr init`](dapr-init.md)
- - [`dapr invoke`](dapr-invoke.md)
- - [`dapr invokeGet`](dapr-invokeGet.md)
- - [`dapr invokePost`](dapr-invokePost.md)
- - [`dapr list`](dapr-list.md)
- - [`dapr logs`](dapr-logs.md)
- - [`dapr mtls`](dapr-mtls.md)
- - [`dapr publish`](dapr-publish.md)
- - [`dapr run`](dapr-run.md)
- - [`dapr status`](dapr-status.md)
- - [`dapr stop`](dapr-stop.md)
- - [`dapr uninstall`](dapr-uninstall.md)
+ - [`dapr components`]({{< ref dapr-components.md >}})
+ - [`dapr configurations`]({{< ref dapr-configurations.md >}})
+ - [`dapr help`]({{< ref dapr-help.md >}})
+ - [`dapr init`]({{< ref dapr-init.md >}})
+ - [`dapr invoke`]({{< ref dapr-invoke.md >}})
+ - [`dapr invokeGet`]({{< ref dapr-invokeGet.md >}})
+ - [`dapr invokePost`]({{< ref dapr-invokePost.md >}})
+ - [`dapr list`]({{< ref dapr-list.md >}})
+ - [`dapr logs`]({{< ref dapr-logs.md >}})
+ - [`dapr mtls`]({{< ref dapr-mtls.md >}})
+ - [`dapr publish`]({{< ref dapr-publish.md >}})
+ - [`dapr run`]({{< ref dapr-run.md >}})
+ - [`dapr status`]({{< ref dapr-status.md >}})
+ - [`dapr stop`]({{< ref dapr-stop.md >}})
+ - [`dapr uninstall`]({{< ref dapr-uninstall.md >}})
 
 ## Environment Variables
 
