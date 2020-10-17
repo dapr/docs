@@ -24,7 +24,7 @@ To change the state store being used, replace the YAML under `/components` with 
 
 ### Kubernetes
 
-See the instructions [here]({{< ref setup-state-store >}}) on how to setup different state stores on Kubernetes.
+See the instructions [here]({{<ref setup-state-store-overview>}}) on how to setup different state stores on Kubernetes.
 
 ## Strong and Eventual consistency
 

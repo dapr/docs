@@ -31,13 +31,13 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 | Building Block | Description |
 |----------------|-------------|
-| **[Service Invocation]({{< ref service-invocation >}})** | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
-|  **[State Management]({{< ref state-management >}})** | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
-| **[Publish and Subscribe Messaging]({{< ref pubsub >}})** | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
-| **[Resource Bindings]({{< ref bindings >}})** | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
-| **[Actors]({{< ref actors >}})** | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
-| **[Observability]({{< ref observability >}})** | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
-| **[Secrets]({{< ref secrets >}})** | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
+| [**Service-to-service invocation**]({{<ref "service-invocation-overview.md">}})  | Resilient service-to-service invocation enables method calls, including retries, on remote services wherever they are located in the supported hosting environment.
+|  [**State management**]({{<ref "state-management-overview.md">}}) | With state management for storing key/value pairs, long running, highly available, stateful services can be easily written alongside stateless services in your application. The state store is pluggable and can include Azure CosmosDB, Azure SQL Server, PostgreSQL, AWS DynamoDB or Redis among others.
+| [**Publish and subscribe**]({{<ref "pubsub-overview.md">}}) | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
+| [**Resource bindings**]({{<ref "bindings-overview.md">}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
+| [**Actors**]({{<ref "actors-overview.md">}}) | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
+|  [**Observability**]({{<ref "observability-concept.md">}}) | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
+| [**Secrets**]({{<ref "secrets-overview.md">}}) | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 
 ## Sidecar architecture
 
@@ -82,7 +82,7 @@ Dapr can be used from  any developer framework. Here are some that have been int
  
  In the Dapr [Java SDK](https://github.com/dapr/java-sdk) you can find [Spring Boot](https://spring.io/) integration.
  
-Dapr integrates easily with Python [Flask](https://pypi.org/project/Flask/) and node [Express](http://expressjs.com/), which you can find in the [getting started samples](https://github.com/dapr/docs/tree/master/getting-started)
+Dapr integrates easily with Python [Flask](https://pypi.org/project/Flask/) and node [Express](http://expressjs.com/). See examples in the [Dapr quickstarts](https://github.com/dapr/quickstarts).
 
 #### Actors
 Dapr SDKs support for [virtual actors]({{< ref actors >}}) which are stateful objects that make concurrency simple, have method and state encapsulation, and are designed for scalable, distributed applications.
@@ -96,9 +96,9 @@ To enable developers to easily build workflow applications that use Dapr’s cap
 [cloud-native workflows using Dapr and Logic Apps](https://cloudblogs.microsoft.com/opensource/2020/05/26/announcing-cloud-native-workflows-dapr-logic-apps/) and visit the [Dapr workflow](https://github.com/dapr/workflows) repo to try out the samples.
 
 ## Designed for Operations
-Dapr is designed for operations. The [services dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs and more for the Dapr sidecars.
+Dapr is designed for [operations](/operations/). The [services dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs and more for the Dapr sidecars.
 
-The [monitoring]({{< ref monitoring >}}) provides deeper visibility into the Dapr system services and side-cars and the [observability]({{< ref observability >}}) of Dapr provide insights into your application such as tracing and metrics.
+The [monitoring tools support](/operations/monitoring/) provides deeper visibility into the Dapr system services and side-cars and the [observability capabilities]({{<ref "observability-concept.md">}}) of Dapr provide insights into your application such as tracing and metrics.
 
 ## Run anywhere
 
@@ -118,4 +118,4 @@ The `dapr-sentry` service is a certificate authority that enables mutual TLS bet
 
 <img src="/images/overview_kubernetes.png" width=800>
 
-Deploying and running a Dapr enabled application into your Kubernetes cluster is a simple as adding a few annotations to the deployment schemes. You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/deploy) in the Kubernetes getting started sample. Try this out with the [Kubernetes getting started sample](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)
+Deploying and running a Dapr enabled application into your Kubernetes cluster is a simple as adding a few annotations to the deployment schemes. You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/deploy) in the Kubernetes getting started sample. Try this out with the [Kubernetes quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes).

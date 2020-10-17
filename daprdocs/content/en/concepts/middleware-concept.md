@@ -8,7 +8,7 @@ description: "Custom processing pipelines of chained middleware components"
 
 Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. A request goes through all defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
 
-<img src="/images/middleware.png" width=800>
+<img src="/images/middleware.png" width=400>
 
 ## Customize processing pipeline
 
@@ -58,9 +58,9 @@ func GetHandler(metadata Metadata) fasthttp.RequestHandler {
 ```
 
 ## Adding new middleware components
-Your middleware component can be contributed to the https://github.com/dapr/components-contrib repository, under the */middleware* folder. 
+Your middleware component can be contributed to the [components-contrib repository](https://github.com/dapr/components-contrib/tree/master/middleware). 
 
-Then submit another pull request against the https://github.com/dapr/dapr repository to register the new middleware type. You'll need to modify the **Load()** method under https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/registry.go to register your middleware using the **Register** method.
+Then submit another pull request against the [Dapr runtime repository](https://github.com/dapr/dapr) to register the new middleware type. You'll need to modify the **Load()** method in [registry.go]( https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/registry.go) to register your middleware using the **Register** method.
 
 ## Next steps
 * [How-To: Configure API authorization with OAuth({{< ref oauth.md >}})

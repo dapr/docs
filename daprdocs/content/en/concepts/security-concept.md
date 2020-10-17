@@ -73,11 +73,11 @@ The diagram below shows secure communication between the Dapr sidecar and the Da
 
 ## Component namespace scopes and secrets
 
-Dapr components are namespaced. That means a Dapr runtime sidecar instance can only access the components that have been deployed to the same namespace. See the [components scope topic]({{< ref component-scopes.md >}}) for more details.
+Dapr components are namespaced. That means a Dapr runtime sidecar instance can only access the components that have been deployed to the same namespace. See the [components scope documentation]({{<ref "component-scopes.md">}}) for more details.
 
-Dapr components uses Dapr's built-in secret management capability to manage secrets. See the [secret topic]({{< ref secrets >}}) for more details.
+Dapr components uses Dapr's built-in secret management capability to manage secrets. See the [secret store overview]({{<ref "secrets-overview.md">}}) for more details.
 
-In addition, Dapr offers application-level scoping for components by allowing users to specify which applications can consume given components.For more information about application level scoping, see [here]({{< ref "component-scopes.md#application-access-to-components-with-scopes" >}})
+In addition, Dapr offers application-level scoping for components by allowing users to specify which applications can consume given components.For more information about application level scoping, see [here]({{<ref "component-scopes.md#application-access-to-components-with-scopes">}}).
 
 ## Network security
 
