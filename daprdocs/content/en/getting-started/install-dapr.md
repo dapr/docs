@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Setup Dapr environment"
-linkTitle: "How-To: Setup environment"
+title: "How-To: Install Dapr into your environment"
+linkTitle: "How-To: Install Dapr"
 weight: 20
-description: "Setup Dapr in your preferred environment"
+description: "Install Dapr in your preferred environment"
 ---
 
 This guide will get you up and running to evaluate Dapr and develop applications. Visit [this page]({{< ref hosting >}}) for a full list of supported platforms with instructions and best practices on running in production.
