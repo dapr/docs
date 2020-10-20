@@ -11,10 +11,6 @@ Dapr integrates with Application Insights through OpenTelemetry's default export
 
 > Note: The local forwarder is still under preview, but being deprecated. The Application Insights team recommends using [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector) (which is in alpha state) for the future so we're working on moving from local forwarder to [Opentelemetry collector](https://github.com/open-telemetry/opentelemetry-collector).
 
-
- - [How to configure distributed tracing with Application insights](#How-to-configure-distributed-tracing-with-Application-insights)
- - [Tracing configuration](#Tracing-configuration)
-
 ## How to configure distributed tracing with Application insights
 
 The following steps show you how to configure Dapr to send distributed tracing data to Application insights.
@@ -34,184 +30,190 @@ The following steps show you how to configure Dapr to send distributed tracing d
 
 ### Setup the Local Forwarder
 
-#### Self hosted environment
-This is for running the local forwarder on your machine.
+{{< tabs "Self-Hosted" Kubernetes>}}
 
+{{% codetab %}}
 1. Run the local fowarder
 
-```bash
-docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678 daprio/dapr-localforwarder:latest
-```
+    ```bash
+    docker run -e APPINSIGHTS_INSTRUMENTATIONKEY=<Your Instrumentation Key> -e APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY=<Your API Key> -d -p 55678:55678     daprio/dapr-localforwarder:latest
+    ```
+    
+{{% alert title="Note" color="primary" %}}
+[dapr-localforwarder](https://github.com/dapr/ApplicationInsights-LocalForwarder) is the forked version of  [ApplicationInsights Localforwarder](https://github.com/microsoft/ApplicationInsights-LocalForwarder/), that includes the minor changes for Dapr. We're working on migrating to [opentelemetry-sdk and opentelemetry collector](https://opentelemetry.io/).
+{{% /alert %}}
+    
+2. Create the following YAML files. Copy the native.yaml component file and tracing.yaml configuration file  to the *components/* sub-folder under the same folder where you run your application. 
 
-> Note: [dapr-localforwarder](https://github.com/dapr/ApplicationInsights-LocalForwarder) is the forked version of  [ApplicationInsights Localforwarder](https://github.com/microsoft/ApplicationInsights-LocalForwarder/), that includes the minor changes for Dapr. We're working on migrating to [opentelemetry-sdk and opentelemetry collector](https://opentelemetry.io/).
+    - native.yaml component
+        ```yaml
+        apiVersion: dapr.io/v1alpha1
+        kind: Component
+        metadata:
+          name: native
+          namespace: default
+        spec:
+          type: exporters.native
+          metadata:
+          - name: enabled
+            value: "true"
+          - name: agentEndpoint
+            value: "localhost:55678"
+        ```
 
-1. Create the following YAML files. Copy the native.yaml component file and tracing.yaml configuration file  to the *components/* sub-folder under the same folder where you run your application. 
+    - tracing.yaml configuration
 
-* native.yaml component
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: native
-  namespace: default
-spec:
-  type: exporters.native
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: agentEndpoint
-    value: "localhost:55678"
-```
-
-* tracing.yaml configuration
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: tracing
-  namespace: default
-spec:
-  tracing:
-    samplingRate: "1"
-```
+        ```yaml
+        apiVersion: dapr.io/v1alpha1
+        kind: Configuration
+        metadata:
+          name: tracing
+          namespace: default
+        spec:
+          tracing:
+            samplingRate: "1"
+        ```
 
 3. When running in the local self hosted mode, you need to launch Dapr with the `--config` parameter:
 
-```bash
-dapr run --app-id mynode --app-port 3000 --config ./components/tracing.yaml node app.js
-```
+    ```bash
+    dapr run --app-id mynode --app-port 3000 --config ./components/tracing.yaml node app.js
+    ```
+{{% /codetab %}}
 
-#### Kubernetes environment
-
+{{% codetab %}}
 1. Create a file named `dapr-localforwarder.yaml` with the following contents:
 
-```yaml
-kind: Service
-apiVersion: v1
-metadata:
-  name: dapr-localforwarder
-  namespace: default
-  labels:
-    app: dapr-localforwarder
-spec:
-  selector:
-    app: dapr-localforwarder
-  ports:
-  - protocol: TCP
-    port: 55678
-    targetPort: 55678
-  type: ClusterIP
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: dapr-localforwarder
-  namespace: default
-  labels:
-    app: dapr-localforwarder
-spec:
-  replicas: 3 # Adjust replica # based on your telemetry volume
-  selector:
-    matchLabels:
-      app: dapr-localforwarder
-  template:
+    ```yaml
+    kind: Service
+    apiVersion: v1
     metadata:
+      name: dapr-localforwarder
+      namespace: default
       labels:
         app: dapr-localforwarder
     spec:
-      containers:
-      - name: dapr-localforwarder
-        image: docker.io/daprio/dapr-localforwarder:latest
-        ports:
-        - containerPort: 55678
-        imagePullPolicy: Always
-        env:
-          - name: APPINSIGHTS_INSTRUMENTATIONKEY
-            value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
-          - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
-            value: <APPINSIGHT API KEY> # Replace with your generated api key
-```
+      selector:
+        app: dapr-localforwarder
+      ports:
+      - protocol: TCP
+        port: 55678
+        targetPort: 55678
+      type: ClusterIP
+    ---
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: dapr-localforwarder
+      namespace: default
+      labels:
+        app: dapr-localforwarder
+    spec:
+      replicas: 3 # Adjust replica # based on your telemetry volume
+      selector:
+        matchLabels:
+          app: dapr-localforwarder
+      template:
+        metadata:
+          labels:
+            app: dapr-localforwarder
+        spec:
+          containers:
+          - name: dapr-localforwarder
+            image: docker.io/daprio/dapr-localforwarder:latest
+            ports:
+            - containerPort: 55678
+            imagePullPolicy: Always
+            env:
+              - name: APPINSIGHTS_INSTRUMENTATIONKEY
+                value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
+              - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+                value: <APPINSIGHT API KEY> # Replace with your generated api key
+    ```
 
 2. Replace `<APPINSIGHT INSTRUMENTATIONKEY>` with your Instrumentation Key and `<APPINSIGHT API KEY>` with the generated key in the file
-
-```yaml
-          - name: APPINSIGHTS_INSTRUMENTATIONKEY
-            value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
-          - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
-            value: <APPINSIGHT API KEY> # Replace with your generated api key
-```
+    
+    ```yaml
+              - name: APPINSIGHTS_INSTRUMENTATIONKEY
+                value: <APPINSIGHT INSTRUMENTATIONKEY> # Replace with your ikey
+              - name: APPINSIGHTS_LIVEMETRICSSTREAMAUTHENTICATIONAPIKEY
+                value: <APPINSIGHT API KEY> # Replace with your generated api key
+    ```
 
 3. Deploy dapr-localfowarder.yaml
 
-```bash
-kubectl apply -f ./dapr-localforwarder.yaml
-```
+    ```bash
+    kubectl apply -f ./dapr-localforwarder.yaml
+    ```
 
 4. Create the following YAML files
 
-* native.yaml component
+    - native.yaml component
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: native
-  namespace: default
-spec:
-  type: exporters.native
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: agentEndpoint
-    value: "<Local forwarder address, e.g. dapr-localforwarder.default.svc.cluster.local:55678>"
-```
+        ```yaml
+        apiVersion: dapr.io/v1alpha1
+        kind: Component
+        metadata:
+          name: native
+          namespace: default
+        spec:
+          type: exporters.native
+          metadata:
+          - name: enabled
+            value: "true"
+          - name: agentEndpoint
+            value: "<Local forwarder address, e.g. dapr-localforwarder.default.svc.cluster.local:55678>"
+        ```
 
-* tracing.yaml configuration 
+    - tracing.yaml configuration 
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: tracing
-  namespace: default
-spec:
-  tracing:
-    samplingRate: "1"
-```
+        ```yaml
+        apiVersion: dapr.io/v1alpha1
+        kind: Configuration
+        metadata:
+          name: tracing
+          namespace: default
+        spec:
+          tracing:
+            samplingRate: "1"
+        ```
 
 5. Use kubectl to apply the above CRD files:
 
-```bash
-kubectl apply -f tracing.yaml
-kubectl apply -f native.yaml
-```
+    ```bash
+    kubectl apply -f tracing.yaml
+    kubectl apply -f native.yaml
+    ```
 
 6. Deploy your app with tracing
 
-When running in Kubernetes mode, apply the configuration by adding a `dapr.io/config` annotation to the container that you want to participate in the distributed tracing, as shown in the following example:
+    When running in Kubernetes mode, apply the configuration by adding a `dapr.io/config` annotation to the container that you want to participate in the distributed tracing, as shown in the following example:
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  ...
-spec:
-  ...
-  template:
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
     metadata:
       ...
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/app-id: "calculator-front-end"
-        dapr.io/app-port: "8080"
-        dapr.io/config: "tracing"
-```
+    spec:
+      ...
+      template:
+        metadata:
+          ...
+          annotations:
+            dapr.io/enabled: "true"
+            dapr.io/app-id: "calculator-front-end"
+            dapr.io/app-port: "8080"
+            dapr.io/config: "tracing"
+    ```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 That's it! There's no need include any SDKs or instrument your application code. Dapr automatically handles the distributed tracing for you.
 
-> **NOTE**: You can register multiple exporters at the same time, and the tracing logs are forwarded to all registered exporters.
+{{% alert title="Note" color="primary" %}}
+You can register multiple exporters at the same time, and the tracing logs are forwarded to all registered exporters.
+{{% /alert %}}
 
 Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use **Application Map** to examine the topology of your services, as shown below:
 
