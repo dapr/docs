@@ -109,6 +109,7 @@ Status | Description
 SUCCESS | message is processed successfully
 RETRY | message to be retried by Dapr
 DROP | warning is logged and message is dropped
+Others | error, message to be retried by Dapr
 
 Dapr assumes a JSON encoded payload response without `status` field or an empty payload responses with HTTP 2xx, as `SUCCESS`.
 
