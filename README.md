@@ -35,3 +35,6 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 
 ## Authoring guide
 Read the [authoring guide](./authoring-guide.md) for info on how to write docs and be consistent.
+
+## Code of Conduct
+Please refer to our [Dapr community code of conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md)

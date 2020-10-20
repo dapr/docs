@@ -22,13 +22,13 @@ See below for a diagram of state management's high level architecture.
 
 ## Features
 
-- [State Management API](#state-management-api)
-- [State Store Behaviors](#state-store-behaviors)
+- [State management API](#state-management-api)
+- [State store behaviors](#state-store-behaviors)
 - [Concurrency](#concurrency)
 - [Consistency](#consistency)
-- [Retry Policies](#retry-policies)
-- [Bulk Operations](#bulk-operations)
-- [Querying State Store Directly](#querying-state-store-directly)
+- [Retry policies](#retry-policies)
+- [Bulk operations](#bulk-operations)
+- [Querying state store directly](#querying-state-store-directly)
 
 ### State management API
 
@@ -62,7 +62,7 @@ The following table summarizes the capabilities of existing data store implement
 
 Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. And when the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the state store.
 
-Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags. It's recommended that you use a [Retry Policy](#Retry-Policies) to compensate for such conflicts when using ETags.
+Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags. It's recommended that you use a [retry policy](#Retry-Policies) to compensate for such conflicts when using ETags.
 
 If your application omits ETags in writing requests, Dapr skips ETag checks while handling the requests. This essentially enables the **last-write-wins** pattern, compared to the **first-write-wins** pattern with ETags.
 

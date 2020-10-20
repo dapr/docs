@@ -12,11 +12,13 @@ This is ideal for event-driven processing, data pipelines or just generally reac
 
 Dapr bindings allow you to:
 
-- Receive events without including specific SDKs or libraries
-- Replace bindings without changing your code
-- Focus on business logic and not the event resource implementation
+* Receive events without including specific SDKs or libraries
+* Replace bindings without changing your code
+* Focus on business logic and not the event resource implementation
 
-For a complete sample showing bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
+For more info on bindings, read [this overview]({{<ref bindings-overview.md>}}).
+
+For a quickstart sample showing bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
 ## 1. Create a binding
 

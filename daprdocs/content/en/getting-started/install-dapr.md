@@ -4,14 +4,13 @@ title: "How-To: Setup Dapr environment"
 linkTitle: "How-To: Setup environment"
 weight: 20
 description: "Setup Dapr in a local environment or in a Kubernetes cluster"
-type: docs
 ---
 
 Dapr can be run in either self hosted or Kubernetes modes. Running Dapr runtime in self hosted mode enables you to develop Dapr applications in your local development environment and then deploy and run them in other Dapr supported environments. For example, you can develop Dapr applications in self hosted mode and then deploy them to any Kubernetes cluster.
 
 ## Prerequisites
 
-On default Dapr will install with a developer environment using Docker containers to get you started easily. However, Dapr does not depend on Docker to run (see [here](https://github.com/dapr/cli/blob/master/README.md) for instructions on installing Dapr locally without Docker using slim init). This getting started guide assumes Dapr is installed along with this developer environment.
+On default Dapr will install with a developer environment using Docker containers to get you started easily. However, Dapr does not depend on Docker to run (see [here](https://github.com/dapr/cli/blob/master/README.md#slim-init) for instructions on installing Dapr locally without Docker using slim init). This getting started guide assumes Dapr is installed along with this developer environment.
 
 - Install [Docker](https://docs.docker.com/install/)
 
@@ -64,7 +63,7 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 
 On default, during initialization the Dapr CLI will install the Dapr binaries as well as setup a developer environment to help you get started easily with Dapr. This environment uses Docker containers, therefore Docker is listed as a prerequisite. 
 
->If you prefer to run Dapr without this environment and no dependency on Docker, see the CLI documentation for usage of the `--slim` flag with the init CLI command [here](https://github.com/dapr/cli/blob/master/README.md). Note, if you are a new user, it is strongly recommended to intall Docker and use the regular init command.
+>If you prefer to run Dapr without this environment and no dependency on Docker, see the CLI documentation for usage of the `--slim` flag with the init CLI command [here](https://github.com/dapr/cli/blob/master/README.md#slim-init). Note, if you are a new user, it is strongly recommended to intall Docker and use the regular init command.
 
 > For Linux users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use "**sudo dapr init**"
 > For Windows users, make sure that you run the cmd terminal in administrator mode
@@ -117,12 +116,12 @@ When setting up Kubernetes, you can do this either via the Dapr CLI or Helm.
 
 Dapr installs the following pods:
 
-* dapr-operator: Manages component updates and kubernetes services endpoints for Dapr (state stores, pub-subs, etc.)
+* dapr-operator: Manages component updates and Kubernetes services endpoints for Dapr (state stores, pub/subs, etc.)
 * dapr-sidecar-injector: Injects Dapr into annotated deployment pods
 * dapr-placement: Used for actors only. Creates mapping tables that map actor instances to pods
 * dapr-sentry: Manages mTLS between services and acts as a certificate authority
 
-### Setup Cluster
+### Setup cluster
 
 You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 
@@ -132,7 +131,7 @@ You can install Dapr on any Kubernetes cluster. Here are some helpful links:
 - [Setup Amazon Elastic Kubernetes Service](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 
 > **Note:** Both the Dapr CLI, and the Dapr Helm chart automatically deploy with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy Dapr to Windows nodes, but most users should not need to.
-> For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref kubernetes-hybrid-clusters >}})
+> For more information see [Deploying to a hybrid Linux/Windows Kubernetes cluster]({{<ref kubernetes-hybrid-clusters>}})
 
 ### Using the Dapr CLI
 
@@ -221,7 +220,7 @@ dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 
 #### Sidecar annotations
 
-To see all the supported annotations for the Dapr sidecar on Kubernetes, visit [this]({{< ref kubernetes >}})  guide.
+To see all the supported annotations for the Dapr sidecar on Kubernetes, visit [this]({{<ref "kubernetes-annotations.md">}}) how to guide.
 
 #### Uninstall Dapr on Kubernetes
 
