@@ -295,7 +295,8 @@ You can now correlate the calls in your app and across services with Dapr using 
 
 * [Observability concepts](../../concepts/observability/traces.md)
 * [W3C Trace Context for distributed tracing](../../concepts/observability/W3C-traces.md)
-* [How to set up Application Insights for distributed tracing](../../howto/diagnose-with-tracing/azure-monitor.md)
+* [How to set up Application Insights distributed tracing with Local Forwarder](../../howto/diagnose-with-tracing/local-forwarder.md)
+* [How to set up Application Insights distributed tracing with OpenTelemetry Collector](../../howto/diagnose-with-tracing/open-telemetry-collector.md)
 * [How to set up Zipkin for distributed tracing](../../howto/diagnose-with-tracing/zipkin.md)
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
 * [Observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability)

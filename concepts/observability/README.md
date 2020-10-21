@@ -36,4 +36,5 @@ The observability tools listed below are ones that have been tested to work with
 ### Distributed Tracing
 
 * [How-To: Set up Zipkin](../../howto/diagnose-with-tracing/zipkin.md)
-* [How-To: Set up Application Insights](../../howto/diagnose-with-tracing/azure-monitor.md)
+* [How-To: Set up Application Insights with Local Forwarder](../../howto/diagnose-with-tracing/local-forwarder.md)
+* [How-To: Set up Application Insights with Open Telemetry Collector](../../howto/diagnose-with-tracing/open-telemetry-collector.md)
