@@ -105,7 +105,8 @@ The tracestate fields are detailed [here](https://www.w3.org/TR/trace-context/#t
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
 ## Related Links
-* [How To set up Application Insights for distributed tracing]({{< ref azure-monitor.md >}})
+* [How To set up Application Insights for distributed tracing with local forwarder]({{< ref local-forwarder.md >}})
+* [How To set up Application Insights for distributed tracing with OpenTelemetry]({{< ref open-telemetry-collector.md >}})
 * [How To set up Zipkin for distributed tracing]({{< ref zipkin.md >}})
 * [W3C trace context specification](https://www.w3.org/TR/trace-context/)
 * [Observability sample](https://github.com/dapr/quickstarts/tree/master/observability)

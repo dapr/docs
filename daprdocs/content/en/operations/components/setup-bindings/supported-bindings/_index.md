@@ -12,6 +12,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
+| [APNs]({{< ref apns.md >}}) |  | ✅ | Experimental |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Experimental |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | Experimental |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Experimental |
