@@ -16,6 +16,14 @@ In self hosted mode, set the `--app-id` flag:
 dapr run --app-id cart --app-port 5000 python app.py
 ```
 
+If your app uses an SSL connection:
+
+```bash
+dapr run --app-id cart --app-port 5000 --app-ssl python app.py
+```
+
+*Note: the Kubernetes annotation can be found [here](../configure-k8s).*
+
 ### Setup an ID using Kubernetes
 
 In Kubernetes, set the `dapr.io/app-id` annotation on your pod:
