@@ -16,7 +16,7 @@ In self hosted mode, set the `--app-id` flag:
 dapr run --app-id cart --app-port 5000 python app.py
 ```
 
-If your app uses an SSL connection:
+If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
 
 ```bash
 dapr run --app-id cart --app-port 5000 --app-ssl python app.py
