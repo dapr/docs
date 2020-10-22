@@ -19,6 +19,7 @@ dapr publish [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
+| `--pubsub` | | | Name of the pub/sub component
 | `--data`, `-d` | | | (optional) a json serialized string |
 | `--help`, `-h` | | | Help for publish |
 | `--topic`, `-t` | | | The topic the app is listening on |
