@@ -4,7 +4,7 @@ Observability is a term from control theory. Observability means you can answer 
 
 The observability capabilities enable users to monitor the Dapr system services, their interaction with user applications and understand how these monitored services behave. The observability capabilities are divided into the following areas;
 
-* **[Metrics](./metrics.md)**: are the series of measured values and counts that are collected and stored over time. Dapr metrics provide monitoring and understanding of the behavior of Dapr system services and user apps. For example, the service metrics between Dapr sidecars and user apps show call latency, traffic failures, error rates of requests etc. Dapr system services metrics show side car injection failures, health of the system services including CPU usage, number of actor placement made etc.  
+* **[Metrics](./metrics.md)**: are the series of measured values and counts that are collected and stored over time. Dapr metrics provide monitoring and understanding of the behavior of Dapr system services and user apps. For example, the service metrics between Dapr sidecars and user apps show call latency, traffic failures, error rates of requests etc. Dapr system services metrics show side car injection failures, health of the system services including CPU usage, number of actor placement made etc.
 * **[Logs](./logs.md)**: are records of events that occur and can be used to determine failures or another status. Logs events contain warning, error, info, and debug messages produced by Dapr system services. Each log event includes metadata such as message type, hostname, component name, App ID, ip address, etc.
 * **[Distributed tracing](./traces.md)**: is used to profile and monitor Dapr system services and user apps. Distributed tracing helps pinpoint where failures occur and what causes poor performance. Distributed tracing is particularly well-suited to debugging and monitoring distributed software architectures, such as microservices.
 
@@ -36,5 +36,4 @@ The observability tools listed below are ones that have been tested to work with
 ### Distributed Tracing
 
 * [How-To: Set up Zipkin](../../howto/diagnose-with-tracing/zipkin.md)
-* [How-To: Set up Application Insights with Local Forwarder](../../howto/diagnose-with-tracing/local-forwarder.md)
 * [How-To: Set up Application Insights with Open Telemetry Collector](../../howto/diagnose-with-tracing/open-telemetry-collector.md)
