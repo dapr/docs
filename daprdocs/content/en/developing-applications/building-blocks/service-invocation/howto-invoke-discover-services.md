@@ -20,9 +20,18 @@ In self hosted mode, set the `--app-id` flag:
 ```bash
 dapr run --app-id cart --app-port 5000 python app.py
 ```
+
+If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+
+```bash
+dapr run --app-id cart --app-port 5000 --app-ssl python app.py
+```
 {{% /codetab %}}
 
 {{% codetab %}}
+
+### Setup an ID using Kubernetes
+
 In Kubernetes, set the `dapr.io/app-id` annotation on your pod:
 
 ```yaml
@@ -48,6 +57,8 @@ spec:
         dapr.io/app-port: "5000"
 ...
 ```
+*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref kubernetes-annotations.md >}}))*
+
 {{% /codetab %}}
 
 {{< /tabs >}}

@@ -65,7 +65,6 @@ spec:
 
 ## References
 
-- [How-To: Setup Application Insights for distributed tracing with Local Forwarder]({{< ref local-forwarder.md >}})
 - [How-To: Setup Application Insights for distributed tracing with OpenTelemetry Collector]({{< ref open-telemetry-collector.md >}})
 - [How-To: Set up Zipkin for distributed tracing]({{< ref zipkin.md >}})
 - [W3C distributed tracing]({{< ref w3c-tracing >}})

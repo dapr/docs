@@ -62,12 +62,11 @@ spec:
     # blow are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
-
-# following subscription options - only one can be used
-  # - name: consumerID
-    # value: queuename
+  - name: consumerID
+    value: <REPLACE-WITH-consumerID> # Optional. Any String would be accept.
   # - name: durableSubscriptionName
   #   value: ""
+  # following subscription options - only one can be used
   # - name: startAtSequence
     # value: 1
   # - name: startWithLastReceived
