@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Deploy to hybrid Linux/Windows Kubernetes clusters"
 linkTitle: "Hybrid clusters"
 weight: 20000
-description: "How to run Dapr apps on kubernetes clusters with windows nodes"
+description: "How to run Dapr apps on Kubernetes clusters with windows nodes"
 ---
 
 Dapr supports running on kubernetes clusters with windows nodes. You can run your Dapr microservices exclusively on Windows, exclusively on Linux, or a combination of both. This is helpful to users who may be doing a piecemeal migration of a legacy application into a Dapr Kubernetes cluster.   

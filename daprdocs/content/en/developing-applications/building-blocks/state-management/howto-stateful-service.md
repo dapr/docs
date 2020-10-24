@@ -10,7 +10,7 @@ In this article you'll learn how you can create a stateful service which can be 
 
 This frees developers from difficult state coordination, conflict resolution and failure handling, and allows them instead to consume these capabilities as APIs from Dapr.
 
-## 1. Setup a state store
+## Setup a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
 For the purpose of this guide, we'll use a Redis state store.

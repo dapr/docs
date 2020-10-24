@@ -6,5 +6,3 @@ weight: 100
 description: >
   How to contribute to the Dapr project
 ---
-
-
