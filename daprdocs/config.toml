@@ -1,0 +1,119 @@
+# Site Configuration
+baseURL = "https://docs.dapr.io/"
+title = "Dapr Docs"
+theme = "docsy"
+
+enableRobotsTXT = true
+enableGitInfo = true
+
+# Language Configuration
+languageCode = "en-us"
+contentDir = "content/en"
+defaultContentLanguage = "en"
+
+# Disable categories & tags
+disableKinds = ["taxonomy", "term"]
+
+# Google Analytics
+[services.googleAnalytics]
+id = "UA-149338238-3"
+
+# Markdown Engine - Allow inline html
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+# Top Nav Bar
+[[menu.main]]
+    name = "Home"
+    weight = 40
+    url = "https://dapr.io"
+[[menu.main]]
+    name = "About"
+    weight = 50
+    url = "https://dapr.io/#about"
+[[menu.main]]
+    name = "Download"
+    weight = 60
+    url = "https://dapr.io/#download"
+[[menu.main]]
+    name = "Blog"
+    weight = 70
+    url = "https://blog.dapr.io/blog"
+[[menu.main]]
+    name = "Community"
+    weight = 80
+    url = "https://dapr.io/#community"
+
+[params]
+copyright = "Dapr"
+#privacy_policy = "https://policies.google.com/privacy"
+
+# Algolia
+algolia_docsearch = true
+offlineSearch = false
+
+# GitHub Information
+github_repo = "https://github.com/dapr/docs"
+github_project_repo = "https://github.com/dapr/dapr"
+github_subdir = "daprdocs"
+github_branch = "website"
+
+# Versioning
+version_menu = "Releases"
+version = "v0.11"
+archived_version = false
+
+[[params.versions]]
+  version = "v0.11"
+  url = "#"
+[[params.versions]]
+  version = "v0.10"
+  url = "https://github.com/dapr/docs/tree/v0.10.0"
+[[params.versions]]
+  version = "v0.9"
+  url = "https://github.com/dapr/docs/tree/v0.9.0"
+[[params.versions]]
+  version = "v0.8"
+  url = "https://github.com/dapr/docs/tree/v0.8.0"
+
+# UI Customization
+[params.ui]
+sidebar_menu_compact = true
+navbar_logo = true
+sidebar_search_disable = true
+
+# Links
+## End user relevant links. These will show up on left side of footer and in the community page if you have one.
+[[params.links.user]]
+	name ="Twitter"
+	url = "https://twitter.com/daprdev"
+	icon = "fab fa-twitter"
+  desc = "Follow us on Twitter to get the latest updates!"
+[[params.links.user]]
+	name = "YouTube"
+	url = "https://www.youtube.com/channel/UCtpSQ9BLB_3EXdWAUQYwnRA"
+	icon = "fab fa-youtube"
+  desc = "Community call recordings and other cool demos"
+[[params.links.user]]
+	name = "Blog"
+	url = "https://blog.dapr.io/posts"
+	icon = "fas fa-blog"
+  desc = "Community call recordings and other cool demos"
+## Developer relevant links. These will show up on right side of footer and in the community page if you have one.
+[[params.links.developer]]
+	name = "GitHub"
+	url = "https://github.com/dapr/"
+	icon = "fab fa-github"
+  desc = "Development takes place here!"
+[[params.links.developer]]
+	name = "Gitter"
+	url = "https://gitter.im/Dapr/community"
+	icon = "fab fa-gitter"
+  desc = "Conversations happen here!"
+[[params.links.developer]]
+	name = "Zoom"
+	url = "https://aka.ms/dapr-community-call"
+	icon = "fas fa-video"
+  desc = "Meetings happen here!"
