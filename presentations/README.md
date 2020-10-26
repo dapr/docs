@@ -6,7 +6,7 @@ Here you can find previous Dapr presentations, as well as a PowerPoint & guidanc
 
 | Presentation | Recording | Deck |
 |--------------|-----------|------|
-| Ignite 2019: Mark Russinovich Presents the Future of Cloud Native Applications | [Link](https://myignite.techcommunity.microsoft.com/sessions/82059?source=sessions) | [Link](./PastPresentations/2019IgniteCloudNativeApps.pdf)
+| Ignite 2019: Mark Russinovich Presents the Future of Cloud Native Applications | [Link](https://www.youtube.com/watch?v=LAUDVk8PaCY) | [Link](./PastPresentations/2019IgniteCloudNativeApps.pdf)
 | Azure Community Live: Build microservice applications using DAPR with Mark Fussell | [Link](https://www.youtube.com/watch?v=CgqI7nen-Ng) | N/A
 
 There are other Dapr resources on the [community](https://github.com/dapr/dapr#community) page.
