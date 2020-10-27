@@ -62,8 +62,13 @@ spec:
     # blow are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
-  - name: consumerID
-    value: <REPLACE-WITH-consumerID> # Optional. Any String would be accept.
+  # - name: ackWaitTime
+    # value: "" # Optional. See: https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements
+  # - name: maxInFlight
+    # value: "" # Optional. See: https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements
+    # blow two, consumerID and durableSubscriptionName always uncomment together. See: More info: https://docs.nats.io/nats-streaming-concepts/client-connections
+  # - name: consumerID
+    # value: <REPLACE-WITH-consumerID> # Optional. Any String would be accept. 
   # - name: durableSubscriptionName
   #   value: ""
   # following subscription options - only one can be used
