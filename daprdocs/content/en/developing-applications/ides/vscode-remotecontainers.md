@@ -20,5 +20,5 @@ These are the steps to use Dapr Remote Containers
 3. Type `dapr` to filter the list to available Dapr remote containers and choose the language container that matches your application. See screen shot below.
 4. Follow the prompts to rebuild your application in container. 
 
-<img src="../../images/vscode_remote_containers.png" width=800>
+<img src="../../../../static/images/vscode_remote_containers.png" width=800>
 
