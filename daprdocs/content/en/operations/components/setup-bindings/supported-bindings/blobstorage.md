@@ -22,8 +22,6 @@ spec:
     value: ***********
   - name: container
     value: container1
-  - name: decodeBase64
-    value: true
 ```
 
 - `storageAccount` is the Blob Storage account name.
