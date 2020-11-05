@@ -37,6 +37,8 @@ Users can call the Service Invocation API to call from HTTP to HTTP, HTTP to gRP
 
 This API is also the underlying mechanism of Dapr Actors.
 
+For more information on Service Invocation, see [here]({{< ref service-invocation-overview.md >}}).
+
 ### Kubernetes test setup
 
 The test was conducted on a 3 node Kubernetes cluster, on commodity hardware running 4 cores and 8GB of RAM, without any network acceleration.
