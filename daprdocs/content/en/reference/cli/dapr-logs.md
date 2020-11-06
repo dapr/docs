@@ -19,8 +19,8 @@ dapr logs [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--app-id`, `-a` | | | The app id for which logs are needed |
-| `--help`, `-h` | | | Help for logs |
-| `--kubernetes`, `-k` | | `true` | only works with a Kubernetes cluster (default true) |
-| `--namespace`, `-n` | | `default` | (optional) Kubernetes namespace in which your application is deployed. default value is 'default' |
-| `--pod-name`, `-p` | | | (optional) Name of the Pod. Use this in case you have multiple app instances (Pods) |
+| `--app-id`, `-a` | | | The application id for which logs are needed |
+| `--help`, `-h` | | | Print this help message |
+| `--kubernetes`, `-k` | | `true` | Get logs from a Kubernetes cluster |
+| `--namespace`, `-n` | | `default` | The Kubernetes namespace in which your application is deployed |
+| `--pod-name`, `-p` | | | The name of the pod in Kubernetes, in case your application has multiple pods (optional) |

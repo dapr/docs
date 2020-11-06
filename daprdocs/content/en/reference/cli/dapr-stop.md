@@ -7,7 +7,7 @@ description: "Detailed information on the stop CLI command"
 
 ## Description
 
-Stops multiple running Dapr instances and their associated apps
+Stop Dapr instances and their associated apps in self-hosted mode
 
 ## Usage
 
@@ -19,5 +19,5 @@ dapr stop [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--app-id` | | | The app ID to stop (standalong mode) |
-| `--help`, `-h` | | | Help for stop |
+| `--app-id` | | | The application id to be stopped |
+| `--help`, `-h` | | | Print this help message |

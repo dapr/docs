@@ -7,7 +7,7 @@ description: "Detailed information on the invoke CLI command"
 
 ## Description
 
-Invokes a Dapr app with an optional payload (deprecated, use invokePost)
+Invoke a method on a given Dapr application
 
 ## Usage
 
@@ -19,7 +19,8 @@ dapr invoke [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--app-id`, `-a` | | | The app ID to invoke |
-| `--help`, `-h` | | | Help for invoke |
+| `--app-id`, `-a` | | | The application id to invoke |
+| `--help`, `-h` | | | Print this help message |
 | `--method`, `-m` | | | The method to invoke |
-| `--payload`, `-p` | | | (optional) a json payload |
+| `--payload`, `-p` | | | The JSON payload (optional) |
+| `--verb`, `-v` | | `POST` | The HTTP verb to use |
