@@ -1,63 +1,60 @@
 ---
 type: docs
-title: "Service Invocation Performance"
-linkTitle: "Service Invocation performance"
+title: "Service invocation performance"
+linkTitle: "Service invocation performance"
 weight: 10000
 description: ""
 ---
-In this section you'll find an overview of the components needed to run Dapr in different hosting environments along with performance benchmarks and resource utilizations.
+In this article you'll find an overview of the components needed to run Dapr in different hosting environments along with performance benchmarks and resource utilizations.
 
 ## System overview
 
-Dapr consists of a data plane (the sidecar that runs next to your app) and a control plane that configures the sidecars and provides additional capabilities like cert management.
+Dapr consists of a data plane, the sidecar that runs next to your app, and a control plane that configures the sidecars and provides capabilities such as cert and identity management.
 
 ### Self-hosted components
 
-* Sidecar (Data Plane)
-* Sentry (Optional, Control Plane)
-* Placement (Optional, Control Plane)
+* Sidecar (data plane)
+* Sentry (optional, control plane)
+* Placement (optional, control plane)
 
-For more information on running Dapr in Self-Hosted mode, see [here]({{< ref self-hosted-overview.md >}}).
+For more information see [overview of Dapr in self-hosted mode]({{< ref self-hosted-overview.md >}}).
 
 ### Kubernetes components
 
-* Sidecar (Data Plane)
-* Sentry (Optional, Control Plane)
-* Placement (Optional, Control Plane)
-* Operator (Control Plane)
-* Sidecar Injector (Control Plane)
+* Sidecar (data plane)
+* Sentry (optional, control plane)
+* Placement (optional, control planee)
+* Operator (control plane)
+* Sidecar Injector (control plane)
 
-For more information on running Dapr in Kubernetes, see [here]({{< ref kubernetes-overview.md >}}).
+For more information see [overview of Dapr on Kubernetes]({{< ref kubernetes-overview.md >}}).
 
 ## Performance summary for Dapr v0.11.3
 
-The Service Invocation API allows developers to use Dapr as a reverse proxy + discovery vehicle to connect in a secured manner to different services. This feature has out of the box telemetry and mTLS for in-transit encryption of traffic, together with resiliency in the form of retries for network partitions and connection errors.
+The service invocation API is a reverse proxy with built-in service discovery to connect to other services. This includes tracing, metrics, mTLS for in-transit encryption of traffic, together with resiliency in the form of retries for network partitions and connection errors.
 
-Users can call the Service Invocation API to call from HTTP to HTTP, HTTP to gRPC, gRPC to HTTP, and gRPC to gRPC. Unlike other proxies, Dapr will not use HTTP for the communication between sidecars, and will always use gRPC while carrying over the semantics of the used protocol to the other side.
+Using service invocation you can call from HTTP to HTTP, HTTP to gRPC, gRPC to HTTP, and gRPC to gRPC. Dapr does not use HTTP for the communication between sidecars, always using gRPC, while carrying over the semantics of the protocol used when called from the app. Service invocation is the underlying mechanism of communicating with Dapr Actors.
 
-This API is also the underlying mechanism of Dapr Actors.
+For more information see [service invocation overview]({{< ref service-invocation-overview.md >}}).
 
-For more information on Service Invocation, see [here]({{< ref service-invocation-overview.md >}}).
+### Kubernetes performance test setup
 
-### Kubernetes test setup
-
-The test was conducted on a 3 node Kubernetes cluster, on commodity hardware running 4 cores and 8GB of RAM, without any network acceleration.
-The setup included a load tester ([Fortio](https://github.com/fortio/fortio)) pod with a Dapr sidecar injected to it that called the service invocation API to reach a pod on a different node.
+The test was conducted on a 3 node Kubernetes cluster, using commodity hardware running 4 cores and 8GB of RAM, without any network acceleration.
+The setup included a load tester ([Fortio](https://github.com/fortio/fortio)) pod with a Dapr sidecar injected into it that called the service invocation API to reach a pod on a different node.
 
 Test parameters:
 
-* 1000 Requests per second
+* 1000 requests per second
 * Sidecar limited to 0.5 vCPU
 * Sidecar mTLS enabled
-* Sidecar telemetry enabled
+* Sidecar telemetry enabled (tracing with a sampling rate of 0.1)
 * Payload of 1KB
 
-The baseline test included a direct, non-encrypted traffic without telemetry directly from the load tester to the target app.
+The baseline test included direct, non-encrypted traffic, without telemetry, directly from the load tester to the target app.
 
 ### Control plane performance
 
 The Dapr control plane uses a total of 0.01 vCPU and 77 Mb.
-
 
 | Component  | vCPU | Memory
 | ------------- | ------------- | -------------
@@ -66,7 +63,7 @@ The Dapr control plane uses a total of 0.01 vCPU and 77 Mb.
 | Sidecar Injector  | 0.002  | 14.6 Mb
 | Placement | 0.001  | 20.9 Mb
 
-There are a number of variants that affect the CPU and memory consumption for each of the system components:
+There are a number of variants that affect the CPU and memory consumption for each of the system components. These variants are shown in the table below.
 
 | Component  | vCPU | Memory
 | ------------- | ------------- | ------------------------
@@ -77,13 +74,13 @@ There are a number of variants that affect the CPU and memory consumption for ea
 
 ### Data plane performance
 
-The Dapr sidecar uses 0.48 vCPU and 23M b per 1000 requests per second.
-End to end, the Dapr sidecar adds 1.57 ms to the 90th percentile latency, and 2.36 ms to the 99th percentile latency.
+The Dapr sidecar uses 0.48 vCPU and 23Mb per 1000 requests per second.
+End-to-end, the Dapr sidecar adds 1.57 ms to the 90th percentile latency, and 2.36 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
 
 ### Latency
 
 In the test setup, requests went through the Dapr sidecar both on the client side (serving requests from the load tester tool) and the server side (the target app).
-mTLS and telemetry (tracing with a sampling rate of 0.1) and metris were enabled on the Dapr test, and disabled for the baseline test.
+mTLS and telemetry (tracing with a sampling rate of 0.1) and metrics were enabled on the Dapr test, and disabled for the baseline test.
 
 <img src="/images/perf_invocation_p90.png" alt="Latency for 90th percentile">
 
