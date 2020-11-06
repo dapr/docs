@@ -19,5 +19,5 @@ dapr configurations [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--help`, `-h` | | | Help for configurations |
-| `--kubernetes`, `-k` | | `false` | List all Dapr configurations in a k8s cluster |
+| `--help`, `-h` | | | Print this help message |
+| `--kubernetes`, `-k` | | `false` | List all Dapr configurations in a Kubernetes cluster |

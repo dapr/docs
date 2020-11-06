@@ -7,7 +7,7 @@ description: "Detailed information on the dashboard CLI command"
 
 ## Description
 
-Start Dapr dashboard.
+Start Dapr dashboard
 
 ## Usage
 
@@ -19,8 +19,8 @@ dapr dashboard [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--help`, `-h` | | | Help for dashboard |
-| `--kubernetes`, `-k` | | `false` | Start Dapr dashboard in local browser |
-| `--version`, `-v` | | `false` | Check Dapr dashboard version |
-| `--port`, `-p` | | `8080` | The local port on which to serve dashboard |
+| `--help`, `-h` | | | Prints this help message |
+| `--kubernetes`, `-k` | | `false` | Opens Dapr dashboard in local browser via local proxy to Kubernetes cluster |
 | `--namespace`, `-n` | | `dapr-system` | The namespace where Dapr dashboard is running |
+| `--port`, `-p` | | `8080` | The local port on which to serve Dapr dashboard |
+| `--version`, `-v` | | `false` | Print the version for Dapr dashboard |
