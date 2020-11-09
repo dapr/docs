@@ -92,8 +92,6 @@ This step will install the latest Dapr Docker containers and setup a developer e
    71cccdce0e8f        redis               "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:6379->6379/tcp             dapr_redis
    ```
 
-4. Visit our [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/hello-world) or dive into the [Dapr building blocks]({{< ref building-blocks >}})
-
 ### (optional) Install a specific runtime version
 
 You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases).
