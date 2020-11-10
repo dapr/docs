@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Configure API authention with OAUTH"
+title: "Configure API authorization with OAuth"
 linkTitle: "OAuth"
 weight: 2000
 description: "Enable OAUTH authorization on Dapr endpoints for your web APIs"
