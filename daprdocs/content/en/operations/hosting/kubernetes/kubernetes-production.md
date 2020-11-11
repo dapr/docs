@@ -215,9 +215,9 @@ helm repo update
 helm upgrade dapr dapr/dapr --version 1.0.0-rc1 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
 ```
 
-Once Dapr is installed completely, ensure that 0.11.x dapr-placement is still running
+Once Dapr is installed completely, ensure that 0.11.x dapr-placement is still running and **wait until all PODs are running**
 ```sh
-kubectl get pods -n dapr-system
+kubectl get pods -n dapr-system -w
 
 NAME                                     READY   STATUS    RESTARTS   AGE
 dapr-dashboard-69f5c5c867-mqhg4          1/1     Running   0          42s
@@ -225,8 +225,8 @@ dapr-operator-5cdd6b7f9c-9sl7g           1/1     Running   0          41s
 dapr-operator-5cdd6b7f9c-jkzjs           1/1     Running   0          29s
 dapr-operator-5cdd6b7f9c-qzp8n           1/1     Running   0          34s
 dapr-placement-5dcb574777-nlq4t          1/1     Running   0          76s  ---- 0.11.x placement
-dapr-placement-server-0                  0/1     Running   0          41s
-dapr-placement-server-1                  0/1     Running   0          41s
+dapr-placement-server-0                  1/1     Running   0          41s
+dapr-placement-server-1                  1/1     Running   0          41s
 dapr-placement-server-2                  1/1     Running   0          41s
 dapr-sentry-84565c747b-7bh8h             1/1     Running   0          35s
 dapr-sentry-84565c747b-fdlls             1/1     Running   0          41s
@@ -235,6 +235,7 @@ dapr-sidecar-injector-68f868668f-6xnbt   1/1     Running   0          41s
 dapr-sidecar-injector-68f868668f-j7jcq   1/1     Running   0          29s
 dapr-sidecar-injector-68f868668f-ltxq4   1/1     Running   0          36s
 ```
+
 
 Update pods that are running Dapr to pick up the new version of the Dapr runtime.
 ```sh
