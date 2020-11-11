@@ -33,6 +33,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.kafka
+  version: v1
   metadata:
       # Kafka broker connection setting
     - name: brokers

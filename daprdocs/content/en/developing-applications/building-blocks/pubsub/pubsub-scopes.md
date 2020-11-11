@@ -51,6 +51,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: "localhost:6379"
@@ -97,6 +98,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: "localhost:6379"
@@ -121,6 +123,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: "localhost:6379"

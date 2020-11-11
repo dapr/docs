@@ -30,6 +30,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.hashicorp.vault
+  version: v1
   metadata:
   - name: vaultAddr
     value: [vault_address] # Optional. Default: "https://127.0.0.1:8200"
@@ -78,6 +79,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: "[redis]:6379"

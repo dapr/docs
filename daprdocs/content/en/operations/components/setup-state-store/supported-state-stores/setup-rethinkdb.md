@@ -33,6 +33,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.rethinkdb
+  version: v1
   metadata:
   - name: address
     value: <REPLACE-RETHINKDB-ADDRESS> # Required, e.g. 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).

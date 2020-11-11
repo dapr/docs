@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.signalr
+  version: v1
   metadata:
   - name: connectionString
     value: Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;

@@ -51,6 +51,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.zookeeper
+  version: v1
   metadata:
   - name: servers
     value: <REPLACE-WITH-COMMA-DELIMITED-SERVERS> # Required. Example: "zookeeper.default.svc.cluster.local:2181"

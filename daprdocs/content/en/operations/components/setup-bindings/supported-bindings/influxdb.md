@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.influx
+  version: v1
   metadata:
   - name: url # Required
     value: <INFLUX-DB-URL>

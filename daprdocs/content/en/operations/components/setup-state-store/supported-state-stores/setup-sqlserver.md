@@ -41,6 +41,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.sqlserver
+  version: v1
   metadata:
   - name: connectionString
     value: <REPLACE-WITH-CONNECTION-STRING>
@@ -64,6 +65,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.sqlserver
+  version: v1
   metadata:
   - name: connectionString
     secretKeyRef:

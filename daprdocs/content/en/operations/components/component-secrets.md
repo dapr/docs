@@ -61,6 +61,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: localhost:6379
@@ -78,6 +79,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: localhost:6379
@@ -111,6 +113,7 @@ metadata:
   namespace: default
 spec:
   type: bindings.azure.eventhubs
+  version: v1
   metadata:
   - name: connectionString
     secretKeyRef:

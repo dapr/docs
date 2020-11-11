@@ -17,6 +17,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.eventhubs
+  version: v1
   metadata:
   - name: connectionString      # Azure EventHubs connection string
     value: "Endpoint=sb://****"

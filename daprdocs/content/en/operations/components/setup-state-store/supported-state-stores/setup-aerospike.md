@@ -51,6 +51,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.Aerospike
+  version: v1
   metadata:
   - name: hosts
     value: <REPLACE-WITH-HOSTS> # Required. A comma delimited string of hosts. Example: "aerospike:3000,aerospike2:3000"

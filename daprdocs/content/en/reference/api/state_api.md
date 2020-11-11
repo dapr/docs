@@ -18,6 +18,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.<TYPE>
+  version: v1
   metadata:
   - name:<KEY>
     value:<VALUE>
@@ -387,6 +388,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <redis host>

@@ -24,6 +24,7 @@ metadata:
   name: messagebus
 spec:
   type: pubsub.snssqs
+  version: v1
   metadata:
     - name: awsEndpoint
       value: http://localhost:4566
@@ -101,6 +102,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.snssqs
+  version: v1
   metadata:
     # ID of the AWS account with appropriate permissions to SNS and SQS
     - name: awsAccountID

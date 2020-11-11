@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.gcp.pubsub
+  version: v1
   metadata:
   - name: topic
     value: topic1

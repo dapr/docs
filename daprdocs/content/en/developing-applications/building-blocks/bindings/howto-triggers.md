@@ -39,6 +39,7 @@ metadata:
   namespace: default
 spec:
   type: bindings.kafka
+  version: v1
   metadata:
   - name: topics
     value: topic1
