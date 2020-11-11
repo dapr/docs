@@ -241,7 +241,7 @@ Update pods that are running Dapr to pick up the new version of the Dapr runtime
 kubectl rollout restart deploy/<DEPLOYMENT-NAME>
 ```
 
-Once all your application is restarted successfully, delete 0.11.x dapr-placement service by following commands:
+Once the deployment is completed, delete 0.11.x dapr-placement service by following commands:
 ```sh
 kubectl delete deployment dapr-placement -n dapr-system
 kubectl delete svc dapr-placement -n dapr-system
