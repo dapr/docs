@@ -202,7 +202,7 @@ kubectl annotate deployment dapr-placement "helm.sh/resource-policy"=keep -n dap
 kubectl annotate svc dapr-placement "helm.sh/resource-policy"=keep -n dapr-system
 ```
 
-Then [ex]port certs manually](exporting-certs-manually).
+Then [export certs manually](#exporting-certs-manually).
 
 ```sh
 dapr mtls export -o ./certs
