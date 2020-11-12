@@ -208,7 +208,7 @@ Then [export certs manually](#exporting-certs-manually).
 dapr mtls export -o ./certs
 ```
 
-Upgrade Dapr using the below commands:
+Upgrade Dapr using the below commands; this example upgrades Dapr from 0.11.x to 1.0.0-rc.1 with HA mode.
 
 ```sh
 helm repo update
