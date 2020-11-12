@@ -54,6 +54,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.natsstreaming
+  version: v1
   metadata:
   - name: natsURL
     value: <REPLACE-WITH-NATS-SERVER-ADDRESS> # Required. example nats://localhost:4222

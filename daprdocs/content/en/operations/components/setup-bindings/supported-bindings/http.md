@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.http
+  version: v1
   metadata:
   - name: url
     value: http://something.com

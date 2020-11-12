@@ -102,6 +102,7 @@ Azure Managed Identity can be used for Azure Key Vault access on Kubernetes. Ins
       namespace: default
     spec:
       type: secretstores.azure.keyvault
+      version: v1
       metadata:
       - name: vaultName
         value: [your_keyvault_name]
@@ -140,6 +141,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.azure.keyvault
+  version: v1
   metadata:
   - name: vaultName
     value: [your_keyvault_name]

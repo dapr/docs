@@ -133,6 +133,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST e.g. redis-master.default.svc.cluster.local:6379>
@@ -154,6 +155,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST e.g. redis-master.default.svc.cluster.local:6379>
@@ -175,6 +177,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST>
@@ -194,6 +197,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST>

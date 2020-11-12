@@ -56,6 +56,7 @@ metadata:
   namespace: default
 spec:
   type: exporters.zipkin
+  version: v1
   metadata:
   - name: enabled
     value: "true"

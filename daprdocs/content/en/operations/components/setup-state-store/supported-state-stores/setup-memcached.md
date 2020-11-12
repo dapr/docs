@@ -50,6 +50,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.memcached
+  version: v1
   metadata:
   - name: hosts
     value: <REPLACE-WITH-COMMA-DELIMITED-ENDPOINTS> # Required. Example: "memcached.default.svc.cluster.local:11211"

@@ -23,6 +23,7 @@ metadata:
   namespace: production
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: redis-master:6379
@@ -71,6 +72,7 @@ metadata:
   namespace: production
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: redis-master:6379

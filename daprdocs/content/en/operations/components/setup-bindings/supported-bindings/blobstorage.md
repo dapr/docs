@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.blobstorage
+  version: v1
   metadata:
   - name: storageAccount
     value: myStorageAccountName

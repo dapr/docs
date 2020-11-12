@@ -31,6 +31,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.azure.cosmosdb
+  version: v1
   metadata:
   - name: url
     value: <REPLACE-WITH-URL>
@@ -57,6 +58,7 @@ metadata:
   name: statestore
 spec:
   type: state.azure.cosmosdb
+  version: v1
   metadata:
   - name: url
     value: https://accountname.documents.azure.com:443
@@ -77,6 +79,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.azure.cosmosdb
+  version: v1
   metadata:
   - name: url
     value: <REPLACE-WITH-URL>

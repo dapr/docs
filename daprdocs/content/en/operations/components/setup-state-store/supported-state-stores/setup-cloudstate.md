@@ -36,6 +36,7 @@ metadata:
   namespace: default
 spec:
   type: state.cloudstate
+  version: v1
   metadata:
   - name: host
     value: "localhost:8013"

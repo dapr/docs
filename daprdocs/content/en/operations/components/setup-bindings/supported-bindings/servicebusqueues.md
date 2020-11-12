@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.servicebusqueues
+  version: v1
   metadata:
   - name: connectionString
     value: "sb://************"

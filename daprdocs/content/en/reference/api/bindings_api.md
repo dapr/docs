@@ -23,6 +23,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.<TYPE>
+  version: v1
   metadata:
   - name: <NAME>
     value: <VALUE>
@@ -58,6 +59,7 @@ metadata:
   namespace: default
 spec:
   type: bindings.kafka
+  version: v1
   metadata:
   - name: brokers
     value: "http://localhost:5050"

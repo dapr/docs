@@ -15,6 +15,7 @@ metadata:
   namespace: default
 spec:
   type: bindings.twilio.sendgrid
+  version: v1
   metadata:
   - name: emailFrom
     value: "testapp@dapr.io" # optional 

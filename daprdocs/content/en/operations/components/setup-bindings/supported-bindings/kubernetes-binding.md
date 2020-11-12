@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.kubernetes
+  version: v1
   metadata:
   - name: namespace
     value: <NAMESPACE>

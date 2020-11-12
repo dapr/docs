@@ -16,6 +16,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.apns
+  version: v1
   metadata:
     - name: development
       value: <true | false>
