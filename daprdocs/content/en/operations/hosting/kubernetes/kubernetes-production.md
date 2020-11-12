@@ -195,7 +195,7 @@ nodeapp    3000      16h  2020-07-29 17:16.22
 
 #### Upgrade from Dapr 0.11.x to 1.0.0
 
-To upgrade from 0.11.x to 1.0.0, the below commands is required to keep 0.11.x placement service to migrate from 0.11.x placement service to 1.0.0 placement service:
+To upgrade from 0.11.x to 1.0.0, the below commands are required to keep 0.11.x placement service to migrate from 0.11.x placement service to 1.0.0 placement service:
 
 ```sh
 kubectl annotate deployment dapr-placement "helm.sh/resource-policy"=keep -n dapr-system
