@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.aws.dynamodb
+  version: v1
   metadata:
   - name: region
     value: us-west-2

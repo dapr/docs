@@ -35,6 +35,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.gcp.firestore
+  version: v1
   metadata:
   - name: type
     value: <REPLACE-WITH-CREDENTIALS-TYPE> # Required. Example: "serviceaccount"

@@ -17,6 +17,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.aws.kinesis
+  version: v1
   metadata:
   - name: region
     value: AWS_REGION #replace

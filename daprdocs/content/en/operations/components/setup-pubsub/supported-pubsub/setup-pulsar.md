@@ -42,6 +42,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.pulsar
+  version: v1
   metadata:
   - name: host
     value: <REPLACE WITH PULSAR URL> #default is localhost:6650

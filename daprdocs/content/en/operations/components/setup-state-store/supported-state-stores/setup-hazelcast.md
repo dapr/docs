@@ -39,6 +39,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.hazelcast
+  version: v1
   metadata:
   - name: hazelcastServers
     value: <REPLACE-WITH-HOSTS> # Required. A comma delimited string of servers. Example: "hazelcast:3000,hazelcast2:3000"

@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.mqtt
+  version: v1
   metadata:
   - name: url
     value: mqtt[s]://[username][:password]@host.domain[:port]

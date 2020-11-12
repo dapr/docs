@@ -51,6 +51,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.etcd
+  version: v1
   metadata:
   - name: endpoints
     value: <REPLACE-WITH-COMMA-DELIMITED-ENDPOINTS> # Required. Example: "etcd-etcd.default.svc.cluster.local:2379"

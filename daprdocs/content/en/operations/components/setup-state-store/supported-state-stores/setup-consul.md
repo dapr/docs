@@ -50,6 +50,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.consul
+  version: v1
   metadata:
   - name: datacenter
     value: <REPLACE-WITH-DATA-CENTER> # Required. Example: dc1
@@ -79,6 +80,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.consul
+  version: v1
   metadata:
   - name: datacenter
     value: <REPLACE-WITH-DATACENTER>

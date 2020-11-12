@@ -134,6 +134,7 @@ In Kubernetes mode, you store the certificate for the service principal into the
       namespace: default
     spec:
       type: secretstores.azure.keyvault
+      version: v1
       metadata:
       - name: vaultName
         value: [your_keyvault_name]

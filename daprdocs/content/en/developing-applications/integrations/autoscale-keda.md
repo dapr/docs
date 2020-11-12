@@ -70,6 +70,7 @@ metadata:
   name: autoscaling-pubsub
 spec:
   type: pubsub.kafka
+  version: v1
   metadata:
     - name: brokers
       value: kafka-cp-kafka.kafka.svc.cluster.local:9092

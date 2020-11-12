@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.cron
+  version: v1
   metadata:
   - name: schedule
     value: "@every 15m" # valid cron schedule  

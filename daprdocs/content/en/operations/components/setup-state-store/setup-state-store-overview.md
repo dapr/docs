@@ -20,6 +20,7 @@ metadata:
   namespace: default
 spec:
   type: state.<DATABASE>
+  version: v1
   metadata:
   - name: <KEY>
     value: <VALUE>

@@ -32,6 +32,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.local.file
+  version: v1
   metadata:
   - name: secretsFile
     value: [path to the JSON file]

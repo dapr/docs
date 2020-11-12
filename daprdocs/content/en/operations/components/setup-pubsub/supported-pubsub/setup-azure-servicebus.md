@@ -23,6 +23,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.azure.servicebus
+  version: v1
   metadata:
   - name: connectionString
     value: <REPLACE-WITH-CONNECTION-STRING> # Required.

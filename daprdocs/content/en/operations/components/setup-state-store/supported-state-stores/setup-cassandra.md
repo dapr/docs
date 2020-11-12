@@ -51,6 +51,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.cassandra
+  version: v1
   metadata:
   - name: hosts
     value: <REPLACE-WITH-COMMA-DELIMITED-HOSTS> # Required. Example: cassandra.cassandra.svc.cluster.local
@@ -86,6 +87,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.cassandra
+  version: v1
   metadata:
   - name: hosts
     value: <REPLACE-WITH-HOSTS>

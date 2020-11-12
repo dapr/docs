@@ -24,6 +24,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.azure.eventhubs
+  version: v1
   metadata:
   - name: connectionString
     value: <REPLACE-WITH-CONNECTION-STRING> # Required. "Endpoint=sb://****"

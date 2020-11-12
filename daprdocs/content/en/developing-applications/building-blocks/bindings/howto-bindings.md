@@ -31,6 +31,7 @@ metadata:
   namespace: default
 spec:
   type: bindings.kafka
+  version: v1
   metadata:
   - name: brokers
     value: localhost:9092

@@ -89,6 +89,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.mqtt
+  version: v1
   metadata:
   - name: url
     value: "tcp://[username][:password]@host.domain[:port]"
