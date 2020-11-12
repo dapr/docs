@@ -212,7 +212,7 @@ Upgrade Dapr using the below commands:
 
 ```sh
 helm repo update
-helm upgrade dapr dapr/dapr --version 1.0.0-rc1 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
+helm upgrade dapr dapr/dapr --version 1.0.0-rc.1 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
 ```
 
 Once Dapr is installed completely, ensure that 0.11.x dapr-placement is still running and **wait until all PODs are running**
