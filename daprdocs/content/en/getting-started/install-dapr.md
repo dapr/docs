@@ -238,6 +238,7 @@ Once the chart installation is complete, verify the dapr-operator, dapr-placemen
 $ kubectl get pods -n dapr-system -w
 
 NAME                                     READY     STATUS    RESTARTS   AGE
+dapr-dashboard-7bd6cbf5bf-xglsr          1/1       Running   0          40s
 dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
 dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
