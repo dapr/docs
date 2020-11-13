@@ -101,8 +101,7 @@ path | route path from the subscription configuration
 
 #### Expected HTTP Response
 
-An HTTP 2xx response denotes successful processing of message.
-For richer response handling, a JSON encoded payload body with the processing status can be sent:
+An HTTP 200 response with JSON encoded payload body with the processing status:
 
 ```json
 {
@@ -115,9 +114,8 @@ Status | Description
 SUCCESS | message is processed successfully
 RETRY | message to be retried by Dapr
 DROP | warning is logged and message is dropped
-Others | error, message to be retried by Dapr
 
-Dapr assumes a JSON encoded payload response without `status` field or an empty payload responses with HTTP 2xx, as `SUCCESS`.
+For empty payload responses in HTTP 2xx, Dapr assumes `SUCCESS`.
 
 The HTTP response might be different from HTTP 2xx, the following are Dapr's behavior in different HTTP statuses:
 
