@@ -32,9 +32,9 @@ git clone https://github.com/dapr/docs.git
 ```sh
 cd daprdocs
 ```
-4. Add Docsy submodule: 
+4. Init submodules: 
 ```sh
-git submodule add https://github.com/google/docsy.git themes/docsy
+git submodule init
 ```
 5. Update submodules: 
 ```sh
