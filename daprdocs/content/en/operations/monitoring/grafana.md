@@ -20,10 +20,10 @@ description: "How to view Dapr metrics in a Grafana dashboard."
    helm install grafana stable/grafana -n dapr-monitoring
    ```
    
-   If you are Minikube user or want to disable persistent volume for    development purpose, you can disable it by using the following command:
+   If you are Minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command:
    
    ```bash
-   helm install grafana stable/grafana -n dapr-monitoring --set    persistence.enabled=false
+   helm install grafana stable/grafana -n dapr-monitoring --set persistence.enabled=false
    ```
 
 2. Retrieve the admin password for Grafana login
@@ -131,9 +131,8 @@ You can find `grafana-actor-dashboard.json`, `grafana-sidecar-dashboard.json` an
 ## References
 
 * [Set up Prometheus and Grafana]({{< ref grafana.md >}})
-* [Prometheus Installation](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
+* [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
-* [Prometheus Kubernetes Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 
 ## Example
