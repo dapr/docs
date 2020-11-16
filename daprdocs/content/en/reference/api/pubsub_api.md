@@ -21,7 +21,8 @@ POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
 
 Code | Description
 ---- | -----------
-200  | Message delivered
+204  | Message delivered
+404  | No pubsub name or topic given
 500  | Delivery failed
 
 ### URL Parameters
