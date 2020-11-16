@@ -89,7 +89,8 @@ Code | Description
 200  | OK
 204  | Secret not found
 400  | Secret store is missing or misconfigured
-500  | Failed to get secret
+403  | Access denied
+500  | Failed to get secret or no secret stores defined
 
 ### Examples
 

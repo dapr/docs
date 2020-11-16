@@ -87,8 +87,8 @@ options | (optional) state operation options, see [state operation options](#opt
 
 Code | Description
 ---- | -----------
-201  | State saved
-400  | State store is missing or misconfigured
+204  | State saved
+400  | State store is missing or misconfigured or malformed request
 500  | Failed to save state
 
 #### Response Body
@@ -184,7 +184,7 @@ This endpoint lets you get a list of values for a given list of keys.
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0/state/<storename>/bulk
+POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/bulk
 ```
 
 #### URL Parameters
@@ -278,7 +278,7 @@ If-Match | (Optional) ETag associated with the key to be deleted
 
 Code | Description
 ---- | -----------
-200  | Delete state successful
+204  | Delete state successful
 400  | State store is missing or misconfigured
 500  | Delete state failed
 
@@ -315,8 +315,8 @@ POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/transaction
 
 Code | Description
 ---- | -----------
-201  | Request successful
-400  | State store is missing or misconfigured
+204  | Request successful
+400  | State store is missing or misconfigured or malformed request
 500  | Request failed
 
 #### URL Parameters

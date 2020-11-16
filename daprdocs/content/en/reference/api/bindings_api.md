@@ -173,6 +173,8 @@ POST/PUT http://localhost:<daprPort>/v1.0/bindings/<name>
 Code | Description
 ---- | -----------
 200  | Request successful
+204  | Empty Response
+400  | Malformed request
 500  | Request failed
 
 ### Payload

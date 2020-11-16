@@ -22,7 +22,7 @@ GET http://localhost:<daprPort>/v1.0/healthz
 
 Code | Description
 ---- | -----------
-200  | dapr is healthy
+204  | dapr is healthy
 500  | dapr is not healthy
 
 ### URL Parameters
