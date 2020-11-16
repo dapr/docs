@@ -15,7 +15,7 @@ description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernet
 
 ## Enable Prometheus metric scrape using config map
 
-1. Make sure that omsagnets are running
+1. Make sure that omsagents are running
 
 ```bash
 $ kubectl get pods -n kube-system

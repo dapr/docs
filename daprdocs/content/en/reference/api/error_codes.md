@@ -34,7 +34,7 @@ Following table lists the error codes returned by Dapr runtime:
 | ERR_PUBSUB_CLOUD_EVENTS_SER       | Error serializing Pub/Sub event envelope.
 | ERR_STATE_STORE_NOT_FOUND         | Error referencing a state store not found.
 | ERR_STATE_STORES_NOT_CONFIGURED   | Error no state stores configured.
-| ERR_NOT_SUPPORTED_STATE_OPERATION | Error trasaction requested on a state store with no trasaction support.
+| ERR_NOT_SUPPORTED_STATE_OPERATION | Error transaction requested on a state store with no transaction support.
 | ERR_STATE_GET                     | Error getting a state for state store.
 | ERR_STATE_DELETE                  | Error deleting a state from state store.
 | ERR_STATE_SAVE                    | Error saving a state in state store.
