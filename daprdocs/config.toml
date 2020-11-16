@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-rc1.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 
@@ -51,23 +51,26 @@ copyright = "Dapr"
 #privacy_policy = "https://policies.google.com/privacy"
 
 # Algolia
-algolia_docsearch = true
+algolia_docsearch = false # Re-enable after setting up new algolia index
 offlineSearch = false
 
 # GitHub Information
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "website"
+github_branch = "v1.0.0-rc.1"
 
 # Versioning
-version_menu = "Releases"
-version = "v0.11"
+version_menu = "v1.0.0-rc.1"
+version = "v1.0.0-rc.1"
 archived_version = false
 
 [[params.versions]]
-  version = "v0.11"
+  version = "v1.0.0-rc.1"
   url = "#"
+[[params.versions]]
+  version = "v0.11"
+  url = "https://docs.dapr.io"
 [[params.versions]]
   version = "v0.10"
   url = "https://github.com/dapr/docs/tree/v0.10.0"
