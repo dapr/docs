@@ -16,20 +16,28 @@ description: "How to view Dapr metrics in a Grafana dashboard."
 
 1. Install Grafana
 
+   Add the Grafana Helm repo:
+
    ```bash
-   helm install grafana stable/grafana -n dapr-monitoring
+   helm repo add grafana https://grafana.github.io/helm-charts
+   ```
+
+   Install the chart:
+   
+   ```bash
+   helm install grafana grafana/grafana -n dapr-monitoring
    ```
    
    If you are Minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command:
    
    ```bash
-   helm install grafana stable/grafana -n dapr-monitoring --set persistence.enabled=false
+   helm install grafana grafana/grafana -n dapr-monitoring --set persistence.enabled=false
    ```
 
 2. Retrieve the admin password for Grafana login
 
    ```bash
-   kubectl get secret --namespace dapr-monitoring grafana -o jsonpath="{.   data.admin-password}" | base64 --decode
+   kubectl get secret --namespace dapr-monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
    cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1%
    ```
 
