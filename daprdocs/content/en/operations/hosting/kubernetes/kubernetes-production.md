@@ -59,7 +59,7 @@ You can find information [here]({{< ref "install-dapr.md#using-helm-advanced" >}
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
 
 ```bash
-helm install dapr dapr/dapr --version=1.0.0-rc.x --namespace dapr-system --set global.ha.enabled=true
+helm install dapr dapr/dapr --version=<Dapr chart version> --namespace dapr-system --set global.ha.enabled=true
 ```
 
 This command will run 3 replicas of each control plane pod in the dapr-system namespace.
@@ -146,7 +146,7 @@ The APP VERSION column tells us which Dapr runtime version is installed by the c
 Use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved:
 
 ```bash
-helm upgrade dapr dapr/dapr --version <CHART-VERSION> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
+helm upgrade dapr dapr/dapr --version <Dapr chart version> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
 ```
 
 Kubernetes now performs a rolling update. Wait until all the new pods appear as running:
@@ -183,7 +183,7 @@ The last step is to update pods that are running Dapr to pick up the new version
 To do that, simply issue a rollout restart command for any deployment that has the `dapr.io/enabled` annotation:
 
 ```
-kubectl rollout restart deploy/<DEPLOYMENT-NAME>
+kubectl rollout restart deploy/<Application deployment name>
 ```
 
 To see a list of all your Dapr enabled deployments, you can either use the [Dapr Dashboard](https://github.com/dapr/dashboard) or run the following command using the Dapr CLI:
@@ -241,7 +241,7 @@ dapr-sidecar-injector-68f868668f-ltxq4   1/1     Running   0          36s
 
 Update pods that are running Dapr to pick up the new version of the Dapr runtime.
 ```sh
-kubectl rollout restart deploy/<DEPLOYMENT-NAME>
+kubectl rollout restart deploy/<Application deployment name>
 ```
 
 Once the deployment is completed, delete 0.11.x dapr-placement service by following commands:
