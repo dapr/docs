@@ -81,15 +81,16 @@ kubectl create namespace dapr-monitoring
 2. Install Prometheus
 
 ```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-helm install dapr-prom stable/prometheus -n dapr-monitoring
+helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring
 ```
 
 If you are Minikube user or want to disable persistent volume for development purposes, you can disable it by using the following command.
 
 ```bash
-helm install dapr-prom stable/prometheus -n dapr-monitoring --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
+helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring
+ --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
 ```
 
 3. Validation
@@ -114,7 +115,5 @@ dapr-prom-prometheus-server-694fd8d7c-q5d59         2/2     Running   0         
 
 ## References
 
-* [Prometheus Installation](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
-* [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
-* [Prometheus Kubernetes Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator)
+* [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)

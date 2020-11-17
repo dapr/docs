@@ -59,10 +59,10 @@ You can find information [here]({{< ref "install-dapr.md#using-helm-advanced" >}
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
 
 ```bash
-helm install dapr dapr/dapr --namespace dapr-system --set global.ha.enabled=true
+helm install dapr dapr/dapr --version=<Dapr chart version> --namespace dapr-system --set global.ha.enabled=true
 ```
 
-This command will run 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace.
+This command will run 3 replicas of each control plane pod in the dapr-system namespace.
 
 *Note: The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref "kubernetes-hybrid-clusters.md" >}})*
 
@@ -77,7 +77,7 @@ Dapr supports zero downtime upgrades. The upgrade path includes the following st
 ### Upgrading the CLI
 
 To upgrade the Dapr CLI, [download a release version](https://github.com/dapr/cli/releases) of the CLI that matches the Dapr runtime version.
-For example, if upgrading to Dapr 0.9.0, download a CLI version of 0.9.x.
+For example, if upgrading to Dapr 1.0.0-rc.x, download a CLI version of 1.0.0-rc.x.
 
 After you downloaded the binary, it's recommended you put the CLI binary in your path.
 
@@ -122,6 +122,8 @@ You should have the following files containing the base64 decoded text from the 
 
 #### Updating the control plane pods
 
+> Note: To upgrade Dapr from 0.11.x to 1.0.0 version, please refer to [this section](#upgrade-from-dapr-011x-to-100).
+
 Next, you need to find a Helm chart version that installs the new desired version of Dapr and perform a `helm upgrade` operation.
 
 First, update the Helm Chart repos:
@@ -133,11 +135,10 @@ helm repo update
 List all charts in the Dapr repo:
 
 ```bash
-helm search repo dapr
+helm search repo dapr --devel
 
 NAME     	CHART VERSION	APP VERSION	DESCRIPTION
-dapr/dapr	0.4.3        	0.9.0      	A Helm chart for Dapr on Kubernetes
-dapr/dapr	0.4.2        	0.8.0      	A Helm chart for Dapr on Kubernetes
+dapr/dapr	1.0.0-rc.1   	1.0.0-rc.1 	A Helm chart for Dapr on Kubernetes
 ```
 
 The APP VERSION column tells us which Dapr runtime version is installed by the chart.
@@ -145,7 +146,7 @@ The APP VERSION column tells us which Dapr runtime version is installed by the c
 Use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved:
 
 ```bash
-helm upgrade dapr dapr/dapr --version <CHART-VERSION> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
+helm upgrade dapr dapr/dapr --version <Dapr chart version> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
 ```
 
 Kubernetes now performs a rolling update. Wait until all the new pods appear as running:
@@ -154,11 +155,11 @@ Kubernetes now performs a rolling update. Wait until all the new pods appear as 
 kubectl get po -n dapr-system -w
 
 NAME                                     READY   STATUS    RESTARTS   AGE
-dapr-dashboard-dcd7cc8fb-ml2p8           1/1     Running   0          12s
-dapr-operator-7b57d884cd-6spcq           1/1     Running   0          12s
-dapr-placement-86b76f6545-vkc6f          1/1     Running   0          12s
-dapr-sentry-7c7bf75d8b-dcnhm             1/1     Running   0          12s
-dapr-sidecar-injector-7b847db96f-kwst9   1/1     Running   0          12s
+dapr-dashboard-86b94bb768-w4wmj          1/1     Running   0          39s
+dapr-operator-67d7d7bb6c-qqkk7           1/1     Running   0          39s
+dapr-placement-server-0                  1/1     Running   0          39s
+dapr-sentry-647759cd46-nwzkw             1/1     Running   0          39s
+dapr-sidecar-injector-74648c9dcb-px2m5   1/1     Running   0          39s
 ```
 
 You can verify the health and version of the control plane using the Dapr CLI:
@@ -166,11 +167,12 @@ You can verify the health and version of the control plane using the Dapr CLI:
 ```bash
 dapr status -k
 
-NAME                   NAMESPACE      HEALTHY  STATUS   VERSION  AGE  CREATED
-dapr-placement         dapr-system    True     Running  0.9.0    12s  2020-07-24 15:38.15
-dapr-operator          dapr-system    True     Running  0.9.0    12s  2020-07-24 15:38.15
-dapr-sidecar-injector  dapr-system    True     Running  0.9.0    12s  2020-07-24 15:38.16
-dapr-sentry            dapr-system    True     Running  0.9.0    12s  2020-07-24 15:38.15
+NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION     AGE  CREATED
+dapr-sidecar-injector  dapr-system  True     Running  1         1.0.0-rc.1  1m   2020-11-16 14:42.19
+dapr-sentry            dapr-system  True     Running  1         1.0.0-rc.1  1m   2020-11-16 14:42.19
+dapr-dashboard         dapr-system  True     Running  1         0.3.0       1m   2020-11-16 14:42.19
+dapr-operator          dapr-system  True     Running  1         1.0.0-rc.1  1m   2020-11-16 14:42.19
+dapr-placement-server  dapr-system  True     Running  1         1.0.0-rc.1  1m   2020-11-16 14:42.19
 ```
 
 *Note: If new fields have been added to the target Helm Chart being upgraded to, the `helm upgrade` command will fail. If that happens, you need to find which new fields have been added in the new chart and add them as parameters to the upgrade command, for example: `--set <field-name>=<value>`.*
@@ -181,7 +183,7 @@ The last step is to update pods that are running Dapr to pick up the new version
 To do that, simply issue a rollout restart command for any deployment that has the `dapr.io/enabled` annotation:
 
 ```
-kubectl rollout restart deploy/<DEPLOYMENT-NAME>
+kubectl rollout restart deploy/<Application deployment name>
 ```
 
 To see a list of all your Dapr enabled deployments, you can either use the [Dapr Dashboard](https://github.com/dapr/dashboard) or run the following command using the Dapr CLI:
@@ -239,7 +241,7 @@ dapr-sidecar-injector-68f868668f-ltxq4   1/1     Running   0          36s
 
 Update pods that are running Dapr to pick up the new version of the Dapr runtime.
 ```sh
-kubectl rollout restart deploy/<DEPLOYMENT-NAME>
+kubectl rollout restart deploy/<Application deployment name>
 ```
 
 Once the deployment is completed, delete 0.11.x dapr-placement service by following commands:
