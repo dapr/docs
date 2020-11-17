@@ -89,7 +89,8 @@ Code | Description
 200  | OK
 204  | Secret not found
 400  | Secret store is missing or misconfigured
-500  | Failed to get secret
+403  | Access denied
+500  | Failed to get secret or no secret stores defined
 
 ### Examples
 
@@ -99,4 +100,10 @@ curl http://localhost:3500/v1.0/secrets/vault/db-secret \
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&metadata.version_stage=AAA \
+```
+
+> Note, in case of deploying into namespace other than  default`, the above query will also have to include the namespace metadata (e.g. `production` below)
+
+```shell
+curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&?metadata.namespace=production
 ```

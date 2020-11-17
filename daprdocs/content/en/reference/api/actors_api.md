@@ -27,7 +27,7 @@ Code | Description
 ---- | -----------
 200  | Request successful
 500  | Request failed
-404  | Actor not found
+XXX  | Status code from upstream call
 
 #### URL Parameters
 
@@ -84,7 +84,7 @@ POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/state
 
 Code | Description
 ---- | -----------
-201  | Request successful
+204  | Request successful
 400  | Actor not found
 500  | Request failed
 
@@ -208,9 +208,9 @@ To configure the reminder to fire once only, the period should be set to empty s
 
 Code | Description
 ---- | -----------
-200  | Request successful
+204  | Request successful
 500  | Request failed
-404  | Actor not found
+400  | Actor not found or malformed request
 
 #### URL Parameters
 
@@ -251,7 +251,6 @@ Code | Description
 ---- | -----------
 200  | Request successful
 500  | Request failed
-404  | Actor not found
 
 #### URL Parameters
 
@@ -295,9 +294,8 @@ DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<
 
 Code | Description
 ---- | -----------
-200  | Request successful
+204  | Request successful
 500  | Request failed
-404  | Actor not found
 
 #### URL Parameters
 
@@ -349,9 +347,9 @@ A `dueTime` of 0 means to fire immediately.  The following body means to fire im
 
 Code | Description
 ---- | -----------
-200  | Request successful
+204  | Request successful
 500  | Request failed
-404  | Actor not found
+400  | Actor not found or malformed request
 
 #### URL Parameters
 
@@ -391,9 +389,8 @@ DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<nam
 
 Code | Description
 ---- | -----------
-200  | Request successful
+204  | Request successful
 500  | Request failed
-404  | Actor not found
 
 #### URL Parameters
 

@@ -63,4 +63,4 @@ Your middleware component can be contributed to the [components-contrib reposito
 Then submit another pull request against the [Dapr runtime repository](https://github.com/dapr/dapr) to register the new middleware type. You'll need to modify the **Load()** method in [registry.go]( https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/registry.go) to register your middleware using the **Register** method.
 
 ## Next steps
-* [How-To: Configure API authorization with OAuth({{< ref oauth.md >}})
+* [How-To: Configure API authorization with OAuth]({{< ref oauth.md >}})
