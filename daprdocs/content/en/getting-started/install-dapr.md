@@ -8,6 +8,7 @@ description: "Install Dapr in your local environment for testing and self-hostin
 
 ### Prerequisites
 
+- Install [Dapr CLI]({{< ref install-dapr-cli.md >}})
 - Install [Docker Desktop](https://docs.docker.com/install/)
    - Windows users ensure that `Docker Desktop For Windows` uses Linux containers.
 
