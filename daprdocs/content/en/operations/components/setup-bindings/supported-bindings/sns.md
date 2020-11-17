@@ -6,6 +6,7 @@ description: "Detailed documentation on the AWS SNS binding component"
 ---
 
 ## Setup Dapr component
+See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -17,19 +18,19 @@ spec:
   type: bindings.aws.sns
   version: v1
   metadata:
+  - name: topicArn
+    value: mytopic
   - name: region
     value: us-west-2
   - name: accessKey
     value: *****************
   - name: secretKey
     value: *****************
-  - name: topicArn
-    value: mytopic
+  - name: sessionToken
+    value: *****************
+
 ```
 
-- `region` is the AWS region.
-- `accessKey` is the AWS access key.
-- `secretKey` is the AWS secret key.
 - `topicArn` is the SNS topic name.
 
 {{% alert title="Warning" color="warning" %}}
@@ -45,3 +46,4 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
+- [Authenticating to AWS]({{< ref authenticating-aws.md >}})
