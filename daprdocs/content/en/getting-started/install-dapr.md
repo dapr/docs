@@ -12,6 +12,10 @@ This guide will get you up and running to evaluate Dapr and develop applications
 
 Begin by downloading and installing the Dapr CLI. This will be used to initialize your environment on your desired platform.
 
+{{% alert title="Note" color="warning" %}}
+This command will download and install Dapr v0.11. To install v1.0-rc.1, the release candidate for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v1.0-rc.1 docs](https://v1-rc1.docs.dapr.io/getting-started/install-dapr/#install-the-dapr-cli).
+{{% /alert %}}
+
 {{< tabs Linux Windows MacOS Binaries>}}
 
 {{% codetab %}}
