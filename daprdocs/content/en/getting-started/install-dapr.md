@@ -17,11 +17,15 @@ By default Dapr will install with a developer environment using Docker container
 
 This step will install the latest Dapr Docker containers and setup a developer environment to help you get started easily with Dapr.
 
+{{% alert title="Note" color="warning" %}}
+This command will download and install Dapr runtime v1.0-rc.1. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+{{% /alert %}}
+
 1. Ensure you are in an elevated terminal:
    - **Linux/MacOS:** if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use `sudo`
    - **Windows:** make sure that you run the cmd terminal in administrator mode
 
-2. Run `dapr init`
+2. Run `dapr init --runtime-version 1.0.0-rc.1`
 
     ```bash
     $ dapr init
@@ -49,7 +53,7 @@ This step will install the latest Dapr Docker containers and setup a developer e
 You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases).
 
 ```bash
-# Install v0.1.0 runtime
+# Install v0.11.0 runtime
 $ dapr init --runtime-version 0.11.0
 
 # Check the versions of cli and runtime
@@ -75,8 +79,6 @@ $ dapr uninstall --all
 {{% /alert %}}
 
 > For Linux/MacOS users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use `sudo dapr uninstall` to remove dapr binaries and/or the containers.
-
-
 
 ### Configure Redis
 

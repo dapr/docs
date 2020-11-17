@@ -33,14 +33,18 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 
 ### Install with Dapr CLI
 
-You can install Dapr to a Kubernetes cluster using the Dapr CLI.
+You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
+
+{{% alert title="Note" color="warning" %}}
+This command will download and install Dapr runtime v1.0-rc.1. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+{{% /alert %}}
 
 #### Install Dapr
 
-The `-k` flag will initialize Dapr on the kuberentes cluster in your current context.
+The `-k` flag will initialize Dapr on the Kuberentes cluster in your current context.
 
 ```bash
-$ dapr init -k
+$ dapr init -k --runtime-version 1.0.0-rc.1
 
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
@@ -54,7 +58,7 @@ $ dapr init -k
 The default namespace when initializeing Dapr is `dapr-system`. You can override this with the `-n` flag.
 
 ```
-dapr init -k -n mynamespace
+dapr init -k -n mynamespace --runtime-version 1.0.0-rc.1
 ```
 
 #### Install in highly available mode:
@@ -62,7 +66,7 @@ dapr init -k -n mynamespace
 You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
 ```
-dapr init -k --enable-ha=true
+dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.1
 ```
 
 #### Disable mTLS:
@@ -70,7 +74,7 @@ dapr init -k --enable-ha=true
 Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
 
 ```
-dapr init -k --enable-mtls=false
+dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.1
 ```
 
 #### Uninstall Dapr on Kubernetes
