@@ -111,7 +111,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
 4. Install the Dapr chart on your cluster in the `dapr-system` namespace.
 
     ```bash
-    helm install dapr dapr/dapr --namespace dapr-system
+    helm install dapr dapr/dapr --namespace dapr-system --version 1.0.0-rc.1
     ```
 
 #### Verify installation
