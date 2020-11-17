@@ -54,8 +54,8 @@ This command will download and install Dapr runtime v1.0-rc.1. To install v0.11,
 You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases).
 
 ```bash
-# Install v0.11.0 runtime
-$ dapr init --runtime-version 0.11.0
+# Install v0.11.3 runtime
+$ dapr init --runtime-version 0.11.3
 
 # Check the versions of cli and runtime
 $ dapr --version
