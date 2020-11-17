@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "How-To: Setup Redis"
-linkTitle: "How-To: Setup Redis"
-weight: 30
+title: "How-To: Setup a customized Redis store"
+linkTitle: "(optional) Configure Redis"
+weight: 40
 description: "Configure Redis for Dapr state management or Pub/Sub"
 ---
 
@@ -133,6 +133,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST e.g. redis-master.default.svc.cluster.local:6379>
@@ -154,6 +155,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST e.g. redis-master.default.svc.cluster.local:6379>
@@ -175,6 +177,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST>
@@ -194,6 +197,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST>
