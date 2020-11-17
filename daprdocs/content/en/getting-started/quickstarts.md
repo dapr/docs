@@ -6,7 +6,7 @@ weight: 50
 description: "Configure Redis for Dapr state management or Pub/Sub"
 ---
 
-The [Dapr Quickstarts](https://github.com/dapr/quickstarts) are a collection of tutorials with code samples that are aimed to get you started quickly with Dapr, each highlighting a different Dapr capability.
+The [Dapr Quickstarts](https://github.com/dapr/quickstarts/tree/v1.0.0-rc.1) are a collection of tutorials with code samples that are aimed to get you started quickly with Dapr, each highlighting a different Dapr capability.
 
 ## Quickstarts
 
