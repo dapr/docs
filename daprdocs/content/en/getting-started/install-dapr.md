@@ -6,7 +6,7 @@ weight: 20
 description: "Install Dapr in your local environment for testing and self-hosting"
 ---
 
-### Prerequisites
+## Prerequisites
 
 - Install [Dapr CLI]({{< ref install-dapr-cli.md >}})
 - Install [Docker Desktop](https://docs.docker.com/install/)
@@ -14,7 +14,7 @@ description: "Install Dapr in your local environment for testing and self-hostin
 
 By default Dapr will install with a developer environment using Docker containers to get you started easily. This getting started guide assumes Docker is installed to ensure the best experience. However, Dapr does not depend on Docker to run. Read [this page]({{< ref self-hosted-no-docker.md >}}) for instructions on installing Dapr locally without Docker using slim init.
 
-### Initialize Dapr using the CLI
+## Initialize Dapr using the CLI
 
 This step will install the latest Dapr Docker containers and setup a developer environment to help you get started easily with Dapr.
 
@@ -49,7 +49,7 @@ This command will download and install Dapr runtime v1.0-rc.1. To install v0.11,
 
 4. Visit our [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/hello-world) or dive into the [Dapr building blocks]({{< ref building-blocks >}})
 
-### (optional) Install a specific runtime version
+## (optional) Install a specific runtime version
 
 You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases).
 
@@ -63,7 +63,7 @@ cli version: v0.11.0
 runtime version: v0.11.2
 ```
 
-### Uninstall Dapr in self-hosted mode
+## Uninstall Dapr in self-hosted mode
 
 This command will remove the placement Dapr container:
 
@@ -81,6 +81,6 @@ $ dapr uninstall --all
 
 > For Linux/MacOS users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use `sudo dapr uninstall` to remove dapr binaries and/or the containers.
 
-### Configure Redis
+## Configure Redis
 
 Unlike Dapr self-hosted, redis is not pre-installed out of the box on Kubernetes. To install Redis as a state store or as a pub/sub message bus in your Kubernetes cluster see [How-To: Setup Redis]({{< ref configure-redis.md >}})
