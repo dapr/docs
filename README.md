@@ -30,17 +30,13 @@ git clone https://github.com/dapr/docs.git
 ```
 3. Change to daprdocs directory: 
 ```sh
-cd daprdocs
+cd ./docs/daprdocs
 ```
-4. Init submodules: 
-```sh
-git submodule init
-```
-5. Update submodules: 
+4. Update submodules: 
 ```sh
 git submodule update --init --recursive
 ```
-6. Install npm packages: 
+5. Install npm packages: 
 ```sh
 npm install
 ```
