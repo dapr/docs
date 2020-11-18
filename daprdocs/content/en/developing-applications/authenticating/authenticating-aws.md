@@ -17,7 +17,9 @@ None of the following attributes are required, since the AWS SDK may be configur
 `endpoint`: The endpoint is normally handled internally by the AWS SDK. However, in some situations it might make sense to set it locally - for example if developing against DynamoDB Local <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html>.
 
 `accessKey`: AWS Access key id.
+
 `secretKey`: AWS Secret access key. Use together with `accessKey` to explicitly specify credentials.
+
 `sessionToken`: AWS Session token. Used together with `accessKey` and `secretKey`. When using a regular IAM user's access key and secret, a session token is normally NOT required.
 
 ## Alternatives to explicitly specifying credentials in component manifest files
