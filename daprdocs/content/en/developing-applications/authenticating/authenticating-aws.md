@@ -29,3 +29,20 @@ Both Kiam and Kube2IAM work by intercepting calls to the instance metadata servi
 
 ## Using instance role/profile when running in stand-alone mode on AWS EC2
 If running dapr directly on an AWS EC2 instance in stand-alone mode, instance profiles can be used. Simply configure an iam role and attach it to the instance profile for the ec2 instance <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html>, and Dapr should be able to authenticate to AWS without specifying credentials in the component manifest.
+
+## Authenticating to AWS when running dapr locally in stand-alone mode
+When running dapr (or daprd directly) in stand-alone mode, you have the option of injecting environment variables into the process like this (on Linux/MacOS):
+`FOO=bar daprd --app-id myapp`. If you have configured named AWS profiles locally <https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html>, you can tell dapr/daprd which profile to use by specifying the `AWS_PROFILE`:
+
+`AWS_PROFILE=myprofile dapr run...` or `AWS_PROFILE=myprofile daprd...`. You can use any of the supported environment variables <https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list> to configure dapr in this manner.
+
+On Windows, the environment variable needs to be set before starting the dapr/daprd command, doing it inline as shown above is not supported.
+
+## Authenticating to AWS if using AWS SSO based profiles
+If you authenticate to AWS using AWS SSO <https://aws.amazon.com/single-sign-on/>, some AWS SDKs (including the Go SDK) don't yet support this natively. There are several utilities you can use to "bridge the gap" between AWS SSO-based credentials, and "legacy" credentials, such as AwsHelper <https://pypi.org/project/awshelper/> or aws-sso-util <https://github.com/benkehoe/aws-sso-util>.
+
+If using AwsHelper, start dapr like this:
+`AWS_PROFILE=myprofile awshelper dapr run...` or `AWS_PROFILE=myprofile awshelper daprd...`
+
+On Windows, the environment variable needs to be set before starting the awshelper command, doing it inline as shown above is not supported.
+
