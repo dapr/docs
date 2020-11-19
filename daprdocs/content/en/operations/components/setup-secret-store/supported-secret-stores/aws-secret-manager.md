@@ -10,6 +10,7 @@ description: Detailed information on the  decret store component
 Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
 
 ## Create the Dapr component
+See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -22,12 +23,12 @@ spec:
   version: v1
   metadata:
   - name: region
-    value: [aws_region] # Required.
-  - name: accessKey # Required.
+    value: "[aws_region]"
+  - name: accessKey
     value: "[aws_access_key]"
-  - name: secretKey # Required.
+  - name: secretKey
     value: "[aws_secret_key]"
-  - name: sessionToken # Required.
+  - name: sessionToken
     value: "[aws_session_token]"
 ```
 
@@ -69,3 +70,4 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 - [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
 - [Secrets API reference]({{< ref secrets_api.md >}})
+- [Authenticating to AWS]({{< ref authenticating-aws.md >}})
