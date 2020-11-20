@@ -26,7 +26,7 @@ This command will download and install Dapr v0.11. To install v1.0-rc.1, the rel
    - **Linux/MacOS:** if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use `sudo`
    - **Windows:** make sure that you run the cmd terminal in administrator mode
 
-2. Run `dapr init --runtime-version 1.0.0-rc.1`
+2. Run `dapr init`
 
     ```bash
     $ dapr init

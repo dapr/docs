@@ -19,14 +19,14 @@ This command will download and install Dapr v0.11. To install v1.0-rc.1, the rel
 {{% codetab %}}
 This command will install the latest linux Dapr CLI to `/usr/local/bin`:
 ```bash
-wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.0.0-rc.2
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 This command will install the latest windows Dapr cli to `%USERPROFILE%\.dapr\` and add this directory to User PATH environment variable:
 ```powershell
-powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList 1.0.0-rc.2"
+powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 Verify by opening Explorer and entering `%USERPROFILE%\.dapr\` into the address bar. You should see folders for bin, componenets and a config file.
 {{% /codetab %}}
@@ -34,7 +34,7 @@ Verify by opening Explorer and entering `%USERPROFILE%\.dapr\` into the address 
 {{% codetab %}}
 This command will install the latest darwin Dapr CLI to `/usr/local/bin`:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash -s 1.0.0-rc.2
+curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
 
 Or you can install via [Homebrew](https://brew.sh):
