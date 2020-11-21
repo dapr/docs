@@ -42,7 +42,7 @@ This command will download and install Dapr v0.11. To install v1.0-rc.1, the rel
 The `-k` flag will initialize Dapr on the Kuberentes cluster in your current context.
 
 ```bash
-$ dapr init -k --runtime-version 1.0.0-rc.1
+$ dapr init -k
 
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
@@ -56,7 +56,7 @@ $ dapr init -k --runtime-version 1.0.0-rc.1
 The default namespace when initializeing Dapr is `dapr-system`. You can override this with the `-n` flag.
 
 ```
-dapr init -k -n mynamespace --runtime-version 1.0.0-rc.1
+dapr init -k -n mynamespace
 ```
 
 ### Install in highly available mode:
@@ -64,7 +64,7 @@ dapr init -k -n mynamespace --runtime-version 1.0.0-rc.1
 You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
 ```
-dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.1
+dapr init -k --enable-ha=true
 ```
 
 ### Disable mTLS:
@@ -72,7 +72,7 @@ dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.1
 Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
 
 ```
-dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.1
+dapr init -k --enable-mtls=false
 ```
 
 ### Uninstall Dapr on Kubernetes
