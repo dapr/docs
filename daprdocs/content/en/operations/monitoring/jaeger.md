@@ -78,7 +78,7 @@ Finally, deploy the the Dapr component and configuration files:
 
 ```bash
 kubectl apply -f tracing.yaml
-kubectl apply -f zipkin.yaml
+kubectl apply -f jaeger.yaml
 ```
 
 In order to enable this configuration for your Dapr sidecar, add the following annotation to your pod spec template:
