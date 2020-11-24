@@ -85,7 +85,7 @@ The front-end application consists of a server and a client written in [React](h
 
 The below illustration shows the underlying architecture:
 
-![Dapr Distributed Calculator Architecture](/images/dapr-distributed-calculator.png)
+![Dapr Distributed Calculator Architecture](/images/nr-dapr-distributed-calculator.png)
 
 ### State Store
 
