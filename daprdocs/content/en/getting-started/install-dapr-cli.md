@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh 
 
 Or you can install via [Homebrew](https://brew.sh):
 ```bash
-brew install dapr/tap/dapr-cli
+brew install dapr/tap/dapr-cli@1.0.0-rc.2
 ```
 {{% /codetab %}}
 
