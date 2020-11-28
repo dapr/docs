@@ -87,6 +87,7 @@ options | (optional) state operation options, see [state operation options](#opt
 
 Code | Description
 ---- | -----------
+201  | State saved
 204  | State saved
 400  | State store is missing or misconfigured or malformed request
 500  | Failed to save state
