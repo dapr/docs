@@ -130,7 +130,7 @@ spec:
 This example uses the the kubernetes secret that was created when setting up a cluster with the above instructions.
 
 {{% alert title="Other stores" color="primary" %}}
-If using a state store other than redis, refer to the [supported state stores]({{< ref supported-state-stores >}}) for information on what options to set.
+If using a state store other than Redis, refer to the [supported state stores]({{< ref supported-state-stores >}}) for information on what options to set.
 {{% /alert %}}
 
 ### Create Pub/sub message broker component
@@ -158,7 +158,7 @@ spec:
 This example uses the the kubernetes secret that was created when setting up a cluster with the above instructions.
 
 {{% alert title="Other stores" color="primary" %}}
-If using a pub/sub message broker other than redis, refer to the [supported pub/sub message brokers]({{< ref supported-pubsub >}}) for information on what options to set.
+If using a pub/sub message broker other than Redis, refer to the [supported pub/sub message brokers]({{< ref supported-pubsub >}}) for information on what options to set.
 {{% /alert %}}
 
 ### Hard coded passwords (not recommended)
