@@ -109,7 +109,7 @@ sidebar_search_disable = true
   desc = "Development takes place here!"
 [[params.links.developer]]
 	name = "Discord"
-	url = "https://discord.com/invite/ptHhX6jc34"
+	url = "https://aka.ms/dapr-discord"
 	icon = "fab fa-discord"
   desc = "Conversations happen here!"
 [[params.links.developer]]
