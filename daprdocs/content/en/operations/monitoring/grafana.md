@@ -86,7 +86,7 @@ First you need to connect Prometheus as a data source to Grafana.
 
 5. Add Prometheus as a data soruce.
 
-      ![add data source](/images/grafana-datasources.png)
+      ![add data source](/images/grafana-add-datasources.png)
 
 6. Enter Promethesus server address in your cluster.
 
