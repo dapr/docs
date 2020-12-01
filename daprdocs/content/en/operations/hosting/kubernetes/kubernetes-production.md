@@ -54,7 +54,7 @@ The CPU and memory limits above account for the fact that Dapr is intended to do
 ## Deploying Dapr with Helm
 
 When deploying to a production cluster, it's recommended to use Helm. The Dapr CLI installation into a Kubernetes cluster is for a development and test only setup.
-You can find information [here]({{< ref "install-dapr.md#using-helm-advanced" >}}) on how to deploy Dapr using Helm.
+You can find information [here]({{< ref "install-dapr-selfhost.md#using-helm-advanced" >}}) on how to deploy Dapr using Helm.
 
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
 
