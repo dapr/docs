@@ -10,7 +10,7 @@ This article provides guidance on running Dapr in self-hosted mode without Docke
 
 ## Prerequisites
 
-- [Dapr CLI]({{< ref "install-dapr.md#installing-dapr-cli" >}})
+- [Dapr CLI]({{< ref "install-dapr-selfhost.md#installing-dapr-cli" >}})
 
 ## Initialize Dapr without containers
 
@@ -63,4 +63,4 @@ Update the state store configuration files to have the Redis host and password m
 
 ## Cleanup
 
-Follow the uninstall [instructions]({{< ref "install-dapr.md#uninstall-dapr-in-a-self-hosted-mode" >}}) to remove the binaries.
+Follow the uninstall [instructions]({{< ref "install-dapr-selfhost.md#uninstall-dapr-in-a-self-hosted-mode" >}}) to remove the binaries.

@@ -24,11 +24,11 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 {{% /codetab %}}
 
 {{% codetab %}}
-This command will install the latest windows Dapr cli to `%USERPROFILE%\.dapr\` and add this directory to User PATH environment variable:
+This command will install the latest windows Dapr cli to `C:\dapr` and add this directory to User PATH environment variable. Run in Command Prompt:
 ```powershell
 powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList 1.0.0-rc.2"
 ```
-Verify by opening Explorer and entering `%USERPROFILE%\.dapr\` into the address bar. You should see folders for bin, componenets and a config file.
+Verify by opening Explorer and entering `C:\dapr` into the address bar. You should see folders for bin, components, and a config file.
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -57,6 +57,6 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 Learn more about the CLI and available commands in the [CLI docs]( {{< ref cli >}}).
 
 ## Next steps
-- [Init Dapr locally]({{< ref install-dapr.md >}})
+- [Init Dapr locally]({{< ref install-dapr-selfhost.md >}})
 - [Init Dapr on Kubernetes]({{< ref install-dapr-kubernetes.md >}})
-- [Try a Dapr Quickstart]({{< ref quickstarts.md >}})
+
