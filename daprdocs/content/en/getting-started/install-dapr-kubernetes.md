@@ -18,6 +18,7 @@ The following pods will be installed:
 ## Prerequisites
 
 - Install [Dapr CLI]({{< ref install-dapr-cli.md >}})
+- Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - Kubernetes cluster (see below if needed)
 
 ### Create cluster
