@@ -8,7 +8,7 @@ description: "Install Dapr in a Kubernetes cluster"
 
 When setting up Kubernetes you can use either the Dapr CLI or Helm.
 
-The following pods will be installed:
+As part of the Dapr initialization the following pods are installed:
 
 - **dapr-operator:** Manages component updates and Kubernetes services endpoints for Dapr (state stores, pub/subs, etc.)
 - **dapr-sidecar-injector:** Injects Dapr into annotated deployment pods
@@ -40,12 +40,12 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
 {{% alert title="Release candidate" color="warning" %}}
-This command will download and install Dapr runtime v1.0-rc.1. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+This command downloads and install Dapr runtime v1.0-rc.1. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 ### Install Dapr
 
-The `-k` flag will initialize Dapr on the Kubernetes cluster in your current context.
+The `-k` flag initializes Dapr on the Kubernetes cluster in your current context.
 
 {{% alert title="Target cluster" color="primary" %}}
 Make sure the correct "target" cluster is set. Check `kubectl context (kubectl config kubectl config get-contexts)` to verify. You can set a different context using `kubectl config use-context <CONTEXT>`.

@@ -15,18 +15,18 @@ aliases:
    - Windows users ensure that `Docker Desktop For Windows` uses Linux containers.
 
 {{% alert title="Note" color="primary" %}}
-By default Dapr will install with a developer environment using Docker containers to get you started easily. This getting started guide assumes Docker is installed to ensure the best experience. However, Dapr does not depend on Docker to run. Read [this page]({{< ref self-hosted-no-docker.md >}}) for instructions on installing Dapr locally without Docker using slim init.
+By default Dapr is installed with a developer environment using Docker containers to get you started easily. This getting started guide assumes Docker is installed to ensure the best experience. However, Dapr does not depend on Docker to run. Read [this page]({{< ref self-hosted-no-docker.md >}}) for instructions on installing Dapr locally without Docker using slim init.
 {{% /alert %}}
 
 ## Initialize Dapr using the CLI
 
-This step will install the latest Dapr Docker containers and setup a developer environment to help you get started easily with Dapr.
+This step installs the latest Dapr Docker containers and setup a developer environment to help you get started easily with Dapr.
 
-- In Linux/MacOS Dapr will be initialized with default components and files in `$HOME/.dapr`.
-- For Windows Dapr will be initialized to `%USERPROFILE%\.dapr\`
+- In Linux/MacOS Dapr is initialized with default components and files in `$HOME/.dapr`.
+- For Windows Dapr is initialized to `%USERPROFILE%\.dapr\`
 
 {{% alert title="Note" color="warning" %}}
-This command will download and install Dapr runtime v1.0-rc.1. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+This command downloads and installs Dapr runtime v1.0-rc.1. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 1. Ensure you are in an elevated terminal:
@@ -69,7 +69,7 @@ This command will download and install Dapr runtime v1.0-rc.1. To install v0.11,
 
 ## Uninstall Dapr in self-hosted mode
 
-This cli command will remove the placement Dapr container:
+This cli command removes the placement Dapr container:
 
 ```bash
 $ dapr uninstall

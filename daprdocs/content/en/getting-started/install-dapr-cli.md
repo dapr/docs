@@ -8,23 +8,23 @@ description: "Install the Dapr CLI to get started with Dapr"
 
 ## Dapr CLI installation scripts
 
-Begin by downloading and installing the Dapr CLI for v1.0.0-rc.2. This will be used to initialize your environment on your desired platform.
+Begin by downloading and installing the Dapr CLI for v1.0.0-rc.2. This is used to initialize your environment on your desired platform.
 
 {{% alert title="Note" color="warning" %}}
-This command will download and install Dapr CLI v1.0-rc.2. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+This command downloads and install Dapr CLI v1.0-rc.2. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 {{< tabs Linux Windows MacOS Binaries>}}
 
 {{% codetab %}}
-This command will install the latest linux Dapr CLI to `/usr/local/bin`:
+This command installs the latest linux Dapr CLI to `/usr/local/bin`:
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.0.0-rc.2
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
-This command will install the latest windows Dapr cli to `C:\dapr` and add this directory to User PATH environment variable. Run in Command Prompt:
+This command installs the latest windows Dapr cli to `C:\dapr` and add this directory to User PATH environment variable. Run in Command Prompt:
 ```powershell
 powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList 1.0.0-rc.2"
 ```
@@ -32,7 +32,7 @@ Verify by opening Explorer and entering `C:\dapr` into the address bar. You shou
 {{% /codetab %}}
 
 {{% codetab %}}
-This command will install the latest darwin Dapr CLI to `/usr/local/bin`:
+This command installs the latest darwin Dapr CLI to `/usr/local/bin`:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash -s 1.0.0-rc.2
 ```

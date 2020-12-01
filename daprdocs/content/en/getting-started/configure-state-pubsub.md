@@ -17,10 +17,10 @@ A full list of supported components can be found here:
 - [Supported state stores]({{< ref supported-state-stores >}})
 - [Supported pub/sub message brokers]({{< ref supported-pubsub >}})
 
-The rest of this page will describe how to get up and running with Redis.
+The rest of this page describes how to get up and running with Redis.
 
 {{% alert title="Self-hosted mode" color="warning" %}}
-When initialized in self-hosted mode, Dapr will automatically run a Redis container and setup the required component yaml files. You can skip this page and go to [quickstarts]({{< ref quickstarts.md >}})
+When initialized in self-hosted mode, Dapr automatically runs a Redis container and sets up the required component yaml files. You can skip this page and go to [next steps](#next-steps)
 {{% /alert %}}
 
 ## Create a Redis store
@@ -30,7 +30,7 @@ Dapr can use any Redis instance - either containerized on your local dev machine
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
 {{% codetab %}}
-Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set and can skip to the [quickstarts]({{< ref quickstarts.md >}})
+Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set and can skip to the [next steps](next steps)
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -97,7 +97,7 @@ This method requires having an Azure Subscription.
 
 ## Configure Dapr components
 
-Dapr uses components to define what resources to use for building block functionality. These steps will go through how to connect the resources you created above to Dapr for state and pub/sub.
+Dapr uses components to define what resources to use for building block functionality. These steps go through how to connect the resources you created above to Dapr for state and pub/sub.
 
 In self-hosted mode, component files are automatically created under:
 - **Windows**: `%USERPROFILE%\.dapr\components\`
@@ -210,7 +210,7 @@ By default the Dapr CLI creates a local Redis instance when you run `dapr init`.
 - Create a new `components` directory in your app folder containing the YAML files and provide the path to the `dapr run` command with the flag `--components-path`
 
 {{% alert title="Self-hosted slim mode" color="primary" %}}
-If you initialized Dapr in [slim mode]({{< ref self-hosted-no-docker.md >}}) (without Docker) you will need to manually create the default directory, or always specify a components directory using `--components-path`.
+If you initialized Dapr in [slim mode]({{< ref self-hosted-no-docker.md >}}) (without Docker) you need to manually create the default directory, or always specify a components directory using `--components-path`.
 {{% /alert %}}
 
 {{% /codetab %}}
