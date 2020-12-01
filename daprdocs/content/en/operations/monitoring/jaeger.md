@@ -48,7 +48,7 @@ spec:
 
 To launch the application referring to the new YAML file, you can use
 `--components-path`. Assuming that, the **jaeger.yaml** file is in the
-current directory, we can use
+current directory, you can use
 
 ```bash
 dapr run --app-id mynode --app-port 3000 node app.js --components-path .
