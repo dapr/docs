@@ -1,0 +1,12 @@
+$primary:#0D2192;
+$secondary: #1F329A;
+
+.navbar-brand {
+    text-align: left;
+
+    svg {
+        display: inline-block;
+        margin: 0 10px;
+        height: 60px;
+    }
+}
