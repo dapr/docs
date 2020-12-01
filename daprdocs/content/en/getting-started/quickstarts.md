@@ -11,7 +11,7 @@ The [Dapr Quickstarts](https://github.com/dapr/quickstarts/tree/v1.0.0-rc.1) are
 - A good place to start is the hello-world quickstart, it demonstrates how to run Dapr in standalone mode locally on your machine and demonstrates state management and service invocation in a simple application.
 - Next, if you are familiar with Kubernetes and want to see how to run the same application in a Kubernetes environment, look for the hello-kubernetes quickstart. Other quickstarts such as pub-sub, bindings and the distributed-calculator quickstart explore different Dapr capabilities include instructions for running both locally and on Kubernetes and can be completed in any order. A full list of the quickstarts can be found below.
 - At anytime, you can explore the Dapr documentation or SDK specific samples and come back to try additional quickstarts.
-- When you're done, consider exploring the Dapr samples repository for additional code samples contributed by the community that show more advanced or specific usages of Dapr.
+- When you're done, consider exploring the [Dapr samples repository](https://github.com/dapr/samples) for additional code samples contributed by the community that show more advanced or specific usages of Dapr.
 
 ## Quickstarts
 
