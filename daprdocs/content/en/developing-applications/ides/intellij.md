@@ -2,7 +2,7 @@
 type: docs
 title: "IntelliJ"
 linkTitle: "IntelliJ"
-weight: 1000
+weight: 2000
 description: "Configuring IntelliJ community edition for debugging with Dapr"
 ---
 

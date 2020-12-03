@@ -15,9 +15,9 @@ Here's how it works:
 - Dapr is set up to use a **secret store** - a place to securely store secret data
 - Application code uses the standard Dapr secrets API to retrieve secrets.
 
-Some examples for secret stores include `Kubernetes`, `Hashicorp Vault`, `Azure KeyVault`. See [secret stores](https://github.com/dapr/components-contrib/tree/master/secretstores) for the list of supported stores.
+Some examples for secret stores include `Kubernetes`, `Hashicorp Vault`, `Azure KeyVault`. See [secret stores]({{< ref  supported-secret-stores >}}) for the list of supported stores.
 
-See [Setup secret stores](https://github.com/dapr/docs/tree/master/howto/setup-secret-store) for a HowTo guide for setting up and using secret stores.
+See [Setup secret stores]({{< ref howto-secrets.md >}}) for a HowTo guide for setting up and using secret stores.
 
 ## Referencing secret stores in Dapr components
 
@@ -45,10 +45,10 @@ In Azure Dapr can be configured to use Managed Identities to authenticate with A
 
 Notice that in all of the examples above the application code did not have to change to get the same secret. Dapr did all the heavy lifting here via the secrets building block API and using the secret components.
 
-See [Access Application Secrets using the Secrets API](https://github.com/dapr/docs/tree/master/howto/get-secrets) for a How To guide to use secrets in your application.
+See [Access Application Secrets using the Secrets API]({{< ref howto-secrets.md >}}) for a How To guide to use secrets in your application.
 
 
-For detailed API information read [Secrets API](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
+For detailed API information read [Secrets API]({{< ref secrets_api.md >}}).
 
 
 
