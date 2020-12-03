@@ -50,7 +50,7 @@ dapr run --app-id myapp
 | `--enable-profiling` | | `false` | Enable `pprof` profiling via an HTTP endpoint 
 | `--help`, `-h` | | | Print this help message |
 | `--image` | | | The image to build the code in. Input is: `repository/image` |
-| `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warning`, `error`, `fatal`, or `panic` |
+| `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic` |
 | `--placement-host-address` | `DAPR_PLACEMENT_HOST` | `localhost` | The host on which the placement service resides |
 | `--profile-port` | | `7777` | The port for the profile server to listen on |
 
