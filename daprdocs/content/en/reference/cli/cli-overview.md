@@ -9,6 +9,7 @@ weight: 10
 The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernetes cluster, provides debugging support, and launches and manages Dapr instances.
 
 ```bash
+
          __                
     ____/ /___ _____  _____
    / __  / __ '/ __ \/ ___/
@@ -16,6 +17,8 @@ The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernet
   \__,_/\__,_/ .___/_/     
               /_/            
                                                                            
+===============================
+Distributed Application Runtime
 
 Usage:
   dapr [command]
