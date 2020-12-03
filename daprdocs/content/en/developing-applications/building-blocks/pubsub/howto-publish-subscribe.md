@@ -144,7 +144,7 @@ def ds_subscriber():
 
 app.run()
 ```
-After creating `app1.py` ensute flask and flask_cors are installed:
+After creating `app1.py` ensure flask and flask_cors are installed:
 
 ```bash
 pip install flask
@@ -221,7 +221,7 @@ def ds_subscriber():
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 app.run()
 ```
-After creating `app1.py` ensute flask and flask_cors are installed:
+After creating `app1.py` ensure flask and flask_cors are installed:
 
 ```bash
 pip install flask

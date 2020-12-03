@@ -61,12 +61,15 @@ github_subdir = "daprdocs"
 github_branch = "website"
 
 # Versioning
-version_menu = "Releases"
+version_menu = "v0.11 (latest)"
 version = "v0.11"
 archived_version = false
 
 [[params.versions]]
-  version = "v0.11"
+  version = "v1.0-rc.1 (preview)"
+  url = "https://v1-rc1.docs.dapr.io"
+[[params.versions]]
+  version = "v0.11 (latest)"
   url = "#"
 [[params.versions]]
   version = "v0.10"
