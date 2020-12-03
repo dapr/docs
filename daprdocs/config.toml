@@ -108,9 +108,9 @@ sidebar_search_disable = true
 	icon = "fab fa-github"
   desc = "Development takes place here!"
 [[params.links.developer]]
-	name = "Gitter"
-	url = "https://gitter.im/Dapr/community"
-	icon = "fab fa-gitter"
+	name = "Discord"
+	url = "https://aka.ms/dapr-discord"
+	icon = "fab fa-discord"
   desc = "Conversations happen here!"
 [[params.links.developer]]
 	name = "Zoom"

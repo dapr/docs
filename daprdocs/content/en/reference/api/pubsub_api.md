@@ -22,6 +22,7 @@ POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
 Code | Description
 ---- | -----------
 204  | Message delivered
+403  | Message forbidden by access controls
 404  | No pubsub name or topic given
 500  | Delivery failed
 
