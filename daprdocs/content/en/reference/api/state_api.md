@@ -217,7 +217,7 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
   -H "Content-Type: application/json" \
   -d '{
           "keys": [ "key1", "key2" ],
-          "parallelism": 10,
+          "parallelism": 10
       }'
 ```
 
@@ -234,7 +234,7 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
     "key": "key2",
     "data": "value2",
     "etag": "1"
-  },
+  }
 ]
 ```
 To pass metadata as query parammeter:
@@ -448,7 +448,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
           "etag": "xxxxx",
           "options": {
             "concurrency": "first-write",
-            "consistency": "strong",
+            "consistency": "strong"
           }
         }
       ]'

@@ -126,7 +126,7 @@ This HTML will display the `dapr-overview.png` image on the `overview.md` page:
 <img src="/images/overview-dapr-overview.png" width=1000 alt="Overview diagram of Dapr and its building blocks">
 ```
 
-### Tabbed Content
+### Tabbed content
 Tabs are made possible through [Hugo shortcodes](https://gohugo.io/content-management/shortcodes/). 
 
 The overall format is:
@@ -195,7 +195,7 @@ brew install dapr/tap/dapr-cli
 
 {{< /tabs >}}
 
-### YouTube Videos
+### YouTube videos
 Hugo can automatically embed YouTube videos using a shortcode:
 ```
 {{</* youtube [VIDEO ID] */>}}

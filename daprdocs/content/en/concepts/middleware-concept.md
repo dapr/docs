@@ -58,7 +58,7 @@ func GetHandler(metadata Metadata) fasthttp.RequestHandler {
 ```
 
 ## Adding new middleware components
-Your middleware component can be contributed to the [components-contrib repository](https://github.com/dapr/components-contrib/tree/master/middleware).
+Your middleware component can be contributed to the [components-contrib repository](https://github.com/dapr/components-contrib/tree/master/middleware). 
 
 Then submit another pull request against the [Dapr runtime repository](https://github.com/dapr/dapr) to register the new middleware type. You'll need to modify the **Load()** method in [registry.go]( https://github.com/dapr/dapr/blob/master/pkg/components/middleware/http/registry.go) to register your middleware using the **Register** method.
 
