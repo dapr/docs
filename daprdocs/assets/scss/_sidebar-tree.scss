@@ -93,9 +93,9 @@
     @include media-breakpoint-up(md) {
         padding-top: 4rem;
         background-color: $td-sidebar-bg-color;
-        padding-right: 1rem;
+        padding-right: .5rem;
+        padding-left: .5rem;
         border-right: 1px solid $td-sidebar-border-color;
-        min-width: 18rem;
     }
 
 
