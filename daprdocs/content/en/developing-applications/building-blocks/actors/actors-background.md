@@ -54,7 +54,7 @@ To provide scalability and reliability, actors instances are distributed through
 Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
 
 ### Actor placement service
-The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor `Placement` service. When a new instance of a service is created, the corresponding Dapr runtime register the actor types it can create and the `Placement` service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
+The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor `Placement` service. When a new instance of a service is created, the corresponding Dapr runtime registers the actor types it can create and the `Placement` service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
 
 <img src="/images/actors_background_placement_service_registration.png" width=600>
 
@@ -67,11 +67,11 @@ When a client calls an actor with a particular id (for example, actor id 123), t
 * By default, actors are randomly placed into pods resulting in uniform distribution.
 * Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
 
-Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all hosting environments for example, self hosted, Kubernetes
+Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all hosting environments for example, self hosted or Kubernetes.
 
 ## Actor communication
 
-You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint
+You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint.
 
 ```bash
 POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<method/state/timers/reminders>
