@@ -7,15 +7,21 @@ description: "Detailed information on the status CLI command"
 
 ## Description
 
-Show the health status of Dapr services
+Show the health status of Dapr services. Supported platforms: Kubernetes
 
 ## Usage
-
-This command only works for Kubernetes mode.
 
 ```bash
 dapr status -k
 ```
+
+## Examples
+
+### Get status of Dapr services from Kubernetes
+```bash
+dapr status -k
+```
+
 
 ## Flags
 

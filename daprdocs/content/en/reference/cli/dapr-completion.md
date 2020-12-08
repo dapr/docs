@@ -12,8 +12,8 @@ Generates shell completion scripts
 ## Usage
 
 ```bash
-  dapr completion [flags]
-  dapr completion [command]
+dapr completion [flags]
+dapr completion [command]
 ```
 
 ## Examples

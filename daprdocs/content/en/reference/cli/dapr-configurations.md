@@ -7,12 +7,19 @@ description: "Detailed information on the configurations CLI command"
 
 ## Description
 
-List all Dapr configurations
+List all Dapr configurations. Supported platforms: Kubernetes
 
 ## Usage
 
 ```bash
 dapr configurations [flags]
+```
+
+## Examples
+
+### List Kubernetes components
+```bash
+dapr components -k
 ```
 
 ## Flags

@@ -7,12 +7,28 @@ description: "Detailed information on the init CLI command"
 
 ## Description
 
-Install Dapr on supported hosting platforms, currently: Kubernetes and self-hosted
+Install Dapr on supported hosting platforms. Supported platforms: Kubernetes and self-hosted
 
 ## Usage
-
 ```bash
 dapr init [flags]
+```
+
+## Examples
+
+### Initialize Dapr in self-hosted mode
+```bash
+dapr init
+```
+
+### Initialize Dapr in Kubernetes
+```bash
+dapr init -k
+```
+
+### Initialize Dapr in slim self-hosted mode
+```bash
+dapr init -s
 ```
 
 ## Flags

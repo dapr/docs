@@ -7,12 +7,23 @@ description: "Detailed information on the list CLI command"
 
 ## Description
 
-List all Dapr instances
+List all Dapr instances. Supported platforms: Kubernetes and self-hosted
 
 ## Usage
-
 ```bash
 dapr list [flags]
+```
+
+## Examples
+
+### List Dapr instances in self-hosted mode
+```bash
+dapr list
+```
+
+### List Dapr instances in Kubernetes mode
+```bash
+dapr list -k
 ```
 
 ## Flags

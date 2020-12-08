@@ -7,12 +7,33 @@ description: "Detailed information on the dashboard CLI command"
 
 ## Description
 
-Start Dapr dashboard
+Start Dapr dashboard. Supported platforms: Kubernetes and self-hosted
 
 ## Usage
-
 ```bash
 dapr dashboard [flags]
+```
+
+## Examples
+
+### Start dashboard locally
+```bash
+dapr dashboard
+```
+
+### Start dashboard locally in a specified port
+```bash
+dapr dashboard -p 9999
+```
+
+### Port forward to dashboard in Kubernetes
+```bash
+dapr dashboard -k
+```
+
+### Port forward to dashboard in Kubernetes using a port
+```bash
+dapr dashboard -k -p 9999
 ```
 
 ## Flags

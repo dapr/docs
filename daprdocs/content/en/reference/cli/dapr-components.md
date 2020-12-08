@@ -7,12 +7,19 @@ description: "Detailed information on the components CLI command"
 
 ## Description
 
-List all Dapr components
+List all Dapr components. Supported platforms: Kubernetes
 
 ## Usage
 
 ```bash
 dapr components [flags]
+```
+
+## Examples
+
+### List Kubernetes components
+```bash
+dapr components -k
 ```
 
 ## Flags

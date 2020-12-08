@@ -7,13 +7,20 @@ description: "Detailed information on the mtls CLI command"
 
 ## Description
 
-Check if mTLS is enabled
+Check if mTLS is enabled. Supported platforms: Kubernetes
 
 ## Usage
 
 ```bash
 dapr mtls [flags]
 dapr mtls [command]
+```
+
+## Examples
+
+### Check if mTLS is enabled
+```bash
+dapr mtls -k
 ```
 
 ## Available Commands
@@ -29,3 +36,10 @@ export      Export the root CA, issuer cert and key from Kubernetes to local fil
 | --- | --- | --- | --- |
 | `--help`, `-h` | | | Print this help message |
 | `--kubernetes`, `-k` | | `false` | Check if mTLS is enabled in a Kubernetes cluster |
+
+## Command Reference
+
+You can learn more about each sub command from the links below.
+
+ - [`dapr mtls expiry`]({{< ref dapr-mtls-expiry.md >}})
+ - [`dapr mtls export`]({{< ref dapr-mtls-export.md >}})

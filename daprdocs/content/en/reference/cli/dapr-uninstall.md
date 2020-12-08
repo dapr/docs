@@ -7,12 +7,29 @@ description: "Detailed information on the uninstall CLI command"
 
 ## Description
 
-Uninstall Dapr runtime
+Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
 
 ## Usage
 
 ```bash
 dapr uninstall [flags]
+```
+
+## Examples
+
+### Uninstall from self-hosted mode
+```bash
+dapr uninstall
+```
+
+### Uninstall from self-hosted mode and remove .dapr directory, Redis, Placement and Zipkin containers
+```bash
+dapr uninstall --all
+```
+
+### Uninstall from Kubernetes
+```bash
+dapr uninstall -k
 ```
 
 ## Flags

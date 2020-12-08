@@ -7,12 +7,23 @@ description: "Detailed information on the invoke CLI command"
 
 ## Description
 
-Invoke a method on a given Dapr application
+Invoke a method on a given Dapr application. Supported platforms: Self-hosted
 
 ## Usage
-
 ```bash
 dapr invoke [flags]
+```
+
+## Examples
+
+### Invoke a sample method on target app with POST Verb
+```bash 
+dapr invoke --app-id target --method sample --data '{"key":"value"}'
+```
+
+### Invoke a sample method on target app with GET Verb
+```bash
+dapr invoke --app-id target --method sample --verb GET
 ```
 
 ## Flags
@@ -22,5 +33,5 @@ dapr invoke [flags]
 | `--app-id`, `-a` | | | The application id to invoke |
 | `--help`, `-h` | | | Print this help message |
 | `--method`, `-m` | | | The method to invoke |
-| `--payload`, `-p` | | | The JSON payload (optional) |
+| `--data`, `-d` | | | The JSON serialized data string (optional) |
 | `--verb`, `-v` | | `POST` | The HTTP verb to use |
