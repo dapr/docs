@@ -8,8 +8,8 @@ metadata:
 data:
   otel-collector-config: |
     receivers:
-      opencensus:
-        endpoint: 0.0.0.0:55678
+      zipkin:
+        endpoint: 0.0.0.0:9411
     processors:
       queued_retry:
       batch:
@@ -20,8 +20,9 @@ data:
       zpages:
         endpoint: :55679
     exporters:
+      logging:
+        loglevel: debug
       azuremonitor:
-      azuremonitor/2:
         endpoint: "https://dc.services.visualstudio.com/v2/track"
         instrumentation_key: "<INSTRUMENTATION-KEY>"
         # maxbatchsize is the maximum number of items that can be
@@ -34,8 +35,8 @@ data:
       extensions: [pprof, zpages, health_check]
       pipelines:
         traces:
-          receivers: [opencensus]
-          exporters: [azuremonitor/2]
+          receivers: [zipkin]
+          exporters: [azuremonitor,logging]
           processors: [batch, queued_retry]
 ---
 apiVersion: v1
@@ -47,10 +48,10 @@ metadata:
     component: otel-collector
 spec:
   ports:
-  - name: opencensus # Default endpoint for Opencensus receiver.
-    port: 55678
+  - name: zipkin # Default endpoint for Zipkin receiver.
+    port: 9411
     protocol: TCP
-    targetPort: 55678
+    targetPort: 9411
   selector:
     component: otel-collector
 ---
@@ -86,7 +87,7 @@ spec:
             cpu: 200m
             memory: 400Mi
         ports:
-          - containerPort: 55678 # Default endpoint for Opencensus receiver.
+          - containerPort: 9411 # Default endpoint for Zipkin receiver.
         volumeMounts:
           - name: otel-collector-config-vol
             mountPath: /conf
