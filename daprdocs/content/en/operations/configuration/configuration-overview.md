@@ -43,6 +43,7 @@ Note: There are more [Kubernetes annotations]({{< ref "kubernetes-annotations.md
 
 The following configuration settings can be applied to Dapr application sidecars;
 - [Tracing](#tracing)
+- [Metrics](#metrics)
 - [Middleware](#middleware)
 - [Scoping secrets for secret stores](#scoping-secrets-for-secret-stores)
 - [Access control allow lists for service invocation](#access-control-allow-lists-for-service-invocation)
@@ -73,6 +74,25 @@ The following table lists the properties for tracing:
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
 See [Observability distributed tracing]({{< ref "tracing.md" >}}) for more information
+
+#### Metrics
+
+The metrics section can be used to enable or disable metrics for an application.
+
+The `metrics` section under the `Configuration` spec contains the following properties:
+
+```yml
+metrics:
+  enabled: true
+```
+
+The following table lists the properties for metrics:
+
+| Property     | Type   | Description |
+|--------------|--------|-------------|
+| `enabled` | boolean | Whether metrics should to be enabled.
+
+See [metrics documentation]({{< ref "metrics.md" >}}) for more information
 
 #### Middleware
 
