@@ -8,9 +8,9 @@ weight: 800
 
 Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns among other things, a list of the components loaded and the activated actors (if present).
 
-The Dapr metadata API also allows you to store additional information in they format of key-value pairs. 
+The Dapr metadata API also allows you to store additional information in the format of key-value pairs.
 
-Note: The Dapr metatada endpoint is for instance being used by the dapr cli when running dapr in standalone mode to store the PID of the process hosting the sidecar and the command used to run the application.
+Note: The Dapr metatada endpoint is for instance being used by the Dapr CLI when running dapr in standalone mode to store the PID of the process hosting the sidecar and the command used to run the application.
 
 ## Get the Dapr sidecar information
 
@@ -43,7 +43,7 @@ Name                   | Type                                                   
 ----                   | ----                                                                  | -----------
 id                     | string                                                                | Application ID
 actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of Registered Actors metadata.
-extended.attributeName | string                                                                | List of custom attributes as key(attributeName)-value pairs.
+extended.attributeName | string                                                                | List of custom attributes as key-value pairs, where key is the attribute name.
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
 
 <a id="metadataapiresponseactor"></a>**Metadata API Response Registered Actor**
