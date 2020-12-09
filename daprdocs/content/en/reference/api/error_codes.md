@@ -46,3 +46,4 @@ Following table lists the error codes returned by Dapr runtime:
 | ERR_SECRET_STORES_NOT_CONFIGURED  | Error that no secret store is configured.
 | ERR_SECRET_STORE_NOT_FOUND        | Error that specified secret store is not found.
 | ERR_HEALTH_NOT_READY              | Error that Dapr is not ready.
+| ERR_METADATA_GET                  | Error parsing the Metadata information.

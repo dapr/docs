@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "How-To: Setup Redis"
-linkTitle: "How-To: Setup Redis"
-weight: 30
+title: "How-To: Setup a customized Redis store"
+linkTitle: "(optional) Configure Redis"
+weight: 40
 description: "Configure Redis for Dapr state management or Pub/Sub"
 ---
 
