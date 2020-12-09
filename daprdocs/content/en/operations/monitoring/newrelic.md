@@ -10,25 +10,23 @@ description: "Set-up New Relic for Dapr observability"
 
 - Perpetually [free New Relic account](https://newrelic.com/signup), 100 GB/month of free data ingest, 1 free full access user, unlimited free basic users
 
-## Configure Zipkin Exporter
+## Configure Dapr tracing
 
-Dapr natively captures metrics and traces that can be send directly to New Relic. The easiest way to export these is by providing a Zipkin exporter configured to send the traces to [New Relic's Trace API](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/trace-api/report-zipkin-format-traces-trace-api#existing-zipkin).
+Dapr natively captures metrics and traces that can be send directly to New Relic. The easiest way to export these is by configuring Dapr to send the traces to [New Relic's Trace API](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/trace-api/report-zipkin-format-traces-trace-api#existing-zipkin) using the Zipkin trace format.
 
 In order for the integration to send data to New Relic [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform), you need a [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#insights-insert-key). 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
-kind: Component
+kind: Configuration
 metadata:
-  name: zipkin
+  name: appconfig
   namespace: default
 spec:
-  type: exporters.zipkin
-  metadata:
-    - name: enabled
-      value: "true"
-    - name: exporterAddress
-      value: "https://trace-api.newrelic.com/trace/v1?Api-Key=<NR-INSIGHTS-INSERT-API-KEY>&Data-Format=zipkin&Data-Format-Version=2"
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "https://trace-api.newrelic.com/trace/v1?Api-Key=<NR-INSIGHTS-INSERT-API-KEY>&Data-Format=zipkin&Data-Format-Version=2"
 ```
 
 ### Viewing Traces

@@ -92,11 +92,6 @@ curl http://localhost:3500/v1.0/metadata
             "name":"statestore",
             "type":"state.redis",
             "version":""
-        },
-        {
-            "name":"zipkin",
-            "type":"exporters.zipkin",
-            "version":""
         }
     ]
 }
@@ -176,11 +171,6 @@ Get the metadata information to confirm your custom attribute was added:
         {
             "name":"statestore",
             "type":"state.redis",
-            "version":""
-        },
-        {
-            "name":"zipkin",
-            "type":"exporters.zipkin",
             "version":""
         }
     ]
