@@ -97,5 +97,5 @@ Event delivery guarantees are controlled by the binding implementation. Dependin
 ## References
 
 * Binding [API](https://github.com/dapr/docs/blob/master/reference/api/bindings_api.md)
-* Binding [Components](https://github.com/dapr/docs/tree/master/concepts/bindings)
+* Binding [Components](https://docs.dapr.io/concepts/building-blocks-concept/)
 * Binding [Detailed specifications](https://github.com/dapr/docs/tree/master/reference/specs/bindings)
