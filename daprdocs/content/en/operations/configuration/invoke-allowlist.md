@@ -14,7 +14,7 @@ An access control policy is specified in configuration and be applied to Dapr si
 
 **TrustDomain** - A "trust domain" is a logical group to manage trust relationships. Every application is assigned a trust domain which can be specified in the access control list policy spec. If no policy spec is defined or an empty trust domain is specified, then a default value "public" is used. This trust domain is used to generate the identity of the application in the TLS cert.
 
-**App Identity** - Dapr generates a [SPIFFE](https://spiffe.io/) id for all applications which is attached in the TLS cert. The SPIFFE id is of the format: `**spiffe://\<trustdomain>/ns/\<namespace\>/\<appid\>**`. For matching policies, the trust domain, namespace and app ID values of the calling app are extracted from the SPIFFE id in the TLS cert of the calling app. These values are matched against the trust domain, namespace and app ID values specified in the policy spec. If all three of these match, then more specific policies are further matched.
+**App Identity** - Dapr requests the sentry service to generate a [SPIFFE](https://spiffe.io/) id for all applications and this id is attached in the TLS cert. The SPIFFE id is of the format: `**spiffe://\<trustdomain>/ns/\<namespace\>/\<appid\>**`. For matching policies, the trust domain, namespace and app ID values of the calling app are extracted from the SPIFFE id in the TLS cert of the calling app. These values are matched against the trust domain, namespace and app ID values specified in the policy spec. If all three of these match, then more specific policies are further matched.
 
 ## Configuration properties
 
@@ -190,7 +190,8 @@ spec:
 ```
 
 ## Hello world example
-This scenario shows how to apply access control to the [hello world](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) or [hello kubernetes](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) samples where a python app invokes a node.js app. You can create and apply these configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) article.
+### Kubernetes Mode
+This scenario shows how to apply access control to the [hello kubernetes](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) samples where a python app invokes a node.js app. You can create and apply these configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) article.
 
 The nodeappconfig example below shows how to deny access to the `neworder` method from the `pythonapp`, where the python app is in the `myDomain` trust domain and `default` namespace. The nodeapp is in the `public` trust domain.
  
@@ -261,3 +262,33 @@ spec:
       - name: python
         image: dapriosamples/hello-k8s-python:edge
  ```  
+
+### Self-hosted Mode
+ This feature relies on the sentry service to generate the TLS certificates with the SPIFFE id to work correctly. Therefore, to run this sample in self-hosted mode, we need to use the steps below to setup the sentry service and enable mTLS. Note, the ACL policies are the same as defined in nodeappconfig.yaml and pythonappconfig.yaml defined above:
+ 1. Follow steps to [run the sentry service in self-hosted mode](../security/mtls.md).
+ 2. Set environment variables and run daprd for node app with mTLS enabled and point to the local sentry service using the commands:
+ ```
+export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
+export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
+export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
+export NAMESPACE=default
+
+daprd --app-id nodeapp --dapr-grpc-port 50002 -dapr-http-port 3501 --log-level debug --app-port 3000 --enable-mtls --sentry-address localhost:50001 --config nodeappconfig.yaml
+ ```
+ 3. Run the node app in a separate window:
+ ```
+ node app.js
+ ```
+ 4. Set environment variables and run daprd for python app with mTLS enabled and point to the local sentry service using the commands:
+ ```
+export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
+export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
+export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
+export NAMESPACE=default
+
+ daprd --app-id pythonapp   --dapr-grpc-port 50003 --metrics-port 9092 --log-level debug --enable-mtls --sentry-address localhost:50001 --config pythonappconfig.yaml
+ ```
+5. Run the python app in a separate window:
+```
+python app.py
+```
