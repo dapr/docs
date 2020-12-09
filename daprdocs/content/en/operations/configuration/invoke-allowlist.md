@@ -191,7 +191,7 @@ spec:
 
 ## Hello world example
 ### Kubernetes Mode
-This scenario shows how to apply access control to the [hello kubernetes](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) samples where a python app invokes a node.js app. You can create and apply these configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) article.
+This scenario shows how to apply access control to the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/README.md) samples where a python app invokes a node.js app. You can create and apply these configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) article.
 
 The nodeappconfig example below shows how to deny access to the `neworder` method from the `pythonapp`, where the python app is in the `myDomain` trust domain and `default` namespace. The nodeapp is in the `public` trust domain.
  
@@ -264,7 +264,7 @@ spec:
  ```  
 
 ### Self-hosted Mode
- This feature relies on the sentry service to generate the TLS certificates with the SPIFFE id to work correctly. Therefore, to run this sample in self-hosted mode, we need to use the steps below to setup the sentry service and enable mTLS. Note, the ACL policies are the same as defined in nodeappconfig.yaml and pythonappconfig.yaml defined above:
+ This feature relies on the sentry service to generate the TLS certificates with the SPIFFE id to work correctly. Therefore, to run this [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-world/README.md) in self-hosted mode, we need to use the steps below to setup the sentry service and enable mTLS. Note, the ACL policies are the same as defined in nodeappconfig.yaml and pythonappconfig.yaml defined above:
  1. Follow steps to [run the sentry service in self-hosted mode](../security/mtls.md).
  2. Set environment variables and run daprd for node app with mTLS enabled and point to the local sentry service using the commands:
  ```
