@@ -1,10 +1,34 @@
 ---
 type: docs
 title: "How-To: Observe metrics with Grafana"
-linkTitle: "Grafana"
+linkTitle: "Metrics dashboards with Grafana"
 weight: 5000
 description: "How to view Dapr metrics in a Grafana dashboard."
 ---
+
+## Available dashboards
+
+{{< tabs "System Service" "Sidecars" "Actors" >}}
+
+{{% codetab %}}
+The `grafana-system-services-dashboard.json` template shows Dapr system component status, dapr-operator, dapr-sidecar-injector, dapr-sentry, and dapr-placement:
+
+<img src="/images/grafana-system-service-dashboard.png" alt="Screenshot of the system service dashboard" width=1200>
+{{% /codetab %}}
+
+{{% codetab %}}
+The `grafana-sidecar-dashboard.json` template shows Dapr sidecar status, including sidecar health/resources, throughput/latency of HTTP and gRPC, Actor, mTLS, etc.:
+
+<img src="/images/grafana-sidecar-dashboard.png" alt="Screenshot of the sidecar dashboard" width=1200>
+{{% /codetab %}}
+
+{{% codetab %}}
+The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrnecy:
+
+<img src="/images/grafana-actor-dashboard.png" alt="Screenshot of the actor dashboard" width=1200>
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Pre-requisites
 
@@ -14,40 +38,36 @@ description: "How to view Dapr metrics in a Grafana dashboard."
 
 ### Install Grafana
 
-1. Install Grafana
-
-   Add the Grafana Helm repo:
+1. Add the Grafana Helm repo:
 
    ```bash
    helm repo add grafana https://grafana.github.io/helm-charts
    ```
 
-   Install the chart:
+1. Install the chart:
    
    ```bash
    helm install grafana grafana/grafana -n dapr-monitoring
    ```
    
-   If you are Minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command:
+   {{% alert title="Note" color="primary" %}}
+   If you are Minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command instead:
    
    ```bash
    helm install grafana grafana/grafana -n dapr-monitoring --set persistence.enabled=false
    ```
+   {{% /alert %}}
+   
 
-2. Retrieve the admin password for Grafana login
+1. Retrieve the admin password for Grafana login:
 
    ```bash
    kubectl get secret --namespace dapr-monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
-   cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1%
    ```
 
-   {{% alert title="Note" color="info" %}}
-   Remove the `%` character from the password that this command returns. For example, the admin password is    `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1`.
-   {{% /alert %}}
+   You will get a password similar to `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1%`. Remove the `%` character from the password to get `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1` as the admin password.
 
-3. Validation
-
-   Ensure Grafana is running in your cluster (see last line below)
+1. Validation Grafana is running in your cluster:
    
    ```bash
    kubectl get pods -n dapr-monitoring
@@ -66,31 +86,37 @@ description: "How to view Dapr metrics in a Grafana dashboard."
 ### Configure Prometheus as data source
 First you need to connect Prometheus as a data source to Grafana.
 
-1. Port-forward to svc/grafana
+1. Port-forward to svc/grafana:
 
    ```bash
-   $ kubectl port-forward svc/grafana 8080:80 -n dapr-monitoring
+   kubectl port-forward svc/grafana 8080:80 -n dapr-monitoring
+
    Forwarding from 127.0.0.1:8080 -> 3000
    Forwarding from [::1]:8080 -> 3000
    Handling connection for 8080
    Handling connection for 8080
    ```
 
-2. Browse `http://localhost:8080`
+1. Open a browser to `http://localhost:8080`
 
-3. Login with admin and password
+1. Login to Grafana
+   - Username = `admin`
+   - Password = Password from above
 
-4. Click Configuration Settings -> Data Sources
+1. Select `Configuration` and `Data Sources`
 
-      ![data source](/images/grafana-datasources.png)
+   <img src="/images/grafana-datasources.png" alt="Screenshot of the Grafana add Data Source menu" width=200>
 
-5. Add Prometheus as a data source.
 
-      ![add data source](/images/grafana-add-datasources.png)
+1. Add Prometheus as a data source.
 
-6. Enter Promethesus server address in your cluster.
+      <img src="/images/grafana-add-datasources.png" alt="Screenshot of the Prometheus add Data Source" width=600>
 
-      You can get the Prometheus server address by running the following command.
+1. Get your Prometheus HTTP URL
+
+   The Prometheus HTTP URL follows the format `http://<prometheus service endpoint>.<namespace>`
+
+   Start by getting the Prometheus server endpoint by running the following command:
 
    ```bash
    kubectl get svc -n dapr-monitoring
@@ -108,40 +134,43 @@ First you need to connect Prometheus as a data source to Grafana.
    
    ```
    
-   In this Howto, the server is `dapr-prom-prometheus-server`.
+      In this guide the server name is `dapr-prom-prometheus-server` and the namespace is `dapr-monitoring`, so the HTTP URL will be `http://dapr-prom-prometheus-server.dapr-monitoring`.
    
-   You now need to set up Prometheus data source with the following    settings:
+1. Fill in the following settings:
    
    - Name: `Dapr`
    - HTTP URL: `http://dapr-prom-prometheus-server.dapr-monitoring`
    - Default: On
-   
-   ![prometheus server](/images/grafana-prometheus-dapr-server-url.png)
 
-7. Click `Save & Test` button to verify that the connection succeeded.
+   <img src="/images/grafana-prometheus-dapr-server-url.png" alt="Screenshot of the Prometheus Data Source configuration" width=600>
+
+1. Click `Save & Test` button to verify that the connection succeeded.
 
 ## Import dashboards in Grafana
-Next you import the Dapr dashboards into Grafana. 
 
-In the upper left, click the "+" then "Import". 
+1. In the upper left corner of the Grafana home screen, click the "+" option, then "Import".
 
-You can now import built-in [Grafana dashboard templates](https://github.com/dapr/dapr/tree/master/grafana).
+   You can now import [Grafana dashboard templates](https://github.com/dapr/dapr/tree/master/grafana) from [release assets](https://github.com/dapr/dapr/releases) for your Dapr version:
 
-The Grafana dashboards are part of [release assets](https://github.com/dapr/dapr/releases) with this URL https://github.com/dapr/dapr/releases/ 
-You can find `grafana-actor-dashboard.json`, `grafana-sidecar-dashboard.json` and `grafana-system-services-dashboard.json` in release assets location.
+   <img src="/images/grafana-uploadjson.png" alt="Screenshot of the Grafana dashboard upload option" width=700>
 
-![upload json](/images/grafana-uploadjson.png)
+1. Find the dashboard that you imported and enjoy
 
-8. Find the dashboard that you imported and enjoy!
+   <img src="/images/system-service-dashboard.png" alt="Screenshot of Dapr service dashbaord" width=900>
 
-![upload json](/images/system-service-dashboard.png)
+   {{% alert title="Tip" color="primary" %}}
+   Hover your mouse over the `i` in the corner to the description of each chart:
+
+   <img src="/images/grafana-tooltip.png" alt="Screenshot of the tooltip for graphs" width=700>
+   {{% /alert %}}
 
 ## References
 
-* [Set up Prometheus and Grafana]({{< ref grafana.md >}})
+* [Dapr Observability]({{<ref observability-concept.md >}})
 * [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+* [Supported Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
 
 ## Example
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
