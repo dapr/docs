@@ -6,8 +6,6 @@ weight: 3000
 description: "Configure Dapr to send distributed tracing data"
 ---
 
-Dapr integrates with Open Census for telemetry and tracing.
-
 It is recommended to run Dapr with tracing enabled for any production scenario.
 Since Dapr uses Open Census, you can configure various exporters for tracing and telemetry data based on your environment, whether it is running in the cloud or on-premises.
 
@@ -17,22 +15,18 @@ The `tracing` section under the `Configuration` spec contains the following prop
 
 ```yml
 tracing:
-    enabled: true
-    exporterType: zipkin
-    exporterAddress: ""
-    expandParams: true
-    includeBody: true
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "https://..."
 ```
 
-The following table lists the different properties.
+The following table lists the properties for tracing:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| enabled  | bool | Set tracing to be enabled or disabled
-| exporterType  | string | Name of the Open Census exporter to use. For example: Zipkin, Azure Monitor, etc
-| exporterAddress  | string | URL of the exporter
-| expandParams  | bool | When true, expands parameters passed to HTTP endpoints
-| includeBody  | bool | When true, includes the request body in the tracing event
+| Property     | Type   | Description |
+|--------------|--------|-------------|
+| `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
+| `zipkin.endpointAddress` | string | Set the Zipkin server address.
 
 
 ## Zipkin in stand-alone mode
@@ -51,11 +45,9 @@ For Standalone mode, create a Dapr configuration file locally and reference it w
      namespace: default
    spec:
      tracing:
-       enabled: true
-       exporterType: zipkin
-       exporterAddress: "http://localhost:9411/api/v2/spans"
-       expandParams: true
-       includeBody: true
+       samplingRate: "1"
+       zipkin:
+         endpointAddress: "http://localhost:9411/api/v2/spans"
    ```
 
 2. Launch Zipkin using Docker:
@@ -99,11 +91,9 @@ metadata:
   namespace: default
 spec:
   tracing:
-    enabled: true
-    exporterType: zipkin
-    exporterAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
 Finally, deploy the Dapr configuration:
