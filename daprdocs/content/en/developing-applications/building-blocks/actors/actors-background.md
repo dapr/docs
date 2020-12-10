@@ -67,7 +67,7 @@ When a client calls an actor with a particular id (for example, actor id 123), t
 * By default, actors are randomly placed into pods resulting in uniform distribution.
 * Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
 
-Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all hosting environments for example, self hosted or Kubernetes.
+Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{< ref hosting >}}), including self-hosted and Kubernetes.
 
 ## Actor communication
 
