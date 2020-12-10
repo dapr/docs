@@ -239,67 +239,86 @@ This example uses the [hello world](https://github.com/dapr/quickstarts/tree/mas
 
 The following steps run the Sentry service locally with mTLS enabled, set up necessary environment variables to access certificates, and then launch both the node app and python app each referencing the Sentry service to apply the ACLs.
 
- 1. Follow these steps to run the [Sentry service in self-hosted mode]({{< ref "mtls.md" >}}) with mTLS enabled.
- 2. In a command prompt, set these environment variables  
-{{< tabs Linux/MacOS Windows>}}
+ 1. Follow these steps to run the [Sentry service in self-hosted mode]({{< ref "mtls.md" >}}) with mTLS enabled
 
-{{% codetab %}}
-```bash
-export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
-export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
-export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
-export NAMESPACE=default
- ```
-{{% /codetab %}}
+ 2. In a command prompt, set these environment variables:
 
-{{% codetab %}}
-```powershell
-set DAPR_TRUST_ANCHORS=``
-set DAPR_CERT_CHAIN=``
-set DAPR_CERT_KEY=``
-set NAMESPACE=default
-```
-{{% /codetab %}} 
+    {{< tabs "Linux/MacOS" Windows >}}
+    
+    {{% codetab %}}
+  ```bash
+  export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
+  export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
+  export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
+  export NAMESPACE=default
+  ```
+
+    {{% /codetab %}}
+    
+    {{% codetab %}}
+  ```powershell
+  set DAPR_TRUST_ANCHORS=``
+  set DAPR_CERT_CHAIN=``
+  set DAPR_CERT_KEY=``
+  set NAMESPACE=default
+  ```
+
+    {{% /codetab %}} 
+    
+    {{< /tabs >}}
  
-3. Run daprd to launch a Dapr sidecar for the node.js app with mTLS enabled, referencing the local Sentry service.
-```
-daprd --app-id nodeapp --dapr-grpc-port 50002 -dapr-http-port 3501 --log-level debug --app-port 3000 --enable-mtls --sentry-address localhost:50001 --config nodeappconfig.yaml
- ```
-4. Run the node app in a separate command prompt.
- ```
- node app.js
-```
-5. In another command prompt, set these environment variables.  
-{{< tabs Linux/MacOS Windows>}}
+3. Run daprd to launch a Dapr sidecar for the node.js app with mTLS enabled, referencing the local Sentry service:
 
-{{% codetab %}}
-```bash
-export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
-export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
-export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
-export NAMESPACE=default
- ```
-{{% /codetab %}}
+   ```bash
+   daprd --app-id nodeapp --dapr-grpc-port 50002 -dapr-http-port 3501 --log-level debug --app-port 3000 --enable-mtls --sentry-address localhost:50001 --config nodeappconfig.yaml
+   ```
 
-{{% codetab %}}
-```powershell
-set DAPR_TRUST_ANCHORS=``
-set DAPR_CERT_CHAIN=``
-set DAPR_CERT_KEY=``
-set NAMESPACE=default
-```
-{{% /codetab %}} 
-6. Run daprd to launch a Dapr sidecar for the python app with mTLS enabled, referencing the local Sentry service.
- ```
- daprd --app-id pythonapp   --dapr-grpc-port 50003 --metrics-port 9092 --log-level debug --enable-mtls --sentry-address localhost:50001 --config pythonappconfig.yaml
- ```
-7. Run the python app in a separate command prompt.
-```
-python app.py
-```
+4. Run the node app in a separate command prompt:
+
+   ```bash
+   node app.js
+   ```
+
+5. In another command prompt, set these environment variables:
+
+   {{< tabs "Linux/MacOS" Windows >}}
+   
+   {{% codetab %}}
+   ```bash
+   export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
+   export DAPR_CERT_CHAIN=`cat $HOME/.dapr/certs/issuer.crt`
+   export DAPR_CERT_KEY=`cat $HOME/.dapr/certs/issuer.key`
+   export NAMESPACE=default
+  ```
+   {{% /codetab %}}
+   
+   {{% codetab %}}
+   ```powershell
+   set DAPR_TRUST_ANCHORS=``
+   set DAPR_CERT_CHAIN=``
+   set DAPR_CERT_KEY=``
+   set NAMESPACE=default
+   ```
+   {{% /codetab %}}
+
+   {{< /tabs >}}
+
+6. Run daprd to launch a Dapr sidecar for the python app with mTLS enabled, referencing the local Sentry service:
+
+   ```bash
+   daprd --app-id pythonapp   --dapr-grpc-port 50003 --metrics-port 9092 --log-level debug --enable-mtls --sentry-address localhost:50001 --config pythonappconfig.yaml
+   ```
+
+7. Run the python app in a separate command prompt:
+
+   ```bash
+   python app.py
+   ```
+
 8. You should see the calls to the node app fail in the python app command prompt based due to the **deny** operation action in the nodeappconfig file. Change this to action to **allow** and re-run the apps and you should then see this call succeed.
 
 ### Kubernetes mode
+
 This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/README.md) quickstart.
 
 You can create and apply the above configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) to the Kubernetes deployments.
