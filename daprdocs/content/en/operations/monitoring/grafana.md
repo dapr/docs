@@ -121,27 +121,37 @@ First you need to connect Prometheus as a data source to Grafana.
 7. Click `Save & Test` button to verify that the connection succeeded.
 
 ## Import dashboards in Grafana
-Next you import the Dapr dashboards into Grafana. 
+
+1. Import the Dapr dashboards into Grafana. 
 
 In the upper left, click the "+" then "Import". 
 
-You can now import built-in [Grafana dashboard templates](https://github.com/dapr/dapr/tree/master/grafana).
+You can now import [Grafana dashboard templates](https://github.com/dapr/dapr/tree/master/grafana) in [release assets](https://github.com/dapr/dapr/releases).
 
-The Grafana dashboards are part of [release assets](https://github.com/dapr/dapr/releases) with this URL https://github.com/dapr/dapr/releases/ 
-You can find `grafana-actor-dashboard.json`, `grafana-sidecar-dashboard.json` and `grafana-system-services-dashboard.json` in release assets location.
+| Dashboard name | Template file name | Description |
+|----------------|--------------------|-------------|
+| Dapr System Service Dashboard | `grafana-system-services-dashboard.json` | [Shows Dapr system component status](/images/grafana-system-service-dashboard.png), dapr-operator, dapr-sidecar-injector, dapr-sentry, and dapr-placement |
+| Dapr Sidecar Dashboard | `grafana-sidecar-dashboard.json` | [Shows Dapr Sidecar status](/images/grafana-sidecar-dashboard.png) - sidecar health/resources, throughput/latency of HTTP and gRPC, Actor, mTLS, etc. |
+| Dapr Actor Dashboard | `grafana-actor-dashboard.json` | [Shows Dapr Sidecar status](/images/grafana-actor-dashboard.png) - actor invocation throughput/latency, timer/reminder triggers, and turn-based concurrnecy. |
 
 ![upload json](/images/grafana-uploadjson.png)
 
-8. Find the dashboard that you imported and enjoy!
+2. Find the dashboard that you imported and enjoy!
 
 ![upload json](/images/system-service-dashboard.png)
 
+> Note: Hover your mouse cursor to see the description of each chart
+
+![tooltip](/images/grafana-tooltip.png)
+
 ## References
 
+* [Dapr Observability]({{<ref "observability-concept.md">}})
 * [Set up Prometheus and Grafana]({{< ref grafana.md >}})
 * [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+* [Supported Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
 
 ## Example
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
