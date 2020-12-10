@@ -241,7 +241,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
 
  1. Follow these steps to run the [Sentry service in self-hosted mode]({{< ref "mtls.md" >}}) with mTLS enabled.
  2. In a command prompt, set these environment variables  
-{{< tabs Linux Windows>}}
+{{< tabs Linux/MacOS Windows>}}
 
 {{% codetab %}}
 ```bash
@@ -270,7 +270,7 @@ daprd --app-id nodeapp --dapr-grpc-port 50002 -dapr-http-port 3501 --log-level d
  node app.js
 ```
 5. In another command prompt, set these environment variables.  
-{{< tabs Linux Windows>}}
+{{< tabs Linux/MacOS Windows>}}
 
 {{% codetab %}}
 ```bash
