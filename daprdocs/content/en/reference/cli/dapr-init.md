@@ -41,6 +41,5 @@ dapr init -s
 | `--kubernetes`, `-k` | | `false` | Deploy Dapr to a Kubernetes cluster |
 | `--namespace`, `-n` | | `dapr-system` | The Kubernetes namespace to install Dapr in |
 | `--network` | `DAPR_NETWORK` | | The Docker network on which to deploy the Dapr runtime |
-| `--redis-host` | `DAPR_REDIS_HOST` | `localhost` | The host on which the Redis service resides |
 | `--runtime-version` | | `latest` | The version of the Dapr runtime to install, for example: `1.0.0` |
 | `--slim`, `-s` | | `false` | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
