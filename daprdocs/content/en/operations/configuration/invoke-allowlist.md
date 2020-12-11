@@ -254,14 +254,14 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
   ```
 
     {{% /codetab %}}
-    
-    {{% codetab %}}
-  ```powershell
-  set DAPR_TRUST_ANCHORS=``
-  set DAPR_CERT_CHAIN=``
-  set DAPR_CERT_KEY=``
-  set NAMESPACE=default
-  ```
+
+   {{% codetab %}}
+   ```powershell
+   $env:DAPR_TRUST_ANCHORS=$(Get-Content $env:USERPROFILE\.dapr\certs\ca.crt)
+   $env:DAPR_CERT_CHAIN=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.crt)
+   $env:DAPR_CERT_KEY=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.key)
+   $env:NAMESPACE="default"
+   ```
 
     {{% /codetab %}} 
     
@@ -294,10 +294,10 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
    
    {{% codetab %}}
    ```powershell
-   set DAPR_TRUST_ANCHORS=``
-   set DAPR_CERT_CHAIN=``
-   set DAPR_CERT_KEY=``
-   set NAMESPACE=default
+   $env:DAPR_TRUST_ANCHORS=$(Get-Content $env:USERPROFILE\.dapr\certs\ca.crt)
+   $env:DAPR_CERT_CHAIN=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.crt)
+   $env:DAPR_CERT_KEY=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.key)
+   $env:NAMESPACE="default"
    ```
    {{% /codetab %}}
 
