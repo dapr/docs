@@ -14,7 +14,7 @@ description: Detailed information on the SQL Server state store component
 In order to setup SQL Server as a state store, you will need the following properties:
 
 - **Connection String**: the SQL Server connection string. For example: server=localhost;user id=sa;password=your-password;port=1433;database=mydatabase;
-- **Schema**: The database schema do use (default=dbo). Will be created if not exists
+- **Schema**: The database schema to use (default=dbo). Will be created if not exists
 - **Table Name**: The database table name. Will be created if not exists
 - **Indexed Properties**: Optional properties from json data which will be indexed and persisted as individual column
 
