@@ -175,7 +175,7 @@ A Dapr control plane configuration can configure the following settings:
 | allowedClockSkew | string | The extra time to give for certificate expiry based on possible clock skew on a machine. Default is 15 minutes.
 | workloadCertTTL  | string | Time a certificate is valid for. Default is 24 hours
 
-See the [Mutual TLS]({{< ref "mtls.md" >}}) HowTo and [security concepts]({{< ref "security-concept.md" >}}) for more information.
+See the [Mutual TLS]({{< ref "mtls" >}}) HowTo and [security concepts]({{< ref "security-concept.md" >}}) for more information.
 
 ### Example control plane configuration
 

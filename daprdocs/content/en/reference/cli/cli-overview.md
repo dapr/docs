@@ -59,7 +59,7 @@ You can learn more about each Dapr command from the links below.
  - [`dapr invoke`]({{< ref dapr-invoke.md >}})
  - [`dapr list`]({{< ref dapr-list.md >}})
  - [`dapr logs`]({{< ref dapr-logs.md >}})
- - [`dapr mtls`]({{< ref dapr-mtls.md >}})
+ - [`dapr mtls`]({{< ref dapr-mtls >}})
  - [`dapr publish`]({{< ref dapr-publish.md >}})
  - [`dapr run`]({{< ref dapr-run.md >}})
  - [`dapr status`]({{< ref dapr-status.md >}})
