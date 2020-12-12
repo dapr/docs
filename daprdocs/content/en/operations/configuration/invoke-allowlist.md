@@ -315,16 +315,15 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
    python app.py
    ```
 
-8. You should see the calls to the node app fail in the python app command prompt based due to the **deny** operation action in the nodeappconfig file. Change this to action to **allow** and re-run the apps and you should then see this call succeed.
+8. You should see the calls to the node app fail in the python app command prompt based due to the **deny** operation action in the nodeappconfig file. Change this action to **allow** and re-run the apps and you should then see this call succeed.
 
 ### Kubernetes mode
-
 This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/README.md) quickstart.
 
 You can create and apply the above configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) to the Kubernetes deployments.
 
 For example, below is how the pythonapp is deployed to Kubernetes in the default namespace with this pythonappconfig configuration file. 
-Do the same for the nodeapp deployment and then look at the logs for the pythonapp to see the calls fail due to the **deny** operation action set in the nodeappconfig file. Change this to action to **allow** and re-deploy the apps and you should then see this call succeed.
+Do the same for the nodeapp deployment and then look at the logs for the pythonapp to see the calls fail due to the **deny** operation action set in the nodeappconfig file. Change this action to **allow** and re-deploy the apps and you should then see this call succeed.
 
 ```yaml
 apiVersion: apps/v1
