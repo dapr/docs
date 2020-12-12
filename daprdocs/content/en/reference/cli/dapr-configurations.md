@@ -30,4 +30,4 @@ dapr configurations -k
 | `--name`, `-n` | | | The configuration name to be printed (optional)
 | `--output`, `-o` | | `list`| Output format (options: json or yaml or list)
 | `--help`, `-h` | | | Print this help message |
-|
+
