@@ -7,7 +7,7 @@ description: "Detailed information on the dashboard CLI command"
 
 ## Description
 
-Start Dapr dashboard.
+Start [Dapr dashboard](https://github.com/dapr/dashboard).
 
 ## Supported platforms
 
