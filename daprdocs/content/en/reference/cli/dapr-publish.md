@@ -27,7 +27,8 @@ dapr publish --topic sample --pubsub target --data '{"key":"value"}'
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--data`, `-d` | | | The JSON serialized data string (optional) |
-| `--help`, `-h` | | | Print this help message |
-| `--pubsub`, `-p` | | | The name of the pub/sub component
+| `--publish-app-id` | `-i`| | The ID that represents the app from which you are publishing
+| `--pubsub` | `-p` | | The name of the pub/sub component
 | `--topic`, `-t` | | | The topic to be published to |
+| `--data`, `-d` | | | The JSON serialized string (optional) |
+| `--help`, `-h` | | | Print this help message |
