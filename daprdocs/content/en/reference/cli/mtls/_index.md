@@ -7,7 +7,11 @@ description: "Detailed information on the mtls CLI command"
 
 ## Description
 
-Check if mTLS is enabled. Supported platforms: Kubernetes
+Check if mTLS is enabled.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 

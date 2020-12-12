@@ -3,11 +3,17 @@ type: docs
 title: "mtls expiry CLI command reference"
 linkTitle: "mtls expiry"
 description: "Detailed information on the mtls expiry CLI command"
+weight: 2000
 ---
 
 ## Description
 
 Checks the expiry of the root certificate
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 ```bash
