@@ -26,6 +26,16 @@ dapr init
 dapr init -k
 ```
 
+### Initialize particular Dapr runtime in self-hosted mode
+```bash
+dapr init --runtime-version 0.10.0
+```
+
+### Initialize particular Dapr runtime in Kubernetes
+```bash
+dapr init -k --runtime-version 0.10.0
+```
+
 ### Initialize Dapr in slim self-hosted mode
 ```bash
 dapr init -s
