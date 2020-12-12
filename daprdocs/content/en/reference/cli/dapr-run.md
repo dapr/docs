@@ -17,6 +17,12 @@ dapr run [flags] [command]
 
 ## Examples
 
+### Run a .NET application
+
+```bash
+dapr run --app-id myapp --app-port 5000 -- dotnet run
+```
+
 ### Run a Java application
 
 ```bash
