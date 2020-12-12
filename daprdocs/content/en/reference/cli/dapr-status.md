@@ -7,7 +7,11 @@ description: "Detailed information on the status CLI command"
 
 ## Description
 
-Show the health status of Dapr services. Supported platforms: Kubernetes
+Show the health status of Dapr services.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 

@@ -7,7 +7,11 @@ description: "Detailed information on the components CLI command"
 
 ## Description
 
-List all Dapr components. Supported platforms: Kubernetes
+List all Dapr components.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 

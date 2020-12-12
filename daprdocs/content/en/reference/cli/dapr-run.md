@@ -7,7 +7,11 @@ description: "Detailed information on the run CLI command"
 
 ## Description
 
-Run Dapr and (optionally) your application side by side. Supported platforms: Self-hosted
+Run Dapr and (optionally) your application side by side.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
 
 ## Usage
 

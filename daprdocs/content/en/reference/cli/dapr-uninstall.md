@@ -7,7 +7,12 @@ description: "Detailed information on the uninstall CLI command"
 
 ## Description
 
-Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
+Uninstall Dapr runtime.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 

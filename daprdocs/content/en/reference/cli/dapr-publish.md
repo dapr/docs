@@ -7,7 +7,11 @@ description: "Detailed information on the publish CLI command"
 
 ## Description
 
-Publish a pub-sub event. Supported platforms: Self-hosted
+Publish a pub-sub event.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
 
 ## Usage
 

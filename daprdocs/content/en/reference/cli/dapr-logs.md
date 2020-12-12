@@ -7,7 +7,11 @@ description: "Detailed information on the logs CLI command"
 
 ## Description
 
-Get Dapr sidecar logs for an application. Supported platforms: Kubernetes
+Get Dapr sidecar logs for an application.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 ```bash

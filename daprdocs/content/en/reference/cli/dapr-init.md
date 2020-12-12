@@ -7,7 +7,12 @@ description: "Detailed information on the init CLI command"
 
 ## Description
 
-Install Dapr on supported hosting platforms. Supported platforms: Kubernetes and self-hosted
+Install Dapr on supported hosting platforms.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 ```bash

@@ -7,7 +7,11 @@ description: "Detailed information on the invoke CLI command"
 
 ## Description
 
-Invoke a method on a given Dapr application. Supported platforms: Self-hosted
+Invoke a method on a given Dapr application.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
 
 ## Usage
 ```bash

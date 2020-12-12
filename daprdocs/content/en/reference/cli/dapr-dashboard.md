@@ -7,7 +7,12 @@ description: "Detailed information on the dashboard CLI command"
 
 ## Description
 
-Start Dapr dashboard. Supported platforms: Kubernetes and self-hosted
+Start Dapr dashboard.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 ```bash

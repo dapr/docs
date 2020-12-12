@@ -7,7 +7,11 @@ description: "Detailed information on the configurations CLI command"
 
 ## Description
 
-List all Dapr configurations. Supported platforms: Kubernetes
+List all Dapr configurations.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 

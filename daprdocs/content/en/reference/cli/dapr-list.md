@@ -7,7 +7,12 @@ description: "Detailed information on the list CLI command"
 
 ## Description
 
-List all Dapr instances. Supported platforms: Kubernetes and self-hosted
+List all Dapr instances.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 ```bash

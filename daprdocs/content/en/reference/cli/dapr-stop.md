@@ -7,7 +7,11 @@ description: "Detailed information on the stop CLI command"
 
 ## Description
 
-Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
+Stop Dapr instances and their associated apps.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
 
 ## Usage
 
