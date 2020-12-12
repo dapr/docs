@@ -9,14 +9,13 @@ weight: 10
 The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernetes cluster, provides debugging support, and launches and manages Dapr instances.
 
 ```bash
-
-         __                
+	 
     ____/ /___ _____  _____
    / __  / __ '/ __ \/ ___/
-  / /_/ / /_/ / /_/ / /    
-  \__,_/\__,_/ .___/_/     
-              /_/            
-                                                                           
+  / /_/ / /_/ / /_/ / /
+  \__,_/\__,_/ .___/_/
+	      /_/
+
 ===============================
 Distributed Application Runtime
 
@@ -25,20 +24,20 @@ Usage:
 
 Available Commands:
   completion     Generates shell completion scripts
-  components     List all Dapr components
-  configurations List all Dapr configurations
-  dashboard      Start Dapr dashboard
+  components     List all Dapr components. Supported platforms: Kubernetes
+  configurations List all Dapr configurations. Supported platforms: Kubernetes
+  dashboard      Start Dapr dashboard. Supported platforms: Kubernetes and self-hosted
   help           Help about any command
-  init           Install Dapr on supported hosting platforms, currently: Kubernetes and self-hosted
-  invoke         Invoke a method on a given Dapr application
-  list           List all Dapr instances
-  logs           Get Dapr sidecar logs for an application
-  mtls           Check if mTLS is enabled
-  publish        Publish a pub-sub event
-  run            Run Dapr and (optionally) your application side by side
-  status         Show the health status of Dapr services
-  stop           Stop Dapr instances and their associated apps in self-hosted mode
-  uninstall      Uninstall Dapr runtime
+  init           Install Dapr on supported hosting platforms. Supported platforms: Kubernetes and self-hosted
+  invoke         Invoke a method on a given Dapr application. Supported platforms: Self-hosted
+  list           List all Dapr instances. Supported platforms: Kubernetes and self-hosted
+  logs           Get Dapr sidecar logs for an application. Supported platforms: Kubernetes
+  mtls           Check if mTLS is enabled. Supported platforms: Kubernetes
+  publish        Publish a pub-sub event. Supported platforms: Self-hosted
+  run            Run Dapr and (optionally) your application side by side. Supported platforms: Self-hosted
+  status         Show the health status of Dapr services. Supported platforms: Kubernetes
+  stop           Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
+  uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
 
 Flags:
   -h, --help      help for dapr
@@ -60,7 +59,7 @@ You can learn more about each Dapr command from the links below.
  - [`dapr invoke`]({{< ref dapr-invoke.md >}})
  - [`dapr list`]({{< ref dapr-list.md >}})
  - [`dapr logs`]({{< ref dapr-logs.md >}})
- - [`dapr mtls`]({{< ref dapr-mtls.md >}})
+ - [`dapr mtls`]({{< ref dapr-mtls >}})
  - [`dapr publish`]({{< ref dapr-publish.md >}})
  - [`dapr run`]({{< ref dapr-run.md >}})
  - [`dapr status`]({{< ref dapr-status.md >}})
