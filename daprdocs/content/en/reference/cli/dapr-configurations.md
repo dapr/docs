@@ -17,9 +17,9 @@ dapr configurations [flags]
 
 ## Examples
 
-### List Kubernetes components
+### List Kubernetes Dapr configurations
 ```bash
-dapr components -k
+dapr configurations -k
 ```
 
 ## Flags
