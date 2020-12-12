@@ -19,16 +19,16 @@ Stop Dapr instances and their associated apps.
 dapr stop [flags]
 ```
 
-## Examples
-
-### Stop Dapr application
-```bash
-dapr stop --app-id <ID>
-```
-
 ## Flags
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
 | `--app-id`, `-a` | | | The application id to be stopped |
 | `--help`, `-h` | | | Print this help message |
+
+## Examples
+
+### Stop Dapr application
+```bash
+dapr stop --app-id <ID>
+```

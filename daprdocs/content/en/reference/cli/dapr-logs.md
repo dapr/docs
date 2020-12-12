@@ -18,13 +18,6 @@ Get Dapr sidecar logs for an application.
 dapr logs [flags]
 ```
 
-## Examples
-
-### Get logs of sample app from target pod in custom namespace
-```bash
-dapr logs -k --app-id sample --pod-name target --namespace custom
-```
-
 ## Flags
 
 | Name | Environment Variable | Default | Description
@@ -34,3 +27,11 @@ dapr logs -k --app-id sample --pod-name target --namespace custom
 | `--kubernetes`, `-k` | | `true` | Get logs from a Kubernetes cluster |
 | `--namespace`, `-n` | | `default` | The Kubernetes namespace in which your application is deployed |
 | `--pod-name`, `-p` | | | The name of the pod in Kubernetes, in case your application has multiple pods (optional) |
+
+
+## Examples
+
+### Get logs of sample app from target pod in custom namespace
+```bash
+dapr logs -k --app-id sample --pod-name target --namespace custom
+```

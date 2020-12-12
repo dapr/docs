@@ -16,6 +16,12 @@ dapr completion [flags]
 dapr completion [command]
 ```
 
+## Flags
+
+| Name | Environment Variable | Default | Description |
+|------|----------------------|---------|-------------|
+| `--help`, `-h` | | | Prints this help message |
+
 ## Examples
 
 ### Installing bash completion on macOS using Homebrew
@@ -96,10 +102,3 @@ bash        Generates bash completion scripts
 powershell  Generates powershell completion scripts
 zsh         Generates zsh completion scripts
 ```
-
-## Flags
-
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | Prints this help message |
-|

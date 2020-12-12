@@ -19,6 +19,25 @@ Run Dapr and (optionally) your application side by side.
 dapr run [flags] [command]
 ```
 
+## Flags
+
+| Name | Environment Variable | Default | Description
+| --- | --- | --- | --- |
+| `--app-id`, `-a` | | | The id for your application, used for service discovery |
+| `--app-max-concurrency` | | `unlimited` | The concurrency level of the application, otherwise is unlimited |
+| `--app-port`, `-p` | | | The port your application is listening on
+| `--app-protocol`, `-P` | | `http` | The protocol (gRPC or HTTP) Dapr uses to talk to the application. Valid values are: `http` or `grpc` |
+| `--app-ssl` | | `false` | Enable https when Dapr invokes the application
+| `--components-path`, `-d` | | `Linux & Mac: $HOME/.dapr/components`, `Windows: %USERPROFILE%\.dapr\components` | The path for components directory
+| `--config`, `-c` | | `Linux & Mac: $HOME/.dapr/config.yaml`, `Windows: %USERPROFILE%\.dapr\config.yaml` | Dapr configuration file |
+| `--dapr-grpc-port` | | `3500` | The gRPC port for Dapr to listen on |
+| `--dapr-http-port` | | `50001` | The HTTP port for Dapr to listen on |
+| `--enable-profiling` | | `false` | Enable `pprof` profiling via an HTTP endpoint 
+| `--help`, `-h` | | | Print this help message |
+| `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warning`, `error`, `fatal`, or `panic` |
+| `--placement-host-address` | `DAPR_PLACEMENT_HOST_ADDRESS` | `localhost` | The host on which the placement service resides |
+| `--profile-port` | | `7777` | The port for the profile server to listen on |
+
 ## Examples
 
 ### Run a .NET application
@@ -50,23 +69,3 @@ dapr run --app-id myapp -- python myapp.py
 ```bash
 dapr run --app-id myapp
 ```
-
-## Flags
-
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--app-id`, `-a` | | | The id for your application, used for service discovery |
-| `--app-max-concurrency` | | `unlimited` | The concurrency level of the application, otherwise is unlimited |
-| `--app-port`, `-p` | | | The port your application is listening on
-| `--app-protocol`, `-P` | | `http` | The protocol (gRPC or HTTP) Dapr uses to talk to the application. Valid values are: `http` or `grpc` |
-| `--app-ssl` | | `false` | Enable https when Dapr invokes the application
-| `--components-path`, `-d` | | `Linux & Mac: $HOME/.dapr/components`, `Windows: %USERPROFILE%\.dapr\components` | The path for components directory
-| `--config`, `-c` | | `Linux & Mac: $HOME/.dapr/config.yaml`, `Windows: %USERPROFILE%\.dapr\config.yaml` | Dapr configuration file |
-| `--dapr-grpc-port` | | `3500` | The gRPC port for Dapr to listen on |
-| `--dapr-http-port` | | `50001` | The HTTP port for Dapr to listen on |
-| `--enable-profiling` | | `false` | Enable `pprof` profiling via an HTTP endpoint 
-| `--help`, `-h` | | | Print this help message |
-| `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warning`, `error`, `fatal`, or `panic` |
-| `--placement-host-address` | `DAPR_PLACEMENT_HOST_ADDRESS` | `localhost` | The host on which the placement service resides |
-| `--profile-port` | | `7777` | The port for the profile server to listen on |
-

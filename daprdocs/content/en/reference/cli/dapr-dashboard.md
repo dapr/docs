@@ -19,6 +19,16 @@ Start [Dapr dashboard](https://github.com/dapr/dashboard).
 dapr dashboard [flags]
 ```
 
+## Flags
+
+| Name | Environment Variable | Default | Description |
+|------|----------------------|---------|-------------|
+| `--help`, `-h`       | |               | Prints this help message |
+| `--kubernetes`, `-k` | | `false`       | Opens Dapr dashboard in local browser via local proxy to Kubernetes cluster |
+| `--namespace`, `-n`  | | `dapr-system` | The namespace where Dapr dashboard is running |
+| `--port`, `-p`       | | `8080`        | The local port on which to serve Dapr dashboard |
+| `--version`, `-v`    | | `false`       | Print the version for Dapr dashboard |
+
 ## Examples
 
 ### Start dashboard locally
@@ -40,13 +50,3 @@ dapr dashboard -k
 ```bash
 dapr dashboard -k -p 9999
 ```
-
-## Flags
-
-| Name | Environment Variable | Default | Description |
-|------|----------------------|---------|-------------|
-| `--help`, `-h`       | |               | Prints this help message |
-| `--kubernetes`, `-k` | | `false`       | Opens Dapr dashboard in local browser via local proxy to Kubernetes cluster |
-| `--namespace`, `-n`  | | `dapr-system` | The namespace where Dapr dashboard is running |
-| `--port`, `-p`       | | `8080`        | The local port on which to serve Dapr dashboard |
-| `--version`, `-v`    | | `false`       | Print the version for Dapr dashboard |

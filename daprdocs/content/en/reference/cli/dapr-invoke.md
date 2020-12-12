@@ -18,6 +18,16 @@ Invoke a method on a given Dapr application.
 dapr invoke [flags]
 ```
 
+## Flags
+
+| Name | Environment Variable | Default | Description
+| --- | --- | --- | --- |
+| `--app-id`, `-a` | | | The application id to invoke |
+| `--help`, `-h` | | | Print this help message |
+| `--method`, `-m` | | | The method to invoke |
+| `--data`, `-d` | | | The JSON serialized data string (optional) |
+| `--verb`, `-v` | | `POST` | The HTTP verb to use |
+
 ## Examples
 
 ### Invoke a sample method on target app with POST Verb
@@ -29,13 +39,3 @@ dapr invoke --app-id target --method sample --data '{"key":"value"}'
 ```bash
 dapr invoke --app-id target --method sample --verb GET
 ```
-
-## Flags
-
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--app-id`, `-a` | | | The application id to invoke |
-| `--help`, `-h` | | | Print this help message |
-| `--method`, `-m` | | | The method to invoke |
-| `--data`, `-d` | | | The JSON serialized data string (optional) |
-| `--verb`, `-v` | | `POST` | The HTTP verb to use |

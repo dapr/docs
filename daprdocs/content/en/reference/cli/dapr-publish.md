@@ -19,14 +19,6 @@ Publish a pub-sub event.
 dapr publish [flags]
 ```
 
-## Examples
-
-### Publish to sample topic in target pubsub
-```bash
-dapr publish --publish-app-id appId --topic sample --pubsub target --data '{"key":"value"}'
-```
-
-
 ## Flags
 
 | Name | Environment Variable | Default | Description
@@ -36,3 +28,11 @@ dapr publish --publish-app-id appId --topic sample --pubsub target --data '{"key
 | `--topic`, `-t` | | | The topic to be published to |
 | `--data`, `-d` | | | The JSON serialized string (optional) |
 | `--help`, `-h` | | | Print this help message |
+
+
+## Examples
+
+### Publish to sample topic in target pubsub
+```bash
+dapr publish --publish-app-id appId --topic sample --pubsub target --data '{"key":"value"}'
+```

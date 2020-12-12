@@ -19,33 +19,6 @@ Install Dapr on supported hosting platforms.
 dapr init [flags]
 ```
 
-## Examples
-
-### Initialize Dapr in self-hosted mode
-```bash
-dapr init
-```
-
-### Initialize Dapr in Kubernetes
-```bash
-dapr init -k
-```
-
-### Initialize particular Dapr runtime in self-hosted mode
-```bash
-dapr init --runtime-version 0.10.0
-```
-
-### Initialize particular Dapr runtime in Kubernetes
-```bash
-dapr init -k --runtime-version 0.10.0
-```
-
-### Initialize Dapr in slim self-hosted mode
-```bash
-dapr init -s
-```
-
 ## Flags
 
 | Name | Environment Variable | Default | Description
@@ -58,3 +31,30 @@ dapr init -s
 | `--network` | `DAPR_NETWORK` | | The Docker network on which to deploy the Dapr runtime |
 | `--runtime-version` | | `latest` | The version of the Dapr runtime to install, for example: `1.0.0` |
 | `--slim`, `-s` | | `false` | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
+
+## Examples
+
+### Initialize Dapr in self-hosted mode
+```bash
+dapr init
+```
+
+### Initialize Dapr in Kubernetes
+```bash
+dapr init -k
+```
+
+### Initialize specified version of Dapr runtime in self-hosted mode
+```bash
+dapr init --runtime-version 0.10.0
+```
+
+### Initialize specified version of Dapr runtime in Kubernetes
+```bash
+dapr init -k --runtime-version 0.10.0
+```
+
+### Initialize Dapr in [slim self-hosted mode]({{< ref self-hosted-no-docker.md >}})
+```bash
+dapr init -s
+```

@@ -19,13 +19,6 @@ List all Dapr configurations.
 dapr configurations [flags]
 ```
 
-## Examples
-
-### List Kubernetes Dapr configurations
-```bash
-dapr configurations -k
-```
-
 ## Flags
 
 | Name | Environment Variable | Default | Description
@@ -35,3 +28,9 @@ dapr configurations -k
 | `--output`, `-o` | | `list`| Output format (options: json or yaml or list)
 | `--help`, `-h` | | | Print this help message |
 
+## Examples
+
+### List Kubernetes Dapr configurations
+```bash
+dapr configurations -k
+```

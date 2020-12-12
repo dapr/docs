@@ -19,6 +19,13 @@ List all Dapr instances.
 dapr list [flags]
 ```
 
+## Flags
+
+| Name | Environment Variable | Default | Description
+| --- | --- | --- | --- |
+| `--help`, `-h` | | | Print this help message |
+| `--kubernetes`, `-k` | | `false` | List all Dapr pods in a Kubernetes cluster |
+
 ## Examples
 
 ### List Dapr instances in self-hosted mode
@@ -30,10 +37,3 @@ dapr list
 ```bash
 dapr list -k
 ```
-
-## Flags
-
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | Print this help message |
-| `--kubernetes`, `-k` | | `false` | List all Dapr pods in a Kubernetes cluster |
