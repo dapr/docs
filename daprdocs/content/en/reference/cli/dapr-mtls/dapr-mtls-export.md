@@ -12,7 +12,6 @@ Export the root CA, issuer cert and key from Kubernetes to local files
 
 ## Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
 - [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage

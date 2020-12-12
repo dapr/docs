@@ -12,7 +12,6 @@ Checks the expiry of the root certificate
 
 ## Supported platforms
 
-- [Self-Hosted]({{< ref self-hosted >}})
 - [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
