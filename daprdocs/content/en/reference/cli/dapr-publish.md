@@ -7,7 +7,11 @@ description: "Detailed information on the publish CLI command"
 
 ## Description
 
-Publish an event to multiple consumers
+Publish a pub-sub event.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
 
 ## Usage
 
@@ -24,3 +28,11 @@ dapr publish [flags]
 | `--topic`, `-t` | | | The topic to be published to |
 | `--data`, `-d` | | | The JSON serialized string (optional) |
 | `--help`, `-h` | | | Print this help message |
+
+
+## Examples
+
+### Publish to sample topic in target pubsub
+```bash
+dapr publish --publish-app-id appId --topic sample --pubsub target --data '{"key":"value"}'
+```
