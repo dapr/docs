@@ -19,7 +19,7 @@ dapr publish [flags]
 
 ### Publish to sample topic in target pubsub
 ```bash
-dapr publish --topic sample --pubsub target --data '{"key":"value"}'
+dapr publish --publish-app-id appId --topic sample --pubsub target --data '{"key":"value"}'
 ```
 
 
