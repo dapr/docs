@@ -9,6 +9,7 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 ## Prerequisites
 
 - Latest [Dapr CLI]({{< ref install-dapr-cli.md >}})
+- [Helm 3](https://github.com/helm/helm/releases)
 
 ## Upgrade existing cluster running 0.11.x
 
