@@ -27,9 +27,10 @@ That means that when an application publishes a message to a topic using the Pub
 
 ### Consumer groups and multiple instances
 
-The burden of dealing with concepts like consumer groups and multiple instances inside consumer groups is all catered for by Dapr.
+The burden of dealing with concepts like consumer groups and multiple instances inside consumer groups is all handled autoamtically by Dapr:
 
-When multiple instances of the same application ID subscribe to a topic, Dapr will make sure to deliver the message to only one instance. If two different applications with different IDs subscribe to a topic, at least one instance in each application receives a copy of the same message.
+* When multiple instances of the same application (same IDs) subscribe to a topic, Dapr will deliver each message to only one instance of that application. 
+* If two different applications (different IDs) subscribe to the same topic, Dapr will deliver each message to only one instance of each application.
 
 ### Cloud events
 
