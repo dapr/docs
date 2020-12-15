@@ -34,7 +34,7 @@ akswin000001                        Ready    agent   6d      v1.17.9   10.240.0.
 ## Installing the Dapr Control Plane
 
 If you are installing using the Dapr CLI or via a helm chart, simply follow the normal deployment procedures:
-[Installing Dapr on a Kubernetes cluster]({{< ref "install-dapr.md#installing-Dapr-on-a-kubernetes-cluster" >}})
+[Installing Dapr on a Kubernetes cluster]({{< ref "install-dapr-selfhost.md#installing-Dapr-on-a-kubernetes-cluster" >}})
 
 Affinity will be automatically set for kubernetes.io/os=linux. This will be sufficient for most users, as Kubernetes requires at least one Linux node pool.
 

@@ -67,10 +67,10 @@ archived_version = false
 
 [[params.versions]]
   version = "v1.0-rc.2 (preview)"
-  url = "https://v1-rc2.docs.dapr.io"
+  url = "#"
 [[params.versions]]
   version = "v0.11 (latest)"
-  url = "#"
+  url = "https://docs.dapr.io"
 [[params.versions]]
   version = "v0.10"
   url = "https://github.com/dapr/docs/tree/v0.10.0"
