@@ -3,7 +3,7 @@ type: docs
 title: "Steps to upgrade Dapr on a Kubernetes cluster"
 linkTitle: "Upgrading Dapr"
 weight: 50000
-description: "Follow these steps to upgrade Dapr and ensure a smooth upgrade."
+description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smooth upgrade."
 ---
 
 ## Prerequisites
