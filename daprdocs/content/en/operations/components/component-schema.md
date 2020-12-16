@@ -43,6 +43,8 @@ spec:
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
 
 ## Further reading
+- [Components concept]({{< ref components-concept.md >}})
+- [Reference secrets in component definitions]({{< ref component-secrets.md >}})
 - [Supported state stores]({{< ref supported-state-stores >}})
 - [Supported pub/sub brokers]({{< ref supported-pubsub >}})
 - [Supported secret stores]({{< ref supported-secret-stores >}})
