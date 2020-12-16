@@ -50,9 +50,10 @@ hugo server --disableFastRender
 3. Navigate to `http://localhost:1313/docs`
 
 ## Update docs
+1. Fork repo into your account
 1. Create new branch
-1. Commit and push changes to content
-1. Submit pull request to `master`
+1. Commit and push changes to forked branch
+1. Submit pull request from downstream branch to the upstream branch for the correct version you are targeting
 1. Staging site will automatically get created and linked to PR to review and test
 
 ## Code of Conduct

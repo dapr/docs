@@ -105,8 +105,19 @@ This shortcode will link to a specific page:
 ```md
 {{</* ref "page.md" */>}}
 ```
+> Note that all pages and folders need to have globally unique names in order for the ref shortcode to work properly. If there are duplicate names the build will break and an error will be thrown.
 
-> Note that all pages and folders need to have globally unique names in order for the ref shortcode to work properly.
+#### Referencing sections in other pages
+
+To reference a specific section in another page, add `#section-short-name` to the end of your reference.
+
+As a general rule, the section short name is the text of the section title, all lowercase, with spaces changed to "-". You can check the section short name by visiting the website page, clicking the link icon (🔗) next to the section, and see how the URL renders in the nav bar. The content after the "#" is your section shortname.
+
+As an example, for this specific section the complete reference to the page and section would be:
+
+```md
+{{</* ref "contributing-docs.md#referencing-sections-in-other-pages" */>}}
+```
 
 ### Images
 The markdown spec used by Docsy and Hugo does not give an option to resize images using markdown notation. Instead, raw HMTL is used.

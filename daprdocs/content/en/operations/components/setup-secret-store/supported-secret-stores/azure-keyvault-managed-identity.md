@@ -100,16 +100,16 @@ description: How to configure Azure Key Vault and Kubernetes to use Azure Manage
       name: [you managed identity name]
     spec:
       type: 0
-      ResourceID: [you managed identity id]
-      ClientID: [you managed identity Client ID]
+      resourceID: [you managed identity id]
+      clientID: [you managed identity Client ID]
     ---
     apiVersion: "aadpodidentity.k8s.io/v1"
     kind: AzureIdentityBinding
     metadata:
       name: [you managed identity name]-identity-binding
     spec:
-      AzureIdentity: [you managed identity name]
-      Selector: [you managed identity selector]
+      azureIdentity: [you managed identity name]
+      selector: [you managed identity selector]
     ```
 
 10. Deploy the azure-identity-config.yaml:
