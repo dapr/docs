@@ -20,7 +20,6 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 * [Service discovery name resolution](https://github.com/dapr/components-contrib/tree/master/nameresolution)
 * [Secret stores](https://github.com/dapr/components-contrib/tree/master/secretstores)
 * [State](https://github.com/dapr/components-contrib/tree/master/state)
-* [Tracing exporters](https://github.com/dapr/components-contrib/tree/master/exporters)
 
 ### Service invocation and service discovery components
 Service discovery components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment to provide service-to-service discovery. For example, the Kubernetes service discovery component integrates with the Kubernetes DNS service and self hosted uses mDNS.
