@@ -107,3 +107,62 @@ curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&m
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&?metadata.namespace=production
 ```
+
+## Get Bulk Secret
+
+This endpoint lets you get all the secrets in a secret store.
+It's recommended to use [token authentication]({{<ref "api-token.md">}}) for Dapr if configuring a secret store.
+
+### HTTP Request
+
+```
+GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/bulk
+```
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+secret-store-name | the name of the secret store to get the secret from
+
+> Note, all URL parameters are case-sensitive.
+
+### HTTP Response
+
+#### Response Body
+
+The returned response is a JSON containing the secrets. The JSON object will contain the secret keys as fields and the secret value as the field value.
+
+##### Response with multiple keys in a secret (eg. Kubernetes): 
+
+```shell
+curl http://localhost:3500/v1.0/secrets/kubernetes/bulk
+```
+
+```json
+{
+  "key1": "value1",
+  "key2": "value2"
+}
+```
+
+#### Response Codes
+
+Code | Description
+---- | -----------
+200  | OK
+400  | Secret store is missing or misconfigured
+403  | Access denied
+500  | Failed to get secret or no secret stores defined
+
+### Examples
+
+```shell
+curl http://localhost:3500/v1.0/secrets/vault/bulk \
+
+{
+  "key1": "value1",
+  "key2": "value2"
+}
+```
