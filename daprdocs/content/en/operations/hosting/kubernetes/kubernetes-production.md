@@ -138,12 +138,19 @@ NAME     	CHART VERSION	APP VERSION	DESCRIPTION
 dapr/dapr	1.0.0-rc.1   	1.0.0-rc.1 	A Helm chart for Dapr on Kubernetes
 ```
 
-The APP VERSION column tells us which Dapr runtime version is installed by the chart.
+The APP VERSION column tells us which Dapr runtime version is installed by the chart. Now, use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved before:
 
-Use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved:
+> Remove the `--set global.ha.enabled=true` if your current Dapr installation has not been deployed is HA mode.
 
 ```bash
-helm upgrade dapr dapr/dapr --version <Dapr chart version> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
+helm upgrade dapr dapr/dapr \
+    --version <Dapr chart version> \
+    --namespace dapr-system \
+    --reset-values \
+    --set-file dapr_sentry.tls.root.certPEM=certs/ca.crt \
+    --set-file dapr_sentry.tls.issuer.certPEM=certs/issuer.crt \
+    --set-file dapr_sentry.tls.issuer.keyPEM=certs/issuer.key \
+    --set global.ha.enabled=true
 ```
 
 Kubernetes now performs a rolling update. Wait until all the new pods appear as running:
