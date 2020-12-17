@@ -8,7 +8,7 @@ description: "Install the Dapr CLI to get started with Dapr"
 
 ## Dapr CLI installation scripts
 
-Begin by downloading and installing the Dapr CLI for v1.0.0-rc.3. This is used to initialize your environment on your desired platform.
+Begin by downloading and installing the Dapr CLI for v0.11. This is used to initialize your environment on your desired platform.
 
 {{% alert title="Note" color="warning" %}}
 This command downloads and install Dapr CLI v0.11. To install v1.0-rc2, our latest preview release prior to the release of the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v1.0-rc1 docs](https://v1-rc1.docs.dapr.io).
