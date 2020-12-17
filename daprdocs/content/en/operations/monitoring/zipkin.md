@@ -11,7 +11,7 @@ type: docs
 
 For self hosted mode, on running `dapr init`:
 
-1. The following YAML file is created by default in `$HOME/dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden `:
+1. The following YAML file is created by default in `$HOME/.dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\.dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden `:
 
 * config.yaml
 
@@ -24,7 +24,7 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
-    zipkin: 
+    zipkin:
 	endpointAddress: "http://localhost:9411/api/v2/spans"
 ```
 
@@ -36,7 +36,7 @@ Launch Zipkin using Docker:
 docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
-3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
 
 ```bash
 dapr run --app-id mynode --app-port 3000 node app.js
