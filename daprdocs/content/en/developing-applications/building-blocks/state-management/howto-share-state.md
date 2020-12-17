@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Change a state sharing strategy"
-linkTitle: "How-To: Change a state sharing strategy"
+title: "How-To: Share state between applications"
+linkTitle: "How-To: CShare state between applications"
 weight: 400
-description: "Choose a strategy for sharing state between different applications"
+description: "Choose different strategies for sharing state between different applications"
 ---
 
 ## Introduction
