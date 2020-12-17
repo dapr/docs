@@ -10,7 +10,7 @@ This article provides guidance on running Dapr in self-hosted mode without Docke
 
 ## Prerequisites
 
-- [Dapr CLI]({{< ref "install-dapr.md#installing-dapr-cli" >}})
+- [Dapr CLI]({{< ref "install-dapr-selfhost.md#installing-dapr-cli" >}})
 
 ## Initialize Dapr without containers
 
@@ -40,11 +40,14 @@ By default for Linux/MacOS the `placement` binary is installed in `/$HOME/.dapr/
 ```bash
 $ $HOME/.dapr/bin/placement
 
-INFO[0000] starting Dapr Placement Service -- version 0.8.0 -- commit 74db927  instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
-INFO[0000] log level set to: info                        instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
-INFO[0000] metrics server started on :9090/              instance=host.localhost.name scope=dapr.metrics type=log ver=0.8.0
-INFO[0000] placement Service started on port 50005       instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
-INFO[0000] Healthz server is listening on :8080          instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
+INFO[0000] starting Dapr Placement Service -- version 1.0.0-rc.1 -- commit 13ae49d  instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
+INFO[0000] log level set to: info                        instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
+INFO[0000] metrics server started on :9090/              instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.metrics type=log ver=1.0.0-rc.1
+INFO[0000] Raft server is starting on 127.0.0.1:8201...  instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement.raft type=log ver=1.0.0-rc.1
+INFO[0000] placement service started on port 50005       instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
+INFO[0000] Healthz server is listening on :8080          instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
+INFO[0001] cluster leadership acquired                   instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
+INFO[0001] leader is established.                        instance=Nicoletaz-L10.redmond.corp.microsoft.com scope=dapr.placement type=log ver=1.0.0-rc.1
 
 ```
 
@@ -57,13 +60,7 @@ Update the state store configuration files to have the Redis host and password m
     value: "true"
 ```
 
-The logs of the placement service are updated whenever a host that uses actors is added or removed similar to the following output: 
-
-```
-INFO[0446] host added: 192.168.1.6                       instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
-INFO[0450] host removed: 192.168.1.6                     instance=host.localhost.name scope=dapr.placement type=log ver=0.8.0
-```
 
 ## Cleanup
 
-Follow the uninstall [instructions]({{< ref "install-dapr.md#uninstall-dapr-in-a-self-hosted-mode" >}}) to remove the binaries.
+Follow the uninstall [instructions]({{< ref "install-dapr-selfhost.md#uninstall-dapr-in-a-self-hosted-mode" >}}) to remove the binaries.

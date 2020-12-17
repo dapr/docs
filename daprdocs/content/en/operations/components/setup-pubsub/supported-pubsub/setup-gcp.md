@@ -23,6 +23,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.gcp.pubsub
+  version: v1
   metadata:
   - name: topic
     value: <TOPIC_NAME>

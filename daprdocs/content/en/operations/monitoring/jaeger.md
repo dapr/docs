@@ -28,30 +28,29 @@ docker run -d --name jaeger \
 
 Next, create the following YAML files locally:
 
-* **jaeger.yaml**: Note that because we are using the Zipkin protocol to talk to Jaeger,
-the type of the exporter in the YAML file below is `exporter.zipkin`,
-while the `exporterAddress` is the address of the Jaeger instance.
+* **config.yaml**: Note that because we are using the Zipkin protocol
+to talk to Jaeger, we specify the `zipkin` section of tracing
+configuration set the `endpointAddress` to address of the Jaeger
+instance.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
-kind: Component
+kind: Configuration
 metadata:
-  name: zipkin
+  name: tracing
+  namespace: default
 spec:
-  type: exporters.zipkin
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: exporterAddress
-    value: "http://localhost:9412/api/v2/spans"
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://localhost:9412/api/v2/spans"
 ```
 
 To launch the application referring to the new YAML file, you can use
-`--components-path`. Assuming that, the **jaeger.yaml** file is in the
-current directory, you can use
+`--config` option:
 
 ```bash
-dapr run --app-id mynode --app-port 3000 node app.js --components-path .
+dapr run --app-id mynode --app-port 3000 node app.js --config config.yaml
 ```
 
 ### Viewing Traces
@@ -92,26 +91,7 @@ kubectl apply -f jaeger-operator.yaml
 kubectl wait deploy --selector app.kubernetes.io/name=jaeger --for=condition=available
 ```
 
-Next, create the following YAML files locally:
-
-* **jaeger.yaml**: Note that because we are using the Zipkin protocol to talk to Jaeger,
-the type of the exporter in the YAML file below is `exporter.zipkin`,
-while the `exporterAddress` is the address of the Jaeger instance.
-
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: zipkin
-spec:
-  type: exporters.zipkin
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: exporterAddress
-    value: "http://jaeger-collector.default.svc.cluster.local:9411/api/v2/spans"
-```
+Next, create the following YAML file locally:
 
 * **tracing.yaml**
 
@@ -124,13 +104,14 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://jaeger-collector.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
 Finally, deploy the the Dapr component and configuration files:
 
 ```bash
 kubectl apply -f tracing.yaml
-kubectl apply -f jaeger.yaml
 ```
 
 In order to enable this configuration for your Dapr sidecar, add the following annotation to your pod spec template:

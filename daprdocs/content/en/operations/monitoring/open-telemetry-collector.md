@@ -6,7 +6,7 @@ weight: 1000
 description: "How to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector."
 ---
 
-Dapr can integrate with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the OpenCensus API. This guide walks through an example to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector.
+Dapr can integrate with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector.
 
 ## Requirements
 
@@ -29,15 +29,15 @@ export APP_INSIGHTS_KEY=<your-app-insight-key>
 
 Next, install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
 
-1. Check out the file [open-telemetry-collector.yaml](/docs/open-telemetry-collector/open-telemetry-collector.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your `APP_INSIGHTS_KEY`. 
+1. Check out the file [open-telemetry-collector.yaml](/docs/open-telemetry-collector/open-telemetry-collector.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your `APP_INSIGHTS_KEY`.
 
 2. Apply the configuration with `kubectl apply -f open-telemetry-collector.yaml`.
 
 Next, set up both a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.
 
-1. Create a collector-component.yaml file with this [content](/docs/open-telemetry-collector/collector-component.yaml)
+1. Create a collector-config.yaml file with this [content](/docs/open-telemetry-collector/collector-config.yaml)
 
-2. Apply the configuration with `kubectl apply -f collector-component.yaml`.
+2. Apply the configuration with `kubectl apply -f collector-config.yaml`.
 
 ### Deploy your app with tracing
 

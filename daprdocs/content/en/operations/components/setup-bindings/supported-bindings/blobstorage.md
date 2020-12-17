@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.blobstorage
+  version: v1
   metadata:
   - name: storageAccount
     value: myStorageAccountName
@@ -22,8 +23,6 @@ spec:
     value: ***********
   - name: container
     value: container1
-  - name: decodeBase64
-    value: true
 ```
 
 - `storageAccount` is the Blob Storage account name.
@@ -39,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Create Blob
 
-To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+To perform a create blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
 ```json
 {

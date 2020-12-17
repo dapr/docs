@@ -17,6 +17,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.twitter
+  version: v1
   metadata:
   - name: consumerKey
     value: "****" # twitter api consumer key, required

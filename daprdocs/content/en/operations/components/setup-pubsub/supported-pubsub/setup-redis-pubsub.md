@@ -78,6 +78,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <HOST>

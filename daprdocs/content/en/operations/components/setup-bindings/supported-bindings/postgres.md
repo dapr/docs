@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.postgres
+  version: v1
   metadata:
   - name: url # Required
     value: <CONNECTION_STRING>

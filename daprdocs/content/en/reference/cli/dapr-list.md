@@ -7,10 +7,14 @@ description: "Detailed information on the list CLI command"
 
 ## Description
 
-List all Dapr instances
+List all Dapr instances.
+
+## Supported platforms
+
+- [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
-
 ```bash
 dapr list [flags]
 ```
@@ -19,5 +23,17 @@ dapr list [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--help`, `-h` | | | Help for list |
-| `--kubernetes`, `-k` | | `false` | List all Dapr pods in a k8s cluster |
+| `--help`, `-h` | | | Print this help message |
+| `--kubernetes`, `-k` | | `false` | List all Dapr pods in a Kubernetes cluster |
+
+## Examples
+
+### List Dapr instances in self-hosted mode
+```bash
+dapr list
+```
+
+### List Dapr instances in Kubernetes mode
+```bash
+dapr list -k
+```

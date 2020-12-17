@@ -117,3 +117,4 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
     * [How-to: Get started with Dapr and gRPC]({{< ref grpc >}})
 * Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or visit the samples in each of the [Dapr SDKs]({{< ref sdks >}})
 * Read the [service invocation API specification]({{< ref service_invocation_api.md >}})
+* See the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers

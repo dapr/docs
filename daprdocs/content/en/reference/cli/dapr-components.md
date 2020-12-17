@@ -7,7 +7,11 @@ description: "Detailed information on the components CLI command"
 
 ## Description
 
-List all Dapr components
+List all Dapr components.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 
@@ -19,5 +23,12 @@ dapr components [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--help`, `-h` | | | Help for components |
-| `--kubernetes`, `-k` | | `false` | List all Dapr components in a k8s cluster |
+| `--help`, `-h` | | | Print this help message |
+| `--kubernetes`, `-k` | | `false` | List all Dapr components in a Kubernetes cluster |
+
+## Examples
+
+### List Kubernetes components
+```bash
+dapr components -k
+```

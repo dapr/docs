@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.rabbitmq
+  version: v1
   metadata:
   - name: queueName
     value: queue1

@@ -26,6 +26,7 @@ These conventions should be followed throughout all Dapr documentation to ensure
 - **Use simple sentences** - Easy-to-read sentences mean the reader can quickly use the guidance you share.
 - **Avoid the first person** - Use 2nd person "you", "your" instead of "I", "we", "our".
 - **Assume a new developer audience** - Some obvious steps can seem hard. E.g. Now set an environment variable Dapr to a value X. It is better to give the reader the explicit command to do this, rather than having them figure this out.
+- **Use present tense** - Avoid sentences like "this command will install redis", which implies the action is in the future. Instead use "This command installs redis" which is in the present tense.
 
 ## Contributing a new docs page
 - Make sure the documentation you are writing is in the correct place in the hierarchy. 

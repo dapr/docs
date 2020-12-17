@@ -18,6 +18,7 @@ metadata:
   namespace: default
 spec:
   type: middleware.http.opa
+  version: v1
   metadata:
     # `includedHeaders` is a comma-seperated set of case-insensitive headers to include in the request input.
     # Request headers are not passed to the policy by default. Include to recieve incoming request headers in

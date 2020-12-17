@@ -20,14 +20,14 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Experimental |
 | [MQTT]({{< ref mqtt.md >}})           | ✅ | ✅ | Experimental |
 | [PostgreSql]({{< ref postgres.md >}})       |    | ✅ | Experimental |
+| [Postmark]({{< ref postmark.md >}})       |    | ✅ | Experimental |
 | [RabbitMQ]({{< ref rabbitmq.md >}})   | ✅ | ✅ | Experimental |
 | [Redis]({{< ref redis.md >}})         |    | ✅ | Experimental |
 | [Twilio]({{< ref twilio.md >}})       |    | ✅ | Experimental |
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Experimental |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Experimental |
 
-
-### Amazon Web Service (AWS)
+### Amazon Web Services (AWS)
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
@@ -36,7 +36,6 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [AWS SNS]({{< ref sns.md >}})           |    | ✅ | Experimental |
 | [AWS SQS]({{< ref sqs.md >}})           | ✅ | ✅ | Experimental |
 | [AWS Kinesis]({{< ref kinesis.md >}})   | ✅ | ✅ | Experimental |
-
 
 ### Google Cloud Platform (GCP)
 

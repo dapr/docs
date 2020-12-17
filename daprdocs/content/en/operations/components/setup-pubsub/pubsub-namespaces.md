@@ -46,6 +46,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: "redisHost"
     value: "redis-master.namespace-a.svc:6379"

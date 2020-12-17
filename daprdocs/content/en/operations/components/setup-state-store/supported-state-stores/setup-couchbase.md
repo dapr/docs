@@ -45,6 +45,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.couchbase
+  version: v1
   metadata:
   - name: couchbaseURL
     value: <REPLACE-WITH-URL> # Required. Example: "http://localhost:8091"
