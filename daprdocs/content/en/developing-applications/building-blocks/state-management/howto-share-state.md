@@ -14,11 +14,11 @@ Different architectures might have different needs when it comes to sharing stat
 
 To enable state sharing, Dapr supports the following key prefixes strategies:
 
-* `appid` - This is the default strategy. the `appid` prefix allows state to be managed only by the app with the specified `appid`. All state keys will be prefixed with the `appid`, and are scoped for the application.
+* **`appid`** - This is the default strategy. the `appid` prefix allows state to be managed only by the app with the specified `appid`. All state keys will be prefixed with the `appid`, and are scoped for the application.
 
-* `name` - This setting uses the name of the state store component as the prefix. Multiple applications can share the same state for a given state store.
+* **`name`** - This setting uses the name of the state store component as the prefix. Multiple applications can share the same state for a given state store.
 
-* `none` - This setting uses no prefixing. Multiple applications share state across different state stores.
+* **`none`** - This setting uses no prefixing. Multiple applications share state across different state stores.
 
 ## Specifying a state prefix strategy
 
@@ -42,7 +42,7 @@ spec:
 
 The following examples will show you how state retrieval looks like with each of the supported prefix strategies:
 
-### `appid` prefix strategy (Default)
+### `appid` (default)
 
 A Dapr application with app id `myApp` is saving state into a state store named `redis`:
 
@@ -59,7 +59,7 @@ curl -X POST http://localhost:3500/v1.0/state/redis \
 
 The key will be saved as `myApp||darth`.
 
-### `name` prefix strategy
+### `name`
 
 A Dapr application with app id `myApp` is saving state into a state store named `redis`:
 
@@ -76,7 +76,7 @@ curl -X POST http://localhost:3500/v1.0/state/redis \
 
 The key will be saved as `redis||darth`.
 
-### `none` prefix strategy
+### `none`
 
 A Dapr application with app id `myApp` is saving state into a state store named `redis`:
 
