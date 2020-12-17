@@ -40,7 +40,7 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
 {{% alert title="Release candidate" color="warning" %}}
-This command downloads and install Dapr runtime v1.0-rc.2. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+This command downloads and install Dapr runtime v0.11. To install v1.0-rc1, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v1.0-rc1 docs](https://v1-rc1.docs.dapr.io).
 {{% /alert %}}
 
 ### Install Dapr
@@ -51,10 +51,10 @@ The `-k` flag initializes Dapr on the Kubernetes cluster in your current context
 Make sure the correct "target" cluster is set. Check `kubectl context (kubectl config kubectl config get-contexts)` to verify. You can set a different context using `kubectl config use-context <CONTEXT>`.
 {{% /alert %}}
 
-Run `dapr init -k --runtime-version 1.0.0-rc.2` on your local machine:
+Run `dapr init -k` on your local machine:
 
 ```bash
-$ dapr init -k --runtime-version 1.0.0-rc.2
+$ dapr init -k
 
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
@@ -68,7 +68,7 @@ $ dapr init -k --runtime-version 1.0.0-rc.2
 The default namespace when initializing Dapr is `dapr-system`. You can override this with the `-n` flag.
 
 ```
-dapr init -k -n mynamespace --runtime-version 1.0.0-rc.2
+dapr init -k -n mynamespace
 ```
 
 
@@ -77,7 +77,7 @@ dapr init -k -n mynamespace --runtime-version 1.0.0-rc.2
 You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
 ```
-dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.2
+dapr init -k --enable-ha=true
 ```
 
 ### Disable mTLS
@@ -85,7 +85,7 @@ dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.2
 Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
 
 ```
-dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.2
+dapr init -k --enable-mtls=false
 ```
 
 ### Uninstall Dapr on Kubernetes with CLI
@@ -122,7 +122,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
 4. Install the Dapr chart on your cluster in the `dapr-system` namespace.
 
     ```bash
-    helm install dapr dapr/dapr --namespace dapr-system --version 1.0.0-rc.2
+    helm install dapr dapr/dapr --namespace dapr-system
     ```
 
 ### Verify installation
