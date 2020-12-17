@@ -16,7 +16,7 @@ Before retrieving secrets in your application's code, you must have a secret sto
 
 Once you have a secret store set up, you can call Dapr to get the secrets for a given key for a specific secret store.
 
-For a full API reference, go [here](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
+For a full API reference, go [here]({{< ref secrets_api.md >}}).
 
 Here are a few examples in different programming languages:
 
