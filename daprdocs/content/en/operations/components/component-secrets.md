@@ -18,9 +18,9 @@ When running in Kubernetes, if the `auth.secretStore` is empty, the Kubernetes s
 
 Go to [this]({{< ref "howto-secrets.md" >}}) link to see all the secret stores supported by Dapr, along with information on how to configure and use them.
 
-## Examples
+## Referencing secrets
 
-Using plain text secrets (not recommended for production):
+While you have the option to use plain text secrets, this is not recommended for production:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -38,7 +38,7 @@ spec:
     value: MyPassword
 ```
 
-Referencing secret from a secret store:
+Instead create the secret in your secret store and reference it in the component definition:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -60,50 +60,49 @@ auth:
   secretStore: <SECRET_STORE_NAME>
 ```
 
-When running in Kubernetes and using a Kubernetes secret store, either the field `auth.SecretStore` can be empty (as it is assumed to be Kubernetes secret store) or it needs to be `kubernetes`. For all other secret store, the `SECRET_STORE_NAME` is the name of the configured secret store component.
+`SECRET_STORE_NAME` is the name of the configured [secret store component]({{< ref supported-secret-stores >}}). When running in Kubernetes and using a Kubernetes secret store, the field `auth.SecretStore` defaults to `kubernetes` and can be left empty. 
 
-The above example tells Dapr to extract a secret named `redis-secret` from the defined secret store and assign the value of the `redis-password` key in the secret to the `redisPassword` field in the Component.
+The above component definition tells Dapr to extract a secret named `redis-secret` from the defined secret store and assign the value of the `redis-password` key in the secret to the `redisPassword` field in the Component.
 
-### Creating a Kubernetes secret and referencing it in a Component
+## Example 
+
+### Referencing a Kubernetes secret
 
 The following example shows you how to create a Kubernetes secret to hold the connection string for an Event Hubs binding.
 
-First, create the Kubernetes secret:
+1. First, create the Kubernetes secret:
+    ```bash
+     kubectl create secret generic eventhubs-secret --from-literal=connectionString=*********
+    ```
 
-```bash
-kubectl create secret generic eventhubs-secret --from-literal=connectionString=*********
-```
+2. Next, reference the secret in your binding:
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: eventhubs
+      namespace: default
+    spec:
+      type: bindings.azure.eventhubs
+      version: v1
+      metadata:
+      - name: connectionString
+        secretKeyRef:
+          name: eventhubs-secret
+          key: connectionString
+    ```
 
-Next, reference the secret in your binding:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: eventhubs
-  namespace: default
-spec:
-  type: bindings.azure.eventhubs
-  version: v1
-  metadata:
-  - name: connectionString
-    secretKeyRef:
-      name: eventhubs-secret
-      key: connectionString
-```
-
-Finally, apply the component to the Kubernetes cluster:
-
-```bash
-kubectl apply -f ./eventhubs.yaml
-```
-## Kubernetes
+3. Finally, apply the component to the Kubernetes cluster:
+    ```bash
+    kubectl apply -f ./eventhubs.yaml
+    ```
+## Kubernetes permissions
 
 ### Default namespace 
 
 When running in Kubernetes, Dapr, during installtion, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
 
-### Non default namespaces
+### Non-default namespaces
 
 If your Dapr enabled apps are using components that fetch secrets from non-default namespaces, apply the following resources to that namespace:
 
