@@ -36,7 +36,7 @@ Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&feature=youtu.be&
 
 Now that the secret store is set up, you can call Dapr to get the secrets for a given key for a specific secret store.
 
-For a full API reference, go [here](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
+For a full API reference, go [here]({{< ref "/operations/components/setup-bindings/supported-bindings/blobstorage.md" >}}).
 
 Here are a few examples in different programming languages:
 
