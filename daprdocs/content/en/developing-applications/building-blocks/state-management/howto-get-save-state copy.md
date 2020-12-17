@@ -12,7 +12,7 @@ Dapr offers developers differnet ways to share state between applications.
 
 Different architectures might have different needs when it comes to sharing state. For example, in one scenario you many want to encapsulate all state within a given application and have Dapr manage the access for you. In a different scenario, you may need to have two applications working on the same state be able to get and save the same keys.
 
-To enable state sharing, Dapr supports the following key prefixes settings, set on Dapr component:
+To enable state sharing, Dapr supports the following key prefixes settings:
 
 * `appid` - This is the default strategy. the `appid` prefix allows state to be managed only by the app with the specified `appid`. All state keys will be prefixed with the `appid`.
 
