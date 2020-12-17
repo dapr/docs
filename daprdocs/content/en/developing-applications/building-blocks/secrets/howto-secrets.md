@@ -6,42 +6,23 @@ weight: 2000
 description: "Use the secret store building block to securely retrieve a secret"
 ---
 
-It's common for applications to store sensitive information such as connection strings, keys and tokens that are used to authenticate with databases, services and external systems in secrets by using a dedicated secret store.
+This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store. 
 
-Usually this involves setting up a secret store such as Azure Key Vault, Hashicorp Vault and others and storing the application level secrets there. To access these secret stores, the application needs to import the secret store SDK, and use it to access the secrets.
+## Prerequisites
 
-This usually involves writing a fair amount of boilerplate code that is not related to the actual business domain of the app, and this becomes an even greater challenge in multi-cloud scenarios: if an app needs to deploy to two different environments and use two different secret stores, the amount of boilerplate code gets doubled, and the effort increases.
-
-In addition, not all secret stores have native SDKs for all programming languages.
-
-To make it easier for developers everywhere to consume application secrets, Dapr has a dedicated secrets building block API that allows developers to get secrets from a secret store.
-
-## Setting up a secret store component
-
-The first step involves setting up a secret store, either in the cloud or in the hosting environment such as a cluster. This is done by using the relevant instructions from the cloud provider or secret store implementation.
-
-The second step is to configure the secret store with Dapr.
-
-To deploy in Kubernetes, save the file above to `aws_secret_manager.yaml` and then run:
-
-```bash
-kubectl apply -f aws_secret_manager.yaml
-```
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
-
-Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&feature=youtu.be&t=1818) for an example on how to use the secrets API. Or watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=1765) for an example on how to component scopes with secret components and the secrets API.
+Before retrieving secrets in your application's code, you must have a secret store component configured. See guidance on [how to configure a secret store]({{<ref secret-stores-overview>}}) and review [supported secret stores]({{< ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 
 ## Calling the secrets API
 
-Now that the secret store is set up, you can call Dapr to get the secrets for a given key for a specific secret store.
+Once you have a secret store set up, you can call Dapr to get the secrets for a given key for a specific secret store.
 
 For a full API reference, go [here](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
 
 Here are a few examples in different programming languages:
 
-### Go
+{{< tabs "Go" "Javascript" "Python" "Rust" "C#" >}}
 
+{{% codetab %}}
 ```Go
 import (
   "fmt"
@@ -61,7 +42,10 @@ func main() {
   fmt.Println(string(body))
 }
 ```
-### Javascript
+
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```javascript
 require('isomorphic-fetch');
@@ -78,7 +62,9 @@ fetch(`${secretsUrl}/kubernetes/my-secret`)
         });
 ```
 
-### Python
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```python
 import requests as req
@@ -87,7 +73,10 @@ resp = req.get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret")
 print(resp.text)
 ```
 
-### Rust
+{{% /codetab %}}
+
+
+{{% codetab %}}
 
 ```rust
 #![deny(warnings)]
@@ -105,7 +94,9 @@ async fn main() -> Result<(), reqwest::Error> {
 }
 ```
 
-### C#
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```csharp
 var client = new HttpClient();
@@ -115,3 +106,6 @@ response.EnsureSuccessStatusCode();
 string secret = await response.Content.ReadAsStringAsync();
 Console.WriteLine(secret);
 ```
+{{% /codetab %}}
+
+{{< /tabs >}}
