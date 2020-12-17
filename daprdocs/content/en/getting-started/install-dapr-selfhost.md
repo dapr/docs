@@ -23,7 +23,7 @@ This step installs the latest Dapr Docker containers and setup a developer envir
 - For Windows Dapr is initialized to `%USERPROFILE%\.dapr\`
 
 {{% alert title="Note" color="warning" %}}
-This command downloads and installs Dapr runtime v0.11. To install v1.0-rc1, the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v1.0-rc1 docs](https://v1-rc1.docs.dapr.io).
+This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc2 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-selfhost/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/)).
 {{% /alert %}}
 
 1. Ensure you are in an elevated terminal:
