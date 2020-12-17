@@ -47,7 +47,11 @@ The following example shows an XML content in CloudEvent v1.0 serialized as JSON
 
 > Starting with v0.9 release, Dapr no longer wraps published content into CloudEvent if the published payload is already in the CloudEvent format. 
 
-### Message Delivery 
+### Message Subscription 
+
+Dapr allows two methods by which you can subscribe to topics: declarative, where subscription is defined in an external file, and programmatic, where subscription is defined in the user code. For more information see Dapr's documentation on [creating subscription](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/#step-2-subscribe-to-topics).
+
+### Message Delivery
 
 In principle, Dapr considers message sucessfully delivered when the subscriber does not respond with an error after processing the message. For more granular control, Dapr's publish/subscribe API also provides explicit statuses, defined in the respons paylaod, which the subscriber can use to indicate the specific handling instructions to Dapr (e.g. `RETRY` or `DROP`). For more information message routing see [Dapr publish/subscribe API documentation] (https://docs.dapr.io/reference/api/pubsub_api/#provide-routes-for-dapr-to-deliver-topic-events)
 
