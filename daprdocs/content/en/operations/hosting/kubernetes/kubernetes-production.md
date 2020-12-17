@@ -76,10 +76,7 @@ Dapr supports zero downtime upgrades. The upgrade path includes the following st
 
 ### Upgrading the CLI
 
-To upgrade the Dapr CLI, [download a release version](https://github.com/dapr/cli/releases) of the CLI that matches the Dapr runtime version.
-For example, if upgrading to Dapr 1.0.0-rc.x, download a CLI version of 1.0.0-rc.x.
-
-After you downloaded the binary, it's recommended you put the CLI binary in your path.
+To upgrade the Dapr CLI, [download the latest version](https://github.com/dapr/cli/releases) of the CLI. After you downloaded the binary, it's recommended you put the CLI binary in your path.
 
 ### Updating the control plane
 
