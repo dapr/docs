@@ -34,7 +34,7 @@ The burden of dealing with concepts like consumer groups and multiple instances 
 
 ### Cloud events
 
-Dapr follows the [CloudEvents 1.0 Spec](https://github.com/cloudevents/spec/tree/v1.0) and wraps any payload sent to a topic inside a Cloud Events envelope.
+Dapr follows the [CloudEvents 1.0 Spec](https://github.com/cloudevents/spec/tree/v1.0) and wraps any payload sent to a topic inside a Cloud Events envelope, using `Content-Type` header value for `datacontenttype` attribute.
 
 The following fields from the Cloud Events spec are implemented with Dapr:
 - `id`

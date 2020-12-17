@@ -54,6 +54,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.natsstreaming
+  version: v1
   metadata:
   - name: natsURL
     value: <REPLACE-WITH-NATS-SERVER-ADDRESS> # Required. example nats://localhost:4222
@@ -62,8 +63,10 @@ spec:
     # blow are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
-  - name: consumerID
-    value: <REPLACE-WITH-consumerID> # Optional. Any String would be accept.
+  # - name: ackWaitTime
+    # value: "" # Optional. See: https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements
+  # - name: maxInFlight
+    # value: "" # Optional. See: https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements
   # - name: durableSubscriptionName
   #   value: ""
   # following subscription options - only one can be used

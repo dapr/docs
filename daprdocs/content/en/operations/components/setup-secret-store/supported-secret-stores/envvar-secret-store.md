@@ -24,6 +24,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.local.env
+  version: v1
   metadata:
 ```
 

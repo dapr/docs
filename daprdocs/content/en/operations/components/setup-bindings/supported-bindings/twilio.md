@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.twilio.sms
+  version: v1
   metadata:
   - name: toNumber # required.
     value: 111-111-1111

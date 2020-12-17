@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.blobstorage
+  version: v1
   metadata:
   - name: storageAccount
     value: myStorageAccountName
@@ -22,8 +23,6 @@ spec:
     value: ***********
   - name: container
     value: container1
-  - name: decodeBase64
-    value: true
 ```
 
 - `storageAccount` is the Blob Storage account name.

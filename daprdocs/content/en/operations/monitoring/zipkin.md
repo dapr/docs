@@ -9,27 +9,9 @@ type: docs
 
 ## Configure self hosted mode
 
-For self hosted mode, on running `dapr init` the following YAML files are created by default and they are referenced by default on `dapr run` calls unless otherwise overridden.
+For self hosted mode, on running `dapr init`:
 
-1. The following file in `$HOME/dapr/components/zipkin.yaml` or `%USERPROFILE%\dapr\components\zipkin.yaml`:
-
-* zipkin.yaml
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: zipkin
-  namespace: default
-spec:
-  type: exporters.zipkin
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: exporterAddress
-    value: "http://localhost:9411/api/v2/spans"
-```
-2. The following file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml`:
+1. The following YAML file is created by default in `$HOME/dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden `:
 
 * config.yaml
 
@@ -42,9 +24,11 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
+    zipkin: 
+	endpointAddress: "http://localhost:9411/api/v2/spans"
 ```
 
-3. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init` or it can be launched with the following code.
+2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init` or it can be launched with the following code.
 
 Launch Zipkin using Docker:
 
@@ -52,7 +36,7 @@ Launch Zipkin using Docker:
 docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
-4. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
 
 ```bash
 dapr run --app-id mynode --app-port 3000 node app.js
@@ -78,24 +62,7 @@ Create a Kubernetes service for the Zipkin pod:
 kubectl expose deployment zipkin --type ClusterIP --port 9411
 ```
 
-Next, create the following YAML files locally:
-
-* zipkin.yaml component
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: zipkin
-  namespace: default
-spec:
-  type: exporters.zipkin
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: exporterAddress
-    value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
-```
+Next, create the following YAML file locally:
 
 * tracing.yaml configuration
 
@@ -108,13 +75,14 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
-Finally, deploy the the Dapr component and configuration files:
+Now, deploy the the Dapr configuration file:
 
 ```bash
 kubectl apply -f tracing.yaml
-kubectl apply -f zipkin.yaml
 ```
 
 In order to enable this configuration for your Dapr sidecar, add the following annotation to your pod spec template:

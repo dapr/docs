@@ -55,6 +55,7 @@ metadata:
   namespace: default
 spec:
   type: middleware.http.oauth2
+  version: v1
   metadata:
   - name: clientId
     value: "<your client ID>"
@@ -101,6 +102,7 @@ metadata:
   name: myComponent
 spec:
   type: middleware.http.oauth2clientcredentials
+  version: v1
   metadata:
   - name: clientId
     value: "<your client ID>"

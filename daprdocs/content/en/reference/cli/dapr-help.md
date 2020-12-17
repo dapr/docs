@@ -19,4 +19,4 @@ dapr help [command] [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--help`, `-h` | | | Help for help |
+| `--help`, `-h` | | | Prints this help message |

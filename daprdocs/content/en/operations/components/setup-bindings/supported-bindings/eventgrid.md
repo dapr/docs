@@ -16,6 +16,7 @@ metadata:
   name: <name>
 spec:
   type: bindings.azure.eventgrid
+  version: v1
   metadata:
   # Required Input Binding Metadata
   - name: tenantId

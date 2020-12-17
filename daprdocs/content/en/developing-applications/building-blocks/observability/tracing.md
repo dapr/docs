@@ -29,7 +29,7 @@ Read [W3C distributed tracing]({{< ref w3c-tracing >}}) for more background on W
 
 Dapr uses [probabilistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probability a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
 
-To change the default tracing behavior, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled):
+To change the default tracing behavior, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled), and sends trace using Zipkin protocol to the Zipkin server at http://zipkin.default.svc.cluster.local
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -40,28 +40,13 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
-Similarly, changing `samplingRate` to 0 will disable tracing altogether.
+Changing `samplingRate` to 0 will disable tracing altogether.
 
 See the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
-
-Dapr supports pluggable exporters, defined by configuration files (in self hosted mode) or a Kubernetes custom resource object (in Kubernetes mode). For example, the following manifest defines a Zipkin exporter:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: zipkin
-  namespace: default
-spec:
-  type: exporters.zipkin
-  metadata:
-  - name: enabled
-    value: "true"
-  - name: exporterAddress
-    value: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
-```
 
 ## References
 

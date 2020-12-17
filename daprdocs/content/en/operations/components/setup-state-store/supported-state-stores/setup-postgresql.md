@@ -39,6 +39,7 @@ metadata:
   name: statestore
 spec:
   type: state.postgresql
+  version: v1
   metadata:
   - name: connectionString
     value: "<CONNECTION STRING>"

@@ -21,6 +21,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.gcp.secretmanager
+  version: v1
   metadata:
   - name: type
     value: service_account
@@ -80,6 +81,7 @@ metadata:
   namespace: default
 spec:
   type: state.redis
+  version: v1
   metadata:
   - name: redisHost
     value: "[redis]:6379"

@@ -52,11 +52,10 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.rabbitmq
+  version: v1
   metadata:
   - name: host
     value: <REPLACE-WITH-HOST> # Required. Example: "amqp://rabbitmq.default.svc.cluster.local:5672", "amqp://localhost:5672"
-  - name: consumerID
-    value: <REPLACE-WITH-CONSUMER-ID> # Required. Any unique ID. Example: "myConsumerID"
   - name: durable
     value: <REPLACE-WITH-DURABLE> # Optional. Default: "false"
   - name: deletedWhenUnused

@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.gcp.bucket
+  version: v1
   metadata:
   - name: bucket
     value: mybucket

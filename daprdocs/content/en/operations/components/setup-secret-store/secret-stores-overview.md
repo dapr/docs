@@ -21,6 +21,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.<NAME>
+  version: v1
   metadata:
   - name: <KEY>
     value: <VALUE>

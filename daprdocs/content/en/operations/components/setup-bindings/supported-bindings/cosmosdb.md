@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.azure.cosmosdb
+  version: v1
   metadata:
   - name: url
     value: https://******.documents.azure.com:443/

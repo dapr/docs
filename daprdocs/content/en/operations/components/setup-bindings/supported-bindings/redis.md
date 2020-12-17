@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.redis
+  version: v1
   metadata:
   - name: redisHost
     value: <address>:6379

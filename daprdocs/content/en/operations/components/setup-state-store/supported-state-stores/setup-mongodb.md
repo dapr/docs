@@ -54,6 +54,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.mongodb
+  version: v1
   metadata:
   - name: host
     value: <REPLACE-WITH-HOST> # Required. Example: "mongo-mongodb.default.svc.cluster.local:27017"
@@ -89,6 +90,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.mondodb
+  version: v1
   metadata:
   - name: host
     value: <REPLACE-WITH-HOST>

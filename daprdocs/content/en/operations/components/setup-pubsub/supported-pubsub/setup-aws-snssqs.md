@@ -14,8 +14,10 @@ This article describes configuring Dapr to use AWS SNS/SQS for pub/sub on local 
 {{% codetab %}}
 For local development the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow the instructions [here](https://github.com/localstack/localstack#installing) to install the localstack CLI.
 
-In order to use localstack with your pubsub binding, you need to provide the `awsEndpoint` configuration 
-in the component metadata. The `awsEndpoint` is unncessary when running against production AWS.
+In order to use localstack with your pubsub binding, you need to provide the `endpoint` configuration 
+in the component metadata. The `endpoint` is unncessary when running against production AWS.
+
+See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -24,8 +26,9 @@ metadata:
   name: messagebus
 spec:
   type: pubsub.snssqs
+  version: v1
   metadata:
-    - name: awsEndpoint
+    - name: endpoint
       value: http://localhost:4566
     # Use us-east-1 for localstack
     - name: awsRegion
@@ -36,7 +39,7 @@ spec:
 {{% codetab %}}
 To run localstack on Kubernetes, you can apply the configuration below. Localstack is then 
 reachable at the DNS name `http://localstack.default.svc.cluster.local:4566` 
-(assuming this was applied to the default namespace) and this should be used as the `awsEndpoint`
+(assuming this was applied to the default namespace) and this should be used as the `endpoint`
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -101,17 +104,18 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: pubsub.snssqs
+  version: v1
   metadata:
     # ID of the AWS account with appropriate permissions to SNS and SQS
-    - name: awsAccountID
-      value: <AWS account ID>
+    - name: accessKey
+      value: **********
     # Secret for the AWS user
-    - name: awsSecret
-      value: <AWS secret>
+    - name: secretKey
+      value: **********
     # The AWS region you want to operate in. 
     # See this page for valid regions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
     # Make sure that SNS and SQS are available in that region.
-    - name: awsRegion
+    - name: region
       value: us-east-1
 ```
 
@@ -128,3 +132,4 @@ Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >
 - [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
 - [AWS SNS API refernce](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
 - [AWS SQS API refernce](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)
+- [Authenticating to AWS]({{< ref authenticating-aws.md >}})

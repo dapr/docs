@@ -15,6 +15,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.kafka
+  version: v1
   metadata:
   - name: topics # Optional. in use for input bindings
     value: topic1,topic2

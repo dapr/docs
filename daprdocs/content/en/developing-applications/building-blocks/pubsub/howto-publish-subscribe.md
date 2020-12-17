@@ -31,6 +31,7 @@ metadata:
   name: pubsub
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: localhost:6379
@@ -52,6 +53,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.redis
+  version: v1
   metadata:
   - name: redisHost
     value: localhost:6379
@@ -311,7 +313,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"status":
 
 {{< /tabs >}}
 
-Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope.
+Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute.
 
 ## Step 4: ACK-ing a message
 

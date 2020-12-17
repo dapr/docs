@@ -7,17 +7,28 @@ description: "Detailed information on the status CLI command"
 
 ## Description
 
-Shows the Dapr system services (control plane) health status.
+Show the health status of Dapr services.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
 
 ```bash
-dapr status [flags]
+dapr status -k
 ```
 
 ## Flags
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--help`, `-h` | | | Help for status |
-| `--kubernetes`, `-k` | | `true` | only works with a Kubernetes cluster (default true) |
+| `--help`, `-h` | | | Print this help message |
+| `--kubernetes`, `-k` | | `false` | Show the health status of Dapr services on Kubernetes cluster |
+
+## Examples
+
+### Get status of Dapr services from Kubernetes
+```bash
+dapr status -k
+```

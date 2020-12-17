@@ -30,6 +30,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.azure.tablestorage
+  version: v1
   metadata:
   - name: accountName
     value: <REPLACE-WITH-ACCOUNT-NAME>
@@ -55,6 +56,7 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.azure.tablestorage
+  version: v1
   metadata:
   - name: accountName
     value: <REPLACE-WITH-ACCOUNT-NAME>
