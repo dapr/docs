@@ -20,7 +20,7 @@ The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.m
 
 ### Message Format
 
-To enable message routing and to provide additonal context with each message Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr will automatically be "wrapped" in Cloud Events envelope, using `Content-Type` header value for `datacontenttype` attribute.
+To enable message routing and to provide additional context with each message Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr will automatically be "wrapped" in Cloud Events envelope, using `Content-Type` header value for `datacontenttype` attribute.
 
 Dapr implements the following Cloud Events fields:
 
