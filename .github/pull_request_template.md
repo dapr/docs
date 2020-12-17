@@ -1,8 +1,13 @@
 Thank you for helping make the Dapr documentation better!
 
-If you are a new contributor, please see the [this contribution guidance](https://github.com/dapr/docs/blob/master/contributing/README.md) which helps keep the Dapr documentation readable, consistent and useful for Dapr users.
+**Please follow this checklist before submitting:**
 
-If you are contributing a new authored "How To" article, [this template](https://github.com/dapr/docs/blob/master/contributing/howto-template.md) was created to assist you.
+- [ ] [Read the contribution guide](https://docs.dapr.io/contributing/contributing-docs/)
+- [ ] Commands include options for Linux, MacOS, and Windows within codetabs
+- [ ] New file and folder names are globally unique
+- [ ] Page references use shortcodes instead of markdown or URL links
+- [ ] Images use HTML style and have alternative text
+- [ ] Places where multiple code/command options are given have codetabs
 
 In addition, please fill out the following to help reviewers understand this pull request:
 
