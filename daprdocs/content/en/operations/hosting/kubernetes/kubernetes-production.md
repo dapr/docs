@@ -140,7 +140,7 @@ dapr/dapr	1.0.0-rc.1   	1.0.0-rc.1 	A Helm chart for Dapr on Kubernetes
 
 The APP VERSION column tells us which Dapr runtime version is installed by the chart. Now, use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved before:
 
-> Remove `--set global.ha.enabled=true` if current Dapr installation has not been deployed is HA mode.
+> Remove `--set global.ha.enabled=true` if current Dapr installation has not been deployed in HA mode.
 
 ```bash
 helm upgrade dapr dapr/dapr \
