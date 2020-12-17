@@ -13,8 +13,8 @@ In addition, please fill out the following to help reviewers understand this pul
 
 ## Description
 
-_Please explain the changes you've made_
+<!--Please explain the changes you've made-->
 
 ## Issue reference
 
-_Please reference the issue this PR will close: #[issue number]_
+<!--Please reference the issue this PR will close: #[issue number]-->
