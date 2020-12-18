@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Enable API token based authentication"
+title: "Enable token based API authentication"
 linkTitle: "API token auth"
 weight: 3000
 description: "Require every incoming API request to include an authentication token before allowing that request to pass through"
@@ -14,7 +14,7 @@ Dapr uses [JWT](https://jwt.io/) tokens for API authentication.
 
 > Note, while Dapr itself is actually not the JWT token issuer in this implementation, being explicit about the use of JWT standard enables federated implementations in the future (e.g. OAuth2).
 
-To configure APIs authentication, start by generating your token using any JWT token compatible tool (e.g. https://jwt.io/) and your secret. 
+To configure API authentication, start by generating your token using any JWT token compatible tool (e.g. https://jwt.io/) and your secret. 
 
 > Note, that secret is only necessary to generate the token, and Dapr doesn't need to know about or store it
 
