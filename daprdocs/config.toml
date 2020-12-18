@@ -66,8 +66,8 @@ version = "v0.11"
 archived_version = false
 
 [[params.versions]]
-  version = "v1.0-rc.1 (preview)"
-  url = "https://v1-rc1.docs.dapr.io"
+  version = "v1.0-rc.2 (preview)"
+  url = "https://v1-rc2.docs.dapr.io"
 [[params.versions]]
   version = "v0.11 (latest)"
   url = "#"
