@@ -6,6 +6,6 @@ type: docs
 
 Welcome to the Dapr documentation site!
 
-{{% alert title="New Release Candidate" color="primary" %}}
-[v1.0-rc.1 is now available](https://github.com/dapr/dapr/releases/tag/v1.0.0-rc.1) to download and test as part of our upcoming v1.0 release. Visit the [v1.0-rc.1 docs](https://v1-rc1.docs.dapr.io/getting-started/install-dapr/#install-the-dapr-cli) to upgrade and try it out.
+{{% alert title="New release candidate" color="primary" %}}
+v1.0-rc.2 preview is now available to download and test as part of the upcoming Dapr v1.0 release. Visit the [v1.0-rc.2 version of the docs](https://v1-rc2.docs.dapr.io) if you would like to upgrade and use the latest preview version.
 {{% /alert %}}
