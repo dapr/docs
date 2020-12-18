@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How To: Use secret scoping"
-linkTitle: "How To: Use secret scoping"
+linkTitle: "Secret scoping"
 weight: 3000
 description: "Use scoping to limit the secrets that can be read from secret stores"
 type: docs

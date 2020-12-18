@@ -9,8 +9,8 @@ no_list: true
 
 The following stores are supported, at various levels, by the Dapr state management building block:
 
-| Name                                                           | CRUD | Transactional |
-|----------------------------------------------------------------|------|---------------|
+| Name                                                           | CRUD | Transactional<br />(required for actors) |
+|----------------------------------------------------------------|:----:|:-------------:|
 | [Aerospike]({{< ref setup-aerospike.md >}})                    | ✅  | ❌            |
 | [Cassandra]({{< ref setup-cassandra.md >}})                    | ✅  | ❌            |
 | [Cloudstate]({{< ref setup-cloudstate.md >}})                  | ✅  | ❌            |

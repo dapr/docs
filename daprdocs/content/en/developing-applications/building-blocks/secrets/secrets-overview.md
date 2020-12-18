@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Secrets stores overview"
-linkTitle: "Secrets stores overview"
+title: "Secrets overview"
+linkTitle: "Secrets overview"
 weight: 1000
 description: "Overview of Dapr secrets management building block"
 ---

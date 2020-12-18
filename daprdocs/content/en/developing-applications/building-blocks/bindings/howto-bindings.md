@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Use bindings to interface with external resources"
 linkTitle: "How-To: Bindings"
 description: "Invoke external systems with Dapr output bindings"
-weight: 300
+weight: 3000
 ---
 
 Using bindings, it is possible to invoke external resources without tying in to special SDK or libraries.

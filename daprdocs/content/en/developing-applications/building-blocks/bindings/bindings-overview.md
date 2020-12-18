@@ -2,7 +2,7 @@
 type: docs
 title: "Bindings overview"
 linkTitle: "Overview"
-weight: 100
+weight: 1000
 description: Overview of the Dapr bindings building block
 ---
 

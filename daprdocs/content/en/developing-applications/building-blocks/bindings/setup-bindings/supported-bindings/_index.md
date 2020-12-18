@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Supported external bindings"
-linkTitle: "Supported bindings"
+linkTitle: "Supported external bindings"
 weight: 200
 description: List of all the supported external bindings that can interface with Dapr
 ---
