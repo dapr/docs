@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Install Dapr into your local environment"
+title: "How-To: Initialize Dapr in your local environment"
 linkTitle: "Init Dapr locally"
 weight: 20
-description: "Install Dapr in your local environment for testing and self-hosting"
+description: "Initialize Dapr in your local environment for testing and self-hosting"
 aliases:
   - /getting-started/install-dapr/
 ---
@@ -40,31 +40,35 @@ This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 prev
    
    {{< /tabs >}}
 
-1. Run `dapr init`:
+1. Run the `init` CLI command:
 
    You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases)
 
     ```bash
-    $ dapr init
-    ⌛  Making the jump to hyperspace...
-    Downloading binaries and setting up components
-    ✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
-    ```
+    dapr init
+   ```
 
-1. Verify Dapr version with `dapr --version`:
+1. Verify Dapr version:
 
     ```bash
-    $ dapr --version
+    dapr --version
+    ```
+
+    Output should look like this:
+    ```
     CLI version: 0.11
     Runtime version: 0.11
     ```
 
-1. Verify Dapr containers are running with `docker ps`:
+1. Verify Dapr containers are running:
+
+   ```bash
+    docker ps
+   ```
 
    Make sure the `daprio/dapr`, `openzipkin/zipkin`, and `redis` container images are all running:
 
-   ```bash
-   $ docker ps
+   ```
    CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                              NAMES
    0dda6684dc2e   openzipkin/zipkin        "/busybox/sh run.sh"     2 minutes ago   Up 2 minutes   9410/tcp, 0.0.0.0:9411->9411/tcp   dapr_zipkin
    9bf6ef339f50   redis                    "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:6379->6379/tcp             dapr_redis
@@ -76,9 +80,13 @@ This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 prev
    {{< tabs "Linux/MacOS" "Windows">}}
 
    {{% codetab %}}
-   Run `ls $HOME/.dapr`:
+   Run:
    ```bash
-   $ ls $HOME/.dapr
+   ls $HOME/.dapr
+   ```
+   Output should look like so:
+
+   ```
    bin  components  config.yaml
    ```
    {{% /codetab %}}
@@ -96,14 +104,14 @@ This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 prev
 This cli command removes the placement Dapr container:
 
 ```bash
-$ dapr uninstall
+dapr uninstall
 ```
 
 {{% alert title="Warning" color="warning" %}}
 This command won't remove the Redis or Zipkin containers by default, just in case you were using them for other purposes. To remove Redis, Zipkin, Actor Placement container, as well as the default Dapr directory located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\`, run:
 
 ```bash
-$ dapr uninstall --all
+dapr uninstall --all
 ```
 {{% /alert %}}
 

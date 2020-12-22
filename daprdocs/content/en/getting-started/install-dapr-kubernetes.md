@@ -51,11 +51,13 @@ The `-k` flag initializes Dapr on the Kubernetes cluster in your current context
 Make sure the correct "target" cluster is set. Check `kubectl context (kubectl config kubectl config get-contexts)` to verify. You can set a different context using `kubectl config use-context <CONTEXT>`.
 {{% /alert %}}
 
-Run `dapr init -k` on your local machine:
+Run on your local machine:
 
 ```bash
-$ dapr init -k
+dapr init -k
+```
 
+```
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
 
@@ -67,7 +69,7 @@ $ dapr init -k
 
 The default namespace when initializing Dapr is `dapr-system`. You can override this with the `-n` flag.
 
-```
+```bash
 dapr init -k -n mynamespace
 ```
 
@@ -76,7 +78,7 @@ dapr init -k -n mynamespace
 
 You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
-```
+```bash
 dapr init -k --enable-ha=true
 ```
 
@@ -84,14 +86,14 @@ dapr init -k --enable-ha=true
 
 Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
 
-```
+```bash
 dapr init -k --enable-mtls=false
 ```
 
 ### Uninstall Dapr on Kubernetes with CLI
 
 ```bash
-$ dapr uninstall --kubernetes
+dapr uninstall --kubernetes
 ```
 
 ## Install with Helm (advanced)
@@ -130,8 +132,10 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
 Once the chart installation is complete verify the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
 
 ```bash
-$ kubectl get pods -n dapr-system -w
+kubectl get pods -n dapr-system -w
+```
 
+```
 NAME                                     READY     STATUS    RESTARTS   AGE
 dapr-dashboard-7bd6cbf5bf-xglsr          1/1       Running   0          40s
 dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
