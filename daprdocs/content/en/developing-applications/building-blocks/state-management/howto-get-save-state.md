@@ -42,7 +42,7 @@ The following example shows how to save two key/value pairs in a single call usi
 {{% codetab %}}
 Begin by ensuring a Dapr sidecar is running:
 ```bash
-dapr --app-id myapp --port 3500 run
+dapr run --app-id myapp --port 3500 run
 ```
 {{% alert title="Note" color="info" %}}
 It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
