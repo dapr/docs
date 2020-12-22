@@ -36,7 +36,7 @@ Instead of a writing an application to call the API you can use the Dapr CLI to 
 
 Follow the instructions in [How-To: Save and get state]({{<ref howto-get-save-state>}})
 
-## Step 5: Explore the Dapr quickstarts
+## Step 4: Explore the Dapr quickstarts
 
 Now that you had your first experience calling the Dapr API directly, you can explore how Dapr is used in an application. To get started quickly with existing code that shows various Dapr capabilities, see the Dapr quickstarts and start with the "Hello world" quickstart.
 
