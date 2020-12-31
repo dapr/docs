@@ -50,8 +50,8 @@ func GetHandler(metadata Metadata) fasthttp.RequestHandler {
   return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
     return func(ctx *fasthttp.RequestCtx) {
       // inboud logic
-      h(ctx)  //call the downstream handler
-      //outbound logic
+      h(ctx)  // call the downstream handler
+      // outbound logic
     }
   }
 }
