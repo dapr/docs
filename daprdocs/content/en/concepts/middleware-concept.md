@@ -49,9 +49,9 @@ Your handler implementation can include any inbound logic, outbound logic, or bo
 func GetHandler(metadata Metadata) fasthttp.RequestHandler {
   return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
     return func(ctx *fasthttp.RequestCtx) {
-      //inboud logic
-            h(ctx)  //call the downstream handler
-            //outbound logic
+      // inboud logic
+      h(ctx)  //call the downstream handler
+      //outbound logic
     }
   }
 }
