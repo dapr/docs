@@ -11,6 +11,8 @@ Using Dapr, you can control how many requests and events will invoke your applic
 
 *Note that this rate limiting is guaranteed for every event that's coming from Dapr, meaning Pub/Sub events, direct invocation from other services, bindings events etc. Dapr can't enforce the concurrency policy on requests that are coming to your app externally.*
 
+*Note that rate limitting can be achieved by using the **middleware.http.ratelimit**. However, there is an imporant difference between the two approaches. The ratelimit middlware is time bound and limits the number of requests per second, while the app-max-concurrency specifies the number of concurrent requests (and events) at any point of time.*
+
 ## Setting app-max-concurrency
 
 Without using Dapr, a developer would need to create some sort of a semaphore in the application and take care of acquiring and releasing it.
