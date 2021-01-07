@@ -63,7 +63,7 @@ Three different event types are available:
 - Delete : Only the `oldVal` field is populated, `newVal` field is an empty `v1.Event`, `event` is `delete`
 - Update : Both the `oldVal` and `newVal` fields are populated,  `event` is `update`
 
-## Required permisiions
+## Required permissions
 
 For consuming `events` from Kubernetes, permissions need to be assigned to a User/Group/ServiceAccount using [RBAC Auth] mechanism of Kubernetes.
 

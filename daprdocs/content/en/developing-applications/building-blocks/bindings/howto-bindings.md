@@ -57,7 +57,7 @@ As seen above, you invoked the `/binding` endpoint with the name of the binding 
 The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
 
 You'll also notice that there's an `operation` field that tells the binding what you need it to do.
-You can check [here]({{< ref bindings >}}) which operations are supported for every output binding.
+You can check [here]({{< ref supported-bindings >}}) which operations are supported for every output binding.
 
 
 ## References
