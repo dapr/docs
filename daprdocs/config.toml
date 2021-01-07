@@ -38,7 +38,7 @@ id = "UA-149338238-3"
     source = "archetypes"
     target = "archetypes"
   [[module.mounts]]
-    source = "../sdkdocs/python/daprdocs/content"
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-docs"
     target = "content/developing-applications/sdks/python"
 
 # Markdown Engine - Allow inline html
