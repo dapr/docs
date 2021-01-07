@@ -66,6 +66,8 @@ spec:
     value: <REPLACE-WITH-DELIVERY-MODE> # Optional. Default: "0". Values between 0 - 2.
   - name: requeueInFailure
     value: <REPLACE-WITH-REQUEUE-IN-FAILURE> # Optional. Default: "false".
+  - name: concurrencyMode
+    value: <REPLACE-WITH-CONCURRENCY-MODE> # Optional. Default: "parallel". Values: "single", "parallel".
 ```
 
 {{% alert title="Warning" color="warning" %}}
