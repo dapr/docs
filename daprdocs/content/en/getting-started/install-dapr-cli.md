@@ -8,10 +8,10 @@ description: "Install the Dapr CLI to get started with Dapr"
 
 ## Dapr CLI installation scripts
 
-Begin by downloading and installing the Dapr CLI for v0.11. This is used to initialize your environment on your desired platform.
+Begin by downloading and installing the Dapr CLI for v1.0.0-rc.3. This is used to initialize your environment on your desired platform.
 
 {{% alert title="Note" color="warning" %}}
-This command downloads and install Dapr CLI v0.11. To install the latest preview release, please visit the [v1.0-rc2 version of this page](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/).
+This command downloads and install Dapr CLI v1.0-rc.3. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 {{< tabs Linux Windows MacOS Binaries>}}
@@ -19,14 +19,14 @@ This command downloads and install Dapr CLI v0.11. To install the latest preview
 {{% codetab %}}
 This command installs the latest linux Dapr CLI to `/usr/local/bin`:
 ```bash
-wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.0.0-rc.3
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 This command installs the latest windows Dapr cli to `C:\dapr` and add this directory to User PATH environment variable. Run in Command Prompt:
 ```powershell
-powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
+powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList 1.0.0-rc.3"
 ```
 Verify by opening Explorer and entering `C:\dapr` into the address bar. You should see folders for bin, components, and a config file.
 {{% /codetab %}}
@@ -34,13 +34,24 @@ Verify by opening Explorer and entering `C:\dapr` into the address bar. You shou
 {{% codetab %}}
 This command installs the latest darwin Dapr CLI to `/usr/local/bin`:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
+curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash -s 1.0.0-rc.3
 ```
 
 Or you can install via [Homebrew](https://brew.sh):
 ```bash
-brew install dapr/tap/dapr-cli
+brew install dapr/tap/dapr-cli@1.0.0-rc.3
 ```
+
+{{% alert title="Note for M1 Macs" color="primary" %}}
+For M1 Macs, homebrew is not supported. You will need to use the dapr install script and have the rosetta amd64 compatibility layer installed. If you do not have it installed already, you can run the following:
+
+```bash
+softwareupdate --install-rosetta
+```
+
+{{% /alert %}}
+
+
 {{% /codetab %}}
 
 {{% codetab %}}

@@ -23,7 +23,7 @@ This step installs the latest Dapr Docker containers and setup a developer envir
 - For Windows Dapr is initialized to `%USERPROFILE%\.dapr\`
 
 {{% alert title="Note" color="warning" %}}
-This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc2 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-selfhost/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/)).
+This command downloads and installs Dapr runtime v1.0-rc.2. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 1. Ensure you are in an elevated terminal:
@@ -40,12 +40,12 @@ This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 prev
    
    {{< /tabs >}}
 
-1. Run `dapr init`:
+1. Run `dapr init --runtime-version 1.0.0-rc.2`:
 
    You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases)
 
     ```bash
-    $ dapr init
+    $ dapr init --runtime-version 1.0.0-rc.2
     ⌛  Making the jump to hyperspace...
     Downloading binaries and setting up components
     ✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
@@ -55,8 +55,8 @@ This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 prev
 
     ```bash
     $ dapr --version
-    CLI version: 0.11
-    Runtime version: 0.11
+    CLI version: 1.0.0-rc.3
+    Runtime version: 1.0.0-rc.2
     ```
 
 1. Verify Dapr containers are running with `docker ps`:
@@ -68,7 +68,7 @@ This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 prev
    CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                              NAMES
    0dda6684dc2e   openzipkin/zipkin        "/busybox/sh run.sh"     2 minutes ago   Up 2 minutes   9410/tcp, 0.0.0.0:9411->9411/tcp   dapr_zipkin
    9bf6ef339f50   redis                    "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:6379->6379/tcp             dapr_redis
-   8d993e514150   daprio/dapr              "./placement"            2 minutes ago   Up 2 minutes   0.0.0.0:6050->50005/tcp            dapr_placement
+   8d993e514150   daprio/dapr:1.0.0-rc.2   "./placement"            2 minutes ago   Up 2 minutes   0.0.0.0:6050->50005/tcp            dapr_placement
    ```
 
 1. Verify Dapr directory has been initialized
