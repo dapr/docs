@@ -20,3 +20,6 @@ See the [Python SDK repository](https://github.com/dapr/python-sdk)
 
 ### Javascript
 See the [Javascript SDK repository](https://github.com/dapr/js-sdk)
+
+### PHP
+See the [PHP SDK repository](https://github.com/dapr/php-sdk)

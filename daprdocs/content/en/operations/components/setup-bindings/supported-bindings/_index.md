@@ -49,9 +49,9 @@ Every binding has its own unique set of properties. Click the name link to see t
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
 | [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Experimental |
-| [Azure EventHubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Experimental |
 | [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Experimental |
+| [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Experimental |
+| [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Experimental |
 | [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Experimental |
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Experimental |
 | [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | Experimental |
-| [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Experimental |
