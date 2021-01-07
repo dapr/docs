@@ -55,7 +55,7 @@ It is important to set an app-id, as the state keys are prefixed with this value
 Begin by launching a Dapr sidecar:
 
 ```bash
-dapr --app-id myapp --port 3500 run
+dapr run --app-id myapp --dapr-http-port 3500
 ```
 
 Then in a separate terminal save a key/value pair into your statestore:

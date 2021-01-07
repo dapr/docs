@@ -74,7 +74,7 @@ copyright = "Dapr"
 #privacy_policy = "https://policies.google.com/privacy"
 
 # Algolia
-algolia_docsearch = false
+algolia_docsearch = true
 offlineSearch = false
 
 # GitHub Information

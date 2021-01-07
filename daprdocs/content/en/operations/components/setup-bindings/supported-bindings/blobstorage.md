@@ -38,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Create Blob
 
-To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+To perform a create blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
 ```json
 {
