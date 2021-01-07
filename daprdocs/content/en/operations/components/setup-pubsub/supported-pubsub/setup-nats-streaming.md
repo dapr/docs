@@ -63,6 +63,8 @@ spec:
     # blow are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
+  - name: deliverNew
+    value: true
   # - name: ackWaitTime
     # value: "" # Optional. See: https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements
   # - name: maxInFlight
@@ -74,9 +76,7 @@ spec:
     # value: 1
   # - name: startWithLastReceived
     # value: false
-  - name: deliverAll
-    value: true
-  # - name: deliverNew
+  # - name: deliverAll
   #   value: false
   # - name: startAtTimeDelta
   #   value: ""
