@@ -1,14 +1,17 @@
 ---
 type: docs
-title: "How-To: Install Dapr CLI"
+title: "Install the Dapr CLI"
 linkTitle: "Install Dapr CLI"
 weight: 10
-description: "Install the Dapr CLI to get started with Dapr"
 ---
 
-## Dapr CLI installation scripts
+The Dapr CLI is main tool you'll be using for various Dapr related tasks. Most importantly it is used to run an application with a Dapr sidecar, but it also can review sidecar logs, list running services, and run the Dapr dashboard. The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
 
-Begin by downloading and installing the Dapr CLI for v0.11. This is used to initialize your environment on your desired platform.
+Learn more about the CLI and available commands in the [CLI reference docs]( {{< ref cli >}}).
+
+### Run the installation script
+
+Begin by downloading and installing the latest version of the Dapr CLI:
 
 {{% alert title="Note" color="warning" %}}
 This command downloads and install Dapr CLI v0.11. To install the latest preview release, please visit the [v1.0-rc2 version of this page](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/).
@@ -54,9 +57,55 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 {{% /codetab %}}
 {{< /tabs >}}
 
-Learn more about the CLI and available commands in the [CLI docs]( {{< ref cli >}}).
 
-## Next steps
-- [Init Dapr locally]({{< ref install-dapr-selfhost.md >}})
-- [Init Dapr on Kubernetes]({{< ref install-dapr-kubernetes.md >}})
+### Verify the installation
+
+You can verify the CLI is installed by running the following:
+
+```bash
+dapr
+```
+
+The output should look like this:
+
+
+```bash
+	 
+    ____/ /___ _____  _____
+   / __  / __ '/ __ \/ ___/
+  / /_/ / /_/ / /_/ / /
+  \__,_/\__,_/ .___/_/
+	      /_/
+
+===============================
+Distributed Application Runtime
+
+Usage:
+  dapr [command]
+
+Available Commands:
+  completion     Generates shell completion scripts
+  components     List all Dapr components. Supported platforms: Kubernetes
+  configurations List all Dapr configurations. Supported platforms: Kubernetes
+  dashboard      Start Dapr dashboard. Supported platforms: Kubernetes and self-hosted
+  help           Help about any command
+  init           Install Dapr on supported hosting platforms. Supported platforms: Kubernetes and self-hosted
+  invoke         Invoke a method on a given Dapr application. Supported platforms: Self-hosted
+  list           List all Dapr instances. Supported platforms: Kubernetes and self-hosted
+  logs           Get Dapr sidecar logs for an application. Supported platforms: Kubernetes
+  mtls           Check if mTLS is enabled. Supported platforms: Kubernetes
+  publish        Publish a pub-sub event. Supported platforms: Self-hosted
+  run            Run Dapr and (optionally) your application side by side. Supported platforms: Self-hosted
+  status         Show the health status of Dapr services. Supported platforms: Kubernetes
+  stop           Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
+  uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
+
+Flags:
+  -h, --help      help for dapr
+      --version   version for dapr
+
+Use "dapr [command] --help" for more information about a command.
+```
+
+<a class="btn btn-primary" href="{{< ref install-dapr-selfhost.md >}}" role="button">Next step: Initialize Dapr >></a>
 
