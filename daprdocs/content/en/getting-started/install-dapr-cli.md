@@ -5,11 +5,11 @@ linkTitle: "Install Dapr CLI"
 weight: 10
 ---
 
-The Dapr CLI is main tool you'll be using for various Dapr related tasks. Most importantly it is used to run an application with a Dapr sidecar, but it also can review sidecar logs, list running services, and run the Dapr dashboard. The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
+The Dapr CLI is the main tool you'll be using for various Dapr related tasks. You can use it to run an application with a Dapr sidecar, as well as review sidecar logs, list running services, and run the Dapr dashboard. The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
 
-Learn more about the CLI and available commands in the [CLI reference docs]( {{< ref cli >}}).
+You can learn more about the CLI and available commands in the [CLI reference docs]( {{< ref cli >}}).
 
-### Run the installation script
+### Step 1: Run the installation script
 
 Begin by downloading and installing the latest version of the Dapr CLI:
 
@@ -27,11 +27,10 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 {{% /codetab %}}
 
 {{% codetab %}}
-This command installs the latest windows Dapr cli to `C:\dapr` and add this directory to User PATH environment variable. Run in Command Prompt:
+This Command Prompt command installs the latest windows Dapr cli to `C:\dapr` and adds this directory to User PATH environment variable.
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
-Verify by opening Explorer and entering `C:\dapr` into the address bar. You should see folders for bin, components, and a config file.
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -53,14 +52,14 @@ Each release of Dapr CLI includes various OSes and architectures. These binary v
 2. Unpack it (e.g. dapr_linux_amd64.tar.gz, dapr_windows_amd64.zip)
 3. Move it to your desired location.
    - For Linux/MacOS - `/usr/local/bin`
-   - For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
+   - For Windows, create a directory and add this to your System PATH. For example create a directory called `C:\dapr` and add this directory to your User PATH, by editing your system environment variable.
 {{% /codetab %}}
 {{< /tabs >}}
 
 
-### Verify the installation
+### Step 2: Verify the installation
 
-You can verify the CLI is installed by running the following:
+You can verify the CLI is installed by restarting your terminal/command prompt and running the following:
 
 ```bash
 dapr
@@ -69,7 +68,7 @@ dapr
 The output should look like this:
 
 
-```bash
+```md
 	 
     ____/ /___ _____  _____
    / __  / __ '/ __ \/ ___/
