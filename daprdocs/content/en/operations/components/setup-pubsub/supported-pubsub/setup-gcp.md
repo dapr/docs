@@ -25,8 +25,6 @@ spec:
   type: pubsub.gcp.pubsub
   version: v1
   metadata:
-  - name: topic
-    value: <TOPIC_NAME>
   - name: type
     value: service_account
   - name: project_id
@@ -51,7 +49,6 @@ spec:
     value: <REPLACE-WITH-DISABLE-ENTITY-MANAGEMENT> # Optional. Default: false. When set to true, topics and subscriptions do not get created automatically.
 ```
 
-- `topic` is the Pub/Sub topic name.
 - `type` is the GCP credentials type.
 - `project_id` is the GCP project id.
 - `private_key_id` is the GCP private key id.
