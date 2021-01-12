@@ -5,9 +5,9 @@ linkTitle: "Apache Kafka"
 description: "Detailed documentation on the Apache Kafka pubsub component"
 ---
 
-## Component Format
+## Component format
 
-To setup Apache Kafka pubsub, you create a component of type `pubsub.kafka`
+To setup Apache Kafka pubsub create a component of type `pubsub.kafka`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -61,5 +61,5 @@ To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- Read [this topic]({{< ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

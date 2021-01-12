@@ -6,9 +6,9 @@ description: "Detailed documentation on the Redis Streams pubsub component"
 weight: 100
 ---
 
-## Component Format
+## Component format
 
-To setup Redis Streams pubsub, you create a component of type `pubsub.redis`
+To setup Redis Streams pubsub create a component of type `pubsub.redis`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -45,7 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Create a Redis instance
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later. If you already have a Redis instance > 5.0.0 installed, move on to the [Configuration](#configuration) section.
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later.
 
 {{< tabs "Self-Hosted" "Kubernetes" "AWS" "GCP" "Azure">}}
 

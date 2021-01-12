@@ -5,8 +5,8 @@ linkTitle: "Azure Events Hub"
 description: "Detailed documentation on the Azure Event Hubs pubsub component"
 ---
 
-## Component Format
-To setup Azure Event Hubs, you create a component of type `pubsub.azure.eventhubs`
+## Component format
+To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.eventhubs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
