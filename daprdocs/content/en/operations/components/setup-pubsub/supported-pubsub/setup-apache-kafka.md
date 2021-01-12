@@ -5,7 +5,9 @@ linkTitle: "Apache Kafka"
 description: "Detailed documentation on the Apache Kafka pubsub component"
 ---
 
-## Format
+## Component Format
+
+To setup Apache Kafka pubsub, you create a component of type `pubsub.kafka`
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -41,11 +43,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true   | `"adminuser"`
 | saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true  |  `""`, `"KeFg23!"`
 
-## Create a Dapr component
 
-To setup Apache Kafka pubsub, you create a component of type `pubsub.kafka`
-
-## Setup Kafka
+## Create a Kafka instance
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
@@ -60,10 +59,7 @@ To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm
 {{< /tabs >}}
 
 
-## Apply the configuration
-
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
-
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

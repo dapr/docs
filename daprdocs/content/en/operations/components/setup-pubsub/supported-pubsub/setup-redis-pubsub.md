@@ -6,7 +6,9 @@ description: "Detailed documentation on the Redis Streams pubsub component"
 weight: 100
 ---
 
-## Format
+## Component Format
+
+To setup Redis Streams pubsub, you create a component of type `pubsub.redis`
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -41,11 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | consumerID        | N         | The consumer group ID   | `"myGroup"`
 | enableTLS         | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 
-## Create a Dapr component
-
-To setup Redis Streams pubsub, you create a component of type `pubsub.redis`
-
-## Setup a Redis instance
+## Create a Redis instance
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later. If you already have a Redis instance > 5.0.0 installed, move on to the [Configuration](#configuration) section.
 
@@ -102,14 +100,11 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{< /tabs >}}
 
 
-## Apply the configuration
-
 {{% alert title="Note" color="primary" %}}
-The Dapr CLI automatically deploys a redis instance and creates Dapr components as part of the `dapr init` command.
+The Dapr CLI automatically deploys a local redis instance in self hosted mode as part of the `dapr init` command.
 {{% /alert %}}
-
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
