@@ -43,7 +43,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
