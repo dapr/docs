@@ -33,6 +33,8 @@ spec:
     value: "0"
   - name: reconnectWait
     value: "0"
+  - name: concurrency
+    value: parallel
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -48,8 +50,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`
 | deliveryMode  | N        | Persistence mode when publishing messages. Defaults to `"0"`. RabbitMQ treats `"2"` as persistent, all other numbers as non-persistent | `"0"`, `"2"`
 | requeueInFailure  | N        | Whether or not to requeue when sending a [negative acknolwedgement](https://www.rabbitmq.com/nack.html) in case of a failure. Defaults to `"false"` | `"true"`, `"false"`
-| prefetchCount  | N        | Number of messages to [prefecth](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be prefected. | `"2"`
+| prefetchCount  | N        | Number of messages to [prefecth](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be pre-fetched. | `"2"`
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
+| concurrency    | N        | `paralell` is the default, and allows processing multiple messages in paralell (limited by the `app-max-concurrency` annotation, if configured). Set to `single` to disable paralell processing. In most situations there's no reason to change this. | `paralell`, `single`
 
 
 ## Create a RabbitMQ server
