@@ -88,5 +88,5 @@ For example, if installing using the example above, the RabbitMQ server client a
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
-- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
