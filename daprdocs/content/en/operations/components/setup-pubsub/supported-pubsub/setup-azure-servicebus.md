@@ -77,4 +77,4 @@ Follow the instructions [here](https://docs.microsoft.com/en-us/azure/service-bu
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Pub/Sub building block]({{< ref pubsub >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components

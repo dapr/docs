@@ -69,5 +69,5 @@ Follow the instructions [here](https://cloud.google.com/pubsub/docs/quickstart-c
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

@@ -96,5 +96,5 @@ For example, if installing using the example above, the NATS Streaming address w
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

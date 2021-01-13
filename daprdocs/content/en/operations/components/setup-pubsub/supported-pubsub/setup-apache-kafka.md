@@ -61,5 +61,5 @@ To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
