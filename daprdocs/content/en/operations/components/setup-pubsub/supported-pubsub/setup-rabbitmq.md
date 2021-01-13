@@ -5,7 +5,7 @@ linkTitle: "RabbitMQ"
 description: "Detailed documentation on the RabbitMQ pubsub component"
 ---
 
-## Format
+## Component format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -38,7 +38,7 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Fields
+## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
@@ -51,9 +51,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | prefetchCount  | N        | Number of messages to [prefecth](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be prefected. | `"2"`
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
 
-## Further reading
 
-### How to set up RabbitMQ
+## Create a RabbitMQ server
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
@@ -87,9 +86,7 @@ For example, if installing using the example above, the RabbitMQ server client a
 {{< /tabs >}}
 
 
-## Apply the configuration
-
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
-
 ## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
+- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
