@@ -40,8 +40,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | brokers             | Y  | Comma separated list of kafka brokers  | `localhost:9092`, `dapr-kafka.myapp.svc.cluster.local:9092`
 | authRequired        | N  | Enable authentication on the Kafka broker. Defaults to `"false"`.   |`"true"`, `"false"`
-| saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true   | `"adminuser"`
-| saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true  |  `""`, `"KeFg23!"`
+| saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true.   | `"adminuser"`
+| saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true. Can be `secretKeyRef` to use a secret reference  |  `""`, `"KeFg23!"`
 
 
 ## Create a Kafka instance
