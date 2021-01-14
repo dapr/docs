@@ -5,7 +5,7 @@ linkTitle: "AWS SNS/SQS"
 description: "Detailed documentation on the AWS SNS/SQS pubsub component"
 ---
 
-## Component Format
+## Component format
 To setup AWS SNS/SQS for pub/sub, you create a component of type `pubsub.snssqs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
