@@ -89,7 +89,7 @@ The following example illustrates this point, considering a subscription for top
 #### HTTP Request
 
 ```
-POST http://localhost:<appPort>/<path>
+POST http://localhost:<appPort>/<path>[?<metadata>]
 ```
 
 > Note, all URL parameters are case-sensitive.
@@ -100,6 +100,17 @@ Parameter | Description
 --------- | -----------
 appPort | the application port
 path | route path from the subscription configuration
+metadata | query parameters for metadata as described below
+
+##### Metadata
+
+Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.` as shown below.
+
+Parameter | Description
+--------- | -----------
+metadata.ttlInSeconds | the number of seconds for the message to expire as [described here]({{< ref pubsub-message-ttl.md >}})
+
+> Additional metadata parameters can be available based on each pubsub component.
 
 #### Expected HTTP Response
 
