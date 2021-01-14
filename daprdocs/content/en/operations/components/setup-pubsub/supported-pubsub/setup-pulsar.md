@@ -5,7 +5,34 @@ linkTitle: "Pulsar"
 description: "Detailed documentation on the Pulsar pubsub component"
 ---
 
-## Setup Pulsar
+## Component format
+To setup Pulsar pubsub create a component of type `pubsub.pulsar`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pulsar-pubsub
+  namespace: default
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "localhost:6650"
+  - name: enableTLS
+    value: "false"
+
+```
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"`
+| enableTLS          | Y  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`
+
+
+## Create a Pulsar instance
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
@@ -23,37 +50,12 @@ docker run -it \
 {{% /codetab %}}
 
 {{% codetab %}}
-Please refer to the following [Helm chart](https://pulsar.apache.org/docs/en/kubernetes-helm/) Documentation.
+Refer to the following [Helm chart](https://pulsar.apache.org/docs/en/kubernetes-helm/) Documentation.
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Create a Dapr component
-
-The next step is to create a Dapr component for Pulsar.
-
-Create the following YAML file named pulsar.yaml:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: pubsub.pulsar
-  version: v1
-  metadata:
-  - name: host
-    value: <REPLACE WITH PULSAR URL> #default is localhost:6650
-  - name: enableTLS
-    value: <TRUE/FALSE>
-
-```
-
-## Apply the configuration
-
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
-
 ## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
