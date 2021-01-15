@@ -40,6 +40,9 @@ id = "UA-149338238-3"
   [[module.mounts]]
     source = "../sdkdocs/python/daprdocs/content/en/python-sdk-docs"
     target = "content/developing-applications/sdks/python"
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-contributing"
+    target = "content/contributing/"
 
 # Markdown Engine - Allow inline html
 [markup]
