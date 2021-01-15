@@ -10,7 +10,7 @@ description: "Use time-to-live in Pub/Sub messages."
 
 Dapr enables per-message time-to-live (TTL). This means that applications can set time-to-live per message, and subscribers will not receive those messages after expiration.
 
-All Dapr [pub/sub components]({{< ref supported-pubsub >}}) are compatible with message TTL, as Dapr handles the TTL logic within the runtime.
+All Dapr [pub/sub components]({{< ref supported-pubsub >}}) are compatible with message TTL, as Dapr handles the TTL logic within the runtime. Simply set the `ttlInSeconds` metadata when publishing a message.
 
 In some components, such as Kafka, time-to-live can be configured in the topic via `retention.ms` as per [documentation](https://kafka.apache.org/documentation/#topicconfigs_retention.ms). With message TTL in Dapr, applications using Kafka can now set time-to-live per message in addition to per topic.
 
