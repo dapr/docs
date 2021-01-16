@@ -14,7 +14,7 @@ Dapr guarantees at least once semantics for this endpoint.
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
+POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>[?<metadata>]
 ```
 
 ### HTTP Response codes
@@ -31,8 +31,9 @@ Code | Description
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-pubsubname | the name of pubsub component.
+pubsubname | the name of pubsub component
 topic | the name of the topic
+metadata | query parameters for metadata as described below
 
 > Note, all URL parameters are case-sensitive.
 
@@ -43,6 +44,16 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
        "status": "completed"
      }'
 ```
+
+#### Metadata
+
+Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.` as shown below.
+
+Parameter | Description
+--------- | -----------
+metadata.ttlInSeconds | the number of seconds for the message to expire as [described here]({{< ref pubsub-message-ttl.md >}})
+
+> Additional metadata parameters are available based on each pubsub component.
 
 ## Optional Application (User Code) Routes
 
