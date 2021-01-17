@@ -9,9 +9,9 @@ description: "Control how many requests and events will invoke your application 
 A common scenario in distributed computing is to only allow for a given number of requests to execute concurrently.
 Using Dapr, you can control how many requests and events will invoke your application simultaneously.
 
-*Note that this rate limiting is guaranteed for every event that's coming from Dapr, meaning Pub/Sub events, direct invocation from other services, bindings events etc. Dapr can't enforce the concurrency policy on requests that are coming to your app externally.*
+*Note that this rate limiing is guaranteed for every event that's coming from Dapr, meaning Pub/Sub events, direct invocation from other services, bindings events etc. Dapr can't enforce the concurrency policy on requests that are coming to your app externally.*
 
-*Note that rate limitting can be achieved by using the **middleware.http.ratelimit**. However, there is an imporant difference between the two approaches. The ratelimit middlware is time bound and limits the number of requests per second, while the app-max-concurrency specifies the number of concurrent requests (and events) at any point of time.*
+*Note that rate limiting per second can be achieved by using the **middleware.http.ratelimit** middleware. However, there is an imporant difference between the two approaches. The rate limit middlware is time bound and limits the number of requests per second, while the `app-max-concurrency` flag specifies the number of concurrent requests (and events) at any point of time. See [Rate limit middleware]({{< ref middleware-rate-limit.md >}}). *
 
 ## Setting app-max-concurrency
 
