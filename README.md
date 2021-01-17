@@ -61,7 +61,7 @@ npm install
 ```sh
 hugo server --disableFastRender
 ```
-3. Navigate to `http://localhost:1313/docs`
+3. Navigate to `http://localhost:1313/`
 
 ## Update docs
 1. Fork repo into your account
