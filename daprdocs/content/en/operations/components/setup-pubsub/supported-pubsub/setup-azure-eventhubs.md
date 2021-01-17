@@ -36,9 +36,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString    | Y  | Connection-string for the Event Hubs  | `Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}`
+| connectionString    | Y  | Connection-string for the Event Hubs  | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"`
 | storageAccountName  | Y  | Storage account name to use for the EventProcessorHost   |`"myeventhubstorage"`
-| storageAccountKey   | Y  | Storage account key  to use for the EventProcessorHost   | `"112233445566778899"`
+| storageAccountKey   | Y  | Storage account key  to use for the EventProcessorHost. Can be `secretKeyRef` to use a secret reference   | `"112233445566778899"`
 | storageContainerName | Y | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
 
 
@@ -56,8 +56,7 @@ For example, a Dapr app running on Kubernetes with `dapr.io/app-id: "myapp"` wil
 
 Note: Dapr passes the name of the Consumer group to the EventHub and so this is not supplied in the metadata.
 
-
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

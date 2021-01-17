@@ -40,8 +40,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | brokers             | Y  | Comma separated list of kafka brokers  | `localhost:9092`, `dapr-kafka.myapp.svc.cluster.local:9092`
 | authRequired        | N  | Enable authentication on the Kafka broker. Defaults to `"false"`.   |`"true"`, `"false"`
-| saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true   | `"adminuser"`
-| saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true  |  `""`, `"KeFg23!"`
+| saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true.   | `"adminuser"`
+| saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}})  |  `""`, `"KeFg23!"`
 
 
 ## Create a Kafka instance
@@ -61,5 +61,5 @@ To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this topic]({{< ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-publish-subscribe.md##step-1-setup-the-pubsub-component" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
