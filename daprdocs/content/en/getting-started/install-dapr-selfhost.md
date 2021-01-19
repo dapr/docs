@@ -7,7 +7,7 @@ aliases:
   - /getting-started/install-dapr/
 ---
 
-Now that you have the Dapr CLI installed, it's time to initialize Dapr on your local machine using the CLI. 
+Now that you have the [Dapr CLI installed]({{<ref install-dapr-cli.md>}}), it's time to initialize Dapr on your local machine using the CLI. 
 
 Dapr runs as a sidecar alongside your application, and in self-hosted mode this means it is a process on your local machine. Therefore, initializing Dapr includes fetching the Dapr sidecar binaries and installing them locally.
 

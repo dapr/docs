@@ -5,18 +5,22 @@ linkTitle: "Define a component"
 weight: 40
 ---
 
-After familiarizing yourself with the Dapr HTTP API and state building block in the previous step, you will now create your first Dapr component to try out the [secrets building block]({{< ref secrets >}}).
+In the [previous step]({{<ref get-started-api.d>}}) you called the Dapr HTTP API to store and retrieve a state from a Redis backed state store. Dapr knew to use the Redis instance that was configured locally on your machine through default component definition files that were created when Dapr was initialized. 
+
+When building an app, you most likely would create your own component file definitions depending on the building block and specific component that you'd like to use. 
+
+As an example of how to define custom components for your application, you will now create a component definition file to interact with the [secrets building block]({{< ref secrets >}}).
 
 In this guide you will:
-- Create a local json secret store
-- Register the secret store with Dapr using a component
+- Create a local JSON secret store
+- Register the secret store with Dapr using a component definition file
 - Obtain the secret using the Dapr HTTP API
 
-## Step 1: Create a json secret store
+## Step 1: Create a JSON secret store
 
-While Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), the easiest way to get started is a local json file with your secret.
+While Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), the easiest way to get started is a local JSON file with your secret (note this secret store is meant for development purposes and is not recommended for production use cases as it is not secured).
 
-Begin by saving the following json contents into a file named `mysecrets.json`:
+Begin by saving the following JSON contents into a file named `mysecrets.json`:
 
 ```json
 {
@@ -26,9 +30,14 @@ Begin by saving the following json contents into a file named `mysecrets.json`:
 
 ## Step 2: Create a secret store Dapr component
 
-Within your default Dapr components directory create a file named `localSecretStore.yaml` with the following contents:
-- Linux/MacOS: `$HOME/.dapr/components`
-- Windows: `%USERPROFILE%\.dapr\components`
+Create a new directory named `my-components` to hold the new component file:
+
+```bash
+mkdir my-components
+```
+
+Inside this directory create a new file `localSecretStore.yaml` with the following contents:
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -46,12 +55,14 @@ spec:
     value: ":"
 ```
 
+You can see that the above file definition has a `type: secretstores.local.file` which tells Dapr to use the local file component as a secret store. The metadata fields provide component specific information needed to work with this component (in this case, the path to the secret store JSON)
+
 ## Step 3: Run the Dapr sidecar
 
 Run the following command to launch a Dapr sidecar that will listen on port 3500 for a blank application named myapp:
 
 ```bash
-dapr run --app-id myapp --dapr-http-port 3500
+dapr run --app-id myapp --dapr-http-port 3500 --components-path ./my-components
 ```
 
 ## Step 4: Get a secret
@@ -71,5 +82,12 @@ curl http://localhost:3500/v1.0/secrets/my-secret-store/my-secret
 Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/secrets/my-secret-store/my-secret'
 ```
 {{% /codetab %}}
+{{< /tabs >}}
+
+You should see output with the secret you stored in the JSON file.
+
+```
+"I'm Batman"
+```
 
 <a class="btn btn-primary" href="{{< ref quickstarts.md >}}" role="button">Next step: Explore Dapr quickstarts >></a>
