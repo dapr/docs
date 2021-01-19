@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Install Dapr into a Kubernetes cluster"
-linkTitle: "Init Dapr on Kubernetes"
+linkTitle: "(optional) Init Dapr on Kubernetes"
 weight: 70
 description: "Install Dapr in a Kubernetes cluster"
 ---

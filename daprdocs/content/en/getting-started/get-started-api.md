@@ -9,7 +9,7 @@ After running the `dapr init` command in the previous step, your local environme
 
 You will now run the sidecar and call the API directly (simulating what an application would do).
 
-### Step 1: Run the Dapr sidecar
+## Step 1: Run the Dapr sidecar
 
 One the most useful Dapr CLI commands is [`dapr run`]({{< ref dapr-run.md >}}). This command launches an application together with a sidecar. For the purpose of this tutorial you'll run the sidecar without an application.
 
@@ -19,7 +19,7 @@ Run the following command to launch a Dapr sidecar that will listen on port 3500
 dapr run --app-id myapp --dapr-http-port 3500
 ```
 
-### Step 2: Save state
+## Step 2: Save state
 
 In a separate terminal run:
 
@@ -40,7 +40,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 {{< /tabs >}}
 
-### Step 2: Get state
+## Step 2: Get state
 
 Now get the state you just stored using a key with the state management API:
 
@@ -62,7 +62,7 @@ Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/name'
 
 {{< /tabs >}}
 
-### Step 3: See how the state is stored in Redis
+## Step 3: See how the state is stored in Redis
 
 You can look in the Redis container and verify Dapr is using it as a state store. Run the following to use the Redis CLI:
 

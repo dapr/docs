@@ -105,7 +105,9 @@ Open `%USERPROFILE%\.dapr\` in file explorer:
 ```powershell
 explorer "%USERPROFILE%\.dapr\"
 ```
-   
+
+You will see the Dapr config, Dapr binaries directory, and the default components directory for Dapr:
+
 <img src="/images/install-dapr-selfhost-windows.png" width=500>
 {{% /codetab %}}
 

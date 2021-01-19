@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Configure state store and pub/sub message broker"
-linkTitle: "Configure state & pub/sub"
+linkTitle: "(optional) Configure state & pub/sub"
 weight: 80
 description: "Configure state store and pub/sub message broker components for Dapr"
 aliases:
