@@ -18,7 +18,7 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
    - Interact with external resources through input and output [bindings]({{< ref bindings >}})
    - Get [secrets]({{< ref secrets >}}) from secret stores
    - Interact with [virtual actors]({{< ref actors >}})
-- **Service Extensions**: The Dapr service extensions allow you to create services that can:
+- **Service extensions**: The Dapr service extensions allow you to create services that can:
    - Be [invoked]({{< ref service-invocation >}}) by other services
    - [Subscribe]({{< ref pubsub >}}) to topics
 - **Actor SDK**: The Dapr Actor SDK allows you to build virtual actors with:
