@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Rate limiting"
-linkTitle: "How-To: Rate limiting"
+linkTitle: "Rate limiting"
 weight: 1000
 description: "Use Dapr rate limit middleware to limit requests per second"
 type: docs
