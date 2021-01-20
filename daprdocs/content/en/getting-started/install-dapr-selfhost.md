@@ -1,116 +1,117 @@
 ---
 type: docs
-title: "How-To: Install Dapr into your local environment"
+title: "Initialize Dapr in your local environment"
 linkTitle: "Init Dapr locally"
 weight: 20
-description: "Install Dapr in your local environment for testing and self-hosting"
 aliases:
   - /getting-started/install-dapr/
 ---
 
-## Prerequisites
+Now that you have the [Dapr CLI installed]({{<ref install-dapr-cli.md>}}), it's time to initialize Dapr on your local machine using the CLI. 
 
-- Install [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- Install [Docker Desktop](https://docs.docker.com/install/)
-   - Windows users ensure that `Docker Desktop For Windows` uses Linux containers.
-   - (alternately) Install Dapr without Docker using [Dapr slim init]({{< ref self-hosted-no-docker.md >}})
+Dapr runs as a sidecar alongside your application, and in self-hosted mode this means it is a process on your local machine. Therefore, initializing Dapr includes fetching the Dapr sidecar binaries and installing them locally.
 
-## Initialize Dapr using the CLI
+In addition, the default initialization process also creates a development environment that helps streamline application development with Dapr. This includes the following steps:
 
-This step installs the latest Dapr Docker containers and setup a developer environment to help you get started easily with Dapr.
+1. Running a **Redis container instance** to be used as a local state store and message broker
+1. Running a **Zipkin container instance** for observability
+1. Creating a **default components folder** with component definitions for the above
+1. Running a **Dapr placement service container instance** for local actor support
+
+{{% alert title="Dapr release candidate" color="warning" %}}
+This page provides instructions for installing Dapr runtime v0.11. To install v1.0-rc2 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc2 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-selfhost/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/)).
+{{% /alert %}}
+
+{{% alert title="Docker" color="primary" %}}
+This recommended development environment requires [Docker](https://docs.docker.com/install/). It is possible to initialize Dapr without a dependency on Docker (see [this guidance]({{<ref self-hosted-no-docker.md>}})) but next steps in this guide assume the recommended development environment.
+{{% /alert %}}
+
+### Step 1: Open an elevated terminal
+
+   {{< tabs "Linux/MacOS" "Windows">}}
+
+   {{% codetab %}}
+   If you run your Docker commands with sudo, or the install path is `/usr/local/bin` (default install path), you will need to use `sudo` below.
+   {{% /codetab %}}
+   
+   {{% codetab %}}
+   Make sure that you run Command Prompt as administrator (right click, run as administrator)
+   {{% /codetab %}}
+   
+   {{< /tabs >}}
+
+### Step 2: Run the init CLI command
+
+Install the latest Dapr runtime binaries:
+
+```bash
+dapr init
+```
+
+### Step 3: Verify Dapr version
+
+```bash
+dapr --version
+```
+
+Output should look like this:
+```
+CLI version: 0.11
+Runtime version: 0.11
+```
+
+### Step 4: Verify containers are running
+
+As mentioned above, the `dapr init` command launches several containers that will help you get started with Dapr. Verify this by running:
+
+```bash
+docker ps
+```
+
+Make sure that instances with `daprio/dapr`, `openzipkin/zipkin`, and `redis` images are all running:
+
+```
+CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                              NAMES
+0dda6684dc2e   openzipkin/zipkin        "/busybox/sh run.sh"     2 minutes ago   Up 2 minutes   9410/tcp, 0.0.0.0:9411->9411/tcp   dapr_zipkin
+9bf6ef339f50   redis                    "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:6379->6379/tcp             dapr_redis
+8d993e514150   daprio/dapr              "./placement"            2 minutes ago   Up 2 minutes   0.0.0.0:6050->50005/tcp            dapr_placement
+```
+
+### Step 5: Verify components directory has been initialized
+
+On `dapr init`, the CLI also creates a default components folder which includes several YAML files with definitions for a state store, pub/sub and zipkin. These will be read by the Dapr sidecar, telling it to use the Redis container for state management and messaging and the Zipkin container for collecting traces.
 
 - In Linux/MacOS Dapr is initialized with default components and files in `$HOME/.dapr`.
 - For Windows Dapr is initialized to `%USERPROFILE%\.dapr\`
 
-{{% alert title="Note" color="warning" %}}
-This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc2 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-selfhost/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/)).
-{{% /alert %}}
 
-1. Ensure you are in an elevated terminal:
+{{< tabs "Linux/MacOS" "Windows">}}
 
-   {{< tabs "Linux/MacOS" "Windows">}}
-
-   {{% codetab %}}
-   If you run your docker commands with sudo or the install path is `/usr/local/bin`(default install path), you need to use `sudo`
-   {{% /codetab %}}
-   
-   {{% codetab %}}
-   Make sure that you run the command prompt terminal in administrator mode (right click, run as administrator)
-   {{% /codetab %}}
-   
-   {{< /tabs >}}
-
-1. Run `dapr init`:
-
-   You can install or upgrade to a specific version of the Dapr runtime using `dapr init --runtime-version`. You can find the list of versions in [Dapr Release](https://github.com/dapr/dapr/releases)
-
-    ```bash
-    $ dapr init
-    ⌛  Making the jump to hyperspace...
-    Downloading binaries and setting up components
-    ✅  Success! Dapr is up and running. To get started, go here: https://aka.ms/dapr-getting-started
-    ```
-
-1. Verify Dapr version with `dapr --version`:
-
-    ```bash
-    $ dapr --version
-    CLI version: 0.11
-    Runtime version: 0.11
-    ```
-
-1. Verify Dapr containers are running with `docker ps`:
-
-   Make sure the `daprio/dapr`, `openzipkin/zipkin`, and `redis` container images are all running:
-
-   ```bash
-   $ docker ps
-   CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                              NAMES
-   0dda6684dc2e   openzipkin/zipkin        "/busybox/sh run.sh"     2 minutes ago   Up 2 minutes   9410/tcp, 0.0.0.0:9411->9411/tcp   dapr_zipkin
-   9bf6ef339f50   redis                    "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:6379->6379/tcp             dapr_redis
-   8d993e514150   daprio/dapr              "./placement"            2 minutes ago   Up 2 minutes   0.0.0.0:6050->50005/tcp            dapr_placement
-   ```
-
-1. Verify Dapr directory has been initialized
-
-   {{< tabs "Linux/MacOS" "Windows">}}
-
-   {{% codetab %}}
-   Run `ls $HOME/.dapr`:
-   ```bash
-   $ ls $HOME/.dapr
-   bin  components  config.yaml
-   ```
-   {{% /codetab %}}
-   
-   {{% codetab %}}
-   Open `%USERPROFILE%\.dapr\` in file explorer
-      
-   ![Explorer files](/images/install-dapr-selfhost-windows.png)
-   {{% /codetab %}}
-   
-   {{< /tabs >}}
-
-## Uninstall Dapr in self-hosted mode
-
-This cli command removes the placement Dapr container:
-
+{{% codetab %}}
+Run:
 ```bash
-$ dapr uninstall
+ls $HOME/.dapr
 ```
 
-{{% alert title="Warning" color="warning" %}}
-This command won't remove the Redis or Zipkin containers by default, just in case you were using them for other purposes. To remove Redis, Zipkin, Actor Placement container, as well as the default Dapr directory located at `$HOME/.dapr` or `%USERPROFILE%\.dapr\`, run:
-
-```bash
-$ dapr uninstall --all
+You should see:
 ```
-{{% /alert %}}
+bin  components  config.yaml
+```
+{{% /codetab %}}
 
-{{% alert title="Note" color="primary" %}}
-For Linux/MacOS users, if you run your docker cmds with sudo or the install path is `/usr/local/bin`(default install path), you need to use `sudo dapr uninstall` to remove dapr binaries and/or the containers.
-{{% /alert %}}
+{{% codetab %}}
+Open `%USERPROFILE%\.dapr\` in file explorer:
 
-## Next steps
-- [Setup a state store and pub/sub message broker]({{< ref configure-state-pubsub.md >}})
+```powershell
+explorer "%USERPROFILE%\.dapr\"
+```
+
+You will see the Dapr config, Dapr binaries directory, and the default components directory for Dapr:
+
+<img src="/images/install-dapr-selfhost-windows.png" width=500>
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+<a class="btn btn-primary" href="{{< ref get-started-api.md >}}" role="button">Next step: Use the Dapr API >></a>
 
