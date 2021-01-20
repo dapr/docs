@@ -9,7 +9,7 @@ type: docs
 
 The Dapr Rate limit [HTTP middleware]({{< ref middleware-concept.md >}}) allows restricting the maximum number of allowed HTTP requests per second. 
 
-## Middleware Component Definition
+## Middleware component definition
 
 In the following definition, the maximum requests per second are set to 10:
 ```yaml
@@ -28,3 +28,7 @@ Once the limit is reached, the request will return *HTTP Status code 429: Too Ma
 ## Referencing the rate limit middleware
 
 To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+## Related links
+- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Dapr configuration]({{< ref configuration-concept.md >}})
