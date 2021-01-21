@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "How-To: Install Dapr into a Kubernetes cluster"
-linkTitle: "Init Dapr on Kubernetes"
-weight: 30
+linkTitle: "(optional) Init Dapr on Kubernetes"
+weight: 70
 description: "Install Dapr in a Kubernetes cluster"
 ---
 
@@ -56,6 +56,7 @@ Run `dapr init -k --runtime-version 1.0.0-rc.2` on your local machine:
 ```bash
 $ dapr init -k --runtime-version 1.0.0-rc.2
 
+```
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
 
@@ -91,7 +92,7 @@ dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.2
 ### Uninstall Dapr on Kubernetes with CLI
 
 ```bash
-$ dapr uninstall --kubernetes
+dapr uninstall --kubernetes
 ```
 
 ## Install with Helm (advanced)
@@ -130,8 +131,10 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
 Once the chart installation is complete verify the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
 
 ```bash
-$ kubectl get pods -n dapr-system -w
+kubectl get pods -n dapr-system -w
+```
 
+```
 NAME                                     READY     STATUS    RESTARTS   AGE
 dapr-dashboard-7bd6cbf5bf-xglsr          1/1       Running   0          40s
 dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
