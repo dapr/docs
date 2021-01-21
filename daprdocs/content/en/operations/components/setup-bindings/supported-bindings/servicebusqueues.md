@@ -18,7 +18,7 @@ spec:
   version: v1
   metadata:
   - name: connectionString
-    value: "sb://************"
+    value: "Endpoint=sb://************"
   - name: queueName
     value: queue1
   - name: ttlInSeconds
