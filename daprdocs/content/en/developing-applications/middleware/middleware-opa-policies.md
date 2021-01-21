@@ -1,15 +1,16 @@
 ---
 type: docs
-title: "How-To: Apply OPA policies"
-linkTitle: "How-To: Apply OPA policies"
-weight: 1000
+title: "How-To: Apply Open Policy Agent (OPA) policies"
+linkTitle: "Apply OPA policies"
+weight: 2000
 description: "Use Dapr middleware to apply Open Policy Agent (OPA) policies on incoming requests"
 type: docs
 ---
 
-The Dapr Open Policy Agent (OPA) [HTTP middleware](https://github.com/dapr/docs/blob/master/concepts/middleware/README.md) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
+The Dapr Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
-## Middleware Component Definition
+## Middleware component definition
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -59,7 +60,6 @@ spec:
         } {
             my_claim := jwt.payload["my-claim"]
         }
-
         jwt = { "payload": payload } {
             auth_header := input.request.headers["authorization"]
             [_, jwt] := split(auth_header, " ")
@@ -122,7 +122,7 @@ default allow = {
 }
 ```
 
-### Changing the Rejected Response Status Code
+### Changing the rejected response status code
 
 When rejecting a request, you can override the status code the that gets returned. For example, if you wanted to return a `401` instead of a `403`, you could do the following:
 
@@ -135,7 +135,7 @@ default allow = {
 }
 ```
 
-### Adding Response Headers
+### Adding response headers
 
 To redirect, add headers and set the `status_code` to the returned result:
 
@@ -151,7 +151,7 @@ default allow = {
 }
 ```
 
-### Adding Request Headers
+### Adding request headers
 
 You can also set additional headers on the allowed request:
 
@@ -162,12 +162,12 @@ default allow = false
 
 allow = { "allow": true, "additional_headers": { "X-JWT-Payload": payload } } {
   not input.path[0] == "forbidden"
-  # Where `jwt` is the result of another rule
+  // Where `jwt` is the result of another rule
   payload := base64.encode(json.marshal(jwt.payload))
 }
 ```
 
-### Result Structure
+### Result structure
 ```go
 type Result bool
 // or
@@ -183,5 +183,5 @@ type Result struct {
 
 ## Related links
 
-- Open Policy Agent: https://www.openpolicyagent.org
-- HTTP API Example: https://www.openpolicyagent.org/docs/latest/http-api-authorization/
+- [Open Policy Agent](https://www.openpolicyagent.org)
+- [HTTP API Example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
