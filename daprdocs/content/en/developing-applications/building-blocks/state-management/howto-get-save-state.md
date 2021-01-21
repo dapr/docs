@@ -28,9 +28,7 @@ For the purpose of this guide we'll use a Redis state store, but any state store
 {{< tabs "Self-Hosted (CLI)" Kubernetes>}}
 
 {{% codetab %}}
-When using `Dapr init` in self-hosted mode, the Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML in a `components` directory:
-- **Linux/MacOS**: `$HOME/.dapr/components`
-- **Windows**: `%USERPROFILE%\.dapr\components`
+When using `dapr init` in Standalone mode, the Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML in a `components` directory, which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`
 
 To optionally change the state store being used, replace the YAML file `statestore.yaml` under `/components` with the file of your choice.
 {{% /codetab %}}
