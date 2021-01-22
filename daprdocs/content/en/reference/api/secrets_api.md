@@ -132,9 +132,9 @@ secret-store-name | the name of the secret store to get the secret from
 
 #### Response Body
 
-The returned response is a JSON containing the secrets. The JSON object will contain the secret keys as fields and the secret value as the field value.
+The returned response is a JSON containing the secrets. The JSON object will contain the secret names as fields and a map of secret keys and values as the field value.
 
-##### Response with multiple keys in a secret (eg. Kubernetes): 
+##### Response with multiple secrets and multiple key / values in a secret (eg. Kubernetes): 
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/kubernetes/bulk
@@ -142,8 +142,14 @@ curl http://localhost:3500/v1.0/secrets/kubernetes/bulk
 
 ```json
 {
-  "key1": "value1",
-  "key2": "value2"
+    "secret1": {
+        "key1": "value1",
+        "key2": "value2"
+    },
+    "secret2": {
+        "key3": "value3",
+        "key4": "value4"
+    }
 }
 ```
 
@@ -160,9 +166,15 @@ Code | Description
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/bulk \
+```
 
+```json
 {
-  "key1": "value1",
-  "key2": "value2"
+    "key1": {
+        "key1": "value1"
+    },
+    "key2": {
+        "key2": "value2"
+    }
 }
 ```
