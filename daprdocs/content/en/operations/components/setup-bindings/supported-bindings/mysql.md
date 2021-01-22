@@ -19,8 +19,10 @@ spec:
   metadata:
     - name: url # Required, define DB connection in DSN format
       value: <CONNECTION_STRING>
-      
-    - name: maxIdleConns # Optional
+    
+    - name: pemPath # Optional
+      value: <PEM PATH>
+    - name: maxIdleConns
       value: <MAX_IDLE_CONNECTIONS>
     - name: maxOpenConns
       value: <MAX_OPEN_CONNECTIONS>
@@ -40,6 +42,10 @@ The MySQL binding uses [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql)
   - name: url
     value: user:password@tcp(localhost:3306)/dbname
   ```
+
+If your server requires SSL your connection string must end of `&tls=custom` for example, `"<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true&tls=custom"`. You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
+
+- `pemPath`: path to the PEM file
 
 also support connection pool configuration variables:
 
