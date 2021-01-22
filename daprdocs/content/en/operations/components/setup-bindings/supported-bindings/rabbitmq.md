@@ -29,6 +29,8 @@ spec:
     value: 60
   - name: prefetchCount
     value: 0
+  - name: exclusive
+    value: false
 ```
 
 - `queueName` is the RabbitMQ queue name.
@@ -37,6 +39,7 @@ spec:
 - `deleteWhenUnused` enables or disables auto-delete.
 - `ttlInSeconds` is an optional parameter to set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed.
 - `prefetchCount` is an optional parameter to set the [Channel Prefetch Setting (QoS)](https://www.rabbitmq.com/confirms.html#channel-qos-prefetch). If this parameter is omiited, QoS would set value to 0 as no limit.
+- `exclusive` determines whether the topic will be an exclusive topic or not
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).

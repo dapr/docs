@@ -2,7 +2,7 @@
 type: docs
 title: "Work with backend state stores"
 linkTitle: "Backend stores"
-weight: 400
+weight: 500
 description: "Guides for working with specific backend states stores"
 ---
 
