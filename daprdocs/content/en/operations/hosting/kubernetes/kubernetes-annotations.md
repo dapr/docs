@@ -13,6 +13,7 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/enabled`                                 | Setting this paramater to `true` injects the Dapr sidecar into the pod
 | `dapr.io/app-port`                                | This parameter tells Dapr which port your application is listening on
 | `dapr.io/app-id`                                  | The unique ID of the application. Used for service discovery, state encapsulation and the pub/sub consumer ID
+| `dapr.io/app-host`                                | The IP address/DNS hostname of the application to connect to. See [here]({{<ref remote-dapr-communication.md>}}) for more information.
 | `dapr.io/log-level`                               | Sets the log level for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info`
 | `dapr.io/config`                                  | Tells Dapr which Configuration CRD to use
 | `dapr.io/log-as-json`                             | Setting this parameter to `true` outputs logs in JSON format. Default is `false`
@@ -35,3 +36,7 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/sidecar-readiness-probe-period-seconds`  | How often (in seconds) to perform the sidecar readiness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `6`
 | `dapr.io/sidecar-readiness-probe-threshold`       | When the sidecar readiness probe fails, Kubernetes will try N times before giving up. In  this case, the Pod will be marked Unready. Read more about `failureThreshold` [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `3`
 | `dapr.io/http-max-request-size`                   | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB      
+
+{{% alert title="Network Based communication" color="warning" %}}
+Using `dapr.io/app-host` enables network based communication. Please see [here]({{<ref remote-dapr-communication.md>}}) for more information.
+{{% /alert %}}
