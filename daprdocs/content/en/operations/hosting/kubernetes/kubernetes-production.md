@@ -9,17 +9,19 @@ description: "Recommendations and practices for deploying Dapr to a Kubernetes c
 ## Cluster capacity requirements
 
 For a production ready Kubernetes cluster deployment, it is recommended you run a cluster of 3 worker nodes to support a highly-available setup of the control plane.
-The Dapr control plane pods are designed to be lightweight and require the following resources in a production-ready setup:
+For a baseline production-read setup, the following resource settings might serve as a starting point. The requirements will vary depending on cluster size and other factors, so individual testing is needed to find the right values for your environment:
 
 *Note: For more info on CPU and Memory resource units and their meaning, see [this](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes) link*
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
-| Operator    | Limit: 1, Request: 100m | Limit: 200Mi, Request: 20Mi
-| Sidecar Injector  | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 20Mi
-| Sentry      | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 20Mi
-| Placement   | Limit: 1, Request: 250m  | Limit: 500Mi, Request: 100Mi
+| Operator    | Limit: 1, Request: 100m | Limit: 200Mi, Request: 100Mi
+| Sidecar Injector  | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
+| Sentry      | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
+| Placement   | Limit: 1, Request: 250m  | Limit: 150Mi, Request: 75Mi
 | Dashboard   | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
+
+When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment. The [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README) documents the details and also provides examples. For local/dev installations, you might simply want to skip configuring the `resources` options.
 
 To change the resource assignments for the Dapr sidecar, see the annotations [here]({{< ref "kubernetes-annotations.md" >}}).
 The specific annotations related to resource constraints are:
@@ -56,10 +58,23 @@ The CPU and memory limits above account for the fact that Dapr is intended to do
 When deploying to a production cluster, it's recommended to use Helm. The Dapr CLI installation into a Kubernetes cluster is for a development and test only setup.
 You can find information [here]({{< ref "install-dapr-selfhost.md#using-helm-advanced" >}}) on how to deploy Dapr using Helm.
 
-When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
+When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane. It is also recommended to create a values file instead of specifying parameters on the command-line. This file should be checked in to source control so that you can track changes to it.
+
+For a full list of all available options you can set in the values file (or by using the `--set` command-line option), see https://github.com/dapr/dapr/blob/master/charts/dapr/README.md.
 
 ```bash
-helm install dapr dapr/dapr --version=<Dapr chart version> --namespace dapr-system --set global.ha.enabled=true
+touch values.yml
+cat << EOF >> values.yml
+global.ha.enabled: true
+
+EOF
+
+
+helm upgrade --install dapr dapr/dapr \
+  --version=<Dapr chart version> \
+  --namespace dapr-system \
+  --values values.yml \
+  --wait
 ```
 
 This command will run 3 replicas of each control plane pod in the dapr-system namespace.
@@ -80,43 +95,6 @@ To upgrade the Dapr CLI, [download the latest version](https://github.com/dapr/c
 
 ### Updating the control plane
 
-#### Saving the current certificates
-
-When upgrading to a new version of Dapr, it is recommended you carry over the root and issuer certificates instead of re-generating them, which might cause a downtime for applications that make use of service invocation or actors.
-
-#### Exporting certs with the Dapr CLI
-
-To get your current certs with the Dapr CLI, run the following command:
-
-```
-dapr mtls export -o ./certs
-```
-
-This will save any existing root cert, issuer cert and issuer key in the output dir of your choice.
-
-### Exporting certs manually
-
-To get the current root and issuer certificates, run the following command:
-
-```
-kubectl get secret dapr-trust-bundle -o yaml -n dapr-system
-
-apiVersion: v1
-data:
-  ca.crt: <ROOT-CERTIFICATE-VALUE>
-  issuer.crt: <ISSUER-CERTIFICATE-VALUE>
-  issuer.key: <ISSUER-KEY-VALUE>
-kind: Secret
-```
-
-Copy the contents of `ca.crt`, `issuer.crt` and `issuer.key` and base64 decode them. Save these certificates as files.
-
-You should have the following files containing the base64 decoded text from the secret saved on your disk:
-
-1. ca.crt
-2. issuer.crt
-3. issuer.key
-
 #### Updating the control plane pods
 
 > Note: To upgrade Dapr from 0.11.x to 1.0.0 version, please refer to [this section](#upgrade-from-dapr-011x-to-100).
@@ -135,23 +113,20 @@ List all charts in the Dapr repo:
 helm search repo dapr --devel
 
 NAME     	CHART VERSION	APP VERSION	DESCRIPTION
-dapr/dapr	1.0.0-rc.1   	1.0.0-rc.1 	A Helm chart for Dapr on Kubernetes
+dapr/dapr	1.0.0-rc.3   	1.0.0-rc.3 	A Helm chart for Dapr on Kubernetes
 ```
 
-The APP VERSION column tells us which Dapr runtime version is installed by the chart. Now, use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved before:
+The APP VERSION column tells us which Dapr runtime version is installed by the chart. Use the `values.yml` file from the installation step above to upgrade.
 
-> Remove `--set global.ha.enabled=true` if current Dapr installation has not been deployed in HA mode.
 
 ```bash
-helm upgrade dapr dapr/dapr \
-    --version <Dapr chart version> \
-    --namespace dapr-system \
-    --reset-values \
-    --set-file dapr_sentry.tls.root.certPEM=certs/ca.crt \
-    --set-file dapr_sentry.tls.issuer.certPEM=certs/issuer.crt \
-    --set-file dapr_sentry.tls.issuer.keyPEM=certs/issuer.key \
-    --set global.ha.enabled=true
+helm upgrade --install dapr dapr/dapr \
+  --version=<Dapr chart version> \
+  --namespace dapr-system \
+  --values values.yml \
+  --wait
 ```
+
 
 Kubernetes now performs a rolling update. Wait until all the new pods appear as running:
 

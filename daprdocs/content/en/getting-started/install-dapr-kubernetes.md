@@ -151,7 +151,10 @@ helm uninstall dapr -n dapr-system
 
 ### More information
 
-See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
+- Read [this guide]({{< ref "Deploy and run Dapr in Kubernetes mode" >}}) for recommended Helm chart values for production setups
+
+- See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
+
 
 ## Next steps
 

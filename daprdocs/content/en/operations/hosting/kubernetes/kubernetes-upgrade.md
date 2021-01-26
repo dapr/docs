@@ -11,7 +11,60 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 - Latest [Dapr CLI]({{< ref install-dapr-cli.md >}})
 - [Helm 3](https://github.com/helm/helm/releases)
 
-## Upgrade existing cluster running 0.11.x
+
+## Upgrade existing cluster running 1.0.0 or newer, and 1.0.0.rc.3
+From version 1.0.0.rc.3 onwards, upgrading Dapr using Helm is no longer a disruptive action since any existing certificate values simply will be re-used.
+
+1. Upgrade Dapr to 1.0.0:
+
+   ```bash
+   helm repo update
+   ```
+   
+   ```bash
+   helm upgrade dapr dapr/dapr --version 1.0.0 --namespace dapr-system --set global.ha.enabled=true --wait
+   ```
+
+2. Upgrade CRDs:
+
+   ```bash
+   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/21636a9237f2dcecd9c80f329e99b512e8377739/charts/dapr/crds/configuration.yaml
+   ```
+   
+   ```bash
+   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/21636a9237f2dcecd9c80f329e99b512e8377739/charts/dapr/crds/components.yaml
+   ```
+
+3. Ensure all pods are running:
+
+   ```bash
+   kubectl get pods -n dapr-system -w
+   
+   NAME                                     READY   STATUS    RESTARTS   AGE
+   dapr-dashboard-69f5c5c867-mqhg4          1/1     Running   0          42s
+   dapr-operator-5cdd6b7f9c-9sl7g           1/1     Running   0          41s
+   dapr-operator-5cdd6b7f9c-jkzjs           1/1     Running   0          29s
+   dapr-operator-5cdd6b7f9c-qzp8n           1/1     Running   0          34s
+   dapr-placement-server-0                  1/1     Running   0          41s
+   dapr-placement-server-1                  1/1     Running   0          41s
+   dapr-placement-server-2                  1/1     Running   0          41s
+   dapr-sentry-84565c747b-7bh8h             1/1     Running   0          35s
+   dapr-sentry-84565c747b-fdlls             1/1     Running   0          41s
+   dapr-sentry-84565c747b-ldnsf             1/1     Running   0          29s
+   dapr-sidecar-injector-68f868668f-6xnbt   1/1     Running   0          41s
+   dapr-sidecar-injector-68f868668f-j7jcq   1/1     Running   0          29s
+   dapr-sidecar-injector-68f868668f-ltxq4   1/1     Running   0          36s
+   ```
+
+4. Restart your application deployments to update the Dapr runtime:
+
+   ```bash
+   kubectl rollout restart deploy/<DEPLOYMENT-NAME>
+   ```
+
+5. All done!
+
+## Upgrade existing cluster running version 
 
 1. Run these two commands to prevent `helm upgrade` from uninstalling `0.11.x` placement service:
 
@@ -86,62 +139,7 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 
 1. All done!
 
-## Upgrade existing cluster running 1.0.0-rc.1
 
-1. Export certs:
-
-   ```bash
-   dapr mtls export -o ./certs
-   ```
-
-1. Upgrade Dapr to 1.0.0-rc.2:
-
-   ```bash
-   helm repo update
-   ```
-   
-   ```bash
-   helm upgrade dapr dapr/dapr --version 1.0.0-rc.2 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file    dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
-   ```
-
-1. Upgrade CRDs:
-
-   ```bash
-   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/21636a9237f2dcecd9c80f329e99b512e8377739/charts/dapr/crds/configuration.yaml
-   ```
-   
-   ```bash
-   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/21636a9237f2dcecd9c80f329e99b512e8377739/charts/dapr/crds/components.yaml
-   ```
-
-1. Ensure all pods are running:
-
-   ```bash
-   kubectl get pods -n dapr-system -w
-   
-   NAME                                     READY   STATUS    RESTARTS   AGE
-   dapr-dashboard-69f5c5c867-mqhg4          1/1     Running   0          42s
-   dapr-operator-5cdd6b7f9c-9sl7g           1/1     Running   0          41s
-   dapr-operator-5cdd6b7f9c-jkzjs           1/1     Running   0          29s
-   dapr-operator-5cdd6b7f9c-qzp8n           1/1     Running   0          34s
-   dapr-placement-server-0                  1/1     Running   0          41s
-   dapr-placement-server-1                  1/1     Running   0          41s
-   dapr-placement-server-2                  1/1     Running   0          41s
-   dapr-sentry-84565c747b-7bh8h             1/1     Running   0          35s
-   dapr-sentry-84565c747b-fdlls             1/1     Running   0          41s
-   dapr-sentry-84565c747b-ldnsf             1/1     Running   0          29s
-   dapr-sidecar-injector-68f868668f-6xnbt   1/1     Running   0          41s
-   dapr-sidecar-injector-68f868668f-j7jcq   1/1     Running   0          29s
-   dapr-sidecar-injector-68f868668f-ltxq4   1/1     Running   0          36s
-   ```
-
-1. Restart your application deployments to update the Dapr runtime:
-
-   ```bash
-   kubectl rollout restart deploy/<DEPLOYMENT-NAME>
-   ```
-
-1. All done!
 
 ## Next steps
 
