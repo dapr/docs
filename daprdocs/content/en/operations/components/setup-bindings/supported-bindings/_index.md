@@ -19,6 +19,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Experimental |
 | [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Experimental |
 | [MQTT]({{< ref mqtt.md >}})           | ✅ | ✅ | Experimental |
+| [MySQL]({{< ref mysql.md >}})       |    | ✅ | Experimental |
 | [PostgreSql]({{< ref postgres.md >}})       |    | ✅ | Experimental |
 | [Postmark]({{< ref postmark.md >}})       |    | ✅ | Experimental |
 | [RabbitMQ]({{< ref rabbitmq.md >}})   | ✅ | ✅ | Experimental |

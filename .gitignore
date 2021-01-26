@@ -1,5 +1,6 @@
 # Visual Studio 2015/2017/2019 cache/options directory
 .vs/
+.idea/
 node_modules/
 daprdocs/public
 daprdocs/resources/_gen
