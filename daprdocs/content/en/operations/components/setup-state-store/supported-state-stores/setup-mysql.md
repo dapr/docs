@@ -7,29 +7,78 @@ description: Detailed information on the MySQL state store component
 
 ## Create a MySQL Store
 
-Dapr can use any MySQL instance. If you already have a running instance of MySQL, move on to the [Create a Dapr component](#create-a-dapr-component) section.
+Dapr can use any MySQL instance - containerized, running on your local dev machine, or a managed cloud service. If you already have a MySQL store, move on to the [Create a Dapr component](#create-a-dapr-component) section.
 
-1. Run an instance of MySQL. You can run a local instance of MySQL in Docker CE with the following command:
+{{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
-     This example does not describe a production configuration because it sets the password in plain text and the user name is left as the MySQL default of "root".
+{{% codetab %}}
+<!-- Self-Hosted -->
 
-     ```bash
-     docker run --name dapr_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
-     ```
+Run an instance of MySQL. You can run a local instance of MySQL in Docker CE with the following command:
 
-2. Create a database for state data.
+This example does not describe a production configuration because it sets the password in plain text and the user name is left as the MySQL default of "root".
 
-    To create a new database in MySQL, run the following SQL command:
+```bash
+docker run --name dapr_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
+```
 
-    ```SQL
-    create database dapr_state_store;
+{{% /codetab %}}
+
+{{% codetab %}}
+<!-- Kubernetes -->
+
+We can use [Helm](https://helm.sh/) to quickly create a MySQL instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
+
+1. Install MySQL into your cluster.
+
+    ```bash
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm install dapr_mysql bitnami/mysql
     ```
+
+1. Run `kubectl get pods` to see the MySQL containers now running in your cluster.
+
+1. Next, we'll get our password, which is slightly different depending on the OS we're using:
+    - **Windows**: Run `[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($(kubectl get secret --namespace default dapr-mysql -o jsonpath="{.data.mysql-root-password}")))` and copy the outputted password.
+
+    - **Linux/MacOS**: Run `kubectl get secret --namespace default dapr-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode` and copy the outputted password.
+
+1. With the password you can construct your connection string.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!-- Azure -->
+
+[Azure MySQL](http://bit.ly/AzureMySQL)
+
+If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!-- AWS -->
+
+[AWS MySQL](https://aws.amazon.com/rds/mysql/)
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!-- GCP -->
+
+[GCP MySQL](https://cloud.google.com/sql/docs/mysql/features)
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Create a Dapr component
 
 ### Non SSL connection
 
-Create a file called `mysqlstate.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard MySQL connection string. For example, `"<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true"`.
+Create a file called `mysqlstate.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard MySQL connection string. For example, `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true"`. Do not add the schema to the connection string. The component connects to the server first to check for the existence of the desired schema. If the schemaName is not provided the default value of **dapr_state_store** will be used. If the schema does not exist it will be created.
+
+The tableName is also optional and if not provided will default to **state**. If the table does ont exist it will be created.
 
 If you want to also configure MySQL to store actors, add the `actorStateStore` configuration element shown below.
 
@@ -44,13 +93,17 @@ spec:
   metadata:
   - name: connectionString
     value: "<CONNECTION STRING>"
+  - name: schemaName
+    value: "<SCHEMA NAME>"
+  - name: tableName
+    value: "<TABLE NAME>"
   - name: actorStateStore
     value: "true"
 ```
 
 ### Enforced SSL connection
 
-If your server requires SSL your connection string must end with `&tls=custom` for example, `"<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true&tls=custom"`. You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
+If your server requires SSL your connection string must end with `&tls=custom` for example, `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true&tls=custom"`. You must replace the `<PEM PATH>` with a full path to the PEM file. The connection to MySQL will require a minimum TLS version of 1.2.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -63,6 +116,10 @@ spec:
   metadata:
   - name: connectionString
     value: "<CONNECTION STRING>"
+  - name: schemaName
+    value: "<SCHEMA NAME>"
+  - name: tableName
+    value: "<TABLE NAME>"
   - name: pemPath
     value: "<PEM PATH>"
   - name: actorStateStore
