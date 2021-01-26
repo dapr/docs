@@ -19,7 +19,6 @@ spec:
   metadata:
     - name: url # Required, define DB connection in DSN format
       value: <CONNECTION_STRING>
-    
     - name: pemPath # Optional
       value: <PEM PATH>
     - name: maxIdleConns
