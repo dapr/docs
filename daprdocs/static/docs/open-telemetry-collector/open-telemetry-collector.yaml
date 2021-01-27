@@ -10,9 +10,6 @@ data:
     receivers:
       zipkin:
         endpoint: 0.0.0.0:9411
-    processors:
-      queued_retry:
-      batch:
     extensions:
       health_check:
       pprof:
@@ -37,7 +34,6 @@ data:
         traces:
           receivers: [zipkin]
           exporters: [azuremonitor,logging]
-          processors: [batch, queued_retry]
 ---
 apiVersion: v1
 kind: Service
