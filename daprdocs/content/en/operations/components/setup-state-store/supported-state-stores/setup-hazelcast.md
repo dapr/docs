@@ -5,31 +5,9 @@ linkTitle: "Hazelcast"
 description: Detailed information on the Hazelcast state store component
 ---
 
-## Setup a Hazelcast state store
-
-{{< tabs "Self-Hosted" "Kubernetes" >}}
-
-{{% codetab %}}
-You can run Hazelcast locally using Docker:
-
-```
-docker run -e JAVA_OPTS="-Dhazelcast.local.publicAddress=127.0.0.1:5701" -p 5701:5701 hazelcast/hazelcast
-```
-
-You can then interact with the server using the `127.0.0.1:5701`.
-{{% /codetab %}}
-
-{{% codetab %}}
-The easiest way to install Hazelcast on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/hazelcast).
-{{% /codetab %}}
-
-{{< /tabs >}}
-
 ## Create a Dapr component
 
-The next step is to create a Dapr component for Hazelcast.
-
-Create the following YAML file named `hazelcast.yaml`:
+To setup Hazelcast state store create a component of type `state.hazelcast`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -51,16 +29,34 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Apply the configuration
+## Spec metadata fields
 
-### In Kubernetes
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| hazelcastServers   | Y        | A comma delimited string of servers. | `"hazelcast:3000,hazelcast2:3000"`
+| hazelcastMap       | Y        | Hazelcast Map configuration. | `"foo-map"`
 
-To apply the Hazelcast state store to Kubernetes, use the `kubectl` CLI:
+## Setup Hazelcast
+
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
+You can run Hazelcast locally using Docker:
 
 ```
-kubectl apply -f hazelcast.yaml
+docker run -e JAVA_OPTS="-Dhazelcast.local.publicAddress=127.0.0.1:5701" -p 5701:5701 hazelcast/hazelcast
 ```
 
-### Running locally
+You can then interact with the server using the `127.0.0.1:5701`.
+{{% /codetab %}}
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+{{% codetab %}}
+The easiest way to install Hazelcast on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/hazelcast).
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- [State management building block]({{< ref state-management >}})

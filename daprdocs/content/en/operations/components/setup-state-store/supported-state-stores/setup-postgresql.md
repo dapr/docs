@@ -5,27 +5,6 @@ linkTitle: "PostgreSQL"
 description: Detailed information on the PostgreSQL state store component
 ---
 
-## Create a PostgreSQL Store
-
-Dapr can use any PostgreSQL instance. If you already have a running instance of PostgreSQL, move on to the [Create a Dapr component](#create-a-dapr-component) section.
-
-1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker CE with the following command:
-
-     This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".  
-
-     ```bash
-     docker run -p 5432:5432 -e POSTGRES_PASSWORD=example postgres
-     ```
-
-2. Create a database for state data.
-Either the default "postgres" database can be used, or create a new database for storing state data.
-
-    To create a new database in PostgreSQL, run the following SQL command:
-
-    ```SQL
-    create database dapr_test
-    ```
-
 ## Create a Dapr component
 
 Create a file called `postgres.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard PostgreSQL connection string. For example, `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html), specifically Keyword/Value Connection Strings, for information on how to define a connection string.
@@ -43,23 +22,54 @@ spec:
   metadata:
   - name: connectionString
     value: "<CONNECTION STRING>"
-  - name: actorStateStore
-    value: "true"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Apply the configuration
+## Spec metadata fields
 
-### In Kubernetes
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| connectionString   | Y        | The connection string for PostgreSQL. | `"User ID=root;Password=myPassword;Host=localhost;Port=5432"`
+| actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
-To apply the PostgreSQL state store to Kubernetes, use the `kubectl` CLI:
+
+If you wish to use PostgreSQL as an actor store, append the following to the yaml.
 
 ```yaml
-kubectl apply -f postgres.yaml
+  - name: actorStateStore
+    value: "true"
 ```
 
-### Running locally
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Create PostgreSQL
+
+{{< tabs "Self-Hosted" >}}
+
+{{% codetab %}}
+
+1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker CE with the following command:
+
+     This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".  
+
+     ```bash
+     docker run -p 5432:5432 -e POSTGRES_PASSWORD=example postgres
+     ```
+
+2. Create a database for state data.
+Either the default "postgres" database can be used, or create a new database for storing state data.
+
+    To create a new database in PostgreSQL, run the following SQL command:
+
+    ```SQL
+    create database dapr_test
+    ```
+{{% /codetab %}}
+
+{{% /tabs %}}
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- [State management building block]({{< ref state-management >}})

@@ -5,7 +5,57 @@ linkTitle: "MongoDB"
 description: Detailed information on the MongoDB state store component
 ---
 
-## Setup a MongoDB state store
+## Component format
+
+To setup MongoDB state store create a component of type `state.mongodb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+  namespace: <NAMESPACE>
+spec:
+  type: state.mongodb
+  version: v1
+  metadata:
+  - name: host
+    value: <REPLACE-WITH-HOST> # Required. Example: "mongo-mongodb.default.svc.cluster.local:27017"
+  - name: username
+    value: <REPLACE-WITH-USERNAME> # Optional. Example: "admin"
+  - name: password
+    value: <REPLACE-WITH-PASSWORD> # Optional.
+  - name: databaseName
+    value: <REPLACE-WITH-DATABASE-NAME> # Optional. default: "daprStore"
+  - name: collectionName
+    value: <REPLACE-WITH-COLLECTION-NAME> # Optional. default: "daprCollection"
+  - name: writeconcern
+    value: <REPLACE-WITH-WRITE-CONCERN> # Optional.
+  - name: readconcern
+    value: <REPLACE-WITH-READ-CONCERN> # Optional.
+  - name: operationTimeout
+    value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "5s"
+```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| host               | Y        | The host to connect to. | `"mongo-mongodb.default.svc.cluster.local:27017"`
+| username           | N        | The username of the user to connect with. | `"admin"`
+| password           | N        | The password of the user. | `"password"`
+| databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
+| collectionName     | N        | The name of the collection to use. Defaults to `"daprCollection"` | `"daprCollection"`
+| writeconcern       | N        | The write concern to use. | `"majority"`
+| readconcern        | N        | The read concern to use.  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
+| operationTimeout   | N        | The timeout for the operation. Defautls to `"5s"` | `"5s"`
+
+## Setup MongoDB
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
@@ -40,82 +90,7 @@ The username will be `admin` by default.
 
 {{< /tabs >}}
 
-## Create a Dapr component
-
-The next step is to create a Dapr component for MongoDB.
-
-Create the following YAML file named `mongodb.yaml`:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.mongodb
-  version: v1
-  metadata:
-  - name: host
-    value: <REPLACE-WITH-HOST> # Required. Example: "mongo-mongodb.default.svc.cluster.local:27017"
-  - name: username
-    value: <REPLACE-WITH-USERNAME> # Optional. Example: "admin"
-  - name: password
-    value: <REPLACE-WITH-PASSWORD> # Optional.
-  - name: databaseName
-    value: <REPLACE-WITH-DATABASE-NAME> # Optional. default: "daprStore"
-  - name: collectionName
-    value: <REPLACE-WITH-COLLECTION-NAME> # Optional. default: "daprCollection"
-  - name: writeconcern
-    value: <REPLACE-WITH-WRITE-CONCERN> # Optional.
-  - name: readconcern
-    value: <REPLACE-WITH-READ-CONCERN> # Optional.
-  - name: operationTimeout
-    value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "5s"
-```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
-
-### Example
-
-The following example uses the Kubernetes secret store to retrieve the username and password:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.mondodb
-  version: v1
-  metadata:
-  - name: host
-    value: <REPLACE-WITH-HOST>
-  - name: username
-    secretKeyRef:
-      name: <KUBERNETES-SECRET-NAME>
-      key: <KUBERNETES-SECRET-KEY>
-  - name: password
-    secretKeyRef:
-      name: <KUBERNETES-SECRET-NAME>
-      key: <KUBERNETES-SECRET-KEY>
-  ...
-``` 
-
-
-## Apply the configuration
-
-### In Kubernetes
-
-To apply the MondoDB state store to Kubernetes, use the `kubectl` CLI:
-
-```
-kubectl apply -f mongodb.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- [State management building block]({{< ref state-management >}})

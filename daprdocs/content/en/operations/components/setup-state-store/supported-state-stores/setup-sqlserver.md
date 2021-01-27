@@ -5,7 +5,57 @@ linkTitle: "SQL Server"
 description: Detailed information on the SQL Server state store component
 ---
 
-## Create an Azure SQL instance
+## Component format
+
+To setup SQL Server state store create a component of type `state.sqlserver`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+  namespace: <NAMESPACE>
+spec:
+  type: state.sqlserver
+  version: v1
+  metadata:
+  - name: connectionString
+    value: <REPLACE-WITH-CONNECTION-STRING> # Required.
+  - name: tableName
+    value: <REPLACE-WITH-TABLE-NAME>  # Required.
+  - name: keyType 
+    value: <REPLACE-WITH-KEY-TYPE>  # Optional. defaults to "string"
+  - name: keyLength
+    value: <KEY-LENGTH> # Optional. defaults to 200. Yo be used with "string" keyType
+  - name: schema
+    value: <SCHEMA> # Optional. defaults to "dbo"
+  - name: indexedProperties
+    value: <INDEXED-PROPERTIES> # Optional. List of IndexedProperties. 
+
+```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+{{% alert title="Note" color="primary" %}}
+Currently this component does not support state management for actors
+{{% /alert %}}
+
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| connectionString   | Y        | The connection string used to connect. | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"`
+| tableName          | Y        | The name of the table to use. Alpha-numeric with underscores | `"table_name"`
+| keyType            | N        | The type of key used. Defaults to `"string"` | `"string"`
+| keyLength          | N        | The max length of key. Used along with `"string"` keytype. Defaults to `"200"` | `"200"`
+| schema             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
+| indexedProperties  | N        | List of IndexedProperties. |  `"[{"ColumnName": "column", "Property": "property", "Type": "type"}]"`
+
+
+## Create Azure SQL instance
 
 [Follow the instructions](https://docs.microsoft.com/azure/sql-database/sql-database-single-database-get-started?tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
 
@@ -25,66 +75,7 @@ When connecting with a dedicated user (not `sa`), these authorizations are requi
 - `CREATE TABLE`
 - `CREATE TYPE`
 
-## Create a Dapr component
-
-> Currently this component does not support state management for actors
-
-The next step is to create a Dapr component for SQL Server.
-
-Create the following YAML file named `sqlserver.yaml`:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.sqlserver
-  version: v1
-  metadata:
-  - name: connectionString
-    value: <REPLACE-WITH-CONNECTION-STRING>
-  - name: tableName
-    value: <REPLACE-WITH-TABLE-NAME>
-```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
-
-### Example
-
-The following example uses the Kubernetes secret store to retrieve the secrets:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.sqlserver
-  version: v1
-  metadata:
-  - name: connectionString
-    secretKeyRef:
-      name: <KUBERNETES-SECRET-NAME>
-      key: <KUBERNETES-SECRET-KEY>
-  - name: tableName
-    value: <REPLACE-WITH-TABLE-NAME>
-```
-
-## Apply the configuration
-
-### In Kubernetes
-
-To apply the SQL Server state store to Kubernetes, use the `kubectl` CLI:
-
-```yaml
-kubectl apply -f sqlserver.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- [State management building block]({{< ref state-management >}})

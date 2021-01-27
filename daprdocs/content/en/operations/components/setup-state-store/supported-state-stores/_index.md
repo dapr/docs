@@ -15,7 +15,6 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Cassandra]({{< ref setup-cassandra.md >}})                    | ✅  | ❌            |
 | [Cloudstate]({{< ref setup-cloudstate.md >}})                  | ✅  | ❌            |
 | [Couchbase]({{< ref setup-couchbase.md >}})                    | ✅  | ❌            |
-| [etcd]({{< ref setup-etcd.md >}})                              | ✅  | ❌            |
 | [Hashicorp Consul]({{< ref setup-consul.md >}})                | ✅  | ❌            |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})                    | ✅  | ❌            |
 | [Memcached]({{< ref setup-memcached.md >}})                    | ✅  | ❌            |

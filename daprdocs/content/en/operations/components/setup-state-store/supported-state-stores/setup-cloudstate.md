@@ -5,28 +5,10 @@ linkTitle: "Cloudstate"
 description: Detailed information on the Cloudstate state store component
 ---
 
-## Introduction
+## Component format
 
-The Cloudstate-Dapr integration is unique in the sense that it enables developers to achieve high-throughput, low latency scenarios by leveraging Cloudstate running as a sidecar *next* to Dapr, keeping the state near the compute unit for optimal performance while providing replication between multiple instances that can be safely scaled up and down. This is due to Cloudstate forming an Akka cluster between its sidecars with replicated in-memory entities.
+To setup Cloudstate state store create a component of type `state.cloudstate`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
-Dapr leverages Cloudstate's CRDT capabilities with last-write-wins semantics.
-
-## Setup a Cloudstate state store
-
-To install Cloudstate on your Kubernetes cluster, run the following commands:
-
-```
-kubectl create namespace cloudstate
-kubectl apply -n cloudstate -f https://github.com/cloudstateio/cloudstate/releases/download/v0.5.0/cloudstate-0.5.0.yaml
-```
-
-This will install Cloudstate into the `cloudstate` namespace with version `0.5.0`.
-
-## Create a Dapr component
-
-The next step is to create a Dapr component for Cloudstate.
-
-Create the following YAML file named `cloudstate.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -39,14 +21,36 @@ spec:
   version: v1
   metadata:
   - name: host
-    value: "localhost:8013"
+    value: <REPLACE-WITH-HOST>
   - name: serverPort
-    value: "8080"
+    value: <REPLACE-WITH-PORT>
 ```
 
-The `metadata.host` field specifies the address for the Cloudstate API. Since Cloudstate will be running as an additional sidecar in the pod, you can reach it via `localhost` with the default port of `8013`.
+## Spec metadata fields
 
-The `metadata.serverPort` field specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr.
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| hosts             | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"`. 
+| serverPort        | Y        | Specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr. | `"8080"`
+
+> Since Cloudstate will be running as an additional sidecar in the pod, you can reach it via `localhost` with the default port of `8013`.
+
+## Introduction
+
+The Cloudstate-Dapr integration is unique in the sense that it enables developers to achieve high-throughput, low latency scenarios by leveraging Cloudstate running as a sidecar *next* to Dapr, keeping the state near the compute unit for optimal performance while providing replication between multiple instances that can be safely scaled up and down. This is due to Cloudstate forming an Akka cluster between its sidecars with replicated in-memory entities.
+
+Dapr leverages Cloudstate's CRDT capabilities with last-write-wins semantics.
+
+## Setup Cloudstate
+
+To install Cloudstate on your Kubernetes cluster, run the following commands:
+
+```
+kubectl create namespace cloudstate
+kubectl apply -n cloudstate -f https://github.com/cloudstateio/cloudstate/releases/download/v0.5.0/cloudstate-0.5.0.yaml
+```
+
+This will install Cloudstate into the `cloudstate` namespace with version `0.5.0`.
 
 ## Apply the configuration
 
@@ -64,7 +68,7 @@ The next examples shows you how to manually inject a Cloudstate sidecar into a D
 
 *Notice the `HTTP_PORT` for the `cloudstate-sidecar` container is the port to be used in the Cloudstate component yaml in `host`.*
 
-```
+```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -159,4 +163,9 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  ```
+```
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- [State management building block]({{< ref state-management >}})

@@ -6,7 +6,66 @@ description: Detailed information on the Redis state store component
 weight: 10
 ---
 
-## Create a Redis Store
+## Component format
+
+To setup Redis state store create a component of type `state.redis`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+  namespace: default
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: <HOST>
+  - name: redisPassword
+    value: <PASSWORD>
+  - name: enableTLS
+    value: <bool> # Optional. Allowed: true, false.
+  - name: failover
+    value: <bool> # Optional. Allowed: true, false.
+  - name: sentinelMasterName
+    value: <string> # Optional
+  - name: maxRetries
+    value: # Optional
+  - name: maxRetryBackoff
+    value: # Optional
+```
+**TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`. 
+
+**Failover:** When set to `true` enables the failover feature. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+
+If you wish to use Redis as an actor store, append the following to the yaml.
+
+```yaml
+  - name: actorStateStore
+    value: "true"
+```
+
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
+| redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
+| consumerID         | N         | The consumer group ID   | `"myGroup"`
+| enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
+| maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
+| maxRetryBackoff    | N         | Minimum backoff between each retry. Defaults to `2` seconds | `3000000000`
+| failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
+| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel). | `""`,  `"127.0.0.1:6379"`
+| actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+
+## Setup Redis
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. If you already have a Redis store, move on to the [Configuration](#configuration) section.
 
@@ -69,46 +128,11 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 {{< /tabs >}}
 
-## Create a Dapr component
-
-**TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`. 
-
-**Failover:** When set to `true` enables the failover feature. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
-
-Create a file called redis.yaml, and paste the following:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: statestore
-  namespace: default
-spec:
-  type: state.redis
-  version: v1
-  metadata:
-  - name: redisHost
-    value: <HOST>
-  - name: redisPassword
-    value: <PASSWORD>
-  - name: enableTLS
-    value: <bool> # Optional. Allowed: true, false.
-  - name: failover
-    value: <bool> # Optional. Allowed: true, false.
-```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% alert title="Note" color="primary" %}}
+The Dapr CLI automatically deploys a local redis instance in self hosted mode as part of the `dapr init` command.
 {{% /alert %}}
 
-## Apply the configuration
-
-### Kubernetes
-
-```
-kubectl apply -f redis.yaml
-```
-
-### Standalone
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- [State management building block]({{< ref state-management >}})
