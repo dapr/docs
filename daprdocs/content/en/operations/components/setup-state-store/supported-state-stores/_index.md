@@ -20,6 +20,7 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Hazelcast]({{< ref setup-hazelcast.md >}})                    | ✅  | ❌            |
 | [Memcached]({{< ref setup-memcached.md >}})                    | ✅  | ❌            |
 | [MongoDB]({{< ref setup-mongodb.md >}})                        | ✅  | ✅            |
+| [MySQL]({{< ref setup-mysql.md >}})                            | ✅  | ✅            |
 | [PostgreSQL]({{< ref setup-postgresql.md >}})                  | ✅  | ✅            |
 | [Redis]({{< ref setup-redis.md >}})                            | ✅  | ✅            |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅  | ❌            |
@@ -28,4 +29,3 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}}) | ✅  | ❌            |
 | [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})   | ✅  | ❌            |
 | [Google Cloud Firestore]({{< ref setup-firestore.md >}})       | ✅  | ❌            |
-
