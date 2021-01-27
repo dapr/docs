@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Scope components to one or more applications"
 linkTitle: "How-To: Set component scopes"
-weight: 100
+weight: 200
 description: "Limit component access to particular Dapr instances"
 ---
 
@@ -31,7 +31,7 @@ spec:
 
 In this example, the Redis component is only accessible to Dapr instances running inside the `production` namespace.
 
-### Example of component namsespacing in self-hosted mode
+### Example of component namespacing in self-hosted mode
 
 In self hosted mode, a developer can specify the namespace to a Dapr instance by setting the `NAMESPACE` environment variable.
 If the `NAMESPACE` environment variable is set, Dapr will not load any component that does not specify the same namespace in its metadata.

@@ -3,7 +3,7 @@ type: docs
 title: "Secrets API reference"
 linkTitle: "Secrets API"
 description: "Detailed documentation on the secrets API"
-weight: 600
+weight: 700
 ---
 
 ## Get Secret
@@ -89,8 +89,7 @@ Code | Description
 200  | OK
 204  | Secret not found
 400  | Secret store is missing or misconfigured
-403  | Access denied
-500  | Failed to get secret or no secret stores defined
+500  | Failed to get secret
 
 ### Examples
 

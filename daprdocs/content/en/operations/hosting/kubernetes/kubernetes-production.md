@@ -54,7 +54,7 @@ The CPU and memory limits above account for the fact that Dapr is intended to do
 ## Deploying Dapr with Helm
 
 When deploying to a production cluster, it's recommended to use Helm. The Dapr CLI installation into a Kubernetes cluster is for a development and test only setup.
-You can find information [here]({{< ref "install-dapr.md#using-helm-advanced" >}}) on how to deploy Dapr using Helm.
+You can find information [here]({{< ref "install-dapr-selfhost.md#using-helm-advanced" >}}) on how to deploy Dapr using Helm.
 
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane:
 
@@ -76,10 +76,7 @@ Dapr supports zero downtime upgrades. The upgrade path includes the following st
 
 ### Upgrading the CLI
 
-To upgrade the Dapr CLI, [download a release version](https://github.com/dapr/cli/releases) of the CLI that matches the Dapr runtime version.
-For example, if upgrading to Dapr 1.0.0-rc.x, download a CLI version of 1.0.0-rc.x.
-
-After you downloaded the binary, it's recommended you put the CLI binary in your path.
+To upgrade the Dapr CLI, [download the latest version](https://github.com/dapr/cli/releases) of the CLI. After you downloaded the binary, it's recommended you put the CLI binary in your path.
 
 ### Updating the control plane
 
@@ -141,12 +138,19 @@ NAME     	CHART VERSION	APP VERSION	DESCRIPTION
 dapr/dapr	1.0.0-rc.1   	1.0.0-rc.1 	A Helm chart for Dapr on Kubernetes
 ```
 
-The APP VERSION column tells us which Dapr runtime version is installed by the chart.
+The APP VERSION column tells us which Dapr runtime version is installed by the chart. Now, use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved before:
 
-Use the following command to upgrade Dapr to your desired runtime version providing a path to the certificate files you saved:
+> Remove `--set global.ha.enabled=true` if current Dapr installation has not been deployed in HA mode.
 
 ```bash
-helm upgrade dapr dapr/dapr --version <Dapr chart version> --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=ca.crt --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key
+helm upgrade dapr dapr/dapr \
+    --version <Dapr chart version> \
+    --namespace dapr-system \
+    --reset-values \
+    --set-file dapr_sentry.tls.root.certPEM=certs/ca.crt \
+    --set-file dapr_sentry.tls.issuer.certPEM=certs/issuer.crt \
+    --set-file dapr_sentry.tls.issuer.keyPEM=certs/issuer.key \
+    --set global.ha.enabled=true
 ```
 
 Kubernetes now performs a rolling update. Wait until all the new pods appear as running:

@@ -17,6 +17,7 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/config`                                  | Tells Dapr which Configuration CRD to use
 | `dapr.io/log-as-json`                             | Setting this parameter to `true` outputs logs in JSON format. Default is `false`
 | `dapr.io/enable-profiling`                        | Setting this paramater to `true` starts the Dapr profiling server on port `7777`. Default is `false`
+| `dapr.io/api-token-secret`                        | Tells Dapr which Kubernetes secret to use for token based API authentication. By default this is not set.
 | `dapr.io/app-protocol`                            | Tells Dapr which protocol your application is using. Valid options are `http` and `grpc`. Default is `http`
 | `dapr.io/app-max-concurrency`                     | Limit the concurrency of your application. A valid value is any number larger than `0`
 | `dapr.io/app-ssl`   | Tells Dapr to invoke the app over an insecure SSL connection. Applies to both HTTP and gRPC. Default is `false`.

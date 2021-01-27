@@ -12,9 +12,15 @@ Generates shell completion scripts
 ## Usage
 
 ```bash
-  dapr completion [flags]
-  dapr completion [command]
+dapr completion [flags]
+dapr completion [command]
 ```
+
+## Flags
+
+| Name | Environment Variable | Default | Description |
+|------|----------------------|---------|-------------|
+| `--help`, `-h` | | | Prints this help message |
 
 ## Examples
 
@@ -96,10 +102,3 @@ bash        Generates bash completion scripts
 powershell  Generates powershell completion scripts
 zsh         Generates zsh completion scripts
 ```
-
-## Flags
-
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | Prints this help message |
-|

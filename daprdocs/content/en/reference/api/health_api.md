@@ -3,7 +3,7 @@ type: docs
 title: "Health API reference"
 linkTitle: "Health API"
 description: "Detailed documentation on the health API"
-weight: 700
+weight: 900
 ---
 
 Dapr provides health checking probes that can be used as readiness or liveness of Dapr.
@@ -22,7 +22,7 @@ GET http://localhost:<daprPort>/v1.0/healthz
 
 Code | Description
 ---- | -----------
-204  | dapr is healthy
+200  | dapr is healthy
 500  | dapr is not healthy
 
 ### URL Parameters

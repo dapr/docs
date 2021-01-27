@@ -23,7 +23,6 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: bindings.<TYPE>
-  version: v1
   metadata:
   - name: <NAME>
     value: <VALUE>
@@ -59,7 +58,6 @@ metadata:
   namespace: default
 spec:
   type: bindings.kafka
-  version: v1
   metadata:
   - name: brokers
     value: "http://localhost:5050"
@@ -173,8 +171,6 @@ POST/PUT http://localhost:<daprPort>/v1.0/bindings/<name>
 Code | Description
 ---- | -----------
 200  | Request successful
-204  | Empty Response
-400  | Malformed request
 500  | Request failed
 
 ### Payload

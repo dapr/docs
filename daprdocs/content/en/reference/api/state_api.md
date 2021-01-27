@@ -18,7 +18,6 @@ metadata:
   namespace: <NAMESPACE>
 spec:
   type: state.<TYPE>
-  version: v1
   metadata:
   - name:<KEY>
     value:<VALUE>
@@ -87,8 +86,8 @@ options | (optional) state operation options, see [state operation options](#opt
 
 Code | Description
 ---- | -----------
-204  | State saved
-400  | State store is missing or misconfigured or malformed request
+201  | State saved
+400  | State store is missing or misconfigured
 500  | Failed to save state
 
 #### Response Body
@@ -184,7 +183,7 @@ This endpoint lets you get a list of values for a given list of keys.
 ### HTTP Request
 
 ```
-POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/bulk
+POST http://localhost:<daprPort>/v1.0/state/<storename>/bulk
 ```
 
 #### URL Parameters
@@ -217,7 +216,7 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
   -H "Content-Type: application/json" \
   -d '{
           "keys": [ "key1", "key2" ],
-          "parallelism": 10
+          "parallelism": 10,
       }'
 ```
 
@@ -234,7 +233,7 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
     "key": "key2",
     "data": "value2",
     "etag": "1"
-  }
+  },
 ]
 ```
 To pass metadata as query parammeter:
@@ -278,7 +277,7 @@ If-Match | (Optional) ETag associated with the key to be deleted
 
 Code | Description
 ---- | -----------
-204  | Delete state successful
+200  | Delete state successful
 400  | State store is missing or misconfigured
 500  | Delete state failed
 
@@ -315,8 +314,8 @@ POST/PUT http://localhost:<daprPort>/v1.0/state/<storename>/transaction
 
 Code | Description
 ---- | -----------
-204  | Request successful
-400  | State store is missing or misconfigured or malformed request
+201  | Request successful
+400  | State store is missing or misconfigured
 500  | Request failed
 
 #### URL Parameters
@@ -388,7 +387,6 @@ metadata:
   namespace: default
 spec:
   type: state.redis
-  version: v1
   metadata:
   - name: redisHost
     value: <redis host>
@@ -448,7 +446,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
           "etag": "xxxxx",
           "options": {
             "concurrency": "first-write",
-            "consistency": "strong"
+            "consistency": "strong",
           }
         }
       ]'

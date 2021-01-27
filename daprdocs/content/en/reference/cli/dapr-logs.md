@@ -7,10 +7,13 @@ description: "Detailed information on the logs CLI command"
 
 ## Description
 
-Gets Dapr sidecar logs for an app in Kubernetes
+Get Dapr sidecar logs for an application.
+
+## Supported platforms
+
+- [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
-
 ```bash
 dapr logs [flags]
 ```
@@ -24,3 +27,11 @@ dapr logs [flags]
 | `--kubernetes`, `-k` | | `true` | Get logs from a Kubernetes cluster |
 | `--namespace`, `-n` | | `default` | The Kubernetes namespace in which your application is deployed |
 | `--pod-name`, `-p` | | | The name of the pod in Kubernetes, in case your application has multiple pods (optional) |
+
+
+## Examples
+
+### Get logs of sample app from target pod in custom namespace
+```bash
+dapr logs -k --app-id sample --pod-name target --namespace custom
+```
