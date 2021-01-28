@@ -19,17 +19,17 @@ The easiest way to connect to your SQL Server instance is to use the [Azure Data
 To get all state keys associated with application "myapp", use the query:
 
 ```sql
-SELECT * FROM states WHERE [Key] LIKE 'myapp-%'
+SELECT * FROM states WHERE [Key] LIKE 'myapp||%'
 ```
 
-The above query returns all rows with id containing "myapp-", which is the prefix of the state keys.
+The above query returns all rows with id containing "myapp||", which is the prefix of the state keys.
 
 ## 3. Get specific state data
 
 To get the state data by a key "balance" for the application "myapp", use the query:
 
 ```sql
-SELECT * FROM states WHERE [Key] = 'myapp-balance'
+SELECT * FROM states WHERE [Key] = 'myapp||balance'
 ```
 
 Then, read the **Data** field of the returned row.
@@ -37,7 +37,7 @@ Then, read the **Data** field of the returned row.
 To get the state version/ETag, use the command:
 
 ```sql
-SELECT [RowVersion] FROM states WHERE [Key] = 'myapp-balance'
+SELECT [RowVersion] FROM states WHERE [Key] = 'myapp||balance'
 ```
 
 ## 4. Get filtered state data
@@ -53,13 +53,13 @@ SELECT * FROM states WHERE JSON_VALUE([Data], '$.color') = 'blue'
 To get all the state keys associated with an actor with the instance ID "leroy" of actor type "cat" belonging to the application with ID "mypets", use the command:
 
 ```sql
-SELECT * FROM states WHERE [Key] LIKE 'mypets-cat-leroy-%'
+SELECT * FROM states WHERE [Key] LIKE 'mypets||cat||leroy||%'
 ```
 
 And to get a specific actor state such as "food", use the command:
 
 ```sql
-SELECT * FROM states WHERE [Key] = 'mypets-cat-leroy-food'
+SELECT * FROM states WHERE [Key] = 'mypets||cat||leroy||food'
 ```
 
 > **WARNING:** You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime.
