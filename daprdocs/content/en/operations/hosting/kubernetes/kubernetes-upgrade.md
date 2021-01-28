@@ -28,13 +28,13 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
    dapr mtls export -o ./certs
    ```
 
-1. Upgrade Dapr to 1.0.0-rc.2:
+1. Upgrade Dapr to 1.0.0-rc.3:
 
    ```bash
    helm repo update
    ```
    ```bash
-   helm upgrade dapr dapr/dapr --version 1.0.0-rc.2 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file    dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
+   helm upgrade dapr dapr/dapr --version 1.0.0-rc.3 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file    dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
    ```
 
 1. Upgrade CRDs:
@@ -94,14 +94,14 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
    dapr mtls export -o ./certs
    ```
 
-1. Upgrade Dapr to 1.0.0-rc.2:
+1. Upgrade Dapr to 1.0.0-3:
 
    ```bash
    helm repo update
    ```
    
    ```bash
-   helm upgrade dapr dapr/dapr --version 1.0.0-rc.2 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file    dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
+   helm upgrade dapr dapr/dapr --version 1.0.0-rc.3 --namespace dapr-system --reset-values --set-file dapr_sentry.tls.root.certPEM=./certs/ca.crt --set-file    dapr_sentry.tls.issuer.certPEM=./certs/issuer.crt --set-file dapr_sentry.tls.issuer.keyPEM=./certs/issuer.key --set global.ha.enabled=true --wait
    ```
 
 1. Upgrade CRDs:

@@ -5,7 +5,7 @@ linkTitle: "Define a component"
 weight: 40
 ---
 
-In the [previous step]({{<ref get-started-api.d>}}) you called the Dapr HTTP API to store and retrieve a state from a Redis backed state store. Dapr knew to use the Redis instance that was configured locally on your machine through default component definition files that were created when Dapr was initialized. 
+In the [previous step]({{<ref get-started-api.md>}}) you called the Dapr HTTP API to store and retrieve a state from a Redis backed state store. Dapr knew to use the Redis instance that was configured locally on your machine through default component definition files that were created when Dapr was initialized. 
 
 When building an app, you most likely would create your own component file definitions depending on the building block and specific component that you'd like to use. 
 
