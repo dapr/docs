@@ -34,8 +34,9 @@ The following stores are supported, at various levels, by the Dapr state managem
 
 | Name                                                             | CRUD | Transactional |
 |------------------------------------------------------------------|------|---------------|
+| [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})     | ✅   | ❌             |
 | [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅   | ✅             |
 | [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅   | ❌             |
 | [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}})   | ✅   | ❌             |
-| [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})     | ✅   | ❌             |
+
 
