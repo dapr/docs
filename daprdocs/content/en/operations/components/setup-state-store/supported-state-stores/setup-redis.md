@@ -3,7 +3,6 @@ type: docs
 title: "Redis"
 linkTitle: "Redis"
 description: Detailed information on the Redis state store component
-weight: 10
 ---
 
 ## Component format
@@ -14,8 +13,8 @@ To setup Redis state store create a component of type `state.redis`. See [this g
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: statestore
-  namespace: default
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.redis
   version: v1
@@ -134,5 +133,5 @@ The Dapr CLI automatically deploys a local redis instance in self hosted mode as
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})

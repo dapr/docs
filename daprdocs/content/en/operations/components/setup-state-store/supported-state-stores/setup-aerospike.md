@@ -36,7 +36,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | hosts          | Y        | Host name/port of database server.  | `"localhost:3000"`, `"aerospike:3000,aerospike2:3000"`
-| namespace      | Y        | The aerospike namespace | `"namespace"`
+| namespace      | Y        | The Aerospike namespace | `"namespace"`
 | set         | N         | The setName in the database.  | `"myset"`
 
 ## Setup Aerospike
@@ -73,5 +73,5 @@ For example, if installing using the example above, the Aerospike host address w
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})

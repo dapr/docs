@@ -15,7 +15,8 @@ If you want to also configure PostgreSQL to store actors, add the `actorStateSto
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: statestore
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.postgresql
   version: v1
@@ -71,5 +72,5 @@ Either the default "postgres" database can be used, or create a new database for
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})

@@ -42,6 +42,14 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+If you wish to use MongoDB as an actor store, append the following to the yaml.
+
+```yaml
+  - name: actorStateStore
+    value: "true"
+```
+
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
@@ -92,5 +100,5 @@ The username will be `admin` by default.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})

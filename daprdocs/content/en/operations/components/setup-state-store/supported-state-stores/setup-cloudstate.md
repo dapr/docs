@@ -14,8 +14,8 @@ To setup Cloudstate state store create a component of type `state.cloudstate`. S
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: cloudstate
-  namespace: default
+  name: <NAME>
+  namespace: <NAMESPACE>
 spec:
   type: state.cloudstate
   version: v1
@@ -167,5 +167,5 @@ subjects:
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring pub/sub components
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})
