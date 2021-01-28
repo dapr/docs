@@ -8,6 +8,10 @@ description: Detailed information on the local file secret store component
 
 This Dapr secret store component reads plain text JSON from a given file and does not use authentication.
 
+{{% alert title="Warning" color="warning" %}}
+This approach to secret management is not recommended for production environments.
+{{% /alert %}}
+
 ## Setup JSON file to hold the secrets
 
 1. Create a JSON file (i.e. `secrets.json`) with the following contents:

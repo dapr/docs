@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Kubernetes Secrets"
-linkTitle: "Kubernetes Secrets"
+title: "Kubernetes secrets"
+linkTitle: "Kubernetes secrets"
 weight: 30
 description: Detailed information on the Kubernetes secret store component
 ---
