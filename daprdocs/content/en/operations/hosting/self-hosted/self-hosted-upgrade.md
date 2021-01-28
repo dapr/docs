@@ -22,14 +22,14 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
 1. Initialize the Dapr runtime:
 
    ```bash
-   dapr init --runtime-version=1.0.0-rc.2
+   dapr init --runtime-version=1.0.0-rc.3
    ```
 
-1. Ensure you are using the latest version of Dapr (1.0.0-rc.2) with:
+1. Ensure you are using the latest version of Dapr (1.0.0-rc.3) with:
 
    ```bash
    $ dapr --version
    
    CLI version: 1.0.0-rc.3
-   Runtime version: 1.0.0-rc.2
+   Runtime version: 1.0.0-rc.3
    ```
