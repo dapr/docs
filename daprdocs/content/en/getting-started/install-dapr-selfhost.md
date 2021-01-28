@@ -20,7 +20,7 @@ In addition, the default initialization process also creates a development envir
 
 
 {{% alert title="Note" color="warning" %}}
-This command downloads and installs Dapr runtime v1.0-rc.2. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
+This command downloads and installs Dapr runtime v1.0-rc.3. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
@@ -46,7 +46,7 @@ This recommended development environment requires [Docker](https://docs.docker.c
 Install the latest Dapr runtime binaries:
 
 ```bash
-dapr init --runtime-version 1.0.0-rc.2
+dapr init --runtime-version 1.0.0-rc.3
 ```
 
 ### Step 3: Verify Dapr version
@@ -57,8 +57,8 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: 1.0.0-rc.3
-Runtime version: 1.0.0-rc.2
+CLI version: 1.0.0-rc.4
+Runtime version: 1.0.0-rc.3
 ```
 
 ### Step 4: Verify containers are running
