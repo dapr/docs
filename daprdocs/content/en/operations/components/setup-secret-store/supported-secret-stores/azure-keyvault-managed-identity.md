@@ -38,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | Field              | Required | Details                                                                 | Example             |
 |--------------------|:--------:|-------------------------------------------------------------------------|---------------------|
 | vaultName          | Y        | The name of the Azure Key Vault                                         | `"mykeyvault"`      |
-| spnClientId        | Y        | Your Managed Identity Client Id                                         | `"yourId"`          |
+| spnClientId        | Y        | Your managed identity client Id                                         | `"yourId"`          |
 
 ## Setup Managed Identity and Azure Key Vault
 
@@ -160,6 +160,6 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 - [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
 - [AAD Pod Identity](https://github.com/Azure/aad-pod-identity)
 - [Secrets building block]({{< ref secrets >}})
-- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
 - [Secrets API reference]({{< ref secrets_api.md >}})
