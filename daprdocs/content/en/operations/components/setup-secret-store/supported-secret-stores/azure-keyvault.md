@@ -211,6 +211,6 @@ kubectl apply -f azurekeyvault.yaml
 - [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 - [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
 - [Secrets building block]({{< ref secrets >}})
-- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
 - [Secrets API reference]({{< ref secrets_api.md >}})
