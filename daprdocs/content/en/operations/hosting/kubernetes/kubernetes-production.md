@@ -63,8 +63,9 @@ You can find information [here]({{< ref "install-dapr-selfhost.md#using-helm-adv
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane. It is recommended to create a values file instead of specifying parameters on the command-line. This file should be checked in to source control so that you can track changes made to it.
 
 
-
 For a full list of all available options you can set in the values file (or by using the `--set` command-line option), see https://github.com/dapr/dapr/blob/master/charts/dapr/README.md.
+
+Instead of using either `helm install` or `helm upgrade` as shown below, you can also run `helm upgrade --install` - this will dynamically determine whether to install or upgrade.
 
 ```bash
 # add/update the helm repo
@@ -82,7 +83,7 @@ global.ha.enabled: true
 EOF
 
 # run install/upgrade
-helm upgrade --install dapr dapr/dapr \
+helm install dapr dapr/dapr \
   --version=<Dapr chart version> \
   --namespace dapr-system \
   --create-namespace \
