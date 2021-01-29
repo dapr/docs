@@ -54,13 +54,13 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| host               | Y        | The host to connect to. | `"mongo-mongodb.default.svc.cluster.local:27017"`
-| username           | N        | The username of the user to connect with. | `"admin"`
-| password           | N        | The password of the user. | `"password"`
+| host               | Y        | The host to connect to | `"mongo-mongodb.default.svc.cluster.local:27017"`
+| username           | N        | The username of the user to connect with | `"admin"`
+| password           | N        | The password of the user | `"password"`
 | databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
 | collectionName     | N        | The name of the collection to use. Defaults to `"daprCollection"` | `"daprCollection"`
-| writeconcern       | N        | The write concern to use. | `"majority"`
-| readconcern        | N        | The read concern to use.  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
+| writeconcern       | N        | The write concern to use | `"majority"`
+| readconcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
 | operationTimeout   | N        | The timeout for the operation. Defautls to `"5s"` | `"5s"`
 
 ## Setup MongoDB
@@ -84,7 +84,7 @@ The easiest way to install MongoDB on Kubernetes is by using the [Helm chart](ht
 helm install mongo stable/mongodb
 ```
 
-This will install MongoDB into the `default` namespace.
+This installs MongoDB into the `default` namespace.
 To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.
 
 For example, if installing using the example above, the MongoDB host address would be:
@@ -93,7 +93,7 @@ For example, if installing using the example above, the MongoDB host address wou
 
 
 Follow the on-screen instructions to get the root password for MongoDB.
-The username will be `admin` by default.
+The username is `admin` by default.
 {{% /codetab %}}
 
 {{< /tabs >}}
