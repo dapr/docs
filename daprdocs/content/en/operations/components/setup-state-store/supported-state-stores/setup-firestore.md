@@ -5,27 +5,10 @@ linkTitle: "GCP Firestore"
 description: Detailed information on the GCP Firestore state store component
 ---
 
-## Setup a GCP Firestone state store
+## Component format
 
-{{< tabs "Self-Hosted" "Google Cloud" >}}
+To setup GCP Firestore state store create a component of type `state.gcp.firestore`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
-{{% codetab %}}
-You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
-
-You can then interact with the server using `localhost:8081`.
-{{% /codetab %}}
-
-{{% codetab %}}
-Follow the instructions [here](https://cloud.google.com/datastore/docs/quickstart) to get started with setting up Firestore in Google Cloud.
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-## Create a Dapr component
-
-The next step is to create a Dapr component for Firestore.
-
-Create the following YAML file named `firestore.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -65,16 +48,39 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Apply the configuration
+## Spec metadata fields
 
-### In Kubernetes
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| type               | Y        | The credentials type | `"serviceaccount"`
+| project_id         | Y        | The ID of the GCP project to use | `"project-id"`
+| private_key_id     | Y        | The ID of the prvate key to use  | `"private-key-id"`
+| client_email       | Y        | The email address for the client | `"eample@example.com"`
+| client_id          | Y        | The client id value to use for authentication | `"client-id"`
+| auth_uri           | Y        | The authentication URI to use | `"https://accounts.google.com/o/oauth2/auth"`
+| token_uri          | Y        | The token URI to query for Auth token | `"https://oauth2.googleapis.com/token"`
+| auth_provider_x509_cert_url | Y | The auth provider certificate URL | `"https://www.googleapis.com/oauth2/v1/certs"`
+| client_x509_cert_url | Y      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
+| entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
 
-To apply the Firestore state store to Kubernetes, use the `kubectl` CLI:
+## Setup GCP Firestone
 
-```
-kubectl apply -f firestore.yaml
-```
+{{< tabs "Self-Hosted" "Google Cloud" >}}
 
-### Running locally
+{{% codetab %}}
+You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+You can then interact with the server using `localhost:8081`.
+{{% /codetab %}}
+
+{{% codetab %}}
+Follow the instructions [here](https://cloud.google.com/datastore/docs/quickstart) to get started with setting up Firestore in Google Cloud.
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
+- [State management building block]({{< ref state-management >}})

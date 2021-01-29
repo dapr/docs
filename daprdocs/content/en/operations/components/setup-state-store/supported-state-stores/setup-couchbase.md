@@ -5,37 +5,10 @@ linkTitle: "Couchbase"
 description: Detailed information on the Couchbase state store component
 ---
 
-## Create a Couchbase state store
+## Component format
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+To setup Couchbase state store create a component of type `state.couchbase`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
-{{% codetab %}}
-You can run Couchbase locally using Docker:
-
-```
-docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
-```
-
-You can then interact with the server using `localhost:8091` and start the server setup.
-{{% /codetab %}}
-
-{{% codetab %}}
-The easiest way to install Couchbase on Kubernetes is by using the [Helm chart](https://github.com/couchbase-partners/helm-charts#deploying-for-development-quick-start):
-
-```
-helm repo add couchbase https://couchbase-partners.github.io/helm-charts/
-helm install couchbase/couchbase-operator
-helm install couchbase/couchbase-cluster
-```
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-## Create a Dapr component
-
-The next step is to create a Dapr component for Couchbase.
-
-Create the following YAML file named `couchbase.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -61,16 +34,42 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Apply the configuration
+## Spec metadata fields
 
-### In Kubernetes
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| couchbaseURL       | Y        | The URL of the Couchbase server | `"http://localhost:8091"`
+| username           | Y        | The username for the database   | `"user"`
+| password           | Y        | The password for access         | `"password"`
+| bucketName         | Y        | The bucket name to write to     |  `"bucket"`
 
-To apply the Couchbase state store to Kubernetes, use the `kubectl` CLI:
+## Setup Couchbase
+
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
+You can run Couchbase locally using Docker:
 
 ```
-kubectl apply -f couchbase.yaml
+docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
 ```
 
-### Running locally
+You can then interact with the server using `localhost:8091` and start the server setup.
+{{% /codetab %}}
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+{{% codetab %}}
+The easiest way to install Couchbase on Kubernetes is by using the [Helm chart](https://github.com/couchbase-partners/helm-charts#deploying-for-development-quick-start):
+
+```
+helm repo add couchbase https://couchbase-partners.github.io/helm-charts/
+helm install couchbase/couchbase-operator
+helm install couchbase/couchbase-cluster
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
+- [State management building block]({{< ref state-management >}})
