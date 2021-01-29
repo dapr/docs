@@ -53,12 +53,12 @@ Additionally, if the optional `archive` metadata is set to `true`, on each state
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| address            | Y        | The address for RethinkDB server. | `"127.0.0.1:28015"`, `"rethinkdb.default.svc.cluster.local:28015"`
-| database           | Y        | The database to use. Alpha-numerics only. | `"dapr"`
-| table              | N        | The table name to use. | `"table"`
-| username           | N        | The username to connect with. | `"user"`
-| password           | N        | The password to connect with. | `"password"`
-| archive            | N        | Whether or not to archive the table. | `"true"`, `"false"`
+| address            | Y        | The address for RethinkDB server | `"127.0.0.1:28015"`, `"rethinkdb.default.svc.cluster.local:28015"`
+| database           | Y        | The database to use. Alpha-numerics only | `"dapr"`
+| table              | N        | The table name to use | `"table"`
+| username           | N        | The username to connect with | `"user"`
+| password           | N        | The password to connect with | `"password"`
+| archive            | N        | Whether or not to archive the table | `"true"`, `"false"`
 
 ## Setup RethinkDB
 
