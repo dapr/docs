@@ -37,9 +37,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| accountName          | Y        | The storage account name. | `"mystorageaccount"`. 
-| accountKey      | Y        | Primary or secondary storage key.| `"key"`
-| containerName         | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist.  | `"container"`
+| accountName          | Y        | The storage account name | `"mystorageaccount"`. 
+| accountKey      | Y        | Primary or secondary storage key | `"key"`
+| containerName         | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
 
 ## Setup Azure Blobstorage
 
