@@ -34,7 +34,26 @@ To optionally change the state store being used, replace the YAML file `statesto
 {{% /codetab %}}
 
 {{% codetab %}}
+
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired statestore component]({{< ref supported-state-stores >}}) in the yaml below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+  namespace: default
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
+```
 See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup different state stores on Kubernetes.
+
 {{% /codetab %}}
 
 {{< /tabs >}}

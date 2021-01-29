@@ -9,13 +9,14 @@ no_list: true
 
 The following stores are supported, at various levels, by the Dapr state management building block:
 
+### Generic
+
 | Name                                                           | CRUD | Transactional |
 |----------------------------------------------------------------|------|---------------|
 | [Aerospike]({{< ref setup-aerospike.md >}})                    | ✅  | ❌            |
-| [Cassandra]({{< ref setup-cassandra.md >}})                    | ✅  | ❌            |
+| [Apache Cassandra]({{< ref setup-cassandra.md >}})             | ✅  | ❌            |
 | [Cloudstate]({{< ref setup-cloudstate.md >}})                  | ✅  | ❌            |
 | [Couchbase]({{< ref setup-couchbase.md >}})                    | ✅  | ❌            |
-| [etcd]({{< ref setup-etcd.md >}})                              | ✅  | ❌            |
 | [Hashicorp Consul]({{< ref setup-consul.md >}})                | ✅  | ❌            |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})                    | ✅  | ❌            |
 | [Memcached]({{< ref setup-memcached.md >}})                    | ✅  | ❌            |
@@ -24,8 +25,18 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [PostgreSQL]({{< ref setup-postgresql.md >}})                  | ✅  | ✅            |
 | [Redis]({{< ref setup-redis.md >}})                            | ✅  | ✅            |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅  | ❌            |
-| [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})          | ✅  | ✅            |
-| [Azure SQL Server]({{< ref setup-sqlserver.md >}})             | ✅  | ✅            |
-| [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}}) | ✅  | ❌            |
-| [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})   | ✅  | ❌            |
-| [Google Cloud Firestore]({{< ref setup-firestore.md >}})       | ✅  | ❌            |
+
+### Google Cloud Platform (GCP)
+| Name                                                  | CRUD | Transactional |
+|-------------------------------------------------------|------|---------------|
+| [GCP Firestore]({{< ref setup-firestore.md >}})       | ✅   | ❌             |
+### Microsoft Azure
+
+| Name                                                             | CRUD | Transactional |
+|------------------------------------------------------------------|------|---------------|
+| [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})     | ✅   | ❌             |
+| [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅   | ✅             |
+| [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅   | ❌             |
+| [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}})   | ✅   | ❌             |
+
+
