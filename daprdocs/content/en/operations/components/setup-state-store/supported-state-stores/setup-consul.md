@@ -40,8 +40,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| datacenter         | Y        | Datacenter to use.                     | `"dc1"`
-| httpAddr           | Y        | Address of the Consul server.          | `"consul.default.svc.cluster.local:8500"`
+| datacenter         | Y        | Datacenter to use                     | `"dc1"`
+| httpAddr           | Y        | Address of the Consul server          | `"consul.default.svc.cluster.local:8500"`
 | aclToken           | N        | Per Request ACL Token. Default is `""` | `"token"`
 | scheme             | N        | Scheme is the URI scheme for the Consul server. Default is `"http"` | `"http"`
 | keyPrefixPath      | N        | Key prefix path in Consul. Default is `""` | `"dapr"`
@@ -67,7 +67,7 @@ The easiest way to install Consul on Kubernetes is by using the [Helm chart](htt
 helm install consul stable/consul
 ```
 
-This will install Consul into the `default` namespace.
+This installs Consul into the `default` namespace.
 To interact with Consul, find the service with: `kubectl get svc consul`.
 
 For example, if installing using the example above, the Consul host address would be:
