@@ -3,7 +3,6 @@ type: docs
 title: "Redis Streams"
 linkTitle: "Redis Streams"
 description: "Detailed documentation on the Redis Streams pubsub component"
-weight: 100
 ---
 
 ## Component format
