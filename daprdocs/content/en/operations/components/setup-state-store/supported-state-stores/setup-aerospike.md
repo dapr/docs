@@ -35,9 +35,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hosts          | Y        | Host name/port of database server  | `"localhost:3000"`, `"aerospike:3000,aerospike2:3000"`
-| namespace      | Y        | The Aerospike namespace | `"namespace"`
-| set         | N         | The setName in the database  | `"myset"`
+| hosts              | Y        | Host name/port of database server  | `"localhost:3000"`, `"aerospike:3000,aerospike2:3000"`
+| namespace          | Y        | The Aerospike namespace | `"namespace"`
+| set                | N        | The setName in the database  | `"myset"`
 
 ## Setup Aerospike
 
@@ -61,7 +61,7 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
 helm install --name my-aerospike --namespace aerospike stable/aerospike
 ```
 
-This will install Aerospike into the `aerospike` namespace.
+This installs Aerospike into the `aerospike` namespace.
 To interact with Aerospike, find the service with: `kubectl get svc aerospike -n aerospike`.
 
 For example, if installing using the example above, the Aerospike host address would be:
