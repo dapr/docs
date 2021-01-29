@@ -51,14 +51,14 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 |--------------------|:--------:|--------------------------------|---------------------|
 | type               | Y        | The type of the account.   | `"serviceAccount"` | 
 | project_id         | Y        | The project ID associated with this component. | `"project_id"` |
-| private_key_id     | N        | The private key id  | `"privatekey"` |
+| private_key_id     | N        | The private key ID  | `"privatekey"` |
 | client_email       | Y        | The client email address | `"client@example.com"` |
 | client_id          | N        | The ID of the client     | `"11111111"` |
 | auth_uri           | N        | The authentication URI   | `"https://accounts.google.com/o/oauth2/auth"` |
 | token_uri          | N        | The authentication token URI | `"https://oauth2.googleapis.com/token"` |
 | auth_provider_x509_cert_url | N | The certificate URL for the auth provider | `"https://www.googleapis.com/oauth2/v1/certs"` |
 | client_x509_cert_url | N | The certificate URL for the client | `"https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com"`|
-| private_key | Y | Tje private key for authentication | `"privateKey"` |
+| private_key | Y | The private key for authentication | `"privateKey"` |
 
 ## Setup GCP Secret Manager instance
 
@@ -66,6 +66,6 @@ Setup GCP Secret Manager using the GCP documentation: https://cloud.google.com/s
 
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
-- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
 - [Secrets API reference]({{< ref secrets_api.md >}})
