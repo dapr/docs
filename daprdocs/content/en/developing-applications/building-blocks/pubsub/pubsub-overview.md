@@ -53,7 +53,7 @@ Dapr allows two methods by which you can subscribe to topics: **declarative**, w
 
 ### Message Delivery
 
-In principle, Dapr considers message successfully delivered when the subscriber responds with a non-error response after processing the message. For more granular control, Dapr's publish/subscribe API also provides explicit statuses, defined in the response payload, which the subscriber can use to indicate the specific handling instructions to Dapr (e.g. `RETRY` or `DROP`). For more information message routing see [Dapr publish/subscribe API documentation] ({{< ref "pubsub_api.md#provide-routes-for-dapr-to-deliver-topic-events" >}})
+In principle, Dapr considers message successfully delivered when the subscriber responds with a non-error response after processing the message. For more granular control, Dapr's publish/subscribe API also provides explicit statuses, defined in the response payload, which the subscriber can use to indicate the specific handling instructions to Dapr (e.g. `RETRY` or `DROP`). For more information message routing see [Dapr publish/subscribe API documentation]({{< ref "pubsub_api.md#provide-routes-for-dapr-to-deliver-topic-events" >}})
 
 ### At-Least-Once guarantee
 
