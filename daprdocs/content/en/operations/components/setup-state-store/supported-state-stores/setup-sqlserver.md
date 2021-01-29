@@ -47,7 +47,7 @@ Currently this component does not support state management for actors
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string used to connect. | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"`
+| connectionString   | Y        | The connection string used to connect | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"`
 | tableName          | Y        | The name of the table to use. Alpha-numeric with underscores | `"table_name"`
 | keyType            | N        | The type of key used. Defaults to `"string"` | `"string"`
 | keyLength          | N        | The max length of key. Used along with `"string"` keytype. Defaults to `"200"` | `"200"`
@@ -61,11 +61,11 @@ Currently this component does not support state management for actors
 
 **Note: SQL Server state store also supports SQL Server running on VMs.**
 
-In order to setup SQL Server as a state store, you will need the following properties:
+In order to setup SQL Server as a state store, you need the following properties:
 
 - **Connection String**: the SQL Server connection string. For example: server=localhost;user id=sa;password=your-password;port=1433;database=mydatabase;
-- **Schema**: The database schema to use (default=dbo). Will be created if not exists
-- **Table Name**: The database table name. Will be created if not exists
+- **Schema**: The database schema to use (default=dbo). Will be created if does not exist
+- **Table Name**: The database table name. Will be created if does not exist
 - **Indexed Properties**: Optional properties from json data which will be indexed and persisted as individual column
 
 ### Create a dedicated user
