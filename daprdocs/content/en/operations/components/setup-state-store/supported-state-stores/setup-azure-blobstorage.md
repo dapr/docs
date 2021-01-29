@@ -37,9 +37,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| accountName          | Y        | The storage account name | `"mystorageaccount"`. 
-| accountKey      | Y        | Primary or secondary storage key | `"key"`
-| containerName         | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
+| accountName        | Y        | The storage account name | `"mystorageaccount"`. 
+| accountKey         | Y        | Primary or secondary storage key | `"key"`
+| containerName      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
 
 ## Setup Azure Blobstorage
 
@@ -80,11 +80,11 @@ curl -X POST http://localhost:3500/v1.0/state \
       ]'
 ```
 
-will create the blob file in the containter with key as filename and value as the contents of file.
+creates the blob file in the containter with `key` as filename and `value` as the contents of file.
 
 ## Concurrency
 
-Azure Blob Storage state concurrency is achieved by using `ETag`s according to [the official documenation](https://docs.microsoft.com/en-us/azure/storage/common/storage-concurrency#managing-concurrency-in-blob-storage).
+Azure Blob Storage state concurrency is achieved by using `ETag`s according to [the Azure Blob Storage documentation](https://docs.microsoft.com/en-us/azure/storage/common/storage-concurrency#managing-concurrency-in-blob-storage).
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
