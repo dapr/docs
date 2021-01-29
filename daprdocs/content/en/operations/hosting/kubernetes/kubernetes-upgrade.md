@@ -12,7 +12,7 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 
 
 ## Upgrade existing cluster to 1.0.0 / 1.0.0-rc.3
-From version 1.0.0.rc.3 onwards, upgrading Dapr using Helm is no longer a disruptive action since existing certificate values will automatically be re-used.
+From version 1.0.0-rc.3 onwards, upgrading Dapr using Helm is no longer a disruptive action since existing certificate values will automatically be re-used.
 
 1. Upgrade Dapr from 1.0.0-rc.1 (or newer) to 1.0.0-rc.3 (or newer):
 

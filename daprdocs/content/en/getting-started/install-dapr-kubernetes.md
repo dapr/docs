@@ -121,7 +121,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.0.0 \
+    --version=1.0.0-rc.3 \
     --namespace dapr-system \
     --create-namespace \
     --wait
