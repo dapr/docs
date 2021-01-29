@@ -97,7 +97,7 @@ dapr uninstall --kubernetes
 
 ## Install with Helm (advanced)
 
-You can install Dapr to Kubernetes cluster using a Helm 3 chart.
+You can install Dapr on Kubernetes using a Helm 3 chart.
 
 
 {{% alert title="Note" color="primary" %}}
@@ -107,31 +107,34 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
 ### Add and install Dapr helm chart
 
 1. Make sure [Helm 3](https://github.com/helm/helm/releases) is installed on your machine
+
 2. Add Helm repo and update
 
     ```bash
     helm repo add dapr https://dapr.github.io/helm-charts/
     helm repo update
+    # See which chart versions are available
+    helm search repo dapr --devel --versions
     ```
 
-3. Create `dapr-system` namespace on your kubernetes cluster
+3. Install the Dapr chart on your cluster in the `dapr-system` namespace.
 
     ```bash
-    kubectl create namespace dapr-system
+    helm upgrade --install dapr dapr/dapr \
+    --version=1.0.0 \
+    --namespace dapr-system \
+    --create-namespace \
+    --wait
     ```
 
-4. Install the Dapr chart on your cluster in the `dapr-system` namespace.
-
-    ```bash
-    helm install dapr dapr/dapr --namespace dapr-system --version 1.0.0-rc.2
-    ```
+See [Guidelines for production ready deployments on Kubernetes]({{ ref kubernetes-production.md }}) for more information on installing and upgrading Dapr using Helm
 
 ### Verify installation
 
-Once the chart installation is complete verify the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
+Once the chart installation is complete, verify that the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
 
 ```bash
-kubectl get pods -n dapr-system -w
+kubectl get pods --namespace dapr-system
 ```
 
 ```
@@ -146,13 +149,12 @@ dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ### Uninstall Dapr on Kubernetes
 
 ```bash
-helm uninstall dapr -n dapr-system
+helm uninstall dapr --namespace dapr-system
 ```
 
 ### More information
 
-- Read [this guide]({{< ref "Deploy and run Dapr in Kubernetes mode" >}}) for recommended Helm chart values for production setups
-
+- Read [this guide]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
 - See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
 
 
