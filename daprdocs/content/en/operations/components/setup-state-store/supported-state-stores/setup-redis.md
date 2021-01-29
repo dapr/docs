@@ -61,7 +61,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | maxRetryBackoff    | N         | Minimum backoff between each retry. Defaults to `2` seconds | `3000000000`
 | failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
-| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel). | `""`,  `"127.0.0.1:6379"`
+| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel) | `""`,  `"127.0.0.1:6379"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup Redis
@@ -90,7 +90,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
         - name: redisHost
           value: redis-master:6379
     ```
-4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
+4. Next, we'll get the Redis password, which is slightly different depending on the OS we're using:
     - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
 
     - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
