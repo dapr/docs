@@ -30,8 +30,6 @@ spec:
     value: "<PEM PATH>"
 ```
 
-
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
@@ -47,8 +45,8 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string to connect to MySQL. Do not add the schema to the connection string. | [Non SSL connection](#non-ssl-connection): `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true"`, [Enforced SSL Connection](#enforced-ssl-connection):  `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true&tls=custom"`|
-| schemaName         | N        | The schema name to use. Will be created if schema does not exist. Defaults to `"dapr_state_store"`.  | `"custom_schema"`, `"dapr_schema"` |
+| connectionString   | Y        | The connection string to connect to MySQL. Do not add the schema to the connection string | [Non SSL connection](#non-ssl-connection): `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true"`, [Enforced SSL Connection](#enforced-ssl-connection):  `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true&tls=custom"`|
+| schemaName         | N        | The schema name to use. Will be created if schema does not exist. Defaults to `"dapr_state_store"`  | `"custom_schema"`, `"dapr_schema"` |
 | tableName          | N        | The table name to use. Will be created if table does not exist. Defaults to `"state"` | `"table_name"`, `"dapr_state"` |
 | pemPath            | N        | Full path to the PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) | `"/path/to/file.pem"`, `"C:\path\to\file.pem"` |
 
