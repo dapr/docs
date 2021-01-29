@@ -33,8 +33,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hazelcastServers   | Y        | A comma delimited string of servers. | `"hazelcast:3000,hazelcast2:3000"`
-| hazelcastMap       | Y        | Hazelcast Map configuration. | `"foo-map"`
+| hazelcastServers   | Y        | A comma delimited string of servers | `"hazelcast:3000,hazelcast2:3000"`
+| hazelcastMap       | Y        | Hazelcast Map configuration | `"foo-map"`
 
 ## Setup Hazelcast
 
