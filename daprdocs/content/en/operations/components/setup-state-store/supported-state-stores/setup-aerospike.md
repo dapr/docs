@@ -24,7 +24,7 @@ spec:
   - name: namespace
     value: <REPLACE-WITH-NAMESPACE> # Required. The aerospike namespace.
   - name: set
-    value: <REPLACE-WITH-SET> # Optional.
+    value: <REPLACE-WITH-SET> # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -35,9 +35,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hosts          | Y        | Host name/port of database server.  | `"localhost:3000"`, `"aerospike:3000,aerospike2:3000"`
+| hosts          | Y        | Host name/port of database server  | `"localhost:3000"`, `"aerospike:3000,aerospike2:3000"`
 | namespace      | Y        | The Aerospike namespace | `"namespace"`
-| set         | N         | The setName in the database.  | `"myset"`
+| set         | N         | The setName in the database  | `"myset"`
 
 ## Setup Aerospike
 
