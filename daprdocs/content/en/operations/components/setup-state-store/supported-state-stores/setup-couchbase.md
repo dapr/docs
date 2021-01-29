@@ -38,10 +38,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| couchbaseURL       | Y        | The URL of the Couchbase server. | `"http://localhost:8091"`
-| username           | Y        | The username for the database. | `"user"`
-| password           | Y        | The password for access.       | `"password"`
-| bucketName         | Y        | The bucket name to write to.   |  `"bucket"`
+| couchbaseURL       | Y        | The URL of the Couchbase server | `"http://localhost:8091"`
+| username           | Y        | The username for the database   | `"user"`
+| password           | Y        | The password for access         | `"password"`
+| bucketName         | Y        | The bucket name to write to     |  `"bucket"`
 
 ## Setup Couchbase
 
