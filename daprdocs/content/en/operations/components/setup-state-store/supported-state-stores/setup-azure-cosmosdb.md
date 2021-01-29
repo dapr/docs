@@ -44,10 +44,10 @@ If you wish to use CosmosDb as an actor store, append the following to the yaml.
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| url          | Y        | The CosmosDB url. | `"https://******.documents.azure.com:443/"`. 
-| masterKey    | Y        | The key to authenticate to the CosmosDB account.| `"key"`
-| database     | Y        | The name of the database.  | `"db"`
-| collection   | Y        | The name of the collection. | `"collection"`
+| url          | Y        | The CosmosDB url | `"https://******.documents.azure.com:443/"`. 
+| masterKey    | Y        | The key to authenticate to the CosmosDB account | `"key"`
+| database     | Y        | The name of the database  | `"db"`
+| collection   | Y        | The name of the collection | `"collection"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup Azure Cosmos DB
