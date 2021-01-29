@@ -52,16 +52,16 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| type               | Y        | The credentials type. | `"serviceaccount"`
-| project_id         | Y        | The ID of the GCP project to use. | `"project-id"`
-| private_key_id     | Y        | The ID of the prvate key to use.  | `"private-key-id"`
-| client_email       | Y        | The email address for the client. | `"eample@example.com"`
-| client_id          | Y        | The client id value to use for authentication. | `"client-id"`
-| auth_uri           | Y        | The authentication URI to use. | `"https://accounts.google.com/o/oauth2/auth"`
-| token_uri          | Y        | The token URI to query for Auth token. | `"https://oauth2.googleapis.com/token"`
-| auth_provider_x509_cert_url | Y | The auth provider certificate URL. | `"https://www.googleapis.com/oauth2/v1/certs"`
-| client_x509_cert_url | Y      | The client certificate URL. | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
-| entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"`. | `"DaprState"`
+| type               | Y        | The credentials type | `"serviceaccount"`
+| project_id         | Y        | The ID of the GCP project to use | `"project-id"`
+| private_key_id     | Y        | The ID of the prvate key to use  | `"private-key-id"`
+| client_email       | Y        | The email address for the client | `"eample@example.com"`
+| client_id          | Y        | The client id value to use for authentication | `"client-id"`
+| auth_uri           | Y        | The authentication URI to use | `"https://accounts.google.com/o/oauth2/auth"`
+| token_uri          | Y        | The token URI to query for Auth token | `"https://oauth2.googleapis.com/token"`
+| auth_provider_x509_cert_url | Y | The auth provider certificate URL | `"https://www.googleapis.com/oauth2/v1/certs"`
+| client_x509_cert_url | Y      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
+| entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
 
 ## Setup GCP Firestone
 
