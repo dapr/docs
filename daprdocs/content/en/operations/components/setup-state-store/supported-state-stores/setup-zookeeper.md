@@ -39,11 +39,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| servers            | Y        | Comma delimited list of servers. | `"zookeeper.default.svc.cluster.local:2181"`
-| sessionTimeout     | Y        | The session timeout value.       | `"5s"`
+| servers            | Y        | Comma delimited list of servers | `"zookeeper.default.svc.cluster.local:2181"`
+| sessionTimeout     | Y        | The session timeout value       | `"5s"`
 | maxBufferSize      | N        | The maximum size of buffer. Defaults to `"1048576"` | `"1048576"`
 | maxConnBufferSize  | N        | The maximum size of connection buffer. Defautls to `"1048576`" | `"1048576"`
-| keyPrefixPath      | N        | The key prefix path in Zookeeper. No default. | `"dapr"`
+| keyPrefixPath      | N        | The key prefix path in Zookeeper. No default | `"dapr"`
 
 ## Setup Zookeeper
 
@@ -67,7 +67,7 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
 helm install zookeeper incubator/zookeeper
 ```
 
-This will install Zookeeper into the `default` namespace.
+This installs Zookeeper into the `default` namespace.
 To interact with Zookeeper, find the service with: `kubectl get svc zookeeper`.
 
 For example, if installing using the example above, the Zookeeper host address would be:
