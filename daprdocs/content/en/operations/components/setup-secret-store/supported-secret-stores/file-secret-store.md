@@ -2,7 +2,6 @@
 type: docs
 title: "Local file (for Development)"
 linkTitle: "Local file"
-weight: 20
 description: Detailed information on the local file secret store component
 ---
 
@@ -12,21 +11,9 @@ This Dapr secret store component reads plain text JSON from a given file and doe
 This approach to secret management is not recommended for production environments.
 {{% /alert %}}
 
-## Setup JSON file to hold the secrets
+## Component format
 
-1. Create a JSON file (i.e. `secrets.json`) with the following contents:
-    
-    ```json
-    {
-        "redisPassword": "your redis passphrase"
-    }
-    ```
-
-2. Save this file to your `./components` directory or a secure location in your filesystem
-
-## Configure Dapr component
-
-Create a Dapr component file (ex. `localSecretStore.yaml`) with following content:
+To setup local file based secret store create a component of type `secretstores.local.file`. Create a file with the following content in your `./components` directory:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -44,9 +31,14 @@ spec:
     value: ":"
 ```
 
-The `nestedSeparator` parameter is optional (default value is ':'). It is used by the store when flattening the json hierarchy to a map. 
+## Spec metadata fields
 
-## Example
+| Field              | Required | Details                                                                 | Example                  |
+|--------------------|:--------:|-------------------------------------------------------------------------|--------------------------|
+| secretsFile        | Y        | The path to the file where secrets are stored   | `"path/to/file.json"` |
+| nestedSeparator    | N        | Used by the store when flattening the JSON hierarchy to a map. Defaults to `":"` | `":"` |
+
+## Setup JSON file to hold the secrets
 
 Given the following json:
 

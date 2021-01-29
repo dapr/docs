@@ -5,13 +5,9 @@ linkTitle: "GCP Secret Manager"
 description: Detailed information on the GCP Secret Manager secret store component
 ---
 
-This document shows how to enable GCP Secret Manager secret store using [Dapr Secrets Component./../concepts/secrets/README.md) for self hosted and Kubernetes mode.
+## Component format
 
-## Setup GCP Secret Manager instance
-
-Setup GCP Secret Manager using the GCP documentation: https://cloud.google.com/secret-manager/docs/quickstart.
-
-## Setup Dapr component
+To setup GCP Secret Manager secret store create a component of type `secretstores.gcp.secretmanager`. See [this guide]({{< ref "secret-stores-overview.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -24,74 +20,49 @@ spec:
   version: v1
   metadata:
   - name: type
-    value: service_account
+    value: <replace-with-account-type>
   - name: project_id
-    value: project_111
+    value: <replace-with-project-id>
   - name: private_key_id
-    value: *************
+    value: <replace-with-private-key-id>
   - name: client_email
-    value: name@domain.com
+    value: <replace-with-email>
   - name: client_id
-    value: '1111111111111111'
+    value: <replace-with-client-id>
   - name: auth_uri
-    value: https://accounts.google.com/o/oauth2/auth
+    value: <replace-with-auth-uri> 
   - name: token_uri
-    value: https://oauth2.googleapis.com/token
+    value: <replace-with-token-uri> 
   - name: auth_provider_x509_cert_url
-    value: https://www.googleapis.com/oauth2/v1/certs
+    value: <replace-with-auth-provider-cert-url> 
   - name: client_x509_cert_url
-    value: https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com
+    value: <replace-with-client-cert-url> 
   - name: private_key
-    value: PRIVATE KEY
+    value: <replace-with-private-key>
 ```
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
 {{% /alert %}}
 
-## Apply the component
+## Spec metadata fields
 
-{{< tabs "Self-Hosted" "Kubernetes">}}
+| Field              | Required | Details                        | Example             |
+|--------------------|:--------:|--------------------------------|---------------------|
+| type               | Y        | The type of the account.   | `"serviceAccount"` | 
+| project_id         | Y        | The project ID associated with this component. | `"project_id"` |
+| private_key_id     | N        | The private key id  | `"privatekey"` |
+| client_email       | Y        | The client email address | `"client@example.com"` |
+| client_id          | N        | The ID of the client     | `"11111111"` |
+| auth_uri           | N        | The authentication URI   | `"https://accounts.google.com/o/oauth2/auth"` |
+| token_uri          | N        | The authentication token URI | `"https://oauth2.googleapis.com/token"` |
+| auth_provider_x509_cert_url | N | The certificate URL for the auth provider | `"https://www.googleapis.com/oauth2/v1/certs"` |
+| client_x509_cert_url | N | The certificate URL for the client | `"https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com"`|
+| private_key | Y | Tje private key for authentication | `"privateKey"` |
 
-{{% codetab %}}
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Setup GCP Secret Manager instance
 
-{{% /codetab %}}
-
-{{% codetab %}}
-To deploy in Kubernetes, save the file above to `gcp_secret_manager.yaml` and then run:
-
-```bash
-kubectl apply -f gcp_secret_manager.yaml
-```
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-## Example
-
-This example shows you how to take the Redis password from the GCP Secret Manager secret store.
-Here, you created a secret named `redisPassword` in GCP Secret Manager. Note its important to set it both as the `name` and `key` properties.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: statestore
-  namespace: default
-spec:
-  type: state.redis
-  version: v1
-  metadata:
-  - name: redisHost
-    value: "[redis]:6379"
-  - name: redisPassword
-    secretKeyRef:
-      name: redisPassword
-      key: redisPassword
-auth:
-    secretStore: gcpsecretmanager
-```
+Setup GCP Secret Manager using the GCP documentation: https://cloud.google.com/secret-manager/docs/quickstart.
 
 ## Related links
 - [Secrets building block]({{< ref secrets >}})

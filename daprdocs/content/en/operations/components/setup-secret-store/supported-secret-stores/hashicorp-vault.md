@@ -5,22 +5,9 @@ linkTitle: "HashiCorp Vault"
 description: Detailed information on the HashiCorp Vault secret store component
 ---
 
-## Setup Hashicorp Vault instance
-
-{{< tabs "Self-Hosted" "Kubernetes" >}}
-
-{{% codetab %}}
-Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
-{{% /codetab %}}
-
-{{% codetab %}}
-For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-
 ## Create the Vault component
+
+To setup HashiCorp Vault secret store create a component of type `secretstores.hashicorp.vault`. See [this guide]({{< ref "secret-stores-overview.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -49,48 +36,35 @@ spec:
   - name: vaultKVPrefix # Optional. Default: "dapr"
     value : "[vault_prefix]"
 ```
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
+{{% /alert %}}
+
+## Spec metadata fields
+
+| Field              | Required | Details                        | Example             |
+|--------------------|:--------:|--------------------------------|---------------------|
+| vaultAddr      | N | The address of the Vault server. Defaults to `"https://127.0.0.1:8200"` | `"https://127.0.0.1:8200"` |
+| caCert | N | Certificate Authority use only one of the options. The encoded cacerts to use | `"cacerts"` |
+| caPath | N | Certificate Authority use only one of the options. The path to a CA cert file |  `"path/to/cacert/file"` |
+| caPem | N | Certificate Authority use only one of the options. The encoded cacert pem to use | `"encodedpem"` |
+| skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
+| tlsServerName | N | TLS config server name | `"tls-server"` | 
+| vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
+| vaultKVPrefix | N | The prefix in vault. Defautls to `"dapr"` | `"dapr"`, `"myprefix"` | 
+## Setup Hashicorp Vault instance
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
 {{% codetab %}}
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+Setup Hashicorp Vault using the Vault documentation: https://www.vaultproject.io/docs/install/index.html.
 {{% /codetab %}}
 
 {{% codetab %}}
-To deploy in Kubernetes, save the file above to `vault.yaml` and then run:
-
-```bash
-kubectl apply -f vault.yaml
-```
+For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-helm>.
 {{% /codetab %}}
 
 {{< /tabs >}}
-
-
-## Example
-
-This example shows you how to take the Redis password from the Vault secret store.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: statestore
-  namespace: default
-spec:
-  type: state.redis
-  version: v1
-  metadata:
-  - name: redisHost
-    value: "[redis]:6379"
-  - name: redisPassword
-    secretKeyRef:
-      name: redisPassword
-      key: redisPassword
-auth:
-    secretStore: vault
-```
-
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})

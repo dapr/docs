@@ -33,7 +33,7 @@ no_list: true
 
 ### Microsoft Azure
 
-| Name                                                    | Status |
-|---------------------------------------------------------|--------|
-| [Azure Events Hub]({{< ref setup-azure-eventhubs.md >}})| Alpha  | 
+| Name                                                      | Status |
+|-----------------------------------------------------------|--------|
+| [Azure Events Hub]({{< ref setup-azure-eventhubs.md >}})  | Alpha  | 
 | [Azure Service Bus]({{< ref setup-azure-servicebus.md >}})| Alpha  | 
