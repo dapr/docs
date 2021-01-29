@@ -12,7 +12,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [APNs]({{< ref apns.md >}}) |  | ✅ | Alpha |
+| [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | Alpha |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha |
