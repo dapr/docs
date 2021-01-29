@@ -18,18 +18,22 @@ no_list: true
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | 
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | 
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Alpha  | 
+
 ### Amazon Web Services (AWS)
 
 | Name                                              | Status |
 |---------------------------------------------------|--------|
 | [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Alpha  | 
+
 ### Google Cloud Platform (GCP)
 
 | Name                                              | Status |
 |---------------------------------------------------|--------|
 | [GCP Pub/Sub]({{< ref setup-gcp-pubsub.md >}})    | Alpha  | 
+
 ### Microsoft Azure
 
 | Name                                                    | Status |
 |---------------------------------------------------------|--------|
 | [Azure Events Hub]({{< ref setup-azure-eventhubs.md >}})| Alpha  | 
+| [Azure Service Bus]({{< ref setup-azure-servicebus.md >}})| Alpha  | 
