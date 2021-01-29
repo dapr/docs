@@ -30,10 +30,10 @@ spec:
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hosts             | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"`. 
-| serverPort        | Y        | Specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr. | `"8080"`
+| hosts             | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"` 
+| serverPort        | Y        | Specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr | `"8080"`
 
-> Since Cloudstate will be running as an additional sidecar in the pod, you can reach it via `localhost` with the default port of `8013`.
+> Since Cloudstate is running as an additional sidecar in the pod, you can reach it via `localhost` with the default port of `8013`.
 
 ## Introduction
 
@@ -50,7 +50,7 @@ kubectl create namespace cloudstate
 kubectl apply -n cloudstate -f https://github.com/cloudstateio/cloudstate/releases/download/v0.5.0/cloudstate-0.5.0.yaml
 ```
 
-This will install Cloudstate into the `cloudstate` namespace with version `0.5.0`.
+This installs Cloudstate into the `cloudstate` namespace with version `0.5.0`.
 
 ## Apply the configuration
 
