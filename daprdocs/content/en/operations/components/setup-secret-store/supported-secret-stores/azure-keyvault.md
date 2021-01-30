@@ -111,10 +111,15 @@ Azure Managed Identity can be used for Azure Key Vault access on Kubernetes. Ins
       - name: spnClientId
         value: "[your_service_principal_app_id]"
       - name: spnCertificateFile
-        value : "[pfx_certificate_file_local_path]"
+        value : "[pfx_certificate_file_fully_qualified_local_path]"
     ```
 
 Fill in the metadata fields with your Key Vault details from the above setup process.
+
+For Windows systems the [pfx_certificate_file_fully_qualified_local_path] value must use escaped backslashes, i.e. double backshashes, instead of a forward slash.
+On Linix C:/something/somethingelse/ttt.pfx will work.
+On Windows C:\\something\\somethingelse\\ttt.pfx will work. 
+
 {{% /codetab %}}
 
 {{% codetab %}}
