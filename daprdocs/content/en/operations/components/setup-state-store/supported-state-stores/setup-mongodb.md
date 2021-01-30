@@ -5,46 +5,10 @@ linkTitle: "MongoDB"
 description: Detailed information on the MongoDB state store component
 ---
 
-## Setup a MongoDB state store
+## Component format
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+To setup MongoDB state store create a component of type `state.mongodb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
-{{% codetab %}}
-You can run MongoDB locally using Docker:
-
-```
-docker run --name some-mongo -d mongo
-```
-
-You can then interact with the server using `localhost:27017`.
-{{% /codetab %}}
-
-{{% codetab %}}
-The easiest way to install MongoDB on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/mongodb):
-
-```
-helm install mongo stable/mongodb
-```
-
-This will install MongoDB into the `default` namespace.
-To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.
-
-For example, if installing using the example above, the MongoDB host address would be:
-
-`mongo-mongodb.default.svc.cluster.local:27017`
-
-
-Follow the on-screen instructions to get the root password for MongoDB.
-The username will be `admin` by default.
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-## Create a Dapr component
-
-The next step is to create a Dapr component for MongoDB.
-
-Create the following YAML file named `mongodb.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -78,44 +42,63 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-### Example
-
-The following example uses the Kubernetes secret store to retrieve the username and password:
+If you wish to use MongoDB as an actor store, append the following to the yaml.
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.mondodb
-  version: v1
-  metadata:
-  - name: host
-    value: <REPLACE-WITH-HOST>
-  - name: username
-    secretKeyRef:
-      name: <KUBERNETES-SECRET-NAME>
-      key: <KUBERNETES-SECRET-KEY>
-  - name: password
-    secretKeyRef:
-      name: <KUBERNETES-SECRET-NAME>
-      key: <KUBERNETES-SECRET-KEY>
-  ...
-``` 
-
-
-## Apply the configuration
-
-### In Kubernetes
-
-To apply the MondoDB state store to Kubernetes, use the `kubectl` CLI:
-
-```
-kubectl apply -f mongodb.yaml
+  - name: actorStateStore
+    value: "true"
 ```
 
-### Running locally
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| host               | Y        | The host to connect to | `"mongo-mongodb.default.svc.cluster.local:27017"`
+| username           | N        | The username of the user to connect with | `"admin"`
+| password           | N        | The password of the user | `"password"`
+| databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
+| collectionName     | N        | The name of the collection to use. Defaults to `"daprCollection"` | `"daprCollection"`
+| writeconcern       | N        | The write concern to use | `"majority"`
+| readconcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
+| operationTimeout   | N        | The timeout for the operation. Defautls to `"5s"` | `"5s"`
+
+## Setup MongoDB
+
+{{< tabs "Self-Hosted" "Kubernetes" >}}
+
+{{% codetab %}}
+You can run MongoDB locally using Docker:
+
+```
+docker run --name some-mongo -d mongo
+```
+
+You can then interact with the server using `localhost:27017`.
+{{% /codetab %}}
+
+{{% codetab %}}
+The easiest way to install MongoDB on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/mongodb):
+
+```
+helm install mongo stable/mongodb
+```
+
+This installs MongoDB into the `default` namespace.
+To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.
+
+For example, if installing using the example above, the MongoDB host address would be:
+
+`mongo-mongodb.default.svc.cluster.local:27017`
+
+
+Follow the on-screen instructions to get the root password for MongoDB.
+The username is `admin` by default.
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
+- [State management building block]({{< ref state-management >}})

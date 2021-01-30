@@ -39,7 +39,7 @@ These conventions should be followed throughout all Dapr documentation to ensure
 ## Contributing a new docs page
 - Make sure the documentation you are writing is in the correct place in the hierarchy. 
 - Avoid creating new sections where possible, there is a good chance a proper place in the docs hierarchy already exists.
-- Make sure to include a complete [Hugo front-matter](front-matter).
+- Make sure to include a complete [Hugo front-matter](#front-matter).
 
 ### Contributing a new concept doc
 - Ensure the reader can understand why they should care about this feature. What problems does it help them solve?
