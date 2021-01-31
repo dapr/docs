@@ -116,21 +116,25 @@ Azure Managed Identity can be used for Azure Key Vault access on Kubernetes. Ins
 
 Fill in the metadata fields with your Key Vault details from the above setup process.
 
-For Windows systems the [pfx_certificate_file_fully_qualified_local_path] value must use escaped backslashes, i.e. double backshashes, instead of a forward slash.
-On Linix C:/something/somethingelse/ttt.pfx will work.
-On Windows C:\\something\\somethingelse\\ttt.pfx will work. 
+For Windows systems the [pfx_certificate_file_fully_qualified_local_path] value must use escaped backslashes, i.e. double backshashes, instead of a forward slash as done with Linux.
+- On Linix /something/somethingelse/ttt.pfx will work.
+- On Windows C:\\\\something\\\\somethingelse\\\\ttt.pfx will work. 
 {{% /codetab %}}
 
 {{% codetab %}}
 In Kubernetes mode, you store the certificate for the service principal into the Kubernetes Secret Store and then enable Azure Key Vault secret store with this certificate in Kubernetes secretstore.
 
+In all below steps: For Windows systems the [pfx_certificate_file_fully_qualified_local_path] value must use escaped backslashes, i.e. double backshashes, instead of a forward slash as done with Linux.
+- On Linix /something/somethingelse/ttt.pfx will work.
+- On Windows C:\\\\something\\\\somethingelse\\\\ttt.pfx will work.
+
 1. Create a kubernetes secret using the following command:
 
    ```bash
-   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[pfx_certificate_file_local_path]
+   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[pfx_certificate_file_fully_qualified_local_path]
    ```
 
-- `[pfx_certificate_file_local_path]` is the path of PFX cert file you downloaded above
+- `[pfx_certificate_file_fully_qualified_local_path]` is the path of PFX cert file you downloaded above
 - `[your_k8s_spn_secret_name]` is secret name in Kubernetes secret store
 
 2. Create a `azurekeyvault.yaml` component file
@@ -156,10 +160,11 @@ spec:
   - name: spnCertificate
     secretKeyRef:
       name: [your_k8s_spn_secret_name]
-      key: [pfx_certificate_file_local_name]
+      key: [pfx_certificate_file_fully_qualified_local_path]
 auth:
     secretStore: kubernetes
 ```
+   Fill in the metadata fields with your Key Vault details from the above setup process.
 
 3. Apply `azurekeyvault.yaml` component
 
