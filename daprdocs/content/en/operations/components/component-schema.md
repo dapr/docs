@@ -42,6 +42,31 @@ spec:
 | spec.ignoreErrors  | N        | Tells the Dapr sidecar to continue initialization if the component fails to load. Default is false  | `false`       
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
 
+### Special metadata values
+
+Metadata values can contain `{uuid}` tag and it will be replaced with a randomly generate UUID when dapr sidecar starts up. A new UUID is generated on every start up. It can be used, for example, to have a POD on Kubernetes with multiple instances consuming a shared MQTT subscription:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.mqtt
+  version: v1
+  metadata:
+    - name: consumerID
+      value: "{uuid}"
+    - name: url
+      value: "tcp://admin:public@localhost:1883"
+    - name: qos
+      value: 1
+    - name: retain
+      value: "false"
+    - name: cleanSession
+      value: "false"
+```
+
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})
 - [Reference secrets in component definitions]({{< ref component-secrets.md >}})
