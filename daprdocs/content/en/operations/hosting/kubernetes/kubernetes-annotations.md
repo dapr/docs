@@ -17,6 +17,7 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/config`                                  | Tells Dapr which Configuration CRD to use
 | `dapr.io/log-as-json`                             | Setting this parameter to `true` outputs logs in JSON format. Default is `false`
 | `dapr.io/enable-profiling`                        | Setting this paramater to `true` starts the Dapr profiling server on port `7777`. Default is `false`
+| `dapr.io/api-token-secret`                        | Tells Dapr which Kubernetes secret to use for token based API authentication. By default this is not set.
 | `dapr.io/app-protocol`                            | Tells Dapr which protocol your application is using. Valid options are `http` and `grpc`. Default is `http`
 | `dapr.io/app-max-concurrency`                     | Limit the concurrency of your application. A valid value is any number larger than `0`
 | `dapr.io/app-ssl`   | Tells Dapr to invoke the app over an insecure SSL connection. Applies to both HTTP and gRPC. Default is `false`.
@@ -33,3 +34,4 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/sidecar-readiness-probe-timeout-seconds` | Number of seconds after which the sidecar readiness probe times out. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `3`
 | `dapr.io/sidecar-readiness-probe-period-seconds`  | How often (in seconds) to perform the sidecar readiness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `6`
 | `dapr.io/sidecar-readiness-probe-threshold`       | When the sidecar readiness probe fails, Kubernetes will try N times before giving up. In  this case, the Pod will be marked Unready. Read more about `failureThreshold` [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `3`
+| `dapr.io/http-max-request-size`                   | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB      

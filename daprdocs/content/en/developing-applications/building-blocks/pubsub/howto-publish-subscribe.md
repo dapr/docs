@@ -68,8 +68,13 @@ spec:
 ## Step 2: Subscribe to topics
 
 Dapr allows two methods by which you can subscribe to topics:
+
 - **Declaratively**, where subscriptions are are defined in an external file.
-- **Programatically**, where subscriptions are defined in user code
+- **Programmatically**, where subscriptions are defined in user code
+
+{{% alert title="Note" color="primary" %}}
+Both declarative and programmatic approaches support the same features. The declarative approach removes the Dapr dependancy from the user code and allows for the use of an existing application to subscribe to topics. The programmatic approach implements the subscription in user code.
+{{% /alert %}}
 
 ### Declarative subscriptions
 
@@ -144,7 +149,7 @@ def ds_subscriber():
 
 app.run()
 ```
-After creating `app1.py` ensute flask and flask_cors are installed:
+After creating `app1.py` ensure flask and flask_cors are installed:
 
 ```bash
 pip install flask
@@ -221,7 +226,7 @@ def ds_subscriber():
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 app.run()
 ```
-After creating `app1.py` ensute flask and flask_cors are installed:
+After creating `app1.py` ensure flask and flask_cors are installed:
 
 ```bash
 pip install flask
@@ -308,7 +313,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"status":
 
 {{< /tabs >}}
 
-Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope.
+Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute.
 
 ## Step 4: ACK-ing a message
 

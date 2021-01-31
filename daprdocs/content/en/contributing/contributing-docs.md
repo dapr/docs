@@ -18,6 +18,14 @@ Fork the [docs repository](https://github.com/dapr/docs) to work on any changes
 
 Follow the instructions in the repository [README.md](https://github.com/dapr/docs/blob/master/README.md#environment-setup) to install Hugo locally and build the docs website.
 
+## Branch guidance
+
+The Dapr docs handles branching differently than most code repositories. Instead of having a `master` or `main` branch, every branch is labeled to match the major and minor version of a runtime release. For the full list visit the [Docs repo](https://github.com/dapr/docs#branch-guidance)
+
+Overall, all updates should go into the docs branch for the latest release of Dapr. You can find this directly at https://github.com/dapr/docs, as the latest release will be the default branch. For any docs changes that are applicable to a release candidate or a pre-release version of the docs, make your changes into that particular branch.
+
+For example, if you are fixing a typo, adding notes, or clarifying a point, make your changes into the default Dapr branch. If you are documenting an upcoming change to a component or the runtime, make your changes to the pre-release branch. Branches can be found in the [Docs repo](https://github.com/dapr/docs#branch-guidance)
+
 ## Style and tone
 These conventions should be followed throughout all Dapr documentation to ensure a consistent experience across all docs.
 
@@ -31,7 +39,7 @@ These conventions should be followed throughout all Dapr documentation to ensure
 ## Contributing a new docs page
 - Make sure the documentation you are writing is in the correct place in the hierarchy. 
 - Avoid creating new sections where possible, there is a good chance a proper place in the docs hierarchy already exists.
-- Make sure to include a complete [Hugo front-matter](front-matter).
+- Make sure to include a complete [Hugo front-matter](#front-matter).
 
 ### Contributing a new concept doc
 - Ensure the reader can understand why they should care about this feature. What problems does it help them solve?
@@ -105,8 +113,19 @@ This shortcode will link to a specific page:
 ```md
 {{</* ref "page.md" */>}}
 ```
+> Note that all pages and folders need to have globally unique names in order for the ref shortcode to work properly. If there are duplicate names the build will break and an error will be thrown.
 
-> Note that all pages and folders need to have globally unique names in order for the ref shortcode to work properly.
+#### Referencing sections in other pages
+
+To reference a specific section in another page, add `#section-short-name` to the end of your reference.
+
+As a general rule, the section short name is the text of the section title, all lowercase, with spaces changed to "-". You can check the section short name by visiting the website page, clicking the link icon (🔗) next to the section, and see how the URL renders in the nav bar. The content after the "#" is your section shortname.
+
+As an example, for this specific section the complete reference to the page and section would be:
+
+```md
+{{</* ref "contributing-docs.md#referencing-sections-in-other-pages" */>}}
+```
 
 ### Images
 The markdown spec used by Docsy and Hugo does not give an option to resize images using markdown notation. Instead, raw HMTL is used.

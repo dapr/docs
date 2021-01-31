@@ -3,7 +3,7 @@ type: docs
 title: "Health API reference"
 linkTitle: "Health API"
 description: "Detailed documentation on the health API"
-weight: 900
+weight: 700
 ---
 
 Dapr provides health checking probes that can be used as readiness or liveness of Dapr.

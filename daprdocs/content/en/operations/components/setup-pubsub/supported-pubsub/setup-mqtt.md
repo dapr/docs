@@ -5,7 +5,78 @@ linkTitle: "MQTT"
 description: "Detailed documentation on the MQTT pubsub component"
 ---
 
-## Setup MQTT
+## Component format
+
+To setup MQTT pubsub create a component of type `pubsub.mqtt`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: mqtt-pubsub
+  namespace: default
+spec:
+  type: pubsub.mqtt
+  version: v1
+  metadata:
+  - name: url
+    value: "tcp://[username][:password]@host.domain[:port]"
+  - name: qos
+    value: 1
+  - name: retain
+    value: "false"
+  - name: cleanSession
+    value: "false"
+```
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| url    | Y  | Address of the MQTT broker  | Use `**tcp://**` scheme for non-TLS communication.   Use`**tcps://**` scheme for TLS communication.  <br> "tcp://[username][:password]@host.domain[:port]"
+| qos    | N  | Indicates the Quality of Service Level (QoS) of the message. Default 0|`1`
+| retain | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Default `"false"`  | `"true"`, `"false"`
+| cleanSession | N | will set the "clean session" in the connect message when client connects to an MQTT broker. Default `"true"`  | `"true"`, `"false"`
+| caCert | Required for using TLS | Certificate authority certificate. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
+| clientCert | Required for using TLS | Client certificate. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
+| clientKey | Required for using TLS | Client key. Can be `secretKeyRef` to use a secret reference | `012345`
+
+
+### Communication using TLS
+To configure communication using TLS, ensure mosquitto broker is configured to support certificates.
+Pre-requisite includes `certficate authority certificate`, `ca issued client certificate`, `client private key`.
+Here is an example.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: mqtt-pubsub
+  namespace: default
+spec:
+  type: pubsub.mqtt
+  metadata:
+  - name: url
+    value: "tcps://host.domain[:port]"
+  - name: qos
+    value: 1
+  - name: retain
+    value: "false"
+  - name: cleanSession
+    value: "false"
+  - name: caCert
+    value: ''
+  - name: clientCert
+    value: ''
+  - name: clientKey
+    value: ''
+```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+
+## Create a MQTT broker
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
@@ -75,68 +146,7 @@ You can then interact with the server using the client port: `tcp://mqtt-broker.
 
 {{< /tabs >}}
 
-## Create a Dapr component
-
-The next step is to create a Dapr component for MQTT.
-
-Create the following yaml file named `mqtt.yaml`
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: pubsub.mqtt
-  version: v1
-  metadata:
-  - name: url
-    value: "tcp://[username][:password]@host.domain[:port]"
-  - name: qos
-    value: 1
-  - name: retain
-    value: "false"
-  - name: cleanSession
-    value: "false"
-```
-
-To configure communication using TLS, ensure mosquitto broker is configured to support certificates.
-Pre-requisite includes `certficate authority certificate`, `ca issued client certificate`, `client private key`.
-Make following additional changes to mqtt pubsub components for supporting TLS.
-```yaml
-...
-spec:
-  type: pubsub.mqtt
-  metadata:
-  - name: url
-    value: "tcps://host.domain[:port]"
-  - name: caCert
-    value: ''
-  - name: clientCert
-    value: ''
-  - name: clientKey
-    value: ''
-```
-
-Where:
-- **url** (required) is the address of the MQTT broker.
--   - use **tcp://** scheme for non-TLS communication.
--   - use **tcps://** scheme for TLS communication.
-- **qos** (optional) indicates the Quality of Service Level (QoS) of the message. (Default 0)
-- **retain** (optional) defines whether the message is saved by the broker as the last known good value for a specified topic. (Default false)
-- **cleanSession** (optional) will set the "clean session" in the connect message when client connects to an MQTT broker . (Default true)
-- **caCert** (required for using TLS) is the certificate authority certificate.
-- **clientCert** (required for using TLS) is the client certificate.
-- **clientKey** (required for using TLS) is the client key.
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
-
-## Apply the configuration
-
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
-
 ## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

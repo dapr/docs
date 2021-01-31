@@ -1,15 +1,14 @@
 # Site Configuration
-baseURL = "https://v1-rc1.docs.dapr.io/"
+baseURL = "https://v1-rc3.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
+disableFastRender = true
 
 enableRobotsTXT = true
 enableGitInfo = true
 
 # Language Configuration
 languageCode = "en-us"
-contentDir = "content/en"
-defaultContentLanguage = "en"
 
 # Disable categories & tags
 disableKinds = ["taxonomy", "term"]
@@ -17,6 +16,33 @@ disableKinds = ["taxonomy", "term"]
 # Google Analytics
 [services.googleAnalytics]
 id = "UA-149338238-3"
+
+# Mounts
+[module]
+  [[module.mounts]]
+    source = "content/en"
+    target = "content"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "layouts"
+    target = "layouts"
+  [[module.mounts]]
+    source = "data"
+    target = "data"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "archetypes"
+    target = "archetypes"
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-docs"
+    target = "content/developing-applications/sdks/python"
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-contributing"
+    target = "content/contributing/"
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -51,22 +77,22 @@ copyright = "Dapr"
 #privacy_policy = "https://policies.google.com/privacy"
 
 # Algolia
-algolia_docsearch = true
+algolia_docsearch = false
 offlineSearch = false
 
 # GitHub Information
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "v1.0.0-rc.1"
+github_branch = "v1.0-rc3"
 
 # Versioning
-version_menu = "v1.0.0-rc.1 (preview)"
-version = "v1.0.0-rc.1"
+version_menu = "v1.0-rc.3 (preview)"
+version = "v1.0-rc.3"
 archived_version = false
 
 [[params.versions]]
-  version = "v1.0.0-rc.1 (preview)"
+  version = "v1.0-rc.3 (preview)"
   url = "#"
 [[params.versions]]
   version = "v0.11 (latest)"

@@ -1,4 +1,3 @@
-
 ---
 type: docs
 title: "Apple Push Notification Service binding spec"
