@@ -12,9 +12,13 @@ Pub/Sub is a common pattern in a distributed system with many services that want
 Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.
 
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
-Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
+Dapr provides components for pub/sub, that enable operators to use their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
 ## Step 1: Setup the Pub/Sub component
+The following example creates applications to publish and subscribe to a topic called `deathStarStatus`.
+
+<img src="/images/pubsub-publish-subscribe-example.png" width=1000>
+<br></br>
 
 The first step is to setup the Pub/Sub component:
 
@@ -70,10 +74,11 @@ spec:
 Dapr allows two methods by which you can subscribe to topics:
 
 - **Declaratively**, where subscriptions are are defined in an external file.
-- **Programmatically**, where subscriptions are defined in user code
+- **Programmatically**, where subscriptions are defined in user code.
 
 {{% alert title="Note" color="primary" %}}
-Both declarative and programmatic approaches support the same features. The declarative approach removes the Dapr dependancy from the user code and allows for the use of an existing application to subscribe to topics. The programmatic approach implements the subscription in user code.
+ Both declarative and programmatic approaches support the same features. The declarative approach removes the Dapr dependency from your code and allows, for example, existing applications to subscribe to topics, without having to change code. The programmatic approach implements the subscription in your code.
+
 {{% /alert %}}
 
 ### Declarative subscriptions
@@ -102,9 +107,9 @@ Set the component with:
 {{< tabs "Self-Hosted (CLI)" Kubernetes>}}
 
 {{% codetab %}}
-Place the CRD in your `./components` directory. When Dapr starts up, it will load subscriptions along with components.
+Place the CRD in your `./components` directory. When Dapr starts up, it loads subscriptions along with components.
 
-*Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.*
+Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.
 
 You can also override the default directory by pointing the Dapr CLI to a components path:
 
@@ -193,10 +198,10 @@ dapr --app-id app2 --app-port 3000 run node app2.js
 ### Programmatic subscriptions 
 
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
-The Dapr instance will call into your app at startup and expect a JSON response for the topic subscriptions with:
-- `pubsubname`: Which pub/sub component Dapr should use
-- `topic`: Which topic to subscribe to
-- `route`: Which endpoint for Dapr to call on when a message comes to that topic
+The Dapr instance calls into your app at startup and expect a JSON response for the topic subscriptions with:
+- `pubsubname`: Which pub/sub component Dapr should use.
+- `topic`: Which topic to subscribe to.
+- `route`: Which endpoint for Dapr to call on when a message comes to that topic.
 
 #### Example
 
@@ -284,8 +289,39 @@ To publish a message to a topic, invoke the following endpoint on a Dapr instanc
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
+To use the Dapr CLI, you need to have an application running that has the permissions to publish topics. Create a new file called `pubapp.js` with the following code.
+
+```javascript
+const express = require('express');
+const path = require('path');
+const request = require('request');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.json());
+
+const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+const daprUrl = `http://localhost:${daprPort}/v1.0`;
+const port = 8080;
+const pubsubName = 'pubsub';
+
+app.post('/publish', (req, res) => {
+  console.log("Publishing: ", req.body);
+  const publishUrl = `${daprUrl}/publish/${pubsubName}/deathStarStatus`;
+  request( { uri: publishUrl, method: 'POST', json: req.body } );
+  res.sendStatus(200);
+});
+
+app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
+```
+Start the pubapp running Dapr by
+
 ```bash
-dapr publish --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
+dapr --app-id pubapp --port 3500 node run pubapp.js
+```
+Now use the Dapr CLI to call onto the pubapp to publish a deathStarStatus topic
+```bash
+dapr publish --publish-app-id myapp --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
 ```
 {{% /codetab %}}
 
@@ -343,6 +379,10 @@ app.post('/dsstatus', (req, res) => {
 {{< /tabs >}}
 
 ## Next steps
-- [Scope access to your pub/sub topics]({{< ref pubsub-scopes.md >}})
-- [Pub/Sub quickstart](https://github.com/dapr/quickstarts/tree/master/pub-sub)
-- [Pub/sub components]({{< ref setup-pubsub >}})
+- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+- Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
+- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
+- Learn [How-To configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- List of [Pub/sub components]({{< ref setup-pubsub >}})
+- Read the [API reference]({{< ref pubsub_api.md >}})
+

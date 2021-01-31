@@ -1,14 +1,23 @@
 ---
 type: docs
-title: "Pub/Sub and namespaces"
-linkTitle: "Kubernetes namespaces"
+title: "How-To: Configure Pub/Sub components with multiple namespaces"
+linkTitle: "How-To: Configure with multiple namespaces "
 weight: 20000
 description: "Use Dapr Pub/Sub with multiple namespaces"
 ---
 
 In some scenarios, applications can be spread across namespaces and share a queue or topic via PubSub. In this case, the PubSub component must be provisioned on each namespace.
 
-This example uses the [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub). The Redis installation and the subscribers are in `namespace-a` while the publisher UI is in `namespace-b`. This solution should also work if Redis is installed on another namespace or if you use a managed cloud service like Azure ServiceBus.
+{{% alert title="Note" color="primary" %}}
+Namespaces are a Dapr concept used for scoping applications and components. This example uses Kubernetes namespaces, however the Dapr component namespace scoping can be used on any supported platform. Read [How-To: Scope components to one or more applications]({{< ref "component-scopes.md" >}}) for more information on scoping components.
+{{% /alert %}}
+
+This example uses the [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub). The Redis installation and the subscribers are in `namespace-a` while the publisher UI is in `namespace-b`. This solution will also work if Redis is installed on another namespace or if you use a managed cloud service like Azure ServiceBus, AWS SNS/SQS or GCP PubSub.
+
+This is a diagram of the example using namespaces.
+
+<img src="/images/pubsub-multiple-namespaces.png" width=1000>
+<br></br>
 
 The table below shows which resources are deployed to which namespaces:
 
@@ -23,8 +32,8 @@ The table below shows which resources are deployed to which namespaces:
 
 ## Pre-requisites
 
-* [Dapr installed](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) on any namespace since Dapr works at the cluster level.
-* Checkout and cd into directory for [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub).
+* [Dapr installed on Kubernetes]({{< ref "install-dapr-kubernetes.md" >}}) in any namespace since Dapr works at the cluster level.
+* Checkout and cd into the directory for [PubSub quickstart](https://github.com/dapr/quickstarts/tree/master/pub-sub).
 
 ## Setup `namespace-a`
 
@@ -111,3 +120,8 @@ kubectl config set-context --current --namespace=default
 kubectl delete namespace namespace-a
 kubectl delete namespace namespace-b
 ```
+
+## Related links
+- [How-To: Scope components to one or more applications]({{< ref "component-scopes.md" >}}) 
+- [How To: Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [How-To: Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
