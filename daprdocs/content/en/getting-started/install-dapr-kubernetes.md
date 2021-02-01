@@ -40,7 +40,7 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
 {{% alert title="Release candidate" color="warning" %}}
-This command downloads and installs Dapr runtime v0.11. To install v1.0-rc2 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc2 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-kubernetes/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/)).
+This command downloads and installs Dapr runtime v0.11. To install v1.0-rc3 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc3 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-kubernetes/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-cli/)).
 {{% /alert %}}
 
 ### Install Dapr
