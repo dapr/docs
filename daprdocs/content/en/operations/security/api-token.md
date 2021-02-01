@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Enable API token authentication in Dapr"
-linkTitle: "API token auth"
+linkTitle: "Dapr API token authentication"
 weight: 3000
 description: "Require every incoming API request for Dapr to include an authentication token before allowing that request to pass through"
 ---
