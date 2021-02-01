@@ -148,6 +148,8 @@ It is recommended that a production-ready deployment includes the following sett
 
 Dapr also supports scoping components for certain applications. This is not a required practice, and can be enabled according to your security needs. See [here]({{< ref "component-scopes.md" >}}) for more info.
 
+5. Dapr to App API authentication is enabled (this is the communication between Dapr and your application). See [here] ({{< ref "app-api-token.md" >}}) for details
+
 ## Tracing and metrics configuration
 
 Dapr has tracing and metrics enabled by default.

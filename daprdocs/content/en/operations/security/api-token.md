@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Enable token based API authentication"
+title: "Enable API token authentication in Dapr"
 linkTitle: "API token auth"
 weight: 3000
-description: "Require every incoming API request to include an authentication token before allowing that request to pass through"
+description: "Require every incoming API request for Dapr to include an authentication token before allowing that request to pass through"
 ---
 
 By default, Dapr relies on the network boundary to limit access to its public API. If you plan on exposing the Dapr API outside of that boundary, or if your deployment demands an additional level of security, consider enabling the token authentication for Dapr APIs. This will cause Dapr to require every incoming gRPC and HTTP request for its APIs for to include authentication token, before allowing that request to pass through. 
@@ -105,6 +105,30 @@ When using gRPC protocol, Dapr will inspect the incoming calls for the API token
 
 ```shell
 dapr-api-token[0].
+```
+
+## Accessing the token from the app
+
+### Kubernetes
+
+In Kubernetes, it's recommended to mount the secret to your pod as an environment variable.
+Assuming we created a secret with the name `dapr-api-token` to hold the token:
+
+```
+containers:
+  - name: mycontainer
+    image: myregistry/myapp
+    envFrom:
+    - secretRef:
+      name: dapr-api-token
+```
+
+### Self-hosted
+
+In self-hosted mode, you can set the token as an environment variable for your app:
+
+```
+export TOKEN=<my-dapr-token>
 ```
 
 ## Related Links
