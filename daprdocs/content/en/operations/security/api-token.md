@@ -111,8 +111,7 @@ dapr-api-token[0].
 
 ### Kubernetes
 
-In Kubernetes, it's recommended to mount the secret to your pod as an environment variable.
-Assuming we created a secret with the name `dapr-api-token` to hold the token:
+In Kubernetes, it's recommended to mount the secret to your pod as an environment variable, as shown in the example below, where a Kubernetes secret with the name `dapr-api-token` is used to hold the token.
 
 ```
 containers:
@@ -128,7 +127,7 @@ containers:
 In self-hosted mode, you can set the token as an environment variable for your app:
 
 ```
-export TOKEN=<my-dapr-token>
+export DAPR_API_TOKEN=<my-dapr-token>
 ```
 
 ## Related Links
