@@ -35,7 +35,7 @@ spec:
   version: v1
   metadata:
   - name: secretsFile
-    value: <PATH TO SECRETS FILE>/secrets.json
+    value: <PATH TO SECRETS FILE>/mysecrets.json
   - name: nestedSeparator
     value: ":"
 ```
