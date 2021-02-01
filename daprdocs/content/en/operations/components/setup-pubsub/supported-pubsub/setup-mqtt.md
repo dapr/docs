@@ -54,6 +54,7 @@ metadata:
   namespace: default
 spec:
   type: pubsub.mqtt
+  version: v1
   metadata:
   - name: url
     value: "tcps://host.domain[:port]"
@@ -69,6 +70,32 @@ spec:
     value: ''
   - name: clientKey
     value: ''
+```
+
+### Consuming a shared topic
+
+When consuming a shared topic, each consumer must have a unique identifier. By default, the application Id is used to uniquely identify each consumer and publisher. In self-hosted mode, running each Dapr run with a different application Id is sufficient to have them consume from the same shared topic. However on Kubernetes, a pod with multiple application instances shares the same application Id, prohibiting all instances from consuming the same topic. To overcome this, configure the component's `ConsumerID` metadata with a `{uuid}` tag, making each instance to have a randomly generated `ConsumerID` value on start up. For example:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+  namespace: default
+spec:
+  type: pubsub.mqtt
+  version: v1
+  metadata:
+    - name: consumerID
+      value: "{uuid}"
+    - name: url
+      value: "tcp://admin:public@localhost:1883"
+    - name: qos
+      value: 1
+    - name: retain
+      value: "false"
+    - name: cleanSession
+      value: "false"
 ```
 
 {{% alert title="Warning" color="warning" %}}
