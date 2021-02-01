@@ -82,9 +82,14 @@ In principle, Dapr considers message successfully delivered when the subscriber 
 
 Dapr guarantees "At-Least-Once" semantics for message delivery. That means that when an application publishes a message to a topic using the publish/subscribe API, Dapr ensures that this message will be delivered at least once to every subscriber.
 
-### Consumer groups and multiple instances
+### Consumer groups and competing consumers pattern with multiple application instances
 
-The burden of dealing with concepts like consumer groups and multiple application instances using a single consumer group is all handled automatically by Dapr. When multiple instances of the same application (running same app-IDs) subscribe to a topic, Dapr delivers each message to only one instance of that application. Similarly, if two different applications (different app-IDs) subscribe to the same topic, Dapr will deliver each message to only one instance of each application.
+The burden of dealing with concepts like consumer groups and multiple application instances using a single consumer group is all handled automatically by Dapr. When multiple instances of the same application (running same app-IDs) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This is commonly known as the competing consumers pattern and is illustrated in the diagram below.
+
+<img src="/images/pubsub-overview-pattern-competing-consumers.png" width=1000>
+<br></br>
+
+Similarly, if two different applications (different app-IDs) subscribe to the same topic, Dapr deliver each message to *only one instance of **each** application*. 
 
 ### Topic scoping
 
