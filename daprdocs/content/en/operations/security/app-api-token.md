@@ -25,7 +25,7 @@ The token authentication configuration is slightly different for either Kubernet
  
 ### Self-hosted 
 
-In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environment variable. If that environment variable is set while `daprd` process launches, Dapr will include the token when calling an app: 
+In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environment variable. If that environment variable is set while `daprd` process launches, Dapr includes the token when calling an app: 
 
 ```shell
 export APP_API_TOKEN=<token>
@@ -51,7 +51,7 @@ annotations:
   dapr.io/app-token-secret: "app-api-token" # name of the Kubernetes secret
 ```
 
-When deployed, the Dapr sidecar injector will automatically create a secret reference and inject the actual value into `APP_API_TOKEN` environment variable.
+When deployed, the Dapr Sidecar Injector automatically creates a secret reference and injects the actual value into `APP_API_TOKEN` environment variable.
  
 ## Rotate a token 
 
@@ -90,7 +90,7 @@ kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name
 
 ## Authenticating requests from Dapr
 
-Once app token authentication is configured in Dapr, all requests coming from Dapr will include the token:
+Once app token authentication is configured in Dapr, all requests *coming from Dapr* include the token:
 
 ### HTTP
 
@@ -129,9 +129,10 @@ containers:
 In self-hosted mode, you can set the token as an environment variable for your app:
 
 ```
-export TOKEN=<my-app-token>
+export APP_API_TOKEN=<my-app-token>
 ```
 
 ## Related Links
 
-* [Other security related topics](https://github.com/dapr/docs/blob/master/concepts/security/README.md)
+- Learn about [Dapr security concepts]({{< ref security-concept.md >}})
+- Learn [HowTo Enable API token authentication in Dapr]({{< ref api-token.md >}})
