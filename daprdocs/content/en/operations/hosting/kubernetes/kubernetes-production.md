@@ -140,15 +140,16 @@ It is recommended that a production-ready deployment includes the following sett
 
 1. Mutual Authentication (mTLS) should be enabled. Note that Dapr has mTLS on by default. For details on how to bring your own certificates, see [here]({{< ref "mtls.md#bringing-your-own-certificates" >}})
 
-2. Dapr API authentication is enabled (this is the communication between your application and the Dapr sidecar). To secure the Dapr API from unauthorized access, it is recommended to enable Dapr's token based auth. See [here]({{< ref "api-token.md" >}}) for details
+2. App to Dapr API authentication is enabled. This is the communication between your application and the Dapr sidecar. To secure the Dapr API from unauthorized application access, it is recommended to enable Dapr's token based auth. See [enable API token authentication in Dapr]({{< ref "api-token.md" >}}) for details
 
-3. All component YAMLs should have secret data configured in a secret store and not hard-coded in the YAML file. See [here]({{< ref "component-secrets.md" >}}) on how to use secrets with Dapr components
+3. Dapr to App API authentication is enabled. This is the communication between Dapr and your application. This ensures that Dapr knows that it is communicating with an authorized application. See [Authenticate requests from Dapr using token authentication] ({{< ref "app-api-token.md" >}}) for details
 
-4. The Dapr control plane is installed on a dedicated namespace such as `dapr-system`.
+4. All component YAMLs should have secret data configured in a secret store and not hard-coded in the YAML file. See [here]({{< ref "component-secrets.md" >}}) on how to use secrets with Dapr components
 
-Dapr also supports scoping components for certain applications. This is not a required practice, and can be enabled according to your security needs. See [here]({{< ref "component-scopes.md" >}}) for more info.
+5. The Dapr control plane is installed on a dedicated namespace such as `dapr-system`.
 
-5. Dapr to App API authentication is enabled (this is the communication between Dapr and your application). See [here] ({{< ref "app-api-token.md" >}}) for details
+6. Dapr also supports scoping components for certain applications. This is not a required practice, and can be enabled according to your security needs. See [here]({{< ref "component-scopes.md" >}}) for more info.
+
 
 ## Tracing and metrics configuration
 
