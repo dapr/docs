@@ -132,4 +132,5 @@ export DAPR_API_TOKEN=<my-dapr-token>
 
 ## Related Links
 
-* [Other security related topics](https://github.com/dapr/docs/blob/master/concepts/security/README.md)
+- Learn about [Dapr security concepts]({{< ref security-concept.md >}})
+- Learn [HowTo authenticate requests from Dapr using token authentication]({{< ref app-api-token.md >}})
