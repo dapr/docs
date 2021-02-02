@@ -100,5 +100,14 @@ Welcome to the Dapr documentation site!
         <h5 class="mt-0"><b>Java</b></h5>
       </div>
     </div>
+    <div class="media mt-3">
+      <a class="pr-4" href="{{< ref sdks >}}">
+        <img src="/images/homepage/golang.svg" alt="Go logo" width=30>
+      </a>
+      <div class="media-body">
+        <h5 class="mt-0"><b>Go</b></h5>
+      </div>
+    </div>
   </div>
 </div>
+<br />
