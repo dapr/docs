@@ -4,7 +4,7 @@ title: "Deploy Dapr on a Kubernetes cluster"
 linkTitle: "Deploy Dapr"
 weight: 20000
 description: "Follow these steps to deploy Dapr on Kubernetes."
-aliases = [
+aliases: [
     "/getting-started/install-dapr-kubernetes/"
 ]
 ---
