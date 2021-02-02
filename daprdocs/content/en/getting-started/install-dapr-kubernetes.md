@@ -96,7 +96,7 @@ dapr uninstall --kubernetes
 ```
 
 ### Upgrade Dapr on a cluster
-To upgrade Dapr on a Kubernetes cluster you can use the CLI. See [upgrade Kubernetes]({{< ref kubernetes-upgrade.md >}}) for more information. 
+To upgrade Dapr on a Kubernetes cluster you can use the CLI. See [upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}}) for more information. 
 
 ## Install with Helm (advanced)
 
