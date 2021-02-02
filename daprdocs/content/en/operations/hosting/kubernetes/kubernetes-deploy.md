@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Install Dapr into a Kubernetes cluster"
-linkTitle: "(optional) Init Dapr on Kubernetes"
-weight: 70
-description: "Install Dapr in a Kubernetes cluster"
+title: "Deploy Dapr on a Kubernetes cluster"
+linkTitle: "Deploy Dapr"
+weight: 20000
+description: "Follow these steps to deploy Dapr on Kubernetes."
 ---
 
 When setting up Kubernetes you can use either the Dapr CLI or Helm.
