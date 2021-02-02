@@ -56,7 +56,7 @@ Run `dapr init -k --runtime-version 1.0.0-rc.3` on your local machine:
 ```bash
 $ dapr init -k --runtime-version 1.0.0-rc.3
 
-```
+
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here:  https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced
 
