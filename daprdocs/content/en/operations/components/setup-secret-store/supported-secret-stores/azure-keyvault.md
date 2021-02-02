@@ -32,7 +32,7 @@ spec:
   - name: spnClientId
     value: "[your_service_principal_app_id]"
   - name: spnCertificateFile
-    value : "[pfx_certificate_file_fully_qualified_local_path"
+    value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
@@ -151,7 +151,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
       - name: spnClientId
         value: "[your_service_principal_app_id]"
       - name: spnCertificateFile
-        value : "[pfx_certificate_file_fully_qualified_local_path"
+        value : "[pfx_certificate_file_fully_qualified_local_path]"
     ```
 
 Fill in the metadata fields with your Key Vault details from the above setup process.
