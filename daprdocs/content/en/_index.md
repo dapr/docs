@@ -108,6 +108,14 @@ Welcome to the Dapr documentation site!
         <h5 class="mt-0"><b>Go</b></h5>
       </div>
     </div>
+    <div class="media mt-3">
+      <a class="pr-4" href="{{< ref sdks >}}">
+        <img src="/images/homepage/php.png" alt="PHP logo" width=30>
+      </a>
+      <div class="media-body">
+        <h5 class="mt-0"><b>PHP</b></h5>
+      </div>
+    </div>
   </div>
 </div>
 <br />
