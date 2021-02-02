@@ -4,9 +4,8 @@ title: "Deploy Dapr on a Kubernetes cluster"
 linkTitle: "Deploy Dapr"
 weight: 20000
 description: "Follow these steps to deploy Dapr on Kubernetes."
-aliases: [
-    "/getting-started/install-dapr-kubernetes/"
-]
+aliases:
+    - /getting-started/install-dapr-kubernetes/
 ---
 
 When setting up Kubernetes you can use either the Dapr CLI or Helm.
