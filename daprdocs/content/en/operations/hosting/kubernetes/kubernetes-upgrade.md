@@ -57,7 +57,7 @@ From version 1.0.0-rc.3 onwards, upgrading Dapr using Helm is no longer a disrup
    kubectl rollout restart deploy/<DEPLOYMENT-NAME>
    ```
 
-4. All don!
+4. All done!
 
 ## Next steps
 
