@@ -15,8 +15,6 @@ If you are looking for an introductory overview of Dapr and learn more about bas
 
 This guide will walk you through a series of steps to install, initialize and start using Dapr. The recommended way to get started with Dapr is to setup a local development environment (also referred to as [_self-hosted_ mode]({{< ref self-hosted >}})) which includes the Dapr CLI, Dapr sidecar binaries, and some default components that can help you start using Dapr quickly.
 
-If you want to install Dapr in Kubernetes, click [here]({{<ref kubernetes-deploy.md>}}).
-
 The following steps in this guide are:
 1. Install the Dapr CLI
 1. Initialize Dapr
