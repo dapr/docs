@@ -95,6 +95,9 @@ dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.3
 dapr uninstall --kubernetes
 ```
 
+### Upgrade Dapr on a cluster
+To upgrade Dapr on a Kubernetes cluster you can use the CLI. See [upgrade Kubernetes]({{< ref kubernetes-upgrade.md >}}) for more information. 
+
 ## Install with Helm (advanced)
 
 You can install Dapr on Kubernetes using a Helm 3 chart.
