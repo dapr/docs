@@ -14,7 +14,7 @@ All Dapr [pub/sub components]({{< ref supported-pubsub >}}) are compatible with 
 
 In some components, such as Kafka, time-to-live can be configured in the topic via `retention.ms` as per [documentation](https://kafka.apache.org/documentation/#topicconfigs_retention.ms). With message TTL in Dapr, applications using Kafka can now set time-to-live per message in addition to per topic.
 
-## Pub/sub component message TTL support
+## Native message TTL support
 
 When message time-to-live has native support in the pub/sub component, Dapr simply forwards the time-to-live configuration without adding any extra logic, keeping predictable behavior. This is helpful when the expired messages are handled differently by the component. For example, with Azure Service Bus, where expired messages are stored in the dead letter queue and are not simply deleted.
 
@@ -69,7 +69,8 @@ with DaprClient() as d:
 See [this guide]({{< ref pubsub_api.md >}}) for a reference on the pub/sub API.
 
 ## Related links
+
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-- Learn [How-To configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})

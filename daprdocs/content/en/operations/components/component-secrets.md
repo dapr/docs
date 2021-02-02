@@ -145,5 +145,6 @@ In production scenario to limit Dapr's access to certain secret resources alone,
 {{% /alert %}}
 
 ## Related links
-- [How To: Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
-- [How-To: Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
+
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})

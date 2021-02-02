@@ -82,7 +82,7 @@ In principle, Dapr considers message successfully delivered when the subscriber 
 
 Dapr guarantees "At-Least-Once" semantics for message delivery. That means that when an application publishes a message to a topic using the publish/subscribe API, Dapr ensures that this message will be delivered at least once to every subscriber.
 
-### Consumer groups and competing consumers pattern with multiple application instances
+### Consumer groups and competing consumers pattern
 
 The burden of dealing with concepts like consumer groups and multiple application instances using a single consumer group is all handled automatically by Dapr. When multiple instances of the same application (running same app-IDs) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This is commonly known as the competing consumers pattern and is illustrated in the diagram below.
 
@@ -95,7 +95,7 @@ Similarly, if two different applications (different app-IDs) subscribe to the sa
 
 By default, all topics backing the Dapr pub/sub component (e.g. Kafka, Redis Stream, RabbitMQ) are available to every application configured with that component. To limit which application can publish or subscribe to topics, Dapr provides topic scoping. This enables to you say which topics an application is allowed to published and which topics an application is allowed to subscribed to. For more information read [publish/subscribe topic scoping]({{< ref pubsub-scopes.md >}}).
 
-### Per message Time to Live (TTL)
+### Message Time-to-Live (TTL)
 Dapr can set a timeout message on a per message basis, meaning that if the message is not read from the pub/sub component, then the message is discarded. This is to prevent the build up of messages that are not read. A message that has been in the queue for longer than the configured TTL is said to be dead.  For more information read [publish/subscribe message time-to-live]({{< ref pubsub-message-ttl.md >}}).
 
 - Note: Message TTL can also be set for a given queue at the time of component creation. Look at the specific characteristic of the component that you are using.
@@ -107,9 +107,9 @@ The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.m
 ## Next steps
 
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
-- Read the [How-To guide on publishing and subscribing]({{< ref howto-publish-subscribe.md >}})
+- Read the [guide on publishing and subscribing]({{< ref howto-publish-subscribe.md >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [How-To configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})

@@ -35,14 +35,15 @@ spec:
 The type of pub/sub is determined by the `type` field, and properties such as connection strings and other metadata are put in the `.metadata` section.
 Even though you can put plain text secrets in there, it is recommended you use a [secret store]({{< ref component-secrets.md >}}) using a `secretKeyRef`
 
-Visit [this HowTo guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring and using pub/sub components.
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring and using pub/sub components.
 
 ## Related links
+
 - Overview of the Dapr [Pub/Sub building block]({{< ref pubsub-overview.md >}})
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
-- Read the [How-To guide on publishing and subscribing]({{< ref howto-publish-subscribe.md >}})
+- Read the [guide on publishing and subscribing]({{< ref howto-publish-subscribe.md >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [How-To configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})

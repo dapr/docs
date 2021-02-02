@@ -317,8 +317,9 @@ app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port
 Start the pubapp running Dapr by
 
 ```bash
-dapr --app-id pubapp --port 3500 node run pubapp.js
+dapr run --app-id pubapp --port 3500 node pubapp.js
 ```
+
 Now use the Dapr CLI to call onto the pubapp to publish a deathStarStatus topic
 ```bash
 dapr publish --publish-app-id myapp --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
@@ -328,7 +329,7 @@ dapr publish --publish-app-id myapp --pubsub pubsub --topic deathStarStatus --da
 {{% codetab %}}
 Begin by ensuring a Dapr sidecar is running:
 ```bash
-dapr --app-id myapp --port 3500 run
+dapr run --app-id myapp --port 3500
 ```
 Then publish a message to the `deathStarStatus` topic:
 ```bash
@@ -339,7 +340,7 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsub/deathStarStatus -H "Conte
 {{% codetab %}}
 Begin by ensuring a Dapr sidecar is running:
 ```bash
-dapr --app-id myapp --port 3500 run
+dapr run --app-id myapp --port 3500
 ```
 Then publish a message to the `deathStarStatus` topic:
 ```powershell
@@ -379,10 +380,11 @@ app.post('/dsstatus', (req, res) => {
 {{< /tabs >}}
 
 ## Next steps
+
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [How-To configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [Pub/sub components]({{< ref setup-pubsub >}})
+- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- List of [pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
 

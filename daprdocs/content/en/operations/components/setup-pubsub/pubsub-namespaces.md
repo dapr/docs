@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "How-To: Configure Pub/Sub components with multiple namespaces"
-linkTitle: "How-To: Configure with multiple namespaces "
+title: "HowTo: Configure Pub/Sub components with multiple namespaces"
+linkTitle: "Multiple namespaces"
 weight: 20000
 description: "Use Dapr Pub/Sub with multiple namespaces"
 ---
@@ -122,6 +122,7 @@ kubectl delete namespace namespace-b
 ```
 
 ## Related links
-- [How-To: Scope components to one or more applications]({{< ref "component-scopes.md" >}}) 
-- [How To: Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
-- [How-To: Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
+
+- [Scope components to one or more applications]({{< ref "component-scopes.md" >}}) 
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})

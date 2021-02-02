@@ -39,7 +39,7 @@ To tell Dapr which namespace it is deployed to, set the environment variable:
 MacOS/Linux:
 
 ```bash
-export NAMESPACE = production
+export NAMESPACE=production
 # run Dapr as usual
 ```
 Windows:
@@ -122,6 +122,7 @@ scopes:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=1763" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Related links
-- [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) 
-- [How To: Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
-- [How-To: Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
+
+- [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) 
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
