@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Kubernetes pod annotations spec"
 linkTitle: "Kubernetes annotations"
-weight: 40000
+weight: 50000
 description: "The available annotations available when configuring Dapr in your Kubernetes environment"
 ---
 
