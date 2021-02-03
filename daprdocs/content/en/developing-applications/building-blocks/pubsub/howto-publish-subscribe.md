@@ -289,47 +289,28 @@ To publish a message to a topic, invoke the following endpoint on a Dapr instanc
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-To use the Dapr CLI, you need to have an application running that has the permissions to publish topics. Create a new file called `pubapp.js` with the following code.
+To publish an event you need to run and instance of a Dapr sidecar to use a pubsub Redis component. You can use the default Redis component installed onto your local environment.
 
-```javascript
-const express = require('express');
-const path = require('path');
-const request = require('request');
-const bodyParser = require('body-parser');
-
-const app = express();
-app.use(bodyParser.json());
-
-const daprPort = process.env.DAPR_HTTP_PORT || 3500;
-const daprUrl = `http://localhost:${daprPort}/v1.0`;
-const port = 8080;
-const pubsubName = 'pubsub';
-
-app.post('/publish', (req, res) => {
-  console.log("Publishing: ", req.body);
-  const publishUrl = `${daprUrl}/publish/${pubsubName}/deathStarStatus`;
-  request( { uri: publishUrl, method: 'POST', json: req.body } );
-  res.sendStatus(200);
-});
-
-app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
-```
-Start the pubapp running Dapr by
+Start an instance of Dapr with an app-id called `testpubsub`: 
 
 ```bash
-dapr run --app-id pubapp --port 3500 node pubapp.js
+dapr run --app-id testpubsub --dapr-http-port 3500 
 ```
 
-Now use the Dapr CLI to call onto the pubapp to publish a deathStarStatus topic
+Then publish a message to the `deathStarStatus` topic:
+
 ```bash
-dapr publish --publish-app-id myapp --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
+dapr publish --publish-app-id testpubapp --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
-Begin by ensuring a Dapr sidecar is running:
+To publish an event you need to run and instance of a Dapr sidecar to use a pubsub Redis component. You can use the default Redis component installed onto your local environment.
+
+Start an instance of Dapr with an app-id called `testpubsub`: 
+
 ```bash
-dapr run --app-id myapp --port 3500
+dapr run --app-id testpubsub --dapr-http-port 3500 
 ```
 Then publish a message to the `deathStarStatus` topic:
 ```bash
@@ -338,9 +319,12 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsub/deathStarStatus -H "Conte
 {{% /codetab %}}
 
 {{% codetab %}}
-Begin by ensuring a Dapr sidecar is running:
+To publish an event you need to run and instance of a Dapr sidecar to use a pubsub Redis component. You can use the default Redis component installed onto your local environment.
+
+Start an instance of Dapr with an app-id called `testpubsub`: 
+
 ```bash
-dapr run --app-id myapp --port 3500
+dapr run --app-id testpubsub --dapr-http-port 3500 
 ```
 Then publish a message to the `deathStarStatus` topic:
 ```powershell
@@ -379,6 +363,38 @@ app.post('/dsstatus', (req, res) => {
 
 {{< /tabs >}}
 
+## (Optional) Step 5: Publishing a topic with code
+
+{{< tabs Node>}}
+
+{{% codetab %}}
+If you prefer publishing a topic using code, here is an example.  
+
+```javascript
+const express = require('express');
+const path = require('path');
+const request = require('request');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.json());
+
+const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+const daprUrl = `http://localhost:${daprPort}/v1.0`;
+const port = 8080;
+const pubsubName = 'pubsub';
+
+app.post('/publish', (req, res) => {
+  console.log("Publishing: ", req.body);
+  const publishUrl = `${daprUrl}/publish/${pubsubName}/deathStarStatus`;
+  request( { uri: publishUrl, method: 'POST', json: req.body } );
+  res.sendStatus(200);
+});
+
+app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
+```
+{{% /codetab %}}
+{{< /tabs >}}
 ## Next steps
 
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
@@ -387,4 +403,3 @@ app.post('/dsstatus', (req, res) => {
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - List of [pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
-
