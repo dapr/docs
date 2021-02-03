@@ -14,6 +14,12 @@ Using Pub/Sub, you can enable scenarios where event consumers are decoupled from
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides components for pub/sub, that enable operators to use their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
+## Content Types
+
+When publishing a message, it's important to specify the content type of the data being sent.
+Unless specified, Dapr will assume `text/plain`. When using Dapr's HTTP API, the content type can be set in a `Content-Type` header.
+gRPC clients and SDKs have a dedicated content type parameter.
+
 ## Step 1: Setup the Pub/Sub component
 The following example creates applications to publish and subscribe to a topic called `deathStarStatus`.
 
@@ -379,6 +385,14 @@ app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port
 ```
 {{% /codetab %}}
 {{< /tabs >}}
+
+## Sending a custom CloudEvent
+
+Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope.
+If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
+
+See info about content types [here](#Content-Types).
+
 ## Next steps
 
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
