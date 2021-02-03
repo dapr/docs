@@ -284,18 +284,16 @@ The `/dsstatus` endpoint matches the `route` defined in the subscriptions and th
 
 ## Step 3: Publish a topic
 
-To publish a message to a topic, invoke the following endpoint on a Dapr instance:
-
-{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
-
-{{% codetab %}}
-To publish an event you need to run and instance of a Dapr sidecar to use a pubsub Redis component. You can use the default Redis component installed onto your local environment.
+To publish a topic you need to run an instance of a Dapr sidecar to use the pubsub Redis component. You can use the default Redis component installed into your local environment.
 
 Start an instance of Dapr with an app-id called `testpubsub`: 
 
 ```bash
 dapr run --app-id testpubsub --dapr-http-port 3500 
 ```
+{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
 
 Then publish a message to the `deathStarStatus` topic:
 
@@ -305,13 +303,6 @@ dapr publish --publish-app-id testpubapp --pubsub pubsub --topic deathStarStatus
 {{% /codetab %}}
 
 {{% codetab %}}
-To publish an event you need to run and instance of a Dapr sidecar to use a pubsub Redis component. You can use the default Redis component installed onto your local environment.
-
-Start an instance of Dapr with an app-id called `testpubsub`: 
-
-```bash
-dapr run --app-id testpubsub --dapr-http-port 3500 
-```
 Then publish a message to the `deathStarStatus` topic:
 ```bash
 curl -X POST http://localhost:3500/v1.0/publish/pubsub/deathStarStatus -H "Content-Type: application/json" -d '{"status": "completed"}'
@@ -319,13 +310,6 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsub/deathStarStatus -H "Conte
 {{% /codetab %}}
 
 {{% codetab %}}
-To publish an event you need to run and instance of a Dapr sidecar to use a pubsub Redis component. You can use the default Redis component installed onto your local environment.
-
-Start an instance of Dapr with an app-id called `testpubsub`: 
-
-```bash
-dapr run --app-id testpubsub --dapr-http-port 3500 
-```
 Then publish a message to the `deathStarStatus` topic:
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"status": "completed"}' -Uri 'http://localhost:3500/v1.0/publish/pubsub/deathStarStatus'
