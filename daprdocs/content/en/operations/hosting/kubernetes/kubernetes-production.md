@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Guidelines for production ready deployments on Kubernetes"
+title: "Production guidelines on Kubernetes"
 linkTitle: "Production guidelines"
-weight: 10000
+weight: 40000
 description: "Recommendations and practices for deploying Dapr to a Kubernetes cluster in a production ready configuration"
 ---
 
