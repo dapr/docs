@@ -14,6 +14,12 @@ Using Pub/Sub, you can enable scenarios where event consumers are decoupled from
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides different implementation of the underlying system, and allows operators to bring in their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
+## Content Types
+
+When publishing a message, it's important to specify the content type of the data being sent.
+Unless specified, Dapr will assume `text/plain`. When using Dapr's HTTP API, the content type can be set in a `Content-Type` header.
+gRPC clients and SDKs have a dedicated content type parameter.
+
 ## Step 1: Setup the Pub/Sub component
 
 The first step is to setup the Pub/Sub component:
@@ -349,12 +355,6 @@ Dapr will automatically take the data sent on the publish request and wrap it in
 If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
 
 See info about content types [here](#Content-Types).
-
-## Content Types
-
-When publishing a message, it's important to specify the content type of the data being sent.
-Unless specified, Dapr will assume `text/plain`. When using Dapr's HTTP API, the content type can be set in a `Content-Type` header.
-gRPC clients and SDKs have a dedicated content type parameter.
 
 ## Next steps
 - [Scope access to your pub/sub topics]({{< ref pubsub-scopes.md >}})
