@@ -14,7 +14,7 @@ You can learn more about the CLI and available commands in the [CLI reference do
 Begin by downloading and installing the latest version of the Dapr CLI:
 
 {{% alert title="Note" color="warning" %}}
-This command downloads and install Dapr CLI v0.11. To install the latest preview release, please visit the [v1.0-rc2 version of this page](https://v1-rc2.docs.dapr.io/getting-started/install-dapr-cli/).
+This command downloads and install Dapr CLI v0.11. To install the latest preview release, please visit the [v1.0-rc3 version of this page](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-cli/).
 {{% /alert %}}
 
 {{< tabs Linux Windows MacOS Binaries>}}
