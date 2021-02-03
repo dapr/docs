@@ -353,13 +353,6 @@ app.post('/dsstatus', (req, res) => {
 
 {{< /tabs >}}
 
-## Sending a custom CloudEvent
-
-Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope.
-If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
-
-See info about content types [here](#Content-Types).
-
 ## (Optional) Step 5: Publishing a topic with code
 
 {{< tabs Node>}}
@@ -392,6 +385,13 @@ app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port
 ```
 {{% /codetab %}}
 {{< /tabs >}}
+
+## Sending a custom CloudEvent
+
+Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope.
+If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
+
+See info about content types [here](#Content-Types).
 
 ## Next steps
 
