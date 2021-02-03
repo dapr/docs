@@ -342,6 +342,13 @@ app.post('/dsstatus', (req, res) => {
 
 {{< /tabs >}}
 
+
+## Content Types
+
+When publishing a message, it's important to specify the content type of the data being sent.
+Unless specified, Dapr will assume `text/plain`. When using Dapr's HTTP API, the content type can be set in a `Content-Type` header.
+gRPC clients and SDKs have a dedicated content type parameter.
+
 ## Next steps
 - [Scope access to your pub/sub topics]({{< ref pubsub-scopes.md >}})
 - [Pub/Sub quickstart](https://github.com/dapr/quickstarts/tree/master/pub-sub)
