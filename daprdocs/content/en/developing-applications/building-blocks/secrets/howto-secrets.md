@@ -35,7 +35,7 @@ spec:
   version: v1
   metadata:
   - name: secretsFile
-    value: <PATH TO SECRETS FILE>/secrets.json
+    value: <PATH TO SECRETS FILE>/mysecrets.json
   - name: nestedSeparator
     value: ":"
 ```
@@ -48,7 +48,7 @@ To configure a different kind of secret store see the guidance on [how to config
 Now run the Dapr sidecar (with no application)
 
 ```bash
-dapr run --app-id my-app --port 3500 --components-path ./components
+dapr run --app-id my-app --dapr-http-port 3500 --components-path ./components
 ```
 
 And now you can get the secret by calling the Dapr sidecar using the secrets API:
