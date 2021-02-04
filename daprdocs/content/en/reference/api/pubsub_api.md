@@ -45,6 +45,14 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
      }'
 ```
 
+### Headers
+
+The `Content-Type` header tells Dapr which content type your data adheres to when constructing a CloudEvent envelope.
+The value of the `Content-Type` header populates the `datacontenttype` field in the CloudEvent.
+Unless specified, Dapr assumes `text/plain`. If your content type is JSON, use a `Content-Type` header with the value of `application/json`.
+
+If you want to send your own custom CloundEvent, use the `application/cloudevents+json` value for the `Content-Type` header.
+
 #### Metadata
 
 Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.` as shown below.
@@ -143,7 +151,7 @@ other | warning is logged and message to be retried
 
 ## Message envelope
 
-Dapr Pub/Sub adheres to version 1.0 of Cloud Events.
+Dapr Pub/Sub adheres to version 1.0 of CloudEvents.
 
 ## Related links
 

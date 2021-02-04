@@ -1,9 +1,11 @@
 ---
 type: docs
-title: "How-To: Install Dapr into a Kubernetes cluster"
-linkTitle: "(optional) Init Dapr on Kubernetes"
-weight: 70
-description: "Install Dapr in a Kubernetes cluster"
+title: "Deploy Dapr on a Kubernetes cluster"
+linkTitle: "Deploy Dapr"
+weight: 20000
+description: "Follow these steps to deploy Dapr on Kubernetes."
+aliases:
+    - /getting-started/install-dapr-kubernetes/
 ---
 
 When setting up Kubernetes you can use either the Dapr CLI or Helm.
@@ -51,10 +53,11 @@ The `-k` flag initializes Dapr on the Kubernetes cluster in your current context
 Make sure the correct "target" cluster is set. Check `kubectl context (kubectl config kubectl config get-contexts)` to verify. You can set a different context using `kubectl config use-context <CONTEXT>`.
 {{% /alert %}}
 
-Run `dapr init -k --runtime-version 1.0.0-rc.3` on your local machine:
+Run on your local machine:
 
 ```bash
-$ dapr init -k --runtime-version 1.0.0-rc.3
+dapr init -k --runtime-version 1.0.0-rc.3
+```
 
 ```
 ⌛  Making the jump to hyperspace...
@@ -68,7 +71,7 @@ $ dapr init -k --runtime-version 1.0.0-rc.3
 
 The default namespace when initializing Dapr is `dapr-system`. You can override this with the `-n` flag.
 
-```
+```bash
 dapr init -k -n mynamespace --runtime-version 1.0.0-rc.3
 ```
 
@@ -77,7 +80,7 @@ dapr init -k -n mynamespace --runtime-version 1.0.0-rc.3
 
 You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
-```
+```bash
 dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.3
 ```
 
@@ -85,7 +88,7 @@ dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.3
 
 Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
 
-```
+```bash
 dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.3
 ```
 
@@ -104,10 +107,10 @@ You can install Dapr on Kubernetes using a Helm 3 chart.
 
 
 {{% alert title="Note" color="primary" %}}
-The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm v2 to Helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
 {{% /alert %}}
 
-### Add and install Dapr helm chart
+### Add and install Dapr Helm chart
 
 1. Make sure [Helm 3](https://github.com/helm/helm/releases) is installed on your machine
 
@@ -130,7 +133,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm 
     --wait
     ```
 
-See [Guidelines for production ready deployments on Kubernetes]({{ ref kubernetes-production.md }}) for more information on installing and upgrading Dapr using Helm
+See [Guidelines for production ready deployments on Kubernetes]({{<ref kubernetes-production.md>}}) for more information on installing and upgrading Dapr using Helm.
 
 ### Verify installation
 
@@ -158,7 +161,7 @@ helm uninstall dapr --namespace dapr-system
 ### More information
 
 - Read [this guide]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
-- See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
+- See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr Helm charts.
 
 
 ## Next steps

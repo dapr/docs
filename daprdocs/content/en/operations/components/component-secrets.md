@@ -96,6 +96,11 @@ The following example shows you how to create a Kubernetes secret to hold the co
     ```bash
     kubectl apply -f ./eventhubs.yaml
     ```
+
+## Scoping access to secrets
+
+Dapr can restrict access to secrets in a secret store using its configuration. Read [How To: Use secret scoping]({{< ref "secrets-scopes.md" >}}) and  [How-To: Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}}) for more information. This is the recommended way to limit access to secrets using Dapr.
+
 ## Kubernetes permissions
 
 ### Default namespace 
@@ -138,3 +143,8 @@ These resources grant Dapr permissions to get secrets from the Kubernetes secret
 {{% alert title="Note" color="warning" %}}
 In production scenario to limit Dapr's access to certain secret resources alone, you can use the `resourceNames` field. See this [link](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-resources) for further explanation.
 {{% /alert %}}
+
+## Related links
+
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})
