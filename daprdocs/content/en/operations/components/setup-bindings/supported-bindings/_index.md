@@ -24,6 +24,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Postmark]({{< ref postmark.md >}})       |    | ✅ | Alpha |
 | [RabbitMQ]({{< ref rabbitmq.md >}})   | ✅ | ✅ | Alpha |
 | [Redis]({{< ref redis.md >}})         |    | ✅ | Alpha |
+| [SMTP]({{< ref smtp.md >}})         |    | ✅ | Alpha |
 | [Twilio]({{< ref twilio.md >}})       |    | ✅ | Alpha |
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha |
