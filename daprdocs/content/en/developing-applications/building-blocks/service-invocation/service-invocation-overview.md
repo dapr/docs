@@ -108,7 +108,7 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 4. The Node.js app's sidecar forwards the request to the Node.js app. The Node.js app performs its business logic, logging the incoming message and then persist the order ID into Redis (not shown in the diagram)
 5. The Node.js app sends a response to the Python app through the Node.js sidecar.
 6. Dapr forwards the response to the Python Dapr sidecar
-7. The Python app receives the resposne.
+7. The Python app receives the response.
 
 ## Next steps
 
