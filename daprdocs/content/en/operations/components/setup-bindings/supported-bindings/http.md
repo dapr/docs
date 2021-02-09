@@ -48,7 +48,11 @@ Optionally, a path can be specified to interact with resource URIs:
 
 #### Response
 
-The response body will contain the data returned by the HTTP endpoint.  The `data` field contains the HTTP response body as a byte slice (Base64 encoded via curl). The `metadata` field contains the values from the HTTP response headers.
+The response body will contain the data returned by the HTTP endpoint.  The `data` field contains the HTTP response body as a byte slice (Base64 encoded via curl). The `metadata` field contains:
+
+* `statusCode` for the [HTTP status code](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+* `status` for the status description (e.g. 200 OK, 201 Created, etc.)
+* Values for all the HTTP response headers. If multiple values for te same key exist, they are delimited by `, `.
 
 #### Example:
 
