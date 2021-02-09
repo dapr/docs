@@ -21,11 +21,40 @@ spec:
     value: http://something.com
 ```
 
-- `url` is the HTTP url to invoke.
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| url                | Y        | The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
 
 ## Output binding supported operations
 
-### Retrieving data
+The HTTP output binding supports using the following [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)
+
+| Operation              | Description |
+|------------------------|-------------|
+| get | Read data/records |
+| head | Identical to get except that the server does not return a response body |
+| post | Typically used to create records or send commands |
+| create | For backward compatability and treated like a post |
+| put | Update data/records |
+| patch | Sometimes used to update a subset of fields of a record |
+| delete | Delete a data/record |
+| options | Requests for information about the communication options available (not commonly used) |
+| trace | Used to invoke a remote, application-layer loop- back of the request message (not commonly used) |
+
+### Request
+
+#### Operation metadata fields
+
+All of the operations above support the following metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| path               | N        | The path to append to the base URL. Used for accessing specific URIs     | `"/1234"`, `"/search?lastName=Jones"`
+| Headers*           | N        | Any fields that have a capital first letter are sent as request headers  | `"Content-Type"`, `"Accept"`
+
+#### Retrieving data
 
 To retrieve data from the HTTP endpoint, invoke the HTTP binding with a `GET` method and the following JSON body:
 
@@ -46,33 +75,57 @@ Optionally, a path can be specified to interact with resource URIs:
 }
 ```
 
-#### Response
+### Response
 
 The response body contains the data returned by the HTTP endpoint.  The `data` field contains the HTTP response body as a byte slice (Base64 encoded via curl). The `metadata` field contains:
 
-* `statusCode` for the [HTTP status code](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
-* `status` for the status description (e.g. 200 OK, 201 Created, etc.)
-* Values for all the HTTP response headers. If multiple values for the same key exist, they are delimited by `, `.
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| statusCode         | Y        | The [HTTP status code](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) | `200`, `404`, `503`
+| status             | Y        | The status description | `"200 OK"`, `"201 Created"`
+| Headers*           | N        | Any fields that have a capital first letter are sent as request headers  | `"Content-Type"`
 
 #### Example
 
-{{% alert title="Note" color="primary" %}}
-Escape since ' is not supported on Windows. Using Windows, utilize a command prompt (PowerShell has different escaping mechanism)
-{{% /alert %}}
-
 **Requesting the base URL**
 
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
 ```bash
 curl -d "{ \"operation\": \"get\" }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d '{ "operation": "get" }' \
+      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 **Requesting a specific path**
 
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
 ```bash
 curl -d "{ \"operation\": \"get\", \"metadata\": { \"path\": \"/things/1234\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d '{ "operation": "get", "metadata": { "path": "/things/1234" } }' \
+      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ### Sending and updating data
 
@@ -98,10 +151,23 @@ For example, the default content type is `application/json; charset=utf-8`. This
 
 **Posting a new record**
 
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
 ```bash
 curl -d "{ \"operation\": \"post\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"path\": \"/things\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "path": "/things" } }' \
+      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Related links
 - [Bindings building block]({{< ref bindings >}})
