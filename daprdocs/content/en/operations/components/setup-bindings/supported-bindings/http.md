@@ -23,7 +23,7 @@ spec:
 
 - `url` is the HTTP url to invoke.
 
-## Output Binding Supported Operations
+## Output binding supported operations
 
 ### Retrieving data
 
@@ -54,10 +54,12 @@ The response body will contain the data returned by the HTTP endpoint.  The `dat
 * `status` for the status description (e.g. 200 OK, 201 Created, etc.)
 * Values for all the HTTP response headers. If multiple values for te same key exist, they are delimited by `, `.
 
-#### Example:
+#### Example
 
-> We escape since ' is not supported on Windows
-> On Windows, utilize CMD (PowerShell has different escaping mechanism)
+{{% alert title="Note" color="primary" %}}
+We escape since ' is not supported on Windows
+On Windows, utilize CMD (PowerShell has different escaping mechanism)
+{{% /alert %}}
 
 **Requesting the base URL**
 
@@ -73,11 +75,14 @@ curl -d "{ \"operation\": \"get\", \"metadata\": { \"path\": \"/things/1234\" } 
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 
-### Creating and Updating data
+### Creating and updating data
 
 To send data to the HTTP endpoint, invoke the HTTP binding with a `POST`, `PUT`, or `PATCH` method and the following JSON body:
 
-> Note: Any metadata field that starts with a capital letter is passed as a request header. For example, the default content type is `application/json; charset=utf-8`. This can be overriden be setting the `Content-Type` metadata field.
+{{% alert title="Note" color="primary" %}}
+Any metadata field that starts with a capital letter is passed as a request header.
+For example, the default content type is `application/json; charset=utf-8`. This can be overriden be setting the `Content-Type` metadata field.
+{{% /alert %}}
 
 ```json
 {
@@ -90,7 +95,7 @@ To send data to the HTTP endpoint, invoke the HTTP binding with a `POST`, `PUT`,
 }
 ```
 
-#### Example:
+#### Example
 
 **Posting a new record**
 
