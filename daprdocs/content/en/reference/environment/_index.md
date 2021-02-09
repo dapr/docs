@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Environment variable reference"
-linkTitle: "Environment Variables"
+linkTitle: "Environment variables"
 description: "A list of all environment variables used by Dapr"
 weight: 300
 ---
