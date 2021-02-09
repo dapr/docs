@@ -29,7 +29,7 @@ metadata:
   namespace: default
 spec:
   mtls:
-    enabled: "true"
+    enabled: true
     workloadCertTTL: "24h"
     allowedClockSkew: "15m"
 ```
@@ -58,7 +58,7 @@ Once the changes are saved, perform a rolling update to the control plane:
 ```
 kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
-kubectl rollout restart deploy/dapr-placement -n <DAPR_NAMESPACE>
+kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 ```
 
 *Note: the sidecar injector does not need to be redeployed*
@@ -183,7 +183,7 @@ metadata:
   namespace: default
 spec:
   mtls:
-    enabled: "true"
+    enabled: true
 ```
 
 If using the Dapr CLI, point Dapr to the config file above to run the Dapr instance with mTLS enabled:
@@ -210,7 +210,7 @@ metadata:
   namespace: default
 spec:
   mtls:
-    enabled: "true"
+    enabled: true
     workloadCertTTL: "25s"
 ```
 

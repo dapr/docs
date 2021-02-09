@@ -34,7 +34,26 @@ To optionally change the state store being used, replace the YAML file `statesto
 {{% /codetab %}}
 
 {{% codetab %}}
+
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired statestore component]({{< ref supported-state-stores >}}) in the yaml below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+  namespace: default
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
+```
 See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup different state stores on Kubernetes.
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -254,10 +273,10 @@ with DaprClient() as d:
     s1 = StateItem(key="key1", value="value1")
     s2 = StateItem(key="key2", value="value2")
 
-    d.save_states(store_name="statestore", states=[s1,s2])
+    d.save_bulk_state(store_name="statestore", states=[s1,s2])
     print("States have been stored")
 
-    items = d.get_states(store_name="statestore", keys=["key1", "key2"]).items
+    items = d.get_bulk_state(store_name="statestore", keys=["key1", "key2"]).items
     print(f"Got items: {[i.data for i in items]}")
 ```
 
@@ -338,10 +357,10 @@ with DaprClient() as d:
     s1 = StateItem(key="key1", value="value1")
     s2 = StateItem(key="key2", value="value2")
 
-    d.save_states(store_name="statestore", states=[s1,s2])
+    d.save_bulk_state(store_name="statestore", states=[s1,s2])
     print("States have been stored")
 
-    d.execute_transaction(
+    d.execute_state_transaction(
         store_name="statestore",
         operations=[
             TransactionalStateOperation(key="key1", data="newValue1", operation_type=TransactionOperationType.upsert),
@@ -350,7 +369,7 @@ with DaprClient() as d:
     )
     print("State transactions have been completed")
 
-    items = d.get_states(store_name="statestore", keys=["key1", "key2"]).items
+    items = d.get_bulk_state(store_name="statestore", keys=["key1", "key2"]).items
     print(f"Got items: {[i.data for i in items]}")
 ```
 

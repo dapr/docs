@@ -5,42 +5,10 @@ linkTitle: "HashiCorp Consul"
 description: Detailed information on the HashiCorp Consul state store component
 --- 
 
-## Setup a HashiCorp Consul state store
+## Component format
 
-{{< tabs "Self-Hosted" "Kubernetes" >}}
+To setup Hashicorp Consul state store create a component of type `state.consul`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
-{{% codetab %}}
-You can run Consul locally using Docker:
-
-```
-docker run -d --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 consul
-```
-
-You can then interact with the server using `localhost:8500`.
-{{% /codetab %}}
-
-{{% codetab %}}
-The easiest way to install Consul on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/consul):
-
-```
-helm install consul stable/consul
-```
-
-This will install Consul into the `default` namespace.
-To interact with Consul, find the service with: `kubectl get svc consul`.
-
-For example, if installing using the example above, the Consul host address would be:
-
-`consul.default.svc.cluster.local:8500`
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-## Create a Dapr component
-
-The next step is to create a Dapr component for Consul.
-
-Create the following YAML file named `consul.yaml`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -68,41 +36,48 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-### Example
+## Spec metadata fields
 
-The following example uses the Kubernetes secret store to retrieve the acl token:
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| datacenter         | Y        | Datacenter to use                     | `"dc1"`
+| httpAddr           | Y        | Address of the Consul server          | `"consul.default.svc.cluster.local:8500"`
+| aclToken           | N        | Per Request ACL Token. Default is `""` | `"token"`
+| scheme             | N        | Scheme is the URI scheme for the Consul server. Default is `"http"` | `"http"`
+| keyPrefixPath      | N        | Key prefix path in Consul. Default is `""` | `"dapr"`
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.consul
-  version: v1
-  metadata:
-  - name: datacenter
-    value: <REPLACE-WITH-DATACENTER>
-  - name: httpAddr
-    value: <REPLACE-WITH-HTTP-ADDRESS>
-  - name: aclToken
-    secretKeyRef:
-      name: <KUBERNETES-SECRET-NAME>
-      key: <KUBERNETES-SECRET-KEY>
-  ...
-```
+## Setup HashiCorp Consul
 
-## Apply the configuration
+{{< tabs "Self-Hosted" "Kubernetes" >}}
 
-### In Kubernetes
-
-To apply the Consul state store to Kubernetes, use the `kubectl` CLI:
+{{% codetab %}}
+You can run Consul locally using Docker:
 
 ```
-kubectl apply -f consul.yaml
+docker run -d --name=dev-consul -e CONSUL_BIND_INTERFACE=eth0 consul
 ```
 
-### Running locally
+You can then interact with the server using `localhost:8500`.
+{{% /codetab %}}
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+{{% codetab %}}
+The easiest way to install Consul on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/consul):
+
+```
+helm install consul stable/consul
+```
+
+This installs Consul into the `default` namespace.
+To interact with Consul, find the service with: `kubectl get svc consul`.
+
+For example, if installing using the example above, the Consul host address would be:
+
+`consul.default.svc.cluster.local:8500`
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
+- [State management building block]({{< ref state-management >}})

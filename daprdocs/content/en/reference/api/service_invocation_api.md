@@ -28,6 +28,9 @@ In case a user invokes Dapr over HTTP to talk to a gRPC enabled service, an erro
 
 Code | Description
 ---- | -----------
+XXX  | Upstream status returned
+400  | Method name not given
+403  | Invocation forbidden by access control
 500  | Request failed
 
 ### URL Parameters

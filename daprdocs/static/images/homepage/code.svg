@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="18" height="18">
+  <defs>
+    <linearGradient id="aa716a78-80ee-47fe-a857-b2ed74c28d78" x1="2.986" y1="8.66" x2="2.785" y2="13.933" gradientTransform="translate(8.685 1.245) rotate(44.919)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0078d4" />
+      <stop offset="0.325" stop-color="#1b84dc" />
+      <stop offset="1" stop-color="#5ea0ef" />
+    </linearGradient>
+    <linearGradient id="bf7e3c18-3832-42d3-964e-6166babd7f39" x1="15.188" y1="9.141" x2="14.986" y2="14.414" gradientTransform="translate(33.765 8.296) rotate(135.081)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0078d4" />
+      <stop offset="0.325" stop-color="#1b84dc" />
+      <stop offset="1" stop-color="#5ea0ef" />
+    </linearGradient>
+    <linearGradient id="aa3f1f45-0da4-4f81-b091-8d9855351ef5" x1="7.288" y1="15.983" x2="10.615" y2="3.041" gradientTransform="translate(-2.312 3.198) rotate(-17.752)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0078d4" />
+      <stop offset="0.325" stop-color="#1b84dc" />
+      <stop offset="1" stop-color="#5ea0ef" />
+    </linearGradient>
+  </defs>
+  <g id="f3e595f5-3683-430f-a199-4ad45fe94afa">
+    <path d="M2.684,7.647H3.53a0,0,0,0,1,0,0v6.689a.271.271,0,0,1-.271.271H2.413a.271.271,0,0,1-.271-.271V8.189a.542.542,0,0,1,.542-.542Z" transform="translate(-7.029 5.251) rotate(-44.919)" fill="url(#aa716a78-80ee-47fe-a857-b2ed74c28d78)" />
+    <path d="M2.179,3.623h.847a.542.542,0,0,1,.542.542v6.246a.271.271,0,0,1-.271.271H2.449a.271.271,0,0,1-.271-.271V3.623a0,0,0,0,1,0,0Z" transform="translate(-0.163 14.237) rotate(-134.919)" fill="#50e6ff" />
+    <path d="M14.744,7.647h.847a.271.271,0,0,1,.271.271v6.689a0,0,0,0,1,0,0h-.847a.542.542,0,0,1-.542-.542V7.918a.271.271,0,0,1,.271-.271Z" transform="translate(18.051 29.716) rotate(-135.081)" fill="url(#bf7e3c18-3832-42d3-964e-6166babd7f39)" />
+    <path d="M14.7,3.625h.847a.271.271,0,0,1,.271.271v6.246a.542.542,0,0,1-.542.542h-.847a0,0,0,0,1,0,0V3.9a.271.271,0,0,1,.271-.271Z" transform="translate(-0.621 12.814) rotate(-45.081)" fill="#50e6ff" />
+    <rect x="8.387" y="2.409" width="1.391" height="13.183" rx="0.193" transform="translate(3.177 -2.341) rotate(17.752)" fill="url(#aa3f1f45-0da4-4f81-b091-8d9855351ef5)" />
+  </g>
+</svg>

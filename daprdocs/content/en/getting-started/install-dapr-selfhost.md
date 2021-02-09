@@ -18,8 +18,9 @@ In addition, the default initialization process also creates a development envir
 1. Creating a **default components folder** with component definitions for the above
 1. Running a **Dapr placement service container instance** for local actor support
 
-{{% alert title="Dapr release candidate" color="warning" %}}
-This page provides instructions for installing Dapr runtime v0.11. To install v1.0-3 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc3 docs version of this page](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-selfhost/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-cli/)).
+
+{{% alert title="Note" color="warning" %}}
+This command downloads and installs Dapr runtime v1.0-rc.3. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
@@ -45,7 +46,7 @@ This recommended development environment requires [Docker](https://docs.docker.c
 Install the latest Dapr runtime binaries:
 
 ```bash
-dapr init
+dapr init --runtime-version 1.0.0-rc.3
 ```
 
 ### Step 3: Verify Dapr version
@@ -56,8 +57,8 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: 0.11
-Runtime version: 0.11
+CLI version: 1.0.0-rc.4
+Runtime version: 1.0.0-rc.3
 ```
 
 ### Step 4: Verify containers are running

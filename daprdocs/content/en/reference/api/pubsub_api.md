@@ -14,14 +14,16 @@ Dapr guarantees at least once semantics for this endpoint.
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
+POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>[?<metadata>]
 ```
 
 ### HTTP Response codes
 
 Code | Description
 ---- | -----------
-200  | Message delivered
+204  | Message delivered
+403  | Message forbidden by access controls
+404  | No pubsub name or topic given
 500  | Delivery failed
 
 ### URL Parameters
@@ -29,8 +31,9 @@ Code | Description
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-pubsubname | the name of pubsub component.
+pubsubname | the name of pubsub component
 topic | the name of the topic
+metadata | query parameters for metadata as described below
 
 > Note, all URL parameters are case-sensitive.
 
@@ -41,6 +44,24 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
        "status": "completed"
      }'
 ```
+
+### Headers
+
+The `Content-Type` header tells Dapr which content type your data adheres to when constructing a CloudEvent envelope.
+The value of the `Content-Type` header populates the `datacontenttype` field in the CloudEvent.
+Unless specified, Dapr assumes `text/plain`. If your content type is JSON, use a `Content-Type` header with the value of `application/json`.
+
+If you want to send your own custom CloundEvent, use the `application/cloudevents+json` value for the `Content-Type` header.
+
+#### Metadata
+
+Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.` as shown below.
+
+Parameter | Description
+--------- | -----------
+metadata.ttlInSeconds | the number of seconds for the message to expire as [described here]({{< ref pubsub-message-ttl.md >}})
+
+> Additional metadata parameters are available based on each pubsub component.
 
 ## Optional Application (User Code) Routes
 
@@ -101,7 +122,8 @@ path | route path from the subscription configuration
 
 #### Expected HTTP Response
 
-An HTTP 200 response with JSON encoded payload body with the processing status:
+An HTTP 2xx response denotes successful processing of message.
+For richer response handling, a JSON encoded payload body with the processing status can be sent:
 
 ```json
 {
@@ -114,8 +136,9 @@ Status | Description
 SUCCESS | message is processed successfully
 RETRY | message to be retried by Dapr
 DROP | warning is logged and message is dropped
+Others | error, message to be retried by Dapr
 
-For empty payload responses in HTTP 2xx, Dapr assumes `SUCCESS`.
+Dapr assumes a JSON encoded payload response without `status` field or an empty payload responses with HTTP 2xx, as `SUCCESS`.
 
 The HTTP response might be different from HTTP 2xx, the following are Dapr's behavior in different HTTP statuses:
 
@@ -128,7 +151,7 @@ other | warning is logged and message to be retried
 
 ## Message envelope
 
-Dapr Pub/Sub adheres to version 1.0 of Cloud Events.
+Dapr Pub/Sub adheres to version 1.0 of CloudEvents.
 
 ## Related links
 

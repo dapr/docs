@@ -1,9 +1,11 @@
 ---
 type: docs
-title: "How-To: Install Dapr into a Kubernetes cluster"
-linkTitle: "(optional) Init Dapr on Kubernetes"
-weight: 70
-description: "Install Dapr in a Kubernetes cluster"
+title: "Deploy Dapr on a Kubernetes cluster"
+linkTitle: "Deploy Dapr"
+weight: 20000
+description: "Follow these steps to deploy Dapr on Kubernetes."
+aliases:
+    - /getting-started/install-dapr-kubernetes/
 ---
 
 When setting up Kubernetes you can use either the Dapr CLI or Helm.
@@ -40,7 +42,7 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
 {{% alert title="Release candidate" color="warning" %}}
-This command downloads and installs Dapr runtime v0.11. To install v1.0-rc3 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc3 docs version of this page](https://v1-rc1.docs.dapr.io/getting-started/install-dapr-kubernetes/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-cli/)).
+This command downloads and install Dapr runtime v1.0-rc.3. To install v0.11, the latest release prior to the release candidates for the [upcoming v1.0 release](https://blog.dapr.io/posts/2020/10/20/the-path-to-v.1.0-production-ready-dapr/), please visit the [v0.11 docs](https://docs.dapr.io).
 {{% /alert %}}
 
 ### Install Dapr
@@ -54,7 +56,7 @@ Make sure the correct "target" cluster is set. Check `kubectl context (kubectl c
 Run on your local machine:
 
 ```bash
-dapr init -k
+dapr init -k --runtime-version 1.0.0-rc.3
 ```
 
 ```
@@ -70,7 +72,7 @@ dapr init -k
 The default namespace when initializing Dapr is `dapr-system`. You can override this with the `-n` flag.
 
 ```bash
-dapr init -k -n mynamespace
+dapr init -k -n mynamespace --runtime-version 1.0.0-rc.3
 ```
 
 
@@ -79,7 +81,7 @@ dapr init -k -n mynamespace
 You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
 ```bash
-dapr init -k --enable-ha=true
+dapr init -k --enable-ha=true --runtime-version 1.0.0-rc.3
 ```
 
 ### Disable mTLS
@@ -87,7 +89,7 @@ dapr init -k --enable-ha=true
 Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}). You can disable it with:
 
 ```bash
-dapr init -k --enable-mtls=false
+dapr init -k --enable-mtls=false --runtime-version 1.0.0-rc.3
 ```
 
 ### Uninstall Dapr on Kubernetes with CLI
@@ -96,43 +98,49 @@ dapr init -k --enable-mtls=false
 dapr uninstall --kubernetes
 ```
 
+### Upgrade Dapr on a cluster
+To upgrade Dapr on a Kubernetes cluster you can use the CLI. See [upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}}) for more information. 
+
 ## Install with Helm (advanced)
 
-You can install Dapr to Kubernetes cluster using a Helm 3 chart.
+You can install Dapr on Kubernetes using a Helm 3 chart.
 
 
 {{% alert title="Note" color="primary" %}}
-The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm v2 to Helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
 {{% /alert %}}
 
-### Add and install Dapr helm chart
+### Add and install Dapr Helm chart
 
 1. Make sure [Helm 3](https://github.com/helm/helm/releases) is installed on your machine
+
 2. Add Helm repo and update
 
     ```bash
     helm repo add dapr https://dapr.github.io/helm-charts/
     helm repo update
+    # See which chart versions are available
+    helm search repo dapr --devel --versions
     ```
 
-3. Create `dapr-system` namespace on your kubernetes cluster
+3. Install the Dapr chart on your cluster in the `dapr-system` namespace.
 
     ```bash
-    kubectl create namespace dapr-system
+    helm upgrade --install dapr dapr/dapr \
+    --version=1.0.0-rc.3 \
+    --namespace dapr-system \
+    --create-namespace \
+    --wait
     ```
 
-4. Install the Dapr chart on your cluster in the `dapr-system` namespace.
-
-    ```bash
-    helm install dapr dapr/dapr --namespace dapr-system
-    ```
+See [Guidelines for production ready deployments on Kubernetes]({{<ref kubernetes-production.md>}}) for more information on installing and upgrading Dapr using Helm.
 
 ### Verify installation
 
-Once the chart installation is complete verify the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
+Once the chart installation is complete, verify that the dapr-operator, dapr-placement, dapr-sidecar-injector and dapr-sentry pods are running in the `dapr-system` namespace:
 
 ```bash
-kubectl get pods -n dapr-system -w
+kubectl get pods --namespace dapr-system
 ```
 
 ```
@@ -147,12 +155,14 @@ dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ### Uninstall Dapr on Kubernetes
 
 ```bash
-helm uninstall dapr -n dapr-system
+helm uninstall dapr --namespace dapr-system
 ```
 
 ### More information
 
-See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr helm charts.
+- Read [this guide]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
+- See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr Helm charts.
+
 
 ## Next steps
 
