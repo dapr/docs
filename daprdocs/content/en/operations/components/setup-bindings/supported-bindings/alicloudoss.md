@@ -4,10 +4,7 @@ title: "Alibaba Cloud Object Storage Service binding spec"
 linkTitle: "Alibaba Cloud Object Storage"
 description: "Detailed documentation on the Alibaba Cloud Object Storage binding component"
 ---
-Endpoint    string `json:"endpoint"`
-	AccessKeyID string `json:"accessKeyID"`
-	AccessKey   string `json:"accessKey"`
-	Bucket      string `json:"bucket"`
+
 ## Setup Dapr component
 
 ```yaml
