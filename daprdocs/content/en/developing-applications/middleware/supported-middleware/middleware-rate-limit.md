@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "How-To: Rate limiting"
+title: "Rate limiting"
 linkTitle: "Rate limiting"
 weight: 1000
 description: "Use Dapr rate limit middleware to limit requests per second"
@@ -23,12 +23,18 @@ spec:
   - name: maxRequestsPerSecond
     value: 10
 ```
-Once the limit is reached, the request will return *HTTP Status code 429: Too Many Requests*. 
+
+| Metadata field       | Description                                                                                                                                                                              | Example |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| maxRequestsPerSecond | The maximum requests per second by remoteIP and path. Something to consider is that **the limit is enforced independently in each Dapr sidecar and not cluster wide.** | `10`    |
+
+Once the limit is reached, the request will return *HTTP Status code 429: Too Many Requests*.
 
 ## Referencing the rate limit middleware
 
 To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
 
 ## Related links
+
 - [Middleware concept]({{< ref middleware-concept.md >}})
 - [Dapr configuration]({{< ref configuration-concept.md >}})

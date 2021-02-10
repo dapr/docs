@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "How-To: Apply Open Policy Agent (OPA) policies"
-linkTitle: "Apply OPA policies"
-weight: 2000
+title: "Apply Open Policy Agent (OPA) policies"
+linkTitle: "Open Policy Agent (OPA)"
+weight: 6000
 description: "Use Dapr middleware to apply Open Policy Agent (OPA) policies on incoming requests"
 type: docs
 ---
@@ -21,8 +21,8 @@ spec:
   type: middleware.http.opa
   version: v1
   metadata:
-    # `includedHeaders` is a comma-seperated set of case-insensitive headers to include in the request input.
-    # Request headers are not passed to the policy by default. Include to recieve incoming request headers in
+    # `includedHeaders` is a comma-separated set of case-insensitive headers to include in the request input.
+    # Request headers are not passed to the policy by default. Include to receive incoming request headers in
     # the input
     - name: includedHeaders
       value: "x-my-custom-header, x-jwt-header"
@@ -68,6 +68,12 @@ spec:
 ```
 
 You can prototype and experiment with policies using the [official opa playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
+
+| Metadata field  | Description                                                                                                                                                                                           | Example                                                           |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| rego            | The Rego policy language                                                                                                                                                                              | See above                                                         |
+| defaultStatus   | The status code to return for denied responses                                                                                                                                                        | `"https://accounts.google.com"`, `"https://login.salesforce.com"` |
+| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input. | `"x-my-custom-header, x-jwt-header"`                              |
 
 ## Input
 
@@ -185,3 +191,5 @@ type Result struct {
 
 - [Open Policy Agent](https://www.openpolicyagent.org)
 - [HTTP API Example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
+- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Dapr configuration]({{< ref configuration-concept.md >}})
