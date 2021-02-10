@@ -29,14 +29,16 @@ spec:
     value: <REPLACE-RETHINKDB-DB-NAME> # Required, e.g. dapr (alpha-numerics only)
 ```
 
-For example on how to combine this binding with Dapr Pub/Sub to stream state changes to a topic see [here](https://github.com/mchmarny/dapr-state-store-change-handler).
+## Spec metadata fields
 
+| Field              | Required | Binding support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| address | Y | Input | Address of RethinkDB server | `"27.0.0.1:28015"`, `"rethinkdb.default.svc.cluster.local:28015"` |
+| database | Y | Input | RethinDB database name | `"dapr"` |
 
-## Binding Support
+## Binding support
 
 This component only supports **input** binding interface. 
-
-
 
 ## Related links
 

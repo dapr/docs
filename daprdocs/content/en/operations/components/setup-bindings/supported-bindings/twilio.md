@@ -36,14 +36,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | toNumber | Y | Output | The target number to send the sms to | `"111-111-1111"` |
 | fromNumber | Y | Output | The sender phone number | `"122-222-2222"` |
 | accountSid | Y | Output | The Twilio account SID | `"account sid"` |
 | authToken | Y | Output | The Twilio auth token | `"auth token"` |
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

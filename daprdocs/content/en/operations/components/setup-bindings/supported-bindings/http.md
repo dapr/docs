@@ -23,11 +23,11 @@ spec:
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support | Details | Example |
+| Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
 | url                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html):
 
@@ -171,5 +171,6 @@ curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "p
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
+- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})

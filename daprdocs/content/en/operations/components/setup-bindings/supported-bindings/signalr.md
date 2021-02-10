@@ -32,13 +32,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | connectionString | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"` |
 | hub | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

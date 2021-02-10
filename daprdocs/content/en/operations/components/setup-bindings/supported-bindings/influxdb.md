@@ -36,14 +36,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | url  | Y | Output | The URL for the InfluxDB instance| `"http://localhost:8086"` |
 | token | Y | Output | The authorization token for InfluxDB | `"mytoken"` |
 | org | Y | Output | The InfluxDB organization | `"myorg"` |
 | bucket | Y | Output | Bucket name to write to | `"mybucket"` |
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

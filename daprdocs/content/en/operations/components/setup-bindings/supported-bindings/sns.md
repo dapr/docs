@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | topicArn | Y | Output | The SNS topic name | `"arn:::topicarn"` | 
 | region             | Y        | Output |  The specific AWS region | `"us-east-1"`       |
@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | secretKey          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | sessionToken       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

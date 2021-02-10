@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | queueName | Y | Input/Output |  The RabbitMQ queue name | `"myqueue"` |
 | host | Y | Input/Output | The RabbitMQ host address | `"amqp://[username][:password]@host.domain[:port]"` |
@@ -54,7 +54,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | prefetchCount | N | Input | Set the [Channel Prefetch Setting (QoS)](https://www.rabbitmq.com/confirms.html#channel-qos-prefetch). If this parameter is omiited, QoS would set value to 0 as no limit | `0` |
 | exclusive | N | Input/Output | Determines whether the topic will be an exclusive topic or not. Defaults to `"false"` | `"true"`, `"false"` |
 | maxPriority| N | Input/Output | Parameter to set the [priority queue](https://www.rabbitmq.com/priority.html). If this parameter is omitted, queue will be created as a general queue instead of a priority queue. Value between 1 and 255. See [also](#specifying-a-priority-per-message) | `"1"`, `"10"` |
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 

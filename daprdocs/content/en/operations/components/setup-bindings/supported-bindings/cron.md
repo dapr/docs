@@ -57,13 +57,14 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 * `@every 15s` where `s` is seconds, `m` minutes, and `h` hours
 * `@daily` or `@hourly` which runs at that period from the time the binding is initialized  
 
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 
 This component supports **output binding** with the folowing operations:
 
 - `delete`
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

@@ -46,14 +46,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `"10"` | `"1"`, `"2"` 
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 
-- `create` : [Create Blob](#create-blob)
-- `get` : [Get Blob](#get-blob)
+- `create` : [Create blob](#create-blob)
+- `get` : [Get blob](#get-blob)
 
-### Create Blob
+### Create blob
 
 To perform a create blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
@@ -66,7 +66,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 }
 ```
 
-#### Example:
+#### Example
 
 > We escape since ' is not supported on Windows
 > On Windows, utilize CMD (PowerShell has different escaping mechanism)
@@ -127,7 +127,7 @@ The response body will contain the following JSON:
 
 ```
 
-### Get Blob
+### Get blob
 
 To perform a get blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
@@ -140,7 +140,7 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 }
 ```
 
-#### Example:
+#### Example
 
 ```bash
 curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \

@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | queueName | Y | Input/Output | The SQS queue name | `"myqueue"` | 
 | region             | Y        | Input/Output |  The specific AWS region | `"us-east-1"`       |
@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | sessionToken       | N        | Input/Output | The AWS session token to use                                            | `"sessionToken"`    |
 
 
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 

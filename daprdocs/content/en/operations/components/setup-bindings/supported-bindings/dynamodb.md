@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | table | Y | Output | The DynamoDB table name | `"items"` | 
 | region             | Y        | Output |  The specific AWS region the AWS DynamoDB instance is deployed in | `"us-east-1"`       |
@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | sessionToken       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

@@ -31,12 +31,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | url | Y | Input/Output | The MQTT broker url | `"mqtt[s]://[username][:password]@host.domain[:port]"` |
 | topic | Y | Input/Output | The topic to listen on or send events to | `"mytopic"` |
 
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 

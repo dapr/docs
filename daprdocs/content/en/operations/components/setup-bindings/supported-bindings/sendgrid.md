@@ -36,7 +36,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | apiKey | Y | Output | SendGrid API key, this should be considered a secret value | `"apikey"` |
 | emailFrom | N | Output | If set this specifies the 'from' email address of the email message. Optional field, see [below](#example-request-payload) | `"me@example.com"` |
@@ -46,7 +46,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | subject | N | Output | If set this specifies the subject of the email message. Optional field, see [below](#example-request-payload) | `"subject of the email"` |
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

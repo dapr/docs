@@ -34,14 +34,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | redisHost | Y | Output |  The Redis host address | `"localhost:6379"` |
 | redisPassword | Y | Output | The Redis password | `"password"` |
 | enableTLS | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

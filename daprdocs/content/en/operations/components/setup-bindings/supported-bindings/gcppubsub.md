@@ -51,7 +51,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required  | Binding Support | Details | Example |
+| Field              | Required  | Binding support | Details | Example |
 |--------------------|:--------:|-----------| -----|---------|
 | topic | Y | Output | GCP Pub/Sub topic name | `"topic1"` |
 | subscription | Y | GCP Pub/Sub subscription name | `"name1"` |
@@ -66,7 +66,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | auth_provider_x509_cert_url | Y | Output |GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
 | client_x509_cert_url | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

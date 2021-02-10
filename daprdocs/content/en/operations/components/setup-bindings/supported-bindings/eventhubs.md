@@ -41,7 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | connectionString | Y | Output | The [EventHubs connection string](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature). Note that this is the EventHub itself and not the EventHubs namespace. Make sure to use the child EventHub shared access policy connection string | `"Endpoint=sb://****"` |
 | consumerGroup | Y | Output | The name of an [EventHubs Consumer Group](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-features#consumer-groups) to listen on | `"group1"` |
@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | storageContainerName | Y | Output | The name of the container in the Azure Storage account to persist checkpoints data on | `"contianerName"` |
 | partitionID | N | Output | ID of the partition to send and receive events | `0` |
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

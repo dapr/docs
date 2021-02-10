@@ -39,7 +39,7 @@ spec:
 | team-id | Y | Output | The identifier for the organization or author from the Apple Developer Portal | `"team-id"` |
 | private-key | Y | Output| Is a PKCS #8-formatted private key. It is intended that the private key is stored in the secret store and not exposed directly in the configuration. See [here](#private-key) for more details | `"pem file"` |
 
-### Private Key
+### Private key
 The APNS binding will need a cryptographic private key in order to generate authentication tokens for the APNS service. 
 The private key can be generated from the Apple Developer Portal and is provided as a PKCS #8 file with the private key stored in PEM format. 
 The private key should be stored in the Dapr secret store and not stored directly in the binding's configuration file.
@@ -79,20 +79,19 @@ stringData:
         -----END PRIVATE KEY-----
 ```
 
-
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 
 - `create`
 
-## Push Notification Format
+## Push notification format
 
 The APNS binding is a pass-through wrapper over the Apple Push Notification Service. The APNS binding will send the request directly to the APNS service without any translation. 
 It is therefore important to understand the payload for push notifications expected by the APNS service. 
 The payload format is documented [here](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification).
 
-### Request Format
+### Request format
 
 ```json
 {
@@ -118,7 +117,7 @@ The `data` object contains a complete push notification specification as describ
 
 Besides the `device-token` value, the HTTP headers specified in the [Apple documentation](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns) can be sent as metadata fields and will be included in the HTTP request to the APNs service.
 
-### Response Format
+### Response format
 
 ```json
 {

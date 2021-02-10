@@ -35,13 +35,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | consumerKey | Y | Input/Output | Twitter API consumer key | `"conusmerkey"` | 
 | consumerSecret | Y | Input/Output | Twitter API consumer secret | `"conusmersecret"` | 
 | accessToken | Y | Input/Output | Twitter API access token | `"accesstoken"` | 
 | accessSecret | Y | Input/Output | Twitter API access secret | `"accesssecret"` | 
-## Binding Support
+
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 

@@ -36,7 +36,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | accountToken | Y | Output |  The Postmark account token, this should be considered a secret value | `"account token"` |
 | serverToken | Y | Output  | The Postmark server token, this should be considered a secret value | `"server token"` |
@@ -51,7 +51,7 @@ You can specify any of the optional metadata properties on the output binding re
 Combined, the optional metadata properties in the component configuration and the request payload should at least contain the `emailFrom`, `emailTo` and `subject` fields, as these are required to send an email with success.
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

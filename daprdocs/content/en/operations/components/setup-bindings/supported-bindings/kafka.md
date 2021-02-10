@@ -41,7 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 {{% /alert %}}
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | topics | N | Input | A comma separated string of topics | `"mytopic1,topic2"` |
 | brokers | Y | Input/Output | A comma separated string of kafka brokers | `"localhost:9092,localhost:9093"` |
@@ -52,7 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | saslPassword | N | Input/Output | The SASL password for authentication. Only used if `authRequired` is set to - `"true"` | `"password"` |
 
 
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 

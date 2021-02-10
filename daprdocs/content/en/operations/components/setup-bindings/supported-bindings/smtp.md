@@ -48,7 +48,7 @@ The example configuration shown above, contain a username and password as plain-
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | host | Y | Output |  The host where your SMTP server runs | `"smtphost"` | 
 | port | Y | Output |  The port your SMTP server listens on | `"9999"` | 
@@ -61,7 +61,7 @@ The example configuration shown above, contain a username and password as plain-
 | emailBcc | N | Output | If set, this specifies email address to BCC in. See [also](#example-request) | `"me@example.com"` |
 | subject | N | Output | If set, this specifies the subject of the email message. See [also](#example-request) | `"subject of mail"` |
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

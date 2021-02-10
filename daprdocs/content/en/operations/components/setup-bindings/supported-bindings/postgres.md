@@ -30,7 +30,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | url | Y | Output | Postgres connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
 
@@ -59,7 +59,7 @@ Both methods also support connection pool configuration variables:
 - `pool_health_check_period`: duration string
 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

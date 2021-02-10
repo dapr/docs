@@ -41,7 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | url | Y | Output | Represent DB connection in Data Source Name (DNS) format. See [here](#ssl-connection-details) SSL details | `"user:password@tcp(localhost:3306)/dbname"` |
 | pemPath | Y | Output | Path to the PEM file. Used with SSL connection | `"path/to/pem/file"` | 
@@ -58,7 +58,7 @@ If your server requires SSL your connection string must end of `&tls=custom` for
 ```
  You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

@@ -46,7 +46,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | collection | Y | Output | The name of the collection inside the database | `"collection"` |
 | partitionKey | Y | Output | The name of the partitionKey to extract from the payload | `"message"` | 
 
-## Binding Support
+## Binding support
 
 This component supports **output binding** with the folowing operations:
 

@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | mode | N | Input| The Kinesis stream mode. `shared`- Shared throughput, `extended` - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html). Defaults to `"shared"` | `"shared"`, `"extended"` | 
 | streamName | Y | Input/Output | The AWS Kinesis Stream Name | `"stream"` |
@@ -53,7 +53,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | secretKey          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | sessionToken       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
 
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 

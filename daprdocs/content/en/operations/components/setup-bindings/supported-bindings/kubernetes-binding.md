@@ -28,12 +28,12 @@ spec:
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | namespace | Y | Input  | The Kubernetes namespace to read events from | `"default"` |
 | resyncPeriodInSec | N | Te period of time to refresh event list from Kubernetes API server. Defaults to `"10"` | `"15"`
 
-## Binding Support
+## Binding support
 
 This component supports **input** binding interface. 
 

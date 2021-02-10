@@ -36,14 +36,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding Support |  Details | Example |
+| Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | storageAccount | Y | Input/Output |  The Azure Storage account name | `"account1"` |
 | storageAccessKey | Y | Input/Output | The Azure Storage access key | `"accessKey"` |
 | queue | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
 | ttlInSeconds | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
 
-## Binding Support
+## Binding support
 
 This component supports both **input and output** binding interfaces. 
 
