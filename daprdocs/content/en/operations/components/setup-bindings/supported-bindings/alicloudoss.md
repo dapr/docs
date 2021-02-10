@@ -13,20 +13,20 @@ To setup an Alibaba Cloud Object Storage binding create a component of type `bin
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
+  name: alicloudobjectstorage
+  namespace: default
 spec:
   type: bindings.alicloud.oss
   version: v1
   metadata:
   - name: endpoint
-    value: <endpoint>
+    value: "[endpoint]"
   - name: accessKeyID
-    value: <key-id>
+    value: "[key-id]"
   - name: accessKey
-    value: <access-key>
+    value: "[access-key]"
   - name: bucket
-    value: <bucket>
+    value: "[bucket]"
 ```
 
 {{% alert title="Warning" color="warning" %}}
