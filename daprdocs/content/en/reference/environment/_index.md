@@ -6,7 +6,7 @@ description: "A list of environment variables used by Dapr"
 weight: 300
 ---
 
-Following table lists the environment variables used by the Dapr runtime, CLI, or your applications:
+The following table lists the environment variables used by the Dapr runtime, CLI, or from within your application:
 
 | Environment Variable             | Used By          | Description |
 |----------------------------------|------------------|-------------|
