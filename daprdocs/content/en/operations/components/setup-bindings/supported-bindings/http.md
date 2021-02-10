@@ -23,25 +23,23 @@ spec:
 
 ## Spec metadata fields
 
-| Field              | Required | Details | Example |
-|--------------------|:--------:|---------|---------|
-| url                | Y        | The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
+| Field              | Required | Binding Support | Details | Example |
+|--------------------|:--------:|--------|--------|---------|
+| url                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
 
-## Output binding supported operations
+## Binding Support
 
-The HTTP output binding supports using the following [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)
+This component supports **output binding** with the folowing [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html):
 
-| Operation              | Description |
-|------------------------|-------------|
-| get | Read data/records |
-| head | Identical to get except that the server does not return a response body |
-| post | Typically used to create records or send commands |
-| create | For backward compatability and treated like a post |
-| put | Update data/records |
-| patch | Sometimes used to update a subset of fields of a record |
-| delete | Delete a data/record |
-| options | Requests for information about the communication options available (not commonly used) |
-| trace | Used to invoke a remote, application-layer loop- back of the request message (not commonly used) |
+- `create` : For backward compatability and treated like a post
+- `get` :  Read data/records
+- `head` : Identical to get except that the server does not return a response body
+- `post` : Typically used to create records or send commands
+- `put` : Update data/records
+- `patch` : Sometimes used to update a subset of fields of a record
+- `delete` : Delete a data/record
+- `options` : Requests for information about the communication options available (not commonly used)
+- `trace` : Used to invoke a remote, application-layer loop- back of the request message (not commonly used)
 
 ### Request
 
@@ -170,6 +168,8 @@ curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "p
 {{< /tabs >}}
 
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})

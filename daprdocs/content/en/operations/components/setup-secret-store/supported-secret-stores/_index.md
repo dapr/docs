@@ -3,7 +3,7 @@ type: docs
 title: "Supported secret stores"
 linkTitle: "Supported secret stores"
 weight: 30000
-description: List of all the supported secret stores that can interface with Dapr
+description: The supported secret stores that interface with Dapr
 no_list: true
 ---
 

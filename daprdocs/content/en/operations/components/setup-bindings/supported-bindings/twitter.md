@@ -5,9 +5,9 @@ linkTitle: "Twitter"
 description: "Detailed documentation on the Twitter binding component"
 ---
 
-## Setup Dapr component
+## Component format
 
-The Twitter binding supports both `input` and `output` binding configuration. First the common part:
+To setup Twitter binding create a component of type `bindings.twitter`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -33,16 +33,33 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Input bindings
+## Spec metadata fields
 
-For input bindings, where the query matching Tweets are streamed to the user service, the above component has to also include a query: 
+| Field              | Required | Binding Support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| consumerKey | Y | Input/Output | Twitter API consumer key | `"conusmerkey"` | 
+| consumerSecret | Y | Input/Output | Twitter API consumer secret | `"conusmersecret"` | 
+| accessToken | Y | Input/Output | Twitter API access token | `"accesstoken"` | 
+| accessSecret | Y | Input/Output | Twitter API access secret | `"accesssecret"` | 
+## Binding Support
+
+This component supports both **input and output** binding interfaces. 
+
+This component supports **output binding** with the folowing operations:
+
+- `get`
+
+### Input binding
+
+For input binding, where the query matching Tweets are streamed to the user service, the above component has to also include a query: 
 
 ```yaml
   - name: query
     value: "dapr" # your search query, required 
 ```
 
-## Output bindings
+### Output binding
+#### get
 
 For output binding invocation the user code has to invoke the binding:
 
@@ -76,6 +93,8 @@ The metadata parameters are:
 You can see the example of the JSON data that Twitter binding returns [here](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets)
 
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

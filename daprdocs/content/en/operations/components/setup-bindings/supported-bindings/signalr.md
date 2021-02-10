@@ -5,7 +5,10 @@ linkTitle: "Azure SignalR"
 description: "Detailed documentation on the Azure SignalR binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup Azure SignalR binding create a component of type `bindings.azure.signalr`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -23,13 +26,23 @@ spec:
     value: <hub name>
 ```
 
-- The metadata `connectionString` contains the Azure SignalR connection string.
-- The optional `hub` metadata value defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub").
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+## Spec metadata fields
+
+| Field              | Required | Binding Support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| connectionString | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"` |
+| hub | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
+
+
+## Binding Support
+
+This component supports **output binding** with the folowing operations:
+
+- `create`
 
 ## Additional information
 
@@ -60,11 +73,9 @@ Applications publishing to an Azure SignalR output binding should send a message
 
 For more information on integration Azure SignalR into a solution check the [documentation](https://docs.microsoft.com/en-us/azure/azure-signalr/)
 
-## Output Binding Supported Operations
-
-* create
-
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

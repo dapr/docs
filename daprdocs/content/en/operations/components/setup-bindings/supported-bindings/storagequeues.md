@@ -5,7 +5,10 @@ linkTitle: "Azure Storage Queues"
 description: "Detailed documentation on the Azure Storage Queues binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup Azure Storage Queues binding create a component of type `bindings.azure.storagequeues`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -27,17 +30,28 @@ spec:
     value: "60"
 ```
 
-- `storageAccount` is the Azure Storage account name.
-- `storageAccessKey` is the Azure Storage access key.
-- `queue` is the name of the Azure Storage queue.
-- `ttlInSeconds` is an optional parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes.
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+## Spec metadata fields
 
-## Specifying a time to live on message level
+| Field              | Required | Binding Support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| storageAccount | Y | Input/Output |  The Azure Storage account name | `"account1"` |
+| storageAccessKey | Y | Input/Output | The Azure Storage access key | `"accessKey"` |
+| queue | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
+| ttlInSeconds | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
+
+## Binding Support
+
+This component supports both **input and output** binding interfaces. 
+
+This component supports **output binding** with the folowing operations:
+
+- `create`
+
+## Specifying a TTL per message
 
 Time to live can be defined on queue level (as illustrated above) or at the message level. The value defined at message level overwrites any value set at queue level.
 
@@ -60,12 +74,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myStorageQueue \
         "operation": "create"
       }'
 ```
-
-## Output Binding Supported Operations
-
-* create
-
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

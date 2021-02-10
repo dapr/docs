@@ -3,7 +3,7 @@ type: docs
 title: "Supported pub/sub components"
 linkTitle: "Supported pub/sub"
 weight: 30000
-description: List of all the supported external pubsub brokers that can interface with Dapr
+description: The supported pub/sub brokers that interface with Dapr
 no_list: true
 ---
 

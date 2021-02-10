@@ -4,10 +4,11 @@ title: "AWS Kinesis binding spec"
 linkTitle: "AWS Kinesis"
 description: "Detailed documentation on the AWS Kinesis binding component"
 ---
+## Component format
+
+To setup AWS Kinesis binding create a component of type `bindings.aws.kinesis`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 See [this](https://aws.amazon.com/kinesis/data-streams/getting-started/) for instructions on how to set up an AWS Kinesis data streams
-
-## Setup Dapr component
 See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
 
 ```yaml
@@ -36,20 +37,32 @@ spec:
     value: *****************
 
 ```
-- `mode` Accepted values: shared, extended. shared - Shared throughput, extended - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html)
-- `streamName` is the AWS Kinesis Stream Name.
-- `consumerName` is the AWS Kinesis Consumer Name.
-
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Output Binding Supported Operations
+## Spec metadata fields
 
-* create
+| Field              | Required | Binding Support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| mode | N | Input| The Kinesis stream mode. `shared`- Shared throughput, `extended` - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html). Defaults to `"shared"` | `"shared"`, `"extended"` | 
+| streamName | Y | Input/Output | The AWS Kinesis Stream Name | `"stream"` |
+| consumerName | Y | Input |  The AWS Kinesis Consumer Name | `"myconsumer"` |
+| region             | Y        | Output |  The specific AWS region the AWS Kinesis instance is deployed in | `"us-east-1"`       |
+| accessKey          | Y        | Output | The AWS Access Key to access this resource                              | `"key"`             |
+| secretKey          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
+| sessionToken       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
 
+## Binding Support
+
+This component supports both **input and output** binding interfaces. 
+
+This component supports **output binding** with the folowing operations:
+
+- `create`
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

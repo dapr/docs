@@ -3,10 +3,9 @@ type: docs
 title: "Supported external bindings"
 linkTitle: "Supported bindings"
 weight: 200
-description: List of all the supported external bindings that can interface with Dapr
+description: The supported external systems that interface with Dapr as input/output bindings
+no_list: true
 ---
-
-Every binding has its own unique set of properties. Click the name link to see the component YAML for each binding.
 
 ### Generic
 
