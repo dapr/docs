@@ -5,7 +5,9 @@ linkTitle: "Alibaba Cloud Object Storage"
 description: "Detailed documentation on the Alibaba Cloud Object Storage binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup an Alibaba Cloud Object Storage binding create a component of type `bindings.alicloud.oss`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -27,22 +29,26 @@ spec:
     value: <bucket>
 ```
 
-- `endpoint` is the Alicloud OSS endpoint. Example: https://oss-cn-hangzhou.aliyuncs.com
-- `accessKeyID` is the access key ID credential.
-- `accessKey` is the access key credential.
-- `bucket` is the name of the storage bucket.
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Output Binding Supported Operations
+## Spec metadata fields
 
-### Create Object
+| Field         | Required | Details | Example |
+|---------------|----------|---------|---------|
+| `endpoint`    | Y | Alicloud OSS endpoint. | https://oss-cn-hangzhou.aliyuncs.com
+| `accessKeyID` | Y | Access key ID credential. |
+| `accessKey`   | Y | Access key credential. |
+| `bucket`      | Y | Name of the storage bucket. |
+
+## Output operations
+
+The following operations are supported as within the output binding:
+
+### Create object
 
 To perform a create object operation, invoke the binding with a `POST` method and the following JSON body:
-
-> Note: by default, a random UUID is generated. See below for Metadata support to set the key for the object.
 
 ```json
 {
@@ -51,28 +57,35 @@ To perform a create object operation, invoke the binding with a `POST` method an
 }
 ```
 
-#### Example:
+{{% alert title="Note" color="primary" %}}
+By default, a random UUID is auto-generated as the object key. See below for Metadata support to set the key for the object.
+{{% /alert %}}
 
-> We escape since ' is not supported on Windows
-> On Windows, utilize CMD (PowerShell has different escaping mechanism)
+#### Example
 
 **Saving to a random generated UUID file**
 
 ```bash
-curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" \
-      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+
+<br />
 
 **Saving to a specific file**
 
 ```bash
-curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-key\" } }" \
-      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-key\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+
+{{% alert title="Note" color="primary" %}}
+Windows CMD requires escaping the `"` character.
+{{% /alert %}}
 
 ## Metadata information
 
-By default the Alicloud OSS output binding will auto generate a UUID as the object key.
+### Object key
+
+By default, the Alicloud OSS output binding will auto-generate a UUID as the object key.
 You can set the key with the following metadata:
 
 ```json
@@ -86,6 +99,7 @@ You can set the key with the following metadata:
 ```
 
 ## Related links
+
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
