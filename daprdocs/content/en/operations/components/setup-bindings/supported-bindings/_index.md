@@ -32,7 +32,7 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [Alibaba Cloud OSSs]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
 
 ### Amazon Web Services (AWS)
 
