@@ -12,7 +12,6 @@ Every binding has its own unique set of properties. Click the name link to see t
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [Alibaba Cloud OSSs]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
 | [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | Alpha |
@@ -28,6 +27,12 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Twilio]({{< ref twilio.md >}})       |    | ✅ | Alpha |
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha |
+
+### Alibaba Cloud
+
+| Name | Input<br>Binding | Output<br>Binding | Status |
+|------|:----------------:|:-----------------:|--------|
+| [Alibaba Cloud OSSs]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
 
 ### Amazon Web Services (AWS)
 
