@@ -28,6 +28,12 @@ Every binding has its own unique set of properties. Click the name link to see t
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha |
 
+### Alibaba Cloud
+
+| Name | Input<br>Binding | Output<br>Binding | Status |
+|------|:----------------:|:-----------------:|--------|
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
+
 ### Amazon Web Services (AWS)
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
