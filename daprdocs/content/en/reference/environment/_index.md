@@ -16,4 +16,4 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | APP_TOKEN_API                    | Your application | The token used by the app to authenticate requests from Dapr. Read [authenticate requests from Dapr using token authentication]({{< ref app-api-token >}}) for more information.
 | DAPR_PLACEMENT_HOST              |Your application | The address for the Dapr Placement service. Only needed in self-hosted mode if you run your app (which creates actors) and you want to tell the app the location of the Placement service. This is never needed outside of local machine development.  
 | DAPR_NETWORK                     | Dapr CLI         | Optionally used by the Dapr CLI to specify the Docker network on which to deploy the Dapr runtime.
-| NAMESPACE                        | Dapr runtime     | Used to specify a component's [namespace in self-hosted mode](({{< ref component-scopes >}})
+| NAMESPACE                        | Dapr runtime     | Used to specify a component's [namespace in self-hosted mode]({{< ref component-scopes >}})
