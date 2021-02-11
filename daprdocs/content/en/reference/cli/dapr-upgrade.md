@@ -23,23 +23,26 @@ dapr upgrade [flags]
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
 | `--help`, `-h` | | | Print this help message |
-| `--kubernetes`, `-k` | | `false` | Deploy Dapr to a Kubernetes cluster |
-| `--runtime-version` | | `latest` | The version of the Dapr runtime to install, for example: `1.0.0` |
+| `--kubernetes`, `-k` | | `false` | Upgrade Dapr in a Kubernetes cluster |
+| `--runtime-version` | | `latest` | The version of the Dapr runtime to upgrade to, for example: `1.0.0` |
 | `--set` | | | Set values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2) |
 
 ## Examples
 
-### Upgrade Dapr in Kubernetes
+### Upgrade Dapr in Kubernetes to latest version
 ```bash
 dapr upgrade -k
 ```
 
 ### Upgrade specified version of Dapr runtime in Kubernetes
 ```bash
-dapr upgrade -k --runtime-version 1.0.0-rc.3
+dapr upgrade -k --runtime-version 1.0.0
 ```
 
 ### Upgrade specified version of Dapr runtime in Kubernetes with value set
 ```bash
-dapr upgrade -k --runtime-version 1.0.0-rc.3 --set global.logAsJson=true
+dapr upgrade -k --runtime-version 1.0.0 --set global.logAsJson=true
 ```
+# Related links
+
+- [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade/.md >}})
