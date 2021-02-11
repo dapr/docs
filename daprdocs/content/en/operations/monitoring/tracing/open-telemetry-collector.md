@@ -3,7 +3,7 @@ type: docs
 title: "Using OpenTelemetry Collector to collect traces"
 linkTitle: "OpenTelemetry"
 weight: 1000
-description: "How to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector."
+description: "How to use Dapr to push trace events through the OpenTelemetry Collector."
 ---
 
 Dapr can integrate with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector.

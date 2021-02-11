@@ -2,6 +2,6 @@
 type: docs
 title: "Tracing"
 linkTitle: "Tracing"
-weight: 400
+weight: 100
 description: "How to setup your trace backend to receive application traces from Dapr"
 ---
