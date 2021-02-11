@@ -47,7 +47,7 @@ spec:
 ```
 
 The type of middleware is determined by the `type` field, and configuration like rate limits, OAuth credentials and other metadata are put in the `.metadata` section.
-Even though metadata values can secrets in plain text, it is recommended you use a [secret store]({{< ref component-secrets.md >}}).
+Even though metadata values can contain secrets in plain text, it is recommended you use a [secret store]({{< ref component-secrets.md >}}).
 
 ## Writing a custom middleware
 
