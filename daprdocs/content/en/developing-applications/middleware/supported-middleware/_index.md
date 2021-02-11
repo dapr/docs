@@ -9,8 +9,8 @@ no_list: true
 
 ### HTTP
 
-| Name                                                                           | Description        | Status                       |
-|--------------------------------------------------------------------------------|--------------------|------------------------------|
+| Name                                                                           | Description                                                                                                                     | Status                     |
+|--------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|----------------------------|
 | [Rate limit]({{< ref middleware-rate-limit.md >}})                             | Restricts the maximum number of allowed HTTP requests per second                                                                | GA (For local development) |
 | [OAuth2]({{< ref middleware-oauth2.md >}})                                     | Enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) on a Web API                    | GA (For local development) |
 | [OAuth2 client credentials]({{< ref middleware-oauth2clientcredentials.md >}}) | Enables the [OAuth2 Client Credentials flow](https://tools.ietf.org/html/rfc6749#section-1.3.4) on a Web API                    | GA (For local development) |
