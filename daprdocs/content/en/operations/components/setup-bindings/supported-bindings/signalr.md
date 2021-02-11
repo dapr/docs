@@ -48,8 +48,8 @@ This component supports **output binding** with the folowing operations:
 
 By default the Azure SignalR output binding will broadcast messages to all connected users. To narrow the audience there are two options, both configurable in the Metadata property of the message:
 
-- group: will send the message to a specific Azure SignalR group
-- user: will send the message to a specific Azure SignalR user
+- group: Sends the message to a specific Azure SignalR group
+- user: Sends the message to a specific Azure SignalR user
 
 Applications publishing to an Azure SignalR output binding should send a message with the following contract:
 
