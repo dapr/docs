@@ -45,4 +45,4 @@ dapr upgrade -k --runtime-version 1.0.0 --set global.logAsJson=true
 ```
 # Related links
 
-- [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade/.md >}})
+- [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade.md >}})
