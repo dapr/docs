@@ -72,7 +72,25 @@ The field name is `ttlInSeconds`.
 
 Example:
 
+{{< tabs Windows Linux >}}
+{{% codetab %}}
 ```shell
+curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
+  -H "Content-Type: application/json" \
+  -d "{
+        \"data\": {
+          \"message\": \"Hi\"
+        },
+        \"metadata\": {
+          \"ttlInSeconds\": "60"
+        },
+        \"operation\": \"create\"
+      }"
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
   -d '{
@@ -85,6 +103,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         "operation": "create"
       }'
 ```
+{{% /codetab %}}
+{{< /tabs >}}
+
 
 ## Specifying a priority per message
 
@@ -96,6 +117,24 @@ The field name is `priority`.
 
 Example:
 
+{{< tabs Windows Linux >}}
+{{% codetab %}}
+```shell
+curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
+  -H "Content-Type: application/json" \
+  -d "{
+        \"data\": {
+          \"message\": \"Hi\"
+        },
+        \"metadata\": {
+          "priority": \"5\"
+        },
+        \"operation\": \"create\"
+      }"
+```
+{{% /codetab %}}
+
+{{% codetab %}}
 ```shell
 curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
   -H "Content-Type: application/json" \
@@ -109,6 +148,9 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
         "operation": "create"
       }'
 ```
+{{% /codetab %}}
+{{< /tabs >}}
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
