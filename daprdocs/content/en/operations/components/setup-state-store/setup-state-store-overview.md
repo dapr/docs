@@ -30,7 +30,7 @@ spec:
 ```
 
 The type of database is determined by the `type` field, and things like connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a [secret store]({{< ref component-secrets.md >}}).
+Even though metadata values can secrets in plain text, it is recommended you use a [secret store]({{< ref component-secrets.md >}}).
 
 Visit [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to configure a state store component.
 
