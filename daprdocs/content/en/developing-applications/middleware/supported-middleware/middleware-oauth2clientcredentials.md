@@ -40,10 +40,10 @@ spec:
 | tokenURL            | The endpoint is used by the client to obtain an access token by presenting its authorization grant or refresh token                                                                                                                                                                                                                                                                                                                                                                                 | `"https://accounts.google.com/o/oauth2/token"`     |
 | headerName          | The authorization header name to forward to your application                                                                                                                                                                                                                                                                                                                                                                                                                                        | `"authorization"`                                  |
 | endpointParamsQuery | Specifies additional parameters for requests to the token endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                  | `true`                                             |
-| authStyle           | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table below of possible values. | `0`                                                |
+| authStyle           | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table of possible values below. | `0`                                                |
 
 
-**Posible values for `authStyle`**
+**Possible values for `authStyle`**
 
 | Value | Meaning |
 |-------|---------|

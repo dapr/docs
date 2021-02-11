@@ -101,7 +101,7 @@ type HTTPRequest struct {
   query map[string][]string
   // The request headers
   // NOTE: By default, no headers are included. You must specify what headers
-  // you want to recieve via `spec.metadata.includedHeaders` (see above)
+  // you want to receive via `spec.metadata.includedHeaders` (see above)
   headers map[string]string
   // The request scheme (e.g. http, https)
   scheme string
