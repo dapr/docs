@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-0.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
