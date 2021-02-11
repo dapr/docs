@@ -1,24 +1,24 @@
 ---
 type: docs
-title: "How-To: Use bindings to interface with external resources"
-linkTitle: "How-To: Bindings"
-description: "Invoke external systems with Dapr output bindings"
+title: "How-To: Use output bindings to interface with external resources"
+linkTitle: "How-To: Output bindings"
+description: "Invoke external systems with output bindings"
 weight: 300
 ---
 
-Using bindings, it is possible to invoke external resources without tying in to special SDK or libraries.
+Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries.
 For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
-
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=ysklxm81MTs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## 1. Create a binding
 
-An output binding represents a resource that Dapr will use invoke and send messages to.
+An output binding represents a resource that Dapr uses to invoke and send messages to.
 
 For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
 
-Here, create a new binding component with the name of `myevent`.
+Create a new binding component with the name of `myevent`.
 
 Inside the `metadata` section, configure Kafka related properties such as the topic to publish the message to and the broker.
 
@@ -74,7 +74,7 @@ spec:
 
 ## 2. Send an event
 
-All that's left now is to invoke the bindings endpoint on a running Dapr instance.
+All that's left now is to invoke the output bindings endpoint on a running Dapr instance.
 
 You can do so using HTTP:
 
@@ -87,7 +87,6 @@ The payload goes inside the mandatory `data` field, and can be any JSON serializ
 
 You'll also notice that there's an `operation` field that tells the binding what you need it to do.
 You can check [here]({{< ref supported-bindings >}}) which operations are supported for every output binding.
-
 
 ## References
 
