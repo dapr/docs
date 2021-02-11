@@ -52,25 +52,21 @@ id = "UA-149338238-3"
 
 # Top Nav Bar
 [[menu.main]]
-    name = "Home"
+    name = "Homepage"
     weight = 40
     url = "https://dapr.io"
 [[menu.main]]
-    name = "About"
+    name = "GitHub"
     weight = 50
-    url = "https://dapr.io/#about"
-[[menu.main]]
-    name = "Download"
-    weight = 60
-    url = "https://dapr.io/#download"
+    url = "https://github.com/dapr"
 [[menu.main]]
     name = "Blog"
-    weight = 70
+    weight = 60
     url = "https://blog.dapr.io/posts"
 [[menu.main]]
-    name = "Community"
-    weight = 80
-    url = "https://dapr.io/#community"
+    name = "Discord"
+    weight = 70
+    url = "https://aka.ms/dapr-discord"
 
 [params]
 copyright = "Dapr"
