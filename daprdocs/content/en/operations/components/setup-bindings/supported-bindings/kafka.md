@@ -2,7 +2,7 @@
 type: docs
 title: "Kafka binding spec"
 linkTitle: "Kafka"
-description: "Detailed documentation on the kafka binding component"
+description: "Detailed documentation on the Kafka binding component"
 ---
 
 ## Component format
