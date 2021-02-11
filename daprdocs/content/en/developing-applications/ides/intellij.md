@@ -25,7 +25,44 @@ Let's get started!
 
 First, quit IntelliJ.
 
-Create or edit the file in `$HOME/.IdeaIC2019.3/config/tools/External\ Tools.xml` (change IntelliJ version in path if needed) to add a new `<tool></tool>` entry:
+### IntelliJ configuration file location
+
+{{< tabs Windows Linux  MacOS >}}
+
+{{% codetab %}}
+For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.html#config-directory) and above the configuration files for tools should be located in:
+```powershell
+%USERPROFILE%\AppData\Roaming\JetBrains\IntelliJIdea2020.1\tools\
+``` 
+{{% /codetab %}}
+
+
+{{% codetab %}}
+For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.html#config-directory) and above the configuration files for tools should be located in:
+ ```shell
+ $HOME/.config/JetBrains/IntelliJIdea2020.1/tools/
+ ```
+{{% /codetab %}}
+
+
+{{% codetab %}}
+For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.html#config-directory) and above the configuration files for tools should be located in:
+
+```shell
+~/Library/Application Support/JetBrains/IntelliJIdea2020.1/tools/
+``` 
+{{% /codetab %}}
+
+
+{{< /tabs >}}
+
+> The configuration file location is different for version 2019.3 or prior. See [here](https://www.jetbrains.com/help/idea/2019.3/tuning-the-ide.html#config-directory) for more details.
+
+Change the version in the path if needed.
+
+Create or edit the file in `<CONFIG PATH>/tools/External\ Tools.xml` (change IntelliJ version in path if needed). The `<CONFIG PATH>` is OS dependennt as seen above.
+
+Add a new `<tool></tool>` entry:
 
 ```xml
 <toolSet name="External Tools">
@@ -34,7 +71,8 @@ Create or edit the file in `$HOME/.IdeaIC2019.3/config/tools/External\ Tools.xml
   <tool name="dapr for DemoService in examples" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
     <exec>
       <!-- 2. For Linux or MacOS use: /usr/local/bin/daprd -->
-      <option name="COMMAND" value="C:\dapr\daprd.exe" />
+      <!-- 2.1 Replace %USERPROFILE% with the full path -->
+      <option name="COMMAND" value="%USERPROFILE%\dapr\daprd.exe" />
       <!-- 3. Choose app, http and grpc ports that do not conflict with other daprd command entries (placement address should not change). -->
       <option name="PARAMETERS" value="-app-id demoservice -app-port 3000 -dapr-http-port 3005 -dapr-grpc-port 52000 -placement-host-address localhost:50005" />
       <!-- 4. Use the folder where the `components` folder is located -->
@@ -53,7 +91,7 @@ Optionally, you may also create a new entry for a sidecar tool that can be reuse
   <!-- 1. Reusable entry for apps with app port. -->
   <tool name="dapr with app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
     <exec>
-      <!-- 2. For Linux or MacOS use: /usr/bin/dapr -->
+      <!-- 2. For Linux or MacOS use: /usr/local/bin/dapr -->
       <option name="COMMAND" value="c:\dapr\dapr.exe" />
       <!-- 3. Prompts user 4 times (in order): app id, app port, Dapr's http port, Dapr's grpc port. -->
       <option name="PARAMETERS" value="run --app-id $Prompt$ --app-port $Prompt$ --dapr-http-port $Prompt$ --dapr-grpc-port $Prompt$" />
@@ -64,7 +102,7 @@ Optionally, you may also create a new entry for a sidecar tool that can be reuse
   <!-- 1. Reusable entry for apps without app port. -->
   <tool name="dapr without app-port" description="Dapr sidecar" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
     <exec>
-      <!-- 2. For Linux or MacOS use: /usr/bin/dapr -->
+      <!-- 2. For Linux or MacOS use: /usr/local/bin/dapr -->
       <option name="COMMAND" value="c:\dapr\dapr.exe" />
       <!-- 3. Prompts user 3 times (in order): app id, Dapr's http port, Dapr's grpc port. -->
       <option name="PARAMETERS" value="run --app-id $Prompt$ --dapr-http-port $Prompt$ --dapr-grpc-port $Prompt$" />
@@ -108,3 +146,7 @@ After debugging, make sure you stop both `dapr` and your app in IntelliJ.
 >Note: Since you launched the service(s) using the **dapr** ***run*** CLI command, the **dapr** ***list*** command will show runs from IntelliJ in the list of apps that are currently running with Dapr.
 
 Happy debugging!
+
+## Related links
+
+- [Change](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs) in IntelliJ configuration directory location
