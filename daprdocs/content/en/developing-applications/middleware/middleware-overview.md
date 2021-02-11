@@ -7,7 +7,7 @@ weight: 10000
 type: docs
 ---
 
-Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. Middleware pipelines can be defined in Dapr configuration files.
+Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. Middleware pipelines can be defined inDapr configuration files.
 
 As with other building block components, middleware components are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 
