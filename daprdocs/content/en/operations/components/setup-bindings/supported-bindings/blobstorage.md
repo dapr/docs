@@ -66,24 +66,47 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 }
 ```
 
-#### Example
+#### Examples
 
-> We escape since ' is not supported on Windows
-> On Windows, utilize CMD (PowerShell has different escaping mechanism)
+{{< tabs Windows Linux >}}
 
 **Saving to a random generated UUID file**
-
+{{% codetab %}}
+On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
 ```bash
-curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" \
+curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d "{ "operation": "create", "data": "Hello World" }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 **Saving to a specific file**
 
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
 ```bash
 curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"blobName\": \"my-test-file.txt\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d "{ "operation": "create", "data": "Hello World", "metadata": { "blobName": "my-test-file.txt" } }" \
+      http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 **Saving a file**
 
@@ -111,10 +134,22 @@ spec:
 
 Then you can upload it as you would normally:
 
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
 ```bash
-curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"blobName\": \"my-test-file.jpg\" } }" \
+curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"blobName\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d "{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "blobName": "my-test-file.jpg" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 #### Response
 
@@ -142,20 +177,30 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 
 #### Example
 
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
+```bash
+curl -d '{ \"operation\": \"get\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+```
+{{% /codetab %}}
+
+{{% codetab %}}
 ```bash
 curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
 ```
+{{% /codetab %}}
 
 #### Response
 
-The response body will contain the value stored in the blob object.
+The response body contains the value stored in the blob object.
 
 ## Metadata information
 
-By default the Azure Blob Storage output binding will auto generate a UUID as blob filename and not assign any system or custom metadata to it. It is configurable in the Metadata property of the message (all optional).
+By default the Azure Blob Storage output binding auto generates a UUID as the blob filename and is not assigned any system or custom metadata to it. It is configurable in the metadata property of the message (all optional).
 
-Applications publishing to an Azure Blob Storage output binding should send a message with the following contract:
+Applications publishing to an Azure Blob Storage output binding should send a message with the following format:
 ```json
 {
     "data": "file content",
