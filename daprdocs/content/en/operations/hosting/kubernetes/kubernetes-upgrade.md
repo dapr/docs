@@ -11,30 +11,30 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 - [Dapr CLI]({{< ref install-dapr-cli.md >}}))
 - [Helm 3](https://github.com/helm/helm/releases) (if using Helm) 
 
-## Upgrade existing cluster to 1.0.0 / 1.0.0-rc.3
+## Upgrade existing cluster to 1.0.0
 There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm. The preferred way is to use the Dapr CLI.
 
 ### Dapr CLI
-The example below shows how to upgrade to version 1.0.0-rc.3
+The example below shows how to upgrade to version 1.0.0
 
   ```bash
-  dapr upgrade -k --runtime-version=1.0.0-rc.3  
+  dapr upgrade -k --runtime-version=1.0.0
   ```
 
 You can provide all the available Helm chart configurations using the Dapr CLI.
 See [here](https://github.com/dapr/cli#supplying-helm-values) for more info.
 
 ### Helm
-From version 1.0.0-rc.3 onwards, upgrading Dapr using Helm is no longer a disruptive action since existing certificate values will automatically be re-used.
+From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive action since existing certificate values will automatically be re-used.
 
-1. Upgrade Dapr from 1.0.0-rc.1 (or newer) to 1.0.0-rc.3 (or newer):
+1. Upgrade Dapr from 1.0.0 (or newer) to any [NEW VERSION] > v1.0.0:
 
    ```bash
    helm repo update
    ```
    
    ```bash
-   helm upgrade dapr dapr/dapr --version 1.0.0-rc.3 --namespace dapr-system --wait
+   helm upgrade dapr dapr/dapr --version [NEW VERSION] --namespace dapr-system --wait
    ```
    *If you're using a values file, remember to add the `--values` option when running the upgrade command.*
 
