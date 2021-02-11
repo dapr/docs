@@ -111,7 +111,7 @@ ngrok http -host-header=localhost 9000
 dapr run --app-id dotnetwebapi --app-port 5000 --dapr-http-port 3500 dotnet run
 ```
 
-### Testing om Kubernetes
+### Testing on Kubernetes
 
 Azure Event Grid requires a valid HTTPS endpoint for custom webhooks. Self signed certificates won't do. In order to enable traffic from public internet to your app's Dapr sidecar you need an ingress controller enabled with Dapr. There's a good article on this topic: [Kubernetes NGINX ingress controller with Dapr](https://carlos.mendible.com/2020/04/05/kubernetes-nginx-ingress-controller-with-dapr/).
 
