@@ -42,9 +42,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|--------|---------|---------|
 | url | Y | Output | The CosmosDB url | `"https://******.documents.azure.com:443/"` | 
 | masterKey | Y | Output | The CosmosDB account master key | `"master-key"` |
-| database | Y | Output | The name of the CosmosDB database | `"db"` |
-| collection | Y | Output | The name of the collection inside the database | `"collection"` |
-| partitionKey | Y | Output | The name of the partitionKey to extract from the payload | `"message"` | 
+| database | Y | Output | The name of the CosmosDB database | `"OrderDb"` |
+| collection | Y | Output | The name of the container inside the database (note was also known as a collection) | `"Orders"` |
+| partitionKey | Y | Output | The name of the partitionKey to extract from the payload and is used in the container | `"OrderId"`, `"message"` | 
 
 ## Binding support
 
