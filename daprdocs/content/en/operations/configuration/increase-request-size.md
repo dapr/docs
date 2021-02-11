@@ -1,15 +1,12 @@
 ---
 type: docs
-title: "How-To: Configure Dapr to handle requests that are bigger that 4 MB"
-linkTitle: "Configure request body size"
+title: "How-To: Handle large http body requests"
+linkTitle: "Http request body size"
 weight: 6000
-description: >-
-     How-To: Configure Dapr to handle requests that are bigger that 4 MB.
+description: "Configure http requests that are bigger than 4 MB"
 ---
 
-## How-To: Configure Dapr to handle requests that are bigger that 4 MB.
-
-By default Dapr have a limit for the request body size which is a 4 MB, but users can change it by defining `dapr.io/http-max-request-size` flag.
+By default Dapr has a limit for the request body size which is set to 4 MB, however you can change this by defining `dapr.io/http-max-request-size` annotation or `--dapr-http-max-request-size` flag.
 
 
 ### Self hosted
@@ -20,7 +17,6 @@ When running in self hosted mode, use the `--dapr-http-max-request-size` flag to
 dapr run --dapr-http-max-request-size 16 node app.js
 ```
 This tells Dapr to set maximum request body size to `16` MB.
-
 
 
 ### Kubernetes
@@ -50,3 +46,6 @@ spec:
         dapr.io/http-max-request-size: "16"
 ...
 ```
+
+## Related links
+- [Dapr Kubernetes pod annotations spec]({{< ref kubernetes-annotations.md >}})
