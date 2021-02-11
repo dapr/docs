@@ -67,6 +67,10 @@ id = "UA-149338238-3"
     name = "Discord"
     weight = 70
     url = "https://aka.ms/dapr-discord"
+[[menu.main]]
+    name = "Community"
+    weight = 80
+    url = "https://github.com/dapr/community/blob/master/README.md"
 
 [params]
 copyright = "Dapr"
