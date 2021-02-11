@@ -72,13 +72,13 @@ The output should look like this:
 
 
 ```md
-	 
+         __                
     ____/ /___ _____  _____
    / __  / __ '/ __ \/ ___/
-  / /_/ / /_/ / /_/ / /
-  \__,_/\__,_/ .___/_/
-	      /_/
-
+  / /_/ / /_/ / /_/ / /    
+  \__,_/\__,_/ .___/_/     
+              /_/            
+                                                                           
 ===============================
 Distributed Application Runtime
 
@@ -101,10 +101,11 @@ Available Commands:
   status         Show the health status of Dapr services. Supported platforms: Kubernetes
   stop           Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
   uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
+  upgrade        Upgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
 
 Flags:
   -h, --help      help for dapr
-      --version   version for dapr
+  -v, --version   version for dapr
 
 Use "dapr [command] --help" for more information about a command.
 ```
