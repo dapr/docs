@@ -40,7 +40,7 @@ spec:
 | private-key | Y | Output| Is a PKCS #8-formatted private key. It is intended that the private key is stored in the secret store and not exposed directly in the configuration. See [here](#private-key) for more details | `"pem file"` |
 
 ### Private key
-The APNS binding will need a cryptographic private key in order to generate authentication tokens for the APNS service. 
+The APNS binding needs a cryptographic private key in order to generate authentication tokens for the APNS service. 
 The private key can be generated from the Apple Developer Portal and is provided as a PKCS #8 file with the private key stored in PEM format. 
 The private key should be stored in the Dapr secret store and not stored directly in the binding's configuration file.
 
