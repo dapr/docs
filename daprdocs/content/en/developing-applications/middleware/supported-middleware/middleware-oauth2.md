@@ -64,6 +64,6 @@ spec:
 
 ## Related links
 - [Configure API authorization with OAuth]({{< ref oauth >}})
-- [Middleware quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
+- [Middleware Quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
 - [Middleware concept]({{< ref middleware-concept.md >}})
 - [Dapr configuration]({{< ref configuration-concept.md >}})
