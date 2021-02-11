@@ -4,12 +4,11 @@ title: "Apply Open Policy Agent (OPA) policies"
 linkTitle: "Open Policy Agent (OPA)"
 weight: 6000
 description: "Use Dapr middleware to apply Open Policy Agent (OPA) policies on incoming requests"
-type: docs
 ---
 
-The Dapr Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
+The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
-## Middleware component definition
+## Component definition
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -74,6 +73,22 @@ You can prototype and experiment with policies using the [official opa playgroun
 | rego            | The Rego policy language                                                                                                                                                                              | See above                                                         |
 | defaultStatus   | The status code to return for denied responses                                                                                                                                                        | `"https://accounts.google.com"`, `"https://login.salesforce.com"` |
 | includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input. | `"x-my-custom-header, x-jwt-header"`                              |
+
+## Dapr configuration
+
+To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: my-policy
+      type: middleware.http.opa
+```
 
 ## Input
 
@@ -190,6 +205,6 @@ type Result struct {
 ## Related links
 
 - [Open Policy Agent](https://www.openpolicyagent.org)
-- [HTTP API Example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
+- [HTTP API example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
 - [Middleware concept]({{< ref middleware-concept.md >}})
 - [Dapr configuration]({{< ref configuration-concept.md >}})

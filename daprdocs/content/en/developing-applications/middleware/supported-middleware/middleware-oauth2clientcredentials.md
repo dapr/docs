@@ -4,18 +4,17 @@ title: "OAuth2 client credentials"
 linkTitle: "OAuth2 client credentials"
 weight: 3000
 description: "Use Dapr OAuth2 client credentials middleware to secure HTTP endpoints"
-type: docs
 ---
 
-The Dapr OAuth2 client credentials [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Client Credentials flow](https://tools.ietf.org/html/rfc6749#section-1.3.4) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+The OAuth2 client credentials [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Client Credentials flow](https://tools.ietf.org/html/rfc6749#section-1.3.4) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
-## Middleware component definition
+## Component definition
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: oauth2
+  name: oauth2clientcredentials
 spec:
   type: middleware.http.oauth2clientcredentials
   version: v1
@@ -42,7 +41,6 @@ spec:
 | endpointParamsQuery | Specifies additional parameters for requests to the token endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                  | `true`                                             |
 | authStyle           | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table of possible values below. | `0`                                                |
 
-
 **Possible values for `authStyle`**
 
 | Value | Meaning |
@@ -50,6 +48,22 @@ spec:
 | `1`   | Sends the "client_id" and "client_secret" in the POST body as application/x-www-form-urlencoded parameters. |
 | `2`   | Sends the "client_id" and "client_secret" using HTTP Basic Authorization. This is an optional style described in the [OAuth2 RFC 6749 section 2.3.1](https://tools.ietf.org/html/rfc6749#section-2.3.1). |
 | `0`   | Means to auto-detect which authentication style the provider wants by trying both ways and caching the successful way for the future. |
+
+## Dapr configuration
+
+To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: oauth2clientcredentials
+      type: middleware.http.oauth2clientcredentials
+```
 
 ## Related links
 - [Middleware concept]({{< ref middleware-concept.md >}})

@@ -4,12 +4,11 @@ title: "OAuth2"
 linkTitle: "OAuth2"
 weight: 2000
 description: "Use Dapr OAuth2 middleware to secure HTTP endpoints"
-type: docs
 ---
 
-The Dapr OAuth2 [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+The OAuth2 [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
-## Middleware component definition
+## Component definition
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -47,8 +46,24 @@ spec:
 | authHeaderName | The authorization header name to forward to your application                                                                                                                 | `"authorization"`                                |
 | forceHTTPS     | If true, enforces the use of TLS/SSL                                                                                                                                         | `true`                                         |
 
+## Dapr configuration
+
+To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: oauth2
+      type: middleware.http.oauth2
+```
+
 ## Related links
 - [Configure API authorization with OAuth]({{< ref oauth >}})
-- [Middleware Quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
+- [Middleware quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
 - [Middleware concept]({{< ref middleware-concept.md >}})
 - [Dapr configuration]({{< ref configuration-concept.md >}})

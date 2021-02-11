@@ -1,0 +1,40 @@
+---
+type: docs
+title: "Uppercase request body"
+linkTitle: "Uppercase"
+weight: 9999
+description: "Test your HTTP pipeline is functioning with the uppercase middleware"
+---
+
+The uppercase [HTTP middleware]({{< ref middleware-concept.md >}}) converts the body of the request to uppercase letters and is used for testing that the pipeline is functioning. It should only be used for local development.
+
+## Component definition
+
+In the following definition, the maximum requests per second are set to 10:
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: uppercase
+spec:
+  type: middleware.http.uppercase
+```
+
+This component has no `metadata` to configure.
+
+## Dapr configuration
+
+To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: uppercase
+      type: middleware.http.uppercase
+```
+
