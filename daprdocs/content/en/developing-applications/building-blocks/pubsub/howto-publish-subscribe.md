@@ -139,7 +139,7 @@ kubectl apply -f subscription.yaml
 
 #### Example
 
-{{< tabs Python Node>}}
+{{< tabs Python Node PHP>}}
 
 {{% codetab %}}
 Create a file named `app1.py` and paste in the following:
@@ -199,6 +199,37 @@ dapr --app-id app2 --app-port 3000 run node app2.js
 ```
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Create a file named `app1.php` and paste in the following:
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->post('/dsstatus', function(
+    #[\Dapr\Attributes\FromBody]
+    \Dapr\PubSub\CloudEvent $cloudEvent,
+    \Psr\Log\LoggerInterface $logger
+    ) {
+        $logger->alert('Received event: {event}', ['event' => $cloudEvent]);
+        return ['status' => 'SUCCESS'];
+    }
+);
+$app->start();
+```
+
+After creating `app1.php`, and with the [SDK installed](https://github.com/dapr/php-sdk/blob/main/docs/getting-started.md),
+go ahead and start the app:
+
+```bash
+dapr --app-id app1 --app-port 3000 run -- php -S 0.0.0.0:3000 app1.php
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ### Programmatic subscriptions 
@@ -211,7 +242,7 @@ The Dapr instance calls into your app at startup and expect a JSON response for 
 
 #### Example
 
-{{< tabs Python Node>}}
+{{< tabs Python Node PHP>}}
 
 {{% codetab %}}
 ```python
@@ -282,6 +313,38 @@ Run this app with:
 ```bash
 dapr --app-id app2 --app-port 3000 run node app2.js
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Update `app1.php` with the following:
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builder->addDefinitions(['dapr.subscriptions' => [
+    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'deathStarStatus', route: '/dsstatus'),
+]]));
+$app->post('/dsstatus', function(
+    #[\Dapr\Attributes\FromBody]
+    \Dapr\PubSub\CloudEvent $cloudEvent,
+    \Psr\Log\LoggerInterface $logger
+    ) {
+        $logger->alert('Received event: {event}', ['event' => $cloudEvent]);
+        return ['status' => 'SUCCESS'];
+    }
+);
+$app->start();
+```
+
+Run this app with:
+
+```bash
+dapr --app-id app1 --app-port 3000 run -- php -S 0.0.0.0:3000 app1.php
+```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -355,7 +418,7 @@ app.post('/dsstatus', (req, res) => {
 
 ## (Optional) Step 5: Publishing a topic with code
 
-{{< tabs Node>}}
+{{< tabs Node PHP>}}
 
 {{% codetab %}}
 If you prefer publishing a topic using code, here is an example.  
@@ -384,6 +447,32 @@ app.post('/publish', (req, res) => {
 app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
 ```
 {{% /codetab %}}
+
+{{% codetab %}}
+
+If you prefer publishing a topic using code, here is an example.
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->run(function(\DI\FactoryInterface $factory, \Psr\Log\LoggerInterface $logger) {
+    $publisher = $factory->make(\Dapr\PubSub\Publish::class, ['pubsub' => 'pubsub']);
+    $publisher->topic('deathStarStatus')->publish('operational');
+    $logger->alert('published!');
+});
+```
+
+You can save this to `app2.php` and while `app1` is running in another terminal, execute:
+
+```bash
+dapr --app-id app2 run -- php app2.php
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Sending a custom CloudEvent

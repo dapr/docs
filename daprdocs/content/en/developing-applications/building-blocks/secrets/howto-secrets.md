@@ -63,7 +63,7 @@ For a full API reference, go [here]({{< ref secrets_api.md >}}).
 
 Once you have a secret store set up, you can call Dapr to get the secrets from your application code. Here are a few examples in different programming languages:
 
-{{< tabs "Go" "Javascript" "Python" "Rust" "C#" >}}
+{{< tabs "Go" "Javascript" "Python" "Rust" "C#" "PHP" >}}
 
 {{% codetab %}}
 ```Go
@@ -149,6 +149,22 @@ response.EnsureSuccessStatusCode();
 string secret = await response.Content.ReadAsStringAsync();
 Console.WriteLine(secret);
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->run(function(\Dapr\SecretManager $secretManager, \Psr\Log\LoggerInterface $logger) {
+    $secret = $secretManager->retrieve(secret_store: 'my-secret-store', name: 'my-secret');
+    $logger->alert('got secret: {secret}', ['secret' => $secret]);
+});
+```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
