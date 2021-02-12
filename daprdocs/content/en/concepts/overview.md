@@ -87,6 +87,8 @@ Dapr can be used from  any developer framework. Here are some that have been int
  
 Dapr integrates easily with Python [Flask](https://pypi.org/project/Flask/) and node [Express](http://expressjs.com/). See examples in the [Dapr quickstarts](https://github.com/dapr/quickstarts).
 
+In the Dapr [PHP-SDK](https://github.com/dapr/php-sdk) you can serve with Apache, Nginx, or Caddyserver.
+
 #### Actors
 Dapr SDKs support for [virtual actors]({{< ref actors >}}) which are stateful objects that make concurrency simple, have method and state encapsulation, and are designed for scalable, distributed applications.
 
