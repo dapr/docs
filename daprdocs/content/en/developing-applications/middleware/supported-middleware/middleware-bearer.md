@@ -3,11 +3,11 @@ type: docs
 title: "Bearer"
 linkTitle: "Bearer"
 weight: 4000
-description: "Use Dapr Bearer middleware to secure HTTP endpoints by verifying bearer tokens"
+description: "Use bearer middleware to secure HTTP endpoints by verifying bearer tokens"
 type: docs
 ---
 
-The Bearer [HTTP middleware]({{< ref middleware-concept.md >}}) verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+The bearer [HTTP middleware]({{< ref middleware-concept.md >}}) verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
 ## Component definition
 
@@ -15,7 +15,7 @@ The Bearer [HTTP middleware]({{< ref middleware-concept.md >}}) verifies a [Bear
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: oauth2
+  name: bearer-token
 spec:
   type: middleware.http.bearer
   version: v1
@@ -34,4 +34,5 @@ spec:
 ## Related links
 
 - [Middleware concept]({{< ref middleware-concept.md >}})
-- [Dapr configuration]({{< ref configuration-concept.md >}})
+- [Configuration concept]({{< ref configuration-concept.md >}})
+- [Configuration overview]({{< ref configuration-overview.md >}})
