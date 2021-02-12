@@ -27,7 +27,7 @@ spec:
 
 | Field       | Details                                                                                                                                                                              | Example |
 |----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| maxRequestsPerSecond | The maximum requests per second by remote IP and path. Something to consider is that **the limit is enforced independently in each Dapr sidecar and not cluster wide.** | `10`    |
+| maxRequestsPerSecond | The maximum requests per second by remote IP and path. Something to consider is that **the limit is enforced independently in each Dapr sidecar and not cluster wide** | `10`    |
 
 Once the limit is reached, the request will return *HTTP Status code 429: Too Many Requests*.
 
