@@ -396,7 +396,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 To batch load and save state with PHP, just create a "Plain Ole' PHP Object" (POPO) and annotate it with
 the StateStore annotation. 
 
-Let's update our `state-example.php` file:
+Let's update the `state-example.php` file:
 
 ```php
 <?php
@@ -534,10 +534,10 @@ You're up and running! Both Dapr and your app logs will appear here.
 {{% codetab %}}
 
 Transactional state is supported by extending `TransactionalState` base object which hooks into your
-object via setters and getters to provide a transaction. Before we created our own transactional object,
-but now we'll ask the Dependency Injection framework to build one for us.
+object via setters and getters to provide a transaction. Before you created your own transactional object,
+but now you'll ask the Dependency Injection framework to build one for you.
 
-Let's modify our `state-example.php` file again:
+Let's modify the `state-example.php` file again:
 
 ```php
 <?php
