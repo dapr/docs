@@ -28,6 +28,8 @@ spec:
       value: "adminuser"
     - name: saslPassword
       value: "KeFg23!"
+    - name: maxMessageBytes
+      value: 1024
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -42,7 +44,27 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | authRequired        | N  | Enable authentication on the Kafka broker. Defaults to `"false"`.   |`"true"`, `"false"`
 | saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true.   | `"adminuser"`
 | saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}})  |  `""`, `"KeFg23!"`
+| maxMessageBytes | N  | The maximum message size allowed for a single Kafka message. Default is 1024. | `2048`
 
+## Per-call metadata fields
+
+### Partition Key
+
+When invoking the Kafka pub/sub, its possible to provide an optional partition key by using the `metadata` query param in the request url.
+
+The param name is `partitionKey`.
+
+Example:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partitionKey=key1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
 
 ## Create a Kafka instance
 {{< tabs "Self-Hosted" "Kubernetes">}}

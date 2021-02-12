@@ -41,6 +41,12 @@ Table captions:
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 
 
+### Alibaba Cloud
+
+| Name | Input<br>Binding | Output<br>Binding | Status |
+|------|:----------------:|:-----------------:|--------|
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
+
 ### Amazon Web Services (AWS)
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
