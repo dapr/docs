@@ -8,7 +8,7 @@ description: "Use rate limit middleware to limit requests per second"
 
 The rate limit [HTTP middleware]({{< ref middleware-concept.md >}}) allows restricting the maximum number of allowed HTTP requests per second. Rate limiting can protect your application from denial of service (DOS) attacks. DOS attacks can be initiated by malicious 3rd parties but also by bugs in your software (a.k.a. a "friendly fire" DOS attack).
 
-## Component definition
+## Component format
 
 In the following definition, the maximum requests per second are set to 10:
 ```yaml
@@ -23,7 +23,9 @@ spec:
     value: 10
 ```
 
-| Metadata field       | Description                                                                                                                                                                              | Example |
+## Spec metadata fields
+
+| Field       | Details                                                                                                                                                                              | Example |
 |----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
 | maxRequestsPerSecond | The maximum requests per second by remote IP and path. Something to consider is that **the limit is enforced independently in each Dapr sidecar and not cluster wide.** | `10`    |
 
