@@ -41,7 +41,7 @@ To be applied, the middleware must be referenced in [configuration]({{< ref conf
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: daprConfig
+  name: appconfig
 spec:
   httpPipeline:
     handlers:
