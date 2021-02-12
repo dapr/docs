@@ -2,6 +2,6 @@
 type: docs
 title: "Metrics"
 linkTitle: "Metrics"
-weight: 400
+weight: 300
 description: "How to view Dapr metrics"
 ---
