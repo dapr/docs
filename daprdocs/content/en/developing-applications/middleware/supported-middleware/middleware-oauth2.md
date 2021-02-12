@@ -8,7 +8,7 @@ description: "Use OAuth2 middleware to secure HTTP endpoints"
 
 The OAuth2 [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-4.1) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
-## Component definition
+## Component format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -33,9 +33,11 @@ spec:
     value: "http://dummy.com"
   - name: authHeaderName
     value: "authorization"
+  - name: forceHTTPS
+    value: "false" 
 ```
-
-| Metadata field | Description                                                                                                                                                                  | Example                                        |
+## Spec metadata fields
+| Field | Details                                                                                                                                                                  | Example                                        |
 |----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
 | clientId       | The client ID of your application that is created as part of a credential hosted by a OAuth-enabled platform                                                                 |                                                |
 | clientSecret   | The client secret of your application that is created as part of a credential hosted by a OAuth-enabled platform                                                             |                                                |
@@ -44,7 +46,7 @@ spec:
 | tokenURL       | The endpoint is used by the client to obtain an access token by presenting its authorization grant or refresh token                                                          | `"https://accounts.google.com/o/oauth2/token"`     |
 | redirectURL    | The URL of your web application that the authorization server should redirect to once the user has authenticated                                                             | `"https://myapp.com"`                              |
 | authHeaderName | The authorization header name to forward to your application                                                                                                                 | `"authorization"`                                |
-| forceHTTPS     | If true, enforces the use of TLS/SSL                                                                                                                                         | `true`                                         |
+| forceHTTPS     | If true, enforces the use of TLS/SSL                                                                                                                                         | `"true"`,`"false"`                                           |
 
 ## Dapr configuration
 
