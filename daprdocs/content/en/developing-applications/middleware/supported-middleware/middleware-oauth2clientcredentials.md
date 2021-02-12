@@ -8,7 +8,7 @@ description: "Use OAuth2 client credentials middleware to secure HTTP endpoints"
 
 The OAuth2 client credentials [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Client Credentials flow](https://tools.ietf.org/html/rfc6749#section-4.4) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
-## Component definition
+## Component format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -30,8 +30,9 @@ spec:
   - name: headerName
     value: "authorization"
 ```
+## Spec metadata fields
 
-| Metadata field      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Example                                            |
+| Field      | Details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Example                                            |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|
 | clientId            | The client ID of your application that is created as part of a credential hosted by a OAuth-enabled platform                                                                                                                                                                                                                                                                                                                                                                                        |                                                    |
 | clientSecret        | The client secret of your application that is created as part of a credential hosted by a OAuth-enabled platform                                                                                                                                                                                                                                                                                                                                                                                    |                                                    |
