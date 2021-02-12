@@ -13,7 +13,7 @@ Dapr supports the configuration of multiple, named, pub/sub components *per appl
 
 Pub/sub components are extensible. A list of support pub/sub components is [here]({{< ref supported-pubsub >}}) and the implementations can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 
-A pub/sub in Dapr is described using a `Component` file:
+A pub/sub is described using a `Component` file:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -33,9 +33,13 @@ spec:
 ```
 
 The type of pub/sub is determined by the `type` field, and properties such as connection strings and other metadata are put in the `.metadata` section.
-Even though you can put plain text secrets in there, it is recommended you use a [secret store]({{< ref component-secrets.md >}}) using a `secretKeyRef`
+Even though metadata values can contain secrets in plain text, it is recommended you use a [secret store]({{< ref component-secrets.md >}}) using a `secretKeyRef`.
 
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring and using pub/sub components.
+{{% alert title="How topics are created" color="primary" %}}
+Depending on the pub/sub message bus you are using and how it is configured, topics may be created automatically. Even if the message bus supports automatic topic creation, it is a common governance practice to disable it in production environments. You may still need to use a CLI, admin console, or request form to manually create the topics required by your application.
+{{% /alert %}}
+
+Visit [this guide]({{< ref "howto-publish-subscribe.md#step-3-publish-a-topic" >}}) for instructions on configuring and using pub/sub components.
 
 ## Related links
 
