@@ -31,9 +31,9 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 
 | Language | State | Client SDK | Service Extensions | Actor SDK |
 |----------|:-----:|:----------:|:-----------:|:---------:|
-| [.NET](https://github.com/dapr/dotnet-sdk) | In Development | ✔ | ASP.NET Core | ✔ |
-| [Python]({{< ref python >}}) | In Development | ✔ | [gRPC]({{< ref python-grpc.md >}}) | [FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
-| [Java](https://github.com/dapr/java-sdk) | In Development | ✔ | Spring Boot | ✔ |
+| [.NET](https://github.com/dapr/dotnet-sdk) | In Development | ✔ |  ✔ </br>ASP.NET Core | ✔ |
+| [Python]({{< ref python >}}) | In Development | ✔ | ✔ </br>[gRPC]({{< ref python-grpc.md >}}) | ✔ </br>[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
+| [Java](https://github.com/dapr/java-sdk) | In Development | ✔ |  ✔ </br>Spring Boot | ✔ |
 | [Go](https://github.com/dapr/go-sdk) | In Development | ✔ | ✔ |  |
 | [PHP](https://github.com/dapr/php-sdk) | In Development | ✔ | ✔ | ✔ |
 | [C++](https://github.com/dapr/cpp-sdk) | Backlog | ✔ | |
