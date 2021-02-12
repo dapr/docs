@@ -28,6 +28,12 @@ no_list: true
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha |
 
+### Alibaba Cloud
+
+| Name | Input<br>Binding | Output<br>Binding | Status |
+|------|:----------------:|:-----------------:|--------|
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
+
 ### Amazon Web Services (AWS)
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
