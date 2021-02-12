@@ -34,6 +34,7 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 | [.NET](https://github.com/dapr/dotnet-sdk) | In Development | ✔ | ASP.NET Core | ✔ |
 | [Python]({{< ref python >}}) | In Development | ✔ | [gRPC]({{< ref python-grpc.md >}}) | [FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
 | [Java](https://github.com/dapr/java-sdk) | In Development | ✔ | Spring Boot | ✔ |
+| [PHP](https://github.com/dapr/php-sdk) | In Development | ✔ | ✔ | ✔ |
 | [Go](https://github.com/dapr/go-sdk) | In Development | ✔ | ✔ |  |
 | [C++](https://github.com/dapr/cpp-sdk) | Backlog | ✔ | |
 | [Rust]() | Backlog | ✔ | |  |
