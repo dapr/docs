@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Tracing"
-linkTitle: "Tracing"
-weight: 3000
+title: "Configure Dapr to send distributed tracing data"
+linkTitle: "Enable Dapr tracing for your application"
+weight: 100
 description: "Configure Dapr to send distributed tracing data"
 ---
 

@@ -187,3 +187,4 @@ Handling connection for 5601
 * [Elastic search helm chart](https://github.com/elastic/helm-charts/tree/master/elasticsearch)
 * [Kibana helm chart](https://github.com/elastic/helm-charts/tree/master/kibana)
 * [Kibana Query Language](https://www.elastic.co/guide/en/kibana/current/kuery-query.html)
+* [Troubleshooting using Logs]({{< ref "logs-troubleshooting.md" >}})
