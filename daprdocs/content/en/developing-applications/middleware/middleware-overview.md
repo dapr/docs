@@ -37,7 +37,7 @@ Next, a Dapr [configuration]({{< ref configuration-overview.md >}}) defines the 
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: daprConfig
+  name: appconfig
 spec:
   httpPipeline:
     handlers:
