@@ -3,7 +3,7 @@ type: docs
 title: "Bindings overview"
 linkTitle: "Overview"
 weight: 100
-description: Overview of the Dapr bindings building block
+description: Overview of the bindings building block
 ---
 
 ## Introduction
@@ -37,19 +37,18 @@ Read the [Create an event-driven app using input bindings]({{< ref howto-trigger
 
 ## Output bindings
 
-Output bindings allow users to invoke external resources.
-An optional payload and metadata can be sent with the invocation request.
+Output bindings allow you to invoke external resources. An optional payload and metadata can be sent with the invocation request.
 
 In order to invoke an output binding:
 
 1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
 2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload
 
-Read the [Send events to external systems using output bindings]({{< ref howto-bindings.md >}}) page to get started with output bindings.
+Read the [Use output bindings to interface with external resources]({{< ref howto-bindings.md >}}) page to get started with output bindings.
 
-
-
- ## Related Topics
-- [Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
-- [Invoke different resources using output bindings]({{< ref howto-bindings.md >}})
-
+## Next Steps 
+* Follow these guides on:
+    * [How-To: Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
+    * [How-To: Use output bindings to interface with external resources]({{< ref howto-bindings.md >}})
+* Try out the [bindings quickstart](https://github.com/dapr/quickstarts/tree/master/bindings/README.md) which shows how to bind to a Kafka queue
+* Read the [bindings API specification]({{< ref bindings_api.md >}})

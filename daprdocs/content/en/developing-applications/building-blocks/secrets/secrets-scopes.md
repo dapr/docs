@@ -3,15 +3,16 @@ type: docs
 title: "How To: Use secret scoping"
 linkTitle: "How To: Use secret scoping"
 weight: 3000
-description: "Use scoping to limit the secrets that can be read from secret stores"
+description: "Use scoping to limit the secrets that can be read by your application from secret stores"
 type: docs
 ---
 
-Follow [these instructions]({{< ref setup-secret-store >}}) to configure secret store for an application. Once configured, any secret defined within that store will be accessible from the Dapr application.
+You can read [guidance on setting up secret store components]({{< ref setup-secret-store >}}) to configure a secret store for an application. Once configured, *any* secret defined within that store is accessible from the Dapr application.
 
-To limit the secrets to which the Dapr application has access, users can define secret scopes by augmenting existing configuration CRD with restrictive permissions.
+To limit the secrets to which the Dapr application has access to, you can can define secret scopes by adding a secret scope policy to the application configuration with restrictive permissions.Follow [these instructions]({{< ref configuration-concept.md >}}) to define an application configuration. 
 
-Follow [these instructions]({{< ref configuration-concept.md >}}) to define a configuration CRD.
+Watch this [video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to use secret scoping with your application.
+<iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=2272" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 
