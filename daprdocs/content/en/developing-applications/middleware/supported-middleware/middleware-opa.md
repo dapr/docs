@@ -8,7 +8,7 @@ description: "Use middleware to apply Open Policy Agent (OPA) policies on incomi
 
 The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) applys [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
-## Component definition
+## Component format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -68,7 +68,9 @@ spec:
 
 You can prototype and experiment with policies using the [official opa playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
 
-| Metadata field  | Description                                                                                                                                                                                           | Example                                                           |
+## Spec metadata fields
+
+| Field  | Details                                                                                                                                                                                           | Example                                                           |
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 | rego            | The Rego policy language                                                                                                                                                                              | See above                                                         |
 | defaultStatus   | The status code to return for denied responses                                                                                                                                                        | `"https://accounts.google.com"`, `"https://login.salesforce.com"` |
