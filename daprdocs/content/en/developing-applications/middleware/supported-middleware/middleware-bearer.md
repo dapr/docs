@@ -31,6 +31,22 @@ spec:
 | clientId       | The client ID of your application that is created as part of a credential hosted by a OpenID Connect platform |                                                                   |
 | issuerURL      | URL identifier for the service.                                                                               | `"https://accounts.google.com"`, `"https://login.salesforce.com"` |
 
+## Dapr configuration
+
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: bearer-token
+      type: middleware.http.bearer
+```
+
 ## Related links
 
 - [Middleware concept]({{< ref middleware-concept.md >}})
