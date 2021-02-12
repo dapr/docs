@@ -76,7 +76,7 @@ You can prototype and experiment with policies using the [official opa playgroun
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in a [Dapr Configuration]({{< ref configuration-concept.md >}}). See [Middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
