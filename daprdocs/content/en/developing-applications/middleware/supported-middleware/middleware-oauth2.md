@@ -3,7 +3,7 @@ type: docs
 title: "OAuth2"
 linkTitle: "OAuth2"
 weight: 2000
-description: "Use Dapr OAuth2 middleware to secure HTTP endpoints"
+description: "Use OAuth2 middleware to secure HTTP endpoints"
 ---
 
 The OAuth2 [HTTP middleware]({{< ref middleware-concept.md >}}) enables the [OAuth2 Authorization Code flow](https://tools.ietf.org/html/rfc6749#section-4.1) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
@@ -54,7 +54,7 @@ To be applied, the middleware must be referenced in a [Dapr Configuration]({{< r
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: daprConfig
+  name: appconfig
 spec:
   httpPipeline:
     handlers:
@@ -64,6 +64,7 @@ spec:
 
 ## Related links
 - [Configure API authorization with OAuth]({{< ref oauth >}})
-- [Middleware Quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
+- [Middleware OAuth quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
 - [Middleware concept]({{< ref middleware-concept.md >}})
-- [Dapr configuration]({{< ref configuration-concept.md >}})
+- [Configuration concept]({{< ref configuration-concept.md >}})
+- [Configuration overview]({{< ref configuration-overview.md >}})
