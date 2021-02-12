@@ -2,12 +2,10 @@
 type: docs
 title: "Supported stores"
 linkTitle: "Supported stores"
-description: "CRUD and/or transactional support for supported stores"
+description: "The supported state stores that interface with Dapr"
 weight: 20000
 no_list: true
 ---
-
-The following stores are supported, at various levels, by the Dapr state management building block:
 
 ### Generic
 

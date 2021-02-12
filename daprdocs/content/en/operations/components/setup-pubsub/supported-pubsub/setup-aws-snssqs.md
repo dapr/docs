@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | secretKey          | Y  | Secret for the AWS user. Can be `secretKeyRef` to use a secret reference   |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | Y  | The AWS region to the instance. See this page for valid regions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html. Ensure that SNS and SQS are available in that region.| `"us-east-1"`
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
-| sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
+| sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
 | messageVisibilityTimeout | N  |Amount of time in seconds that a message is hidden from receive requests after it is sent to a subscriber. Default: `10`   | `10`
 | messageRetryLimit        | N  |Number of times to resend a message after processing of that message fails before removing that message from the queue. Default: `10`   | `10`
 | messageWaitTimeSeconds   | N  |amount of time to await receipt of a message before making another request. Default: `1`   | `1`

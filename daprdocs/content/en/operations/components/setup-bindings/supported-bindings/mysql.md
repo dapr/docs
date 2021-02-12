@@ -5,7 +5,11 @@ linkTitle: "MySQL"
 description: "Detailed documentation on the MySQL binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup MySQL binding create a component of type `bindings.mysql`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
+The MySQL binding uses [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) internally.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -31,31 +35,32 @@ spec:
       value: <CONNECTION_MAX_IDLE_TIME>
 ```
 
-The MySQL binding uses [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) internally so the `url` parameter should follow the `DSN` format shown below:
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
-- `url`: Required, represent DB connection in Data Source Name (DNS) format.
+## Spec metadata fields
 
-  **Example DSN**
-  
-  ```yaml
-  - name: url
-    value: user:password@tcp(localhost:3306)/dbname
-  ```
+| Field              | Required | Binding support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| url | Y | Output | Represent DB connection in Data Source Name (DNS) format. See [here](#ssl-connection-details) SSL details | `"user:password@tcp(localhost:3306)/dbname"` |
+| pemPath | Y | Output | Path to the PEM file. Used with SSL connection | `"path/to/pem/file"` | 
+| maxIdleConns | N | Output | The max idle connections. Integer greater than 0 | `"10"` |
+| maxOpenConns | N | Output | The max open connections. Integer greater than 0 | `"10"` | 
+| connMaxLifetime | N | Output | The max connection lifetime. Duration string | `"12s"` |
+| connMaxIdleTime | N | Output | The max connection idel time. Duration string | `"12s"` |
 
-If your server requires SSL your connection string must end of `&tls=custom` for example, `"<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true&tls=custom"`. You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
+### SSL connection
 
-- `pemPath`: path to the PEM file
+If your server requires SSL your connection string must end of `&tls=custom` for example:
+```bash
+"<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true&tls=custom"
+```
+ You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
 
-also support connection pool configuration variables:
+## Binding support
 
-- `maxIdleConns`: integer greater than 0
-- `maxOpenConns`: integer greater than 0
-- `connMaxLifetime`: duration string
-- `connMaxIdleTime`: duration string
-
-{{% alert title="Warning" color="warning" %}} The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}). {{% /alert %}}
-
-## Output Binding Supported Operations
+This component supports **output binding** with the folowing operations:
 
 - `exec`
 - `query`
@@ -141,6 +146,7 @@ Finally, the `close` operation can be used to explicitly close the DB connection
 
 ## Related links
 
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

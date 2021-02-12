@@ -5,7 +5,10 @@ linkTitle: "GCP Pub/Sub"
 description: "Detailed documentation on the GCP Pub/Sub binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup Azure Pub/Sub binding create a component of type `bindings.gcp.pubsub`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -42,29 +45,36 @@ spec:
   - name: private_key
     value: PRIVATE KEY
 ```
-
-- `topic` is the Pub/Sub topic name.
-- `subscription` is the Pub/Sub subscription name.
-- `type` is the GCP credentials type.
-- `project_id` is the GCP project id.
-- `private_key_id` is the GCP private key id.
-- `client_email` is the GCP client email.
-- `client_id` is the GCP client id.
-- `auth_uri` is Google account OAuth endpoint.
-- `token_uri` is Google account token uri.
-- `auth_provider_x509_cert_url` is the GCP credentials cert url.
-- `client_x509_cert_url` is the GCP credentials project x509 cert url.
-- `private_key` is the GCP credentials private key.
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Output Binding Supported Operations
+## Spec metadata fields
 
-* create
+| Field              | Required  | Binding support | Details | Example |
+|--------------------|:--------:|-----------| -----|---------|
+| topic | Y | Output | GCP Pub/Sub topic name | `"topic1"` |
+| subscription | Y | GCP Pub/Sub subscription name | `"name1"` |
+| type           | Y | Output | GCP credentials type  | `service_account`
+| project_id     | Y | Output | GCP project id| `projectId`
+| private_key_id | Y | Output | GCP private key id | `"privateKeyId"`
+| private_key    | Y | Output | GCP credentials private key. Replace with x509 cert | `12345-12345`
+| client_email   | Y | Output | GCP client email  | `"client@email.com"`
+| client_id      | Y | Output | GCP client id | `0123456789-0123456789`
+| auth_uri       | Y | Output | Google account OAuth endpoint | `https://accounts.google.com/o/oauth2/auth`
+| token_uri      | Y | Output | Google account token uri | `https://oauth2.googleapis.com/token`
+| auth_provider_x509_cert_url | Y | Output |GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
+| client_x509_cert_url | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
+
+## Binding support
+
+This component supports **output binding** with the folowing operations:
+
+- `create`
 
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
