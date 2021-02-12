@@ -43,10 +43,6 @@ kind: Configuration
 metadata:
   name: daprConfig
 spec:
-  tracing:
-    samplingRate: "1"
-    zipkin:
-      endpointAddress: "http://localhost:9411/api/v2/spans"
   httpPipeline:
     handlers:
     - name: ratelimit

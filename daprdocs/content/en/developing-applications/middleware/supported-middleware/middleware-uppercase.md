@@ -38,6 +38,8 @@ spec:
       type: middleware.http.uppercase
 ```
 
+## Related links
+
 - [Middleware concept]({{< ref middleware-concept.md >}})
 - [Configuration concept]({{< ref configuration-concept.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})

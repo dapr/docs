@@ -42,7 +42,7 @@ spec:
 | endpointParamsQuery | Specifies additional parameters for requests to the token endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                  | `true`                                             |
 | authStyle           | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table of possible values below. | `0`                                                |
 
-**Possible values for `authStyle`**
+### Possible values for `authStyle`
 
 | Value | Meaning |
 |-------|---------|
