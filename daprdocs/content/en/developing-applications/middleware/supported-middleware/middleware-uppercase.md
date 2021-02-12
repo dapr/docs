@@ -8,7 +8,7 @@ description: "Test your HTTP pipeline is functioning with the uppercase middlewa
 
 The uppercase [HTTP middleware]({{< ref middleware-concept.md >}}) converts the body of the request to uppercase letters and is used for testing that the pipeline is functioning. It should only be used for local development.
 
-## Component definition
+## Component format
 
 In the following definition, the maximum requests per second are set to 10:
 ```yaml
@@ -38,3 +38,6 @@ spec:
       type: middleware.http.uppercase
 ```
 
+- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Configuration concept]({{< ref configuration-concept.md >}})
+- [Configuration overview]({{< ref configuration-overview.md >}})
