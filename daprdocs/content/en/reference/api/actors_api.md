@@ -7,7 +7,7 @@ weight: 500
 ---
 
 Dapr provides native, cross-platform and cross-language virtual actor capabilities.
-Besides the language specific Dapr SDKs, a developer can invoke an actor using the API endpoints below.
+Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke an actor using the API endpoints below.
 
 ## User service code calling dapr
 
