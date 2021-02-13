@@ -50,7 +50,7 @@ For more information see [Azure Cosmos DB resource model](https://docs.microsoft
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 
