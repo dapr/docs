@@ -53,7 +53,7 @@ Combined, the optional metadata properties in the component configuration and th
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 

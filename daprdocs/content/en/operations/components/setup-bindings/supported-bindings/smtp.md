@@ -63,7 +63,7 @@ The example configuration shown above, contain a username and password as plain-
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 

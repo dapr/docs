@@ -61,7 +61,7 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 
 This component supports both **input and output** binding interfaces. 
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `delete`
 
