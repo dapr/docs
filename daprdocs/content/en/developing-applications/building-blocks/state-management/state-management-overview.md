@@ -58,14 +58,6 @@ When strong consistency is used, Dapr waits for all replicas (or designated quor
 
 Read the [API reference]({{< ref state_api.md >}}) to learn how to set consistency options.
 
-<!---
-### Retry policies
-
-Dapr allows you to attach a retry policy to any write request. A policy is described by an **retryInterval**, a **retryPattern** and a **retryThreshold**. Dapr keeps retrying the request at the given interval up to the specified threshold. You can choose between a **linear** retry pattern or an **exponential** (backoff) pattern. When the **exponential** pattern is used, the retry interval is doubled after each attempt.
-
-Visit the [API reference]({{< ref state_api.md >}}) to learn how to set retry policy options.
--->
-
 ### Bulk operations
 
 Dapr supports two types of bulk operations - **bulk** or **multi**. You can group several requests of the same type into a bulk (or a batch). Dapr submits requests in the bulk as individual requests to the underlying data store. In other words, bulk operations are not transactional. On the other hand, you can group requests of different types into a multi-operation, which is handled as an atomic transaction.
@@ -74,7 +66,6 @@ Read the [API reference]({{< ref state_api.md >}}) to learn how use bulk and mul
 
 ### Actor state
 Transactional state stores can be used to store actor state. To specify which state store to be used for actors, specify value of property `actorStateStore` as `true` in the metadata section of the state store component. Actors state is stored with a specific scheme in transactional state stores, which allows for consistent querying. Read the [API reference]({{< ref state_api.md >}}) to learn more about state stores for actors and the [actors API reference]({{< ref actors_api.md >}})
-
 
 ### Query state store directly
 
