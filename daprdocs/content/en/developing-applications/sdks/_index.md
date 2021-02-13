@@ -29,15 +29,16 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 
 ## SDK languages
 
-| Language | State | Client SDK | Service Extensions | Actor SDK |
+| Language | Version | Client SDK | Service Extensions | Actor SDK |
 |----------|:-----:|:----------:|:-----------:|:---------:|
-| [.NET](https://github.com/dapr/dotnet-sdk) | In Development | ✔ | ASP.NET Core | ✔ |
-| [Python]({{< ref python >}}) | In Development | ✔ | [gRPC]({{< ref python-grpc.md >}}) | [FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
-| [Java](https://github.com/dapr/java-sdk) | In Development | ✔ | Spring Boot | ✔ |
-| [Go](https://github.com/dapr/go-sdk) | In Development | ✔ | ✔ |  |
-| [C++](https://github.com/dapr/cpp-sdk) | Backlog | ✔ | |
-| [Rust]() | Backlog | ✔ | |  |
-| [Javascript]() | Backlog | ✔ | |
+| [.NET](https://github.com/dapr/dotnet-sdk) | v1.0 | ✔ |  ✔ </br>ASP.NET Core | ✔ |
+| [Python]({{< ref python >}}) | v1.0 | ✔ | ✔ </br>[gRPC]({{< ref python-grpc.md >}}) | ✔ </br>[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
+| [Java](https://github.com/dapr/java-sdk) | v1.0 | ✔ |  ✔ </br>Spring Boot | ✔ |
+| [Go](https://github.com/dapr/go-sdk) | v1.0 | ✔ | ✔ |  |
+| [PHP](https://github.com/dapr/php-sdk) | Preview | ✔ | ✔ | ✔ |
+| [C++](https://github.com/dapr/cpp-sdk) | Preview | ✔ | |
+| [Rust]() | Preview | ✔ | |  |
+| [Javascript]() | Preview | ✔ | |
 
 ## Further reading
 

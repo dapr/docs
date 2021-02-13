@@ -60,7 +60,7 @@ If your server requires SSL your connection string must end of `&tls=custom` for
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `exec`
 - `query`

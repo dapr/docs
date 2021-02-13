@@ -30,10 +30,12 @@ spec:
     value: topic3
   - name: authRequired # Required. default: "true"
     value: "false"
-   - name: saslUsername # Optional.
+  - name: saslUsername # Optional.
     value: "user"
-   - name: saslPassword # Optional.
+  - name: saslPassword # Optional.
     value: "password"
+  - name: maxMessageBytes # Optional.
+    value: 1024
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -50,13 +52,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | authRequired | Y | Input/Output | Determines whether to use SASL authentication or not. Defaults to `"true"` | `"true"`, `"false"` |
 | saslUsername | N | Input/Output | The SASL username for authentication. Only used if `authRequired` is set to - `"true"` | `"user"` |
 | saslPassword | N | Input/Output | The SASL password for authentication. Only used if `authRequired` is set to - `"true"` | `"password"` |
+| maxMessageBytes | N | Input/Output | The maximum size allowed for a single Kafka message. Defaults to 1024 | `2048` |
 
 
 ## Binding support
 
 This component supports both **input and output** binding interfaces. 
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 

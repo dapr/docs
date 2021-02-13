@@ -61,7 +61,7 @@ Both methods also support connection pool configuration variables:
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `exec`
 - `query`
