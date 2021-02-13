@@ -80,7 +80,7 @@ curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localh
 
 {{% codetab %}}
 ```bash
-curl -d "{ "operation": "create", "data": "Hello World" }" \
+curl -d '{ "operation": "create", "data": "Hello World" }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /codetab %}}
@@ -100,7 +100,7 @@ curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": {
 
 {{% codetab %}}
 ```bash
-curl -d "{ "operation": "create", "data": "Hello World", "metadata": { "blobName": "my-test-file.txt" } }" \
+curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "blobName": "my-test-file.txt" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /codetab %}}
@@ -144,7 +144,7 @@ curl -d "{ \"operation\": \"create\", \"data\": \"YOUR_BASE_64_CONTENT\", \"meta
 
 {{% codetab %}}
 ```bash
-curl -d "{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "blobName": "my-test-file.jpg" } }" \
+curl -d '{ "operation": "create", "data": "YOUR_BASE_64_CONTENT", "metadata": { "blobName": "my-test-file.jpg" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /codetab %}}

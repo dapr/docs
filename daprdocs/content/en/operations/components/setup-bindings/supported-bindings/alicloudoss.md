@@ -67,7 +67,7 @@ By default, a random UUID is auto-generated as the object key. See below for Met
 
 **Saving to a random generated UUID file**
 
-{{< tabs Linux >}}
+{{< tabs "Windows" "Linux/MacOS" >}}
 
 {{% codetab %}}
 
@@ -77,12 +77,20 @@ curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localh
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```bash
+curl -d '{ "operation": "create", "data": "Hello World" }' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 <br />
 
 **Saving to a specific file**
-{{< tabs Linux >}}
+{{< tabs "Windows" "Linux/MacOS" >}}
 
 {{% codetab %}}
 
@@ -92,7 +100,15 @@ curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": {
 
 {{% /codetab %}}
 
-{{< /tabs >}}`
+{{% codetab %}}
+
+```bash
+curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-key" } }' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 {{% alert title="Note" color="primary" %}}
 Windows CMD requires escaping the `"` character.
