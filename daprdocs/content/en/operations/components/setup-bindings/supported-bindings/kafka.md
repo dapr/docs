@@ -38,14 +38,6 @@ spec:
     value: 1024
 ```
 
-- `topics` is a comma separated string of topics for an input binding.
-- `brokers` is a comma separated string of kafka brokers.
-- `consumerGroup` is a kafka consumer group to listen on.
-- `publishTopic` is the topic to publish for an output binding.
-- `authRequired` determines whether to use SASL authentication or not.
-- `saslUsername` is the SASL username for authentication. Only used if `authRequired` is set to - `"true"`.
-- `maxMessageBytes` is the maximum message size allowed for a single Kafka message. Default is 1024.
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
@@ -60,13 +52,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | authRequired | Y | Input/Output | Determines whether to use SASL authentication or not. Defaults to `"true"` | `"true"`, `"false"` |
 | saslUsername | N | Input/Output | The SASL username for authentication. Only used if `authRequired` is set to - `"true"` | `"user"` |
 | saslPassword | N | Input/Output | The SASL password for authentication. Only used if `authRequired` is set to - `"true"` | `"password"` |
+| maxMessageBytes | N | Input/Output | The maximum size allowed for a single Kafka message. Defaults to 1024 | `2048` |
 
 
 ## Binding support
 
 This component supports both **input and output** binding interfaces. 
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 
