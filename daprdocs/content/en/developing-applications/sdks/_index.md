@@ -35,10 +35,10 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 | [Python]({{< ref python >}}) | v1.0 | ✔ | ✔ </br>[gRPC]({{< ref python-grpc.md >}}) | ✔ </br>[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
 | [Java](https://github.com/dapr/java-sdk) | v1.0 | ✔ |  ✔ </br>Spring Boot | ✔ |
 | [Go](https://github.com/dapr/go-sdk) | v1.0 | ✔ | ✔ |  |
-| [PHP](https://github.com/dapr/php-sdk) | Preview | ✔ | ✔ | ✔ |
-| [C++](https://github.com/dapr/cpp-sdk) | Preview | ✔ | |
-| [Rust]() | Preview | ✔ | |  |
-| [Javascript]() | Preview | ✔ | |
+| [PHP](https://github.com/dapr/php-sdk) | v1.0 | ✔ | ✔ | ✔ |
+| [C++](https://github.com/dapr/cpp-sdk) | v0.3.0 (Preview) | ✔ | |
+| [Rust]() | v0.4.0 (Preview) | ✔ | |  |
+| [Javascript]() | v0.10 (Preview) | ✔ | |
 
 ## Further reading
 
