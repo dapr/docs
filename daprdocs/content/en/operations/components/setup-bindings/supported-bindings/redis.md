@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 

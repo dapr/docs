@@ -76,7 +76,7 @@ Scope is the identifier of the resource to which the event subscription needs to
 
 This component supports both **input and output** binding interfaces. 
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 ## Additional information
