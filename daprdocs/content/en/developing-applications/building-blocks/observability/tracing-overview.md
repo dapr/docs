@@ -14,7 +14,7 @@ Dapr uses the Zipkin protocol for distributed traces and metrics collection. Due
 
 Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts all Dapr and application traffic and automatically injects correlation IDs to trace distributed transactions. This design has several benefits:
 
-* No need for code instrumentation. All traffic is automatically traced (with configurable tracing levels).
+* No need for code instrumentation. All traffic is automatically traced with configurable tracing levels.
 * Consistent tracing behavior across microservices. Tracing is configured and managed on Dapr sidecar so that it remains consistent across services made by different teams and potentially written in different programming languages.
 * Configurable and extensible. By leveraging the Zipkin API and the OpenTelemetry Collector, Dapr tracing can be configured to work with popular tracing backends, including custom backends a customer may have.
 * You can define and enable multiple exporters at the same time.
@@ -44,7 +44,7 @@ spec:
       endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
-Changing `samplingRate` to 0 will disable tracing altogether.
+Note: Changing `samplingRate` to 0 disables tracing altogether.
 
 See the [References](#references) section for more details on how to configure tracing on local environment and Kubernetes environment.
 
