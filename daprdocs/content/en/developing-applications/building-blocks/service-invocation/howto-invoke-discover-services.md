@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "How-To: Invoke and discover services"
+title: "How-To: Invoke services using HTTP"
 linkTitle: "How-To: Invoke services"
-description: "How-to guide on how to use Dapr service invocation in a distributed application"
+description: "Call between services using service invocation"
 weight: 2000
 ---
 

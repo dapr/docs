@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Secrets stores overview"
-linkTitle: "Secrets stores overview"
+title: "Secrets management overview"
+linkTitle: "Overview"
 weight: 1000
-description: "Overview of Dapr secrets management building block"
+description: "Overview of secrets management building block"
 ---
 
 It's common for applications to store sensitive information such as connection strings, keys and tokens that are used to authenticate with databases, services and external systems in secrets by using a dedicated secret store.
