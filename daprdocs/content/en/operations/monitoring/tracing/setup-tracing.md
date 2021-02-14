@@ -6,8 +6,10 @@ weight: 100
 description: "Configure Dapr to send distributed tracing data"
 ---
 
-It is recommended to run Dapr with tracing enabled for any production scenario.
-Since Dapr uses Open Census, you can configure various exporters for tracing and telemetry data based on your environment, whether it is running in the cloud or on-premises.
+It is recommended to run Dapr with tracing enabled for any production
+scenario.  You can configure Dapr to send tracing and telemetry data
+to many backends based on your environment, whether it is running in
+the cloud or on-premises.
 
 ## Tracing configuration
 
@@ -29,13 +31,13 @@ The following table lists the properties for tracing:
 | `zipkin.endpointAddress` | string | Set the Zipkin server address.
 
 
-## Zipkin in stand-alone mode
+## Zipkin in self hosted mode
 
 The following steps show you how to configure Dapr to send distributed tracing data to Zipkin running as a container on your local machine and view them.
 
-For Standalone mode, create a Dapr configuration file locally and reference it with the Dapr CLI.
+For self hosted mode, create a Dapr configuration file locally and reference it with the Dapr CLI.
 
-1. Create the following YAML file:
+1. Create the following `config.yaml` YAML file:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -56,7 +58,7 @@ For Standalone mode, create a Dapr configuration file locally and reference it w
    docker run -d -p 9411:9411 openzipkin/zipkin
    ```
 
-3. Launch Dapr with the `--config` param:
+3. Launch Dapr with the `--config` param with the path for where the `config.yaml` is saved :
 
    ```bash
    dapr run --app-id mynode --app-port 3000 --config ./config.yaml node app.js
@@ -109,7 +111,7 @@ annotations:
   dapr.io/config: "zipkin"
 ```
 
-That's it! Your sidecar is now configured for use with Open Census and Zipkin.
+That's it! Your sidecar is now configured for use with Zipkin.
 
 ### Viewing Tracing Data
 
@@ -123,3 +125,5 @@ On your browser, go to ```http://localhost:9411``` and you should see the Zipkin
 
 ![zipkin](/images/zipkin_ui.png)
 
+## References
+- [Zipkin for distributed tracing](https://zipkin.io/)
