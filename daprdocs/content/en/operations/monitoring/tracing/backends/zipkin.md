@@ -36,7 +36,7 @@ Launch Zipkin using Docker:
 docker run -d -p 9411:9411 openzipkin/zipkin
 ```
 
-3. The applications launched with `dapr run` will by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
+3. The applications launched with `dapr run` by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param:
 
 ```bash
 dapr run --app-id mynode --app-port 3000 node app.js
@@ -46,7 +46,7 @@ To view traces, in your browser go to http://localhost:9411 and you will see the
 
 ## Configure Kubernetes
 
-The following steps shows you how to configure Dapr to send distributed tracing data to Zipkin running as a container in your Kubernetes cluster, how to view them.
+The following steps shows you how to configure Dapr to send distributed tracing data to Zipkin running as a container in your Kubernetes cluster, and how to view them.
 
 ### Setup
 
@@ -92,11 +92,11 @@ annotations:
   dapr.io/config: "tracing"
 ```
 
-That's it! your sidecar is now configured for use with Open Census and Zipkin.
+That's it! Your sidecar is now configured to send traces to Zipkin.
 
 ### Viewing Tracing Data
 
-To view traces, connect to the Zipkin Service and open the UI:
+To view traces, connect to the Zipkin service and open the UI:
 
 ```bash
 kubectl port-forward svc/zipkin 9411:9411
@@ -107,4 +107,5 @@ In your browser, go to `http://localhost:9411` and you will see the Zipkin UI.
 ![zipkin](/images/zipkin_ui.png)
 
 ## References
+- [Zipkin for distributed tracing](https://zipkin.io/)
 - [W3C distributed tracing]({{< ref w3c-tracing >}})
