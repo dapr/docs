@@ -125,5 +125,5 @@ On your browser, go to ```http://localhost:9411``` and you should see the Zipkin
 
 ![zipkin](/images/zipkin_ui.png)
 
-## Related links
+## References
 - [Zipkin for distributed tracing](https://zipkin.io/)
