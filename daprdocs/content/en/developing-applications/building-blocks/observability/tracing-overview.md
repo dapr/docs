@@ -6,7 +6,7 @@ weight: 1000
 description: "Use Dapr tracing to get visibility for distributed application"
 ---
 
-Dapr uses OpenTelemetry (previously known as OpenCensus) for distributed traces and metrics collection. OpenTelemetry supports various backends including [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor/), [Datadog](https://www.datadoghq.com), [Instana](https://www.instana.com), [Jaeger](https://www.jaegertracing.io/), [SignalFX](https://www.signalfx.com/), [Stackdriver](https://cloud.google.com/stackdriver), [Zipkin](https://zipkin.io) and others.
+Dapr uses the Zipkin protocol for distributed traces and metrics collection. Due to the ubiquity of the Zipkin protocol, many backends are supported out of the box, for examples [Stackdriver](https://cloud.google.com/stackdriver), [Zipkin](https://zipkin.io), [New Relic](https://newrelic.com) and others. Combining with the OpenTelemetry Collector, Dapr can export traces to many other backends including but not limted to [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor/), [Datadog](https://www.datadoghq.com), [Instana](https://www.instana.com), [Jaeger](https://www.jaegertracing.io/), and [SignalFX](https://www.signalfx.com/).
 
 <img src="/images/tracing.png" width=600>
 
@@ -16,8 +16,8 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 
 * No need for code instrumentation. All traffic is automatically traced (with configurable tracing levels).
 * Consistent tracing behavior across microservices. Tracing is configured and managed on Dapr sidecar so that it remains consistent across services made by different teams and potentially written in different programming languages.
-* Configurable and extensible. By leveraging OpenTelemetry, Dapr tracing can be configured to work with popular tracing backends, including custom backends a customer may have.
-* OpenTelemetry exporters are defined as first-class Dapr components. You can define and enable multiple exporters at the same time.
+* Configurable and extensible. By leveraging the Zipkin API and the OpenTelemetry Collector, Dapr tracing can be configured to work with popular tracing backends, including custom backends a customer may have.
+* You can define and enable multiple exporters at the same time.
 
 ## W3C Correlation ID
 
