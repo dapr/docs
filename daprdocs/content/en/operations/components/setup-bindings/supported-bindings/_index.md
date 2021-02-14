@@ -21,7 +21,7 @@ Table captions:
 > `Component version`: defines the version of the component
 ### Generic
 
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since runtime version |
 |------|:----------------:|:-----------------:|--------|-------- | ---------|
 | [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 | 
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
