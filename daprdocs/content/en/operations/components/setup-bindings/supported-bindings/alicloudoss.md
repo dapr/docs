@@ -35,16 +35,18 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field         | Required | Details | Example |
-|---------------|----------|---------|---------|
-| `endpoint`    | Y | Alicloud OSS endpoint. | https://oss-cn-hangzhou.aliyuncs.com
-| `accessKeyID` | Y | Access key ID credential. |
-| `accessKey`   | Y | Access key credential. |
-| `bucket`      | Y | Name of the storage bucket. |
+| Field         | Required | Binding support  | Details | Example |
+|---------------|----------|---------|---------|---------|
+| `endpoint`    | Y | Output | Alicloud OSS endpoint. | https://oss-cn-hangzhou.aliyuncs.com
+| `accessKeyID` | Y | Output | Access key ID credential. |
+| `accessKey`   | Y | Output | Access key credential. |
+| `bucket`      | Y | Output | Name of the storage bucket. |
 
-## Output operations
+## Binding support 
 
-The following operations are supported as within the output binding:
+This component supports **output binding** with the following operations:
+- `create`: [Create object](#create-object)
+
 
 ### Create object
 
@@ -65,17 +67,48 @@ By default, a random UUID is auto-generated as the object key. See below for Met
 
 **Saving to a random generated UUID file**
 
+{{< tabs "Windows" "Linux/MacOS" >}}
+
+{{% codetab %}}
+
 ```bash
 curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\" }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+curl -d '{ "operation": "create", "data": "Hello World" }' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 <br />
 
 **Saving to a specific file**
+{{< tabs "Windows" "Linux/MacOS" >}}
+
+{{% codetab %}}
 
 ```bash
 curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-key\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-key" } }' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 {{% alert title="Note" color="primary" %}}
 Windows CMD requires escaping the `"` character.

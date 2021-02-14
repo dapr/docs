@@ -81,7 +81,7 @@ stringData:
 
 ## Binding support
 
-This component supports **output binding** with the folowing operations:
+This component supports **output binding** with the following operations:
 
 - `create`
 
