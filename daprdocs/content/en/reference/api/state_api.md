@@ -378,6 +378,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
 ## Configuring state store for actors
 
 Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently Mongodb, Redis, PostgreSQL, SQL Server, and Azure CosmosDB implement the transactional state store interface.
+
 To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
 Example: Following components yaml will configure redis to be used as the state store for Actors.
 
@@ -435,9 +436,9 @@ When a strong consistency hint is attached, a state store should:
 * For read requests, the state store should return the most up-to-date data consistently across replicas.
 * For write/delete requests, the state store should synchronisely replicate updated data to configured quorum before completing the write request.
 
-### Example - Complete Request
+### Example - Complete options request example
 
-The following is a sample *set* request with a complete operation option definition:
+The following is an example *set* request with a complete options definition:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/starwars \
@@ -456,7 +457,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
 ```
 
 ### Example - Working with ETags
-The following is a sample which walks through the usage of an ETag when setting/deleting an object in a compatible statestore.
+The following is an example which walks through the usage of an ETag when setting/deleting an object in a compatible statestore.
 
 First, store an object in a statestore (this sample uses Redis that has been defined as 'statestore'):
 
@@ -514,7 +515,7 @@ curl -X DELETE -H 'If-Match: 5' http://localhost:3500/v1.0/state/statestore/samp
 app||sampleData"}
 ```
 
-In order to update or delete the object, simply match the ETag in either the request body (update) or the If-Match header (delete). Note, when the state is updated, it will receive a new ETag so further updates or deletes will need to use the need ETag.
+In order to update or delete the object, simply match the ETag in either the request body (update) or the `If-Match` header (delete). Note, when the state is updated, it receives a new ETag so further updates or deletes will need to use the new ETag.
 
 ```shell
 # Update
