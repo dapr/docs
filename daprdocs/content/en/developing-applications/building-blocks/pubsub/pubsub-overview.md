@@ -3,7 +3,7 @@ type: docs
 title: "Publish and subscribe overview"
 linkTitle: "Overview"
 weight: 1000
-description: "Overview of the Dapr Pub/Sub building block"
+description: "Overview of the Pub/Sub building block"
 ---
 
 ## Introduction
@@ -106,10 +106,11 @@ The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.m
 
 ## Next steps
 
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
-- Read the [guide on publishing and subscribing]({{< ref howto-publish-subscribe.md >}})
-- Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [pub/sub components]({{< ref supported-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+* Follow these guides on:
+    * [How-To: Publish a message and subscribe to a topic]({{< ref howto-publish-subscribe.md >}})
+    * [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+* Try out the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+* Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
+* Learn about [message time-to-live (TTL)]({{< ref pubsub-message-ttl.md >}})
+* List of [pub/sub components]({{< ref supported-pubsub.md >}})
+* Read the [pub/sub API reference]({{< ref pubsub_api.md >}})

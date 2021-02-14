@@ -1,14 +1,14 @@
 ---
 type: docs
-title: "Dapr actors overview"
+title: "Actors overview"
 linkTitle: "Overview"
 weight: 10
-description: Overview of Dapr support for actors
+description: Overview of the actors building block
 aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-## Background 
+## Introduction 
 The [actor pattern](https://en.wikipedia.org/wiki/Actor_model) describes actors as the lowest-level "unit of computation". In other words, you write your code in a self-contained unit (called an actor) that receives messages and processes them one at a time, without any kind of concurrency or threading.
 
 While your code processes a message, it can send one or more messages to other actors, or create new actors. An underlying runtime manages how, when and where each actor runs, and also routes messages between actors.
