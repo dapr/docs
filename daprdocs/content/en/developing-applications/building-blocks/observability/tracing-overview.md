@@ -27,7 +27,7 @@ Read [W3C distributed tracing]({{< ref w3c-tracing >}}) for more background on W
 
 ## Configuration
 
-Dapr uses [probabilistic sampling](https://opencensus.io/tracing/sampling/probabilistic/) as defined by OpenCensus. The sample rate defines the probability a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The deafault sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
+Dapr uses probabilistic sampling. The sample rate defines the probability a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The default sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
 
 To change the default tracing behavior, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (i.e. every span is sampled), and sends trace using Zipkin protocol to the Zipkin server at http://zipkin.default.svc.cluster.local
 

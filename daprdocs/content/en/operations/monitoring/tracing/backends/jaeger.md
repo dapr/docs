@@ -6,9 +6,10 @@ weight: 3000
 description: "Set up Jaeger for distributed tracing"
 type: docs
 ---
-Dapr currently supports two kind of tracing protocol: OpenCensus and
-Zipkin. Since Jaeger is compatible with Zipkin, the Zipkin
-protocol can be used to talk to Jaeger.
+
+Dapr currently supports the Zipkin protocol. Since Jaeger is
+compatible with Zipkin, the Zipkin protocol can be used to talk to
+Jaeger.
 
 ## Configure self hosted mode
 

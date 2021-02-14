@@ -92,7 +92,7 @@ annotations:
   dapr.io/config: "tracing"
 ```
 
-That's it! your sidecar is now configured for use with Open Census and Zipkin.
+That's it! Your sidecar is now configured to send trace to Zipkin.
 
 ### Viewing Tracing Data
 
