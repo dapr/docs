@@ -26,9 +26,9 @@ First, find out Application Insights Instrumentation Key to be used in later ste
 
 Next, install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
 
-1. Check out the file [open-telemetry-collector.yaml](/docs/open-telemetry-collector/open-telemetry-collector.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your Application Insights Instrumentation Key.
+1. Check out the file [open-telemetry-collector-appinsights.yaml](/docs/open-telemetry-collector/open-telemetry-collector-appinsights.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your Application Insights Instrumentation Key.
 
-2. Apply the configuration with `kubectl apply -f open-telemetry-collector.yaml`.
+2. Apply the configuration with `kubectl apply -f open-telemetry-collector-appinsights.yaml`.
 
 Next, set up both a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.
 
