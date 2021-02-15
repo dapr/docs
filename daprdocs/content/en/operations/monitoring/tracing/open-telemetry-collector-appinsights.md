@@ -69,4 +69,4 @@ Deploy and run some applications. After a few minutes, you should see tracing lo
 
 ## References
 
-* [Tracing Configuration]({{< ref configuration-overview.md >}}#tracing)
+* [Tracing Configuration]({{< ref "configuration-overview.md#tracing" >}})
