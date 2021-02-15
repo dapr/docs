@@ -29,16 +29,16 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 
 ## SDK languages
 
-| Language | Version | Client SDK | Service Extensions | Actor SDK |
+| Language | Status | Client SDK | Service Extensions | Actor SDK |
 |----------|:-----:|:----------:|:-----------:|:---------:|
-| [.NET](https://github.com/dapr/dotnet-sdk) | v1.0 | ✔ |  ✔ </br>ASP.NET Core | ✔ |
-| [Python]({{< ref python >}}) | v1.0 | ✔ | ✔ </br>[gRPC]({{< ref python-grpc.md >}}) | ✔ </br>[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
-| [Java](https://github.com/dapr/java-sdk) | v1.0 | ✔ |  ✔ </br>Spring Boot | ✔ |
-| [Go](https://github.com/dapr/go-sdk) | v1.0 | ✔ | ✔ |  |
-| [PHP](https://github.com/dapr/php-sdk) | v1.0 | ✔ | ✔ | ✔ |
-| [C++](https://github.com/dapr/cpp-sdk) | v0.3.0 (Preview) | ✔ | |
-| [Rust]() | v0.4.0 (Preview) | ✔ | |  |
-| [Javascript]() | v0.10 (Preview) | ✔ | |
+| [.NET](https://github.com/dapr/dotnet-sdk) | Stable | ✔ |  ✔ </br>ASP.NET Core | ✔ |
+| [Python]({{< ref python >}}) | Stable | ✔ | ✔ </br>[gRPC]({{< ref python-grpc.md >}}) | ✔ </br>[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
+| [Java](https://github.com/dapr/java-sdk) | Stable | ✔ |  ✔ </br>Spring Boot | ✔ |
+| [Go](https://github.com/dapr/go-sdk) | Stable | ✔ | ✔ |  |
+| [PHP](https://github.com/dapr/php-sdk) | Stable | ✔ | ✔ | ✔ |
+| [C++](https://github.com/dapr/cpp-sdk) | In development | ✔ | |
+| [Rust]() | In development | ✔ | |  |
+| [Javascript]() | In development| ✔ | |
 
 ## Further reading
 
