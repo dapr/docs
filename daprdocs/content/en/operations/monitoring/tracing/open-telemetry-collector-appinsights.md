@@ -67,20 +67,6 @@ Deploy and run some applications. After a few minutes, you should see tracing lo
 
 > **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) are displayed in Application Map topology.
 
-## Tracing configuration
+## References
 
-The `tracing` section under the `Configuration` spec contains the following properties:
-
-```yml
-tracing:
-    samplingRate: "1"
-```
-
-The following table lists the different properties.
-
-| Property      | Type   | Description
-|-------------- | ------ | -----------
-| samplingRate  | string | Set sampling rate for tracing to be enabled or disabled.
-
-
-`samplingRate` is used to enable or disable the tracing. To disable the sampling rate , set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces. By default, the sampling rate is 1 in 10,000
+* [Tracing Configuration]({{< ref configuration-overview.md >}}#tracing)

@@ -65,23 +65,6 @@ That's it! There's no need include any SDKs or instrument your application code.
 
 Deploy and run some applications. Wait for the trace to propagate to your tracing backend and view them there.
 
-## Tracing configuration
-
-The `tracing` section under the `Configuration` spec contains the following properties:
-
-```yml
-tracing:
-    samplingRate: "1"
-```
-
-The following table lists the different properties.
-
-| Property      | Type   | Description
-|-------------- | ------ | -----------
-| samplingRate  | string | Set sampling rate for tracing to be enabled or disabled.
-
-
-`samplingRate` is used to enable or disable the tracing. To disable the sampling rate , set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces. By default, the sampling rate is 1 in 10,000
-
 ## References
+* [Tracing Configuration]({{< ref configuration-overview.md >}}#tracing)
 * [Using OpenTelemetry Collector to push to Azure AppInsights]({{< ref open-telemetry-collector-appinsights.md >}})
