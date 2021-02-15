@@ -20,7 +20,7 @@ Dapr can be [configured to emit tracing data]({{<ref setup-tracing.md>}}), and b
 <img src="/images/observability-tracing.png" width=1000>
 
 ### OpenTelemetry collector
-Dapr can also be configured to work with an [OpenTelemtry collector]({{<ref open-telemetry-collector>}}) which offers even more compatibility with external monitoring tools.
+Dapr can also be configured to work with the [OpenTelemetry Collector]({{<ref open-telemetry-collector>}}) which offers even more compatibility with external monitoring tools.
 
 <img src="/images/observability-opentelemetry-collector.png" width=1000>
 
