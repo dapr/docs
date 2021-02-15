@@ -1,35 +1,35 @@
 ---
 type: docs
-title: "Using OpenTelemetry Collector to collect traces"
-linkTitle: "Using the OpenTelemetry Collector"
-weight: 900
-description: "How to use Dapr to push trace events through the OpenTelemetry Collector."
+title: "Using OpenTelemetry Collector to collect traces to send to AppInsights"
+linkTitle: "Using the OpenTelemetry for Azure AppInsights"
+weight: 1000
+description: "How to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector."
 ---
 
-Dapr will be exporting trace in the OpenTelemetry format when OpenTelemetry is GA. In the mean time, traces can be exported using the Zipkin format. Combining with the [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) you can still send trace to many popular tracing backends (like Azure AppInsights, AWS X-Ray, StackDriver, etc).
-
-![Using OpenTelemetry Collect to integrate with many backend](/images/open-telemetry-collector.png)
+Dapr can integrate with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector.
 
 ## Requirements
 
-1. A installation of Dapr on Kubernetes. 
+A installation of Dapr on Kubernetes.
 
-2. You are already setting up your trace backends  to receive traces. 
+## How to configure distributed tracing with Application Insights
 
-3. Check OpenTelemetry Collector exporters [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter) and [here](https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter) to see if your trace backend is supported by the OpenTelemetry Collector. On those linked pages, find the exporter you want to use and read its doc to find out the parameters required.
+### Setup Application Insights
 
-## Setting OpenTelemetry Collector
+1. First, you'll need an Azure account. See instructions [here](https://azure.microsoft.com/free/) to apply for a **free** Azure account.
+2. Follow instructions [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource) to create a new Application Insights resource.
+3. Get the Application Insights Intrumentation key from your Application Insights page.
 
-### Run OpenTelemetry Collector to push to your trace backend
+### Run OpenTelemetry Collector to push to your Application Insights instance
 
+First, find out Application Insights Instrumentation Key to be used in later steps.
 
-1. Check out the file [open-telemetry-collector-generic.yaml](/docs/open-telemetry-collector/open-telemetry-collector-generic.yaml) and replace the section marked with `<your-exporter-here>` with the correct settings for your trace exporter. Again, refer to the OpenTelemetry Collector links in the Prerequisites section to determine the correct settings. 
+Next, install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
 
-2. Apply the configuration with `kubectl apply -f open-telemetry-collector-generic.yaml`.
+1. Check out the file [open-telemetry-collector.yaml](/docs/open-telemetry-collector/open-telemetry-collector.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your Application Insights Instrumentation Key.
 
-## Set up Dapr to send trace to OpenTelemetry Collector 
+2. Apply the configuration with `kubectl apply -f open-telemetry-collector.yaml`.
 
-### Turn on tracing in Dapr
 Next, set up both a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.
 
 1. Create a collector-config.yaml file with this [content](/docs/open-telemetry-collector/collector-config.yaml)
@@ -63,7 +63,11 @@ That's it! There's no need include any SDKs or instrument your application code.
 
 > **NOTE**: You can register multiple tracing exporters at the same time, and the tracing logs are forwarded to all registered exporters.
 
-Deploy and run some applications. Wait for the trace to propagate to your tracing backend and view them there.
+Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use **Application Map** to examine the topology of your services, as shown below:
+
+![Application map](/images/open-telemetry-app-insights.png)
+
+> **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) are displayed in Application Map topology.
 
 ## Tracing configuration
 
@@ -82,6 +86,3 @@ The following table lists the different properties.
 
 
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate , set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces. By default, the sampling rate is 1 in 10,000
-
-## References
-* [Using OpenTelemetry Collector to push to Azure AppInsights]({{< ref open-telemetry-collector-appinsights.md >}})

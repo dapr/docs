@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Monitor your application with Dapr"
-linkTitle: "Monitoring"
-weight: 400
+title: "Observe your application with Dapr"
+linkTitle: "Observability"
+weight: 80
 description: "How to monitor your application using Dapr integrations"
 ---
