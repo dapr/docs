@@ -3,10 +3,10 @@ type: docs
 title: "Using OpenTelemetry Collector to collect traces to send to AppInsights"
 linkTitle: "Using the OpenTelemetry for Azure AppInsights"
 weight: 1000
-description: "How to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector."
+description: "How to push trace events to Azure Application Insights, using the OpenTelemetry Collector."
 ---
 
-Dapr can integrate with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector.
+Dapr integrates with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example using Dapr to push trace events to Azure Application Insights, using the OpenTelemetry Collector.
 
 ## Requirements
 
@@ -22,9 +22,7 @@ A installation of Dapr on Kubernetes.
 
 ### Run OpenTelemetry Collector to push to your Application Insights instance
 
-First, find out Application Insights Instrumentation Key to be used in later steps.
-
-Next, install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
+Install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
 
 1. Check out the file [open-telemetry-collector-appinsights.yaml](/docs/open-telemetry-collector/open-telemetry-collector-appinsights.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your Application Insights Instrumentation Key.
 
@@ -63,7 +61,7 @@ That's it! There's no need include any SDKs or instrument your application code.
 
 > **NOTE**: You can register multiple tracing exporters at the same time, and the tracing logs are forwarded to all registered exporters.
 
-Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use **Application Map** to examine the topology of your services, as shown below:
+Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use the **Application Map** to examine the topology of your services, as shown below:
 
 ![Application map](/images/open-telemetry-app-insights.png)
 
