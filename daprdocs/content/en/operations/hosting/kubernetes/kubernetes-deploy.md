@@ -74,7 +74,7 @@ dapr init -k -n mynamespace
 
 ### Install in highly available mode:
 
-You can run Dapr with 3 replicas of each control plane pod with the exception of the Placement pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
+You can run Dapr with 3 replicas of each control plane pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
 ```bash
 dapr init -k --enable-ha=true
@@ -128,6 +128,18 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
     --create-namespace \
     --wait
     ```
+
+To install in high availability mode:
+
+    ```bash
+    helm upgrade --install dapr dapr/dapr \
+    --version=1.0.0 \
+    --namespace dapr-system \
+    --create-namespace \
+    --set global.ha.enabled=true \
+    --wait
+    ```
+
 
 See [Guidelines for production ready deployments on Kubernetes]({{<ref kubernetes-production.md>}}) for more information on installing and upgrading Dapr using Helm.
 
