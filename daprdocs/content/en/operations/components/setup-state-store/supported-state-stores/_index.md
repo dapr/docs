@@ -26,6 +26,12 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Redis]({{< ref setup-redis.md >}})                            | ✅   | ✅            |  Alpha  |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅   | ❌            |  Alpha  |
 
+
+### Amazon Web Services (AWS)
+| Name                                                  | CRUD | Transactional | Status |
+|-------------------------------------------------------|------|---------------|--------|
+| [AWS DynamoDB]({{< ref setup-dynamodb.md >}})                      | ✅   | ❌            |  Alpha  |
+
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional | Status |
 |-------------------------------------------------------|------|---------------|--------|
