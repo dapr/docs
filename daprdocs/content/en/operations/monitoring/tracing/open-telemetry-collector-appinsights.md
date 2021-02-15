@@ -67,6 +67,6 @@ Deploy and run some applications. After a few minutes, you should see tracing lo
 
 > **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) are displayed in Application Map topology.
 
-## References
-
-* [Tracing Configuration]({{< ref "configuration-overview.md#tracing" >}})
+## Related links
+* Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability/README.md)
+* How to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})

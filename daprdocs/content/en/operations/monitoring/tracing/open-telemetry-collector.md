@@ -65,6 +65,7 @@ That's it! There's no need include any SDKs or instrument your application code.
 
 Deploy and run some applications. Wait for the trace to propagate to your tracing backend and view them there.
 
-## References
-* [Tracing Configuration]({{< ref "configuration-overview.md#tracing" >}})
-* [Using OpenTelemetry Collector to push to Azure AppInsights]({{< ref open-telemetry-collector-appinsights.md >}})
+## Related links
+* Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability/README.md)
+* How to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
+
