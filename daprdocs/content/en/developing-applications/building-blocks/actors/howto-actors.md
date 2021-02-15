@@ -26,13 +26,7 @@ Actors can save state reliably using state management capability.
 
 You can interact with Dapr through HTTP/gRPC endpoints for state management.
 
-To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The following state stores implement this interface:
-
-- Redis
-- MongoDB
-- PostgreSQL
-- SQL Server
-- Azure CosmosDB
+To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}).
 
 ## Actor timers and reminders
 
