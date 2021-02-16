@@ -22,14 +22,14 @@ no_list: true
 | [MySQL]({{< ref setup-mysql.md >}})                            | ✅   | ✅                  | ✅    | Alpha  |
 | [PostgreSQL]({{< ref setup-postgresql.md >}})                  | ✅   | ✅                  | ✅    | Alpha  |
 | [Redis]({{< ref setup-redis.md >}})                            | ✅   | ✅                  | ✅    | Alpha  |
-| RethinkDB                                                      | ✅   | ✅                  | ✅    | Alpha  |
+| [RethinkDB]({{< ref setup-rethinkdb.md >}})                                                      | ✅   | ✅                  | ✅    | Alpha  |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅   | ❌                  | ✅    | Alpha  |
 
 
 ### Amazon Web Services (AWS)
 | Name                                                             | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
 |------------------------------------------------------------------|------|---------------------|------|--------|
-| AWS DynamoDB                                                     | ✅   | ❌                   | ❌   |  Alpha |
+| [AWS DynamoDB]({{< ref setup-dynamodb.md>}})                                                     | ✅   | ❌                   | ❌   |  Alpha |
 
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
