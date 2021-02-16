@@ -5,52 +5,45 @@ linkTitle: "Azure Service Bus"
 description: "Detailed documentation on the Azure Service Bus pubsub component"
 ---
 
-## Setup Azure Service Bus
-
-Follow the instructions [here](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
-
-## Create a Dapr component
-
-The next step is to create a Dapr component for Azure Service Bus.
-
-Create the following YAML file named `azuresb.yaml`:
+## Component format
+To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.servicebus`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
+  name: servicebus-pubsub
+  namespace: default
 spec:
   type: pubsub.azure.servicebus
   version: v1
   metadata:
-  - name: connectionString
-    value: <REPLACE-WITH-CONNECTION-STRING> # Required.
-  - name: timeoutInSec
-    value: <REPLACE-WITH-TIMEOUT-IN-SEC> # Optional. Default: "60". Timeout for sending messages and management operations.
-  - name: handlerTimeoutInSec
-    value: <REPLACE-WITH-HANDLER-TIMEOUT-IN-SEC> # Optional. Default: "60". Timeout for invoking app handler.
-  - name: disableEntityManagement
-    value: <REPLACE-WITH-DISABLE-ENTITY-MANAGEMENT> # Optional. Default: false. When set to true, topics and subscriptions do not get created automatically.
-  - name: maxDeliveryCount
-    value: <REPLACE-WITH-MAX-DELIVERY-COUNT> # Optional. Defines the number of attempts the server will make to deliver a message.
-  - name: lockDurationInSec
-    value: <REPLACE-WITH-LOCK-DURATION-IN-SEC> # Optional. Defines the length in seconds that a message will be locked for before expiring.
-  - name: lockRenewalInSec
-    value: <REPLACE-WITH-LOCK-RENEWAL-IN-SEC> # Optional. Default: "20". Defines the frequency at which buffered message locks will be renewed.
-  - name: maxActiveMessages
-    value: <REPLACE-WITH-MAX-ACTIVE-MESSAGES> # Optional. Default: "10000". Defines the maximum number of messages to be buffered or processing at once.
-  - name: maxActiveMessagesRecoveryInSec
-    value: <REPLACE-WITH-MAX-ACTIVE-MESSAGES-RECOVERY-IN-SEC> # Optional. Default: "2". Defines the number of seconds to wait once the maximum active message limit is reached.
-  - name: maxConcurrentHandlers
-    value: <REPLACE-WITH-MAX-CONCURRENT-HANDLERS> # Optional. Defines the maximum number of concurrent message handlers
-  - name: prefetchCount
-    value: <REPLACE-WITH-PREFETCH-COUNT> # Optional. Defines the number of prefetched messages (use for high throughput / low latency scenarios)
-  - name: defaultMessageTimeToLiveInSec
-    value: <REPLACE-WITH-MESSAGE-TIME-TO-LIVE-IN-SEC> # Optional.
-  - name: autoDeleteOnIdleInSec
-    value: <REPLACE-WITH-AUTO-DELETE-ON-IDLE-IN-SEC> # Optional.
+  - name: connectionString # Required
+    value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
+  - name: timeoutInSec # Optional
+    value: 60
+  - name: handlerTimeoutInSec # Optional
+    value: 60
+  - name: disableEntityManagement # Optional
+    value: "false" 
+  - name: maxDeliveryCount # Optional
+    value: 3
+  - name: lockDurationInSec # Optional
+    value: 60 
+  - name: lockRenewalInSec # Optional
+    value: 20 
+  - name: maxActiveMessages # Optional
+    value: 2000 
+  - name: maxActiveMessagesRecoveryInSec # Optional
+    value: 2 
+  - name: maxConcurrentHandlers # Optional
+    value: 10
+  - name: prefetchCount # Optional
+    value: 5
+  - name: defaultMessageTimeToLiveInSec # Optional
+    value: 10
+  - name: autoDeleteOnIdleInSec # Optional
+    value: 10
 ```
 
 > __NOTE:__ The above settings are shared across all topics that use this component.
@@ -59,9 +52,29 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Apply the configuration
+## Spec metadata fields
 
-Visit [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| connectionString   | Y  | Connection-string for the Event Hubs  | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
+| timeoutInSec       | N  | Timeout for sending messages and management operations. Default: `60` |`30`
+| handlerTimeoutInSec| N  |  Timeout for invoking app handler. # Optional. Default: `60` | `30`
+| disableEntityManagement | N  | When set to true, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
+| maxDeliveryCount      | N  |Defines the number of attempts the server will make to deliver a message. Default set by server| `10`
+| lockDurationInSec     | N  |Defines the length in seconds that a message will be locked for before expiring. Default set by server | `30`
+| lockRenewalInSec      | N  |Defines the frequency at which buffered message locks will be renewed. Default: `20`. | `20`
+| maxActiveMessages     | N  |Defines the maximum number of messages to be buffered or processing at once. Default: `10000` | `2000`
+| maxActiveMessagesRecoveryInSec | N  |Defines the number of seconds to wait once the maximum active message limit is reached. Default: `2` | `10`
+| maxConcurrentHandlers | N  |Defines the maximum number of concurrent message handlers  | `10`
+| prefetchCount         | N  |Defines the number of prefetched messages (use for high throughput / low latency scenarios)| `5`
+| defaultMessageTimeToLiveInSec | N  |Default message time to live. | `10`
+| autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting messages. | `10`
+
+## Create an Azure Service Bus
+
+Follow the instructions [here](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
 
 ## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Pub/Sub building block]({{< ref pubsub >}})
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components

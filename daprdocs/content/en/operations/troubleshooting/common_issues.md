@@ -82,7 +82,7 @@ The most common cause of this failure is that a component (such as a state store
 
 To diagnose the root cause:
 
-- Significantly increase the liveness probe delay - [link]{{< ref "kubernetes-overview.md" >}})
+- Significantly increase the liveness probe delay - [link]({{< ref "kubernetes-overview.md" >}})
 - Set the log level of the sidecar to debug - [link]({{< ref "logs-troubleshooting.md#setting-the-sidecar-log-level" >}})
 - Watch the logs for meaningful information - [link]({{< ref "logs-troubleshooting.md#viewing-logs-on-kubernetes" >}})
 
@@ -195,3 +195,11 @@ The following example shows how to set the Host IP env var to `127.0.0.1`:
 ```bash
 export DAPR_HOST_IP=127.0.0.1
 ```
+
+## None of my components are getting loaded when my application starts. I keep getting "Error component X cannot be found"
+
+This is usually due to one of the following issues
+
+- You may have defined the `NAMESPACE` environment variable locally or deployed your components into a different namespace in Kubernetes. Check which namespace your app and the components are deployed to. Read [scoping components to one or more applications]({{< ref "component-scopes.md" >}}) for more information. 
+- You may have not provided a `--components-path` with the Dapr `run` commands or not placed your components into the default components folder for your OS. Read [define a component]({{< ref "get-started-component.md" >}}) for more information. 
+- You may have a syntax issue in component YAML file. Check your component YAML with the component [YAML samples]({{< ref "components.md" >}}).

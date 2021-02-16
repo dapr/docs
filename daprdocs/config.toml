@@ -1,15 +1,14 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-0.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
+disableFastRender = true
 
 enableRobotsTXT = true
 enableGitInfo = true
 
 # Language Configuration
 languageCode = "en-us"
-contentDir = "content/en"
-defaultContentLanguage = "en"
 
 # Disable categories & tags
 disableKinds = ["taxonomy", "term"]
@@ -17,6 +16,36 @@ disableKinds = ["taxonomy", "term"]
 # Google Analytics
 [services.googleAnalytics]
 id = "UA-149338238-3"
+
+# Mounts
+[module]
+  [[module.mounts]]
+    source = "content/en"
+    target = "content"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "layouts"
+    target = "layouts"
+  [[module.mounts]]
+    source = "data"
+    target = "data"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "archetypes"
+    target = "archetypes"
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-docs"
+    target = "content/developing-applications/sdks/python"
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-contributing"
+    target = "content/contributing/"
+  [[module.mounts]]
+    source = "../sdkdocs/php/daprdocs/content/en/php-sdk-docs"
+    target = "content/developing-applications/sdks/php"
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -26,25 +55,25 @@ id = "UA-149338238-3"
 
 # Top Nav Bar
 [[menu.main]]
-    name = "Home"
+    name = "Homepage"
     weight = 40
     url = "https://dapr.io"
 [[menu.main]]
-    name = "About"
+    name = "GitHub"
     weight = 50
-    url = "https://dapr.io/#about"
-[[menu.main]]
-    name = "Download"
-    weight = 60
-    url = "https://dapr.io/#download"
+    url = "https://github.com/dapr"
 [[menu.main]]
     name = "Blog"
-    weight = 70
+    weight = 60
     url = "https://blog.dapr.io/posts"
+[[menu.main]]
+    name = "Discord"
+    weight = 70
+    url = "https://aka.ms/dapr-discord"
 [[menu.main]]
     name = "Community"
     weight = 80
-    url = "https://dapr.io/#community"
+    url = "https://github.com/dapr/community/blob/master/README.md"
 
 [params]
 copyright = "Dapr"
@@ -58,16 +87,19 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "website"
+github_branch = "v1.0"
 
 # Versioning
-version_menu = "Releases"
-version = "v0.11"
+version_menu = "v1.0 (latest)"
+version = "v1.0"
 archived_version = false
 
 [[params.versions]]
-  version = "v0.11"
+  version = "v1.0 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v0.11"
+  url = "https://v0-11.docs.dapr.io"
 [[params.versions]]
   version = "v0.10"
   url = "https://github.com/dapr/docs/tree/v0.10.0"

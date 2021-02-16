@@ -7,7 +7,7 @@ weight: 500
 ---
 
 Dapr provides native, cross-platform and cross-language virtual actor capabilities.
-Besides the language specific Dapr SDKs, a developer can invoke an actor using the API endpoints below.
+Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke an actor using the API endpoints below.
 
 ## User service code calling dapr
 
@@ -662,6 +662,6 @@ The state namespace created by Dapr for actors is composed of the following item
 - Key - A key for the specific state value. An actor ID can hold multiple state keys.
 
 The following example shows how to construct a key for the state of an actor instance under the `myapp` App ID namespace:
-`myapp-cat-hobbit-food`
+`myapp||cat||hobbit||food`
 
 In the example above, we are getting the value for the state key `food`, for the actor ID `hobbit` with an actor type of `cat`, under the App ID namespace of `myapp`.

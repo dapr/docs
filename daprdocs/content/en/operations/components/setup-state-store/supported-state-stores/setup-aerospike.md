@@ -5,6 +5,40 @@ linkTitle: "Aerospike"
 description: Detailed information on the Aerospike state store component
 ---
 
+## Component format
+
+To setup Aerospike state store create a component of type `state.Aerospike`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+  namespace: <NAMESPACE>
+spec:
+  type: state.Aerospike
+  version: v1
+  metadata:
+  - name: hosts
+    value: <REPLACE-WITH-HOSTS> # Required. A comma delimited string of hosts. Example: "aerospike:3000,aerospike2:3000"
+  - name: namespace
+    value: <REPLACE-WITH-NAMESPACE> # Required. The aerospike namespace.
+  - name: set
+    value: <REPLACE-WITH-SET> # Optional
+```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| hosts              | Y        | Host name/port of database server  | `"localhost:3000"`, `"aerospike:3000,aerospike2:3000"`
+| namespace          | Y        | The Aerospike namespace | `"namespace"`
+| set                | N        | The setName in the database  | `"myset"`
+
 ## Setup Aerospike
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
@@ -27,7 +61,7 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
 helm install --name my-aerospike --namespace aerospike stable/aerospike
 ```
 
-This will install Aerospike into the `aerospike` namespace.
+This installs Aerospike into the `aerospike` namespace.
 To interact with Aerospike, find the service with: `kubectl get svc aerospike -n aerospike`.
 
 For example, if installing using the example above, the Aerospike host address would be:
@@ -37,44 +71,7 @@ For example, if installing using the example above, the Aerospike host address w
 
 {{< /tabs >}}
 
-## Create a Dapr component
-
-The next step is to create a Dapr component for Aerospike.
-
-Create the following YAML file named `aerospike.yaml`:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: state.Aerospike
-  version: v1
-  metadata:
-  - name: hosts
-    value: <REPLACE-WITH-HOSTS> # Required. A comma delimited string of hosts. Example: "aerospike:3000,aerospike2:3000"
-  - name: namespace
-    value: <REPLACE-WITH-NAMESPACE> # Required. The aerospike namespace.
-  - name: set
-    value: <REPLACE-WITH-SET> # Optional.
-```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
-
-## Apply the configuration
-
-### In Kubernetes
-
-To apply the Aerospike state store to Kubernetes, use the `kubectl` CLI:
-
-```
-kubectl apply -f aerospike.yaml
-```
-
-### Running locally
-
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+## Related links
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
+- [State management building block]({{< ref state-management >}})

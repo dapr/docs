@@ -3,56 +3,62 @@ type: docs
 title: "Supported external bindings"
 linkTitle: "Supported bindings"
 weight: 200
-description: List of all the supported external bindings that can interface with Dapr
+description: The supported external systems that interface with Dapr as input/output bindings
+no_list: true
 ---
-
-Every binding has its own unique set of properties. Click the name link to see the component YAML for each binding.
 
 ### Generic
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [APNs]({{< ref apns.md >}}) |  | ✅ | Experimental |
-| [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Experimental |
-| [HTTP]({{< ref http.md >}})           |    | ✅ | Experimental |
-| [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Experimental |
-| [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Experimental |
-| [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Experimental |
-| [MQTT]({{< ref mqtt.md >}})           | ✅ | ✅ | Experimental |
-| [PostgreSql]({{< ref postgres.md >}})       |    | ✅ | Experimental |
-| [RabbitMQ]({{< ref rabbitmq.md >}})   | ✅ | ✅ | Experimental |
-| [Redis]({{< ref redis.md >}})         |    | ✅ | Experimental |
-| [Twilio]({{< ref twilio.md >}})       |    | ✅ | Experimental |
-| [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Experimental |
-| [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Experimental |
+| [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha |
+| [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha |
+| [HTTP]({{< ref http.md >}})           |    | ✅ | Alpha |
+| [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha |
+| [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Alpha |
+| [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Alpha |
+| [MQTT]({{< ref mqtt.md >}})           | ✅ | ✅ | Alpha |
+| [MySQL]({{< ref mysql.md >}})       |    | ✅ | Alpha |
+| [PostgreSql]({{< ref postgres.md >}})       |    | ✅ | Alpha |
+| [Postmark]({{< ref postmark.md >}})       |    | ✅ | Alpha |
+| [RabbitMQ]({{< ref rabbitmq.md >}})   | ✅ | ✅ | Alpha |
+| [Redis]({{< ref redis.md >}})         |    | ✅ | Alpha |
+| [SMTP]({{< ref smtp.md >}})         |    | ✅ | Alpha |
+| [Twilio]({{< ref twilio.md >}})       |    | ✅ | Alpha |
+| [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha |
+| [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha |
 
-
-### Amazon Web Service (AWS)
+### Alibaba Cloud
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [AWS DynamoDB]({{< ref dynamodb.md >}}) |    | ✅ | Experimental |
-| [AWS S3]({{< ref s3.md >}})             |    | ✅ | Experimental |
-| [AWS SNS]({{< ref sns.md >}})           |    | ✅ | Experimental |
-| [AWS SQS]({{< ref sqs.md >}})           | ✅ | ✅ | Experimental |
-| [AWS Kinesis]({{< ref kinesis.md >}})   | ✅ | ✅ | Experimental |
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
 
+### Amazon Web Services (AWS)
+
+| Name | Input<br>Binding | Output<br>Binding | Status |
+|------|:----------------:|:-----------------:|--------|
+| [AWS DynamoDB]({{< ref dynamodb.md >}}) |    | ✅ | Alpha |
+| [AWS S3]({{< ref s3.md >}})             |    | ✅ | Alpha |
+| [AWS SNS]({{< ref sns.md >}})           |    | ✅ | Alpha |
+| [AWS SQS]({{< ref sqs.md >}})           | ✅ | ✅ | Alpha |
+| [AWS Kinesis]({{< ref kinesis.md >}})   | ✅ | ✅ | Alpha |
 
 ### Google Cloud Platform (GCP)
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [GCP Cloud Pub/Sub]({{< ref gcppubsub.md >}})  | ✅ | ✅ | Experimental |
-| [GCP Storage Bucket]({{< ref gcpbucket.md >}}) |     | ✅ | Experimental |
+| [GCP Cloud Pub/Sub]({{< ref gcppubsub.md >}})  | ✅ | ✅ | Alpha |
+| [GCP Storage Bucket]({{< ref gcpbucket.md >}}) |     | ✅ | Alpha |
 
 ### Microsoft Azure
 
 | Name | Input<br>Binding | Output<br>Binding | Status |
 |------|:----------------:|:-----------------:|--------|
-| [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Experimental |
-| [Azure EventHubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Experimental |
-| [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Experimental |
-| [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Experimental |
-| [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Experimental |
-| [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | Experimental |
-| [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Experimental |
+| [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Alpha |
+| [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Alpha |
+| [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Alpha |
+| [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Alpha |
+| [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha |
+| [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha |
+| [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | Alpha |

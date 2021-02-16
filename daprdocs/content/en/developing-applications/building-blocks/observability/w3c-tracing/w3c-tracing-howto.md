@@ -10,7 +10,7 @@ type: docs
 # How to use trace context
 Dapr uses W3C trace context for distributed tracing for both service invocation and pub/sub messaging. Dapr does all the heavy lifting of generating and propagating the trace context information and there are very few cases where you need to either propagate or create a trace context. First read scenarios in the [W3C distributed tracing]({{< ref w3c-tracing >}}) article to understand whether you need to propagate or create a trace context.
 
-To view traces, read the [how to diagnose with tracing]({{< ref tracing.md >}}) article.
+To view traces, read the [how to diagnose with tracing]({{< ref tracing-overview.md >}}) article.
 
 ## How to retrieve trace context from a response
 `Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`
