@@ -66,7 +66,7 @@ The following example shows how to a single key/value pair using the Dapr state 
 It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
 {{% /alert %}}
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK">}}
+{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
 
 {{% codetab %}}
 Begin by launching a Dapr sidecar:
@@ -153,6 +153,45 @@ You are up and running! Both Dapr and your app logs will appear here.
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Save the following in `state-example.php`:
+
+```php
+<?php
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
+    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
+        key: 'myFirstKey',
+        value: 'myFirstValue' 
+    ));
+    $logger->alert('State has been stored');
+
+    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
+    $logger->alert("Got value: {data}", ['data' => $data]);
+});
+```
+
+Once saved run the following command to launch a Dapr sidecar and run the PHP application:
+
+```bash
+dapr --app-id myapp run -- php state-example.php
+```
+
+You should get an output similar to the following, which will show both the Dapr and app logs:
+
+```md
+✅  You're up and running! Both Dapr and your app logs will appear here.
+
+== APP == [2021-02-12T16:30:11.078777+01:00] APP.ALERT: State has been stored [] []
+
+== APP == [2021-02-12T16:30:11.082620+01:00] APP.ALERT: Got value: myFirstValue {"data":"myFirstValue"} []
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -160,7 +199,7 @@ You are up and running! Both Dapr and your app logs will appear here.
 
 The following example shows how to delete an item by using a key with the state management API:
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK">}}
+{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
 
 {{% codetab %}}
 With the same dapr instance running from above run:
@@ -226,13 +265,58 @@ You're up and running! Both Dapr and your app logs will appear here.
 ```
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Update `state-example.php` with the following contents:
+
+```php
+<?php
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
+    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
+        key: 'myFirstKey',
+        value: 'myFirstValue' 
+    ));
+    $logger->alert('State has been stored');
+
+    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
+    $logger->alert("Got value: {data}", ['data' => $data]);
+    
+    $stateManager->delete_keys(store_name: 'statestore', keys: ['myFirstKey']);
+    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
+    $logger->alert("Got value after delete: {data}", ['data' => $data]);
+});
+```
+
+Now run it with: 
+
+```bash
+dapr --app-id myapp run -- php state-example.php
+```
+
+You should see something similar the following output:
+
+```md
+✅  You're up and running! Both Dapr and your app logs will appear here.
+
+== APP == [2021-02-12T16:38:00.839201+01:00] APP.ALERT: State has been stored [] []
+
+== APP == [2021-02-12T16:38:00.841997+01:00] APP.ALERT: Got value: myFirstValue {"data":"myFirstValue"} []
+
+== APP == [2021-02-12T16:38:00.845721+01:00] APP.ALERT: Got value after delete:  {"data":null} []
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Step 4: Save and retrieve multiple states
 
 Dapr also allows you to save and retrieve multiple states in the same call.
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK">}}
+{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
 
 {{% codetab %}}
 With the same dapr instance running from above save two key/value pairs into your statestore:
@@ -307,6 +391,53 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+To batch load and save state with PHP, just create a "Plain Ole' PHP Object" (POPO) and annotate it with
+the StateStore annotation. 
+
+Update the `state-example.php` file:
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+#[\Dapr\State\Attributes\StateStore('statestore', \Dapr\consistency\EventualLastWrite::class)]
+class MyState {
+    public string $key1 = 'value1';
+    public string $key2 = 'value2';
+}
+
+$app = \Dapr\App::create();
+$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
+    $obj = new MyState();
+    $stateManager->save_object(item: $obj);
+    $logger->alert('States have been stored');
+
+    $stateManager->load_object(into: $obj);
+    $logger->alert("Got value: {data}", ['data' => $obj]);
+});
+```
+
+Run the app:
+
+```bash
+dapr --app-id myapp run -- php state-example.php
+```
+
+And see the following output:
+
+```md
+✅  You're up and running! Both Dapr and your app logs will appear here.
+
+== APP == [2021-02-12T16:55:02.913801+01:00] APP.ALERT: States have been stored [] []
+
+== APP == [2021-02-12T16:55:02.917850+01:00] APP.ALERT: Got value: [object MyState] {"data":{"MyState":{"key1":"value1","key2":"value2"}}} []
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Step 5: Perform state transactions
@@ -315,7 +446,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 State transactions require a state store that supports multi-item transactions. Visit the [supported state stores page]({{< ref supported-state-stores >}}) page for a full list. Note that the default Redis container created in a self-hosted environment supports them.
 {{% /alert %}}
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" >}}
+{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
 
 {{% codetab %}}
 With the same dapr instance running from above perform two state transactions:
@@ -396,6 +527,57 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 == APP == State transactions have been completed
 == APP == Got items: [b'value1', b'']
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Transactional state is supported by extending `TransactionalState` base object which hooks into your
+object via setters and getters to provide a transaction. Before you created your own transactional object,
+but now you'll ask the Dependency Injection framework to build one for you.
+
+Modify the `state-example.php` file again:
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+#[\Dapr\State\Attributes\StateStore('statestore', \Dapr\consistency\EventualLastWrite::class)]
+class MyState extends \Dapr\State\TransactionalState {
+    public string $key1 = 'value1';
+    public string $key2 = 'value2';
+}
+
+$app = \Dapr\App::create();
+$app->run(function(MyState $obj, \Psr\Log\LoggerInterface $logger, \Dapr\State\StateManager $stateManager) {
+    $obj->begin();
+    $obj->key1 = 'hello world';
+    $obj->key2 = 'value3';
+    $obj->commit();
+    $logger->alert('Transaction committed!');
+
+    // begin a new transaction which reloads from the store
+    $obj->begin();
+    $logger->alert("Got value: {key1}, {key2}", ['key1' => $obj->key1, 'key2' => $obj->key2]);
+});
+```
+
+Run the application:
+
+```bash
+dapr --app-id myapp run -- php state-example.php
+```
+
+Observe the following output:
+
+```md
+✅  You're up and running! Both Dapr and your app logs will appear here.
+
+== APP == [2021-02-12T17:10:06.837110+01:00] APP.ALERT: Transaction committed! [] []
+
+== APP == [2021-02-12T17:10:06.840857+01:00] APP.ALERT: Got value: hello world, value3 {"key1":"hello world","key2":"value3"} []
 ```
 
 {{% /codetab %}}

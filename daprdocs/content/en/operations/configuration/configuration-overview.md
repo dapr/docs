@@ -73,7 +73,7 @@ The following table lists the properties for tracing:
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
-See [Observability distributed tracing]({{< ref "tracing.md" >}}) for more information
+See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information
 
 #### Metrics
 
@@ -92,7 +92,7 @@ The following table lists the properties for metrics:
 |--------------|--------|-------------|
 | `enabled` | boolean | Whether metrics should to be enabled.
 
-See [metrics documentation]({{< ref "metrics.md" >}}) for more information
+See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more information
 
 #### Middleware
 

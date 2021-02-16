@@ -34,7 +34,7 @@ When non-Dapr subscribers use components such as Azure Service Bus, which native
 
 Message TTL can be set in the metadata as part of the publishing request:
 
-{{< tabs curl "Python SDK">}}
+{{< tabs curl "Python SDK" "PHP SDK">}}
 
 {{% codetab %}}
 ```bash
@@ -62,6 +62,22 @@ with DaprClient() as d:
     # Print the request
     print(req_data, flush=True)
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->run(function(\DI\FactoryInterface $factory) {
+    $publisher = $factory->make(\Dapr\PubSub\Publish::class, ['pubsub' => 'pubsub']);
+    $publisher->topic('TOPIC_A')->publish('data', ['ttlInSeconds' => '120']);
+});
+```
+
 {{% /codetab %}}
 
 {{< /tabs >}}

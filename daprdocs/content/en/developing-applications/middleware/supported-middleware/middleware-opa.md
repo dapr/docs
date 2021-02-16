@@ -1,15 +1,14 @@
 ---
 type: docs
-title: "How-To: Apply Open Policy Agent (OPA) policies"
-linkTitle: "Apply OPA policies"
-weight: 2000
-description: "Use Dapr middleware to apply Open Policy Agent (OPA) policies on incoming requests"
-type: docs
+title: "Apply Open Policy Agent (OPA) policies"
+linkTitle: "Open Policy Agent (OPA)"
+weight: 6000
+description: "Use middleware to apply Open Policy Agent (OPA) policies on incoming requests"
 ---
 
-The Dapr Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) allows applying [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
+The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) applys [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
-## Middleware component definition
+## Component format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -21,8 +20,8 @@ spec:
   type: middleware.http.opa
   version: v1
   metadata:
-    # `includedHeaders` is a comma-seperated set of case-insensitive headers to include in the request input.
-    # Request headers are not passed to the policy by default. Include to recieve incoming request headers in
+    # `includedHeaders` is a comma-separated set of case-insensitive headers to include in the request input.
+    # Request headers are not passed to the policy by default. Include to receive incoming request headers in
     # the input
     - name: includedHeaders
       value: "x-my-custom-header, x-jwt-header"
@@ -69,6 +68,30 @@ spec:
 
 You can prototype and experiment with policies using the [official opa playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
 
+## Spec metadata fields
+
+| Field  | Details                                                                                                                                                                                           | Example                                                           |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| rego            | The Rego policy language                                                                                                                                                                              | See above                                                         |
+| defaultStatus   | The status code to return for denied responses                                                                                                                                                        | `"https://accounts.google.com"`, `"https://login.salesforce.com"` |
+| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`                              |
+
+## Dapr configuration
+
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: my-policy
+      type: middleware.http.opa
+```
+
 ## Input
 
 This middleware supplies a [`HTTPRequest`](#httprequest) as input.
@@ -95,7 +118,7 @@ type HTTPRequest struct {
   query map[string][]string
   // The request headers
   // NOTE: By default, no headers are included. You must specify what headers
-  // you want to recieve via `spec.metadata.includedHeaders` (see above)
+  // you want to receive via `spec.metadata.includedHeaders` (see above)
   headers map[string]string
   // The request scheme (e.g. http, https)
   scheme string
@@ -184,4 +207,7 @@ type Result struct {
 ## Related links
 
 - [Open Policy Agent](https://www.openpolicyagent.org)
-- [HTTP API Example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
+- [HTTP API example](https://www.openpolicyagent.org/docs/latest/http-api-authorization/)
+- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Configuration concept]({{< ref configuration-concept.md >}})
+- [Configuration overview]({{< ref configuration-overview.md >}})

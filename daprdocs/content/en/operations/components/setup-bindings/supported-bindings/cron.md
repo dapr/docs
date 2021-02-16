@@ -5,7 +5,10 @@ linkTitle: "Cron"
 description: "Detailed documentation on the cron binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup cron binding create a component of type `bindings.cron`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -21,7 +24,13 @@ spec:
     value: "@every 15m" # valid cron schedule  
 ```
 
-## Schedule Format 
+## Spec metadata fields
+
+| Field              | Required | Binding support |  Details | Example |
+|--------------------|:--------:|-------|--------|---------|
+| schedule | Y | Input/Output |  The valid cron schedule to use. See [this](#schedule-format) for more details | `"@every 15m"`
+
+### Schedule Format 
 
 The Dapr cron binding supports following formats: 
 
@@ -48,7 +57,17 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 * `@every 15s` where `s` is seconds, `m` minutes, and `h` hours
 * `@daily` or `@hourly` which runs at that period from the time the binding is initialized  
 
+## Binding support
+
+This component supports both **input and output** binding interfaces. 
+
+This component supports **output binding** with the following operations:
+
+- `delete`
+
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

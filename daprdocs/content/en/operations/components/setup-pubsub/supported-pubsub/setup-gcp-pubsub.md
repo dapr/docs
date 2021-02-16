@@ -44,6 +44,9 @@ spec:
   - name: disableEntityManagement
     value: "false"
 ```
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Spec metadata fields
 
@@ -60,10 +63,6 @@ spec:
 | auth_provider_x509_cert_url | Y | GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
 | client_x509_cert_url | Y | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
 | disableEntityManagement | N | When set to `"true"`, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
 
 ## Create a GCP Pub/Sub
 
