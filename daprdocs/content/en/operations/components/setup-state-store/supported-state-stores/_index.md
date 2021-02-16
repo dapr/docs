@@ -25,6 +25,12 @@ no_list: true
 | RethinkDB                                                      | ✅   | ✅                  | ✅    | Alpha  |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅   | ❌                  | ✅    | Alpha  |
 
+
+### Amazon Web Services (AWS)
+| Name                                                             | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
+|------------------------------------------------------------------|------|---------------------|------|--------|
+| AWS DynamoDB                                                     | ✅   | ❌                   | ❌   |  Alpha |
+
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
 |-------------------------------------------------------|------|---------------------|------|--------|
@@ -37,8 +43,3 @@ no_list: true
 | [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅   | ✅                  | ✅    | Alpha  |
 | [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅   | ✅                  | ✅    | Alpha  |
 | [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}})   | ✅   | ❌                  | ✅    | Alpha  |
-
-### Amazon Web Services (AWS)
-| Name                                                             | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
-|------------------------------------------------------------------|------|---------------------|------|--------|
-| AWS DynamoDB                                                     | ✅   | ❌                   | ❌   |  Alpha |
