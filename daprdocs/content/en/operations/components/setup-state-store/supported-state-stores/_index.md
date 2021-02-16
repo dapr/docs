@@ -25,6 +25,12 @@ no_list: true
 | RethinkDB                                                      | ✅   | ✅                  | ✅    | Alpha  |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅   | ❌                  | ✅    | Alpha  |
 
+
+### Amazon Web Services (AWS)
+| Name                                                  | CRUD | Transactional | Status |
+|-------------------------------------------------------|------|---------------|--------|
+| [AWS DynamoDB]({{< ref setup-dynamodb.md >}})                      | ✅   | ❌            |  Alpha  |
+
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
 |-------------------------------------------------------|------|---------------------|------|--------|
