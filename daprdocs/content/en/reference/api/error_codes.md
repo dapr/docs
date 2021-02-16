@@ -31,6 +31,7 @@ Following table lists the error codes returned by Dapr runtime:
 | ERR_ACTOR_STATE_TRANSACTION_SAVE  | Error storing actor state transactionally.
 | ERR_PUBSUB_NOT_FOUND              | Error referencing the Pub/Sub component in Dapr runtime.
 | ERR_PUBSUB_PUBLISH_MESSAGE        | Error publishing a message.
+| ERR_PUBSUB_FORBIDDEN              | Error message forbidden by access controls.
 | ERR_PUBSUB_CLOUD_EVENTS_SER       | Error serializing Pub/Sub event envelope.
 | ERR_STATE_STORE_NOT_FOUND         | Error referencing a state store not found.
 | ERR_STATE_STORES_NOT_CONFIGURED   | Error no state stores configured.
