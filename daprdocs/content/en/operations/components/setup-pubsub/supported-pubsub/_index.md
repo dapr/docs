@@ -12,7 +12,8 @@ Table captions:
 > `Status`: [Component certification]({{<ref "certification-lifecycle.md">}}) status
   - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
   - [Beta]({{<ref "certification-lifecycle.md#beta">}})
-  - [GA]({{<ref "certification-lifecycle.md#general-availability-ga">}})> `Since`: defines from which Dapr Runtime version, the component is in the current status
+  - [GA]({{<ref "certification-lifecycle.md#general-availability-ga">}})
+> `Since`: defines from which Dapr Runtime version, the component is in the current status
 
 > `Component version`: defines the version of the component
 ### Generic

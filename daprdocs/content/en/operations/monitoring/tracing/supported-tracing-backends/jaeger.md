@@ -6,9 +6,10 @@ weight: 3000
 description: "Set up Jaeger for distributed tracing"
 type: docs
 ---
-Dapr currently supports two kind of tracing protocol: OpenCensus and
-Zipkin. Since Jaeger is compatible with Zipkin, the Zipkin
-protocol can be used to talk to Jaeger.
+
+Dapr currently supports the Zipkin protocol. Since Jaeger is
+compatible with Zipkin, the Zipkin protocol can be used to talk to
+Jaeger.
 
 ## Configure self hosted mode
 
@@ -54,8 +55,7 @@ dapr run --app-id mynode --app-port 3000 node app.js --config config.yaml
 ```
 
 ### Viewing Traces
-To view traces, in your browser go to http://localhost:16686 and you
-will see the Zipkin UI.
+To view traces, in your browser go to http://localhost:16686 and you will see the Jaeger UI.
 
 ## Configure Kubernetes
 The following steps shows you how to configure Dapr to send distributed tracing data to Jaeger running as a container in your Kubernetes cluster, how to view them.
@@ -68,7 +68,7 @@ First create the following YAML file to install Jaeger
 apiVersion: jaegertracing.io/v1
 kind: "Jaeger"
 metadata:
-  name: "jaeger"
+  name: jaeger
 spec:
   strategy: allInOne
   ingress:
@@ -121,7 +121,7 @@ annotations:
   dapr.io/config: "tracing"
 ```
 
-That's it! your sidecar is now configured for use with Jaeger.
+That's it! Your Dapr sidecar is now configured for use with Jaeger.
 
 ### Viewing Tracing Data
 
