@@ -2,7 +2,7 @@
 type: docs
 title: "Versioning policy"
 linkTitle: "Versioning "
-weight: 200
+weight: 2000
 description: "Dapr's versioning policies"
 ---
 
@@ -41,7 +41,7 @@ The definition of a breaking change to the API can be viewed [here](https://gith
 Dapr releases use `MAJOR.MINOR.PATCH` versioning. For example 1.0.0. Read [Supported releases]({{< ref support-release-policy.md >}}) for more on the versioning of releases. 
 
 ## Helm Charts
-Helm charts are versioned with the Dapr runtime.
+Helm charts in the [helm-charts repo](https://github.com/dapr/helm-charts) are versioned with the Dapr runtime. The Helm charts are used in the [Kubernetes deployment]({{< ref "kubernetes-deploy#install-with-helm-advanced" >}})
 
 ## Language SDKs, CLI and dashboard
 The Dapr language SDKs, CLI and dashboard are versioned independently from the Dapr runtime and can be released at different schedules. See this [table]({{< ref "support-release-policy#supported-versions" >}}) to show the compatibility between versions of the SDKs, CLI, dashboard and runtime. Each new release on the runtime lists the corresponding supported SDKs, CLI and Dashboard. 
