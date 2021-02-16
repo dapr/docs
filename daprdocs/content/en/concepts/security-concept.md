@@ -129,5 +129,18 @@ The test focused on the following:
 
 The full report can be found [here](/docs/Dapr-july-2020-security-audit-report.pdf).
 
-Two issues, one critical and one high, were fixed during the test.
-As of July 21st 2020, Dapr has 0 criticals, 2 highs, 2 mediums, 1 low, 1 info.
+### February 2021
+
+In February 2021, Dapr has gone a 2nd security audit targetting it's 1.0 release by Cure53.
+The test focused on the following:
+
+* Dapr runtime code base evaluation since last audit
+* Access control lists
+* Secrets management
+* Penetration testing
+* Validating fixes for previous high/medium issues
+
+The full report can be found [here](/docs/Dapr-february-2021-security-audit-report.pdf).
+
+One high issue was detected and fixed during the test.
+As of February 16th 2021, Dapr has 0 criticals, 0 highs, 0 mediums, 2 lows, 2 infos.
