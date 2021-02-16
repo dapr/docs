@@ -27,9 +27,9 @@ no_list: true
 
 
 ### Amazon Web Services (AWS)
-| Name                                                  | CRUD | Transactional | Status |
+| Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status |
 |-------------------------------------------------------|------|---------------|--------|
-| [AWS DynamoDB]({{< ref setup-dynamodb.md >}})                      | ✅   | ❌            |  Alpha  |
+| [AWS DynamoDB]({{< ref setup-dynamodb.md >}})         | ✅   | ❌            | ❌     |  Alpha  |
 
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status |

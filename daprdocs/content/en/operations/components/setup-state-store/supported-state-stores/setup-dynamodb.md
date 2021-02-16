@@ -22,15 +22,15 @@ spec:
   - name: table
     value: "mytable"
   - name: accessKey
-    value: "abcd"
+    value: "abcd" # Optional
   - name: secretKey
-    value: "abcd"
+    value: "abcd" # Optional
   - name: endpoint
-    value: "http://localhost:8080"
-  - name: region
-    value: "eu-west-1"
+    value: "http://localhost:8080" # Optional
+  - name: region 
+    value: "eu-west-1" # Optional
   - name: sessionToken
-    value: "abcd"
+    value: "abcd" # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
