@@ -40,7 +40,7 @@ The table below shows the tested upgrade paths for the Dapr runtime. For example
 
 |  Current Runtime version | Must upgrade through  | Target Runtime version   | Notes
 |--------------------------|-----------------------|------------------------- |------------------------- |
-| 0.11                     |                   N/A |                    1.0.0 | Use Dapr CLI to upgrade for both self hosted and Kubernetes 
+| 0.11                     |                   N/A |                    1.0.0 | Use Dapr CLI to upgrade for both self hosted and Kubernetes
 | 1.0-rc1 to 1.0-rc4       |                   N/A |                    1.0.0 | See Dapr 1.0 release notes
 
 ## Feature and deprecations
