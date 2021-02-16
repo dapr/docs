@@ -15,6 +15,7 @@ Dapr offers key/value storage APIs for state management. If a microservice uses 
 When using state management your application can leverage several features that would otherwise be complicated and error-prone to build yourself such as:
 
 - Distributed concurrency and data consistency
+- Retry policies
 - Bulk [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations
 
 ## Features
@@ -34,6 +35,7 @@ Dapr allows developers to attach additional metadata to a state operation reques
 For example, you can attach:
 - Concurrency requirements
 - Consistency requirements
+- Retry policies
 
 By default, your application should assume a data store is **eventually consistent** and uses a **last-write-wins** concurrency pattern.
 
@@ -53,7 +55,7 @@ The following table gives examples of capabilities of popular data store impleme
 
 Dapr supports optimistic concurrency control (OCC) using ETags. When a state is requested, Dapr always attaches an **ETag** property to the returned state. When the user code tries to update or delete a state, it's expected to attach the ETag through the **If-Match** header. The write operation can succeed only when the provided ETag matches with the ETag in the state store.
 
-Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags.
+Dapr chooses OCC because in many applications, data update conflicts are rare because clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, a request may get rejected because of mismatched ETags.  It's recommended that you use a [retry policy](#retry-policies) to compensate for such conflicts when using ETags.
 
 If your application omits ETags in writing requests, Dapr skips ETag checks while handling the requests. This essentially enables the **last-write-wins** pattern, compared to the **first-write-wins** pattern with ETags.
 
@@ -68,6 +70,12 @@ Dapr supports both **strong consistency** and **eventual consistency**, with eve
 When strong consistency is used, Dapr waits for all replicas (or designated quorums) to acknowledge before it acknowledges a write request. When eventual consistency is used, Dapr returns as soon as the write request is accepted by the underlying data store, even if this is a single replica.
 
 Visit the [API reference]({{< ref state_api.md >}}) to learn how to set consistency options.
+
+### Retry policies	
+
+Dapr allows you to attach a retry policy to any write request. A policy is described by an **retryInterval**, a **retryPattern** and a **retryThreshold**. Dapr keeps retrying the request at the given interval up to the specified threshold. You can choose between a **linear** retry pattern or an **exponential** (backoff) pattern. When the **exponential** pattern is used, the retry interval is doubled after each attempt.	
+
+Visit the [API reference]({{< ref state_api.md >}}) to learn how to set retry policy options.	
 
 ### Bulk operations
 

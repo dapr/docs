@@ -15,7 +15,7 @@ In general a component needs to be:
 - functionally correct and robust
 - well documented and maintained
 
-To make sure a component conforms to the standards set by Dapr, there are a set of tests run against a component in a Dapr maintainers managed environment. Once the tests pass consistently for a certain number of runs, the maturity level can be determined for a component. 
+To make sure a component conforms to the standards set by Dapr, there are a set of tests run against a component in a Dapr maintainers managed environment. Once the tests pass consistently, the maturity level can be determined for a component. 
 
 ## Certification levels 
 
@@ -31,7 +31,7 @@ The levels are as follows:
 - The component might be buggy or might expose bugs on integration
 - The component may not pass all conformance tests
 - The component may not have conformance tests
-- Not recommended for use in production
+- Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases
 
 All components start at the Alpha stage.
 
@@ -40,7 +40,7 @@ All components start at the Alpha stage.
 - The component must pass all the component conformance tests defined to satisfy the component specification
 - The component conformance tests have been run in a Dapr maintainers managed environment
 - The component contains a record of the conformance test result reviewed and approved by Dapr maintainers with specific components-contrib version
-- Not recommended for use in production
+- Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases
 
 ### General Availability (GA)
 
@@ -50,7 +50,7 @@ All components start at the Alpha stage.
 
 ## Conformance tests 
 
-Each component in the [components-contrib](https://github.com/dapr/components-contrib) repository needs to adhere to a set of interfaces defined by Dapr. Conformance tests are tests that are run on these component definitions with their associated backing services such that the component is tested to be conformant with the Dapr interface specifications. 
+Each component in the [components-contrib](https://github.com/dapr/components-contrib) repository needs to adhere to a set of interfaces defined by Dapr. Conformance tests are tests that are run on these component definitions with their associated backing services such that the component is tested to be conformant with the Dapr interface specifications and behavior. 
 
 The conformance tests are defined for the following building blocks: 
 
@@ -72,8 +72,8 @@ To understand more about them see the readme [here](https://github.com/dapr/comp
 
 For a new component a request for component certification follows these steps. This applies for either certifying a component going from Beta from Alpha or GA from Beta.
 - An issue is created with a request for certification of the component with the current and the new certification levels
-- The component owner/maintainer submits a PR for integrating the component to run with the defined conformance test suite
-- The component owner/maintainer details the environment setup in the issue created, so that a Dapr maintainer can setup the service in a managed environment
+- A user of a component user submits a PR for integrating the component to run with the defined conformance test suite
+- The user details the environment setup in the issue created, so that a Dapr maintainer can setup the service in a managed environment
 - After the environment setup is complete, Dapr maintainers review the PR and if approved merges that PR
 - Dapr maintainers review functional correctness with the test being run in a Dapr team maintained environment
 - Dapr maintainers update the component status document categorized by Dapr Runtime version. This is done as part of the release process in the next release of Dapr runtime
@@ -84,11 +84,12 @@ For an existing GA certified component:
 - If there only internal method (not interface methods) signature changes but the behavior has not changed (for example adding new logging), then there is no need to re-certify the component
 
 - The component need to be recertified in these scenarios:
+  - If the component has bug fixes or feature improvements
   - If there are dependency changes. For example a different or update version of Redis client is used
-  - If the component needs to be certified with a new version of backing service it integrates with. For example the a Kafka queue version is updated.
+  - If the component needs to be certified with a new version of backing service it integrates with. For example Kafka broker version is updated
 - For recertification the tests are run for the component with the new versions of the client and/or the backing service and results verified
 - The new component certification process is followed in these scenarios:
-  - If the behavior of the component is changing
+  - If the behavior of the component is changing resulting in a version update of the component
   - If there are breaking changes in terms of function signature/interface changes
 
-For a component to be certified tests are run in a Dapr team maintained environment.
+For a component to be certified tests are run in an environment maintaine by the Dapr team.

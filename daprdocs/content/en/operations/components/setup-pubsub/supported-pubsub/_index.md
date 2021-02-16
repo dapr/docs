@@ -19,10 +19,10 @@ Table captions:
 
 | Name                                                  | Status | Component version | Since |
 |-------------------------------------------------------|--------| -----| ------------- |
-| [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Alpha  | v1 | 1.0 |
+| [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Beta  | v1 | 1.0 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})           | Alpha  | v1 | 1.0 |
 | [MQTT]({{< ref setup-mqtt.md >}})                     | Alpha  | v1 | 1.0 |
-| [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Alpha  | v1 | 1.0 |
+| [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta  | v1 | 1.0 |
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | v1 | 1.0 |
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | v1 | 1.0 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | GA  | v1 | 1.0 |
