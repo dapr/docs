@@ -35,14 +35,14 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [MySQL]({{< ref setup-mysql.md >}})                            | ✅   | ✅                  | ✅    | Alpha  | v1 | 1.0 |
 | [PostgreSQL]({{< ref setup-postgresql.md >}})                  | ✅   | ✅                  | ✅    | Alpha  | v1 | 1.0 |
 | [Redis]({{< ref setup-redis.md >}})                            | ✅   | ✅                  | ✅    | GA  | v1 | 1.0 |
-| RethinkDB                                                      | ✅   | ✅                  | ✅    | Alpha  | v1 | 1.0 |
+| [RethinkDB]({{< ref setup-rethinkdb.md >}})                                                      | ✅   | ✅                  | ✅    | Alpha  | v1 | 1.0 |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅   | ❌                  | ✅    | Alpha  | v1 | 1.0 |
 
 
 ### Amazon Web Services (AWS)
 | Name                                                             | CRUD | Transactional </br>(Supports Actors) | ETag | Status | Component version | Since |
 |------------------------------------------------------------------|------|---------------------|------|--------|-----|-------|
-| AWS DynamoDB                                                     | ✅   | ❌                   | ❌   |  Alpha | v1 | 1.0 |
+| [AWS DynamoDB]({{< ref setup-dynamodb.md>}})                                                      | ✅   | ❌                   | ❌   |  Alpha | v1 | 1.0 |
 
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status | Component version | Since |
