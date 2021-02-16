@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "DynamoDB"
+title: "AWS DynamoDB"
 linkTitle: "DynamoDB"
 description: Detailed information on the AWS DynamoDB state store component
 ---
