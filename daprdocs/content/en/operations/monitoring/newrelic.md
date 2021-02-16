@@ -8,7 +8,7 @@ description: "Set-up New Relic for Dapr observability"
 
 ## Prerequisites
 
-- Perpetually [free New Relic account](https://newrelic.com/signup), 100 GB/month of free data ingest, 1 free full access user, unlimited free basic users
+- Perpetually [free New Relic account](https://newrelic.com/signup?ref=dapr), 100 GB/month of free data ingest, 1 free full access user, unlimited free basic users
 
 ## Configure Zipkin Exporter
 
@@ -107,7 +107,7 @@ All the data that is collected from Dapr, Kubernetes or any services that run on
 
 ## Related Links/References
 
-* [New Relic Account Signup](https://newrelic.com/signup)
+* [New Relic Account Signup](https://newrelic.com/signup?ref=dapr)
 * [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform)
 * [Distributed Tracing](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/get-started/introduction-distributed-tracing)
 * [New Relic Trace API](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/trace-api)
