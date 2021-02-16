@@ -38,6 +38,12 @@ The following stores are supported, at various levels, by the Dapr state managem
 | RethinkDB                                                      | ✅   | ✅                  | ✅    | Alpha  | v1 | 1.0 |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})                    | ✅   | ❌                  | ✅    | Alpha  | v1 | 1.0 |
 
+
+### Amazon Web Services (AWS)
+| Name                                                             | CRUD | Transactional </br>(Supports Actors) | ETag | Status | Component version | Since |
+|------------------------------------------------------------------|------|---------------------|------|--------|-----|-------|
+| AWS DynamoDB                                                     | ✅   | ❌                   | ❌   |  Alpha | v1 | 1.0 |
+
 ### Google Cloud Platform (GCP)
 | Name                                                  | CRUD | Transactional </br>(Supports Actors) | ETag | Status | Component version | Since |
 |-------------------------------------------------------|------|---------------------|------|--------|-----|------|
@@ -50,8 +56,3 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅   | ✅                  | ✅    | GA  | v1 | 1.0 |
 | [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅   | ✅                  | ✅    | Alpha  | v1 | 1.0 |
 | [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}})   | ✅   | ❌                  | ✅    | Alpha  | v1 | 1.0 |
-
-### Amazon Web Services (AWS)
-| Name                                                             | CRUD | Transactional </br>(Supports Actors) | ETag | Status | Component version | Since |
-|------------------------------------------------------------------|------|---------------------|------|--------|-------|------|
-| AWS DynamoDB                                                     | ✅   | ❌                   | ❌   |  Alpha | v1 | 1.0 |
