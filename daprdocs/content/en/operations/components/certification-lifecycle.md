@@ -68,28 +68,22 @@ To understand more about them see the readme [here](https://github.com/dapr/comp
 
 ## Component certification process
 
+For a component to be certified tests are run in an environment maintained by the Dapr team.
+
 ### New component certification: Alpha->Beta or Beta->GA
 
-For a new component a request for component certification follows these steps. This applies for either certifying a component going from Beta from Alpha or GA from Beta.
+For a new component requiring a certification change from Alpha to Beta or Beta to GA, a request for component certification follows these steps:
 - An issue is created with a request for certification of the component with the current and the new certification levels
-- A user of a component user submits a PR for integrating the component to run with the defined conformance test suite
+- A user of a component submits a PR for integrating the component to run with the defined conformance test suite
 - The user details the environment setup in the issue created, so that a Dapr maintainer can setup the service in a managed environment
 - After the environment setup is complete, Dapr maintainers review the PR and if approved merges that PR
-- Dapr maintainers review functional correctness with the test being run in a Dapr team maintained environment
+- Dapr maintainers review functional correctness with the test being run in an environment maintained by the Dapr team
 - Dapr maintainers update the component status document categorized by Dapr Runtime version. This is done as part of the release process in the next release of Dapr runtime
 
 ### Existing GA certified component
 
-For an existing GA certified component:
-- If there only internal method (not interface methods) signature changes but the behavior has not changed (for example adding new logging), then there is no need to re-certify the component
+For an existing GA certified component, conformance test should be run against any changes made to component code or the backing service version or the client version.
 
-- The component need to be recertified in these scenarios:
-  - If the component has bug fixes or feature improvements
-  - If there are dependency changes. For example a different or update version of Redis client is used
-  - If the component needs to be certified with a new version of backing service it integrates with. For example Kafka broker version is updated
-- For recertification the tests are run for the component with the new versions of the client and/or the backing service and results verified
-- The new component certification process is followed in these scenarios:
-  - If the behavior of the component is changing resulting in a version update of the component
-  - If there are breaking changes in terms of function signature/interface changes
+In the scenarios where a component version is updated, the component again starts from Alpha stage and then the new component certification is followed for that.
 
-For a component to be certified tests are run in an environment maintaine by the Dapr team.
+
