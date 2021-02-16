@@ -40,6 +40,7 @@ The table below shows the tested upgrade paths for the Dapr runtime. For example
 
 |  Current Runtime version | Must upgrade through  | Target Runtime version   |
 |--------------------------|-----------------------|------------------------- |
+| 0.11                     |               1.0-rc4 |                    1.0.0 |
 | 1.0-rc4                  |                   N/A |                    1.0.0 |
 
 ## Feature and deprecations
@@ -53,7 +54,7 @@ After announcing a future breaking change, the change will happen in 2 releases 
 
 Here is an example, using a hypothetical 1.1.0 as the deprecation announcement release.
 
-| Feature               |   Deprecation announcement   | Deprecation removal   |
+| Feature               |   Deprecation announcement   | Deprecation       |
 |-----------------------|-----------------------|------------------------- |
 | Feature X             |                 1.1.0 |                    1.3.0 |
 

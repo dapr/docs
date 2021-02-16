@@ -23,7 +23,7 @@ Dapr has the following versioning schemes:
 - Dapr `GRPC API` with `MAJOR`
 - Releases (GitHub repositories including dapr, CLI, SDKs and Helm Chart) with `MAJOR.MINOR.PATCH`
 - Documentation and Quickstarts repositories are versioned with the Dapr runtime repository versioning.
-- Dapr `Components` with `MAJOR` in component-config GitHub repositories.
+- Dapr `Components` with `MAJOR` in components-contrib GitHub repositories.
 - Dapr `Manifests` with `MAJOR.MINOR`. These include subscriptions and configurations.
 
 Note that the Dapr APIs,  binaries releases (runtime, CLI, SDKs) and components are all independent from one another.
@@ -51,7 +51,7 @@ SDKs, CLIs and Dashboard are versioning follows a `MAJOR.MINOR.PATCH` format. A 
 Samples and examples in SDKs version with that repo.
 
 ## Components
-Components are implemented in a component-contrib repository and follow a `MAJOR` versioning scheme. The version for components adheres to major versions (vX), as patches and non-breaking changes are added to the latest major version. The version is incremented when there’s a non-backwards compatible change in a component interface, for example, changing an existing method in the State Store interface.  
+Components are implemented in the components-contrib repository and follow a `MAJOR` versioning scheme. The version for components adheres to major versions (vX), as patches and non-breaking changes are added to the latest major version. The version is incremented when there’s a non-backwards compatible change in a component interface, for example, changing an existing method in the State Store interface.  
 
 The [components-contrib](https://github.com/dapr/components-contrib/) repo release is a flat version across all components inside.  That is, a version for the components-contrib repo release is made up of all the schemas for the components inside it. A new version of Dapr does not mean there is a new release of components-contrib if there are no component changes. 
 
@@ -91,7 +91,7 @@ The Component YAML manifest is versioned with `dapr.io/v1alpha1`.
 The version for a component implementation is determined by the `.spec.version` field as can be seen in the example above. The `.spec.version` field is mandatory in a schema instance and the component fails to load if this is not present. For the release of Dapr 1.0.0 all components are marked as `v1`.The component implementation version is incremented only for non-backward compatible changes.
 
 ### Component deprecations
-Deprecations of components will be announced two (2) releases ahead. After 2 releases, the component is unregistered from the Dapr runtime, and trying to load it issues a warning.
+Deprecations of components will be announced two (2) releases ahead. Deprecation of a component, results in major version update of the component version. After 2 releases, the component is unregistered from the Dapr runtime, and trying to load it will throw a fatal exception. 
 
 ## Quickstarts and Samples 
 Quickstarts in the [Quickstarts repo](https://github.com/dapr/quickstarts) are versioned with the runtime, where a table of corresponding versions is on the front page of the samples repo.  Users should only use Quickstarts corresponding to the version of the runtime being run.  
