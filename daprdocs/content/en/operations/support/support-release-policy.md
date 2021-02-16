@@ -38,10 +38,10 @@ After the 1.0 release of the runtime there may be situations where it is necessa
 
 The table below shows the tested upgrade paths for the Dapr runtime. For example you are able to upgrade from 1.0-rc4 to the 1.0 release. Any other combinations of upgrades have not been tested.
 
-|  Current Runtime version | Must upgrade through  | Target Runtime version   |
-|--------------------------|-----------------------|------------------------- |
-| 0.11                     |               1.0-rc4 |                    1.0.0 |
-| 1.0-rc4                  |                   N/A |                    1.0.0 |
+|  Current Runtime version | Must upgrade through  | Target Runtime version   | Notes
+|--------------------------|-----------------------|------------------------- |------------------------- |
+| 0.11                     |                   N/A |                    1.0.0 | Use Dapr CLI to upgrade for both self hosted and Kubernetes 
+| 1.0-rc1 to 1.0-rc4       |                   N/A |                    1.0.0 | See Dapr 1.0 release notes
 
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
