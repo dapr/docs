@@ -23,4 +23,4 @@ Deploying and running a Dapr enabled application into your Kubernetes cluster is
 ```
 You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/deploy) in the Kubernetes getting started sample.
 
-Read [Kubernetes how to topics](https://github.com/dapr/docs/tree/master/howto#kubernetes-configuration) for more information about setting up Kubernetes and Dapr.
+Explore additional [Kubernetes related topics]({{<ref kubernetes>}}) for more information about working with Dapr on Kubernetes.
