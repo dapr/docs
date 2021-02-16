@@ -30,9 +30,9 @@ no_list: true
 
 ### Alibaba Cloud
 
-| Name | Input<br>Binding | Output<br>Binding | Status |
-|------|:----------------:|:-----------------:|--------|
-| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | v1 | Alpha |
+| Name | Input<br>Binding | Output<br>Binding | Version | Status |
+|------|:----------------:|:-----------------:|:--------:|--------|
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})|    | ✅ | v1 | Alpha |
 
 ### Amazon Web Services (AWS)
 
