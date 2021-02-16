@@ -5,7 +5,10 @@ linkTitle: "Kubernetes Events"
 description: "Detailed documentation on the Kubernetes Events binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup Kubernetes Events binding create a component of type `bindings.kubernetes`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -23,8 +26,18 @@ spec:
     vale: "<seconds>"
 ```
 
-- `namespace` (required) is the Kubernetes namespace to read events from.
-- `resyncPeriodInSec` (optional, default `10`) the period of time to refresh event list from Kubernetes API server.
+## Spec metadata fields
+
+| Field              | Required | Binding support |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| namespace | Y | Input  | The Kubernetes namespace to read events from | `"default"` |
+| resyncPeriodInSec | N | Te period of time to refresh event list from Kubernetes API server. Defaults to `"10"` | `"15"`
+
+## Binding support
+
+This component supports **input** binding interface. 
+
+## Output format
 
 Output received from the binding is of format `bindings.ReadResponse` with the `Data` field populated with the following structure: 
 
@@ -102,6 +115,8 @@ roleRef:
 ```
 
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})

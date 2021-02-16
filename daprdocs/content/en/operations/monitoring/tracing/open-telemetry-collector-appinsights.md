@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "Using OpenTelemetry Collector to collect traces"
-linkTitle: "OpenTelemetry"
+title: "Using OpenTelemetry Collector to collect traces to send to AppInsights"
+linkTitle: "Using the OpenTelemetry for Azure AppInsights"
 weight: 1000
-description: "How to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector."
+description: "How to push trace events to Azure Application Insights, using the OpenTelemetry Collector."
 ---
 
-Dapr can integrate with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example to use Dapr to push trace events to Azure Application Insights, through the OpenTelemetry Collector.
+Dapr integrates with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example using Dapr to push trace events to Azure Application Insights, using the OpenTelemetry Collector.
 
 ## Requirements
 
@@ -22,16 +22,11 @@ A installation of Dapr on Kubernetes.
 
 ### Run OpenTelemetry Collector to push to your Application Insights instance
 
-First, save your Application Insights Instrumentation Key in an environment variable
-```
-export APP_INSIGHTS_KEY=<your-app-insight-key>
-```
+Install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
 
-Next, install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
+1. Check out the file [open-telemetry-collector-appinsights.yaml](/docs/open-telemetry-collector/open-telemetry-collector-appinsights.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your Application Insights Instrumentation Key.
 
-1. Check out the file [open-telemetry-collector.yaml](/docs/open-telemetry-collector/open-telemetry-collector.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your `APP_INSIGHTS_KEY`.
-
-2. Apply the configuration with `kubectl apply -f open-telemetry-collector.yaml`.
+2. Apply the configuration with `kubectl apply -f open-telemetry-collector-appinsights.yaml`.
 
 Next, set up both a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.
 
@@ -66,26 +61,12 @@ That's it! There's no need include any SDKs or instrument your application code.
 
 > **NOTE**: You can register multiple tracing exporters at the same time, and the tracing logs are forwarded to all registered exporters.
 
-Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use **Application Map** to examine the topology of your services, as shown below:
+Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use the **Application Map** to examine the topology of your services, as shown below:
 
 ![Application map](/images/open-telemetry-app-insights.png)
 
 > **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) are displayed in Application Map topology.
 
-## Tracing configuration
-
-The `tracing` section under the `Configuration` spec contains the following properties:
-
-```yml
-tracing:
-    samplingRate: "1"
-```
-
-The following table lists the different properties.
-
-| Property      | Type   | Description
-|-------------- | ------ | -----------
-| samplingRate  | string | Set sampling rate for tracing to be enabled or disabled.
-
-
-`samplingRate` is used to enable or disable the tracing. To disable the sampling rate , set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces. By default, the sampling rate is 1 in 10,000
+## Related links
+* Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability/README.md)
+* How to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})

@@ -5,7 +5,10 @@ linkTitle: "Azure CosmosDB"
 description: "Detailed documentation on the Azure CosmosDB binding component"
 ---
 
-## Setup Dapr component
+## Component format
+
+To setup Azure CosmosDB binding create a component of type `bindings.azure.cosmosdb`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -29,21 +32,31 @@ spec:
     value: message
 ```
 
-- `url` is the CosmosDB url.
-- `masterKey` is the CosmosDB account master key.
-- `database` is the name of the CosmosDB database.
-- `collection` is name of the collection inside the database.
-- `partitionKey` is the name of the partitionKey to extract from the payload.
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Output Binding Supported Operations
+## Spec metadata fields
 
-* create
+| Field              | Required | Binding support | Details | Example |
+|--------------------|:--------:|--------|---------|---------|
+| url | Y | Output | The CosmosDB url | `"https://******.documents.azure.com:443/"` | 
+| masterKey | Y | Output | The CosmosDB account master key | `"master-key"` |
+| database | Y | Output | The name of the CosmosDB database | `"OrderDb"` |
+| collection | Y | Output | The name of the container inside the database.  | `"Orders"` |
+| partitionKey | Y | Output | The name of the partitionKey to extract from the payload and is used in the container | `"OrderId"`, `"message"` | 
+
+For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/en-us/azure/cosmos-db/account-databases-containers-items).
+
+## Binding support
+
+This component supports **output binding** with the following operations:
+
+- `create`
 
 ## Related links
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
