@@ -18,6 +18,7 @@ metadata:
   name: ratelimit
 spec:
   type: middleware.http.ratelimit
+  version: v1
   metadata:
   - name: maxRequestsPerSecond
     value: 10
