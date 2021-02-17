@@ -87,7 +87,7 @@ github_subdir = "daprdocs"
 github_branch = "v0.11"
 
 # Versioning
-version_menu = "v0.11 (latest)"
+version_menu = "v0.11"
 version = "v0.11"
 archived_version = false
 

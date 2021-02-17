@@ -18,10 +18,6 @@ In addition, the default initialization process also creates a development envir
 1. Creating a **default components folder** with component definitions for the above
 1. Running a **Dapr placement service container instance** for local actor support
 
-{{% alert title="Dapr release candidate" color="warning" %}}
-This page provides instructions for installing Dapr runtime v0.11. To install v1.0-3 preview, the release candidate for the upcoming v1.0 release please visit the [v1.0-rc3 docs version of this page](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-selfhost/). Note you will need to ensure you are also using the preview version of the CLI (instructions to install the latest preview CLI can be found [here](https://v1-rc3.docs.dapr.io/getting-started/install-dapr-cli/)).
-{{% /alert %}}
-
 {{% alert title="Docker" color="primary" %}}
 This recommended development environment requires [Docker](https://docs.docker.com/install/). It is possible to initialize Dapr without a dependency on Docker (see [this guidance]({{<ref self-hosted-no-docker.md>}})) but next steps in this guide assume the recommended development environment.
 {{% /alert %}}
