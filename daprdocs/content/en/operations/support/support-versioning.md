@@ -61,6 +61,8 @@ Note: Components have a production usage lifecycle status: Alpha, Beta and GA (s
 * List of [secret store components]({{< ref supported-secret-stores.md >}})
 * List of [binding components]({{< ref supported-bindings.md >}})
 
+For more information on component versioning  read [Version 2 and beyond of a component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md#version-2-and-beyond-of-a-component)
+
 ### Component schemas 
 
 Versioning for component YAMLs comes in two forms:
@@ -84,6 +86,7 @@ spec:
   - name: redisPassword
     value: general-kenobi
 ```
+
 ### Component manifest version
 The Component YAML manifest is versioned with `dapr.io/v1alpha1`. 
 
