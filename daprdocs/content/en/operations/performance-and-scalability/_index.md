@@ -2,6 +2,6 @@
 type: docs
 title: "Performance and Scalability"
 linkTitle: "Performance and Scalability"
-weight: 90
+weight: 700
 description: "Benchmarks and guidelines for Dapr building blocks"
 ---
