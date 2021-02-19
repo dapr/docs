@@ -81,7 +81,7 @@ To make using Dapr more natural for different languages, it also includes [langu
 Dapr can be used from  any developer framework. Here are some that have been integrated with Dapr.
 
 #### Web
- In the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services. 
+ In the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) integration, which brings stateful routing controllers that respond to pub/sub events from other services. 
  
  In the Dapr [Java SDK](https://github.com/dapr/java-sdk) you can find [Spring Boot](https://spring.io/) integration.
  
