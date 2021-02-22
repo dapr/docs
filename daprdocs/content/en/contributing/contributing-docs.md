@@ -128,7 +128,7 @@ As an example, for this specific section the complete reference to the page and 
 ```
 
 ### Images
-The markdown spec used by Docsy and Hugo does not give an option to resize images using markdown notation. Instead, raw HMTL is used.
+The markdown spec used by Docsy and Hugo does not give an option to resize images using markdown notation. Instead, raw HTML is used.
 
 Begin by placing images under `/daprdocs/static/images` with the naming convention of `[page-name]-[image-name].[png|jpg|svg]`.
 
