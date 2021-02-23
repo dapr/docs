@@ -62,7 +62,7 @@ In container hosting environments such as Kubernetes, Dapr runs as a side-car co
 
 ## Developer language SDKs and frameworks
 
-To make using Dapr more natural for different languages, it also includes [language specific SDKs]({{<ref sdks>}}) for Go, Java, JavaScript, .NET, PHP and Python. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
+To make using Dapr more natural for different languages, it also includes [language specific SDKs]({{<ref sdks>}}) for C++, Go, Java, JavaScript, Python, Rust .NET and PHP. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
 ### SDKs
 
