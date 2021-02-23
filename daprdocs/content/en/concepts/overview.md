@@ -62,7 +62,7 @@ In container hosting environments such as Kubernetes, Dapr runs as a side-car co
 
 ## Developer language SDKs and frameworks
 
-To make using Dapr more natural for different languages, it also includes [language specific SDKs]({{<ref sdks>}}) for Go, Java, JavaScript, .NET, PHP and Python. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
+To make using Dapr more natural for different languages, it also includes [language specific SDKs]({{<ref sdks>}}) for C++, Go, Java, JavaScript, Python, Rust .NET and PHP. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
 ### SDKs
 
@@ -81,7 +81,7 @@ To make using Dapr more natural for different languages, it also includes [langu
 Dapr can be used from  any developer framework. Here are some that have been integrated with Dapr.
 
 #### Web
- In the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find ASP.NET Core integration, which brings stateful routing controllers that respond to pub/sub events from other services. 
+ In the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) integration, which brings stateful routing controllers that respond to pub/sub events from other services. 
  
  In the Dapr [Java SDK](https://github.com/dapr/java-sdk) you can find [Spring Boot](https://spring.io/) integration.
  
