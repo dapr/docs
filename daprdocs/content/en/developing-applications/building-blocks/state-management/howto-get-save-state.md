@@ -77,7 +77,7 @@ dapr run --app-id myapp --dapr-http-port 3500
 
 Then in a separate terminal save a key/value pair into your statestore:
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{ "key": "key1", "value": "value1"}' http://localhost:3500/v1.0/state/statestore
+curl -X POST -H "Content-Type: application/json" -d '[{ "key": "key1", "value": "value1"}]' http://localhost:3500/v1.0/state/statestore
 ```
 
 Now get the state you just saved:
@@ -98,7 +98,7 @@ dapr --app-id myapp --port 3500 run
 
 Then in a separate terminal save a key/value pair into your statestore:
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"key": "key1", "value": "value1"}' -Uri 'http://localhost:3500/v1.0/state/statestore'
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "key1", "value": "value1"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
 ```
 
 Now get the state you just saved:

@@ -46,7 +46,7 @@ You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref instal
 The `-k` flag initializes Dapr on the Kubernetes cluster in your current context.
 
 {{% alert title="Target cluster" color="primary" %}}
-Make sure the correct "target" cluster is set. Check `kubectl context (kubectl config kubectl config get-contexts)` to verify. You can set a different context using `kubectl config use-context <CONTEXT>`.
+Make sure the correct "target" cluster is set. Check `kubectl context (kubectl config get-contexts)` to verify. You can set a different context using `kubectl config use-context <CONTEXT>`.
 {{% /alert %}}
 
 Run on your local machine:

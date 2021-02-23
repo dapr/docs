@@ -42,7 +42,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 {{< /tabs >}}
 
-## Step 2: Get state
+## Step 3: Get state
 
 Now get the state you just stored using a key with the state management API:
 
@@ -64,7 +64,7 @@ Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/name'
 
 {{< /tabs >}}
 
-## Step 3: See how the state is stored in Redis
+## Step 4: See how the state is stored in Redis
 
 You can look in the Redis container and verify Dapr is using it as a state store. Run the following to use the Redis CLI:
 
