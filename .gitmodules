@@ -7,3 +7,6 @@
 [submodule "sdkdocs/php"]
 	path = sdkdocs/php
 	url = https://github.com/dapr/php-sdk.git
+[submodule "sdkdocs/dotnet"]
+	path = sdkdocs/dotnet
+	url = https://github.com/dapr/php-sdk.git
