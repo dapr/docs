@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Set-up New Relic for Dapr observability"
+title: "How-To: Set-up New Relic for distributed tracing"
 linkTitle: "New Relic"
 weight: 2000
-description: "Set-up New Relic for Dapr observability"
+description: "Set-up New Relic for distributed tracing"
 ---
 
 ## Prerequisites

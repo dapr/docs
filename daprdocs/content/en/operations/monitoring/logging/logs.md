@@ -86,7 +86,7 @@ spec:
 
 ## Log collectors
 
-If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [json parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON formatted logs. This [how-to]({{< ref fluentd.md >}}) shows how to configure the Fleuntd in your cluster.
+If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [json parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON formatted logs. This [how-to]({{< ref fluentd.md >}}) shows how to configure the Fluentd in your cluster.
 
 If you are using the Azure Kubernetes Service, you can use the default OMS Agent to collect logs with Azure Monitor without needing to install Fluentd.
 
