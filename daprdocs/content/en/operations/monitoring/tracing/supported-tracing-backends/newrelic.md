@@ -8,7 +8,7 @@ description: "Set-up New Relic for distributed tracing"
 
 ## Prerequisites
 
-- Perpetually [free New Relic account](https://newrelic.com/signup), 100 GB/month of free data ingest, 1 free full access user, unlimited free basic users
+- Perpetually [free New Relic account](https://newrelic.com/signup?ref=dapr), 100 GB/month of free data ingest, 1 free full access user, unlimited free basic users
 
 ## Configure Dapr tracing
 
