@@ -78,7 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 You can run a NATS server locally using Docker:
 
 ```bash
-docker run -d -name nats-streaming -p 4222:4222 -p 8222:8222 nats-streaming
+docker run -d --name nats-streaming -p 4222:4222 -p 8222:8222 nats-streaming
 ```
 
 You can then interact with the server using the client port: `localhost:4222`.
