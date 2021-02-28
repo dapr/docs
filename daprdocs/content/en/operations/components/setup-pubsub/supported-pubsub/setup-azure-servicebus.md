@@ -44,6 +44,10 @@ spec:
     value: 10
   - name: autoDeleteOnIdleInSec # Optional
     value: 10
+  - name: maxReconnectionAttempts # Optional
+    value: 30
+  - name: connectionRecoveryInSec # Optional
+    value: 2
 ```
 
 > __NOTE:__ The above settings are shared across all topics that use this component.
@@ -69,6 +73,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | prefetchCount         | N  |Defines the number of prefetched messages (use for high throughput / low latency scenarios)| `5`
 | defaultMessageTimeToLiveInSec | N  |Default message time to live. | `10`
 | autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting messages. | `10`
+| maxReconnectionAttempts | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
+| connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Defaults: `2` | `2`
 
 ## Create an Azure Service Bus
 
