@@ -24,7 +24,6 @@ This document explains how to install it in your cluster, either using a Helm ch
 
 3. Run the following command to install the New Relic Logging Kubernetes plugin via Helm, replacing the placeholder value YOUR_LICENSE_KEY with your [New Relic license key](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key):
 
-- Helm 3
     ```bash
     helm install nri-prometheus newrelic/nri-prometheus --set licenseKey=YOUR_LICENSE_KEY
     ```
