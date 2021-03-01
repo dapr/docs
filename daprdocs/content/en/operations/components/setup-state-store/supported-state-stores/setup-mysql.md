@@ -64,7 +64,7 @@ Run an instance of MySQL. You can run a local instance of MySQL in Docker CE wit
 This example does not describe a production configuration because it sets the password in plain text and the user name is left as the MySQL default of "root".
 
 ```bash
-docker run --name dapr_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
+docker run --name dapr-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
 ```
 
 {{% /codetab %}}
@@ -78,7 +78,7 @@ We can use [Helm](https://helm.sh/) to quickly create a MySQL instance in our Ku
 
     ```bash
     helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm install dapr_mysql bitnami/mysql
+    helm install dapr-mysql bitnami/mysql
     ```
 
 1. Run `kubectl get pods` to see the MySQL containers now running in your cluster.
