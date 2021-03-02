@@ -45,7 +45,7 @@ helm install elasticsearch elastic/elasticsearch -n dapr-monitoring
 If you are using minikube or want to disable persistent volumes for development purposes, you can disable it by using the following command:
 
 ```bash
-helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set persistence.enabled=false --replicas=1
+helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set persistence.enabled=false,replicas=1
 ```
 
 4. Install Kibana

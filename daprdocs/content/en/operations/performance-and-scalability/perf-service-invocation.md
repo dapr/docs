@@ -29,7 +29,7 @@ For more information see [overview of Dapr in self-hosted mode]({{< ref self-hos
 
 For more information see [overview of Dapr on Kubernetes]({{< ref kubernetes-overview.md >}}).
 
-## Performance summary for Dapr v0.11.3
+## Performance summary for Dapr v1.0
 
 The service invocation API is a reverse proxy with built-in service discovery to connect to other services. This includes tracing, metrics, mTLS for in-transit encryption of traffic, together with resiliency in the form of retries for network partitions and connection errors.
 
@@ -76,7 +76,9 @@ There are a number of variants that affect the CPU and memory consumption for ea
 ### Data plane performance
 
 The Dapr sidecar uses 0.48 vCPU and 23Mb per 1000 requests per second.
-End-to-end, the Dapr sidecars (client and server) add 1.57 ms to the 90th percentile latency, and 2.36 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
+End-to-end, the Dapr sidecars (client and server) add ~1.40 ms to the 90th percentile latency, and ~2.10 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
+
+This performance is on par or better than commonly used service meshes.
 
 ### Latency
 
