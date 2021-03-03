@@ -21,7 +21,7 @@ Use the following resource settings might serve as a starting point. Requirement
 | Placement   | Limit: 1, Request: 250m  | Limit: 150Mi, Request: 75Mi
 | Dashboard   | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
 
-When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment. The [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README) has detailed information and examples. For local/dev installations, you might simply want to skip configuring the `resources` options.
+When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment. The [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) has detailed information and examples. For local/dev installations, you might simply want to skip configuring the `resources` options.
 
 ### Optional components
 
