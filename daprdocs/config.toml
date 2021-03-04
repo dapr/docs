@@ -46,6 +46,12 @@ id = "UA-149338238-3"
   [[module.mounts]]
     source = "../sdkdocs/php/daprdocs/content/en/php-sdk-docs"
     target = "content/developing-applications/sdks/php"
+  [[module.mounts]]
+    source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-docs"
+    target = "content/developing-applications/sdks/dotnet"
+  [[module.mounts]]
+    source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
+    target = "content/contributing/"
 
 # Markdown Engine - Allow inline html
 [markup]
