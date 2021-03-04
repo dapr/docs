@@ -88,7 +88,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 {{< /tabs >}}
 
-##### Saving to a specific file
+##### Save text to a specific blob
 
 {{< tabs Windows Linux >}}
 
