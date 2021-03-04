@@ -19,7 +19,7 @@ Run the following command to launch a Dapr sidecar that will listen on port 3500
 dapr run --app-id myapp --dapr-http-port 3500
 ```
 
-With this command, no custom component folder was defined so the Dapr uses the default component definitions that were created during the init flow (these can be found under `$HOME/.dapr/components` on Linux or MacOS and under `%USERPROFILE%\.dapr\components` on Windows). These tell Dapr to the local Redis Docker container as a state store and message broker.
+With this command, no custom component folder was defined, so Dapr uses the default component definitions that were created during the init flow (these can be found under `$HOME/.dapr/components` on Linux or MacOS and under `%USERPROFILE%\.dapr\components` on Windows). These tell Dapr to use the local Redis Docker container as a state store and message broker.
 
 ## Step 2: Save state
 
