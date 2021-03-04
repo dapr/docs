@@ -109,7 +109,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 {{< /tabs >}}
 
 
-##### Saving a file
+##### Save a file to a blob
 
 To upload a file, encode it as Base64 and let the Binding know to deserialize it:
 
