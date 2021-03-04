@@ -69,7 +69,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 #### Examples
 
 
-##### Saving to a random generated UUID file
+##### Save text to a random generated UUID blob
   
 {{< tabs Windows Linux >}}
   {{% codetab %}}
