@@ -123,7 +123,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.0.0 \
+    --version=1.0.1 \
     --namespace dapr-system \
     --create-namespace \
     --wait
@@ -133,7 +133,7 @@ To install in high availability mode:
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.0.0 \
+    --version=1.0.1 \
     --namespace dapr-system \
     --create-namespace \
     --set global.ha.enabled=true \
