@@ -1,0 +1,29 @@
+name: validate-links
+
+on:
+  push:
+    branches:
+      - v*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - v*
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env: 
+      PYTHON_VER: 3.7
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ env.PYTHON_VER }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VER }}
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install setuptools wheel twine tox mechanical-markdown
+      - name: Check Markdown Files
+        run: |
+          for name in `find . -name "*.md"`; do echo -e "------\n$name" ; mm.py -l $name || exit 1 ;done
