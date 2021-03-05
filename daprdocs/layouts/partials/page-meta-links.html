@@ -23,10 +23,6 @@
 
 <a href="{{ $editURL }}" target="_blank"><i class="fa fa-edit fa-fw"></i> {{ T "post_edit_this" }}</a>
 <a href="{{ $issuesURL }}" target="_blank"><i class="fab fa-github fa-fw"></i> {{ T "post_create_issue" }}</a>
-{{ if $gh_project_repo }}
-{{ $project_issueURL := printf "%s/issues/new/choose" $gh_project_repo }}
-<a href="{{ $project_issueURL }}" target="_blank"><i class="fas fa-tasks fa-fw"></i> {{ T "post_create_project_issue" }}</a>
-{{ end }}
 </div>
 {{ end }}
 {{ end }}
