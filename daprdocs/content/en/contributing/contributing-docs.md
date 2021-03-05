@@ -232,3 +232,32 @@ The shortcode would be:
 
 ### References
 - [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/)
+
+## Translations
+
+The Dapr Docs supports adding language translations into the docs using git submodules and Hugo's built in language support.
+
+You can find an example PR of adding Chinese language support in [PR 1286](https://github.com/dapr/docs/pull/1286).
+
+Steps to add a language:
+- Open an issue in the Docs repo requesting to create a new language-specific docs repo
+- Once created, create a git submodule within the docs repo:
+   ```sh
+   git submodule add <remote_url> translations/<language_code>
+   ```
+- Add a language entry within `daprdocs/config.toml`:
+   ```toml
+    [languages.<language_code>]
+      title = "Dapr Docs"
+      weight = 3
+      contentDir = "content/<language_code>"
+      languageName = "<language_name>"
+   ```
+- Create a mount within `daprdocs/config.toml`:
+   ```toml
+   [[module.mounts]]
+     source = "../translations/docs-<language_code>/content/<language_code>"
+     target = "content"
+     lang = "<language_code>"
+   ```
+- Repeat above step as necessary for all other translation directories
