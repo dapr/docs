@@ -43,7 +43,7 @@ kubectl create namespace namespace-a
 kubectl config set-context --current --namespace=namespace-a
 ```
 
-Install Redis (master and slave) on `namespace-a`, following [these instructions](https://github.com/dapr/docs/blob/master/howto/setup-pub-sub-message-broker/setup-redis.md).
+Install Redis (master and slave) on `namespace-a`, following [these instructions]({{< ref "configure-state-pubsub.md" >}}).
 
 Now, configure `deploy/redis.yaml`, paying attention to the hostname containing `namespace-a`.
 
