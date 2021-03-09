@@ -15,7 +15,7 @@ When using state management your application can leverage features that would ot
 - Distributed concurrency and data consistency
 - Bulk [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations
 
-Your application can used Dapr's state management API to save and read key/value pairs using a state store component, as shown in the diagram below. For example, by using HTTP POST you can save key/value pairs and by using HTTP GET you can read a key and have its value returned.
+Your application can use Dapr's state management API to save and read key/value pairs using a state store component, as shown in the diagram below. For example, by using HTTP POST you can save key/value pairs and by using HTTP GET you can read a key and have its value returned.
 
 <img src="/images/state-management-overview.png" width=900>
 
