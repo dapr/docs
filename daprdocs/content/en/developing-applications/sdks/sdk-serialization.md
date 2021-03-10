@@ -14,7 +14,7 @@ An SDK for Dapr should provide serialization for two use cases. First, for API o
 
 ```java
     DaprClient client = (new DaprClientBuilder()).build();
-    client.invokeService(Verb.POST, "myappid", "saySomething", "My Message", null).block();
+    client.invokeService("myappid", "saySomething", "My Message", HttpExtension.POST).block();
 ```
 
 In the example above, the app will receive a `POST` request for the `saySomething` method with the request payload as `"My Message"` - quoted since the serializer will serialize the input String to JSON.
@@ -139,7 +139,7 @@ redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928
 {"value":"My data value."}
 ```
 3. Custom serializers must serialize object to `byte[]`.
-4. Custom serializers must deserilize `byte[]` to object.
+4. Custom serializers must deserialize `byte[]` to object.
 5. When user provides a custom serializer, it should be transferred or persisted as `byte[]`. When persisting, also encode as Base64 string. This is done natively by most JSON libraries.
 ```bash
 redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928192||message
@@ -149,6 +149,6 @@ redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928
  redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928192||mydata
 "eyJ2YWx1ZSI6Ik15IGRhdGEgdmFsdWUuIn0="
 ```
-6. When serializing a object that is a `byte[]`, the serializer should just pass it through since `byte[]` shoould be already handled internally in the SDK. The same happens when deserializing to `byte[]`.
+6. When serializing an object that is a `byte[]`, the serializer should just pass it through since `byte[]` should be already handled internally in the SDK. The same happens when deserializing to `byte[]`.
 
 *As of now, the [Java SDK](https://github.com/dapr/java-sdk/) is the only Dapr SDK that implements this specification. In the near future, other SDKs will also implement the same.*
