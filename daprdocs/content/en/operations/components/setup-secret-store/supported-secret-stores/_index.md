@@ -31,7 +31,7 @@ Table captions:
 | Name                                                     | Status | Component version | Since |
 |----------------------------------------------------------|--------| -------------------| ---- |
 | [AWS Secrets Manager]({{< ref aws-secret-manager.md >}}) | Alpha  | v1 | 1.0 |
-| [AWS SSM Parameter Store]({{< ref aws-parameter-store.md >}}) | Alpha  | v1 | 1.0 |
+| [AWS SSM Parameter Store]({{< ref aws-parameter-store.md >}}) | Alpha  | v1 | 1.1 |
 
 ### Google Cloud Platform (GCP)
 
