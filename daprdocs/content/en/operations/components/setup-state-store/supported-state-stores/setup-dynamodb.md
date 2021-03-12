@@ -16,7 +16,7 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: state.dynamodb
+  type: state.aws.dynamodb
   version: v1
   metadata:
   - name: table
