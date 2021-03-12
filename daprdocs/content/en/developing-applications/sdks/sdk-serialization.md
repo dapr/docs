@@ -149,6 +149,5 @@ redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928
  redis-cli MGET "ActorStateIT_StatefulActorService||StatefulActorTest||1581130928192||mydata
 "eyJ2YWx1ZSI6Ik15IGRhdGEgdmFsdWUuIn0="
 ```
-6. When serializing an object that is a `byte[]`, the serializer should just pass it through since `byte[]` should be already handled internally in the SDK. The same happens when deserializing to `byte[]`.
 
 *As of now, the [Java SDK](https://github.com/dapr/java-sdk/) is the only Dapr SDK that implements this specification. In the near future, other SDKs will also implement the same.*
