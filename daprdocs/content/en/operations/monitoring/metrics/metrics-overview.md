@@ -12,9 +12,39 @@ Dapr exposes a [Prometheus](https://prometheus.io/) metrics endpoint that you ca
 
 The metrics endpoint is enabled by default, you can disable it by passing the command line argument `--enable-metrics=false` to Dapr system processes.
 
-The default metrics port is `9090`. This can be overridden by passing the command line argument `--metrics-port` to Daprd.
+The default metrics port is `9090`. This can be overridden by passing the command line argument `--metrics-port` to Daprd. Additionally, the metrics exporter can be disabled for a specific application by setting the `dapr.io/enable-metrics: "false"` annotation to your application deployment. With the metrics exporter disabled, `daprd` will not open the metrics listening port.
 
-To disable the metrics in the Dapr side car, you can use the `metric` spec configuration and set `enabled: false` to disable the metrics in the Dapr runtime.
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp
+  labels:
+    app: node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "nodeapp"
+        dapr.io/app-port: "3000"
+        dapr.io/enable-metrics: "false"
+    spec:
+      containers:
+      - name: node
+        image: dapriosamples/hello-k8s-node:latest
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+```
+
+To disable the metrics collection in the Dapr side cars running in a specific namespace, you can use the `metric` spec configuration and set `enabled: false` to disable the metrics in the Dapr runtime.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
