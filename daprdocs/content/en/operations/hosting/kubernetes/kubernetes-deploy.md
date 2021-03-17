@@ -65,7 +65,6 @@ The default namespace when initializing Dapr is `dapr-system`. You can override 
 dapr init -k -n mynamespace
 ```
 
-
 ### Install in highly available mode
 
 You can run Dapr with 3 replicas of each control plane pod in the dapr-system namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
@@ -80,6 +79,16 @@ Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-
 
 ```bash
 dapr init -k --enable-mtls=false
+```
+
+### Wait for the installation to complete
+
+ You can wait for the installation to complete its deployment with the `--wait` flag. 
+ 
+ The default timeout is 300s (5 min), but can be customized with the `--timeout` flag.
+
+```bash
+dapr init -k --wait --timeout 600
 ```
 
 ### Uninstall Dapr on Kubernetes with CLI
