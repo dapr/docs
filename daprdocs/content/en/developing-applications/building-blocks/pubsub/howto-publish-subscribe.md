@@ -221,7 +221,7 @@ $app->post('/dsstatus', function(
 $app->start();
 ```
 
-After creating `app1.php`, and with the [SDK installed](https://github.com/dapr/php-sdk/blob/main/docs/getting-started.md),
+After creating `app1.php`, and with the [SDK installed](https://docs.dapr.io/developing-applications/sdks/php/),
 go ahead and start the app:
 
 ```bash
