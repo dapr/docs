@@ -10,7 +10,7 @@ The uppercase [HTTP middleware]({{< ref middleware-concept.md >}}) converts the 
 
 ## Component format
 
-In the following definition, the maximum requests per second are set to 10:
+In the following definition, it make content of request body into uppercase:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
