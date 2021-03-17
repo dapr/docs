@@ -81,7 +81,11 @@ Dapr is initialized by default with [mTLS]({{< ref "security-concept.md#sidecar-
 dapr init -k --enable-mtls=false
 ```
 
-### Wait for the installation to complete (default timeout is 300s/5m)
+### Wait for the installation to complete
+
+ You can wait for the installation to complete its deployment with the `--wait` flag. 
+ 
+ The default timeout is 300s (5 min), but can be customized with the `--timeout` flag.
 
 ```bash
 dapr init -k --wait --timeout 600
