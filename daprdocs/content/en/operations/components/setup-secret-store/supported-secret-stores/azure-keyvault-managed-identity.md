@@ -78,7 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
       ```bash
       az aks show -g <AKSResourceGroup> -n <AKSClusterName>
       ```
-    For more detail about the roles to assign to integrate AKS with Azure Services [Role Assignment](https://github.com/Azure/aad-pod-identity/blob/master/docs/readmes/README.role-assignment.md).
+    For more detail about the roles to assign to integrate AKS with Azure Services [Role Assignment](https://azure.github.io/aad-pod-identity/docs/getting-started/role-assignment/).
 
 4.  Retrieve Managed Identity ID
   
