@@ -39,12 +39,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
-| consumerID         | N        | The consumer group ID   | `"myGroup"`
-| enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
-| redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
-| processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
-| queueDepth         | N        | The size of the message queue for processing. Defaults to `"100"`. | `"1000"`
-| concurrency        | N        | The number of concurrent workers that are processing messages. Defaults to `"10"`. | `"15"`
+| consumerID        | N         | The consumer group ID   | `"myGroup"`
+| enableTLS         | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Create a Redis instance
 
