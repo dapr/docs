@@ -39,6 +39,7 @@ spec:
 | caCert | Required for using TLS | Certificate authority certificate. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
 | clientCert | Required for using TLS | Client certificate. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
 | clientKey | Required for using TLS | Client key. Can be `secretKeyRef` to use a secret reference | `012345`
+| backOffMaxRetries   | N  | The maximum number of retries to process the message before returning an error. Defaults to `"0"` which means the component will not retry processing the message. `"-1"` will retry indefinitely until the message is processed or the application is shutdown. And positive number is treated as the maximum retry count. The component will wait 5 seconds between retries. | `"3"`
 
 
 ### Communication using TLS

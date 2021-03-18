@@ -31,6 +31,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | connectionString    | Y  | A comma delimited string of servers. Example: "hazelcast:3000,hazelcast2:3000"  | `"hazelcast:3000,hazelcast2:3000"`
+| backOffMaxRetries   | N  | The maximum number of retries to process the message before returning an error. Defaults to `"0"` which means the component will not retry processing the message. `"-1"` will retry indefinitely until the message is processed or the application is shutdown. And positive number is treated as the maximum retry count. The component will wait 5 seconds between retries. | `"3"` |
 
 
 ## Create a Hazelcast instance
