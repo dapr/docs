@@ -1,11 +1,9 @@
 ---
 type: docs
-title: "Deploy Dapr at a Kubernetes cluster"
+title: "Deploy Dapr on a Kubernetes cluster without CLI"
 linkTitle: "Deploy Dapr without CLI"
 weight: 21000
-description: "Follow these steps to deploy Dapr at Kubernetes without cluster permissions."
-aliases:
-    - /getting-started/install-dapr-kubernetes/
+description: "Follow these steps to deploy Dapr at Kubernetes without cluster permissions and the CLI"
 ---
 
 This part describes the process of installation Dapr without CLI or Helm when you have no cluster permissions. Such situation may arise when you have a project in OKD or namespace in Kubernetes. In this case you have no cluster permission and can't deploy the operator. You can't also address cluster admin to install Dapr operator because you are the only one who needs it.
