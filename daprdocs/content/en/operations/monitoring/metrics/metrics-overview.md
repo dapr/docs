@@ -57,7 +57,7 @@ spec:
   tracing:
     samplingRate: "1"
   metric:
-    enabled: false
+    enabled: true
 ```
 
 ## Metrics
