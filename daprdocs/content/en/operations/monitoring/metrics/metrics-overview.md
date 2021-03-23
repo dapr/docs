@@ -3,7 +3,7 @@ type: docs
 title: "Metrics"
 linkTitle: "Metrics"
 weight: 4000
-description: "Observing Dapr metrics"
+description: "Observing Dapr metrics in Kubernetes"
 ---
 
 Dapr exposes a [Prometheus](https://prometheus.io/) metrics endpoint that you can scrape to gain a greater understanding of how Dapr is behaving and to setup alerts for specific conditions.
@@ -34,7 +34,8 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "nodeapp"
         dapr.io/app-port: "3000"
-        dapr.io/enable-metrics: "false"
+        dapr.io/enable-metrics: "true"
+        dapr.io/metrics-port: "9090"
     spec:
       containers:
       - name: node
