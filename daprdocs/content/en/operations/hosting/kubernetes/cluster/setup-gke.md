@@ -2,7 +2,7 @@
 type: docs
 title: "Setup a Google Kubernetes Engine cluster"
 linkTitle: "Google Kubernetes Engine"
-weight: 2000
+weight: 3000
 description: "Setup a Google Kubernetes Engine cluster"
 ---
 
