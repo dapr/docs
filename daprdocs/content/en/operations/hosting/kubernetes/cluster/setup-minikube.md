@@ -2,7 +2,7 @@
 type: docs
 title: "Setup an Minikube cluster"
 linkTitle: "Minikube"
-weight: 2000
+weight: 1000
 description: >
   How to setup Dapr on a Minikube cluster.
 ---
