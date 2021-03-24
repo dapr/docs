@@ -45,6 +45,19 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | queueDepth         | N        | The size of the message queue for processing. Defaults to `"100"`. | `"1000"`
 | concurrency        | N        | The number of concurrent workers that are processing messages. Defaults to `"10"`. | `"15"`
+| redisDB        | N        | Database to be selected after connecting to redis. Defaults to `"0"`. | `"0"`
+| redisMaxRetries        | N        | Maximum number of retries before giving up. Default is to not retry failed commands.  | `"5"`
+| redisMinRetryInterval        | N        | Minimum backoff for redis commands between each retry. Default is `"8ms"`;  `"-1"` disables backoff. | `"8ms"`
+| redisMaxRetryInterval        | N        | Maximum backoff for redis commands between each retry. Default is `"512ms"`;`"-1"` disables backoff. | `"5s"`
+| dialTimeout        | N        | Dial timeout for establishing new connections. Defaults to `"5s"`.  | `"5s"`
+| readTimeout        | N        | Timeout for socket reads. If reached, redis commands will fail with a timeout instead of blocking. Defaults to `"3s"`, `"-1"` for no timeout. | `"3s"`
+| writeTimeout        | N        | Timeout for socket writes. If reached, redis commands will fail with a timeout instead of blocking. Defaults is readTimeout. | `"3s"`
+| poolSize        | N        | Maximum number of socket connections. Default is 10 connections per every CPU as reported by runtime.NumCPU. | `"20"`
+| poolTimeout        | N        | Amount of time client waits for connection if all connections are busy before returning an error. Default is readTimeout + 1 second. | `"5s"`
+| maxConnAge        | N        | Connection age at which client retires (closes) the connection. Default is to not close aged connections. | `"30m"`
+| minIdleConns        | N        | Minimum number of idle connections which is useful when establishing new connection is slow. Defaults to `"0"`. | `"2"`
+| idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
+| idleTimeout        | N        | Amount of time after which client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
 
 ## Create a Redis instance
 
