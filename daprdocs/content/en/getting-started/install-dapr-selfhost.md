@@ -52,7 +52,7 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: 1.0.0
+CLI version: 1.0.1
 Runtime version: 1.0.1
 ```
 
