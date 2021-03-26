@@ -20,7 +20,7 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/api-token-secret`                        | Tells Dapr which Kubernetes secret to use for token based API authentication. By default this is not set.
 | `dapr.io/app-protocol`                            | Tells Dapr which protocol your application is using. Valid options are `http` and `grpc`. Default is `http`
 | `dapr.io/app-max-concurrency`                     | Limit the concurrency of your application. A valid value is any number larger than `0`
-| `dapr.io/app-ssl`   | Tells Dapr to invoke the app over an insecure SSL connection. Applies to both HTTP and gRPC. Default is `false`.
+| `dapr.io/app-ssl`   | Tells Dapr to invoke the app over an insecure SSL connection. Applies to both HTTP and gRPC. Traffic between your app and the Dapr sidecar is encrypted with a certificate issued by a non-trusted certificate authority, which is considered insecure. Default is `false`.
 | `dapr.io/metrics-port`                            | Sets the port for the sidecar metrics server. Default is `9090`
 | `dapr.io/sidecar-cpu-limit`                       | Maximum amount of CPU that the Dapr sidecar can use. See valid values [here](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/). By default this is not set
 | `dapr.io/sidecar-memory-limit`                    | Maximum amount of Memory that the Dapr sidecar can use. See valid values [here](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/). By default this is not set
