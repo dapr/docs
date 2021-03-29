@@ -29,6 +29,7 @@ Table captions:
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 | [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Alpha | v1 | 1.0 |
+| [Local Storage]({{< ref localstorage.md >}})           |    | ✅ | Alpha | v1 | 1.1 |
 | [MQTT]({{< ref mqtt.md >}})           | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [MySQL]({{< ref mysql.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 | [PostgreSql]({{< ref postgres.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
