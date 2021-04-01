@@ -138,7 +138,7 @@ github_branch = "v1.0"
 # Versioning
 version_menu = "v1.0"
 version = "v1.0"
-archived_version = false
+archived_version = true
 
 [[params.versions]]
   version = "v1.1 (latest)"
