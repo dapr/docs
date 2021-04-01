@@ -7,7 +7,7 @@ weight: 10000
 type: docs
 ---
 
-Dapr integrates with secret stores to provide apps and other components with secure store and access to secrets such as access keys and passwords. Each secret store component has a name and this name is used when accessing a secret.
+Dapr integrates with secret stores to provide apps and other components with secure storage and access to secrets such as access keys and passwords. Each secret store component has a name and this name is used when accessing a secret.
 
 As with other building block components, secret store components are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib).
 
