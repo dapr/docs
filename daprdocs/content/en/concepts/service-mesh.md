@@ -40,6 +40,6 @@ Should you be using Dapr, a service mesh or both? The answer depends on your req
 
 Typically you would use a service mesh with Dapr where there is a corporate policy that traffic on the network needs to be encrypted regardless for all applications. For example, you may be using Dapr in only part of your application and other services and processes that are not using Dapr in your application also need encrypted traffic. In this scenario a service mesh is the better option and most likely you should use mTLS and distributed tracing on the service mesh and disable this on Dapr.  
 
-If you need traffic splitting for A/B testing scenarios you would benefit from using a service mesh, since Dapr does not provide this.
+If you need traffic splitting for A/B testing scenarios you would benefit from using a service mesh, since Dapr does not provide these capabilities.
 
 In some cases, where you require capabilities that are unique to both you will find it useful to leverage both Dapr and a service mesh - as mentioned above, there is no limitation for using them together.
