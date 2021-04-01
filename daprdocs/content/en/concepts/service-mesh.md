@@ -16,11 +16,11 @@ In most cases, developers do not need to be aware that the application they are 
 
 Some common capabilities that Dapr shares with service meshes include:
 - Secure service-to-service communication with mTLS encryption
-- service-to-service metric collection
-- service-to-service distributed tracing
+- Service-to-service metric collection
+- Service-to-service distributed tracing
 - Resiliency through retries
 
- Importantly Dapr provides service discovery and invocation via names which is a developer centric convern. This means that through Dapr's service invocation API, developers call a method on a service name, whereas service meshes deal with network concepts such as IPs and DNS addresses. However, Dapr does not provide capabilities for traffic behavior such as routing or traffic splitting. Traffic routing is often addressed with ingress proxies to an application and does not have to use a service mesh. In addition, Dapr does provides other application level building blocks for state management, pub/sub messaging, actors and more.
+ Importantly Dapr provides service discovery and invocation via names which is a developer centric concern. This means that through Dapr's service invocation API, developers call a method on a service name, whereas service meshes deal with network concepts such as IPs and DNS addresses. However, Dapr does not provide capabilities for traffic behavior such as routing or traffic splitting. Traffic routing is often addressed with ingress proxies to an application and does not have to use a service mesh. In addition, Dapr does provides other application level building blocks for state management, pub/sub messaging, actors and more.
 
 Another difference between Dapr and service meshes is with observability (tracing and metrics). Service meshes operate at the network level and trace the network calls between services. Dapr does this with service invocation, however Dapr also provides observability (tracing and metrics) over pub/sub calls using trace ids written into the Cloud Events envelope. This means that the metrics and tracing with Dapr is more extensive than with a service mesh for applications that use both service-to-service invocation and pub/sub to communicate.
 
