@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v0-11.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -93,8 +93,11 @@ archived_version = true
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.0 (latest)"
+  version = "v1.1 (latest)"
   url = "https://docs.dapr.io"
+[[params.versions]]
+  version = "v1.0"
+  url = "https://v1-0.docs.dapr.io"
 [[params.versions]]
   version = "v0.11"
   url = "#"
