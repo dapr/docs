@@ -47,6 +47,8 @@ If your pod spec template is annotated correctly and you still don't see the sid
 
 If this is the case, restarting the pods will fix the issue.
 
+If you are deploying Dapr on a private GKE cluster, sidecar injection does not work without extra steps. See [Setup a Google Kubernetes Engine cluster]({{< ref setup-gke.md >}}).
+
 In order to further diagnose any issue, check the logs of the Dapr sidecar injector:
 
 ```bash

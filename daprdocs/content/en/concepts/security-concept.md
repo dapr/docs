@@ -112,7 +112,7 @@ Threat modeling is a process by which potential threats, such as structural vuln
 
 ### February 2021
 
-In February 2021, Dapr has gone a 2nd security audit targetting it's 1.0 release by Cure53.
+In February 2021, Dapr has gone through a 2nd security audit targetting it's 1.0 release by Cure53.
 The test focused on the following:
 
 * Dapr runtime code base evaluation since last audit
