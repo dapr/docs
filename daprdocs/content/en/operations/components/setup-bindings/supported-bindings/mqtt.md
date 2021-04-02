@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|---------|---------|---------|
-| url    | Y  | Input/Output | Address of the MQTT broker  | Use `**tcp://**` scheme for non-TLS communication.   Use`**tcps://**` scheme for TLS communication.  <br> "tcp://[username][:password]@host.domain[:port]"
+| url    | Y  | Input/Output | Address of the MQTT broker  | Use `**tcp://**` scheme for non-TLS communication.   Use`**ssl://**` scheme for TLS communication.  <br> "tcp://[username][:password]@host.domain[:port]"
 | topic | Y | Input/Output | The topic to listen on or send events to | `"mytopic"` |
 | qos    | N  | Input/Output | Indicates the Quality of Service Level (QoS) of the message. Default 0|`1`
 | retain | N  | Input/Output | Defines whether the message is saved by the broker as the last known good value for a specified topic. Default `"false"`  | `"true"`, `"false"`
@@ -64,7 +64,7 @@ spec:
   version: v1
   metadata:
   - name: url
-    value: "tcps://host.domain[:port]"
+    value: "ssl://host.domain[:port]"
   - name: topic
     value: "topic1"
   - name: qos
