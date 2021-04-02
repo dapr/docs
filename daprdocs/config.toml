@@ -139,6 +139,7 @@ github_branch = "v1.1"
 version_menu = "v1.1 (latest)"
 version = "v1.1"
 archived_version = false
+url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
   version = "v1.1 (latest)"
