@@ -2,7 +2,7 @@
 type: docs
 title: "Running Dapr with a Kubernetes Job"
 linkTitle: "Kubernetes Jobs"
-weight: 1000
+weight: 70000
 description: "Use Dapr API in a Kubernetes Job context"
 type: docs
 ---
