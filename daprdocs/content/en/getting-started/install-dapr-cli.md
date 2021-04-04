@@ -23,6 +23,11 @@ This Command Prompt command installs the latest windows Dapr cli to `C:\dapr` an
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
+
+Or you can install via [Scoop](https://scoop.sh):
+```powershell
+scoop install dapr-cli
+```
 {{% /codetab %}}
 
 {{% codetab %}}
