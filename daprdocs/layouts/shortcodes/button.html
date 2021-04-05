@@ -4,4 +4,4 @@
 
 {{- if $page -}}{{- $link = ref . $page -}}{{- end -}}
 
-<a class="btn btn-{{ $color }}" href="{{ $link }}" role="button">{{ .Inner }}</a>
+<a class="btn btn-{{ $color }}" href="{{ $link }}" role="button">{{ .Inner | replaceRE "(.*)\n" "$1" }}</a>
