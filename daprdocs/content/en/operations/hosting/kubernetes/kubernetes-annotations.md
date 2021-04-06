@@ -20,7 +20,7 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/api-token-secret`                        | Tells Dapr which Kubernetes secret to use for token based API authentication. By default this is not set.
 | `dapr.io/app-protocol`                            | Tells Dapr which protocol your application is using. Valid options are `http` and `grpc`. Default is `http`
 | `dapr.io/app-max-concurrency`                     | Limit the concurrency of your application. A valid value is any number larger than `0`
-| `dapr.io/app-ssl`   | Tells Dapr to invoke the app over an insecure SSL connection. Applies to both HTTP and gRPC. Default is `false`.
+| `dapr.io/app-ssl`   | Tells Dapr to invoke the app over an insecure SSL connection. Applies to both HTTP and gRPC. Traffic between your app and the Dapr sidecar is encrypted with a certificate issued by a non-trusted certificate authority, which is considered insecure. Default is `false`.
 | `dapr.io/metrics-port`                            | Sets the port for the sidecar metrics server. Default is `9090`
 | `dapr.io/sidecar-cpu-limit`                       | Maximum amount of CPU that the Dapr sidecar can use. See valid values [here](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/). By default this is not set
 | `dapr.io/sidecar-memory-limit`                    | Maximum amount of Memory that the Dapr sidecar can use. See valid values [here](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/). By default this is not set
@@ -35,3 +35,4 @@ The following table shows all the supported pod Spec annotations supported by Da
 | `dapr.io/sidecar-readiness-probe-period-seconds`  | How often (in seconds) to perform the sidecar readiness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `6`
 | `dapr.io/sidecar-readiness-probe-threshold`       | When the sidecar readiness probe fails, Kubernetes will try N times before giving up. In  this case, the Pod will be marked Unready. Read more about `failureThreshold` [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `3`
 | `dapr.io/http-max-request-size`                   | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB      
+| `dapr.io/env`                                     | List of environment variable to be injected into the sidecar. Strings consisting of key=value pairs separated by a comma.

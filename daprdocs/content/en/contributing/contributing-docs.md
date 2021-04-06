@@ -22,7 +22,7 @@ Follow the instructions in the repository [README.md](https://github.com/dapr/do
 
 The Dapr docs handles branching differently than most code repositories. Instead of having a `master` or `main` branch, every branch is labeled to match the major and minor version of a runtime release. For the full list visit the [Docs repo](https://github.com/dapr/docs#branch-guidance)
 
-Overall, all updates should go into the docs branch for the latest release of Dapr. You can find this directly at https://github.com/dapr/docs, as the latest release will be the default branch. For any docs changes that are applicable to a release candidate or a pre-release version of the docs, make your changes into that particular branch.
+Overall, all updates should go into the docs branch for the latest release of Dapr. You can find this directly at [https://github.com/dapr/docs](https://github.com/dapr/docs), as the latest release will be the default branch. For any docs changes that are applicable to a release candidate or a pre-release version of the docs, make your changes into that particular branch.
 
 For example, if you are fixing a typo, adding notes, or clarifying a point, make your changes into the default Dapr branch. If you are documenting an upcoming change to a component or the runtime, make your changes to the pre-release branch. Branches can be found in the [Docs repo](https://github.com/dapr/docs#branch-guidance)
 
@@ -127,6 +127,10 @@ As an example, for this specific section the complete reference to the page and 
 {{</* ref "contributing-docs.md#referencing-sections-in-other-pages" */>}}
 ```
 
+## Shortcodes
+
+The following are useful shortcodes for writing Dapr documentation
+
 ### Images
 The markdown spec used by Docsy and Hugo does not give an option to resize images using markdown notation. Instead, raw HTML is used.
 
@@ -230,5 +234,74 @@ The shortcode would be:
 {{</* youtube dQw4w9WgXcQ */>}}
 ```
 
+### Buttons
+
+To create a button in a webpage, use the `button` shortcode.
+
+#### Link to an external page
+
+```
+{{</* button text="My Button" link="https://example.com" */>}}
+```
+
+{{< button text="My Button" link="https://example.com" >}}
+
+#### Link to another docs page
+
+You can also reference pages in your button as well:
+```
+{{</* button text="My Button" page="contributing" */>}}
+```
+
+{{< button text="My Button" page="contributing" >}}
+
+#### Button colors
+
+You can customize the colors using the Bootstrap colors:
+```
+{{</* button text="My Button" link="https://example.com" color="primary" */>}}
+{{</* button text="My Button" link="https://example.com" color="secondary" */>}}
+{{</* button text="My Button" link="https://example.com" color="success" */>}}
+{{</* button text="My Button" link="https://example.com" color="danger" */>}}
+{{</* button text="My Button" link="https://example.com" color="warning" */>}}
+{{</* button text="My Button" link="https://example.com" color="info" */>}}
+```
+
+{{< button text="My Button" link="https://example.com" color="primary" >}}
+{{< button text="My Button" link="https://example.com" color="secondary" >}}
+{{< button text="My Button" link="https://example.com" color="success" >}}
+{{< button text="My Button" link="https://example.com" color="danger" >}}
+{{< button text="My Button" link="https://example.com" color="warning" >}}
+{{< button text="My Button" link="https://example.com" color="info" >}}
+
 ### References
 - [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/)
+
+## Translations
+
+The Dapr Docs supports adding language translations into the docs using git submodules and Hugo's built in language support.
+
+You can find an example PR of adding Chinese language support in [PR 1286](https://github.com/dapr/docs/pull/1286).
+
+Steps to add a language:
+- Open an issue in the Docs repo requesting to create a new language-specific docs repo
+- Once created, create a git submodule within the docs repo:
+   ```sh
+   git submodule add <remote_url> translations/<language_code>
+   ```
+- Add a language entry within `daprdocs/config.toml`:
+   ```toml
+    [languages.<language_code>]
+      title = "Dapr Docs"
+      weight = 3
+      contentDir = "content/<language_code>"
+      languageName = "<language_name>"
+   ```
+- Create a mount within `daprdocs/config.toml`:
+   ```toml
+   [[module.mounts]]
+     source = "../translations/docs-<language_code>/content/<language_code>"
+     target = "content"
+     lang = "<language_code>"
+   ```
+- Repeat above step as necessary for all other translation directories

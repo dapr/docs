@@ -77,7 +77,7 @@ Welcome to the Dapr documentation site!
     <h5 class="mt-0"><b>Language SDKs</b></h5>
     <p>Create Dapr applications in your preferred language using the Dapr SDKs.</p>
     <div class="media mt-3">
-      <a class="pr-3" href="{{< ref sdks >}}">
+      <a class="pr-3" href="{{< ref dotnet >}}">
         <img src="/images/homepage/dotnet.png" alt=".NET logo" width=30>
       </a>
       <div class="media-body">
@@ -109,7 +109,7 @@ Welcome to the Dapr documentation site!
       </div>
     </div>
     <div class="media mt-3">
-      <a class="pr-4" href="{{< ref sdks >}}">
+      <a class="pr-4" href="{{< ref php >}}">
         <img src="/images/homepage/php.png" alt="PHP logo" width=30>
       </a>
       <div class="media-body">

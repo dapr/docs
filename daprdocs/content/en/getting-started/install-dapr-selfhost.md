@@ -52,8 +52,8 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: 1.0.0
-Runtime version: 1.0.0
+CLI version: 1.1.0
+Runtime version: 1.1.0
 ```
 
 ### Step 4: Verify containers are running

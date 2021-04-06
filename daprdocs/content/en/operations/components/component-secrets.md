@@ -121,7 +121,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
-  verbs: ["get"]
+  verbs: ["get", "list"]
 ---
 
 kind: RoleBinding

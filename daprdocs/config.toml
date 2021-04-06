@@ -10,6 +10,18 @@ enableGitInfo = true
 # Language Configuration
 languageCode = "en-us"
 
+[languages]
+  [languages.en]
+    title = "Dapr Docs"
+    weight = 1
+    contentDir = "content/en"
+    languageName = "English"
+  [languages.zh-hans]
+    title = "Dapr 文档库"
+    weight = 2
+    contentDir = "content/zh-hans"
+    languageName = "简体中文"
+
 # Disable categories & tags
 disableKinds = ["taxonomy", "term"]
 
@@ -22,6 +34,7 @@ id = "UA-149338238-3"
   [[module.mounts]]
     source = "content/en"
     target = "content"
+    lang = "en"
   [[module.mounts]]
     source = "static"
     target = "static"
@@ -37,15 +50,48 @@ id = "UA-149338238-3"
   [[module.mounts]]
     source = "archetypes"
     target = "archetypes"
+
   [[module.mounts]]
     source = "../sdkdocs/python/daprdocs/content/en/python-sdk-docs"
     target = "content/developing-applications/sdks/python"
+    lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/python/daprdocs/content/en/python-sdk-contributing"
     target = "content/contributing/"
+    lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/php/daprdocs/content/en/php-sdk-docs"
     target = "content/developing-applications/sdks/php"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-docs"
+    target = "content/developing-applications/sdks/dotnet"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
+
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/zh-hans"
+    target = "content"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/contributing"
+    target = "content/contributing/"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_python"
+    target = "content/developing-applications/sdks/python"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_php"
+    target = "content/developing-applications/sdks/php"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_dotnet"
+    target = "content/developing-applications/sdks/dotnet"
+    lang = "zh-hans"
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -87,16 +133,20 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "v1.0"
+github_branch = "v1.1"
 
 # Versioning
-version_menu = "v1.0 (latest)"
-version = "v1.0"
+version_menu = "v1.1 (latest)"
+version = "v1.1"
 archived_version = false
+url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.0 (latest)"
+  version = "v1.1 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.0"
+  url = "https://v1-0.docs.dapr.io"
 [[params.versions]]
   version = "v0.11"
   url = "https://v0-11.docs.dapr.io"

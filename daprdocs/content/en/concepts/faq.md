@@ -6,27 +6,8 @@ weight: 1000
 description: "Common questions asked about Dapr"
 ---
 
-## Networking and service meshes
-
-### Understanding how Dapr works with service meshes
-
-Dapr is a distributed application runtime.  Unlike a service mesh which is focused on networking concerns, Dapr is focused on providing building blocks that make it easier for developers to build microservices.  Dapr is developer-centric versus service meshes being infrastructure-centric.
-
-Dapr can be used alongside any service mesh such as Istio and Linkerd. A service mesh is a dedicated network infrastructure layer designed to connect services to one another and provide insightful telemetry. A service mesh doesn’t introduce new functionality to an application.
-
-That is where Dapr comes in. Dapr is a language agnostic programming model built on http and gRPC that provides distributed system building blocks via open APIs for asynchronous pub-sub, stateful services, service discovery and invocation, actors and distributed tracing. Dapr introduces new functionality to an app’s runtime. Both service meshes and Dapr run as side-car services to your application, one giving network features and the other distributed application capabilities.
-
-Watch this [video](https://www.youtube.com/watch?v=xxU68ewRmz8&feature=youtu.be&t=140) on how Dapr and service meshes work together.
-
-### Understanding how Dapr interoperates with the service mesh interface (SMI)
-
-SMI is an abstraction layer that provides a common API surface across different service mesh technology.  Dapr can leverage any service mesh technology including SMI.
-
-### Differences between Dapr, Istio and Linkerd
-
-Read [How does Dapr work with service meshes?](https://github.com/dapr/dapr/wiki/FAQ#how-does-dapr-work-with-service-meshes) Istio is an open source service mesh implementation that focuses on Layer7 routing, traffic flow management and mTLS authentication between services. Istio uses a sidecar to intercept traffic going into and out of a container and enforces a set of network policies on them.
-
-Istio is not a programming model and does not focus on application level features such as state management, pub-sub, bindings etc. That is where Dapr comes in.
+## How does Dapr compare to service meshes such as Istio, Linkerd or OSM?
+Dapr is not a service mesh. While service meshes focus on fine grained network control, Dapr is focused on helping developers build distributed applications. Both Dapr and service meshes use the sidecar pattern and run alongside the application and they do have some overlapping features but also offer unique benefits. For more information please read the [Dapr & service meshes]({{<ref service-mesh>}}) concept page.
 
 ## Performance Benchmarks
 The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. See [here]({{< ref perf-service-invocation.md >}}) for updated performance numbers.
@@ -36,7 +17,7 @@ The Dapr project is focused on performance due to the inherent discussion of Dap
 ### What is the relationship between Dapr, Orleans and Service Fabric Reliable Actors?
 
 The actors in Dapr are based on the same virtual actor concept that [Orleans](https://www.microsoft.com/research/project/orleans-virtual-actors/) started, meaning that they are activated when called and deactivated after a period of time. If you are familiar with Orleans, Dapr C# actors will be familiar. Dapr C# actors are based on [Service Fabric Reliable Actors](https://docs.microsoft.com/azure/service-fabric/service-fabric-reliable-actors-introduction) (which also came from Orleans) and enable you to take Reliable Actors in Service Fabric and migrate them to other hosting platforms such as Kubernetes or other on-premise environments.
-Also Dapr is about more than just actors. It provides you with a set of best practice building blocks to build into any microservices application. See [Dapr overview](https://github.com/dapr/docs/blob/master/overview/README.md).
+Also Dapr is about more than just actors. It provides you with a set of best practice building blocks to build into any microservices application. See [Dapr overview]({{< ref overview.md >}}).
 
 ### Differences between Dapr from an actor framework
 
