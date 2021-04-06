@@ -109,7 +109,6 @@ All the data that is collected from Dapr, Kubernetes or any services that run on
 * [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform)
 * [Distributed Tracing](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/get-started/introduction-distributed-tracing)
 * [New Relic Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/introduction-trace-api/)
-* [New Relic Metric API](https://docs.newrelic.com/docs/telemetry-data-platform/get-data/apis/introduction-metric-api)
 * [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys)
 * [New Relic OpenTelemetry User Experience](https://blog.newrelic.com/product-news/opentelemetry-user-experience/)
 * [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence)
