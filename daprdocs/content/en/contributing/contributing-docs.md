@@ -127,6 +127,10 @@ As an example, for this specific section the complete reference to the page and 
 {{</* ref "contributing-docs.md#referencing-sections-in-other-pages" */>}}
 ```
 
+## Shortcodes
+
+The following are useful shortcodes for writing Dapr documentation
+
 ### Images
 The markdown spec used by Docsy and Hugo does not give an option to resize images using markdown notation. Instead, raw HTML is used.
 
@@ -229,6 +233,46 @@ The shortcode would be:
 ```
 {{</* youtube dQw4w9WgXcQ */>}}
 ```
+
+### Buttons
+
+To create a button in a webpage, use the `button` shortcode.
+
+#### Link to an external page
+
+```
+{{</* button text="My Button" link="https://example.com" */>}}
+```
+
+{{< button text="My Button" link="https://example.com" >}}
+
+#### Link to another docs page
+
+You can also reference pages in your button as well:
+```
+{{</* button text="My Button" page="contributing" */>}}
+```
+
+{{< button text="My Button" page="contributing" >}}
+
+#### Button colors
+
+You can customize the colors using the Bootstrap colors:
+```
+{{</* button text="My Button" link="https://example.com" color="primary" */>}}
+{{</* button text="My Button" link="https://example.com" color="secondary" */>}}
+{{</* button text="My Button" link="https://example.com" color="success" */>}}
+{{</* button text="My Button" link="https://example.com" color="danger" */>}}
+{{</* button text="My Button" link="https://example.com" color="warning" */>}}
+{{</* button text="My Button" link="https://example.com" color="info" */>}}
+```
+
+{{< button text="My Button" link="https://example.com" color="primary" >}}
+{{< button text="My Button" link="https://example.com" color="secondary" >}}
+{{< button text="My Button" link="https://example.com" color="success" >}}
+{{< button text="My Button" link="https://example.com" color="danger" >}}
+{{< button text="My Button" link="https://example.com" color="warning" >}}
+{{< button text="My Button" link="https://example.com" color="info" >}}
 
 ### References
 - [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/)
