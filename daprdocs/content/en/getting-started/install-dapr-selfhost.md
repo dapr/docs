@@ -109,6 +109,4 @@ You will see the Dapr config, Dapr binaries directory, and the default component
 
 {{< /tabs >}}
 
-{{% alert color="primary" %}}
-[Next step: Use the Dapr API >>]({{< ref get-started-api.md >}})
-{{% /alert %}}
+{{< button text="Next step: Use the Dapr API >>" page="get-started-api" >}}
