@@ -1,0 +1,15 @@
+<!-- Check the variable that indicates whether this is an archived doc set.
+  If yes, display a banner. -->
+  {{ if .Site.Params.archived_version }}
+  {{ $color := "primary" }}
+  {{ $latest_version := .Site.Params.url_latest_version }}
+  {{ $current_version := .Site.Params.version }}
+  <div class="pageinfo pageinfo-{{ $color }}">
+    {{ with $current_version }}<p>The documentation you are viewing is for Dapr {{ . | markdownify }} 
+      which is an older version of Dapr. 
+      {{ with $latest_version }}For up-to-date documentation, see the 
+        <a href="{{ $latest_version | safeURL }}" target="_blank">latest version</a>.</p>
+      {{ end }}
+    {{ end }}
+  </div>
+{{ end }}
