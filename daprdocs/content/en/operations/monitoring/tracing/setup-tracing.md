@@ -16,7 +16,7 @@ the cloud or on-premises.
 The `tracing` section under the `Configuration` spec contains the following properties:
 
 ```yml
-tracing:
+spec:
   tracing:
     samplingRate: "1"
     zipkin:
