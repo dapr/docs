@@ -142,6 +142,6 @@ Use the `AWS account ID` and `AWS account secret` and plug them into the `access
 - [Pub/Sub building block]({{< ref pubsub >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
-- [AWS SNS API refernce](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
-- [AWS SQS API refernce](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)
+- [AWS SNS API reference](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
+- [AWS SQS API reference](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)
 - [Authenticating to AWS]({{< ref authenticating-aws.md >}})
