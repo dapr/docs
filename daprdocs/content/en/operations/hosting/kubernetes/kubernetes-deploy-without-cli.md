@@ -31,7 +31,7 @@ You can install Dapr to a Kubernetes cluster or other orchectrator without Dapr 
 
 ### Install Dapr
 
-Dapr installation is done with ordinary Kubernes deployment. 
+Dapr is installed as a Kubernetes deployment. 
 The example below demonstrates how to describe deployment process.
 
 ```yml
@@ -294,4 +294,6 @@ The next example shows how to apply it to Kubernetes.
 ```bash
 kubectl apply -f application.yml
 ```
-As you can see, to run application we use mode named **dns**. In this mode to locate the Dapr application we use services with suffix `-dapr`.
+
+To run the application use the **dns** mode . In this mode to locate the Dapr application, use services with suffix `-dapr`.
+
