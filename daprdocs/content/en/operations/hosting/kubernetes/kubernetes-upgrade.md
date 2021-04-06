@@ -19,7 +19,7 @@ There are two ways to upgrade the Dapr control plane on a Kubernetes cluster usi
 The example below shows how to upgrade to version 1.1.0:
 
   ```bash
-  dapr upgrade -k --runtime-version=1.0.1
+  dapr upgrade -k --runtime-version=1.1.0
   ```
 
 You can provide all the available Helm chart configurations using the Dapr CLI.
