@@ -23,23 +23,25 @@ spec:
   metadata:
   - name: type
     value: service_account
-  - name: project_id
+  - name: projectId
     value: <PROJECT_ID> # replace
-  - name: private_key_id
+  - name: identityProjectId
+    value: <IDENTITY_PROJECT_ID> # replace
+  - name: privateKeyId
     value: <PRIVATE_KEY_ID> #replace
-  - name: client_email
+  - name: clientEmail
     value: <CLIENT_EMAIL> #replace
-  - name: client_id
+  - name: clientId
     value: <CLIENT_ID> # replace
-  - name: auth_uri
+  - name: authUri
     value: https://accounts.google.com/o/oauth2/auth
-  - name: token_uri
+  - name: tokenUri
     value: https://oauth2.googleapis.com/token
-  - name: auth_provider_x509_cert_url
+  - name: authProviderX509CertUrl
     value: https://www.googleapis.com/oauth2/v1/certs
-  - name: client_x509_cert_url
+  - name: clientX509CertUrl
     value: https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com #replace PROJECT_NAME
-  - name: private_key
+  - name: privateKey
     value: <PRIVATE_KEY> # replace x509 cert  
   - name: disableEntityManagement
     value: "false"
@@ -52,19 +54,22 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| type           | Y | GCP credentials type  | `service_account`
-| project_id     | Y | GCP project id| `projectId`
-| private_key_id | Y | GCP private key id | `"privateKeyId"`
-| private_key    | Y | GCP credentials private key. Replace with x509 cert | `12345-12345`
-| client_email   | Y | GCP client email  | `"client@email.com"`
-| client_id      | Y |  GCP client id | `0123456789-0123456789`
-| auth_uri       | Y | Google account OAuth endpoint | `https://accounts.google.com/o/oauth2/auth`
-| token_uri      | Y | Google account token uri | `https://oauth2.googleapis.com/token`
-| auth_provider_x509_cert_url | Y | GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
-| client_x509_cert_url | Y | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
+| type           | N | GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
+| projectId     | Y | GCP project id| `myproject-123`
+| identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
+| privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-proviate-key"`
+
+| privateKey    | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----`
+| clientEmail   | N | If using explicit credentials, this field should contain the `client_email` field from the service account json  | `"myservice@myproject-123.iam.gserviceaccount.com"`
+| clientId      | N |  If using explicit credentials, this field should contain the `client_id` field from the service account json | `106234234234`
+| authUri       | N | If using explicit credentials, this field should contain the `auth_uri` field from the service account json | `https://accounts.google.com/o/oauth2/auth`
+| tokenUri      | N | If using explicit credentials, this field should contain the `token_uri` field from the service account json | `https://oauth2.googleapis.com/token`
+| authProviderX509CertUrl | N | If using explicit credentials, this field should contain the `auth_provider_x509_cert_url` field from the service account json | `https://www.googleapis.com/oauth2/v1/certs`
+| clientX509CertUrl | N | If using explicit credentials, this field should contain the `client_x509_cert_url` field from the service account json | `https://www.googleapis.com/robot/v1/metadata/x509/myserviceaccount%40myproject.iam.gserviceaccount.com`
 | disableEntityManagement | N | When set to `"true"`, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 
 ## Create a GCP Pub/Sub
+You can use either "explicit" or "implicit" credentials to configure access to your GCP pubsub instance. If using explicit, most fields are required. Implicit relies on dapr running under a Kubernetes service acccount (KSA) mapped to a Google service account (GSA) which has the necessary permissions to access pubsub. In implicit mode, only the `projectId` attribute is needed, all other are optional.
 
 Follow the instructions [here](https://cloud.google.com/pubsub/docs/quickstart-console) on setting up Google Cloud Pub/Sub system.
 
