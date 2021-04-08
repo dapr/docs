@@ -55,7 +55,7 @@ Example settings for the dapr sidecar in a production-ready setup:
 
 *Note: Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr enable you to drastically reduce the resource allocations for the application*
 
-The CPU and memory limits above account for the fact that Dapr is intended to a high number of I/O bound operations. It is strongly recommended that you use a tool monitoring tool to baseline the sidecar (and app) containers and tune these settings based on those baselines.
+The CPU and memory limits above account for the fact that Dapr is intended to a high number of I/O bound operations. It is strongly recommended that you use a monitoring tool to baseline the sidecar (and app) containers and tune these settings based on those baselines.
 
 ## Highly-available mode
 
