@@ -31,7 +31,9 @@ spec:
     value : "[skip_tls_verification]"
   - name: tlsServerName # Optional.
     value : "[tls_config_server_name]"
-  - name: vaultTokenMountPath # Required. Path to token file.
+  - name: vaultTokenMountPath # Required if vaultToken not provided. Path to token file.
+    value : "[path_to_file_containing_token]"
+  - name: vaultToken # Required if vaultTokenMountPath not provided. Token value.
     value : "[path_to_file_containing_token]"
   - name: vaultKVPrefix # Optional. Default: "dapr"
     value : "[vault_prefix]"
@@ -51,6 +53,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
 | tlsServerName | N | TLS config server name | `"tls-server"` | 
 | vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
+| vaultToken | Y | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault.  | `"tokenValue"` |
 | vaultKVPrefix | N | The prefix in vault. Defautls to `"dapr"` | `"dapr"`, `"myprefix"` | 
 ## Setup Hashicorp Vault instance
 
