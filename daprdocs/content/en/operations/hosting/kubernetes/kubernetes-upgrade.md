@@ -11,12 +11,12 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 - [Dapr CLI]({{< ref install-dapr-cli.md >}})
 - [Helm 3](https://github.com/helm/helm/releases) (if using Helm) 
 
-## Upgrade existing cluster to 1.0.1
+## Upgrade existing cluster to 1.1.0
 There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 ### Dapr CLI
 
-The example below shows how to upgrade to version 1.0.1:
+The example below shows how to upgrade to version 1.1.0:
 
   ```bash
   dapr upgrade -k --runtime-version=1.0.1
@@ -24,6 +24,26 @@ The example below shows how to upgrade to version 1.0.1:
 
 You can provide all the available Helm chart configurations using the Dapr CLI.
 See [here](https://github.com/dapr/cli#supplying-helm-values) for more info.
+
+#### Troubleshooting upgrade using the CLI
+
+There is a known issue running upgrades on clusters that may have previously had a version prior to 1.0.0-rc.2 installed on a cluster.
+
+Most users should not encounter this issue, but there are a few upgrade path edge cases that may leave an incompatible CustomResourceDefinition installed on your cluster. The error message for this case looks like this:
+
+```
+❌  Failed to upgrade Dapr: Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+The CustomResourceDefinition "configurations.dapr.io" is invalid: spec.preserveUnknownFields: Invalid value: true: must be false in order to use defaults in the schema
+
+```
+
+To resolve this issue please run the follow command to upgrade the CustomResourceDefinition to a compatible version:
+
+```
+kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/5a15b3e0f093d2d0938b12f144c7047474a290fe/charts/dapr/crds/configuration.yaml
+```
+
+Then proceed with the `dapr upgrade --runtime-version 1.1.0 -k` command as above.
 
 ### Helm
 
