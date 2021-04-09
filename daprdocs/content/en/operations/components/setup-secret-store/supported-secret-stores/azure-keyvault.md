@@ -88,7 +88,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
     }
     ```
 
-    **Save the both the appId and tenant from the output which will be used in the next step**
+    **Save both the appId and tenant from the output which will be used in the next step**
 
 4. Get the Object Id for [your_service_principal_name]
 
