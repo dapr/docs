@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "External bindings component specs"
+title: "Bindings component specs"
 linkTitle: "Bindings"
 weight: 3000
 description: The supported external bindings that interface with Dapr
