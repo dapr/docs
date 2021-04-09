@@ -58,8 +58,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | type           | N | GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
 | projectId     | Y | GCP project id| `myproject-123`
 | identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
-| privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-proviate-key"`
-
+| privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-private-key"`
 | privateKey    | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----`
 | clientEmail   | N | If using explicit credentials, this field should contain the `client_email` field from the service account json  | `"myservice@myproject-123.iam.gserviceaccount.com"`
 | clientId      | N |  If using explicit credentials, this field should contain the `client_id` field from the service account json | `106234234234`
