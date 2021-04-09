@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Supported secret stores"
+title: "Secret store component specs"
 linkTitle: "Secret stores"
 weight: 4000
 description: The supported secret stores that interface with Dapr
