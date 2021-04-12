@@ -95,11 +95,11 @@ defer client.Close()
 
 ```go
 // save state with the key key1
-err = client.SaveStateData(ctx, "statestore", "key1", "1", data)
+err = client.SaveState(ctx, "statestore", "key1", data)
 if err != nil {
-  logger.Panic(err)
+  log.Panic(err)
 }
-logger.Println("data saved")
+log.Println("data saved")
 ```
 
 Hooray!
