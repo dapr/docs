@@ -86,7 +86,7 @@ data := []byte("ping")
 // create the client
 client, err := dapr.NewClient()
 if err != nil {
-  logger.Panic(err)
+  log.Panic(err)
 }
 defer client.Close()
 ```
