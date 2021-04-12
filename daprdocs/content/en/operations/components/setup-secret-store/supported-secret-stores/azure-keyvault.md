@@ -31,6 +31,8 @@ spec:
     value: "[your_service_principal_tenant_id]"
   - name: spnClientId
     value: "[your_service_principal_app_id]"
+  - name: spnCertificate
+    value : "[pfx_certificate_contents_k8s_secret_name]"
   - name: spnCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
@@ -57,7 +59,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | vaultName          | Y        | The name of the Azure Key Vault                                         | `"mykeyvault"`           |
 | spnTenantId        | Y        | Service Principal Tenant Id                                        | `"spnTenantId"`          |
 | spnClientId        | Y        | Service Principal App Id                                           | `"spnAppId"`             |
-| spnCertificate     | Y        | Store the certificate for the service principal into the Kubernetes Secret Store.<br></br> See [configure the component](#configure-the-component) for more details | kubectl create secret generic [name] --from-file=[fully_qualified_local_path]        |
+| spnCertificate     | Y        | Store the certificate for the service principal into the Kubernetes Secret Store.<br></br>  kubectl create secret generic [secretName] --from-file=[secretKey]=[fully_qualified_local_path]<br></br> See [configure the component](#configure-the-component) for more details |   See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components      |
 
 ## Setup Key Vault and service principal
 
@@ -73,7 +75,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
     ```bash
     # Log in Azure
     az login
-    
+
     # Set your subscription to the default subscription
     az account set -s [your subscription id]
     ```
@@ -90,7 +92,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
     ```bash
     az ad sp create-for-rbac --name [your_service_principal_name] --create-cert --cert [certificate_name] --keyvault [your_keyvault] --skip-assignment --years 1
-    
+
     {
        "appId": "a4f90000-0000-0000-0000-00000011d000",
        "displayName": "[your_service_principal_name]",
@@ -106,7 +108,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
     ```bash
     az ad sp show --id [service_principal_app_id]
-    
+
     {
         ...
         "objectId": "[your_service_principal_object_id]",
@@ -175,11 +177,12 @@ In Kubernetes, you store the certificate for the service principal into the Kube
 1. Create a kubernetes secret using the following command:
 
    ```bash
-   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[pfx_certificate_file_fully_qualified_local_path]
+   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[your_k8s_spn_secret_key]=[pfx_certificate_file_fully_qualified_local_path]
    ```
 
 - `[pfx_certificate_file_fully_qualified_local_path]` is the path of PFX cert file you downloaded above
 - `[your_k8s_spn_secret_name]` is secret name in Kubernetes secret store
+- `[your_k8s_spn_secret_key]` is secret key in Kubernetes secret store
 
 2. Create a `azurekeyvault.yaml` component file
 
@@ -204,7 +207,7 @@ spec:
   - name: spnCertificate
     secretKeyRef:
       name: [your_k8s_spn_secret_name]
-      key: [pfx_certificate_file_fully_qualified_local_path]
+      key: [your_k8s_spn_secret_key]
 auth:
     secretStore: kubernetes
 ```
