@@ -54,7 +54,7 @@ This component supports **output binding** with the following operations:
 
 - `create` : [Create blob](#create-blob)
 - `get` : [Get blob](#get-blob)
-- `delete`: [Delete blob](#delete-blob)
+- `delete` : [Delete blob](#delete-blob)
 
 ### Create blob
 
