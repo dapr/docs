@@ -22,6 +22,16 @@ The example below shows how to upgrade to version 1.1.1:
   dapr upgrade -k --runtime-version=1.1.1
   ```
 
+{{% alert title="Note" color="warning" %}}
+If you are using Dapr CLI v1.1.0 there is a known issue where mTLS will be enabled by default, even on clusters where it is disabled. If your cluster has mTLS disabled, and you would like it to stay disabled, add `--set global.mtls.enabled=false` to your upgrade command:
+
+```bash
+dapr upgrade -k --runtime-version 1.1.1 --set global.mtls.enabled=false
+```
+
+You can track the issue here: [#664](https://github.com/dapr/cli/issues/664).
+{{% /alert %}}
+
 You can provide all the available Helm chart configurations using the Dapr CLI.
 See [here](https://github.com/dapr/cli#supplying-helm-values) for more info.
 
