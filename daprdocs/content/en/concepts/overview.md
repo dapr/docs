@@ -9,7 +9,7 @@ description: >
 
 Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
-{{< youtube 9o9iDAgYBA8 >}}
+<iframe width="1120" height="630" src="https://www.youtube.com/embed/9o9iDAgYBA8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Any language, any framework, anywhere
 
@@ -29,7 +29,7 @@ Using Dapr you can easily build microservice applications using any language, an
 
 There are many considerations when architecting microservices applications. Dapr provides best practices for common capabilities when building microservice applications that developers can use in a standard way and deploy to any environment. It does this by providing distributed system building blocks.
 
-Each of these building blocks is independent, meaning that you can use one, some or all of them in your application. In this initial release of Dapr, the following building blocks are provided:
+Each of these building blocks is independent, meaning that you can use one, some or all of them in your application. Today, the following building blocks are available:
 
 | Building Block | Description |
 |----------------|-------------|
@@ -43,84 +43,78 @@ Each of these building blocks is independent, meaning that you can use one, some
 
 ## Sidecar architecture
 
-Dapr exposes its APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
+Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a container or as a process, not requiring the application code to include any Dapr runtime code. This makes integration with Dapr easy from other runtimes, as well as providing separation of the application logic for improved supportability.
 
-## Hosting Environments
-Dapr can be hosted in multiple environments, including self hosted for local development or to deploy to a group of VMs, Kubernetes and edge environments such as Azure IoT Edge.
+<img src="/images/overview-sidecar-model.png" width=700>
 
-### Self hosted
+## Hosting environments
 
-In self hosted mode Dapr runs as a separate side-car process which your service code can call via HTTP or gRPC. In self hosted mode, you can  also deploy Dapr onto a set of VMs.
+Dapr can be hosted in multiple environments, including self-hosted for local development and Kubernetes for production workloads.
 
-<img src="/images/overview-sidecar.png" width=1000>
+### Self-hosted
 
-### Kubernetes hosted
-
-In container hosting environments such as Kubernetes, Dapr runs as a side-car container with the application container in the same pod.
-
-<img src="/images/overview-sidecar-kubernetes.png" width=1000>
-
-## Developer language SDKs and frameworks
-
-To make using Dapr more natural for different languages, it also includes [language specific SDKs]({{<ref sdks>}}) for C++, Go, Java, JavaScript, Python, Rust .NET and PHP. These SDKs expose the functionality in the Dapr building blocks, such as saving state, publishing an event or creating an actor, through a typed, language API rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
-
-### SDKs
-
-- **[C++ SDK](https://github.com/dapr/cpp-sdk)**
-- **[Go SDK](https://github.com/dapr/go-sdk)**
-- **[Java SDK](https://github.com/dapr/java-sdk)**
-- **[Javascript SDK](https://github.com/dapr/js-sdk)**
-- **[Python SDK](https://github.com/dapr/python-sdk)**
-- **[RUST SDK](https://github.com/dapr/rust-sdk)**
-- **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
-- **[PHP SDK](https://github.com/dapr/php-sdk)**
-
-> Note: Dapr is language agnostic and provides a [RESTful HTTP API]({{< ref api >}}) in addition to the protobuf clients.
-
-### Developer frameworks
-Dapr can be used from  any developer framework. Here are some that have been integrated with Dapr.
-
-#### Web
- In the Dapr [.NET SDK](https://github.com/dapr/dotnet-sdk) you can find [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) integration, which brings stateful routing controllers that respond to pub/sub events from other services. 
- 
- In the Dapr [Java SDK](https://github.com/dapr/java-sdk) you can find [Spring Boot](https://spring.io/) integration.
- 
-Dapr integrates easily with Python [Flask](https://pypi.org/project/Flask/) and node [Express](http://expressjs.com/). See examples in the [Dapr quickstarts](https://github.com/dapr/quickstarts).
-
-In the Dapr [PHP-SDK](https://github.com/dapr/php-sdk) you can serve with Apache, Nginx, or Caddyserver.
-
-#### Actors
-Dapr SDKs support for [virtual actors]({{< ref actors >}}) which are stateful objects that make concurrency simple, have method and state encapsulation, and are designed for scalable, distributed applications.
-
-#### Azure Functions
-Dapr integrates with the Azure Functions runtime via an extension that lets a function seamlessly interact with Dapr. Azure Functions provides an event-driven programming model and Dapr provides cloud-native building blocks. With this  extension, you can bring both together for serverless and event-driven apps. For more information read
-[Azure Functions extension for Dapr](https://cloudblogs.microsoft.com/opensource/2020/07/01/announcing-azure-functions-extension-for-dapr/) and visit the [Azure Functions extension](https://github.com/dapr/azure-functions-extension) repo to try out the samples.
-
-#### Dapr workflows
-To enable developers to easily build workflow applications that use Dapr’s capabilities including diagnostics and multi-language support, you can use Dapr workflows. Dapr integrates with workflow engines such as Logic Apps.  For more information read
-[cloud-native workflows using Dapr and Logic Apps](https://cloudblogs.microsoft.com/opensource/2020/05/26/announcing-cloud-native-workflows-dapr-logic-apps/) and visit the [Dapr workflow](https://github.com/dapr/workflows) repo to try out the samples.
-
-## Designed for Operations
-Dapr is designed for [operations](/operations/). The [services dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs and more for the Dapr sidecars.
-
-The [monitoring tools support](/operations/monitoring/) provides deeper visibility into the Dapr system services and side-cars and the [observability capabilities]({{<ref "observability-concept.md">}}) of Dapr provide insights into your application such as tracing and metrics.
-
-## Run anywhere
-
-### Running Dapr on a local developer machine in self hosted mode
-
-Dapr can be configured to run on your local developer machine in [self-hosted mode]({{< ref self-hosted >}}). Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
+In self hosted mode Dapr runs as a separate sidecar process which your service code can call via HTTP or gRPC. Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
 
 You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples]({{< ref getting-started >}}). 
 
-<img src="/images/overview_standalone.png" width=800>
+<img src="/images/overview_standalone.png" width=1000 alt="Architecture diagram of Dapr in self-hosted mode">
 
-### Running Dapr in Kubernetes mode
+### Kubernetes hosted
 
-Dapr can be configured to run on any [Kubernetes cluster]({{< ref kubernetes >}}). In Kubernetes the `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
+In container hosting environments such as Kubernetes, Dapr runs as a sidecar container with the application container in the same pod.
+
+The `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
 
 The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview]({{< ref "security-concept.md#dapr-to-dapr-communication" >}})
 
-<img src="/images/overview_kubernetes.png" width=800>
+Deploying and running a Dapr enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. Visit the [Dapr on Kubernetes docs]({{< ref kubernetes >}})
 
-Deploying and running a Dapr enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/deploy) in the Kubernetes getting started sample. Try this out with the [Kubernetes quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes).
+<img src="/images/overview_kubernetes.png" width=1000 alt="Architecture diagram of Dapr in Kubernetes mode">
+
+## Developer language SDKs and frameworks
+
+Dapr offers a variety of SDKs and frameworks to make it easy to begin developing with Dapr in your preferred language.
+
+### Dapr SDKs
+
+To make using Dapr more natural for different languages, it also includes [language specific SDKs]({{<ref sdks>}}) for:
+- C++
+- Go
+- Java
+- JavaScript
+- Python
+- Rust
+- .NET
+- PHP.
+
+These SDKs expose the functionality of the Dapr building blocks through a typed language API, rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
+
+### Developer frameworks
+
+Dapr can be used from any developer framework. Here are some that have been integrated with Dapr:
+
+#### Web
+
+| Language | Frameworks | Description |
+|----------|------------|-------------|
+| [.NET]({{< ref dotnet >}}) | [ASP.NET]({{< ref dotnet-aspnet.md >}}) | Brings stateful routing controllers that respond to pub/sub events from other services. 
+| [Java](https://github.com/dapr/java-sdk) | [Spring Boot](https://spring.io/) 
+| [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}})
+| [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/)
+| [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.
+
+#### Integrations
+
+Visit the [integrations]({{< ref integrations >}}) page to learn about some of the first-class support Dapr has for various frameworks and external products, including:
+- Visual Studio Code
+- Azure Functions
+- Azure Logic Apps
+- KEDA
+
+## Designed for operations
+
+Dapr is designed for [operations]({{< ref operations >}}) and security. The Dapr sidecars, runtime, components, and configuration can all be managed and deployed easily and securly to match your organization's needs.
+
+The [services dashboard](https://github.com/dapr/dashboard), installed via the Dapr CLI, provides a web-based UI enabling you to see information, view logs and more for the Dapr sidecars.
+
+The [monitoring tools support]({{< ref monitoring >}}) provides deeper visibility into the Dapr system services and side-cars and the [observability capabilities]({{<ref "observability-concept.md">}}) of Dapr provide insights into your application such as tracing and metrics.
