@@ -4,6 +4,8 @@ title: "Authenticating to AWS"
 linkTitle: "Authenticating to AWS"
 weight: 10
 description: "Information about authentication and configuration options for AWS"
+aliases:
+  - /developing-applications/integrations/authenticating/authenticating-aws/
 ---
 
 All Dapr components using various AWS services (DynamoDB, SQS, S3, etc) use a standardized set of attributes for configuration, these are described below.
@@ -12,11 +14,11 @@ All Dapr components using various AWS services (DynamoDB, SQS, S3, etc) use a st
 
 None of the following attributes are required, since the AWS SDK may be configured using the default provider chain described in the link above. It's important to test the component configuration and inspect the log output from the Dapr runtime to ensure that components initialize correctly.
 
-`region`: Which AWS region to connect to. In some situations (when running Dapr in self-hosted mode, for example) this flag can be provided by the environment variable `AWS_REGION`. Since Dapr sidecar injection doesn't allow configuring environment variables on the Dapr sidecar, it is recommended to always set the `region` attribute in the component spec.   
-`endpoint`: The endpoint is normally handled internally by the AWS SDK. However, in some situations it might make sense to set it locally - for example if developing against [DynamoDB Local](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html).   
-`accessKey`: AWS Access key id.   
-`secretKey`: AWS Secret access key. Use together with `accessKey` to explicitly specify credentials.   
-`sessionToken`: AWS Session token. Used together with `accessKey` and `secretKey`. When using a regular IAM user's access key and secret, a session token is normally not required.
+- `region`: Which AWS region to connect to. In some situations (when running Dapr in self-hosted mode, for example) this flag can be provided by the environment variable `AWS_REGION`. Since Dapr sidecar injection doesn't allow configuring environment variables on the Dapr sidecar, it is recommended to always set the `region` attribute in the component spec.   
+- `endpoint`: The endpoint is normally handled internally by the AWS SDK. However, in some situations it might make sense to set it locally - for example if developing against [DynamoDB Local](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html).   
+- `accessKey`: AWS Access key id.   
+- `secretKey`: AWS Secret access key. Use together with `accessKey` to explicitly specify credentials.   
+- `sessionToken`: AWS Session token. Used together with `accessKey` and `secretKey`. When using a regular IAM user's access key and secret, a session token is normally not required.
 
 ## Alternatives to explicitly specifying credentials in component manifest files
 In production scenarios, it is recommended to use a solution such as [Kiam](https://github.com/uswitch/kiam) or [Kube2iam](https://github.com/jtblin/kube2iam). If running on AWS EKS, you can [link an IAM role to a Kubernetes service account](https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html), which your pod can use.
