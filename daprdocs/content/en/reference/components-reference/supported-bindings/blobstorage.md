@@ -202,7 +202,7 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 
 The response body contains the value stored in the blob object.
 
-### Delete Blob
+### Delete blob
 
 To perform a delete blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
 
