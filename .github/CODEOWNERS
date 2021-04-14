@@ -7,4 +7,4 @@
 
 # Default rule: anything that doesn't match a more specific rule goes here
 
-@dapr/maintainers-docs
+@dapr/approvers-docs
