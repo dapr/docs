@@ -54,6 +54,7 @@ This component supports **output binding** with the following operations:
 
 - `create` : [Create blob](#create-blob)
 - `get` : [Get blob](#get-blob)
+- `delete` : [Delete blob](#delete-blob)
 
 ### Create blob
 
@@ -200,6 +201,82 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 #### Response
 
 The response body contains the value stored in the blob object.
+
+### Delete blob
+
+To perform a delete blob operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "delete",
+  "metadata": {
+    "blobName": "myblob"
+  }
+}
+```
+
+#### Examples
+
+##### Delete blob
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob" }}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
+##### Delete blob snapshots only
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "DeleteSnapshotOptions": "only" }}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
+##### Delete blob including snapshots
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "DeleteSnapshotOptions": "include" }}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
+#### Response
+
+An HTTP 204 (No Content) and empty body will be retuned if successful.
 
 ## Metadata information
 
