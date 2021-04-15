@@ -52,8 +52,8 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: 1.0.0
-Runtime version: 1.0.1
+CLI version: 1.1.0
+Runtime version: 1.1.1
 ```
 
 ### Step 4: Verify containers are running
@@ -109,5 +109,4 @@ You will see the Dapr config, Dapr binaries directory, and the default component
 
 {{< /tabs >}}
 
-<a class="btn btn-primary" href="{{< ref get-started-api.md >}}" role="button">Next step: Use the Dapr API >></a>
-
+{{< button text="Next step: Use the Dapr API >>" page="get-started-api" >}}

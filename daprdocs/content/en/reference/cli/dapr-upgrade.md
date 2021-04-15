@@ -36,12 +36,12 @@ dapr upgrade -k
 
 ### Upgrade specified version of Dapr runtime in Kubernetes
 ```bash
-dapr upgrade -k --runtime-version 1.0.0
+dapr upgrade -k --runtime-version 1.1.1
 ```
 
 ### Upgrade specified version of Dapr runtime in Kubernetes with value set
 ```bash
-dapr upgrade -k --runtime-version 1.0.0 --set global.logAsJson=true
+dapr upgrade -k --runtime-version 1.1.1 --set global.logAsJson=true
 ```
 # Related links
 

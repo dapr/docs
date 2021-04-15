@@ -367,7 +367,7 @@ dapr run --app-id testpubsub --dapr-http-port 3500
 Then publish a message to the `deathStarStatus` topic:
 
 ```bash
-dapr publish --publish-app-id testpubapp --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
+dapr publish --publish-app-id testpubsub --pubsub pubsub --topic deathStarStatus --data '{"status": "completed"}'
 ```
 {{% /codetab %}}
 

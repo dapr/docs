@@ -25,11 +25,11 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
    dapr init
    ```
 
-1. Ensure you are using the latest version of Dapr (1.0.1) with:
+1. Ensure you are using the latest version of Dapr (v1.1.1) with:
 
    ```bash
    $ dapr --version
    
-   CLI version: 1.0.0
-   Runtime version: 1.0.1
+   CLI version: 1.1.0
+   Runtime version: 1.1.1
    ```
