@@ -35,6 +35,7 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Mar 4th 2021  | 1.0.1</br>| 1.0.1 | Java 1.0.2 </br>Go 1.0.0 </br>PHP 1.0.0 </br>Python 1.0.0 </br>.NET 1.0.0 | 0.6.0 | Supported |
 | Apr 1st 2021 | 1.1.0</br> | 1.1.0 | Java 1.0.2 </br>Go 1.1.0 </br>PHP 1.0.0 </br>Python 1.1.0 </br>.NET 1.1.0 | 0.6.0 | Supported |
 | Apr 6th 2021 | 1.1.1</br> | 1.1.0 | Java 1.0.2 </br>Go 1.1.0 </br>PHP 1.0.0 </br>Python 1.1.0 </br>.NET 1.1.0 | 0.6.0 | Supported (current) |
+| Apr 16th 2021 | 1.1.2</br> | 1.1.0 | Java 1.0.2 </br>Go 1.1.0 </br>PHP 1.0.0 </br>Python 1.1.0 </br>.NET 1.1.0 | 0.6.0 | Supported (current) |
 
 ## Upgrade paths
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example an upgrade from v1.0 to v1.2 may need go pass through v1.1
@@ -46,10 +47,10 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 |  Current Runtime version | Must upgrade through  | Target Runtime version   |
 |--------------------------|-----------------------|------------------------- |
 | 0.11                     |                   N/A |                    1.0.1 | 
-|                          |                 1.0.1 |                    1.1.1 |
+|                          |                 1.0.1 |                    1.1.2 |
 | 1.0-rc1 to 1.0-rc4       |                   N/A |                    1.0.1 | 
-| 1.0.0 or 1.0.1           |                   N/A |                    1.1.1 | 
-| 1.1.0                    |                   N/A |                    1.1.1 | 
+| 1.0.0 or 1.0.1           |                   N/A |                    1.1.2 | 
+| 1.1.0 or 1.1.1           |                   N/A |                    1.1.2 | 
 
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
