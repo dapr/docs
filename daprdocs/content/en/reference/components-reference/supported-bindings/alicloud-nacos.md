@@ -65,8 +65,8 @@ This component supports **output binding** with the following operations:
 - `get`
 
 ## Create an AliCloud Nacos
-Follow the instructions [here](https://www.alibabacloud.com/help/doc-detail/59963.htm) on setting up AliCloud nacos.
-Follow the instructions [here](https://help.aliyun.com/document_detail/85466.html) on setting up AliCloud nacos.
+Follow [these instructions](https://www.alibabacloud.com/help/doc-detail/59963.htm) to setup AliCloud Nacos.
+   - A Chinese (simplified) version can be found [here](https://help.aliyun.com/document_detail/85466.html)
 
 ## Specifying a partition key
 
