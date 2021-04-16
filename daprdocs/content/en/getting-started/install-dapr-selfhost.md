@@ -96,7 +96,7 @@ bin  components  config.yaml
 {{% /codetab %}}
 
 {{% codetab %}}
-Open `%USERPROFILE%\.dapr\` in file explorer:
+Using Command Prompt (not PowerShell), open `%USERPROFILE%\.dapr\` in file explorer:
 
 ```powershell
 explorer "%USERPROFILE%\.dapr\"
