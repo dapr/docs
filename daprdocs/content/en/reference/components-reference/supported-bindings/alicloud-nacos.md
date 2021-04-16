@@ -3,8 +3,6 @@ type: docs
 title: "Alibaba Cloud Nacos binding spec"
 linkTitle: "Alibaba Cloud Nacos"
 description: "Detailed documentation on the Alibaba Cloud Nacos binding component"
-aliases:
-- "/operations/components/setup-bindings/supported-bindings/alicloud-nacos/"
 ---
 
 ## Setup Dapr component
