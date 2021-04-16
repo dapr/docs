@@ -70,7 +70,7 @@ Follow [these instructions](https://www.alibabacloud.com/help/doc-detail/59963.h
 
 ## Specifying a partition key
 
-When invoking the nacos binding, its possible to provide an optional partition key by using the `metadata` section in the request body.
+When invoking the Nacos binding, its possible to provide an optional partition key by using the `metadata` section in the request body.
 You can specifie`config-id` and `config-group` in `metadata`
 
 Example:
