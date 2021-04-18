@@ -9,7 +9,14 @@ description: "Common issues and problems faced when running Dapr applications"
 ## I don't see the Dapr sidecar injected to my pod
 
 There could be several reasons to why a sidecar will not be injected into a pod.
-First, check your Deployment or Pod YAML file, and check that you have the following annotations in the right place:
+First, check your deployment or pod YAML file, and check that you have the following annotations in the right place:
+
+```yaml
+annotations:
+  dapr.io/enabled: "true"
+  dapr.io/app-id: "nodeapp"
+  dapr.io/app-port: "3000"
+```
 
 Sample deployment:
 
@@ -31,9 +38,9 @@ spec:
       labels:
         app: node
       annotations:
-        <b>dapr.io/enabled: "true"</b>
-        <b>dapr.io/app-id: "nodeapp"</b>
-        <b>dapr.io/app-port: "3000"</b>
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "nodeapp"
+        dapr.io/app-port: "3000"
     spec:
       containers:
       - name: node
@@ -162,9 +169,9 @@ In Kubernetes, make sure the `dapr.io/app-port` annotation is specified:
 
 ```yaml
 annotations:
-    dapr.io/enabled: "true"
-    dapr.io/app-id: "nodeapp"
-    dapr.io/app-port: "3000"
+  dapr.io/enabled: "true"
+  dapr.io/app-id: "nodeapp"
+  dapr.io/app-port: "3000"
 ```
 
 If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` flag to the `dapr run` command.
