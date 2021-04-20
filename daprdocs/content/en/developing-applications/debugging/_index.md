@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Debug"
-linkTitle: "Debug"
-weight: 50
-description: "How to debug Dapr application and Dapr itself"
+title: "Debugging Dapr applications and the Dapr control plane"
+linkTitle: "Debugging"
+weight: 60
+description: "Guides on how to debug Dapr applications and the Dapr control plane"
 ---

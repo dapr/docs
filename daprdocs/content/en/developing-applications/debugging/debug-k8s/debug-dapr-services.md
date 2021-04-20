@@ -1,30 +1,36 @@
 ---
 type: docs
-title: "Debug Dapr services on Kubernetes"
-linkTitle: "Dapr services"
-weight: 10000
-description: "How to debug Dapr services on your Kubernetes cluster"
+title: "Debug Dapr control plane on Kubernetes"
+linkTitle: "Dapr control plane"
+weight: 1000
+description: "How to debug Dapr control plane on your Kubernetes cluster"
 ---
 
 ## Overview
 
-Sometimes it is necessary to understand what's going on in Dapr Kubernetes services, including `dapr-sidecar-injector`, `dapr-operator`, `dapr-placement`, and `dapr-sentry`, especially when you diagnose your Dapr application and wonder if there's something gets wrong in Dapr itself, or when you contribute to Dapr relevant to Kubernetes support.
+Sometimes it is necessary to understand what's going on in Dapr control plane (aka, Kubernetes services), including `dapr-sidecar-injector`, `dapr-operator`, `dapr-placement`, and `dapr-sentry`, especially when you diagnose your Dapr application and wonder if there's something wrong in Dapr itself. Additionally, you may be developing a new feature for Dapr on Kubernetes and want to debug your code.
 
-If this is the case, Dapr has built-in Kubernetes debug support coming in to rescue.
+This guide will cover how to use Dapr debugging binaries to debug the Dapr services on your Kubernetes cluster.
 
-## Debug Dapr Kubernetes services
+## Debugging Dapr Kubernetes services
 
-Before read on, pls. refer [this guide]({{< ref kubernetes-deploy.md >}}) to learn how to deploy Dapr to your Kubernetes cluster.
+### Pre-requisites
+
+- Familiarize yourself with [this guide]({{< ref kubernetes-deploy.md >}}) to learn how to deploy Dapr to your Kubernetes cluster.
+- Setup your [dev environment](https://github.com/dapr/dapr/blob/master/docs/development/developing-dapr.md)
+-  [Helm](https://github.com/helm/helm/releases)
 
 ### 1. Build Dapr debugging binaries
 
-In order to debug Dapr Kubernetes services, it's required to rebuild all Dapr binaries and Docker images to disable compiler optimization. To do this, pls. execute the following commands:
+In order to debug Dapr Kubernetes services, it's required to rebuild all Dapr binaries and Docker images to disable compiler optimization. To do this, execute the following commands:
 
 ```bash
 git clone https://github.com/dapr/dapr.git
 cd dapr
 make release GOOS=linux GOARCH=amd64 DEBUG=1
 ```
+
+>On Windows download [MingGW](https://sourceforge.net/projects/mingw/files/MinGW/Extension/make/mingw32-make-3.80-3/) and use `ming32-make.exe` instead of `make`.
 
 In the above command, 'DEBUG' is specified  to '1' to disable compiler optimization. 'GOOS=linux' and 'GOARCH=amd64' are also necessary since the binaries will be packaged into Linux-based Docker image in the next step.
 
@@ -51,7 +57,7 @@ If Dapr has already been installed in your Kubernetes cluster, uninstall it firs
 dapr uninstall -k
 ```
 
-We will use 'helm' to install Dapr debugging binaries. For more information pls. check [Install with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}). In the following sections, we will use Dapr operator as an example to demonstrate how to configure, install, and debug Dapr services in a Kubernetes environment.
+We will use 'helm' to install Dapr debugging binaries. In the following sections, we will use Dapr operator as an example to demonstrate how to configure, install, and debug Dapr services in a Kubernetes environment.
 
 First configure a values file with these options:
 
@@ -99,7 +105,7 @@ Forwarding from 127.0.0.1:40000 -> 40000
 Forwarding from [::1]:40000 -> 40000
 ```
 
-All done. Now you can point to port 40000 and start remote debug session from your favorite IDE.
+All done. Now you can point to port 40000 and start a remote debug session from your favorite IDE.
 
 ## Related links
 
