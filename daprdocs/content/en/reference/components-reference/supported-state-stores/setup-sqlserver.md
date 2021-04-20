@@ -41,9 +41,12 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-{{% alert title="Note" color="primary" %}}
-Currently this component does not support state management for actors
-{{% /alert %}}
+If you wish to use Redis as an [actor state store]({{< ref "state_api.md#configuring-state-store-for-actors" >}}), append the following to the yaml.
+
+```yaml
+  - name: actorStateStore
+    value: "true"
+```
 
 ## Spec metadata fields
 
@@ -55,6 +58,7 @@ Currently this component does not support state management for actors
 | keyLength          | N        | The max length of key. Used along with `"string"` keytype. Defaults to `"200"` | `"200"`
 | schema             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
 | indexedProperties  | N        | List of IndexedProperties. |  `"[{"ColumnName": "column", "Property": "property", "Type": "type"}]"`
+| actorStateStore | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{< ref "state_api.md#configuring-state-store-for-actors" >}})). | `"true"`
 
 
 ## Create Azure SQL instance
