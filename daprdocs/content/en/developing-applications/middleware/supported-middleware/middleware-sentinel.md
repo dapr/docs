@@ -3,7 +3,7 @@ type: docs
 title: "Sentinel"
 linkTitle: "Sentinel"
 weight: 7000
-description: "Use rate limit middleware to limit requests per second"
+description: "Use Sentinel middleware to guarantee the reliability and resiliency of your application"
 ---
 
 [Sentinel](https://github.com/alibaba/sentinel-golang) is a powerful fault-tolerance component that takes "flow" as the breakthrough point and covers multiple fields including flow control, traffic shaping, concurrency limiting, circuit breaking, and adaptive system protection to guarantee the reliability and resiliency of microservices.
