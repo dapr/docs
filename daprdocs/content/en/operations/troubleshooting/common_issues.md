@@ -18,7 +18,7 @@ annotations:
   dapr.io/app-port: "3000"
 ```
 
-Sample deployment:
+### Sample deployment:
 
 ```yaml
 apiVersion: apps/v1
