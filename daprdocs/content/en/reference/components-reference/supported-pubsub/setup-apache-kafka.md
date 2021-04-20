@@ -77,7 +77,7 @@ To run without Docker, see the getting started guide [here](https://kafka.apache
 {{% /codetab %}}
 
 {{% codetab %}}
-To run Kafka on Kubernetes, you can use the [Helm Chart](https://github.com/helm/charts/tree/master/incubator/kafka#installing-the-chart).
+To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](https://strimzi.io/docs/operators/latest/quickstart.html#ref-install-prerequisites-str).
 {{% /codetab %}}
 
 {{< /tabs >}}
