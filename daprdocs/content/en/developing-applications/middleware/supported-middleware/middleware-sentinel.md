@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Sentinel"
+title: "Sentinel fault-tolerance middleware component"
 linkTitle: "Sentinel fault-tolerance middleware component"
 weight: 7000
 description: "Use Sentinel middleware to guarantee the reliability and resiliency of your application"
