@@ -3,14 +3,12 @@ type: docs
 title: "Alibaba Cloud RocketMQ"
 linkTitle: "Alibaba Cloud RocketMQ"
 description: "Detailed documentation on the Alibaba Cloud RocketMQ pubsub component"
-aliases:
-- "/operations/components/setup-pubsub/supported-pubsub/setup-alicloud-rocketmq/"
 ---
 
 ## Component format
 To setup Alibaba Cloud RocketMQ pubsub create a component of type `pubsub.rocketmq`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
-HTTP
+### HTTP
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -35,7 +33,7 @@ spec:
       value: "MQ_INST_******"
 ```
 
-TCP
+### TCP
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -81,9 +79,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | content-type                | N        | msg's content-type eg:"application/cloudevents+json; charset=utf-8", application/octet-stream | `"text/plain"`
 
 ## Create an AliCloud RocketMQ
-- Follow the instructions [here(en)](https://www.alibabacloud.com/help/doc-detail/200153.htm) on setting up AliCloud RocketMQ
-- Follow the instructions [here(zh-cn)](https://help.aliyun.com/document_detail/200153.html) on setting up AliCloud RocketMQ
-
+Follow the instructions [here](https://www.alibabacloud.com/help/doc-detail/200153.htm) to setup AliCloud RocketMQ
+  - Simplified Chinese translation [here](https://help.aliyun.com/document_detail/200153.html)
 
 ## Per-call metadata fields
 
