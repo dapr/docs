@@ -49,7 +49,7 @@ Table captions:
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| ------ |----------|
 | [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
-| [Alibaba Cloud DingTalk]({{< ref alicloud-dingtalk.md >}})           |  ✅ | ✅ | Alpha | v1 | 1.0 |
+| [Alibaba Cloud DingTalk]({{< ref alicloud-dingtalk.md >}})           |  ✅ | ✅ | Alpha | v1 | 1.2 |
 
 ### Amazon Web Services (AWS)
 

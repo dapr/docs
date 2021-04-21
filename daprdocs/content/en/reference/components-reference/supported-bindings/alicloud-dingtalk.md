@@ -3,8 +3,6 @@ type: docs
 title: "Alibaba Cloud DingTalk binding spec"
 linkTitle: "Alibaba Cloud DingTalk"
 description: "Detailed documentation on the Alibaba Cloud DingTalk binding component"
-aliases:
-- "/operations/components/setup-bindings/supported-bindings/alicloud-dingtalk/"
 ---
 
 ## Setup Dapr component
