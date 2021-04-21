@@ -3,14 +3,12 @@ type: docs
 title: "Alibaba Cloud RocketMQ binding spec"
 linkTitle: "Alibaba Cloud RocketMQ"
 description: "Detailed documentation on the Alibaba Cloud RocketMQ binding component"
-aliases:
-- "/operations/components/setup-bindings/supported-bindings/rocketmq/"
 ---
 
 ## Setup Dapr component
 To setup an Alibaba Cloud Object Storage binding create a component of type `bindings.rocketmq`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
 
-HTTP
+### HTTP
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -37,7 +35,7 @@ spec:
       value: "topic1||topic2"
 ```
 
-TCP
+### TCP
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -90,8 +88,8 @@ This component supports **output binding** with the following operations:
 - `create`
 
 ## Create an AliCloud RocketMQ
-- Follow the instructions [here(en)](https://www.alibabacloud.com/help/doc-detail/200153.htm) on setting up AliCloud RocketMQ
-- Follow the instructions [here(zh-cn)](https://help.aliyun.com/document_detail/200153.html) on setting up AliCloud RocketMQ
+Follow the instructions [here](https://www.alibabacloud.com/help/doc-detail/200153.htm) to setup AliCloud RocketMQ
+  - Simplified Chinese version [here](https://help.aliyun.com/document_detail/200153.html)
 
 ## Specifying a partition key
 
