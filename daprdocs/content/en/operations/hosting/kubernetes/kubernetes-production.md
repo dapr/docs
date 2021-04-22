@@ -59,7 +59,9 @@ The CPU and memory limits above account for the fact that Dapr is intended to a 
 
 ## Highly-available mode
 
-When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace.
+When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows for the Dapr control plane to survive node failures and other outages.
+
+HA mode can be enabled with both the [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}} and with [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}}).
 
 ## Deploying Dapr with Helm
 
