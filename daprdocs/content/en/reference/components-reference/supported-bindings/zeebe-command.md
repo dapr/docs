@@ -3,8 +3,6 @@ type: docs
 title: "Zeebe command binding spec"
 linkTitle: "Zeebe command"
 description: "Detailed documentation on the Zeebe command binding component"
-aliases:
-- "/operations/components/setup-bindings/supported-bindings/zeebe-commands/"
 ---
 
 ## Component format
