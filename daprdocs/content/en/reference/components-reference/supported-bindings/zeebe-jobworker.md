@@ -3,8 +3,6 @@ type: docs
 title: "Zeebe JobWorker binding spec"
 linkTitle: "Zeebe JobWorker"
 description: "Detailed documentation on the Zeebe JobWorker binding component"
-aliases:
-- "/operations/components/setup-bindings/supported-bindings/zeebe-jobworker/"
 ---
 
 ## Component format
