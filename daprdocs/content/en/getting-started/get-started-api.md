@@ -11,7 +11,7 @@ You will now run the sidecar and call the API directly (simulating what an appli
 
 ## Step 1: Run the Dapr sidecar
 
-One the most useful Dapr CLI commands is [`dapr run`]({{< ref dapr-run.md >}}). This command launches an application together with a sidecar. For the purpose of this tutorial you'll run the sidecar without an application.
+One of the most useful Dapr CLI commands is [`dapr run`]({{< ref dapr-run.md >}}). This command launches an application together with a sidecar. For the purpose of this tutorial you'll run the sidecar without an application.
 
 Run the following command to launch a Dapr sidecar that will listen on port 3500 for a blank application named myapp:
 
