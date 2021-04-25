@@ -23,7 +23,20 @@ With this command, no custom component folder was defined, so Dapr uses the defa
 
 ## Step 2: Save state
 
-In a separate terminal run:
+We will now update the state with an object. The new state will look like this:
+
+```json
+[
+  {
+    "key": "name",
+    "value": "Bruce Wayne"
+  }
+]
+```
+
+Notice, the object contained in the state has a `key` assigned with the value `name`. You will use the key in the next step.
+
+Run the command shown below to store the new state.
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 {{% codetab %}}
@@ -44,7 +57,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 ## Step 3: Get state
 
-Now get the state you just stored using a key with the state management API:
+Now get the object you just stored in the state by using the state management API with the key `name`:
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
