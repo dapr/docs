@@ -3,8 +3,6 @@ type: docs
 title: "HashiCorp Consul"
 linkTitle: "HashiCorp Consul"
 description: Detailed information on the HashiCorp Consul name resolution component
-aliases: 
-  - "/operations/components/setup-name-resolution/supported-name-resolution/setup-consul/"
 --- 
 
 ## Component format
