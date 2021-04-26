@@ -7,7 +7,7 @@ description: Detailed information on the HashiCorp Consul name resolution compon
 
 ## Component format
 
-To enable Hashicorp Consul name resolution set the component field to `consul` under the `nameResolution` spec in your Dapr config. If you are using the Dapr sidecar to register your service to Consul then you will need the following configuration:
+To enable Hashicorp Consul name resolution set the component field to `consul` under the `nameResolution` spec in your [Dapr config]({{< ref configuration-overview.md >}}). If you are using the Dapr sidecar to register your service to Consul then you will need the following configuration:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
