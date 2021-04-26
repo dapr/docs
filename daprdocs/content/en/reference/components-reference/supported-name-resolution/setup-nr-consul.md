@@ -45,7 +45,7 @@ As of writing the configuration spec is fixed to v1.3.0 of the Consul api
 | SelfRegister | N        | `bool` | Controls if Dapr will register the service to Consul. The name resolution interface does not cater for an "on shutdown" pattern so please consider this if using Dapr to register services to Consul as it will not deregister services. |
 | AdvancedRegistration | N        | [*api.AgentServiceRegistration](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#AgentServiceRegistration) | Gives full control of service registration through configuration. If configured the component will ignore any configuration of Checks, Tags, Meta and SelfRegister. |
 
-## Samples Configurations
+## Samples configurations
 
 ### Basic
 
