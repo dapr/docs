@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.servicebus`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To setup Azure Service Bus pubsub create a component of type `pubsub.azure.servicebus`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -50,6 +50,10 @@ spec:
     value: 30
   - name: connectionRecoveryInSec # Optional
     value: 2
+  - name: publishMaxRetries # Optional
+    value: 5
+  - name: publishInitialRetryInternalInMs # Optional
+    value: 500
 ```
 
 > __NOTE:__ The above settings are shared across all topics that use this component.
@@ -62,7 +66,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y  | Connection-string for the Event Hubs  | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
+| connectionString   | Y  | Connection-string for the Service Bus  | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
 | timeoutInSec       | N  | Timeout for sending messages and management operations. Default: `60` |`30`
 | handlerTimeoutInSec| N  |  Timeout for invoking app handler. # Optional. Default: `60` | `30`
 | disableEntityManagement | N  | When set to true, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
@@ -77,6 +81,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting messages. | `10`
 | maxReconnectionAttempts | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
 | connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Defaults: `2` | `2`
+| publishMaxRetries | N  | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
+| publishInitialRetryInternalInMs | N  | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
 
 ## Create an Azure Service Bus
 
