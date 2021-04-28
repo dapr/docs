@@ -53,7 +53,7 @@ dapr --version
 Output should look like this:
 ```
 CLI version: 1.1.0
-Runtime version: 1.1.1
+Runtime version: 1.1.2
 ```
 
 ### Step 4: Verify containers are running
@@ -96,7 +96,7 @@ bin  components  config.yaml
 {{% /codetab %}}
 
 {{% codetab %}}
-Open `%USERPROFILE%\.dapr\` in file explorer:
+Using Command Prompt (not PowerShell), open `%USERPROFILE%\.dapr\` in file explorer:
 
 ```powershell
 explorer "%USERPROFILE%\.dapr\"
