@@ -45,22 +45,23 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 ### Self-Hosted
 
-| Field              | Required | Details                                                                 | Example                  |
-|--------------------|:--------:|-------------------------------------------------------------------------|--------------------------|
-| vaultName          | Y        | The name of the Azure Key Vault                                         | `"mykeyvault"`           |
-| spnTenantId        | Y        | Service Principal Tenant Id                                        | `"spnTenantId"`          |
-| spnClientId        | Y        | Service Principal App Id                                           | `"spnAppId"`             |
-| spnCertificateFile | Y        | PFX certificate file path. <br></br> For Windows the `[pfx_certificate_file_fully_qualified_local_path]` value must use escaped backslashes, i.e. double backslashes. For example `"C:\\folder1\\folder2\\certfile.pfx"`. <br></br> For Linux you can use single slashes. For example `"/folder1/folder2/certfile.pfx"`.  <br></br> See [configure the component](#configure-the-component) for more details | `"C:\\folder1\\folder2\\certfile.pfx"`, `"/folder1/folder2/certfile.pfx"`        |
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| vaultName          | Y        | The name of the Azure Key Vault | `"mykeyvault"`
+| spnTenantId        | Y        | Service Principal Tenant Id | `"spnTenantId"`
+| spnClientId        | Y        | Service Principal App Id | `"spnAppId"`
+| spnCertificateFile | Y        | PFX certificate file path. <br></br> For Windows the `[pfx_certificate_file_fully_qualified_local_path]` value must use escaped backslashes, i.e. double backslashes. For example `"C:\\folder1\\folder2\\certfile.pfx"`. <br></br> For Linux you can use single slashes. For example `"/folder1/folder2/certfile.pfx"`.  <br></br> See [configure the component](#configure-the-component) for more details | `"C:\\folder1\\folder2\\certfile.pfx"`, `"/folder1/folder2/certfile.pfx"`
 
 
 ### Kubernetes
 
-| Field              | Required | Details                                                                 | Example                  |
-|--------------------|:--------:|-------------------------------------------------------------------------|--------------------------|
-| vaultName          | Y        | The name of the Azure Key Vault                                         | `"mykeyvault"`           |
-| spnTenantId        | Y        | Service Principal Tenant Id                                        | `"spnTenantId"`          |
-| spnClientId        | Y        | Service Principal App Id                                           | `"spnAppId"`             |
-| spnCertificate     | Y        | Store the certificate for the service principal into the Kubernetes Secret Store.<br></br>  kubectl create secret generic [secretName] --from-file=[secretKey]=[fully_qualified_local_path]<br></br> See [configure the component](#configure-the-component) for more details |   See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components      |
+| Field          | Required | Details | Example |
+|----------------|:--------:|---------|---------|
+| vaultName      | Y        | The name of the Azure Key Vault | `"mykeyvault"`
+| spnTenantId    | Y        | Service Principal Tenant Id | `"spnTenantId"`
+| spnClientId    | Y        | Service Principal App Id | `"spnAppId"`
+| spnCertificate | Y        | PKCS 12 encoded bytes of the certificate. See [configure the component](#configure-the-component) for details on encoding this in a Kubernetes secret. | `secretKeyRef: ...` <br /> See [configure the component](#configure-the-component) for more information.
+
 
 ## Setup Key Vault and service principal
 
