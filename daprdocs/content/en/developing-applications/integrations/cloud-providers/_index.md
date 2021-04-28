@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Authenticating to services"
-linkTitle: "Authenticating to services"
-weight: 3000
+title: "Integrations with cloud providers"
+linkTitle: "Cloud providers"
+weight: 5000
 description: "Information about authentication and configuration for various cloud providers"
 ---
