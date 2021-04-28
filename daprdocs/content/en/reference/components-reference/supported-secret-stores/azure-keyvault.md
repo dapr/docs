@@ -33,8 +33,7 @@ spec:
     value: "[your_service_principal_tenant_id]"
   - name: spnClientId
     value: "[your_service_principal_app_id]"
-  - name: spnCertificate
-    value : "[pfx_certificate_contents_k8s_secret_name]"
+    value : "[pfx_certificate_contents]"
   - name: spnCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
