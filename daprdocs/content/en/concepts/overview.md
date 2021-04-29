@@ -103,13 +103,14 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/)
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.
 
-#### Integrations
+#### Integrations and extensions
 
 Visit the [integrations]({{< ref integrations >}}) page to learn about some of the first-class support Dapr has for various frameworks and external products, including:
-- Visual Studio Code
-- Azure Functions
-- Azure Logic Apps
+- Azure Functions runtime
+- Azure Logic Apps runtime
+- Azure API Management
 - KEDA
+- Visual Studio Code
 
 ## Designed for operations
 
