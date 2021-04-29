@@ -5,9 +5,13 @@ linkTitle: "HashiCorp Consul"
 description: Detailed information on the HashiCorp Consul name resolution component
 --- 
 
-## Component format
+## Configuration format
 
-To enable Hashicorp Consul name resolution set the component field to `consul` under the `nameResolution` spec in your [Dapr config]({{< ref configuration-overview.md >}}). If you are using the Dapr sidecar to register your service to Consul then you will need the following configuration:
+Hashicorp Consul is setup within the [Dapr Configuration]({{< ref configuration-overview.md >}}).
+
+Within the config, add a `nameResolution` spec and set the `component` field to `"consul"`.
+
+If you are using the Dapr sidecar to register your service to Consul then you will need the following configuration:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -21,7 +25,7 @@ spec:
       selfRegister: true
 ```
 
-If Consul service registration is managed externally from Dapr you need to ensure that the Dapr-to-Dapr internal grpc port is added to the service metadata under `DAPR_PORT` (this key is configurable) and that the Consul service Id matches the Dapr app Id. You can then omit `selfRegister` from the config above.
+If Consul service registration is managed externally from Dapr you need to ensure that the Dapr-to-Dapr internal gRPC port is added to the service metadata under `DAPR_PORT` (this key is configurable) and that the Consul service Id matches the Dapr app Id. You can then omit `selfRegister` from the config above.
 
 ## Behaviour
 
