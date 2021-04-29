@@ -16,7 +16,7 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
 ## State stores
 
-State store components are databases that store key-value pairs as part of the [state management]({{< ref "state-management-overview.md" >}}) building block.
+State store components are data stores (databases, files, memory) that store key-value pairs as part of the [state management]({{< ref "state-management-overview.md" >}}) building block.
 
 - [List of state stores]({{< ref supported-state-stores >}})
 - [State store implementations](https://github.com/dapr/components-contrib/tree/master/state)
@@ -35,21 +35,21 @@ Dapr allows custom [middleware]({{<ref "middleware-concept.md">}})  to be plugge
 
 ## Pub/sub brokers
 
-Pub/sub broker components are message busses that can pass messages to/from services as part of the [publish & subscribe]({{< ref pubsub-overview.md >}}) building block.
+Pub/sub broker components are message brokers that can pass messages to/from services as part of the [publish & subscribe]({{< ref pubsub-overview.md >}}) building block.
 
 - [List of pub/sub brokers]({{< ref supported-pubsub >}})
 - [Pub/sub broker implementations](https://github.com/dapr/components-contrib/tree/master/pubsub)
 
 ## Bindings
 
-External resources can connect to Dapr in order to trigger a service or be invoked from a service as part of the [bindings]({{< ref bindings-overview.md >}}) building block.
+External resources can connect to Dapr in order to trigger a service or be called from a service as part of the [bindings]({{< ref bindings-overview.md >}}) building block.
 
 - [List of supported bindings]({{< ref supported-bindings >}})
 - [Binding implementations](https://github.com/dapr/components-contrib/tree/master/bindings)
 
 ## Secret stores
 
-In Dapr, a [secret]({{<ref "secrets-overview.md">}}) is any piece of private information that you want to guard against unwanted users. Secrets stores, used to store secrets, are Dapr components and can be used by any of the building blocks.
+In Dapr, a [secret]({{<ref "secrets-overview.md">}}) is any piece of private information that you want to guard against unwanted users. Secrets stores are used to store secrets that can be retrieved and used in services.
 
 - [List of supported secret stores]({{< ref supported-secret-stores >}})
 - [Secret store implementations](https://github.com/dapr/components-contrib/tree/master/secretstores)
