@@ -85,7 +85,7 @@ To make using Dapr more natural for different languages, it also includes [langu
 - Python
 - Rust
 - .NET
-- PHP.
+- PHP
 
 These SDKs expose the functionality of the Dapr building blocks through a typed language API, rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of their choice. And because these SDKs share the Dapr runtime, you get cross-language actor and functions support.
 
