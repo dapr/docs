@@ -49,11 +49,11 @@ Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a conta
 
 ## Hosting environments
 
-Dapr can be hosted in multiple environments, including self-hosted for local development and Kubernetes for production workloads.
+Dapr can be hosted in multiple environments, including self-hosted on a Windows/Linux/macOS machine and on Kubernetes.
 
 ### Self-hosted
 
-In self hosted mode Dapr runs as a separate sidecar process which your service code can call via HTTP or gRPC. Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
+In [self-hosted mode]({{< ref self-hosted-overview.md >}}) Dapr runs as a separate sidecar process which your service code can call via HTTP or gRPC. Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
 
 You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples]({{< ref getting-started >}}). 
 
