@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
+| redisHost          | Y        | Connection-string for the redis host. If `"redisType"` is `"cluster"` it can be multiple hosts separated by commas or just a single host   | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | consumerID         | N        | The consumer group ID   | `"myGroup"`
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
@@ -47,7 +47,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
 | queueDepth         | N        | The size of the message queue for processing. Defaults to `"100"`. | `"1000"`
 | concurrency        | N        | The number of concurrent workers that are processing messages. Defaults to `"10"`. | `"15"`
-| redisDB        | N        | Database selected after connecting to redis. Defaults to `"0"`. | `"0"`
+| redisType        | N        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
+| redisDB        | N        | Database selected after connecting to redis. If `"redisType"` is `"cluster"` this option is ignored. Defaults to `"0"`. | `"0"`
 | redisMaxRetries        | N        | Maximum number of times to retry commands before giving up. Default is to not retry failed commands.  | `"5"`
 | redisMinRetryInterval        | N        | Minimum backoff for redis commands between each retry. Default is `"8ms"`;  `"-1"` disables backoff. | `"8ms"`
 | redisMaxRetryInterval        | N        | Maximum backoff for redis commands between each retry. Default is `"512ms"`;`"-1"` disables backoff. | `"5s"`

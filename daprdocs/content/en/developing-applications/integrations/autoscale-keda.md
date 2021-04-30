@@ -1,7 +1,8 @@
 ---
 type: docs
 title: "Autoscaling a Dapr app with KEDA"
-linkTitle: "Autoscale"
+linkTitle: "Autoscale with KEDA"
+description: "How to configure your Dapr application to autoscale using KEDA"
 weight: 2000
 ---
 
@@ -9,7 +10,7 @@ Dapr, with its modular building-block approach, along with the 10+ different [pu
 
 For Kubernetes, Dapr integrates with [KEDA](https://github.com/kedacore/keda), an event driven autoscaler for Kubernetes. Many of Dapr's pub/sub components overlap with the scalers provided by [KEDA](https://github.com/kedacore/keda) so it's easy to configure your Dapr deployment on Kubernetes to autoscale based on the back pressure using KEDA. 
 
-This how-to walks through the configuration of a scalable Dapr application along with the back pressure on Kafka topic, however you can apply this approach to [pub/sub components]({{< ref pubsub >}}) offered by Dapr.
+This how-to walks through the configuration of a scalable Dapr application along with the back pressure on Kafka topic, however you can apply this approach to any [pub/sub components]({{< ref pubsub >}}) offered by Dapr.
 
 ## Install KEDA
 
@@ -138,4 +139,4 @@ All done!
 
 Now, that the `ScaledObject` KEDA object is configured, your deployment will scale based on the lag of the Kafka topic. More information on configuring KEDA for Kafka topics is available [here](https://keda.sh/docs/2.0/scalers/apache-kafka/).
 
-You can now start publishing messages to your Kafka topic `demo-topic` and watch the pods autoscale when the lag threshold is higher than `5` topics, as we have defined in the KEDA scaler manifest. You can publish messages to the Kafka Dapr component by using the Dapr [Publish](https://github.com/dapr/CLI#publishsubscribe) CLI command
+You can now start publishing messages to your Kafka topic `demo-topic` and watch the pods autoscale when the lag threshold is higher than `5` topics, as we have defined in the KEDA scaler manifest. You can publish messages to the Kafka Dapr component by using the Dapr [Publish]({{< ref dapr-publish >}}) CLI command
