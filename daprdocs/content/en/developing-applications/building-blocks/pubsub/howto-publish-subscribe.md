@@ -79,7 +79,7 @@ spec:
 
 Dapr allows two methods by which you can subscribe to topics:
 
-- **Declaratively**, where subscriptions are are defined in an external file.
+- **Declaratively**, where subscriptions are defined in an external file.
 - **Programmatically**, where subscriptions are defined in user code.
 
 {{% alert title="Note" color="primary" %}}

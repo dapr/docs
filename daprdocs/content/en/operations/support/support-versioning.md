@@ -2,7 +2,7 @@
 type: docs
 title: "Versioning policy"
 linkTitle: "Versioning "
-weight: 2000
+weight: 1000
 description: "Dapr's versioning policies"
 ---
 
