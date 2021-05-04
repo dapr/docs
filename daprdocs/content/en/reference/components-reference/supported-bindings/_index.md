@@ -43,7 +43,6 @@ Table captions:
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 
-
 ### Alibaba Cloud
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
@@ -79,3 +78,10 @@ Table captions:
 | [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | GA | v1 | 1.0 |
+
+### Zeebe (Camunda)
+
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
+|------|:----------------:|:-----------------:|--------| --------- | ---------- |
+| [Zeebe Command]({{< ref zeebe-command.md >}})            |    | ✅ | Alpha | v1 | 1.2 |
+| [Zeebe Job Worker]({{< ref zeebe-jobworker.md >}})       | ✅ |    | Alpha | v1 | 1.2 |
