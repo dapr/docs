@@ -15,7 +15,7 @@ The following components provide name resolution for the service invocation buil
 
 | Name                                            | Status  | Component version | Since |
 |-------------------------------------------------|:-------:|:-----------------:|:-----:|
-| [HashiCorp Consul]({{< ref setup-consul.md >}}) | Alpha   | v1                | 1.2   |
+| [HashiCorp Consul]({{< ref setup-nr-consul.md >}}) | Alpha   | v1                | 1.2   |
 
 ### Self-Hosted
 
