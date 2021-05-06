@@ -17,5 +17,5 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-pr-message: 'Stale PR, paging all reviewers'
         stale-pr-label: 'stale'
-        exempt-pr-labels: 'question,"help wanted",do-not-merge'
+        exempt-pr-labels: 'question,"help wanted",do-not-merge,waiting-on-code-pr'
         days-before-stale: 5

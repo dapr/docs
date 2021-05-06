@@ -2,7 +2,7 @@
 type: docs
 title: "Supported releases"
 linkTitle: "Supported releases"
-weight: 1000
+weight: 2000
 description: "Release support and upgrade policies "
 ---
 
