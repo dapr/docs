@@ -77,7 +77,7 @@ POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<met
 
 You can provide any data for the actor method in the request body, and the response for the request would be in the response body which is the data from actor call.
 
-Refer to [Dapr Actor Features]({{< ref actors-overview.md >}}) for more details.
+Refer to [Dapr Actor Features]({{< ref howto-actors.md >}}) for more details.
 
 ### Concurrency
 
