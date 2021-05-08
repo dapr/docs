@@ -69,7 +69,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | disableEntityManagement | N | When set to `"true"`, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 
 ## Create a GCP Pub/Sub
-You can use either "explicit" or "implicit" credentials to configure access to your GCP pubsub instance. If using explicit, most fields are required. Implicit relies on dapr running under a Kubernetes service acccount (KSA) mapped to a Google service account (GSA) which has the necessary permissions to access pubsub. In implicit mode, only the `projectId` attribute is needed, all other are optional.
+You can use either "explicit" or "implicit" credentials to configure access to your GCP pubsub instance. If using explicit, most fields are required. Implicit relies on dapr running under a Kubernetes service account (KSA) mapped to a Google service account (GSA) which has the necessary permissions to access pubsub. In implicit mode, only the `projectId` attribute is needed, all other are optional.
 
 Follow the instructions [here](https://cloud.google.com/pubsub/docs/quickstart-console) on setting up Google Cloud Pub/Sub system.
 
