@@ -43,6 +43,7 @@ spec:
     allowed:
     - name: state
       version: v1.0
+      protocol: http
 ```
 
 ### Enabling specific gRPC APIs
@@ -60,6 +61,7 @@ spec:
     allowed:
     - name: state
       version: v1
+      protocol: grpc
 ```
 
 ### List of Dapr APIs
