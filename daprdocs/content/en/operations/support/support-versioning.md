@@ -28,7 +28,7 @@ Dapr has the following versioning schemes:
 
 Note that the Dapr APIs,  binaries releases (runtime, CLI, SDKs) and components are all independent from one another.
 
-## Dapr API 
+## Dapr HTTP API 
 The Dapr HTTP API is versioned according to these [REST API guidelines](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#71-url-structure). 
 
 Based to the these guidelines; 
