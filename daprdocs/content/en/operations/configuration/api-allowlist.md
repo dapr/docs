@@ -70,10 +70,10 @@ See this list of values corresponding to the different Dapr APIs:
 
 | Name  | Dapr API |
 | ------------- | ------------- |
-| state  | State  |
-| invoke  | Service Invocation  |
-| secrets  | Secrets  |
-| bindings  | Output Bindings  |
-| publish | Pub/Sub |
-| actors | Actors |
-| metadata | Metadata |
+| state  | [State]({{< ref state_api.md>}})|
+| invoke  | [Service Invocation]({{< ref service_invocation_api.md >}})  |
+| secrets  | [Secrets]({{< ref secrets_api.md >}})|
+| bindings  | [Output Bindings]({{< ref bindings_api.md >}})  |
+| publish | [Pub/Sub]({{< ref pubsub.md >}}) |
+| actors | [Actors]({{< ref actors_api.md >}}) |
+| metadata | [Metadata]({{< ref metadata_api.md >}}) |
