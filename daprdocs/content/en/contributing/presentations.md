@@ -8,13 +8,13 @@ description: How to give a presentation on Dapr and examples
 
 We welcome community members giving presentations on Dapr and spreading the word about all the awesome Dapr features! We offer a template PowerPoint file to get started.
 
-{{< button text="Download the Dapr PowerPoint" link="/presentations/Dapr.zip" >}}
+{{< button text="Download the Dapr Presentation Deck" link="/presentations/dapr-slidedeck.zip" >}}
 
 ## Giving a Dapr presentation
 
-- Begin by downloading the [Dapr Presentation Deck](/presentations/Dapr.zip). This contains slides and diagrams needed to give a Dapr presentation.
+- Begin by downloading the [Dapr Presentation Deck](/presentations/dapr-slidedeck.zip). This contains slides and diagrams needed to give a Dapr presentation.
 - Next, review the docs to make sure you understand the [concepts]({{< ref concepts >}}).
-- Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo and [samples](https://github.com/dapr/samples) repo to show demos of how to use Dapr
+- Use the Dapr [quickstarts](https://github.com/dapr/quickstarts) repo and [samples](https://github.com/dapr/samples) repo to show demos of how to use Dapr.
 
 ## Previous Dapr presentations
 
