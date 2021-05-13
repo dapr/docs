@@ -33,6 +33,7 @@ spec:
     value: "[your_service_principal_tenant_id]"
   - name: spnClientId
     value: "[your_service_principal_app_id]"
+    value : "[pfx_certificate_contents]"
   - name: spnCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
@@ -42,12 +43,25 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 ## Spec metadata fields
 
-| Field              | Required | Details                                                                 | Example                  |
-|--------------------|:--------:|-------------------------------------------------------------------------|--------------------------|
-| vaultName          | Y        | The name of the Azure Key Vault                                         | `"mykeyvault"`           |
-| spnTenantId        | Y        | Service Principal Tenant Id                                        | `"spnTenantId"`          |
-| spnClientId        | Y        | Service Principal App Id                                           | `"spnAppId"`             |
-| spnCertificateFile | Y        | PFX certificate file path. <br></br> For Windows the `[pfx_certificate_file_fully_qualified_local_path]` value must use escaped backslashes, i.e. double backslashes. For example `"C:\\folder1\\folder2\\certfile.pfx"`. <br></br> For Linux you can use single slashes. For example `"/folder1/folder2/certfile.pfx"`.  <br></br> See [configure the component](#configure-the-component) for more details | `"C:\\folder1\\folder2\\certfile.pfx"`, `"/folder1/folder2/certfile.pfx"`        |
+### Self-Hosted
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| vaultName          | Y        | The name of the Azure Key Vault | `"mykeyvault"`
+| spnTenantId        | Y        | Service Principal Tenant Id | `"spnTenantId"`
+| spnClientId        | Y        | Service Principal App Id | `"spnAppId"`
+| spnCertificateFile | Y        | PFX certificate file path. <br></br> For Windows the `[pfx_certificate_file_fully_qualified_local_path]` value must use escaped backslashes, i.e. double backslashes. For example `"C:\\folder1\\folder2\\certfile.pfx"`. <br></br> For Linux you can use single slashes. For example `"/folder1/folder2/certfile.pfx"`.  <br></br> See [configure the component](#configure-the-component) for more details | `"C:\\folder1\\folder2\\certfile.pfx"`, `"/folder1/folder2/certfile.pfx"`
+
+
+### Kubernetes
+
+| Field          | Required | Details | Example |
+|----------------|:--------:|---------|---------|
+| vaultName      | Y        | The name of the Azure Key Vault | `"mykeyvault"`
+| spnTenantId    | Y        | Service Principal Tenant Id | `"spnTenantId"`
+| spnClientId    | Y        | Service Principal App Id | `"spnAppId"`
+| spnCertificate | Y        | PKCS 12 encoded bytes of the certificate. See [configure the component](#configure-the-component) for details on encoding this in a Kubernetes secret. | `secretKeyRef: ...` <br /> See [configure the component](#configure-the-component) for more information.
+
 
 ## Setup Key Vault and service principal
 
@@ -63,7 +77,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
     ```bash
     # Log in Azure
     az login
-    
+
     # Set your subscription to the default subscription
     az account set -s [your subscription id]
     ```
@@ -80,7 +94,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
     ```bash
     az ad sp create-for-rbac --name [your_service_principal_name] --create-cert --cert [certificate_name] --keyvault [your_keyvault] --skip-assignment --years 1
-    
+
     {
        "appId": "a4f90000-0000-0000-0000-00000011d000",
        "displayName": "[your_service_principal_name]",
@@ -96,7 +110,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
     ```bash
     az ad sp show --id [service_principal_app_id]
-    
+
     {
         ...
         "objectId": "[your_service_principal_object_id]",
@@ -165,11 +179,12 @@ In Kubernetes, you store the certificate for the service principal into the Kube
 1. Create a kubernetes secret using the following command:
 
    ```bash
-   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[pfx_certificate_file_fully_qualified_local_path]
+   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[your_k8s_spn_secret_key]=[pfx_certificate_file_fully_qualified_local_path]
    ```
 
 - `[pfx_certificate_file_fully_qualified_local_path]` is the path of PFX cert file you downloaded above
 - `[your_k8s_spn_secret_name]` is secret name in Kubernetes secret store
+- `[your_k8s_spn_secret_key]` is secret key in Kubernetes secret store
 
 2. Create a `azurekeyvault.yaml` component file
 
@@ -194,7 +209,7 @@ spec:
   - name: spnCertificate
     secretKeyRef:
       name: [your_k8s_spn_secret_name]
-      key: [pfx_certificate_file_fully_qualified_local_path]
+      key: [your_k8s_spn_secret_key]
 auth:
     secretStore: kubernetes
 ```
