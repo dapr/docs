@@ -11,7 +11,7 @@ Some features in Dapr are considered experimental when they are first released. 
 
 Currently, preview features are enabled on a per application basis. A global scope may be introduced in the future should there be a use case for it.
 
-### Current Preview Features
+### Current preview features
 Below is a list of existing preview features:
 - Actor Reentrancy
 
