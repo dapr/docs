@@ -15,7 +15,7 @@ Currently, preview features are enabled on a per application basis. A global sco
 Below is a list of existing preview features:
 - Actor Reentrancy
 
-## Configuration Elements
+## Configuration properties
 The `features` section under the `Configuration` spec contains the following properties:
 
 | Property       | Type   | Description |
