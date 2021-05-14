@@ -64,7 +64,7 @@ In Kubernetes mode, the configuration must be provided via a configuration compo
 kubectl apply -f previewConfig.yaml
 ```
 
-This can then be referenced in any application by modifying the application's configuration to reference that specific configuration component via the `dapr.io/config` element. For example:
+This configuration component can then be referenced in any application by modifying the application's configuration to reference that specific configuration component via the `dapr.io/config` element. For example:
 
 ```yaml
 apiVersion: apps/v1
