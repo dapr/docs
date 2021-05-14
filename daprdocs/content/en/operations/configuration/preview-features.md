@@ -24,7 +24,7 @@ The `features` section under the `Configuration` spec contains the following pro
 |enabled|bool|Boolean specifying if the feature is enabled or disabled
 
 ## Enabling a preview feature
-As stated above, preview features are specified in the configuration. Here is an example of a full configuration that contains multiple features:
+Preview features are specified in the configuration. Here is an example of a full configuration that contains multiple features:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
