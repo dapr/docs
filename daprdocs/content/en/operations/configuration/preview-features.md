@@ -23,7 +23,7 @@ The `features` section under the `Configuration` spec contains the following pro
 |name|string|The name of the preview feature that will be enabled/disabled
 |enabled|bool|Boolean specifying if the feature is enabled or disabled
 
-## Enabling a Preview Feature
+## Enabling a preview feature
 As stated above, preview features are specified in the configuration. Here is an example of a full configuration that contains multiple features:
 
 ```yaml
