@@ -44,9 +44,13 @@ spec:
 ```
 
 ### Standalone
-To enabled a preview feature when running dapr locally, the configuration can be provided in two separate ways.
+To enable preview features when running Dapr locally, either update the default configuration or specify a separate config file using `dapr run`.
 
-The primary way to provide the configuration is by specifying it while starting an application with the CLI.
+The default Dapr config is created when you run `dapr init`, and is located at:
+- Windows: `%USERPROFILE%\.dapr\config.yaml`
+- Linux/macOS: `~/.dapr/config.yaml`
+
+Alternately, you can update preview features on all apps run locally by specifying the `--config` flag in `dapr run` and pointing to a separate Dapr config file:
 
 ```bash
 dapr run --app-id myApp --config ./previewConfig.yaml ./app
