@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Enable preview features"
-linkTitle: "Preview Features"
+linkTitle: "Preview features"
 weight: 7000
 description: "How to specify and enable preview features"
 ---
