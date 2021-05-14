@@ -9,7 +9,7 @@ description: "How to specify and enable preview features"
 ## Overview
 Some features in Dapr are considered experimental when they are first released. These features require explicit opt-in in order to be used. The opt-in is specified in Dapr's configuration.
 
-Currently, preview features are enabled on a per application basis. A global scope may be introduced in the future should there be a use case for it.
+Currently, preview features are enabled on a per application basis when running on Kubernetes. A global scope may be introduced in the future should there be a use case for it.
 
 ### Current preview features
 Below is a list of existing preview features:
