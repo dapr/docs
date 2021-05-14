@@ -126,7 +126,7 @@ See the [Scoping secrets]({{< ref "secret-scope.md" >}}) guide for information a
 See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists.
 
 #### Preview features
-See the [Preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to use preview features.
+See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to use opt-in preview features.
 
 ### Example sidecar configuration
 The following yaml shows an example configuration file that can be applied to an applications' Dapr sidecar.
