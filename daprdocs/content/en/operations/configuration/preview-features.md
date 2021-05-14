@@ -58,7 +58,7 @@ dapr run --app-id myApp --config ./previewConfig.yaml ./app
 
 
 ### Kubernetes
-In kubernetes, the configuration must be provided via a configuration component. Using the same configuration as above, apply it via `kubectl`.
+In Kubernetes mode, the configuration must be provided via a configuration component. Using the same configuration as above, apply it via `kubectl`:
 
 ```bash
 kubectl apply -f previewConfig.yaml
