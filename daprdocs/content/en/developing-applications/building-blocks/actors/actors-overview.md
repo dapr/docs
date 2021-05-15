@@ -89,6 +89,8 @@ Actors can deadlock on each other if there is a circular request between two act
 
 <img src="/images/actors_background_communication.png" width=600>
 
+#### Reentrancy
+As an enhancement to the base actors in dapr, reentrancy can now be enabled as a preview feature. To learn more about it, see [actor reentrancy]({{<ref actor-reentrancy.md>}})
 
 ### Turn-based access
 
