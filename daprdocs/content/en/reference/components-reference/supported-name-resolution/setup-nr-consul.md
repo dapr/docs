@@ -38,16 +38,16 @@ The component resolves target apps by filtering healthy services and looks for a
 
 As of writing the configuration spec is fixed to v1.3.0 of the Consul api
 
-| Field          | Required | Type              | Details      |
-| :------------ |:--------:|------------------:| :----------------|
-| Client  | N        | [*api.Config](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#Config) | Configures client connection to the Consul agent. If blank it will use the sdk defaults, which in this case is just an address of `127.0.0.1:8500` |
-| QueryOptions  | N        | [*api.QueryOptions](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#QueryOptions) | Configures query used for resolving healthy services, if blank it will default to `UseCache` as `true` |
-| Checks | N        | [[]*api.AgentServiceCheck](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#AgentServiceCheck) | Configures health checks if/when registering. If blank it will default to a single health check on the Dapr sidecar health endpoint |
-| Tags | N        | `[]string` | Configures any tags to include if/when registering services |
-| Meta | N        | `map[string]string` | Configures any additional metadata to include if/when registering services |
-| DaprPortMetaKey | N        | `string` | The key used for getting the Dapr sidecar port from Consul service metadata during service resolution, it will also be used to set the Dapr sidecar port in metadata during registration. If blank it will default to `DAPR_PORT` |
-| SelfRegister | N        | `bool` | Controls if Dapr will register the service to Consul. The name resolution interface does not cater for an "on shutdown" pattern so please consider this if using Dapr to register services to Consul as it will not deregister services. |
-| AdvancedRegistration | N        | [*api.AgentServiceRegistration](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#AgentServiceRegistration) | Gives full control of service registration through configuration. If configured the component will ignore any configuration of Checks, Tags, Meta and SelfRegister. |
+| Field        | Required | Type | Details  | Examples |
+|--------------|:--------:|-----:|:---------|----------|
+| Client       | N        | [*api.Config](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#Config) | Configures client connection to the Consul agent. If blank it will use the sdk defaults, which in this case is just an address of `127.0.0.1:8500` | `10.0.4.4:8500`
+| QueryOptions | N        | [*api.QueryOptions](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#QueryOptions) | Configures query used for resolving healthy services, if blank it will default to `UseCache:true` | `UseCache: false`, `Datacenter: "myDC"`
+| Checks       | N        | [[]*api.AgentServiceCheck](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#AgentServiceCheck) | Configures health checks if/when registering. If blank it will default to a single health check on the Dapr sidecar health endpoint | See [sample configs](#sample-configurations)
+| Tags         | N        | `[]string` | Configures any tags to include if/when registering services | `- "dapr"`
+| Meta         | N        | `map[string]string` | Configures any additional metadata to include if/when registering services | `DAPR_METRICS_PORT: "${DAPR_METRICS_PORT}"`
+| DaprPortMetaKey | N     | `string` | The key used for getting the Dapr sidecar port from Consul service metadata during service resolution, it will also be used to set the Dapr sidecar port in metadata during registration. If blank it will default to `DAPR_PORT` | `"DAPR_TO_DAPR_PORT"`
+| SelfRegister | N        | `bool` | Controls if Dapr will register the service to Consul. The name resolution interface does not cater for an "on shutdown" pattern so please consider this if using Dapr to register services to Consul as it will not deregister services. If blank it will default to `false` | `true`
+| AdvancedRegistration | N | [*api.AgentServiceRegistration](https://pkg.go.dev/github.com/hashicorp/consul/api@v1.3.0#AgentServiceRegistration) | Gives full control of service registration through configuration. If configured the component will ignore any configuration of Checks, Tags, Meta and SelfRegister. | See [sample configs](#sample-configurations)
 
 ## Sample configurations
 
