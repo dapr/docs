@@ -145,3 +145,6 @@ The test focused on the following:
 
 The full report can be found [here](/docs/Dapr-july-2020-security-audit-report.pdf).
 
+## Reporting a security issue
+
+Visit [this page]({{< ref support-security-issues.md >}}) to report a security issue to the Dapr maintainers.
