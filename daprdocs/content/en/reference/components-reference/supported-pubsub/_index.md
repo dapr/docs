@@ -30,6 +30,11 @@ Table captions:
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | v1 | 1.0 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | GA  | v1 | 1.0 |
 
+### Alibaba Cloud
+| Name                                              | Status | Component version | Since |
+|---------------------------------------------------|--------| ---- |---------------|
+| [Alibaba Cloud RocketMQ]({{< ref setup-alicloud-rocketmq.md >}})           |  Alpha  | v1 | 1.2 |
+
 ### Amazon Web Services (AWS)
 
 | Name                                              | Status | Component version | Since | 
