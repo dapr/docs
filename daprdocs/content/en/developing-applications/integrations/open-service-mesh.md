@@ -18,6 +18,10 @@ Users are able to leverage both OSM SMI traffic policies and Dapr capabilities o
 
 {{< button text="Deploy OSM and Dapr" link="https://docs.openservicemesh.io/docs/integrations/demo_dapr/" >}}
 
+## Example
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LSYyTL0nS8Y?start=1916" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Additional resources
 
 - [Dapr and service meshes]({{< ref service-mesh.md >}})
