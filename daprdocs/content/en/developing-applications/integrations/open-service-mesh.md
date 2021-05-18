@@ -1,0 +1,23 @@
+---
+type: docs
+title: "Running Dapr and Open Service Mesh together"
+linkTitle: "Open Service Mesh"
+weight: 4000
+description: "Learn how to run both Open Service Mesh and Dapr on the same Kubernetes cluster"
+---
+
+## Overview
+
+[Open Service Mesh (OSM)](https://openservicemesh.io/) is a lightweight, extensible, Cloud Native service mesh that allows users to uniformly manage, secure, and get out-of-the-box observability features for highly dynamic microservice environments.
+
+{{< button text="Learn more" link="https://openservicemesh.io/" >}}
+
+## Dapr integration
+
+Users are able to leverage both OSM SMI traffic policies and Dapr capabilities on the same Kubernetes cluster. Visit [this guide](https://docs.openservicemesh.io/docs/integrations/demo_dapr/) to get started.
+
+{{< button text="Deploy OSM and Dapr" link="https://docs.openservicemesh.io/docs/integrations/demo_dapr/" >}}
+
+## Additional resources
+
+- [Dapr and service meshes]({{< ref service-mesh.md >}})
