@@ -73,10 +73,10 @@ This component supports **input** binding interfaces.
 
 ### Input binding
 
-The Zeebe workflow engine handles the workflow state as also workflow variables which can be passed 
-on workflow instantiation or which can be updated or created during workflow execution. These variables
+The Zeebe process engine handles the process state as also process variables which can be passed 
+on process instantiation or which can be updated or created during process execution. These variables
 can be passed to a registered job worker by defining the variable names as comma-separated list in
-the `fetchVariables` metadata field. The workflow engine will then pass these variables with its current 
+the `fetchVariables` metadata field. The process engine will then pass these variables with its current 
 values to the job worker implementation.
 
 If the binding will register three variables `productId`, `productName` and `productKey` then the service will
