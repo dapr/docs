@@ -3,7 +3,7 @@ type: docs
 title: "Kubernetes Events binding spec"
 linkTitle: "Kubernetes Events"
 description: "Detailed documentation on the Kubernetes Events binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/kubernetes-binding/"
 ---
 
@@ -37,11 +37,11 @@ spec:
 
 ## Binding support
 
-This component supports **input** binding interface. 
+This component supports **input** binding interface.
 
 ## Output format
 
-Output received from the binding is of format `bindings.ReadResponse` with the `Data` field populated with the following structure: 
+Output received from the binding is of format `bindings.ReadResponse` with the `Data` field populated with the following structure:
 
 ```json
  {
@@ -73,7 +73,7 @@ Output received from the binding is of format `bindings.ReadResponse` with the `
    }
  }
 ```
-Three different event types are available: 
+Three different event types are available:
 - Add : Only the `newVal` field is populated, `oldVal` field is an empty `v1.Event`, `event` is `add`
 - Delete : Only the `oldVal` field is populated, `newVal` field is an empty `v1.Event`, `event` is `delete`
 - Update : Both the `oldVal` and `newVal` fields are populated,  `event` is `update`

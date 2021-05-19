@@ -165,7 +165,7 @@ $app = \Dapr\App::create();
 $app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
     $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
         key: 'myFirstKey',
-        value: 'myFirstValue' 
+        value: 'myFirstValue'
     ));
     $logger->alert('State has been stored');
 
@@ -277,20 +277,20 @@ $app = \Dapr\App::create();
 $app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
     $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
         key: 'myFirstKey',
-        value: 'myFirstValue' 
+        value: 'myFirstValue'
     ));
     $logger->alert('State has been stored');
 
     $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
     $logger->alert("Got value: {data}", ['data' => $data]);
-    
+
     $stateManager->delete_keys(store_name: 'statestore', keys: ['myFirstKey']);
     $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
     $logger->alert("Got value after delete: {data}", ['data' => $data]);
 });
 ```
 
-Now run it with: 
+Now run it with:
 
 ```bash
 dapr --app-id myapp run -- php state-example.php
@@ -394,7 +394,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 {{% codetab %}}
 
 To batch load and save state with PHP, just create a "Plain Ole' PHP Object" (POPO) and annotate it with
-the StateStore annotation. 
+the StateStore annotation.
 
 Update the `state-example.php` file:
 

@@ -10,7 +10,7 @@ description: >
 Dapr uses a sidecar architecture, running as a separate process alongside the application and includes features such as, service invocation, network security and distributed tracing. This often raises the question - how does Dapr compare to service mesh solutions such as Linkerd, Istio and Open Service Mesh (OSM)?
 
 ## How Dapr and service meshes compare
-While Dapr and service meshes do offer some overlapping capabilities, **Dapr is not a service mesh** where a service mesh, is defined as a *networking* service mesh. Unlike a service mesh which is focused on networking concerns, Dapr is focused on providing building blocks that make it easier for developers to build applications as microservices. Dapr is developer-centric versus service meshes being infrastructure-centric. 
+While Dapr and service meshes do offer some overlapping capabilities, **Dapr is not a service mesh** where a service mesh, is defined as a *networking* service mesh. Unlike a service mesh which is focused on networking concerns, Dapr is focused on providing building blocks that make it easier for developers to build applications as microservices. Dapr is developer-centric versus service meshes being infrastructure-centric.
 
 In most cases, developers do not need to be aware that the application they are building will be deployed in an environment which includes a service mesh since a service mesh intercepts network traffic. Service meshes are mostly managed and deployed by system operators. However, Dapr building block APIs are intended to be used by developers explicitly in their code.
 
@@ -29,7 +29,7 @@ The illustration below captures the overlapping features and unique capabilities
 <img src="/images/service-mesh.png" width=1000>
 
 ## Using Dapr with a service mesh
-Dapr does work with service meshes. In the case where both are deployed together, both Dapr and service mesh sidecars are running in the application environment. In this case, it is recommended to configure only Dapr or only the service mesh to perform mTLS encryption and distributed tracing. 
+Dapr does work with service meshes. In the case where both are deployed together, both Dapr and service mesh sidecars are running in the application environment. In this case, it is recommended to configure only Dapr or only the service mesh to perform mTLS encryption and distributed tracing.
 
 Watch these recordings from the Dapr community calls showing presentations on running Dapr together with different service meshes:
 - General overview and a demo of [Dapr and Linkerd](https://youtu.be/xxU68ewRmz8?t=142)
@@ -38,7 +38,7 @@ Watch these recordings from the Dapr community calls showing presentations on ru
 ## When to choose using Dapr, a service mesh or both
 Should you be using Dapr, a service mesh or both? The answer depends on your requirements. If, for example, you are looking to use Dapr for one or more building blocks such as state management or pub/sub and considering using a service mesh just for network security or observability, you may find that Dapr is a good fit and a service mesh is not required.
 
-Typically you would use a service mesh with Dapr where there is a corporate policy that traffic on the network needs to be encrypted regardless for all applications. For example, you may be using Dapr in only part of your application and other services and processes that are not using Dapr in your application also need encrypted traffic. In this scenario a service mesh is the better option and most likely you should use mTLS and distributed tracing on the service mesh and disable this on Dapr.  
+Typically you would use a service mesh with Dapr where there is a corporate policy that traffic on the network needs to be encrypted regardless for all applications. For example, you may be using Dapr in only part of your application and other services and processes that are not using Dapr in your application also need encrypted traffic. In this scenario a service mesh is the better option and most likely you should use mTLS and distributed tracing on the service mesh and disable this on Dapr.
 
 If you need traffic splitting for A/B testing scenarios you would benefit from using a service mesh, since Dapr does not provide these capabilities.
 

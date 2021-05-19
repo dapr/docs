@@ -3,7 +3,7 @@ type: docs
 title: "MongoDB"
 linkTitle: "MongoDB"
 description: Detailed information on the MongoDB state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-mongodb/"
 ---
 

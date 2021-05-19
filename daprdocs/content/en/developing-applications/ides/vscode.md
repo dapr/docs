@@ -45,7 +45,7 @@ Dapr has pre-built Docker remote containers for each of the language SDKs. You c
     <br /><img src="/images/vscode-remotecontainers-addcontainer.png" alt="Screenshot of adding a remote container" width="700">
 3. Type `dapr` to filter the list to available Dapr remote containers and choose the language container that matches your application. Note you may need to select `Show All Definitions...`
     <br /><img src="/images/vscode-remotecontainers-daprcontainers.png" alt="Screenshot of adding a Dapr container" width="700">
-4. Follow the prompts to rebuild your application in container. 
+4. Follow the prompts to rebuild your application in container.
     <br /><img src="/images/vscode-remotecontainers-reopen.png" alt="Screenshot of reopening an application in the dev container" width="700">
 
 #### Example

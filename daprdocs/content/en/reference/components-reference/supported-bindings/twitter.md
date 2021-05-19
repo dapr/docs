@@ -3,7 +3,7 @@ type: docs
 title: "Twitter binding spec"
 linkTitle: "Twitter"
 description: "Detailed documentation on the Twitter binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/twitter/"
 ---
 
@@ -39,14 +39,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| consumerKey | Y | Input/Output | Twitter API consumer key | `"conusmerkey"` | 
-| consumerSecret | Y | Input/Output | Twitter API consumer secret | `"conusmersecret"` | 
-| accessToken | Y | Input/Output | Twitter API access token | `"accesstoken"` | 
-| accessSecret | Y | Input/Output | Twitter API access secret | `"accesssecret"` | 
+| consumerKey | Y | Input/Output | Twitter API consumer key | `"conusmerkey"` |
+| consumerSecret | Y | Input/Output | Twitter API consumer secret | `"conusmersecret"` |
+| accessToken | Y | Input/Output | Twitter API access token | `"accesstoken"` |
+| accessSecret | Y | Input/Output | Twitter API access secret | `"accesssecret"` |
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 
@@ -54,11 +54,11 @@ This component supports **output binding** with the following operations:
 
 ### Input binding
 
-For input binding, where the query matching Tweets are streamed to the user service, the above component has to also include a query: 
+For input binding, where the query matching Tweets are streamed to the user service, the above component has to also include a query:
 
 ```yaml
   - name: query
-    value: "dapr" # your search query, required 
+    value: "dapr" # your search query, required
 ```
 
 ### Output binding
@@ -86,7 +86,7 @@ Where the payload is:
 
 The metadata parameters are:
 
-- `query` - any valid Twitter query (e.g. `dapr` or `dapr AND serverless`). See [Twitter docs](https://developer.twitter.com/en/docs/tweets/rules-and-filtering/overview/standard-operators) for more details on advanced query formats 
+- `query` - any valid Twitter query (e.g. `dapr` or `dapr AND serverless`). See [Twitter docs](https://developer.twitter.com/en/docs/tweets/rules-and-filtering/overview/standard-operators) for more details on advanced query formats
 - `lang` - (optional, default: `en`) restricts result tweets to the given language using [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 - `result` - (optional, default: `recent`) specifies tweet query result type. Valid values include:
   - `mixed` - both popular and real time results

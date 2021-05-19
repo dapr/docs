@@ -3,7 +3,7 @@ type: docs
 title: "Azure CosmosDB binding spec"
 linkTitle: "Azure CosmosDB"
 description: "Detailed documentation on the Azure CosmosDB binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/cosmosdb/"
 ---
 
@@ -42,11 +42,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| url | Y | Output | The CosmosDB url | `"https://******.documents.azure.com:443/"` | 
+| url | Y | Output | The CosmosDB url | `"https://******.documents.azure.com:443/"` |
 | masterKey | Y | Output | The CosmosDB account master key | `"master-key"` |
 | database | Y | Output | The name of the CosmosDB database | `"OrderDb"` |
 | collection | Y | Output | The name of the container inside the database.  | `"Orders"` |
-| partitionKey | Y | Output | The name of the partitionKey to extract from the payload and is used in the container | `"OrderId"`, `"message"` | 
+| partitionKey | Y | Output | The name of the partitionKey to extract from the payload and is used in the container | `"OrderId"`, `"message"` |
 
 For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/en-us/azure/cosmos-db/account-databases-containers-items).
 
