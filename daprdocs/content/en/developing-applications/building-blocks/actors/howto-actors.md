@@ -129,3 +129,16 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
 Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
+
+## Actor Runtime Configuration
+
+You can configure the Dapr Actors runtime configuration to modify the default runtime behavior.
+
+### Current defaults
+- `actorIdleTimeout` The timeout before deactivating an idle actor. Checks for timeouts occur every `actorScanInterval` interval. **Default: 60 minutes**
+- `actorScanInterval` The duration which specifies how often to scan for actors to deactivate idle actors. Actors that have been idle longer than actor_idle_timeout will be deactivated. **Default: 30 seconds**
+- `drainOngoingCallTimeout` The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. **Default: 60 seconds**
+- `drainRebalancedActors` If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
+- `reentrancy (ActorReentrancyConfig)` Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
+
+Refer to the [Dapr SDKs]({{< ref "developing-applications/sdks/#sdk-languages" >}}) for more details.
