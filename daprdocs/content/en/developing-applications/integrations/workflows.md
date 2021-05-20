@@ -12,11 +12,13 @@ Dapr Workflows is a lightweight host that allows developers to run cloud-native 
 
 By using a workflow engine, business logic can be defined in a declarative, no-code fashion so application code doesn't need to change when a workflow changes. Dapr Workflows allows you to use workflows in a distributed application along with these added benefits:
 
-- Run workflows anywhere - on your local machine, on-premises, on Kubernetes or in the cloud
-- Built-in tracing, metrics and mTLS through Dapr
-- gRPC and HTTP endpoints for your workflows
-- Kick off workflows based on Dapr bindings events
-- Orchestrate complex workflows by calling back to Dapr to save state, publish a message and more
+- **Run workflows anywhere**: on your local machine, on-premises, on Kubernetes or in the cloud
+- **Built-in observability**: tracing, metrics and mTLS through Dapr
+- **gRPC and HTTP endpoints** for your workflows
+- Kick off workflows based on **Dapr bindings** events
+- Orchestrate complex workflows by **calling back to Dapr** to save state, publish a message and more
+
+<img src="/images/workflows-diagram.png" width=500 alt="Diagram of Dapr Workflows">
 
 ## How it works
 
@@ -24,8 +26,6 @@ Dapr Workflows hosts a gRPC server that implements the Dapr Client API.
 
 This allows users to start workflows using gRPC and HTTP endpoints through Dapr, or start a workflow asynchronously using Dapr bindings.
 Once a workflow request comes in, Dapr Workflows uses the Logic Apps SDK to execute the workflow.
-
-![Diagram](./assets/architecture_diagram.png)
 
 ## Supported workflow features
 
@@ -37,15 +37,15 @@ Once a workflow request comes in, Dapr Workflows uses the Logic Apps SDK to exec
 
 ### Supported control workflows
 
-* [All control workflows](https://docs.microsoft.com/en-us/azure/connectors/apis-list#control-workflow)
+- [All control workflows](https://docs.microsoft.com/en-us/azure/connectors/apis-list#control-workflow)
 
 ### Supported data manipulation
 
-* [All data operations](https://docs.microsoft.com/en-us/azure/connectors/apis-list#manage-or-manipulate-data)
+- [All data operations](https://docs.microsoft.com/en-us/azure/connectors/apis-list#manage-or-manipulate-data)
 
 ### Not supported
 
-* [Managed connectors](https://docs.microsoft.com/en-us/azure/connectors/apis-list#managed-connectors)
+- [Managed connectors](https://docs.microsoft.com/en-us/azure/connectors/apis-list#managed-connectors)
 
 ## Example
 
@@ -53,7 +53,7 @@ Dapr Workflows can be used as the orchestrator for many otherwise complex activi
 
 This is due to the fact Dapr runs as a sidecar next to the workflow host just as if it was any other app.
 
-Examine [workflow2.json](./samples/workflow2.json) as an example of a workflow that does the following:
+Examine [workflow2.json](/code/workflow.json) as an example of a workflow that does the following:
 
 1. Calls into Azure Functions to get a JSON response
 2. Saves the result to a Dapr state store
@@ -154,12 +154,12 @@ Prerequisites:
    ```bash
    curl http://localhost:3500/v1.0/invoke/workflows/method/workflow1
    
-   {"value":"Hello from Logic App workflow running with Dapr!"}                                                                                      
+   {"value":"Hello from Logic App workflow running with Dapr!"}
    ```
 
 ## Invoking workflows using Dapr bindings
 
-1. First, create any Dapr binding of your choice. See [this]({{< ref howto-triggers >}}) How-To tutorial.
+1. First, create any [Dapr binding]({{< ref components-reference >}}) of your choice. See [this]({{< ref howto-triggers >}}) How-To tutorial.
 
    In order for Dapr Workflows to be able to start a workflow from a Dapr binding event, simply name the binding with the name of the workflow you want it to trigger.
 
