@@ -21,6 +21,8 @@ When adopting Dapr to an application, it might happen that other publisher or su
 
 ## Publish example
 
+<img src="/images/pubsub_publish_raw.png" alt="Diagram showing how to publish with Dapr when subscriber does not use Dapr or CloudEvent" width=1000>
+
 To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This will allow subscribers to receive these messages without having to parse the CloudEvent schema.
 
 {{< tabs curl "Python SDK" "PHP SDK">}}
@@ -73,6 +75,8 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 ## Subscribing to raw events
 
+<img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
+
 When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar will automatically wrap the payloads into a CloudEvent that is compatible with current Dapr SDKs.
 
 {{< tabs "Python SDK" "PHP SDK" >}}
@@ -99,6 +103,11 @@ def subscribe():
                       } }]
     return jsonify(subscriptions)
 
+@app.route('/dsstatus', methods=['POST'])
+def ds_subscriber():
+    print(request.json, flush=True)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
 app.run()
 ```
 
@@ -113,6 +122,16 @@ require_once __DIR__.'/vendor/autoload.php';
 $app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builder->addDefinitions(['dapr.subscriptions' => [
     new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'deathStarStatus', route: '/dsstatus', metadata: [ 'rawPayload' => 'true'] ),
 ]]));
+
+$app->post('/dsstatus', function(
+    #[\Dapr\Attributes\FromBody]
+    \Dapr\PubSub\CloudEvent $cloudEvent,
+    \Psr\Log\LoggerInterface $logger
+    ) {
+        $logger->alert('Received event: {event}', ['event' => $cloudEvent]);
+        return ['status' => 'SUCCESS'];
+    }
+);
 
 $app->start();
 ```
