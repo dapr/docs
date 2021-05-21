@@ -21,7 +21,7 @@ When adding Dapr to your application, some services may still need to communicat
 Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built on top of the CloudEvent schema.
 {{% /alert %}}
 
-## Publish example
+## Publishing raw messages
 
 <img src="/images/pubsub_publish_raw.png" alt="Diagram showing how to publish with Dapr when subscriber does not use Dapr or CloudEvent" width=1000>
 
