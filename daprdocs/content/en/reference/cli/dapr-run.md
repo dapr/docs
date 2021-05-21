@@ -38,6 +38,7 @@ dapr run [flags] [command]
 | `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic` |
 | `--placement-host-address` | `DAPR_PLACEMENT_HOST` | `localhost` | The host on which the placement service resides |
 | `--profile-port` | | `7777` | The port for the profile server to listen on |
+| `--dapr-http-max-request-size` | | `4` | Max size of request body in MB.|
 
 ## Examples
 
