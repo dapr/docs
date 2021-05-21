@@ -100,6 +100,9 @@ Dapr can set a timeout message on a per message basis, meaning that if the messa
 
 - Note: Message TTL can also be set for a given queue at the time of component creation. Look at the specific characteristic of the component that you are using.
 
+### Communication with applications not using Dapr
+For scenarios where one application uses Dapr but another one doesn't, CloudEvent wrapping can be disabled as a publisher or subscriber. This feature is available since version 1.2 and allows partially adoption of Dapr pubsub in larger organizations. For more information, learn [how to use pubsub without CloudEvent]({{< ref pubsub-raw.md >}}).
+
 ### Publish/Subscribe API
 
 The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.md >}}).
@@ -112,5 +115,6 @@ The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.m
 * Try out the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message time-to-live (TTL)]({{< ref pubsub-message-ttl.md >}})
+* Learn about [pubsub without CloudEvent]({{< ref pubsub-raw.md >}})
 * List of [pub/sub components]({{< ref supported-pubsub.md >}})
 * Read the [pub/sub API reference]({{< ref pubsub_api.md >}})
