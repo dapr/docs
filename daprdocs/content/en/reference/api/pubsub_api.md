@@ -109,7 +109,7 @@ Optionally, metadata can be sent via the request body.
 
 Parameter | Description
 --------- | -----------
-rawPayload | subscribe to events that do not comply with CloudEvent specification, as [described here]({{< ref pubsub-raw.md >}})
+rawPayload | boolean to subscribe to events that do not comply with CloudEvent specification, as [described here]({{< ref pubsub-raw.md >}})
 
 ### Provide route(s) for Dapr to deliver topic events
 
