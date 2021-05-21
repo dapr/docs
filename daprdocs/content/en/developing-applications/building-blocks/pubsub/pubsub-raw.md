@@ -71,7 +71,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 {{< /tabs >}}
 
-# Subscribe example
+## Subscribing to raw events
 
 When subscribing, add the additional metadata entry for `rawPayload` and Dapr sidecar will automatically wrap the payloads into a CloudEvent that is compatible with current Dapr SDKs.
 
