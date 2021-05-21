@@ -17,7 +17,9 @@ For more information about CloudEvent, please check the [official specification]
 
 When adding Dapr to your application, some services may still need to communicate via raw pub/sub messages not encapsulated in CloudEvents. This may be for compatibility reasons, or because some apps are not using Dapr yet. Dapr enables apps to publish and subscribe to raw events that are not wrapped in a CloudEvent.
 
-> Not using CloudEvent automatically disables support for tracing, deduplication per message Id, content-type metadata and any other feature built on top of the CloudEvent schema.
+{{% alert title="Warning" color="warning" %}}
+Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built on top of the CloudEvent schema.
+{{% /alert %}}
 
 ## Publish example
 
