@@ -73,7 +73,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 ## Subscribing to raw events
 
-When subscribing, add the additional metadata entry for `rawPayload` and Dapr sidecar will automatically wrap the payloads into a CloudEvent that is compatible with current Dapr SDKs.
+When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar will automatically wrap the payloads into a CloudEvent that is compatible with current Dapr SDKs.
 
 {{< tabs "Python SDK" "PHP SDK" >}}
 
