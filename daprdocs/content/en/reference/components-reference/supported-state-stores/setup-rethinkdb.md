@@ -3,7 +3,7 @@ type: docs
 title: "RethinkDB"
 linkTitle: "RethinkDB"
 description: Detailed information on the RethinkDB state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-rethinkdb/"
 ---
 
@@ -47,9 +47,9 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 ```
 
 
-RethinkDB state store supports transactions so it can be used to persist Dapr Actor state. By default, the state will be stored in table name `daprstate` in the specified database. 
+RethinkDB state store supports transactions so it can be used to persist Dapr Actor state. By default, the state will be stored in table name `daprstate` in the specified database.
 
-Additionally, if the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr. 
+Additionally, if the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr.
 
 ## Spec metadata fields
 

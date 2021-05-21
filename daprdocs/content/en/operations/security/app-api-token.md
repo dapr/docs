@@ -11,55 +11,55 @@ To enable the application to authenticate requests that are arriving from the Da
 
 ## Create a token
 
-Dapr uses [JWT](https://jwt.io/) tokens for API authentication. 
+Dapr uses [JWT](https://jwt.io/) tokens for API authentication.
 
 > Note, while Dapr itself is actually not the JWT token issuer in this implementation, being explicit about the use of JWT standard enables federated implementations in the future (e.g. OAuth2).
 
-To configure API authentication, start by generating your token using any JWT token compatible tool (e.g. https://jwt.io/) and your secret. 
+To configure API authentication, start by generating your token using any JWT token compatible tool (e.g. https://jwt.io/) and your secret.
 
 > Note, that secret is only necessary to generate the token, and Dapr doesn't need to know about or store it
 
 ## Configure app API token authentication in Dapr
 
-The token authentication configuration is slightly different for either Kubernetes or self-hosted Dapr deployments: 
- 
-### Self-hosted 
+The token authentication configuration is slightly different for either Kubernetes or self-hosted Dapr deployments:
 
-In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environment variable. If that environment variable is set while `daprd` process launches, Dapr includes the token when calling an app: 
+### Self-hosted
+
+In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environment variable. If that environment variable is set while `daprd` process launches, Dapr includes the token when calling an app:
 
 ```shell
 export APP_API_TOKEN=<token>
 ```
 
-To rotate the configured token, simply set the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process. 
+To rotate the configured token, simply set the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
 
-### Kubernetes  
+### Kubernetes
 
 In Kubernetes deployment, Dapr leverages Kubernetes secrets store to hold the JWT token. Start by creating a new secret:
 
 ```shell
-kubectl create secret generic app-api-token --from-literal=token=<token> 
+kubectl create secret generic app-api-token --from-literal=token=<token>
 ```
 
-> Note, the above secret needs to be created in each namespace in which you want to enable app token authentication 
+> Note, the above secret needs to be created in each namespace in which you want to enable app token authentication
 
 To indicate to Dapr to use the token in the secret when sending requests to the app, add an annotation to your Deployment template spec:
 
 ```yaml
-annotations: 
-  dapr.io/enabled: "true" 
+annotations:
+  dapr.io/enabled: "true"
   dapr.io/app-token-secret: "app-api-token" # name of the Kubernetes secret
 ```
 
 When deployed, the Dapr Sidecar Injector automatically creates a secret reference and injects the actual value into `APP_API_TOKEN` environment variable.
- 
-## Rotate a token 
 
-### Self-hosted 
+## Rotate a token
 
-To rotate the configured token in self-hosted, simply set the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process. 
+### Self-hosted
 
-### Kubernetes 
+To rotate the configured token in self-hosted, simply set the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
+
+### Kubernetes
 
 To rotate the configured token in Kubernates, update the previously created secret with the new token in each namespace. You can do that using `kubectl patch` command, but the easiest way to update these in each namespace is by using manifest:
 
@@ -79,13 +79,13 @@ And then apply it to each namespace:
 kubectl apply --file token-secret.yaml --namespace <namespace-name>
 ```
 
-To tell Dapr to start using the new token, trigger a rolling upgrade to each one of your deployments: 
+To tell Dapr to start using the new token, trigger a rolling upgrade to each one of your deployments:
 
 ```shell
 kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name>
 ```
 
-> Note, assuming your service is configured with more than one replica, the key rotation process does not result in any downtime. 
+> Note, assuming your service is configured with more than one replica, the key rotation process does not result in any downtime.
 
 
 ## Authenticating requests from Dapr

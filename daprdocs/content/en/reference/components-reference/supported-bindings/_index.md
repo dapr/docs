@@ -4,7 +4,7 @@ title: "Bindings component specs"
 linkTitle: "Bindings"
 weight: 3000
 description: The supported external bindings that interface with Dapr
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/"
 no_list: true
 ---
@@ -25,7 +25,7 @@ Table captions:
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since runtime version |
 |------|:----------------:|:-----------------:|--------|-------- | ---------|
-| [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 | 
+| [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | GA | v1 | 1.0 |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
@@ -69,7 +69,7 @@ Table captions:
 
 ### Microsoft Azure
 
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Alpha | v1 | 1.0 |

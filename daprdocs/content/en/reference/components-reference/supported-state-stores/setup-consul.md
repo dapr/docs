@@ -3,9 +3,9 @@ type: docs
 title: "HashiCorp Consul"
 linkTitle: "HashiCorp Consul"
 description: Detailed information on the HashiCorp Consul state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-consul/"
---- 
+---
 
 ## Component format
 

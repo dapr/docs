@@ -9,7 +9,7 @@ type: docs
 
 You can read [guidance on setting up secret store components]({{< ref setup-secret-store >}}) to configure a secret store for an application. Once configured, by default *any* secret defined within that store is accessible from the Dapr application.
 
-To limit the secrets to which the Dapr application has access to, you can can define secret scopes by adding a secret scope policy to the application configuration with restrictive permissions. Follow [these instructions]({{< ref configuration-concept.md >}}) to define an application configuration. 
+To limit the secrets to which the Dapr application has access to, you can can define secret scopes by adding a secret scope policy to the application configuration with restrictive permissions. Follow [these instructions]({{< ref configuration-concept.md >}}) to define an application configuration.
 
 The secret scoping policy applies to any [secret store]({{< ref supported-secret-stores.md >}}), whether that is a local secret store, a Kubernetes secret store or a public cloud secret store. For details on how to set up a [secret stores]({{< ref setup-secret-store.md >}}) read [How To: Retrieve a secret]({{< ref howto-secrets.md >}})
 
@@ -34,13 +34,13 @@ spec:
         defaultAccess: deny
 ```
 
-For applications that need to be denied access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview.md >}}), and add the following annotation to the application pod. 
+For applications that need to be denied access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview.md >}}), and add the following annotation to the application pod.
 
 ```yaml
 dapr.io/config: appconfig
 ```
 
-With this defined, the application no longer has access to any secrets in the Kubernetes secret store. 
+With this defined, the application no longer has access to any secrets in the Kubernetes secret store.
 
 ## Scenario 2 : Allow access to only certain secrets in a secret store
 

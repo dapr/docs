@@ -79,7 +79,7 @@ etag | (optional) state ETag
 metadata | (optional) additional key-value pairs to be passed to the state store
 options | (optional) state operation options, see [state operation options](#optional-behaviors)
 
-> **ETag format** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store. 
+> **ETag format** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store.
 
 ### HTTP Response
 
@@ -157,7 +157,7 @@ ETag | ETag of returned value
 #### Response Body
 JSON-encoded value
 
-### Example 
+### Example
 
 ```shell
 curl http://localhost:3500/v1.0/state/starwars/planet \
@@ -211,7 +211,7 @@ Code | Description
 #### Response Body
 An array of JSON-encoded values
 
-### Example 
+### Example
 
 ```shell
 curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
@@ -430,7 +430,7 @@ Dapr assumes data stores are eventually consistent by default. A state should:
 * For write request, the state store should asynchronously replicate updates to configured quorum after acknowledging the update request.
 
 #### Strong Consistency
-  
+
 When a strong consistency hint is attached, a state store should:
 
 * For read requests, the state store should return the most up-to-date data consistently across replicas.
@@ -475,13 +475,13 @@ curl -X POST http://localhost:3500/v1.0/state/statestore \
 Get the object to find the ETag that was set automatically by the statestore:
 
 ```shell
-curl http://localhost:3500/v1.0/state/statestore/sampleData -v 
+curl http://localhost:3500/v1.0/state/statestore/sampleData -v
 * Connected to localhost (127.0.0.1) port 3500 (#0)
 > GET /v1.0/state/statestore/sampleData HTTP/1.1
 > Host: localhost:3500
 > User-Agent: curl/7.64.1
 > Accept: */*
-> 
+>
 < HTTP/1.1 200 OK
 < Server: fasthttp
 < Date: Sun, 14 Feb 2021 04:51:50 GMT
@@ -489,7 +489,7 @@ curl http://localhost:3500/v1.0/state/statestore/sampleData -v
 < Content-Length: 3
 < Etag: 1
 < Traceparent: 00-3452582897d134dc9793a244025256b1-b58d8d773e4d661d-01
-< 
+<
 * Connection #0 to host localhost left intact
 "1"* Closing connection 0
 ```
