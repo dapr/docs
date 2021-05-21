@@ -21,7 +21,7 @@ When adopting Dapr to an application, it might happen that other publisher or su
 
 ## Publish example
 
-To disable CloudEvent wrapping, set the `rawPayload` metadata as part of the publishing request. This will enable subscribers to receive these messages without having to parsing the CloudEvent schema.
+To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This will allow subscribers to receive these messages without having to parse the CloudEvent schema.
 
 {{< tabs curl "Python SDK" "PHP SDK">}}
 
