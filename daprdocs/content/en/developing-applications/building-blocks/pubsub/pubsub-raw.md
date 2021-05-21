@@ -75,7 +75,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 {{< /tabs >}}
 
-## Subscribing to raw events
+## Subscribing to raw messages
 
 <img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
 
