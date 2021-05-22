@@ -90,6 +90,8 @@ Connection establishment via gRPC to the target sidecar has a timeout of 5 secon
 
 Dapr can run on any [hosting platform]({{< ref hosting >}}). For the supported hosting platforms this means they have a [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) developed for them that enables service discovery. For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. For local and multiple physical machines this uses the mDNS protocol.
 
+> Note: [For local and physical machines, ensure mDNS is functioning properly.]({{< ref "common_issues.md#my-dapr-service-instance-is-missing-an-app-id-value-macos" >}})
+
 ### Round robin load balancing with mDNS
 Dapr provides round robin load balancing of service invocation requests with the mDNS protocol, for example with a single machine or with multiple, networked, physical machines.
 
