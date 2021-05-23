@@ -3,7 +3,7 @@ type: docs
 title: "AWS SSM Parameter Store"
 linkTitle: "AWS SSM Parameter Store"
 description: Detailed information on the AWS SSM Parameter Store - secret store component
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/aws-parameter-store/"
 ---
 

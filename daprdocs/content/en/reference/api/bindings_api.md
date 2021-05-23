@@ -87,7 +87,7 @@ def incoming():
 ### Binding endpoints
 
 Bindings are discovered from component yaml files. Dapr calls this endpoint on startup to ensure that app can handle this call. If the app doesn't have the endpoint, Dapr ignores it.
- 
+
 #### HTTP Request
 
 ```
@@ -108,12 +108,12 @@ Parameter | Description
 appPort | the application port
 name | the name of the binding
 
-> Note, all URL parameters are case-sensitive. 
+> Note, all URL parameters are case-sensitive.
 
 ### Binding payload
 
 In order to deliver binding inputs, a POST call is made to user code with the name of the binding as the URL path.
- 
+
 #### HTTP Request
 
 ```
@@ -148,7 +148,7 @@ If `concurrency` is not set, it is sent out sequential (the example below shows 
 {
     "storeName": "stateStore",
     "state": stateDataToStore,
-    
+
     "to": ['storage', 'queue'],
     "concurrency": "parallel",
     "data": jsonObject,

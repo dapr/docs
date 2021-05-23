@@ -3,7 +3,7 @@ type: docs
 title: "MQTT binding spec"
 linkTitle: "MQTT"
 description: "Detailed documentation on the MQTT binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/mqtt/"
 ---
 
@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 

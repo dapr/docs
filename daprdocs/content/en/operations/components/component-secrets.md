@@ -60,11 +60,11 @@ auth:
   secretStore: <SECRET_STORE_NAME>
 ```
 
-`SECRET_STORE_NAME` is the name of the configured [secret store component]({{< ref supported-secret-stores >}}). When running in Kubernetes and using a Kubernetes secret store, the field `auth.SecretStore` defaults to `kubernetes` and can be left empty. 
+`SECRET_STORE_NAME` is the name of the configured [secret store component]({{< ref supported-secret-stores >}}). When running in Kubernetes and using a Kubernetes secret store, the field `auth.SecretStore` defaults to `kubernetes` and can be left empty.
 
 The above component definition tells Dapr to extract a secret named `redis-secret` from the defined secret store and assign the value of the `redis-password` key in the secret to the `redisPassword` field in the Component.
 
-## Example 
+## Example
 
 ### Referencing a Kubernetes secret
 
@@ -103,7 +103,7 @@ Dapr can restrict access to secrets in a secret store using its configuration. R
 
 ## Kubernetes permissions
 
-### Default namespace 
+### Default namespace
 
 When running in Kubernetes, Dapr, during installtion, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
 
@@ -146,5 +146,5 @@ In production scenario to limit Dapr's access to certain secret resources alone,
 
 ## Related links
 
-- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}})
 - [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})

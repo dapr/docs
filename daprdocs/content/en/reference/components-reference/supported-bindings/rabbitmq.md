@@ -3,7 +3,7 @@ type: docs
 title: "RabbitMQ binding spec"
 linkTitle: "RabbitMQ"
 description: "Detailed documentation on the RabbitMQ binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/rabbitmq/"
 ---
 
@@ -52,13 +52,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | host | Y | Input/Output | The RabbitMQ host address | `"amqp://[username][:password]@host.domain[:port]"` |
 | durable | N | Output | Tells RabbitMQ to persist message in storage. Defaults to `"false"` | `"true"`, `"false"` |
 | deleteWhenUnused | N | Input/Output | Enables or disables auto-delete. Defaults to `"false"` | `"true"`, `"false"` |
-| ttlInSeconds | N | Output | Set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed. See [also](#specifying-a-ttl-per-message)  | `60` | 
+| ttlInSeconds | N | Output | Set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed. See [also](#specifying-a-ttl-per-message)  | `60` |
 | prefetchCount | N | Input | Set the [Channel Prefetch Setting (QoS)](https://www.rabbitmq.com/confirms.html#channel-qos-prefetch). If this parameter is omiited, QoS would set value to 0 as no limit | `0` |
 | exclusive | N | Input/Output | Determines whether the topic will be an exclusive topic or not. Defaults to `"false"` | `"true"`, `"false"` |
 | maxPriority| N | Input/Output | Parameter to set the [priority queue](https://www.rabbitmq.com/priority.html). If this parameter is omitted, queue will be created as a general queue instead of a priority queue. Value between 1 and 255. See [also](#specifying-a-priority-per-message) | `"1"`, `"10"` |
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 
@@ -111,7 +111,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myRabbitMQ \
 
 ## Specifying a priority per message
 
-Priority can be defined at the message level. If `maxPriority` parameter is set, high priority messages will have priority over other low priority messages. 
+Priority can be defined at the message level. If `maxPriority` parameter is set, high priority messages will have priority over other low priority messages.
 
 To set priority at message level use the `metadata` section in the request body during the binding invocation.
 

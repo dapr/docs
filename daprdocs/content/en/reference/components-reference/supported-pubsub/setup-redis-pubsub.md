@@ -3,7 +3,7 @@ type: docs
 title: "Redis Streams"
 linkTitle: "Redis Streams"
 description: "Detailed documentation on the Redis Streams pubsub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-redis-pubsub/"
 ---
 

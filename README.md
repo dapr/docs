@@ -41,22 +41,22 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 ```sh
 git clone https://github.com/dapr/docs.git
 ```
-3. Change to daprdocs directory: 
+3. Change to daprdocs directory:
 ```sh
 cd ./docs/daprdocs
 ```
-4. Update submodules: 
+4. Update submodules:
 ```sh
 git submodule update --init --recursive
 ```
-5. Install npm packages: 
+5. Install npm packages:
 ```sh
 npm install
 ```
 
 ## Run local server
 1. Make sure you're still in the `daprdocs` directory
-2. Run 
+2. Run
 ```sh
 hugo server --disableFastRender
 ```

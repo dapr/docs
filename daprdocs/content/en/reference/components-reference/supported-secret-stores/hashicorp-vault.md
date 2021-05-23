@@ -3,7 +3,7 @@ type: docs
 title: "HashiCorp Vault"
 linkTitle: "HashiCorp Vault"
 description: Detailed information on the HashiCorp Vault secret store component
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/hashicorp-vault/"
 ---
 
@@ -51,9 +51,9 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | caPath | N | Certificate Authority use only one of the options. The path to a CA cert file |  `"path/to/cacert/file"` |
 | caPem | N | Certificate Authority use only one of the options. The encoded cacert pem to use | `"encodedpem"` |
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
-| tlsServerName | N | TLS config server name | `"tls-server"` | 
+| tlsServerName | N | TLS config server name | `"tls-server"` |
 | vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
-| vaultKVPrefix | N | The prefix in vault. Defautls to `"dapr"` | `"dapr"`, `"myprefix"` | 
+| vaultKVPrefix | N | The prefix in vault. Defautls to `"dapr"` | `"dapr"`, `"myprefix"` |
 ## Setup Hashicorp Vault instance
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}

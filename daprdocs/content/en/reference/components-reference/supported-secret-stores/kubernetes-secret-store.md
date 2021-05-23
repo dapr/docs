@@ -3,7 +3,7 @@ type: docs
 title: "Kubernetes secrets"
 linkTitle: "Kubernetes secrets"
 description: Detailed information on the Kubernetes secret store component
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/kubernetes-secret-store/"
 ---
 
