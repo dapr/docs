@@ -93,4 +93,4 @@ You can check [here]({{< ref supported-bindings >}}) which operations are suppor
 
 - [Binding API]({{< ref bindings_api.md >}})
 - [Binding components]({{< ref bindings >}})
-- [Binding detailed specifications]({{< ref supported-bindings >}}) 
+- [Binding detailed specifications]({{< ref supported-bindings >}})

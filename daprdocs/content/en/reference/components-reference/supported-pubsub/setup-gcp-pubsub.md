@@ -3,7 +3,7 @@ type: docs
 title: "GCP Pub/Sub"
 linkTitle: "GCP Pub/Sub"
 description: "Detailed documentation on the GCP Pub/Sub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-gcp/"
   - "/operations/components/setup-pubsub/supported-pubsub/setup-gcp-pubsub/"
 ---
@@ -43,7 +43,7 @@ spec:
   - name: clientX509CertUrl
     value: https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com #replace PROJECT_NAME
   - name: privateKey
-    value: <PRIVATE_KEY> # replace x509 cert  
+    value: <PRIVATE_KEY> # replace x509 cert
   - name: disableEntityManagement
     value: "false"
 ```

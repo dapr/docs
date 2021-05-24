@@ -8,7 +8,7 @@ weight: 2000
 
 Dapr, with its modular building-block approach, along with the 10+ different [pub/sub components]({{< ref pubsub >}}), make it easy to write message processing applications. Since Dapr can run in many environments (e.g. VM, bare-metal, Cloud, or Edge) the autoscaling of Dapr applications is managed by the hosting later.
 
-For Kubernetes, Dapr integrates with [KEDA](https://github.com/kedacore/keda), an event driven autoscaler for Kubernetes. Many of Dapr's pub/sub components overlap with the scalers provided by [KEDA](https://github.com/kedacore/keda) so it's easy to configure your Dapr deployment on Kubernetes to autoscale based on the back pressure using KEDA. 
+For Kubernetes, Dapr integrates with [KEDA](https://github.com/kedacore/keda), an event driven autoscaler for Kubernetes. Many of Dapr's pub/sub components overlap with the scalers provided by [KEDA](https://github.com/kedacore/keda) so it's easy to configure your Dapr deployment on Kubernetes to autoscale based on the back pressure using KEDA.
 
 This how-to walks through the configuration of a scalable Dapr application along with the back pressure on Kafka topic, however you can apply this approach to any [pub/sub components]({{< ref pubsub >}}) offered by Dapr.
 
@@ -60,7 +60,7 @@ kubectl -n kafka exec -it kafka-client -- kafka-topics \
 		--if-not-exists
 ```
 
-## Deploy a Dapr Pub/Sub component 
+## Deploy a Dapr Pub/Sub component
 
 Next, we'll deploy the Dapr Kafka pub/sub component for Kubernetes. Paste the following YAML into a file named `kafka-pubsub.yaml`:
 
@@ -81,9 +81,9 @@ spec:
       value: autoscaling-subscriber
 ```
 
-The above YAML defines the pub/sub component that your application subscribes to, the `demo-topic` we created above. If you used the Kafka Helm install instructions above you can leave the  `brokers` value as is. Otherwise, change this to the connection string to your Kafka brokers. 
+The above YAML defines the pub/sub component that your application subscribes to, the `demo-topic` we created above. If you used the Kafka Helm install instructions above you can leave the  `brokers` value as is. Otherwise, change this to the connection string to your Kafka brokers.
 
-Also notice the `autoscaling-subscriber` value set for `consumerID` which is used later to make sure that KEDA and your deployment use the same [Kafka partition offset](http://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.). 
+Also notice the `autoscaling-subscriber` value set for `consumerID` which is used later to make sure that KEDA and your deployment use the same [Kafka partition offset](http://cloudurable.com/blog/kafka-architecture-topics/index.html#:~:text=Kafka%20continually%20appended%20to%20partitions,fit%20on%20a%20single%20server.).
 
 Now, deploy the component to the cluster:
 
@@ -93,7 +93,7 @@ kubectl apply -f kafka-pubsub.yaml
 
 ## Deploy KEDA autoscaler for Kafka
 
-Next, we will deploy the KEDA scaling object that monitors the lag on the specified Kafka topic and configures the Kubernetes Horizontal Pod Autoscaler (HPA) to scale your Dapr deployment in and out. 
+Next, we will deploy the KEDA scaling object that monitors the lag on the specified Kafka topic and configures the Kubernetes Horizontal Pod Autoscaler (HPA) to scale your Dapr deployment in and out.
 
 Paste the following into a file named `kafka_scaler.yaml`, and configure your Dapr deployment in the required place:
 
@@ -127,7 +127,7 @@ A few things to review here in the above file:
 * Similarly the `bootstrapServers` should be set to the same broker connection string used in the `kafka-pubsub.yaml` file
 * The `consumerGroup` should be set to the same value as the `consumerID` in the `kafka-pubsub.yaml` file
 
-> Note: setting the connection string, topic, and consumer group to the *same* values for both the Dapr service subscription and the KEDA scaler configuration is critical to ensure the autoscaling works correctly. 
+> Note: setting the connection string, topic, and consumer group to the *same* values for both the Dapr service subscription and the KEDA scaler configuration is critical to ensure the autoscaling works correctly.
 
 Next, deploy the KEDA scaler to Kubernetes:
 

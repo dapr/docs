@@ -6,7 +6,7 @@ weight: 3000
 description: "Understand Dapr logging"
 ---
 
-Dapr produces structured logs to stdout either as a plain text or JSON formatted. By default, all Dapr processes (runtime and system services) write to console out in plain text. To enable JSON formatted logs, you need to add the `--log-as-json` command flag when running Dapr processes. 
+Dapr produces structured logs to stdout either as a plain text or JSON formatted. By default, all Dapr processes (runtime and system services) write to console out in plain text. To enable JSON formatted logs, you need to add the `--log-as-json` command flag when running Dapr processes.
 
 If you want to use a search engine such as Elastic Search or Azure Monitor to search the logs, it is recommended to use JSON-formatted logs which the log collector and search engine can parse using the built-in JSON parser.
 
@@ -56,7 +56,7 @@ You can enable JSON formatted logs for Dapr system services by adding `--set glo
 helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 ```
 
-### Enable JSON formatted log for Dapr sidecars 
+### Enable JSON formatted log for Dapr sidecars
 
 You can enable JSON-formatted logs in Dapr sidecars activated by the Dapr sidecar-injector service by adding the `dapr.io/log-as-json: "true"` annotation to the deployment.
 

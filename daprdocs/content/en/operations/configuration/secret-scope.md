@@ -69,13 +69,13 @@ spec:
         defaultAccess: deny
 ```
 
-For applications that need to be deined access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview >}}), and add the following annotation to the application pod. 
+For applications that need to be deined access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview >}}), and add the following annotation to the application pod.
 
 ```yaml
 dapr.io/config: appconfig
 ```
 
-With this defined, the application no longer has access to Kubernetes secret store. 
+With this defined, the application no longer has access to Kubernetes secret store.
 
 ### Scenario 2 : Allow access to only certain secrets in a secret store
 

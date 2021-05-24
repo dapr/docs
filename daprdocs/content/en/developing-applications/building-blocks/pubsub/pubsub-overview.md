@@ -10,7 +10,7 @@ description: "Overview of the Pub/Sub building block"
 
 The [publish/subscribe pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) allows microservices to communicate with each other using messages. The **producer or publisher** sends messages to a **topic** without knowledge of what application will receive them. This involves writing them to an input channel. Similarly, a **consumer or subscriber** subscribes to the topic and receive its messages without any knowledge of what service produced these messages. This involves receiving messages from an output channel. An intermediary message broker is responsible for copying each message from an input channel to an output channels for all subscribers interested in that message. This pattern is especially useful when you need to decouple microservices from one another.
 
-The publish/subscribe API in Dapr provides an at-least-once guarantee and integrates with various message brokers and queuing systems. The specific implementation used by your service is pluggable and configured as a Dapr pub/sub component at runtime. This approach removes the dependency from your service and, as a result, makes your service more portable and flexible to changes. 
+The publish/subscribe API in Dapr provides an at-least-once guarantee and integrates with various message brokers and queuing systems. The specific implementation used by your service is pluggable and configured as a Dapr pub/sub component at runtime. This approach removes the dependency from your service and, as a result, makes your service more portable and flexible to changes.
 
 The complete list of Dapr pub/sub components is [here]({{< ref supported-pubsub >}}).
 
@@ -62,13 +62,13 @@ The following example shows an XML content in CloudEvent v1.0 serialized as JSON
 }
 ```
 
-### Message subscription 
+### Message subscription
 
 Dapr applications can subscribe to published topics. Dapr allows two methods by which your applications can subscribe to topics:
 
- - **Declarative**, where a subscription is defined in an external file, 
+ - **Declarative**, where a subscription is defined in an external file,
  - **Programmatic**, where a subscription is defined in the user code.
- 
+
  Both declarative and programmatic approaches support the same features. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. The programmatic approach implements the subscription in your code.
 
   For more information read [How-To: Publish a message and subscribe to a topic]({{< ref howto-publish-subscribe >}}).
@@ -89,7 +89,7 @@ The burden of dealing with concepts like consumer groups and multiple applicatio
 <img src="/images/pubsub-overview-pattern-competing-consumers.png" width=1000>
 <br></br>
 
-Similarly, if two different applications (different app-IDs) subscribe to the same topic, Dapr deliver each message to *only one instance of **each** application*. 
+Similarly, if two different applications (different app-IDs) subscribe to the same topic, Dapr deliver each message to *only one instance of **each** application*.
 
 ### Topic scoping
 

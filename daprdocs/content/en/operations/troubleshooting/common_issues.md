@@ -64,9 +64,9 @@ In order to further diagnose any issue, check the logs of the Dapr sidecar injec
 
 *Note: If you installed Dapr to a different namespace, replace dapr-system above with the desired namespace*
 
-## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar 
+## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar
 
-If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes. 
+If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes.
 
 If your pod is in a failed state you should check this:
 
@@ -209,6 +209,6 @@ export DAPR_HOST_IP=127.0.0.1
 
 This is usually due to one of the following issues
 
-- You may have defined the `NAMESPACE` environment variable locally or deployed your components into a different namespace in Kubernetes. Check which namespace your app and the components are deployed to. Read [scoping components to one or more applications]({{< ref "component-scopes.md" >}}) for more information. 
-- You may have not provided a `--components-path` with the Dapr `run` commands or not placed your components into the default components folder for your OS. Read [define a component]({{< ref "get-started-component.md" >}}) for more information. 
+- You may have defined the `NAMESPACE` environment variable locally or deployed your components into a different namespace in Kubernetes. Check which namespace your app and the components are deployed to. Read [scoping components to one or more applications]({{< ref "component-scopes.md" >}}) for more information.
+- You may have not provided a `--components-path` with the Dapr `run` commands or not placed your components into the default components folder for your OS. Read [define a component]({{< ref "get-started-component.md" >}}) for more information.
 - You may have a syntax issue in component YAML file. Check your component YAML with the component [YAML samples]({{< ref "components.md" >}}).

@@ -6,7 +6,7 @@ weight: 2000
 description: "Use the secret store building block to securely retrieve a secret"
 ---
 
-This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store. 
+This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store.
 
 ## Set up a secret store
 
@@ -77,7 +77,7 @@ func main() {
 
   res, err := http.Get(url)
   if err != nil {
-    panic(err)  
+    panic(err)
   }
   defer res.Body.Close()
 

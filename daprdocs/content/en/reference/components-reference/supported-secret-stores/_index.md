@@ -4,7 +4,7 @@ title: "Secret store component specs"
 linkTitle: "Secret stores"
 weight: 4000
 description: The supported secret stores that interface with Dapr
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/"
 no_list: true
 ---
@@ -44,6 +44,6 @@ Table captions:
 ### Microsoft Azure
 
 | Name                                                                                  | Status | Component version | Since |
-|---------------------------------------------------------------------------------------|--------| ---- |--------------| 
+|---------------------------------------------------------------------------------------|--------| ---- |--------------|
 | [Azure Key Vault w/ Managed Identity]({{< ref azure-keyvault-managed-identity.md >}}) | Alpha  | v1 | 1.0 |
 | [Azure Key Vault]({{< ref azure-keyvault.md >}})                                      | GA  | v1 | 1.0 |

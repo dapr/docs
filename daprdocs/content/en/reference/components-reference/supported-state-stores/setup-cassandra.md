@@ -3,9 +3,9 @@ type: docs
 title: "Cassandra"
 linkTitle: "Cassandra"
 description: Detailed information on the Cassandra state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-cassandra/"
---- 
+---
 
 ## Component format
 
@@ -47,7 +47,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hosts             | Y        | Comma separated value of the hosts | `"cassandra.cassandra.svc.cluster.local"`. 
+| hosts             | Y        | Comma separated value of the hosts | `"cassandra.cassandra.svc.cluster.local"`.
 | port              | N        |  Port for communication. Default `"9042"` | `"9042"`
 | username          | Y        | The username of database user. No default | `"user"`
 | password          | Y        | The password for the user  | `"password"`

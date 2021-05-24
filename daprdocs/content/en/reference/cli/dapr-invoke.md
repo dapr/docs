@@ -31,7 +31,7 @@ dapr invoke [flags]
 ## Examples
 
 ### Invoke a sample method on target app with POST Verb
-```bash 
+```bash
 dapr invoke --app-id target --method sample --data '{"key":"value"}'
 ```
 

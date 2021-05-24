@@ -198,7 +198,7 @@ type Result struct {
   // Whether to allow or deny the incoming request
   allow bool
   // Overrides denied response status code; Optional
-  status_code int  
+  status_code int
   // Sets headers on allowed request or denied response; Optional
   additional_headers map[string]string
 }
