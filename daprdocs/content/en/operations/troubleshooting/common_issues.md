@@ -219,9 +219,10 @@ Some organizations will implement software that filters out all UPD traffic, whi
 
 In order for mDNS to function properly, ensure `Micorosft Content Filter` is inactive.
 
-- Open `System Preferences` and select `Network`
-- Locate `Microsoft Content Filter`
-- Click the `...` or or the cogs dropdown depending on your OSX version
-- Select `Make Service Inactive`
+- Open a terminal shell.
+- Type `mdatp system-extension network-filter disable` and hit enter.
+- Enter your account password.
+
+Microsoft Content Filter is disbaled when the output is "Success". 
 
 > Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting. 
