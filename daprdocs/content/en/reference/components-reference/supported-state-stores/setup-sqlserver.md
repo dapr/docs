@@ -3,7 +3,7 @@ type: docs
 title: "SQL Server"
 linkTitle: "SQL Server"
 description: Detailed information on the SQL Server state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-sqlserver/"
 ---
 
@@ -26,14 +26,14 @@ spec:
     value: <REPLACE-WITH-CONNECTION-STRING> # Required.
   - name: tableName
     value: <REPLACE-WITH-TABLE-NAME>  # Required.
-  - name: keyType 
+  - name: keyType
     value: <REPLACE-WITH-KEY-TYPE>  # Optional. defaults to "string"
   - name: keyLength
     value: <KEY-LENGTH> # Optional. defaults to 200. Yo be used with "string" keyType
   - name: schema
     value: <SCHEMA> # Optional. defaults to "dbo"
   - name: indexedProperties
-    value: <INDEXED-PROPERTIES> # Optional. List of IndexedProperties. 
+    value: <INDEXED-PROPERTIES> # Optional. List of IndexedProperties.
 
 ```
 

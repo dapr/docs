@@ -3,7 +3,7 @@ type: docs
 title: "Message Time-to-Live (TTL)"
 linkTitle: "Message TTL"
 weight: 6000
-description: "Use time-to-live in Pub/Sub messages." 
+description: "Use time-to-live in Pub/Sub messages."
 ---
 
 ## Introduction

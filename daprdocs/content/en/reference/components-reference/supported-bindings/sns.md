@@ -3,7 +3,7 @@ type: docs
 title: "AWS SNS binding spec"
 linkTitle: "AWS SNS"
 description: "Detailed documentation on the AWS SNS binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/sns/"
 ---
 
@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| topicArn | Y | Output | The SNS topic name | `"arn:::topicarn"` | 
+| topicArn | Y | Output | The SNS topic name | `"arn:::topicarn"` |
 | region             | Y        | Output |  The specific AWS region | `"us-east-1"`       |
 | accessKey          | Y        | Output | The AWS Access Key to access this resource                              | `"key"`             |
 | secretKey          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |

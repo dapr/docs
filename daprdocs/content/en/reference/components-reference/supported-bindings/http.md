@@ -3,7 +3,7 @@ type: docs
 title: "HTTP binding spec"
 linkTitle: "HTTP"
 description: "Detailed documentation on the HTTP binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/http/"
 ---
 

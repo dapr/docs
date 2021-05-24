@@ -5,7 +5,7 @@ linkTitle: "Service invocation performance"
 weight: 10000
 description: ""
 ---
-This article provides service invocation API performance benchmarks and resource utilization for the components needed to run Dapr in different hosting environments. 
+This article provides service invocation API performance benchmarks and resource utilization for the components needed to run Dapr in different hosting environments.
 
 ## System overview
 

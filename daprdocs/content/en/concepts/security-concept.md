@@ -12,7 +12,7 @@ This article addresses multiple security considerations when using Dapr in a dis
 Several of the areas above are addressed through encryption of data in transit. One of the security mechanisms that Dapr employs for encrypting data in transit is [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. mTLS offers a few key features for network traffic inside your application:
 
 - Two way authentication - the client proving its identity to the server, and vice-versa
-- An encrypted channel for all in-flight communication, after two-way authentication is established  
+- An encrypted channel for all in-flight communication, after two-way authentication is established
 
 Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
 
@@ -60,7 +60,7 @@ In addition to automatic mTLS between Dapr sidecars, Dapr offers mandatory mTLS 
 
 When mTLS is enabled, Sentry writes the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed. In self hosted mode, Sentry writes the certificates to a configurable filesystem path.
 
-In Kubernetes, when the Dapr system services start, they automatically mount the secret containing the root and issuer certs and use those to secure the gRPC server that is used by the Dapr sidecar.  
+In Kubernetes, when the Dapr system services start, they automatically mount the secret containing the root and issuer certs and use those to secure the gRPC server that is used by the Dapr sidecar.
 
 In self hosted mode, each system service can be mounted to a filesystem path to get the credentials.
 

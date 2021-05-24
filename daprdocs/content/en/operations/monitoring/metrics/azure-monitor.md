@@ -101,7 +101,7 @@ spec:
 
 2. Search Dapr logs
 
-Here is an example query, to parse JSON formatted logs and query logs from dapr system processes. 
+Here is an example query, to parse JSON formatted logs and query logs from dapr system processes.
 
 ```
 ContainerLog
@@ -120,7 +120,7 @@ InsightsMetrics
 | where Namespace == "prometheus" and Name == "process_resident_memory_bytes"
 | extend tags=parse_json(Tags)
 | project TimeGenerated, Name, Val, app=tostring(tags['app'])
-| summarize memInBytes=percentile(Val, 99) by bin(TimeGenerated, 1m), app 
+| summarize memInBytes=percentile(Val, 99) by bin(TimeGenerated, 1m), app
 | where app startswith "dapr-"
 | render timechart
 ```

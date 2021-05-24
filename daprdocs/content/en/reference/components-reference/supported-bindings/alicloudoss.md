@@ -3,7 +3,7 @@ type: docs
 title: "Alibaba Cloud Object Storage Service binding spec"
 linkTitle: "Alibaba Cloud Object Storage"
 description: "Detailed documentation on the Alibaba Cloud Object Storage binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/alicloudoss/"
 ---
 
@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `accessKey`   | Y | Output | Access key credential. |
 | `bucket`      | Y | Output | Name of the storage bucket. |
 
-## Binding support 
+## Binding support
 
 This component supports **output binding** with the following operations:
 - `create`: [Create object](#create-object)

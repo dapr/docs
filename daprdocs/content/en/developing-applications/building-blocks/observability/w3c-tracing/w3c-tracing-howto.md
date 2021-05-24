@@ -98,7 +98,7 @@ f.SpanContextToRequest(traceContext, req)
 traceContext := span.SpanContext()
 traceContextBinary := propagation.Binary(traceContext)
  ```
- 
+
 You can then pass the trace context through [gRPC metadata](https://google.golang.org/grpc/metadata) through `grpc-trace-bin` header.
 
 ```go

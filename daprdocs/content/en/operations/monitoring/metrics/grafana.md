@@ -45,19 +45,19 @@ The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor inv
    ```
 
 1. Install the chart:
-   
+
    ```bash
    helm install grafana grafana/grafana -n dapr-monitoring
    ```
-   
+
    {{% alert title="Note" color="primary" %}}
    If you are Minikube user or want to disable persistent volume for development purpose, you can disable it by using the following command instead:
-   
+
    ```bash
    helm install grafana grafana/grafana -n dapr-monitoring --set persistence.enabled=false
    ```
    {{% /alert %}}
-   
+
 
 1. Retrieve the admin password for Grafana login:
 
@@ -68,10 +68,10 @@ The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor inv
    You will get a password similar to `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1%`. Remove the `%` character from the password to get `cj3m0OfBNx8SLzUlTx91dEECgzRlYJb60D2evof1` as the admin password.
 
 1. Validation Grafana is running in your cluster:
-   
+
    ```bash
    kubectl get pods -n dapr-monitoring
-   
+
    NAME                                                READY   STATUS       RESTARTS   AGE
    dapr-prom-kube-state-metrics-9849d6cc6-t94p8        1/1     Running      0          4m58s
    dapr-prom-prometheus-alertmanager-749cc46f6-9b5t8   2/2     Running      0          4m58s
@@ -80,7 +80,7 @@ The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor inv
    dapr-prom-prometheus-node-exporter-bjp9f            1/1     Running      0          4m58s
    dapr-prom-prometheus-pushgateway-688665d597-h4xx2   1/1     Running      0          4m58s
    dapr-prom-prometheus-server-694fd8d7c-q5d59         2/2     Running      0          4m58s
-   grafana-c49889cff-x56vj                             1/1     Running      0          5m10s 
+   grafana-c49889cff-x56vj                             1/1     Running      0          5m10s
    ```
 
 ### Configure Prometheus as data source
@@ -120,7 +120,7 @@ First you need to connect Prometheus as a data source to Grafana.
 
    ```bash
    kubectl get svc -n dapr-monitoring
-   
+
    NAME                                 TYPE        CLUSTER-IP        EXTERNAL-IP   PORT(S)             AGE
    dapr-prom-kube-state-metrics         ClusterIP   10.0.174.177      <none>        8080/TCP            7d9h
    dapr-prom-prometheus-alertmanager    ClusterIP   10.0.255.199      <none>        80/TCP              7d9h
@@ -131,13 +131,13 @@ First you need to connect Prometheus as a data source to Grafana.
    elasticsearch-master-headless        ClusterIP   None              <none>        9200/TCP,9300/TCP   7d10h
    grafana                              ClusterIP   10.0.15.229       <none>        80/TCP              5d5h
    kibana-kibana                        ClusterIP   10.0.188.224      <none>        5601/TCP            7d10h
-   
+
    ```
-   
+
       In this guide the server name is `dapr-prom-prometheus-server` and the namespace is `dapr-monitoring`, so the HTTP URL will be `http://dapr-prom-prometheus-server.dapr-monitoring`.
-   
+
 1. Fill in the following settings:
-   
+
    - Name: `Dapr`
    - HTTP URL: `http://dapr-prom-prometheus-server.dapr-monitoring`
    - Default: On

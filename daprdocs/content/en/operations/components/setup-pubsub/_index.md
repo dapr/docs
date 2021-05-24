@@ -4,11 +4,11 @@ title: "Pub/Sub brokers"
 linkTitle: "Pub/sub brokers"
 description: "Guidance on setting up different message brokers for Dapr Pub/Sub"
 weight: 2000
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/setup-pubsub-overview/"
 ---
 
-Dapr integrates with pub/sub message buses to provide applications with the ability to create event-driven, loosely coupled architectures where producers send events to consumers via topics. 
+Dapr integrates with pub/sub message buses to provide applications with the ability to create event-driven, loosely coupled architectures where producers send events to consumers via topics.
 
 Dapr supports the configuration of multiple, named, pub/sub components *per application*. Each pub/sub component has a name and this name is used when publishing a message topic. Read the [API reference]({{< ref pubsub_api.md >}}) for details on how to publish and subscribe to topics.
 
