@@ -13,19 +13,19 @@ Dapr uses CloudEvents to provide additional context to the event payload, enabli
 * Deduplication by message Id
 * Content-type for proper deserialization of event's data
 
-For more information about CloudEvent, please check the [official specification](https://github.com/cloudevents/spec).
+For more information about CloudEvents, read the [CloudEvents specification](https://github.com/cloudevents/spec).
 
-When adding Dapr to your application, some services may still need to communicate via raw pub/sub messages not encapsulated in CloudEvents. This may be for compatibility reasons, or because some apps are not using Dapr yet. Dapr enables apps to publish and subscribe to raw events that are not wrapped in a CloudEvent.
+When adding Dapr to your application, some services may still need to communicate via raw pub/sub messages not encapsulated in CloudEvents. This may be for compatibility reasons, or because some apps are not using Dapr. Dapr enables apps to publish and subscribe to raw events that are not wrapped in a CloudEvent.
 
 {{% alert title="Warning" color="warning" %}}
-Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built on top of the CloudEvent schema.
+Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built using the CloudEvent schema.
 {{% /alert %}}
 
 ## Publishing raw messages
 
 <img src="/images/pubsub_publish_raw.png" alt="Diagram showing how to publish with Dapr when subscriber does not use Dapr or CloudEvent" width=1000>
 
-To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This will allow subscribers to receive these messages without having to parse the CloudEvent schema.
+To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This allows subscribers to receive these messages without having to parse the CloudEvent schema.
 
 {{< tabs curl "Python SDK" "PHP SDK">}}
 
@@ -79,7 +79,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 <img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
 
-When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar will automatically wrap the payloads into a CloudEvent that is compatible with current Dapr SDKs.
+When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar automatically wraps the payloads into a CloudEvent that is compatible with current Dapr SDKs.
 
 {{< tabs "Python SDK" "PHP SDK" >}}
 
