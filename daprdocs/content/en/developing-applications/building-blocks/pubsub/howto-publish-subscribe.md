@@ -153,7 +153,7 @@ import sys
 app = flask.Flask(__name__)
 CORS(app)
 
-@app.route('/', methods=['POST'])
+@app.route('/dsstatus', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
