@@ -61,11 +61,10 @@ Deprecations appear in release notes under a section named “Deprecations”, w
 
 After announcing a future breaking change, the change will happen in 2 releases or 6 months, whichever is greater. Deprecated features should respond with warning but do nothing otherwise. 
 
-Here is an example, using a hypothetical 1.1.0 as the deprecation announcement release.
-
+### Announced deprecations
 | Feature               |   Deprecation announcement   | Deprecation       |
 |-----------------------|-----------------------|------------------------- |
-| Feature X             |                 1.1.0 |                    1.3.0 |
+| GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
 
 ## Upgrade on Hosting platforms
 Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})
