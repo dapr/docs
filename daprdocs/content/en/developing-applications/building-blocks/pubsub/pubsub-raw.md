@@ -145,6 +145,7 @@ $app->start();
 
 {{< /tabs >}}
 
+You cannot use this feature when subscribing to a topic using the Subscription Custom Resources Definition (CRD) since it does not contain the metadata attribute.
 
 ## Related links
 
