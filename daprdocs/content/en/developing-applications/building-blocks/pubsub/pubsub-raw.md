@@ -83,6 +83,9 @@ Dapr apps are also able to subscribe to raw events coming from existing pub/sub 
 
 <img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
 
+
+### Programmatically subscribe to raw events 
+
 When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar automatically wraps the payloads into a CloudEvent that is compatible with current Dapr SDKs.
 
 {{< tabs "Python" "PHP SDK" >}}
