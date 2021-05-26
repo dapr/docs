@@ -148,7 +148,10 @@ $app->start();
 
 {{< /tabs >}}
 
-You cannot use this feature when subscribing to a topic using the Subscription Custom Resources Definition (CRD) since it does not contain the metadata attribute.
+
+## Declaratively subscribe to raw events
+
+Subscription Custom Resources Definitions (CRDs) do not currently contain metadata attributes ([issue #3225](https://github.com/dapr/dapr/issues/3225)). At this time subscribing to raw events can only be done through programmatic subscriptions.
 
 ## Related links
 
