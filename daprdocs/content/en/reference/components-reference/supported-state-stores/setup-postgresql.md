@@ -3,7 +3,7 @@ type: docs
 title: "PostgreSQL"
 linkTitle: "PostgreSQL"
 description: Detailed information on the PostgreSQL state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-postgresql/"
 ---
 
@@ -54,7 +54,7 @@ If you wish to use PostgreSQL as an actor store, append the following to the yam
 
 1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker CE with the following command:
 
-     This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".  
+     This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".
 
      ```bash
      docker run -p 5432:5432 -e POSTGRES_PASSWORD=example postgres

@@ -3,7 +3,7 @@ type: docs
 title: "Azure Service Bus Queues binding spec"
 linkTitle: "Azure Service Bus Queues"
 description: "Detailed documentation on the Azure Service Bus Queues binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/servicebusqueues/"
 ---
 
@@ -45,7 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 

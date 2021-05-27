@@ -29,11 +29,11 @@ See [this sample](https://github.com/dapr/samples/tree/master/hello-dapr-slim) f
 
 ## Enabling state management or pub/sub
 
-See configuring Redis in self hosted mode [without docker](https://redis.io/topics/quickstart) to enable a local state store or pub/sub broker for messaging. 
+See configuring Redis in self-hosted mode [without docker](https://redis.io/topics/quickstart) to enable a local state store or pub/sub broker for messaging. 
 
 ## Enabling actors
 
-The placement service must be run locally to enable actor placement. Also a [transactional state store](#Enabling-state-management-or-pub/sub) must be enabled for actors. 
+The placement service must be run locally to enable actor placement. Also, a [transactional state store that supports ETags]({{< ref "supported-state-stores.md" >}}) must be enabled to use actors, for example, [Redis configured in self-hosted mode](https://redis.io/topics/quickstart).
 
 By default for Linux/MacOS the `placement` binary is installed in `/$HOME/.dapr/bin` or for Windows at `%USERPROFILE%\.dapr\bin`.
 

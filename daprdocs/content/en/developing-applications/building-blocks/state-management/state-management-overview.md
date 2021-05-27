@@ -97,7 +97,7 @@ Direct queries of the state store are not governed by Dapr concurrency control, 
 
 ### State management API
 
-The API for state management can be found in the [state management API reference]({{< ref state_api.md >}}) which describes how to retrieve, save and delete state values by providing keys. 
+The API for state management can be found in the [state management API reference]({{< ref state_api.md >}}) which describes how to retrieve, save and delete state values by providing keys.
 
 ## Next steps
 * Follow these guides on:

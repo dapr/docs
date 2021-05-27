@@ -3,7 +3,7 @@ type: docs
 title: "Cron binding spec"
 linkTitle: "Cron"
 description: "Detailed documentation on the cron binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/cron/"
 ---
 
@@ -23,7 +23,7 @@ spec:
   version: v1
   metadata:
   - name: schedule
-    value: "@every 15m" # valid cron schedule  
+    value: "@every 15m" # valid cron schedule
 ```
 
 ## Spec metadata fields
@@ -32,9 +32,9 @@ spec:
 |--------------------|:--------:|-------|--------|---------|
 | schedule | Y | Input/Output |  The valid cron schedule to use. See [this](#schedule-format) for more details | `"@every 15m"`
 
-### Schedule Format 
+### Schedule Format
 
-The Dapr cron binding supports following formats: 
+The Dapr cron binding supports following formats:
 
 | Character |	Descriptor        | Acceptable values                             |
 |:---------:|-------------------|-----------------------------------------------|
@@ -45,7 +45,7 @@ The Dapr cron binding supports following formats:
 | 5	        | Month	            | 1 to 12, or *                                 |
 | 6	        | Day of the week	  | 0 to 7 (where 0 and 7 represent Sunday), or * |
 
-For example: 
+For example:
 
 * `30 * * * * *` - every 30 seconds
 * `0 15 * * * *` - every 15 minutes
@@ -57,11 +57,11 @@ For example:
 For ease of use, the Dapr cron binding also supports few shortcuts:
 
 * `@every 15s` where `s` is seconds, `m` minutes, and `h` hours
-* `@daily` or `@hourly` which runs at that period from the time the binding is initialized  
+* `@daily` or `@hourly` which runs at that period from the time the binding is initialized
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 

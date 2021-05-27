@@ -3,7 +3,7 @@ type: docs
 title: "AWS Kinesis binding spec"
 linkTitle: "AWS Kinesis"
 description: "Detailed documentation on the AWS Kinesis binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/kinesis/"
 ---
 ## Component format
@@ -25,8 +25,8 @@ spec:
   metadata:
   - name: streamName
     value: KINESIS_STREAM_NAME # Kinesis stream name
-  - name: consumerName 
-    value: KINESIS_CONSUMER_NAME # Kinesis consumer name 
+  - name: consumerName
+    value: KINESIS_CONSUMER_NAME # Kinesis consumer name
   - name: mode
     value: shared # shared - Shared throughput or extended - Extended/Enhanced fanout
   - name: region
@@ -47,7 +47,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| mode | N | Input| The Kinesis stream mode. `shared`- Shared throughput, `extended` - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html). Defaults to `"shared"` | `"shared"`, `"extended"` | 
+| mode | N | Input| The Kinesis stream mode. `shared`- Shared throughput, `extended` - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html). Defaults to `"shared"` | `"shared"`, `"extended"` |
 | streamName | Y | Input/Output | The AWS Kinesis Stream Name | `"stream"` |
 | consumerName | Y | Input |  The AWS Kinesis Consumer Name | `"myconsumer"` |
 | region             | Y        | Output |  The specific AWS region the AWS Kinesis instance is deployed in | `"us-east-1"`       |
@@ -57,7 +57,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 

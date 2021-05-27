@@ -3,7 +3,7 @@ type: docs
 title: "Twilio SMS binding spec"
 linkTitle: "Twilio SMS"
 description: "Detailed documentation on the Twilio SMS binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/twilio/"
 ---
 
