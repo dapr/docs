@@ -4,7 +4,7 @@ title: "Secret store components"
 linkTitle: "Secret stores"
 description: "Guidance on setting up different secret store components"
 weight: 3000
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/secret-stores-overview/"
 ---
 
@@ -55,7 +55,7 @@ spec:
     value: "[aws_session_token]"
 ```
 
-## Apply the configuration 
+## Apply the configuration
 
 Once you have created the component's YAML file, follow these instructions to apply it based on your hosting environment:
 

@@ -3,7 +3,7 @@ type: docs
 title: "Local environment variables (for Development)"
 linkTitle: "Local environment variables"
 description: Detailed information on the local environment secret store component
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/envvar-secret-store/"
 ---
 

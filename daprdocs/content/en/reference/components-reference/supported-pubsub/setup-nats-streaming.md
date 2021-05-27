@@ -3,7 +3,7 @@ type: docs
 title: "NATS Streaming"
 linkTitle: "NATS Streaming"
 description: "Detailed documentation on the NATS Streaming pubsub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-nats-streaming/"
 ---
 
@@ -28,7 +28,7 @@ spec:
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
   - name: ackWaitTime
-    value: "" # Optional. 
+    value: "" # Optional.
   - name: maxInFlight
     value: "" # Optional.
   - name: durableSubscriptionName
@@ -61,16 +61,16 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | natsURL            | Y  | NATS server address URL   | "`nats://localhost:4222`"|
 | natsStreamingClusterID  | Y  | NATS cluster ID   |`"clusterId"`|
 | subscriptionType   | Y | Subscription type. Allowed values `"topic"`, `"queue"` | `"topic"` |
-| ackWaitTime        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"300ms"`| 
+| ackWaitTime        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"300ms"`|
 | maxInFlight        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"25"` |
 | durableSubscriptionName | N | [Durable subscriptions](https://docs.nats.io/developing-with-nats-streaming/durables) identification name. | `"my-durable"`|
-| deliverNew         | N | Subscription Options. Only one can be used. Deliver new messages only  | `"true"`, `"false"` | 
-| startAtSequence    | N | Subscription Options. Only one can be used. Sets the desired start sequence position and state  | `"100000"`, `"230420"` | 
+| deliverNew         | N | Subscription Options. Only one can be used. Deliver new messages only  | `"true"`, `"false"` |
+| startAtSequence    | N | Subscription Options. Only one can be used. Sets the desired start sequence position and state  | `"100000"`, `"230420"` |
 | startWithLastReceived | N | Subscription Options. Only one can be used. Sets the start position to last received. | `"true"`, `"false"` |
-| deliverAll         | N | Subscription Options. Only one can be used. Deliver all available messages  | `"true"`, `"false"` | 
-| startAtTimeDelta   | N | Subscription Options. Only one can be used. Sets the desired start time position and state using the delta  | `"10m"`, `"23s"` | 
-| startAtTime        | N | Subscription Options. Only one can be used. Sets the desired start time position and state  | `"Feb 3, 2013 at 7:54pm (PST)"` | 
-| startAtTimeDelta   | N | Must be used with `startAtTime`. Sets the format for the time  | `"Jan 2, 2006 at 3:04pm (MST)"` | 
+| deliverAll         | N | Subscription Options. Only one can be used. Deliver all available messages  | `"true"`, `"false"` |
+| startAtTimeDelta   | N | Subscription Options. Only one can be used. Sets the desired start time position and state using the delta  | `"10m"`, `"23s"` |
+| startAtTime        | N | Subscription Options. Only one can be used. Sets the desired start time position and state  | `"Feb 3, 2013 at 7:54pm (PST)"` |
+| startAtTimeDelta   | N | Must be used with `startAtTime`. Sets the format for the time  | `"Jan 2, 2006 at 3:04pm (MST)"` |
 
 ## Create a NATS server
 

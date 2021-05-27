@@ -3,7 +3,7 @@ type: docs
 title: "Twilio SendGrid binding spec"
 linkTitle: "Twilio SendGrid"
 description: "Detailed documentation on the Twilio SendGrid binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/sendgrid/"
 ---
 
@@ -23,11 +23,11 @@ spec:
   version: v1
   metadata:
   - name: emailFrom
-    value: "testapp@dapr.io" # optional 
+    value: "testapp@dapr.io" # optional
   - name: emailTo
-    value: "dave@dapr.io" # optional 
+    value: "dave@dapr.io" # optional
   - name: subject
-    value: "Hello!" # optional 
+    value: "Hello!" # optional
   - name: apiKey
     value: "YOUR_API_KEY" # required, this is your SendGrid key
 ```
@@ -54,7 +54,7 @@ This component supports **output binding** with the following operations:
 
 - `create`
 
-## Example request payload 
+## Example request payload
 
 You can specify any of the optional metadata properties on the output binding request too (e.g. `emailFrom`, `emailTo`, `subject`, etc.)
 
@@ -63,7 +63,7 @@ You can specify any of the optional metadata properties on the output binding re
   "metadata": {
     "emailTo": "changeme@example.net",
     "subject": "An email from Dapr SendGrid binding"
-  }, 
+  },
   "data": "<h1>Testing Dapr Bindings</h1>This is a test.<br>Bye!"
 }
 ```

@@ -3,7 +3,7 @@ type: docs
 title: "Azure SignalR binding spec"
 linkTitle: "Azure SignalR"
 description: "Detailed documentation on the Azure SignalR binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/signalr/"
 ---
 

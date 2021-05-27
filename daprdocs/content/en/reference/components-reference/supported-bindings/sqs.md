@@ -3,7 +3,7 @@ type: docs
 title: "AWS SQS binding spec"
 linkTitle: "AWS SQS"
 description: "Detailed documentation on the AWS SQS binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/sqs/"
 ---
 
@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| queueName | Y | Input/Output | The SQS queue name | `"myqueue"` | 
+| queueName | Y | Input/Output | The SQS queue name | `"myqueue"` |
 | region             | Y        | Input/Output |  The specific AWS region | `"us-east-1"`       |
 | accessKey          | Y        | Input/Output | The AWS Access Key to access this resource                              | `"key"`             |
 | secretKey          | Y        | Input/Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
@@ -53,7 +53,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 
