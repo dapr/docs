@@ -62,7 +62,7 @@ Deprecations appear in release notes under a section named “Deprecations”, w
 After announcing a future breaking change, the change will happen in 2 releases or 6 months, whichever is greater. Deprecated features should respond with warning but do nothing otherwise. 
 
 ### Announced deprecations
-| Feature               |   Deprecation announcement   | Deprecation       |
+| Feature               |   Deprecation announcement   | Removal       |
 |-----------------------|-----------------------|------------------------- |
 | GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
 
