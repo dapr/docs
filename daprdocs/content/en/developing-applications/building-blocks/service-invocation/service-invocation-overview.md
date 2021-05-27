@@ -8,7 +8,7 @@ description: "Overview of the service invocation building block"
 
 ## Introduction
 
-Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols. 
+Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
 In many environments with multiple services that need to communicate with each other, developers often ask themselves the following questions:
 
@@ -21,15 +21,15 @@ Dapr addresses these challenges by providing a service invocation API that acts 
 
 Dapr uses a sidecar architecture. To invoke an application using Dapr, you use the `invoke` API on any Dapr instance. The sidecar programming model encourages each applications to talk to its own instance of Dapr. The Dapr instances discover and communicate with one another.
 
-### Service invocation 
+### Service invocation
 
 The diagram below is an overview of how Dapr's service invocation works.
 
 <img src="/images/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation">
 
-1. Service A makes an HTTP or gRPC call targeting Service B. The call goes to the local Dapr sidecar.  
+1. Service A makes an HTTP or gRPC call targeting Service B. The call goes to the local Dapr sidecar.
 2. Dapr discovers Service B's location using the [name resolution component](https://github.com/dapr/components-contrib/tree/master/nameresolution) which is running on the given [hosting platform]({{< ref "hosting" >}}).
-3. Dapr forwards the message to Service B's Dapr sidecar 
+3. Dapr forwards the message to Service B's Dapr sidecar
 
     **Note**: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC
 
@@ -43,7 +43,7 @@ Service invocation provides several features to make it easy for you to call met
 
 ### Namespaces scoping
 
-Service invocation supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace. 
+Service invocation supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace.
 
 For example, the following string contains the app ID `nodeapp` in addition to the namespace the app runs in `production`.
 
@@ -69,8 +69,8 @@ Applications can control which other applications are allowed to call them and w
 
 For more information read the [access control allow lists for service invocation]({{< ref invoke-allowlist.md >}}) article.
 
-#### Example service invocation security 
-The diagram below is an example deployment on a Kubernetes cluster with a Daprized `Ingress` service that calls onto `Service A` using service invocation with mTLS encryption and an applies access control policy. `Service A` then calls onto `Service B` also using service invocation and mTLS. Each service is running in different namespaces for added isolation.  
+#### Example service invocation security
+The diagram below is an example deployment on a Kubernetes cluster with a Daprized `Ingress` service that calls onto `Service A` using service invocation with mTLS encryption and an applies access control policy. `Service A` then calls onto `Service B` also using service invocation and mTLS. Each service is running in different namespaces for added isolation.
 
 <img src="/images/service-invocation-security.png" width=800>
 
@@ -84,7 +84,7 @@ Errors that cause retries are:
 * Authentication errors due to a renewing certificate on the calling/callee Dapr sidecars.
 
 Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.
-Connection establishment via gRPC to the target sidecar has a timeout of 5 seconds. 
+Connection establishment via gRPC to the target sidecar has a timeout of 5 seconds.
 
 ### Pluggable service discovery
 
@@ -107,7 +107,7 @@ By default, all calls between applications are traced and metrics are gathered t
 
 ### Service invocation API
 
-The API for service invocation can be found in the [service invocation API reference]({{< ref service_invocation_api.md >}}) which describes how to invoke a method on another service. 
+The API for service invocation can be found in the [service invocation API reference]({{< ref service_invocation_api.md >}}) which describes how to invoke a method on another service.
 
 ## Example
 Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".

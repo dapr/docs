@@ -38,7 +38,7 @@ Each of these building blocks is independent, meaning that you can use one, some
 | [**Publish and subscribe**]({{<ref "pubsub-overview.md">}}) | Publishing events and subscribing to topics | tween services enables event-driven architectures to simplify horizontal scalability and make them | silient to failure. Dapr provides at least once message delivery guarantee.
 | [**Resource bindings**]({{<ref "bindings-overview.md">}}) | Resource bindings with triggers builds further on event-driven architectures for scale and resiliency by receiving and sending events to and from any external source such as databases, queues, file systems, etc.
 | [**Actors**]({{<ref "actors-overview.md">}}) | A pattern for stateful and stateless objects that make concurrency simple with method and state encapsulation. Dapr provides many capabilities in its actor runtime including concurrency, state, life-cycle management for actor activation/deactivation and timers and reminders to wake-up actors.
-|  [**Observability**]({{<ref "observability-concept.md">}}) | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools. 
+|  [**Observability**]({{<ref "observability-concept.md">}}) | Dapr emit metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools.
 | [**Secrets**]({{<ref "secrets-overview.md">}}) | Dapr provides secrets management and integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 
 ## Sidecar architecture
@@ -53,9 +53,9 @@ Dapr can be hosted in multiple environments, including self-hosted on a Windows/
 
 ### Self-hosted
 
-In [self-hosted mode]({{< ref self-hosted-overview.md >}}) Dapr runs as a separate sidecar process which your service code can call via HTTP or gRPC. Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks. 
+In [self-hosted mode]({{< ref self-hosted-overview.md >}}) Dapr runs as a separate sidecar process which your service code can call via HTTP or gRPC. Each running service has a Dapr runtime process (or sidecar) which is configured to use state stores, pub/sub, binding components and the other building blocks.
 
-You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples]({{< ref getting-started >}}). 
+You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr enabled application on your local machine. Try this out with the [getting started samples]({{< ref getting-started >}}).
 
 <img src="/images/overview_standalone.png" width=1000 alt="Architecture diagram of Dapr in self-hosted mode">
 
@@ -63,7 +63,7 @@ You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app)
 
 In container hosting environments such as Kubernetes, Dapr runs as a sidecar container with the application container in the same pod.
 
-The `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster. 
+The `dapr-sidecar-injector` and `dapr-operator` services provide first class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned into the cluster.
 
 The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption. For more information on the `Sentry` service read the [security overview]({{< ref "security-concept.md#dapr-to-dapr-communication" >}})
 
@@ -98,7 +98,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | Language | Frameworks | Description |
 |----------|------------|-------------|
 | [.NET]({{< ref dotnet >}}) | [ASP.NET]({{< ref dotnet-aspnet.md >}}) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/en-us/aspnet/core/grpc/).
-| [Java](https://github.com/dapr/java-sdk) | [Spring Boot](https://spring.io/) 
+| [Java](https://github.com/dapr/java-sdk) | [Spring Boot](https://spring.io/)
 | [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}})
 | [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/)
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.

@@ -3,7 +3,7 @@ type: docs
 title: "GCP Firestore (Datastore mode)"
 linkTitle: "GCP Firestore"
 description: Detailed information on the GCP Firestore state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-firestore/"
 ---
 

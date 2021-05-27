@@ -3,7 +3,7 @@ type: docs
 title: "Memcached"
 linkTitle: "Memcached"
 description: Detailed information on the Memcached state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-memcached/"
 ---
 

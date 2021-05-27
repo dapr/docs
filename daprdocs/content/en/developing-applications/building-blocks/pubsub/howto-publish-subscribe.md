@@ -156,7 +156,7 @@ CORS(app)
 @app.route('/dsstatus', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 app.run()
 ```
@@ -232,7 +232,7 @@ dapr --app-id app1 --app-port 3000 run -- php -S 0.0.0.0:3000 app1.php
 
 {{< /tabs >}}
 
-### Programmatic subscriptions 
+### Programmatic subscriptions
 
 To subscribe to topics, start a web server in the programming language of your choice and listen on the following `GET` endpoint: `/dapr/subscribe`.
 The Dapr instance calls into your app at startup and expect a JSON response for the topic subscriptions with:
@@ -265,7 +265,7 @@ def subscribe():
 @app.route('/dsstatus', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 app.run()
 ```
 After creating `app1.py` ensure flask and flask_cors are installed:
@@ -296,7 +296,7 @@ app.get('/dapr/subscribe', (req, res) => {
         {
             pubsubname: "pubsub",
             topic: "deathStarStatus",
-            route: "dsstatus"        
+            route: "dsstatus"
         }
     ]);
 })
@@ -355,10 +355,10 @@ The `/dsstatus` endpoint matches the `route` defined in the subscriptions and th
 
 To publish a topic you need to run an instance of a Dapr sidecar to use the pubsub Redis component. You can use the default Redis component installed into your local environment.
 
-Start an instance of Dapr with an app-id called `testpubsub`: 
+Start an instance of Dapr with an app-id called `testpubsub`:
 
 ```bash
-dapr run --app-id testpubsub --dapr-http-port 3500 
+dapr run --app-id testpubsub --dapr-http-port 3500
 ```
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -402,7 +402,7 @@ In order to tell Dapr that a message was processed successfully, return a `200 O
 @app.route('/dsstatus', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 ```
 {{% /codetab %}}
 
@@ -421,7 +421,7 @@ app.post('/dsstatus', (req, res) => {
 {{< tabs Node PHP>}}
 
 {{% codetab %}}
-If you prefer publishing a topic using code, here is an example.  
+If you prefer publishing a topic using code, here is an example.
 
 ```javascript
 const express = require('express');

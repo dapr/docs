@@ -5,7 +5,7 @@ linkTitle: "Actors activation performance"
 weight: 20000
 description: ""
 ---
-This article provides service invocation API performance benchmarks and resource utilization for actors in Dapr on Kubernetes. 
+This article provides service invocation API performance benchmarks and resource utilization for actors in Dapr on Kubernetes.
 
 ## System overview
 

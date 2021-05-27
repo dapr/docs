@@ -14,7 +14,7 @@ description: "Set-up New Relic for distributed tracing"
 
 Dapr natively captures metrics and traces that can be send directly to New Relic. The easiest way to export these is by configuring Dapr to send the traces to [New Relic's Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/report-zipkin-format-traces-trace-api/) using the Zipkin trace format.
 
-In order for the integration to send data to New Relic [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform), you need a [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#insights-insert-key). 
+In order for the integration to send data to New Relic [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform), you need a [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#insights-insert-key).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -39,7 +39,7 @@ New Relic Distributed Tracing details
 
 ## (optional) New Relic Instrumentation
 
-In order for the integrations to send data to New Relic Telemetry Data Platform, you either need a [New Relic license key](https://docs.newrelic.com/docs/accounts/accounts-billing/account-setup/new-relic-license-key) or [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#insights-insert-key). 
+In order for the integrations to send data to New Relic Telemetry Data Platform, you either need a [New Relic license key](https://docs.newrelic.com/docs/accounts/accounts-billing/account-setup/new-relic-license-key) or [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#insights-insert-key).
 
 ### OpenTelemetry instrumentation
 

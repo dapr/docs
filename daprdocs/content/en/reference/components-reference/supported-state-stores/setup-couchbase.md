@@ -3,7 +3,7 @@ type: docs
 title: "Couchbase"
 linkTitle: "Couchbase"
 description: Detailed information on the Couchbase state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-couchbase/"
 ---
 

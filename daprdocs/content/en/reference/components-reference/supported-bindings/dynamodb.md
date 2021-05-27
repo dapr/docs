@@ -3,7 +3,7 @@ type: docs
 title: "AWS DynamoDB binding spec"
 linkTitle: "AWS DynamoDB"
 description: "Detailed documentation on the AWS DynamoDB binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/dynamodb/"
 ---
 
@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| table | Y | Output | The DynamoDB table name | `"items"` | 
+| table | Y | Output | The DynamoDB table name | `"items"` |
 | region             | Y        | Output |  The specific AWS region the AWS DynamoDB instance is deployed in | `"us-east-1"`       |
 | accessKey          | Y        | Output | The AWS Access Key to access this resource                              | `"key"`             |
 | secretKey          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |

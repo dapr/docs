@@ -3,7 +3,7 @@ type: docs
 title: "Cloudstate"
 linkTitle: "Cloudstate"
 description: Detailed information on the Cloudstate state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-cloudstate/"
 ---
 
@@ -32,7 +32,7 @@ spec:
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hosts             | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"` 
+| hosts             | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"`
 | serverPort        | Y        | Specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr | `"8080"`
 
 > Since Cloudstate is running as an additional sidecar in the pod, you can reach it via `localhost` with the default port of `8013`.
