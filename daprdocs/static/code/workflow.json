@@ -1,0 +1,82 @@
+{
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "actions": {
+        "Function": {
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://daprfunc.azurewebsites.net/api/HttpTrigger1"
+          },
+          "runAfter": {}
+        },
+        "SaveState": {
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "http://localhost:3500/v1.0/state/statestore",
+            "body": [
+              {
+                "key": "mystate",
+                "value": "@body('Function')"
+              }
+            ],
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          "runAfter": {
+            "Function": [
+              "Succeeded"
+            ]
+          }
+        },
+        "SendToServiceBus": {
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "http://localhost:3500/v1.0/bindings/servicebus",
+            "body": {
+              "data": {
+                "message": "@body('Function')"
+              }
+            },
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          "runAfter": {
+            "SaveState": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Response": {
+          "inputs": {
+            "body": {
+              "value": "@body('Function')"
+            },
+            "statusCode": 200
+          },
+          "runAfter": {
+            "SendToServiceBus": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response"
+        }
+      },
+      "contentVersion": "1.0.0.0",
+      "outputs": {},
+      "parameters": {},
+      "triggers": {
+        "manual": {
+          "inputs": {
+            "schema": {}
+          },
+          "kind": "Http",
+          "type": "Request"
+        }
+      }
+    }
+  }

@@ -45,7 +45,7 @@ The following tables lists the different properties for access control, policies
 
 | Property | Type   | Description |
 |----------|--------|-------------|
-| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used to under a path to match 
+| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used to under a path to match
 | httpVerb | list   | List specific http verbs that can be used by the calling app. Wildcard "\*" can be used to match any http verb. Unused for grpc invocation
 | action   | string | Access modifier. Accepted values "allow" (default) or "deny"
 
@@ -192,12 +192,12 @@ spec:
       namespace: "ns2"
 ```
 
-## Hello world examples 
+## Hello world examples
 These examples show how to apply access control to the [hello world](https://github.com/dapr/quickstarts#quickstarts) quickstart samples where a python app invokes a node.js app.
 Access control lists rely on the Dapr [Sentry service]({{< ref "security-concept.md" >}}) to generate the TLS certificates with a SPIFFE id for authentication, which means the Sentry service either has to be running locally or deployed to your hosting enviroment such as a Kubernetes cluster.
 
-The nodeappconfig example below shows how to **deny** access to the `neworder` method from the `pythonapp`, where the python app is in the `myDomain` trust domain and `default` namespace. The nodeapp is in the `public` trust domain. 
- 
+The nodeappconfig example below shows how to **deny** access to the `neworder` method from the `pythonapp`, where the python app is in the `myDomain` trust domain and `default` namespace. The nodeapp is in the `public` trust domain.
+
 **nodeappconfig.yaml**
 
 ```yaml
@@ -220,9 +220,9 @@ spec:
       - name: /neworder
         httpVerb: ['POST']
         action: deny
-```    
+```
 
-**pythonappconfig.yaml** 
+**pythonappconfig.yaml**
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -235,7 +235,7 @@ spec:
   accessControl:
     defaultAction: allow
     trustDomain: "myDomain"
-```     
+```
 
 ### Self-hosted mode
 This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/hello-world/README.md) quickstart.
@@ -247,7 +247,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
  2. In a command prompt, set these environment variables:
 
     {{< tabs "Linux/MacOS" Windows >}}
-    
+
     {{% codetab %}}
   ```bash
   export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
@@ -266,10 +266,10 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
    $env:NAMESPACE="default"
    ```
 
-    {{% /codetab %}} 
-    
+    {{% /codetab %}}
+
     {{< /tabs >}}
- 
+
 3. Run daprd to launch a Dapr sidecar for the node.js app with mTLS enabled, referencing the local Sentry service:
 
    ```bash
@@ -285,7 +285,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
 5. In another command prompt, set these environment variables:
 
    {{< tabs "Linux/MacOS" Windows >}}
-   
+
    {{% codetab %}}
    ```bash
    export DAPR_TRUST_ANCHORS=`cat $HOME/.dapr/certs/ca.crt`
@@ -294,7 +294,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
    export NAMESPACE=default
   ```
    {{% /codetab %}}
-   
+
    {{% codetab %}}
    ```powershell
    $env:DAPR_TRUST_ANCHORS=$(Get-Content $env:USERPROFILE\.dapr\certs\ca.crt)
@@ -325,7 +325,7 @@ This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tre
 
 You can create and apply the above configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) to the Kubernetes deployments.
 
-For example, below is how the pythonapp is deployed to Kubernetes in the default namespace with this pythonappconfig configuration file. 
+For example, below is how the pythonapp is deployed to Kubernetes in the default namespace with this pythonappconfig configuration file.
 Do the same for the nodeapp deployment and then look at the logs for the pythonapp to see the calls fail due to the **deny** operation action set in the nodeappconfig file. Change this action to **allow** and re-deploy the apps and you should then see this call succeed.
 
 ```yaml
@@ -353,4 +353,4 @@ spec:
       containers:
       - name: python
         image: dapriosamples/hello-k8s-python:edge
- ```  
+ ```

@@ -63,7 +63,7 @@ version | string | Component version.
 
 ### Examples
 
-Note: This example is based on the Actor sample provided in the [Dapr SDK for Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor). 
+Note: This example is based on the Actor sample provided in the [Dapr SDK for Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor).
 
 ```shell
 curl http://localhost:3500/v1.0/metadata
@@ -143,7 +143,7 @@ Note: This example is based on the Actor sample provided in the [Dapr SDK for Py
 Add a custom attribute to the metadata endpoint:
 
 ```shell
-curl -X PUT -H "Content-Type: text/plain" --data "myDemoAttributeValue" http://localhost:3500/v1.0/metadata/myDemoAttribute 
+curl -X PUT -H "Content-Type: text/plain" --data "myDemoAttributeValue" http://localhost:3500/v1.0/metadata/myDemoAttribute
 ```
 
 Get the metadata information to confirm your custom attribute was added:

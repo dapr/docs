@@ -91,23 +91,54 @@ kubectl logs --selector=app=dapr-sentry --namespace <DAPR_NAMESPACE>
 
 ### Bringing your own certificates
 
-Using Helm, you can provide the PEM encoded root cert, issuer cert and private key that will be populated into the Kubernetes secret.
+Using Helm, you can provide the PEM encoded root cert, issuer cert and private key that will be populated into the Kubernetes secret used by Sentry.
 
-*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+_Note: This example uses the OpenSSL command line tool, this is a widely distributed package, easily installed on Linux via the package manager. On Windows OpenSSL can be installed [using chocolatey](https://community.chocolatey.org/packages/openssl). On MacOS it can be installed using brew `brew install openssl`_
 
-Create the root certificate:
+Create config files for generating the certificates, this is necessary for generating v3 certificates with the SAN (Subject Alt Name) extension fields. First save the following to a file named `root.conf`:
 
+```ini
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+C = US
+ST = VA
+L = Daprville
+O = dapr.io/sentry
+OU = dapr.io/sentry
+CN = cluster.local
+[v3_req]
+basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = cluster.local
 ```
-step certificate create cluster.local ca.crt ca.key --profile root-ca --no-password --insecure
+
+Repeat this for `issuer.conf`, paste the same contents into the file, but add `pathlen:0` to the end of the basicConstraints line, as shown below:
+
+```ini
+basicConstraints = critical, CA:true, pathlen:0
 ```
 
-Create the issuer certificate:
+Run the following to generate the root cert and key
 
-```
-step certificate create cluster.local issuer.crt issuer.key --ca ca.crt --ca-key ca.key --profile intermediate-ca --not-after 8760h --no-password --insecure
+```bash
+openssl ecparam -genkey -name prime256v1 | openssl ec -out root.key
+openssl req -new -nodes -sha256 -key root.key -out root.csr -config root.conf -extensions v3_req
+openssl x509 -req -sha256 -days 365 -in root.csr -signkey root.key -outform PEM -out root.pem -extfile root.conf -extensions v3_req
 ```
 
-This creates the root and issuer certs and keys.
+Next run the following to generate the issuer cert and key:
+
+```bash
+openssl ecparam -genkey -name prime256v1 | openssl ec -out issuer.key
+openssl req -new -sha256 -key issuer.key -out issuer.csr -config issuer.conf -extensions v3_req
+openssl x509 -req -in issuer.csr -CA root.pem -CAkey root.key -CAcreateserial -outform PEM -out issuer.pem -days 365 -sha256 -extfile issuer.conf -extensions v3_req
+```
 
 Install Helm and pass the root cert, issuer cert and issuer key to Sentry via configuration:
 
@@ -115,9 +146,9 @@ Install Helm and pass the root cert, issuer cert and issuer key to Sentry via co
 kubectl create ns dapr-system
 
 helm install \
-  --set-file dapr_sentry.tls.issuer.certPEM=issuer.crt \
+  --set-file dapr_sentry.tls.issuer.certPEM=issuer.pem \
   --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key \
-  --set-file dapr_sentry.tls.root.certPEM=ca.crt \
+  --set-file dapr_sentry.tls.root.certPEM=root.pem \
   --namespace dapr-system \
   dapr \
   dapr/dapr

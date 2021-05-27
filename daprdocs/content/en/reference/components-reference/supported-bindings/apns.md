@@ -3,7 +3,7 @@ type: docs
 title: "Apple Push Notification Service binding spec"
 linkTitle: "Apple Push Notification Service"
 description: "Detailed documentation on the Apple Push Notification Service binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/apns/"
 ---
 
@@ -42,8 +42,8 @@ spec:
 | private-key | Y | Output| Is a PKCS #8-formatted private key. It is intended that the private key is stored in the secret store and not exposed directly in the configuration. See [here](#private-key) for more details | `"pem file"` |
 
 ### Private key
-The APNS binding needs a cryptographic private key in order to generate authentication tokens for the APNS service. 
-The private key can be generated from the Apple Developer Portal and is provided as a PKCS #8 file with the private key stored in PEM format. 
+The APNS binding needs a cryptographic private key in order to generate authentication tokens for the APNS service.
+The private key can be generated from the Apple Developer Portal and is provided as a PKCS #8 file with the private key stored in PEM format.
 The private key should be stored in the Dapr secret store and not stored directly in the binding's configuration file.
 
 A sample configuration file for the APNS binding is shown below:
@@ -89,8 +89,8 @@ This component supports **output binding** with the following operations:
 
 ## Push notification format
 
-The APNS binding is a pass-through wrapper over the Apple Push Notification Service. The APNS binding will send the request directly to the APNS service without any translation. 
-It is therefore important to understand the payload for push notifications expected by the APNS service. 
+The APNS binding is a pass-through wrapper over the Apple Push Notification Service. The APNS binding will send the request directly to the APNS service without any translation.
+It is therefore important to understand the payload for push notifications expected by the APNS service.
 The payload format is documented [here](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification).
 
 ### Request format

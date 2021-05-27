@@ -3,7 +3,7 @@ type: docs
 title: "Azure Service Bus"
 linkTitle: "Azure Service Bus"
 description: "Detailed documentation on the Azure Service Bus pubsub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-azure-servicebus/"
 ---
 
@@ -27,17 +27,17 @@ spec:
   - name: handlerTimeoutInSec # Optional
     value: 60
   - name: disableEntityManagement # Optional
-    value: "false" 
+    value: "false"
   - name: maxDeliveryCount # Optional
     value: 3
   - name: lockDurationInSec # Optional
-    value: 60 
+    value: 60
   - name: lockRenewalInSec # Optional
-    value: 20 
+    value: 20
   - name: maxActiveMessages # Optional
-    value: 2000 
+    value: 2000
   - name: maxActiveMessagesRecoveryInSec # Optional
-    value: 2 
+    value: 2
   - name: maxConcurrentHandlers # Optional
     value: 10
   - name: prefetchCount # Optional
