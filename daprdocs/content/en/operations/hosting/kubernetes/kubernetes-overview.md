@@ -36,6 +36,14 @@ Deploying and running a Dapr enabled application into your Kubernetes cluster is
 
 You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes) in the Kubernetes getting started quickstart.
 
+## Supported versions
+Dapr is tested and supported on the following versions of Kubernetes.
+
+| Supported Kubernetes versions    |
+|-----------------------|
+| 1.17.x and above        |
+
+
 ## Related links
 
 - [Deploy Dapr to a Kubernetes cluster]({{< ref kubernetes-deploy >}})
