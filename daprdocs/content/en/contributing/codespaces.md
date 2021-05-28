@@ -2,7 +2,7 @@
 type: docs
 title: "Contributing with GitHub Codespaces"
 linkTitle: "GitHub Codespaces"
-weight: 3000
+weight: 2500
 description: "How to work with Dapr repos in GitHub Codespaces"
 ---
 
@@ -37,7 +37,7 @@ If you haven't already forked the repo, creating the Codespace will also create 
 Developing a new Dapr component requires working with both the [components-contrib](https://github.com/dapr/components-contrib) and [dapr](https://github.com/dapr/dapr) repos together under the `$GOPATH` tree for testing purposes. To facilitate this, the `/go/src/github.com/dapr` folder in the components-contrib Codespace will already be set up with your fork of components-contrib, and a clone of the dapr repo as described in the [component development documentation](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md). A few things to note in this configuration:
 
 - The components-contrib and dapr repos only define Codespaces for the Linux amd64 environment at the moment.
-- The default `/go/src/github.com/dapr/components-contrib` folder is a soft link to Codespace's default `/workspace/components-contrib` folder, so changes in one will be automatically reflected in the other.
+- The `/go/src/github.com/dapr/components-contrib` folder is a soft link to Codespace's default `/workspace/components-contrib` folder, so changes in one will be automatically reflected in the other.
 - Since the `/go/src/github.com/dapr/dapr` folder uses a clone of the official dapr repo rather than a fork, you will not be able to make a pull request from changes made in that folder directly. You can use the dapr Codespace separately for that PR, or if you would like to use the same Codespace for the dapr changes as well, you should remap the dapr repo origin to your fork in the components-contrib Codespace. For example, to use a dapr fork under `my-git-alias`:
 
 ```bash
