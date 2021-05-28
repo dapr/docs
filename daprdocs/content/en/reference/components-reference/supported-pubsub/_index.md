@@ -4,7 +4,7 @@ title: "Pub/sub brokers component specs"
 linkTitle: "Pub/sub brokers"
 weight: 2000
 description: The supported pub/sub brokers that interface with Dapr
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/"
 no_list: true
 ---
@@ -32,7 +32,7 @@ Table captions:
 
 ### Amazon Web Services (AWS)
 
-| Name                                              | Status | Component version | Since | 
+| Name                                              | Status | Component version | Since |
 |---------------------------------------------------|--------| ---- |---------------|
 | [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Alpha  | v1 | 1.0 |
 

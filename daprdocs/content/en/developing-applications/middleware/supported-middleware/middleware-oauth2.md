@@ -34,7 +34,7 @@ spec:
   - name: authHeaderName
     value: "authorization"
   - name: forceHTTPS
-    value: "false" 
+    value: "false"
 ```
 ## Spec metadata fields
 | Field | Details                                                                                                                                                                  | Example                                        |

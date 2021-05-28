@@ -3,7 +3,7 @@ type: docs
 title: "SMTP binding spec"
 linkTitle: "SMTP"
 description: "Detailed documentation on the SMTP binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/smtp/"
 ---
 
@@ -23,7 +23,7 @@ spec:
   version: v1
   metadata:
   - name: host
-    value: "smtp host" 
+    value: "smtp host"
   - name: port
     value: "smtp port"
   - name: user
@@ -52,10 +52,10 @@ The example configuration shown above, contain a username and password as plain-
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| host | Y | Output |  The host where your SMTP server runs | `"smtphost"` | 
-| port | Y | Output |  The port your SMTP server listens on | `"9999"` | 
-| user | Y | Output |  The user to authenticate against the SMTP server | `"user"` | 
-| password | Y | Output | The password of the user | `"password"` | 
+| host | Y | Output |  The host where your SMTP server runs | `"smtphost"` |
+| port | Y | Output |  The port your SMTP server listens on | `"9999"` |
+| user | Y | Output |  The user to authenticate against the SMTP server | `"user"` |
+| password | Y | Output | The password of the user | `"password"` |
 | skipTLSVerify | N | Output | If set to true, the SMPT server's TLS certificate will not be verified. Defaults to `"false"` | `"true"`, `"false"` |
 | emailFrom | N | Output | If set, this specifies the email address of the sender. See [also](#example-request) | `"me@example.com"` |
 | emailTo | N | Output | If set, this specifies the email address of the receiver. See [also](#example-request) | `"me@example.com"` |
@@ -69,7 +69,7 @@ This component supports **output binding** with the following operations:
 
 - `create`
 
-## Example request 
+## Example request
 
 You can specify any of the following optional metadata properties with each request:
 

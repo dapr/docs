@@ -14,8 +14,8 @@ The following branches are currently maintained:
 
 | Branch | Website | Description |
 |--------|---------|-------------|
-| [v1.1](https://github.com/dapr/docs) (primary) | https://docs.dapr.io | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here.
-| [v1.2](https://github.com/dapr/docs/tree/v1.2) (pre-release) | https://v1-2.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.2+ go here.
+| [v1.2](https://github.com/dapr/docs) (primary) | https://docs.dapr.io | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here.
+| [v1.3](https://github.com/dapr/docs/tree/v1.3) (pre-release) | https://v1-3.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.3+ go here.
 
 For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/contributing-docs/#branch-guidance) document.
 
@@ -41,24 +41,24 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 ```sh
 git clone https://github.com/dapr/docs.git
 ```
-3. Change to daprdocs directory: 
+3. Change to daprdocs directory:
 ```sh
 cd ./docs/daprdocs
 ```
-4. Update submodules: 
+4. Update submodules:
 ```sh
 git submodule update --init --recursive
 ```
-5. Install npm packages: 
+5. Install npm packages:
 ```sh
 npm install
 ```
 
 ## Run local server
 1. Make sure you're still in the `daprdocs` directory
-2. Run 
+2. Run
 ```sh
-hugo server --disableFastRender
+hugo server
 ```
 3. Navigate to `http://localhost:1313/`
 

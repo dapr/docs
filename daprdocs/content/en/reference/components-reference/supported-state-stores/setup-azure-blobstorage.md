@@ -3,7 +3,7 @@ type: docs
 title: "Azure Blob Storage"
 linkTitle: "Azure Blob Storage"
 description: Detailed information on the Azure Blob Store state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-azure-blobstorage/"
 ---
 
@@ -39,7 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| accountName        | Y        | The storage account name | `"mystorageaccount"`. 
+| accountName        | Y        | The storage account name | `"mystorageaccount"`.
 | accountKey         | Y        | Primary or secondary storage key | `"key"`
 | containerName      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
 | ContentType        | N        | The blob’s content type | `"text/plain"`
@@ -51,12 +51,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Azure Blobstorage
 
-[Follow the instructions](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account. 
+[Follow the instructions](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
 
 If you wish to create a container for Dapr to use, you can do so beforehand. However, Blob Storage state provider will create one for you automatically if it doesn't exist.
 
 In order to setup Azure Blob Storage as a state store, you will need the following properties:
-- **AccountName**: The storage account name. For example: **mystorageaccount**. 
+- **AccountName**: The storage account name. For example: **mystorageaccount**.
 - **AccountKey**: Primary or secondary storage key.
 - **ContainerName**: The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist.
 

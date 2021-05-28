@@ -83,8 +83,8 @@ dapr init -k --enable-mtls=false
 
 ### Wait for the installation to complete
 
- You can wait for the installation to complete its deployment with the `--wait` flag. 
- 
+ You can wait for the installation to complete its deployment with the `--wait` flag.
+
  The default timeout is 300s (5 min), but can be customized with the `--timeout` flag.
 
 ```bash
@@ -122,24 +122,24 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.1.2 \
+    --version=1.2 \
     --namespace dapr-system \
     --create-namespace \
     --wait
     ```
 
    To install in high availability mode:
-   
+
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.1.2 \
+    --version=1.2 \
     --namespace dapr-system \
     --create-namespace \
     --set global.ha.enabled=true \
     --wait
     ```
-   
-   
+
+
    See [Guidelines for production ready deployments on Kubernetes]({{<ref kubernetes-production.md>}}) for more information on    installing and upgrading Dapr using Helm.
 
 ### Uninstall Dapr on Kubernetes

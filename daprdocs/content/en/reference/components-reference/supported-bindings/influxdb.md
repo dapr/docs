@@ -3,7 +3,7 @@ type: docs
 title: "InfluxDB binding spec"
 linkTitle: "InfluxDB"
 description: "Detailed documentation on the InfluxDB binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/influxdb/"
 ---
 

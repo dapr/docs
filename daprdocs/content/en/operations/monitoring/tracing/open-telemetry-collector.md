@@ -12,9 +12,9 @@ Dapr will be exporting trace in the OpenTelemetry format when OpenTelemetry is G
 
 ## Requirements
 
-1. A installation of Dapr on Kubernetes. 
+1. A installation of Dapr on Kubernetes.
 
-2. You are already setting up your trace backends  to receive traces. 
+2. You are already setting up your trace backends  to receive traces.
 
 3. Check OpenTelemetry Collector exporters [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter) and [here](https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter) to see if your trace backend is supported by the OpenTelemetry Collector. On those linked pages, find the exporter you want to use and read its doc to find out the parameters required.
 
@@ -23,11 +23,11 @@ Dapr will be exporting trace in the OpenTelemetry format when OpenTelemetry is G
 ### Run OpenTelemetry Collector to push to your trace backend
 
 
-1. Check out the file [open-telemetry-collector-generic.yaml](/docs/open-telemetry-collector/open-telemetry-collector-generic.yaml) and replace the section marked with `<your-exporter-here>` with the correct settings for your trace exporter. Again, refer to the OpenTelemetry Collector links in the Prerequisites section to determine the correct settings. 
+1. Check out the file [open-telemetry-collector-generic.yaml](/docs/open-telemetry-collector/open-telemetry-collector-generic.yaml) and replace the section marked with `<your-exporter-here>` with the correct settings for your trace exporter. Again, refer to the OpenTelemetry Collector links in the Prerequisites section to determine the correct settings.
 
 2. Apply the configuration with `kubectl apply -f open-telemetry-collector-generic.yaml`.
 
-## Set up Dapr to send trace to OpenTelemetry Collector 
+## Set up Dapr to send trace to OpenTelemetry Collector
 
 ### Turn on tracing in Dapr
 Next, set up both a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.

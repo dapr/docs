@@ -3,7 +3,7 @@ type: docs
 title: "GCP Storage Bucket binding spec"
 linkTitle: "GCP Storage Bucket"
 description: "Detailed documentation on the GCP Storage Bucket binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/gcpbucket/"
 ---
 
@@ -89,7 +89,7 @@ To perform a create operation, invoke the GCP Storage Bucket binding with a `POS
 
 
 ##### Save text to a random generated UUID file
-  
+
 {{< tabs Windows Linux >}}
   {{% codetab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)

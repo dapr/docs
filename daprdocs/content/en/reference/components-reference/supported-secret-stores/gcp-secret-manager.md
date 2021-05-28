@@ -3,7 +3,7 @@ type: docs
 title: "GCP Secret Manager"
 linkTitle: "GCP Secret Manager"
 description: Detailed information on the GCP Secret Manager secret store component
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/gcp-secret-manager/"
 ---
 
@@ -32,13 +32,13 @@ spec:
   - name: client_id
     value: <replace-with-client-id>
   - name: auth_uri
-    value: <replace-with-auth-uri> 
+    value: <replace-with-auth-uri>
   - name: token_uri
-    value: <replace-with-token-uri> 
+    value: <replace-with-token-uri>
   - name: auth_provider_x509_cert_url
-    value: <replace-with-auth-provider-cert-url> 
+    value: <replace-with-auth-provider-cert-url>
   - name: client_x509_cert_url
-    value: <replace-with-client-cert-url> 
+    value: <replace-with-client-cert-url>
   - name: private_key
     value: <replace-with-private-key>
 ```
@@ -51,7 +51,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
-| type               | Y        | The type of the account.   | `"serviceAccount"` | 
+| type               | Y        | The type of the account.   | `"serviceAccount"` |
 | project_id         | Y        | The project ID associated with this component. | `"project_id"` |
 | private_key_id     | N        | The private key ID  | `"privatekey"` |
 | client_email       | Y        | The client email address | `"client@example.com"` |
