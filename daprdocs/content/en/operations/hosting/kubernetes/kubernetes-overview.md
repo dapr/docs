@@ -8,7 +8,7 @@ description: "Overview of how to get Dapr running on your Kubernetes cluster"
 
 ## Dapr on Kubernetes
 
-Dapr can be configured to run on any Kubernetes cluster. To achieve this, Dapr begins by deploying the `dapr-sidecar-injector`, `dapr-operator`, `dapr-placement`, and `dapr-sentry` Kubernetes services. These provide first-class integration to make running applications with Dapr easy.
+Dapr can be configured to run on any supported versions of Kubernetes. To achieve this, Dapr begins by deploying the `dapr-sidecar-injector`, `dapr-operator`, `dapr-placement`, and `dapr-sentry` Kubernetes services. These provide first-class integration to make running applications with Dapr easy.
 - **dapr-operator:** Manages [component]({{< ref components >}}) updates and Kubernetes services endpoints for Dapr (state stores, pub/subs, etc.)
 - **dapr-sidecar-injector:** Injects Dapr into [annotated](#adding-dapr-to-a-kubernetes-deployment) deployment pods and adds the environment variables `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` to enable user-defined applications to easily communicate with Dapr without hard-coding Dapr port values.
 - **dapr-placement:** Used for [actors]({{< ref actors >}}) only. Creates mapping tables that map actor instances to pods
