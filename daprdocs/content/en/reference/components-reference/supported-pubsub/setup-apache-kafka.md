@@ -24,6 +24,8 @@ spec:
       # Kafka broker connection setting
     - name: brokers
       value: "dapr-kafka.myapp.svc.cluster.local:9092"
+    - name: consumerID
+      value: "consumerIDVal"
     - name: authRequired
       value: "true"
     - name: saslUsername
@@ -43,6 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | brokers             | Y  | Comma separated list of kafka brokers  | `localhost:9092`, `dapr-kafka.myapp.svc.cluster.local:9092`
+| consumerID          | Y  | Using it as ConsumerGroup name         | `consumerIDVal`
 | authRequired        | N  | Enable authentication on the Kafka broker. Defaults to `"false"`.   |`"true"`, `"false"`
 | saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true.   | `"adminuser"`
 | saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}})  |  `""`, `"KeFg23!"`
