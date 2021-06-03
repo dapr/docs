@@ -84,11 +84,11 @@ spec:
       checks:
         - name: "Dapr Health Status"
           checkID: "daprHealth:${APP_ID}"
-          interval: "15s",
+          interval: "15s"
           http: "http://${HOST_ADDRESS}:${DAPR_HTTP_PORT}/v1.0/healthz"
         - name: "Service Health Status"
           checkID: "serviceHealth:${APP_ID}"
-          interval: "15s",
+          interval: "15s"
           http: "http://${HOST_ADDRESS}:${APP_PORT}/health"
       tags:
         - "dapr"
@@ -129,7 +129,7 @@ spec:
         check:
           name: "Dapr Health Status"
           checkID: "daprHealth:${APP_ID}"
-          interval: "15s",
+          interval: "15s"
           http: "http://${HOST_ADDRESS}:${DAPR_HTTP_PORT}/v1.0/healthz"
         meta:
           DAPR_METRICS_PORT: "${DAPR_METRICS_PORT}"
