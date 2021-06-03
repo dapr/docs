@@ -4,6 +4,8 @@ title: "Contributing with GitHub Codespaces"
 linkTitle: "GitHub Codespaces"
 weight: 2500
 description: "How to work with Dapr repos in GitHub Codespaces"
+aliases:
+  - "/developing-applications/ides/codespaces/"
 ---
 
 [GitHub Codespaces](https://github.com/features/codespaces) are the easiest way to get up and running for contributing to a Dapr repo. In as little as a single click, you can have an environment with all of the prerequisites ready to go in your browser.
