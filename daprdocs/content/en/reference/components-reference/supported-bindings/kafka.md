@@ -3,7 +3,7 @@ type: docs
 title: "Kafka binding spec"
 linkTitle: "Kafka"
 description: "Detailed documentation on the Kafka binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/kafka/"
 ---
 
@@ -59,7 +59,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 

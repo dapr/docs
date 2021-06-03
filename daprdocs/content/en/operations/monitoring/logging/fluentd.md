@@ -57,7 +57,7 @@ helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set persis
 5. Validation
 
     Ensure Elastic Search and Kibana are running in your Kubernetes cluster.
-    
+
     ```bash
     kubectl get pods -n dapr-monitoring
     NAME                            READY   STATUS    RESTARTS   AGE
@@ -135,7 +135,7 @@ spec:
 
 ## Search logs
 
-> Note: Elastic Search takes a time to index the logs that Fluentd sends. 
+> Note: Elastic Search takes a time to index the logs that Fluentd sends.
 
 1. Port-forward to svc/kibana-kibana
 

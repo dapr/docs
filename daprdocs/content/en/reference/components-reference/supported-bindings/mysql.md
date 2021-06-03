@@ -1,9 +1,9 @@
 ---
-type: docs 
+type: docs
 title: "MySQL binding spec"
 linkTitle: "MySQL"
 description: "Detailed documentation on the MySQL binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/mysql/"
 ---
 
@@ -46,9 +46,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | url | Y | Output | Represent DB connection in Data Source Name (DNS) format. See [here](#ssl-connection-details) SSL details | `"user:password@tcp(localhost:3306)/dbname"` |
-| pemPath | Y | Output | Path to the PEM file. Used with SSL connection | `"path/to/pem/file"` | 
+| pemPath | Y | Output | Path to the PEM file. Used with SSL connection | `"path/to/pem/file"` |
 | maxIdleConns | N | Output | The max idle connections. Integer greater than 0 | `"10"` |
-| maxOpenConns | N | Output | The max open connections. Integer greater than 0 | `"10"` | 
+| maxOpenConns | N | Output | The max open connections. Integer greater than 0 | `"10"` |
 | connMaxLifetime | N | Output | The max connection lifetime. Duration string | `"12s"` |
 | connMaxIdleTime | N | Output | The max connection idel time. Duration string | `"12s"` |
 

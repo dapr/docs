@@ -72,9 +72,9 @@ In this example, the Redis component is only accessible to Dapr instances runnin
 
 {{< /tabs >}}
 
-## Using namespaces with service invocation 
+## Using namespaces with service invocation
 
-When using service invocation an application in a namespace you have to qualify it with the namespace. For example calling the `ping` method on `myapp` which is scoped to the `production` namespace would be like this. 
+When using service invocation an application in a namespace you have to qualify it with the namespace. For example calling the `ping` method on `myapp` which is scoped to the `production` namespace would be like this.
 
 ```bash
 https://localhost:3500/v1.0/invoke/myapp.production/method/ping
@@ -98,7 +98,7 @@ Read [Pub/Sub and namespaces]({{< ref "component-scopes.md" >}}) for more inform
 Developers and operators might want to limit access for one database to a certain application, or a specific set of applications.
 To achieve this, Dapr allows you to specify `scopes` on the component YAML. Application scopes added to a component limit only the applications with specific IDs to be able to use the component.
 
-The following example shows how to give access to two Dapr enabled apps, with the app IDs of `app1` and `app2` to the Redis component named `statestore` which itself is in the `production` namespace 
+The following example shows how to give access to two Dapr enabled apps, with the app IDs of `app1` and `app2` to the Redis component named `statestore` which itself is in the `production` namespace
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -123,6 +123,6 @@ scopes:
 
 ## Related links
 
-- [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) 
-- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}})
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}})
 - [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})

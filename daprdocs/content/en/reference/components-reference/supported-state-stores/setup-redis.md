@@ -3,7 +3,7 @@ type: docs
 title: "Redis"
 linkTitle: "Redis"
 description: Detailed information on the Redis state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-redis/"
 ---
 
@@ -36,7 +36,7 @@ spec:
   - name: maxRetryBackoff
     value: # Optional
 ```
-**TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`. 
+**TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`.
 
 **Failover:** When set to `true` enables the failover feature. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
 

@@ -32,7 +32,7 @@ dapr run [flags] [command]
 | `--config`, `-c` | | `Linux & Mac: $HOME/.dapr/config.yaml`, `Windows: %USERPROFILE%\.dapr\config.yaml` | Dapr configuration file |
 | `--dapr-grpc-port` | | `50001` | The gRPC port for Dapr to listen on |
 | `--dapr-http-port` | | `3500` | The HTTP port for Dapr to listen on |
-| `--enable-profiling` | | `false` | Enable `pprof` profiling via an HTTP endpoint 
+| `--enable-profiling` | | `false` | Enable `pprof` profiling via an HTTP endpoint
 | `--help`, `-h` | | | Print this help message |
 | `--image` | | | The image to build the code in. Input is: `repository/image` |
 | `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic` |

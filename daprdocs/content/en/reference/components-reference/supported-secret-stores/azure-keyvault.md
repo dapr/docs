@@ -3,7 +3,7 @@ type: docs
 title: "Azure Key Vault secret store"
 linkTitle: "Azure Key Vault"
 description: Detailed information on the Azure Key Vault secret store component
-aliases: 
+aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault/"
 ---
 

@@ -3,7 +3,7 @@ type: docs
 title: "Redis binding spec"
 linkTitle: "Redis"
 description: "Detailed documentation on the Redis binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/redis/"
 ---
 

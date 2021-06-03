@@ -3,7 +3,7 @@ type: docs
 title: "Zookeeper"
 linkTitle: "Zookeeper"
 description: Detailed information on the Zookeeper state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-zookeeper/"
 ---
 

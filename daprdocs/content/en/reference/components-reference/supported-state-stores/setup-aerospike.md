@@ -3,7 +3,7 @@ type: docs
 title: "Aerospike"
 linkTitle: "Aerospike"
 description: Detailed information on the Aerospike state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-aerospike/"
 ---
 

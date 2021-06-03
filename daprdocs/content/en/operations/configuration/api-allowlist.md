@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Selectively enable Dapr APIs on the Dapr sidecar"
 linkTitle: "Dapr APIs allow list"
-weight: 7000
+weight: 4500
 description: "Choose which Dapr sidecar APIs are available to the app"
 ---
 

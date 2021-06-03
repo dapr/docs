@@ -3,7 +3,7 @@ type: docs
 title: "Azure Blob Storage binding spec"
 linkTitle: "Azure Blob Storage"
 description: "Detailed documentation on the Azure Blob Storage binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/blobstorage/"
 ---
 
@@ -45,7 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | storageAccessKey | Y | Output | The Blob Storage access key | `"access-key"` |
 | container | Y | Output | The name of the Blob Storage container to write to | `"myexamplecontainer"` |
 | decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `"true"` is the only allowed positive value. Other positive variations like `"True"` are not acceptable. Defaults to `"false"` | `"true"`, `"false"` |
-| getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `"10"` | `"1"`, `"2"` 
+| getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `"10"` | `"1"`, `"2"`
 
 
 ## Binding support
@@ -73,7 +73,7 @@ To perform a create blob operation, invoke the Azure Blob Storage binding with a
 
 
 ##### Save text to a random generated UUID blob
-  
+
 {{< tabs Windows Linux >}}
   {{% codetab %}}
   On Windows, utilize cmd prompt (PowerShell has different escaping mechanism)
@@ -185,14 +185,14 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 
   {{% codetab %}}
   ```bash
-  curl -d '{ \"operation\": \"get\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  curl -d '{ \"operation\": \"get\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
   curl -d '{ "operation": "get", "metadata": { "blobName": "myblob" }}' \
-        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
@@ -223,14 +223,14 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
 
   {{% codetab %}}
   ```bash
-  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob" }}' \
-        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
@@ -242,14 +242,14 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
 
   {{% codetab %}}
   ```bash
-  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "DeleteSnapshotOptions": "only" }}' \
-        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
@@ -261,14 +261,14 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
 
   {{% codetab %}}
   ```bash
-  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
   curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "DeleteSnapshotOptions": "include" }}' \
-        http://localhost:<dapr-port>/v1.0/bindings/<binding-name> 
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 

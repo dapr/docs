@@ -3,7 +3,7 @@ type: docs
 title: "Pulsar"
 linkTitle: "Pulsar"
 description: "Detailed documentation on the Pulsar pubsub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-pulsar/"
 ---
 

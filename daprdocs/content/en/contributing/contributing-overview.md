@@ -7,8 +7,8 @@ description: >
   General guidance for contributing to any of the Dapr project repositories
 ---
 
-Thank you for your interest in Dapr! 
-This document provides the guidelines for how to contribute to the [Dapr project](https://github.com/dapr) through issues and pull-requests. Contributions can also come in additional ways such as engaging with the community in community calls, commenting on issues or pull requests and more. 
+Thank you for your interest in Dapr!
+This document provides the guidelines for how to contribute to the [Dapr project](https://github.com/dapr) through issues and pull-requests. Contributions can also come in additional ways such as engaging with the community in community calls, commenting on issues or pull requests and more.
 
 See the [Dapr community repository](https://github.com/dapr/community) for more information on community engagement and community membership.
 

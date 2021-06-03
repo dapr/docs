@@ -46,7 +46,7 @@ In order to invoke an output binding:
 
 Read the [Use output bindings to interface with external resources]({{< ref howto-bindings.md >}}) page to get started with output bindings.
 
-## Next Steps 
+## Next Steps
 * Follow these guides on:
     * [How-To: Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
     * [How-To: Use output bindings to interface with external resources]({{< ref howto-bindings.md >}})
