@@ -30,11 +30,11 @@ For example, the diagram below shows an application requesting the secret called
 
 <img src="/images/secrets-overview-cloud-stores.png" width=600>
 
-Applications can use the secrets API to access secrets from a Kubernetes secret store. In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.  
+Applications can use the secrets API to access secrets from a Kubernetes secret store. In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
 
 <img src="/images/secrets-overview-kubernetes-store.png" width=600>
 
-In Azure Dapr can be configured to use Managed Identities to authenticate with Azure Key Vault in order to retrieve secrets. In the example below, an Azure Kubernetes Service (AKS) cluster is configured to use managed identities. Then Dapr uses [pod identities](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application. 
+In Azure Dapr can be configured to use Managed Identities to authenticate with Azure Key Vault in order to retrieve secrets. In the example below, an Azure Kubernetes Service (AKS) cluster is configured to use managed identities. Then Dapr uses [pod identities](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application.
 
 <img src="/images/secrets-overview-azure-aks-keyvault.png" width=600>
 
@@ -46,7 +46,7 @@ For detailed API information read [Secrets API]({{< ref secrets_api.md >}}).
 
 ## Referencing secret stores in Dapr components
 
-When configuring Dapr components such as state stores it is often required to include credentials in components files. Instead of doing that, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is preferred approach and is a recommended best practice especially in production environments. 
+When configuring Dapr components such as state stores it is often required to include credentials in components files. Instead of doing that, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is preferred approach and is a recommended best practice especially in production environments.
 
 For more information read [referencing secret stores in components]({{< ref component-secrets.md >}})
 

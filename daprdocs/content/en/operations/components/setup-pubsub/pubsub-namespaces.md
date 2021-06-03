@@ -123,6 +123,6 @@ kubectl delete namespace namespace-b
 
 ## Related links
 
-- [Scope components to one or more applications]({{< ref "component-scopes.md" >}}) 
-- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Scope components to one or more applications]({{< ref "component-scopes.md" >}})
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}})
 - [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})

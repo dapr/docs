@@ -48,8 +48,8 @@ dapr init -k
 
 ### Initialize Dapr in Kubernetes and wait for the installation to complete
 
- You can wait for the installation to complete its deployment with the `--wait` flag. 
- 
+ You can wait for the installation to complete its deployment with the `--wait` flag.
+
  The default timeout is 300s (5 min), but can be customized with the `--timeout` flag.
 ```bash
 dapr init -k --wait --timeout 600

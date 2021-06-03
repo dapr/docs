@@ -3,7 +3,7 @@ type: docs
 title: "Postmark binding spec"
 linkTitle: "Postmark"
 description: "Detailed documentation on the Postmark binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/postmark/"
 ---
 

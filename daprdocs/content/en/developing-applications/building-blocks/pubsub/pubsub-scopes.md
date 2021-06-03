@@ -3,7 +3,7 @@ type: docs
 title: "Scope Pub/Sub topic access"
 linkTitle: "Scope topic access"
 weight: 5000
-description: "Use scopes to limit Pub/Sub topics to specific applications" 
+description: "Use scopes to limit Pub/Sub topics to specific applications"
 ---
 
 ## Introduction
@@ -34,7 +34,7 @@ To use this topic scoping three metadata properties can be set for a pub/sub com
   - If `allowedTopics` is not set (default behavior), all topics are valid. `subscriptionScopes` and `publishingScopes` still take place if present.
   - `publishingScopes` or `subscriptionScopes` can be used in conjuction with `allowedTopics` to add granular limitations
 
-These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component. 
+These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component.
 
 ## Example 1: Scope topic access
 

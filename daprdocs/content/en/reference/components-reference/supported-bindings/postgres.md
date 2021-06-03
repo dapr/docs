@@ -3,7 +3,7 @@ type: docs
 title: "PostgreSQL binding spec"
 linkTitle: "PostgreSQL"
 description: "Detailed documentation on the PostgreSQL binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/postgres/"
 ---
 
@@ -36,7 +36,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|------------|-----|---------|
 | url | Y | Output | Postgres connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
 
-### URL format 
+### URL format
 
 The PostgreSQL binding uses [pgx connection pool](https://github.com/jackc/pgx) internally so the `url` parameter can be any valid connection string, either in a `DSN` or `URL` format:
 
@@ -90,7 +90,7 @@ The `exec` operation can be used for DDL operations (like table creation), as we
 {
   "metadata": {
     "operation": "exec",
-    "duration": "294µs", 
+    "duration": "294µs",
     "start-time": "2020-09-24T11:13:46.405097Z",
     "end-time": "2020-09-24T11:13:46.414519Z",
     "rows-affected": "1",
@@ -120,7 +120,7 @@ The `query` operation is used for `SELECT` statements, which returns the metadat
 {
   "metadata": {
     "operation": "query",
-    "duration": "432µs", 
+    "duration": "432µs",
     "start-time": "2020-09-24T11:13:46.405097Z",
     "end-time": "2020-09-24T11:13:46.420566Z",
     "sql": "SELECT * FROM foo WHERE id < 3"

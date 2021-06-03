@@ -10,13 +10,13 @@ The Dapr CLI allows you to setup Dapr on your local dev machine or on a Kubernet
 
 ```bash
 
-         __                
+         __
     ____/ /___ _____  _____
    / __  / __ '/ __ \/ ___/
-  / /_/ / /_/ / /_/ / /    
-  \__,_/\__,_/ .___/_/     
-              /_/            
-                                                                           
+  / /_/ / /_/ / /_/ / /
+  \__,_/\__,_/ .___/_/
+              /_/
+
 ===============================
 Distributed Application Runtime
 

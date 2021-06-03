@@ -7,11 +7,11 @@ description: >
   Guidelines for contributing to the Dapr Docs
 ---
 
-This guide contains information about contributions to the [Dapr docs repository](https://github.com/dapr/docs). Please review the guidelines below before making a contribution to the Dapr docs. This guide assumes you have already reviewed the [general guidance]({{< ref contributing-overview>}}) which applies to any Dapr project contributions. 
+This guide contains information about contributions to the [Dapr docs repository](https://github.com/dapr/docs). Please review the guidelines below before making a contribution to the Dapr docs. This guide assumes you have already reviewed the [general guidance]({{< ref contributing-overview>}}) which applies to any Dapr project contributions.
 
 Dapr docs are published to [docs.dapr.io](https://docs.dapr.io). Therefore, any contribution must ensure docs can be compiled and published correctly.
 
-## Prerequisites 
+## Prerequisites
 The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme. To verify docs are built correctly before submitting a contribution, you should setup your local environment to build and display the docs locally.
 
 Fork the [docs repository](https://github.com/dapr/docs) to work on any changes
@@ -30,14 +30,14 @@ For example, if you are fixing a typo, adding notes, or clarifying a point, make
 These conventions should be followed throughout all Dapr documentation to ensure a consistent experience across all docs.
 
 - **Casing** - Use upper case only at the start of a sentence or for proper nouns including names of technologies (Dapr, Redis, Kubernetes etc.).
-- **Headers and titles** - Headers and titles must be descriptive and clear, use sentence casing i.e. use the above casing guidance for headers and titles too 
+- **Headers and titles** - Headers and titles must be descriptive and clear, use sentence casing i.e. use the above casing guidance for headers and titles too
 - **Use simple sentences** - Easy-to-read sentences mean the reader can quickly use the guidance you share.
 - **Avoid the first person** - Use 2nd person "you", "your" instead of "I", "we", "our".
 - **Assume a new developer audience** - Some obvious steps can seem hard. E.g. Now set an environment variable Dapr to a value X. It is better to give the reader the explicit command to do this, rather than having them figure this out.
 - **Use present tense** - Avoid sentences like "this command will install redis", which implies the action is in the future. Instead use "This command installs redis" which is in the present tense.
 
 ## Contributing a new docs page
-- Make sure the documentation you are writing is in the correct place in the hierarchy. 
+- Make sure the documentation you are writing is in the correct place in the hierarchy.
 - Avoid creating new sections where possible, there is a good chance a proper place in the docs hierarchy already exists.
 - Make sure to include a complete [Hugo front-matter](#front-matter).
 
@@ -151,7 +151,7 @@ This HTML will display the `dapr-overview.png` image on the `overview.md` page:
 ```
 
 ### Tabbed content
-Tabs are made possible through [Hugo shortcodes](https://gohugo.io/content-management/shortcodes/). 
+Tabs are made possible through [Hugo shortcodes](https://gohugo.io/content-management/shortcodes/).
 
 The overall format is:
 ```
