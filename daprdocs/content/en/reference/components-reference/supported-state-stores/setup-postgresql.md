@@ -34,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string for PostgreSQL | `"User ID=root;Password=myPassword;Host=localhost;Port=5432"`
+| connectionString   | Y        | The connection string for PostgreSQL | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 
