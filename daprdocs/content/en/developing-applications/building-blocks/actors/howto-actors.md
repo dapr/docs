@@ -186,4 +186,4 @@ ActorRuntime.set_actor_config(
 
 {{< /tabs >}}
 
-Refer to the [Dapr SDKs]({{< ref "developing-applications/sdks/#sdk-languages" >}}) for more details.
+Refer to the documentation and examples of the [Dapr SDKs]({{< ref "developing-applications/sdks/#sdk-languages" >}}) for more details.
