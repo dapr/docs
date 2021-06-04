@@ -145,7 +145,6 @@ You can configure the Dapr Actors runtime configuration to modify the default ru
 
 {{% codetab %}}
 ```java
-
 // import io.dapr.actors.runtime.ActorRuntime;
 // import java.time.Duration;
 
@@ -160,15 +159,33 @@ See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/mai
 {{% /codetab %}}
 
 {{% codetab %}}
-```dotnet
+```csharp
+// In Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register actor runtime with DI
+    services.AddActors(options =>
+    {
+        // Register actor types and configure actor settings
+        options.Actors.RegisterActor<MyActor>();
+        
+        // Configure default settings
+        options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
+        options.ActorScanInterval = TimeSpan.FromSeconds(30);
+        options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
+        options.DrainRebalancedActors = true;
+        // reentrancy not implemented in the .NET SDK at this time
+    });
 
-TBD
+    // Register additional services for use with actors
+    services.AddSingleton<BankService>();
+}
 ```
+See the .NET SDK [documentation](https://github.com/dapr/dotnet-sdk/blob/master/daprdocs/content/en/dotnet-sdk-docs/dotnet-actors/dotnet-actors-usage.md#registering-actors).
 {{% /codetab %}}
 
 {{% codetab %}}
 ```python
-
 from datetime import timedelta
 from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
 
