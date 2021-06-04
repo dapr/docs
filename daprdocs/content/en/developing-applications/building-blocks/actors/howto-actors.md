@@ -141,4 +141,49 @@ You can configure the Dapr Actors runtime configuration to modify the default ru
 - `drainRebalancedActors` - If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
 - `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
 
+{{< tabs Java .Net Python>}}
+
+{{% codetab %}}
+```java
+
+// import io.dapr.actors.runtime.ActorRuntime;
+// import java.time.Duration;
+
+ActorRuntime.getInstance().getConfig().setActorIdleTimeout(Duration.ofMinutes(60));
+ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(30));
+ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(60));
+ActorRuntime.getInstance().getConfig().setDrainBalancedActors(true);
+ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
+```
+
+See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/actors/DemoActorService.java)
+{{% /codetab %}}
+
+{{% codetab %}}
+```dotnet
+
+TBD
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+
+from datetime import timedelta
+from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
+
+ActorRuntime.set_actor_config(
+    ActorRuntimeConfig(
+        actor_idle_timeout=timedelta(hours=1),
+        actor_scan_interval=timedelta(seconds=30),
+        drain_ongoing_call_timeout=timedelta(minutes=1),
+        drain_rebalanced_actors=True,
+        reentrancy=ActorReentrancyConfig(enabled=False)
+    )
+)
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 Refer to the [Dapr SDKs]({{< ref "developing-applications/sdks/#sdk-languages" >}}) for more details.
