@@ -141,7 +141,7 @@ You can configure the Dapr Actors runtime configuration to modify the default ru
 - `drainRebalancedActors` - If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
 - `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
 
-{{< tabs Java .Net Python>}}
+{{< tabs Java Dotnet Python >}}
 
 {{% codetab %}}
 ```java
