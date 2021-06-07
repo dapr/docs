@@ -13,7 +13,7 @@ To setup Azure Key Vault secret store with Managed Identies create a component o
 
 In Kubernetes mode, you store the certificate for the service principal into the Kubernetes Secret Store and then enable Azure Key Vault secret store with this certificate in Kubernetes secretstore.
 
-The component yaml uses the name of your key vault and the Cliend ID of the managed identity to setup the secret store.
+The component yaml uses the name of your key vault and the Client ID of the managed identity to setup the secret store.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
