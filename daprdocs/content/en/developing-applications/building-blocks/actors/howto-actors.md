@@ -130,7 +130,7 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 
 Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
 
-## Actor Runtime Configuration
+## Actor runtime configuration
 
 You can configure the Dapr Actors runtime configuration to modify the default runtime behavior.
 
