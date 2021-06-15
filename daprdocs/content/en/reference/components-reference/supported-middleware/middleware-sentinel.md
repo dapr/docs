@@ -2,8 +2,9 @@
 type: docs
 title: "Sentinel fault-tolerance middleware component"
 linkTitle: "Sentinel"
-weight: 7000
 description: "Use Sentinel middleware to guarantee the reliability and resiliency of your application"
+aliases:
+- /developing-applications/middleware/supported-middleware/middleware-sentinel/
 ---
 
 [Sentinel](https://github.com/alibaba/sentinel-golang) is a powerful fault-tolerance component that takes "flow" as the breakthrough point and covers multiple fields including flow control, traffic shaping, concurrency limiting, circuit breaking, and adaptive system protection to guarantee the reliability and resiliency of microservices.
@@ -41,15 +42,15 @@ spec:
 
 ## Spec metadata fields
 
-| Field       | Details                                                                                                                                                                              | Example |
-|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| appName | the name of current running service | `nodeapp`    |
-| logDir | the log directory path | `/var/tmp/sentinel` |
-| flowRules | json array of sentinel flow control rules | [flow control rule](https://github.com/alibaba/sentinel-golang/blob/master/core/flow/rule.go) |
-| circuitBreakerRules | json array of sentinel circuit breaker rules | [circuit breaker rule](https://github.com/alibaba/sentinel-golang/blob/master/core/circuitbreaker/rule.go) |
-| hotSpotParamRules | json array of sentinel hotspot parameter flow control rules | [hotspot rule](https://github.com/alibaba/sentinel-golang/blob/master/core/hotspot/rule.go) |
-| isolationRules | json array of sentinel isolation rules | [isolation rule](https://github.com/alibaba/sentinel-golang/blob/master/core/isolation/rule.go) |
-| systemRules | json array of sentinel system rules | [system rule](https://github.com/alibaba/sentinel-golang/blob/master/core/system/rule.go) |
+| Field | Details | Example |
+|-------|---------|---------|
+| appName | the name of current running service | `nodeapp`
+| logDir | the log directory path | `/var/tmp/sentinel`
+| flowRules | json array of sentinel flow control rules | [flow control rule](https://github.com/alibaba/sentinel-golang/blob/master/core/flow/rule.go)
+| circuitBreakerRules | json array of sentinel circuit breaker rules | [circuit breaker rule](https://github.com/alibaba/sentinel-golang/blob/master/core/circuitbreaker/rule.go)
+| hotSpotParamRules | json array of sentinel hotspot parameter flow control rules | [hotspot rule](https://github.com/alibaba/sentinel-golang/blob/master/core/hotspot/rule.go)
+| isolationRules | json array of sentinel isolation rules | [isolation rule](https://github.com/alibaba/sentinel-golang/blob/master/core/isolation/rule.go)
+| systemRules | json array of sentinel system rules | [system rule](https://github.com/alibaba/sentinel-golang/blob/master/core/system/rule.go)
 
 Once the limit is reached, the request will return *HTTP Status code 429: Too Many Requests*.
 

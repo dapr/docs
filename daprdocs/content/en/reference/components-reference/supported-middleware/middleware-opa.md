@@ -2,8 +2,9 @@
 type: docs
 title: "Apply Open Policy Agent (OPA) policies"
 linkTitle: "Open Policy Agent (OPA)"
-weight: 6000
 description: "Use middleware to apply Open Policy Agent (OPA) policies on incoming requests"
+aliases:
+- /developing-applications/middleware/supported-middleware/middleware-opa/
 ---
 
 The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware-concept.md >}}) applys [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
@@ -70,11 +71,11 @@ You can prototype and experiment with policies using the [official opa playgroun
 
 ## Spec metadata fields
 
-| Field  | Details                                                                                                                                                                                           | Example                                                           |
-|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| rego            | The Rego policy language                                                                                                                                                                              | See above                                                         |
-| defaultStatus   | The status code to return for denied responses                                                                                                                                                        | `"https://accounts.google.com"`, `"https://login.salesforce.com"` |
-| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`                              |
+| Field  | Details | Example |
+|--------|---------|---------|
+| rego | The Rego policy language | See above |
+| defaultStatus   | The status code to return for denied responses | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
+| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"` 
 
 ## Dapr configuration
 
