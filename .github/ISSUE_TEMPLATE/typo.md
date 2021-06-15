@@ -1,7 +1,7 @@
 ---
 name: Typo
 about: Report incorrect language/small updates to fix readability
-title: "[TYPO]"
+title: ''
 labels: content/typo
 assignees: ''
 
