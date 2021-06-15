@@ -1,14 +1,19 @@
 ---
 type: docs
-title: "Overview"
-linkTitle: "Overview"
-description: "General overview on set up of middleware components for Dapr"
-weight: 10000
-type: docs
+title: "Middleware"
+linkTitle: "Middleware"
+weight: 50
+description: "Customize processing pipelines by adding middleware components"
+aliases:
+- /developing-applications/middleware/middleware-overview/
 ---
 
-Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. Middleware pipelines are defined in Dapr configuration files.
-As with other [building block components]({{< ref component-schema.md >}}), middleware components are extensible and can be found in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
+Dapr allows custom processing pipelines to be defined by chaining a series of middleware components.
+
+## Using Dapr middleware
+
+Middleware pipelines are defined in Dapr configuration files.
+As with other [building block components]({{< ref component-schema.md >}}), middleware components are extensible and can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
 
 Middleware in Dapr is described using a `Component` file with the following schema:
 

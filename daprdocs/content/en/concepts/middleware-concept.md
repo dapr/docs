@@ -35,5 +35,5 @@ spec:
 
 ## Next steps
 
-* [Middleware overview]({{< ref middleware-overview.md >}})
+* [Middleware overview]({{< ref middleware.md >}})
 * [How-To: Configure API authorization with OAuth]({{< ref oauth.md >}})
