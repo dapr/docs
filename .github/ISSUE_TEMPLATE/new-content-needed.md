@@ -2,7 +2,7 @@
 name: New Content Needed
 about: Topic is missing and needs to be written
 title: ''
-labels: content/missing-information
+labels: needs-triage,content/missing-information
 assignees: ''
 
 ---

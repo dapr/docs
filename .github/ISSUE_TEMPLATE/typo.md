@@ -2,7 +2,7 @@
 name: Typo
 about: Report incorrect language/small updates to fix readability
 title: ''
-labels: content/typo
+labels: needs-triage,content/typo
 assignees: ''
 
 ---
