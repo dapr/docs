@@ -24,7 +24,7 @@ The table below shows which resources are deployed to which namespaces:
 | Resource                | namespace-a | namespace-b |
 |------------------------ |-------------|-------------|
 | Redis master            | X           |             |
-| Redis slave             | X           |             |
+| Redis replicas          | X           |             |
 | Dapr's PubSub component | X           | X           |
 | Node subscriber         | X           |             |
 | Python subscriber       | X           |             |
