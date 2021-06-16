@@ -49,7 +49,7 @@ spec:
 
 ## Writing a custom middleware
 
-Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns a **fasthttp.RequestHandler**:
+Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns  **fasthttp.RequestHandler** and **error**:
 
 ```go
 type Middleware interface {
@@ -60,14 +60,16 @@ type Middleware interface {
 Your handler implementation can include any inbound logic, outbound logic, or both:
 
 ```go
-func GetHandler(metadata Metadata) fasthttp.RequestHandler {
+
+func (m *customMiddleware) GetHandler(metadata Metadata) (func(fasthttp.RequestHandler) fasthttp.RequestHandler, error) {
+  var err error
   return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
     return func(ctx *fasthttp.RequestCtx) {
       // inboud logic
       h(ctx)  // call the downstream handler
       // outbound logic
     }
-  }
+  }, err
 }
 ```
 

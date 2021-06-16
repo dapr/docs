@@ -130,8 +130,9 @@ controller:
 Then install NGINX ingress controller to your Kubernetes cluster with Helm 3 using the annotations
 
 ```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-helm install nginx stable/nginx-ingress -f ./dapr-annotations.yaml -n default
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install nginx-ingress ingress-nginx/ingress-nginx -f ./dapr-annotations.yaml -n default
 # Get the public IP for the ingress controller
 kubectl get svc -l component=controller -o jsonpath='Public IP is: {.items[0].status.loadBalancer.ingress[0].ip}{"\n"}'
 ```

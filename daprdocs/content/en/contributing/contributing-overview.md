@@ -49,6 +49,7 @@ All contributions come through pull requests. To submit a proposed change, follo
 
 1. Make sure there's an issue (bug or proposal) raised, which sets the expectations for the contribution you are about to make.
 1. Fork the relevant repo and create a new branch
+    - Some Dapr repos support [Codespaces]({{< ref codespaces.md >}}) to provide an instant environment for you to build and test your changes.
 1. Create your change
     - Code changes require tests
 1. Update relevant documentation for the change
