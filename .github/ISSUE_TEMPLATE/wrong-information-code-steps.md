@@ -1,8 +1,8 @@
 ---
 name: Wrong Information/Code/Steps
 about: Something in the docs is incorrect
-title: "[CONTENT]"
-labels: P1, content/incorrect-information
+title: ''
+labels: needs-triage,content/incorrect-information
 assignees: ''
 
 ---
