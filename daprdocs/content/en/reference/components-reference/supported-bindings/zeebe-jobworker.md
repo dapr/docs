@@ -73,14 +73,16 @@ This component supports **input** binding interfaces.
 
 ### Input binding
 
-The Zeebe workflow engine handles the workflow state as also workflow variables which can be passed 
-on workflow instantiation or which can be updated or created during workflow execution. These variables
+#### Variables
+
+The Zeebe process engine handles the process state as also process variables which can be passed 
+on process instantiation or which can be updated or created during process execution. These variables
 can be passed to a registered job worker by defining the variable names as comma-separated list in
-the `fetchVariables` metadata field. The workflow engine will then pass these variables with its current 
+the `fetchVariables` metadata field. The process engine will then pass these variables with its current 
 values to the job worker implementation.
 
-If the binding will register three variables `productId`, `productName` and `productKey` then the service will
-be called with the following JSON:
+If the binding will register three variables `productId`, `productName` and `productKey` then the worker will
+be called with the following JSON body:
 
 ```json
 {
@@ -89,6 +91,31 @@ be called with the following JSON:
   "productKey": "some-product-key"  
 }
 ```
+
+Note: if the `fetchVariables` metadata field will not be passed, all process variables will be passed to the worker.
+
+#### Headers
+
+The Zeebe process engine has the ability to pass custom task headers to a job worker. These headers can be defined for every
+[service task](https://stage.docs.zeebe.io/bpmn-workflows/service-tasks/service-tasks.html). Task headers will be passed
+by the binding as metadata (HTTP headers) to the job worker.
+
+The binding will also pass the following job related variables as metadata. The values will be passed as string. The table contains also the
+original data type so that it can be converted back to the equivalent data type in the used programming language for the worker.
+
+| Metadata                           | Data type | Description                                                                                     |
+|------------------------------------|-----------|-------------------------------------------------------------------------------------------------|
+| X-Zeebe-Job-Key                    | int64     | The key, a unique identifier for the job                                                        |
+| X-Zeebe-Job-Type                   | string    | The type of the job (should match what was requested)                                           |
+| X-Zeebe-Process-Instance-Key       | int64     | The job's process instance key                                                                  |
+| X-Zeebe-Bpmn-Process-Id            | string    | The bpmn process ID of the job process definition                                               |
+| X-Zeebe-Process-Definition-Version | int32     | The version of the job process definition                                                       |
+| X-Zeebe-Process-Definition-Key     | int64     | The key of the job process definition                                                           |
+| X-Zeebe-Element-Id                 | string    | The associated task element ID                                                                  |
+| X-Zeebe-Element-Instance-Key       | int64     | The unique key identifying the associated task, unique within the scope of the process instance |
+| X-Zeebe-Worker                     | string    | The name of the worker which activated this job                                                 |
+| X-Zeebe-Retries                    | int32     | The amount of retries left to this job (should always be positive)                              |
+| X-Zeebe-Deadline                   | int64     | When the job can be activated again, sent as a UNIX epoch timestamp                             |
 
 ## Related links
 
