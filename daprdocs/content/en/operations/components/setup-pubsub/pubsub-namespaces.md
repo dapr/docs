@@ -24,7 +24,7 @@ The table below shows which resources are deployed to which namespaces:
 | Resource                | namespace-a | namespace-b |
 |------------------------ |-------------|-------------|
 | Redis master            | X           |             |
-| Redis slave             | X           |             |
+| Redis replicas          | X           |             |
 | Dapr's PubSub component | X           | X           |
 | Node subscriber         | X           |             |
 | Python subscriber       | X           |             |
@@ -123,6 +123,6 @@ kubectl delete namespace namespace-b
 
 ## Related links
 
-- [Scope components to one or more applications]({{< ref "component-scopes.md" >}}) 
-- [Use secret scoping]({{< ref "secrets-scopes.md" >}}) 
+- [Scope components to one or more applications]({{< ref "component-scopes.md" >}})
+- [Use secret scoping]({{< ref "secrets-scopes.md" >}})
 - [Limit the secrets that can be read from secret stores]({{< ref "secret-scope.md" >}})

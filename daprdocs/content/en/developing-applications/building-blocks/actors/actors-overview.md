@@ -8,7 +8,7 @@ aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-## Introduction 
+## Introduction
 The [actor pattern](https://en.wikipedia.org/wiki/Actor_model) describes actors as the lowest-level "unit of computation". In other words, you write your code in a self-contained unit (called an actor) that receives messages and processes them one at a time, without any kind of concurrency or threading.
 
 While your code processes a message, it can send one or more messages to other actors, or create new actors. An underlying runtime manages how, when and where each actor runs, and also routes messages between actors.
@@ -77,7 +77,7 @@ POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<met
 
 You can provide any data for the actor method in the request body, and the response for the request would be in the response body which is the data from actor call.
 
-Refer to [Dapr Actor Features]({{< ref actors-overview.md >}}) for more details.
+Refer to [Dapr Actor Features]({{< ref howto-actors.md >}}) for more details.
 
 ### Concurrency
 
@@ -89,6 +89,8 @@ Actors can deadlock on each other if there is a circular request between two act
 
 <img src="/images/actors_background_communication.png" width=600>
 
+#### Reentrancy
+As an enhancement to the base actors in dapr, reentrancy can now be enabled as a preview feature. To learn more about it, see [actor reentrancy]({{<ref actor-reentrancy.md>}})
 
 ### Turn-based access
 

@@ -57,7 +57,7 @@ If a secret store has support for multiple keys in a secret, a JSON payload is r
 
 In case of a secret store that only has name/value semantics, a JSON payload is returned with the name of the secret as the field and the value of the secret as the value.
 
-##### Response with multiple keys in a secret (eg. Kubernetes): 
+##### Response with multiple keys in a secret (eg. Kubernetes):
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/kubernetes/db-secret
@@ -134,7 +134,7 @@ secret-store-name | the name of the secret store to get the secret from
 
 The returned response is a JSON containing the secrets. The JSON object will contain the secret names as fields and a map of secret keys and values as the field value.
 
-##### Response with multiple secrets and multiple key / values in a secret (eg. Kubernetes): 
+##### Response with multiple secrets and multiple key / values in a secret (eg. Kubernetes):
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/kubernetes/bulk

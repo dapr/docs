@@ -3,7 +3,7 @@ type: docs
 title: "Pulsar"
 linkTitle: "Pulsar"
 description: "Detailed documentation on the Pulsar pubsub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-pulsar/"
 ---
 
@@ -31,7 +31,7 @@ spec:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"`
-| enableTLS          | Y  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`
+| enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`
 
 
 ## Create a Pulsar instance

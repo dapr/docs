@@ -3,7 +3,7 @@ type: docs
 title: "MySQL"
 linkTitle: "MySQL"
 description: Detailed information on the MySQL state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-mysql/"
 ---
 
@@ -121,7 +121,7 @@ If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [do
 
 ### Non SSL connection
 
-Replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard MySQL connection string. For example, `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true"`.  
+Replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard MySQL connection string. For example, `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true"`.
 
 ### Enforced SSL connection
 

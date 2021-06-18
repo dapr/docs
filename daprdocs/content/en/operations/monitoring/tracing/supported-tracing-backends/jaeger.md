@@ -20,10 +20,10 @@ Jaeger image published to DockerHub:
 
 ```bash
 docker run -d --name jaeger \
-  -e COLLECTOR_ZIPKIN_HTTP_PORT=9412 \
+  -e COLLECTOR_ZIPKIN_HOST_PORT=:9412 \
   -p 16686:16686 \
   -p 9412:9412 \
-  jaegertracing/all-in-one:1.21
+  jaegertracing/all-in-one:1.22
 ```
 
 
@@ -74,7 +74,7 @@ spec:
   ingress:
     enabled: false
   allInOne:
-    image: jaegertracing/all-in-one:1.13
+    image: jaegertracing/all-in-one:1.22
     options:
       query:
         base-path: /jaeger

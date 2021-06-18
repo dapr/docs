@@ -3,7 +3,7 @@ type: docs
 title: "Hazelcast"
 linkTitle: "Hazelcast"
 description: Detailed information on the Hazelcast state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-hazelcast/"
 ---
 

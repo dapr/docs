@@ -3,7 +3,7 @@ type: docs
 title: "MQTT"
 linkTitle: "MQTT"
 description: "Detailed documentation on the MQTT pubsub component"
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-mqtt/"
 ---
 

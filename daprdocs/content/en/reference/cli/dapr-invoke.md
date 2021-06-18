@@ -26,12 +26,13 @@ dapr invoke [flags]
 | `--help`, `-h` | | | Print this help message |
 | `--method`, `-m` | | | The method to invoke |
 | `--data`, `-d` | | | The JSON serialized data string (optional) |
+| `--data-file`, `-f` | | | A file containing the JSON serialized data (optional) 
 | `--verb`, `-v` | | `POST` | The HTTP verb to use |
 
 ## Examples
 
 ### Invoke a sample method on target app with POST Verb
-```bash 
+```bash
 dapr invoke --app-id target --method sample --data '{"key":"value"}'
 ```
 

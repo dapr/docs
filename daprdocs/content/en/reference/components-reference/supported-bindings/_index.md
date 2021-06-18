@@ -4,7 +4,7 @@ title: "Bindings component specs"
 linkTitle: "Bindings"
 weight: 3000
 description: The supported external bindings that interface with Dapr
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/"
 no_list: true
 ---
@@ -25,7 +25,7 @@ Table captions:
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since runtime version |
 |------|:----------------:|:-----------------:|--------|-------- | ---------|
-| [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 | 
+| [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | GA | v1 | 1.0 |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
@@ -43,12 +43,12 @@ Table captions:
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 
-
 ### Alibaba Cloud
 
-| Name | Input<br>Binding | Output<br>Binding | Status |
-|------|:----------------:|:-----------------:|--------|
-| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
+|------|:----------------:|:-----------------:|--------| ------ |----------|
+| [Alibaba Cloud DingTalk]({{< ref alicloud-dingtalk.md >}})           |  ✅ | ✅ | Alpha | v1 | 1.2 |
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 
 ### Amazon Web Services (AWS)
 
@@ -69,7 +69,7 @@ Table captions:
 
 ### Microsoft Azure
 
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Alpha | v1 | 1.0 |
@@ -78,3 +78,10 @@ Table captions:
 | [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | GA | v1 | 1.0 |
+
+### Zeebe (Camunda)
+
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
+|------|:----------------:|:-----------------:|--------| --------- | ---------- |
+| [Zeebe Command]({{< ref zeebe-command.md >}})            |    | ✅ | Alpha | v1 | 1.2 |
+| [Zeebe Job Worker]({{< ref zeebe-jobworker.md >}})       | ✅ |    | Alpha | v1 | 1.2 |

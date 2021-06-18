@@ -49,7 +49,7 @@ spec:
 
 ## Writing a custom middleware
 
-Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns a **fasthttp.RequestHandler**:
+Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns  **fasthttp.RequestHandler** and **error**:
 
 ```go
 type Middleware interface {
@@ -60,20 +60,22 @@ type Middleware interface {
 Your handler implementation can include any inbound logic, outbound logic, or both:
 
 ```go
-func GetHandler(metadata Metadata) fasthttp.RequestHandler {
+
+func (m *customMiddleware) GetHandler(metadata Metadata) (func(fasthttp.RequestHandler) fasthttp.RequestHandler, error) {
+  var err error
   return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
     return func(ctx *fasthttp.RequestCtx) {
       // inboud logic
       h(ctx)  // call the downstream handler
       // outbound logic
     }
-  }
+  }, err
 }
 ```
 
 ## Adding new middleware components
 
-Your middleware component can be contributed to the [components-contrib repository](https://github.com/dapr/components-contrib/tree/master/middleware). 
+Your middleware component can be contributed to the [components-contrib repository](https://github.com/dapr/components-contrib/tree/master/middleware).
 
 After the components-contrib change has been accepted, submit another pull request against the [Dapr runtime repository](https://github.com/dapr/dapr) to register the new middleware type. You'll need to modify **[runtime.WithHTTPMiddleware](https://github.com/dapr/dapr/blob/f4d50b1369e416a8f7b93e3e226c4360307d1313/cmd/daprd/main.go#L394-L424)** method in [cmd/daprd/main.go](https://github.com/dapr/dapr/blob/master/cmd/daprd/main.go) to register your middleware with Dapr's runtime.
 
