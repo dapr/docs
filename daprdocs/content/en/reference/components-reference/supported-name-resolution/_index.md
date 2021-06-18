@@ -21,14 +21,13 @@ The following components provide name resolution for the service invocation buil
 
 | Name | Status | Component version | Since |
 |------|:------:|:-----------------:|:-----:|
-| mDNS | GA     | v1                | 1.0   |
+| [mDNS]({{< ref nr-mdns.md >}}) | GA | v1 | 1.0 |
 
 ### Kubernetes
 
 | Name       | Status | Component version | Since |
 |------------|:------:|:-----------------:|:-----:|
-| Kubernetes | GA     | v1                | 1.0   |
-
+| [Kubernetes]({{< ref nr-kubernetes.md >}}) | GA | v1 | 1.0 |
 
 ## Definitions
 
