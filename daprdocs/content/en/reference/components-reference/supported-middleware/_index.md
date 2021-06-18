@@ -1,10 +1,12 @@
 ---
 type: docs
-title: "Supported middleware"
-linkTitle: "Supported middleware"
-weight: 30000
+title: "Middleware component specs"
+linkTitle: "Middleware"
+weight: 6000
 description: List of all the supported middleware components that can be injected in Dapr's processing pipeline.
 no_list: true
+aliases:
+- /developing-applications/middleware/supported-middleware/
 ---
 
 ### HTTP
