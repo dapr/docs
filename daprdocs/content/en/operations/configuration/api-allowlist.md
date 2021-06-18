@@ -8,7 +8,7 @@ description: "Choose which Dapr sidecar APIs are available to the app"
 
 In certain scenarios such as zero trust networks or when exposing the Dapr sidecar to external traffic through a frontend, it's recommended to only enable the Dapr sidecar APIs that are being used by the app. Doing so reduces the attack surface and helps keep the Dapr APIs scoped to the actual needs of the application.
 
-Dapr allows developers to control which APIs are accessible to the application by setting an API allow list using a [Dapr Configuration](({{<ref "configuration-overview.md">}})).
+Dapr allows developers to control which APIs are accessible to the application by setting an API allow list using a [Dapr Configuration]({{<ref "configuration-overview.md">}}).
 
 ### Default behavior
 
