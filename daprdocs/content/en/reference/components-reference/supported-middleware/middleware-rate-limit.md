@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-rate-limit/
 ---
 
-The rate limit [HTTP middleware]({{< ref middleware-concept.md >}}) allows restricting the maximum number of allowed HTTP requests per second. Rate limiting can protect your application from denial of service (DOS) attacks. DOS attacks can be initiated by malicious 3rd parties but also by bugs in your software (a.k.a. a "friendly fire" DOS attack).
+The rate limit [HTTP middleware]({{< ref middleware.md >}}) allows restricting the maximum number of allowed HTTP requests per second. Rate limiting can protect your application from denial of service (DOS) attacks. DOS attacks can be initiated by malicious 3rd parties but also by bugs in your software (a.k.a. a "friendly fire" DOS attack).
 
 ## Component format
 
@@ -37,7 +37,7 @@ Alternatively, the [max concurrency setting]({{< ref control-concurrency.md >}})
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -54,6 +54,6 @@ spec:
 ## Related links
 
 - [Control max concurrently]({{< ref control-concurrency.md >}})
-- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Middleware]({{< ref middleware.md >}})
 - [Dapr configuration]({{< ref configuration-concept.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})

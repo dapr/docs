@@ -9,7 +9,7 @@ aliases:
 
 [Sentinel](https://github.com/alibaba/sentinel-golang) is a powerful fault-tolerance component that takes "flow" as the breakthrough point and covers multiple fields including flow control, traffic shaping, concurrency limiting, circuit breaking, and adaptive system protection to guarantee the reliability and resiliency of microservices.
 
-The Sentinel [HTTP middleware]({{< ref middleware-concept.md >}}) enables Dapr to facilitate Sentinel's powerful abilities to protect your application. You can refer to [Sentinel Wiki](https://github.com/alibaba/sentinel-golang/wiki) for more details on Sentinel.
+The Sentinel [HTTP middleware]({{< ref middleware.md >}}) enables Dapr to facilitate Sentinel's powerful abilities to protect your application. You can refer to [Sentinel Wiki](https://github.com/alibaba/sentinel-golang/wiki) for more details on Sentinel.
 
 ## Component format
 
@@ -64,7 +64,7 @@ All concrete HTTP API information can be found from [Dapr API Reference]{{< ref 
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -81,6 +81,6 @@ spec:
 ## Related links
 
 - [Sentinel Github](https://github.com/alibaba/sentinel-golang)
-- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Middleware]({{< ref middleware.md >}})
 - [Dapr configuration]({{< ref configuration-concept.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})
