@@ -6,51 +6,37 @@ weight: 50
 description: "Customize processing pipelines by adding middleware components"
 aliases:
 - /developing-applications/middleware/middleware-overview/
+- /concepts/middleware-concept/
 ---
 
-Dapr allows custom processing pipelines to be defined by chaining a series of middleware components.
+Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. A request goes through all defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
 
-## Using Dapr middleware
+<img src="/images/middleware.png" width=800>
 
-Middleware pipelines are defined in Dapr configuration files.
-As with other [building block components]({{< ref component-schema.md >}}), middleware components are extensible and can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
+## Configuring middleware pipelines
 
-Middleware in Dapr is described using a `Component` file with the following schema:
+When launched, a Dapr sidecar constructs a middleware processing pipeline. By default the pipeline consists of [tracing middleware]({{< ref tracing-overview.md >}}) and CORS middleware. Additional middleware, configured by a Dapr [configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, security and others.
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <COMPONENT NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: middleware.http.<MIDDLEWARE TYPE>
-  version: v1
-  metadata:
-  - name: <KEY>
-    value: <VALUE>
-  - name: <KEY>
-    value: <VALUE>
-...
-```
-The type of middleware is determined by the `type` field. Component setting values such as rate limits, OAuth credentials and other settings are put in the `metadata` section.
-Even though metadata values can contain secrets in plain text, it is recommended that you use a [secret store]({{< ref component-secrets.md >}}).
-
-Next, a Dapr [configuration]({{< ref configuration-overview.md >}}) defines the pipeline of middleware components for your application.
+The following configuration example defines a custom pipeline that uses a [OAuth 2.0 middleware]({{< ref middleware-oauth2.md >}}) and an [uppercase middleware component]({{< ref middleware-uppercase.md >}}). In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase text, before they are forwarded to user code.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: appconfig
+  name: pipeline
+  namespace: default
 spec:
   httpPipeline:
     handlers:
-    - name: <COMPONENT NAME>
-      type: middleware.http.<MIDDLEWARE TYPE>
-    - name: <COMPONENT NAME>
-      type: middleware.http.<MIDDLEWARE TYPE>
+    - name: oauth2
+      type: middleware.http.oauth2
+    - name: uppercase
+      type: middleware.http.uppercase
 ```
+
+As with other building block components, middleware components are extensible and can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
+
+{{< button page="supported-middleware" text="See all middleware components">}}
 
 ## Writing a custom middleware
 
@@ -86,7 +72,6 @@ After the components-contrib change has been accepted, submit another pull reque
 
 ## Related links
 
-* [Middleware pipelines concept]({{< ref middleware-concept.md >}})
 * [Component schema]({{< ref component-schema.md >}})
 * [Configuration overview]({{< ref configuration-overview.md >}})
 * [Middleware quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
