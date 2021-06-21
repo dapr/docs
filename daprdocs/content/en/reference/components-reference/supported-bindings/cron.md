@@ -50,7 +50,7 @@ For example:
 * `30 * * * * *` - every 30 seconds
 * `0 15 * * * *` - every 15 minutes
 * `0 30 3-6,20-23 * * *` - every hour on the half hour in the range 3-6am, 8-11pm
-* `CRON_TZ=America/New_York 0 0 30 04 * * *` - every day at 4:30am New York time
+* `CRON_TZ=America/New_York 0 30 04 * * *` - every day at 4:30am New York time
 
 > You can learn more about cron and the supported formats [here](https://en.wikipedia.org/wiki/Cron)
 
