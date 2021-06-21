@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "How-To: Use output bindings to interface with external resources using client SDKs"
-linkTitle: "How-To: Output bindings using client SDKs"
+title: "How-To: Use output bindings through client SDKs to interface with external resources"
+linkTitle: "How-To: Use output bindings through client SDKs to interface with external resources"
 description: "Invoke external systems with output bindings using client SDKs"
 weight: 300
 ---

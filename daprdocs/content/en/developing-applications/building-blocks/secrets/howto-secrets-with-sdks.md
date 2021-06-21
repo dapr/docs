@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How To: Retrieve a secret using client SDKs"
-linkTitle: "How To: Retrieve a secret using client SDKs"
+title: "How To: Use client SDKS to retrieve a secret"
+linkTitle: "How To: Use client SDKS to retrieve a secret"
 weight: 2000
-description: "Use the secret store building block to securely retrieve a secret while using language specific SDKs"
+description: "Use clients SDKS to use the secret store building block to securely retrieve a secret"
 ---
 
 [How To: Retrieve a secret in Dapr using the .NET SDK]({{< ref "dotnet-client.md#retrieve-secrets" >}}) 

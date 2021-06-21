@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-to: Use virtual actors in Dapr with SDKs"
-linkTitle: "How-To: Virtual actors with SDKs"
+title: "How-to: Use virtual actors in Dapr through langauge specific SDKs"
+linkTitle: "How-To: Use virtual actors in Dapr through langauge specific SDKs"
 weight: 20
-description: Learn more about the actor pattern using langauge specific SDKs
+description: Learn more about how to use actors with langauge specific SDKs
 ---
 
 [How-to: Use virtual actors in Dapr using the .NET SDK]({{< ref "dotnet-actors" >}}) 
