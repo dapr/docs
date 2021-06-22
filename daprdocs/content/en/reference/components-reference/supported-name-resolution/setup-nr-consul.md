@@ -29,7 +29,7 @@ If Consul service registration is managed externally from Dapr you need to ensur
 
 ## Behaviour
 
-On ``init`` the Consul component either validates the connection to the configured (or default) agent or registers the service if configured to do so. The name resolution interface does not cater for an "on shutdown" pattern so consider this when using Dapr to register services to Consul as it does not deregister services.
+On `init` the Consul component either validates the connection to the configured (or default) agent or registers the service if configured to do so. The name resolution interface does not cater for an "on shutdown" pattern so consider this when using Dapr to register services to Consul as it does not deregister services.
 
 The component resolves target apps by filtering healthy services and looks for a `DAPR_PORT` in the metadata (key is configurable) in order to retrieve the Dapr sidecar port. Consul `service.meta` is used over `service.port` so as to not interfere with existing Consul estates.
 
