@@ -40,7 +40,7 @@ spec:
     value: ":"
 ```
 
-Make sure to replace `<PATH TO SECRETS FILE>` with the path to the JSON file you just created.
+Make sure to replace `<PATH TO SECRETS FILE>` with the path (relative to the root of the application folder) to the JSON file you just created.
 
 To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 ## Get a secret
