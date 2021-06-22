@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Kubernetes DNS Name Resolution Provider"
+title: "Kubernetes DNS name resolution provider spec"
 linkTitle: "Kubernetes DNS"
 description: Detailed information on the Kubernetes DNS name resolution component
 ---

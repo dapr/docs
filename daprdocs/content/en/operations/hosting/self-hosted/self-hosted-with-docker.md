@@ -151,7 +151,7 @@ If your deployment target is Kubernetes please use Dapr's first-class integratio
 
 ## Name resolution
 
-Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If running on multiple machines and/or VMs, visit the [supported name resolution providers page]({{< ref supported-name-resolution. >}}) to pick an alternate provider.
+Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{< ref setup-nr-consul.md >}}) component for name resolution.
 
 ## Docker images
 

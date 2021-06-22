@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "HashiCorp Consul"
+title: "HashiCorp Consul name resolution provider spec"
 linkTitle: "HashiCorp Consul"
 description: Detailed information on the HashiCorp Consul name resolution component
 ---

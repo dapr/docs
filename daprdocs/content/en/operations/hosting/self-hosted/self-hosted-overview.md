@@ -29,4 +29,4 @@ You can use the [`dapr run` CLI command]({{< ref dapr-run.md >}}) to a Dapr side
 
 Dapr uses a [name resolution component]({{< ref supported-name-resolution >}}) for service discovery within the [service invocation]({{< ref service-invocation >}}) building block. By default Dapr uses mDNS when in self-hosted mode.
 
-If you are running Dapr on virtual machines or across multiple machines you can use [HashiCorp Consul]({{< ref setup-nr-consul.md >}}).
+If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{< ref setup-nr-consul.md >}}) component for name resolution.
