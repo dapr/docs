@@ -16,35 +16,27 @@ Dapr welcomes contributions from the community. If there are features on the roa
 <br />
 The Dapr Roadmap progresses through the following four stages:
 
-<div class="card-deck">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b><a href="https://github.com/orgs/dapr/projects/52#column-14691591">Backlog</a></b></h5>
-      <p class="card-text">GitHub issues (features) that have sparked interest from the Dapr community will be moved by maintainers into the Dapr Roadmap and by default added to the Backlog column. <br /><br />Please vote by adding a 👍 to the features you would most like to see Dapr support as this will help influence priority.</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b><a href="https://github.com/orgs/dapr/projects/52#column-14561691">Planned (Committed)</a></b></h5>
-      <p class="card-text">Once a GitHub issue (feature) has a proposal and/or has a targeted release milestone, it is moved into the “Planned” column. This is where design proposals are discussed before moving into the implementation phase (In progress).</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b><a href="https://github.com/orgs/dapr/projects/52#column-14561696">In Progress (Development)</a></b></h5>
-      <p class="card-text">Implementation specifics have been agreed upon and the feature is under active development.</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b><a href="https://github.com/orgs/dapr/projects/52#column-14561700">Done</a></b></h5>
-      <p class="card-text">The feature capability has been completed and is scheduled for an upcoming release.</p>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b><a href="https://github.com/orgs/dapr/projects/52#column-14659973">Released</a></b></h5>
-      <p class="card-text">The feature is released and available for use.</p>
-    </div>
-  </div>
-</div>
+{{< cardpane >}}
+{{< card title="**[Backlog](https://github.com/orgs/dapr/projects/52#column-14691591)**" >}}
+  GitHub issues (features) that have sparked interest from the Dapr community will be moved by maintainers into the Dapr Roadmap and by default added to the Backlog column. 
+
+  Please vote by adding a 👍 to the features you would most like to see Dapr support as this will help influence priority.
+{{< /card >}}
+
+{{< card title="**[Planned (Committed)](https://github.com/orgs/dapr/projects/52#column-14561691)**" >}}
+  Once a GitHub issue (feature) has a proposal and/or has a targeted release milestone, it is moved into the “Planned” column. This is where design proposals are discussed before moving into the implementation phase (In progress).
+{{< /card >}}
+
+{{< card title="**[In Progress (Development)](https://github.com/orgs/dapr/projects/52#column-14561696)**" >}}
+ Implementation specifics have been agreed upon and the feature is under active development.
+{{< /card >}}
+
+{{< card title="**[Done](https://github.com/orgs/dapr/projects/52#column-14561700)**" >}}
+ The feature capability has been completed and is scheduled for an upcoming release.
+{{< /card >}}
+
+{{< card title="**[Released](https://github.com/orgs/dapr/projects/52#column-14659973)**" >}}
+ The feature is released and available for use.
+{{< /card >}}
+
+{{< /cardpane >}}
