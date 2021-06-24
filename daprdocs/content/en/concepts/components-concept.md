@@ -29,7 +29,7 @@ Service discovery components are used with the [service invocation]({{<ref "serv
 
 ## Middleware
 
-Dapr allows custom [middleware]({{<ref "middleware-concept.md">}})  to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
+Dapr allows custom [middleware]({{<ref "middleware.md">}})  to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
 
 - [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)
 

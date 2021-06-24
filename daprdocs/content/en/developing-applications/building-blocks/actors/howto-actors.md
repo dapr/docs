@@ -23,10 +23,9 @@ Refer [api spec]({{< ref "actors_api.md#invoke-actor-method" >}}) for more detai
 ## Actor state management
 
 Actors can save state reliably using state management capability.
-
 You can interact with Dapr through HTTP/gRPC endpoints for state management.
 
-To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}).
+To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors. 
 
 ## Actor timers and reminders
 
@@ -129,3 +128,78 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
 Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
+
+## Actor runtime configuration
+
+You can configure the Dapr Actors runtime configuration to modify the default runtime behavior.
+
+### Configuration parameters
+- `actorIdleTimeout` - The timeout before deactivating an idle actor. Checks for timeouts occur every `actorScanInterval` interval. **Default: 60 minutes**
+- `actorScanInterval` - The duration which specifies how often to scan for actors to deactivate idle actors. Actors that have been idle longer than actor_idle_timeout will be deactivated. **Default: 30 seconds**
+- `drainOngoingCallTimeout` - The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. **Default: 60 seconds**
+- `drainRebalancedActors` - If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
+- `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
+
+{{< tabs Java Dotnet Python >}}
+
+{{% codetab %}}
+```java
+// import io.dapr.actors.runtime.ActorRuntime;
+// import java.time.Duration;
+
+ActorRuntime.getInstance().getConfig().setActorIdleTimeout(Duration.ofMinutes(60));
+ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(30));
+ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(60));
+ActorRuntime.getInstance().getConfig().setDrainBalancedActors(true);
+ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
+```
+
+See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/actors/DemoActorService.java)
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+// In Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register actor runtime with DI
+    services.AddActors(options =>
+    {
+        // Register actor types and configure actor settings
+        options.Actors.RegisterActor<MyActor>();
+        
+        // Configure default settings
+        options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
+        options.ActorScanInterval = TimeSpan.FromSeconds(30);
+        options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
+        options.DrainRebalancedActors = true;
+        // reentrancy not implemented in the .NET SDK at this time
+    });
+
+    // Register additional services for use with actors
+    services.AddSingleton<BankService>();
+}
+```
+See the .NET SDK [documentation](https://github.com/dapr/dotnet-sdk/blob/master/daprdocs/content/en/dotnet-sdk-docs/dotnet-actors/dotnet-actors-usage.md#registering-actors).
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+from datetime import timedelta
+from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
+
+ActorRuntime.set_actor_config(
+    ActorRuntimeConfig(
+        actor_idle_timeout=timedelta(hours=1),
+        actor_scan_interval=timedelta(seconds=30),
+        drain_ongoing_call_timeout=timedelta(minutes=1),
+        drain_rebalanced_actors=True,
+        reentrancy=ActorReentrancyConfig(enabled=False)
+    )
+)
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Refer to the documentation and examples of the [Dapr SDKs]({{< ref "developing-applications/sdks/#sdk-languages" >}}) for more details.
