@@ -79,7 +79,7 @@ Table captions:
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | GA | v1 | 1.0 |
 
-### Zeebe (Camunda)
+### Zeebe (Camunda Cloud)
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
