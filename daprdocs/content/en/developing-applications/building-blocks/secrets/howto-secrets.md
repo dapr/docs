@@ -14,7 +14,7 @@ Before retrieving secrets in your application's code, you must have a secret sto
 
 >Note: The component used in this example is not secured and is not recommended for production deployments. You can find other alternatives [here]({{<ref supported-secret-stores >}}).
 
-Create a file named `secrets.json` with the following contents:
+Create a file named `mysecrets.json` with the following contents:
 
 ```json
 {
