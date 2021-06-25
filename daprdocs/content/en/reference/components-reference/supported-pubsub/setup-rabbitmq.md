@@ -55,6 +55,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | prefetchCount  | N        | Number of messages to [prefetch](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be pre-fetched. | `"2"`
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
 | concurrencyMode | N        | `parallel` is the default, and allows processing multiple messages in parallel (limited by the `app-max-concurrency` annotation, if configured). Set to `single` to disable parallel processing. In most situations there's no reason to change this. | `parallel`, `single`
+| backOffPolicy              | N        | Retry policy, `"constant"` is a backoff policy that always returns the same backoff delay. `"exponential"` is a backoff policy that increases the backoff period for each retry attempt using a randomization function that grows exponentially. Defaults to `"constant"`. | `constant`、`exponential` |
+| backOffDuration            | N        | The fixed interval only takes effect when the policy is constant. | `"5s"`、`"5000"`                  |
+| backOffInitialInterval     | N        | The backoff initial interval on retry. Only takes effect when the policy is exponential. Defaults to `"500"`                         | `"50"`                       |
+| backOffMaxInterval         | N        | The backoff initial interval on retry. Only takes effect when the policy is exponential. Defaults to `"60s"`     | `"60000"`                     |
+| backOffMaxRetries          | N        | The maximum number of retries to process the message before returning an error. Defaults to `"0"` which means the component will not retry processing the message. `"-1"` will retry indefinitely until the message is processed or the application is shutdown. And positive number is treated as the maximum retry count. | `"3"` |
+| backOffRandomizationFactor | N        | Randomization factor, between 1 and 0, including 0 but not 1. Randomized interval = RetryInterval * (1 ± backOffRandomizationFactor). Defaults to `"0.5"`.                 | `"0.5"`                       |
+| backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
+| backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. Defaults to `"15m"` | `"15m"` |
 
 
 ## Create a RabbitMQ server
