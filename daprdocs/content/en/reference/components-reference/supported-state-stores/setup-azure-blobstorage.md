@@ -42,6 +42,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | accountName        | Y        | The storage account name | `"mystorageaccount"`.
 | accountKey         | Y        | Primary or secondary storage key | `"key"`
 | containerName      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
+| ContentType        | N        | The blob’s content type | `"text/plain"`
+| ContentMD5         | N        | The blob's MD5 hash | `"vZGKbMRDAnMs4BIwlXaRvQ=="`
+| ContentEncoding    | N        | The blob's content encoding | `"UTF-8"`
+| ContentLanguage    | N        | The blob's content language | `"en-us"`
+| ContentDisposition | N        | The blob's content disposition. Conveys additional information about how to process the response payload | `"attachment"`
+| CacheControl       | N        | The blob's cache control | `"no-cache"`
 
 ## Setup Azure Blobstorage
 

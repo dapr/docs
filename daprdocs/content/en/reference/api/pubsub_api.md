@@ -60,6 +60,7 @@ Metadata can be sent via query parameters in the request's URL. It must be prefi
 Parameter | Description
 --------- | -----------
 metadata.ttlInSeconds | the number of seconds for the message to expire as [described here]({{< ref pubsub-message-ttl.md >}})
+metadata.rawPayload | boolean to determine if Dapr should publish the event without wrapping it as CloudEvent as [described here]({{< ref pubsub-raw.md >}})
 
 > Additional metadata parameters are available based on each pubsub component.
 
@@ -92,12 +93,23 @@ Example:
   {
     "pubsubname": "pubsub",
     "topic": "newOrder",
-    "route": "/orders"
+    "route": "/orders",
+    "metadata": {
+      "rawPayload": "true",
+    }
   }
 ]
 ```
 
 > Note, all subscription parameters are case-sensitive.
+
+#### Metadata
+
+Optionally, metadata can be sent via the request body.
+
+Parameter | Description
+--------- | -----------
+rawPayload | boolean to subscribe to events that do not comply with CloudEvent specification, as [described here]({{< ref pubsub-raw.md >}})
 
 ### Provide route(s) for Dapr to deliver topic events
 

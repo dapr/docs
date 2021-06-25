@@ -1,8 +1,8 @@
 ---
 name: Typo
 about: Report incorrect language/small updates to fix readability
-title: "[TYPO]"
-labels: content/typo
+title: ''
+labels: needs-triage,content/typo
 assignees: ''
 
 ---

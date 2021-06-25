@@ -1,8 +1,8 @@
 ---
 name: Website Issue
 about: The website is broken or not working correctly.
-title: "[WEBSITE]"
-labels: website/functionality
+title: ''
+labels: needs-triage,website/functionality
 assignees: AaronCrawfis
 
 ---
