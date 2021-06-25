@@ -19,6 +19,10 @@ Please vote by adding a 👍 on the GitHub issues for the feature capabilities y
 
 Contributions from the community is also welcomed. If there are features on the roadmap that you are interested in contributing to, please comment on the GitHub issue and include your solution proposal.
 
+{{% alert title="Note" color="primary" %}}
+The Dapr roadmap includes issues only from the v1.2 release and onwards. Issues closed and released prior to v1.2 are not included.
+{{% /alert %}}
+
 ## Stages
 
 The Dapr Roadmap progresses through the following stages:
