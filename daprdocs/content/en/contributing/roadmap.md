@@ -3,7 +3,7 @@ type: docs
 title: "Dapr Roadmap"
 linkTitle: "Roadmap"
 description: "The Dapr Roadmap is a tool to help with visibility into investments across the Dapr project"
-weight: 200
+weight: 1100
 no_list: true
 ---
 
@@ -30,16 +30,14 @@ The Dapr Roadmap progresses through the following stages:
 {{< card title="**[⏳ Planned (Committed)](https://github.com/orgs/dapr/projects/52#column-14561691)**" >}}
   Issues with a proposal and/or targeted release milestone. This is where design proposals are discussed and designed.
 {{< /card >}}
-{{< /cardpane >}}
-{{< cardpane >}}
 {{< card title="**[👩‍💻 In Progress (Development)](https://github.com/orgs/dapr/projects/52#column-14561696)**" >}}
  Implementation specifics have been agreed upon and the feature is under active development.
 {{< /card >}}
+{{< /cardpane >}}
+{{< cardpane >}}
 {{< card title="**[☑ Done](https://github.com/orgs/dapr/projects/52#column-14561700)**" >}}
  The feature capability has been completed and is scheduled for an upcoming release.
 {{< /card >}}
-{{< /cardpane >}}
-{{< cardpane >}}
 {{< card title="**[✅ Released](https://github.com/orgs/dapr/projects/52#column-14659973)**" >}}
  The feature is released and available for use.
 {{< /card >}}
