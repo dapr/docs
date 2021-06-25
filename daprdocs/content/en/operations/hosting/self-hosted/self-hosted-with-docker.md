@@ -149,6 +149,10 @@ To further learn how to run Dapr with Docker Compose, see the [Docker-Compose Sa
 If your deployment target is Kubernetes please use Dapr's first-class integration. Refer to the
 [Dapr on Kubernetes docs]({{< ref "kubernetes-overview.md" >}}).
 
+## Name resolution
+
+Dapr by default uses mDNS as the name resolution component in self-hosted mode for service invocation. If you are running Dapr on virtual machines or where mDNS is not available, then you can use the [HashiCorp Consul]({{< ref setup-nr-consul.md >}}) component for name resolution.
+
 ## Docker images
 
 Dapr provides a number of prebuilt Docker images for different components, you should select the relevant image for your desired binary, architecture, and tag/version.
