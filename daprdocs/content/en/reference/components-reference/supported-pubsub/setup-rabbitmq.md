@@ -37,6 +37,12 @@ spec:
     value: "0"
   - name: concurrencyMode
     value: parallel
+  - name: backOffPolicy
+    value: "exponential"
+  - name: backOffInitialInterval
+    value: "100"
+  - name: backOffMaxRetries
+    value: "16"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -56,13 +62,20 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
 | concurrencyMode | N        | `parallel` is the default, and allows processing multiple messages in parallel (limited by the `app-max-concurrency` annotation, if configured). Set to `single` to disable parallel processing. In most situations there's no reason to change this. | `parallel`, `single`
 | backOffPolicy              | N        | Retry policy, `"constant"` is a backoff policy that always returns the same backoff delay. `"exponential"` is a backoff policy that increases the backoff period for each retry attempt using a randomization function that grows exponentially. Defaults to `"constant"`. | `constant`、`exponential` |
-| backOffDuration            | N        | The fixed interval only takes effect when the policy is constant. | `"5s"`、`"5000"`                  |
+| backOffDuration            | N        | The fixed interval only takes effect when the policy is constant. 
+For all time type backoff parameters, there are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"5s"`. | `"5s"`、`"5000"`                  |
 | backOffInitialInterval     | N        | The backoff initial interval on retry. Only takes effect when the policy is exponential. Defaults to `"500"`                         | `"50"`                       |
 | backOffMaxInterval         | N        | The backoff initial interval on retry. Only takes effect when the policy is exponential. Defaults to `"60s"`     | `"60000"`                     |
 | backOffMaxRetries          | N        | The maximum number of retries to process the message before returning an error. Defaults to `"0"` which means the component will not retry processing the message. `"-1"` will retry indefinitely until the message is processed or the application is shutdown. And positive number is treated as the maximum retry count. | `"3"` |
 | backOffRandomizationFactor | N        | Randomization factor, between 1 and 0, including 0 but not 1. Randomized interval = RetryInterval * (1 ± backOffRandomizationFactor). Defaults to `"0.5"`.                 | `"0.5"`                       |
 | backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
 | backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. Defaults to `"15m"` | `"15m"` |
+
+
+### Backoff policy introduction
+Backoff retry strategy can instruct the dapr sidecar how to resend the message. By default, the retry strategy is turned off, which means that the sidecar will send a message to the service once. When the service returns a result, the message will be marked as consumption regardless of whether it is correct or not. The above is based on the condition of `autoAck` and `requeueInFailure` is setting to false(if `requeueInFailure` is set to true, the message will get a second chance).
+
+But in some cases, you may want dapr to retry pushing message with an (exponential or constant) backoff strategy until the message is processed normally or the number of retries is exhausted. This maybe useful when your service breaks down abnormally but the sidecar is not stopped together. Adding backoff policy will retry the message pushing during the service downtime, instead of marking these message as consumed.
 
 
 ## Create a RabbitMQ server
