@@ -47,7 +47,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| vaultName          | Y        | The name of the Azure Key Vault | `"mykeyvault"`
+| vaultName          | Y        | The name of the Azure Key Vault, if you only provide name, it would covert to "[your_keyvault_name].vault.azure.net" in Dapr. If your URL uses other suffix, please provide whole link like "test.vault.azure.cn". we support all suffixes that Azure uses. | `"mykeyvault"`, `mykeyvault.value.azure.cn`
 | spnTenantId        | Y        | Service Principal Tenant Id | `"spnTenantId"`
 | spnClientId        | Y        | Service Principal App Id | `"spnAppId"`
 | spnCertificateFile | Y        | PFX certificate file path. <br></br> For Windows the `[pfx_certificate_file_fully_qualified_local_path]` value must use escaped backslashes, i.e. double backslashes. For example `"C:\\folder1\\folder2\\certfile.pfx"`. <br></br> For Linux you can use single slashes. For example `"/folder1/folder2/certfile.pfx"`.  <br></br> See [configure the component](#configure-the-component) for more details | `"C:\\folder1\\folder2\\certfile.pfx"`, `"/folder1/folder2/certfile.pfx"`
