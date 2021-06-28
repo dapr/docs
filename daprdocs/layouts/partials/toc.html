@@ -1,8 +1,8 @@
-{{ partial "page-meta-links.html" . }}
 {{ if not .Params.notoc }}
 {{ with .TableOfContents }}
 {{ if ge (len .) 200 }}
-{{ . }}
+<br />
+<div class="td-toc">{{ . }}</div>
 {{ end }}
 {{ end }}
 {{ end }}
