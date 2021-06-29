@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Visual Studio Code"
+title: "Visual Studio Code integration with Dapr"
 linkTitle: "Visual Studio Code"
 weight: 1000
-description: "Information on how to develop and run Dapr applications in VS Code"
+description: "How to develop and run Dapr applications in Visual Studio Code"
 ---

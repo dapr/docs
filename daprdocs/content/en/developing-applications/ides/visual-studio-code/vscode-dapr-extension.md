@@ -3,7 +3,7 @@ type: docs
 title: "Dapr Visual Studio Code extension overview"
 linkTitle: "Overview"
 weight: 10000
-description:  "Information on how to develop and run Dapr applications with the Dapr extension"
+description:  "How to develop and run Dapr applications with the Dapr extension"
 ---
 
 
@@ -11,13 +11,13 @@ Dapr offers a *preview* [Dapr Visual Studio Code extension](https://marketplace.
 
 <a href="vscode:extension/ms-azuretools.vscode-dapr" class="btn btn-primary" role="button">Open in VSCode</a>
 
-## Features Overview
+## Features
 
-### Scaffold Dapr Tasks 
+### Scaffold Dapr tasks 
 
 * Helps scaffold VS Code task.json and launch.json configurations needed to debug your application within the Dapr environment.
 * Requires an already existing launch.json files to be found in the VS Code workspace.
-* Example NodeJS App:
+* Example NodeJS app:
 
 
 Before scaffolding version of launch.json configurations:
@@ -84,7 +84,7 @@ After scaffolding task.json:
 }
 ```
 
-### Scaffold Dapr Components 
+### Scaffold Dapr components 
 * Generates the Dapr component assets needed for general Dapr applications.
 * Provides a Component folder in your VS Code workspace that contains pubsub, statestore and a zipkin yaml file.
 * Example pubsub file:
@@ -108,7 +108,7 @@ spec:
 
 <br /><img src="/images/vscode-extension-view.png" alt="Screenshot of the Dapr VSCode extension view running applications option" width="800">
 
-### Invoke Dapr Application Methods
+### Invoke Dapr application methods
 * Allows users to select a Dapr application found in the tree view "Applications" and invoke GET/POST methods by name.
 * Allows users to specify an optional payload for POST methods
 <br /><img src="/images/vscode-extension-invoke.png" alt="Screenshot of the Dapr VSCode extension invoke option" width="800">

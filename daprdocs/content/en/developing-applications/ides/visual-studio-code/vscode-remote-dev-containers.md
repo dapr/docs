@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "Visual Studio Code Remote Dev Containers"
-linkTitle: "Visual Studio Code remote dev containers"
+title: "Visual Studio Code remote dev containers"
+linkTitle: "Remote dev containers"
 weight: 20000
-description:  "Information on how to setup a remote dev environment"
+description:  "How to setup a remote dev container environment with Dapr"
 ---
 
-The Visual Studio Code Remote Containers extension lets you use a Docker container as a full-featured development environment enabling you to [develop inside a container](https://code.visualstudio.com/docs/remote/containers) without installing any additional frameworks or packages to your local filesystem.
+The Visual Studio Code [Remote Containers extension](https://code.visualstudio.com/docs/remote/containers) lets you use a Docker container as a full-featured development environment without installing any additional frameworks or packages to your local filesystem.
 
 Dapr has pre-built Docker remote containers for each of the language SDKs. You can pick the one of your choice for a ready made environment. Note these pre-built containers automatically update to the latest Dapr release.
 
@@ -19,7 +19,7 @@ Dapr has pre-built Docker remote containers for each of the language SDKs. You c
 
 #### Create remote Dapr container
 1. Open your application workspace in VS Code
-2. In the command command palette (ctrl+shift+p) type and select `Remote-Containers: Add Development Container Configuration Files...`
+2. In the command command palette (`CTRL+SHIFT+P`) type and select `Remote-Containers: Add Development Container Configuration Files...`
     <br /><img src="/images/vscode-remotecontainers-addcontainer.png" alt="Screenshot of adding a remote container" width="700">
 3. Type `dapr` to filter the list to available Dapr remote containers and choose the language container that matches your application. Note you may need to select `Show All Definitions...`
     <br /><img src="/images/vscode-remotecontainers-daprcontainers.png" alt="Screenshot of adding a Dapr container" width="700">
