@@ -3,12 +3,14 @@ type: docs
 title: "Visual Studio Code manual debugging configuration"
 linkTitle: "Manual debugging configuration"
 weight: 30000
-description:  "Information on how to setup Visual Studio Code debugging manually"
+description:  "How to manually setup Visual Studio Code debugging"
 ---
 
-If instead of using the Dapr VS Code extension you wish to configure a project to use Dapr in the [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) and [launch.json](https://code.visualstudio.com/Docs/editor/debugging) files these are the manual steps.
+The [Dapr VSCode extension]({{< ref vscode-dapr-extension.md >}}) automates the setup of [VSCode debugging](https://code.visualstudio.com/Docs/editor/debugging).
 
-When developing Dapr applications, you typically use the dapr cli to start your daprized service similar to this:
+If instead you wish to manually configure the `[tasks.json](https://code.visualstudio.com/Docs/editor/tasks)` and `[launch.json](https://code.visualstudio.com/Docs/editor/debugging)` files to use Dapr, these are the steps.
+
+When developing Dapr applications, you typically use the Dapr cli to start your daprized service similar to this:
 
 ```bash
 dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 app.js
