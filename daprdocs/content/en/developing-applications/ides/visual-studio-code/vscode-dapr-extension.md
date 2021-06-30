@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Dapr Visual Studio Code extension overview"
-linkTitle: "Overview"
+linkTitle: "Dapr extension"
 weight: 10000
 description:  "How to develop and run Dapr applications with the Dapr extension"
 ---
@@ -19,37 +19,8 @@ Dapr offers a *preview* [Dapr Visual Studio Code extension](https://marketplace.
 * Requires an already existing launch.json files to be found in the VS Code workspace.
 * Example NodeJS app:
 
-
-Before scaffolding version of launch.json configurations:
+After scaffolding the launch.json should contain similar snippets:
 ```json
-{
-     "version": "0.2.0",
-     "configurations": [
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/app.js"
-        }
-}
-```
-After scaffolding version of launch.json:
-```json
-{
-     "version": "0.2.0",
-     "configurations": [
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/app.js"
-        },
         {
             "type": "pwa-node",
             "request": "launch",
@@ -61,27 +32,16 @@ After scaffolding version of launch.json:
             "preLaunchTask": "daprd-debug",
             "postDebugTask": "daprd-down"
         }
-}
 ```
-After scaffolding task.json:
+After scaffolding the task.json should contain similar snippets:
 
 ```json
-{
-	"version": "2.0.0",
-	"tasks": [
 		{
 			"appId": "nodeapp",
 			"appPort": 3500,
 			"label": "daprd-debug",
 			"type": "daprd"
-		},
-		{
-			"appId": "nodeapp",
-			"label": "daprd-down",
-			"type": "daprd-down"
 		}
-	]
-}
 ```
 
 ### Scaffold Dapr components 
