@@ -3,7 +3,7 @@ type: docs
 title: "AWS DynamoDB"
 linkTitle: "AWS DynamoDB"
 description: Detailed information on the AWS DynamoDB state store component
-aliases: 
+aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-dynamodb/"
 ---
 
@@ -29,7 +29,7 @@ spec:
     value: "abcd" # Optional
   - name: endpoint
     value: "http://localhost:8080" # Optional
-  - name: region 
+  - name: region
     value: "eu-west-1" # Optional
   - name: sessionToken
     value: "abcd" # Optional

@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "HashiCorp Consul"
+title: "HashiCorp Consul name resolution provider spec"
 linkTitle: "HashiCorp Consul"
 description: Detailed information on the HashiCorp Consul name resolution component
---- 
+---
 
 ## Configuration format
 
@@ -29,14 +29,14 @@ If Consul service registration is managed externally from Dapr you need to ensur
 
 ## Behaviour
 
-On init the Consul component will either validate the connection to the configured (or default) agent or register the service if configured to do so. The name resolution interface does not cater for an "on shutdown" pattern so please consider this if using Dapr to register services to Consul as it will not deregister services.
+On `init` the Consul component either validates the connection to the configured (or default) agent or registers the service if configured to do so. The name resolution interface does not cater for an "on shutdown" pattern so consider this when using Dapr to register services to Consul as it does not deregister services.
 
 The component resolves target apps by filtering healthy services and looks for a `DAPR_PORT` in the metadata (key is configurable) in order to retrieve the Dapr sidecar port. Consul `service.meta` is used over `service.port` so as to not interfere with existing Consul estates.
 
 
 ## Spec configuration fields
 
-As of writing the configuration spec is fixed to v1.3.0 of the Consul api
+The configuration spec is fixed to v1.3.0 of the Consul API
 
 | Field        | Required | Type | Details  | Examples |
 |--------------|:--------:|-----:|:---------|----------|
@@ -84,11 +84,11 @@ spec:
       checks:
         - name: "Dapr Health Status"
           checkID: "daprHealth:${APP_ID}"
-          interval: "15s",
+          interval: "15s"
           http: "http://${HOST_ADDRESS}:${DAPR_HTTP_PORT}/v1.0/healthz"
         - name: "Service Health Status"
           checkID: "serviceHealth:${APP_ID}"
-          interval: "15s",
+          interval: "15s"
           http: "http://${HOST_ADDRESS}:${APP_PORT}/health"
       tags:
         - "dapr"
@@ -105,7 +105,7 @@ spec:
 
 ### Advanced registration
 
-Configuring the advanced registration gives you full control over all the properties possible when registering.
+Configuring the advanced registration gives you full control over setting all the Consul properties possible when registering.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -129,7 +129,7 @@ spec:
         check:
           name: "Dapr Health Status"
           checkID: "daprHealth:${APP_ID}"
-          interval: "15s",
+          interval: "15s"
           http: "http://${HOST_ADDRESS}:${DAPR_HTTP_PORT}/v1.0/healthz"
         meta:
           DAPR_METRICS_PORT: "${DAPR_METRICS_PORT}"
@@ -142,11 +142,11 @@ spec:
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
 {{% codetab %}}
-HashiCorp offer in depth guides on how to setup Consul for different hosting models. Please check out the [self-hosted guide here](https://learn.hashicorp.com/collections/consul/getting-started)
+HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [self-hosted guide here](https://learn.hashicorp.com/collections/consul/getting-started)
 {{% /codetab %}}
 
 {{% codetab %}}
-HashiCorp offer in depth guides on how to setup Consul for different hosting models. Please check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/gs-consul-service-mesh)
+HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/gs-consul-service-mesh)
 {{% /codetab %}}
 
 {{< /tabs >}}

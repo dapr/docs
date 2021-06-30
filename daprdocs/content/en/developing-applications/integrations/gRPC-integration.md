@@ -82,7 +82,7 @@ import (
 // just for this demo
 ctx := context.Background()
 data := []byte("ping")
-  
+
 // create the client
 client, err := dapr.NewClient()
 if err != nil {

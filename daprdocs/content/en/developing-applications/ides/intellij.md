@@ -34,7 +34,7 @@ For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.
 
 ```powershell
 %USERPROFILE%\AppData\Roaming\JetBrains\IntelliJIdea2020.1\tools\
-``` 
+```
 {{% /codetab %}}
 
 
@@ -48,7 +48,7 @@ For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.
 {{% codetab %}}
 ```shell
 ~/Library/Application Support/JetBrains/IntelliJIdea2020.1/tools/
-``` 
+```
 {{% /codetab %}}
 
 
@@ -146,4 +146,8 @@ Happy debugging!
 
 ## Related links
 
+<!-- IGNORE_LINKS -->
+
 - [Change](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs) in IntelliJ configuration directory location
+
+<!-- END_IGNORE -->

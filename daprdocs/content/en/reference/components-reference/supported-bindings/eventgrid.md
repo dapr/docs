@@ -3,7 +3,7 @@ type: docs
 title: "Azure Event Grid binding spec"
 linkTitle: "Azure Event Grid"
 description: "Detailed documentation on the Azure Event Grid binding component"
-aliases: 
+aliases:
   - "/operations/components/setup-bindings/supported-bindings/eventgrid/"
 ---
 
@@ -32,7 +32,7 @@ spec:
   - name: clientSecret
     value: "[ClientSecret]"
   - name: subscriberEndpoint
-    value: "[SubscriberEndpoint]"    
+    value: "[SubscriberEndpoint]"
   - name: handshakePort
     value: [HandshakePort]
   - name: scope
@@ -60,13 +60,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | clientId | Y | Input | The client id that should be used by the binding to create or update the Event Grid Event Subscription | `"clientId"` |
 | clientSecret | Y | Input | The client id that should be used by the binding to create or update the Event Grid Event Subscription | `"clientSecret"` |
 | subscriberEndpoint | Y | Input | The https endpoint in which Event Grid will handshake and send Cloud Events. If you aren't re-writing URLs on ingress, it should be in the form of: `https://[YOUR HOSTNAME]/api/events` If testing on your local machine, you can use something like [ngrok](https://ngrok.com) to create a public endpoint. | `"https://[YOUR HOSTNAME]/api/events"` |
-| handshakePort | Y | Input | The container port that the input binding will listen on for handshakes and events | `"9000"` | 
+| handshakePort | Y | Input | The container port that the input binding will listen on for handshakes and events | `"9000"` |
 | scope | Y | Input | The identifier of the resource to which the event subscription needs to be created or updated. See [here](#scope) for more details | `"/subscriptions/{subscriptionId}/"` |
 | eventSubscriptionName | N | Input | The name of the event subscription. Event subscription names must be between 3 and 64 characters in length and should use alphanumeric letters only | `"name"` |
 | accessKey | Y | Output | The Access Key to be used for publishing an Event Grid Event to a custom topic | `"accessKey"` |
 | topicEndpoint | Y | Output | The topic endpoint in which this output binding should publish events | `"topic-endpoint"` |
 
-### Scope 
+### Scope
 
 Scope is the identifier of the resource to which the event subscription needs to be created or updated. The scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider namespace, or an Event Grid topic. For example:
 - `'/subscriptions/{subscriptionId}/'` for a subscription
@@ -76,7 +76,7 @@ Scope is the identifier of the resource to which the event subscription needs to
 > Values in braces {} should be replaced with actual values.
 ## Binding support
 
-This component supports both **input and output** binding interfaces. 
+This component supports both **input and output** binding interfaces.
 
 This component supports **output binding** with the following operations:
 
@@ -130,8 +130,9 @@ controller:
 Then install NGINX ingress controller to your Kubernetes cluster with Helm 3 using the annotations
 
 ```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-helm install nginx stable/nginx-ingress -f ./dapr-annotations.yaml -n default
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install nginx-ingress ingress-nginx/ingress-nginx -f ./dapr-annotations.yaml -n default
 # Get the public IP for the ingress controller
 kubectl get svc -l component=controller -o jsonpath='Public IP is: {.items[0].status.loadBalancer.ingress[0].ip}{"\n"}'
 ```
@@ -246,7 +247,7 @@ $ kubectl logs nginx-nginx-ingress-controller-649df94867-fp6mg nginx-ingress-con
 $ kubectl delete pod nginx-nginx-ingress-controller-649df94867-fp6mg
 
 # Check the logs again - it should start returning 200
-# .."OPTIONS /api/events HTTP/1.1" 200.. 
+# .."OPTIONS /api/events HTTP/1.1" 200..
 ```
 
 ## Related links

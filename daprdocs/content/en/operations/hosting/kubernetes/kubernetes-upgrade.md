@@ -9,28 +9,18 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 ## Prerequisites
 
 - [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- [Helm 3](https://github.com/helm/helm/releases) (if using Helm) 
+- [Helm 3](https://github.com/helm/helm/releases) (if using Helm)
 
-## Upgrade existing cluster to 1.1.2
+## Upgrade existing cluster to 1.2.0
 There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 ### Dapr CLI
 
-The example below shows how to upgrade to version 1.1.2:
+The example below shows how to upgrade to version 1.2.0:
 
   ```bash
-  dapr upgrade -k --runtime-version=1.1.2
+  dapr upgrade -k --runtime-version=1.2.0
   ```
-
-{{% alert title="Note" color="warning" %}}
-If you are using Dapr CLI v1.1.0 there is a known issue where mTLS will be enabled by default, even on clusters where it is disabled. If your cluster has mTLS disabled, and you would like it to stay disabled, add `--set global.mtls.enabled=false` to your upgrade command:
-
-```bash
-dapr upgrade -k --runtime-version 1.1.1 --set global.mtls.enabled=false
-```
-
-You can track the issue here: [#664](https://github.com/dapr/cli/issues/664).
-{{% /alert %}}
 
 You can provide all the available Helm chart configurations using the Dapr CLI.
 See [here](https://github.com/dapr/cli#supplying-helm-values) for more info.
@@ -53,7 +43,7 @@ To resolve this issue please run the follow command to upgrade the CustomResourc
 kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/5a15b3e0f093d2d0938b12f144c7047474a290fe/charts/dapr/crds/configuration.yaml
 ```
 
-Then proceed with the `dapr upgrade --runtime-version 1.1.2 -k` command as above.
+Then proceed with the `dapr upgrade --runtime-version 1.2.0 -k` command as above.
 
 ### Helm
 
@@ -64,7 +54,7 @@ From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive 
    ```bash
    helm repo update
    ```
-   
+
    ```bash
    helm upgrade dapr dapr/dapr --version [NEW VERSION] --namespace dapr-system --wait
    ```
@@ -74,7 +64,7 @@ From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive 
 
    ```bash
    kubectl get pods -n dapr-system -w
-   
+
    NAME                                     READY   STATUS    RESTARTS   AGE
    dapr-dashboard-69f5c5c867-mqhg4          1/1     Running   0          42s
    dapr-operator-5cdd6b7f9c-9sl7g           1/1     Running   0          41s

@@ -4,7 +4,7 @@ title: "Pub/sub brokers component specs"
 linkTitle: "Pub/sub brokers"
 weight: 2000
 description: The supported pub/sub brokers that interface with Dapr
-aliases: 
+aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/"
 no_list: true
 ---
@@ -30,14 +30,9 @@ Table captions:
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | v1 | 1.0 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | GA  | v1 | 1.0 |
 
-### Alibaba Cloud
-| Name                                              | Status | Component version | Since |
-|---------------------------------------------------|--------| ---- |---------------|
-| [Alibaba Cloud RocketMQ]({{< ref setup-alicloud-rocketmq.md >}})           |  Alpha  | v1 | 1.2 |
-
 ### Amazon Web Services (AWS)
 
-| Name                                              | Status | Component version | Since | 
+| Name                                              | Status | Component version | Since |
 |---------------------------------------------------|--------| ---- |---------------|
 | [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Alpha  | v1 | 1.0 |
 
