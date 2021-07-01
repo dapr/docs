@@ -65,7 +65,7 @@ Dapr supports two types of bulk operations - **bulk** or **multi**. You can grou
 Read the [API reference]({{< ref state_api.md >}}) to learn how use bulk and multi options.
 
 ### Actor state
-Transactional state stores can be used to store actor state. To specify which state store to be used for actors, specify value of property `actorStateStore` as `true` in the metadata section of the state store component. Actors state is stored with a specific scheme in transactional state stores, which allows for consistent querying. Read the [API reference]({{< ref state_api.md >}}) to learn more about state stores for actors and the [actors API reference]({{< ref actors_api.md >}})
+Transactional state stores can be used to store actor state. To specify which state store to be used for actors, specify value of property `actorStateStore` as `true` in the metadata section of the state store component. Actors state is stored with a specific scheme in transactional state stores, which allows for consistent querying. Only a single state store component can be used as the statestore for all actors. Read the [API reference]({{< ref state_api.md >}}) to learn more about state stores for actors and the [actors API reference]({{< ref actors_api.md >}})
 
 ### Query state store directly
 

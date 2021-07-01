@@ -115,7 +115,7 @@ The following table lists the properties for HTTP handlers:
 | name     | string | Name of the middleware component
 | type     | string | Type of middleware component
 
-See [Middleware pipelines]({{< ref "middleware-concept.md" >}}) for more information
+See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
 
 #### Scope secret store access
 See the [Scoping secrets]({{< ref "secret-scope.md" >}}) guide for information and examples on how to scope secrets to an application.
