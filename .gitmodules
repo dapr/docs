@@ -16,4 +16,4 @@
 	branch = v1.0_content
 [submodule "sdkdocs/go"]
 	path = sdkdocs/go
-	url = git@github.com:dapr/go-sdk.git
+	url = https://github.com/dapr/go-sdk.git
