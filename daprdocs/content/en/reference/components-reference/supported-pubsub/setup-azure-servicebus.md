@@ -22,38 +22,38 @@ spec:
   metadata:
   - name: connectionString # Required
     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
-  - name: timeoutInSec # Optional
-    value: 60
-  - name: handlerTimeoutInSec # Optional
-    value: 60
-  - name: disableEntityManagement # Optional
-    value: "false"
-  - name: maxDeliveryCount # Optional
-    value: 3
-  - name: lockDurationInSec # Optional
-    value: 60
-  - name: lockRenewalInSec # Optional
-    value: 20
-  - name: maxActiveMessages # Optional
-    value: 2000
-  - name: maxActiveMessagesRecoveryInSec # Optional
-    value: 2
-  - name: maxConcurrentHandlers # Optional
-    value: 10
-  - name: prefetchCount # Optional
-    value: 5
-  - name: defaultMessageTimeToLiveInSec # Optional
-    value: 10
-  - name: autoDeleteOnIdleInSec # Optional
-    value: 10
-  - name: maxReconnectionAttempts # Optional
-    value: 30
-  - name: connectionRecoveryInSec # Optional
-    value: 2
-  - name: publishMaxRetries # Optional
-    value: 5
-  - name: publishInitialRetryInternalInMs # Optional
-    value: 500
+  # - name: timeoutInSec # Optional
+  #   value: 60
+  # - name: handlerTimeoutInSec # Optional
+  #   value: 60
+  # - name: disableEntityManagement # Optional
+  #   value: "false"
+  # - name: maxDeliveryCount # Optional
+  #   value: 3
+  # - name: lockDurationInSec # Optional
+  #   value: 60
+  # - name: lockRenewalInSec # Optional
+  #   value: 20
+  # - name: maxActiveMessages # Optional
+  #   value: 2000
+  # - name: maxActiveMessagesRecoveryInSec # Optional
+  #   value: 2
+  # - name: maxConcurrentHandlers # Optional
+  #   value: 10
+  # - name: prefetchCount # Optional
+  #   value: 5
+  # - name: defaultMessageTimeToLiveInSec # Optional
+  #   value: 10
+  # - name: autoDeleteOnIdleInSec # Optional
+  #   value: 10
+  # - name: maxReconnectionAttempts # Optional
+  #   value: 30
+  # - name: connectionRecoveryInSec # Optional
+  #   value: 2
+  # - name: publishMaxRetries # Optional
+  #   value: 5
+  # - name: publishInitialRetryInternalInMs # Optional
+  #   value: 500
 ```
 
 > __NOTE:__ The above settings are shared across all topics that use this component.
