@@ -127,7 +127,7 @@ spec:
       key: redis-password
 ```
 
-This example uses the the kubernetes secret that was created when setting up a cluster with the above instructions.
+This example uses the kubernetes secret that was created when setting up a cluster with the above instructions.
 
 {{% alert title="Other stores" color="primary" %}}
 If using a state store other than Redis, refer to the [supported state stores]({{< ref supported-state-stores >}}) for information on what options to set.
@@ -155,7 +155,7 @@ spec:
       key: redis-password
 ```
 
-This example uses the the kubernetes secret that was created when setting up a cluster with the above instructions.
+This example uses the kubernetes secret that was created when setting up a cluster with the above instructions.
 
 {{% alert title="Other stores" color="primary" %}}
 If using a pub/sub message broker other than Redis, refer to the [supported pub/sub message brokers]({{< ref supported-pubsub >}}) for information on what options to set.
