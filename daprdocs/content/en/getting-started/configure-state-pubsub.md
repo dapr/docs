@@ -30,7 +30,7 @@ Dapr can use any Redis instance - either containerized on your local dev machine
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
 {{% codetab %}}
-Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set and can skip to the [next steps](next steps)
+Redis is automatically installed in self-hosted environments by the Dapr CLI as part of the initialization process. You are all set and can skip to the [next steps](#next-steps)
 {{% /codetab %}}
 
 {{% codetab %}}
