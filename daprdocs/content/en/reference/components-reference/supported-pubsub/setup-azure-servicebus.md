@@ -66,7 +66,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y  | Connection-string for the Service Bus  | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
+| connectionString   | Y  | Shared access policy connection-string for the Service Bus  | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
 | timeoutInSec       | N  | Timeout for sending messages and management operations. Default: `60` |`30`
 | handlerTimeoutInSec| N  |  Timeout for invoking app handler. # Optional. Default: `60` | `30`
 | disableEntityManagement | N  | When set to true, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
