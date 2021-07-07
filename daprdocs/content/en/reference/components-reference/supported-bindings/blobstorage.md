@@ -174,10 +174,16 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 {
   "operation": "get",
   "metadata": {
-    "blobName": "myblob"
+    "blobName": "myblob",
+    "withUserMetadata": "true"
   }
 }
 ```
+
+The metadata parameters are:
+
+- `blobName` - the name of the blob
+- `withUserMetadata`- (optional) defines if the user metadata should be returned or not, defaults to: false
 
 #### Example
 
@@ -200,7 +206,10 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 
 #### Response
 
-The response body contains the value stored in the blob object.
+The response body contains the value stored in the blob object. If enabled, the user defined metadata will be returned as HTTP headers in the form:
+
+`Metadata.key1: value1`
+`Metadata.key2: value2`
 
 ### Delete blob
 
@@ -214,6 +223,10 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
   }
 }
 ```
+
+The metadata parameters are:
+
+- `blobName` - the name of the blob
 
 #### Examples
 
