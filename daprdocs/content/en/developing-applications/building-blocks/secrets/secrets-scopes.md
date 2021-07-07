@@ -18,7 +18,7 @@ Watch this [video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 
-This example uses Kubernetes. The native Kubernetes secret store is added to you Dapr application by default. In some scenarios it may be necessary to deny access to Dapr secrets for a given application. To add this configuration follow the steps below:
+This example uses Kubernetes. A Kubernetes secret store with name `kubernetes` is added to you Dapr application by default, however, it is strongly encouraged to instead explictly define a Kubernetes secret store (example used here: `mycustomsecretstore`). In some scenarios it may be necessary to deny access to Dapr secrets for a given application. To add this configuration follow the steps below:
 
 Define the following `appconfig.yaml` configuration and apply it to the Kubernetes cluster using the command `kubectl apply -f appconfig.yaml`.
 
@@ -31,6 +31,8 @@ spec:
   secrets:
     scopes:
       - storeName: kubernetes
+        defaultAccess: deny
+      - storeName: mycustomsecreststore
         defaultAccess: deny
 ```
 
