@@ -1,0 +1,23 @@
+{{ $file := .Get "file" }}
+{{ $filePath := (path.Join "/static/code/" $file ) }}
+{{ $fileContents := $filePath | readFile }}
+{{ $lang := .Get "lang" | default "txt" }}
+{{ $embed := .Get "embed" | default true }}
+{{ if $embed }}
+{{ if isset .Params "marker" }}
+    {{ $marker := .Get "marker" }}
+    {{ $regex := printf "(?s).*%s%s%s.*" $marker `(\n)?(?P<inner>.*?)(\n\s+)?` $marker }}
+    {{ $fileContents = replaceRE $regex "$inner" $fileContents}}
+{{ end }}
+{{ range $key, $value := $.Params }}
+    {{ if hasPrefix $key "replace-key" }}
+        {{ $replace := $value }}
+        {{ $replaceValueParameter := printf "replace-value-%s" (slicestr $key (len "replace-key-")) }}
+        <p>{{ $replaceValueParameter }}</p>
+        {{ $replaceWith := index $.Params $replaceValueParameter }}
+        {{ $regex := printf "(?s)%s%s%s" $replace `(\n)?(?P<inner>.*?)(\n\s+)?` $replace }}
+        {{ $fileContents = replaceRE $regex $replaceWith $fileContents}}
+    {{ end }}
+{{ end }}
+{{ (print "```" $lang "\n" $fileContents "\n```") | markdownify }}
+{{ end }}
