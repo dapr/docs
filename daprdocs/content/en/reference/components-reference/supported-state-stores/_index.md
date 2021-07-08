@@ -26,7 +26,7 @@ The following stores are supported, at various levels, by the Dapr state managem
 
 ### Generic
 
-| Name                                                           | CRUD | Transactional | ETag | TTL | Actors | Status | Component version | Since |
+| Name                                                           | CRUD | Transactional | ETag | [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | Status | Component version | Since |
 |----------------------------------------------------------------|------|---------------------|------|-----|------|--------| -------|------|
 | [Aerospike]({{< ref setup-aerospike.md >}})                    | ✅   | ❌                  | ✅    | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [Apache Cassandra]({{< ref setup-cassandra.md >}})             | ✅   | ❌                  | ❌    | ✅ | ❌ | Alpha  | v1 | 1.0 |
@@ -44,18 +44,18 @@ The following stores are supported, at various levels, by the Dapr state managem
 
 
 ### Amazon Web Services (AWS)
-| Name                                                             | CRUD | Transactional | ETag | TTL | Actors | Status | Component version | Since |
+| Name                                                           | CRUD | Transactional | ETag | [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | Status | Component version | Since |
 |------------------------------------------------------------------|------|---------------------|------|-----|--------|-----|-----|-------|
 | [AWS DynamoDB]({{< ref setup-dynamodb.md>}})                                                      | ✅   | ❌                   | ❌   | ❌ | ❌   |  Alpha | v1 | 1.0 |
 
 ### Google Cloud Platform (GCP)
-| Name                                                             | CRUD | Transactional | ETag | TTL | Actors | Status | Component version | Since |
+| Name                                                           | CRUD | Transactional | ETag | [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | Status | Component version | Since |
 |------------------------------------------------------------------|------|---------------------|------|-----|--------|-----|-----|-------|
 | [GCP Firestore]({{< ref setup-firestore.md >}})       | ✅   | ❌                  | ❌     | ❌ | ❌     | Alpha  | v1 | 1.0 |
 
 ### Microsoft Azure
 
-| Name                                                             | CRUD | Transactional | ETag | TTL | Actors | Status | Component version | Since |
+| Name                                                           | CRUD | Transactional | ETag | [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | Status | Component version | Since |
 |------------------------------------------------------------------|------|---------------------|------|-----|--------|-----|-----|-------|
 | [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})     | ✅   | ❌                  | ✅    | ❌ | ❌    | GA  | v1 | 1.0 |
 | [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅   | ✅                  | ✅    | ✅ | ✅    | GA  | v1 | 1.0 |
