@@ -25,6 +25,7 @@ dapr list [flags]
 | --- | --- | --- | --- |
 | `--help`, `-h` | | | Print this help message |
 | `--kubernetes`, `-k` | | `false` | List all Dapr pods in a Kubernetes cluster |
+| `--output`, `-o` | | `table` | The output format of the list. Valid values are: `json`, `yaml`, or `table`
 
 ## Examples
 
@@ -36,4 +37,9 @@ dapr list
 ### List Dapr instances in Kubernetes mode
 ```bash
 dapr list -k
+```
+
+### List Dapr instances in JSON format
+```bash
+dapr list -o json
 ```
