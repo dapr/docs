@@ -24,7 +24,6 @@ If you do not have access to the `sudo` command or your username is not in the `
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
 ```
 {{% /alert %}}
-```
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -39,6 +38,7 @@ If you do not have admin rights you can install Dapr to an alternate directory v
 ```powershell
 $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$HOME/dapr"
 ```
+{{% /alert %}}
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -65,10 +65,7 @@ If you do not have access to the `sudo` command or your username is not in the `
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
 ```
-
 {{% /alert %}}
-
-
 {{% /codetab %}}
 
 {{% codetab %}}
