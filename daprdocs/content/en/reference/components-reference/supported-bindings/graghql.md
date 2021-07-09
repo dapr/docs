@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup GraphQL binding create a component of type `bindings.graphql`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup GraphQL binding create a component of type `bindings.graphql`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration. To separate normal config settings (e.g. endpoint) from headers, "header:" is used a prefix on the header names.
 
 
 ```yaml
@@ -22,9 +22,11 @@ spec:
   version: v1
   metadata:
     - name: endpoint
-      value:  #required    
-    - name: header:xyz # e.g. header:x-hasura-access-key
-      value:
+      value:  http://localhost:8080/v1/graphql     
+    - name: header:x-hasura-access-key
+      value: adminkey
+    - name: header:Cache-Control
+      value: no-cache
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -35,8 +37,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| endpoint | Y | Output | GraphQL endpoint string See [here](#url-format) for more details | `"http://localhost:4000/graphql"` |
-| header | N | Output | GraphQL header | `"header:Cache-Control"` |
+| endpoint | Y | Output | GraphQL endpoint string See [here](#url-format) for more details | `"http://localhost:4000/graphql/graphql"` |
+| header | N | Output | GraphQL header | `"no-cache"` |
 
 ### Endpoint and Header format
 
