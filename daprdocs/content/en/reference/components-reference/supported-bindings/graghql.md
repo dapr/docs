@@ -38,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | endpoint | Y | Output | GraphQL endpoint string See [here](#url-format) for more details | `"http://localhost:4000/graphql/graphql"` |
-| header | N | Output | GraphQL header | `"no-cache"` |
+| header:[HEADERKEY] | N | Output | GraphQL header. Specify the header key in the `name`, and the header value in the `value`. | `"no-cache"` (see above) |
 
 ### Endpoint and Header format
 
