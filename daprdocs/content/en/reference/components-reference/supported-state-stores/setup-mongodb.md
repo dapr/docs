@@ -78,9 +78,7 @@ docker run --name some-mongo -d mongo
 
 You can then interact with the server using `localhost:27017`.
 
-{{% alert title="Note" %}}
-Please create a database named `daprStore` in case the `databaseName` is not specified in the component definition. 
-{{% /alert %}}
+If you do not specify a `databaseName` value in your component definition, make sure to create a database named `daprStore`. 
 
 {{% /codetab %}}
 
