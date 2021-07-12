@@ -58,6 +58,7 @@ For M1 Macs, homebrew is not supported. You will need to use the dapr install sc
 ```bash
 softwareupdate --install-rosetta
 ```
+{{% /alert %}}
 
 {{% alert title="Installation without `sudo`" color="primary" %}}
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
