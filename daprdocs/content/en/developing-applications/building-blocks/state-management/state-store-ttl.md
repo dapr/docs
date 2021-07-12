@@ -2,7 +2,7 @@
 type: docs
 title: "State Time-to-Live (TTL)"
 linkTitle: "State TTL"
-weight: 6000
+weight: 500
 description: "Manage state with time-to-live."
 ---
 
