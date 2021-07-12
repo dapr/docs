@@ -23,7 +23,7 @@ When a TTL is not specified the default behavior of the state store is retained.
 
 To explictly persist a state (ignoring any TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
 
-### Supported components
+## Supported components
 
 Please refer to the TTL column in the tables at [state store components]({{< ref supported-state-stores >}}).
 
