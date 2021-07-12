@@ -9,7 +9,7 @@ description: "Detailed documentation on the Zeebe command binding component"
 
 To setup Zeebe command binding create a component of type `bindings.zeebe.command`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-See [this](https://docs.camunda.io/docs/product-manuals/zeebe/zeebe-overview/) for Zeebe documentation.
+See [this](https://docs.camunda.io/docs/product-manuals/zeebe/zeebe-overview) for Zeebe documentation.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
