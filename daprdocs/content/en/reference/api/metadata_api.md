@@ -18,7 +18,7 @@ Gets the Dapr sidecar information provided by the Metadata Endpoint.
 
 ### HTTP Request
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/metadata
 ```
 
@@ -103,7 +103,7 @@ Adds a custom attribute to the Dapr sidecar information stored by the Metadata E
 
 ### HTTP Request
 
-```http
+```
 PUT http://localhost:<daprPort>/v1.0/metadata/attributeName
 ```
 

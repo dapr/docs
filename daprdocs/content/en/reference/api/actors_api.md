@@ -381,7 +381,7 @@ Deletes a timer for an actor.
 
 #### HTTP Request
 
-```http
+```
 DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
