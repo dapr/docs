@@ -13,36 +13,16 @@ Dapr offers a *preview* [Dapr Visual Studio Code extension](https://marketplace.
 
 ## Features
 
-### Scaffold Dapr tasks 
+### Scaffold Dapr debugging tasks
 
-* Helps scaffold VS Code task.json and launch.json configurations needed to debug your application within the Dapr environment.
-* Requires an already existing launch.json files to be found in the VS Code workspace.
-* Example NodeJS app:
+The Dapr extension helps you debug your applications with Dapr using Visual Studio Code's [built-in debugging capability](https://code.visualstudio.com/Docs/editor/debugging).
 
-After scaffolding the launch.json should contain similar snippets:
-```json
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Program with Dapr",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/app.js",
-            "preLaunchTask": "daprd-debug",
-            "postDebugTask": "daprd-down"
-        }
-```
-After scaffolding the task.json should contain similar snippets:
+Using the `Dapr: Scaffold Dapr Tasks` [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) operation, you can update your existing `task.json` and `launch.json` files to launch and configure the Dapr sidecar when you begin debugging.
 
-```json
-		{
-			"appId": "nodeapp",
-			"appPort": 3500,
-			"label": "daprd-debug",
-			"type": "daprd"
-		}
-```
+1. Make sure you have a launch configuration set for your app. ([Learn more](https://code.visualstudio.com/Docs/editor/debugging))
+1. Open the Command Palette with `Ctrl+Shift+P`
+1. Select `Dapr: Scaffold Dapr Tasks`
+1. Run your app and the Dapr sidecar with `F5` or via the Run view.
 
 ### Scaffold Dapr components 
 * Generates the Dapr component assets needed for general Dapr applications.
