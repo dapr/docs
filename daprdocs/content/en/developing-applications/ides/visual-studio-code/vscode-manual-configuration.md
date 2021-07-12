@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Visual Studio Code manual debugging configuration"
-linkTitle: "Manual debugging configuration"
+linkTitle: "Manual debugging"
 weight: 30000
 description:  "How to manually setup Visual Studio Code debugging"
 ---
