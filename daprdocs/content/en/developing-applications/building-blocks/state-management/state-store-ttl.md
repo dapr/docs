@@ -92,7 +92,7 @@ $app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterf
 
 {{< /tabs >}}
 
-See [this guide]({{< ref pubsub_api.md >}}) for a reference on the pub/sub API.
+See [this guide]({{< ref state_api.md >}}) for a reference on the state API.
 
 ## Related links
 
