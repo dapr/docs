@@ -68,6 +68,7 @@ If you don’t wish to send usage data to Microsoft, you can set the `telemetry.
 ## Additional resources
 
 ### Debugging multiple Dapr applications at the same time
+
 Using the VS Code extension, you can debug multiple Dapr applications at the same time with [Multi-target debugging](https://code.visualstudio.com/docs/editor/debugging#_multitarget-debugging).
 
 ### Community call demo
