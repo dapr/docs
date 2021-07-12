@@ -19,7 +19,7 @@ Some state stores can specify a default expiration on a per-table/container basi
 When state time-to-live has native support in the state store component, Dapr simply forwards the time-to-live configuration without adding any extra logic, keeping predictable behavior. This is helpful when the expired state is handled differently by the component.
 When a TTL is not specified the default behavior of the state store is retained.
 
-### Persisting state (ignoring an existing TTL)
+## Persisting state (ignoring an existing TTL)
 
 To explictly persist a state (ignoring any TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
 
