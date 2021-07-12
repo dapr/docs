@@ -41,9 +41,10 @@ The Applications view shows Dapr applications running locally on your machine.
 
 <br /><img src="/images/vscode-extension-view.png" alt="Screenshot of the Dapr VSCode extension view running applications option" width="800">
 
-### Invoke Dapr application methods
-* Allows users to select a Dapr application found in the tree view "Applications" and invoke GET/POST methods by name.
-* Allows users to specify an optional payload for POST methods
+### Invoke Dapr applications
+
+Within the Applications view, users can right-click and invoke Dapr apps via GET or POST methods, optionally specifying a payload.
+
 <br /><img src="/images/vscode-extension-invoke.png" alt="Screenshot of the Dapr VSCode extension invoke option" width="800">
 
 ### Publish events to Dapr applications
