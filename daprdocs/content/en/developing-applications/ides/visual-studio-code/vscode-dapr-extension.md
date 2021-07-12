@@ -47,10 +47,12 @@ The Applications view shows Dapr applications running locally on your machine.
 <br /><img src="/images/vscode-extension-invoke.png" alt="Screenshot of the Dapr VSCode extension invoke option" width="800">
 
 ### Publish events to Dapr applications
-* Within the Applications view, users can right-click and publish messages to a running Dapr application, specifying the topic and payload.
-Users can also publish messages to all running applications.
-  <br /><img src="/images/vscode-extension-publish.png" alt="Screenshot of the Dapr VSCode extension publish option" width="800">
 
+Within the Applications view, users can right-click and publish messages to a running Dapr application, specifying the topic and payload.
+
+Users can also publish messages to all running applications.
+
+  <br /><img src="/images/vscode-extension-publish.png" alt="Screenshot of the Dapr VSCode extension publish option" width="800">
 
 ## Telemetry
 
