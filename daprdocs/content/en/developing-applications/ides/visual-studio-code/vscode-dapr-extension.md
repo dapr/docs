@@ -36,7 +36,9 @@ To create a dedicated components folder with the default `statestore`, `pubsub`,
 1. Run your application with `dapr run --components-path ./components -- ...`
 
 ### View running Dapr applications
-* The Applications view shows Dapr applications running locally on your machine.
+
+The Applications view shows Dapr applications running locally on your machine.
+
 <br /><img src="/images/vscode-extension-view.png" alt="Screenshot of the Dapr VSCode extension view running applications option" width="800">
 
 ### Invoke Dapr application methods
