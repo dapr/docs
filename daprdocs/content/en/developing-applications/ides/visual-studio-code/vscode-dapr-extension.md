@@ -24,24 +24,16 @@ Using the `Dapr: Scaffold Dapr Tasks` [Command Palette](https://code.visualstudi
 1. Select `Dapr: Scaffold Dapr Tasks`
 1. Run your app and the Dapr sidecar with `F5` or via the Run view.
 
-### Scaffold Dapr components 
-* Generates the Dapr component assets needed for general Dapr applications.
-* Provides a Component folder in your VS Code workspace that contains pubsub, statestore and a zipkin yaml file.
-* Example pubsub file:
+### Scaffold Dapr components
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: pubsub
-spec:
-  type: pubsub.redis
-  metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
-```
+When adding Dapr to your application, you may want to have a dedicated components directory, separate from the default components initialized as part of `dapr init`.
+
+To create a dedicated components folder with the default `statestore`, `pubsub`, and `zipkin` components, use the `Dapr: Scaffold Dapr Components` [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) operation.
+
+1. Open your application directory in Visual Studio Code
+1. Open the Command Palette with `Ctrl+Shift+P`
+1. Select `Dapr: Scaffold Dapr Components`
+1. Run your application with `dapr run --components-path ./components -- ...`
 
 ### View running Dapr applications
 * The Applications view shows Dapr applications running locally on your machine.
