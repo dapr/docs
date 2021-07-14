@@ -65,12 +65,8 @@ Run the following command to launch a Dapr sidecar that will listen on port 3500
 dapr run --app-id myapp --dapr-http-port 3500 --components-path ./my-components
 ```
 
-*note*: 
-If you follow [previous step]({{<ref get-started-api.md>}}) completely without stop the running sidecar, and run above command in new terminal, then you will get error message like below:
-```bash
-dapr with ID myapp is already running
-```
-You could fix this problem by "Control-C" to stop the running sidecar in previous terminal. 
+> If you encounter a error message stating the app ID is already in use, it may be that the sidecar you ran in the previous step is still running. Make sure you stop the sidecar before running the above command (e.g. using "Control-C").
+
 ## Step 4: Get a secret
 
 In a separate terminal run:
