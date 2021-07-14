@@ -71,6 +71,14 @@ id = "UA-149338238-3"
     source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
     target = "content/contributing/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/go/daprdocs/content/en/go-sdk-docs"
+    target = "content/developing-applications/sdks/go"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/go/daprdocs/content/en/go-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
 
   [[module.mounts]]
     source = "../translations/docs-zh/content/zh-hans"
