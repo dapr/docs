@@ -18,7 +18,7 @@ Gets the Dapr sidecar information provided by the Metadata Endpoint.
 
 ### HTTP Request
 
-```http
+```
 GET http://localhost:<daprPort>/v1.0/metadata
 ```
 
