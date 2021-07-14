@@ -16,12 +16,6 @@ When developing Dapr applications, you typically use the Dapr cli to start your 
 dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 app.js
 ```
 
-This will generate the components yaml files (if they don't exist) so that your service can interact with the local redis container. This is great when you are just getting started but what if you want to attach a debugger to your service and step through the code? This is where you can use the dapr runtime (daprd) to help facilitate this.
-
-{{% alert title="Note" color="primary" %}}
-The dapr runtime (daprd) will not automatically generate the components yaml files for Redis. These will need to be created manually or you will need to run the dapr cli (dapr) once in order to have them created automatically.
-{{% /alert %}}
-
 One approach to attaching the debugger to your service is to first run daprd with the correct arguments from the command line and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
 
 Using the [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) and [launch.json](https://code.visualstudio.com/Docs/editor/debugging) files in Visual Studio Code, you can simplify the process and request that VS Code kick off the daprd process prior to launching the debugger.

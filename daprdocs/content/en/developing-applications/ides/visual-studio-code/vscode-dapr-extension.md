@@ -7,7 +7,7 @@ description:  "How to develop and run Dapr applications with the Dapr extension"
 ---
 
 
-Dapr offers a *preview* [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) for local development and debugging of your Dapr applications.
+Dapr offers a *preview* [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) for local development which enables users a variety of features related to better managing their Dapr applications and debugging of your Dapr applications for all supported Dapr languages which are .NET, Go, PHP, Python and Java.
 
 <a href="vscode:extension/ms-azuretools.vscode-dapr" class="btn btn-primary" role="button">Open in VSCode</a>
 
@@ -20,9 +20,9 @@ The Dapr extension helps you debug your applications with Dapr using Visual Stud
 Using the `Dapr: Scaffold Dapr Tasks` [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) operation, you can update your existing `task.json` and `launch.json` files to launch and configure the Dapr sidecar when you begin debugging.
 
 1. Make sure you have a launch configuration set for your app. ([Learn more](https://code.visualstudio.com/Docs/editor/debugging))
-1. Open the Command Palette with `Ctrl+Shift+P`
-1. Select `Dapr: Scaffold Dapr Tasks`
-1. Run your app and the Dapr sidecar with `F5` or via the Run view.
+2. Open the Command Palette with `Ctrl+Shift+P`
+3. Select `Dapr: Scaffold Dapr Tasks`
+4. Run your app and the Dapr sidecar with `F5` or via the Run view.
 
 ### Scaffold Dapr components
 
@@ -31,9 +31,9 @@ When adding Dapr to your application, you may want to have a dedicated component
 To create a dedicated components folder with the default `statestore`, `pubsub`, and `zipkin` components, use the `Dapr: Scaffold Dapr Components` [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) operation.
 
 1. Open your application directory in Visual Studio Code
-1. Open the Command Palette with `Ctrl+Shift+P`
-1. Select `Dapr: Scaffold Dapr Components`
-1. Run your application with `dapr run --components-path ./components -- ...`
+2. Open the Command Palette with `Ctrl+Shift+P`
+3. Select `Dapr: Scaffold Dapr Components`
+4. Run your application with `dapr run --components-path ./components -- ...`
 
 ### View running Dapr applications
 
@@ -54,17 +54,6 @@ Within the Applications view, users can right-click and publish messages to a ru
 Users can also publish messages to all running applications.
 
   <br /><img src="/images/vscode-extension-publish.png" alt="Screenshot of the Dapr VSCode extension publish option" width="800">
-
-## Telemetry
-
-### Data collection
-
-The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described [in the repository](https://github.com/microsoft/vscode-dapr). There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft's privacy statement. Microsoft's privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data collection and use in the help documentation and privacy statement. Your use of the software operates as your consent to these practices.
-
-### Disabling Telemetry
-
-If you don’t wish to send usage data to Microsoft, you can set the `telemetry.enableTelemetry` setting to `false`. Learn more in the VSCode [FAQ](https://code.visualstudio.com/docs/supporting/faq#_how-to-disable-telemetry-reporting).
-
 ## Additional resources
 
 ### Debugging multiple Dapr applications at the same time
