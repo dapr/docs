@@ -17,13 +17,12 @@ This command installs the latest linux Dapr CLI to `/usr/local/bin`:
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 
-{{% alert title="Installation without `sudo`" color="primary" %}}
+### Installation without `sudo`"
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
 ```
-{{% /alert %}}
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -32,13 +31,12 @@ This Command Prompt command installs the latest windows Dapr cli to `C:\dapr` an
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 
-{{% alert title="Installation without administrative rights" color="primary" %}}
+### Installation without administrative rights
 If you do not have admin rights you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
 
 ```powershell
 $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$HOME/dapr"
 ```
-{{% /alert %}}
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -52,21 +50,19 @@ Or you can install via [Homebrew](https://brew.sh):
 brew install dapr/tap/dapr-cli
 ```
 
-{{% alert title="Note for M1 Macs" color="primary" %}}
+### Note for M1 Macs
 For M1 Macs, homebrew is not supported. You will need to use the dapr install script and have the rosetta amd64 compatibility layer installed. If you do not have it installed already, you can run the following:
 
 ```bash
 softwareupdate --install-rosetta
 ```
-{{% /alert %}}
 
-{{% alert title="Installation without `sudo`" color="primary" %}}
+### Installation without `sudo`
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
 ```
-{{% /alert %}}
 {{% /codetab %}}
 
 {{% codetab %}}
