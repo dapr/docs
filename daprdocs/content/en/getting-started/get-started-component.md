@@ -55,7 +55,7 @@ spec:
     value: ":"
 ```
 
-You can see that the above file definition has a `type: secretstores.local.file` which tells Dapr to use the local file component as a secret store. The metadata fields provide component specific information needed to work with this component (in this case, the path to the secret store JSON relative to where you started your app from.)
+You can see that the above file definition has a `type: secretstores.local.file` which tells Dapr to use the local file component as a secret store. The metadata fields provide component specific information needed to work with this component (in this case, the path to the secret store JSON is relative to where you call `dapr run` from.)
 
 ## Step 3: Run the Dapr sidecar
 
