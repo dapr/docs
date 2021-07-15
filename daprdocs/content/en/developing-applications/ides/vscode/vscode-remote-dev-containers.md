@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Visual Studio Code remote dev containers"
+title: "Developing Dapr applications with remote dev containers"
 linkTitle: "Remote dev containers"
 weight: 20000
 description:  "How to setup a remote dev container environment with Dapr"
@@ -8,7 +8,7 @@ description:  "How to setup a remote dev container environment with Dapr"
 
 The Visual Studio Code [Remote Containers extension](https://code.visualstudio.com/docs/remote/containers) lets you use a Docker container as a full-featured development environment without installing any additional frameworks or packages to your local filesystem.
 
-Dapr has pre-built Docker remote containers for each of the language SDKs. You can pick the one of your choice for a ready made environment. Note these pre-built containers automatically update to the latest Dapr release.
+Dapr has pre-built Docker remote containers for NodeJS and C#. You can pick the one of your choice for a ready made environment. Note these pre-built containers automatically update to the latest Dapr release.
 
 ### Setup a remote dev container
 

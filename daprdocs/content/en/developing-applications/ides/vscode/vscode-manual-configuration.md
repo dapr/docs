@@ -22,7 +22,7 @@ Using the [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) and [lau
 
 #### Modifying launch.json configurations to include a preLaunchTask
 
-In your [launch.json](https://code.visualstudio.com/Docs/editor/debugging) file add a [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) for each configuration that you want daprd launched. The [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) will reference tasks that you define in your tasks.json file. Here is an example for both Node and .NET Core. Notice the [preLaunchTasks](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) referenced: daprd-web and daprd-leaderboard.
+In your [launch.json](https://code.visualstudio.com/Docs/editor/debugging) file add a [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) for each configuration that you want daprd launched. The [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) references tasks that you define in your tasks.json file. Here is an example for both Node and .NET Core. Notice the [preLaunchTasks](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) referenced: daprd-web and daprd-leaderboard.
 
 ```json
 {
@@ -64,17 +64,17 @@ In your [launch.json](https://code.visualstudio.com/Docs/editor/debugging) file 
 
 #### Adding daprd tasks to tasks.json
 
-You will need to define a task and problem matcher for daprd in your [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) file. Here are two examples (both referenced via the [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) members above). Notice that in the case of the .NET Core daprd task (daprd-leaderboard) there is also a [dependsOn](https://code.visualstudio.com/Docs/editor/tasks#_compound-tasks) member that references the build task to ensure the latest code is being run/debugged. The [problemMatcher](https://code.visualstudio.com/Docs/editor/tasks#_defining-a-problem-matcher) is used so that VSCode can understand when the daprd process is up and running.
+You need to define a task and problem matcher for daprd in your [tasks.json](https://code.visualstudio.com/Docs/editor/tasks) file. Here are two examples (both referenced via the [preLaunchTask](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes) members above). Notice that in the case of the .NET Core daprd task (daprd-leaderboard) there is also a [dependsOn](https://code.visualstudio.com/Docs/editor/tasks#_compound-tasks) member that references the build task to ensure the latest code is being run/debugged. The [problemMatcher](https://code.visualstudio.com/Docs/editor/tasks#_defining-a-problem-matcher) is used so that VSCode can understand when the daprd process is up and running.
 
 Let's take a quick look at the args that are being passed to the daprd command.
 
-* -app-id -- the id (how you will locate it via service invocation) of your microservice
+* -app-id -- the id (how you locate it via service invocation) of your microservice
 * -app-port -- the port number that your application code is listening on
 * -dapr-http-port -- the http port for the dapr api
 * -dapr-grpc-port -- the grpc port for the dapr api
 * -placement-host-address -- the location of the placement service (this should be running in docker as it was created when you installed dapr and ran ```dapr init```)
 
->Note: You will need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you will run into port conflicts when you attempt to launch the second configuration.
+>Note: You  need to ensure that you specify different http/grpc (-dapr-http-port and -dapr-grpc-port) ports for each daprd task that you create, otherwise you  run into port conflicts when you attempt to launch the second configuration.
 
 ```json
 {
