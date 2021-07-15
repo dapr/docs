@@ -50,3 +50,4 @@ Dapr is tested and supported on the following versions of Kubernetes.
 - [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade >}})
 - [Production guidelines for Dapr on Kubernetes]({{< ref kubernetes-production.md >}})
 - [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)
+- [Use Bridge to Kubernetes to debug Dapr apps locally, while connected to your Kubernetes cluster]({{< ref bridge-to-kubernetes >}})
