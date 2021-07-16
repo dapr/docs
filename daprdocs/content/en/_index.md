@@ -101,7 +101,7 @@ Welcome to the Dapr documentation site!
       </div>
     </div>
     <div class="media mt-3">
-      <a class="pr-4" href="{{< ref sdks >}}">
+      <a class="pr-4" href="{{< ref go >}}">
         <img src="/images/homepage/golang.svg" alt="Go logo" width=30>
       </a>
       <div class="media-body">
