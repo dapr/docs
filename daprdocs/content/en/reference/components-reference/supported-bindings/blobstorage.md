@@ -41,11 +41,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| storageAccount | Y | Output | The Blob Storage account name | `"myexmapleaccount"` |
-| storageAccessKey | Y | Output | The Blob Storage access key | `"access-key"` |
-| container | Y | Output | The name of the Blob Storage container to write to | `"myexamplecontainer"` |
-| decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `"true"` is the only allowed positive value. Other positive variations like `"True"` are not acceptable. Defaults to `"false"` | `"true"`, `"false"` |
-| getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `"10"` | `"1"`, `"2"`
+| storageAccount | Y | Output | The Blob Storage account name | `myexmapleaccount` |
+| storageAccessKey | Y | Output | The Blob Storage access key | `access-key` |
+| container | Y | Output | The name of the Blob Storage container to write to | `myexamplecontainer` |
+| decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+| getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `10` | `1`, `2`
 
 
 ## Binding support
@@ -55,6 +55,7 @@ This component supports **output binding** with the following operations:
 - `create` : [Create blob](#create-blob)
 - `get` : [Get blob](#get-blob)
 - `delete` : [Delete blob](#delete-blob)
+- `list`: [List blobs](#list-blobs)
 
 ### Create blob
 
@@ -133,7 +134,7 @@ spec:
   - name: container
     value: container1
   - name: decodeBase64
-    value: "true"
+    value: true
 ```
 
 Then you can upload it as you would normally:
@@ -174,10 +175,16 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 {
   "operation": "get",
   "metadata": {
-    "blobName": "myblob"
+    "blobName": "myblob",
+    "includeMetadata": "true"
   }
 }
 ```
+
+The metadata parameters are:
+
+- `blobName` - the name of the blob
+- `includeMetadata`- (optional) defines if the user defined metadata should be returned or not, defaults to: false
 
 #### Example
 
@@ -200,7 +207,10 @@ To perform a get blob operation, invoke the Azure Blob Storage binding with a `P
 
 #### Response
 
-The response body contains the value stored in the blob object.
+The response body contains the value stored in the blob object. If enabled, the user defined metadata will be returned as HTTP headers in the form:
+
+`Metadata.key1: value1`
+`Metadata.key2: value2`
 
 ### Delete blob
 
@@ -214,6 +224,13 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
   }
 }
 ```
+
+The metadata parameters are:
+
+- `blobName` - the name of the blob
+- `deleteSnapshots` - (optional) required if the blob has associated snapshots. Specify one of the following two options:
+  - include: Delete the base blob and all of its snapshots
+  - only: Delete only the blob's snapshots and not the blob itself
 
 #### Examples
 
@@ -242,13 +259,13 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
 
   {{% codetab %}}
   ```bash
-  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"deleteSnapshots\": \"only\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
-  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "DeleteSnapshotOptions": "only" }}' \
+  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "deleteSnapshots": "only" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
@@ -261,13 +278,13 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
 
   {{% codetab %}}
   ```bash
-  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"DeleteSnapshotOptions\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"blobName\": \"myblob\", \"deleteSnapshots\": \"include\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
-  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "DeleteSnapshotOptions": "include" }}' \
+  curl -d '{ "operation": "delete", "metadata": { "blobName": "myblob", "deleteSnapshots": "include" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
@@ -277,6 +294,104 @@ To perform a delete blob operation, invoke the Azure Blob Storage binding with a
 #### Response
 
 An HTTP 204 (No Content) and empty body will be retuned if successful.
+
+### List blobs
+
+To perform a list blobs operation, invoke the Azure Blob Storage binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "list",
+  "data": {
+    "maxResults": 10,
+    "prefix": "file",
+    "marker": "2!108!MDAwMDM1IWZpbGUtMDgtMDctMjAyMS0wOS0zOC01NS03NzgtMjEudHh0ITAwMDAyOCE5OTk5LTEyLTMxVDIzOjU5OjU5Ljk5OTk5OTlaIQ--",
+    "include": {
+      "snapshots": false,
+      "metadata": true,
+      "uncommittedBlobs": false,
+      "copy": false,
+      "deleted": false
+    }
+  }
+}
+```
+
+The data parameters are:
+
+- `maxResults` - (optional) specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not specify maxresults the server will return up to 5,000 items.
+- `prefix` - (optional) filters the results to return only blobs whose names begin with the specified prefix.
+- `marker` - (optional) a string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items.
+- `include` - (optional) Specifies one or more datasets to include in the response:
+  - snapshots: Specifies that snapshots should be included in the enumeration. Snapshots are listed from oldest to newest in the response. Defaults to: false
+  - metadata: Specifies that blob metadata be returned in the response. Defaults to: false
+  - uncommittedBlobs: Specifies that blobs for which blocks have been uploaded, but which have not been committed using Put Block List, be included in the response. Defaults to: false
+  - copy: Version 2012-02-12 and newer. Specifies that metadata related to any current or previous Copy Blob operation should be included in the response. Defaults to: false
+  - deleted: Version 2017-07-29 and newer. Specifies that soft deleted blobs should be included in the response. Defaults to: false
+
+#### Response
+
+The response body contains the list of found blocks as also the following HTTP headers:
+
+`Metadata.marker: 2!108!MDAwMDM1IWZpbGUtMDgtMDctMjAyMS0wOS0zOC0zNC04NjctMTEudHh0ITAwMDAyOCE5OTk5LTEyLTMxVDIzOjU5OjU5Ljk5OTk5OTlaIQ--`
+`Metadata.number: 10`
+
+- `marker` - the next marker which can be used in a subsequent call to request the next set of list items. See the marker description on the data property of the binding input.
+- `number` - the number of found blobs
+
+The list of blobs will be returned as JSON array in the following form:
+
+```json
+[
+  {
+    "XMLName": {
+      "Space": "",
+      "Local": "Blob"
+    },
+    "Name": "file-08-07-2021-09-38-13-776-1.txt",
+    "Deleted": false,
+    "Snapshot": "",
+    "Properties": {
+      "XMLName": {
+        "Space": "",
+        "Local": "Properties"
+      },
+      "CreationTime": "2021-07-08T07:38:16Z",
+      "LastModified": "2021-07-08T07:38:16Z",
+      "Etag": "0x8D941E3593C6573",
+      "ContentLength": 1,
+      "ContentType": "application/octet-stream",
+      "ContentEncoding": "",
+      "ContentLanguage": "",
+      "ContentMD5": "xMpCOKC5I4INzFCab3WEmw==",
+      "ContentDisposition": "",
+      "CacheControl": "",
+      "BlobSequenceNumber": null,
+      "BlobType": "BlockBlob",
+      "LeaseStatus": "unlocked",
+      "LeaseState": "available",
+      "LeaseDuration": "",
+      "CopyID": null,
+      "CopyStatus": "",
+      "CopySource": null,
+      "CopyProgress": null,
+      "CopyCompletionTime": null,
+      "CopyStatusDescription": null,
+      "ServerEncrypted": true,
+      "IncrementalCopy": null,
+      "DestinationSnapshot": null,
+      "DeletedTime": null,
+      "RemainingRetentionDays": null,
+      "AccessTier": "Hot",
+      "AccessTierInferred": true,
+      "ArchiveStatus": "",
+      "CustomerProvidedKeySha256": null,
+      "AccessTierChangeTime": null
+    },
+    "Metadata": null
+  }
+]
+```
 
 ## Metadata information
 
@@ -289,13 +404,13 @@ Applications publishing to an Azure Blob Storage output binding should send a me
     "data": "file content",
     "metadata": {
         "blobName"           : "filename.txt",
-        "ContentType"        : "text/plain",
-        "ContentMD5"         : "vZGKbMRDAnMs4BIwlXaRvQ==",
-        "ContentEncoding"    : "UTF-8",
-        "ContentLanguage"    : "en-us",
-        "ContentDisposition" : "attachment",
-        "CacheControl"       : "no-cache",
-        "Custom"             : "hello-world",
+        "contentType"        : "text/plain",
+        "contentMD5"         : "vZGKbMRDAnMs4BIwlXaRvQ==",
+        "contentEncoding"    : "UTF-8",
+        "contentLanguage"    : "en-us",
+        "contentDisposition" : "attachment",
+        "cacheControl"       : "no-cache",
+        "custom"             : "hello-world"
     },
     "operation": "create"
 }

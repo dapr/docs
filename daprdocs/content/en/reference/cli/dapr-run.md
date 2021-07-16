@@ -36,7 +36,7 @@ dapr run [flags] [command]
 | `--help`, `-h` | | | Print this help message |
 | `--image` | | | The image to build the code in. Input is: `repository/image` |
 | `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic` |
-| `--placement-host-address` | `DAPR_PLACEMENT_HOST` | `localhost` | The host on which the placement service resides |
+| `--placement-host-address` | `DAPR_PLACEMENT_HOST` | `localhost` | The address of the placement service. Format is either `<hostname>` for default port (`6050` on Windows, `50005` on Linux/MacOS) or `<hostname>:<port>` for custom port |
 | `--profile-port` | | `7777` | The port for the profile server to listen on |
 | `--dapr-http-max-request-size` | | `4` | Max size of request body in MB.|
 

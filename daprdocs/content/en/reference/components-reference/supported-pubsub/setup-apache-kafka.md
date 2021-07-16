@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Apache Kafka pubsub create a component of type `pubsub.kafka`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To setup Apache Kafka pubsub create a component of type `pubsub.kafka`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration. For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{< ref component-secrets.md >}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -21,32 +21,35 @@ spec:
   type: pubsub.kafka
   version: v1
   metadata:
-      # Kafka broker connection setting
-    - name: brokers
-      value: "dapr-kafka.myapp.svc.cluster.local:9092"
-    - name: authRequired
-      value: "true"
-    - name: saslUsername
-      value: "adminuser"
-    - name: saslPassword
-      value: "KeFg23!"
-    - name: maxMessageBytes
-      value: 1024
+  - name: brokers # Required. Kafka broker connection setting
+    value: "dapr-kafka.myapp.svc.cluster.local:9092"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "my-dapr-app-id"
+  - name: authRequired # Required.
+    value: "true"
+  - name: saslUsername # Required if authRequired is `true`.
+    value: "adminuser"
+  - name: saslPassword # Required if authRequired is `true`.
+    secretKeyRef:
+      name: kafka-secrets
+      key: saslPasswordSecret
+  - name: maxMessageBytes # Optional.
+    value: 1024
 ```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
 
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| brokers             | Y  | Comma separated list of kafka brokers  | `localhost:9092`, `dapr-kafka.myapp.svc.cluster.local:9092`
-| authRequired        | N  | Enable authentication on the Kafka broker. Defaults to `"false"`.   |`"true"`, `"false"`
-| saslUsername        | N  | Username used for authentication. Only required if authRequired is set to true.   | `"adminuser"`
-| saslPassword        | N  | Password used for authentication. Can be `secretKeyRef` to use a secret reference. Only required if authRequired is set to true. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}})  |  `""`, `"KeFg23!"`
-| maxMessageBytes | N  | The maximum message size allowed for a single Kafka message. Default is 1024. | `2048`
+| brokers             | Y | A comma-separated list of Kafka brokers. | `"localhost:9092,dapr-kafka.myapp.svc.cluster.local:9093"`
+| consumerGroup       | N | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. | `"group1"`
+| clientID            | N | A user-provided string sent with every request to the Kafka brokers for logging, debugging, and auditing purposes. Defaults to `"sarama"`. | `"my-dapr-app"`
+| authRequired        | Y | Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"`
+| saslUsername        | N | The SASL username used for authentication. Only required if `authRequired` is set to `"true"`. | `"adminuser"`
+| saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"`
+| maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 
 ## Per-call metadata fields
 
@@ -69,6 +72,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partiti
 ```
 
 ## Create a Kafka instance
+
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
@@ -81,7 +85,6 @@ To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](ht
 {{% /codetab %}}
 
 {{< /tabs >}}
-
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
