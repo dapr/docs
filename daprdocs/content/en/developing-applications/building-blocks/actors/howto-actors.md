@@ -139,6 +139,8 @@ You can configure the Dapr Actors runtime configuration to modify the default ru
 - `drainOngoingCallTimeout` - The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. **Default: 60 seconds**
 - `drainRebalancedActors` - If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
 - `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
+**Default: 0**
+- `remindersStoragePartitions` - Configure the number of partitions for actor's reminders. If not provided, all reminders are saved as a single record in actor's state store. **Default: 0**
 
 {{< tabs Java Dotnet Python >}}
 
@@ -152,6 +154,7 @@ ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(3
 ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(60));
 ActorRuntime.getInstance().getConfig().setDrainBalancedActors(true);
 ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
+ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
 ```
 
 See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/actors/DemoActorService.java)
@@ -173,6 +176,7 @@ public void ConfigureServices(IServiceCollection services)
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
         options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
         options.DrainRebalancedActors = true;
+        options.RemindersStoragePartitions = 7;
         // reentrancy not implemented in the .NET SDK at this time
     });
 
@@ -194,7 +198,8 @@ ActorRuntime.set_actor_config(
         actor_scan_interval=timedelta(seconds=30),
         drain_ongoing_call_timeout=timedelta(minutes=1),
         drain_rebalanced_actors=True,
-        reentrancy=ActorReentrancyConfig(enabled=False)
+        reentrancy=ActorReentrancyConfig(enabled=False),
+        remindersStoragePartitions=7
     )
 )
 ```
