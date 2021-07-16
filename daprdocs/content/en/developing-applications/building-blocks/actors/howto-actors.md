@@ -111,6 +111,28 @@ The following request body configures a reminder with a `dueTime` 15 seconds and
 }
 ```
 
+[ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) can also be used to specify `period`. The following request body configures a reminder with a `dueTime` 0 seconds an `period` of 15 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"P0Y0M0W0DT0H0M15S"
+}
+```
+The designators for zero are optional and the above `period` can be simplified to `PT15S`.
+ISO 8601 specifies multiple recurrence formats but only the duration format is currently supported.
+
+#### Reminders with repetitions
+
+When configured with ISO 8601 durations, the `period` column also allows to specify number of times a reminder can run. The following request body will create a reminder that will execute for 5 number of times with a period of 15 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"R5/PT15S"
+}
+```
+
+The number of repetitions i.e. the number of times the reminder is run should be a positive number.
+
 #### Retrieve actor reminder
 
 You can retrieve the actor reminder by calling
