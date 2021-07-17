@@ -59,8 +59,7 @@ This component supports **output binding** with the following operations:
 
 ### Output binding
 
-Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the gRPC API reference for more information: 
-https://stage.docs.zeebe.io/reference/grpc.html  
+Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the [gRPC API reference](https://stage.docs.zeebe.io/reference/grpc.html) for more information. 
 
 #### topology
 
