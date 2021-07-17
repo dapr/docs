@@ -6,42 +6,66 @@ weight: 2000
 description: "Use the secret store building block to securely retrieve a secret"
 ---
 
-It's common for applications to store sensitive information such as connection strings, keys and tokens that are used to authenticate with databases, services and external systems in secrets by using a dedicated secret store.
+This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store.
 
-Usually this involves setting up a secret store such as Azure Key Vault, Hashicorp Vault and others and storing the application level secrets there. To access these secret stores, the application needs to import the secret store SDK, and use it to access the secrets.
+## Set up a secret store
 
-This usually involves writing a fair amount of boilerplate code that is not related to the actual business domain of the app, and this becomes an even greater challenge in multi-cloud scenarios: if an app needs to deploy to two different environments and use two different secret stores, the amount of boilerplate code gets doubled, and the effort increases.
+Before retrieving secrets in your application's code, you must have a secret store component configured. For the purposes of this guide, as an example you will configure a local secret store which uses a local JSON file to store secrets.
 
-In addition, not all secret stores have native SDKs for all programming languages.
+>Note: The component used in this example is not secured and is not recommended for production deployments. You can find other alternatives [here]({{<ref supported-secret-stores >}}).
 
-To make it easier for developers everywhere to consume application secrets, Dapr has a dedicated secrets building block API that allows developers to get secrets from a secret store.
+Create a file named `mysecrets.json` with the following contents:
 
-## Setting up a secret store component
-
-The first step involves setting up a secret store, either in the cloud or in the hosting environment such as a cluster. This is done by using the relevant instructions from the cloud provider or secret store implementation.
-
-The second step is to configure the secret store with Dapr.
-
-To deploy in Kubernetes, save the file above to `aws_secret_manager.yaml` and then run:
-
-```bash
-kubectl apply -f aws_secret_manager.yaml
+```json
+{
+   "my-secret" : "I'm Batman"
+}
 ```
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+Create a directory for your components file named `components` and inside it create a file named `localSecretStore.yaml` with the following contents:
 
-Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&feature=youtu.be&t=1818) for an example on how to use the secrets API. Or watch this [video](https://www.youtube.com/watch?v=8W-iBDNvCUM&feature=youtu.be&t=1765) for an example on how to component scopes with secret components and the secrets API.
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: my-secrets-store
+  namespace: default
+spec:
+  type: secretstores.local.file
+  version: v1
+  metadata:
+  - name: secretsFile
+    value: <PATH TO SECRETS FILE>/mysecrets.json
+  - name: nestedSeparator
+    value: ":"
+```
 
-## Calling the secrets API
+Make sure to replace `<PATH TO SECRETS FILE>` with the path to the JSON file you just created.
 
-Now that the secret store is set up, you can call Dapr to get the secrets for a given key for a specific secret store.
+To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
+## Get a secret
 
-For a full API reference, go [here](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
+Now run the Dapr sidecar (with no application)
 
-Here are a few examples in different programming languages:
+```bash
+dapr run --app-id my-app --dapr-http-port 3500 --components-path ./components
+```
 
-### Go
+And now you can get the secret by calling the Dapr sidecar using the secrets API:
 
+```bash
+curl http://localhost:3500/v1.0/secrets/my-secrets-store/my-secret
+```
+
+For a full API reference, go [here]({{< ref secrets_api.md >}}).
+
+## Calling the secrets API from your code
+
+Once you have a secret store set up, you can call Dapr to get the secrets from your application code. Here are a few examples in different programming languages:
+
+{{< tabs "Go" "Javascript" "Python" "Rust" "C#" "PHP" >}}
+
+{{% codetab %}}
 ```Go
 import (
   "fmt"
@@ -49,11 +73,11 @@ import (
 )
 
 func main() {
-  url := "http://localhost:3500/v1.0/secrets/kubernetes/my-secret"
+  url := "http://localhost:3500/v1.0/secrets/my-secrets-store/my-secret"
 
   res, err := http.Get(url)
   if err != nil {
-    panic(err)  
+    panic(err)
   }
   defer res.Body.Close()
 
@@ -61,13 +85,16 @@ func main() {
   fmt.Println(string(body))
 }
 ```
-### Javascript
+
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```javascript
 require('isomorphic-fetch');
 const secretsUrl = `http://localhost:3500/v1.0/secrets`;
 
-fetch(`${secretsUrl}/kubernetes/my-secret`)
+fetch(`${secretsUrl}/my-secrets-store/my-secret`)
         .then((response) => {
             if (!response.ok) {
                 throw "Could not get secret";
@@ -78,16 +105,21 @@ fetch(`${secretsUrl}/kubernetes/my-secret`)
         });
 ```
 
-### Python
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```python
 import requests as req
 
-resp = req.get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret")
+resp = req.get("http://localhost:3500/v1.0/secrets/my-secrets-store/my-secret")
 print(resp.text)
 ```
 
-### Rust
+{{% /codetab %}}
+
+
+{{% codetab %}}
 
 ```rust
 #![deny(warnings)]
@@ -95,7 +127,7 @@ use std::{thread};
 
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
-    let res = reqwest::get("http://localhost:3500/v1.0/secrets/kubernetes/my-secret").await?;
+    let res = reqwest::get("http://localhost:3500/v1.0/secrets/my-secrets-store/my-secret").await?;
     let body = res.text().await?;
     println!("Secret:{}", body);
 
@@ -105,13 +137,43 @@ async fn main() -> Result<(), reqwest::Error> {
 }
 ```
 
-### C#
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```csharp
 var client = new HttpClient();
-var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/my-secret");
+var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/my-secrets-store/my-secret");
 response.EnsureSuccessStatusCode();
 
 string secret = await response.Content.ReadAsStringAsync();
 Console.WriteLine(secret);
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create();
+$app->run(function(\Dapr\SecretManager $secretManager, \Psr\Log\LoggerInterface $logger) {
+    $secret = $secretManager->retrieve(secret_store: 'my-secret-store', name: 'my-secret');
+    $logger->alert('got secret: {secret}', ['secret' => $secret]);
+});
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Related links
+
+- [Dapr secrets overview]({{<ref secrets-overview>}})
+- [Secrets API reference]({{<ref secrets_api>}})
+- [Configure a secret store]({{<ref setup-secret-store>}})
+- [Supported secrets]({{<ref supported-secret-stores>}})
+- [Using secrets in components]({{<ref component-secrets>}})
+- [Secret stores quickstart](https://github.com/dapr/quickstarts/tree/master/secretstore)

@@ -1,3 +1,19 @@
 [submodule "daprdocs/themes/docsy"]
 	path = daprdocs/themes/docsy
 	url = https://github.com/google/docsy.git
+[submodule "sdkdocs/python"]
+	path = sdkdocs/python
+	url = https://github.com/dapr/python-sdk.git
+[submodule "sdkdocs/php"]
+	path = sdkdocs/php
+	url = https://github.com/dapr/php-sdk.git
+[submodule "sdkdocs/dotnet"]
+	path = sdkdocs/dotnet
+	url = https://github.com/dapr/dotnet-sdk.git
+[submodule "translations/docs-zh"]
+	path = translations/docs-zh
+	url = https://github.com/dapr/docs-zh.git
+	branch = v1.0_content
+[submodule "sdkdocs/go"]
+	path = sdkdocs/go
+	url = https://github.com/dapr/go-sdk.git

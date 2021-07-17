@@ -7,7 +7,7 @@ weight: 500
 ---
 
 Dapr provides native, cross-platform and cross-language virtual actor capabilities.
-Besides the language specific Dapr SDKs, a developer can invoke an actor using the API endpoints below.
+Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke an actor using the API endpoints below.
 
 ## User service code calling dapr
 
@@ -38,7 +38,7 @@ actorType | The actor type.
 actorId | The actor ID.
 method | The name of the method to invoke.
 
-> Note, all URL parameters are case-sensitive. 
+> Note, all URL parameters are case-sensitive.
 
 #### Examples
 
@@ -50,7 +50,7 @@ curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/method/shoot \
 ```
 
 Example of invoking a method on an actor that takes parameters: You can provided the method parameters and values in the body of the request, for example in curl using -d "{\"param\":\"value\"}"
- 
+
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
@@ -196,7 +196,7 @@ A `dueTime` of 0 means to fire immediately.  The following body means to fire im
 }
 ```
 
-To configure the reminder to fire once only, the period should be set to empty string.  The following specifies a `dueTime` of 3 seconds with a period of empty string, which means the reminder will fire in 3 seconds and then never fire again. 
+To configure the reminder to fire once only, the period should be set to empty string.  The following specifies a `dueTime` of 3 seconds with a period of empty string, which means the reminder will fire in 3 seconds and then never fire again.
 ```json
 {
   "dueTime":"0h0m3s0ms",
@@ -311,8 +311,8 @@ name | The name of the reminder to delete.
 #### Examples
 
 ```shell
-curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
-  -X "Content-Type: application/json"
+curl -X DELETE http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
+  -H "Content-Type: application/json"
 ```
 
 ### Create actor timer
@@ -381,7 +381,7 @@ Deletes a timer for an actor.
 
 #### HTTP Request
 
-```http
+```
 DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
@@ -404,8 +404,8 @@ name | The name of the timer to delete.
 > Note, all URL parameters are case-sensitive.
 
 ```shell
-curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
-  -X "Content-Type: application/json"
+curl -X DELETE http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
+  -H "Content-Type: application/json"
 ```
 
 ## Dapr calling to user service code
@@ -502,7 +502,7 @@ curl -X DELETE http://localhost:3000/actors/stormtrooper/50 \
 
 ### Invoke actor method
 
-Invokes a method for an actor with the specified methodName where parameters to the method are passed in the body of the request message and return values are provided in the body of the response message.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.  
+Invokes a method for an actor with the specified methodName where parameters to the method are passed in the body of the request message and return values are provided in the body of the response message.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 
@@ -531,7 +531,7 @@ methodName | The name of the method to invoke.
 
 #### Examples
 
-Example of invoking a method for an actor: The example calls the performAction method on the actor type stormtrooper that has actorId of 50 
+Example of invoking a method for an actor: The example calls the performAction method on the actor type stormtrooper that has actorId of 50
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
@@ -540,7 +540,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
 
 ### Invoke reminder
 
-Invokes a reminder for an actor with the specified reminderName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.  
+Invokes a reminder for an actor with the specified reminderName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 
@@ -569,7 +569,7 @@ reminderName | The name of the reminder to invoke.
 
 #### Examples
 
-Example of invoking a reminder for an actor: The example calls the checkRebels reminder method on the actor type stormtrooper that has actorId of 50 
+Example of invoking a reminder for an actor: The example calls the checkRebels reminder method on the actor type stormtrooper that has actorId of 50
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkRebels \
@@ -578,7 +578,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
 
 ### Invoke timer
 
-Invokes a timer for an actor rwith the specified timerName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.  
+Invokes a timer for an actor rwith the specified timerName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 
@@ -607,7 +607,7 @@ timerName | The name of the timer to invoke.
 
 #### Examples
 
-Example of invoking a timer for an actor: The example calls the checkRebels timer method on the actor type stormtrooper that has actorId of 50 
+Example of invoking a timer for an actor: The example calls the checkRebels timer method on the actor type stormtrooper that has actorId of 50
 
 ```shell
 curl -X POST http://localhost:3000/actors/stormtrooper/50/method/timer/checkRebels \
@@ -662,6 +662,6 @@ The state namespace created by Dapr for actors is composed of the following item
 - Key - A key for the specific state value. An actor ID can hold multiple state keys.
 
 The following example shows how to construct a key for the state of an actor instance under the `myapp` App ID namespace:
-`myapp-cat-hobbit-food`
+`myapp||cat||hobbit||food`
 
 In the example above, we are getting the value for the state key `food`, for the actor ID `hobbit` with an actor type of `cat`, under the App ID namespace of `myapp`.

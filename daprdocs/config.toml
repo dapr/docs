@@ -2,14 +2,25 @@
 baseURL = "https://docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
+disableFastRender = true
 
 enableRobotsTXT = true
 enableGitInfo = true
 
 # Language Configuration
 languageCode = "en-us"
-contentDir = "content/en"
-defaultContentLanguage = "en"
+
+[languages]
+  [languages.en]
+    title = "Dapr Docs"
+    weight = 1
+    contentDir = "content/en"
+    languageName = "English"
+  [languages.zh-hans]
+    title = "Dapr 文档库"
+    weight = 2
+    contentDir = "content/zh-hans"
+    languageName = "简体中文"
 
 # Disable categories & tags
 disableKinds = ["taxonomy", "term"]
@@ -17,6 +28,78 @@ disableKinds = ["taxonomy", "term"]
 # Google Analytics
 [services.googleAnalytics]
 id = "UA-149338238-3"
+
+# Mounts
+[module]
+  [[module.mounts]]
+    source = "content/en"
+    target = "content"
+    lang = "en"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "layouts"
+    target = "layouts"
+  [[module.mounts]]
+    source = "data"
+    target = "data"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "archetypes"
+    target = "archetypes"
+
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-docs"
+    target = "content/developing-applications/sdks/python"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/python/daprdocs/content/en/python-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/php/daprdocs/content/en/php-sdk-docs"
+    target = "content/developing-applications/sdks/php"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-docs"
+    target = "content/developing-applications/sdks/dotnet"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/go/daprdocs/content/en/go-sdk-docs"
+    target = "content/developing-applications/sdks/go"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/go/daprdocs/content/en/go-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
+
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/zh-hans"
+    target = "content"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/contributing"
+    target = "content/contributing/"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_python"
+    target = "content/developing-applications/sdks/python"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_php"
+    target = "content/developing-applications/sdks/php"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_dotnet"
+    target = "content/developing-applications/sdks/dotnet"
+    lang = "zh-hans"
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -26,25 +109,25 @@ id = "UA-149338238-3"
 
 # Top Nav Bar
 [[menu.main]]
-    name = "Home"
+    name = "Homepage"
     weight = 40
     url = "https://dapr.io"
 [[menu.main]]
-    name = "About"
+    name = "GitHub"
     weight = 50
-    url = "https://dapr.io/#about"
-[[menu.main]]
-    name = "Download"
-    weight = 60
-    url = "https://dapr.io/#download"
+    url = "https://github.com/dapr"
 [[menu.main]]
     name = "Blog"
-    weight = 70
+    weight = 60
     url = "https://blog.dapr.io/posts"
+[[menu.main]]
+    name = "Discord"
+    weight = 70
+    url = "https://aka.ms/dapr-discord"
 [[menu.main]]
     name = "Community"
     weight = 80
-    url = "https://dapr.io/#community"
+    url = "https://github.com/dapr/community/blob/master/README.md"
 
 [params]
 copyright = "Dapr"
@@ -58,16 +141,26 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "website"
+github_branch = "v1.2"
 
 # Versioning
-version_menu = "Releases"
-version = "v0.11"
+version_menu = "v1.2 (latest)"
+version = "v1.2"
 archived_version = false
+url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v0.11"
+  version = "v1.2 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.1"
+  url = "https://v1-1.docs.dapr.io"
+[[params.versions]]
+  version = "v1.0"
+  url = "https://v1-0.docs.dapr.io"
+[[params.versions]]
+  version = "v0.11"
+  url = "https://v0-11.docs.dapr.io"
 [[params.versions]]
   version = "v0.10"
   url = "https://github.com/dapr/docs/tree/v0.10.0"
@@ -108,9 +201,9 @@ sidebar_search_disable = true
 	icon = "fab fa-github"
   desc = "Development takes place here!"
 [[params.links.developer]]
-	name = "Gitter"
-	url = "https://gitter.im/Dapr/community"
-	icon = "fab fa-gitter"
+	name = "Discord"
+	url = "https://aka.ms/dapr-discord"
+	icon = "fab fa-discord"
   desc = "Conversations happen here!"
 [[params.links.developer]]
 	name = "Zoom"

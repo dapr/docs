@@ -79,7 +79,7 @@ etag | (optional) state ETag
 metadata | (optional) additional key-value pairs to be passed to the state store
 options | (optional) state operation options, see [state operation options](#optional-behaviors)
 
-> **ETag format** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store. 
+> **ETag format** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store.
 
 ### HTTP Response
 
@@ -103,7 +103,8 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
   -d '[
         {
           "key": "weapon",
-          "value": "DeathStar"
+          "value": "DeathStar",
+          "etag": "1234"
         },
         {
           "key": "planet",
@@ -156,7 +157,7 @@ ETag | ETag of returned value
 #### Response Body
 JSON-encoded value
 
-### Example 
+### Example
 
 ```shell
 curl http://localhost:3500/v1.0/state/starwars/planet \
@@ -210,7 +211,7 @@ Code | Description
 #### Response Body
 An array of JSON-encoded values
 
-### Example 
+### Example
 
 ```shell
 curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
@@ -288,7 +289,7 @@ None.
 ### Example
 
 ```shell
-curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "ETag: xxxxxxx"
+curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "If-Match: xxxxxxx"
 ```
 
 ## State transactions
@@ -377,6 +378,7 @@ curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
 ## Configuring state store for actors
 
 Actors don't support multiple state stores and require a transactional state store to be used with Dapr. Currently Mongodb, Redis, PostgreSQL, SQL Server, and Azure CosmosDB implement the transactional state store interface.
+
 To specify which state store to be used for actors, specify value of property `actorStateStore` as true in the metadata section of the state store component yaml file.
 Example: Following components yaml will configure redis to be used as the state store for Actors.
 
@@ -428,15 +430,15 @@ Dapr assumes data stores are eventually consistent by default. A state should:
 * For write request, the state store should asynchronously replicate updates to configured quorum after acknowledging the update request.
 
 #### Strong Consistency
-  
+
 When a strong consistency hint is attached, a state store should:
 
 * For read requests, the state store should return the most up-to-date data consistently across replicas.
 * For write/delete requests, the state store should synchronisely replicate updated data to configured quorum before completing the write request.
 
-### Example
+### Example - Complete options request example
 
-The following is a sample *set* request with a complete operation option definition:
+The following is an example *set* request with a complete options definition:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/starwars \
@@ -454,6 +456,82 @@ curl -X POST http://localhost:3500/v1.0/state/starwars \
       ]'
 ```
 
+### Example - Working with ETags
+The following is an example which walks through the usage of an ETag when setting/deleting an object in a compatible statestore.
+
+First, store an object in a statestore (this sample uses Redis that has been defined as 'statestore'):
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state/statestore \
+    -H "Content-Type: application/json" \
+    -d '[
+            {
+                "key": "sampleData",
+                "value": "1"
+            }
+    ]'
+```
+
+Get the object to find the ETag that was set automatically by the statestore:
+
+```shell
+curl http://localhost:3500/v1.0/state/statestore/sampleData -v
+* Connected to localhost (127.0.0.1) port 3500 (#0)
+> GET /v1.0/state/statestore/sampleData HTTP/1.1
+> Host: localhost:3500
+> User-Agent: curl/7.64.1
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: fasthttp
+< Date: Sun, 14 Feb 2021 04:51:50 GMT
+< Content-Type: application/json
+< Content-Length: 3
+< Etag: 1
+< Traceparent: 00-3452582897d134dc9793a244025256b1-b58d8d773e4d661d-01
+<
+* Connection #0 to host localhost left intact
+"1"* Closing connection 0
+```
+
+The returned ETag here was 1. Sending a new request to update or delete the data with the wrong ETag will return an error (omitting the ETag will allow the request):
+
+```shell
+# Update
+curl -X POST http://localhost:3500/v1.0/state/statestore \
+    -H "Content-Type: application/json" \
+    -d '[
+            {
+                "key": "sampleData",
+                "value": "2",
+                "etag": "2"
+            }
+    ]'
+{"errorCode":"ERR_STATE_SAVE","message":"failed saving state in state store statestore: possible etag mismatch. error from state store: ERR Error running script (call to f_83e03ec05d6a3b6fb48483accf5e594597b6058f): @user_script:1: user_script:1: failed to set key nodeapp||sampleData"}
+
+# Delete
+curl -X DELETE -H 'If-Match: 5' http://localhost:3500/v1.0/state/statestore/sampleData
+{"errorCode":"ERR_STATE_DELETE","message":"failed deleting state with key sampleData: possible etag mismatch. error from state store: ERR Error running script (call to f_9b5da7354cb61e2ca9faff50f6c43b81c73c0b94): @user_script:1: user_script:1: failed to delete node
+app||sampleData"}
+```
+
+In order to update or delete the object, simply match the ETag in either the request body (update) or the `If-Match` header (delete). Note, when the state is updated, it receives a new ETag so further updates or deletes will need to use the new ETag.
+
+```shell
+# Update
+curl -X POST http://localhost:3500/v1.0/state/statestore \
+    -H "Content-Type: application/json" \
+    -d '[
+        {
+            "key": "sampleData",
+            "value": "2",
+            "etag": "1"
+        }
+    ]'
+
+# Delete
+curl -X DELETE -H 'If-Match: 1' http://localhost:3500/v1.0/state/statestore/sampleData
+```
 ## Next Steps
 - [State management overview]({{< ref state-management-overview.md >}})
 - [How-To: Save & get state]({{< ref howto-get-save-state.md >}})

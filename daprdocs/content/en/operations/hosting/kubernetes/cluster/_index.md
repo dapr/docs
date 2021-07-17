@@ -2,7 +2,7 @@
 type: docs
 title: "Kubernetes cluster setup"
 linkTitle: "How-to: Setup clusters"
-weight: 50000
+weight: 80000
 description: >
-  How to setup dapr on a kubernetes cluster.
+  How to create a Kubernetes cluster
 ---

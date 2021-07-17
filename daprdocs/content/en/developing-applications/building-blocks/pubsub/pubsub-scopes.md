@@ -3,7 +3,7 @@ type: docs
 title: "Scope Pub/Sub topic access"
 linkTitle: "Scope topic access"
 weight: 5000
-description: "Use scopes to limit Pub/Sub topics to specific applications" 
+description: "Use scopes to limit Pub/Sub topics to specific applications"
 ---
 
 ## Introduction
@@ -32,9 +32,9 @@ To use this topic scoping three metadata properties can be set for a pub/sub com
 - `spec.metadata.allowedTopics`
   - A comma-separated list of allowed topics for all applications.
   - If `allowedTopics` is not set (default behavior), all topics are valid. `subscriptionScopes` and `publishingScopes` still take place if present.
-  - `publishingScopes` or `subscriptionScopes` can be used in conjuction with `allowedTopics` to add granular limitations
+  - `publishingScopes` or `subscriptionScopes` can be used in conjunction with `allowedTopics` to add granular limitations
 
-These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component. 
+These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component.
 
 ## Example 1: Scope topic access
 
@@ -159,3 +159,10 @@ The table below shows which application is allowed to subscribe to the topics:
 ## Demo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/7VdWBBGcbHQ?start=513" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Related links
+
+- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
+- List of [pub/sub components]({{< ref supported-pubsub >}})
+- Read the [API reference]({{< ref pubsub_api.md >}})

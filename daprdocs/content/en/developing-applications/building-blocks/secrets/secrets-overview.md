@@ -1,30 +1,25 @@
 ---
 type: docs
-title: "Secrets stores overview"
-linkTitle: "Secrets stores overview"
+title: "Secrets management overview"
+linkTitle: "Overview"
 weight: 1000
-description: "Overview of Dapr secrets management building block"
+description: "Overview of secrets management building block"
 ---
 
-Almost all non-trivial applications need to _securely_ store secret data like API keys, database passwords, and more. By nature, these secrets should not be checked into the version control system, but they also need to be accessible to code running in production. This is generally a hard problem, but it's critical to get it right. Otherwise, critical production systems can be compromised.
+It's common for applications to store sensitive information such as connection strings, keys and tokens that are used to authenticate with databases, services and external systems in secrets by using a dedicated secret store.
 
-Dapr's solution to this problem is the secrets API and secrets stores.
+Usually this involves setting up a secret store such as Azure Key Vault, Hashicorp Vault and others and storing the application level secrets there. To access these secret stores, the application needs to import the secret store SDK, and use it to access the secrets. This may require a fair amount of boilerplate code that is not related to the actual business domain of the app, and so becomes an even greater challenge in multi-cloud scenarios where different vendor specific secret stores may be used.
 
-Here's how it works:
+To make it easier for developers everywhere to consume application secrets, Dapr has a dedicated secrets building block API that allows developers to get secrets from a secret store.
 
-- Dapr is set up to use a **secret store** - a place to securely store secret data
-- Application code uses the standard Dapr secrets API to retrieve secrets.
+Using Dapr's secret store building block typically involves the following:
+1. Setting up a component for a specific secret store solution.
+1. Retrieving secrets using the Dapr secrets API in the application code.
+1. Optionally, referencing secrets in Dapr component files.
 
-Some examples for secret stores include `Kubernetes`, `Hashicorp Vault`, `Azure KeyVault`. See [secret stores](https://github.com/dapr/components-contrib/tree/master/secretstores) for the list of supported stores.
+## Setting up a secret store
 
-See [Setup secret stores](https://github.com/dapr/docs/tree/master/howto/setup-secret-store) for a HowTo guide for setting up and using secret stores.
-
-## Referencing secret stores in Dapr components
-
-Instead of including credentials directly within a Dapr component file, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is preferred approach and is a recommended best practice especially in production environments. 
-
-For more information read [Referencing Secret Stores in Components]({{< ref component-secrets.md >}})
-
+See [Setup secret stores]({{< ref howto-secrets.md >}}) for guidance on how to setup a secret store with Dapr.
 
 ## Using secrets in your application
 
@@ -35,21 +30,28 @@ For example, the diagram below shows an application requesting the secret called
 
 <img src="/images/secrets-overview-cloud-stores.png" width=600>
 
-Applications can use the secrets API to access secrets from a Kubernetes secret store. In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.  
+Applications can use the secrets API to access secrets from a Kubernetes secret store. In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
 
 <img src="/images/secrets-overview-kubernetes-store.png" width=600>
 
-In Azure Dapr can be configured to use Managed Identities to authenticate with Azure Key Vault in order to retrieve secrets. In the example below, an Azure Kubernetes Service (AKS) cluster is configured to use managed identities. Then Dapr uses [pod identities](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application. 
+In Azure Dapr can be configured to use Managed Identities to authenticate with Azure Key Vault in order to retrieve secrets. In the example below, an Azure Kubernetes Service (AKS) cluster is configured to use managed identities. Then Dapr uses [pod identities](https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application.
 
 <img src="/images/secrets-overview-azure-aks-keyvault.png" width=600>
 
 Notice that in all of the examples above the application code did not have to change to get the same secret. Dapr did all the heavy lifting here via the secrets building block API and using the secret components.
 
-See [Access Application Secrets using the Secrets API](https://github.com/dapr/docs/tree/master/howto/get-secrets) for a How To guide to use secrets in your application.
+See [Access Application Secrets using the Secrets API]({{< ref howto-secrets.md >}}) for a How To guide to use secrets in your application.
 
+For detailed API information read [Secrets API]({{< ref secrets_api.md >}}).
 
-For detailed API information read [Secrets API](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md).
+## Referencing secret stores in Dapr components
 
+When configuring Dapr components such as state stores it is often required to include credentials in components files. Instead of doing that, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is preferred approach and is a recommended best practice especially in production environments.
 
+For more information read [referencing secret stores in components]({{< ref component-secrets.md >}})
+
+## Limiting access to secrets
+
+To provide more granular control on access to secrets, Dapr provides the ability to define scopes and restricting access permissions. Learn more about [using secret scoping]({{<ref secrets-scopes>}})
 
 

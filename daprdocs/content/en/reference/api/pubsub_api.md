@@ -14,7 +14,7 @@ Dapr guarantees at least once semantics for this endpoint.
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
+POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>[?<metadata>]
 ```
 
 ### HTTP Response codes
@@ -22,6 +22,7 @@ POST http://localhost:<daprPort>/v1.0/publish/<pubsubname>/<topic>
 Code | Description
 ---- | -----------
 204  | Message delivered
+403  | Message forbidden by access controls
 404  | No pubsub name or topic given
 500  | Delivery failed
 
@@ -30,8 +31,9 @@ Code | Description
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-pubsubname | the name of pubsub component.
+pubsubname | the name of pubsub component
 topic | the name of the topic
+metadata | query parameters for metadata as described below
 
 > Note, all URL parameters are case-sensitive.
 
@@ -42,6 +44,25 @@ curl -X POST http://localhost:3500/v1.0/publish/pubsubName/deathStarStatus \
        "status": "completed"
      }'
 ```
+
+### Headers
+
+The `Content-Type` header tells Dapr which content type your data adheres to when constructing a CloudEvent envelope.
+The value of the `Content-Type` header populates the `datacontenttype` field in the CloudEvent.
+Unless specified, Dapr assumes `text/plain`. If your content type is JSON, use a `Content-Type` header with the value of `application/json`.
+
+If you want to send your own custom CloundEvent, use the `application/cloudevents+json` value for the `Content-Type` header.
+
+#### Metadata
+
+Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.` as shown below.
+
+Parameter | Description
+--------- | -----------
+metadata.ttlInSeconds | the number of seconds for the message to expire as [described here]({{< ref pubsub-message-ttl.md >}})
+metadata.rawPayload | boolean to determine if Dapr should publish the event without wrapping it as CloudEvent as [described here]({{< ref pubsub-raw.md >}})
+
+> Additional metadata parameters are available based on each pubsub component.
 
 ## Optional Application (User Code) Routes
 
@@ -72,12 +93,23 @@ Example:
   {
     "pubsubname": "pubsub",
     "topic": "newOrder",
-    "route": "/orders"
+    "route": "/orders",
+    "metadata": {
+      "rawPayload": "true",
+    }
   }
 ]
 ```
 
 > Note, all subscription parameters are case-sensitive.
+
+#### Metadata
+
+Optionally, metadata can be sent via the request body.
+
+Parameter | Description
+--------- | -----------
+rawPayload | boolean to subscribe to events that do not comply with CloudEvent specification, as [described here]({{< ref pubsub-raw.md >}})
 
 ### Provide route(s) for Dapr to deliver topic events
 
@@ -131,9 +163,9 @@ other | warning is logged and message to be retried
 
 ## Message envelope
 
-Dapr Pub/Sub adheres to version 1.0 of Cloud Events.
+Dapr Pub/Sub adheres to version 1.0 of CloudEvents.
 
 ## Related links
 
 * [How to publish to and consume topics]({{< ref howto-publish-subscribe.md >}})
-* [Sample for pub/sub](https://github.com/dapr/quickstarts/tree/master/pub-sub) 
+* [Sample for pub/sub](https://github.com/dapr/quickstarts/tree/master/pub-sub)

@@ -15,7 +15,7 @@ In self hosted mode the Dapr configuration is a configuration file, for example 
 
 A Dapr sidecar can also apply a configuration by using a ```--config``` flag to the file path with ```dapr run``` CLI command.
 
-#### Kubernetes sidecar 
+#### Kubernetes sidecar
 In Kubernetes mode the Dapr configuration is a Configuration CRD, that is applied to the cluster. For example;
 
 ```bash
@@ -43,6 +43,7 @@ Note: There are more [Kubernetes annotations]({{< ref "kubernetes-annotations.md
 
 The following configuration settings can be applied to Dapr application sidecars;
 - [Tracing](#tracing)
+- [Metrics](#metrics)
 - [Middleware](#middleware)
 - [Scoping secrets for secret stores](#scoping-secrets-for-secret-stores)
 - [Access control allow lists for service invocation](#access-control-allow-lists-for-service-invocation)
@@ -56,24 +57,46 @@ The `tracing` section under the `Configuration` spec contains the following prop
 
 ```yml
 tracing:
-    samplingRate: "1"
+  samplingRate: "1"
+  zipkin:
+    endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
 
 The following table lists the properties for tracing:
 
 | Property     | Type   | Description |
 |--------------|--------|-------------|
-| samplingRate | string | Set sampling rate for tracing to be enabled or disabled. 
+| `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
+| `zipkin.endpointAddress` | string | Set the Zipkin server address.
 
 
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
-See [Observability distributed tracing]({{< ref "tracing.md" >}}) for more information
+See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information
+
+#### Metrics
+
+The metrics section can be used to enable or disable metrics for an application.
+
+The `metrics` section under the `Configuration` spec contains the following properties:
+
+```yml
+metrics:
+  enabled: true
+```
+
+The following table lists the properties for metrics:
+
+| Property     | Type   | Description |
+|--------------|--------|-------------|
+| `enabled` | boolean | Whether metrics should to be enabled.
+
+See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more information
 
 #### Middleware
 
-Middleware configuration set named Http pipeline middleware handlers 
+Middleware configuration set named Http pipeline middleware handlers
 The `httpPipeline` section under the `Configuration` spec contains the following properties:
 
 ```yml
@@ -92,15 +115,19 @@ The following table lists the properties for HTTP handlers:
 | name     | string | Name of the middleware component
 | type     | string | Type of middleware component
 
-See [Middleware pipelines]({{< ref "middleware-concept.md" >}}) for more information
+See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
 
 #### Scope secret store access
-
 See the [Scoping secrets]({{< ref "secret-scope.md" >}}) guide for information and examples on how to scope secrets to an application.
 
-#### Access Control allow lists for service invocation
+#### Access Control allow lists for building block APIs
+See the [selectively enable Dapr APIs on the Dapr sidecar]({{< ref "api-allowlist.md" >}}) guide for information and examples on how to set ACLs on the building block APIs lists.
 
-See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists.
+#### Access Control allow lists for service invocation API
+See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists with ACLs which using service invocation API.
+
+#### Turning on preview features
+See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to opt-in to preview features for a release. Preview feature enable new capabilities to be added that still need more time until they become generally available (GA) in the runtime.
 
 ### Example sidecar configuration
 The following yaml shows an example configuration file that can be applied to an applications' Dapr sidecar.
@@ -128,14 +155,14 @@ spec:
     trustDomain: "public"
     policies:
     - appId: app1
-      defaultAction: deny 
+      defaultAction: deny
       trustDomain: 'public'
-      namespace: "default" 
+      namespace: "default"
       operations:
-      - name: /op1 
-        httpVerb: ['POST', 'GET'] 
+      - name: /op1
+        httpVerb: ['POST', 'GET']
         action: deny
-      - name: /op2/* 
+      - name: /op2/*
         httpVerb: ["*"]
         action: allow
 ```

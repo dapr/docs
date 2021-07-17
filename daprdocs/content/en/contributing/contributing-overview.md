@@ -7,8 +7,8 @@ description: >
   General guidance for contributing to any of the Dapr project repositories
 ---
 
-Thank you for your interest in Dapr! 
-This document provides the guidelines for how to contribute to the [Dapr project](https://github.com/dapr) through issues and pull-requests. Contributions can also come in additional ways such as engaging with the community in community calls, commenting on issues or pull requests and more. 
+Thank you for your interest in Dapr!
+This document provides the guidelines for how to contribute to the [Dapr project](https://github.com/dapr) through issues and pull-requests. Contributions can also come in additional ways such as engaging with the community in community calls, commenting on issues or pull requests and more.
 
 See the [Dapr community repository](https://github.com/dapr/community) for more information on community engagement and community membership.
 
@@ -38,7 +38,7 @@ Before you submit an issue, make sure you've checked the following:
         - 👎 down-vote
 1. For bugs
     - Check it's not an environment issue. For example, if running on Kubernetes, make sure prerequisites are in place. (state stores, bindings, etc.)
-    - You have as much data as possible. This usually comes in the form of logs and/or stacktrace. If running on Kubernetes or other environment, look at the logs of the Dapr services (runtime, operator, placement service). More details on how to get logs can be found [here](https://github.com/dapr/docs/tree/master/best-practices/troubleshooting/logs.md).
+    - You have as much data as possible. This usually comes in the form of logs and/or stacktrace. If running on Kubernetes or other environment, look at the logs of the Dapr services (runtime, operator, placement service). More details on how to get logs can be found [here]({{< ref "logs-troubleshooting.md" >}}).
 1. For proposals
     - Many changes to the Dapr runtime may require changes to the API. In that case, the best place to discuss the potential feature is the main [Dapr repo](https://github.com/dapr/dapr).
     - Other examples could include bindings, state stores or entirely new components.
@@ -49,6 +49,7 @@ All contributions come through pull requests. To submit a proposed change, follo
 
 1. Make sure there's an issue (bug or proposal) raised, which sets the expectations for the contribution you are about to make.
 1. Fork the relevant repo and create a new branch
+    - Some Dapr repos support [Codespaces]({{< ref codespaces.md >}}) to provide an instant environment for you to build and test your changes.
 1. Create your change
     - Code changes require tests
 1. Update relevant documentation for the change

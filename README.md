@@ -6,6 +6,19 @@ If you are looking to explore the Dapr documentation, please go to the documenta
 
 This repo contains the markdown files which generate the above website. See below for guidance on running with a local environment to contribute to the docs.
 
+## Branch guidance
+
+The Dapr docs handles branching differently than most code repositories. Instead of having a `master` or `main` branch, every branch is labeled to match the major and minor version of a runtime release.
+
+The following branches are currently maintained:
+
+| Branch | Website | Description |
+|--------|---------|-------------|
+| [v1.2](https://github.com/dapr/docs) (primary) | https://docs.dapr.io | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here.
+| [v1.3](https://github.com/dapr/docs/tree/v1.3) (pre-release) | https://v1-3.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.3+ go here.
+
+For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/contributing-docs/#branch-guidance) document.
+
 ## Contribution guidelines
 
 Before making your first contribution, make sure to review the [contributing section](http://docs.dapr.io/contributing/) in the docs.
@@ -28,35 +41,32 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 ```sh
 git clone https://github.com/dapr/docs.git
 ```
-3. Change to daprdocs directory: 
+3. Change to daprdocs directory:
 ```sh
-cd daprdocs
+cd ./docs/daprdocs
 ```
-4. Add Docsy submodule: 
-```sh
-git submodule add https://github.com/google/docsy.git themes/docsy
-```
-5. Update submodules: 
+4. Update submodules:
 ```sh
 git submodule update --init --recursive
 ```
-6. Install npm packages: 
+5. Install npm packages:
 ```sh
 npm install
 ```
 
 ## Run local server
 1. Make sure you're still in the `daprdocs` directory
-2. Run 
+2. Run
 ```sh
-hugo server --disableFastRender
+hugo server
 ```
-3. Navigate to `http://localhost:1313/docs`
+3. Navigate to `http://localhost:1313/`
 
 ## Update docs
+1. Fork repo into your account
 1. Create new branch
-1. Commit and push changes to content
-1. Submit pull request to `master`
+1. Commit and push changes to forked branch
+1. Submit pull request from downstream branch to the upstream branch for the correct version you are targeting
 1. Staging site will automatically get created and linked to PR to review and test
 
 ## Code of Conduct

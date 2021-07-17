@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Dapr's gRPC Interface"
-linkTitle: "gRPC"
+linkTitle: "gRPC interface"
 weight: 1000
 description: "Use the Dapr gRPC API in your application"
 type: docs
@@ -82,11 +82,11 @@ import (
 // just for this demo
 ctx := context.Background()
 data := []byte("ping")
-  
+
 // create the client
 client, err := dapr.NewClient()
 if err != nil {
-  logger.Panic(err)
+  log.Panic(err)
 }
 defer client.Close()
 ```
@@ -95,11 +95,11 @@ defer client.Close()
 
 ```go
 // save state with the key key1
-err = client.SaveStateData(ctx, "statestore", "key1", "1", data)
+err = client.SaveState(ctx, "statestore", "key1", data)
 if err != nil {
-  logger.Panic(err)
+  log.Panic(err)
 }
-logger.Println("data saved")
+log.Println("data saved")
 ```
 
 Hooray!
@@ -135,6 +135,7 @@ import (
 ```go
 // server is our user app
 type server struct {
+     pb.UnimplementedAppCallbackServer
 }
 
 // EchoMethod is a simple demo method to invoke
@@ -176,16 +177,16 @@ func (s *server) ListInputBindings(ctx context.Context, in *empty.Empty) (*pb.Li
 	}, nil
 }
 
-// This method gets invoked every time a new event is fired from a registerd binding. The message carries the binding name, a payload and optional metadata
+// This method gets invoked every time a new event is fired from a registered binding. The message carries the binding name, a payload and optional metadata
 func (s *server) OnBindingEvent(ctx context.Context, in *pb.BindingEventRequest) (*pb.BindingEventResponse, error) {
 	fmt.Println("Invoked from binding")
 	return &pb.BindingEventResponse{}, nil
 }
 
 // This method is fired whenever a message has been published to a topic that has been subscribed. Dapr sends published messages in a CloudEvents 0.3 envelope.
-func (s *server) OnTopicEvent(ctx context.Context, in *pb.TopicEventRequest) (*empty.Empty, error) {
+func (s *server) OnTopicEvent(ctx context.Context, in *pb.TopicEventRequest) (*pb.TopicEventResponse, error) {
 	fmt.Println("Topic message arrived")
-	return &empty.Empty{}, nil
+        return &pb.TopicEventResponse{}, nil
 }
 
 ```

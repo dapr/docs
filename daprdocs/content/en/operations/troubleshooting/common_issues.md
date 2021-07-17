@@ -9,9 +9,16 @@ description: "Common issues and problems faced when running Dapr applications"
 ## I don't see the Dapr sidecar injected to my pod
 
 There could be several reasons to why a sidecar will not be injected into a pod.
-First, check your Deployment or Pod YAML file, and check that you have the following annotations in the right place:
+First, check your deployment or pod YAML file, and check that you have the following annotations in the right place:
 
-Sample deployment:
+```yaml
+annotations:
+  dapr.io/enabled: "true"
+  dapr.io/app-id: "nodeapp"
+  dapr.io/app-port: "3000"
+```
+
+### Sample deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -31,9 +38,9 @@ spec:
       labels:
         app: node
       annotations:
-        <b>dapr.io/enabled: "true"</b>
-        <b>dapr.io/app-id: "nodeapp"</b>
-        <b>dapr.io/app-port: "3000"</b>
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "nodeapp"
+        dapr.io/app-port: "3000"
     spec:
       containers:
       - name: node
@@ -47,6 +54,8 @@ If your pod spec template is annotated correctly and you still don't see the sid
 
 If this is the case, restarting the pods will fix the issue.
 
+If you are deploying Dapr on a private GKE cluster, sidecar injection does not work without extra steps. See [Setup a Google Kubernetes Engine cluster]({{< ref setup-gke.md >}}).
+
 In order to further diagnose any issue, check the logs of the Dapr sidecar injector:
 
 ```bash
@@ -55,9 +64,9 @@ In order to further diagnose any issue, check the logs of the Dapr sidecar injec
 
 *Note: If you installed Dapr to a different namespace, replace dapr-system above with the desired namespace*
 
-## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar 
+## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar
 
-If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes. 
+If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes.
 
 If your pod is in a failed state you should check this:
 
@@ -82,7 +91,7 @@ The most common cause of this failure is that a component (such as a state store
 
 To diagnose the root cause:
 
-- Significantly increase the liveness probe delay - [link]{{< ref "kubernetes-overview.md" >}})
+- Significantly increase the liveness probe delay - [link]({{< ref "kubernetes-annotations.md" >}})
 - Set the log level of the sidecar to debug - [link]({{< ref "logs-troubleshooting.md#setting-the-sidecar-log-level" >}})
 - Watch the logs for meaningful information - [link]({{< ref "logs-troubleshooting.md#viewing-logs-on-kubernetes" >}})
 
@@ -160,9 +169,9 @@ In Kubernetes, make sure the `dapr.io/app-port` annotation is specified:
 
 ```yaml
 annotations:
-    dapr.io/enabled: "true"
-    dapr.io/app-id: "nodeapp"
-    dapr.io/app-port: "3000"
+  dapr.io/enabled: "true"
+  dapr.io/app-id: "nodeapp"
+  dapr.io/app-port: "3000"
 ```
 
 If using Dapr Standalone and the Dapr CLI, make sure you pass the `--app-port` flag to the `dapr run` command.
@@ -195,3 +204,25 @@ The following example shows how to set the Host IP env var to `127.0.0.1`:
 ```bash
 export DAPR_HOST_IP=127.0.0.1
 ```
+
+## None of my components are getting loaded when my application starts. I keep getting "Error component X cannot be found"
+
+This is usually due to one of the following issues
+
+- You may have defined the `NAMESPACE` environment variable locally or deployed your components into a different namespace in Kubernetes. Check which namespace your app and the components are deployed to. Read [scoping components to one or more applications]({{< ref "component-scopes.md" >}}) for more information.
+- You may have not provided a `--components-path` with the Dapr `run` commands or not placed your components into the default components folder for your OS. Read [define a component]({{< ref "get-started-component.md" >}}) for more information.
+- You may have a syntax issue in component YAML file. Check your component YAML with the component [YAML samples]({{< ref "components.md" >}}).
+
+## Service invocation is failing and my Dapr service is missing an appId (macOS)
+
+Some organizations will implement software that filters out all UPD traffic, which is what mDNS is based on. Mostly commonly, on MacOS, `Microsoft Content Filter` is the culprit.
+
+In order for mDNS to function properly, ensure `Micorosft Content Filter` is inactive.
+
+- Open a terminal shell.
+- Type `mdatp system-extension network-filter disable` and hit enter.
+- Enter your account password.
+
+Microsoft Content Filter is disabled when the output is "Success". 
+
+> Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting. 

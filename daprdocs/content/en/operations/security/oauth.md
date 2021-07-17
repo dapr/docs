@@ -6,7 +6,7 @@ weight: 2000
 description: "Enable OAUTH authorization on Dapr endpoints for your web APIs"
 ---
 
-Dapr OAuth 2.0 [middleware]({{< ref "middleware-concept.md" >}}) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
+Dapr OAuth 2.0 [middleware]({{< ref "middleware.md" >}}) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
 You can also inject authorization tokens into your APIs which can be used for authorization towards external APIs called by your APIs using the [Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4).
 When the middleware is enabled any method invocation through Dapr needs to be authorized before getting passed to the user code.
 
@@ -71,11 +71,17 @@ spec:
     value: "<redirect URL>"
   - name: authHeaderName
     value: "<header name under which the secret token is saved>"
+    # forceHTTPS:
+    # This key is used to set HTTPS schema on redirect to your API method
+    # after Dapr successfully received Access Token from Identity Provider.
+    # By default, Dapr will use HTTP on this redirect.
+  - name: forceHTTPS
+    value: "<set to true if you invoke an API method through Dapr from https origin>"
 ```
 
 ### Define a custom pipeline for an Authorization Code Grant
 
-To use the OAuth middleware (Authorization Code), you should create a [custom pipeline]({{< ref "middleware-concept.md" >}})
+To use the OAuth middleware (Authorization Code), you should create a [custom pipeline]({{< ref "middleware.md" >}})
 using [Dapr configuration]({{< ref "configuration-overview" >}}), as shown in the following sample:
 
 ```yaml
@@ -133,7 +139,7 @@ spec:
 
 ### Define a custom pipeline for a Client Credentials Grant
 
-To use the OAuth middleware (Client Credentials), you should create a [custom pipeline]({{< ref "middleware-concept.md" >}})
+To use the OAuth middleware (Client Credentials), you should create a [custom pipeline]({{< ref "middleware.md" >}})
 using [Dapr configuration]({{< ref "configuration-overview.md" >}}), as shown in the following sample:
 
 ```yaml

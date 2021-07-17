@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "How-To: Invoke and discover services"
+title: "How-To: Invoke services using HTTP"
 linkTitle: "How-To: Invoke services"
-description: "How-to guide on how to use Dapr service invocation in a distributed application"
+description: "Call between services using service invocation"
 weight: 2000
 ---
 
@@ -140,6 +140,6 @@ The example above showed you how to directly invoke a different service running 
 For more information on tracing and logs see the [observability]({{< ref observability-concept.md >}}) article.
 
  ## Related Links
- 
+
 * [Service invocation overview]({{< ref service-invocation-overview.md >}})
 * [Service invocation API specification]({{< ref service_invocation_api.md >}})

@@ -178,3 +178,7 @@ time="2019-09-04T00:21:57Z" level=info msg="host added: 10.244.1.89"
 ### Non Kubernetes Environments
 
 The examples above are specific specific to Kubernetes, but the principal is the same for any kind of container based environment: simply grab the container ID of the Dapr sidecar and/or system component (if applicable) and view its logs.
+
+## References
+
+* [How to setup loggings for Dapr sidecar, and your application]({{< ref "logging.md" >}})
