@@ -62,8 +62,12 @@ The following steps shows you how to configure Dapr to send distributed tracing 
 
 ### Setup
 
-First create the following YAML file to install Jaeger
-* jaeger-operator.yaml
+First create the following YAML file to install Jaeger, file name is `jaeger-operator.yaml`
+
+#### development/test configuration
+
+defaultly, allInOne uses memory as the backend storage. If you use the YAML configuration to deploy in production environment, it is dangerous!!!
+
 ```yaml
 apiVersion: jaegertracing.io/v1
 kind: "Jaeger"
@@ -78,6 +82,43 @@ spec:
     options:
       query:
         base-path: /jaeger
+```
+
+#### production configuration
+
+jaeger uses elasticsearch as the backend storage, you maybe create jaeger-secret to access elasticsearch server. see [Configuring and Deploying Jaeger](https://docs.openshift.com/container-platform/4.7/jaeger/jaeger_install/rhbjaeger-deploying.html)
+
+> kubectl create secret generic jaeger-secret --from-literal=ES_PASSWORD='xxx' --from-literal=ES_USERNAME='xxx' -n ${NAMESPACE}
+
+```yaml
+apiVersion: jaegertracing.io/v1
+kind: "Jaeger"
+metadata:
+  name: jaeger
+spec:
+  strategy: production
+  query:
+    options:
+      log-level: info
+      query:
+        base-path: /jaeger
+  collector:
+    maxReplicas: 5
+    resources:
+      limits:
+        cpu: 500m
+        memory: 516Mi
+  storage:
+    type: elasticsearch
+    esIndexCleaner:
+      enabled: false                                ## turn the job deployment on and off
+      numberOfDays: 7                               ## number of days to wait before deleting a record
+      schedule: "55 23 * * *"                       ## cron expression for it to run
+      image: jaegertracing/jaeger-es-index-cleaner  ## image of the job
+    secretName: jaeger-secret
+    options:
+      es:
+        server-urls: http://elasticsearch:9200
 ```
 
 Now, use the above YAML file to install Jaeger
