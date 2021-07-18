@@ -81,6 +81,7 @@ You can specify any of the following optional metadata properties with each requ
 
 When sending an email, the metadata in the configuration and in the request is combined. The combined set of metadata must contain at least the `emailFrom`, `emailTo`, `emailCc`, `emailBcc` and `subject` fields.
 
+The `emailTo`, `emailCC` and `emailBCC` fields can contain multiple email addresses separated by a semicolon.
 
 Example:
 ```json
@@ -94,7 +95,7 @@ Example:
   "data": "Testing Dapr SMTP Binding"
 }
 ```
-
+The `emailTo`, `emailCC` and `emailBCC` fields can contain multiple email addresses separated by a semicolon.
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
