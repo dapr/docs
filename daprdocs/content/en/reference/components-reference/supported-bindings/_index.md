@@ -57,6 +57,7 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| ------ |----------|
 | [AWS DynamoDB]({{< ref dynamodb.md >}}) |    | ✅ | Alpha | v1 | 1.0 |
 | [AWS S3]({{< ref s3.md >}})             |    | ✅ | Alpha | v1 | 1.0 |
+| [AWS SES]({{< ref ses.md >}})           |    | ✅ | Alpha | v1 | 1.4 |
 | [AWS SNS]({{< ref sns.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 | [AWS SQS]({{< ref sqs.md >}})           | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [AWS Kinesis]({{< ref kinesis.md >}})   | ✅ | ✅ | Alpha | v1 | 1.0 |
