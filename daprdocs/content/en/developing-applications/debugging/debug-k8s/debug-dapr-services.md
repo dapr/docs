@@ -31,7 +31,6 @@ make release GOOS=linux GOARCH=amd64 DEBUG=1
 ```
 
 >On Windows download [MingGW](https://sourceforge.net/projects/mingw/files/MinGW/Extension/make/mingw32-make-3.80-3/) and use `ming32-make.exe` instead of `make`.
->On Windows download [MingGW](https://sourceforge.net/projects/mingw/files/MinGW/Extension/make/mingw32-make-3.80-3/) and use `ming32-make.exe` instead of `make`.
 
 In the above command, 'DEBUG' is specified  to '1' to disable compiler optimization. 'GOOS=linux' and 'GOARCH=amd64' are also necessary since the binaries will be packaged into Linux-based Docker image in the next step.
 
