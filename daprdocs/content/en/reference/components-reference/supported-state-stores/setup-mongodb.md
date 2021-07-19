@@ -63,7 +63,7 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 | collectionName     | N        | The name of the collection to use. Defaults to `"daprCollection"` | `"daprCollection"`
 | writeconcern       | N        | The write concern to use | `"majority"`
 | readconcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
-| operationTimeout   | N        | The timeout for the operation. Defautls to `"5s"` | `"5s"`
+| operationTimeout   | N        | The timeout for the operation. Defaults to `"5s"` | `"5s"`
 
 ## Setup MongoDB
 
