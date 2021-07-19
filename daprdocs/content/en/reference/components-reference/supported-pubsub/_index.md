@@ -23,6 +23,7 @@ Table captions:
 | Name                                                  | Status | Component version | Since |
 |-------------------------------------------------------|--------| -----| ------------- |
 | [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Beta  | v1 | 1.0 |
+| [Apache Kafka (confluent kafka sdk)]({{< ref setup-confluent-kafka.md >}})     | alpha  | v1 | 1.0 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})           | Alpha  | v1 | 1.0 |
 | [MQTT]({{< ref setup-mqtt.md >}})                     | Alpha  | v1 | 1.0 |
 | [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta  | v1 | 1.0 |
