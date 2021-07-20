@@ -6,7 +6,15 @@ description: "Call between services using service invocation"
 weight: 3000
 ---
 
-This article describe how to deploy services each with an unique application ID, so that other services can discover and call endpoints on them using service invocation API.
+This article describe how to use Dapr to connect services using gRPC.
+By using Dapr's gRPC proxying capability, you can use your existing proto based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr Service Invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
+
+1. Mutual authentication
+2. Tracing
+3. Metrics
+4. Access lists
+5. Network level resiliency
+6. API token based authentication
 
 ## Step 1: Run a gRPC server
 
@@ -236,3 +244,4 @@ For more information on tracing and logs see the [observability]({{< ref observa
 
 * [Service invocation overview]({{< ref service-invocation-overview.md >}})
 * [Service invocation API specification]({{< ref service_invocation_api.md >}})
+* [gRPC proxying community call video](https://youtu.be/B_vkXqptpXY?t=70)
