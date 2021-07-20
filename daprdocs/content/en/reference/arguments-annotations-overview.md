@@ -1,12 +1,14 @@
 ---
 type: docs
-title: "Dapr annotations spec"
-linkTitle: "Daprd, CLI, and Kubernetes annotations"
-description: "The annotations available when configuring Dapr in different environments"
+title: "Dapr arguments and annotations"
+linkTitle: "Daprd, CLI, and Kubernetes arguments and annotations"
+description: "The arguments and annotations available when configuring Dapr in different environments"
 weight: 300
+aliases:
+  - "/operations/components/setup-pubsub/setup-pubsub-overview/"
 ---
 
-The following table shows all the annotations supported by Dapr:
+The following table shows all the annotations supported by Dapr. This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts--via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
 
 | daprd | dapr CLI | CLI shorthand | K8s annotations | Description
 |----- | ------- | -----------| ----------| ------------ | ------------ |
@@ -19,14 +21,14 @@ The following table shows all the annotations supported by Dapr:
 | `--control-plane-address` | not supported | | not supported | Address for a Dapr control plane | 
 | `--dapr-grpc-port` | `--dapr-grpc-port` | | not supported | gRPC port for the Dapr API to listen on (default "50001") | 
 | `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API | 
-| --dapr-http-max-request-size | --dapr-http-max-request-size | | `dapr.io/http-max-request-size`                   | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB | 
+|` --dapr-http-max-request-size` | --dapr-http-max-request-size | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB | 
 | not supported | `--image` | | not supported 
 | `--internal-grpc-port` | not supported | | not supported | gRPC port for the Dapr Internal API to listen on | 
 | `--enable-metrics` | not supported | | configuration spec | Enable prometheus metric (default true) | 
 | `--enable-mtls` | not supported | | configuration spec | Enables automatic mTLS for daprd to daprd communication channels | 
 | `--enable-profiling` | `--enable-profiling` | | `dapr.io/enable-profiling` | Enable profiling | 
 | `--log-as-json` | not supported | | `dapr.io/log-as-json` | Setting this parameter to `true` outputs logs in JSON format. Default is `false` | 
-| `--log-level` | `--log-level`	| | `dapr.io/log-level` | Sets the log level for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` | 
+| `--log-level` | `--log-level` | | `dapr.io/log-level` | Sets the log level for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` | 
 | `--app-max-concurrency` | `--app-max-concurrency` | | `dapr.io/app-max-concurrency` | Limit the concurrency of your application. A valid value is any number larger than `0`
 | `--metrics-port` | `--metrics-port` | | `dapr.io/metrics-port` | Sets the port for the sidecar metrics server. Default is `9090` | 
 | `--mode` | not supported | | not supported | Runtime mode for Dapr (default "standalone") | 
@@ -50,6 +52,3 @@ The following table shows all the annotations supported by Dapr:
 | not supported | not supported | | `dapr.io/sidecar-readiness-probe-period-seconds`  | How often (in seconds) to perform the sidecar readiness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `6`
 | not supported | not supported | | `dapr.io/sidecar-readiness-probe-threshold`       | When the sidecar readiness probe fails, Kubernetes will try N times before giving up. In  this case, the Pod will be marked Unready. Read more about `failureThreshold` [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). Default is `3`
 | not supported | not supported | | `dapr.io/env`                                     | List of environment variable to be injected into the sidecar. Strings consisting of key=value pairs separated by a comma.
-
-
-
