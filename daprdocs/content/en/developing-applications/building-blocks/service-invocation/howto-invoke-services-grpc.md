@@ -65,7 +65,7 @@ This Go app implements the Greeter proto service and exposes a `SayHello` method
 
 ### Run the gRPC server using the Dapr CLI
 
-Since gRPC proxying is an opt-in feature, first enable it using a configuration file:
+Since gRPC proxying is currently a preview feature, you need to opt-in using a configuration file. See https://docs.dapr.io/operations/configuration/preview-features/ for more information.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -142,7 +142,7 @@ ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 
 ### Run the client using the Dapr CLI
 
-Since gRPC proxying is an opt-in feature, first enable it using a configuration file:
+Since gRPC proxying is currently a preview feature, you need to opt-in using a configuration file. See https://docs.dapr.io/operations/configuration/preview-features/ for more information.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
