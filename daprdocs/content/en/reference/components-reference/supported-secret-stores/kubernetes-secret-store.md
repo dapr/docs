@@ -8,10 +8,12 @@ aliases:
 ---
 
 ## Default Kubernetes secret store component
-When Dapr is deployed to a Kubernetes cluster, a secret store with the name `kubernetes` is automatically provisioned. This is meant to streamline the usage of the native Kubernetes secret store but generally, it is a better practice to create a component definition like the one below with a custom name. Using a custom definition decouples referencing the secret store in your code from the hosting platform (Kubernetes) keeping you code more generic and portable. Additionally, by explicitly defining a Kubernetes secret store component you can connect to a Kubernetes secret store from a local Dapr self-hosted installation. This requires a valid [`kubeconfig`](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) file.
+When Dapr is deployed to a Kubernetes cluster, a secret store with the name `kubernetes` is automatically provisioned. This pre-provisioned secret store allows you to use the native Kubernetes secret store with no need to author, deploy or maintain a component configuration file for the secret store and is useful for developers looking to simply access secrets stored natively in a Kubernetes cluster. 
+
+A custom component definition file for a Kubernetes secret store can still be configured (See below for details). Using a custom definition decouples referencing the secret store in your code from the hosting platform as the store name is not fixed and can be customized, keeping you code more generic and portable. Additionally, by explicitly defining a Kubernetes secret store component you can connect to a Kubernetes secret store from a local Dapr self-hosted installation. This requires a valid [`kubeconfig`](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) file.
 
 {{% alert title="Scoping secret store access" color="warning" %}}
-When limiting access to secrets in your application using [secret scopes]({{<ref secrets-scopes.md>}}), it's important to include this default secret store in the scope definition in order to restrict it.
+When limiting access to secrets in your application using [secret scopes]({{<ref secrets-scopes.md>}}), it's important to include the default secret store in the scope definition in order to restrict it.
 {{% /alert %}}
 
 ## Create a custom Kubernetes secret store component
