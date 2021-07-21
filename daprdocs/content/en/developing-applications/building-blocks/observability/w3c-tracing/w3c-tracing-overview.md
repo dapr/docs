@@ -72,7 +72,7 @@ In these scenarios Dapr does some of the work for you and you need to either cre
      To understand how to extract the trace headers from a response and add the trace headers into a request, see the [how to use trace context]({{< ref w3c-tracing >}}) article.
 
 2. You have chosen to generate your own trace context headers.
-This is much more unusual. There may be occassions where you specifically chose to add W3C trace headers into a service call, for example if you have an existing application that does not currently use Dapr. In this case Dapr still propagates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done :
+This is much more unusual. There may be occasions where you specifically chose to add W3C trace headers into a service call, for example if you have an existing application that does not currently use Dapr. In this case Dapr still propagates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done :
 
      1. You can use the industry standard OpenCensus/OpenTelemetry SDKs to generate trace headers and pass these trace headers to a Dapr enabled service. This is the preferred recommendation.
 

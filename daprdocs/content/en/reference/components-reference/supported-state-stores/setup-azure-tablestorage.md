@@ -79,7 +79,7 @@ will create the following record in a table:
 
 ## Concurrency
 
-Azure Table Storage state concurrency is achieved by using `ETag`s according to [the official documenation]( https://docs.microsoft.com/en-us/azure/storage/common/storage-concurrency#managing-concurrency-in-table-storage).
+Azure Table Storage state concurrency is achieved by using `ETag`s according to [the official documentation]( https://docs.microsoft.com/en-us/azure/storage/common/storage-concurrency#managing-concurrency-in-table-storage).
 
 
 ## Related links
