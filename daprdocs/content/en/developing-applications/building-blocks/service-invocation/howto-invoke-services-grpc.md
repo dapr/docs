@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Invoke services using gRPC"
-linkTitle: "How-To: Invoke services using gRPC"
+linkTitle: "How-To: Invoke with gRPC"
 description: "Call between services using service invocation"
 weight: 3000
 ---
@@ -19,6 +19,8 @@ By using Dapr's gRPC proxying capability, you can use your existing proto based 
 ## Step 1: Run a gRPC server
 
 The following example is taken from the [hello world grpc-go example](https://github.com/grpc/grpc-go/tree/master/examples/helloworld).
+
+Note this example is in Go, but applies to all programming languages supported by gRPC.
 
 ```go
 package main
@@ -138,6 +140,43 @@ The following line tells Dapr to discover and invoke an app named `server`:
 
 ```go
 ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
+```
+
+All languages supported by gRPC allow for adding metadata. Here are a few examples:
+
+```csharp
+var metadata = new Metadata
+{
+	{ "dapr-app-id", "server" }
+};
+
+var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata);
+```
+
+```javascript
+const metadata = new grpc.Metadata();
+metadata.add('dapr-app-id', 'server');
+
+client.sayHello({ name: "Darth Malgus", metadata })
+```
+
+```java
+Metadata headers = new Metadata();
+Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "Darth Revan");
+
+GreeterService.ServiceBlockingStub stub = GreeterService.newBlockingStub(channel);
+stub = MetadataUtils.attachHeaders(stub, header);
+stub.SayHello(new HelloRequest() { Name = "Darth Malak" });
+```
+
+```python
+metadata = (('dapr-app-id', 'server'))
+response = stub.SayHello(request={ name: 'Darth Plagueis' }, metadata=metadata)
+```
+
+```ruby
+metadata = { 'dapr-app-id' : 'server' }
+response = service.sayHello({ 'name': 'Darth Bane' }, metadata)
 ```
 
 ### Run the client using the Dapr CLI
