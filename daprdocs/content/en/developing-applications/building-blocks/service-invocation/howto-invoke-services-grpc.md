@@ -144,22 +144,9 @@ ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 
 All languages supported by gRPC allow for adding metadata. Here are a few examples:
 
-```csharp
-var metadata = new Metadata
-{
-	{ "dapr-app-id", "server" }
-};
+{{< tabs Java Dotnet Python JavaScript Ruby "C++">}}
 
-var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata);
-```
-
-```javascript
-const metadata = new grpc.Metadata();
-metadata.add('dapr-app-id', 'server');
-
-client.sayHello({ name: "Darth Malgus", metadata })
-```
-
+{{% codetab %}}
 ```java
 Metadata headers = new Metadata();
 Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
@@ -168,16 +155,50 @@ GreeterService.ServiceBlockingStub stub = GreeterService.newBlockingStub(channel
 stub = MetadataUtils.attachHeaders(stub, header);
 stub.SayHello(new HelloRequest() { Name = "Darth Malak" });
 ```
+{{% /codetab %}}
 
+{{% codetab %}}
+```csharp
+var metadata = new Metadata
+{
+	{ "dapr-app-id", "server" }
+};
+
+var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata);
+```
+{{% /codetab %}}
+
+{{% codetab %}}
 ```python
 metadata = (('dapr-app-id', 'server'))
 response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 ```
+{{% /codetab %}}
 
+{{% codetab %}}
+```javascript
+const metadata = new grpc.Metadata();
+metadata.add('dapr-app-id', 'server');
+
+client.sayHello({ name: "Darth Malgus", metadata })
+```
+{{% /codetab %}}
+
+{{% codetab %}}
 ```ruby
 metadata = { 'dapr-app-id' : 'server' }
 response = service.sayHello({ 'name': 'Darth Bane' }, metadata)
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+```c++
+grpc::ClientContext context;
+context.AddMetadata("dapr-app-id", "Darth Sidious");
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ### Run the client using the Dapr CLI
 
