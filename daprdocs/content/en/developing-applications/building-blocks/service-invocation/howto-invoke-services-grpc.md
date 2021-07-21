@@ -162,7 +162,7 @@ client.sayHello({ name: "Darth Malgus", metadata })
 
 ```java
 Metadata headers = new Metadata();
-Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "Darth Revan");
+Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
 
 GreeterService.ServiceBlockingStub stub = GreeterService.newBlockingStub(channel);
 stub = MetadataUtils.attachHeaders(stub, header);
@@ -171,7 +171,7 @@ stub.SayHello(new HelloRequest() { Name = "Darth Malak" });
 
 ```python
 metadata = (('dapr-app-id', 'server'))
-response = stub.SayHello(request={ name: 'Darth Plagueis' }, metadata=metadata)
+response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 ```
 
 ```ruby
