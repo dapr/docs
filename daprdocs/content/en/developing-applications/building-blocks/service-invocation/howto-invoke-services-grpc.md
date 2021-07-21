@@ -93,7 +93,7 @@ Using the Dapr CLI, we're assigning a unique id to the app, `server`, using the 
 ## Step 2: Invoke the service
 
 The following example shows you how to discover the Greeter service using Dapr from a gRPC client.
-Notice that instead of invoking the target service directly at port `50051`, the client is invoking its local Dapr sidecar over port `50007` which then takes care of service discovery, telemetry, mTLS and other concerns.
+Notice that instead of invoking the target service directly at port `50051`, the client is invoking its local Dapr sidecar over port `50007` which then provides all the capabilities of service invocation including service discovery, tracing, mTLS and retries.
 
 ```go
 package main
