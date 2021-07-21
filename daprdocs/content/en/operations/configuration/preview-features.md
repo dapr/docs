@@ -12,8 +12,7 @@ Some features in Dapr are considered experimental when they are first released. 
 Currently, preview features are enabled on a per application basis when running on Kubernetes. A global scope may be introduced in the future should there be a use case for it.
 
 ### Current preview features
-Below is a list of existing preview features:
-- [Actor Reentrancy]({{<ref actor-reentrancy.md>}})
+Currently supported preview features can be seen [here]({{<ref support-preview-features>}}).
 
 ## Configuration properties
 The `features` section under the `Configuration` spec contains the following properties:
