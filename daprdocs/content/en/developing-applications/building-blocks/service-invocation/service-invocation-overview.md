@@ -105,7 +105,7 @@ The API for service invocation can be found in the [service invocation API refer
 
 ### gRPC proxying
 
-Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutotial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}). 
+Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}). 
 
 ## Example
 
