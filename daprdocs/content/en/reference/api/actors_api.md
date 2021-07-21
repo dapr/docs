@@ -178,7 +178,16 @@ Creates a persistent reminder for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-Body:
+#### Request Body
+
+A JSON object with the following fields:
+
+| Field | Description |
+|-------|--------------|
+| dueTime | Specifies the time after which the reminder is invoked, its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) format
+| period | Specifies the period between different invocations, its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) format or ISO 8601 duration format with optional recurrence.
+
+`period` field supports `time.Duration` format and ISO 8601 format (with some limitations). Only duration format of ISO 8601 duration `Rn/PnYnMnWnDTnHnMnS` is supported for `period`. Here `Rn/` specifies that the reminder will be invoked `n` number of times. It should be a positive integer greater than zero. If certain values are zero, the `period` can be shortened, for example 10 seconds can be specified in ISO 8601 duration as `PT10S`. If `Rn/` is not specified the reminder will run infinite number of times until deleted.
 
 The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
 ```json
