@@ -115,7 +115,7 @@ For the following tutorial you need to have the following parameters filled out 
 }
 ```
 
-#### Python Task
+#### Python task
 
 
 ```json
