@@ -8,7 +8,7 @@ aliases:
   - "/operations/hosting/kubernetes/kubernetes-annotations/"
 ---
 
-The following table shows all the annotations supported by Dapr. This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts--via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
+This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts--via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
 
 | daprd | dapr CLI | CLI shorthand | K8s annotations | Description
 |----- | ------- | -----------| ----------| ------------ | ------------ |
