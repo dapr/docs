@@ -14,7 +14,6 @@ Currently, preview features are enabled on a per application basis when running 
 ### Current preview features
 Below is a list of existing preview features:
 - [Actor reentrancy]({{<ref actor-reentrancy.md>}})
-- [Actor type metadata with reminders partitioning]({{<ref actor-reminders-partitions.md>}})
 
 ## Configuration properties
 The `features` section under the `Configuration` spec contains the following properties:
@@ -22,6 +21,7 @@ The `features` section under the `Configuration` spec contains the following pro
 | Property       | Type   | Description |
 |----------------|--------|-------------|
 |name|string|The name of the preview feature that will be enabled/disabled
+|enabled|bool|Boolean specifying if the feature is enabled or disabled
 
 ## Enabling a preview feature
 Preview features are specified in the configuration. Here is an example of a full configuration that contains multiple features:
