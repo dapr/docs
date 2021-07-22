@@ -90,7 +90,6 @@ You need to create the tasks mentioned in the launch.json for both application c
 
 This is the full list of the parameters the Daprd tasks you need to create can use, not all are going to be necessary but for future customization its important to be aware.
 
-
 ### Hello World daprd task
 
 For the following tutorial you need to have the following parameters filled out "appId", "httpPort", "metricsPort",  "label" and "type". There are more parameters depending on the specific Daprd command you're trying to run that you willneed such as "appPort" but those are dependent on what each application is trying to accomplish.
