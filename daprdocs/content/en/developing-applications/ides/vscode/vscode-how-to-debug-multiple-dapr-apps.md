@@ -1,9 +1,9 @@
 ---
 type: docs
 title: "How-To: Debug multiple Dapr applications"
-linkTitle: "How-To: Debug multiple Dapr applications"
+linkTitle: "How-To: Debug Dapr applications"
 weight: 40000
-description:  "How to configure Dapr for multiple applications"
+description:  "Learn how to configure VSCode to debug multiple Dapr applications"
 ---
 
 As your project grows you will experience a need to configure VS Code to handle multiple Dapr applications to debug your project. This guide will offer you a simple to follow explanation of the type of changes you will need
