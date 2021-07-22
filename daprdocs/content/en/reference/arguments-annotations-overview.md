@@ -1,11 +1,11 @@
 ---
 type: docs
-title: "Dapr arguments and annotations"
-linkTitle: "Daprd, CLI, and Kubernetes arguments and annotations"
+title: "Dapr arguments and annotations for daprd, CLI, and Kubernetes"
+linkTitle: "Arguments and annotations"
 description: "The arguments and annotations available when configuring Dapr in different environments"
-weight: 300
+weight: 350
 aliases:
-  - "/operations/components/setup-pubsub/setup-pubsub-overview/"
+  - "/operations/hosting/kubernetes/kubernetes-annotations/"
 ---
 
 The following table shows all the annotations supported by Dapr. This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts--via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
