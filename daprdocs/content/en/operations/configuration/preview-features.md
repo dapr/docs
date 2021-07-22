@@ -13,7 +13,7 @@ Currently, preview features are enabled on a per application basis when running 
 
 ### Current preview features
 Below is a list of existing preview features:
-- [Actor reentrancy]({{<ref actor-reentrancy.md>}})
+- [Actor Reentrancy]({{<ref actor-reentrancy.md>}})
 
 ## Configuration properties
 The `features` section under the `Configuration` spec contains the following properties:
