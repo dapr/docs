@@ -54,9 +54,6 @@ The 3 main parameters each configuration will need is a `request`, `type` and `n
 - `${workspaceFolder}` is a VS Code variable reference, equal to the workspace path of the opened VS Code workspace.
 - The `preLaunchTask` and `postDebugTask` parameters refer to the program configurations run before and after launching the application. See step 2 on how to configure these.
 
-For this tutorial the `preLaunchTask` and `postDebugTask` both refer to task.json configurations that are related to Daprd commands.
-
-
 ## Step 2: Configure  task.json
 
 You need to create the tasks mentioned in the launch.json for both application configurations in order for them to launch succesfully.
