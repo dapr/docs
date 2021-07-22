@@ -7,16 +7,13 @@ description: "Set up Jaeger for distributed tracing"
 type: docs
 ---
 
-Dapr currently supports the Zipkin protocol. Since Jaeger is
-compatible with Zipkin, the Zipkin protocol can be used to talk to
-Jaeger.
+Dapr supports the Zipkin protocol. Since Jaeger is compatible with Zipkin, the Zipkin protocol can be used to communication with Jaeger.
 
 ## Configure self hosted mode
 
 ### Setup
 
-The simplest way to start Jaeger is to use the pre-built all-in-one
-Jaeger image published to DockerHub:
+The simplest way to start Jaeger is to use the pre-built all-in-one Jaeger image published to DockerHub:
 
 ```bash
 docker run -d --name jaeger \
@@ -55,7 +52,7 @@ dapr run --app-id mynode --app-port 3000 node app.js --config config.yaml
 ```
 
 ### Viewing Traces
-To view traces, in your browser go to http://localhost:16686 and you will see the Jaeger UI.
+To view traces, in your browser go to http://localhost:16686 to see the Jaeger UI.
 
 ## Configure Kubernetes
 The following steps shows you how to configure Dapr to send distributed tracing data to Jaeger running as a container in your Kubernetes cluster, how to view them.
@@ -86,7 +83,7 @@ spec:
 
 #### production configuration
 
-jaeger uses elasticsearch as the backend storage, you maybe create jaeger-secret to access elasticsearch server. see [Configuring and Deploying Jaeger](https://docs.openshift.com/container-platform/4.7/jaeger/jaeger_install/rhbjaeger-deploying.html)
+Jaeger uses elasticsearch as the backend storage, you may need to a create jaeger-secret to access elasticsearch server. See [Configuring and Deploying Jaeger](https://docs.openshift.com/container-platform/4.7/jaeger/jaeger_install/rhbjaeger-deploying.html)
 
 > kubectl create secret generic jaeger-secret --from-literal=ES_PASSWORD='xxx' --from-literal=ES_USERNAME='xxx' -n ${NAMESPACE}
 
