@@ -95,7 +95,7 @@ This is the full list of the parameters the Daprd tasks you need to create can u
 
 For the following tutorial you need to have the following parameters filled out "appId", "httpPort", "metricsPort",  "label" and "type". There are more parameters depending on the specific Daprd command you're trying to run that you willneed such as "appPort" but those are dependent on what each application is trying to accomplish.
 
-#### NodeJs Task
+#### NodeJs task
 
 ```json
 {
