@@ -58,7 +58,7 @@ The 3 main parameters each configuration will need is a `request`, `type` and `n
 
 You need to create the tasks mentioned in the launch.json for both application configurations in order for them to launch succesfully.
 
-### Daprd Parameters
+### Daprd parameters
 ```json
 {
     "allowedOrigins": "string",
