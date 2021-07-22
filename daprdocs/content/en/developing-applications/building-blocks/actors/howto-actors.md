@@ -133,6 +133,8 @@ When configured with ISO 8601 durations, the `period` column also allows to spec
 
 The number of repetitions i.e. the number of times the reminder is run should be a positive number.
 
+Watch this [video](https://www.youtube.com/watch?v=B_vkXqptpXY&t=1002s) for more information on using ISO 861 for Reminders
+
 #### Retrieve actor reminder
 
 You can retrieve the actor reminder by calling
