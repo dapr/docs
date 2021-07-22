@@ -49,13 +49,10 @@ Each SDK supported will require its own tweaks for the launching of the program 
 
 The 3 main parameters each configuration will need is a `request`, `type` and `name`. In these scenarios we need only the `launch` request as we will be launching each application and connecting to a running Daprd instance which we will launch right before the application itself.
 
-`type` is related to the SDK you are trying to run and depending on the SDK it might require a extension found in the marketplace in order to properly configure, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
-
-`name` is just a unique name for the configuration which will come in useful once we create what is called a compound configuration which will allow you to call multiple configurations for your project.
-
-`${workspaceFolder}` is one of the supported VS Code variable references that are already predefined, its value is the workspace path of the opened VS Code workspace.
-
-The `preLaunchTask` and `postDebugTask` parameters will refer to what the program configuration will run before launching the actual Node app and commands it will run afterwards. 
+- `type` is related to the SDK you are trying to run, and depending on the SDK it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
+- `name` is a unique name for the configuration, used for compound configurations when calling multiple configurations in your project.
+- `${workspaceFolder}` is a VS Code variable reference, equal to the workspace path of the opened VS Code workspace.
+- The `preLaunchTask` and `postDebugTask` parameters refer to the program configurations run before and after launching the application. See step 2 on how to configure these.
 
 For this tutorial the `preLaunchTask` and `postDebugTask` both refer to task.json configurations that are related to Daprd commands.
 
@@ -170,4 +167,3 @@ You can now run the program in debug mode by finding the compound command in the
 
 * [VS Code Extension Overview]({{< ref vscode-dapr-extension.md >}})
 * [VS Code Manual Configurations]({{< ref vscode-manual-configuration.md >}})
-
