@@ -7,7 +7,7 @@ description: "Detailed information on the run CLI command"
 
 ## Description
 
-Run Dapr and (optionally) your application side by side.
+Run Dapr and (optionally) your application side by side. A full list comparing daprd arguments, CLI arguments, and Kubernetes annotations can be found [here]({{< ref arguments-annotations-overview.md >}}).
 
 ## Supported platforms
 
