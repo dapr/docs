@@ -93,4 +93,6 @@ For production scenarios, there are some points to be considered before enabling
 
 * Enabling actor type metadata can only be reverted if the number of partitions remains zero, otherwise the reminders' set will be reverted to an previous state.
 * Number of partitions can only be increased and not decreased. This allows Dapr to automatically redistribute the data on a rolling restart where one or more partition configurations might be active.
-* This feature is in preview, so the Dapr team is collecting feedback on its correctness and performance prior to enabling it by default.
+
+### Related links
+* [Actor reminder partitioning community call video](https://youtu.be/ZwFOEUYe1WA?t=1493)
