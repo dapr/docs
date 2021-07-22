@@ -9,53 +9,50 @@ aliases:
 
 ## Component format
 
-To setup Kafka binding create a component of type `bindings.kafka`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
-
+To setup Kafka binding create a component of type `bindings.kafka`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration. For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{< ref component-secrets.md >}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
+  name: kafka-binding
+  namespace: default
 spec:
   type: bindings.kafka
   version: v1
   metadata:
-  - name: topics # Optional. in use for input bindings
-    value: topic1,topic2
-  - name: brokers
-    value: localhost:9092,localhost:9093
-  - name: consumerGroup
-    value: group1
-  - name: publishTopic # Optional. in use for output bindings
-    value: topic3
-  - name: authRequired # Required. default: "true"
-    value: "false"
-  - name: saslUsername # Optional.
+  - name: topics # Optional. Used for input bindings.
+    value: "topic1,topic2"
+  - name: brokers # Required.
+    value: "localhost:9092,localhost:9093"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: publishTopic # Optional. Used for output bindings.
+    value: "topic3"
+  - name: authRequired # Required.
+    value: "true"
+  - name: saslUsername # Required if authRequired is `true`.
     value: "user"
-  - name: saslPassword # Optional.
-    value: "password"
+  - name: saslPassword # Required if authRequired is `true`.
+    secretKeyRef:
+      name: kafka-secrets
+      key: saslPasswordSecret
   - name: maxMessageBytes # Optional.
     value: 1024
 ```
 
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
 ## Spec metadata fields
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| topics | N | Input | A comma separated string of topics | `"mytopic1,topic2"` |
-| brokers | Y | Input/Output | A comma separated string of kafka brokers | `"localhost:9092,localhost:9093"` |
-| consumerGroup | N | Input | A kafka consumer group to listen on | `"group1"` |
-| publishTopic | Y | Output | The topic to publish to | `"mytopic"` |
-| authRequired | Y | Input/Output | Determines whether to use SASL authentication or not. Defaults to `"true"` | `"true"`, `"false"` |
-| saslUsername | N | Input/Output | The SASL username for authentication. Only used if `authRequired` is set to - `"true"` | `"user"` |
-| saslPassword | N | Input/Output | The SASL password for authentication. Only used if `authRequired` is set to - `"true"` | `"password"` |
-| maxMessageBytes | N | Input/Output | The maximum size allowed for a single Kafka message. Defaults to 1024 | `2048` |
-
+| topics | N | Input | A comma-separated string of topics. | `"mytopic1,topic2"` |
+| brokers | Y | Input/Output | A comma-separated string of Kafka brokers. | `"localhost:9092,dapr-kafka.myapp.svc.cluster.local:9093"` |
+| consumerGroup | N | Input | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. | `"group1"` |
+| publishTopic | Y | Output | The topic to publish to. | `"mytopic"` |
+| authRequired | Y | Input/Output | Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"` |
+| saslUsername | N | Input/Output | The SASL username used for authentication. Only required if `authRequired` is set to `"true"`. | `"adminuser"` |
+| saslPassword | N | Input/Output | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"` |
+| maxMessageBytes | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048` |
 
 ## Binding support
 
@@ -86,7 +83,6 @@ curl -X POST http://localhost:3500/v1.0/bindings/myKafka \
         "operation": "create"
       }'
 ```
-
 
 ## Related links
 
