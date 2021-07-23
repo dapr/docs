@@ -23,7 +23,7 @@ The `dapr-placement` service is responsible for managing the actor distribution 
 
 ## Launching applications with Dapr
 
-You can use the [`dapr run` CLI command]({{< ref dapr-run.md >}}) to a Dapr sidecar process along with your application.
+You can use the [`dapr run` CLI command]({{< ref dapr-run.md >}}) to a Dapr sidecar process along with your application. Additional arguments and flags can be found [here]({{< ref arguments-annotations-overview.md >}}). 
 
 ## Name resolution
 
