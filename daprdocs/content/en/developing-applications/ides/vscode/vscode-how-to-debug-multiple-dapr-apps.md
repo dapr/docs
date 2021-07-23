@@ -8,7 +8,7 @@ description:  "Learn how to configure VSCode to debug multiple Dapr applications
 
 As your project grows you may need to configure VS Code to debug multiple Dapr applications. This topic provides guidance on the steps you need to take.
 
-To follow along with the breakdown of configuration features setup the [Hello World Quickstart Project](https://github.com/dapr/quickstarts/tree/v1.0.0/hello-world) 
+To follow along with the breakdown of configuration features set up the [Hello World Quickstart Project](https://github.com/dapr/quickstarts/tree/v1.0.0/hello-world) 
 
 ## Step 1: Configure launch.json
 This file contains information regarding the configurations you run during the debugging process. For the Hello World project, you have two applications running along side 2 Dapr instances.
