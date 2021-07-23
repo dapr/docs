@@ -6,7 +6,7 @@ weight: 8000
 description: "Invoke service method in middleware call chains"
 ---
 
-The invoke [HTTP middleware]({{< ref middleware-concept.md >}}) provides the ability of calling other service in middleware chain.
+The invoke [HTTP middleware]({{< ref middleware.md >}}) provides the ability of calling other service in middleware chain.
 
 
 ## Component format
@@ -79,6 +79,6 @@ spec:
 ## Related links
 
 - [Dapr Service invoke API]({{< ref service_invocation_api.md >}})
-- [Middleware concept]({{< ref middleware-concept.md >}})
+- [Middleware]({{< ref middleware.md >}})
 - [Configuration concept]({{< ref configuration-concept.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})
