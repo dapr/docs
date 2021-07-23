@@ -11,8 +11,8 @@ As your project grows you may need to configure VS Code to debug multiple Dapr a
 To follow along with the breakdown of configuration features set up the [Hello World Quickstart Project](https://github.com/dapr/quickstarts/tree/v1.0.0/hello-world) 
 
 ## Step 1: Configure launch.json
-This file contains information regarding the configurations you run during the debugging process. For the Hello World project, you have two applications running along side 2 Dapr instances.
-Each language configuration supported requires its own tweaks for the launching of the program but each configuration contains a Daprd run task and a Daprd stop task for its prelaunch and post debug actions.
+This file contains information regarding the configurations you run during the debugging process. For the Hello World project, you have two applications running alongside 2 Dapr instances.
+Each supported language requires a specific configuration for launching the program. However, each configuration contains a Daprd run task and a Daprd stop task for prelaunch and post debug actions.
 
 
 
@@ -56,7 +56,7 @@ Each language configuration supported requires its own tweaks for the launching 
 }
 ```
 
-The 3 main parameters each configuration needs is a `request`, `type` and `name`. They work as the basic parameters which help VS Code identify how to handle the task configurations you build later on. For more information on VS Code debugging parameters visit the [VS Code launch attributes](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes)
+The 3 main parameters each configuration needs are a `request`, `type` and `name`. They work as the basic parameters which help VS Code identify how to handle the task configurations you build later. For more information on VS Code debugging parameters visit the [VS Code launch attributes](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes)
 
 - `type` is related to the language you are trying to run, and depending on the language it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
 - `name` is a unique name for the configuration, used for compound configurations when calling multiple configurations in your project.
@@ -119,7 +119,7 @@ For the following tutorial you need to have the following parameters filled out 
 
 ## Step 3: Configure compound launch inside launch.json
 
-A compound launch configuration can be made in the launch.json and its purpose is to list the names of two or more launch configurations that should be launched in parallel. Optionally a preLaunchTask can be specified that is run before the individual debug sessions are started.
+A compound launch configuration can be made in the launch.json and its purpose is to list the names of two or more launch configurations that should be launched in parallel. Optionally, a preLaunchTask can be specified and run before the individual debug sessions are started.
 
 For our example the compound configuration is be:
 
