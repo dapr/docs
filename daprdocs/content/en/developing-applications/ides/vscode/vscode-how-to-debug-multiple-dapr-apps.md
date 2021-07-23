@@ -170,7 +170,7 @@ Below you will find all the current supported parameters for VS Code tasks.
 | `sentryAddress` | Address for the Sentry CA service | No | "sentryAddress": ""
 | `type` | Tells VS Code it will be a daprd task type | Yes | "type": "daprd"
 
-For more information on daprd, dapr Cli, and Kubernetes arguments visit the [Arguments and annotations]({<.ref arguments-annotations-overview.md>}})
+For more information on daprd, dapr Cli, and Kubernetes arguments visit the [Arguments and annotations]({<ref arguments-annotations-overview.md>}})
 ## Related Links
 
 * [VS Code Extension Overview]({{< ref vscode-dapr-extension.md >}})
