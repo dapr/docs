@@ -61,7 +61,7 @@ spec:
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware-concept.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#configuring-middleware-pipelines">}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
