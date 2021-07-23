@@ -37,7 +37,7 @@ A Dapr sidecar can apply a specific configuration by using a ```dapr.io/config``
     dapr.io/app-port: "3000"
     dapr.io/config: "myappconfig"
 ```
-Note: There are more [Kubernetes annotations]({{< ref "kubernetes-annotations.md" >}}) available to configure the Dapr sidecar on activation by sidecar Injector system service.
+Note: There are more [Kubernetes annotations]({{< ref "arguments-annotations-overview.md" >}}) available to configure the Dapr sidecar on activation by sidecar Injector system service.
 
 ### Sidecar configuration settings
 
