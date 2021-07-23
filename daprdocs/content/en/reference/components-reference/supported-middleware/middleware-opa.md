@@ -99,7 +99,7 @@ This middleware supplies a [`HTTPRequest`](#httprequest) as input.
 
 ### HTTPRequest
 
-The `HTTPRequest` input contains all the revelant information about an incoming HTTP Request except it's body.
+The `HTTPRequest` input contains all the relevant information about an incoming HTTP Request except it's body.
 
 ```go
 type Input struct {
