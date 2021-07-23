@@ -12,5 +12,5 @@ Preview features in Dapr are considered experimental when they are first release
 | Description | Setting | Documentation |
 |-------------|---------|---------------|
 | Preview feature that enables Actors to be called multiple times in the same call chain allowing call backs between actors. | Actor.Reentrancy | [Actor reentrancy]({{<ref actor-reentrancy>}}) |
-| Preview feature that allows Actor reminders to be partitioned across multiple keys in the underlying statestore in order to improve scale and performance. | Actor.TypeMetadata | TODO: Real link |
+| Preview feature that allows Actor reminders to be partitioned across multiple keys in the underlying statestore in order to improve scale and performance. | Actor.TypeMetadata | [How-To: Partition Actor Reminders]({{< ref "howto-actors.md#partitioning-reminders" >}}) |
 | Preview feature that enables you to call endpoints using service invocation on gRPC services through Dapr via gRPC proxying, without requiring the use of Dapr SDKs. | proxy.grpc | [How-To: Invoke services using gRPC]({{<ref howto-invoke-services-grpc>}}) |
