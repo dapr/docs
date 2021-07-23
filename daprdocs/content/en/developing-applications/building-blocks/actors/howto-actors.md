@@ -77,7 +77,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
 
 ### Actor reminders
 
-Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actors runtime persists the information about the actors' reminders using Dapr actor state provider.
+Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actors runtime persists the information about the actors' reminders using Dapr actor state provider.
 
 You can create a persistent reminder for an actor by calling the Http/gRPC request to Dapr.
 
@@ -110,6 +110,34 @@ The following request body configures a reminder with a `dueTime` 15 seconds and
   "period":""
 }
 ```
+
+[ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) can also be used to specify `period`. The following request body configures a reminder with a `dueTime` 0 seconds an `period` of 15 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"P0Y0M0W0DT0H0M15S"
+}
+```
+The designators for zero are optional and the above `period` can be simplified to `PT15S`.
+ISO 8601 specifies multiple recurrence formats but only the duration format is currently supported.
+
+#### Reminders with repetitions
+
+When configured with ISO 8601 durations, the `period` column also allows to specify number of times a reminder can run. The following request body will create a reminder that will execute for 5 number of times with a period of 15 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"R5/PT15S"
+}
+```
+
+The number of repetitions i.e. the number of times the reminder is run should be a positive number.
+
+**Example**
+
+Watch this [video](https://www.youtube.com/watch?v=B_vkXqptpXY&t=1002s) for more information on using ISO 861 for Reminders
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/B_vkXqptpXY?start=1003" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 #### Retrieve actor reminder
 
