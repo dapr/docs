@@ -102,6 +102,3 @@ The following example illustrates the above concepts. Consider an actor type tha
 
 <img src="/images/actors_background_concurrency.png" width=600>
 
-#### Scaling reminders
-If your application expects a high volume of reminders registered or unregistered, consider [actor reminders partitioning]({{<ref actor-reminders-partitions.md>}})
-

@@ -51,8 +51,63 @@ spec:
 ```
 
 ### Actor runtime configuration
-Once actor type metadata is enabled as an opt-in preview feature, the actor runtime must also provide the appropriate configuration to partition actor reminders. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements. Here is a snipet of an actor written in Golang providing the configuration:
+Once actor type metadata is enabled as an opt-in preview feature, the actor runtime must also provide the appropriate configuration to partition actor reminders. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
+{{< tabs Java Dotnet Python Go >}}
+
+{{% codetab %}}
+```java
+// import io.dapr.actors.runtime.ActorRuntime;
+// import java.time.Duration;
+
+ActorRuntime.getInstance().getConfig().setActorIdleTimeout(Duration.ofMinutes(60));
+ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(30));
+ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
+```
+
+See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/actors/DemoActorService.java)
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+// In Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register actor runtime with DI
+    services.AddActors(options =>
+    {
+        // Register actor types and configure actor settings
+        options.Actors.RegisterActor<MyActor>();
+        
+        // Configure default settings
+        options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
+        options.ActorScanInterval = TimeSpan.FromSeconds(30);
+        options.RemindersStoragePartitions = 7;
+        // reentrancy not implemented in the .NET SDK at this time
+    });
+
+    // Register additional services for use with actors
+    services.AddSingleton<BankService>();
+}
+```
+See the .NET SDK [documentation](https://github.com/dapr/dotnet-sdk/blob/master/daprdocs/content/en/dotnet-sdk-docs/dotnet-actors/dotnet-actors-usage.md#registering-actors).
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+from datetime import timedelta
+
+ActorRuntime.set_actor_config(
+    ActorRuntimeConfig(
+        actor_idle_timeout=timedelta(hours=1),
+        actor_scan_interval=timedelta(seconds=30),
+        remindersStoragePartitions=7
+    )
+)
+```
+{{% /codetab %}}
+
+{{% codetab %}}
 ```go
 type daprConfig struct {
 	Entities                   []string `json:"entities,omitempty"`
@@ -78,6 +133,9 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(daprConfigResponse)
 }
 ```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 The following, is an example of a valid configuration for reminder partitioning:
 
