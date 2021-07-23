@@ -124,10 +124,11 @@ The pictures are as follows, include Elasticsearch and Grafana tracing data:
 
 ![jaeger-storage-es](/images/jaeger_storage_elasticsearch.png)
 
-![grafana](/images/jaeger_jaeger_grafana.png)
+![grafana](/images/jaeger_grafana.png)
 
 
 Now, use the above YAML file to install Jaeger
+
 ```bash
 # Install Jaeger
 helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
