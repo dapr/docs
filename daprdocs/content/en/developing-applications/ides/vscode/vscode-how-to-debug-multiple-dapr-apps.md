@@ -155,7 +155,7 @@ Below you will find all the current supported parameters for VS Code tasks.
 | `args` | Sets a list of arguments to pass on to the Dapr app	 | No | "args": [] 
 | `componentsPath` | Path for components directory. If empty, components will not be loaded. | No | "componentsPath": "./components"
 | `config` | Tells Dapr which Configuration CRD to use | No | "config": "./config"
-| `controlPlaneAddress` | Address for a Dapr control plane | No | "controlPlaneAddress": ""
+| `controlPlaneAddress` | Address for a Dapr control plane | No | "controlPlaneAddress": "http://localhost:1366/"
 | `enableProfiling` | Enable profiling	 | No | "enableProfiling": false
 | `enableMtls` | Enables automatic mTLS for daprd to daprd communication channels | No | "enableMtls": false
 | `grpcPort` | gRPC port for the Dapr API to listen on (default “50001”) | Yes, if multiple apps | "grpcPort": 50004
@@ -165,9 +165,9 @@ Below you will find all the current supported parameters for VS Code tasks.
 | `logLevel` | Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info | No | "logLevel": "debug"
 | `metricsPort` | Sets the port for the sidecar metrics server. Default is 9090 | Yes, if multiple apps | "metricsPort": 9093
 | `mode` | Runtime mode for Dapr (default “standalone”) | No | "mode": "standalone"
-| `placementHostAddress` | Addresses for Dapr Actor Placement servers | No | "placementHostAddress": ""
+| `placementHostAddress` | Addresses for Dapr Actor Placement servers | No | "placementHostAddress": "http://localhost:1313/"
 | `profilePort` | The port for the profile server (default “7777”)	 | No |  "profilePort": 7777
-| `sentryAddress` | Address for the Sentry CA service | No | "sentryAddress": ""
+| `sentryAddress` | Address for the Sentry CA service | No | "sentryAddress": "http://localhost:1345/"
 | `type` | Tells VS Code it will be a daprd task type | Yes | "type": "daprd"
 
 For more information on daprd, dapr Cli, and Kubernetes arguments visit the [arguments and annotations page]({<ref arguments-annotations-overview.md>}})
