@@ -7,7 +7,7 @@ description: Scale actor reminders storage via partitioning
 ---
 
 {{% alert title="Preview feature" color="warning" %}}
-Actor reminders partitioning is currently in [preview]({{< ref preview-features.md >}}).
+Actor reminders partitioning is currently in [preview]({{< ref preview-features.md >}}). Use this feature if you are runnining into issues due to a high number of reminders registered.
 {{% /alert %}}
 
 ## Actor reminders
