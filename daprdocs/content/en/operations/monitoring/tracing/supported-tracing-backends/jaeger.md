@@ -128,6 +128,7 @@ The pictures are as follows, include Elasticsearch and Grafana tracing data:
 
 
 Now, use the above YAML file to install Jaeger
+
 ```bash
 # Install Jaeger
 helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
