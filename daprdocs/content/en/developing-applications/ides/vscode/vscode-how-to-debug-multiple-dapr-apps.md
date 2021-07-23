@@ -6,13 +6,11 @@ weight: 40000
 description:  "Learn how to configure VSCode to debug multiple Dapr applications"
 ---
 
-This doc provides guidance on the steps you need to take to configure VS Code to debug multiple Dapr applications. To follow along, set up the [Hello World Quickstart Project](https://github.com/dapr/quickstarts/tree/v1.0.0/hello-world).
+This doc provides guidance on the steps you need to take to configure VS Code to debug multiple Dapr applications. This guidance will use the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/hello-world) as an example.
 
 ## Step 1: Configure launch.json
-This file contains information regarding the configurations you run during the debugging process. For the Hello World project, you have two applications running alongside 2 Dapr instances.
-Each supported language requires a specific configuration for launching the program. However, each configuration contains a Daprd run task and a Daprd stop task for prelaunch and post debug actions.
-
-
+The file `launch.json` contains configurations for a VS Code debug run. In the case of the hello world quickstart, two applications are running, each with its own Dapr sidecar.
+Configurations are different for differernt languages (in the quickstart NodeJS and Python are used). However, you'll notice that each configuration contains a `daprd run` task and a `daprd stop` task for prelaunch and post debug actions.
 
 ### NodeJS
 
@@ -54,20 +52,20 @@ Each supported language requires a specific configuration for launching the prog
 }
 ```
 
-The 3 parameters each configuration needs are a `request`, `type` and `name`. These parameters help VS Code identify how to handle the task configurations you build later. For more information on VS Code debugging parameters visit the [VS Code launch attributes](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes).
+The three parameters each configuration needs are `request`, `type` and `name`. These parameters help VS Code identify the task configurations in the `task.json` files (See below). For more information on VS Code debugging parameters see [VS Code launch attributes](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes).
 
-- `type` is related to the language you are launching.  Depending on the language, it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
+- `type` defines the language used.  Depending on the language, it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
 - `name` is a unique name for the configuration. This is used for compound configurations when calling multiple configurations in your project.
 - `${workspaceFolder}` is a VS Code variable reference. This is the path to the workspace opened in VS Code. 
 - The `preLaunchTask` and `postDebugTask` parameters refer to the program configurations run before and after launching the application. See step 2 on how to configure these.
 
 ## Step 2: Configure  task.json
 
-You need to create the tasks mentioned in the launch.json for both application configurations in order for them to launch succesfully.
+For each task defined in the `launch.json` file, a corresponding `task.json` file must be defined.
 
-### Hello World daprd task
+### Hello world daprd task
 
-For the following tutorial, you need to have the following parameters filled out "appId", "httpPort", "metricsPort", "label" and "type". There are more parameters depending on the specific Daprd command you're running, such as "appPort", but those are dependent on what each application is trying to accomplish.
+In the case of the quickstart the following parameters are required: `appId`, `httpPort`, `metricsPort`, `label` and `type`. There are additional parameters that may be configured see below for a table detailing the available parameters.
 
 #### NodeJs task
 
@@ -115,11 +113,11 @@ For the following tutorial, you need to have the following parameters filled out
 }
 ```
 
-## Step 3: Configure compound launch inside launch.json
+## Step 3: Configure a compound launch in launch.json
 
-A compound launch configuration can be made in the launch.json. Its purpose is to list the names of two or more launch configurations that should be launched in parallel. Optionally, a preLaunchTask can be specified and run before the individual debug sessions are started.
+A compound launch configuration can defined in `launch.json` and is a set of two or more launch configurations that are launched in parallel. Optionally, a `preLaunchTask` can be specified and run before the individual debug sessions are started.
 
-For our example the compound configuration is be:
+For this example the compound configuration is:
 
 ```json
 {
@@ -132,15 +130,15 @@ For our example the compound configuration is be:
 }
 ```
 
-## Step 4: Run compound launch
+## Step 4: Run a compound launch
 
-You can now run the program in debug mode by finding the compound command in the VS Code debugger.
+You can now run the applications in debug mode by finding the compound command name you have defined in the previous step in the VS Code debugger:
 
 <img src="/images/vscode-launch-configuration.png" width=400 >
 
 
 #### Daprd parameter table
-Below you will find all the current supported parameters for VS Code tasks.
+Below are the supported parameters for VS Code tasks. These parameters are equivalent to `daprd` arguments as detailed in [this reference]({{< ref arguments-annotations-overview.md >}}):
 
 | Parameter    | Description   | Required    | Example |
 |--------------|---------------|-------------|---------|
