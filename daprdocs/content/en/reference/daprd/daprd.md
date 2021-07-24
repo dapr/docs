@@ -24,7 +24,7 @@ daprd can be used with several arguments in different scenarios. For a detailed 
 ```bash
 ~/.dapr/bin/daprd --app-id --app-port 5000
 ```
-3. If you are using many different components and want your app to be pointed to a specific one, you can specify the component directory dapr should look into
+3. If you are using several custom components and want to specify the location of the component definition files, use the `--components-path` argument:
 
 ```bash
 ~/.dapr/bin/daprd --app-id myapp --components-path ~/.dapr/components
