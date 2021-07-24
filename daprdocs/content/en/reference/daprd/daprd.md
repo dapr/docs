@@ -7,7 +7,7 @@ weight: 100
 
 Dapr runs along side an application as a [sidecar](https://docs.dapr.io/concepts/overview/#sidecar-architecture). The sidecar is in practice a process running in the same environment as the application or in a separate container depending on where the application is hosted. For a self-hosted environment, the CLI command `dapr run` starts the sidecar as a process and for a Kubernetes environment the dapr-sidecar-injector does injects a container with a daprd process into the application's pod. After installing Dapr locally on your machine the `dapr init` command places the `daprd` executable in `.dapr/bin` under your home directory.
 
-Most of the time one would not need to use daprd explicitly as long as sidecar is being started by one of the above dapr methods. However, there could be use cases where a one would want to use daprd explicity. For example, while debugging, to find the application the sidecar is attached to or if the environment being used makes it unfeasible to use `dapr run`. The section below explores examples to use daprd along with some of its arguments.
+In most cases you would not need to run daprd explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the Dapr control plane (Kubernetes). Examples of times when launching daprd directly may be useful include debugging, to find the application the sidecar is attached to or if the environment being used makes it unfeasible to use `dapr run` (e.g. automating sidecar launch on a VM) .
 
 ## Usage
 
@@ -35,4 +35,3 @@ daprd can be used with many arguments for different scenarios. To know the list 
 ```bash
 ~/.dapr/bin/daprd --app-id myapp --enable-metrics
 ```
-
