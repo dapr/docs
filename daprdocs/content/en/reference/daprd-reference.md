@@ -1,8 +1,9 @@
 ---
 type: docs
-title: "daprd"
-linkTitle: "daprd"
-weight: 100
+title: "daprd reference"
+linkTitle: "daprd reference"
+weight: 300
+description: "Detailed information on daprd and usage"
 ---
 
 Dapr runs along side an application as a [sidecar](https://docs.dapr.io/concepts/overview/#sidecar-architecture). The sidecar is in practice a process running in the same environment as the application or in a separate container depending on where the application is hosted. For a self-hosted environment, the CLI command `dapr run` starts the sidecar as a process and for a Kubernetes environment the dapr-sidecar-injector does injects a container with a daprd process into the application's pod. After installing Dapr locally on your machine the `dapr init` command places the `daprd` executable in `.dapr/bin` under your home directory.
