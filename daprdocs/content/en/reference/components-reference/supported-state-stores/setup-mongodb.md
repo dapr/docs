@@ -22,8 +22,10 @@ spec:
   type: state.mongodb
   version: v1
   metadata:
+  - name: server
+    value: <REPLACE-WITH-SERVER> # Required unless "host" field is set . Example: "server.example.com"
   - name: host
-    value: <REPLACE-WITH-HOST> # Required. Example: "mongo-mongodb.default.svc.cluster.local:27017"
+    value: <REPLACE-WITH-HOST> # Required unless "server" field is set . Example: "mongo-mongodb.default.svc.cluster.local:27017"
   - name: username
     value: <REPLACE-WITH-USERNAME> # Optional. Example: "admin"
   - name: password
@@ -56,14 +58,17 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| host               | Y        | The host to connect to | `"mongo-mongodb.default.svc.cluster.local:27017"`
-| username           | N        | The username of the user to connect with | `"admin"`
-| password           | N        | The password of the user | `"password"`
+| server             | Y<sup>*</sup> | The server to connect to, when using DNS SRV record | `"server.example.com"`
+| host               | Y<sup>*</sup> | The host to connect to | `"mongo-mongodb.default.svc.cluster.local:27017"`
+| username           | N        | The username of the user to connect with (applicable in conjunction with `host`) | `"admin"`
+| password           | N        | The password of the user (applicable in conjunction with `host`) | `"password"`
 | databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
 | collectionName     | N        | The name of the collection to use. Defaults to `"daprCollection"` | `"daprCollection"`
 | writeconcern       | N        | The write concern to use | `"majority"`
 | readconcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
 | operationTimeout   | N        | The timeout for the operation. Defautls to `"5s"` | `"5s"`
+
+> <sup>[*]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr will return an error.
 
 ## Setup MongoDB
 
