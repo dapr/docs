@@ -65,7 +65,7 @@ For each task defined in the `launch.json` file, a corresponding `task.json` fil
 
 ### Hello world daprd task
 
-In the case of the quickstart the following parameters are required: `appId`, `httpPort`, `metricsPort`, `label` and `type`. There are additional parameters that may be configured see below for a table detailing the available parameters.
+In the case of the quickstart the following parameters are required: `appId`, `httpPort`, `metricsPort`, `label` and `type`. There are additional parameters that may be configured. See below for a table detailing the available parameters.
 
 #### NodeJs task
 
