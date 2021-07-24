@@ -9,7 +9,7 @@ Dapr runs along side an application as a [sidecar](https://docs.dapr.io/concepts
 
 In most cases you would not need to run daprd explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the Dapr control plane (Kubernetes). Examples of times when launching daprd directly may be useful include debugging, to find the application the sidecar is attached to or if the environment being used makes it unfeasible to use `dapr run` (e.g. automating sidecar launch on a VM) .
 
-## Usage
+## Usage examples
 
 daprd can be used with many arguments for different scenarios. To know the list of all the arguments you can run a cli command `~/.dapr/bin/daprd --help` or checkout this [table](https://docs.dapr.io/reference/arguments-annotations-overview/) for comprehensive comparison between daprd options with cli and K8 annotation options
 
