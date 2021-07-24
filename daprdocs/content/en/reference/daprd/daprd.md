@@ -11,7 +11,7 @@ In most cases you would not need to run daprd explicitly, as the sidecar is eith
 
 ## Usage examples
 
-daprd can be used with many arguments for different scenarios. To know the list of all the arguments you can run a cli command `~/.dapr/bin/daprd --help` or checkout this [table](https://docs.dapr.io/reference/arguments-annotations-overview/) for comprehensive comparison between daprd options with cli and K8 annotation options
+daprd can be used with several arguments in different scenarios. For a detailed list of all available arguments run: `daprd --help` or see this [table](https://docs.dapr.io/reference/arguments-annotations-overview/) for a comprehensive comparison between daprd options with CLI and Kubernestes annotation options.
 
 1. Start a sidecar along an application by specifying its unique ID. This is a required field
 
