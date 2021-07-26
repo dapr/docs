@@ -22,7 +22,7 @@ Read [this guide]({{< ref kubernetes-deploy.md >}}) to learn how to deploy Dapr 
 
 ## Adding Dapr to a Kubernetes deployment
 
-Deploying and running a Dapr enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. To give your service an `id` and `port` known to Dapr, turn on tracing through configuration and launch the Dapr sidecar container, you annotate your Kubernetes deployment like this. For more information check  [dapr annotations]({{< ref kubernetes-annotations.md >}})
+Deploying and running a Dapr enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. To give your service an `id` and `port` known to Dapr, turn on tracing through configuration and launch the Dapr sidecar container, you annotate your Kubernetes deployment like this. For more information check  [dapr annotations]({{< ref arguments-annotations-overview.md >}})
 
 ```yml
   annotations:
@@ -50,3 +50,4 @@ Dapr is tested and supported on the following versions of Kubernetes.
 - [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade >}})
 - [Production guidelines for Dapr on Kubernetes]({{< ref kubernetes-production.md >}})
 - [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)
+- [Use Bridge to Kubernetes to debug Dapr apps locally, while connected to your Kubernetes cluster]({{< ref bridge-to-kubernetes >}})
