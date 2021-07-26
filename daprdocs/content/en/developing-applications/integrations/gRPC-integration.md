@@ -177,7 +177,7 @@ func (s *server) ListInputBindings(ctx context.Context, in *empty.Empty) (*pb.Li
 	}, nil
 }
 
-// This method gets invoked every time a new event is fired from a registerd binding. The message carries the binding name, a payload and optional metadata
+// This method gets invoked every time a new event is fired from a registered binding. The message carries the binding name, a payload and optional metadata
 func (s *server) OnBindingEvent(ctx context.Context, in *pb.BindingEventRequest) (*pb.BindingEventResponse, error) {
 	fmt.Println("Invoked from binding")
 	return &pb.BindingEventResponse{}, nil

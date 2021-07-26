@@ -12,12 +12,12 @@ data:
     # Any errors related to config map settings can be found in the KubeMonAgentEvents table in the Log Analytics workspace that the cluster is sending data to.
     [log_collection_settings]
        [log_collection_settings.stdout]
-          # In the absense of this configmap, default value for enabled is true
+          # In the absence of this configmap, default value for enabled is true
           enabled = true
           # exclude_namespaces setting holds good only if enabled is set to true
           # kube-system log collection is disabled by default in the absence of 'log_collection_settings.stdout' setting. If you want to enable kube-system, remove it from the following setting.
           # If you want to continue to disable kube-system log collection keep this namespace in the following setting and add any other namespace you want to disable log collection to the array.
-          # In the absense of this configmap, default value for exclude_namespaces = ["kube-system"]
+          # In the absence of this configmap, default value for exclude_namespaces = ["kube-system"]
           exclude_namespaces = ["kube-system"]
        [log_collection_settings.stderr]
           # Default value for enabled is true
@@ -25,17 +25,17 @@ data:
           # exclude_namespaces setting holds good only if enabled is set to true
           # kube-system log collection is disabled by default in the absence of 'log_collection_settings.stderr' setting. If you want to enable kube-system, remove it from the following setting.
           # If you want to continue to disable kube-system log collection keep this namespace in the following setting and add any other namespace you want to disable log collection to the array.
-          # In the absense of this cofigmap, default value for exclude_namespaces = ["kube-system"]
+          # In the absence of this cofigmap, default value for exclude_namespaces = ["kube-system"]
           exclude_namespaces = ["kube-system"]
        [log_collection_settings.env_var]
-          # In the absense of this configmap, default value for enabled is true
+          # In the absence of this configmap, default value for enabled is true
           enabled = true
        [log_collection_settings.enrich_container_logs]
-          # In the absense of this configmap, default value for enrich_container_logs is false
+          # In the absence of this configmap, default value for enrich_container_logs is false
           enabled = true
           # When this is enabled (enabled = true), every container log entry (both stdout & stderr) will be enriched with container Name & container Image
        [log_collection_settings.collect_all_kube_events]
-          # In the absense of this configmap, default value for collect_all_kube_events is false
+          # In the absence of this configmap, default value for collect_all_kube_events is false
           # When the setting is set to false, only the kube events with !normal event type will be collected
           enabled = false
           # When this is enabled (enabled = true), all kube events including normal events will be collected

@@ -493,7 +493,7 @@ To perform a `fail-job` operation, invoke the Zeebe command binding with a `POST
   "data": {
     "jobKey": 2251799813685739,
     "retries": 5,
-    "errorMessage": "some error occured"
+    "errorMessage": "some error occurred"
   },
   "metadata": {},
   "operation": "fail-job"

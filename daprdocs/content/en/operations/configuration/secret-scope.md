@@ -96,7 +96,7 @@ spec:
 
 This example defines configuration for secret store named vault. The default access to the secret store is `deny`, whereas some secrets are accessible by the application based on the `allowedSecrets` list. Follow [these instructions]({{< ref configuration-overview.md >}}) to apply configuration to the sidecar.
 
-### Scenario 3: Deny access to certain senstive secrets in a secret store
+### Scenario 3: Deny access to certain sensitive secrets in a secret store
 
 Define the following `config.yaml`:
 

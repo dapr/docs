@@ -31,9 +31,9 @@ spec:
 
 ## Binding support
 
-This component supports **output binding** with the folowing [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html):
+This component supports **output binding** with the following [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html):
 
-- `create` : For backward compatability and treated like a post
+- `create` : For backward compatibility and treated like a post
 - `get` :  Read data/records
 - `head` : Identical to get except that the server does not return a response body
 - `post` : Typically used to create records or send commands
@@ -133,7 +133,7 @@ To send data to the HTTP endpoint, invoke the HTTP binding with a `POST`, `PUT`,
 
 {{% alert title="Note" color="primary" %}}
 Any metadata field that starts with a capital letter is passed as a request header.
-For example, the default content type is `application/json; charset=utf-8`. This can be overriden be setting the `Content-Type` metadata field.
+For example, the default content type is `application/json; charset=utf-8`. This can be overridden be setting the `Content-Type` metadata field.
 {{% /alert %}}
 
 ```json
