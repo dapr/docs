@@ -156,7 +156,7 @@ First you need to connect Prometheus as a data source to Grafana.
 
 1. Find the dashboard that you imported and enjoy
 
-   <img src="/images/system-service-dashboard.png" alt="Screenshot of Dapr service dashbaord" width=900>
+   <img src="/images/system-service-dashboard.png" alt="Screenshot of Dapr service dashboard" width=900>
 
    {{% alert title="Tip" color="primary" %}}
    Hover your mouse over the `i` in the corner to the description of each chart:
