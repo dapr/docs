@@ -32,17 +32,21 @@ Deploying and running a Dapr enabled application into your Kubernetes cluster is
     dapr.io/config: "tracing"
 ```
 
+## Pulling container images from private registries
+
+Dapr works seamlessly with any user application container image, regardless of its origin. Simply init Dapr and add the [Dapr annotations]({{< ref arguments-annotations-overview.md >}}) to your Kubernetes definition to add the Dapr sidecar.
+
+The Dapr control-plane and sidecar images come from the [daprio Docker Hub](https://hub.docker.com/u/daprio) container registry, which is a public registry.
+
+For information about pulling your application images from a private registry, reference the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). If you are using Azure Container Registry with Azure Kubernetes Service, reference the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/cluster-container-registry-integration).
+
+
 ## Quickstart
 
 You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes) in the Kubernetes getting started quickstart.
 
 ## Supported versions
-Dapr is tested and supported on the following versions of Kubernetes.
-
-| Supported Kubernetes versions    |
-|-----------------------|
-| 1.17.x and above        |
-
+Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy).
 
 ## Related links
 

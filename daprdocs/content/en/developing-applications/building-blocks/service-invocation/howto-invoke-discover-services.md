@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Invoke services using HTTP"
-linkTitle: "How-To: Invoke services"
+linkTitle: "How-To: Invoke with HTTP"
 description: "Call between services using service invocation"
 weight: 2000
 ---

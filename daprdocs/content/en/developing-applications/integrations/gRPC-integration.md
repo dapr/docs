@@ -15,7 +15,7 @@ You can find a list of auto-generated clients [here](https://github.com/dapr/doc
 
 The Dapr runtime implements a [proto service](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) that apps can communicate with via gRPC.
 
-In addition to calling Dapr via gRPC, Dapr can communicate with an application via gRPC. To do that, the app needs to host a gRPC server and implements the [Dapr appcallback service](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/appcallback.proto)
+In addition to calling Dapr via gRPC, Dapr supports service to service calls with gRPC by acting as a proxy. See more information [here]({{< ref howto-invoke-services-grpc.md >}}).
 
 ## Configuring Dapr to communicate with an app via gRPC
 

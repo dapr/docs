@@ -81,6 +81,11 @@ From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive 
 
 4. All done!
 
+#### Upgrading existing Dapr to enable high availability mode
+
+Enabling HA mode in an existing Dapr deployment requires additional steps. Please refer to [this paragraph]({{< ref "kubernetes-production.md#enabling-high-availability-in-an-existing-dapr-deployment" >}}) for more details.
+
+
 ## Next steps
 
 - [Dapr on Kubernetes]({{< ref kubernetes-overview.md >}})

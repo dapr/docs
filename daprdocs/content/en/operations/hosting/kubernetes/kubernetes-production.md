@@ -61,7 +61,9 @@ The CPU and memory limits above account for the fact that Dapr is intended to a 
 
 When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows for the Dapr control plane to survive node failures and other outages.
 
-HA mode can be enabled with both the [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}) and with [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}}).
+For a new Dapr deployment, the HA mode can be set with both the [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}) and with [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}}).
+
+For an existing Dapr deployment, enabling the HA mode requires additional steps. Please refer to [this paragraph]({{< ref "#enabling-high-availability-in-an-existing-dapr-deployment" >}}) for more details.
 
 ## Deploying Dapr with Helm
 
@@ -138,6 +140,23 @@ dapr list -k
 APP ID     APP PORT  AGE  CREATED
 nodeapp    3000      16h  2020-07-29 17:16.22
 ```
+
+### Enabling high-availability in an existing Dapr deployment
+
+Enabling HA mode for an existing Dapr deployment requires two steps.
+
+First, delete the existing placement stateful set:
+```bash
+kubectl delete statefulset.apps/dapr-placement-server -n dapr-system
+```
+Second, issue the upgrade command:
+```bash
+helm upgrade dapr ./charts/dapr -n dapr-system --set global.ha.enabled=true
+```
+
+The reason for deletion of the placement stateful set is because in the HA mode, the placement service adds [Raft](https://raft.github.io/) for leader election. However, Kubernetes only allows for limited fields in stateful sets to be patched, subsequently failing upgrade of the placement service.
+
+Deletion of the existing placement stateful set is safe. The agents will reconnect and re-register with the newly created placement service, which will persist its table in Raft.
 
 ## Recommended security configuration
 
