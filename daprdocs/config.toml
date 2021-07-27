@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-2.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -77,6 +77,14 @@ id = "UA-149338238-3"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/go/daprdocs/content/en/go-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/java/daprdocs/content/en/java-sdk-docs"
+    target = "content/developing-applications/sdks/java"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/java/daprdocs/content/en/java-sdk-contributing"
     target = "content/contributing/"
     lang = "en"
 
