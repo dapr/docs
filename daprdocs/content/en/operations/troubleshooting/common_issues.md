@@ -91,7 +91,7 @@ The most common cause of this failure is that a component (such as a state store
 
 To diagnose the root cause:
 
-- Significantly increase the liveness probe delay - [link]({{< ref "kubernetes-annotations.md" >}})
+- Significantly increase the liveness probe delay - [link]({{< ref "arguments-annotations-overview.md" >}})
 - Set the log level of the sidecar to debug - [link]({{< ref "logs-troubleshooting.md#setting-the-sidecar-log-level" >}})
 - Watch the logs for meaningful information - [link]({{< ref "logs-troubleshooting.md#viewing-logs-on-kubernetes" >}})
 
@@ -223,6 +223,6 @@ In order for mDNS to function properly, ensure `Micorosft Content Filter` is ina
 - Type `mdatp system-extension network-filter disable` and hit enter.
 - Enter your account password.
 
-Microsoft Content Filter is disbaled when the output is "Success". 
+Microsoft Content Filter is disabled when the output is "Success". 
 
 > Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting. 

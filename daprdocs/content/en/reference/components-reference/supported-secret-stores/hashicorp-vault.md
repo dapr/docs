@@ -58,7 +58,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | tlsServerName | N | TLS config server name | `"tls-server"` |
 | vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
 | vaultToken | Y | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault.  | `"tokenValue"` |
-| vaultKVPrefix | N | The prefix in vault. Defautls to `"dapr"` | `"dapr"`, `"myprefix"` |
+| vaultKVPrefix | N | The prefix in vault. Defaults to `"dapr"` | `"dapr"`, `"myprefix"` |
 | vaultKVUsePrefix | N | If false, vaultKVPrefix is forced to be empty. If the value is not given or set to true, vaultKVPrefix is used when accessing the vault. Setting it to false is needed to be able to use the BulkGetSecret method of the store.  | `"true"`, `"false"` |
 
 ## Setup Hashicorp Vault instance

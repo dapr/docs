@@ -35,7 +35,7 @@ The following Dapr control plane deployments are optional:
 
 ## Sidecar resource settings
 
-To set the resource assignments for the Dapr sidecar, see the annotations [here]({{< ref "kubernetes-annotations.md" >}}).
+To set the resource assignments for the Dapr sidecar, see the annotations [here]({{< ref "arguments-annotations-overview.md" >}}).
 The specific annotations related to resource constraints are:
 
 - `dapr.io/sidecar-cpu-limit`

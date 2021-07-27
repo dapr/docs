@@ -32,7 +32,7 @@ To use this topic scoping three metadata properties can be set for a pub/sub com
 - `spec.metadata.allowedTopics`
   - A comma-separated list of allowed topics for all applications.
   - If `allowedTopics` is not set (default behavior), all topics are valid. `subscriptionScopes` and `publishingScopes` still take place if present.
-  - `publishingScopes` or `subscriptionScopes` can be used in conjuction with `allowedTopics` to add granular limitations
+  - `publishingScopes` or `subscriptionScopes` can be used in conjunction with `allowedTopics` to add granular limitations
 
 These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component.
 

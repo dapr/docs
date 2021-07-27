@@ -277,7 +277,7 @@ spec:
 		dapr.io/config: "serverconfig"
 ...
 ```
-*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref kubernetes-annotations.md >}}))*
+*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}}))*
 
 The `dapr.io/app-protocol: "grpc"` annotation tells Dapr to invoke the app using gRPC.
 The `dapr.io/config: "serverconfig"` annotation tells Dapr to use the configuration applied above that enables gRPC proxying.
