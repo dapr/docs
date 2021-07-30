@@ -79,6 +79,14 @@ id = "UA-149338238-3"
     source = "../sdkdocs/go/daprdocs/content/en/go-sdk-contributing"
     target = "content/contributing/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/java/daprdocs/content/en/java-sdk-docs"
+    target = "content/developing-applications/sdks/java"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/java/daprdocs/content/en/java-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
 
   [[module.mounts]]
     source = "../translations/docs-zh/content/zh-hans"

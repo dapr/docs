@@ -2,7 +2,7 @@
 type: docs
 title: "Developing Dapr applications with remote dev containers"
 linkTitle: "Remote dev containers"
-weight: 20000
+weight: 30000
 description:  "How to setup a remote dev container environment with Dapr"
 ---
 

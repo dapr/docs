@@ -30,6 +30,6 @@ spec:
 ```
 ## Related Links
 - [Secrets building block]({{< ref secrets >}})
-- [How-To: Retreive a secret]({{< ref "howto-secrets.md" >}})
+- [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
 - [Secrets API reference]({{< ref secrets_api.md >}})

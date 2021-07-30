@@ -4,3 +4,4 @@
 node_modules/
 daprdocs/public
 daprdocs/resources/_gen
+.venv/
