@@ -99,7 +99,7 @@ Each container will receive a unique IP on that network and be able to communica
 
 [Docker Compose](https://docs.docker.com/compose/) can be used to define multi-container application configurations. If you wish to run multiple apps with Dapr sidecars locally without Kubernetes then it is recommended to use a Docker Compose definition (`docker-compose.yml`).
 
-The syntax and tooling of Docker Compose is outside the scope of this article, however, it is recommended you refer to the [offical Docker documentation](https://docs.docker.com/compose/) for further details.
+The syntax and tooling of Docker Compose is outside the scope of this article, however, it is recommended you refer to the [official Docker documentation](https://docs.docker.com/compose/) for further details.
 
 In order to run your applications using Dapr and Docker Compose you'll need to define the sidecar pattern in your `docker-compose.yml`. For example:
 

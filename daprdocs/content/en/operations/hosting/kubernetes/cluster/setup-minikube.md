@@ -31,7 +31,7 @@ minikube config set vm-driver [driver_name]
 Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
 
 ```bash
-minikube start --cpus=4 --memory=4096 --kubernetes-version=1.16.2 --extra-config=apiserver.authorization-mode=RBAC
+minikube start --cpus=4 --memory=4096
 ```
 
 3. Enable dashboard and ingress addons
