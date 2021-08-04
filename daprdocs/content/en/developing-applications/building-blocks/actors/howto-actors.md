@@ -137,7 +137,9 @@ The number of repetitions i.e. the number of times the reminder is run should be
 
 Watch this [video](https://www.youtube.com/watch?v=B_vkXqptpXY&t=1002s) for more information on using ISO 861 for Reminders
 
+<div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/B_vkXqptpXY?start=1003" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 #### Retrieve actor reminder
 
