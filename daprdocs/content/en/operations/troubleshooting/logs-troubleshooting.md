@@ -106,7 +106,7 @@ This section will guide you on how to view logs for Dapr system components as we
 
 #### Sidecar Logs
 
-When deployed in Kubernetes, the Dapr sidecar injector will inject an Dapr container named `daprd` into your annotated pod.
+When deployed in Kubernetes, the Dapr sidecar injector will inject a Dapr container named `daprd` into your annotated pod.
 In order to view logs for the sidecar, simply find the pod in question by running `kubectl get pods`:
 
 ```bash
