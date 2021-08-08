@@ -43,7 +43,7 @@ spec:
   - name: subject
     value: "subject"
   - name: priority
-    value: "priority value (highest[1] to lowest[5])"
+    value: "[value 1-5]"
 ```
 
 {{% alert title="Warning" color="warning" %}}
