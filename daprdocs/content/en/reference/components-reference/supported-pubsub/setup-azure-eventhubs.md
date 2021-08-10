@@ -1,11 +1,19 @@
 ---
 type: docs
-title: "Azure Events Hub"
-linkTitle: "Azure Events Hub"
-description: "Detailed documentation on the Azure Event Hubs pubsub component"
+title: "Azure Events Hub (deprecated)"
+linkTitle: "Azure Events Hub (deprecated)"
+description: "Detailed documentation on the Azure Event Hubs pubsub component (deprecated)"
 aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-azure-eventhubs/"
 ---
+
+{{% alert title="Deprecated" color="warning" %}}
+The Azure Event Hubs pubsub component is deprecated and has been removed from starting with release 1.4.
+{{% /alert %}}
+
+{{% alert title="Note" color="warning" %}}
+It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
+{{% /alert %}}
 
 ## Component format
 To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.eventhubs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
