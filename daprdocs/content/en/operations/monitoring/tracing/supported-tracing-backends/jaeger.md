@@ -175,7 +175,7 @@ That's it! Your Dapr sidecar is now configured for use with Jaeger.
 
 To view traces, connect to the Jaeger Service and open the UI:
 
-```bash
+```bash 
 kubectl port-forward svc/jaeger-query 16686
 ```
 
