@@ -9,9 +9,11 @@ description: "Detailed information on the upgrade CLI command"
 
 Upgrade or downgrade Dapr on supported hosting platforms. 
 
-> Note: Version steps should be done incrementally, including minor versions as you upgrade or downgrade.
+{{% alert title="Warning" color="warning" %}}
+Version steps should be done incrementally, including minor versions as you upgrade or downgrade.
 
-> Note: Prior to downgrading, confirm components are backwards compatible and application code does ultilize APIs that are not supported in previous versions of Dapr. 
+Prior to downgrading, confirm components are backwards compatible and application code does ultilize APIs that are not supported in previous versions of Dapr.
+{{% /alert %}}
 
 ## Supported platforms
 
