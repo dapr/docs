@@ -87,6 +87,14 @@ id = "UA-149338238-3"
     source = "../sdkdocs/java/daprdocs/content/en/java-sdk-contributing"
     target = "content/contributing/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/js/daprdocs/content/en/js-sdk-docs"
+    target = "content/developing-applications/sdks/js"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/js/daprdocs/content/en/js-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
 
   [[module.mounts]]
     source = "../translations/docs-zh/content/zh-hans"

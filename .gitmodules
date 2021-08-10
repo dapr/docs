@@ -20,3 +20,6 @@
 [submodule "sdkdocs/java"]
 	path = sdkdocs/java
 	url = https://github.com/dapr/java-sdk.git
+[submodule "sdkdocs/js"]
+	path = sdkdocs/js
+	url = https://github.com/greenie-msft/js-sdk.git 
