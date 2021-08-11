@@ -83,7 +83,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
-| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explictly defined via the request metadata. This is especially useful because Redis does not offer a global default TTL feature. [Read more]({{< ref "state-store-ttl.md" >}}) about State Time-to-Live (TTL). | `600` 
+| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600` 
 
 ## Setup Redis
 
