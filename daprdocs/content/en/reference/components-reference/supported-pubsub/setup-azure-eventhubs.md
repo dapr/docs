@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Azure Events Hub (deprecated)"
+title: "Azure Event Hubs (deprecated)"
 linkTitle: "Azure Events Hub (deprecated)"
 description: "Detailed documentation on the Azure Event Hubs pubsub component (deprecated)"
 aliases:
