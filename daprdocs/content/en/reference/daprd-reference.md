@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "daprd reference"
+title: "daprd sidecar process reference"
 linkTitle: "daprd"
 weight: 300
 description: "Detailed information on the daprd process and usage examples"
