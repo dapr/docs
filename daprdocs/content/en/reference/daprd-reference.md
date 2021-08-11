@@ -3,7 +3,7 @@ type: docs
 title: "daprd reference"
 linkTitle: "daprd"
 weight: 300
-description: "Detailed information on daprd and usage"
+description: "Detailed information on the daprd process and usage examples"
 ---
 
 ## Overview
