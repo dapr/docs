@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "daprd reference"
-linkTitle: "daprd reference"
+linkTitle: "daprd"
 weight: 300
 description: "Detailed information on daprd and usage"
 ---
