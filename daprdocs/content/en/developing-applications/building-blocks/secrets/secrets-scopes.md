@@ -14,7 +14,10 @@ To limit the secrets to which the Dapr application has access to, you can define
 The secret scoping policy applies to any [secret store]({{< ref supported-secret-stores.md >}}), whether that is a local secret store, a Kubernetes secret store or a public cloud secret store. For details on how to set up a [secret stores]({{< ref setup-secret-store.md >}}) read [How To: Retrieve a secret]({{< ref howto-secrets.md >}})
 
 Watch this [video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to use secret scoping with your application.
+
+<div class="embed-responsive embed-responsive-16by9">
 <iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=2272" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 

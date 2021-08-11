@@ -1,4 +1,4 @@
----
+--- 
 type: docs
 title: "How-To: Invoke services using HTTP"
 linkTitle: "How-To: Invoke with HTTP"
@@ -18,13 +18,13 @@ Dapr allows you to assign a global, unique ID for your app. This ID encapsulates
 In self hosted mode, set the `--app-id` flag:
 
 ```bash
-dapr run --app-id cart --app-port 5000 python app.py
+dapr run --app-id cart --dapr-http-port 3500 --app-port 5000 python app.py
 ```
 
 If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
 
 ```bash
-dapr run --app-id cart --app-port 5000 --app-ssl python app.py
+dapr run --app-id cart --dapr-http-port 3500 --app-port 5000 --app-ssl python app.py
 ```
 {{% /codetab %}}
 
