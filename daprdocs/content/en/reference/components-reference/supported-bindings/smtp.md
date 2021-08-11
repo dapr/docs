@@ -95,7 +95,7 @@ Example:
     "emailTo": "dapr-smtp-binding@example.net",
     "emailCC": "cc1@example.net; cc2@example.net",
     "subject": "Email subject",
-    "piority: "1"
+    "priority: "1"
   },
   "data": "Testing Dapr SMTP Binding"
 }
