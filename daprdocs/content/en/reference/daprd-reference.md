@@ -18,7 +18,11 @@ When initializing Dapr in self-hosted mode via `dapr init`, the daprd binary is 
 
 On Kubernetes, `dapr init -k` will install the [dapr-sidecar-injector service]({{< ref kubernetes-overview.md >}}), which will watch for new pods with the `dapr.io/enabled` annotation and inject a container with the daprd process within the pod.
 
-In most cases you would not need to run daprd explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the Dapr control plane (Kubernetes). Examples of times when launching daprd directly may be useful include debugging, to find the application the sidecar is attached to or if the environment being used makes it unfeasible to use `dapr run` (e.g. automating sidecar launch on a VM) .
+## Running directly
+
+In most cases you do not need to run daprd explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the dapr-sidecar-injector service (Kubernetes). 
+
+For advanced use cases (debugging, scripted deployments, etc.) the daprd process can be launched directly.
 
 For a detailed list of all available arguments run `daprd --help` or see this [table]({{< ref arguments-annotations-overview.md >}}).
 
