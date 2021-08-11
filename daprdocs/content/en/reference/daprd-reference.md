@@ -20,9 +20,9 @@ On Kubernetes, `dapr init -k` will install the [dapr-sidecar-injector service]({
 
 In most cases you would not need to run daprd explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the Dapr control plane (Kubernetes). Examples of times when launching daprd directly may be useful include debugging, to find the application the sidecar is attached to or if the environment being used makes it unfeasible to use `dapr run` (e.g. automating sidecar launch on a VM) .
 
-## Usage examples
+For a detailed list of all available arguments run `daprd --help` or see this [table]({{< ref arguments-annotations-overview.md >}}).
 
-daprd can be used with several arguments in different scenarios. For a detailed list of all available arguments run: `daprd --help` or see this [table](https://docs.dapr.io/reference/arguments-annotations-overview/) for a comprehensive comparison between daprd options with CLI and Kubernestes annotation options.
+### Examples
 
 1. Start a sidecar along an application by specifying its unique ID. Note `--app-id` is a required field:
 
