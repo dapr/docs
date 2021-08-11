@@ -6,7 +6,17 @@ weight: 300
 description: "Detailed information on daprd and usage"
 ---
 
-Dapr runs along side an application as a [sidecar](https://docs.dapr.io/concepts/overview/#sidecar-architecture). The sidecar is in practice a process running in the same environment as the application or in a separate container depending on where the application is hosted. For a self-hosted environment, the CLI command `dapr run` starts the sidecar as a process and for a Kubernetes environment the dapr-sidecar-injector does injects a container with a daprd process into the application's pod. After installing Dapr locally on your machine the `dapr init` command places the `daprd` executable in `.dapr/bin` under your home directory.
+## Overview
+
+The daprd process is what you think of as "Dapr". It is the process that offers the various Dapr [building blocks]({{< ref building-blocks >}}) through HTTP and gRPC APIs to your application.
+
+The daprd process runs alongside your application as a [sidecar]({{< ref "overview.md#sidecar-architecture" >}}), either as a process in a self-hosted environment or as a container within the application pods in a Kubernetes environment.
+
+## Installation
+
+When initializing Dapr in self-hosted mode via `dapr init`, the daprd binary is installed to the`.dapr/bin` directory within your home directory. Running `dapr run` will launch a daprd process alongside your application.
+
+On Kubernetes, `dapr init -k` will install the [dapr-sidecar-injector service]({{< ref kubernetes-overview.md >}}), which will watch for new pods with the `dapr.io/enabled` annotation and inject a container with the daprd process within the pod.
 
 In most cases you would not need to run daprd explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the Dapr control plane (Kubernetes). Examples of times when launching daprd directly may be useful include debugging, to find the application the sidecar is attached to or if the environment being used makes it unfeasible to use `dapr run` (e.g. automating sidecar launch on a VM) .
 
