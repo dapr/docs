@@ -8,7 +8,7 @@ aliases:
 ---
 
 {{% alert title="Deprecated" color="warning" %}}
-The Azure Event Hubs pubsub component is deprecated and will be removed in release 1.6. Please use the [Azure Event Hubs bindings]({{< ref "supported-bindings/eventhubs.md" >}}) instead.
+The Azure Event Hubs pubsub component is deprecated and will be removed in release 1.6. Please use the [Azure Event Hubs bindings]({{< ref "eventhubs.md" >}}) instead.
 {{% /alert %}}
 
 ## Component format
