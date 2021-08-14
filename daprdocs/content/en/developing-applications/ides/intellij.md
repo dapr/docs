@@ -80,7 +80,7 @@ Add a new `<tool></tool>` entry:
 </toolSet>
 ```
 
-Optionally, you may also create a new entry for a sidecar tool that can be reused accross many projects:
+Optionally, you may also create a new entry for a sidecar tool that can be reused across many projects:
 
 ```xml
 <toolSet name="External Tools">

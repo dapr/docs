@@ -42,6 +42,9 @@ spec:
 
 Make sure to replace `<PATH TO SECRETS FILE>` with the path to the JSON file you just created.
 
+>Note: the path to the secret store JSON is relative to where you call `dapr run` from.
+
+
 To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 ## Get a secret
 
