@@ -416,7 +416,9 @@ app.post('/dsstatus', (req, res) => {
 
 {{< /tabs >}}
 
-Some pubsub components (e.g.: Redis) will redeliver a message if a response is not sent back within a specified time window. For redis, the default is 60 sec and can be configured through the processingTimeout setting in component's meta or set to 0 to disable this behavior.
+{{% alert title="👷‍♂️ Under construction 🚧" color="primary" %}}
+Some pubsub components (e.g. Redis) will redeliver a message if a response is not sent back within a specified time window. Make sure to configure metadata such as `processingTimeout` to customize this behavior. For more information refer to the respective [component references]({{< ref supported-pubsub >}}).
+{{% /alert %}}
 
 ## (Optional) Step 5: Publishing a topic with code
 
