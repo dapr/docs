@@ -8,7 +8,7 @@ description: "Restrict what operations *calling* applications can perform, via s
 
 Access control enables the configuration of policies that restrict what operations *calling* applications can perform, via service invocation, on the *called* application. To limit access to a called applications from specific operations and HTTP verbs from the calling applications, you can define an access control policy specification in configuration.
 
-An access control policy is specified in configuration and be applied to Dapr sidecar for the *called* application. Example access policies are shown below and access to the called app is based on the matched policy action. You can provide a default global action for all calling applications and if no access control policy is specified, the default behavior is to allow all calling applicatons to access to the called app.
+An access control policy is specified in configuration and be applied to Dapr sidecar for the *called* application. Example access policies are shown below and access to the called app is based on the matched policy action. You can provide a default global action for all calling applications and if no access control policy is specified, the default behavior is to allow all calling applications to access to the called app.
 
 Watch this [video](https://youtu.be/j99RN_nxExA?t=1108) on how to apply access control list for service invocation.
 <iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=1108" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -194,7 +194,7 @@ spec:
 
 ## Hello world examples
 These examples show how to apply access control to the [hello world](https://github.com/dapr/quickstarts#quickstarts) quickstart samples where a python app invokes a node.js app.
-Access control lists rely on the Dapr [Sentry service]({{< ref "security-concept.md" >}}) to generate the TLS certificates with a SPIFFE id for authentication, which means the Sentry service either has to be running locally or deployed to your hosting enviroment such as a Kubernetes cluster.
+Access control lists rely on the Dapr [Sentry service]({{< ref "security-concept.md" >}}) to generate the TLS certificates with a SPIFFE id for authentication, which means the Sentry service either has to be running locally or deployed to your hosting environment such as a Kubernetes cluster.
 
 The nodeappconfig example below shows how to **deny** access to the `neworder` method from the `pythonapp`, where the python app is in the `myDomain` trust domain and `default` namespace. The nodeapp is in the `public` trust domain.
 
