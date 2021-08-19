@@ -21,7 +21,7 @@ When a TTL is not specified the default behavior of the state store is retained.
 
 ## Persisting state (ignoring an existing TTL)
 
-To explictly persist a state (ignoring any TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
+To explicitly persist a state (ignoring any TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
 
 ## Supported components
 
