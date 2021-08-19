@@ -6,7 +6,7 @@ weight: 300
 description: "Debug Dapr apps locally which still connected to your Kubernetes cluster"
 ---
 
-Bridge to Kubernetes allows you to run and debug code on your development computer, while still connected to your Kubernetes cluster with the rest of your application or services. This type of debugging is often called *local tunnel debugging*. 
+Bridge to Kubernetes allows you to run and debug code on your development computer, while still connected to your Kubernetes cluster with the rest of your application or services. This type of debugging is often called *local tunnel debugging*.
 
 {{< button text="Learn more about Bridge to Kubernetes" link="https://aka.ms/bridge-vscode-dapr" >}}
 

@@ -274,7 +274,7 @@ Will result in the following output:
 
 {{< code-snippet file="contributing-1.py" lang="python" marker="#SAMPLE" >}}
 
-Use the `replace-key-[token]` and `replace-value-[token]` parameters to limit the embedded snipped to a portion of the sample file. This is useful when you want abbreviate a portion of the code sample. Multiple replacements are supported with multiple values of `token`. 
+Use the `replace-key-[token]` and `replace-value-[token]` parameters to limit the embedded snipped to a portion of the sample file. This is useful when you want abbreviate a portion of the code sample. Multiple replacements are supported with multiple values of `token`.
 
 The shortcode below and code sample:
 
