@@ -416,7 +416,7 @@ app.post('/dsstatus', (req, res) => {
 
 {{< /tabs >}}
 
-{{% alert title="👷‍♂️ Under construction 🚧" color="primary" %}}
+{{% alert title="Note on message redelivery" color="primary" %}}
 Some pubsub components (e.g. Redis) will redeliver a message if a response is not sent back within a specified time window. Make sure to configure metadata such as `processingTimeout` to customize this behavior. For more information refer to the respective [component references]({{< ref supported-pubsub >}}).
 {{% /alert %}}
 
