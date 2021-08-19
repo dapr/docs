@@ -7,7 +7,7 @@ description: "Detailed information on the upgrade CLI command"
 
 ## Description
 
-Upgrade or downgrade Dapr on supported hosting platforms. 
+Upgrade or downgrade Dapr on supported hosting platforms.
 
 {{% alert title="Warning" color="warning" %}}
 Version steps should be done incrementally, including minor versions as you upgrade or downgrade.

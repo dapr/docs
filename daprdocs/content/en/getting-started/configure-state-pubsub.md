@@ -125,6 +125,9 @@ spec:
     secretKeyRef:
       name: redis
       key: redis-password
+  # uncomment below for connecting to redis cache instances over TLS (ex - Azure Redis Cache)
+  # - name: enableTLS
+  #   value: true 
 ```
 
 This example uses the kubernetes secret that was created when setting up a cluster with the above instructions.
@@ -153,6 +156,9 @@ spec:
     secretKeyRef:
       name: redis
       key: redis-password
+ # uncomment below for connecting to redis cache instances over TLS (ex - Azure Redis Cache)
+  # - name: enableTLS
+  #   value: true 
 ```
 
 This example uses the kubernetes secret that was created when setting up a cluster with the above instructions.
@@ -179,6 +185,9 @@ spec:
     value: <HOST>
   - name: redisPassword
     value: <PASSWORD>
+  # uncomment below for connecting to redis cache instances over TLS (ex - Azure Redis Cache)
+  # - name: enableTLS
+  #   value: true 
 ```
 
 ```yaml
@@ -195,6 +204,9 @@ spec:
     value: <HOST>
   - name: redisPassword
     value: <PASSWORD>
+  # uncomment below for connecting to redis cache instances over TLS (ex - Azure Redis Cache)
+  # - name: enableTLS
+  #   value: true 
 ```
 
 ## Apply the configuration

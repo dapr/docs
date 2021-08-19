@@ -20,16 +20,16 @@ The Dapr CLI provides an option to initialize Dapr using slim init, without the 
 dapr init --slim
 ```
 
-In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors]({{< ref "actors-overview.md" >}}) in a Dapr self-hosted installation. 
+In this mode two different binaries are installed `daprd` and `placement`. The `placement` binary is needed to enable [actors]({{< ref "actors-overview.md" >}}) in a Dapr self-hosted installation.
 
 In this mode no default components such as Redis are installed for state management or pub/sub. This means, that aside from [Service Invocation]({{< ref "service-invocation-overview.md" >}}), no other building block functionality is available on install out of the box. Users are free to setup their own environment and custom components. Furthermore, actor based service invocation is possible if a state store is configured as explained in the following sections.
 
 ## Service invocation
-See [this sample](https://github.com/dapr/samples/tree/master/hello-dapr-slim) for an example on how to perform service invocation in this mode. 
+See [this sample](https://github.com/dapr/samples/tree/master/hello-dapr-slim) for an example on how to perform service invocation in this mode.
 
 ## Enabling state management or pub/sub
 
-See configuring Redis in self-hosted mode [without docker](https://redis.io/topics/quickstart) to enable a local state store or pub/sub broker for messaging. 
+See configuring Redis in self-hosted mode [without docker](https://redis.io/topics/quickstart) to enable a local state store or pub/sub broker for messaging.
 
 ## Enabling actors
 
@@ -51,7 +51,7 @@ INFO[0001] leader is established.                        instance=Nicoletaz-L10.
 
 ```
 
-From here on you can follow the sample example created for the [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors), [python-sdk](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor) or [dotnet-sdk]({{< ref "dotnet-actors-howto.md" >}}) for running an application with Actors enabled. 
+From here on you can follow the sample example created for the [java-sdk](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors), [python-sdk](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor) or [dotnet-sdk]({{< ref "dotnet-actors-howto.md" >}}) for running an application with Actors enabled.
 
 Update the state store configuration files to have the Redis host and password match the setup that you have. Additionally to enable it as a actor state store have the metadata piece added similar to the [sample Java Redis component](https://github.com/dapr/java-sdk/blob/master/examples/components/state/redis.yaml) definition.
 

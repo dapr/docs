@@ -21,7 +21,7 @@ Watch this [video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 
-In this example all secret access is denied to an application running on a Kubernetes cluster which has a configured [Kubernetes secret store]({{<ref kubernetes-secret-store>}}) named `mycustomsecretstore`. In the case of Kubernetes, aside from the user defined custom store, the default store named `kubernetes` is also addressed to ensure all secrets are denied access (See [here]({{<ref "kubernetes-secret-store.md#default-kubernetes-secret-store-component">}}) to learn more about the Kubernetes default secret store). 
+In this example all secret access is denied to an application running on a Kubernetes cluster which has a configured [Kubernetes secret store]({{<ref kubernetes-secret-store>}}) named `mycustomsecretstore`. In the case of Kubernetes, aside from the user defined custom store, the default store named `kubernetes` is also addressed to ensure all secrets are denied access (See [here]({{<ref "kubernetes-secret-store.md#default-kubernetes-secret-store-component">}}) to learn more about the Kubernetes default secret store).
 
 To add this configuration follow the steps below:
 
