@@ -61,7 +61,7 @@ spec:
             my_claim := jwt.payload["my-claim"]
         }
         jwt = { "payload": payload } {
-            auth_header := input.request.headers["authorization"]
+            auth_header := input.request.headers["Authorization"]
             [_, jwt] := split(auth_header, " ")
             [_, payload, _] := io.jwt.decode(jwt)
         }
