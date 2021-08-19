@@ -22,7 +22,7 @@ spec:
   version: v1
   metadata:
     - name: endpoint
-      value:  http://localhost:8080/v1/graphql     
+      value:  http://localhost:8080/v1/graphql
     - name: header:x-hasura-access-key
       value: adminkey
     - name: header:Cache-Control

@@ -75,7 +75,7 @@ You can prototype and experiment with policies using the [official opa playgroun
 |--------|---------|---------|
 | rego | The Rego policy language | See above |
 | defaultStatus   | The status code to return for denied responses | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
-| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"` 
+| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`
 
 ## Dapr configuration
 
