@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Dapr sidecar injector overview"
-linkTitle: "Sidecar"
+linkTitle: "Sidecar injector"
 description: "Overview of the Dapr sidecar injector process"
 ---
 
