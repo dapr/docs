@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr sidecar (daprd) overview"
 linkTitle: "Sidecar"
-weight: 300
+weight: 100
 description: "Overview of the Dapr sidecar process"
 ---
 
