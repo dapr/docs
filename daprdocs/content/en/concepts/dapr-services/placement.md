@@ -5,7 +5,7 @@ linkTitle: "Placement"
 description: "Overview of the Dapr placement process"
 ---
 
-The Dapr placement service is used to calculate and distribute distributed hash tables for the location of [Dapr actors]({{< ref actors >}} running in [self-hosted mode]({{< ref self-hosted >}}) or on [Kubernetes]({{< ref kubernetes >}}). This hash table maps actor IDs to pods or processes so a Dapr application can communicate with the actor.Anytime a Dapr application activates a Dapr actor, the placement updates the hash tables with the latest actor locations.
+The Dapr placement service is used to calculate and distribute distributed hash tables for the location of [Dapr actors]({{< ref actors >}}) running in [self-hosted mode]({{< ref self-hosted >}}) or on [Kubernetes]({{< ref kubernetes >}}). This hash table maps actor IDs to pods or processes so a Dapr application can communicate with the actor.Anytime a Dapr application activates a Dapr actor, the placement updates the hash tables with the latest actor locations.
 
 ## Self-hosted mode
 
