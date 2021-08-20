@@ -93,7 +93,7 @@ Similarly, if two different applications (different app-IDs) subscribe to the sa
 
 ### Topic scoping
 
-By default, all topics backing the Dapr pub/sub component (e.g. Kafka, Redis Stream, RabbitMQ) are available to every application configured with that component. To limit which application can publish or subscribe to topics, Dapr provides topic scoping. This enables to you say which topics an application is allowed to published and which topics an application is allowed to subscribed to. For more information read [publish/subscribe topic scoping]({{< ref pubsub-scopes.md >}}).
+By default, all topics backing the Dapr pub/sub component (e.g. Kafka, Redis Stream, RabbitMQ) are available to every application configured with that component. To limit which application can publish or subscribe to topics, Dapr provides topic scoping. This enables to you say which topics an application is allowed to publish and which topics an application is allowed to subscribe to. For more information read [publish/subscribe topic scoping]({{< ref pubsub-scopes.md >}}).
 
 ### Message Time-to-Live (TTL)
 Dapr can set a timeout message on a per message basis, meaning that if the message is not read from the pub/sub component, then the message is discarded. This is to prevent the build up of messages that are not read. A message that has been in the queue for longer than the configured TTL is said to be dead.  For more information read [publish/subscribe message time-to-live]({{< ref pubsub-message-ttl.md >}}).
