@@ -31,6 +31,8 @@ spec:
     value: [path to the JSON file]
   - name: nestedSeparator
     value: ":"
+  - name: multiValued
+    value: "false"
 ```
 
 ## Spec metadata fields
@@ -38,7 +40,8 @@ spec:
 | Field              | Required | Details                                                                 | Example                  |
 |--------------------|:--------:|-------------------------------------------------------------------------|--------------------------|
 | secretsFile        | Y        | The path to the file where secrets are stored   | `"path/to/file.json"` |
-| nestedSeparator    | N        | Used by the store when flattening the JSON hierarchy to a map. Defaults to `":"` | `":"` |
+| nestedSeparator    | N        | Used by the store when flattening the JSON hierarchy to a map. Defaults to `":"` | `":"` 
+| multiValued        | N        | Allows one level of multi-valued key/value pairs before flattening JSON hierarchy. Defaults to `"false"` | `"true"` |
 
 ## Setup JSON file to hold the secrets
 
@@ -54,7 +57,7 @@ Given the following json:
 }
 ```
 
-The store will load the file and create a map with the following key value pairs:
+If `multiValued` is `"false"`, the store will load the file and create a map with the following key value pairs:
 
 | flattened key           | value                           |
 | ---                     | ---                             |
@@ -62,7 +65,24 @@ The store will load the file and create a map with the following key value pairs
 |"connectionStrings:sql"  | "your sql connection string"    |
 |"connectionStrings:mysql"| "your mysql connection string"  |
 
-Use the flattened key (`connectionStrings:sql`) to access the secret.
+Use the flattened key (`connectionStrings:sql`) to access the secret. The following JSON map returned:
+
+```json
+{
+  "connectionStrings:sql": "your sql connection string"
+}
+```
+
+If `multiValued` is `"true"`, you would instead use the top level key. In this example, `connectionStrings` would return the following map:
+
+```json
+{
+  "sql": "your sql connection string",
+  "mysql": "your mysql connection string"
+}
+```
+
+This is useful in order to mimic secret stores like Vault or Kubernetes that return multiple key/value pairs per secret key.
 
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
