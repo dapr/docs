@@ -29,23 +29,23 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
 1. Start a sidecar along an application by specifying its unique ID. Note `--app-id` is a required field:
 
    ```bash
-   ~/.dapr/bin/daprd --app-id myapp
+   daprd --app-id myapp
    ```
 
 2. Specify the port your application is listening to
 
    ```bash
-   ~/.dapr/bin/daprd --app-id --app-port 5000
+   daprd --app-id --app-port 5000
    ```
 
 3. If you are using several custom components and want to specify the location of the component definition files, use the `--components-path` argument:
 
    ```bash
-   ~/.dapr/bin/daprd --app-id myapp --components-path ~/.dapr/components
+   daprd --app-id myapp --components-path <PATH-TO-COMPONENTS-FILES>
    ```
 
 4. Enable collection of Prometheus metrics while running your app
 
    ```bash
-   ~/.dapr/bin/daprd --app-id myapp --enable-metrics
+   daprd --app-id myapp --enable-metrics
    ```
