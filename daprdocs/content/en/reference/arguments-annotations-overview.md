@@ -10,7 +10,7 @@ aliases:
 
 This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts--via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
 
-| daprd | Dapr CLI | CLI shorthand | K8s annotations | Description
+| daprd | Dapr CLI | CLI shorthand | Kubernetes annotations | Description
 |----- | ------- | -----------| ----------| ------------ |
 | `--allowed-origins`  | not supported |  | not supported | Allowed HTTP origins (default "*") |
 | `--app-id` | `--app-id` | `-i` | `dapr.io/app-id`  | The unique ID of the application. Used for service discovery, state encapsulation and the pub/sub consumer ID |
