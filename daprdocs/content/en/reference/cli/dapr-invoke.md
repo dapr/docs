@@ -26,7 +26,7 @@ dapr invoke [flags]
 | `--help`, `-h` | | | Print this help message |
 | `--method`, `-m` | | | The method to invoke |
 | `--data`, `-d` | | | The JSON serialized data string (optional) |
-| `--data-file`, `-f` | | | A file containing the JSON serialized data (optional) 
+| `--data-file`, `-f` | | | A file containing the JSON serialized data (optional)
 | `--verb`, `-v` | | `POST` | The HTTP verb to use |
 
 ## Examples

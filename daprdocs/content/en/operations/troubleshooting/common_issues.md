@@ -223,6 +223,6 @@ In order for mDNS to function properly, ensure `Micorosft Content Filter` is ina
 - Type `mdatp system-extension network-filter disable` and hit enter.
 - Enter your account password.
 
-Microsoft Content Filter is disabled when the output is "Success". 
+Microsoft Content Filter is disabled when the output is "Success".
 
-> Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting. 
+> Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting.

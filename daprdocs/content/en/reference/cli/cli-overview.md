@@ -52,7 +52,7 @@ Use "dapr [command] --help" for more information about a command.
 
 ## Command Reference
 
-You can learn more about each Dapr command from the links below. 
+You can learn more about each Dapr command from the links below.
 
  - [`dapr build-info`]({{< ref dapr-build-info.md >}})
  - [`dapr completion`]({{< ref dapr-completion.md >}})

@@ -25,7 +25,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-actor-method" >}}) for more detai
 Actors can save state reliably using state management capability.
 You can interact with Dapr through HTTP/gRPC endpoints for state management.
 
-To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors. 
+To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors.
 
 ## Actor timers and reminders
 
@@ -200,7 +200,7 @@ public void ConfigureServices(IServiceCollection services)
     {
         // Register actor types and configure actor settings
         options.Actors.RegisterActor<MyActor>();
-        
+
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
@@ -312,7 +312,7 @@ public void ConfigureServices(IServiceCollection services)
     {
         // Register actor types and configure actor settings
         options.Actors.RegisterActor<MyActor>();
-        
+
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
