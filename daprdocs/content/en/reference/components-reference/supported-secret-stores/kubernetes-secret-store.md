@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Default Kubernetes secret store component
-When Dapr is deployed to a Kubernetes cluster, a secret store with the name `kubernetes` is automatically provisioned. This pre-provisioned secret store allows you to use the native Kubernetes secret store with no need to author, deploy or maintain a component configuration file for the secret store and is useful for developers looking to simply access secrets stored natively in a Kubernetes cluster. 
+When Dapr is deployed to a Kubernetes cluster, a secret store with the name `kubernetes` is automatically provisioned. This pre-provisioned secret store allows you to use the native Kubernetes secret store with no need to author, deploy or maintain a component configuration file for the secret store and is useful for developers looking to simply access secrets stored natively in a Kubernetes cluster.
 
 A custom component definition file for a Kubernetes secret store can still be configured (See below for details). Using a custom definition decouples referencing the secret store in your code from the hosting platform as the store name is not fixed and can be customized, keeping you code more generic and portable. Additionally, by explicitly defining a Kubernetes secret store component you can connect to a Kubernetes secret store from a local Dapr self-hosted installation. This requires a valid [`kubeconfig`](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) file.
 

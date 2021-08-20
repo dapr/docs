@@ -12,7 +12,7 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
    {{% alert title="Note" color="warning" %}}
    This will remove the default `$HOME/.dapr` directory, binaries and all containers (dapr_redis, dapr_placement and dapr_zipkin). Linux users need to run `sudo` if    docker command needs sudo.
    {{% /alert %}}
-   
+
    ```bash
    dapr uninstall --all
    ```
@@ -29,7 +29,7 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
 
    ```bash
    $ dapr --version
-   
+
    CLI version: 1.3
    Runtime version: 1.3
    ```

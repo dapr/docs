@@ -14,7 +14,7 @@ description: "Set-up New Relic for distributed tracing"
 
 Dapr natively captures metrics and traces that can be send directly to New Relic. The easiest way to export these is by configuring Dapr to send the traces to [New Relic's Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/report-zipkin-format-traces-trace-api/) using the Zipkin trace format.
 
-In order for the integration to send data to New Relic [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform), you need a [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys#insights-insert-key).
+In order for the integration to send data to New Relic [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform), you need a [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/#insights-insert-key).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -39,7 +39,7 @@ New Relic Distributed Tracing details
 
 ## (optional) New Relic Instrumentation
 
-In order for the integrations to send data to New Relic Telemetry Data Platform, you either need a [New Relic license key](https://docs.newrelic.com/docs/accounts/accounts-billing/account-setup/new-relic-license-key) or [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys#insights-insert-key).
+In order for the integrations to send data to New Relic Telemetry Data Platform, you either need a [New Relic license key](https://docs.newrelic.com/docs/accounts/accounts-billing/account-setup/new-relic-license-key) or [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/#insights-insert-key).
 
 ### OpenTelemetry instrumentation
 
@@ -47,7 +47,7 @@ Leverage the different language specific OpenTelemetry implementations, for exam
 
 ### New Relic Language agent
 
-Similarly to the OpenTelemetry instrumentation, you can also leverage a New Relic language agent. As an example, the [New Relic agent instrumentation for .NET Core](https://docs.newrelic.com/docs/agents/net-agent/other-installation/install-net-agent-docker-container/) is part of the Dockerfile. See example [here](https://github.com/harrykimpel/quickstarts/blob/master/distributed-calculator/csharp/Dockerfile).
+Similarly to the OpenTelemetry instrumentation, you can also leverage a New Relic language agent. As an example, the [New Relic agent instrumentation for .NET Core](https://docs.newrelic.com/docs/agents/net-agent/other-installation/install-net-agent-docker-container) is part of the Dockerfile. See example [here](https://github.com/harrykimpel/quickstarts/blob/master/distributed-calculator/csharp/Dockerfile).
 
 ## (optional) Enable New Relic Kubernetes integration
 
@@ -109,6 +109,6 @@ All the data that is collected from Dapr, Kubernetes or any services that run on
 * [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform)
 * [Distributed Tracing](https://docs.newrelic.com/docs/distributed-tracing/concepts/introduction-distributed-tracing/)
 * [New Relic Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/introduction-trace-api/)
-* [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys)
+* [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/)
 * [New Relic OpenTelemetry User Experience](https://blog.newrelic.com/product-news/opentelemetry-user-experience/)
 * [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence)
