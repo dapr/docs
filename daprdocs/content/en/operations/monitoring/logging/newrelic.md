@@ -74,5 +74,5 @@ By default, tailing is set to /var/log/containers/*.log. To change this setting,
 * [New Relic Account Signup](https://newrelic.com/signup)
 * [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform)
 * [New Relic Logging](https://github.com/newrelic/helm-charts/tree/master/charts/newrelic-logging)
-* [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys)
+* [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/)
 * [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence)

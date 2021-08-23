@@ -22,7 +22,9 @@ Users are able to leverage both OSM SMI traffic policies and Dapr capabilities o
 
 Watch the OSM team present the OSM and Dapr integration in the 05/18/2021 community call:
 
+<div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/LSYyTL0nS8Y?start=1916" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ## Additional resources
 

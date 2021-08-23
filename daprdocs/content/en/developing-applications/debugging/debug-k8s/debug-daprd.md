@@ -91,5 +91,5 @@ All done. Now you can point to port 40000 and start a remote debug session to da
 
 - [Overview of Dapr on Kubernetes]({{< ref kubernetes-overview >}})
 - [Deploy Dapr to a Kubernetes cluster]({{< ref kubernetes-deploy >}})
-- [Debug Dapr services on Kubernetes]({{< ref debug-dapr-services >}})  
+- [Debug Dapr services on Kubernetes]({{< ref debug-dapr-services >}})
 - [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)

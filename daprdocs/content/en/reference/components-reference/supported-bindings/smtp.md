@@ -42,6 +42,8 @@ spec:
     value: "bcc@example.com"
   - name: subject
     value: "subject"
+  - name: priority
+    value: "[value 1-5]"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -62,6 +64,7 @@ The example configuration shown above, contain a username and password as plain-
 | emailCc | N | Output | If set, this specifies the email address to CC in. See [also](#example-request) | `"me@example.com"` |
 | emailBcc | N | Output | If set, this specifies email address to BCC in. See [also](#example-request) | `"me@example.com"` |
 | subject | N | Output | If set, this specifies the subject of the email message. See [also](#example-request) | `"subject of mail"` |
+| priority | N | Output | If set, this specifies the priority (X-Priority) of the email message, from 1 (lowest) to 5 (highest) (default value: 3). See [also](#example-request) | `"1"` |
 
 ## Binding support
 
@@ -78,6 +81,7 @@ You can specify any of the following optional metadata properties with each requ
 - `emailCC`
 - `emailBCC`
 - `subject`
+- `priority`
 
 When sending an email, the metadata in the configuration and in the request is combined. The combined set of metadata must contain at least the `emailFrom`, `emailTo` and `subject` fields.
 
@@ -90,7 +94,8 @@ Example:
   "metadata": {
     "emailTo": "dapr-smtp-binding@example.net",
     "emailCC": "cc1@example.net; cc2@example.net",
-    "subject": "Email subject"
+    "subject": "Email subject",
+    "priority: "1"
   },
   "data": "Testing Dapr SMTP Binding"
 }
