@@ -229,6 +229,8 @@ If using `daprd` directly, use the following flags to enable mTLS:
 daprd --app-id myapp --enable-mtls --sentry-address localhost:50001 --config=./config.yaml
 ```
 
+Several environment variables should be filled in with the information of the certificates when invoking services with the dapr sidecar. Check the [Service Invocation access control]({{< ref "invoke-allowlist.md" >}}) self-hosted example using mTLS for more detail.
+
 #### Sentry configuration
 
 Here's an example of a configuration for Sentry that changes the workload cert TTL to 25 seconds:
