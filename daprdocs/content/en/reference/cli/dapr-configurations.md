@@ -23,8 +23,10 @@ dapr configurations [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
+| `--all-namespaces`, `-A` | | `false` | If true, list all Dapr configurations in all namespaces
 | `--kubernetes`, `-k` | | `false` | List all Dapr configurations in a Kubernetes cluster
-| `--name`, `-n` | | | The configuration name to be printed (optional)
+| `--namespace`, `-n` | | `default` | List define namespace configurations in a Kubernetes cluster
+| `--name` | | | The configuration name to be printed (optional)
 | `--output`, `-o` | | `list`| Output format (options: json or yaml or list)
 | `--help`, `-h` | | | Print this help message |
 

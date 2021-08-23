@@ -23,8 +23,12 @@ dapr components [flags]
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
+| `--all-namespaces`, `-A` | | `false` | If true, list all Dapr components in all namespaces |
 | `--help`, `-h` | | | Print this help message |
 | `--kubernetes`, `-k` | | `false` | List all Dapr components in a Kubernetes cluster |
+| `--name` | |  | The components name to be printed (optional) |
+| `--namespace`, `-n` | | `default` | List define namespace components in a Kubernetes cluster |
+| `--output`, `-o` | | `list` | Output format (options: json or yaml or list) |
 
 ## Examples
 
