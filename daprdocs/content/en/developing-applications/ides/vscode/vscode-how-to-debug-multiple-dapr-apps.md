@@ -56,7 +56,7 @@ In the case of the hello world quickstart, two applications are launched, each w
          "type": "python",
          "request": "launch",
          "name": "Pythonapp with Dapr",
-         "program": "${workspaceFolder}/app.py",   
+         "program": "${workspaceFolder}/app.py",
          "console": "integratedTerminal",
          "preLaunchTask": "daprd-debug-python",
          "postDebugTask": "daprd-down-python"
@@ -69,7 +69,7 @@ Each configuration requires a `request`, `type` and `name`. These parameters hel
 
 - `type` defines the language used.  Depending on the language, it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
 - `name` is a unique name for the configuration. This is used for compound configurations when calling multiple configurations in your project.
-- `${workspaceFolder}` is a VS Code variable reference. This is the path to the workspace opened in VS Code. 
+- `${workspaceFolder}` is a VS Code variable reference. This is the path to the workspace opened in VS Code.
 - The `preLaunchTask` and `postDebugTask` parameters refer to the program configurations run before and after launching the application. See step 2 on how to configure these.
 
 For more information on VSCode debugging parameters see [VS Code launch attributes](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes).
@@ -153,7 +153,7 @@ Below are the supported parameters for VS Code tasks. These parameters are equiv
 | `appPort` | This parameter tells Dapr which port your application is listening on	 | Yes |  `"appPort": 4000`
 | `appProtocol` | Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http	 | No | `"appProtocol": "http"`
 | `appSsl` | Sets the URI scheme of the app to https and attempts an SSL connection	 | No |  `"appSsl": true`
-| `args` | Sets a list of arguments to pass on to the Dapr app	 | No | "args": [] 
+| `args` | Sets a list of arguments to pass on to the Dapr app	 | No | "args": []
 | `componentsPath` | Path for components directory. If empty, components will not be loaded. | No | `"componentsPath": "./components"`
 | `config` | Tells Dapr which Configuration CRD to use | No | `"config": "./config"`
 | `controlPlaneAddress` | Address for a Dapr control plane | No | `"controlPlaneAddress": "http://localhost:1366/"`

@@ -35,10 +35,10 @@ spec:
 
 | Field                   | Required | Binding support |  Details | Example |
 |-------------------------|:--------:|------------|-----|---------|
-| gatewayAddr             | Y | Output | Zeebe gateway address                                                                     | `localhost:26500` | 
-| gatewayKeepAlive        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `45s` | 
-| usePlainTextConnection  | N | Output | Whether to use a plain text connection or not                                             | `true,false` | 
-| caCertificatePath       | N | Output | The path to the CA cert                                                                    | `/path/to/ca-cert` | 
+| gatewayAddr             | Y | Output | Zeebe gateway address                                                                     | `localhost:26500` |
+| gatewayKeepAlive        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `45s` |
+| usePlainTextConnection  | N | Output | Whether to use a plain text connection or not                                             | `true,false` |
+| caCertificatePath       | N | Output | The path to the CA cert                                                                    | `/path/to/ca-cert` |
 
 ## Binding support
 
@@ -59,7 +59,7 @@ This component supports **output binding** with the following operations:
 
 ### Output binding
 
-Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the [gRPC API reference](https://stage.docs.zeebe.io/reference/grpc.html) for more information. 
+Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the [gRPC API reference](https://stage.docs.zeebe.io/reference/grpc.html) for more information.
 
 #### topology
 
@@ -161,7 +161,7 @@ The response values are:
 
 - `key` - the unique key identifying the deployment
 - `processes` - a list of deployed processes
-    - `bpmnProcessId` - the bpmn process ID, as parsed during deployment; together with the version forms a unique identifier for a specific 
+    - `bpmnProcessId` - the bpmn process ID, as parsed during deployment; together with the version forms a unique identifier for a specific
       process definition
     - `version` - the assigned process version
     - `processDefinitionKey` - the assigned key, which acts as a unique identifier for this process
@@ -169,7 +169,7 @@ The response values are:
 
 #### create-instance
 
-The `create-instance` operation creates and starts an instance of the specified process. The process definition to use to create the instance can be 
+The `create-instance` operation creates and starts an instance of the specified process. The process definition to use to create the instance can be
 specified either using its unique key (as returned by the `deploy-process` operation), or using the BPMN process ID and a version.
 
 Note that only processes with none start events can be started through this command.
@@ -296,7 +296,7 @@ To perform a `set-variables` operation, invoke the Zeebe command binding with a 
 
 The data parameters are:
 
-- `elementInstanceKey` - the unique identifier of a particular element; can be the process instance key (as 
+- `elementInstanceKey` - the unique identifier of a particular element; can be the process instance key (as
   obtained during instance creation), or a given element, such as a service task (see elementInstanceKey on the job message)
 - `local` - (optional, default: `false`) if true, the variables will be merged strictly into the local scope (as indicated by
   elementInstanceKey); this means the variables is not propagated to upper scopes.
@@ -369,7 +369,7 @@ The data parameters are:
 - `messageName` - the name of the message
 - `correlationKey` - (optional) the correlation key of the message
 - `timeToLive` - (optional)  how long the message should be buffered on the broker
-- `messageId` - (optional) the unique ID of the message; can be omitted. only useful to ensure only one message with the given ID will ever 
+- `messageId` - (optional) the unique ID of the message; can be omitted. only useful to ensure only one message with the given ID will ever
   be published (during its lifetime)
 - `variables` - (optional) the message variables as a JSON document; to be valid, the root of the document must be an object, e.g. { "a": "foo" }.
   [ "foo" ] would not be valid
@@ -390,7 +390,7 @@ The response values are:
 
 #### activate-jobs
 
-The `activate-jobs` operation iterates through all known partitions round-robin and activates up to the requested maximum and streams them back to 
+The `activate-jobs` operation iterates through all known partitions round-robin and activates up to the requested maximum and streams them back to
 the client as they are activated.
 
 To perform a `activate-jobs` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
@@ -419,7 +419,7 @@ The data parameters are:
 - `maxJobsToActivate` - the maximum jobs to activate by this request
 - `timeout` - (optional, default: 5 minutes) a job returned after this call will not be activated by another call until the timeout has been reached
 - `workerName` - (optional, default: `default`) the name of the worker activating the jobs, mostly used for logging purposes
-- `fetchVariables` - (optional) a list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the 
+- `fetchVariables` - (optional) a list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the
   scope of the job will be returned
 
 ##### Response
@@ -429,7 +429,7 @@ The binding returns a JSON with the following response:
 ```json
 [
   {
-    
+
   }
 ]
 ```
@@ -482,8 +482,8 @@ The binding does not return a response body.
 
 #### fail-job
 
-The `fail-job` operation marks the job as failed; if the retries argument is positive, then the job will be immediately activatable again, and a 
-worker could try again to process it. If it is zero or negative however, an incident will be raised, tagged with the given errorMessage, and the 
+The `fail-job` operation marks the job as failed; if the retries argument is positive, then the job will be immediately activatable again, and a
+worker could try again to process it. If it is zero or negative however, an incident will be raised, tagged with the given errorMessage, and the
 job will not be activatable until the incident is resolved.
 
 To perform a `fail-job` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
@@ -504,7 +504,7 @@ The data parameters are:
 
 - `jobKey` - the unique job identifier, as obtained when activating the job
 - `retries` - the amount of retries the job should have left
-- `errorMessage ` - (optional) an message describing why the job failed this is particularly useful if a job runs out of retries and an 
+- `errorMessage ` - (optional) an message describing why the job failed this is particularly useful if a job runs out of retries and an
   incident is raised, as it this message can help explain why an incident was raised
 
 ##### Response
@@ -513,7 +513,7 @@ The binding does not return a response body.
 
 #### update-job-retries
 
-The `update-job-retries` operation updates the number of retries a job has left. This is mostly useful for jobs that have run out of retries, should the 
+The `update-job-retries` operation updates the number of retries a job has left. This is mostly useful for jobs that have run out of retries, should the
 underlying problem be solved.
 
 To perform a `update-job-retries` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
@@ -540,7 +540,7 @@ The binding does not return a response body.
 
 #### throw-error
 
-The `throw-error` operation throw an error to indicate that a business error is occurred while processing the job. The error is identified 
+The `throw-error` operation throw an error to indicate that a business error is occurred while processing the job. The error is identified
 by an error code and is handled by an error catch event in the process with the same error code.
 
 To perform a `throw-error` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
