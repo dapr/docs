@@ -45,7 +45,7 @@ spec:
 
 ## Setup JSON file to hold the secrets
 
-Given the following json:
+Given the following JSON loaded from `secretsFile`:
 
 ```json
 {
@@ -79,6 +79,31 @@ If `multiValued` is `"true"`, you would instead use the top level key. In this e
 {
   "sql": "your sql connection string",
   "mysql": "your mysql connection string"
+}
+```
+
+Nested structures after the top level will be flattened. In this example, `connectionStrings` would return the following map:
+
+JSON from `secretsFile`:
+
+```json
+{
+    "redisPassword": "your redis password",
+    "connectionStrings": {
+        "mysql": {
+          "username": "your mysql username",
+          "password": "your mysql password"
+        }
+    }
+}
+```
+
+Response:
+
+```json
+{
+  "mysql:username": "your mysql username",
+  "mysql:password": "your mysql password"
 }
 ```
 
