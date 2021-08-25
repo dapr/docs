@@ -28,8 +28,10 @@ spec:
     value: "<SCHEMA NAME>"
   - name: tableName
     value: "<TABLE NAME>"
-  - name: pemPath
+  - name: pemPath # Required if pemContents not provided. Path to pem file.
     value: "<PEM PATH>"
+  - name: pemContents # Required if pemPath not provided. Pem value.
+    value: "<PEM CONTENTS>"    
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -50,7 +52,8 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 | connectionString   | Y        | The connection string to connect to MySQL. Do not add the schema to the connection string | [Non SSL connection](#non-ssl-connection): `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true"`, [Enforced SSL Connection](#enforced-ssl-connection):  `"<user>:<password>@tcp(<server>:3306)/?allowNativePasswords=true&tls=custom"`|
 | schemaName         | N        | The schema name to use. Will be created if schema does not exist. Defaults to `"dapr_state_store"`  | `"custom_schema"`, `"dapr_schema"` |
 | tableName          | N        | The table name to use. Will be created if table does not exist. Defaults to `"state"` | `"table_name"`, `"dapr_state"` |
-| pemPath            | N        | Full path to the PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) | `"/path/to/file.pem"`, `"C:\path\to\file.pem"` |
+| pemPath            | N        | Full path to the PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemContents is not provided. Cannot be used in K8s environment | `"/path/to/file.pem"`, `"C:\path\to\file.pem"` |
+| pemContents        | N        | Contents of PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemPath is not provided. Can be used in K8s environment | `"pem value"` |
 
 ## Setup MySQL
 
