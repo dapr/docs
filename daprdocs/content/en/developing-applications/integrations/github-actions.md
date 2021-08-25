@@ -1,22 +1,24 @@
 ---
 type: docs
 weight: 10000
-title: "GitHub Actions"
+title: "Use the Dapr CLI in a GitHub Actions workflow"
 linkTitle: "GitHub Actions"
-description: "Deploy your application with GitHub Actions"
+description: "Learn how to add the Dapr CLI to your GitHub Actions to deploy and manage Dapr in your environments."
 ---
 
-Dapr can be integrated with GitHub Actions via the [Dapr tool installer](https://github.com/marketplace/actions/dapr-tool-installer) available in the GitHub Marketplace.
+Dapr can be integrated with GitHub Actions via the [Dapr tool installer](https://github.com/marketplace/actions/dapr-tool-installer) available in the GitHub Marketplace. This installer adds the Dapr CLI to your workflow, allowing you to deploy, manage, and upgrade Dapr across your environments.
 
 ## Overview
 
-Before Dapr can be used in your Action Workflow you must install the Dapr CLI on the runner. Using the Dapr tool installer action will install the specified version of the Dapr CLI on macOS, Linux and Windows runners.
+The `dapr/setup-dapr` action will install the specified version of the Dapr CLI on macOS, Linux and Windows runners. Once installed, you can run any [Dapr CLI command]({{< ref cli >}}) to manage your Dapr environments.
 
 ## Example
 
 ```yaml
 - name: Install Dapr
   uses: dapr/setup-dapr@v1
+  with:
+    version: '1.3.0'
 
 - name: Initialize Dapr
   shell: pwsh
