@@ -83,7 +83,7 @@ Table captions:
 
 ### Zeebe (Camunda Cloud)
 
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Zeebe Command]({{< ref zeebe-command.md >}})            |    | ✅ | Alpha | v1 | 1.2 |
 | [Zeebe Job Worker]({{< ref zeebe-jobworker.md >}})       | ✅ |    | Alpha | v1 | 1.2 |
