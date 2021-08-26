@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-2.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -79,6 +79,14 @@ id = "UA-149338238-3"
     source = "../sdkdocs/go/daprdocs/content/en/go-sdk-contributing"
     target = "content/contributing/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/java/daprdocs/content/en/java-sdk-docs"
+    target = "content/developing-applications/sdks/java"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/java/daprdocs/content/en/java-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
 
   [[module.mounts]]
     source = "../translations/docs-zh/content/zh-hans"
@@ -144,13 +152,19 @@ github_subdir = "daprdocs"
 github_branch = "v1.2"
 
 # Versioning
-version_menu = "v1.2 (latest)"
+version_menu = "v1.2"
 version = "v1.2"
-archived_version = false
+archived_version = true
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.2 (latest)"
+  version = "v1.4 (preview)"
+  url = "https://v1-4.docs.dapr.io"
+[[params.versions]]
+  version = "v1.3 (latest)"
+  url = "https://docs.dapr.io"
+[[params.versions]]
+  version = "v1.2"
   url = "#"
 [[params.versions]]
   version = "v1.1"

@@ -17,3 +17,6 @@
 [submodule "sdkdocs/go"]
 	path = sdkdocs/go
 	url = https://github.com/dapr/go-sdk.git
+[submodule "sdkdocs/java"]
+	path = sdkdocs/java
+	url = https://github.com/dapr/java-sdk.git
