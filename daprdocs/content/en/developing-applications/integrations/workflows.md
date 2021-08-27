@@ -80,28 +80,28 @@ Prerequisites:
 1. Set up the environment variables containing the Azure Storage Account credentials:
 
    {{< tabs Windows "macOS/Linux" >}}
-   
+
    {{% codetab %}}
    ```bash
    export STORAGE_ACCOUNT_KEY=<YOUR-STORAGE-ACCOUNT-KEY>
    export STORAGE_ACCOUNT_NAME=<YOUR-STORAGE-ACCOUNT-NAME>
    ```
    {{% /codetab %}}
-   
+
    {{% codetab %}}
    ```bash
    set STORAGE_ACCOUNT_KEY=<YOUR-STORAGE-ACCOUNT-KEY>
    set STORAGE_ACCOUNT_NAME=<YOUR-STORAGE-ACCOUNT-NAME>
    ```
    {{% /codetab %}}
-   
+
    {{< /tabs >}}
 
 1. Move to the workflows directory and run the sample runtime:
 
    ```bash
    cd src/Dapr.Workflows
-   
+
    dapr run --app-id workflows --protocol grpc --port 3500 --app-port    50003 -- dotnet run --workflows-path ../../samples
    ```
 
@@ -109,8 +109,8 @@ Prerequisites:
 
    ```bash
    curl http://localhost:3500/v1.0/invoke/workflows/method/workflow1
-   
-   {"value":"Hello from Logic App workflow running with    Dapr!"}                                                                                      
+
+   {"value":"Hello from Logic App workflow running with    Dapr!"}
    ```
 
 ### Kubernetes
@@ -153,7 +153,7 @@ Prerequisites:
 
    ```bash
    curl http://localhost:3500/v1.0/invoke/workflows/method/workflow1
-   
+
    {"value":"Hello from Logic App workflow running with Dapr!"}
    ```
 
@@ -186,42 +186,44 @@ Prerequisites:
 1. Next, apply the Dapr component:
 
    {{< tabs Self-hosted Kubernetes >}}
-   
+
    {{% codetab %}}
    Place the binding yaml file above in a `components` directory at the    root of your application.
    {{% /codetab %}}
-   
+
    {{% codetab %}}
    ```bash
    kubectl apply -f my_binding.yaml
    ```
    {{% /codetab %}}
-   
+
    {{< /tabs >}}
 
 1. Once an event is sent to the bindings component, check the logs Dapr Workflows to see the output.
 
    {{< tabs Self-hosted Kubernetes >}}
-   
+
    {{% codetab %}}
    In standalone mode, the output will be printed to the local terminal.
    {{% /codetab %}}
-   
+
    {{% codetab %}}
    On Kubernetes, run the following command:
-   
+
    ```bash
    kubectl logs -l app=dapr-workflows-host -c host
    ```
    {{% /codetab %}}
-   
+
    {{< /tabs >}}
 
 ## Example
 
 Watch an example from the Dapr community call:
 
+<div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/7fP-0Ixmi-w?start=116" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ## Additional resources
 

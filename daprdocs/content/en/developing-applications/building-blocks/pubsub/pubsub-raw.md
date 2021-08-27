@@ -3,7 +3,7 @@ type: docs
 title: "Pub/Sub without CloudEvents"
 linkTitle: "Pub/Sub without CloudEvents"
 weight: 7000
-description: "Use Pub/Sub without CloudEvents." 
+description: "Use Pub/Sub without CloudEvents."
 ---
 
 ## Introduction
