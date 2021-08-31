@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Invoke service"
+title: "Invoke service middleware"
 linkTitle: "Invoke"
 weight: 8000
 description: "Invoke service method in middleware call chains"
