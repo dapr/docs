@@ -46,5 +46,5 @@ Table captions:
 
 | Name                                                      | Status | Component version | Since |
 |-----------------------------------------------------------|--------| ----------------| -- |
-| [Azure Events Hub]({{< ref setup-azure-eventhubs.md >}})  | Alpha  | v1 | 1.0 |
+| [Azure Event Hubs]({{< ref setup-azure-eventhubs.md >}})  | Alpha  | v1 | 1.0 |
 | [Azure Service Bus]({{< ref setup-azure-servicebus.md >}})| GA  | v1 | 1.0 |
