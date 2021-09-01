@@ -3,7 +3,7 @@ type: docs
 title: "Pub/Sub without CloudEvents"
 linkTitle: "Pub/Sub without CloudEvents"
 weight: 7000
-description: "Use Pub/Sub without CloudEvents." 
+description: "Use Pub/Sub without CloudEvents."
 ---
 
 ## Introduction
@@ -83,8 +83,7 @@ Dapr apps are also able to subscribe to raw events coming from existing pub/sub 
 
 <img src="/images/pubsub_subscribe_raw.png" alt="Diagram showing how to subscribe with Dapr when publisher does not use Dapr or CloudEvent" width=1000>
 
-
-### Programmatically subscribe to raw events 
+### Programmatically subscribe to raw events
 
 When subscribing programmatically, add the additional metadata entry for `rawPayload` so the Dapr sidecar automatically wraps the payloads into a CloudEvent that is compatible with current Dapr SDKs.
 
@@ -148,10 +147,25 @@ $app->start();
 
 {{< /tabs >}}
 
-
 ## Declaratively subscribe to raw events
 
-Subscription Custom Resources Definitions (CRDs) do not currently contain metadata attributes ([issue #3225](https://github.com/dapr/dapr/issues/3225)). At this time subscribing to raw events can only be done through programmatic subscriptions.
+Similarly, you can subscribe to raw events declaratively by adding the `rawPayload` metadata entry to your Subscription Custom Resource Definition (CRD):
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: myevent-subscription
+spec:
+  topic: deathStarStatus
+  route: /dsstatus
+  pubsubname: pubsub
+  metadata:
+    rawPayload: "true"
+scopes:
+- app1
+- app2
+```
 
 ## Related links
 

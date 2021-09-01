@@ -57,4 +57,4 @@ spec:
 {{< /tabs >}}
 
 ## Related links
-- [Dapr Kubernetes pod annotations spec]({{< ref kubernetes-annotations.md >}})
+- [Dapr Kubernetes pod annotations spec]({{< ref arguments-annotations-overview.md >}})

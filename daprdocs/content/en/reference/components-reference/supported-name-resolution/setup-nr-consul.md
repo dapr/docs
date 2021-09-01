@@ -97,7 +97,7 @@ spec:
       meta:
         DAPR_METRICS_PORT: "${DAPR_METRICS_PORT}"
         DAPR_PROFILE_PORT: "${DAPR_PROFILE_PORT}"
-      daprPortMetaKey: "DAPR_PORT"        
+      daprPortMetaKey: "DAPR_PORT"
       queryOptions:
         useCache: true
         filter: "Checks.ServiceTags contains dapr"

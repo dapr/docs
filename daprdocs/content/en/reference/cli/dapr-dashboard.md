@@ -23,6 +23,7 @@ dapr dashboard [flags]
 
 | Name | Environment Variable | Default | Description |
 |------|----------------------|---------|-------------|
+| `--address`, `-a`    | | `localhost`   | Address to listen on. Only accepts IP address or localhost as a value |
 | `--help`, `-h`       | |               | Prints this help message |
 | `--kubernetes`, `-k` | | `false`       | Opens Dapr dashboard in local browser via local proxy to Kubernetes cluster |
 | `--namespace`, `-n`  | | `dapr-system` | The namespace where Dapr dashboard is running |
@@ -44,6 +45,11 @@ dapr dashboard -p 9999
 ### Port forward to dashboard service running in Kubernetes
 ```bash
 dapr dashboard -k
+```
+
+### Port forward to dashboard service running in Kubernetes on all addresses on a specified port
+```bash
+dapr dashboard -k -p 9999 --address 0.0.0.0
 ```
 
 ### Port forward to dashboard service running in Kubernetes on a specified port

@@ -2,7 +2,7 @@
 type: docs
 title: "Developing Dapr applications with remote dev containers"
 linkTitle: "Remote dev containers"
-weight: 20000
+weight: 30000
 description:  "How to setup a remote dev container environment with Dapr"
 ---
 
@@ -28,4 +28,7 @@ Dapr has pre-built Docker remote containers for NodeJS and C#. You can pick the 
 
 #### Example
 Watch this [video](https://www.youtube.com/watch?v=D2dO4aGpHcg&t=120) on how to use the Dapr VS Code Remote Containers with your application.
+
+<div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/D2dO4aGpHcg?start=120" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

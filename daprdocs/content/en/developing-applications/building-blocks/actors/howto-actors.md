@@ -25,7 +25,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-actor-method" >}}) for more detai
 Actors can save state reliably using state management capability.
 You can interact with Dapr through HTTP/gRPC endpoints for state management.
 
-To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors. 
+To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors.
 
 ## Actor timers and reminders
 
@@ -77,7 +77,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
 
 ### Actor reminders
 
-Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actors runtime persists the information about the actors' reminders using Dapr actor state provider.
+Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actors runtime persists the information about the actors' reminders using Dapr actor state provider.
 
 You can create a persistent reminder for an actor by calling the Http/gRPC request to Dapr.
 
@@ -111,6 +111,36 @@ The following request body configures a reminder with a `dueTime` 15 seconds and
 }
 ```
 
+[ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) can also be used to specify `period`. The following request body configures a reminder with a `dueTime` 0 seconds an `period` of 15 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"P0Y0M0W0DT0H0M15S"
+}
+```
+The designators for zero are optional and the above `period` can be simplified to `PT15S`.
+ISO 8601 specifies multiple recurrence formats but only the duration format is currently supported.
+
+#### Reminders with repetitions
+
+When configured with ISO 8601 durations, the `period` column also allows to specify number of times a reminder can run. The following request body will create a reminder that will execute for 5 number of times with a period of 15 seconds.
+```json
+{
+  "dueTime":"0h0m0s0ms",
+  "period":"R5/PT15S"
+}
+```
+
+The number of repetitions i.e. the number of times the reminder is run should be a positive number.
+
+**Example**
+
+Watch this [video](https://www.youtube.com/watch?v=B_vkXqptpXY&t=1002s) for more information on using ISO 861 for Reminders
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/B_vkXqptpXY?start=1003" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
 #### Retrieve actor reminder
 
 You can retrieve the actor reminder by calling
@@ -139,6 +169,8 @@ You can configure the Dapr Actors runtime configuration to modify the default ru
 - `drainOngoingCallTimeout` - The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. **Default: 60 seconds**
 - `drainRebalancedActors` - If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
 - `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
+**Default: 0**
+- `remindersStoragePartitions` - Configure the number of partitions for actor's reminders. If not provided, all reminders are saved as a single record in actor's state store. **Default: 0**
 
 {{< tabs Java Dotnet Python >}}
 
@@ -152,6 +184,7 @@ ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(3
 ActorRuntime.getInstance().getConfig().setDrainOngoingCallTimeout(Duration.ofSeconds(60));
 ActorRuntime.getInstance().getConfig().setDrainBalancedActors(true);
 ActorRuntime.getInstance().getConfig().setActorReentrancyConfig(false, null);
+ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
 ```
 
 See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/actors/DemoActorService.java)
@@ -167,12 +200,13 @@ public void ConfigureServices(IServiceCollection services)
     {
         // Register actor types and configure actor settings
         options.Actors.RegisterActor<MyActor>();
-        
+
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
         options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
         options.DrainRebalancedActors = true;
+        options.RemindersStoragePartitions = 7;
         // reentrancy not implemented in the .NET SDK at this time
     });
 
@@ -194,7 +228,8 @@ ActorRuntime.set_actor_config(
         actor_scan_interval=timedelta(seconds=30),
         drain_ongoing_call_timeout=timedelta(minutes=1),
         drain_rebalanced_actors=True,
-        reentrancy=ActorReentrancyConfig(enabled=False)
+        reentrancy=ActorReentrancyConfig(enabled=False),
+        remindersStoragePartitions=7
     )
 )
 ```
@@ -203,3 +238,153 @@ ActorRuntime.set_actor_config(
 {{< /tabs >}}
 
 Refer to the documentation and examples of the [Dapr SDKs]({{< ref "developing-applications/sdks/#sdk-languages" >}}) for more details.
+
+## Partitioning reminders
+
+{{% alert title="Preview feature" color="warning" %}}
+Actor reminders partitioning is currently in [preview]({{< ref preview-features.md >}}). Use this feature if you are runnining into issues due to a high number of reminders registered.
+{{% /alert %}}
+
+Actor reminders are persisted and continue to be triggered after sidecar restarts. Prior to Dapr runtime version 1.3, reminders were persisted on a single record in the actor state store:
+
+| Key      | Value |
+| ----------- | ----------- |
+| `actors\|\|<actor type>` | `[ <reminder 1>, <reminder 2>, ... , <reminder n> ]` |
+
+Applications that register many reminders can experience the following issues:
+
+* Low throughput on reminders registration and deregistration
+* Limit on total number of reminders registered based on the single record size limit on the state store
+
+Since version 1.3, applications can now enable partitioning of actor reminders in the state store. As data is distributed in multiple keys in the state store. First, there is a metadata record in `actors\|\|<actor type>\|\|metadata` that is used to store persisted configuration for a given actor type. Then, there are multiple records that stores subsets of the reminders for the same actor type.
+
+| Key      | Value |
+| ----------- | ----------- |
+| `actors\|\|<actor type>\|\|metadata` | `{ "id": <actor metadata identifier>, "actorRemindersMetadata": { "partitionCount": <number of partitions for reminders> } }` |
+| `actors\|\|<actor type>\|\|<actor metadata identifier>\|\|reminders\|\|1` | `[ <reminder 1-1>, <reminder 1-2>, ... , <reminder 1-n> ]` |
+| `actors\|\|<actor type>\|\|<actor metadata identifier>\|\|reminders\|\|2` | `[ <reminder 1-1>, <reminder 1-2>, ... , <reminder 1-m> ]` |
+| ... | ... |
+
+If the number of partitions is not enough, it can be changed and Dapr's sidecar will automatically redistribute the reminders's set.
+
+### Enabling actor reminders partitioning
+Actor reminders partitioning is currently in preview, so enabling it is a two step process.
+
+#### Preview feature configuration
+Before using reminders partitioning, actor type metadata must be enabled in Dapr. For more information on preview configurations, see [the full guide on opting into preview features in Dapr]({{< ref preview-features.md >}}). Below is an example of the configuration:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: myconfig
+spec:
+  features:
+    - name: Actor.TypeMetadata
+      enabled: true
+```
+
+#### Actor runtime configuration
+Once actor type metadata is enabled as an opt-in preview feature, the actor runtime must also provide the appropriate configuration to partition actor reminders. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
+
+{{< tabs Java Dotnet Python Go >}}
+
+{{% codetab %}}
+```java
+// import io.dapr.actors.runtime.ActorRuntime;
+// import java.time.Duration;
+
+ActorRuntime.getInstance().getConfig().setActorIdleTimeout(Duration.ofMinutes(60));
+ActorRuntime.getInstance().getConfig().setActorScanInterval(Duration.ofSeconds(30));
+ActorRuntime.getInstance().getConfig().setRemindersStoragePartitions(7);
+```
+
+See [this example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/actors/DemoActorService.java)
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+// In Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register actor runtime with DI
+    services.AddActors(options =>
+    {
+        // Register actor types and configure actor settings
+        options.Actors.RegisterActor<MyActor>();
+
+        // Configure default settings
+        options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
+        options.ActorScanInterval = TimeSpan.FromSeconds(30);
+        options.RemindersStoragePartitions = 7;
+        // reentrancy not implemented in the .NET SDK at this time
+    });
+
+    // Register additional services for use with actors
+    services.AddSingleton<BankService>();
+}
+```
+See the .NET SDK [documentation](https://github.com/dapr/dotnet-sdk/blob/master/daprdocs/content/en/dotnet-sdk-docs/dotnet-actors/dotnet-actors-usage.md#registering-actors).
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+from datetime import timedelta
+
+ActorRuntime.set_actor_config(
+    ActorRuntimeConfig(
+        actor_idle_timeout=timedelta(hours=1),
+        actor_scan_interval=timedelta(seconds=30),
+        remindersStoragePartitions=7
+    )
+)
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```go
+type daprConfig struct {
+	Entities                   []string `json:"entities,omitempty"`
+	ActorIdleTimeout           string   `json:"actorIdleTimeout,omitempty"`
+	ActorScanInterval          string   `json:"actorScanInterval,omitempty"`
+	DrainOngoingCallTimeout    string   `json:"drainOngoingCallTimeout,omitempty"`
+	DrainRebalancedActors      bool     `json:"drainRebalancedActors,omitempty"`
+	RemindersStoragePartitions int      `json:"remindersStoragePartitions,omitempty"`
+}
+
+var daprConfigResponse = daprConfig{
+	[]string{defaultActorType},
+	actorIdleTimeout,
+	actorScanInterval,
+	drainOngoingCallTimeout,
+	drainRebalancedActors,
+	7,
+}
+
+func configHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(daprConfigResponse)
+}
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+The following, is an example of a valid configuration for reminder partitioning:
+
+```json
+{
+	"entities": [ "MyActorType", "AnotherActorType" ],
+	"remindersStoragePartitions": 7
+}
+```
+
+#### Handling configuration changes
+For production scenarios, there are some points to be considered before enabling this feature:
+
+* Enabling actor type metadata can only be reverted if the number of partitions remains zero, otherwise the reminders' set will be reverted to an previous state.
+* Number of partitions can only be increased and not decreased. This allows Dapr to automatically redistribute the data on a rolling restart where one or more partition configurations might be active.
+
+#### Demo
+* [Actor reminder partitioning community call video](https://youtu.be/ZwFOEUYe1WA?t=1493)

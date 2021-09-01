@@ -83,7 +83,7 @@ Connection establishment via gRPC to the target sidecar has a timeout of 5 secon
 
 ### Pluggable service discovery
 
-Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment including Kubernetes or self-hosted.  
+Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment including Kubernetes or self-hosted.
 
 ### Round robin load balancing with mDNS
 
@@ -102,6 +102,10 @@ By default, all calls between applications are traced and metrics are gathered t
 ### Service invocation API
 
 The API for service invocation can be found in the [service invocation API reference]({{< ref service_invocation_api.md >}}) which describes how to invoke a method on another service.
+
+### gRPC proxying
+
+Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 
 ## Example
 
@@ -124,6 +128,7 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 - Follow these guides on:
   - [How-to: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}})
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
+  - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}})
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers

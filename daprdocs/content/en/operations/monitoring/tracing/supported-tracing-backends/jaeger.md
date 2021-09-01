@@ -7,16 +7,13 @@ description: "Set up Jaeger for distributed tracing"
 type: docs
 ---
 
-Dapr currently supports the Zipkin protocol. Since Jaeger is
-compatible with Zipkin, the Zipkin protocol can be used to talk to
-Jaeger.
+Dapr supports the Zipkin protocol. Since Jaeger is compatible with Zipkin, the Zipkin protocol can be used to communication with Jaeger.
 
 ## Configure self hosted mode
 
 ### Setup
 
-The simplest way to start Jaeger is to use the pre-built all-in-one
-Jaeger image published to DockerHub:
+The simplest way to start Jaeger is to use the pre-built all-in-one Jaeger image published to DockerHub:
 
 ```bash
 docker run -d --name jaeger \
@@ -55,15 +52,19 @@ dapr run --app-id mynode --app-port 3000 node app.js --config config.yaml
 ```
 
 ### Viewing Traces
-To view traces, in your browser go to http://localhost:16686 and you will see the Jaeger UI.
+To view traces, in your browser go to http://localhost:16686 to see the Jaeger UI.
 
 ## Configure Kubernetes
 The following steps shows you how to configure Dapr to send distributed tracing data to Jaeger running as a container in your Kubernetes cluster, how to view them.
 
 ### Setup
 
-First create the following YAML file to install Jaeger
-* jaeger-operator.yaml
+First create the following YAML file to install Jaeger, file name is `jaeger-operator.yaml`
+
+#### Development and test
+
+By default, the allInOne Jaeger image uses memory as the backend storage and it is not recommended to use this in a production environment.
+
 ```yaml
 apiVersion: jaegertracing.io/v1
 kind: "Jaeger"
@@ -80,7 +81,54 @@ spec:
         base-path: /jaeger
 ```
 
+#### Production
+
+Jaeger uses Elasticsearch as the backend storage, and you can create a secret in k8s cluster to access Elasticsearch server with access control. See [Configuring and Deploying Jaeger](https://docs.openshift.com/container-platform/4.7/jaeger/jaeger_install/rhbjaeger-deploying.html)
+
+```shell
+kubectl create secret generic jaeger-secret --from-literal=ES_PASSWORD='xxx' --from-literal=ES_USERNAME='xxx' -n ${NAMESPACE}
+```
+
+```yaml
+apiVersion: jaegertracing.io/v1
+kind: "Jaeger"
+metadata:
+  name: jaeger
+spec:
+  strategy: production
+  query:
+    options:
+      log-level: info
+      query:
+        base-path: /jaeger
+  collector:
+    maxReplicas: 5
+    resources:
+      limits:
+        cpu: 500m
+        memory: 516Mi
+  storage:
+    type: elasticsearch
+    esIndexCleaner:
+      enabled: false                                ## turn the job deployment on and off
+      numberOfDays: 7                               ## number of days to wait before deleting a record
+      schedule: "55 23 * * *"                       ## cron expression for it to run
+      image: jaegertracing/jaeger-es-index-cleaner  ## image of the job
+    secretName: jaeger-secret
+    options:
+      es:
+        server-urls: http://elasticsearch:9200
+```
+
+The pictures are as follows, include Elasticsearch and Grafana tracing data:
+
+![jaeger-storage-es](/images/jaeger_storage_elasticsearch.png)
+
+![grafana](/images/jaeger_grafana.png)
+
+
 Now, use the above YAML file to install Jaeger
+
 ```bash
 # Install Jaeger
 helm repo add jaegertracing https://jaegertracing.github.io/helm-charts

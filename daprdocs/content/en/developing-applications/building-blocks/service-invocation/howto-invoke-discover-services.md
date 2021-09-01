@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Invoke services using HTTP"
-linkTitle: "How-To: Invoke services"
+linkTitle: "How-To: Invoke with HTTP"
 description: "Call between services using service invocation"
 weight: 2000
 ---
@@ -18,13 +18,13 @@ Dapr allows you to assign a global, unique ID for your app. This ID encapsulates
 In self hosted mode, set the `--app-id` flag:
 
 ```bash
-dapr run --app-id cart --app-port 5000 python app.py
+dapr run --app-id cart --dapr-http-port 3500 --app-port 5000 python app.py
 ```
 
 If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
 
 ```bash
-dapr run --app-id cart --app-port 5000 --app-ssl python app.py
+dapr run --app-id cart --dapr-http-port 3500 --app-port 5000 --app-ssl python app.py
 ```
 {{% /codetab %}}
 
@@ -57,7 +57,7 @@ spec:
         dapr.io/app-port: "5000"
 ...
 ```
-*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref kubernetes-annotations.md >}}))*
+*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}}))*
 
 {{% /codetab %}}
 
