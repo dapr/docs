@@ -24,15 +24,51 @@ spec:
     value: "localhost:6650"
   - name: enableTLS
     value: "false"
-
 ```
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"`
+| host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"`|
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`
 
+
+### Delay queue
+
+When invoking the Pulsar pub/sub, its possible to provide an optional delay queue by using the `metadata` query param in the request url.
+
+These param names are `deliverAt` or `deliverAfter`.
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| deliverAt | N | delay queue configuration param. Default is empty | `"2021-09-01 10:00:00"`|
+| deliverAfter | N | delay queue configuration param. Default is empty | `"4h5m3s"`|
+
+Example:
+
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAt='2021-09-01 10:00:00' \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
+Or 
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAfter='4h5m3s' \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
 
 ## Create a Pulsar instance
 
