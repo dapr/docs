@@ -31,7 +31,7 @@ spec:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"`|
-| enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`
+| enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`|
 
 
 ### Delay queue
