@@ -42,14 +42,14 @@ These param names are `deliverAt` or `deliverAfter`.
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| deliverAt | N | delay queue configuration param. Default is empty | `"2021-09-01 10:00:00"`|
+| deliverAt | N | delay queue configuration param. use time RFC3339, Default is empty | `"2021-09-01T10:00:00Z"`|
 | deliverAfter | N | delay queue configuration param. Default is empty | `"4h5m3s"`|
 
 Example:
 
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAt='2021-09-01 10:00:00' \
+curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAt='2021-09-01T10:00:00Z' \
   -H "Content-Type: application/json" \
   -d '{
         "data": {
