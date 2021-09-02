@@ -114,7 +114,7 @@ Dapr puts any payload returned by the called service in the HTTP response's body
 
 ### Additional URL formats
 
-In order to avoid changing URL paths as much as possible, Dapr provides the following ways to call the Service Invocation API:
+In order to avoid changing URL paths as much as possible, Dapr provides the following ways to call the service invocation API:
 
 
 1. Change the address in the URL to `localhost:<dapr-http-port>`.
