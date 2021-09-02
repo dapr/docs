@@ -9,7 +9,7 @@ description: "Automatically encrypt state and manage key rotations"
 
 ## Introduction
 
-Application state often needs to get encrypted at rest to provide stonger security in enterprise workloads or regulated environments. Dapr offers automatic client side encryption based on an [AES256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
+Application state often needs to get encrypted at rest to provide stonger security in enterprise workloads or regulated environments. Dapr offers automatic client side encryption based on [AES256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
 
 In addition to automatic encryption, Dapr supports primary and secondary encryption keys to make it easier for developers and ops teams to enable a key rotation strategy.
 This feature is supported by all Dapr state stores.
