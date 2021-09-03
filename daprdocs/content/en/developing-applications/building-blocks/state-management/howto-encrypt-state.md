@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Encrypt application state"
-linkTitle: "How-To: Encrypt application state"
+linkTitle: "How-To: Encrypt state"
 weight: 450
 description: "Automatically encrypt state and manage key rotations"
 
