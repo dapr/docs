@@ -18,7 +18,7 @@ The encryption keys are fetched from a secret, and cannot be supplied as plainte
 
 ## Enabling automatic encryption
 
-1. enable the state encryption preview feature using a standard Dapr Configuration:
+1. Enable the state encryption preview feature using a standard [Dapr Configuration]({{< ref configuration-overview.md >}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
