@@ -190,6 +190,10 @@ url_latest_version = "https://docs.dapr.io"
 sidebar_menu_compact = true
 navbar_logo = true
 sidebar_search_disable = true
+[params.ui.feedback]
+enable = true
+yes = '<b>Glad to hear it!</b> Please <a href="https://github.com/dapr/docs/issues/new/choose">tell us how we can improve</a>.'
+no = '<b>Sorry to hear that.</b> Please <a href="https://github.com/dapr/docs/issues/new/choose">tell us how we can improve</a>.'
 
 # Links
 ## End user relevant links. These will show up on left side of footer and in the community page if you have one.
