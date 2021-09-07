@@ -9,16 +9,21 @@ type: docs
 
 You can read [guidance on setting up secret store components]({{< ref setup-secret-store >}}) to configure a secret store for an application. Once configured, by default *any* secret defined within that store is accessible from the Dapr application.
 
-To limit the secrets to which the Dapr application has access to, you can can define secret scopes by adding a secret scope policy to the application configuration with restrictive permissions. Follow [these instructions]({{< ref configuration-concept.md >}}) to define an application configuration.
+To limit the secrets to which the Dapr application has access to, you can define secret scopes by adding a secret scope policy to the application configuration with restrictive permissions. Follow [these instructions]({{< ref configuration-concept.md >}}) to define an application configuration.
 
 The secret scoping policy applies to any [secret store]({{< ref supported-secret-stores.md >}}), whether that is a local secret store, a Kubernetes secret store or a public cloud secret store. For details on how to set up a [secret stores]({{< ref setup-secret-store.md >}}) read [How To: Retrieve a secret]({{< ref howto-secrets.md >}})
 
 Watch this [video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to use secret scoping with your application.
+
+<div class="embed-responsive embed-responsive-16by9">
 <iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=2272" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ## Scenario 1 : Deny access to all secrets for a secret store
 
-This example uses Kubernetes. The native Kubernetes secret store is added to you Dapr application by default. In some scenarios it may be necessary to deny access to Dapr secrets for a given application. To add this configuration follow the steps below:
+In this example all secret access is denied to an application running on a Kubernetes cluster which has a configured [Kubernetes secret store]({{<ref kubernetes-secret-store>}}) named `mycustomsecretstore`. In the case of Kubernetes, aside from the user defined custom store, the default store named `kubernetes` is also addressed to ensure all secrets are denied access (See [here]({{<ref "kubernetes-secret-store.md#default-kubernetes-secret-store-component">}}) to learn more about the Kubernetes default secret store).
+
+To add this configuration follow the steps below:
 
 Define the following `appconfig.yaml` configuration and apply it to the Kubernetes cluster using the command `kubectl apply -f appconfig.yaml`.
 
@@ -31,6 +36,8 @@ spec:
   secrets:
     scopes:
       - storeName: kubernetes
+        defaultAccess: deny
+      - storeName: mycustomsecreststore
         defaultAccess: deny
 ```
 

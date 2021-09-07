@@ -21,7 +21,7 @@ To enable profiling in Standalone mode, pass the `--enable-profiling` and the `-
 Note that `profile-port` is not required, and if not provided Dapr will pick an available port.
 
 ```bash
-dapr run --enable-profiling true --profile-port 7777 python myapp.py
+dapr run --enable-profiling --profile-port 7777 python myapp.py
 ```
 
 ### Kubernetes

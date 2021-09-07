@@ -6,7 +6,7 @@ weight: 1000
 description: "Use Dapr tracing to get visibility for distributed application"
 ---
 
-Dapr uses the Zipkin protocol for distributed traces and metrics collection. Due to the ubiquity of the Zipkin protocol, many backends are supported out of the box, for examples [Stackdriver](https://cloud.google.com/stackdriver), [Zipkin](https://zipkin.io), [New Relic](https://newrelic.com) and others. Combining with the OpenTelemetry Collector, Dapr can export traces to many other backends including but not limted to [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor/), [Datadog](https://www.datadoghq.com), [Instana](https://www.instana.com), [Jaeger](https://www.jaegertracing.io/), and [SignalFX](https://www.signalfx.com/).
+Dapr uses the Zipkin protocol for distributed traces and metrics collection. Due to the ubiquity of the Zipkin protocol, many backends are supported out of the box, for examples [Stackdriver](https://cloud.google.com/stackdriver), [Zipkin](https://zipkin.io), [New Relic](https://newrelic.com) and others. Combining with the OpenTelemetry Collector, Dapr can export traces to many other backends including but not limted to [Azure Monitor](https://azure.microsoft.com/en-us/services/monitor/), [Datadog](https://www.datadoghq.com), Instana, [Jaeger](https://www.jaegertracing.io/), and [SignalFX](https://www.signalfx.com/).
 
 <img src="/images/tracing.png" width=600>
 

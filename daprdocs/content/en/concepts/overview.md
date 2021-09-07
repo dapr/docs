@@ -9,7 +9,9 @@ description: >
 
 Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks.
 
-<iframe width="1120" height="630" src="https://www.youtube.com/embed/9o9iDAgYBA8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe width="1120" height="630" src="https://www.youtube.com/embed/9o9iDAgYBA8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ## Any language, any framework, anywhere
 
@@ -98,7 +100,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | Language | Frameworks | Description |
 |----------|------------|-------------|
 | [.NET]({{< ref dotnet >}}) | [ASP.NET]({{< ref dotnet-aspnet.md >}}) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/en-us/aspnet/core/grpc/).
-| [Java](https://github.com/dapr/java-sdk) | [Spring Boot](https://spring.io/)
+| [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/)
 | [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}})
 | [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/)
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.

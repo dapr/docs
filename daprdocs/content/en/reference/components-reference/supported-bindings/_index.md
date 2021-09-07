@@ -57,6 +57,7 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| ------ |----------|
 | [AWS DynamoDB]({{< ref dynamodb.md >}}) |    | ✅ | Alpha | v1 | 1.0 |
 | [AWS S3]({{< ref s3.md >}})             |    | ✅ | Alpha | v1 | 1.0 |
+| [AWS SES]({{< ref ses.md >}})           |    | ✅ | Alpha | v1 | 1.4 |
 | [AWS SNS]({{< ref sns.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 | [AWS SQS]({{< ref sqs.md >}})           | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [AWS Kinesis]({{< ref kinesis.md >}})   | ✅ | ✅ | Alpha | v1 | 1.0 |
@@ -82,7 +83,7 @@ Table captions:
 
 ### Zeebe (Camunda Cloud)
 
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since | 
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Zeebe Command]({{< ref zeebe-command.md >}})            |    | ✅ | Alpha | v1 | 1.2 |
 | [Zeebe Job Worker]({{< ref zeebe-jobworker.md >}})       | ✅ |    | Alpha | v1 | 1.2 |
