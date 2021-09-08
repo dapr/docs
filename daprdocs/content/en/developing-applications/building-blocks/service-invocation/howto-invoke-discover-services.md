@@ -111,6 +111,32 @@ curl http://localhost:3500/v1.0/invoke/cart/method/add -X DELETE
 ```
 
 Dapr puts any payload returned by the called service in the HTTP response's body.
+
+### Additional URL formats
+
+In order to avoid changing URL paths as much as possible, Dapr provides the following ways to call the service invocation API:
+
+
+1. Change the address in the URL to `localhost:<dapr-http-port>`.
+2. Add a `dapr-app-id` header to specify the ID of the target service, or alternatively pass the ID via HTTP Basic Auth: `http://dapr-app-id:<service-id>@localhost:3500/path`.
+
+For example, the following command
+```bash
+curl http://localhost:3500/v1.0/invoke/cart/method/add
+```
+
+is equivalent to:
+
+```bash
+curl -H 'dapr-app-id: cart' 'http://localhost:3500/add' -X POST
+```
+
+or:
+
+```bash
+curl 'http://dapr-app-id:cart@localhost:3500/add' -X POST
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}
