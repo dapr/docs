@@ -150,7 +150,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
       azureIdentity: [your managed identity name]
       selector: [your managed identity selector]
     ```
-    where the value `resourceID: [your managed identity id]` is the fully qualified ID of the managed identity. It can be retrieved by running 
+    where the value `resourceID: [your managed identity id]` is the fully qualified resource ID of the managed identity. It can be retrieved by running 
     ```
     az identity show -g [your resource group] -n [managed identity name] --query id
     ```
