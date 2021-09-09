@@ -30,6 +30,6 @@ description: "Follow these steps to upgrade Dapr in self-hosted mode and ensure 
    ```bash
    $ dapr --version
 
-   CLI version: {{% dapr-latest-version %}}
-   Runtime version: {{% dapr-latest-version %}}
+   CLI version: {{% dapr-latest-version version="short" %}}
+   Runtime version: {{% dapr-latest-version version="short" %}}
    ```
