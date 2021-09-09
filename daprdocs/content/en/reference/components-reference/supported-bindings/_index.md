@@ -50,6 +50,7 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| ------ |----------|
 | [Alibaba Cloud DingTalk]({{< ref alicloud-dingtalk.md >}})           |  ✅ | ✅ | Alpha | v1 | 1.2 |
 | [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
+| [Alibaba Cloud Tablestore]({{< ref alicloudtablestore.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 
 ### Amazon Web Services (AWS)
 
