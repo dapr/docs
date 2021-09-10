@@ -15,6 +15,7 @@ The [Dapr Quickstarts](https://github.com/dapr/quickstarts/tree/v1.0.0) are a co
 
 ## Quickstarts
 
+<!-- IGNORE_LINKS -->
 | Quickstart               | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Hello World](https://github.com/dapr/quickstarts/tree/v{{% dapr-latest-version %}}/hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
@@ -25,3 +26,4 @@ The [Dapr Quickstarts](https://github.com/dapr/quickstarts/tree/v1.0.0) are a co
 | [Middleware](https://github.com/dapr/quickstarts/tree/v{{% dapr-latest-version %}}/middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 | [Observability](https://github.com/dapr/quickstarts/tree/v{{% dapr-latest-version %}}/observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [Secret Store](https://github.com/dapr/quickstarts/tree/v{{% dapr-latest-version %}}/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
+<!-- END_IGNORE -->

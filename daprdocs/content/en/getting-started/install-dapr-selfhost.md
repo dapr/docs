@@ -52,8 +52,8 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: {{% dapr-latest-version %}}
-Runtime version: {{% dapr-latest-version %}}
+CLI version: {{% dapr-latest-version long="true" %}}
+Runtime version: {{% dapr-latest-version long="true" %}}
 ```
 
 ### Step 4: Verify containers are running

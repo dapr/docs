@@ -1,5 +1,1 @@
-{{ if .Get "version" }}
-1.4
-{{ else }}
-1.4.0
-{{ end }}
+{{ if .Get "short" }}1.4{{ else if .Get "long" }}1.4.0{{ else }}1.4.0{{ end }}
