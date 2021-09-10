@@ -78,7 +78,26 @@ For backwards-compatibility reasons, the following values in the metadata are su
 
 ## Generating a new Azure AD application (Service Principal)
 
-To start, create a new Azure AD application which we'll use as Service Principal. The following lines require the [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli), [jq](https://stedolan.github.io/jq/download/), and OpenSSL (included by default on all Linux and macOS systems), and are optimized for a bash or zsh shell.
+To start, create a new Azure AD application which we'll use as Service Principal.
+
+Prerequisites:
+
+- [Azure Subscription](https://azure.microsoft.com/free/)
+- [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
+- [jq](https://stedolan.github.io/jq/download/)
+- OpenSSL (included by default on all Linux and macOS systems, as well as on WSL)
+- The scripts below are optimized for a bash or zsh shell
+
+> If you haven't already, log in to Azure first using the Azure CLI:
+>
+> ```sh
+> # Log in Azure
+> az login
+> # Set your default subscription
+> az account set -s [your subscription id]
+> ```
+
+First, create the Azure AD application with:
 
 ```sh
 # Friendly name for the application / Service Principal
@@ -91,6 +110,10 @@ APP_ID=$(az ad app create \
   --oauth2-allow-implicit-flow false \
   | jq -r .appId)
 ```
+
+{{< tabs "Client secret" "Certificate">}}
+
+{{% codetab %}}
 
 To create a **client secret**, then run this command. This will generate a random password based on the base64 charset and 40-characters long. Additionally, it will make the password valid for 2 years, before it will need to be rotated:
 
@@ -118,7 +141,10 @@ Take note of the values above, which you'll need to use in your Dapr components'
 - `password` is the value for `azureClientSecret` (this was randomly-generated)
 - `tenant` is the value for `azureTenantId`
 
-If you'd rather use a **PFX certificate**, instead of the command above run this one which will create a self-signed certificate:
+{{% /codetab %}}
+
+{{% codetab %}}
+If you'd rather use a **PFX certificate**, run this command which will create a self-signed certificate:
 
 ```sh
 az ad app credential reset \
@@ -147,7 +173,31 @@ Take note of the values above, which you'll need to use in your Dapr components'
 - The self-signed PFX certificate and private key are written in the file at the path specified in `fileWithCertAndPrivateKey`.  
   Use the contents of that file as `azureCertificate` (or write it to a file on the server and use `azureCertificateFile`)
 
-Note that the Service Principal we just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Once you have created an Azure AD application, we need to create a Service Principal for that application, which will allow us to grant it access to Azure resources. Run:
+
+```sh
+SERVICE_PRINCIPAL_ID=$(az ad sp create \
+  --id $APP_ID \
+  | jq -r .objectId)
+echo "Service Principal ID: ${SERVICE_PRINCIPAL_ID}"
+```
+
+The output will be similar to:
+
+```text
+Service Principal ID: 1d0ccf05-5427-4b5e-8eb4-005ac5f9f163
+```
+
+Note that the value above is the ID of the **Service Principal** which is different from the ID of application in Azure AD (client ID)! The former is defined within an Azure tenant and is used to grant access to Azure resources to an application. The client ID instead is used by your application to authenticate. To sum things up:
+
+- You'll use the client ID in Dapr manifests to configure authentication with Azure services
+- You'll use the Service Principal ID to grant permissions to an application to access Azure resources
+
+Keep in mind that the Service Principal we just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
 
 > Note: this step is different from the [official documentation](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) as the short-hand commands create a Service Principal that has broad read-write access to all Azure resources in your subscription. Not only this grants our application more access than you are likely going to desire, but this also applies only to the Azure management plane (Azure Resource Manager, or ARM), which is irrelevant for Dapr anyways (all Azure components are designed to interact with the data plane of various services, and not ARM).
 
