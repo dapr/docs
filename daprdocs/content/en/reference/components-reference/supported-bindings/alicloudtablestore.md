@@ -114,7 +114,7 @@ To perform a list objects operation, invoke the binding with a `POST` method and
 
 {{% alert title="Note" color="primary" %}}
 Note the `metadata.primaryKeys` field is mandatory.
-{{% /alert %}
+{{% /alert %}}
 
 ### Get object
 
@@ -134,7 +134,7 @@ To perform a get object operation, invoke the binding with a `POST` method and t
 
 {{% alert title="Note" color="primary" %}}
 Note the `metadata.primaryKeys` field is mandatory.
-{{% /alert %}
+{{% /alert %}}
 
 ## Related links
 
