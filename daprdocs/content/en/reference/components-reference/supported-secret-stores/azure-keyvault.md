@@ -106,7 +106,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
 
   ```sh
   az role assignment create \
-    --assignee "${APP_ID}" \
+    --assignee "${SERVICE_PRINCIPAL_ID}" \
     --role "Key Vault Crypto Officer" \
     --scope "${RG_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
   ```
