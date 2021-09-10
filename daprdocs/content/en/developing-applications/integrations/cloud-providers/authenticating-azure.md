@@ -20,7 +20,7 @@ Some Azure components offer alternative authentication methods, such as systems 
 
 Azure AD is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services.
 
-Azure AD is based on the OAuth 2.0 standard, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Key Vault, Cosmos DB, etc. In the Azure terminology, an application is also called a "Service Principal".
+Azure AD is built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Key Vault, Cosmos DB, etc. In the Azure terminology, an application is also called a "Service Principal".
 
 Many of the services listed above also support authentication using other systems, such as "master keys" or "shared keys". Although those are always valid methods to authenticate your application (and Dapr continues to support them, as explained in each component's reference page), using Azure AD when possible offers various benefits, including:
 
