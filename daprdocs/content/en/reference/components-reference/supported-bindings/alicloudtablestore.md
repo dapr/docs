@@ -92,7 +92,7 @@ To perform a delete object operation, invoke the binding with a `POST` method an
 
 {{% alert title="Note" color="primary" %}}
 Note the `metadata.primaryKeys` field is mandatory.
-{{% /alert %}
+{{% /alert %}}
 
 ### List objects
 
