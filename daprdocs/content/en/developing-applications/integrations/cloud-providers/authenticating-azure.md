@@ -2,7 +2,7 @@
 type: docs
 title: "Authenticating to Azure"
 linkTitle: "Authenticating to Azure"
-description: "How to authenticate Azure components using Azure AD and Managed Identities"
+description: "How to authenticate Azure components using Azure AD and/or Managed Identities"
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault-managed-identity/"
   - "/reference/components-reference/supported-secret-stores/azure-keyvault-managed-identity/"
@@ -24,14 +24,15 @@ Azure AD is built on top of open standards such OAuth 2.0, which allows services
 
 Many of the services listed above also support authentication using other systems, such as "master keys" or "shared keys". Although those are always valid methods to authenticate your application (and Dapr continues to support them, as explained in each component's reference page), using Azure AD when possible offers various benefits, including:
 
-- The ability to leverage Managed Service Identities, which allow your application to authenticate with Azure AD, and obtain an access token to make requests to Azure services, without the need to use any credential. When your application is running on a supported Azure service (including, but not limited to, Azure VMs, Azure Kubernetes Service, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level. This way, your code does not have to deal with credentials of any kind, removing the challenge of safely managing credentials, allowing greater separation of concerns between development and operations teams and reducing the number of people with access to credentials, and lastly simplifying operational aspects–especially when multiple environments are used.
+- The ability to leverage Managed Service Identities, which allow your application to authenticate with Azure AD, and obtain an access token to make requests to Azure services, without the need to use any credential. When your application is running on a supported Azure service (including, but not limited to, Azure VMs, Azure Kubernetes Service, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.  
+  This way, your code does not have to deal with credentials of any kind, removing the challenge of safely managing credentials, allowing greater separation of concerns between development and operations teams and reducing the number of people with access to credentials, and lastly simplifying operational aspects–especially when multiple environments are used.
 - Using RBAC (Role-Based Access Control) with supported services (such as Azure Storage and Cosmos DB), permissions given to an application can be fine-tuned, for example allowing restricting access to a subset of data or making it read-only.
 - Better auditing for access.
 - Ability to authenticate using certificates (optional).
 
-## Credentials
+## Credentials metadata fields
 
-To authenticate with Azure AD, you will need to add the following credentials as values in the metadata for your Dapr component (read the next section on how to create them). There are multiple options depending on the way you have chosen to pass the credentials to your Dapr service.
+To authenticate with Azure AD, you will need to add the following credentials as values in the metadata for your Dapr component (read the next section for how to create them). There are multiple options depending on the way you have chosen to pass the credentials to your Dapr service.
 
 **Authenticating using client credentials:**
 
@@ -49,8 +50,8 @@ When running on Kubernetes, you can also use references to Kubernetes secrets fo
 |--------|--------|--------|--------|
 | `azureTenantId` | Y | ID of the Azure AD tenant | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"` |
 | `azureClientId` | Y | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
-| `azureCertificate` | One of `azureCertificate` and `azureCertificateFile` | Certificate and private key | `"-----BEGIN PRIVATE KEY-----\n MIIEvgI... \n -----END PRIVATE KEY----- \n -----BEGIN CERTIFICATE----- \n MIICoTC... \n -----END CERTIFICATE-----` |
-| `azureCertificateFile` | One of `azureCertificate` and `azureCertificateFile` | Path to the PFX file containing the certificate and private key | `"/path/to/file.pem"` |
+| `azureCertificate` | One of `azureCertificate` and `azureCertificateFile` | Certificate and private key (in PFX/PKCS#12 format) | `"-----BEGIN PRIVATE KEY-----\n MIIEvgI... \n -----END PRIVATE KEY----- \n -----BEGIN CERTIFICATE----- \n MIICoTC... \n -----END CERTIFICATE-----` |
+| `azureCertificateFile` | One of `azureCertificate` and `azureCertificateFile` | Path to the PFX/PKCS#12 file containing the certificate and private key | `"/path/to/file.pem"` |
 | `azureCertificatePassword` | N | Password for the certificate if encrypted | `"password"` |
 
 When running on Kubernetes, you can also use references to Kubernetes secrets for any or all of the values above.
@@ -76,9 +77,9 @@ For backwards-compatibility reasons, the following values in the metadata are su
 | `azureCertificateFile`     | `spnCertificateFile`               |
 | `azureCertificatePassword` | `spnCertificatePassword`           |
 
-## Generating a new Azure AD application (Service Principal)
+## Generating a new Azure AD application and Service Principal
 
-To start, create a new Azure AD application which we'll use as Service Principal.
+To start, create a new Azure AD application which we'll use as Service Principal too.
 
 Prerequisites:
 
@@ -88,7 +89,7 @@ Prerequisites:
 - OpenSSL (included by default on all Linux and macOS systems, as well as on WSL)
 - The scripts below are optimized for a bash or zsh shell
 
-> If you haven't already, log in to Azure first using the Azure CLI:
+> If you haven't already, start by logging in to Azure using the Azure CLI:
 >
 > ```sh
 > # Log in Azure
@@ -96,6 +97,8 @@ Prerequisites:
 > # Set your default subscription
 > az account set -s [your subscription id]
 > ```
+
+### Creating an Azure AD application
 
 First, create the Azure AD application with:
 
@@ -105,7 +108,7 @@ APP_NAME="dapr-application"
 
 # Create the app
 APP_ID=$(az ad app create \
-  --display-name $APP_NAME \
+  --display-name "${APP_NAME}" \
   --available-to-other-tenants false \
   --oauth2-allow-implicit-flow false \
   | jq -r .appId)
@@ -119,7 +122,7 @@ To create a **client secret**, then run this command. This will generate a rando
 
 ```sh
 az ad app credential reset \
-  --id $APP_ID \
+  --id "${APP_ID}" \
   --years 2 \
   --password $(openssl rand -base64 30)
 ```
@@ -135,7 +138,7 @@ The ouput of the command above will be similar to this:
 }
 ```
 
-Take note of the values above, which you'll need to use in your Dapr components' metadata:
+Take note of the values above, which you'll need to use in your Dapr components' metadata, to allow Dapr to authenticate with Azure:
 
 - `appId` is the value for `azureClientId`
 - `password` is the value for `azureClientSecret` (this was randomly-generated)
@@ -144,11 +147,11 @@ Take note of the values above, which you'll need to use in your Dapr components'
 {{% /codetab %}}
 
 {{% codetab %}}
-If you'd rather use a **PFX certificate**, run this command which will create a self-signed certificate:
+If you'd rather use a **PFX (PKCS#12) certificate**, run this command which will create a self-signed certificate:
 
 ```sh
 az ad app credential reset \
-  --id $APP_ID \
+  --id "${APP_ID}" \
   --create-cert
 ```
 
@@ -173,15 +176,19 @@ Take note of the values above, which you'll need to use in your Dapr components'
 - The self-signed PFX certificate and private key are written in the file at the path specified in `fileWithCertAndPrivateKey`.  
   Use the contents of that file as `azureCertificate` (or write it to a file on the server and use `azureCertificateFile`)
 
+> While the generated file has the `.pem` extension, it contains a certificate and private key encoded as PFX (PKCS#12).
+
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+### Creating a Service Principal
 
 Once you have created an Azure AD application, we need to create a Service Principal for that application, which will allow us to grant it access to Azure resources. Run:
 
 ```sh
 SERVICE_PRINCIPAL_ID=$(az ad sp create \
-  --id $APP_ID \
+  --id "${APP_ID}" \
   | jq -r .objectId)
 echo "Service Principal ID: ${SERVICE_PRINCIPAL_ID}"
 ```
@@ -199,7 +206,8 @@ Note that the value above is the ID of the **Service Principal** which is differ
 
 Keep in mind that the Service Principal we just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
 
-> Note: this step is different from the [official documentation](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) as the short-hand commands create a Service Principal that has broad read-write access to all Azure resources in your subscription. Not only this grants our application more access than you are likely going to desire, but this also applies only to the Azure management plane (Azure Resource Manager, or ARM), which is irrelevant for Dapr anyways (all Azure components are designed to interact with the data plane of various services, and not ARM).
+> Note: this step is different from the [official documentation](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) as the short-hand commands included there create a Service Principal that has broad read-write access to all Azure resources in your subscription.  
+> Not only doing that would grant our Service Principal more access than you are likely going to desire, but this also applies only to the Azure management plane (Azure Resource Manager, or ARM), which is irrelevant for Dapr anyways (all Azure components are designed to interact with the data plane of various services, and not ARM).
 
 ### Example usage in a Dapr component
 
@@ -262,7 +270,7 @@ To use a **client secret**:
 1. Create a Kubernetes secret using the following command:
 
    ```bash
-   kubectl create secret generic [your_k8s_secret_name] --from-file=[your_k8s_secret_key]=[your_client_secret]
+   kubectl create secret generic [your_k8s_secret_name] --from-literal=[your_k8s_secret_key]=[your_client_secret]
    ```
 
     - `[your_client_secret]` is the application's client secret as generated above
@@ -311,7 +319,7 @@ To use a **certificate**:
    kubectl create secret generic [your_k8s_secret_name] --from-file=[your_k8s_secret_key]=[pfx_certificate_file_fully_qualified_local_path]
    ```
 
-    - `[pfx_certificate_file_fully_qualified_local_path]` is the path of PFX file you obtained earlier
+    - `[pfx_certificate_file_fully_qualified_local_path]` is the path to the PFX file you obtained earlier
     - `[your_k8s_secret_name]` is secret name in the Kubernetes secret store
     - `[your_k8s_secret_key]` is secret key in the Kubernetes secret store
 
@@ -378,7 +386,7 @@ After assigning a managed identity to your Azure resource, you will have credent
 }
 ```
 
-From the list above, `principalId` is the value that you can use to set the optional `azureClientId` value in the metadata. However, that is usually not necessary, unless you have more than one identity assigned to a resource and you need to specify the one to use.
+From the list above, take note of **`principalId`** which is the ID of the Service Principal that was created. You'll need that to grant access to Azure resources to your Service Principal.
 
 ## Support for other Azure environments
 

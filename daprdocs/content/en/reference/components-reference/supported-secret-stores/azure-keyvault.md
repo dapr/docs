@@ -72,7 +72,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
   SERVICE_PRINCIPAL_ID="[your_service_principal_object_id]"
   ```
 
-1. Set a variable with the location where to create all resources:
+2. Set a variable with the location where to create all resources:
 
   ```sh
   LOCATION="[your_location]"
@@ -80,29 +80,29 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
 
   (You can get the full list of options with: `az account list-locations --output tsv`)
 
-1. Create a Resource Group, giving it any name you'd like:
+3. Create a Resource Group, giving it any name you'd like:
 
   ```sh
   RG_NAME="[resource_group_name]"
   RG_ID=$(az group create \
-    --name $RG_NAME \
-    --location $LOCATION \
+    --name "${RG_NAME}" \
+    --location "${LOCATION}" \
     | jq -r .id)
   ```
 
-1. Create an Azure Key Vault (that uses Azure RBAC for authorization):
+4. Create an Azure Key Vault (that uses Azure RBAC for authorization):
 
   ```sh
   KEYVAULT_NAME="[key_vault_name]"
   az keyvault create \
-    --name $KEYVAULT_NAME \
+    --name "${KEYVAULT_NAME}" \
     --enable-rbac-authorization true \
-    --resource-group $RG_NAME \
-    --location $LOCATION
+    --resource-group "${RG_NAME}" \
+    --location "${LOCATION}"
   ```
 
-1. Using RBAC, assign a role to the Azure AD application that we created so it can access the Key Vault.  
-  In this case, we're assigning the "Key Vault Crypto Officer" role, which has broad access; other more restrictive roles can be used as well.
+5. Using RBAC, assign a role to the Azure AD application that we created so it can access the Key Vault.  
+  In this case, we're assigning the "Key Vault Crypto Officer" role, which has broad access; other more restrictive roles can be used as well, depending on your application.
 
   ```sh
   az role assignment create \
@@ -117,7 +117,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
 
 {{% codetab %}}
 
-To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory, filling in with the details from the above setup process:
+To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory, filling in with the Azure AD application that you created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -139,7 +139,7 @@ spec:
     value : "[your_client_secret]"
 ```
 
-If you want to use a **certificate** saved on the local disk, instead, use:
+If you want to use a **certificate** saved on the local disk, instead, use this template, filling in with details of the Azure AD application that you created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -163,19 +163,20 @@ spec:
 {{% /codetab %}}
 
 {{% codetab %}}
-In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file.
+In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. You will need the details of the Azure AD application that was created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
 
 To use a **client secret**:
 
 1. Create a Kubernetes secret using the following command:
 
    ```bash
-   kubectl create secret generic [your_k8s_secret_name] --from-file=[your_k8s_secret_key]=[your_client_secret]
+   kubectl create secret generic [your_k8s_secret_name] --from-literal=[your_k8s_secret_key]=[your_client_secret]
    ```
 
     - `[your_client_secret]` is the application's client secret as generated above
     - `[your_k8s_secret_name]` is secret name in the Kubernetes secret store
     - `[your_k8s_secret_key]` is secret key in the Kubernetes secret store
+
 
 2. Create an `azurekeyvault.yaml` component file.
 
@@ -264,7 +265,7 @@ To use a **certificate**:
 ## References
 
 - [Authenticating to Azure]({{< ref authenticating-azure.md >}})
-- [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
+- [Azure CLI: keyvault commands](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
