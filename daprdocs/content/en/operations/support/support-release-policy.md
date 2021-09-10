@@ -54,9 +54,12 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 | 1.0.0 or 1.0.1           |                   N/A |                    1.1.2 |
 |                          |                 1.1.2 |                    1.2.2 |
 |                          |                 1.2.2 |                    1.3.0 |
+|                          |                 1.3.0 |                    1.4.0 |
 | 1.1.0 to 1.1.2           |                   N/A |                    1.2.2 |
 |                          |                 1.2.2 |                    1.3.0 |
+|                          |                 1.3.0 |                    1.4.0 |
 | 1.2.0 to 1.2.2           |                   N/A |                    1.3.0 |
+|                          |                 1.3.0 |                    1.4.0 |
 | 1.3.0                    |                   N/A |                    1.4.0 |
 
 ## Feature and deprecations
