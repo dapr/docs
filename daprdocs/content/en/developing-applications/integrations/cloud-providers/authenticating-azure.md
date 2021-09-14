@@ -79,7 +79,7 @@ For backwards-compatibility reasons, the following values in the metadata are su
 
 ## Generating a new Azure AD application and Service Principal
 
-To start, create a new Azure AD application which we'll use as Service Principal too.
+To start, create a new Azure AD application, which will also be used as Service Principal.
 
 Prerequisites:
 
