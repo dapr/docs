@@ -12,7 +12,7 @@ aliases:
 
 Certain Azure components for Dapr offer support for the *common Azure authentication layer*, which enables applications to access data stored in Azure resources by authenticating with Azure AD. Thanks to this, administrators can leverage all the benefits of fine-tuned permissions with RBAC (Role-Based Access Control), and applications running on certain Azure services such as Azure VMs, Azure Kubernetes Service, or many Azure platform services can leverage [Managed Service Identities (MSI)](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview).
 
-Some Azure components offer alternative authentication methods, such as systems based on "master keys" or "shared keys". Whenever possible, we recommend authenticating your Dapr components using Azure AD for increased security and ease of management, as well as for the ability to leverage MSI if your app is running on supported Azure services.
+Some Azure components offer alternative authentication methods, such as systems based on "master keys" or "shared keys". Whenever possible, it is recommended that you authenticate your Dapr components using Azure AD for increased security and ease of management, as well as for the ability to leverage MSI if your app is running on supported Azure services.
 
 > Currently, only a subset of Azure components for Dapr offer support for this authentication method. Over time, support will be expanded to all other Azure components for Dapr. You can track the progress of the work, component-by-component, on [this issue](https://github.com/dapr/components-contrib/issues/1103).
 
@@ -184,7 +184,7 @@ Take note of the values above, which you'll need to use in your Dapr components'
 
 ### Creating a Service Principal
 
-Once you have created an Azure AD application, we need to create a Service Principal for that application, which will allow us to grant it access to Azure resources. Run:
+Once you have created an Azure AD application, create a Service Principal for that application, which will allow us to grant it access to Azure resources. Run:
 
 ```sh
 SERVICE_PRINCIPAL_ID=$(az ad sp create \
@@ -204,7 +204,7 @@ Note that the value above is the ID of the **Service Principal** which is differ
 - You'll use the client ID in Dapr manifests to configure authentication with Azure services
 - You'll use the Service Principal ID to grant permissions to an application to access Azure resources
 
-Keep in mind that the Service Principal we just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
+Keep in mind that the Service Principal that was just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
 
 > Note: this step is different from the [official documentation](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) as the short-hand commands included there create a Service Principal that has broad read-write access to all Azure resources in your subscription.  
 > Not only doing that would grant our Service Principal more access than you are likely going to desire, but this also applies only to the Azure management plane (Azure Resource Manager, or ARM), which is irrelevant for Dapr anyways (all Azure components are designed to interact with the data plane of various services, and not ARM).
