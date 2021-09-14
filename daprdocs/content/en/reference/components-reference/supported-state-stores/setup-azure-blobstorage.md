@@ -62,7 +62,7 @@ In order to setup Azure Blob Storage as a state store, you will need the followi
 
 ### Authenticating with Azure AD
 
-This component supports authentication with Azure AD as an alternative to use account keys. Whenever possible, we recommend using Azure AD for authentication in production systems, to take advantage of better security, fine-tuned access control, and the ability to use managed identities for apps running on Azure.
+This component supports authentication with Azure AD as an alternative to use account keys. Whenever possible, it is reccomended that you use  Azure AD for authentication in production systems, to take advantage of better security, fine-tuned access control, and the ability to use managed identities for apps running on Azure.
 
 > The following scripts are optimized for a bash or zsh shell and require the following apps installed:
 >
@@ -86,7 +86,7 @@ This component supports authentication with Azure AD as an alternative to use ac
   ```
 
 3. Using RBAC, assign a role to our Service Principal so it can access data inside the Storage Account.  
-  In this case, we're assigning the "Storage blob Data Contributor" role, which has broad access; other more restrictive roles can be used as well, depending on your application.
+  In this case, you are assigning the "Storage blob Data Contributor" role, which has broad access; other more restrictive roles can be used as well, depending on your application.
 
   ```sh
   RG_ID=$(az group show --resource-group ${RG_NAME} | jq -r ".id")
