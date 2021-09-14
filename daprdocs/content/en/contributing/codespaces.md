@@ -10,10 +10,6 @@ aliases:
 
 [GitHub Codespaces](https://github.com/features/codespaces) are the easiest way to get up and running for contributing to a Dapr repo. In as little as a single click, you can have an environment with all of the prerequisites ready to go in your browser.
 
-{{% alert title="Private Beta" color="warning" %}}
-GitHub Codespaces is currently in a private beta. Sign up [here](https://github.com/features/codespaces/signup).
-{{% /alert %}}
-
 ## Features
 
 - **Click and Run**: Get a dedicated and sandboxed environment with all of the required frameworks and packages ready to go.
