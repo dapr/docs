@@ -11,15 +11,15 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 - [Dapr CLI]({{< ref install-dapr-cli.md >}})
 - [Helm 3](https://github.com/helm/helm/releases) (if using Helm)
 
-## Upgrade existing cluster to 1.3.0
+## Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
 There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 ### Dapr CLI
 
-The example below shows how to upgrade to version 1.3.0:
+The example below shows how to upgrade to version {{% dapr-latest-version long="true" %}}:
 
   ```bash
-  dapr upgrade -k --runtime-version=1.3.0
+  dapr upgrade -k --runtime-version={{% dapr-latest-version long="true" %}}
   ```
 
 You can provide all the available Helm chart configurations using the Dapr CLI.
@@ -43,7 +43,7 @@ To resolve this issue please run the follow command to upgrade the CustomResourc
 kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/5a15b3e0f093d2d0938b12f144c7047474a290fe/charts/dapr/crds/configuration.yaml
 ```
 
-Then proceed with the `dapr upgrade --runtime-version 1.3.0 -k` command as above.
+Then proceed with the `dapr upgrade --runtime-version {{% dapr-latest-version long="true" %}} -k` command as above.
 
 ### Helm
 
