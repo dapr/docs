@@ -40,7 +40,7 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Jun 16th 2021 | 1.2.1</br> | 1.2.0 | Java 1.1.0 </br>Go 1.1.0 </br>PHP 1.1.0 </br>Python 1.1.0 </br>.NET 1.2.0 | 0.6.0 | Unsupported |
 | Jun 16th 2021 | 1.2.2</br> | 1.2.0 | Java 1.1.0 </br>Go 1.1.0 </br>PHP 1.1.0 </br>Python 1.1.0 </br>.NET 1.2.0 | 0.6.0 | Unsupported |
 | Jul 26th 2021 | 1.3</br> | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Supported |
-| Sep 14th 2021 | 1.4</br> | 1.4.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.2.0 </br>Python 1.3.0 </br>.NET 1.3.0 | 0.8.0 | Supported (current) |
+| Sep 14th 2021 | 1.4</br> | 1.4.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.2.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported (current) |
 
 ## Upgrade paths
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example an upgrade from v1.0 to v1.2 may need go pass through v1.1
