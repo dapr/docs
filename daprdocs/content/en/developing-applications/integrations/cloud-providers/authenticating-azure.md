@@ -211,7 +211,7 @@ Keep in mind that the Service Principal that was just created does not have acce
 
 ### Example usage in a Dapr component
 
-In this example, we're going to set up an Azure Key Vault secret store component that uses Azure AD to authenticate.
+In this example, you will set up an Azure Key Vault secret store component that uses Azure AD to authenticate.
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
