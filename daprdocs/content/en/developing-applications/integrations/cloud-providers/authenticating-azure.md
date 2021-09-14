@@ -14,7 +14,7 @@ Certain Azure components for Dapr offer support for the *common Azure authentica
 
 Some Azure components offer alternative authentication methods, such as systems based on "master keys" or "shared keys". Whenever possible, we recommend authenticating your Dapr components using Azure AD for increased security and ease of management, as well as for the ability to leverage MSI if your app is running on supported Azure services.
 
-> Currently, only a subset of Azure components for Dapr offer support for this authentication method. Over time, we are planning to expand support to all other Azure components for Dapr. You can track the progress of the work, component-by-component, on [this issue](https://github.com/dapr/components-contrib/issues/1103).
+> Currently, only a subset of Azure components for Dapr offer support for this authentication method. Over time, support will be expanded to all other Azure components for Dapr. You can track the progress of the work, component-by-component, on [this issue](https://github.com/dapr/components-contrib/issues/1103).
 
 ### About authentication with Azure AD
 
