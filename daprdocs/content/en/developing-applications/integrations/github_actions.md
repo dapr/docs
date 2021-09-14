@@ -18,7 +18,7 @@ The `dapr/setup-dapr` action will install the specified version of the Dapr CLI 
 - name: Install Dapr
   uses: dapr/setup-dapr@v1
   with:
-    version: '1.4.0'
+    version: '{{% dapr-latest-version long="true" %}}'
 
 - name: Initialize Dapr
   shell: pwsh
