@@ -234,7 +234,7 @@ $app->start();
 
 {{< /tabs >}}
 
-In these examples, depending on the type of the event (`event.type`), the application will be called on `/dsstatus.v3`, `/dsstatus.v2` or `/dsstatus`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel). `event` represents the cloud event and any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced. It is only possible to access the attributes inside `event.data` if it is nested JSON
+In these examples, depending on the type of the event (`event.type`), the application will be called on `/dsstatus.v3`, `/dsstatus.v2` or `/dsstatus`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression. One caveat is that it is only possible to access the attributes inside `event.data` if it is nested JSON
 
 ## Next steps
 
