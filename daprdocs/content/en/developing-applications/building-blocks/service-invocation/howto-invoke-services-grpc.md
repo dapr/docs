@@ -170,7 +170,7 @@ var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata
 
 {{% codetab %}}
 ```python
-metadata = (('dapr-app-id', 'server'))
+metadata = (('dapr-app-id', 'server'),)
 response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 ```
 {{% /codetab %}}
