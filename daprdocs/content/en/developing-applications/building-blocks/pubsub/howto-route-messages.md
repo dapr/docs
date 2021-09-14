@@ -8,6 +8,7 @@ description: "Learn how to route messages from a topic to different event handle
 
 {{% alert title="Note" color="primary" %}}
 This is an preview feature. To enable it, add the `PubSub.Routing` feature entry to your application configuration.
+{{% /alert %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -23,8 +24,6 @@ spec:
 ## Introduction
 
 [Content-based routing](https://www.enterpriseintegrationpatterns.com/ContentBasedRouter.html) is a messaging pattern that utilizes a DSL instead of imperative application code. PubSub routing is an implementation of this pattern that allows developers to use expressions to route [CloudEvents](https://cloudevents.io) based on their contents to different URIs/paths and event handlers in your application. If no route matches, then an optional default route is used. This becomes useful as your applications expands to support multiple event versions, or special cases. Routing can be implemented with code; however, keeping routing rules external from the application can improve portability.
-
-{{% /alert %}}
 
 This feature is available to both the declarative and programmatic subscription approaches.
 
