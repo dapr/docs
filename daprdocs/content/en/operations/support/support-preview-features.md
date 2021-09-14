@@ -9,10 +9,10 @@ Preview features in Dapr are considered experimental when they are first release
 
 
 ## Current preview features
-| Description | Setting | Documentation |
-|-------------|---------|---------------|
-| Enables Actors to be called multiple times in the same call chain allowing call backs between actors. | Actor.Reentrancy | [Actor reentrancy]({{<ref actor-reentrancy>}}) |
-| Allows Actor reminders to be partitioned across multiple keys in the underlying statestore in order to improve scale and performance. | Actor.TypeMetadata | [How-To: Partition Actor Reminders]({{< ref "howto-actors.md#partitioning-reminders" >}}) |
-| Enables you to call endpoints using service invocation on gRPC services through Dapr via gRPC proxying, without requiring the use of Dapr SDKs. | proxy.grpc | [How-To: Invoke services using gRPC]({{<ref howto-invoke-services-grpc>}}) |
-| Enables automatic client side encryption for state stores | State.Encryption | [How-To: Encrypt application state]({{<ref howto-encrypt-state>}}) |
-| | | |
+| Feature | Description | Setting | Documentation |
+| ------- |-------------|---------|---------------|
+| **Actor reentrancy** | Enables actors to be called multiple times in the same call chain allowing call backs between actors. | Actor.Reentrancy | [Actor reentrancy]({{<ref actor-reentrancy>}}) |
+| **Partition actor reminders** | Allows actor reminders to be partitioned across multiple keys in the underlying statestore in order to improve scale and performance. | Actor.TypeMetadata | [How-To: Partition Actor Reminders]({{< ref "howto-actors.md#partitioning-reminders" >}}) |
+| **gRPC proxying** | Enables calling endpoints using service invocation on gRPC services through Dapr via gRPC proxying, without requiring the use of Dapr SDKs. | proxy.grpc | [How-To: Invoke services using gRPC]({{<ref howto-invoke-services-grpc>}}) |
+| **State store encryption** | Enables automatic client side encryption for state stores | State.Encryption | [How-To: Encrypt application state]({{<ref howto-encrypt-state>}}) |
+| **Pub/Sub routing** | Allow the use of expressions to route cloud events to different URIs/paths and event handlers in your application. | PubSub.Routing | [How-To: Publish a message and subscribe to a topic]({{<ref howto-route-messages>}}) |
