@@ -62,7 +62,7 @@ In order to setup Azure Blob Storage as a state store, you will need the followi
 
 ### Authenticating with Azure AD
 
-This component supports authentication with Azure AD as an alternative to use account keys. Whenever possible, it is reccomended that you use  Azure AD for authentication in production systems, to take advantage of better security, fine-tuned access control, and the ability to use managed identities for apps running on Azure.
+This component supports authentication with Azure AD as an alternative to use account keys. Whenever possible, it is recommended that you use  Azure AD for authentication in production systems, to take advantage of better security, fine-tuned access control, and the ability to use managed identities for apps running on Azure.
 
 > The following scripts are optimized for a bash or zsh shell and require the following apps installed:
 >
