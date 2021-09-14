@@ -101,8 +101,8 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
     --location "${LOCATION}"
   ```
 
-5. Using RBAC, assign a role to the Azure AD application that we created so it can access the Key Vault.  
-  In this case, we're assigning the "Key Vault Crypto Officer" role, which has broad access; other more restrictive roles can be used as well, depending on your application.
+5. Using RBAC, assign a role to the Azure AD application so it can access the Key Vault.  
+  In this case, assign the "Key Vault Crypto Officer" role, which has broad access; other more restrictive roles can be used as well, depending on your application.
 
   ```sh
   az role assignment create \
