@@ -365,7 +365,7 @@ To use a **certificate**:
 
 Using MSI, authentication happens automatically by virtue of your application running on top of an Azure service that has an assigned identity. For example, when you create an Azure VM or an Azure Kubernetes Service cluster and choose to enable a managed identity for that, an Azure AD application is created for you and automatically assigned to the service. Your Dapr services can then leverage that identity to authenticate with Azure AD, transparently and without you having to specify any credential.
 
-To get started with managed identities, first you need to assign an identity to a new or existing Azure resource. The instruction depend on the service use, and we'll link you to the official documentation for that:
+To get started with managed identities, first you need to assign an identity to a new or existing Azure resource. The instructions depend on the service use. Below are links to the official documentation:
 
 - [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/use-managed-identity)
 - [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity) (including Azure Web Apps and Azure Functions)
