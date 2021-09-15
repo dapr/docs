@@ -94,7 +94,7 @@ def subscribe():
       }]
     return jsonify(subscriptions)
 
-@app.route('/dsstatus', methods=['POST'])
+@app.route('/withdraw', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
@@ -134,7 +134,7 @@ app.get('/dapr/subscribe', (req, res) => {
     ]);
 })
 
-app.post('/dsstatus', (req, res) => {
+app.post('/withdraw', (req, res) => {
     console.log(req.body);
     res.sendStatus(200);
 });
@@ -147,7 +147,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```csharp
         [Topic("pubsub", "transactions", "event.type ==\"withdraw.v3\"", 1)]
         [HttpPost("withdraw.v3")]
-        public async Task<ActionResult<Account>> WithdrawV2(TransactionV3 transaction, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult<Account>> WithdrawV3(TransactionV3 transaction, [FromServices] DaprClient daprClient)
         {
             // Logic
             return account;
@@ -163,7 +163,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 
         [Topic("pubsub", "transactions")]
         [HttpPost("withdraw")]
-        public async Task<ActionResult<Account>> WithdrawV2(Transaction transaction, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult<Account>> Withdraw(Transaction transaction, [FromServices] DaprClient daprClient)
         {
             // Logic
             return account;
@@ -251,7 +251,7 @@ $app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builde
       ]
       default: '/withdraw')),
 ]]));
-$app->post('/dsstatus', function(
+$app->post('/withdraw', function(
     #[\Dapr\Attributes\FromBody]
     \Dapr\PubSub\CloudEvent $cloudEvent,
     \Psr\Log\LoggerInterface $logger
@@ -266,7 +266,7 @@ $app->start();
 
 {{< /tabs >}}
 
-In these examples, depending on the type of the event (`event.type`), the application will be called on `/dsstatus.v3`, `/dsstatus.v2` or `/dsstatus`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression.
+In these examples, depending on the type of the event (`event.type`), the application will be called on `/withdraw.v3`, `/withdraw.v2` or `/withdraw`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression.
 
 For reference, the following attributes are from the CloudEvents specification.
 
@@ -396,7 +396,7 @@ on the definition of OPTIONAL.
   For some binary mode protocol bindings, this field is directly mapped to the
   respective protocol's content-type metadata property. Normative rules for the
   binary mode and the content-type metadata mapping can be found in the
-  respective protocol
+  respective protocol.
 
   In some event formats the `datacontenttype` attribute MAY be omitted. For
   example, if a JSON format event has no `datacontenttype` attribute, then it is
