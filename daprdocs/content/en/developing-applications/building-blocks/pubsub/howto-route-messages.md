@@ -42,14 +42,14 @@ metadata:
   name: myevent-subscription
 spec:
   pubsubname: pubsub
-  topic: deathStarStatus
+  topic: transactions
   routes:
     rules:
-      - match: event.type == "rebels.attacking.v3"
-        path: /dsstatus.v3
-      - match: event.type == "rebels.attacking.v2"
-        path: /dsstatus.v2
-    default: /dsstatus
+      - match: event.type == "withdraw.v3"
+        path: /withdraw.v3
+      - match: event.type == "withdraw.v2"
+        path: /withdraw.v2
+    default: /withdraw
 scopes:
   - app1
   - app2
@@ -59,7 +59,7 @@ scopes:
 
 Alternatively, the programattic approach varies slightly in that the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML.
 
-{{< tabs Python Node Go PHP>}}
+{{< tabs Python Node "C#" Go PHP>}}
 
 {{% codetab %}}
 ```python
@@ -77,19 +77,19 @@ def subscribe():
     subscriptions = [
       {
         'pubsubname': 'pubsub',
-        'topic': 'deathStarStatus',
+        'topic': 'transactions',
         'routes': {
           'rules': [
             {
-              'match': 'event.type == "rebels.attacking.v3"',
-              'path': '/dsstatus.v3'
+              'match': 'event.type == "withdraw.v3"',
+              'path': '/withdraw.v3'
             },
             {
-              'match': 'event.type == "rebels.attacking.v2"',
-              'path': '/dsstatus.v2'
+              'match': 'event.type == "withdraw.v2"',
+              'path': '/withdraw.v2'
             },
           ],
-          'default': '/dsstatus'
+          'default': '/withdraw'
         }
       }]
     return jsonify(subscriptions)
@@ -116,19 +116,19 @@ app.get('/dapr/subscribe', (req, res) => {
     res.json([
         {
             pubsubname: "pubsub",
-            topic: "deathStarStatus",
+            topic: "transactions",
             routes: {
                 rules: [
                     {
-                        match: 'event.type == "rebels.attacking.v3"',
-                        path: '/dsstatus.v3'
+                        match: 'event.type == "withdraw.v3"',
+                        path: '/withdraw.v3'
                     },
                     {
-                        match: 'event.type == "rebels.attacking.v2"',
-                        path: '/dsstatus.v2'
+                        match: 'event.type == "withdraw.v2"',
+                        path: '/withdraw.v2'
                     },
                 ],
-                default: '/dsstatus'
+                default: '/withdraw'
             }
         }
     ]);
@@ -140,6 +140,34 @@ app.post('/dsstatus', (req, res) => {
 });
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+        [Topic("pubsub", "transactions", "event.type ==\"withdraw.v3\"", 1)]
+        [HttpPost("withdraw.v3")]
+        public async Task<ActionResult<Account>> WithdrawV2(TransactionV3 transaction, [FromServices] DaprClient daprClient)
+        {
+            // Logic
+            return account;
+        }
+
+        [Topic("pubsub", "transactions", "event.type ==\"withdraw.v2\"", 2)]
+        [HttpPost("withdraw.v2")]
+        public async Task<ActionResult<Account>> WithdrawV2(TransactionV2 transaction, [FromServices] DaprClient daprClient)
+        {
+            // Logic
+            return account;
+        }
+
+        [Topic("pubsub", "transactions")]
+        [HttpPost("withdraw")]
+        public async Task<ActionResult<Account>> WithdrawV2(Transaction transaction, [FromServices] DaprClient daprClient)
+        {
+            // Logic
+            return account;
+        }
 ```
 {{% /codetab %}}
 
@@ -180,19 +208,19 @@ func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 	t := []subscription{
 		{
 			PubsubName: "pubsub",
-			Topic:      "deathStarStatus",
+			Topic:      "transactions",
 			Routes: routes{
 				Rules: []rule{
 					{
-						Match: `event.type == "rebels.attacking.v3"`,
-						Path:  "/dsstatus.v3",
+						Match: `event.type == "withdraw.v3"`,
+						Path:  "/withdraw.v3",
 					},
 					{
-						Match: `event.type == "rebels.attacking.v2"`,
-						Path:  "/dsstatus.v2",
+						Match: `event.type == "withdraw.v2"`,
+						Path:  "/withdraw.v2",
 					},
 				},
-				Default: "/dsstatus",
+				Default: "/withdraw",
 			},
 		},
 	}
@@ -216,12 +244,12 @@ func main() {
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builder->addDefinitions(['dapr.subscriptions' => [
-    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'deathStarStatus', routes: (
+    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'transactions', routes: (
       rules: => [
-        ('match': 'event.type == "rebels.attacking.v3"', path: '/dsstatus.v3'),
-        ('match': 'event.type == "rebels.attacking.v2"', path: '/dsstatus.v2'),
+        ('match': 'event.type == "withdraw.v3"', path: '/withdraw.v3'),
+        ('match': 'event.type == "withdraw.v2"', path: '/withdraw.v2'),
       ]
-      default: '/dsstatus')),
+      default: '/withdraw')),
 ]]));
 $app->post('/dsstatus', function(
     #[\Dapr\Attributes\FromBody]
@@ -238,7 +266,213 @@ $app->start();
 
 {{< /tabs >}}
 
-In these examples, depending on the type of the event (`event.type`), the application will be called on `/dsstatus.v3`, `/dsstatus.v2` or `/dsstatus`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression. One caveat is that it is only possible to access the attributes inside `event.data` if it is nested JSON
+In these examples, depending on the type of the event (`event.type`), the application will be called on `/dsstatus.v3`, `/dsstatus.v2` or `/dsstatus`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression.
+
+For reference, the following attributes are from the CloudEvents specification.
+
+### Event Data
+
+#### data
+
+As defined by the term Data, CloudEvents MAY include domain-specific information about the occurrence. When present, this information will be encapsulated within `data`.
+
+- Description: The event payload. This specification does not place any restriction on the type of this information. It is encoded into a media format which is specified by the `datacontenttype` attribute (e.g. application/json), and adheres to the `dataschema` format when those respective attributes are present.
+- Constraints:
+  - OPTIONAL
+
+{{% alert title="Limitation" color="warning" %}}
+Currently, it is only possible to access the attributes inside data if it is nested JSON values and not JSON escaped in a string.
+{{% /alert %}}
+
+### REQUIRED Attributes
+
+The following attributes are REQUIRED to be present in all CloudEvents:
+
+#### id
+
+- Type: `String`
+- Description: Identifies the event. Producers MUST ensure that `source` + `id`
+  is unique for each distinct event. If a duplicate event is re-sent (e.g. due
+  to a network error) it MAY have the same `id`. Consumers MAY assume that
+  Events with identical `source` and `id` are duplicates.
+- Constraints:
+  - REQUIRED
+  - MUST be a non-empty string
+  - MUST be unique within the scope of the producer
+- Examples:
+  - An event counter maintained by the producer
+  - A UUID
+
+#### source
+
+- Type: `URI-reference`
+- Description: Identifies the context in which an event happened. Often this
+  will include information such as the type of the event source, the
+  organization publishing the event or the process that produced the event. The
+  exact syntax and semantics behind the data encoded in the URI is defined by
+  the event producer.
+
+  Producers MUST ensure that `source` + `id` is unique for each distinct event.
+
+  An application MAY assign a unique `source` to each distinct producer, which
+  makes it easy to produce unique IDs since no other producer will have the same
+  source. The application MAY use UUIDs, URNs, DNS authorities or an
+  application-specific scheme to create unique `source` identifiers.
+
+  A source MAY include more than one producer. In that case the producers MUST
+  collaborate to ensure that `source` + `id` is unique for each distinct event.
+
+- Constraints:
+  - REQUIRED
+  - MUST be a non-empty URI-reference
+  - An absolute URI is RECOMMENDED
+- Examples
+  - Internet-wide unique URI with a DNS authority.
+    - https://github.com/cloudevents
+    - mailto:cncf-wg-serverless@lists.cncf.io
+  - Universally-unique URN with a UUID:
+    - urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
+  - Application-specific identifiers
+    - /cloudevents/spec/pull/123
+    - /sensors/tn-1234567/alerts
+    - 1-555-123-4567
+
+#### specversion
+
+- Type: `String`
+- Description: The version of the CloudEvents specification which the event
+  uses. This enables the interpretation of the context. Compliant event
+  producers MUST use a value of `1.0` when referring to this version of the
+  specification.
+
+  Currently, this attribute will only have the 'major' and 'minor' version
+  numbers included in it. This allows for 'patch' changes to the specification
+  to be made without changing this property's value in the serialization.
+  Note: for 'release candidate' releases a suffix might be used for testing
+  purposes.
+
+- Constraints:
+  - REQUIRED
+  - MUST be a non-empty string
+
+#### type
+
+- Type: `String`
+- Description: This attribute contains a value describing the type of event
+  related to the originating occurrence. Often this attribute is used for
+  routing, observability, policy enforcement, etc. The format of this is
+  producer defined and might include information such as the version of the
+  `type` - see
+  [Versioning of CloudEvents in the Primer](primer.md#versioning-of-cloudevents)
+  for more information.
+- Constraints:
+  - REQUIRED
+  - MUST be a non-empty string
+  - SHOULD be prefixed with a reverse-DNS name. The prefixed domain dictates the
+    organization which defines the semantics of this event type.
+- Examples
+  - com.github.pull_request.opened
+  - com.example.object.deleted.v2
+
+### OPTIONAL Attributes
+
+The following attributes are OPTIONAL to appear in CloudEvents. See the
+[Notational Conventions](#notational-conventions) section for more information
+on the definition of OPTIONAL.
+
+#### datacontenttype
+
+- Type: `String` per [RFC 2046](https://tools.ietf.org/html/rfc2046)
+- Description: Content type of `data` value. This attribute enables `data` to
+  carry any type of content, whereby format and encoding might differ from that
+  of the chosen event format. For example, an event rendered using the
+  [JSON envelope](./json-format.md#3-envelope) format might carry an XML payload
+  in `data`, and the consumer is informed by this attribute being set to
+  "application/xml". The rules for how `data` content is rendered for different
+  `datacontenttype` values are defined in the event format specifications; for
+  example, the JSON event format defines the relationship in
+  [section 3.1](./json-format.md#31-handling-of-data).
+
+  For some binary mode protocol bindings, this field is directly mapped to the
+  respective protocol's content-type metadata property. Normative rules for the
+  binary mode and the content-type metadata mapping can be found in the
+  respective protocol
+
+  In some event formats the `datacontenttype` attribute MAY be omitted. For
+  example, if a JSON format event has no `datacontenttype` attribute, then it is
+  implied that the `data` is a JSON value conforming to the "application/json"
+  media type. In other words: a JSON-format event with no `datacontenttype` is
+  exactly equivalent to one with `datacontenttype="application/json"`.
+
+  When translating an event message with no `datacontenttype` attribute to a
+  different format or protocol binding, the target `datacontenttype` SHOULD be
+  set explicitly to the implied `datacontenttype` of the source.
+
+- Constraints:
+  - OPTIONAL
+  - If present, MUST adhere to the format specified in
+    [RFC 2046](https://tools.ietf.org/html/rfc2046)
+- For Media Type examples see
+  [IANA Media Types](http://www.iana.org/assignments/media-types/media-types.xhtml)
+
+#### dataschema
+
+- Type: `URI`
+- Description: Identifies the schema that `data` adheres to. Incompatible
+  changes to the schema SHOULD be reflected by a different URI. See
+  [Versioning of CloudEvents in the Primer](primer.md#versioning-of-cloudevents)
+  for more information.
+- Constraints:
+  - OPTIONAL
+  - If present, MUST be a non-empty URI
+
+#### subject
+
+- Type: `String`
+- Description: This describes the subject of the event in the context of the
+  event producer (identified by `source`). In publish-subscribe scenarios, a
+  subscriber will typically subscribe to events emitted by a `source`, but the
+  `source` identifier alone might not be sufficient as a qualifier for any
+  specific event if the `source` context has internal sub-structure.
+
+  Identifying the subject of the event in context metadata (opposed to only in
+  the `data` payload) is particularly helpful in generic subscription filtering
+  scenarios where middleware is unable to interpret the `data` content. In the
+  above example, the subscriber might only be interested in blobs with names
+  ending with '.jpg' or '.jpeg' and the `subject` attribute allows for
+  constructing a simple and efficient string-suffix filter for that subset of
+  events.
+
+- Constraints:
+  - OPTIONAL
+  - If present, MUST be a non-empty string
+- Example:
+  - A subscriber might register interest for when new blobs are created inside a
+    blob-storage container. In this case, the event `source` identifies the
+    subscription scope (storage container), the `type` identifies the "blob
+    created" event, and the `id` uniquely identifies the event instance to
+    distinguish separate occurrences of a same-named blob having been created;
+    the name of the newly created blob is carried in `subject`:
+    - `source`: https://example.com/storage/tenant/container
+    - `subject`: mynewfile.jpg
+
+#### time
+
+- Type: `Timestamp`
+- Description: Timestamp of when the occurrence happened. If the time of the
+  occurrence cannot be determined then this attribute MAY be set to some other
+  time (such as the current time) by the CloudEvents producer, however all
+  producers for the same `source` MUST be consistent in this respect. In other
+  words, either they all use the actual time of the occurrence or they all use
+  the same algorithm to determine the value used.
+- Constraints:
+  - OPTIONAL
+  - If present, MUST adhere to the format specified in
+    [RFC 3339](https://tools.ietf.org/html/rfc3339)
+
+{{% alert title="Limitation" color="warning" %}}
+Currently, comparisons to time (e.g. before or after "now") are not supported.
+{{% /alert %}}
 
 ## Next steps
 
