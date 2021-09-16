@@ -54,6 +54,11 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+{{% alert title="Warning" color="warning" %}}
+NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning).
+Please consider using [NATS JetStream]({{< ref setup-jetstream >}}) going forward.
+{{% /alert %}}
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
@@ -111,3 +116,4 @@ For example, if installing using the example above, the NATS Streaming address w
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
+- [NATS Streaming Deprecation Notice](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning)
