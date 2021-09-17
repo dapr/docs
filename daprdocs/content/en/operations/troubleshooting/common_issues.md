@@ -226,3 +226,26 @@ In order for mDNS to function properly, ensure `Micorosft Content Filter` is ina
 Microsoft Content Filter is disabled when the output is "Success".
 
 > Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting.
+
+## I can not create a pod
+
+If you can not create a pod as below:
+
+```bash
+root:[dapr]$ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
+Error from server: admission webhook "sidecar-injector.dapr.io" denied the request: service account 'user-xdd5l' not on the list of allowed controller accounts
+```
+
+You can create a clusterrolebind for a user:
+
+```bash
+kubectl create clusterrolebinding dapr-<name-of-user> --clusterrole=dapr-operator-admin --user <name-of-user>
+```
+
+You can run below command to get all users in your cluster:
+
+```bash
+kubectl config get-users
+```
+
+Then you can enjoy it!
