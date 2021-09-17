@@ -38,9 +38,9 @@ spec:
     value: MyPassword
 ```
 
-Instead create the secret in your secret store and reference it in the component definition.  There are 2 cases for this shown below -- the "Secret Contains an Embedded Key" and the "Secret is a String".
+Instead create the secret in your secret store and reference it in the component definition.  There are two cases for this shown below -- the "Secret contains an embedded key" and the "Secret is a string".
 
-The "Secret Contains an Embedded Key" case applies when there is a key embedded within the secret, i.e. the secret is NOT an entire connection string. This is shown in the following component definition yaml.
+The "Secret contains an embedded key" case applies when there is a key embedded within the secret, i.e. the secret is **not** an entire connection string. This is shown in the following component definition yaml.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -64,10 +64,9 @@ auth:
 
 `SECRET_STORE_NAME` is the name of the configured [secret store component]({{< ref supported-secret-stores >}}). When running in Kubernetes and using a Kubernetes secret store, the field `auth.SecretStore` defaults to `kubernetes` and can be left empty.
 
-The above component definition tells Dapr to extract a secret named `redis-secret` from the defined `secretStore` and assign the value associated with the `redis-password` key embedded in the secret to the `redisPassword` field in the component.  One use of this case is when your code is constructing a connection string, for example putting together a URL, a secret, plus other information as necessary, into a string.
+The above component definition tells Dapr to extract a secret named `redis-secret` from the defined `secretStore` and assign the value associated with the `redis-password` key embedded in the secret to the `redisPassword` field in the component. One use of this case is when your code is constructing a connection string, for example putting together a URL, a secret, plus other information as necessary, into a string.
 
-
-On the other hand, the below "Secret is a String" case applies when there is NOT a key embedded in the secret.  Rather, the secret is just a string.  Therefore, in the `secretKeyRef` section both the secret `name` and the secret `key` will be identical.  This is the case when the secret itself is an entire connection string with no embedded key whose value needs to be extracted.  Typically a connection string consists of connection information, some sort of secret to allow connection, plus perhaps other information and does not require a separate "secret". This case is shown in the below component definition yaml.
+On the other hand, the below "Secret is a string" case applies when there is NOT a key embedded in the secret. Rather, the secret is just a string. Therefore, in the `secretKeyRef` section both the secret `name` and the secret `key` will be identical. This is the case when the secret itself is an entire connection string with no embedded key whose value needs to be extracted. Typically a connection string consists of connection information, some sort of secret to allow connection, plus perhaps other information and does not require a separate "secret". This case is shown in the below component definition yaml.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -88,7 +87,7 @@ auth:
 secretStore: <SECRET_STORE_NAME>
 
 ```
-The above "Secret is a String" case yaml tells Dapr to extract a connection string named `asbNsConnstring` from the defined `secretStore` and assign the value to the `connectionString` field in the component since there is no key embedded in the "secret" from the `secretStore` because it is a plain string.  This requires the secret `name` and secret `key` to be identical.
+The above "Secret is a string" case yaml tells Dapr to extract a connection string named `asbNsConnstring` from the defined `secretStore` and assign the value to the `connectionString` field in the component since there is no key embedded in the "secret" from the `secretStore` because it is a plain string. This requires the secret `name` and secret `key` to be identical.
 
 ## Example
 
