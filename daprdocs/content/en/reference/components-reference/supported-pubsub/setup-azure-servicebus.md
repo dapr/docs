@@ -90,7 +90,7 @@ Azure Service Bus messages extend the Dapr message format with additional contex
 
 ### Sending a message with metadata
 
-To set Azure Service Bus metadata when sending a message, add any of the following properties as either HTTP headers or gRPC message metadata.
+To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#metadata).
 
 - `metadata.MessageId`
 - `metadata.CorrelationId`
