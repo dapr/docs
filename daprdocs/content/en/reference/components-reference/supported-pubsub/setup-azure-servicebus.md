@@ -103,6 +103,8 @@ To set Azure Service Bus metadata when sending a message, set the query paramete
 - `metadata.ScheduledEnqueueTimeUtc`
 - `metadata.ReplyToSessionId`
 
+> **NOTE:** The `metadata.MessageId` property does not set the `id` property of the cloud event and should be treated in isolation.
+
 ### Receiving a message with metadata
 
 When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
@@ -114,7 +116,7 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 - `metadata.EnqueuedTimeUtc`
 - `metadata.SequenceNumber`
 
-> To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/en-us/rest/api/servicebus/message-headers-and-properties#message-headers).
+To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/en-us/rest/api/servicebus/message-headers-and-properties#message-headers).
 
 ## Create an Azure Service Bus
 
