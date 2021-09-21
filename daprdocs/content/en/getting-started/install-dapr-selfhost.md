@@ -7,7 +7,7 @@ aliases:
   - /getting-started/install-dapr/
 ---
 
-Now that you have the [Dapr CLI installed]({{<ref install-dapr-cli.md>}}), it's time to initialize Dapr on your local machine using the CLI. 
+Now that you have the [Dapr CLI installed]({{<ref install-dapr-cli.md>}}), it's time to initialize Dapr on your local machine using the CLI.
 
 Dapr runs as a sidecar alongside your application, and in self-hosted mode this means it is a process on your local machine. Therefore, initializing Dapr includes fetching the Dapr sidecar binaries and installing them locally.
 
@@ -29,11 +29,11 @@ This recommended development environment requires [Docker](https://docs.docker.c
    {{% codetab %}}
    If you run your Docker commands with sudo, or the install path is `/usr/local/bin` (default install path), you will need to use `sudo` below.
    {{% /codetab %}}
-   
+
    {{% codetab %}}
    Make sure that you run Command Prompt as administrator (right click, run as administrator)
    {{% /codetab %}}
-   
+
    {{< /tabs >}}
 
 ### Step 2: Run the init CLI command
@@ -52,8 +52,8 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: 1.3.0
-Runtime version: 1.3.0
+CLI version: {{% dapr-latest-version long="true" %}}
+Runtime version: {{% dapr-latest-version long="true" %}}
 ```
 
 ### Step 4: Verify containers are running

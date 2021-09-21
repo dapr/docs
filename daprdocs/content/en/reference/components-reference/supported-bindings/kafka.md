@@ -52,6 +52,7 @@ spec:
 | authRequired | Y | Input/Output | Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"` |
 | saslUsername | N | Input/Output | The SASL username used for authentication. Only required if `authRequired` is set to `"true"`. | `"adminuser"` |
 | saslPassword | N | Input/Output | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"` |
+| initialOffset   | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"` |
 | maxMessageBytes | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048` |
 
 ## Binding support

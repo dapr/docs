@@ -416,6 +416,10 @@ app.post('/dsstatus', (req, res) => {
 
 {{< /tabs >}}
 
+{{% alert title="Note on message redelivery" color="primary" %}}
+Some pubsub components (e.g. Redis) will redeliver a message if a response is not sent back within a specified time window. Make sure to configure metadata such as `processingTimeout` to customize this behavior. For more information refer to the respective [component references]({{< ref supported-pubsub >}}).
+{{% /alert %}}
+
 ## (Optional) Step 5: Publishing a topic with code
 
 {{< tabs Node PHP>}}
@@ -485,6 +489,7 @@ Read about content types [here](#content-types), and about the [Cloud Events mes
 ## Next steps
 
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+- Learn about [PubSub routing]({{< ref howto-route-messages >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})

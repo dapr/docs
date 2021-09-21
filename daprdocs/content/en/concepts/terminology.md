@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr terminology and definitions"
 linkTitle: "Terminology"
-weight: 800
+weight: 900
 description: Definitions for common terms and acronyms in the Dapr documentation
 ---
 

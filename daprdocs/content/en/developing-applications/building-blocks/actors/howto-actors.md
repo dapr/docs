@@ -6,11 +6,11 @@ weight: 20
 description: Learn more about the actor pattern
 ---
 
-The Dapr actors runtime provides support for [virtual actors]({{< ref actors-overview.md >}}) through following capabilities:
+The Dapr actor runtime provides support for [virtual actors]({{< ref actors-overview.md >}}) through following capabilities:
 
 ## Actor method invocation
 
-You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint
+You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint.
 
 ```html
 POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/method/<method>
@@ -20,38 +20,75 @@ You can provide any data for the actor method in the request body and the respon
 
 Refer [api spec]({{< ref "actors_api.md#invoke-actor-method" >}}) for more details.
 
+Alternatively, you can use the Dapr SDK in [.NET]({{< ref "dotnet-actors" >}}), [Java]({{< ref "java#actors" >}}), or [Python]({{< ref "python-actor" >}}).
+
 ## Actor state management
 
 Actors can save state reliably using state management capability.
 You can interact with Dapr through HTTP/gRPC endpoints for state management.
 
-To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors. 
+To use actors, your state store must support multi-item transactions.  This means your state store [component](https://github.com/dapr/components-contrib/tree/master/state) must implement the [TransactionalStore](https://github.com/dapr/components-contrib/blob/master/state/transactional_store.go) interface.  The list of components that support transactions/actors can be found here: [supported state stores]({{< ref supported-state-stores.md >}}). Only a single state store component can be used as the statestore for all actors.
 
 ## Actor timers and reminders
 
 Actors can schedule periodic work on themselves by registering either timers or reminders.
 
+The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
+
+This distintcion allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
+
+The scheduling configuration of timers and reminders is identical, as summarized below:
+
+---
+`dueTime` is an optional parameter that sets time at which or time interval before the callback is invoked for the first time. If `dueTime` is omitted, the callback is invoked immediately after timer/reminder registration.
+
+Supported formats:
+- RFC3339 date format, e.g. `2020-10-02T15:00:00Z`
+- time.Duration format, e.g. `2h30m`
+- [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format, e.g. `PT2H30M`
+
+---
+`period` is an optional parameter that sets time interval between two consecutive callback invocations. When specified in `ISO 8601-1 duration` format, you can also configure the number of repetition in order to limit the total number of callback invocations.
+If `period` is omitted, the callback will be invoked only once.
+
+Supported formats:
+- time.Duration format, e.g. `2h30m`
+- [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format, e.g. `PT2H30M`, `R5/PT1M30S`
+
+---
+`ttl` is an optional parameter that sets time at which or time interval after which the timer/reminder will be expired and deleted. If `ttl` is omitted, no restrictions are applied.
+
+Supported formats:
+* RFC3339 date format, e.g. `2020-10-02T15:00:00Z`
+* time.Duration format, e.g. `2h30m`
+* [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. Example: `PT2H30M`
+
+---
+The actor runtime validates correctess of the scheduling configuration and returns error on invalid input.
+
+When you specify both the number of repetitions in `period` as well as `ttl`, the timer/reminder will be stopped when either condition is met.
+
 ### Actor timers
 
 You can register a callback on actor to be executed based on a timer.
 
-The Dapr actor runtime ensures that the callback methods respect the turn-based concurrency guarantees.This means that no other actor methods or timer/reminder callbacks will be in progress until this callback completes execution.
+The Dapr actor runtime ensures that the callback methods respect the turn-based concurrency guarantees. This means that no other actor methods or timer/reminder callbacks will be in progress until this callback completes execution.
 
-The next period of the timer starts after the callback completes execution. This implies that the timer is stopped while the callback is executing and is started when the callback finishes.
+The Dapr actor runtime saves changes made to the actor's state when the callback finishes. If an error occurs in saving the state, that actor object is deactivated and a new instance will be activated.
 
-The Dapr actors runtime saves changes made to the actor's state when the callback finishes. If an error occurs in saving the state, that actor object is deactivated and a new instance will be activated.
+All timers are stopped when the actor is deactivated as part of garbage collection. No timer callbacks are invoked after that. Also, the Dapr actor runtime does not retain any information about the timers that were running before deactivation. It is up to the actor to register any timers that it needs when it is reactivated in the future.
 
-All timers are stopped when the actor is deactivated as part of garbage collection. No timer callbacks are invoked after that. Also, the Dapr actors runtime does not retain any information about the timers that were running before deactivation. It is up to the actor to register any timers that it needs when it is reactivated in the future.
-
-You can create a timer for an actor by calling the HTTP/gRPC request to Dapr.
+You can create a timer for an actor by calling the HTTP/gRPC request to Dapr as shown below, or via Dapr SDK.
 
 ```md
 POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-The timer `duetime` and callback are specified in the request body.  The due time represents when the timer will first fire after registration.  The `period` represents how often the timer fires after that.  A due time of 0 means to fire immediately.  Negative due times and negative periods are invalid.
+**Examples**
 
-The following request body configures a timer with a `dueTime` of 9 seconds and a `period` of 3 seconds.  This means it will first fire after 9 seconds, then every 3 seconds after that.
+The timer parameters are specified in the request body.
+
+The following request body configures a timer with a `dueTime` of 9 seconds and a `period` of 3 seconds. This means it will first fire after 9 seconds, then every 3 seconds after that.
 ```json
 {
   "dueTime":"0h0m9s0ms",
@@ -59,11 +96,27 @@ The following request body configures a timer with a `dueTime` of 9 seconds and 
 }
 ```
 
-The following request body configures a timer with a `dueTime` 0 seconds and a `period` of 3 seconds.  This means it fires immediately after registration, then every 3 seconds after that.
+The following request body configures a timer with a `period` of 3 seconds (in ISO 8601 duration format). It also limits the number of invocations to 10. This means it will fire 10 times: first, immediately after registration, then every 3 seconds after that.
 ```json
 {
-  "dueTime":"0h0m0s0ms",
-  "period":"0h0m3s0ms"
+  "period":"R10/PT3S",
+}
+```
+
+The following request body configures a timer with a `period` of 3 seconds (in ISO 8601 duration format) and a `ttl` of 20 seconds. This means it fires immediately after registration, then every 3 seconds after that for the duration of 20 seconds.
+```json
+{
+  "period":"PT3S",
+  "ttl":"20s"
+}
+```
+
+The following request body configures a timer with a `dueTime` of 10 seconds, a `period` of 3 seconds, and a `ttl` of 10 seconds. It also limits the number of invocations to 4. This means it will first fire after 10 seconds, then every 3 seconds after that for the duration of 10 seconds, but no more than 4 times in total.
+```json
+{
+  "dueTime":"10s",
+  "period":"R4/PT3S",
+  "ttl":"10s"
 }
 ```
 
@@ -77,69 +130,15 @@ Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
 
 ### Actor reminders
 
-Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actors runtime persists the information about the actors' reminders using Dapr actor state provider.
+Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using Dapr actor state provider.
 
-You can create a persistent reminder for an actor by calling the Http/gRPC request to Dapr.
+You can create a persistent reminder for an actor by calling the HTTP/gRPC request to Dapr as shown below, or via Dapr SDK.
 
 ```md
 POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-The reminder `duetime` and callback can be specified in the request body.  The due time represents when the reminder first fires after registration.  The `period` represents how often the reminder will fire after that.  A due time of 0 means to fire immediately.  Negative due times and negative periods are invalid.  To register a reminder that fires only once, set the period to an empty string.
-
-The following request body configures a reminder with a `dueTime` 9 seconds and a `period` of 3 seconds.  This means it will first fire after 9 seconds, then every 3 seconds after that.
-```json
-{
-  "dueTime":"0h0m9s0ms",
-  "period":"0h0m3s0ms"
-}
-```
-
-The following request body configures a reminder with a `dueTime` 0 seconds and a `period` of 3 seconds.  This means it will fire immediately after registration, then every 3 seconds after that.
-```json
-{
-  "dueTime":"0h0m0s0ms",
-  "period":"0h0m3s0ms"
-}
-```
-
-The following request body configures a reminder with a `dueTime` 15 seconds and a `period` of empty string.  This means it will first fire after 15 seconds, then never fire again.
-```json
-{
-  "dueTime":"0h0m15s0ms",
-  "period":""
-}
-```
-
-[ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) can also be used to specify `period`. The following request body configures a reminder with a `dueTime` 0 seconds an `period` of 15 seconds.
-```json
-{
-  "dueTime":"0h0m0s0ms",
-  "period":"P0Y0M0W0DT0H0M15S"
-}
-```
-The designators for zero are optional and the above `period` can be simplified to `PT15S`.
-ISO 8601 specifies multiple recurrence formats but only the duration format is currently supported.
-
-#### Reminders with repetitions
-
-When configured with ISO 8601 durations, the `period` column also allows to specify number of times a reminder can run. The following request body will create a reminder that will execute for 5 number of times with a period of 15 seconds.
-```json
-{
-  "dueTime":"0h0m0s0ms",
-  "period":"R5/PT15S"
-}
-```
-
-The number of repetitions i.e. the number of times the reminder is run should be a positive number.
-
-**Example**
-
-Watch this [video](https://www.youtube.com/watch?v=B_vkXqptpXY&t=1002s) for more information on using ISO 861 for Reminders
-
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/B_vkXqptpXY?start=1003" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+The request structure for reminders is identical to those of actors. Please refer to the [actor timers examples]({{< ref "#actor-timers" >}}).
 
 #### Retrieve actor reminder
 
@@ -161,7 +160,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
 
 ## Actor runtime configuration
 
-You can configure the Dapr Actors runtime configuration to modify the default runtime behavior.
+You can configure the Dapr actor runtime configuration to modify the default runtime behavior.
 
 ### Configuration parameters
 - `actorIdleTimeout` - The timeout before deactivating an idle actor. Checks for timeouts occur every `actorScanInterval` interval. **Default: 60 minutes**
@@ -200,7 +199,7 @@ public void ConfigureServices(IServiceCollection services)
     {
         // Register actor types and configure actor settings
         options.Actors.RegisterActor<MyActor>();
-        
+
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
@@ -312,7 +311,7 @@ public void ConfigureServices(IServiceCollection services)
     {
         // Register actor types and configure actor settings
         options.Actors.RegisterActor<MyActor>();
-        
+
         // Configure default settings
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
