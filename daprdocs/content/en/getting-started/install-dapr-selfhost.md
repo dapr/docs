@@ -52,7 +52,7 @@ dapr --version
 
 Output should look like this:
 ```
-CLI version: {{% dapr-latest-version long="true" %}}
+CLI version: {{% dapr-latest-version cli="true" %}}
 Runtime version: {{% dapr-latest-version long="true" %}}
 ```
 
