@@ -42,14 +42,14 @@ metadata:
   name: myevent-subscription
 spec:
   pubsubname: pubsub
-  topic: transactions
+  topic: inventory
   routes:
     rules:
-      - match: event.type == "withdraw.v3"
-        path: /withdraw.v3
-      - match: event.type == "withdraw.v2"
-        path: /withdraw.v2
-    default: /withdraw
+      - match: event.type == "widget"
+        path: /widgets
+      - match: event.type == "gadget"
+        path: /gadgets
+    default: /products
 scopes:
   - app1
   - app2
@@ -77,24 +77,24 @@ def subscribe():
     subscriptions = [
       {
         'pubsubname': 'pubsub',
-        'topic': 'transactions',
+        'topic': 'inventory',
         'routes': {
           'rules': [
             {
-              'match': 'event.type == "withdraw.v3"',
-              'path': '/withdraw.v3'
+              'match': 'event.type == "widget"',
+              'path': '/widgets'
             },
             {
-              'match': 'event.type == "withdraw.v2"',
-              'path': '/withdraw.v2'
+              'match': 'event.type == "gadget"',
+              'path': '/gadgets'
             },
           ],
-          'default': '/withdraw'
+          'default': '/products'
         }
       }]
     return jsonify(subscriptions)
 
-@app.route('/withdraw', methods=['POST'])
+@app.route('/products', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
@@ -113,30 +113,30 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 const port = 3000
 
 app.get('/dapr/subscribe', (req, res) => {
-    res.json([
-        {
-            pubsubname: "pubsub",
-            topic: "transactions",
-            routes: {
-                rules: [
-                    {
-                        match: 'event.type == "withdraw.v3"',
-                        path: '/withdraw.v3'
-                    },
-                    {
-                        match: 'event.type == "withdraw.v2"',
-                        path: '/withdraw.v2'
-                    },
-                ],
-                default: '/withdraw'
-            }
-        }
-    ]);
+  res.json([
+    {
+      pubsubname: "pubsub",
+      topic: "inventory",
+      routes: {
+        rules: [
+          {
+            match: 'event.type == "widget"',
+            path: '/widgets'
+          },
+          {
+            match: 'event.type == "gadget"',
+            path: '/gadgets'
+          },
+        ],
+        default: '/products'
+      }
+    }
+  ]);
 })
 
-app.post('/withdraw', (req, res) => {
-    console.log(req.body);
-    res.sendStatus(200);
+app.post('/products', (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
 });
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
@@ -145,25 +145,25 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 
 {{% codetab %}}
 ```csharp
-        [Topic("pubsub", "transactions", "event.type ==\"withdraw.v3\"", 1)]
-        [HttpPost("withdraw.v3")]
-        public async Task<ActionResult<Account>> WithdrawV3(TransactionV3 transaction, [FromServices] DaprClient daprClient)
+        [Topic("pubsub", "inventory", "event.type ==\"widget\"", 1)]
+        [HttpPost("widgets")]
+        public async Task<ActionResult<Account>> HandleWidget(Widget transaction, [FromServices] DaprClient daprClient)
         {
             // Logic
             return account;
         }
 
-        [Topic("pubsub", "transactions", "event.type ==\"withdraw.v2\"", 2)]
-        [HttpPost("withdraw.v2")]
-        public async Task<ActionResult<Account>> WithdrawV2(TransactionV2 transaction, [FromServices] DaprClient daprClient)
+        [Topic("pubsub", "inventory", "event.type ==\"gadget\"", 2)]
+        [HttpPost("gadgets")]
+        public async Task<ActionResult<Account>> HandleGadget(Gadget transaction, [FromServices] DaprClient daprClient)
         {
             // Logic
             return account;
         }
 
-        [Topic("pubsub", "transactions")]
-        [HttpPost("withdraw")]
-        public async Task<ActionResult<Account>> Withdraw(Transaction transaction, [FromServices] DaprClient daprClient)
+        [Topic("pubsub", "inventory")]
+        [HttpPost("products")]
+        public async Task<ActionResult<Account>> HandleProduct(Product transaction, [FromServices] DaprClient daprClient)
         {
             // Logic
             return account;
@@ -208,19 +208,19 @@ func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 	t := []subscription{
 		{
 			PubsubName: "pubsub",
-			Topic:      "transactions",
+			Topic:      "inventory",
 			Routes: routes{
 				Rules: []rule{
 					{
-						Match: `event.type == "withdraw.v3"`,
-						Path:  "/withdraw.v3",
+						Match: `event.type == "widget"`,
+						Path:  "/widgets",
 					},
 					{
-						Match: `event.type == "withdraw.v2"`,
-						Path:  "/withdraw.v2",
+						Match: `event.type == "gadget"`,
+						Path:  "/gadgets",
 					},
 				},
-				Default: "/withdraw",
+				Default: "/products",
 			},
 		},
 	}
@@ -244,14 +244,14 @@ func main() {
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builder->addDefinitions(['dapr.subscriptions' => [
-    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'transactions', routes: (
+    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'inventory', routes: (
       rules: => [
-        ('match': 'event.type == "withdraw.v3"', path: '/withdraw.v3'),
-        ('match': 'event.type == "withdraw.v2"', path: '/withdraw.v2'),
+        ('match': 'event.type == "widget"', path: '/widgets'),
+        ('match': 'event.type == "gadget"', path: '/gadgets'),
       ]
-      default: '/withdraw')),
+      default: '/products')),
 ]]));
-$app->post('/withdraw', function(
+$app->post('/products', function(
     #[\Dapr\Attributes\FromBody]
     \Dapr\PubSub\CloudEvent $cloudEvent,
     \Psr\Log\LoggerInterface $logger
@@ -266,7 +266,34 @@ $app->start();
 
 {{< /tabs >}}
 
-In these examples, depending on the type of the event (`event.type`), the application will be called on `/withdraw.v3`, `/withdraw.v2` or `/withdraw`. The expressions are written as [Common Expression Language (CEL)](https://opensource.google/projects/cel) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression.
+## Common Expression Language (CEL)
+
+In these examples, depending on the type of the event (`event.type`), the application will be called on `/widgets`, `/gadgets` or `/products`. The expressions are written as [Common Expression Language (CEL)](https://github.com/google/cel-spec) where `event` represents the cloud event. Any of the attributes from the [CloudEvents core specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#required-attributes) can be referenced in the expression.
+
+### Example expressions
+
+Match "important" messages
+
+```javascript
+has(event.data.important) && event.data.important == true
+```
+
+Match deposits greater than $10000
+
+```javascript
+event.type == "deposit" && event.data.amount > 10000
+```
+
+Match multiple versions of a message
+
+```javascript
+event.type == "mymessage.v1"
+```
+```javascript
+event.type == "mymessage.v2"
+```
+
+## CloudEvent attributes
 
 For reference, the following attributes are from the CloudEvents specification.
 
@@ -476,7 +503,13 @@ Currently, comparisons to time (e.g. before or after "now") are not supported.
 
 ## Next steps
 
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+Watch [this video](https://www.youtube.com/watch?v=QqJgRmbH82I&t=1063s) on how to use message routing with pub/sub.
+
+<p class="embed-responsive embed-responsive-16by9">
+<iframe width="688" height="430" src="https://www.youtube.com/embed/QqJgRmbH82I?start=1063" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>
+
+- Try the [Pub/Sub routing sample](https://github.com/dapr/samples/tree/master/pub-sub-routing)
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
