@@ -390,7 +390,7 @@ The following attributes are REQUIRED to be present in all CloudEvents:
   routing, observability, policy enforcement, etc. The format of this is
   producer defined and might include information such as the version of the
   `type` - see
-  [Versioning of CloudEvents in the Primer](primer.md#versioning-of-cloudevents)
+  [Versioning of CloudEvents in the Primer](https://github.com/cloudevents/spec/blob/v1.0.1/primer.md#versioning-of-cloudevents)
   for more information.
 - Constraints:
   - REQUIRED
@@ -404,7 +404,7 @@ The following attributes are REQUIRED to be present in all CloudEvents:
 ### OPTIONAL Attributes
 
 The following attributes are OPTIONAL to appear in CloudEvents. See the
-[Notational Conventions](#notational-conventions) section for more information
+[Notational Conventions](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#notational-conventions) section for more information
 on the definition of OPTIONAL.
 
 #### datacontenttype
@@ -413,12 +413,12 @@ on the definition of OPTIONAL.
 - Description: Content type of `data` value. This attribute enables `data` to
   carry any type of content, whereby format and encoding might differ from that
   of the chosen event format. For example, an event rendered using the
-  [JSON envelope](./json-format.md#3-envelope) format might carry an XML payload
+  [JSON envelope](https://github.com/cloudevents/spec/blob/v1.0.1/json-format.md#3-envelope) format might carry an XML payload
   in `data`, and the consumer is informed by this attribute being set to
   "application/xml". The rules for how `data` content is rendered for different
   `datacontenttype` values are defined in the event format specifications; for
   example, the JSON event format defines the relationship in
-  [section 3.1](./json-format.md#31-handling-of-data).
+  [section 3.1](https://github.com/cloudevents/spec/blob/v1.0.1/json-format.md#31-handling-of-data).
 
   For some binary mode protocol bindings, this field is directly mapped to the
   respective protocol's content-type metadata property. Normative rules for the
@@ -447,7 +447,7 @@ on the definition of OPTIONAL.
 - Type: `URI`
 - Description: Identifies the schema that `data` adheres to. Incompatible
   changes to the schema SHOULD be reflected by a different URI. See
-  [Versioning of CloudEvents in the Primer](primer.md#versioning-of-cloudevents)
+  [Versioning of CloudEvents in the Primer](https://github.com/cloudevents/spec/blob/v1.0.1/primer.md#versioning-of-cloudevents)
   for more information.
 - Constraints:
   - OPTIONAL
