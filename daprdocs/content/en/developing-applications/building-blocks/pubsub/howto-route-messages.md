@@ -147,26 +147,26 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```csharp
         [Topic("pubsub", "inventory", "event.type ==\"widget\"", 1)]
         [HttpPost("widgets")]
-        public async Task<ActionResult<Account>> HandleWidget(Widget transaction, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult<Stock>> HandleWidget(Widget widget, [FromServices] DaprClient daprClient)
         {
             // Logic
-            return account;
+            return stock;
         }
 
         [Topic("pubsub", "inventory", "event.type ==\"gadget\"", 2)]
         [HttpPost("gadgets")]
-        public async Task<ActionResult<Account>> HandleGadget(Gadget transaction, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult<Stock>> HandleGadget(Gadget gadget, [FromServices] DaprClient daprClient)
         {
             // Logic
-            return account;
+            return stock;
         }
 
         [Topic("pubsub", "inventory")]
         [HttpPost("products")]
-        public async Task<ActionResult<Account>> HandleProduct(Product transaction, [FromServices] DaprClient daprClient)
+        public async Task<ActionResult<Stock>> HandleProduct(Product product, [FromServices] DaprClient daprClient)
         {
             // Logic
-            return account;
+            return stock;
         }
 ```
 {{% /codetab %}}
