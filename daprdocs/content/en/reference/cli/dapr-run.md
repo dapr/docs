@@ -38,6 +38,7 @@ dapr run [flags] [command]
 | `--log-level` | | `info` | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic` |
 | `--placement-host-address` | `DAPR_PLACEMENT_HOST` | `localhost` | The address of the placement service. Format is either `<hostname>` for default port (`6050` on Windows, `50005` on Linux/MacOS) or `<hostname>:<port>` for custom port |
 | `--profile-port` | | `7777` | The port for the profile server to listen on |
+| `--unix-domain-socket`, `-u` | | `/tmp/dapr-APPID-[http|grpc].socket` | The socket path to listen on |
 | `--dapr-http-max-request-size` | | `4` | Max size of request body in MB.|
 
 ## Examples
@@ -70,4 +71,10 @@ dapr run --app-id myapp -- python myapp.py
 
 ```bash
 dapr run --app-id myapp
+```
+
+### Run a .Net application with socket
+
+```bash
+dapr run --app-id myapp --app-port 5000 --enable-unix-socket -- dotnet run
 ```
