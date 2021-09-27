@@ -227,9 +227,9 @@ Microsoft Content Filter is disabled when the output is "Success".
 
 > Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting.
 
-## I can not create a pod
+## admission webhook denied the request
 
-If you can not create a pod as below:
+If you meet error like below:
 
 ```bash
 root:[dapr]$ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
@@ -242,10 +242,8 @@ You can create a clusterrolebind for a user:
 kubectl create clusterrolebinding dapr-<name-of-user> --clusterrole=dapr-operator-admin --user <name-of-user>
 ```
 
-You can run below command to get all users in your cluster:
+You can run the below command to get all users in your cluster:
 
 ```bash
 kubectl config get-users
 ```
-
-Then you can enjoy it!
