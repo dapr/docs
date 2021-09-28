@@ -11,6 +11,7 @@ Welcome to the Dapr getting started guide!
 
 {{% alert title="Dapr Concepts" color="primary" %}}
 If you are looking for an introductory overview of Dapr and learn more about basic Dapr terminology, it is recommended to visit the [concepts section]({{<ref concepts>}}).
+{{< button text="Learn more" page="concepts" >}}
 {{% /alert %}}
 
 This guide will walk you through a series of steps to install, initialize and start using Dapr. The recommended way to get started with Dapr is to setup a local development environment (also referred to as [_self-hosted_ mode]({{< ref self-hosted >}})) which includes the Dapr CLI, Dapr sidecar binaries, and some default components that can help you start using Dapr quickly.
@@ -23,3 +24,4 @@ The following steps in this guide are:
 1. Explore Dapr quickstarts
 
 {{< button text="First step: Install the Dapr CLI >>" page="install-dapr-cli" >}}
+<br><br>
