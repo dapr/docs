@@ -10,6 +10,12 @@ enableGitInfo = true
 # Language Configuration
 languageCode = "en-us"
 
+[server]
+[[server.headers]]
+  for = '/**.html'
+  [server.headers.values]
+    X-Frame-Options = 'DENY'
+
 [languages]
   [languages.en]
     title = "Dapr Docs"
