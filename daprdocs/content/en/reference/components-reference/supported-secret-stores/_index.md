@@ -45,5 +45,4 @@ Table captions:
 
 | Name                                                                                  | Status | Component version | Since |
 |---------------------------------------------------------------------------------------|--------| ---- |--------------|
-| [Azure Key Vault w/ Managed Identity]({{< ref azure-keyvault-managed-identity.md >}}) | Alpha  | v1 | 1.0 |
 | [Azure Key Vault]({{< ref azure-keyvault.md >}})                                      | GA  | v1 | 1.0 |
