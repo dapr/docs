@@ -49,3 +49,9 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
    ```bash
    daprd --app-id myapp --enable-metrics
    ```
+
+5. Listen to IPv4 and IPv6 loopback only
+
+   ```bash
+   daprd --app-id myapp --dapr-listen-addresses '127.0.0.1,[::1]'
+   ```
