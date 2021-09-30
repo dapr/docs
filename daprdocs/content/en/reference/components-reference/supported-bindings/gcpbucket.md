@@ -172,7 +172,7 @@ The response body will contain the following JSON:
 
 ### Get object
 
-To perform a get file operation, invoke the AWS S3 binding with a `POST` method and the following JSON body:
+To perform a get file operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
 
 ```json
 {
@@ -215,7 +215,7 @@ The response body contains the value stored in the object.
 
 ### Delete object
 
-To perform a delete object operation, invoke the AWS S3 binding with a `POST` method and the following JSON body:
+To perform a delete object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
 
 ```json
 {
