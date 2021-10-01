@@ -30,6 +30,8 @@ spec:
     value: "myqueue"
   - name: ttlInSeconds
     value: "60"
+  - name: decodeBase64
+    value: "false"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -44,6 +46,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | storageAccessKey | Y | Input/Output | The Azure Storage access key | `"accessKey"` |
 | queue | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
 | ttlInSeconds | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
+| decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 
 ## Binding support
 
