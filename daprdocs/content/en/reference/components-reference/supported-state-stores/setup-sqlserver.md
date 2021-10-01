@@ -52,7 +52,7 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string used to connect. If the connection string contains the database it must already exist. If the database is omitted a default database named `"Dapr"` will be created.  | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"`
+| connectionString   | Y        | The connection string used to connect. If the connection string contains the database it must already exist. If the database is omitted a default database named `"Dapr"` is created.  | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"`
 | tableName          | N        | The name of the table to use. Alpha-numeric with underscores. Defaults to `"state"` | `"table_name"`
 | keyType            | N        | The type of key used. Defaults to `"string"` | `"string"`
 | keyLength          | N        | The max length of key. Used along with `"string"` keytype. Defaults to `"200"` | `"200"`
