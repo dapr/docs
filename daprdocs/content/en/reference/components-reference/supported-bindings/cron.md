@@ -74,3 +74,4 @@ This component supports **output binding** with the following operations:
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
+- [Dapr Cron Binding Example](https://markheath.net/post/dapr-cron-binding)
