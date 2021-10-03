@@ -7,16 +7,19 @@ no_list: true
 
 Welcome to the Dapr documentation site!
 
-### Sections
+
+{{% alert title="What is Dapr?" color="primary" %}}
+Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, 
+stateless and stateful applications that run on the cloud and edge and embraces the diversity of 
+languages and developer frameworks. Leveraging the benefits of a sidecar architecture, Dapr helps 
+you tackle the challenges that come with building microservices and keeps your code platform agnostic. 
+{{< button text="Get started" page="getting-started" >}}
+{{% /alert %}}
+
+
+### Start developing with Dapr
 
 <div class="card-deck">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><b>Concepts</b></h5>
-      <p class="card-text">Learn about Dapr, including its main features and capabilities.</p>
-      <a href="{{< ref concepts >}}" class="stretched-link"></a>
-    </div>
-  </div>
   <div class="card">
     <div class="card-body">
       <h5 class="card-title"><b>Getting started</b></h5>
@@ -26,14 +29,38 @@ Welcome to the Dapr documentation site!
   </div>
   <div class="card">
     <div class="card-body">
+      <h5 class="card-title"><b>Quickstarts</b></h5>
+      <p class="card-text">A collection of tutorials with code samples to get you started quickly with Dapr.</p>
+      <a href="{{< ref quickstarts >}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><b>Concepts</b></h5>
+      <p class="card-text">Learn about Dapr, including its main features and capabilities.</p>
+      <a href="{{< ref concepts >}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
+
+
+### Learn more about Dapr
+
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
       <h5 class="card-title"><b>Developing applications</b></h5>
       <p class="card-text">Tools, tips, and information on how to build your application with Dapr.</p>
       <a href="{{< ref developing-applications >}}" class="stretched-link"></a>
     </div>
   </div>
-</div>
-<br />
-<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><b>Building blocks</b></h5>
+      <p class="card-text">Capabilities that solve common development challenges for distributed applications.</p>
+      <a href="{{< ref building-blocks-concept >}}" class="stretched-link"></a>
+    </div>
+  </div>
   <div class="card">
     <div class="card-body">
       <h5 class="card-title"><b>Operations</b></h5>
@@ -41,6 +68,12 @@ Welcome to the Dapr documentation site!
       <a href="{{< ref operations >}}" class="stretched-link"></a>
     </div>
   </div>
+</div>
+
+
+### Additional info
+
+<div class="card-deck">
   <div class="card">
     <div class="card-body">
       <h5 class="card-title"><b>Reference</b></h5>
@@ -58,64 +91,100 @@ Welcome to the Dapr documentation site!
 </div>
 
 
-### Tooling
+### Tooling and resources
 
-<div class="media">
-  <a class="pr-1" href="{{< ref ides >}}">
-    <img class="mr-3" src="/images/homepage/vscode.svg" alt="Visual studio code icon" width=40>
-  </a>
-  <div class="media-body">
-    <h5 class="mt-0"><b>IDE Integrations</b></h5>
-    <p>Learn how to get up and running with Dapr in your preferred integrated development environment.</p>
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/vscode.svg" alt="Visual studio code icon" width=40>
+        <b>IDE Integrations</b>
+      </h5>
+      <p class="card-text">
+        Learn how to get up and running with Dapr in your preferred integrated development environment.
+      </p>
+      <a href="{{< ref ides >}}" class="stretched-link"></a>
+    </div>
   </div>
 </div>
-<div class="media">
-  <a class="pr-1" href="{{< ref sdks >}}">
-    <img class="mr-3" src="/images/homepage/code.svg" alt="Code icon" width=40>
-  </a>
-  <div class="media-body">
-    <h5 class="mt-0"><b>Language SDKs</b></h5>
-    <p>Create Dapr applications in your preferred language using the Dapr SDKs.</p>
-    <div class="media mt-3">
-      <a class="pr-3" href="{{< ref dotnet >}}">
+<br>
+<div class="card-deck">
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/code.svg" alt="Code icon" width=40>
+        <b>Language SDKs</b>
+      </h5>
+      <p class="card-text">
+        Create Dapr applications in your preferred language using the Dapr SDKs.
+      </p>
+      <a href="{{< ref sdks >}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
+<br>
+<div class="card-deck">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
         <img src="/images/homepage/dotnet.png" alt=".NET logo" width=30>
-      </a>
-      <div class="media-body">
-        <h5 class="mt-0"><b>.NET</b></h5>
-      </div>
+        <b>.NET</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the .NET SDK.
+      </p>
+      <a href="{{< ref dotnet >}}" class="stretched-link"></a>
     </div>
-    <div class="media mt-3">
-      <a class="pr-3" href="{{< ref python >}}">
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
         <img src="/images/homepage/python.png" alt="Python logo" width=30>
-      </a>
-      <div class="media-body">
-        <h5 class="mt-0"><b>Python</b></h5>
-      </div>
-    </div>
-    <div class="media mt-3">
-      <a class="pr-4" href="{{< ref sdks >}}">
-        <img src="/images/homepage/java.png" alt="Java logo" width=20>
-      </a>
-      <div class="media-body">
-        <h5 class="mt-0"><b>Java</b></h5>
-      </div>
-    </div>
-    <div class="media mt-3">
-      <a class="pr-4" href="{{< ref go >}}">
-        <img src="/images/homepage/golang.svg" alt="Go logo" width=30>
-      </a>
-      <div class="media-body">
-        <h5 class="mt-0"><b>Go</b></h5>
-      </div>
-    </div>
-    <div class="media mt-3">
-      <a class="pr-4" href="{{< ref php >}}">
-        <img src="/images/homepage/php.png" alt="PHP logo" width=30>
-      </a>
-      <div class="media-body">
-        <h5 class="mt-0"><b>PHP</b></h5>
-      </div>
+        <b>Python</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the Python SDK.
+      </p>
+      <a href="{{< ref python >}}" class="stretched-link"></a>
     </div>
   </div>
 </div>
-<br />
+<br>
+<div class="card-deck">
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/javalang.png" alt="Java logo" width=30>
+        <b>Java</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the Java SDK.
+      </p>
+      <a href="{{< ref java >}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/golang.svg" alt="Go logo" width=30>
+        <b>Go</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the Go SDK.
+      </p>
+      <a href="{{< ref go >}}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/php.png" alt="PHP logo" width=30>
+        <b>PHP</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the PHP SDK.
+      </p>
+      <a href="{{< ref php >}}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
