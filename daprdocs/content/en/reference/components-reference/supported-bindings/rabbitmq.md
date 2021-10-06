@@ -38,6 +38,8 @@ spec:
     value: false
   - name: maxPriority
     value: 5
+- name: contentType
+    value: "text/plain"
 ```
 
 {{% alert title="Warning" color="warning" %}}
