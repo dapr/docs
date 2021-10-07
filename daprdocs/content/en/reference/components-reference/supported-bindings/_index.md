@@ -26,6 +26,7 @@ Table captions:
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since runtime version |
 |------|:----------------:|:-----------------:|--------|-------- | ---------|
 | [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 |
+| [commercetools]({{< ref commercetools.md >}})       |    | ✅ | Alpha | v1 | 1.5 |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [GraphQL]({{< ref graghql.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | GA | v1 | 1.0 |
