@@ -403,12 +403,22 @@ spec:
 
 ## Optional behaviors
 
-### Key scheme
+### Custom key schemes
 
-A Dapr-compatible state store shall use the following key scheme:
+For non-actor state stores, the key scheme can be customized by setting the `keyPrefix` metadata property in the component's configuration YAML file. The `keyPrefix` can be set to one of the following values:
 
-* *\<App ID>||\<state key>* key format for general states
-* *\<App ID>||\<Actor type>||\<Actor id>||\<state key>* key format for Actor states.
+| `keyPrefix` value | Key scheme | Example |
+| ----------------- | ---------- | ------- |
+| `appid` (default) | _\<app ID\>_\|\|_\<state key\>_        | `myapp\|\|key1` |
+| `name`            | _\<store name\>_\|\|_\<state key\>_    | `myredisstore\|\|key1` |
+| `none`            | _\<state key\>_                        | `key1` |
+| Custom prefix, e.g. `foo` | _\<custom prefix\>_\|\|_\<state key\>_ | `foo\|\|key1` |
+
+> Note that custom prefix strings must be specified without the reserved separator string `||`, for example `foo`, not `foo||`.
+
+For usage examples, see [How-To: Share state between applications]({{< ref howto-share-state.md >}}).
+
+Actor state stores do not support custom key schemes and always use _\<app ID\>_\|\|_\<actor type\>_\|\|_\<actor id\>_\|\|_\<state key\>_ as the key scheme.
 
 ### Concurrency
 
