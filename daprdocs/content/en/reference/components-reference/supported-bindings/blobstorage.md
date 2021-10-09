@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | container | Y | Output | The name of the Blob Storage container to write to | `myexamplecontainer` |
 | decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `10` | `1`, `2`
-| publicAccessLevel | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only it's used if the container is created by dapr). Defaults to `none` | `blob`, `container`, `none` 
+| publicAccessLevel | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only used if the container is created by Dapr). Defaults to `none` | `blob`, `container`, `none` 
 
 
 ## Binding support
