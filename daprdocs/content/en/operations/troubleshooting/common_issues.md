@@ -229,6 +229,8 @@ Microsoft Content Filter is disabled when the output is "Success".
 
 ## admission webhook denied the request
 
+This is due to admission webhook has a whitelist for service accounts to create/modify resources.
+
 If you meet error like below:
 
 ```bash
