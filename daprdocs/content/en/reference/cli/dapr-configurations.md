@@ -5,21 +5,21 @@ linkTitle: "configurations"
 description: "Detailed information on the configurations CLI command"
 ---
 
-## Description
+### Description
 
 List all Dapr configurations.
 
-## Supported platforms
+### Supported platforms
 
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr configurations [flags]
 ```
 
-## Flags
+### Flags
 
 | Name                 | Environment Variable | Default | Description                                          |
 | -------------------- | -------------------- | ------- | ---------------------------------------------------- |
@@ -28,7 +28,7 @@ dapr configurations [flags]
 | `--output`, `-o`     |                      | `list`  | Output format (options: json or yaml or list)        |
 | `--help`, `-h`       |                      |         | Print this help message                              |
 
-## Examples
+### Examples
 
 ```bash
 # List Kubernetes Dapr configurations

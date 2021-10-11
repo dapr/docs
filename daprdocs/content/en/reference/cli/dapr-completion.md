@@ -5,26 +5,26 @@ linkTitle: "completion"
 description: "Detailed information on the completion CLI command"
 ---
 
-## Description
+### Description
 
 Generates shell completion scripts
 
-## Usage
+### Usage
 
 ```bash
 dapr completion [flags]
 dapr completion [command]
 ```
 
-## Flags
+### Flags
 
 | Name           | Environment Variable | Default | Description              |
 | -------------- | -------------------- | ------- | ------------------------ |
 | `--help`, `-h` |                      |         | Prints this help message |
 
-## Examples
+### Examples
 
-### Installing bash completion on macOS using Homebrew
+#### Installing bash completion on macOS using Homebrew
 
 If running Bash 3.2 included with macOS:
 
@@ -45,7 +45,7 @@ dapr completion bash > $(brew --prefix)/etc/bash_completion.d/dapr
 source ~/.bash_profile
 ```
 
-### Installing bash completion on Linux
+#### Installing bash completion on Linux
 
 If bash-completion is not installed on Linux, please install the bash-completion' package via your distribution's package manager.
 
@@ -63,7 +63,7 @@ printf "source '$HOME/.dapr/completion.bash.inc'" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
-### Installing zsh completion on macOS using homebrew
+#### Installing zsh completion on macOS using homebrew
 
 If zsh-completion is not installed on macOS, please install the 'zsh-completion' package:
 
@@ -77,7 +77,7 @@ dapr completion zsh > "${fpath[1]}/_dapr"
 source ~/.zshrc
 ```
 
-### Installing zsh completion on Linux
+#### Installing zsh completion on Linux
 
 If zsh-completion is not installed on Linux, please install the 'zsh-completion' package via your distribution's package manager.
 
@@ -93,7 +93,7 @@ Set the dapr completion code for zsh[1] to autoload on startup:
 dapr completion zsh > "${fpath[1]}/_dapr"
 ```
 
-### Installing Powershell completion on Windows
+#### Installing Powershell completion on Windows
 
 Create $PROFILE if it not exists:
 
@@ -107,7 +107,7 @@ Add the completion to your profile:
 dapr completion powershell >> $PROFILE
 ```
 
-## Available Commands
+### Available Commands
 
 ```txt
 bash        Generates bash completion scripts

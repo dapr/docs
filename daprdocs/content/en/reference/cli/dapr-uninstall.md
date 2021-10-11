@@ -5,22 +5,22 @@ linkTitle: "uninstall"
 description: "Detailed information on the uninstall CLI command"
 ---
 
-## Description
+### Description
 
 Uninstall Dapr runtime.
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr uninstall [flags]
 ```
 
-## Flags
+### Flags
 
 | Name                 | Environment Variable | Default       | Description                                                                                                                                         |
 | -------------------- | -------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -29,9 +29,9 @@ dapr uninstall [flags]
 | `--kubernetes`, `-k` |                      | `false`       | Uninstall Dapr from a Kubernetes cluster                                                                                                            |
 | `--namespace`, `-n`  |                      | `dapr-system` | The Kubernetes namespace to uninstall Dapr from                                                                                                     |
 
-## Examples
+### Examples
 
-### Uninstall from self-hosted mode
+#### Uninstall from self-hosted mode
 
 ```bash
 dapr uninstall
@@ -43,7 +43,7 @@ You can also use option `--all` to remove .dapr directory, Redis, Placement and 
 dapr uninstall --all
 ```
 
-### Uninstall from Kubernetes
+#### Uninstall from Kubernetes
 
 ```bash
 dapr uninstall -k

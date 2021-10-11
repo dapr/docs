@@ -5,21 +5,21 @@ linkTitle: "invoke"
 description: "Detailed information on the invoke CLI command"
 ---
 
-## Description
+### Description
 
 Invoke a method on a given Dapr application.
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr invoke [flags]
 ```
 
-## Flags
+### Flags
 
 | Name                | Environment Variable | Default | Description                                           |
 | ------------------- | -------------------- | ------- | ----------------------------------------------------- |
@@ -30,7 +30,7 @@ dapr invoke [flags]
 | `--data-file`, `-f` |                      |         | A file containing the JSON serialized data (optional) |
 | `--verb`, `-v`      |                      | `POST`  | The HTTP verb to use                                  |
 
-## Examples
+### Examples
 
 ```bash
 # Invoke a sample method on target app with POST Verb

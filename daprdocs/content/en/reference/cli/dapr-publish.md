@@ -5,21 +5,21 @@ linkTitle: "publish"
 description: "Detailed information on the publish CLI command"
 ---
 
-## Description
+### Description
 
 Publish a pub-sub event.
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr publish [flags]
 ```
 
-## Flags
+### Flags
 
 | Name                     | Environment Variable | Default                                                      | Description                                           |
 | ------------------------ | -------------------- | ------------------------------------------------------------ | ----------------------------------------------------- |
@@ -31,7 +31,7 @@ dapr publish [flags]
 | `--help`, `-h`           |                      |                                                              | Print this help message                               |
 
 
-## Examples
+### Examples
 
 ```bash
 # Publish to sample topic in target pubsub

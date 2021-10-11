@@ -5,22 +5,22 @@ linkTitle: "dashboard"
 description: "Detailed information on the dashboard CLI command"
 ---
 
-## Description
+### Description
 
 Start [Dapr dashboard](https://github.com/dapr/dashboard).
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr dashboard [flags]
 ```
 
-## Flags
+### Flags
 
 | Name                 | Environment Variable | Default       | Description                                                                 |
 | -------------------- | -------------------- | ------------- | --------------------------------------------------------------------------- |
@@ -31,7 +31,7 @@ dapr dashboard [flags]
 | `--port`, `-p`       |                      | `8080`        | The local port on which to serve Dapr dashboard                             |
 | `--version`, `-v`    |                      | `false`       | Print the version for Dapr dashboard                                        |
 
-## Examples
+### Examples
 
 ```bash
 # Start dashboard locally

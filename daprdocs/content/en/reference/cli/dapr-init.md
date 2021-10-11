@@ -5,22 +5,22 @@ linkTitle: "init"
 description: "Detailed information on the init CLI command"
 ---
 
-## Description
+### Description
 
 Install Dapr on supported hosting platforms.
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr init [flags]
 ```
 
-## Flags
+### Flags
 
 | Name                 | Environment Variable | Default       | Description                                                                          |
 | -------------------- | -------------------- | ------------- | ------------------------------------------------------------------------------------ |
@@ -34,9 +34,9 @@ dapr init [flags]
 | `--runtime-version`  |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
 | `--slim`, `-s`       |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
 
-## Examples
+### Examples
 
-### Self-hosted environment
+#### Self-hosted environment
 
 ```bash
 dapr init
@@ -54,7 +54,7 @@ Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) 
 dapr init -s
 ```
 
-### Kubernetes environment
+#### Kubernetes environment
 
 ```bash
 dapr init -k

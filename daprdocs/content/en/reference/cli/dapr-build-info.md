@@ -5,20 +5,20 @@ linkTitle: "build-info"
 description: "Detailed build information on dapr-cli and daprd executables"
 ---
 
-## Description
+### Description
 
 Get the version and git commit data for `dapr-cli` and `daprd` executables.
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr build-info
 ```
 
-## Related facts
+### Related facts
 
 You can get `daprd` build information directly by invoking `daprd --build-info` command.

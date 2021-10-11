@@ -5,21 +5,21 @@ linkTitle: "run"
 description: "Detailed information on the run CLI command"
 ---
 
-## Description
+### Description
 
 Run Dapr and (optionally) your application side by side. A full list comparing daprd arguments, CLI arguments, and Kubernetes annotations can be found [here]({{< ref arguments-annotations-overview.md >}}).
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr run [flags] [command]
 ```
 
-## Flags
+### Flags
 
 | Name                           | Environment Variable | Default                                                                            | Description                                                                                          |
 | ------------------------------ | -------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -40,7 +40,7 @@ dapr run [flags] [command]
 | `--profile-port`               |                      | `7777`                                                                             | The port for the profile server to listen on                                                         |
 | `--dapr-http-max-request-size` |                      | `4`                                                                                | Max size of request body in MB.                                                                      |
 
-## Examples
+### Examples
 
 ```bash
 # Run a .NET application

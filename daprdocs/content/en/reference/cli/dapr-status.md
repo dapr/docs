@@ -5,28 +5,28 @@ linkTitle: "status"
 description: "Detailed information on the status CLI command"
 ---
 
-## Description
+### Description
 
 Show the health status of Dapr services.
 
-## Supported platforms
+### Supported platforms
 
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr status -k
 ```
 
-## Flags
+### Flags
 
 | Name                 | Environment Variable | Default | Description                                                   |
 | -------------------- | -------------------- | ------- | ------------------------------------------------------------- |
 | `--help`, `-h`       |                      |         | Print this help message                                       |
 | `--kubernetes`, `-k` |                      | `false` | Show the health status of Dapr services on Kubernetes cluster |
 
-## Examples
+### Examples
 
 ```bash
 # Get status of Dapr services from Kubernetes
