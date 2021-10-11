@@ -14,6 +14,7 @@ Get the version and git commit data for `dapr-cli` and `daprd` executables.
 - [Self-Hosted]({{< ref self-hosted >}})
 
 ## Usage
+
 ```bash
 dapr build-info
 ```

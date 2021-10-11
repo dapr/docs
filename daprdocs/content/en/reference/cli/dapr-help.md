@@ -17,6 +17,6 @@ dapr help [command] [flags]
 
 ## Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | Prints this help message |
+| Name           | Environment Variable | Default | Description              |
+| -------------- | -------------------- | ------- | ------------------------ |
+| `--help`, `-h` |                      |         | Prints this help message |

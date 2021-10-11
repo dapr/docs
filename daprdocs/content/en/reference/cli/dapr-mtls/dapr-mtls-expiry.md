@@ -15,19 +15,20 @@ Checks the expiry of the root certificate
 - [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
+
 ```bash
 dapr mtls expiry [flags]
 ```
 
 ## Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | help for expiry |
+| Name           | Environment Variable | Default | Description     |
+| -------------- | -------------------- | ------- | --------------- |
+| `--help`, `-h` |                      |         | help for expiry |
 
 ## Examples
 
-### Check expiry of Kubernetes certs
 ```bash
+# Check expiry of Kubernetes certs
 dapr mtls expiry
 ```

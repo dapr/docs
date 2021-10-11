@@ -21,14 +21,14 @@ dapr status -k
 
 ## Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | Print this help message |
-| `--kubernetes`, `-k` | | `false` | Show the health status of Dapr services on Kubernetes cluster |
+| Name                 | Environment Variable | Default | Description                                                   |
+| -------------------- | -------------------- | ------- | ------------------------------------------------------------- |
+| `--help`, `-h`       |                      |         | Print this help message                                       |
+| `--kubernetes`, `-k` |                      | `false` | Show the health status of Dapr services on Kubernetes cluster |
 
 ## Examples
 
-### Get status of Dapr services from Kubernetes
 ```bash
+# Get status of Dapr services from Kubernetes
 dapr status -k
 ```

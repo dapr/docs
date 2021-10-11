@@ -15,20 +15,21 @@ Export the root CA, issuer cert and key from Kubernetes to local files
 - [Kubernetes]({{< ref kubernetes >}})
 
 ## Usage
+
 ```bash
 dapr mtls export [flags]
 ```
 
 ## Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | help for export |
-| `--out`, `-o` | | current directory | The output directory path to save the certs |
+| Name           | Environment Variable | Default           | Description                                 |
+| -------------- | -------------------- | ----------------- | ------------------------------------------- |
+| `--help`, `-h` |                      |                   | help for export                             |
+| `--out`, `-o`  |                      | current directory | The output directory path to save the certs |
 
 ## Examples
 
-### Check expiry of Kubernetes certs
 ```bash
+# Check expiry of Kubernetes certs
 dapr mtls export -o ./certs
 ```

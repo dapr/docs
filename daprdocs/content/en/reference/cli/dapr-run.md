@@ -42,32 +42,19 @@ dapr run [flags] [command]
 
 ## Examples
 
-### Run a .NET application
-
 ```bash
+# Run a .NET application
 dapr run --app-id myapp --app-port 5000 -- dotnet run
-```
 
-### Run a Java application
-
-```bash
+# Run a Java application
 dapr run --app-id myapp -- java -jar myapp.jar
-```
 
-### Run a NodeJs application that listens to port 3000
-
-```bash
+# Run a NodeJs application that listens to port 3000
 dapr run --app-id myapp --app-port 3000 -- node myapp.js
-```
 
-### Run a Python application
-
-```bash
+# Run a Python application
 dapr run --app-id myapp -- python myapp.py
-```
 
-### Run sidecar only
-
-```bash
+# Run sidecar only
 dapr run --app-id myapp
 ```
