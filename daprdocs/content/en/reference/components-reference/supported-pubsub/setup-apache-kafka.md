@@ -51,6 +51,55 @@ spec:
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
+| caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
+| clientCert | N | Client certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
+| clientKey | N | Client key, required for using TLS. Can be `secretKeyRef` to use a secret reference | `012345`
+| skipVerify | N | Skip TLS verification, this is not recommended using in production. Defaults to `"false"` | `"true"`, `"false"` |
+
+### Communication using TLS
+To configure communication using TLS, ensure kafka broker is configured to support certificates.
+Pre-requisite includes `certficate authority certificate`, `ca issued client certificate`, `client private key`.
+Here is an example.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub
+  namespace: default
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: brokers # Required. Kafka broker connection setting
+    value: "dapr-kafka.myapp.svc.cluster.local:9092"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "my-dapr-app-id"
+  - name: authRequired # Required.
+    value: "true"
+  - name: saslUsername # Required if authRequired is `true`.
+    value: "adminuser"
+  - name: saslPassword # Required if authRequired is `true`.
+    secretKeyRef:
+      name: kafka-secrets
+      key: saslPasswordSecret
+  - name: maxMessageBytes # Optional.
+    value: 1024
+  - name: caCert # Certificate authority certificate.
+    secretKeyRef:
+      name: kafka-tls
+      key: caCert
+  - name: clientCert # Client certificate.
+    secretKeyRef:
+      name: kafka-tls
+      key: clientCert
+  - name: clientKey # Client key.
+    secretKeyRef:
+      name: kafka-tls
+      key: clientKey
+```
 
 ## Per-call metadata fields
 
