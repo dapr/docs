@@ -57,4 +57,7 @@ dapr run --app-id myapp -- python myapp.py
 
 # Run sidecar only
 dapr run --app-id myapp
+
+# Run a gRPC application written in Go (listening on port 3000)
+dapr run --app-id myapp --app-port 5000 --app-protocol grpc -- go run main.go
 ```
