@@ -73,6 +73,7 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Alpha | v1 | 1.0 |
+| [Azure CosmosGraphDB]({{< ref cosmosdb.md >}})              |    | ✅ | Alpha | v1 | 1.4 |
 | [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
