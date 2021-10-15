@@ -39,6 +39,10 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+## Primary Key
+
+In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`.
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |

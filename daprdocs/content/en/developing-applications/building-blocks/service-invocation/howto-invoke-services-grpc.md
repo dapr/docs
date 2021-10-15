@@ -5,9 +5,12 @@ linkTitle: "How-To: Invoke with gRPC"
 description: "Call between services using service invocation"
 weight: 3000
 ---
+{{% alert title="Preview feature" color="warning" %}}
+gRPC proxying is currently in [preview]({{< ref preview-features.md >}}).
+{{% /alert %}}
 
 This article describe how to use Dapr to connect services using gRPC.
-By using Dapr's gRPC proxying capability, you can use your existing proto based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr Service Invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
+By using Dapr's gRPC proxying capability, you can use your existing proto based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
 
 1. Mutual authentication
 2. Tracing
@@ -170,7 +173,7 @@ var call = client.SayHello(new HelloRequest { Name = "Darth Nihilus" }, metadata
 
 {{% codetab %}}
 ```python
-metadata = (('dapr-app-id', 'server'))
+metadata = (('dapr-app-id', 'server'),)
 response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 ```
 {{% /codetab %}}
@@ -305,3 +308,10 @@ For more information on tracing and logs see the [observability]({{< ref observa
 * [Service invocation overview]({{< ref service-invocation-overview.md >}})
 * [Service invocation API specification]({{< ref service_invocation_api.md >}})
 * [gRPC proxying community call video](https://youtu.be/B_vkXqptpXY?t=70)
+
+## Community call demo
+Watch this [video](https://youtu.be/B_vkXqptpXY?t=69) on how to use Dapr's gRPC proxying capability:
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/B_vkXqptpXY?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

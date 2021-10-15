@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-5.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -87,6 +87,14 @@ id = "UA-149338238-3"
     source = "../sdkdocs/java/daprdocs/content/en/java-sdk-contributing"
     target = "content/contributing/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/js/daprdocs/content/en/js-sdk-docs"
+    target = "content/developing-applications/sdks/js"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/js/daprdocs/content/en/js-sdk-contributing"
+    target = "content/contributing/"
+    lang = "en"
 
   [[module.mounts]]
     source = "../translations/docs-zh/content/zh-hans"
@@ -149,20 +157,23 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "v1.3"
+github_branch = "v1.5"
 
 # Versioning
-version_menu = "v1.3 (latest)"
-version = "v1.3"
+version_menu = "v1.5 (preview)"
+version = "v1.5"
 archived_version = false
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.4 (preview)"
-  url = "https://v1-4.docs.dapr.io"
-[[params.versions]]
-  version = "v1.3 (latest)"
+  version = "v1.5 (preview)"
   url = "#"
+[[params.versions]]
+  version = "v1.4 (latest)"
+  url = "https://docs.dapr.io"
+[[params.versions]]
+  version = "v1.3"
+  url = "https://v1-3.docs.dapr.io"
 [[params.versions]]
   version = "v1.2"
   url = "https://v1-2.docs.dapr.io"
@@ -190,6 +201,10 @@ url_latest_version = "https://docs.dapr.io"
 sidebar_menu_compact = true
 navbar_logo = true
 sidebar_search_disable = true
+[params.ui.feedback]
+enable = true
+yes = '<b>Glad to hear it!</b> Please <a href="https://github.com/dapr/docs/issues/new/choose">tell us how we can improve</a>.'
+no = '<b>Sorry to hear that.</b> Please <a href="https://github.com/dapr/docs/issues/new/choose">tell us how we can improve</a>.'
 
 # Links
 ## End user relevant links. These will show up on left side of footer and in the community page if you have one.

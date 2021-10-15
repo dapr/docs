@@ -35,6 +35,8 @@ spec:
     value: # Optional
   - name: maxRetryBackoff
     value: # Optional
+  - name: ttlInSeconds
+    value: <int> # Optional
 ```
 **TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`.
 
@@ -58,6 +60,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 |--------------------|:--------:|---------|---------|
 | redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
+| redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | consumerID         | N         | The consumer group ID   | `"myGroup"`
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
@@ -81,6 +84,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600` 
 
 ## Setup Redis
 
