@@ -45,7 +45,7 @@ dapr init
 You can also specify a specific runtime version. Be default, the latest version is used.
 
 ```bash
-dapr init --runtime-version 0.10.0
+dapr init --runtime-version 1.4.0
 ```
 
 Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) without Docker.
@@ -70,5 +70,5 @@ dapr init -k --wait --timeout 600
 You can also specify a specific runtime version.
 
 ```bash
-dapr init -k --runtime-version 0.10.0
+dapr init -k --runtime-version 1.4.0
 ```
