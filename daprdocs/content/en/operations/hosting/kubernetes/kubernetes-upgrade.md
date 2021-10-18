@@ -49,14 +49,26 @@ Then proceed with the `dapr upgrade --runtime-version {{% dapr-latest-version lo
 
 From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive action since existing certificate values will automatically be re-used.
 
-1. Upgrade Dapr from 1.0.0 (or newer) to any [NEW VERSION] > v1.0.0:
+1. Upgrade Dapr from 1.0.0 (or newer) to any [NEW VERSION] > 1.0.0:
+
+   *Helm does not handle upgrading CRDs, so you will need to perform that manually. CRDs are backward-compatible and should only be installed forward.*
+
+   ***Note**: The Dapr version is included in the commands below*
+
+   For version {{% dapr-latest-version long="true" %}}:
+
+   ```bash
+   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/components.yaml
+   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/configuration.yaml
+   kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/subscription.yaml
+   ```
 
    ```bash
    helm repo update
    ```
 
    ```bash
-   helm upgrade dapr dapr/dapr --version [NEW VERSION] --namespace dapr-system --wait
+   helm upgrade dapr dapr/dapr --version {{% dapr-latest-version long="true" %}} --namespace dapr-system --wait
    ```
    *If you're using a values file, remember to add the `--values` option when running the upgrade command.*
 
