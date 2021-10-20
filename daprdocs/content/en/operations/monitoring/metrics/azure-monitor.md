@@ -10,7 +10,7 @@ description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernet
 
 - [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/)
 - [Enable Azure Monitor For containers in AKS](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-overview)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Helm 3](https://helm.sh/)
 
 ## Enable Prometheus metric scrape using config map
