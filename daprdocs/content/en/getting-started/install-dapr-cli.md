@@ -56,10 +56,10 @@ brew install dapr/tap/dapr-cli
 ```
 
 #### Note for M1 Macs
-For M1 Macs, homebrew is not supported. You will need to use the dapr install script and have the rosetta amd64 compatibility layer installed. If you do not have it installed already, you can run the following:
+For M1 Macs, only homebrew 3.0+ versions are supported. Please update Homebrew to 3.0.0+ and use below command
 
 ```bash
-softwareupdate --install-rosetta
+arch -arm64 brew install dapr/tap/dapr-cli
 ```
 
 ### Install without `sudo`
