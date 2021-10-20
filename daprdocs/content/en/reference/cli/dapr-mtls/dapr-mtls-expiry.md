@@ -6,28 +6,29 @@ description: "Detailed information on the mtls expiry CLI command"
 weight: 2000
 ---
 
-## Description
+### Description
 
 Checks the expiry of the root certificate
 
-## Supported platforms
+### Supported platforms
 
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
+
 ```bash
 dapr mtls expiry [flags]
 ```
 
-## Flags
+### Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | help for expiry |
+| Name           | Environment Variable | Default | Description     |
+| -------------- | -------------------- | ------- | --------------- |
+| `--help`, `-h` |                      |         | help for expiry |
 
-## Examples
+### Examples
 
-### Check expiry of Kubernetes certs
 ```bash
+# Check expiry of Kubernetes certs
 dapr mtls expiry
 ```
