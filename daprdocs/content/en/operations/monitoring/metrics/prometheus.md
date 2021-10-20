@@ -67,7 +67,7 @@ Once Prometheus is running, you'll be able to visit its dashboard by visiting `h
 ### Prerequisites
 
 - Kubernetes (> 1.14)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Helm 3](https://helm.sh/)
 
 ### Install Prometheus
