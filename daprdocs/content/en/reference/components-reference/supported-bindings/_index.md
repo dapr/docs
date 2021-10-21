@@ -27,7 +27,6 @@ Table captions:
 |------|:----------------:|:-----------------:|--------|-------- | ---------|
 | [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
-| [GraphQL]({{< ref graghql.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 | [HTTP]({{< ref http.md >}})           |    | ✅ | GA | v1 | 1.0 |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 | [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Alpha | v1 | 1.0 |
@@ -44,13 +43,12 @@ Table captions:
 | [Twitter]({{< ref twitter.md >}})       | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [SendGrid]({{< ref sendgrid.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 
+
 ### Alibaba Cloud
 
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
-|------|:----------------:|:-----------------:|--------| ------ |----------|
-| [Alibaba Cloud DingTalk]({{< ref alicloud-dingtalk.md >}})           |  ✅ | ✅ | Alpha | v1 | 1.2 |
-| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
-| [Alibaba Cloud Tablestore]({{< ref alicloudtablestore.md >}})           |    | ✅ | Alpha | v1 | 1.4 |
+| Name | Input<br>Binding | Output<br>Binding | Status |
+|------|:----------------:|:-----------------:|--------|
+| [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha |
 
 ### Amazon Web Services (AWS)
 
@@ -58,7 +56,6 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| ------ |----------|
 | [AWS DynamoDB]({{< ref dynamodb.md >}}) |    | ✅ | Alpha | v1 | 1.0 |
 | [AWS S3]({{< ref s3.md >}})             |    | ✅ | Alpha | v1 | 1.0 |
-| [AWS SES]({{< ref ses.md >}})           |    | ✅ | Alpha | v1 | 1.4 |
 | [AWS SNS]({{< ref sns.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
 | [AWS SQS]({{< ref sqs.md >}})           | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [AWS Kinesis]({{< ref kinesis.md >}})   | ✅ | ✅ | Alpha | v1 | 1.0 |
@@ -76,15 +73,9 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Alpha | v1 | 1.0 |
+| [Azure CosmosGraphDB]({{< ref cosmosgrapdb.md >}})              |    | ✅ | Alpha | v1 | 1.4 |
 | [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha | v1 | 1.0 |
 | [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | GA | v1 | 1.0 |
-
-### Zeebe (Camunda Cloud)
-
-| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
-|------|:----------------:|:-----------------:|--------| --------- | ---------- |
-| [Zeebe Command]({{< ref zeebe-command.md >}})            |    | ✅ | Alpha | v1 | 1.2 |
-| [Zeebe Job Worker]({{< ref zeebe-jobworker.md >}})       | ✅ |    | Alpha | v1 | 1.2 |
