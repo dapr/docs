@@ -5,30 +5,30 @@ linkTitle: "stop"
 description: "Detailed information on the stop CLI command"
 ---
 
-## Description
+### Description
 
 Stop Dapr instances and their associated apps.
 
-## Supported platforms
+### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr stop [flags]
 ```
 
-## Flags
+### Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--app-id`, `-a` | | | The application id to be stopped |
-| `--help`, `-h` | | | Print this help message |
+| Name             | Environment Variable | Default | Description                      |
+| ---------------- | -------------------- | ------- | -------------------------------- |
+| `--app-id`, `-a` | `APP_ID`             |         | The application id to be stopped |
+| `--help`, `-h`   |                      |         | Print this help message          |
 
-## Examples
+### Examples
 
-### Stop Dapr application
 ```bash
+# Stop Dapr application
 dapr stop --app-id <ID>
 ```
