@@ -8,7 +8,7 @@ description: "Setup a Google Kubernetes Engine cluster"
 
 ### Prerequisites
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Google Cloud SDK](https://cloud.google.com/sdk)
 
 ## Create a new cluster

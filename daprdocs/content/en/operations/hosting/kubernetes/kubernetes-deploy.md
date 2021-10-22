@@ -15,7 +15,7 @@ For more information on what is deployed to your Kubernetes cluster read the [Ku
 ## Prerequisites
 
 - Install [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- Install [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - Kubernetes cluster (see below if needed)
 
 ### Create cluster
