@@ -70,7 +70,7 @@ app.post('/scheduled', async function(req, res){
 });
 ```
   
-If we run this, we'll see that the /scheduled endpoint is called every five minutes by the Dapr sidecar.
+When running this code, note that the `/scheduled` endpoint is called every five minutes by the Dapr sidecar.
 
 
 ## Binding support
