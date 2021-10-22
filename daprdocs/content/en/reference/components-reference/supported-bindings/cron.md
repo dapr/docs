@@ -61,7 +61,7 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 
 ## Listen to the cron binding
 
-After setting up the cron binding, all we need to do is listen on an endpoint that matches the name of our component. let's assume the <NAME> is `scheduled`. Note that this will be made as a HTTP `POST` request. The example below shows how a simple Node.js Express application can receive calls on the `/scheduled` endpoint and write a message to the console.
+After setting up the cron binding, all you need to do is listen on an endpoint that matches the name of your component. Assume the <NAME> is `scheduled`. Note that this will be made as a HTTP `POST` request. The below example shows how a simple Node.js Express application can receive calls on the `/scheduled` endpoint and write a message to the console.
   
 ```js
 app.post('/scheduled', async function(req, res){
