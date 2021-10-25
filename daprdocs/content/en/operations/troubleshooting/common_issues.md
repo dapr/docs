@@ -229,16 +229,14 @@ Microsoft Content Filter is disabled when the output is "Success".
 
 ## admission webhook denied the request
 
-This is due to admission webhook has a whitelist for service accounts to create/modify resources.
-
-If you meet error like below:
+You may encounter an error similar to the one below due to admission webhook having an allowlist for service accounts to create or modify resources.
 
 ```bash
 root:[dapr]$ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 Error from server: admission webhook "sidecar-injector.dapr.io" denied the request: service account 'user-xdd5l' not on the list of allowed controller accounts
 ```
 
-You can create a clusterrolebind for a user:
+You should create a clusterrolebind for current user:
 
 ```bash
 kubectl create clusterrolebinding dapr-<name-of-user> --clusterrole=dapr-operator-admin --user <name-of-user>
@@ -249,3 +247,5 @@ You can run the below command to get all users in your cluster:
 ```bash
 kubectl config get-users
 ```
+
+You may learn more about webhooks [here](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
