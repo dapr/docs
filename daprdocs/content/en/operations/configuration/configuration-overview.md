@@ -127,7 +127,7 @@ See the [selectively enable Dapr APIs on the Dapr sidecar]({{< ref "api-allowlis
 See the [Allow lists for service invocation]({{< ref "invoke-allowlist.md" >}}) guide for information and examples on how to set allow lists with ACLs which using service invocation API.
 
 #### Turning on preview features
-See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to opt-in to preview features for a release. Preview feature enable new capabilities to be added that still need more time until they become generally available (GA) in the runtime.
+See the [preview features]({{< ref "preview-features.md" >}}) guide for information and examples on how to opt-in to preview features for a release. Preview feature enable new capabilities to be added that still need more time until they become stable in the runtime.
 
 ### Example sidecar configuration
 The following yaml shows an example configuration file that can be applied to an applications' Dapr sidecar.

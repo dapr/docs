@@ -6,7 +6,7 @@ weight: 900
 description: "How to use Dapr to push trace events through the OpenTelemetry Collector."
 ---
 
-Dapr will be exporting trace in the OpenTelemetry format when OpenTelemetry is GA. In the mean time, traces can be exported using the Zipkin format. Combining with the [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) you can still send trace to many popular tracing backends (like Azure AppInsights, AWS X-Ray, StackDriver, etc).
+Dapr will be exporting trace in the OpenTelemetry format when OpenTelemetry is stable. In the mean time, traces can be exported using the Zipkin format. Combining with the [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) you can still send trace to many popular tracing backends (like Azure AppInsights, AWS X-Ray, StackDriver, etc).
 
 ![Using OpenTelemetry Collect to integrate with many backend](/images/open-telemetry-collector.png)
 

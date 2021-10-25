@@ -17,7 +17,7 @@ Table captions:
 > `Status`: [Component certification]({{<ref "certification-lifecycle.md">}}) status
   - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
   - [Beta]({{<ref "certification-lifecycle.md#beta">}})
-  - [GA]({{<ref "certification-lifecycle.md#general-availability-ga">}})
+  - [Stable]({{<ref "certification-lifecycle.md#stable">}})
 > `Since`: defines from which Dapr Runtime version, the component is in the current status
 
 > `Component version`: defines the version of the component
@@ -28,7 +28,7 @@ Table captions:
 | [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [GraphQL]({{< ref graghql.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
-| [HTTP]({{< ref http.md >}})           |    | ✅ | GA | v1 | 1.0 |
+| [HTTP]({{< ref http.md >}})           |    | ✅ | Stable | v1 | 1.0 |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 | [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Alpha | v1 | 1.0 |
@@ -80,7 +80,7 @@ Table captions:
 | [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha | v1 | 1.0 |
-| [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | GA | v1 | 1.0 |
+| [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | Stable | v1 | 1.0 |
 
 ### Zeebe (Camunda Cloud)
 

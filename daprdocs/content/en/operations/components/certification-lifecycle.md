@@ -22,7 +22,7 @@ To make sure a component conforms to the standards set by Dapr, there are a set 
 The levels are as follows:
 - [Alpha](#alpha)
 - [Beta](#beta)
-- [General availability (GA)](#general-availability-ga)
+- [Stable](#stable)
 
 ### Alpha
 
@@ -42,10 +42,10 @@ All components start at the Alpha stage.
 - The component contains a record of the conformance test result reviewed and approved by Dapr maintainers with specific components-contrib version
 - Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases
 
-### General Availability (GA)
+### Stable
 
 - Has at least two different users using the component in production
-- A GA component has a maintainer in the Dapr community or the Dapr maintainers
+- A stable component has a maintainer in the Dapr community or the Dapr maintainers
 - The component is well documented, tested and maintained across multiple versions of components-contrib repo
 
 ## Conformance tests
@@ -70,9 +70,9 @@ To understand more about them see the readme [here](https://github.com/dapr/comp
 
 For a component to be certified tests are run in an environment maintained by the Dapr team.
 
-### New component certification: Alpha->Beta or Beta->GA
+### New component certification: Alpha->Beta or Beta->Stable
 
-For a new component requiring a certification change from Alpha to Beta or Beta to GA, a request for component certification follows these steps:
+For a new component requiring a certification change from Alpha to Beta or Beta to Stable, a request for component certification follows these steps:
 - An issue is created with a request for certification of the component with the current and the new certification levels
 - A user of a component submits a PR for integrating the component to run with the defined conformance test suite
 - The user details the environment setup in the issue created, so that a Dapr maintainer can setup the service in a managed environment
@@ -80,10 +80,8 @@ For a new component requiring a certification change from Alpha to Beta or Beta 
 - Dapr maintainers review functional correctness with the test being run in an environment maintained by the Dapr team
 - Dapr maintainers update the component status document categorized by Dapr Runtime version. This is done as part of the release process in the next release of Dapr runtime
 
-### Existing GA certified component
+### Existing stable certified component
 
-For an existing GA certified component, conformance test should be run against any changes made to component code or the backing service version or the client version.
+For an existing stable certified component, conformance test should be run against any changes made to component code or the backing service version or the client version.
 
 In the scenarios where a component version is updated, the component again starts from Alpha stage and then the new component certification is followed for that.
-
-
