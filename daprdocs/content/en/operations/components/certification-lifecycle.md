@@ -87,7 +87,7 @@ The test plan must be approved by a Dapr maintainer and be published in a `READM
 ### Test requirements
 
 - The tests should validate the functional behavior and robustness of the component based on the component specification, reflecting the scenarios from the test plan
-- The tests must run successfully as part of the continuous integration of `components-contrib` repository
+- The tests must run successfully as part of the continuous integration of the `components-contrib` repository
 
 
 ## Component certification process
