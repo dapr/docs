@@ -77,7 +77,7 @@ Each stable component in the [components-contrib](https://github.com/dapr/compon
 
 Test plan for stable components should include the following scenarios:
 
-- Client reconnection: in case the client library cannot connect to the service for a moment, Dapr sidecar should not require to be restarted once the service is back online.
+- Client reconnection: in case the client library cannot connect to the service for a moment, Dapr sidecar should not require a restart once the service is back online.
 - Authentication options: validate the component can authenticate with all the supported options.
 - Validate resource provisioning: validate if the component automatically provisions resources on initialization, if applicable.
 - All scenarios relevant to the corresponding building block and component.
