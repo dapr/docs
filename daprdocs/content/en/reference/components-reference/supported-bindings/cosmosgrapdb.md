@@ -3,8 +3,6 @@ type: docs
 title: "Azure CosmosGraphDB binding spec"
 linkTitle: "Azure CosmosGraphDB"
 description: "Detailed documentation on the Azure CosmosGraphDB binding component"
-aliases:
-  - "/operations/components/setup-bindings/supported-bindings/cosmosgraphdb/"
 ---
 
 ## Component format
