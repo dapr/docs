@@ -64,13 +64,14 @@ Azure IoT Hub provides an [endpoint that is compatible with Event Hubs](https://
 
 The device-to-cloud events created by Azure IoT Hub devices will contain additional [IoT Hub System Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-construct#system-properties-of-d2c-iot-hub-messages), and the Azure Event Hubs pubsub component for Dapr will return the following as part of the response metadata:
 
-| System Property Name | Description |
-|--------------------|:--------|
+| System Property Name | Description & Routing Query Keyword |
+|----------------------|:------------------------------------|
 | `iothub-connection-auth-generation-id` | The **connectionDeviceGenerationId** of the device that sent the message. See [IoT Hub device identity properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-identity-registry#device-identity-properties). |
-| `iothub-connection-auth-method` | The authentication method used to authenticate the device that sent the message. |
+| `iothub-connection-auth-method` | The **connectionAuthMethod** used to authenticate the device that sent the message. |
 | `iothub-connection-device-id` | The **deviceId** of the device that sent the message. See [IoT Hub device identity properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-identity-registry#device-identity-properties). |
 | `iothub-connection-module-id` | The **moduleId** of the device that sent the message. See [IoT Hub device identity properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-identity-registry#device-identity-properties). |
-| `iothub-enqueuedtime` | The date and time in RFC3339 format that the device-to-cloud message was received by IoT Hub. |
+| `iothub-enqueuedtime` | The **enqueuedTime** in RFC3339 format that the device-to-cloud message was received by IoT Hub. |
+| `message-id` | The user-settable AMQP **messageId**. |
 
 For example, the headers of a delivered HTTP subscription message would contain:
 
@@ -85,6 +86,7 @@ For example, the headers of a delivered HTTP subscription message would contain:
   'iothub-connection-auth-method': '{"scope":"module","type":"sas","issuer":"iothub","acceptingIpFilterRule":null}',
   'iothub-connection-module-id': 'my-test-module-a',
   'iothub-enqueuedtime': '2021-07-13T22:08:09Z',
+  'message-id': 'my-custom-message-id',
   'x-opt-sequence-number': '35',
   'x-opt-enqueued-time': '2021-07-13T22:08:09Z',
   'x-opt-offset': '21560',
