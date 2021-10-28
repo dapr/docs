@@ -37,6 +37,8 @@ spec:
       key: saslPasswordSecret
   - name: maxMessageBytes # Optional.
     value: 1024
+  - name: consumeRetryInterval # Optional.
+    value: 200ms
 ```
 
 ## Spec metadata fields
