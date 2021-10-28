@@ -47,6 +47,9 @@ dapr run [flags] [command]
 # Run a .NET application
 dapr run --app-id myapp --app-port 5000 -- dotnet run
 
+# Run a .Net application with socket
+dapr run --app-id myapp --app-port 5000 --unix-domain-socket /tmp -- dotnet run
+
 # Run a Java application
 dapr run --app-id myapp -- java -jar myapp.jar
 
@@ -61,10 +64,4 @@ dapr run --app-id myapp
 
 # Run a gRPC application written in Go (listening on port 3000)
 dapr run --app-id myapp --app-port 5000 --app-protocol grpc -- go run main.go
-```
-
-### Run a .Net application with socket
-
-```bash
-dapr run --app-id myapp --app-port 5000 --enable-unix-socket -- dotnet run
 ```
