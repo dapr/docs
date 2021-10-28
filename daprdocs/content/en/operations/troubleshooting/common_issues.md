@@ -227,16 +227,16 @@ Microsoft Content Filter is disabled when the output is "Success".
 
 > Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting.
 
-## admission webhook denied the request
+## Admission webhook denied the request
 
 You may encounter an error similar to the one below due to admission webhook having an allowlist for service accounts to create or modify resources.
 
-```bash
+```
 root:[dapr]$ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 Error from server: admission webhook "sidecar-injector.dapr.io" denied the request: service account 'user-xdd5l' not on the list of allowed controller accounts
 ```
 
-You should create a clusterrolebind for current user:
+To resolve this error, you should create a `clusterrolebind` for the current user:
 
 ```bash
 kubectl create clusterrolebinding dapr-<name-of-user> --clusterrole=dapr-operator-admin --user <name-of-user>
