@@ -106,7 +106,7 @@ For a new component requiring a certification change from Alpha to Beta, a reque
 ### New component certification: Beta->Stable
 
 For a new component requiring a certification change from Beta to Stable, a request for component certification follows these steps:
-- Requestor creates an issue in `components-contrib` repository for certification of the component with the current and the new certification levels
+- Requestor creates an issue in the `components-contrib` repository for certification of the component with the current and the new certification levels
 - Requestor submits a PR for the test plan as a `README.md` file in the component's source code directory
     - The user details the test environment requirements in the PR created, including any manual steps or credentials needed
     - A Dapr maintainer reviews the test plan, giving feedback or approving it and merge the PR
