@@ -109,7 +109,7 @@ For a new component requiring a certification change from Beta to Stable, a requ
 - Requestor creates an issue in the `components-contrib` repository for certification of the component with the current and the new certification levels
 - Requestor submits a PR for the test plan as a `README.md` file in the component's source code directory
     - The user details the test environment requirements in the PR created, including any manual steps or credentials needed
-    - A Dapr maintainer reviews the test plan, giving feedback or approving it and merge the PR
+    - A Dapr maintainer reviews the test plan, giving feedback or approving it and merges the PR
 - Requestor submits a PR for the automated certification tests, including scripts to provision resources when applicable
 - After the test environment setup is completed and credentials provisioned, Dapr maintainers review the PR and, if approved, merges the PR
 - Requestor submits a PR in `docs` repository, updating the component's certification level
