@@ -98,7 +98,7 @@ In order for a component to be certified, tests are run in an environment mainta
 
 For a new component requiring a certification change from Alpha to Beta, a request for component certification follows these steps:
 - Requestor creates an issue in the `components-contrib` repository for certification of the component with the current and the new certification levels
-- Requestor submits a PR for integrating the component to run with the defined conformance test suite, if not included already
+- Requestor submits a PR to integrate the component with the defined conformance test suite, if not already included
     - The user details the environment setup in the issue created, so a Dapr maintainer can setup the service in a managed environment
     - After the environment setup is complete, Dapr maintainers review the PR and if approved merges that PR
 - Requestor submits a PR in the `docs` repository, updating the component's certification level
