@@ -92,7 +92,7 @@ The test plan must be approved by a Dapr maintainer and be published in a `READM
 
 ## Component certification process
 
-For a component to be certified tests are run in an environment maintained by the Dapr team.
+In order for a component to be certified, tests are run in an environment maintained by the Dapr project.
 
 ### New component certification: Alpha->Beta
 
