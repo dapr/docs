@@ -37,6 +37,8 @@ spec:
       key: saslPasswordSecret
   - name: maxMessageBytes # Optional.
     value: 1024
+  - name: consumeRetryInterval # Optional.
+    value: 200ms
 ```
 
 ## Spec metadata fields
@@ -51,6 +53,7 @@ spec:
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
+| consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms`
 
 ## Per-call metadata fields
 
