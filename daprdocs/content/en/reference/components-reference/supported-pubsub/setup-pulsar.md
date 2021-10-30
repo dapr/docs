@@ -36,16 +36,19 @@ spec:
 
 ### Delay queue
 
-When invoking the Pulsar pub/sub, its possible to provide an optional delay queue by using the `metadata` query param in the request url.
+When invoking the Pulsar pub/sub, it's possible to provide an optional delay queue by using the `metadata` query parameters in the request url.
 
-These param names are `deliverAt` or `deliverAfter`.
+These optional parameter names are `metadata.deliverAt` or `metadata.deliverAfter`:
+- `deliverAt`: Delay message to deliver at a specified time (RFC3339 format), e.g. `"2021-09-01T10:00:00Z"`
+- `deliverAfter`: Delay message to deliver after a specified amount of time, e.g.`"4h5m3s"`
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | deliverAt | N | delay queue configuration param. use time RFC3339, Default is empty | `"2021-09-01T10:00:00Z"`|
 | deliverAfter | N | delay queue configuration param. Default is empty | `"4h5m3s"`|
 
-Example:
+
+Examples:
 
 
 ```shell
