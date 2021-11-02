@@ -112,4 +112,4 @@ For a new component requiring a certification change from Beta to Stable, a requ
     - A Dapr maintainer reviews the test plan, provides feedback or approves it, and eventually merges the PR
 - Requestor submits a PR for the automated certification tests, including scripts to provision resources when applicable
 - After the test environment setup is completed and credentials provisioned, Dapr maintainers review the PR and, if approved, merges the PR
-- Requestor submits a PR in the `docs` repository, updating the component's certification level
+- Requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level
