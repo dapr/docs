@@ -10,7 +10,7 @@ description: "Learn how to run your Dapr apps on the Azure Container Apps server
 
 Dapr is built-in as a first-class experience in Container Apps, letting you use Dapr building blocks without any manual deployment or management of Kubernetes or the Dapr runtime. Simply deploy your services and Dapr components and let the platform take care of the rest.
 
-{{< button text="Learn more" link="https://docs.microsoft.com/en-us/azure/container-apps/overview" >}}
+{{< button text="Learn more" link="https://docs.microsoft.com/en-us/azure/container-apps/overview" newtab="true" >}}
 
 ## Tutorial
 
@@ -18,4 +18,4 @@ Visit the [Azure docs](https://docs.microsoft.com/en-us/azure/container-apps/mic
 
 <img src="azure-container-apps-microservices-dapr.png" alt="Diagram of a Container Apps environment with two Dapr services" style="width:600px" >
 
-{{< button text="Try out Dapr on Container Apps" link="https://docs.microsoft.com/en-us/azure/container-apps/microservices-dapr" >}}
+{{< button text="Try out Dapr on Container Apps" link="https://docs.microsoft.com/en-us/azure/container-apps/microservices-dapr" newtab="true" >}}
