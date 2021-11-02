@@ -49,7 +49,7 @@ All components start at the Alpha stage.
 - The component is well documented and tested
 - A maintainer will address component security, core functionality and test issues according to the Dapr support policy and issue a patch release that includes the patched stable component
 
-### Previous General Available (GA) components
+### Previous Generally Available (GA) components
 
 Any component that was previously certified as GA is now grandfathered into Stable even if the new requirements are not met.
 
