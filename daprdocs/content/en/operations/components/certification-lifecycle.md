@@ -101,7 +101,7 @@ For a new component requiring a certification change from Alpha to Beta, a reque
 - Requestor submits a PR to integrate the component with the defined conformance test suite, if not already included
     - The user details the environment setup in the issue created, so a Dapr maintainer can setup the service in a managed environment
     - After the environment setup is complete, Dapr maintainers review the PR and if approved merges that PR
-- Requestor submits a PR in the `docs` repository, updating the component's certification level
+- Requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level
 
 ### New component certification: Beta->Stable
 
