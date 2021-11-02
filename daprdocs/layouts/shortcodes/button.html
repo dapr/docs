@@ -2,8 +2,8 @@
 {{ $page := .Get "page" }}
 {{ $link := .Get "link" | default "#" }}
 {{ $text := .Get "text" }}
-{{ $opentab := .Get "newtab" | default False }}
+{{ $newtab := .Get "newtab" | default "false" }}
 
 {{- if $page -}}{{- $link = ref . $page -}}{{- end -}}
 
-<a class="btn btn-{{ $color }}" href="{{ $link }}" role="button" {{- if $opentab -}}target="_blank"{{- end -}}>{{ $text }}</a>
+<a class="btn btn-{{ $color }}" href="{{ $link }}" role="button" {{- if eq $newtab "true" -}}target="_blank"{{- end -}}>{{ $text }}</a>
