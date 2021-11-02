@@ -51,7 +51,7 @@ All components start at the Alpha stage.
 
 ### Previous Generally Available (GA) components
 
-Any component that was previously certified as GA is now grandfathered into Stable even if the new requirements are not met.
+Any component that was previously certified as GA is allowed into Stable even if the new requirements are not met.
 
 ## Conformance tests
 
