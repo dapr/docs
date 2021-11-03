@@ -5,18 +5,18 @@ linkTitle: "help"
 description: "Detailed information on the help CLI command"
 ---
 
-## Description
+### Description
 
 Help provides help for any command in the application.
 
-## Usage
+### Usage
 
 ```bash
 dapr help [command] [flags]
 ```
 
-## Flags
+### Flags
 
-| Name | Environment Variable | Default | Description
-| --- | --- | --- | --- |
-| `--help`, `-h` | | | Prints this help message |
+| Name           | Environment Variable | Default | Description              |
+| -------------- | -------------------- | ------- | ------------------------ |
+| `--help`, `-h` |                      |         | Prints this help message |

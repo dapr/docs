@@ -91,6 +91,20 @@ In order to tell Dapr that the event wasn't processed correctly in your applicat
 res.status(500).send()
 ```
 
+### Specifying a custom route
+
+By default, incoming events will be sent to an HTTP endpoint that corresponds to the name of the input binding.
+You can override this by setting the following metadata property:
+
+```yaml
+name: mybinding
+spec:
+  type: binding.rabbitmq
+  metadata:
+  - name: route
+    value: /onevent
+```
+
 ### Event delivery Guarantees
 Event delivery guarantees are controlled by the binding implementation. Depending on the binding implementation, the event delivery can be exactly once or at least once.
 

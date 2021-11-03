@@ -7,10 +7,6 @@ aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault/"
 ---
 
-{{% alert title="Note" color="primary" %}}
-Azure Managed Identity can be used for Azure Key Vault access on Kubernetes. Instructions [here]({{< ref azure-keyvault-managed-identity.md >}}).
-{{% /alert %}}
-
 ## Component format
 
 To setup Azure Key Vault secret store create a component of type `secretstores.azure.keyvault`. See [this guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
@@ -37,158 +33,91 @@ spec:
   - name: spnCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
+
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
 {{% /alert %}}
 
-## Spec metadata fields
+## Authenticating with Azure AD
 
-### Self-Hosted
+The Azure Key Vault secret store component supports authentication with Azure AD only. Before you enable this component, make sure you've read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document and created an Azure AD application (also called Service Principal). Alternatively, make sure you have created a managed identity for your application platform.
+
+## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| vaultName | Y | The name of the Azure Key Vault. If you only provide a name, it will covert to `[your_keyvault_name].vault.azure.net` in Dapr. If your URL uses another suffix, please provide the entire URI, such as `test.vault.azure.cn`. | `"mykeyvault"`, `"mykeyvault.value.azure.cn"`
-| spnTenantId        | Y        | Service Principal Tenant Id | `"spnTenantId"`
-| spnClientId        | Y        | Service Principal App Id | `"spnAppId"`
-| spnCertificateFile | Y        | PFX certificate file path. <br></br> For Windows the `[pfx_certificate_file_fully_qualified_local_path]` value must use escaped backslashes, i.e. double backslashes. For example `"C:\\folder1\\folder2\\certfile.pfx"`. <br></br> For Linux you can use single slashes. For example `"/folder1/folder2/certfile.pfx"`.  <br></br> See [configure the component](#configure-the-component) for more details | `"C:\\folder1\\folder2\\certfile.pfx"`, `"/folder1/folder2/certfile.pfx"`
+| `vaultName` | Y | The name of the Azure Key Vault | `"mykeyvault"` |
+| `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"`, `"AZUREGERMANCLOUD"` |
 
+Additionally, you must provide the authentication fields as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
 
-### Kubernetes
-
-| Field          | Required | Details | Example |
-|----------------|:--------:|---------|---------|
-| vaultName      | Y        | The name of the Azure Key Vault | `"mykeyvault"`
-| spnTenantId    | Y        | Service Principal Tenant Id | `"spnTenantId"`
-| spnClientId    | Y        | Service Principal App Id | `"spnAppId"`
-| spnCertificate | Y        | PKCS 12 encoded bytes of the certificate. See [configure the component](#configure-the-component) for details on encoding this in a Kubernetes secret. | `secretKeyRef: ...` <br /> See [configure the component](#configure-the-component) for more information.
-
-
-## Setup Key Vault and service principal
+## Create the Azure Key Vault and authorize the Service Principal
 
 ### Prerequisites
 
-- [Azure Subscription](https://azure.microsoft.com/en-us/free/)
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+- [Azure Subscription](https://azure.microsoft.com/free/)
+- [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
+- [jq](https://stedolan.github.io/jq/download/)
+- The scripts below are optimized for a bash or zsh shell
+
+Make sure you have followed the steps in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document to create  an Azure AD application (also called Service Principal). You will need the following values:
+
+- `SERVICE_PRINCIPAL_ID`: the ID of the Service Principal that you created for a given application
 
 ### Steps
 
-1. Login to Azure and set the default subscription
+1. Set a variable with the Service Principal that you created:
 
-    ```bash
-    # Log in Azure
-    az login
+  ```sh
+  SERVICE_PRINCIPAL_ID="[your_service_principal_object_id]"
+  ```
 
-    # Set your subscription to the default subscription
-    az account set -s [your subscription id]
-    ```
+2. Set a variable with the location where to create all resources:
 
-2. Create an Azure Key Vault in a region
+  ```sh
+  LOCATION="[your_location]"
+  ```
 
-     ```bash
-     az keyvault create --location [region] --name [your_keyvault] --resource-group [your resource group]
-     ```
+  (You can get the full list of options with: `az account list-locations --output tsv`)
 
-3. Create a service principal
+3. Create a Resource Group, giving it any name you'd like:
 
-    Create a service principal with a new certificate and store the 1-year certificate inside your keyvault's certificate vault. You can skip this step if you want to use an existing service principal for keyvault instead of creating new one
+  ```sh
+  RG_NAME="[resource_group_name]"
+  RG_ID=$(az group create \
+    --name "${RG_NAME}" \
+    --location "${LOCATION}" \
+    | jq -r .id)
+  ```
 
-    ```bash
-    az ad sp create-for-rbac --name [your_service_principal_name] --create-cert --cert [certificate_name] --keyvault [your_keyvault] --skip-assignment --years 1
+4. Create an Azure Key Vault (that uses Azure RBAC for authorization):
 
-    {
-       "appId": "a4f90000-0000-0000-0000-00000011d000",
-       "displayName": "[your_service_principal_name]",
-       "name": "http://[your_service_principal_name]",
-       "password": null,
-       "tenant": "34f90000-0000-0000-0000-00000011d000"
-    }
-    ```
+  ```sh
+  KEYVAULT_NAME="[key_vault_name]"
+  az keyvault create \
+    --name "${KEYVAULT_NAME}" \
+    --enable-rbac-authorization true \
+    --resource-group "${RG_NAME}" \
+    --location "${LOCATION}"
+  ```
 
-    **Save both the appId and tenant from the output which will be used in the next step**
+5. Using RBAC, assign a role to the Azure AD application so it can access the Key Vault.  
+  In this case, assign the "Key Vault Crypto Officer" role, which has broad access; other more restrictive roles can be used as well, depending on your application.
 
-4. Get the Object Id for [your_service_principal_name]
-
-    ```bash
-    az ad sp show --id [service_principal_app_id]
-
-    {
-        ...
-        "objectId": "[your_service_principal_object_id]",
-        "objectType": "ServicePrincipal",
-        ...
-    }
-    ```
-
-5. Grant the service principal the GET permission to your Azure Key Vault
-
-    ```bash
-    az keyvault set-policy --name [your_keyvault] --object-id [your_service_principal_object_id] --secret-permissions get
-    ```
-
-    Now that your service principal has access to your keyvault you are ready to configure the secret store component to use secrets stored in your keyvault to access     other components securely.
-
-6. Download the certificate in PFX format from your Azure Key Vault either using the Azure portal or the Azure CLI:
-
-- **Using the Azure portal:**
-
-  Go to your key vault on the Azure portal and navigate to the *Certificates* tab under *Settings*. Find the certificate that was created during the service principal creation, named [certificate_name] and click on it.
-
-  Click *Download in PFX/PEM format* to download the certificate.
-
-- **Using the Azure CLI:**
-
-   ```bash
-   az keyvault secret download --vault-name [your_keyvault] --name [certificate_name] --encoding base64 --file [certificate_name].pfx
-   ```
+  ```sh
+  az role assignment create \
+    --assignee "${SERVICE_PRINCIPAL_ID}" \
+    --role "Key Vault Crypto Officer" \
+    --scope "${RG_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
+  ```
 
 ## Configure the component
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
-1. Copy downloaded PFX cert from your Azure Keyvault into your components directory or a secure location on your local disk
 
-2. Create a file called `azurekeyvault.yaml` in the components directory
-
-    ```yaml
-    apiVersion: dapr.io/v1alpha1
-    kind: Component
-    metadata:
-      name: azurekeyvault
-      namespace: default
-    spec:
-      type: secretstores.azure.keyvault
-      version: v1
-      metadata:
-      - name: vaultName
-        value: [your_keyvault_name]
-      - name: spnTenantId
-        value: "[your_service_principal_tenant_id]"
-      - name: spnClientId
-        value: "[your_service_principal_app_id]"
-      - name: spnCertificateFile
-        value : "[pfx_certificate_file_fully_qualified_local_path]"
-    ```
-
-Fill in the metadata fields with your Key Vault details from the above setup process.
-{{% /codetab %}}
-
-{{% codetab %}}
-In Kubernetes, you store the certificate for the service principal into the Kubernetes Secret Store and then enable Azure Key Vault secret store with this certificate in Kubernetes secretstore.
-
-1. Create a kubernetes secret using the following command:
-
-   ```bash
-   kubectl create secret generic [your_k8s_spn_secret_name] --from-file=[your_k8s_spn_secret_key]=[pfx_certificate_file_fully_qualified_local_path]
-   ```
-
-- `[pfx_certificate_file_fully_qualified_local_path]` is the path of PFX cert file you downloaded above
-- `[your_k8s_spn_secret_name]` is secret name in Kubernetes secret store
-- `[your_k8s_spn_secret_key]` is secret key in Kubernetes secret store
-
-2. Create a `azurekeyvault.yaml` component file
-
-The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the certificate stored in Kubernetes secret store.
+To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory, filling in with the Azure AD application that you created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -201,32 +130,142 @@ spec:
   version: v1
   metadata:
   - name: vaultName
-    value: [your_keyvault_name]
-  - name: spnTenantId
-    value: "[your_service_principal_tenant_id]"
-  - name: spnClientId
-    value: "[your_service_principal_app_id]"
-  - name: spnCertificate
-    secretKeyRef:
-      name: [your_k8s_spn_secret_name]
-      key: [your_k8s_spn_secret_key]
-auth:
-    secretStore: kubernetes
+    value: "[your_keyvault_name]"
+  - name: azureTenantId
+    value: "[your_tenant_id]"
+  - name: azureClientId
+    value: "[your_client_id]"
+  - name: azureClientSecret
+    value : "[your_client_secret]"
 ```
 
-3. Apply `azurekeyvault.yaml` component
+If you want to use a **certificate** saved on the local disk, instead, use this template, filling in with details of the Azure AD application that you created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document:
 
-```bash
-kubectl apply -f azurekeyvault.yaml
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: azurekeyvault
+  namespace: default
+spec:
+  type: secretstores.azure.keyvault
+  version: v1
+  metadata:
+  - name: vaultName
+    value: "[your_keyvault_name]"
+  - name: azureTenantId
+    value: "[your_tenant_id]"
+  - name: azureClientId
+    value: "[your_client_id]"
+  - name: azureCertificateFile
+    value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. You will need the details of the Azure AD application that was created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+
+To use a **client secret**:
+
+1. Create a Kubernetes secret using the following command:
+
+   ```bash
+   kubectl create secret generic [your_k8s_secret_name] --from-literal=[your_k8s_secret_key]=[your_client_secret]
+   ```
+
+    - `[your_client_secret]` is the application's client secret as generated above
+    - `[your_k8s_secret_name]` is secret name in the Kubernetes secret store
+    - `[your_k8s_secret_key]` is secret key in the Kubernetes secret store
+
+
+2. Create an `azurekeyvault.yaml` component file.
+
+    The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the client secret stored in the Kubernetes secret store.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: azurekeyvault
+      namespace: default
+    spec:
+      type: secretstores.azure.keyvault
+      version: v1
+      metadata:
+      - name: vaultName
+        value: "[your_keyvault_name]"
+      - name: azureTenantId
+        value: "[your_tenant_id]"
+      - name: azureClientId
+        value: "[your_client_id]"
+      - name: azureClientSecret
+        secretKeyRef:
+          name: "[your_k8s_secret_name]"
+          key: "[your_k8s_secret_key]"
+    auth:
+      secretStore: kubernetes
+    ```
+
+3. Apply the `azurekeyvault.yaml` component:
+
+    ```bash
+    kubectl apply -f azurekeyvault.yaml
+    ```
+
+To use a **certificate**:
+
+1. Create a Kubernetes secret using the following command:
+
+   ```bash
+   kubectl create secret generic [your_k8s_secret_name] --from-file=[your_k8s_secret_key]=[pfx_certificate_file_fully_qualified_local_path]
+   ```
+
+    - `[pfx_certificate_file_fully_qualified_local_path]` is the path of PFX file you obtained earlier
+    - `[your_k8s_secret_name]` is secret name in the Kubernetes secret store
+    - `[your_k8s_secret_key]` is secret key in the Kubernetes secret store
+
+2. Create an `azurekeyvault.yaml` component file.
+
+    The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the certificate stored in the Kubernetes secret store.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: azurekeyvault
+      namespace: default
+    spec:
+      type: secretstores.azure.keyvault
+      version: v1
+      metadata:
+      - name: vaultName
+        value: "[your_keyvault_name]"
+      - name: azureTenantId
+        value: "[your_tenant_id]"
+      - name: azureClientId
+        value: "[your_client_id]"
+      - name: azureCertificate
+        secretKeyRef:
+          name: "[your_k8s_secret_name]"
+          key: "[your_k8s_secret_key]"
+    auth:
+      secretStore: kubernetes
+    ```
+
+3. Apply the `azurekeyvault.yaml` component:
+
+    ```bash
+    kubectl apply -f azurekeyvault.yaml
+    ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## References
 
-- [Azure CLI Keyvault CLI](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
-- [Create an Azure service principal with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
+- [Authenticating to Azure]({{< ref authenticating-azure.md >}})
+- [Azure CLI: keyvault commands](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})

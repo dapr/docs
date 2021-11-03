@@ -41,6 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | redisHost          | Y        | Connection-string for the redis host. If `"redisType"` is `"cluster"` it can be multiple hosts separated by commas or just a single host   | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
+| redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | consumerID         | N        | The consumer group ID   | `"myGroup"`
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
