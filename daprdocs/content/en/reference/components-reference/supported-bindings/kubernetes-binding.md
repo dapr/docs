@@ -25,7 +25,7 @@ spec:
   - name: namespace
     value: <NAMESPACE>
   - name: resyncPeriodInSec
-    vale: "<seconds>"
+    value: "<seconds>"
 ```
 
 ## Spec metadata fields
