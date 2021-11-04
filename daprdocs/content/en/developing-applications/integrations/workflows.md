@@ -128,7 +128,7 @@ Prerequisites:
 1. Create a Config Map for the workflow:
 
    ```bash
-   kubectl create configmap workflows --from-file ./samples/workflow1.   json
+   kubectl create configmap workflows --from-file ./samples/workflow1.json
    ```
 
 1. Create a secret containing the Azure Storage Account credentials. Replace the account name and key values below with the actual credentials:
