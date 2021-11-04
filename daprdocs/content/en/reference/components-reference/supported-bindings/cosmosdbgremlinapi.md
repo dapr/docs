@@ -17,7 +17,7 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: bindings.azure.cosmosdbgremlinapi
+  type: bindings.azure.cosmosdb.gremlinapi
   version: v1
   metadata:
   - name: url
