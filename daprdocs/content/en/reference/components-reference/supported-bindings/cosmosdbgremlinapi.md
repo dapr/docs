@@ -7,7 +7,7 @@ description: "Detailed documentation on the Azure CosmosDBGremlinAPI binding com
 
 ## Component format
 
-To setup Azure CosmosDBGremlinAPI binding create a component of type `bindings.azure.cosmosdbgremlinapi`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Azure CosmosDBGremlinAPI binding create a component of type `bindings.azure.cosmosdb.gremlinapi`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 
 ```yaml
