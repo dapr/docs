@@ -23,8 +23,8 @@ Table captions:
 
 | Name                                                              | Status                       | Component version | Since |
 |-------------------------------------------------------------------|------------------------------| ---------------- |-- |
-| [Local environment variables]({{< ref envvar-secret-store.md >}}) | Beta   | v1 | 1.0 |
-| [Local file]({{< ref file-secret-store.md >}})                    | Beta   | v1 | 1.0 |
+| [Local environment variables]({{< ref envvar-secret-store.md >}}) | Beta                         | v1 | 1.0 |
+| [Local file]({{< ref file-secret-store.md >}})                    | Beta                         | v1 | 1.0 |
 | [HashiCorp Vault]({{< ref hashicorp-vault.md >}})                 | Alpha                        | v1 | 1.0 |
 | [Kubernetes secrets]({{< ref kubernetes-secret-store.md >}})      | Stable                       | v1 | 1.0 |
 
@@ -45,4 +45,4 @@ Table captions:
 
 | Name                                                                                  | Status | Component version | Since |
 |---------------------------------------------------------------------------------------|--------| ---- |--------------|
-| [Azure Key Vault]({{< ref azure-keyvault.md >}})                                      | Stable | v1 | 1.0 |
+| [Azure Key Vault]({{< ref azure-keyvault.md >}})                                      | Stable | v1   | 1.0 |
