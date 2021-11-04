@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | masterKey | Y | Output | The CosmosDBGremlinAPI account master key | `"masterKey"` |
 | database | Y | Output | The username of the CosmosDBGremlinAPI database | `"username"` |
 
-For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin ](https://docs.microsoft.com/en-us/azure/cosmos-db/graph/create-graph-console).
+For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin ](https://docs.microsoft.com/azure/cosmos-db/graph/create-graph-console).
 
 ## Binding support
 
