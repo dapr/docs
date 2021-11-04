@@ -263,7 +263,7 @@ To use **Azure managed identity**:
 1. Ensure your AKS cluster has managed identity enabled and follow the [guide for using managed identities](https://docs.microsoft.com/azure/aks/use-managed-identity).
 2. Create an `azurekeyvault.yaml` component file.
 
-    The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the certificate stored in the Kubernetes secret store.
+    The component yaml refers to a particular KeyVault name. The managed identity you will use in a later step must be given read access to this particular KeyVault instance.
 
     ```yaml
     apiVersion: dapr.io/v1alpha1
