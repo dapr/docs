@@ -277,13 +277,14 @@ To use **Azure managed identity**:
       metadata:
       - name: vaultName
         value: "[your_keyvault_name]"
+    ```
 
 3. Apply the `azurekeyvault.yaml` component:
 
     ```bash
     kubectl apply -f azurekeyvault.yaml
     ```
-4. Create and use a managed identity / pod identity by following [this guide](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity). After creating an AKS pod identity, give this identity read permissions on your desired KeyVault instance, and finally in your application deployment inject the pod identity via a label annotation:
+4. Create and use a managed identity / pod identity by following [this guide](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity). After creating an AKS pod identity, [give this identity read permissions on your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy), and finally in your application deployment inject the pod identity via a label annotation:
 
   ```yaml
   apiVersion: v1
