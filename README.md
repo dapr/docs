@@ -25,7 +25,7 @@ Before making your first contribution, make sure to review the [contributing sec
 
 ## Overview
 
-The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme, hosted on an [Azure Static Web App](https://docs.microsoft.com/en-us/azure/static-web-apps/overview).
+The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme, hosted on an [Azure Static Web App](https://docs.microsoft.com/azure/static-web-apps/overview).
 
 The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, and theme configurations.
 

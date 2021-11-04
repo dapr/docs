@@ -16,7 +16,7 @@ The main difference between the two flows is that the `Authorization Code Grant 
 
 Different authorization servers provide different application registration experiences. Here are some samples:
 
-* [Azure AAD](https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code)
+* [Azure AAD](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-oauth-code)
 * [Facebook](https://developers.facebook.com/apps)
 * [Fitbit](https://dev.fitbit.com/build/reference/web-api/oauth2/)
 * [GitHub](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
