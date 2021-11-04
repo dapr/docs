@@ -9,6 +9,16 @@ aliases:
 - /developing-applications/middleware/supported-middleware/
 ---
 
+Table captions:
+
+> `Status`: [Component certification]({{<ref "certification-lifecycle.md">}}) status
+  - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
+  - [Beta]({{<ref "certification-lifecycle.md#beta">}})
+  - [Stable]({{<ref "certification-lifecycle.md#stable">}})
+> `Since`: defines from which Dapr Runtime version, the component is in the current status
+
+> `Component version`: defines the version of the component
+
 ### HTTP
 
 | Name       | Description    | Status    |  Component version |

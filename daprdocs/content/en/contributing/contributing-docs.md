@@ -334,6 +334,8 @@ The shortcode would be:
 
 To create a button in a webpage, use the `button` shortcode.
 
+An optional "newtab" parameter will indicate if the page should open in a new tab. Options are "true" or "false". Default is "false", where the page will open in the same tab.
+
 #### Link to an external page
 
 ```
@@ -346,10 +348,10 @@ To create a button in a webpage, use the `button` shortcode.
 
 You can also reference pages in your button as well:
 ```
-{{</* button text="My Button" page="contributing" */>}}
+{{</* button text="My Button" page="contributing" newtab="true" */>}}
 ```
 
-{{< button text="My Button" page="contributing" >}}
+{{< button text="My Button" page="contributing" newtab="true" >}}
 
 #### Button colors
 
