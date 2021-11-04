@@ -59,5 +59,5 @@ The following stores are supported, at various levels, by the Dapr state managem
 |------------------------------------------------------------------|------|---------------------|------|-----|--------|-----|-----|-------|
 | [Azure Blob Storage]({{< ref setup-azure-blobstorage.md >}})     | ✅   | ❌                  | ✅    | ❌ | ❌    | Stable | v1 | 1.0 |
 | [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅   | ✅                  | ✅    | ✅ | ✅    | Stable | v1 | 1.0 |
-| [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅   | ✅                  | ✅    | ❌ | ✅    | Stable  | v1 | 1.5 |
+| [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅   | ✅                  | ✅    | ❌ | ✅    | Stable | v1 | 1.5 |
 | [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}})   | ✅   | ❌                  | ✅    | ❌ | ❌    | Alpha  | v1 | 1.0 |
