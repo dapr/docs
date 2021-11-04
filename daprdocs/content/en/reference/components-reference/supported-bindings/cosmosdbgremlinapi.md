@@ -1,13 +1,13 @@
 ---
 type: docs
-title: "Azure CosmosGraphDB binding spec"
-linkTitle: "Azure CosmosGraphDB"
-description: "Detailed documentation on the Azure CosmosGraphDB binding component"
+title: "Azure CosmosDBGremlinAPI binding spec"
+linkTitle: "Azure CosmosDBGremlinAPI"
+description: "Detailed documentation on the Azure CosmosDBGremlinAPI binding component"
 ---
 
 ## Component format
 
-To setup Azure CosmosGraphDB binding create a component of type `bindings.azure.cosmosgraphdb`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Azure CosmosDBGremlinAPI binding create a component of type `bindings.azure.cosmosdbgremlinapi`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -17,7 +17,7 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: bindings.azure.cosmosgraphdb
+  type: bindings.azure.cosmosdbgremlinapi
   version: v1
   metadata:
   - name: url
@@ -36,9 +36,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| url | Y | Output | The CosmosGraphDB url | `"wss://******.gremlin.cosmos.azure.com:443/"` |
-| masterKey | Y | Output | The CosmosGraphDB account master key | `"masterKey"` |
-| database | Y | Output | The username of the CosmosGraphDB database | `"username"` |
+| url | Y | Output | The CosmosDBGremlinAPI url | `"wss://******.gremlin.cosmos.azure.com:443/"` |
+| masterKey | Y | Output | The CosmosDBGremlinAPI account master key | `"masterKey"` |
+| database | Y | Output | The username of the CosmosDBGremlinAPI database | `"username"` |
 
 For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin ](https://docs.microsoft.com/en-us/azure/cosmos-db/graph/create-graph-console).
 
