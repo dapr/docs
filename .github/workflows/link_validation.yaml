@@ -27,3 +27,11 @@ jobs:
       - name: Check Markdown Files
         run: |
           for name in `find . -name "*.md"`; do echo -e "------\n$name" ; mm.py -l $name || exit 1 ;done
+      - name: Check Microsoft URLs do not pin localized versions
+        run: |
+          localized=$(find . -name '*.md' | xargs grep -ol "\.microsoft\.com/[[:alpha:]]\{2\}-[[:alnum:]]\{2\}/")
+          if [[ $(echo $localized) ]]; then
+            echo "The following files contain links to Microsoft Docs that pin a localized version:"
+            echo $localized
+            exit 1
+          fi
