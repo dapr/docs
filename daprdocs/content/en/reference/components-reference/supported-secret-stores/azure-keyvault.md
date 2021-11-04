@@ -258,6 +258,42 @@ To use a **certificate**:
     kubectl apply -f azurekeyvault.yaml
     ```
 
+To use **Azure managed identity**:
+
+1. Ensure your AKS cluster has managed identity enabled and follow the [guide for using managed identities](https://docs.microsoft.com/azure/aks/use-managed-identity).
+2. Create an `azurekeyvault.yaml` component file.
+
+    The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the certificate stored in the Kubernetes secret store.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: azurekeyvault
+      namespace: default
+    spec:
+      type: secretstores.azure.keyvault
+      version: v1
+      metadata:
+      - name: vaultName
+        value: "[your_keyvault_name]"
+
+3. Apply the `azurekeyvault.yaml` component:
+
+    ```bash
+    kubectl apply -f azurekeyvault.yaml
+    ```
+4. Create and use a managed identity / pod identity by following [this guide](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity). After creating an AKS pod identity, give this identity read permissions on your desired KeyVault instance, and finally in your application deployment inject the pod identity via a label annotation:
+
+  ```yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: mydaprdemoapp
+    labels:
+      aadpodidbinding: $POD_IDENTITY_NAME
+  ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
