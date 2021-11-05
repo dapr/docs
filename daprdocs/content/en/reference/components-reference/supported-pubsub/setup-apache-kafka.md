@@ -39,7 +39,7 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
-  - name: version
+  - name: version # Optional.
     value: 0.10.2.0
 ```
 
