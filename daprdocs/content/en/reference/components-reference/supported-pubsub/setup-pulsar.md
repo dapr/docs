@@ -42,14 +42,7 @@ These optional parameter names are `metadata.deliverAt` or `metadata.deliverAfte
 - `deliverAt`: Delay message to deliver at a specified time (RFC3339 format), e.g. `"2021-09-01T10:00:00Z"`
 - `deliverAfter`: Delay message to deliver after a specified amount of time, e.g.`"4h5m3s"`
 
-| Field              | Required | Details | Example |
-|--------------------|:--------:|---------|---------|
-| deliverAt | N | delay queue configuration param. use time RFC3339, Default is empty | `"2021-09-01T10:00:00Z"`|
-| deliverAfter | N | delay queue configuration param. Default is empty | `"4h5m3s"`|
-
-
 Examples:
-
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAt='2021-09-01T10:00:00Z' \
