@@ -11,7 +11,7 @@ aliases:
 
 To setup Azure Event Grid binding create a component of type `bindings.azure.eventgrid`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-See [this](https://docs.microsoft.com/en-us/azure/event-grid/) for Azure Event Grid documentation.
+See [this](https://docs.microsoft.com/azure/event-grid/) for Azure Event Grid documentation.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -83,7 +83,7 @@ This component supports **output binding** with the following operations:
 - `create`
 ## Additional information
 
-Event Grid Binding creates an [event subscription](https://docs.microsoft.com/en-us/azure/event-grid/concepts#event-subscriptions) when Dapr initializes. Your Service Principal needs to have the RBAC permissions to enable this.
+Event Grid Binding creates an [event subscription](https://docs.microsoft.com/azure/event-grid/concepts#event-subscriptions) when Dapr initializes. Your Service Principal needs to have the RBAC permissions to enable this.
 
 ```bash
 # First ensure that Azure Resource Manager provider is registered for Event Grid
@@ -137,7 +137,7 @@ helm install nginx-ingress ingress-nginx/ingress-nginx -f ./dapr-annotations.yam
 kubectl get svc -l component=controller -o jsonpath='Public IP is: {.items[0].status.loadBalancer.ingress[0].ip}{"\n"}'
 ```
 
-If deploying to Azure Kubernetes Service, you can follow [the official MS documentation for rest of the steps](https://docs.microsoft.com/en-us/azure/aks/ingress-tls)
+If deploying to Azure Kubernetes Service, you can follow [the official MS documentation for rest of the steps](https://docs.microsoft.com/azure/aks/ingress-tls)
 - Add an A record to your DNS zone
 - Install cert-manager
 - Create a CA cluster issuer
