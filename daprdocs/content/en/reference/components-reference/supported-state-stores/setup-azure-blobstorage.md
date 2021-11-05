@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Azure Blob Storage
 
-[Follow the instructions](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
+[Follow the instructions](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
 
 If you wish to create a container for Dapr to use, you can do so beforehand. However, the Blob Storage state provider will create one for you automatically if it doesn't exist.
 
@@ -155,7 +155,7 @@ This creates the blob file in the container with `key` as filename and `value` a
 
 ## Concurrency
 
-Azure Blob Storage state concurrency is achieved by using `ETag`s according to [the Azure Blob Storage documentation](https://docs.microsoft.com/en-us/azure/storage/common/storage-concurrency#managing-concurrency-in-blob-storage).
+Azure Blob Storage state concurrency is achieved by using `ETag`s according to [the Azure Blob Storage documentation](https://docs.microsoft.com/azure/storage/common/storage-concurrency#managing-concurrency-in-blob-storage).
 
 ## Related links
 
