@@ -51,15 +51,15 @@ spec:
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
-| caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
-| clientCert | N | Client certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `0123456789-0123456789`
-| clientKey | N | Client key, required for using TLS. Can be `secretKeyRef` to use a secret reference | `012345`
+| caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert | N | Client certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | N | Client key, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 | skipVerify | N | Skip TLS verification, this is not recommended using in production. Defaults to `"false"` | `"true"`, `"false"` |
 
 ### Communication using TLS
-To configure communication using TLS, ensure kafka broker is configured to support certificates.
+To configure communication using TLS, ensure the Kafka broker is configured to support certificates.
 Pre-requisite includes `certficate authority certificate`, `ca issued client certificate`, `client private key`.
-Here is an example.
+Below is an example of a Kafka pubsub component configured to use TLS:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -99,6 +99,8 @@ spec:
     secretKeyRef:
       name: kafka-tls
       key: clientKey
+auth:
+  secretStore: <SECRET_STORE_NAME>
 ```
 
 ## Per-call metadata fields
