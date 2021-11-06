@@ -84,6 +84,8 @@ spec:
     value: "true"
   - name: saslUsername # Required if authRequired is `true`.
     value: "adminuser"
+  - name: consumeRetryInterval # Optional.
+    value: 200ms
   - name: saslPassword # Required if authRequired is `true`.
     secretKeyRef:
       name: kafka-secrets
