@@ -108,6 +108,8 @@ auth:
   secretStore: <SECRET_STORE_NAME>
 ```
 
+The `secretKeyRef` above is using a secret store to access the tls information, if you don't know how to use secret store, you can read [secret store components]({{< ref setup-secret-store.md >}}) and [Kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) and [how to reference secrets in Dapr components]({{< ref component-secrets.md >}}) for more information.
+
 ## Per-call metadata fields
 
 ### Partition Key
