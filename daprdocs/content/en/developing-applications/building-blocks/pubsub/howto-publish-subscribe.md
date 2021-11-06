@@ -486,6 +486,33 @@ If you want to use your own custom CloudEvent, make sure to specify the content 
 
 Read about content types [here](#content-types), and about the [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
 
+#### Example
+
+{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
+Publish a custom CloudEvent to the `deathStarStatus` topic:
+```bash
+dapr publish --publish-app-id testpubsub --pubsub pubsub --topic deathStarStatus --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"status": "completed"}}'
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+Publish a custom CloudEvent to the `deathStarStatus` topic:
+```bash
+curl -X POST http://localhost:3500/v1.0/publish/pubsub/deathStarStatus -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"status": "completed"}}'
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+Publish a custom CloudEvent to the `deathStarStatus` topic:
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"status": "completed"}}' -Uri 'http://localhost:3500/v1.0/publish/pubsub/deathStarStatus'
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 ## Next steps
 
 - Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)

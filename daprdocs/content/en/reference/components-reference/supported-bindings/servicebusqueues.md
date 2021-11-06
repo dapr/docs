@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | connectionString | Y | Input/Output | The Service Bus connection string | `"Endpoint=sb://************"` |
-| queueName | Y | Input/Output | The Service Bus queue name | `"queuename"` |
+| queueName | Y | Input/Output | The Service Bus queue name. Queue names are case-insensitive and will always be forced to lowercase. | `"queuename"` |
 | ttlInSeconds | N | Output | Parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days. See [also](#specifying-a-ttl-per-message) | `"60"` |
 
 ## Binding support

@@ -9,7 +9,7 @@ description: "How to install Fluentd, Elastic Search, and Kibana to search logs 
 ## Prerequisites
 
 - Kubernetes (> 1.14)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Helm 3](https://helm.sh/)
 
 ## Install Elastic search and Kibana
