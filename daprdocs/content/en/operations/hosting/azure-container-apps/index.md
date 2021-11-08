@@ -3,19 +3,22 @@ type: docs
 title: "Run Dapr in Azure Container Apps"
 linkTitle: "Azure Container Apps"
 weight: 3000
-description: "Learn how to run your Dapr apps on the Azure Container Apps serverless runtime"
+description: "Learn how to run your Dapr applications on the Azure Container Apps serverless platform "
+
 ---
 
-[Azure Container Apps](https://docs.microsoft.com/en-us/azure/container-apps/overview) is a serverless application centric hosting service where users do not see nor manage any underlying VMs, orchestrators, or other cloud infrastructure. Azure Container Apps enables executing application code packaged in any container and is unopinionated about runtime or programming model.
+[Azure Container Apps](https://docs.microsoft.com/en-us/azure/container-apps/overview) is a serverless application hosting service where users do not see nor manage any underlying VMs, orchestrators, or other cloud infrastructure. Azure Container Apps enables you to run your application code packaged in multiple containers and is unopinionated about runtimes or programming models that are used.
 
 
-Dapr is built-in as a first-class experience in Container Apps, letting you use Dapr building blocks without any manual deployment or management of Kubernetes or the Dapr runtime. Simply deploy your services and Dapr components and let the platform take care of the rest.
+Dapr is built-in to Container Apps, enabling you to use the Dapr API building blocks without any manual deployment of the Dapr runtime. You simply deploy your services with their Dapr components.
+
 
 {{< button text="Learn more" link="https://docs.microsoft.com/en-us/azure/container-apps/overview" newtab="true" >}}
 
 ## Tutorial
 
-Visit the [Azure docs](https://docs.microsoft.com/en-us/azure/container-apps/microservices-dapr) to try out a microservices tutorial, where you'll deploy two Dapr-enabled services in Azure Container Apps:
+Visit the [Azure docs](https://docs.microsoft.com/en-us/azure/container-apps/microservices-dapr) to try out a microservices tutorial, where you'll deploy two Dapr-enabled applications to Azure Container Apps.
+
 
 
 <img src="azure-container-apps-microservices-dapr.png" alt="Diagram of a Container Apps environment with two Dapr services" style="width:600px" >
