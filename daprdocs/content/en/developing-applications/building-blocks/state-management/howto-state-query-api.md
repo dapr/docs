@@ -79,7 +79,7 @@ The query API allows you to select records from this JSON structure.
 
 Now you can run the queries.
 
-### Example 1.
+### Example 1
 
 First, let's find all employees in the state of California and sort them by their employee ID in descending order.
 
@@ -178,7 +178,7 @@ The query result is an array of matching key/value pairs in the requested order:
 }
 ```
 
-### Example 2.
+### Example 2
 
 Let's now find all employees from the "Dev Ops" and "Hardware" organizations.
 
@@ -215,7 +215,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api
 
 Similar to the previous example, the result is an array of matching key/value pairs.
 
-### Example 3.
+### Example 3
 
 In this example let's find all employees from the "Dev Ops" department
 and those employees from the "Finance" departing residing in the states of Washington and California.
@@ -416,6 +416,6 @@ And the result of this query is:
 That way you can update the pagination token in the query and iterate through the results until no more records are returned.
 
 ## Related links
- - [Query API reference ]({{< ref "state_api.md#state-query" >}}),
- - [State store components with those that implement query support]({{< ref supported-state-stores.md >}}),
- - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api).
+ - [Query API reference ]({{< ref "state_api.md#state-query" >}})
+ - [State store components with those that implement query support]({{< ref supported-state-stores.md >}})
+ - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api)
