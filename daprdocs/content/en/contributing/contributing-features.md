@@ -34,6 +34,8 @@ Maintainers will now assign the issue to a contributor or maintainer to propose 
 
 The next step is to implement the feature in the runtime, if applicable. New features should be behind a preview feature flag or as an alpha API. There might be exceptions to this for features that are considered small and harmless at the maintainers' discretion. The new feature must also be covered in a new end-to-end test before it can migrate out of alpha into the fully supported API.
 
+New features might also require changes in the [Components-contrib repository](https://github.com/dapr/dapr). There might be a path to add the new feature to existing components, including stable components.
+
 ## Implementation in SDKs
 
 The feature now must be implemented in all SDKs, with examples and integration testing. The timing to which a feature is available on each SDKs might vary.
