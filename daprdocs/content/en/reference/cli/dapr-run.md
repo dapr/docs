@@ -47,7 +47,7 @@ dapr run [flags] [command]
 # Run a .NET application
 dapr run --app-id myapp --app-port 5000 -- dotnet run
 
-# Run a .Net application with socket
+# Run a .Net application with unix domain sockets
 dapr run --app-id myapp --app-port 5000 --unix-domain-socket /tmp -- dotnet run
 
 # Run a Java application
