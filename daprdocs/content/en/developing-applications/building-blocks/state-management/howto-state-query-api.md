@@ -30,12 +30,13 @@ The body of the request is the JSON map with 3 entries: `filter`, `sort`, and `p
 The `filter` is an optional section. It specifies the query conditions in the form of a tree of key/value operations, where the key is the operator and the value is the operands.
 
 The following operations are supported:
+
 | Operator |  Operands   | Description  |
 |----------|-------------|--------------|
 | `EQ`     | key:value   | key == value |
 | `IN`     | key:[]value | key == value[0] OR key == value[1] OR ... OR key == value[n] |
-| `AND`    | []operation |  operation[0] AND operation[1] AND ... AND operation[n] |
-| `OR`     | []operation |  operation[0] OR operation[1] OR ... OR operation[n] |
+| `AND`    | []operation | operation[0] AND operation[1] AND ... AND operation[n] |
+| `OR`     | []operation | operation[0] OR operation[1] OR ... OR operation[n] |
 
 If `filter` section is omitted, the query returns all entries.
 
