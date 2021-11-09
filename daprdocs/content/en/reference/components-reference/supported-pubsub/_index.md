@@ -22,12 +22,12 @@ Table captions:
 
 | Name                                                  | Status | Component version | Since |
 |-------------------------------------------------------|--------| -----| ------------- |
-| [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Beta  | v1 | 1.0 |
+| [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Stable | v1 | 1.5 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})           | Alpha  | v1 | 1.0 |
 | [MQTT]({{< ref setup-mqtt.md >}})                     | Alpha  | v1 | 1.0 |
-| [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta  | v1 | 1.0 |
-| [In Memory]({{< ref setup-inmemory.md >}}) | Alpha  | v1 | 1.4 |
-| [JetStream]({{< ref setup-jetstream.md >}}) | Alpha  | v1 | 1.4 |
+| [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta   | v1 | 1.0 |
+| [In Memory]({{< ref setup-inmemory.md >}})            | Alpha  | v1 | 1.4 |
+| [JetStream]({{< ref setup-jetstream.md >}})           | Alpha  | v1 | 1.4 |
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | v1 | 1.0 |
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | v1 | 1.0 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Stable | v1 | 1.0 |
