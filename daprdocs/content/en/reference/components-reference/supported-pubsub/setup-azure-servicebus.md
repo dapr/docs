@@ -116,11 +116,11 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 - `metadata.EnqueuedTimeUtc`
 - `metadata.SequenceNumber`
 
-To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/en-us/rest/api/servicebus/message-headers-and-properties#message-headers).
+To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
 
 ## Create an Azure Service Bus
 
-Follow the instructions [here](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
+Follow the instructions [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

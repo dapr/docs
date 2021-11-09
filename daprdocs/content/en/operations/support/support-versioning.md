@@ -55,7 +55,7 @@ Components are implemented in the components-contrib repository and follow a `MA
 
 The [components-contrib](https://github.com/dapr/components-contrib/) repo release is a flat version across all components inside.  That is, a version for the components-contrib repo release is made up of all the schemas for the components inside it. A new version of Dapr does not mean there is a new release of components-contrib if there are no component changes.
 
-Note: Components have a production usage lifecycle status: Alpha, Beta and GA (stable). These statuses are not related to their versioning. The tables of supported components shows both their versions and their status.
+Note: Components have a production usage lifecycle status: Alpha, Beta and Stable. These statuses are not related to their versioning. The tables of supported components shows both their versions and their status.
 * List of [state store components]({{< ref supported-state-stores.md >}})
 * List of [pub/sub components]({{< ref supported-pubsub.md >}})
 * List of [secret store components]({{< ref supported-secret-stores.md >}})
