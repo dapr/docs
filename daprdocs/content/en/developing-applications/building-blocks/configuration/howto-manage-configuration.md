@@ -42,7 +42,9 @@ set myconfig "wookie"
 
 ### Get configuration items
 
-Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto). The following examples show Java, C#
+Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto). The following examples show Java, C#, Python and Javascript.
+
+{{< tabs Java Dotnet Python Javascript >}}
 
 {{% codetab %}}
 ```java
@@ -70,6 +72,8 @@ response = stub.GetConfigurationAlpha1(request={ StoreName: 'redisconfig', Keys 
 client.GetConfigurationAlpha1({ StoreName: 'redisconfig', Keys = ['myconfig'] })
 ```
 {{% /codetab %}}
+
+{{< /tabs >}}
 
 ### Watch configuration items
 
