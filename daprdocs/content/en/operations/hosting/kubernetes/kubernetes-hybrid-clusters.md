@@ -16,7 +16,7 @@ You will need a Kubernetes cluster with Windows nodes. Many Kubernetes providers
 
 1. Follow your preferred provider's instructions for setting up a cluster with Windows enabled
 
-- [Setting up Windows on Azure AKS](https://docs.microsoft.com/en-us/azure/aks/windows-container-cli)
+- [Setting up Windows on Azure AKS](https://docs.microsoft.com/azure/aks/windows-container-cli)
 - [Setting up Windows on AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html)
 - [Setting up Windows on Google Cloud GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows)
 
@@ -49,7 +49,7 @@ helm install dapr dapr/dapr --set global.daprControlPlaneOs=windows
 ## Installing Dapr applications
 
 ### Windows applications
-In order to launch a Dapr application on Windows, you'll first need to create a Docker container with your application installed. For a step by step guide see [Get started: Prep Windows for containers](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment). Once you have a docker container with your application, create a deployment YAML file with node affinity set to kubernetes.io/os: windows.
+In order to launch a Dapr application on Windows, you'll first need to create a Docker container with your application installed. For a step by step guide see [Get started: Prep Windows for containers](https://docs.microsoft.com/virtualization/windowscontainers/quick-start/set-up-environment). Once you have a docker container with your application, create a deployment YAML file with node affinity set to kubernetes.io/os: windows.
 
 1. Create a deployment YAML
 
@@ -162,8 +162,8 @@ helm uninstall dapr
 ## Related links
 
 - See the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) for examples of more advanced configuration via node affinity
-- [Get started: Prep Windows for containers](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment)
-- [Setting up a Windows enabled Kubernetes cluster on Azure AKS](https://docs.microsoft.com/en-us/azure/aks/windows-container-cli)
+- [Get started: Prep Windows for containers](https://docs.microsoft.com/virtualization/windowscontainers/quick-start/set-up-environment)
+- [Setting up a Windows enabled Kubernetes cluster on Azure AKS](https://docs.microsoft.com/azure/aks/windows-container-cli)
 - [Setting up a Windows enabled Kubernetes cluster on AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/windows-support.html)
 - [Setting up Windows on Google Cloud GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster-windows)
 

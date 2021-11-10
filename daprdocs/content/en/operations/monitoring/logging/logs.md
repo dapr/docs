@@ -94,7 +94,7 @@ If you are using the Azure Kubernetes Service, you can use the default OMS Agent
 
 If you use [Fluentd](https://www.fluentd.org/), we recommend to using Elastic Search and Kibana. This [how-to]({{< ref fluentd.md >}}) shows how to set up Elastic Search and Kibana in your Kubernetes cluster.
 
-If you are using the Azure Kubernetes Service, you can use [Azure monitor for containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-overview) without indstalling any additional monitoring tools. Also read [How to enable Azure Monitor for containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-onboard)
+If you are using the Azure Kubernetes Service, you can use [Azure monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-overview) without indstalling any additional monitoring tools. Also read [How to enable Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-onboard)
 
 ## References
 

@@ -54,7 +54,7 @@ If you wish to use CosmosDb as an actor store, append the following to the yaml.
 
 ## Setup Azure Cosmos DB
 
-[Follow the instructions](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr can use it.
+[Follow the instructions](https://docs.microsoft.com/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr can use it.
 
 **Note : The partition key for the collection must be named "/partitionKey".  Note: this is case-sensitive.**
 

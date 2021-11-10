@@ -22,7 +22,7 @@ When message time-to-live has native support in the pub/sub component, Dapr simp
 
 #### Azure Service Bus
 
-Azure Service Bus supports [entity level time-to-live](https://docs.microsoft.com/en-us/azure/service-bus-messaging/message-expiration). This means that messages have a default time-to-live but can also be set with a shorter timespan at publishing time. Dapr propagates the time-to-live metadata for the message and lets Azure Service Bus handle the expiration directly.
+Azure Service Bus supports [entity level time-to-live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). This means that messages have a default time-to-live but can also be set with a shorter timespan at publishing time. Dapr propagates the time-to-live metadata for the message and lets Azure Service Bus handle the expiration directly.
 
 ## Non-Dapr subscribers
 
