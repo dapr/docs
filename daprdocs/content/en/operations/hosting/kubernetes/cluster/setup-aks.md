@@ -12,12 +12,12 @@ description: >
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/install/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
 
 ## Deploy an Azure Kubernetes Service cluster
 
-This guide walks you through installing an Azure Kubernetes Service cluster. If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough)
+This guide walks you through installing an Azure Kubernetes Service cluster. If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/azure/aks/kubernetes-walkthrough)
 
 1. Login to Azure
 

@@ -50,7 +50,7 @@ Flags:
 Use "dapr [command] --help" for more information about a command.
 ```
 
-## Command Reference
+### Command Reference
 
 You can learn more about each Dapr command from the links below.
 
@@ -72,6 +72,6 @@ You can learn more about each Dapr command from the links below.
  - [`dapr uninstall`]({{< ref dapr-uninstall.md >}})
  - [`dapr upgrade`]({{< ref dapr-upgrade.md >}})
 
-## Environment Variables
+### Environment Variables
 
 Some Dapr flags can be set via environment variables (e.g. `DAPR_NETWORK` for the `--network` flag of the `dapr init` command). Note that specifying the flag on the command line overrides any set environment variable.

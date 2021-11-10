@@ -8,9 +8,9 @@ description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernet
 
 ## Prerequisites
 
-- [Azure Kubernetes Service](https://docs.microsoft.com/en-us/azure/aks/)
-- [Enable Azure Monitor For containers in AKS](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-overview)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/)
+- [Enable Azure Monitor For containers in AKS](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-overview)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Helm 3](https://helm.sh/)
 
 ## Enable Prometheus metric scrape using config map
@@ -127,6 +127,6 @@ InsightsMetrics
 
 # References
 
-* [Configure scraping of Prometheus metrics with Azure Monitor for containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-prometheus-integration)
-* [Configure agent data collection for Azure Monitor for containers](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-agent-config)
-* [Azure Monitor Query](https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/query-language)
+* [Configure scraping of Prometheus metrics with Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-prometheus-integration)
+* [Configure agent data collection for Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-agent-config)
+* [Azure Monitor Query](https://docs.microsoft.com/azure/azure-monitor/log-query/query-language)

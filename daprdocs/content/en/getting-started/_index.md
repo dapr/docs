@@ -23,3 +23,4 @@ The following steps in this guide are:
 1. Explore Dapr quickstarts
 
 {{< button text="First step: Install the Dapr CLI >>" page="install-dapr-cli" >}}
+<br><br>

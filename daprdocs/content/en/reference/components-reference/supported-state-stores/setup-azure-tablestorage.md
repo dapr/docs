@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Azure Table Storage
 
-[Follow the instructions](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
+[Follow the instructions](https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal) from the Azure documentation on how to create an Azure Storage Account.
 
 If you wish to create a table for Dapr to use, you can do so beforehand. However, Table Storage state provider will create one for you automatically if it doesn't exist.
 
@@ -79,7 +79,7 @@ will create the following record in a table:
 
 ## Concurrency
 
-Azure Table Storage state concurrency is achieved by using `ETag`s according to [the official documentation]( https://docs.microsoft.com/en-us/azure/storage/common/storage-concurrency#managing-concurrency-in-table-storage).
+Azure Table Storage state concurrency is achieved by using `ETag`s according to [the official documentation]( https://docs.microsoft.com/azure/storage/common/storage-concurrency#managing-concurrency-in-table-storage).
 
 
 ## Related links
