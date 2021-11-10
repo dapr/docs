@@ -38,6 +38,7 @@ dapr run [flags] [command]
 | `--log-level`                  |                      | `info`                                                                             | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic`           |
 | `--metrics-port`               | `DAPR_METRICS_PORT`  | `9090`                                                                             | The port that Dapr sends its metrics information to                                                  |
 | `--profile-port`               |                      | `7777`                                                                             | The port for the profile server to listen on                                                         |
+| `--unix-domain-socket`, `-u`   |                      |                                                                                    |  Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows OS |
 | `--dapr-http-max-request-size` |                      | `4`                                                                                | Max size of request body in MB.                                                                      |
 
 ### Examples
@@ -45,6 +46,9 @@ dapr run [flags] [command]
 ```bash
 # Run a .NET application
 dapr run --app-id myapp --app-port 5000 -- dotnet run
+
+# Run a .Net application with unix domain sockets
+dapr run --app-id myapp --app-port 5000 --unix-domain-socket /tmp -- dotnet run
 
 # Run a Java application
 dapr run --app-id myapp -- java -jar myapp.jar
