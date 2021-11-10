@@ -14,7 +14,7 @@ Dapr offers a [State Management API]({{<ref "state-management-overview.md">}})) 
 
 Dapr's Configuration API allows developers to consume configurations and subscribe to changes whenever a configuration item changes.
 
-*This API is currently in Alpha state and only available on gRPC*
+*This API is currently in Alpha state and only available on gRPC. HTTP1.1 support will be available before the API becomes stable.*
 
 ## Step 1: Save a configuration item
 
@@ -39,6 +39,24 @@ Save a configuration item:
 ```
 set myconfig "wookie"
 ```
+
+### Configure a Dapr configuration store
+
+Save the following file:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: redisconfig
+spec:
+  type: configuration.redis
+  metadata:
+  - name: host
+    value: localhost:6379
+```
+
+You can use this as the Dapr component YAML for Kubernetes using kubectl or when running with the Dapr CLI.
 
 ### Get configuration items
 
