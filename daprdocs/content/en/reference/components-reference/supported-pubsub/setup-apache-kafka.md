@@ -56,7 +56,65 @@ spec:
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms`
-| version     | N | Kafka cluster version. Defaults to `2.0.0.0` | `0.10.2.0`
+| version               | N | Kafka cluster version. Defaults to 2.0.0.0 | `0.10.2.0`
+| caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert | N | Client certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | N | Client key, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| skipVerify | N | Skip TLS verification, this is not recommended for use in production. Defaults to `"false"` | `"true"`, `"false"` |
+
+### Communication using TLS
+To configure communication using TLS, ensure the Kafka broker is configured to support certificates.
+Pre-requisite includes `certficate authority certificate`, `ca issued client certificate`, `client private key`.
+Below is an example of a Kafka pubsub component configured to use TLS:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub
+  namespace: default
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: brokers # Required. Kafka broker connection setting
+    value: "dapr-kafka.myapp.svc.cluster.local:9092"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "my-dapr-app-id"
+  - name: authRequired # Required.
+    value: "true"
+  - name: saslUsername # Required if authRequired is `true`.
+    value: "adminuser"
+  - name: consumeRetryInterval # Optional.
+    value: 200ms
+  - name: version # Optional.
+    value: 0.10.2.0
+  - name: saslPassword # Required if authRequired is `true`.
+    secretKeyRef:
+      name: kafka-secrets
+      key: saslPasswordSecret
+  - name: maxMessageBytes # Optional.
+    value: 1024
+  - name: caCert # Certificate authority certificate.
+    secretKeyRef:
+      name: kafka-tls
+      key: caCert
+  - name: clientCert # Client certificate.
+    secretKeyRef:
+      name: kafka-tls
+      key: clientCert
+  - name: clientKey # Client key.
+    secretKeyRef:
+      name: kafka-tls
+      key: clientKey
+auth:
+  secretStore: <SECRET_STORE_NAME>
+```
+
+The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
+
 
 ## Per-call metadata fields
 
