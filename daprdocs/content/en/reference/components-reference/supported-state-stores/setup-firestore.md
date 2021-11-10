@@ -65,7 +65,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | client_x509_cert_url | Y      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
 | entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
 
-## Setup GCP Firestone
+## Setup GCP Firestore
 
 {{< tabs "Self-Hosted" "Google Cloud" >}}
 

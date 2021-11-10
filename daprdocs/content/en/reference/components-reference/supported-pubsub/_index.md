@@ -14,7 +14,7 @@ Table captions:
 > `Status`: [Component certification]({{<ref "certification-lifecycle.md">}}) status
   - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
   - [Beta]({{<ref "certification-lifecycle.md#beta">}})
-  - [GA]({{<ref "certification-lifecycle.md#general-availability-ga">}})
+  - [Stable]({{<ref "certification-lifecycle.md#stable">}})
 > `Since`: defines from which Dapr Runtime version, the component is in the current status
 
 > `Component version`: defines the version of the component
@@ -22,13 +22,15 @@ Table captions:
 
 | Name                                                  | Status | Component version | Since |
 |-------------------------------------------------------|--------| -----| ------------- |
-| [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Beta  | v1 | 1.0 |
+| [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Stable | v1 | 1.5 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})           | Alpha  | v1 | 1.0 |
 | [MQTT]({{< ref setup-mqtt.md >}})                     | Alpha  | v1 | 1.0 |
-| [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta  | v1 | 1.0 |
+| [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta   | v1 | 1.0 |
+| [In Memory]({{< ref setup-inmemory.md >}})            | Alpha  | v1 | 1.4 |
+| [JetStream]({{< ref setup-jetstream.md >}})           | Alpha  | v1 | 1.4 |
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | v1 | 1.0 |
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | v1 | 1.0 |
-| [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | GA  | v1 | 1.0 |
+| [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Stable | v1 | 1.0 |
 
 ### Amazon Web Services (AWS)
 
@@ -46,5 +48,5 @@ Table captions:
 
 | Name                                                      | Status | Component version | Since |
 |-----------------------------------------------------------|--------| ----------------| -- |
-| [Azure Events Hub]({{< ref setup-azure-eventhubs.md >}})  | Alpha  | v1 | 1.0 |
-| [Azure Service Bus]({{< ref setup-azure-servicebus.md >}})| GA  | v1 | 1.0 |
+| [Azure Event Hubs]({{< ref setup-azure-eventhubs.md >}})  | Alpha  | v1 | 1.0 |
+| [Azure Service Bus]({{< ref setup-azure-servicebus.md >}})| Stable | v1 | 1.0 |

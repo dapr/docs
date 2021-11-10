@@ -12,10 +12,10 @@ description: >
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/install/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
-> Note: For Windows, enable Virtualization in BIOS and [install Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
+> Note: For Windows, enable Virtualization in BIOS and [install Hyper-V](https://docs.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
 
 ## Start the Minikube cluster
 

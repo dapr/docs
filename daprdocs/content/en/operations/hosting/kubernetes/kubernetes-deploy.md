@@ -15,7 +15,7 @@ For more information on what is deployed to your Kubernetes cluster read the [Ku
 ## Prerequisites
 
 - Install [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- Install [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - Kubernetes cluster (see below if needed)
 
 ### Create cluster
@@ -122,7 +122,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.2 \
+    --version={{% dapr-latest-version short="true" %}} \
     --namespace dapr-system \
     --create-namespace \
     --wait
@@ -132,7 +132,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
-    --version=1.2 \
+    --version={{% dapr-latest-version short="true" %}} \
     --namespace dapr-system \
     --create-namespace \
     --set global.ha.enabled=true \
