@@ -99,7 +99,7 @@ Dapr uses the configured authentication method to authenticate with the underlyi
 
 When deploying on Kubernetes, you can use regular [Kubernetes RBAC]( https://kubernetes.io/docs/reference/access-authn-authz/rbac/) to control access to management activities.
 
-When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
+When deploying on Azure Kubernetes Service (AKS), you can use [Azure Active Directory (AD) service principals]( https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals) to control access to management activities and resource management.
 
 ## Threat model
 Threat modeling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified and enumerated, and mitigations can be prioritized. The Dapr threat model is below.

@@ -1,0 +1,34 @@
+{
+    "query": {
+        "filter": {
+            "OR": [
+                {
+                    "EQ": { "value.person.org": "Dev Ops" }
+                },
+                {
+                    "AND": [
+                        {
+                            "EQ": { "value.person.org": "Finance" }
+                        },
+                        {
+                            "IN": { "value.state": [ "CA", "WA" ] }
+                        }
+                    ]
+                }
+            ]
+        },
+        "sort": [
+            {
+                "key": "value.state",
+                "order": "DESC"
+            },
+            {
+                "key": "value.person.id"
+            }
+        ],
+        "pagination": {
+            "limit": 3,
+            "token": "3"
+        }
+    }
+}
