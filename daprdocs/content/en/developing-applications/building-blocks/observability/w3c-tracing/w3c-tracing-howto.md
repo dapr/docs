@@ -47,7 +47,7 @@ client.InvokeService(ctx, &pb.InvokeServiceRequest{
 
 ### Retrieve trace context in C#
 #### For HTTP calls
-To retrieve the trace context from HTTP response, you can use [.NET API](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.headers.httpresponseheaders?view=netcore-3.1) :
+To retrieve the trace context from HTTP response, you can use [.NET API](https://docs.microsoft.com/dotnet/api/system.net.http.headers.httpresponseheaders?view=netcore-3.1) :
 
 ```csharp
 // client is HttpClient. req is HttpRequestMessage
@@ -75,7 +75,7 @@ var response = await call.ResponseAsync;
 var headers = await call.ResponseHeadersAsync();
 var tracecontext = headers.First(e => e.Key == "grpc-trace-bin");
 ```
-Additional general details on calling gRPC services with .NET client [here](https://docs.microsoft.com/en-us/aspnet/core/grpc/client?view=aspnetcore-3.1).
+Additional general details on calling gRPC services with .NET client [here](https://docs.microsoft.com/aspnet/core/grpc/client?view=aspnetcore-3.1).
 
 ## How to propagate trace context in a request
 `Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`
@@ -109,7 +109,7 @@ You can then continuing passing this go context `ctx` in subsequent Dapr gRPC ca
 
 ### Pass trace context in C#
 #### For HTTP calls
-To pass trace context in HTTP request, you can use [.NET API](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.headers.httprequestheaders?view=netcore-3.1) :
+To pass trace context in HTTP request, you can use [.NET API](https://docs.microsoft.com/dotnet/api/system.net.http.headers.httprequestheaders?view=netcore-3.1) :
 
 ```csharp
 // client is HttpClient. req is HttpRequestMessage
@@ -127,7 +127,7 @@ var headers = new Metadata();
 headers.Add("grpc-trace-bin", tracecontext);
 using var call = client.InvokeServiceAsync(req, headers);
 ```
-Additional general details on calling gRPC services with .NET client [here](https://docs.microsoft.com/en-us/aspnet/core/grpc/client?view=aspnetcore-3.1).
+Additional general details on calling gRPC services with .NET client [here](https://docs.microsoft.com/aspnet/core/grpc/client?view=aspnetcore-3.1).
 
 ## How to create trace context
 You can create a trace context using the recommended OpenCensus SDKs. OpenCensus supports several different programming languages.
