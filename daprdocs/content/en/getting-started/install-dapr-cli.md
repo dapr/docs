@@ -56,7 +56,7 @@ brew install dapr/tap/dapr-cli
 ```
 
 #### Note for ARM64 Macs
-For M1 Macs, only homebrew 3.0+ versions are supported. Please update Homebrew to 3.0.0+ and use below command
+For ARM64 Macs, only Homebrew 3.0 and higher versions are supported. Please update Homebrew to 3.0.0 or higher and the command below:
 
 ```bash
 arch -arm64 brew install dapr/tap/dapr-cli
