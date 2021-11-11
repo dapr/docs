@@ -55,7 +55,7 @@ You can install via [Homebrew](https://brew.sh):
 brew install dapr/tap/dapr-cli
 ```
 
-#### Note for M1 Macs
+#### Note for ARM64 Macs
 For M1 Macs, only homebrew 3.0+ versions are supported. Please update Homebrew to 3.0.0+ and use below command
 
 ```bash
