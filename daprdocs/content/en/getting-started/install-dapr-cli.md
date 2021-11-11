@@ -48,6 +48,11 @@ This command installs the latest darwin Dapr CLI to `/usr/local/bin`:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
+#### Note for ARM64 Macs
+Support for ARM64 Macs is available as a Preview feature. When installing from the terminal, native ARM64 binaries are downloaded when available. For older releases, AMD64 binaries are downloaded, which must be run with Rosetta2 emulation enabled. To install Rosetta emulation:
+```bash
+softwareupdate --install-rosetta
+```
 
 ### Install from Homebrew
 You can install via [Homebrew](https://brew.sh):
@@ -55,11 +60,11 @@ You can install via [Homebrew](https://brew.sh):
 brew install dapr/tap/dapr-cli
 ```
 
-#### Note for M1 Macs
-For M1 Macs, homebrew is not supported. You will need to use the dapr install script and have the rosetta amd64 compatibility layer installed. If you do not have it installed already, you can run the following:
+#### Note for ARM64 Macs
+For ARM64 Macs, only Homebrew 3.0 and higher versions are supported. Please update Homebrew to 3.0.0 or higher and then run the command below:
 
 ```bash
-softwareupdate --install-rosetta
+arch -arm64 brew install dapr/tap/dapr-cli
 ```
 
 ### Install without `sudo`
