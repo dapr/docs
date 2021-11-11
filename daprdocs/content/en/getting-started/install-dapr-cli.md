@@ -48,9 +48,10 @@ This command installs the latest darwin Dapr CLI to `/usr/local/bin`:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
-When installing from the terminal, native ARM64 binaries are downloaded when available. For older releases, AMD64 binaries are downloaded, which must be run with Rosetta2 emulation enabled. To install Rosetta emulation:
+#### Note for ARM64 Macs
+Support for ARM64 Macs is available, but currently in the Preview phase. When installing from the terminal, native ARM64 binaries are downloaded when available. For older releases, AMD64 binaries are downloaded, which must be run with Rosetta2 emulation enabled. To install Rosetta emulation:
 ```bash
-run softwareupdate --install-rosetta
+softwareupdate --install-rosetta
 ```
 
 ### Install from Homebrew
