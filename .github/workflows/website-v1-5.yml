@@ -1,4 +1,4 @@
-name: Azure Static Web App v1.4
+name: Azure Static Web App v1.5
 
 on:
   push:
