@@ -90,6 +90,7 @@ After announcing a future breaking change, the change will happen in 2 releases 
 | Feature               |   Deprecation announcement   | Removal       |
 |-----------------------|-----------------------|------------------------- |
 | GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
+| Java domain builder classes deprecated (Users should use [setters](https://github.com/dapr/java-sdk/issues/587) instead) | 1.3.0 |                    [1.5.0](https://github.com/dapr/java-sdk/issues/601) |
 
 ## Upgrade on Hosting platforms
 Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})
