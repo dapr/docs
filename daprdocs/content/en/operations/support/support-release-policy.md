@@ -77,7 +77,6 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 |                                 |                 1.4.3 |                    1.5.0 |
 | 1.4.3                        |                   N/A |                    1.5.0 |
 
-
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
 
