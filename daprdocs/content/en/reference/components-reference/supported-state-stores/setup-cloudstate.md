@@ -9,8 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Cloudstate state store create a component of type `state.cloudstate`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
-
+To setup Cloudstate state store create a component of type `state.cloudstate.crdt`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -19,7 +18,7 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: state.cloudstate
+  type: state.cloudstate.crdt
   version: v1
   metadata:
   - name: host
@@ -32,8 +31,8 @@ spec:
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| hosts             | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"`
-| serverPort        | Y        | Specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr | `"8080"`
+| hosts              | Y        | Specifies the address for the Cloudstate API | `"localhost:8013"`
+| serverPort         | Y        | Specifies the port to be opened in Dapr for Cloudstate to callback to. This can be any free port that is not used by either your application or Dapr | `"8080"`
 
 > Since Cloudstate is running as an additional sidecar in the pod, you can reach it via `localhost` with the default port of `8013`.
 
@@ -41,60 +40,131 @@ spec:
 
 The Cloudstate-Dapr integration is unique in the sense that it enables developers to achieve high-throughput, low latency scenarios by leveraging Cloudstate running as a sidecar *next* to Dapr, keeping the state near the compute unit for optimal performance while providing replication between multiple instances that can be safely scaled up and down. This is due to Cloudstate forming an Akka cluster between its sidecars with replicated in-memory entities.
 
-Dapr leverages Cloudstate's CRDT capabilities with last-write-wins semantics.
+Dapr leverages Cloudstate's Conflict-free Replicated Data Type (CRDT) capabilities with last-write-wins semantics.
 
-## Setup Cloudstate
+## Deploy Cloudstate into Kubernetes
 
 To install Cloudstate on your Kubernetes cluster, run the following commands:
 
-```
+```bash
 kubectl create namespace cloudstate
-kubectl apply -n cloudstate -f https://github.com/cloudstateio/cloudstate/releases/download/v0.5.0/cloudstate-0.5.0.yaml
+kubectl apply -n cloudstate -f https://github.com/cloudstateio/cloudstate/releases/download/v0.5.1/cloudstate-0.5.1.yaml
 ```
 
-This installs Cloudstate into the `cloudstate` namespace with version `0.5.0`.
+This installs Cloudstate into the `cloudstate` namespace with version `0.5.1`.
 
-## Apply the configuration
+> Note that the `0.5.1` and `0.6.0` cloudstate yaml files still use the `apiextensions.k8s.io/v1beta1` API version for Custom Resource Definition (CRD). That API version has been deprecated as of Kubernetes v1.16 and unsupported as of v1.22, so plan accordingly when configuring the target Kubernetes cluster to which Cloudstate will be deployed.
 
-### In Kubernetes
+## Apply the Dapr Cloudstate configuration
 
-To apply the Cloudstate state store to Kubernetes, use the `kubectl` CLI:
+To apply the [Cloudstate Dapr state store configuration](#component-format) to your Kubernetes cluster, use the `kubectl` CLI:
 
-```
+```bash
 kubectl apply -f cloudstate.yaml
 ```
 
-## Running the Cloudstate sidecar alongside Dapr
+## Run the Cloudstate sidecar with the app
 
-The next examples shows you how to manually inject a Cloudstate sidecar into a Dapr enabled deployment:
+To run the Cloudstate sidecar with your Dapr app, you can manually inject a Cloudstate sidecar into your app's Kubernetes deployment yaml.
 
-*Notice the `HTTP_PORT` for the `cloudstate-sidecar` container is the port to be used in the Cloudstate component yaml in `host`.*
+Starting with a basic Dapr-enabled app deployment configuration as an example:
 
 ```yaml
-apiVersion: extensions/v1beta1
+kind: Service
+apiVersion: v1
+metadata:
+  name: myapp
+  labels:
+    app: myapp
+spec:
+  selector:
+    app: myapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-  name: test-dapr-app
+  name: myapp
   namespace: default
   labels:
-    app: test-dapr-app
+    app: myapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-dapr-app
+      app: myapp
   template:
     metadata:
+      labels:
+        app: myapp
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/app-id: "testapp"
-      labels:
-        app: test-dapr-app
+        dapr.io/app-id: "myapp"
+        dapr.io/app-port: "3000"
     spec:
       containers:
-      - name: user-container
-        image: nginx
+      - name: myapp
+        image: myregistry/myapp-image:latest
+        ports:
+        - containerPort: 3000
+```
+
+To add the Cloudstate sidecar to that app deployment definition, you would:
+
+- Add an additional `cloudstate-sidecar` container definition to the `Deployment`.
+- Add the `cloudstate-pod-reader` RBAC role and grant it to the default service account.
+
+The result would look like:
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: myapp
+  labels:
+    app: myapp
+spec:
+  selector:
+    app: myapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  namespace: default
+  labels:
+    app: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "myapp"
+        dapr.io/app-port: "3000"
+        dapr.io/metrics-port: "9091"
+    spec:
+      containers:
+      - name: myapp
+        image: myregistry/myapp-image:latest
+        ports:
+        - containerPort: 3000
       - name: cloudstate-sidecar
         env:
         - name: HTTP_PORT
@@ -106,14 +176,14 @@ spec:
         - name: MANAGEMENT_PORT
           value: "8558"
         - name: SELECTOR_LABEL_VALUE
-          value: test-dapr-app
+          value: myapp
         - name: SELECTOR_LABEL
           value: app
         - name: REQUIRED_CONTACT_POINT_NR
           value: "1"
         - name: JAVA_OPTS
           value: -Xms256m -Xmx256m
-        image: cloudstateio/cloudstate-proxy-no-store:0.5.0
+        image: cloudstateio/cloudstate-proxy-no-store:0.5.1
         livenessProbe:
           httpGet:
             path: /alive
@@ -136,6 +206,7 @@ spec:
           requests:
             cpu: 400m
             memory: 512Mi
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -167,7 +238,14 @@ subjects:
   name: default
 ```
 
+A few details to pay attention to:
+
+- The `HTTP_PORT` and `USER_FUNCTION_PORT` values should match the values specified in the [Dapr Cloudstate component configuration](#component-format) for your cluster.
+- The `SELECTOR_LABEL` and `SELECTOR_LABEL_VALUE` should match the what has been specified for your app configuration.
+- You may need to specify a custom `dapr.io/metrics-port` annotation for your app deployment, since both Cloudstate and Dapr sidecars will attempt to use `9090` by default and a binding conflict on that port can prevent the Cloudstate container from running successfully.
+
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})
