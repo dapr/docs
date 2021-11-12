@@ -44,6 +44,10 @@ spec:
     value: https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com
   - name: private_key
     value: PRIVATE KEY
+  - name: decodeBase64
+    value: <bool>
+  - name: encodeBase64
+    value: <bool>
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -65,12 +69,17 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | token_uri      | Y | Output | Google account token uri | `https://oauth2.googleapis.com/token`
 | auth_provider_x509_cert_url | Y | Output | GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
 | client_x509_cert_url | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
+| decodeBase64 | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+| encodeBase64 | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 
 ## Binding support
 
 This component supports **output binding** with the following operations:
 
-- `create`
+- `create` : [Create file](#create-file)
+- `get` : [Get file](#get-file)
+- `delete` : [Delete file](#delete-file)
+- `list`: [List file](#list-files)
 
 ### Create file
 
@@ -84,10 +93,11 @@ To perform a create operation, invoke the GCP Storage Bucket binding with a `POS
   "data": "YOUR_CONTENT"
 }
 ```
+The metadata parameters are:
+- `key` - (optional) the name of the object
+- `decodeBase64` - (optional) configuration to decode base64 file content before saving to storage
 
 #### Examples
-
-
 ##### Save text to a random generated UUID file
 
 {{< tabs Windows Linux >}}
@@ -113,14 +123,14 @@ To perform a create operation, invoke the GCP Storage Bucket binding with a `POS
 
   {{% codetab %}}
   ```bash
-  curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"name\": \"my-test-file.txt\" } }" \
+  curl -d "{ \"operation\": \"create\", \"data\": \"Hello World\", \"metadata\": { \"key\": \"my-test-file.txt\" } }" \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
-  curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "name": "my-test-file.txt" } }' \
+  curl -d '{ "operation": "create", "data": "Hello World", "metadata": { "key": "my-test-file.txt" } }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
@@ -138,19 +148,175 @@ Then you can upload it as you would normally:
 
   {{% codetab %}}
   ```bash
-  curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"name\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  curl -d "{ \"operation\": \"create\", \"data\": \"(YOUR_FILE_CONTENTS)\", \"metadata\": { \"key\": \"my-test-file.jpg\" } }" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
   {{% codetab %}}
   ```bash
-  curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg)", "metadata": { "name": "my-test-file.jpg" } }' \
+  curl -d '{ "operation": "create", "data": "$(cat my-test-file.jpg)", "metadata": { "key": "my-test-file.jpg" } }' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+#### Response
+
+The response body will contain the following JSON:
+
+```json
+{
+    "objectURL":"https://storage.googleapis.com/<your bucket>/<key>",
+}
+```
+
+### Get object
+
+To perform a get file operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "get",
+  "metadata": {
+    "key": "my-test-file.txt"
+  }
+}
+```
+
+The metadata parameters are:
+
+- `key` - the name of the object
+- `encodeBase64` - (optional) configuration to encode base64 file content before return the content.
+
+
+#### Example
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"get\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "get", "metadata": { "key": "my-test-file.txt" }}' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
 
 {{< /tabs >}}
 
+#### Response
+
+The response body contains the value stored in the object.
+
+
+### Delete object
+
+To perform a delete object operation, invoke the GCP bucket binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "delete",
+  "metadata": {
+    "key": "my-test-file.txt"
+  }
+}
+```
+
+The metadata parameters are:
+
+- `key` - the name of the object
+
+
+#### Examples
+
+##### Delete object
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"delete\", \"metadata\": { \"key\": \"my-test-file.txt\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "delete", "metadata": { "key": "my-test-file.txt" }}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
+#### Response
+An HTTP 204 (No Content) and empty body will be retuned if successful.
+
+
+### List objects
+
+To perform a list object operation, invoke the S3  binding with a `POST` method and the following JSON body:
+
+```json
+{
+  "operation": "list",
+  "data": {
+    "maxResults": 10,
+    "prefix": "file",
+    "delimiter": "i0FvxAn2EOEL6"
+  }
+}
+```
+
+The data parameters are:
+
+- `maxResults` - (optional) sets the maximum number of keys returned in the response. By default the action returns up to 1,000 key names. The response might contain fewer keys but will never contain more.
+- `prefix` - (optional) it can be used to filter objects starting with prefix.
+- `delimiter` - (optional)  it can be used to restrict the results to only the kobjects in the given "directory". Without the delimiter, the entire tree under the prefix is returned
+
+#### Response
+
+The response body contains the list of found objects.
+
+The list of objects will be returned as JSON array in the following form:
+
+```json
+[
+	{
+		"Bucket": "<your bucket>",
+		"Name": "02WGzEdsUWNlQ",
+		"ContentType": "image/png",
+		"ContentLanguage": "",
+		"CacheControl": "",
+		"EventBasedHold": false,
+		"TemporaryHold": false,
+		"RetentionExpirationTime": "0001-01-01T00:00:00Z",
+		"ACL": null,
+		"PredefinedACL": "",
+		"Owner": "",
+		"Size": 5187,
+		"ContentEncoding": "",
+		"ContentDisposition": "",
+		"MD5": "aQdLBCYV0BxA51jUaxc3pQ==",
+		"CRC32C": 1058633505,
+		"MediaLink": "https://storage.googleapis.com/download/storage/v1/b/<your bucket>/o/02WGzEdsUWNlQ?generation=1631553155678071&alt=media",
+		"Metadata": null,
+		"Generation": 1631553155678071,
+		"Metageneration": 1,
+		"StorageClass": "STANDARD",
+		"Created": "2021-09-13T17:12:35.679Z",
+		"Deleted": "0001-01-01T00:00:00Z",
+		"Updated": "2021-09-13T17:12:35.679Z",
+		"CustomerKeySHA256": "",
+		"KMSKeyName": "",
+		"Prefix": "",
+		"Etag": "CPf+mpK5/PICEAE="
+	}
+]
+```
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

@@ -38,7 +38,7 @@ Dapr works seamlessly with any user application container image, regardless of i
 
 The Dapr control-plane and sidecar images come from the [daprio Docker Hub](https://hub.docker.com/u/daprio) container registry, which is a public registry.
 
-For information about pulling your application images from a private registry, reference the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). If you are using Azure Container Registry with Azure Kubernetes Service, reference the [AKS documentation](https://docs.microsoft.com/en-us/azure/aks/cluster-container-registry-integration).
+For information about pulling your application images from a private registry, reference the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). If you are using Azure Container Registry with Azure Kubernetes Service, reference the [AKS documentation](https://docs.microsoft.com/azure/aks/cluster-container-registry-integration).
 
 
 ## Quickstart

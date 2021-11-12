@@ -2,23 +2,6 @@
 type: docs
 no_list: true
 ---
-
-<div class="card-deck">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <img src="/images/daprcon.png" alt="DaprCon logo" width=40>
-        <b> Watch DaprCon sessions on-demand!</b>
-      </h5>
-      <p class="card-text">
-        The first ever DaprCon took place October 19th-20th, 2021. Read this recap and find links to all on-demand content <br></br><i><b>Learn more >></b></i>
-      </p>
-      <a href="https://blog.dapr.io/posts/2021/10/21/thanks-for-a-great-first-daprcon/" class="stretched-link"></a>
-    </div>
-  </div>
-</div>
-
-<br></br>
 # <img src="/images/home-title.png" alt="Dapr Docs" width=400>
 
 Welcome to the Dapr documentation site!
