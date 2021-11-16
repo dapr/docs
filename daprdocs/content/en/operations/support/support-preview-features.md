@@ -16,3 +16,4 @@ Preview features in Dapr are considered experimental when they are first release
 | **gRPC proxying** | Enables calling endpoints using service invocation on gRPC services through Dapr via gRPC proxying, without requiring the use of Dapr SDKs. | `proxy.grpc` | [How-To: Invoke services using gRPC]({{<ref howto-invoke-services-grpc>}}) |
 | **State store encryption** | Enables automatic client side encryption for state stores | `State.Encryption` | [How-To: Encrypt application state]({{<ref howto-encrypt-state>}}) |
 | **Pub/Sub routing** | Allow the use of expressions to route cloud events to different URIs/paths and event handlers in your application. | `PubSub.Routing` | [How-To: Publish a message and subscribe to a topic]({{<ref howto-route-messages>}}) |
+| **ARM64 Mac Support** | Dapr CLI, sidecar, and Dashboard are now natively compiled for ARM64 Macs, along with Dapr CLI installation via Homebrew. | N/A | [Install the Dapr CLI]({{<ref install-dapr-cli>}}) |
