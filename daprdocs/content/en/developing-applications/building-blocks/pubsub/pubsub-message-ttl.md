@@ -84,7 +84,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 See [this guide]({{< ref pubsub_api.md >}}) for a reference on the pub/sub API.
 
-## Related links
+## Next steps
 
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})

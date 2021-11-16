@@ -2,6 +2,6 @@
 type: docs
 title: "Configuration"
 linkTitle: "Configuration"
-weight: 30
-description: Manage application configuration
+weight: 80
+description: Manage and be notified of application configuration changes
 ---

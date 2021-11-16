@@ -21,17 +21,12 @@ State store components are data stores (databases, files, memory) that store key
 - [List of state stores]({{< ref supported-state-stores >}})
 - [State store implementations](https://github.com/dapr/components-contrib/tree/master/state)
 
-## Service discovery
+## Name resolution
 
-Service discovery components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment to provide service-to-service discovery. For example, the Kubernetes service discovery component integrates with the Kubernetes DNS service and self hosted uses mDNS.
+Name resolution components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment to provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
 
+- [List of state stores]({{< ref supported-name-resolution >}})
 - [Service discovery name resolution implementations](https://github.com/dapr/components-contrib/tree/master/nameresolution)
-
-## Middleware
-
-Dapr allows custom [middleware]({{<ref "middleware.md">}})  to be plugged into the request processing pipeline. Middleware can perform additional actions on a request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
-
-- [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)
 
 ## Pub/sub brokers
 
@@ -49,7 +44,21 @@ External resources can connect to Dapr in order to trigger a service or be calle
 
 ## Secret stores
 
-In Dapr, a [secret]({{<ref "secrets-overview.md">}}) is any piece of private information that you want to guard against unwanted users. Secrets stores are used to store secrets that can be retrieved and used in services.
+A [secret]({{<ref "secrets-overview.md">}}) is any piece of private information that you want to guard against unwanted users. Secrets stores are used to store secrets that can be retrieved and used in services.
 
 - [List of supported secret stores]({{< ref supported-secret-stores >}})
 - [Secret store implementations](https://github.com/dapr/components-contrib/tree/master/secretstores)
+
+## Configuration stores
+
+Configuration stores are used to save application data which can then be read by application instances on startup or be notified of when changes occur. This allows for dynamic configuration.
+
+- [List of supported configuration stores]({{< ref supported-configuration-stores >}})
+- [Configuration store implementations](https://github.com/dapr/components-contrib/tree/master/configuration)
+
+## Middleware
+
+Dapr allows custom [middleware]({{<ref "middleware.md">}})  to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on a HTTP request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
+
+- [List of supported middleware components]({{< ref supported-middleware >}})
+- [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)
