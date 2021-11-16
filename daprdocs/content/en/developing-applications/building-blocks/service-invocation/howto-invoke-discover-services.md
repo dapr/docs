@@ -296,6 +296,7 @@ import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client';
 
 //code
 
+const daprHost = "127.0.0.1"; 
 const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
 const result = await client.invoker.invoke('checkoutservice' , "checkout/" + orderId , HttpMethod.GET);   
 
