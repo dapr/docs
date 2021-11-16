@@ -12,7 +12,7 @@ This article describe how to deploy services each with an unique application ID,
 
 There are two services called order processing service and checkout service. Dapr sdk that is used in order processing service is used to invoke checkout service. Both order processing service and checkout service have dapr side car.
 
-<img src="/images/service-invocation-overview.png" width=800 alt="Diagram showing service invocation of example service">
+<img src="/images/service_invocation_eg.png" width=1000 alt="Diagram showing service invocation of example service">
 
 ## Step 1: Choose an ID for your service
 
