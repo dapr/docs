@@ -59,6 +59,20 @@ For ease of use, the Dapr cron binding also supports few shortcuts:
 * `@every 15s` where `s` is seconds, `m` minutes, and `h` hours
 * `@daily` or `@hourly` which runs at that period from the time the binding is initialized
 
+## Listen to the cron binding
+
+After setting up the cron binding, all you need to do is listen on an endpoint that matches the name of your component. Assume the [NAME] is `scheduled`. This will be made as a HTTP `POST` request. The below example shows how a simple Node.js Express application can receive calls on the `/scheduled` endpoint and write a message to the console.
+  
+```js
+app.post('/scheduled', async function(req, res){
+    console.log("scheduled endpoint called", req.body)
+    res.status(200).send()
+});
+```
+  
+When running this code, note that the `/scheduled` endpoint is called every five minutes by the Dapr sidecar.
+
+
 ## Binding support
 
 This component supports both **input and output** binding interfaces.
