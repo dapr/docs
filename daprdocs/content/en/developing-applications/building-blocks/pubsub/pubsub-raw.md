@@ -51,7 +51,7 @@ with DaprClient() as d:
         topic='TOPIC_A',
         data=json.dumps(req_data),
         metadata=(
-                     ('rawPayload', 'true'),
+                     ('rawpayload', 'true'),
                  )
     )
     # Print the request
