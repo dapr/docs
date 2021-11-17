@@ -161,7 +161,7 @@ spec:
   route: /dsstatus
   pubsubname: pubsub
   metadata:
-    rawpayload: "true"
+    rawPayload: "true"
 scopes:
 - app1
 - app2
