@@ -10,7 +10,7 @@ This article describe how to deploy services each with an unique application ID,
 
 ## Example:
 
-There are two services called order processing service and checkout service. Dapr sdk that is used in order processing service is used to invoke checkout service. Both order processing service and checkout service have dapr side car.
+There are two services called order processing service and checkout service. Dapr used in order processing service is used to invoke checkout service. Both order processing service and checkout service have dapr side cars.
 
 <img src="/images/service_invocation_eg.png" width=1000 alt="Diagram showing service invocation of example service">
 
@@ -19,7 +19,7 @@ There are two services called order processing service and checkout service. Dap
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
 
-{{< tabs Dotnet Java Python Go Javascript PHP Kubernetes>}}
+{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
 
 
 {{% codetab %}}
@@ -137,29 +137,6 @@ dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 -
 
 {{% codetab %}}
 
-```bash
-
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 sudo brew services stop nginx
-
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 php CheckoutService.php
-
-```
-
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
-
-```bash
-
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl sudo brew services stop nginx
-
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl php CheckoutService.php
-
-```
-
-{{% /codetab %}}
-
-
-{{% codetab %}}
-
 ### Setup an ID using Kubernetes
 
 In Kubernetes, set the `dapr.io/app-id` annotation on your pod:
@@ -199,7 +176,9 @@ Dapr uses a sidecar, decentralized architecture. To invoke an application using 
 
 The sidecar programming model encourages each applications to talk to its own instance of Dapr. The Dapr instances discover and communicate with one another.
 
-{{< tabs Dotnet Java Python Go Javascript PHP curl CLI >}}
+Below are the example code snippets leveraging Dapr SDKs.
+
+{{< tabs Dotnet Java Python Go Javascript curl CLI >}}
 
 
 {{% codetab %}}
@@ -304,25 +283,10 @@ const result = await client.invoker.invoke('checkoutservice' , "checkout/" + ord
 {{% /codetab %}}
 
 {{% codetab %}}
-```bash
-
-//headers
-
-namespace Dapr\Client\DaprClient;
-
-//code
-
-$client = \Dapr\Client\DaprClient::clientBuilder()->build();
-$result = $client->invokeMethod('GET', new AppId('checkoutservice'), 'checkout/' + orderId, 'test');  
-
-```
-{{% /codetab %}}
-
-{{% codetab %}}
 To invoke a 'GET' endpoint:
 
 ```bash
-curl http://localhost:3602/v1.0/invoke/checkoutservice/method/checkout/<id>
+curl http://localhost:3602/v1.0/invoke/checkoutservice/method/checkout/100
 ```
 
 ### Additional URL formats
@@ -362,9 +326,9 @@ dapr invoke --app-id checkoutservice --method checkout/100
 
 ### Namespaces
 
-When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `myApp.production`
+When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `checkoutservice.production`
 
-For example, invoking the example python service with a namespace would be:
+For example, invoking the example service with a namespace would be:
 
 ```bash
 curl http://localhost:3602/v1.0/invoke/checkoutservice.production/method/checkout/100 -X POST
