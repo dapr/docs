@@ -50,9 +50,7 @@ with DaprClient() as d:
         pubsub_name='pubsub',
         topic='TOPIC_A',
         data=json.dumps(req_data),
-        metadata=(
-                     ('rawpayload', 'true'),
-                 )
+        publish_metadata={'rawpayload': 'true'}
     )
     # Print the request
     print(req_data, flush=True)
