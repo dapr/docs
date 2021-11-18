@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Build workflows with Logic Apps"
-linkTitle: "Workflows"
-description: "Learn how to build workflows using Dapr Workflows and Logic Apps"
-weight: 4000
+title: "Build workflow applications with Logic Apps"
+linkTitle: "Logic Apps workflows"
+description: "Learn how to build workflows applications using Dapr Workflows and Logic Apps runtime"
+weight: 3000
 ---
 
 Dapr Workflows is a lightweight host that allows developers to run cloud-native workflows locally, on-premises or any cloud environment using the [Azure Logic Apps](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview) workflow engine and Dapr.
