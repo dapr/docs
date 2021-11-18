@@ -10,9 +10,9 @@ This article describe how to deploy services each with an unique application ID,
 
 ## Example:
 
-There are two services called order processing service and checkout service. Dapr used in order processing service is used to invoke checkout service. Both order processing service and checkout service have dapr side cars.
+The below code examples loosely describe an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars and the order processing service uses Dapr to invoke the checkout method in the checkout service.
 
-<img src="/images/service_invocation_eg.png" width=1000 alt="Diagram showing service invocation of example service">
+<img src="/images/service_invocation_eg.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
 ## Step 1: Choose an ID for your service
 
@@ -26,9 +26,9 @@ Dapr allows you to assign a global, unique ID for your app. This ID encapsulates
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 dotnet run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 dotnet run
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 
 ```
 
@@ -36,9 +36,9 @@ If your app uses an SSL connection, you can tell Dapr to invoke your app over an
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
 
 ```
 
@@ -48,9 +48,9 @@ dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 -
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 
 ```
 
@@ -58,9 +58,9 @@ If your app uses an SSL connection, you can tell Dapr to invoke your app over an
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl mvn spring-boot:run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl mvn spring-boot:run
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl mvn spring-boot:run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl mvn spring-boot:run
 
 ```
 
@@ -70,32 +70,9 @@ dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 -
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 -- python3 CheckoutService.py
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 -- python3 CheckoutService.py
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
-
-```
-
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
-
-```bash
-
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl -- python3 CheckoutService.py
-
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl -- python3 OrderProcessingService.py
-
-```
-
-{{% /codetab %}}
-
-
-{{% codetab %}}
-
-```bash
-
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
-
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 
 ```
 
@@ -103,9 +80,9 @@ If your app uses an SSL connection, you can tell Dapr to invoke your app over an
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl go run CheckoutService.go
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl -- python3 CheckoutService.py
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl go run OrderProcessingService.go
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl -- python3 OrderProcessingService.py
 
 ```
 
@@ -116,9 +93,9 @@ dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 -
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 
 ```
 
@@ -126,9 +103,32 @@ If your app uses an SSL connection, you can tell Dapr to invoke your app over an
 
 ```bash
 
-dapr run --app-id checkoutservice --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl npm start
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl go run CheckoutService.go
 
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl npm start
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl go run OrderProcessingService.go
+
+```
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
+```bash
+
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
+
+```
+
+If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+
+```bash
+
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl npm start
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl npm start
 
 ```
 
@@ -194,7 +194,7 @@ using System.Net.Http;
 CancellationTokenSource source = new CancellationTokenSource();
 CancellationToken cancellationToken = source.Token;
 using var client = new DaprClientBuilder().Build();
-var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkoutservice", "checkout/" + orderId, cancellationToken);
+var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
 await client.InvokeMethodAsync(result);
 
 ```
@@ -214,7 +214,7 @@ import io.dapr.client.domain.HttpExtension;
 
 DaprClient daprClient = new DaprClientBuilder().build();
 var result = daprClient.invokeMethod(
-    "checkoutservice",
+    "checkout",
     "checkout/" + orderId,
     null,
     HttpExtension.GET,
@@ -235,7 +235,7 @@ from dapr.clients import DaprClient
 
 with DaprClient() as daprClient:
   result = daprClient.invoke_method(
-      "checkoutservice",
+      "checkout",
           f"checkout/{orderId}",
           data=b'',
           http_verb="GET"
@@ -261,7 +261,7 @@ if err != nil {
 defer client.Close()
 ctx := context.Background()
 
-result, err := client.InvokeMethod(ctx, "checkoutservice", "checkout/" + strconv.Itoa(orderId), "get") 
+result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get") 
 
 ```
 {{% /codetab %}}
@@ -277,7 +277,7 @@ import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client';
 
 const daprHost = "127.0.0.1"; 
 const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-const result = await client.invoker.invoke('checkoutservice' , "checkout/" + orderId , HttpMethod.GET);   
+const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , HttpMethod.GET);   
 
 ```
 {{% /codetab %}}
@@ -286,7 +286,7 @@ const result = await client.invoker.invoke('checkoutservice' , "checkout/" + ord
 To invoke a 'GET' endpoint:
 
 ```bash
-curl http://localhost:3602/v1.0/invoke/checkoutservice/method/checkout/100
+curl http://localhost:3602/v1.0/invoke/checkout/method/checkout/100
 ```
 
 ### Additional URL formats
@@ -299,26 +299,26 @@ In order to avoid changing URL paths as much as possible, Dapr provides the foll
 
 For example, the following command
 ```bash
-curl http://localhost:3602/v1.0/invoke/checkoutservice/method/checkout/100
+curl http://localhost:3602/v1.0/invoke/checkout/method/checkout/100
 ```
 
 is equivalent to:
 
 ```bash
-curl -H 'dapr-app-id: checkoutservice' 'http://localhost:3602/checkout/100' -X POST
+curl -H 'dapr-app-id: checkout' 'http://localhost:3602/checkout/100' -X POST
 ```
 
 or:
 
 ```bash
-curl 'http://dapr-app-id:checkoutservice@localhost:3602/checkout/100' -X POST
+curl 'http://dapr-app-id:checkout@localhost:3602/checkout/100' -X POST
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
 ```bash
-dapr invoke --app-id checkoutservice --method checkout/100
+dapr invoke --app-id checkout --method checkout/100
 ```
 {{% /codetab %}}
 
@@ -326,12 +326,12 @@ dapr invoke --app-id checkoutservice --method checkout/100
 
 ### Namespaces
 
-When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `checkoutservice.production`
+When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `checkout.production`
 
 For example, invoking the example service with a namespace would be:
 
 ```bash
-curl http://localhost:3602/v1.0/invoke/checkoutservice.production/method/checkout/100 -X POST
+curl http://localhost:3602/v1.0/invoke/checkout.production/method/checkout/100 -X POST
 ```
 
 See the [Cross namespace API spec]({{< ref "service_invocation_api.md#cross-namespace-invocation" >}}) for more information on namespaces.
