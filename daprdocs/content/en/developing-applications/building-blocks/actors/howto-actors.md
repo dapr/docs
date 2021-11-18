@@ -35,7 +35,7 @@ Actors can schedule periodic work on themselves by registering either timers or 
 
 The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
 
-This distintcion allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
+This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
 
 The scheduling configuration of timers and reminders is identical, as summarized below:
 

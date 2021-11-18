@@ -147,6 +147,18 @@ you tackle the challenges that come with building microservices and keeps your c
       <a href="{{< ref python >}}" class="stretched-link"></a>
     </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        <img src="/images/homepage/javascript.png" alt="JS logo" width=30>
+        <b>JavaScript</b>
+      </h5>
+      <p class="card-text">
+        Learn more about the JavaScript SDK.
+      </p>
+      <a href="{{< ref js >}}" class="stretched-link"></a>
+    </div>
+  </div>
 </div>
 <br>
 <div class="card-deck">
