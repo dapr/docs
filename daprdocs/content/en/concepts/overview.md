@@ -91,10 +91,10 @@ To make using Dapr more natural for different languages, it also includes [langu
 - Go
 - Java
 - JavaScript
-- Python
-- Rust
 - .NET
 - PHP
+- Python
+- Rust
 
 These SDKs expose the functionality of the Dapr building blocks through a typed language API, rather than calling the http/gRPC API. This enables you to write a combination of stateless and stateful functions and actors all in the language of your choice. And because these SDKs share the Dapr runtime, you get cross-language actor and function support.
 
@@ -106,7 +106,7 @@ Dapr can be used from any developer framework. Here are some that have been inte
 
 | Language | Frameworks | Description |
 |----------|------------|-------------|
-| [.NET]({{< ref dotnet >}}) | [ASP.NET]({{< ref dotnet-aspnet.md >}}) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/aspnet/core/grpc/).
+| [.NET]({{< ref dotnet >}}) | [ASP.NET Core]({{< ref dotnet-aspnet.md >}}) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/aspnet/core/grpc/).
 | [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/)
 | [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}})
 | [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/)
@@ -116,7 +116,6 @@ Dapr can be used from any developer framework. Here are some that have been inte
 
 Visit the [integrations]({{< ref integrations >}}) page to learn about some of the first-class support Dapr has for various frameworks and external products, including:
 - Public cloud services
-- KEDA
 - Visual Studio Code
 - GitHub
 
