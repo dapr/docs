@@ -15,7 +15,7 @@ While your code processes a message, it can send one or more messages to other a
 
 A large number of actors can execute simultaneously, and actors execute independently from each other.
 
-Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/en-us/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the Actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
+Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the Actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
 
 ### When to use actors
 

@@ -57,7 +57,7 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 | keyType            | N        | The type of key used. Defaults to `"string"` | `"string"`
 | keyLength          | N        | The max length of key. Used along with `"string"` keytype. Defaults to `"200"` | `"200"`
 | schema             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
-| indexedProperties  | N        | List of IndexedProperties. |  `"[{"ColumnName": "column", "Property": "property", "Type": "type"}]"`
+| indexedProperties  | N        | List of IndexedProperties. |  `'[{"column": "transactionid", "property": "id", "type": "int"}, {"column": "customerid", "property": "customer", "type": "nvarchar(100)"}]'`
 | actorStateStore | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{< ref "state_api.md#configuring-state-store-for-actors" >}})). | `"true"`
 
 
@@ -65,7 +65,7 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 
 [Follow the instructions](https://docs.microsoft.com/azure/sql-database/sql-database-single-database-get-started?tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
 
-**Note: SQL Server state store also supports SQL Server running on VMs.**
+**Note: SQL Server state store also supports SQL Server running on VMs and in Docker.**
 
 In order to setup SQL Server as a state store, you need the following properties:
 

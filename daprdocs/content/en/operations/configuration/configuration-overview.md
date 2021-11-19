@@ -168,7 +168,7 @@ spec:
 ```
 
 ## Control-plane configuration
-There is a single configuration file called `default` installed with the Dapr control plane system services that applies global settings. This is only set up when Dapr is deployed to Kubernetes.
+There is a single configuration file called `daprsystem` installed with the Dapr control plane system services that applies global settings. This is only set up when Dapr is deployed to Kubernetes.
 
 ### Control-plane configuration settings
 A Dapr control plane configuration can configure the following settings:
