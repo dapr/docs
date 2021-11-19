@@ -25,13 +25,12 @@ spec:
   metadata:
   - name: vaultName
     value: [your_keyvault_name]
-  - name: spnTenantId
-    value: "[your_service_principal_tenant_id]"
-  - name: spnClientId
-    value: "[your_service_principal_app_id]"
-    value : "[pfx_certificate_contents]"
-  - name: spnCertificateFile
-    value : "[pfx_certificate_file_fully_qualified_local_path]"
+  - name: azureTenantId
+    value: "[your_tenant_id]"
+  - name: azureClientId
+    value: "[your_client_id]"
+  - name: azureClientSecret
+    value : "[your_client_secret]"
 ```
 
 {{% alert title="Warning" color="warning" %}}
