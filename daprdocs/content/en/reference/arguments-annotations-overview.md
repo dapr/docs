@@ -22,11 +22,12 @@ This table is meant to help users understand the equivalent options for running 
 | `--dapr-grpc-port` | `--dapr-grpc-port` | | not supported | gRPC port for the Dapr API to listen on (default "50001") |
 | `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API |
 |` --dapr-http-max-request-size` | --dapr-http-max-request-size | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB |
-| not supported | `--image` | | not supported
+| not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is `daprio/daprd:latest` |
 | `--internal-grpc-port` | not supported | | not supported | gRPC port for the Dapr Internal API to listen on |
 | `--enable-metrics` | not supported | | configuration spec | Enable prometheus metric (default true) |
 | `--enable-mtls` | not supported | | configuration spec | Enables automatic mTLS for daprd to daprd communication channels |
 | `--enable-profiling` | `--enable-profiling` | | `dapr.io/enable-profiling` | Enable profiling |
+| `--unix-domain-socket` | `--unix-domain-socket` | `-u` | not supported  | On Linux, when communicating with the Dapr sidecar, use unix domain sockets for lower latency and greater throughput compared to TCP ports. Not available on Windows OS |
 | `--log-as-json` | not supported | | `dapr.io/log-as-json` | Setting this parameter to `true` outputs logs in JSON format. Default is `false` |
 | `--log-level` | `--log-level` | | `dapr.io/log-level` | Sets the log level for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` |
 | `--app-max-concurrency` | `--app-max-concurrency` | | `dapr.io/app-max-concurrency` | Limit the concurrency of your application. A valid value is any number larger than `0`
