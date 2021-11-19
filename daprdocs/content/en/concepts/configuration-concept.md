@@ -41,7 +41,6 @@ spec:
 ```
 
 Visit [overview of Dapr configuration options]({{<ref "configuration-overview.md">}}) for a list of the configuration options.
-For an 
 
 {{% alert title="Note" color="primary" %}}
 Dapr application and control plane configurations should not be confused with the configuration building block API that enables applications to retrieve key/value data from configuration store components. Read the [Configuration building block]({{< ref configuration-api-overview >}}) for more information.
