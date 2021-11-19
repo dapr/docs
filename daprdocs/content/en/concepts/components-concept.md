@@ -51,7 +51,7 @@ A [secret]({{<ref "secrets-overview.md">}}) is any piece of private information 
 
 ## Configuration stores
 
-Configuration stores are used to save application data which can then be read by application instances on startup or be notified of when changes occur. This allows for dynamic configuration.
+Configuration stores are used to save application data, which can then be read by application instances on startup or notified of when changes occur. This allows for dynamic configuration.
 
 - [List of supported configuration stores]({{< ref supported-configuration-stores >}})
 - [Configuration store implementations](https://github.com/dapr/components-contrib/tree/master/configuration)
