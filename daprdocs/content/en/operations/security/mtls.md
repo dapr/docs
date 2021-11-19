@@ -198,7 +198,7 @@ Run the Sentry service locally with the following command:
 ./sentry --issuer-credentials $HOME/.dapr/certs --trust-domain cluster.local
 ```
 
-If successful, the Sentry service runs and create the root certs in the given directory.
+If successful, the Sentry service runs and creates the root certs in the given directory.
 This command uses default configuration values as no custom config file was given. See below on how to start Sentry service with a custom configuration.
 
 ### Setting up mTLS with the configuration resource
