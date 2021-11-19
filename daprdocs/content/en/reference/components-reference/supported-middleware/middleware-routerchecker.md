@@ -7,11 +7,11 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-routerchecker/
 ---
 
-The routerchecker [HTTP middleware]({{< ref middleware.md >}}) checks the legitimacy of http request routing, that prevents illegal routers from entering dapr cluster, and at the same time prevents a large number of such requests from affecting the view of observable data.
+The RouterChecker HTTP [middleware]({{< ref middleware.md >}}) component leverages regexp to check the validity of HTTP request routing to prevent invalid routers from entering the Dapr cluster. In turn, filtering out bad requests reduces noise in the telemetry and logs data.
 
 ## Component format
 
-In the following definition,  the http request router is set to  `^[A-Za-z0-9/._-]+$`.
+In the following definition,  the HTTP request RouterChecker is set to validate against `^[A-Za-z0-9/._-]+$`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -26,7 +26,7 @@ spec:
     value: "^[A-Za-z0-9/._-]+$"
 ```
 
-For example:
+As an example, the above definition would result in the following PASS/FAIL cases:
 
 ```shell
 PASS /v1.0/invoke/demo/method/method
@@ -46,7 +46,7 @@ FAIL /v1.0/invoke/demo.default/method/"$(curl
 
 | Field | Details | Example |
 |-------|---------|---------|
-| rule | http request routing regexp | `^[A-Za-z0-9/._-]+$`|
+| rule | the regexp expression to be used by the HTTP request RouterChecker | `^[A-Za-z0-9/._-]+$`|
 
 ## Dapr configuration
 
