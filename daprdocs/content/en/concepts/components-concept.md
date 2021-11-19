@@ -23,7 +23,7 @@ State store components are data stores (databases, files, memory) that store key
 
 ## Name resolution
 
-Name resolution components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment to provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
+Name resolution components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment and provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
 
 - [List of name resolution components]({{< ref supported-name-resolution >}})
 - [Name resolution implementations](https://github.com/dapr/components-contrib/tree/master/nameresolution)
