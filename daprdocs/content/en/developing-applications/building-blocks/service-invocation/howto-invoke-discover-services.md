@@ -137,7 +137,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% codetab %}}
 
-### Setup an ID using Kubernetes
+### Set an app-id when deploying to Kubernetes
 
 In Kubernetes, set the `dapr.io/app-id` annotation on your pod:
 
@@ -172,17 +172,17 @@ spec:
 
 ## Step 2: Invoke the service
 
-Dapr uses a sidecar, decentralized architecture. To invoke an application using Dapr, you can use the `invoke` API on any Dapr instance.
+To invoke an application using Dapr, you can use the `invoke` API on any Dapr instance.
 
-The sidecar programming model encourages each applications to talk to its own instance of Dapr. The Dapr instances discover and communicate with one another.
+The sidecar programming model encourages each application to interact with its own instance of Dapr. The Dapr sidecars discover and communicate with one another.
 
-Below are the example code snippets leveraging Dapr SDKs.
+Below are code examples that leverage Dapr SDKs for service invocation.
 
-{{< tabs Dotnet Java Python Go Javascript curl CLI >}}
+{{< tabs Dotnet Java Python Go Javascript>}}
 
 
 {{% codetab %}}
-```bash
+```csharp
 
 //headers
 
@@ -202,7 +202,7 @@ await client.InvokeMethodAsync(result);
 
 
 {{% codetab %}}
-```bash
+```java
 
 //headers
 
@@ -225,7 +225,7 @@ var result = daprClient.invokeMethod(
 {{% /codetab %}}
 
 {{% codetab %}}
-```bash
+```python
 
 //headers
 
@@ -245,11 +245,11 @@ with DaprClient() as daprClient:
 {{% /codetab %}}
 
 {{% codetab %}}
-```bash
+```go
 
 //headers
 import (
-	dapr "github.com/dapr/go-sdk/client"
+  dapr "github.com/dapr/go-sdk/client"
 )
 
 //code
@@ -267,7 +267,7 @@ result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(o
 {{% /codetab %}}
 
 {{% codetab %}}
-```bash
+```javascript
 
 //headers
 
@@ -282,14 +282,14 @@ const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , 
 ```
 {{% /codetab %}}
 
-{{% codetab %}}
-To invoke a 'GET' endpoint:
+{{< /tabs >}}
 
+### Additional URL formats
+
+To invoke a 'GET' endpoint:
 ```bash
 curl http://localhost:3602/v1.0/invoke/checkout/method/checkout/100
 ```
-
-### Additional URL formats
 
 In order to avoid changing URL paths as much as possible, Dapr provides the following ways to call the service invocation API:
 
@@ -314,15 +314,11 @@ or:
 curl 'http://dapr-app-id:checkout@localhost:3602/checkout/100' -X POST
 ```
 
-{{% /codetab %}}
+Using CLI:
 
-{{% codetab %}}
 ```bash
 dapr invoke --app-id checkout --method checkout/100
 ```
-{{% /codetab %}}
-
-{{< /tabs >}}
 
 ### Namespaces
 
