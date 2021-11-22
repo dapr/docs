@@ -3,7 +3,7 @@ type: docs
 title: "State management overview"
 linkTitle: "Overview"
 weight: 100
-description: "Overview of the state management building block API"
+description: "Overview of the state management API building block"
 ---
 
 ## Introduction
