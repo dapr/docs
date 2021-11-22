@@ -13,7 +13,7 @@ This HowTo uses the Redis configuration store component as an example on how to 
 
 ## Step 1: Create a configuration item in store
 
-First, create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component
+First, create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component.
 
 ### Run Redis with Docker
 ```
