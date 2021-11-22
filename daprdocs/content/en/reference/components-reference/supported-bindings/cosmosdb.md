@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | collection | Y | Output | The name of the container inside the database.  | `"Orders"` |
 | partitionKey | Y | Output | The name of the partitionKey to extract from the payload and is used in the container | `"OrderId"`, `"message"` |
 
-For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/en-us/azure/cosmos-db/account-databases-containers-items).
+For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items).
 
 ## Binding support
 

@@ -14,8 +14,8 @@ The following branches are currently maintained:
 
 | Branch                                                       | Website                    | Description                                                                                      |
 | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
-| [v1.4](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
-| [v1.5](https://github.com/dapr/docs/tree/v1.5) (pre-release) | https://v1-5.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.5+ go here.                |
+| [v1.5](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
+| [v1.6](https://github.com/dapr/docs/tree/v1.6) (pre-release) | https://v1-6.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.6+ go here.                |
 
 For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/contributing-docs/#branch-guidance) document.
 
@@ -25,7 +25,7 @@ Before making your first contribution, make sure to review the [contributing sec
 
 ## Overview
 
-The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme, hosted on an [Azure Static Web App](https://docs.microsoft.com/en-us/azure/static-web-apps/overview).
+The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme, hosted on an [Azure Static Web App](https://docs.microsoft.com/azure/static-web-apps/overview).
 
 The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, and theme configurations.
 
