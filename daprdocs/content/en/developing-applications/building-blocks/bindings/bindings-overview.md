@@ -3,7 +3,7 @@ type: docs
 title: "Bindings overview"
 linkTitle: "Overview"
 weight: 100
-description: Overview of the bindings building block
+description: Overview of the bindings API building block 
 ---
 
 ## Introduction

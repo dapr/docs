@@ -165,7 +165,7 @@ scopes:
 - app2
 ```
 
-## Related links
+## Next steps
 
 - Learn more about [how to publish and subscribe]({{< ref howto-publish-subscribe.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
