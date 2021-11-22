@@ -1,15 +1,15 @@
 {{ $links := .Site.Params.links }}
 <footer class="bg-dark py-7 row d-print-none">
-  <div class="container-fluid mx-sm-5">
+  <div class="container-fluid mx-sm-5" style="margin-top: 2rem;">
     <div class="row">
-      <div class="col-6 col-sm-2 text-xs-center order-sm-2">
+      <div class="col-6 col-sm-2 text-xs-center order-sm-2" style="margin-top: 1rem;">
         {{ with $links }}
         {{ with index . "user"}}
         {{ template "footer-links-block"  . }}
         {{ end }}
         {{ end }}
       </div>
-      <div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+      <div class="col-6 col-sm-2 text-right text-xs-center order-sm-3" style="margin-top: 1rem;">
         {{ with $links }}
         {{ with index . "developer"}}
         {{ template "footer-links-block"  . }}
@@ -17,7 +17,6 @@
         {{ end }}
       </div>
       <div class="col-12 col-sm-6 text-center py-2 order-sm-2">
-        {{ with .Site.Params }}<small class="text-white">&copy; {{ .copyright }} {{ now.Year}} | {{ .distributed | markdownify }}</small>{{ end }}<br></br>
         {{ with .Site.Params }}<small class="text-white">&copy; {{ now.Year}} {{ .trademark | markdownify }}</small>{{ end }}
   {{ if not .Site.Params.ui.footer_about_disable }}
 		{{ with .Site.GetPage "about" }}<p class="mt-2"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}

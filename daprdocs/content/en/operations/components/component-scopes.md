@@ -91,7 +91,7 @@ curl -i -d '{ "message": "hello" }' \
 ```
 
 ## Using namespaces with pub/sub
-Read [Pub/Sub and namespaces]({{< ref "component-scopes.md" >}}) for more information on scoping components.
+Read [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for more information on using namespaces with pub/sub.
 
 ## Application access to components with scopes
 

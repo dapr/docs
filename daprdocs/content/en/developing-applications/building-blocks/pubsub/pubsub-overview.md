@@ -3,7 +3,7 @@ type: docs
 title: "Publish and subscribe overview"
 linkTitle: "Overview"
 weight: 1000
-description: "Overview of the Pub/Sub building block"
+description: "Overview of the Pub/Sub API building block"
 ---
 
 ## Introduction
