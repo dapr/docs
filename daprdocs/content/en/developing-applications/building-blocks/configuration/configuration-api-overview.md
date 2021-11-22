@@ -18,7 +18,7 @@ It is worth noting that this configuration API should not be confused with the [
 
 ## Features
 
-*This API is currently in `Alpha state` and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API becomes stable.*
+*This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.*
 
 ## Next steps
 Follow these guides on:
