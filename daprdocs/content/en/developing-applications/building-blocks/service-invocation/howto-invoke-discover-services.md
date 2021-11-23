@@ -184,7 +184,7 @@ Below are code examples that leverage Dapr SDKs for service invocation.
 {{% codetab %}}
 ```csharp
 
-//headers
+//dependencies
 
 using Dapr.Client;
 using System.Net.Http;
@@ -204,7 +204,7 @@ await client.InvokeMethodAsync(result);
 {{% codetab %}}
 ```java
 
-//headers
+//dependencies
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
@@ -227,11 +227,11 @@ var result = daprClient.invokeMethod(
 {{% codetab %}}
 ```python
 
-//headers
+#dependencies
 
 from dapr.clients import DaprClient
 
-//code
+#code
 
 with DaprClient() as daprClient:
   result = daprClient.invoke_method(
@@ -247,7 +247,7 @@ with DaprClient() as daprClient:
 {{% codetab %}}
 ```go
 
-//headers
+//dependencies
 import (
   dapr "github.com/dapr/go-sdk/client"
 )
@@ -269,7 +269,7 @@ result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(o
 {{% codetab %}}
 ```javascript
 
-//headers
+//dependencies
 
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
