@@ -185,17 +185,41 @@ Below are code examples that leverage Dapr SDKs for service invocation.
 ```csharp
 
 //dependencies
-
-using Dapr.Client;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 //code
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+           //Calling service multiple times with 5 seconds gap in between the calls
+           while(true) {
+                System.Threading.Thread.Sleep(5000);
+                Random random = new Random();
+                int orderId = random.Next(1,1000);
 
-CancellationTokenSource source = new CancellationTokenSource();
-CancellationToken cancellationToken = source.Token;
-using var client = new DaprClientBuilder().Build();
-var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
-await client.InvokeMethodAsync(result);
+                CancellationTokenSource source = new CancellationTokenSource();
+                CancellationToken cancellationToken = source.Token;
+                //Using Dapr SDK to invoke a method
+                using var client = new DaprClientBuilder().Build();
+                var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
+                await client.InvokeMethodAsync(result);
+
+                Console.WriteLine("Order requested: " + orderId);
+                Console.WriteLine("Result: " + result);
+		        }
+        }
+    }
+}
 
 ```
 {{% /codetab %}}
@@ -205,21 +229,45 @@ await client.InvokeMethodAsync(result);
 ```java
 
 //dependencies
-
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.HttpExtension;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 //code
+@SpringBootApplication
+public class OrderProcessingServiceApplication {
 
-DaprClient daprClient = new DaprClientBuilder().build();
-var result = daprClient.invokeMethod(
-    "checkout",
-    "checkout/" + orderId,
-    null,
-    HttpExtension.GET,
-    String.class
-);
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
+	public static void main(String[] args) throws InterruptedException{
+
+       //Calling service multiple times with 5 seconds gap in between the calls
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
+
+             //Using Dapr SDK to invoke a method
+			DaprClient client = new DaprClientBuilder().build();
+			var result = client.invokeMethod(
+					"checkout",
+					"checkout/" + orderId,
+					null,
+					HttpExtension.GET,
+					String.class
+			);
+
+			log.info("Order requested: " + orderId);
+			log.info("Result: " + result);
+		}
+	}
+}
 
 ```
 {{% /codetab %}}
@@ -228,18 +276,31 @@ var result = daprClient.invokeMethod(
 ```python
 
 #dependencies
-
+import random
+from time import sleep    
+import requests
+import logging
 from dapr.clients import DaprClient
 
 #code
+logging.basicConfig(level = logging.INFO)
+    
+#Calling service multiple times with 5 seconds gap in between the calls
+while True:
+    sleep(random.randrange(50, 5000) / 1000)
+    orderId = random.randint(1, 1000)
 
-with DaprClient() as daprClient:
-  result = daprClient.invoke_method(
-      "checkout",
-          f"checkout/{orderId}",
-          data=b'',
-          http_verb="GET"
-  )    
+    #Using Dapr SDK to invoke a method
+    with DaprClient() as client:
+        result = client.invoke_method(
+            "checkout",
+               f"checkout/{orderId}",
+               data=b'',
+               http_verb="GET"
+        )    
+    logging.basicConfig(level = logging.INFO)
+    logging.info('Order requested: ' + str(orderId))
+    logging.info('Result: ' + str(result))   
 
 ```
 {{% /codetab %}}
@@ -249,19 +310,37 @@ with DaprClient() as daprClient:
 
 //dependencies
 import (
-  dapr "github.com/dapr/go-sdk/client"
+	"context"
+	"log"
+	"math/rand"
+	"time"
+	"strconv"
+	dapr "github.com/dapr/go-sdk/client"
+
 )
 
 //code
+func main() {
 
-client, err := dapr.NewClient()
-if err != nil {
-  panic(err)
+    //Calling service multiple times with 5 seconds gap in between the calls
+	for i := 0; i < 10; i++ {
+		time.Sleep(5000)
+		orderId := rand.Intn(1000-1) + 1
+
+        //Using Dapr SDK to invoke a method
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+		result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get")
+
+		log.Println("Order requested: " + strconv.Itoa(orderId))
+		log.Println("Result: ")
+		log.Println(result)
+	}
 }
-defer client.Close()
-ctx := context.Background()
-
-result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get") 
 
 ```
 {{% /codetab %}}
@@ -270,14 +349,32 @@ result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(o
 ```javascript
 
 //dependencies
-
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
-//code
-
 const daprHost = "127.0.0.1"; 
-const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , HttpMethod.GET);   
+
+//code
+var main = function() {
+
+    //Calling service multiple times with 5 seconds gap in between the calls
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+
+        //Using Dapr SDK to invoke a method
+        const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+        const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , HttpMethod.GET);
+
+        console.log("Order requested: " + orderId);
+        console.log("Result: " + result);
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+main();
 
 ```
 {{% /codetab %}}
