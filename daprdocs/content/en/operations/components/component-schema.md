@@ -38,7 +38,7 @@ spec:
 | **spec**           | -        | **Detailed information on the component resource**
 | spec.type          | Y        | The type of the component | `state.redis`
 | spec.version       | Y        | The version of the component | `v1`
-| spec.initTimeout   | N        | The timeout duration for the initialization of the component. Default is 30s  | `5m`, `1h`, `20s`
+| spec.initTimeout   | N        | The timeout duration for the initialization of the component. Default is 5s  | `5m`, `1h`, `20s`
 | spec.ignoreErrors  | N        | Tells the Dapr sidecar to continue initialization if the component fails to load. Default is false  | `false`
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
 
