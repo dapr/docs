@@ -54,11 +54,11 @@ To run Prometheus as a Docker container on your local machine, first ensure you 
 Then you can run Prometheus as a Docker container using:
 ```bash
 docker run \
-    --net=host \
+    --net=bridge \
     -v /tmp/prometheus.yml:/etc/prometheus/prometheus.yml \
     prom/prometheus --config.file=/etc/prometheus/prometheus.yml --web.listen-address=:8080
 ```
-`--net=host` ensures that the Prometheus instance will be able to connect to any Dapr instances running on the host machine. If you plan to run your Dapr apps in containers as well, you'll need to run them on a shared Docker network and update the configuration with the correct target address.
+`--net=bridge` ensures that the Prometheus instance will be able to connect to any Dapr instances running on the host machine. If you plan to run your Dapr apps in containers as well, you'll need to run them on a shared Docker network and update the configuration with the correct target address.
 
 Once Prometheus is running, you'll be able to visit its dashboard by visiting `http://localhost:8080`.
 
