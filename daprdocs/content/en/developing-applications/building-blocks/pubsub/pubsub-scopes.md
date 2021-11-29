@@ -162,7 +162,7 @@ The table below shows which application is allowed to subscribe to the topics:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/7VdWBBGcbHQ?start=513" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-## Related links
+## Next steps
 
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})

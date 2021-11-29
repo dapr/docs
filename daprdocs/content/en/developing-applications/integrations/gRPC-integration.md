@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr's gRPC Interface"
 linkTitle: "gRPC interface"
-weight: 1000
+weight: 6000
 description: "Use the Dapr gRPC API in your application"
 type: docs
 ---

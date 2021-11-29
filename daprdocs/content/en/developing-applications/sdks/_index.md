@@ -32,13 +32,13 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 | Language | Status | Client SDK | Server extensions | Actor SDK |
 |----------|:------|:----------:|:-----------:|:---------:|
 | [.NET]({{< ref dotnet >}}) | Stable | ✔ |  [ASP.NET Core]({{< ref dotnet-aspnet >}}) | ✔ |
-| [Python]({{< ref python >}}) | Stable | ✔ | [gRPC]({{< ref python-grpc.md >}}) | [FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}}) |
+| [Python]({{< ref python >}}) | Stable | ✔ | [gRPC]({{< ref python-grpc.md >}}) <br />[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}})| ✔ |
 | [Java]({{< ref java >}}) | Stable | ✔ | Spring Boot | ✔ |
-| [Go]({{< ref go >}}) | Stable | ✔ | ✔ |  |
+| [Go]({{< ref go >}}) | Stable | ✔ | ✔ | ✔ |
 | [PHP]({{< ref php >}}) | Stable | ✔ | ✔ | ✔ |
+| [Javascript](https://github.com/dapr/js-sdk) | Stable| ✔ | | ✔ |
 | [C++](https://github.com/dapr/cpp-sdk) | In development | ✔ | |
 | [Rust](https://github.com/dapr/rust-sdk) | In development | ✔ | |  |
-| [Javascript](https://github.com/dapr/js-sdk) | In development| ✔ | |
 
 ## Further reading
 

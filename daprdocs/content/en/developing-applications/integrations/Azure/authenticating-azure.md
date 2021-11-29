@@ -6,6 +6,7 @@ description: "How to authenticate Azure components using Azure AD and/or Managed
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault-managed-identity/"
   - "/reference/components-reference/supported-secret-stores/azure-keyvault-managed-identity/"
+weight: 1000
 ---
 
 ## Common Azure authentication layer
