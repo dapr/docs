@@ -51,7 +51,7 @@ with DaprClient() as client:
 
 ```
 
-Once saved run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
