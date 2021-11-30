@@ -86,7 +86,7 @@ with NATS, find the service with: `kubectl get svc my-nats`.
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
-- [JetStream Documentation](https://docs.nats.io/jetstream/jetstream)
+- [JetStream Documentation](https://docs.nats.io/nats-concepts/jetstream)
 - [NATS CLI](https://github.com/nats-io/natscli)
 
 
