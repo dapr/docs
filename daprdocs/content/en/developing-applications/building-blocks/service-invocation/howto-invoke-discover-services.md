@@ -10,7 +10,7 @@ This article describe how to deploy services each with an unique application ID,
 
 ## Example:
 
-The below code examples loosely describe an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars and the order processing service uses Dapr to invoke the checkout method in the checkout service.
+The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars and the order processing service uses Dapr to invoke the checkout method in the checkout service.
 
 <img src="/images/service_invocation_eg.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
