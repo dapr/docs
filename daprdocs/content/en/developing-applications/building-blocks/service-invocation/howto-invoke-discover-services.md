@@ -10,9 +10,9 @@ This article describe how to deploy services each with an unique application ID,
 
 ## Example:
 
-The below code examples loosely describe an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars and the order processing service uses Dapr to invoke the checkout method in the checkout service.
+The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars and the order processing service uses Dapr to invoke the checkout method in the checkout service.
 
-<img src="/images/service_invocation_eg.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
+<img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
 ## Step 1: Choose an ID for your service
 
@@ -184,18 +184,26 @@ Below are code examples that leverage Dapr SDKs for service invocation.
 {{% codetab %}}
 ```csharp
 
-//headers
-
+//dependencies
 using Dapr.Client;
-using System.Net.Http;
 
 //code
-
-CancellationTokenSource source = new CancellationTokenSource();
-CancellationToken cancellationToken = source.Token;
-using var client = new DaprClientBuilder().Build();
-var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
-await client.InvokeMethodAsync(result);
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+          int orderId = 100;
+          CancellationTokenSource source = new CancellationTokenSource();
+          CancellationToken cancellationToken = source.Token;
+          //Using Dapr SDK to invoke a method
+          using var client = new DaprClientBuilder().Build();
+          var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
+          await client.InvokeMethodAsync(result);
+        }
+    }
+}
 
 ```
 {{% /codetab %}}
@@ -204,22 +212,27 @@ await client.InvokeMethodAsync(result);
 {{% codetab %}}
 ```java
 
-//headers
-
+//dependencies
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.HttpExtension;
 
 //code
-
-DaprClient daprClient = new DaprClientBuilder().build();
-var result = daprClient.invokeMethod(
-    "checkout",
-    "checkout/" + orderId,
-    null,
-    HttpExtension.GET,
-    String.class
-);
+@SpringBootApplication
+public class OrderProcessingServiceApplication {
+	public static void main(String[] args) throws InterruptedException {
+      int orderId = 100;
+      //Using Dapr SDK to invoke a method
+      DaprClient client = new DaprClientBuilder().build();
+      var result = client.invokeMethod(
+          "checkout",
+          "checkout/" + orderId,
+          null,
+          HttpExtension.GET,
+          String.class
+      );
+	}
+}
 
 ```
 {{% /codetab %}}
@@ -227,19 +240,19 @@ var result = daprClient.invokeMethod(
 {{% codetab %}}
 ```python
 
-//headers
-
+#dependencies
 from dapr.clients import DaprClient
 
-//code
-
-with DaprClient() as daprClient:
-  result = daprClient.invoke_method(
-      "checkout",
-          f"checkout/{orderId}",
-          data=b'',
-          http_verb="GET"
-  )    
+#code
+orderId = 100
+#Using Dapr SDK to invoke a method
+with DaprClient() as client:
+    result = client.invoke_method(
+        "checkout",
+            f"checkout/{orderId}",
+            data=b'',
+            http_verb="GET"
+    ) 
 
 ```
 {{% /codetab %}}
@@ -247,21 +260,25 @@ with DaprClient() as daprClient:
 {{% codetab %}}
 ```go
 
-//headers
+//dependencies
 import (
-  dapr "github.com/dapr/go-sdk/client"
+	"strconv"
+	dapr "github.com/dapr/go-sdk/client"
+
 )
 
 //code
-
-client, err := dapr.NewClient()
-if err != nil {
-  panic(err)
+func main() {
+  orderId := 100
+  //Using Dapr SDK to invoke a method
+  client, err := dapr.NewClient()
+  if err != nil {
+    panic(err)
+  }
+  defer client.Close()
+  ctx := context.Background()
+  result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get")
 }
-defer client.Close()
-ctx := context.Background()
-
-result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get") 
 
 ```
 {{% /codetab %}}
@@ -269,15 +286,20 @@ result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(o
 {{% codetab %}}
 ```javascript
 
-//headers
-
+//dependencies
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
 //code
+const daprHost = "127.0.0.1";
 
-const daprHost = "127.0.0.1"; 
-const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , HttpMethod.GET);   
+var main = function() {
+  var orderId = 100;
+  //Using Dapr SDK to invoke a method
+  const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+  const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , HttpMethod.GET);
+}
+
+main();
 
 ```
 {{% /codetab %}}

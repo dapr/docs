@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "State Time-to-Live (TTL)"
-linkTitle: "State TTL"
+title: "How-To: Set state Time-to-Live (TTL)"
+linkTitle: "How-To: Set state TTL"
 weight: 500
 description: "Manage state with time-to-live."
 ---
@@ -31,12 +31,38 @@ Please refer to the TTL column in the tables at [state store components]({{< ref
 
 State TTL can be set in the metadata as part of the state store set request:
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
+{{< tabs Python "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
+
+```python
+#dependencies
+
+from dapr.clients import DaprClient
+
+#code
+
+DAPR_STORE_NAME = "statestore"
+
+with DaprClient() as client:
+        client.save_state(DAPR_STORE_NAME, "order_1", str(orderId), metadata=(
+            ('ttlInSeconds', '120')
+        )) 
+
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '[{ "key": "key1", "value": "value1", "metadata": { "ttlInSeconds": "120" } }]' http://localhost:3500/v1.0/state/statestore
+curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250", "metadata": { "ttlInSeconds": "120" } }]' http://localhost:3601/v1.0/state/statestore
 ```
 
 {{% /codetab %}}
@@ -44,48 +70,7 @@ curl -X POST -H "Content-Type: application/json" -d '[{ "key": "key1", "value": 
 {{% codetab %}}
 
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "key1", "value": "value1", "metadata": {"ttlInSeconds": "120"}}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```python
-from dapr.clients import DaprClient
-
-with DaprClient() as d:
-    d.save_state(
-        store_name="statestore",
-        key="myFirstKey",
-        value="myFirstValue",
-        metadata=(
-            ('ttlInSeconds', '120')
-        )
-    )
-    print("State has been stored")
-
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-Save the following in `state-example.php`:
-
-```php
-<?php
-require_once __DIR__.'/vendor/autoload.php';
-
-$app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
-        key: 'myFirstKey',
-        value: 'myFirstValue',
-        metadata: ['ttlInSeconds' => '120']
-    ));
-    $logger->alert('State has been stored');
-});
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "order_1", "value": "250", "metadata": {"ttlInSeconds": "120"}}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
 {{% /codetab %}}
