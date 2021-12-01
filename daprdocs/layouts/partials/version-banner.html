@@ -8,7 +8,7 @@
     {{ with $current_version }}<p>The documentation you are viewing is for Dapr {{ . | markdownify }} 
       which is an older version of Dapr. 
       {{ with $latest_version }}For up-to-date documentation, see the 
-        <a href="{{ $latest_version | safeURL }}" target="_blank">latest version</a>.</p>
+        <a href="{{ $latest_version | safeURL }}" target="_blank" rel="nofollow noopener noreferrer">latest version</a>.</p>
       {{ end }}
     {{ end }}
   </div>
