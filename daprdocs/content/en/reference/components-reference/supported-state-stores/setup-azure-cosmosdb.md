@@ -75,6 +75,14 @@ Therefore several strategies must be applied to avoid simultaneous new connectio
 - Avoid reusing the same Azure Cosmos DB account for unrelated databases or systems (even outside of Dapr). Distinct Azure Cosmos DB accounts have distinct rate limits.
 - Increase the `initTimeout` value to allow the component to retry connecting to Azure Cosmos DB during side car initialization for up to 5 minutes. The default value is `5s` and should be increased. When using Kubernetes, increasing this value may also require an update to your [Readiness and Liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
+```yaml
+spec:
+  type: state.azure.cosmosdb
+  version: v1
+  initTimeout: 5m
+  metadata:
+```
+
 ## Data format
 
 To use the CosmosDB state store, your data must be sent to Dapr in JSON-serialized.  Having it just JSON *serializable* will not work.
