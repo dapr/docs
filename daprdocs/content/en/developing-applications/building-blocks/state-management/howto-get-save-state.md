@@ -23,7 +23,7 @@ In this guide we'll start of with the basics: Using the key/value state API to a
 
 The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
 
-<img src="/images/state_management_eg.png" width=1000 alt="Diagram showing state management of example service">
+<img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
 
 ## Step 1: Setup a state store
 
