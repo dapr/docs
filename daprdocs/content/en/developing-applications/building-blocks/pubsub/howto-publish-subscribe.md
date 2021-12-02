@@ -474,10 +474,14 @@ Start an instance of Dapr with an app-id called `orderprocessing`:
 
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 dapr run --app-id orderprocessing --dapr-http-port 3601
 =======
 dapr run --app-id orderprocessing --dapr-http-port 3500
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+dapr run --app-id orderprocessing --dapr-http-port 3601
+>>>>>>> 3380b73a (Changed port number in the command)
 ```
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -718,10 +722,14 @@ func main() {
     defer client.Close()
     ctx := context.Background()
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Using Dapr SDK to publish a topic
 =======
     //Using Dapr SDK to publish to a topic
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+    
+>>>>>>> 3380b73a (Changed port number in the command)
     if err := client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId))); 
     err != nil {
       panic(err)
@@ -762,10 +770,14 @@ const daprHost = "127.0.0.1";
 
 var main = function() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     var orderId = 100;
 =======
     var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+    var orderId = 100;
+>>>>>>> 3380b73a (Changed port number in the command)
     start(orderId).catch((e) => {
         console.error(e);
         process.exit(1);
@@ -776,10 +788,13 @@ async function start(orderId) {
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     console.log("Published data:" + orderId)
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Using Dapr SDK to publish a topic
 =======
     //Using Dapr SDK to publish to a topic
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+>>>>>>> 3380b73a (Changed port number in the command)
     await client.pubsub.publish("order_pub_sub", "orders", orderId);
 }
 
