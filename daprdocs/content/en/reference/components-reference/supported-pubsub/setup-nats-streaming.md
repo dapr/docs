@@ -92,7 +92,7 @@ You can then interact with the server using the client port: `localhost:4222`.
 {{% /codetab %}}
 
 {{% codetab %}}
-Install NATS on Kubernetes by using the [kubectl](https://docs.nats.io/nats-on-kubernetes/minimal-setup):
+Install NATS on Kubernetes by using the [kubectl](https://docs.nats.io/running-a-nats-service/introduction/running/nats-kubernetes/minimal-setup#minimal-nats-setup):
 
 ```bash
 # Single server NATS
