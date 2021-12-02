@@ -55,6 +55,47 @@ spec:
     value: "[aws_session_token]"
 ```
 
+## Cache for secret stores
+
+For performance purposes, dapr provides a caching feature for the secret store.
+Cache for secret stores can easily be configured by metadata configuration. Each secret store can have its own cache configuration.
+
+### Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| cacheEnable               | N        | Enable cache for this secret store or not. Defaults to `false`.| `true`、`false`
+| cacheTTL               | N        | TTL for cache items. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are “ns”, “us” (or “µs”), “ms”, “s”, “m”, “h”. Defaults to `5m`  | `5000`、`15m`
+| cacheMemoryLimit               | N        | Maximum length in bytes of the memory usages for cache. Since the value in memory is encrypted, so the memory usage will be lagger than the original secret bytes. When exceeds the limit old items will be evicted. Defaults to `10485760` (1M).  | `10485760`
+
+Below is an example of secret store configuration with cache enabled.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: awssecretmanager
+  namespace: default
+spec:
+  type: secretstores.aws.secretmanager
+  version: v1
+  metadata:
+  - name: region
+    value: "[aws_region]"
+  - name: accessKey
+    value: "[aws_access_key]"
+  - name: secretKey
+    value: "[aws_secret_key]"
+  - name: sessionToken
+    value: "[aws_session_token]"
+  - name: cacheEnable
+    value: "true"
+  - name: cacheTTL
+    value: "5m" # 5 minutes
+  - name: cacheMemoryLimit
+    value: "10485760" # 10M
+```
+
 ## Apply the configuration
 
 Once you have created the component's YAML file, follow these instructions to apply it based on your hosting environment:

@@ -34,6 +34,13 @@ Some secret stores have **optional** metadata properties. metadata is populated 
 GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata.version_id=15
 ```
 
+##### Common metadata parameters
+The following optional meta can be used when cache is enabled. And will be ignored if cache is disabled.
+
+Query Parameter | Description
+--------- | -----------
+metadata.refresh_cache | refresh cache data immediately when setting to `"true"`
+
 ##### GCP Secret Manager
 The following optional meta can be provided to the GCP Secret Manager component
 
