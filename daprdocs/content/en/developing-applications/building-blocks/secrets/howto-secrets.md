@@ -18,7 +18,7 @@ The below code examples loosely describe an application that processes orders. I
 
 Before retrieving secrets in your application's code, you must have a secret store component configured. For the purposes of this guide, as an example you will configure a local secret store which uses a local JSON file to store secrets.
 
->Note: The component used in this example is not secured and is not recommended for production deployments. You can find other alternatives [here]({{<ref supported-secret-stores >}}).
+>Note: The component used in this example is not secure and is not recommended for production deployments. You can find other alternatives [here]({{<ref supported-secret-stores >}}).
 
 Create a file named `secrets.json` with the following contents:
 
@@ -46,10 +46,12 @@ spec:
     value: ":"
 ```
 
+>Note: the path to the secret store JSON is relative to where you call `dapr run` from.
+
 To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 ## Get a secret
 
-Now run the Dapr sidecar (with no application)
+Now run the Dapr sidecar with the application.
 
 
 {{< tabs Dotnet Java Python Go Javascript>}}
@@ -130,7 +132,6 @@ namespace EventService
             //Using Dapr SDK to get a secret
             var secret = await client.GetSecretAsync(SECRET_STORE_NAME, "secret");
             Console.WriteLine($"Result: {string.Join(", ", secret)}");
-            secret = await client.GetSecretAsync(SECRET_STORE_NAME, "secret");
             Console.WriteLine($"Result for bulk: {string.Join(", ", secret.Keys)}");
         }
     }
@@ -168,12 +169,6 @@ public class OrderProcessingServiceApplication {
         //Using Dapr SDK to get a secret
 		Map<String, String> secret = client.getSecret(SECRET_STORE_NAME, "secret").block();
 		log.info("Result: " + JSON_SERIALIZER.writeValueAsString(secret));
-		try {
-			secret = client.getSecret(SECRET_STORE_NAME, "secret").block();
-			log.info("Result for random key: " + JSON_SERIALIZER.writeValueAsString(secret));
-		} catch (Exception ex) {
-			System.out.println("Got error for accessing key");
-		}
 	}
 }
 
