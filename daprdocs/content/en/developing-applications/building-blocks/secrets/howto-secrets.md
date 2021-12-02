@@ -11,10 +11,14 @@ This article provides guidance on using Dapr's secrets API in your code to lever
 ## Example
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 The below code example loosely describes an application that processes orders. In the example, there is an order processing service, which has a Dapr sidecar. The order processing service uses Dapr to store a secret in a local secret store.
 =======
 The below code examples loosely describes an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store a secret in a local secret store.
 >>>>>>> 0e4ab1a9 (Update daprdocs/content/en/developing-applications/building-blocks/secrets/howto-secrets.md)
+=======
+The below code example loosely describes an application that processes orders. In the example, there is an order processing service, which has a Dapr sidecar. The order processing service uses Dapr to store a secret in a local secret store.
+>>>>>>> ee1a2382 (Update daprdocs/content/en/developing-applications/building-blocks/secrets/howto-secrets.md)
 
 <img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
 
