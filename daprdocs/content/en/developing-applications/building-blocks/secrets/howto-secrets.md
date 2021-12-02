@@ -41,7 +41,7 @@ spec:
   version: v1
   metadata:
   - name: secretsFile
-    value: secrets.json
+    value: secrets.json  //path to secrets file
   - name: nestedSeparator
     value: ":"
 ```
@@ -199,12 +199,6 @@ with DaprClient() as client:
     secret = client.get_bulk_secret(store_name=DAPR_STORE_NAME)
     logging.info('Result for bulk secret: ')
     logging.info(sorted(secret.secrets.items()))
-    try:
-        secret = client.get_secret(store_name=DAPR_STORE_NAME, key=key)
-        logging.info('Result for random key: ')
-        logging.info(secret.secret)
-    except:
-        print("Got error for accessing key")
 
 ```
 {{% /codetab %}}
