@@ -22,7 +22,7 @@ gRPC clients and SDKs have a dedicated content type parameter.
 
 ## Example:
 
-The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish message and the checkout service subscribes to the message in Rabbit mq.
+The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message and the checkout service subscribes to the message in RabbitMQ.
 
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
@@ -36,7 +36,7 @@ The first step is to setup the Pub/Sub component:
 {{% codetab %}}
 pubsub.yaml is created by default on a local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
 
-In this example, rabbit mq is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
+In this example, RabbitMQ is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -136,26 +136,57 @@ The example above shows an event subscription to topic `orders`, for the pubsub 
 - The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
 
 Set the component with:
-{{< tabs "Self-Hosted (CLI)" Kubernetes>}}
 
-{{% codetab %}}
 Place the CRD in your `./components` directory. When Dapr starts up, it loads subscriptions along with components.
 
 Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.
 
 You can also override the default directory by pointing the Dapr CLI to a components path:
 
+{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
+
+{{% codetab %}}
+
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- <language_specific_command>
+dapr run --app-id myapp --components-path ./myComponents -- dotnet run
 ```
 
-*Note: If you place the subscription in a custom components path, make sure the Pub/Sub component is present also.*
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- go run app.go
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- npm start
+```
 
 {{% /codetab %}}
 
 {{% codetab %}}
 In Kubernetes, save the CRD to a file and apply it to the cluster:
-
 ```bash
 kubectl apply -f subscription.yaml
 ```
@@ -172,10 +203,6 @@ Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 ```csharp
 
 //dependencies 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Mvc;
 using Dapr;
 using Dapr.Client;
 
@@ -210,10 +237,6 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 //dependencies
 import io.dapr.Topic;
 import io.dapr.client.domain.CloudEvent;
-import org.springframework.web.bind.annotation.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 //code
@@ -250,8 +273,6 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 #dependencies
 from cloudevents.sdk.event import v1
 from dapr.ext.grpc import App
-import logging
-import json
 
 #code
 app = App()
@@ -413,14 +434,7 @@ Below are code examples that leverage Dapr SDKs to publish a topic.
 ```csharp
 
 //dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 //code
 namespace EventService
@@ -435,7 +449,7 @@ namespace EventService
           CancellationTokenSource source = new CancellationTokenSource();
           CancellationToken cancellationToken = source.Token;
           using var client = new DaprClientBuilder().Build();
-          //Using Dapr SDK to publish to a topic
+          //Using Dapr SDK to publish a topic
           await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
           Console.WriteLine("Published data: " + orderId);
         }
@@ -460,7 +474,6 @@ import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.Metadata;
 import static java.util.Collections.singletonMap;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //code
 @SpringBootApplication
@@ -473,7 +486,7 @@ public class OrderProcessingServiceApplication {
 
     int orderId = 100;
     DaprClient client = new DaprClientBuilder().build();
-    //Using Dapr SDK to publish to a topic
+    //Using Dapr SDK to publish a topic
     client.publishEvent(
         PUBSUB_NAME,
         TOPIC_NAME,
@@ -497,27 +510,22 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 {{% codetab %}}
 
 ```python
-#dependencies
-import random
-from time import sleep    
-import requests
-import logging
-import json
+#dependencies  
 from dapr.clients import DaprClient
 
 #code
 logging.basicConfig(level = logging.INFO)
     
 orderId = 100
-    with DaprClient() as client:
-        #Using Dapr SDK to publish to a topic
-        result = client.publish_event(
-            pubsub_name='order_pub_sub',
-            topic_name='orders',
-            data=json.dumps(orderId),
-            data_content_type='application/json',
-        )
-    logging.info('Published data: ' + str(orderId))
+with DaprClient() as client:
+    #Using Dapr SDK to publish a topic
+    result = client.publish_event(
+        pubsub_name='order_pub_sub',
+        topic_name='orders',
+        data=json.dumps(orderId),
+        data_content_type='application/json',
+    )
+logging.info('Published data: ' + str(orderId))
     
 ```
 
@@ -555,7 +563,7 @@ func main() {
     }
     defer client.Close()
     ctx := context.Background()
-    
+    //Using Dapr SDK to publish a topic
     if err := client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId))); 
     err != nil {
       panic(err)
@@ -593,6 +601,7 @@ var main = function() {
 async function start(orderId) {
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     console.log("Published data:" + orderId)
+    //Using Dapr SDK to publish a topic
     await client.pubsub.publish("order_pub_sub", "orders", orderId);
 }
 
