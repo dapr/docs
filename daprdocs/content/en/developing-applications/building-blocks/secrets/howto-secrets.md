@@ -194,6 +194,10 @@ with DaprClient() as client:
     secret = client.get_bulk_secret(store_name=DAPR_STORE_NAME)
     logging.info('Result for bulk secret: ')
     logging.info(sorted(secret.secrets.items()))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 03751403 (Modified based on the review comments - 1)
 ```
 {{% /codetab %}}
 
