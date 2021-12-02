@@ -373,7 +373,7 @@ To publish a topic you need to run an instance of a Dapr sidecar to use the pubs
 Start an instance of Dapr with an app-id called `orderprocessing`:
 
 ```bash
-dapr run --app-id orderprocessing --dapr-http-port 3500
+dapr run --app-id orderprocessing --dapr-http-port 3601
 ```
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -555,7 +555,7 @@ func main() {
     }
     defer client.Close()
     ctx := context.Background()
-    //Using Dapr SDK to publish to a topic
+    
     if err := client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId))); 
     err != nil {
       panic(err)
@@ -583,7 +583,7 @@ import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client';
 const daprHost = "127.0.0.1"; 
 
 var main = function() {
-    var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+    var orderId = 100;
     start(orderId).catch((e) => {
         console.error(e);
         process.exit(1);
@@ -593,7 +593,6 @@ var main = function() {
 async function start(orderId) {
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     console.log("Published data:" + orderId)
-    //Using Dapr SDK to publish to a topic
     await client.pubsub.publish("order_pub_sub", "orders", orderId);
 }
 
