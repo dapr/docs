@@ -18,9 +18,7 @@ The below code example loosely describes an application that processes orders. I
 
 Before retrieving secrets in your application's code, you must have a secret store component configured. For the purposes of this guide, as an example you will configure a local secret store which uses a local JSON file to store secrets.
 
-{{% alert title="Warning" color="warning" %}}
 In a production-grade application, local secret stores are not recommended. You can find other alternatives [here]({{<ref supported-secret-stores >}}) to securely manage your secrets.
-{{% /alert %}}
 
 Create a file named `secrets.json` with the following contents:
 
@@ -54,7 +52,6 @@ To configure a different kind of secret store see the guidance on [how to config
 ## Get a secret
 
 Run the Dapr sidecar with the application.
-
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
