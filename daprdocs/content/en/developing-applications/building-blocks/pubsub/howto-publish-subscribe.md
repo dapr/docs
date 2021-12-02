@@ -23,10 +23,14 @@ gRPC clients and SDKs have a dedicated content type parameter.
 ## Example:
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 The below code example loosely describes an application that processes orders. In the example, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message to RabbitMQ and the checkout service subscribes to the topic in the message queue.
 =======
 The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish message and the checkout service subscribes to the message in Rabbit mq.
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message and the checkout service subscribes to the message in RabbitMQ.
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
@@ -45,8 +49,12 @@ In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yam
 =======
 pubsub.yaml is created by default on a local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
 
+<<<<<<< HEAD
 In this example, rabbit mq is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+In this example, RabbitMQ is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -159,10 +167,14 @@ You can also override the default directory by pointing the Dapr CLI to a compon
 
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 dapr run --app-id myapp --components-path ./myComponents -- dotnet run
 =======
 dapr run --app-id myapp --components-path ./myComponents -- <language_specific_command>
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+dapr run --app-id myapp --components-path ./myComponents -- dotnet run
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 ```
 
 {{% /codetab %}}
@@ -172,6 +184,17 @@ dapr run --app-id myapp --components-path ./myComponents -- <language_specific_c
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
 ```
+<<<<<<< HEAD
+=======
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+```
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 
 {{% /codetab %}}
 
@@ -179,7 +202,27 @@ dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
 
 <<<<<<< HEAD
 ```bash
+<<<<<<< HEAD
 dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+=======
+dapr run --app-id myapp --components-path ./myComponents -- go run app.go
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- npm start
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+In Kubernetes, save the CRD to a file and apply it to the cluster:
+```bash
+kubectl apply -f subscription.yaml
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 ```
 
 {{% /codetab %}}
@@ -209,10 +252,6 @@ Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 ```csharp
 
 //dependencies 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Mvc;
 using Dapr;
 using Dapr.Client;
 
@@ -295,12 +334,15 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 import io.dapr.Topic;
 import io.dapr.client.domain.CloudEvent;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 import reactor.core.publisher.Mono;
 
 //code
@@ -338,10 +380,13 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 from cloudevents.sdk.event import v1
 from dapr.ext.grpc import App
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import logging
 import json
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 
 #code
 app = App()
@@ -534,6 +579,7 @@ Below are code examples that leverage Dapr SDKs to publish a topic.
 
 //dependencies
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Dapr.Client;
 =======
 using System;
@@ -545,6 +591,9 @@ using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+using Dapr.Client;
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 
 //code
 namespace EventService
@@ -560,10 +609,14 @@ namespace EventService
           CancellationToken cancellationToken = source.Token;
           using var client = new DaprClientBuilder().Build();
 <<<<<<< HEAD
+<<<<<<< HEAD
           //Using Dapr SDK to publish a topic
 =======
           //Using Dapr SDK to publish to a topic
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+          //Using Dapr SDK to publish a topic
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
           await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
           Console.WriteLine("Published data: " + orderId);
         }
@@ -589,9 +642,12 @@ import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.Metadata;
 import static java.util.Collections.singletonMap;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 
 //code
 @SpringBootApplication
@@ -605,10 +661,14 @@ public class OrderProcessingServiceApplication {
     int orderId = 100;
     DaprClient client = new DaprClientBuilder().build();
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Using Dapr SDK to publish a topic
 =======
     //Using Dapr SDK to publish to a topic
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+    //Using Dapr SDK to publish a topic
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
     client.publishEvent(
         PUBSUB_NAME,
         TOPIC_NAME,
@@ -641,6 +701,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```python
 <<<<<<< HEAD
+<<<<<<< HEAD
 #dependencies  
 =======
 #dependencies
@@ -650,6 +711,9 @@ import requests
 import logging
 import json
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+#dependencies  
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 from dapr.clients import DaprClient
 
 #code
@@ -657,6 +721,9 @@ logging.basicConfig(level = logging.INFO)
     
 orderId = 100
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
 with DaprClient() as client:
     #Using Dapr SDK to publish a topic
     result = client.publish_event(
@@ -666,6 +733,7 @@ with DaprClient() as client:
         data_content_type='application/json',
     )
 logging.info('Published data: ' + str(orderId))
+<<<<<<< HEAD
     
 ```
 
@@ -683,6 +751,8 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-pr
             data_content_type='application/json',
         )
     logging.info('Published data: ' + str(orderId))
+=======
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
     
 ```
 
@@ -723,6 +793,7 @@ func main() {
     ctx := context.Background()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Using Dapr SDK to publish a topic
 =======
     //Using Dapr SDK to publish to a topic
@@ -730,6 +801,9 @@ func main() {
 =======
     
 >>>>>>> 3380b73a (Changed port number in the command)
+=======
+    //Using Dapr SDK to publish a topic
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
     if err := client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId))); 
     err != nil {
       panic(err)
@@ -789,12 +863,16 @@ async function start(orderId) {
     console.log("Published data:" + orderId)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Using Dapr SDK to publish a topic
 =======
     //Using Dapr SDK to publish to a topic
 >>>>>>> 0e83af7a (Added pub sub documentation)
 =======
 >>>>>>> 3380b73a (Changed port number in the command)
+=======
+    //Using Dapr SDK to publish a topic
+>>>>>>> fbadd23a (Modified based on the review comments - 1)
     await client.pubsub.publish("order_pub_sub", "orders", orderId);
 }
 
