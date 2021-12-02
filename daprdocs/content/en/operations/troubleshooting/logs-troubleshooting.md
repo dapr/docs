@@ -14,7 +14,7 @@ Logs have different, configurable verbosity levels.
 The levels outlined below are the same for both system components and the Dapr sidecar process/container:
 
 1. error
-2. warning
+2. warn
 3. info
 4. debug
 
@@ -34,13 +34,13 @@ This will start the Dapr runtime binary with a log level of `error` and the Dapr
 To set the log level when running your app with the Dapr CLI, pass the `log-level` param:
 
 ```bash
-dapr run --log-level warning node myapp.js
+dapr run --log-level warn node myapp.js
 ```
 
 As outlined above, every Dapr binary takes a `--log-level` argument. For example, to launch the placement service with a log level of warning:
 
 ```bash
-./placement --log-level warning
+./placement --log-level warn
 ```
 
 ### Viewing Logs on Standalone Mode
@@ -62,7 +62,7 @@ dapr run node myapp.js
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="loaded component messagebus (pubsub.redis)"
 == DAPR == 2019/09/05 12:26:43 redis: connecting to localhost:6379
 == DAPR == 2019/09/05 12:26:43 redis: connected to localhost:6379 (localAddr: [::1]:56734, remAddr: [::1]:6379)
-== DAPR == time="2019-09-05T12:26:43-07:00" level=warning msg="failed to init input bindings: app channel not initialized"
+== DAPR == time="2019-09-05T12:26:43-07:00" level=warn msg="failed to init input bindings: app channel not initialized"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="actor runtime started. actor idle timeout: 1h0m0s. actor scan interval: 30s"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="actors: starting connection attempt to placement service at localhost:50005"
 == DAPR == time="2019-09-05T12:26:43-07:00" level=info msg="http server is running on port 56730"
