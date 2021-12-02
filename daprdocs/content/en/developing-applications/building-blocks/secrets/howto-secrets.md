@@ -10,7 +10,7 @@ This article provides guidance on using Dapr's secrets API in your code to lever
 
 ## Example
 
-The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store secret in a local secret store.
+The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store a secret in a local secret store.
 
 <img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
 
@@ -18,7 +18,7 @@ The below code examples loosely describe an application that processes orders. I
 
 Before retrieving secrets in your application's code, you must have a secret store component configured. For the purposes of this guide, as an example you will configure a local secret store which uses a local JSON file to store secrets.
 
->Note: The component used in this example is not secure and is not recommended for production deployments. You can find other alternatives [here]({{<ref supported-secret-stores >}}).
+>Note: In a production-grade application, local secret stores are not recommended. You can find other alternatives [here]({{<ref supported-secret-stores >}}) to securely manage your secrets.
 
 Create a file named `secrets.json` with the following contents:
 
@@ -51,7 +51,7 @@ spec:
 To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 ## Get a secret
 
-Now run the Dapr sidecar with the application.
+Run the Dapr sidecar with the application.
 
 
 {{< tabs Dotnet Java Python Go Javascript>}}
@@ -92,7 +92,7 @@ dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 -
 
 {{< /tabs >}}
 
-And now you can get the secret by calling the Dapr sidecar using the secrets API:
+Get the secret by calling the Dapr sidecar using the secrets API:
 
 ```bash
 curl http://localhost:3601/v1.0/secrets/localsecretstore/secret
@@ -102,7 +102,7 @@ For a full API reference, go [here]({{< ref secrets_api.md >}}).
 
 ## Calling the secrets API from your code
 
-Once you have a secret store set up, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
+Once you have a secret store, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
@@ -110,15 +110,7 @@ Once you have a secret store set up, call Dapr to get the secrets from your appl
 ```csharp
 
 //dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
 
 //code
 namespace EventService
@@ -145,15 +137,8 @@ namespace EventService
 ```java
 
 //dependencies
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 //code
 @SpringBootApplication
@@ -180,7 +165,6 @@ public class OrderProcessingServiceApplication {
 ```python
 
 #dependencies 
-import logging
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
