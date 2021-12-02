@@ -18,7 +18,9 @@ The below code example loosely describes an application that processes orders. I
 
 Before retrieving secrets in your application's code, you must have a secret store component configured. For the purposes of this guide, as an example you will configure a local secret store which uses a local JSON file to store secrets.
 
+{{% alert title="Warning" color="warning" %}}
 In a production-grade application, local secret stores are not recommended. You can find other alternatives [here]({{<ref supported-secret-stores >}}) to securely manage your secrets.
+{{% /alert %}}
 
 Create a file named `secrets.json` with the following contents:
 
@@ -52,6 +54,10 @@ To configure a different kind of secret store see the guidance on [how to config
 ## Get a secret
 
 Run the Dapr sidecar with the application.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7bfd5715 (Modified based on the review comments - 2)
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
@@ -108,15 +114,7 @@ Once you have a secret store, call Dapr to get the secrets from your application
 {{% codetab %}}
 ```csharp
 //dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
 
 //code
 namespace EventService
@@ -140,14 +138,15 @@ namespace EventService
 
 ```java
 //dependencies
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+<<<<<<< HEAD
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+=======
+>>>>>>> 7bfd5715 (Modified based on the review comments - 2)
 
 //code
 @SpringBootApplication
@@ -172,10 +171,13 @@ public class OrderProcessingServiceApplication {
 
 ```python
 #dependencies 
+<<<<<<< HEAD
 import random
 from time import sleep    
 import requests
 import logging
+=======
+>>>>>>> 7bfd5715 (Modified based on the review comments - 2)
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
