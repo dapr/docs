@@ -419,10 +419,14 @@ Navigate to the directory containing the above code, then run the following comm
 
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
 =======
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 -- python3 CheckoutService.py
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
+>>>>>>> 5584d819 (Changed python commands)
 ```
 
 {{% /codetab %}}
@@ -767,8 +771,12 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-pr
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
+<<<<<<< HEAD
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
+>>>>>>> 5584d819 (Changed python commands)
 ```
 
 {{% /codetab %}}
