@@ -36,7 +36,7 @@ The first step is to setup the Pub/Sub component:
 {{% codetab %}}
 The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
 
-In this example, RabbitMQ is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
+In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yaml` file contents with the below contents.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -621,7 +621,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ## Step 4: ACK-ing a message
 
-In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following At-Least-Once semantics.
+In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 
 ## Sending a custom CloudEvent
 
