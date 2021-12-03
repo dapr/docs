@@ -405,6 +405,7 @@ logging.basicConfig(level = logging.INFO)
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
 <<<<<<< HEAD
+<<<<<<< HEAD
     logging.info('Subscriber received: ' + str(data))
 
 app.run(6002)
@@ -413,6 +414,11 @@ app.run(6002)
 
 app.run(60002)
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+    logging.info('Subscriber received: ' + str(data))
+
+app.run(6002)
+>>>>>>> babb5810 (Changed python commands)
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
