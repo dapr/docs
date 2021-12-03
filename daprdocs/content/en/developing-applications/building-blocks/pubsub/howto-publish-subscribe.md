@@ -24,6 +24,7 @@ gRPC clients and SDKs have a dedicated content type parameter.
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 The below code example loosely describes an application that processes orders. In the example, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message to RabbitMQ and the checkout service subscribes to the topic in the message queue.
 =======
 The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish message and the checkout service subscribes to the message in Rabbit mq.
@@ -31,6 +32,9 @@ The below code examples loosely describes an application that processes orders. 
 =======
 The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message and the checkout service subscribes to the message in RabbitMQ.
 >>>>>>> fbadd23a (Modified based on the review comments - 1)
+=======
+The below code example loosely describes an application that processes orders. In the example, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message to RabbitMQ and the checkout service subscribes to the topic in the message queue.
+>>>>>>> 303fc825 (Modified based on the review comments - 2)
 
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
@@ -43,11 +47,15 @@ The first step is to setup the Pub/Sub component:
 
 {{% codetab %}}
 <<<<<<< HEAD
+<<<<<<< HEAD
 The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
 
 In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yaml` file contents with the below contents.
 =======
 pubsub.yaml is created by default on a local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
+=======
+The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
+>>>>>>> 303fc825 (Modified based on the review comments - 2)
 
 <<<<<<< HEAD
 In this example, rabbit mq is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
