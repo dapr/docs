@@ -93,7 +93,7 @@ spec:
 
 ## 2. Send an event(Output Binding)
 
-Below are code examples that leverage Dapr SDKs for saving and retrieving a single state.
+Below are code examples that leverage Dapr SDKs for output binding.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
@@ -186,7 +186,7 @@ logging.info('Sending message: ' + str(orderId))
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
