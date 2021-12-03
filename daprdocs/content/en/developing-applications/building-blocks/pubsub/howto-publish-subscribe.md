@@ -290,7 +290,7 @@ app.run(60002)
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 -- python3 CheckoutService.py
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
 ```
 
 {{% /codetab %}}
@@ -532,7 +532,7 @@ logging.info('Published data: ' + str(orderId))
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
