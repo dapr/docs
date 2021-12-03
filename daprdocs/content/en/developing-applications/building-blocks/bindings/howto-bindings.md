@@ -11,7 +11,7 @@ For a complete sample showing output bindings, visit this [link](https://github.
 
 ## Example:
 
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources(output binding).
+The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources via an output binding.
 
 <img src="/images/building-block-bindings-example.png" width=1000 alt="Diagram showing bindings of example service">
 

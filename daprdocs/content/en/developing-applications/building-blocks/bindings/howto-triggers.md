@@ -20,13 +20,13 @@ For more info on bindings, read [this overview]({{<ref bindings-overview.md>}}).
 
 ## Example:
 
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The checkout service uses Dapr to trigger the application(input binding).
+The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The checkout service uses Dapr to trigger the application via an input binding.
 
 <img src="/images/building-block-bindings-example.png" width=1000 alt="Diagram showing bindings of example service">
 
 ## 1. Create a binding
 
-An output binding represents a resource that Dapr uses to invoke and send messages to.
+An input binding represents a resource that Dapr uses to read events from and push to your application.
 
 For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
 
@@ -100,7 +100,7 @@ spec:
 
 {{< /tabs >}}
 
-## 2. Listen for incoming events(Input Binding)
+## 2. Listen for incoming events (input binding)
 
 Now configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specified in `metadata.name` in the file. 
 
@@ -275,7 +275,7 @@ In order to tell Dapr that you successfully processed an event in your applicati
 
 ### Rejecting an event
 
-In order to tell Dapr that the event wasn't processed correctly in your application and schedule it for redelivery, return any response different from `200 OK`. For example, a `500 Error`.
+In order to tell Dapr that the event was not processed correctly in your application and schedule it for redelivery, return any response other than `200 OK`. For example, a `500 Error`.
 
 ### Specifying a custom route
 
