@@ -58,11 +58,15 @@ The pubsub.yaml is created by default on your local machine when running `dapr i
 >>>>>>> 303fc825 (Modified based on the review comments - 2)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 In this example, rabbit mq is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
 >>>>>>> 0e83af7a (Added pub sub documentation)
 =======
 In this example, RabbitMQ is used for publish and subscribe. Replace pubsub.yaml file contents with the below contents.
 >>>>>>> fbadd23a (Modified based on the review comments - 1)
+=======
+In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yaml` file contents with the below contents.
+>>>>>>> d9b29df7 (Modified based on the review comments - 3)
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -915,10 +919,14 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 ## Step 4: ACK-ing a message
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 =======
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following At-Least-Once semantics.
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
+>>>>>>> d9b29df7 (Modified based on the review comments - 3)
 
 ## Sending a custom CloudEvent
 
