@@ -78,12 +78,8 @@ Save the following in `state-example.php`:
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
-        key: 'myFirstKey',
-        value: 'myFirstValue',
-        metadata: ['ttlInSeconds' => '120']
-    ));
+$app->run(function(\Dapr\Client\DaprClient $daprClient ,\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
+    $daprClient->saveState(storeName: 'statestore', key: 'myFirstKey', value: 'myFirstValue', metadata: ['ttlInSeconds' => '120']);
     $logger->alert('State has been stored');
 });
 ```

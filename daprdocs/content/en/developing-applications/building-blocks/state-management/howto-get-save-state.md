@@ -162,14 +162,11 @@ Save the following in `state-example.php`:
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
-        key: 'myFirstKey',
-        value: 'myFirstValue'
-    ));
+$app->run(function(\Dapr\Client\DaprClient $daprClient, \Psr\Log\LoggerInterface $logger) {
+    $daprClient->saveState(storeName: 'statestore', key: 'myFirstKey', value: 'myFirstValue');
     $logger->alert('State has been stored');
 
-    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
+    $data = $daprClient->getState(storeName: 'statestore', key: 'myFirstKey')
     $logger->alert("Got value: {data}", ['data' => $data]);
 });
 ```
@@ -274,18 +271,15 @@ Update `state-example.php` with the following contents:
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
-        key: 'myFirstKey',
-        value: 'myFirstValue'
-    ));
+$app->run(function(\Dapr\Client\DaprClient $daprClient, \Psr\Log\LoggerInterface $logger) {
+    $daprClient->saveState(storeName: 'statestore', key: 'myFirstKey', value: 'myFirstValue');
     $logger->alert('State has been stored');
 
-    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
+    $data = $daprClient->getState(storeName: 'statestore', key: 'myFirstKey')
     $logger->alert("Got value: {data}", ['data' => $data]);
 
-    $stateManager->delete_keys(store_name: 'statestore', keys: ['myFirstKey']);
-    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
+    $daprClient->deleteState(storeName: 'statestore', key: 'myFirstKey');
+    $data = $daprClient->getState(storeName: 'statestore', key: 'myFirstKey');
     $logger->alert("Got value after delete: {data}", ['data' => $data]);
 });
 ```

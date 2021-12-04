@@ -67,9 +67,8 @@ with DaprClient() as d:
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create();
-$app->run(function(\DI\FactoryInterface $factory) {
-    $publisher = $factory->make(\Dapr\PubSub\Publish::class, ['pubsub' => 'pubsub']);
-    $publisher->topic('TOPIC_A')->publish('data', ['rawPayload' => 'true']);
+$app->run(function(\Dapr\Client\DaprClient $daprClient) {
+    $daprClient->publishEvent(pubsubName: 'pubsub', topicName: 'TOPIC_A', data: 'data', metadata: ['rawPayload' = 'true']);
 });
 ```
 

@@ -162,8 +162,8 @@ Console.WriteLine(secret);
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create();
-$app->run(function(\Dapr\SecretManager $secretManager, \Psr\Log\LoggerInterface $logger) {
-    $secret = $secretManager->retrieve(secret_store: 'my-secret-store', name: 'my-secret');
+$app->run(function(\Dapr\Client\DaprClient $daprClient, \Psr\Log\LoggerInterface $logger) {
+    $secret = $daprClient->getSecret(storeName: 'my-secret-store', key: 'my-secret')
     $logger->alert('got secret: {secret}', ['secret' => $secret]);
 });
 ```

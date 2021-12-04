@@ -462,9 +462,8 @@ If you prefer publishing a topic using code, here is an example.
 require_once __DIR__.'/vendor/autoload.php';
 
 $app = \Dapr\App::create();
-$app->run(function(\DI\FactoryInterface $factory, \Psr\Log\LoggerInterface $logger) {
-    $publisher = $factory->make(\Dapr\PubSub\Publish::class, ['pubsub' => 'pubsub']);
-    $publisher->topic('deathStarStatus')->publish('operational');
+$app->run(function(\Dapr\Client\DaprClient $daprClient, \Psr\Log\LoggerInterface $logger) {
+    $daprClient->publishEvent(pubsubName: 'pubsub', topicName: 'deathStarStatus', data: 'operational');
     $logger->alert('published!');
 });
 ```
