@@ -161,14 +161,18 @@ import io.dapr.client.DaprClientBuilder;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> e257da8d (Added full code snippets of secrets management)
 =======
 >>>>>>> 5b6521a2 (Added full code snippets of secrets management)
+=======
+>>>>>>> 77d11604 (Added full code snippets of secrets management)
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -177,6 +181,8 @@ import java.util.*;
 >>>>>>> e257da8d (Added full code snippets of secrets management)
 =======
 >>>>>>> 5b6521a2 (Added full code snippets of secrets management)
+=======
+>>>>>>> 77d11604 (Added full code snippets of secrets management)
 
 //code
 @SpringBootApplication
@@ -204,14 +210,18 @@ public class OrderProcessingServiceApplication {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> e257da8d (Added full code snippets of secrets management)
 =======
 >>>>>>> 5b6521a2 (Added full code snippets of secrets management)
+=======
+>>>>>>> 77d11604 (Added full code snippets of secrets management)
 import random
 from time import sleep    
 import requests
 import logging
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -220,6 +230,8 @@ import logging
 >>>>>>> e257da8d (Added full code snippets of secrets management)
 =======
 >>>>>>> 5b6521a2 (Added full code snippets of secrets management)
+=======
+>>>>>>> 77d11604 (Added full code snippets of secrets management)
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
@@ -241,6 +253,7 @@ with DaprClient() as client:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 03751403 (Modified based on the review comments - 1)
@@ -248,6 +261,8 @@ with DaprClient() as client:
 >>>>>>> e257da8d (Added full code snippets of secrets management)
 =======
 >>>>>>> 5b6521a2 (Added full code snippets of secrets management)
+=======
+>>>>>>> 77d11604 (Added full code snippets of secrets management)
 ```
 {{% /codetab %}}
 
