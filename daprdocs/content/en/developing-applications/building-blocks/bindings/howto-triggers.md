@@ -22,7 +22,7 @@ For more info on bindings, read [this overview]({{<ref bindings-overview.md>}}).
 
 The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The checkout service uses Dapr to trigger the application via an input binding.
 
-<img src="/images/building-block-bindings-example.png" width=1000 alt="Diagram showing bindings of example service">
+<img src="/images/building-block-input-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
 ## 1. Create a binding
 
@@ -146,12 +146,16 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 ```java
 //dependencies
+import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 //code
 @RestController
 @RequestMapping("/")
 public class CheckoutServiceController {
+    private static final Logger log = LoggerFactory.getLogger(CheckoutServiceController.class);
         @PostMapping(path = "/checkout")
         public Mono<String> getCheckout(@RequestBody(required = false) byte[] body) {
             return Mono.fromRunnable(() ->
@@ -173,6 +177,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 ```python
 #dependencies
+import logging
 from dapr.ext.grpc import App, BindingRequest
 
 #code
@@ -201,6 +206,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol 
 //dependencies
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"github.com/gorilla/mux"
 )
@@ -237,7 +243,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 {{% codetab %}}
 
 ```javascript
-//dependencies
+//dependencies 
 import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
 
 //code

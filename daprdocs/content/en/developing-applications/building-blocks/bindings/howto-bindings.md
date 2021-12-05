@@ -13,13 +13,13 @@ For a complete sample showing output bindings, visit this [link](https://github.
 
 The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources via an output binding.
 
-<img src="/images/building-block-bindings-example.png" width=1000 alt="Diagram showing bindings of example service">
+<img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
 ## 1. Create a binding
 
 An output binding represents a resource that Dapr uses to invoke and send messages to.
 
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
+For the purpose of this guide, you'll use a Kafka binding. You can find a list of all supported binding components [here]({{< ref setup-bindings >}}).
 
 Create a new binding component with the name of `checkout`.
 
@@ -101,7 +101,14 @@ Below are code examples that leverage Dapr SDKs for output binding.
 
 ```csharp
 //dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 //code
 namespace EventService
@@ -110,13 +117,17 @@ namespace EventService
     {
         static async Task Main(string[] args)
         {
-          string BINDING_NAME = "checkout";
-          string BINDING_OPERATION = "create";
-          int orderId = 100;
-          using var client = new DaprClientBuilder().Build();
-          //Using Dapr SDK to invoke output binding
-          await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
-          Console.WriteLine("Sending message: " + orderId);
+           string BINDING_NAME = "checkout";
+		   string BINDING_OPERATION = "create";
+           while(true) {
+                System.Threading.Thread.Sleep(5000);
+                Random random = new Random();
+                int orderId = random.Next(1,1000);
+                using var client = new DaprClientBuilder().Build();
+                //Using Dapr SDK to invoke output binding
+                await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
+                Console.WriteLine("Sending message: " + orderId);
+		    }
         }
     }
 }
@@ -138,19 +149,30 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.HttpExtension;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 //code
 @SpringBootApplication
 public class OrderProcessingServiceApplication {
 
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
 	public static void main(String[] args) throws InterruptedException{
 		String BINDING_NAME = "checkout";
 		String BINDING_OPERATION = "create";
-		int orderId = 100;
-    DaprClient client = new DaprClientBuilder().build();
-    //Using Dapr SDK to invoke output binding
-    client.invokeBinding(BINDING_NAME, BINDING_OPERATION, orderId).block();
-    log.info("Sending message: " + orderId);
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
+			DaprClient client = new DaprClientBuilder().build();
+          //Using Dapr SDK to invoke output binding
+			client.invokeBinding(BINDING_NAME, BINDING_OPERATION, orderId).block();
+			log.info("Sending message: " + orderId);
+		}
 	}
 }
 
@@ -168,18 +190,25 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```python
 #dependencies
+import random
+from time import sleep    
+import requests
+import logging
+import json
 from dapr.clients import DaprClient
 
 #code
+logging.basicConfig(level = logging.INFO)
 BINDING_NAME = 'checkout'
 BINDING_OPERATION = 'create' 
-
-orderId = 100
-with DaprClient() as client:
-    #Using Dapr SDK to invoke output binding
-    resp = client.invoke_binding(BINDING_NAME, BINDING_OPERATION, json.dumps(orderId))
-logging.basicConfig(level = logging.INFO)
-logging.info('Sending message: ' + str(orderId))
+while True:
+    sleep(random.randrange(50, 5000) / 1000)
+    orderId = random.randint(1, 1000)
+    with DaprClient() as client:
+        #Using Dapr SDK to invoke output binding
+        resp = client.invoke_binding(BINDING_NAME, BINDING_OPERATION, json.dumps(orderId))
+    logging.basicConfig(level = logging.INFO)
+    logging.info('Sending message: ' + str(orderId))
     
 ```
 
@@ -197,6 +226,9 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-pr
 //dependencies
 import (
 	"context"
+	"log"
+	"math/rand"
+	"time"
 	"strconv"
 	dapr "github.com/dapr/go-sdk/client"
 
@@ -206,17 +238,20 @@ import (
 func main() {
 	BINDING_NAME := "checkout";
 	BINDING_OPERATION := "create";
-	orderId := 100
-  client, err := dapr.NewClient()
-  if err != nil {
-    panic(err)
-  }
-  defer client.Close()
-  ctx := context.Background()
-  //Using Dapr SDK to invoke output binding
-  in := &dapr.InvokeBindingRequest{ Name: BINDING_NAME, Operation: BINDING_OPERATION , Data: []byte(strconv.Itoa(orderId))}
-  err = client.InvokeOutputBinding(ctx, in)
-  log.Println("Sending message: " + strconv.Itoa(orderId))
+	for i := 0; i < 10; i++ {
+		time.Sleep(5000)
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+        //Using Dapr SDK to invoke output binding
+		in := &dapr.InvokeBindingRequest{ Name: BINDING_NAME, Operation: BINDING_OPERATION , Data: []byte(strconv.Itoa(orderId))}
+		err = client.InvokeOutputBinding(ctx, in)
+		log.Println("Sending message: " + strconv.Itoa(orderId))
+	}
 }
     
 ```
@@ -233,17 +268,21 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
+
 import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
 
 //code
 const daprHost = "127.0.0.1"; 
 
 var main = function() {
-    var orderId = 100;
-    start(orderId).catch((e) => {
-        console.error(e);
-        process.exit(1);
-    });
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        start(orderId).catch((e) => {
+            console.error(e);
+            process.exit(1);
+        });
+    }
 }
 
 async function start(orderId) {
@@ -253,6 +292,10 @@ async function start(orderId) {
     //Using Dapr SDK to invoke output binding
     const result = await client.binding.send(BINDING_NAME, BINDING_OPERATION, { orderId: orderId });
     console.log("Sending message: " + orderId);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 main();
