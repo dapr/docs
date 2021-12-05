@@ -19,7 +19,7 @@ The below code example loosely describes an application that processes orders. I
 
 An output binding represents a resource that Dapr uses to invoke and send messages to.
 
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of all supported binding components [here]({{< ref setup-bindings >}}).
+For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
 
 Create a new binding component with the name of `checkout`.
 
