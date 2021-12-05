@@ -558,10 +558,14 @@ Then publish a message to the `orders` topic:
 
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
 =======
 dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data '{"orderId": "100"}'
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
+>>>>>>> f26f475c (Fix publish a topic examples)
 ```
 {{% /codetab %}}
 
@@ -569,10 +573,14 @@ dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data '
 Then publish a message to the `orders` topic:
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 =======
 curl -X POST http://localhost:3601/v1.0/publish/pubsub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
+>>>>>>> f26f475c (Fix publish a topic examples)
 ```
 {{% /codetab %}}
 
@@ -580,10 +588,14 @@ curl -X POST http://localhost:3601/v1.0/publish/pubsub/orders -H "Content-Type: 
 Then publish a message to the `orders` topic:
 ```powershell
 <<<<<<< HEAD
+<<<<<<< HEAD
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
 =======
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/pubsub/orders'
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+>>>>>>> f26f475c (Fix publish a topic examples)
 ```
 {{% /codetab %}}
 
@@ -943,10 +955,14 @@ Read about content types [here](#content-types), and about the [Cloud Events mes
 Publish a custom CloudEvent to the `orders` topic:
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 =======
 dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
+>>>>>>> f26f475c (Fix publish a topic examples)
 ```
 {{% /codetab %}}
 
@@ -954,10 +970,14 @@ dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data '
 Publish a custom CloudEvent to the `orders` topic:
 ```bash
 <<<<<<< HEAD
+<<<<<<< HEAD
 curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 =======
 curl -X POST http://localhost:3601/v1.0/publish/pubsub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
+>>>>>>> f26f475c (Fix publish a topic examples)
 ```
 {{% /codetab %}}
 
@@ -965,10 +985,14 @@ curl -X POST http://localhost:3601/v1.0/publish/pubsub/orders -H "Content-Type: 
 Publish a custom CloudEvent to the `orders` topic:
 ```powershell
 <<<<<<< HEAD
+<<<<<<< HEAD
 Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
 =======
 Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/pubsub/orders'
 >>>>>>> 0e83af7a (Added pub sub documentation)
+=======
+Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+>>>>>>> f26f475c (Fix publish a topic examples)
 ```
 {{% /codetab %}}
 
