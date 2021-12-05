@@ -122,7 +122,15 @@ Once you have a secret store, call Dapr to get the secrets from your application
 {{% codetab %}}
 ```csharp
 //dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Text.Json;
 
 //code
 namespace EventService
@@ -146,15 +154,23 @@ namespace EventService
 
 ```java
 //dependencies
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e257da8d (Added full code snippets of secrets management)
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
+<<<<<<< HEAD
 =======
 >>>>>>> 7bfd5715 (Modified based on the review comments - 2)
+=======
+>>>>>>> e257da8d (Added full code snippets of secrets management)
 
 //code
 @SpringBootApplication
@@ -180,12 +196,18 @@ public class OrderProcessingServiceApplication {
 ```python
 #dependencies 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e257da8d (Added full code snippets of secrets management)
 import random
 from time import sleep    
 import requests
 import logging
+<<<<<<< HEAD
 =======
 >>>>>>> 7bfd5715 (Modified based on the review comments - 2)
+=======
+>>>>>>> e257da8d (Added full code snippets of secrets management)
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
@@ -205,9 +227,12 @@ with DaprClient() as client:
     logging.info('Result for bulk secret: ')
     logging.info(sorted(secret.secrets.items()))
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 03751403 (Modified based on the review comments - 1)
+=======
+>>>>>>> e257da8d (Added full code snippets of secrets management)
 ```
 {{% /codetab %}}
 
