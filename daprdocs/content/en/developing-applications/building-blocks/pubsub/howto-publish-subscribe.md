@@ -262,6 +262,7 @@ Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 {{% codetab %}}
 
 ```csharp
+<<<<<<< HEAD
 //dependencies 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -307,6 +308,8 @@ Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 {{% codetab %}}
 
 ```csharp
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 //dependencies 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -355,15 +358,19 @@ import io.dapr.client.domain.CloudEvent;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 0e83af7a (Added pub sub documentation)
@@ -373,6 +380,8 @@ import org.slf4j.LoggerFactory;
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 import reactor.core.publisher.Mono;
 
 //code
@@ -413,6 +422,7 @@ from dapr.ext.grpc import App
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import logging
 import json
@@ -427,6 +437,10 @@ import json
 import logging
 import json
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+import logging
+import json
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 
 #code
 app = App()
@@ -669,13 +683,17 @@ Below are code examples that leverage Dapr SDKs to publish a topic.
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Dapr.Client;
 =======
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -703,6 +721,11 @@ using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 
 //code
 namespace EventService
@@ -711,6 +734,7 @@ namespace EventService
     {
         static async Task Main(string[] args)
         {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
           string PUBSUB_NAME = "order_pub_sub";
@@ -733,6 +757,8 @@ namespace EventService
 =======
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
            string PUBSUB_NAME = "order_pub_sub";
            string TOPIC_NAME = "orders";
            while(true) {
@@ -747,9 +773,12 @@ namespace EventService
                 Console.WriteLine("Published data: " + orderId);
 		        }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
         }
     }
 }
@@ -775,6 +804,7 @@ import static java.util.Collections.singletonMap;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 >>>>>>> 0e83af7a (Added pub sub documentation)
@@ -783,20 +813,26 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 =======
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 
 //code
 @SpringBootApplication
 public class OrderProcessingServiceApplication {
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   public static void main(String[] args) throws InterruptedException{
@@ -880,6 +916,30 @@ Navigate to the directory containing the above code, then run the following comm
 	}
 }
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
+=======
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
+	public static void main(String[] args) throws InterruptedException{
+		String MESSAGE_TTL_IN_SECONDS = "1000";
+		String TOPIC_NAME = "orders";
+		String PUBSUB_NAME = "order_pub_sub";
+
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
+			DaprClient client = new DaprClientBuilder().build();
+      //Using Dapr SDK to publish a topic
+			client.publishEvent(
+					PUBSUB_NAME,
+					TOPIC_NAME,
+					orderId,
+					singletonMap(Metadata.TTL_IN_SECONDS, MESSAGE_TTL_IN_SECONDS)).block();
+			log.info("Published data:" + orderId);
+		}
+	}
+}
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
@@ -912,20 +972,27 @@ import json
 =======
 #dependencies  
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> fbadd23a (Modified based on the review comments - 1)
 =======
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 import random
 from time import sleep    
 import requests
 import logging
 import json
+<<<<<<< HEAD
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 from dapr.clients import DaprClient
 
 #code
 logging.basicConfig(level = logging.INFO)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     
@@ -948,6 +1015,8 @@ logging.info('Published data: ' + str(orderId))
 =======
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 while True:
     sleep(random.randrange(50, 5000) / 1000)
     orderId = random.randint(1, 1000)
@@ -963,9 +1032,12 @@ while True:
         )
     logging.info('Published data: ' + str(orderId))
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
@@ -1022,6 +1094,7 @@ var (
 func main() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     orderId := 100
     client, err := dapr.NewClient()
     if err != nil {
@@ -1070,6 +1143,18 @@ func main() {
 		ctx := context.Background()
     //Using Dapr SDK to publish a topic
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+	for i := 0; i < 10; i++ {
+		time.Sleep(5000)
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+    //Using Dapr SDK to publish a topic
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 		if err := client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId))); 
 		err != nil {
 			panic(err)
@@ -1078,9 +1163,12 @@ func main() {
 		log.Println("Published data: " + strconv.Itoa(orderId))
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 }
 ```
 <<<<<<< HEAD
@@ -1108,10 +1196,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
 
 const daprHost = "127.0.0.1"; 
+const serverHost = "127.0.0.1";
+const serverPort = "6002"; 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1192,10 +1283,29 @@ async function start(orderId) {
     //Using Dapr SDK to publish a topic
 <<<<<<< HEAD
 >>>>>>> 8dfbce07 (Added full code snippets of pub sub)
+=======
+start().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});
+
+async function start(orderId) {
+    const PUBSUB_NAME = "order_pub_sub"
+	const TOPIC_NAME  = "orders"
+    const server = new DaprServer(
+        serverHost, 
+        serverPort, 
+        daprHost, 
+        process.env.DAPR_HTTP_PORT, 
+        CommunicationProtocolEnum.HTTP
+    );
+    //Using Dapr SDK to publish a topic
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
     await server.pubsub.subscribe(PUBSUB_NAME, TOPIC_NAME, async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
     });
     await server.startServer();
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
 =======
@@ -1235,6 +1345,9 @@ function sleep(ms) {
 
 main();
 >>>>>>> e4e78805 (Modified based on the review comments - 1)
+=======
+}
+>>>>>>> 08f856a0 (Added full code snippets of pub sub)
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
