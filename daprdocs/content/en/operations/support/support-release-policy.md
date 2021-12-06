@@ -47,6 +47,7 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Oct 7th 2021  | 1.4.3</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.2.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported (current) |
 | December 6th 2021  | 1.4.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.2.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported (current) |
 
+
 ## Upgrade paths
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example an upgrade from v1.0 to v1.2 may need go pass through v1.1
 
@@ -69,6 +70,7 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 |                          |                 1.3.1 |                    1.4.4 |
 | 1.3.1                    |                   N/A |                    1.4.4 |
 | 1.4.0 to 1.4.3           |                   N/A |                    1.4.4 |
+
 
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
