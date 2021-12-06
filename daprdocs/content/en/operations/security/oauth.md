@@ -1,13 +1,13 @@
 ---
 type: docs
-title: "Configure API authorization with OAuth"
-linkTitle: "OAuth"
+title: "Configure endpoint authorization with OAuth"
+linkTitle: "Configure endpoint authorization with OAuth"
 weight: 2000
-description: "Enable OAUTH authorization on Dapr endpoints for your web APIs"
+description: "Enable OAuth authorization on application endpoints for your web APIs"
 ---
 
 Dapr OAuth 2.0 [middleware]({{< ref "middleware.md" >}}) allows you to enable [OAuth](https://oauth.net/2/) authorization on Dapr endpoints for your web APIs using the [Authorization Code Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
-You can also inject authorization tokens into your APIs which can be used for authorization towards external APIs called by your APIs using the [Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4).
+You can also inject authorization tokens into your endpoint APIs which can be used for authorization towards external APIs called by your APIs using the [Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4).
 When the middleware is enabled any method invocation through Dapr needs to be authorized before getting passed to the user code.
 
 The main difference between the two flows is that the `Authorization Code Grant flow` needs user interaction and authorizes a user where the `Client Credentials Grant flow` doesn't need a user interaction and authorizes a service/application.

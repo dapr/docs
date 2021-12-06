@@ -3,7 +3,7 @@ type: docs
 title: "State management overview"
 linkTitle: "Overview"
 weight: 100
-description: "Overview of the state management building block"
+description: "Overview of the state management API building block"
 ---
 
 ## Introduction
@@ -18,7 +18,7 @@ When using state management, your application can leverage features that would o
 
 Your application can use Dapr's state management API to save, read and query key/value pairs using a state store component, as shown in the diagram below. For example, by using HTTP POST you can save or query key/value pairs and by using HTTP GET you can read a specific key and have its value returned.
 
-<img src="/images/state-management-overview.png" width=900>
+<img src="/images/state-management-overview.png" width=1000>
 
 ## Features
 These are the features available as part of the state management API:

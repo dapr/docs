@@ -46,7 +46,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | masterKey | Y | Output | The CosmosDB account master key | `"master-key"` |
 | database | Y | Output | The name of the CosmosDB database | `"OrderDb"` |
 | collection | Y | Output | The name of the container inside the database.  | `"Orders"` |
-| partitionKey | Y | Output | The name of the partitionKey to extract from the payload and is used in the container | `"OrderId"`, `"message"` |
+| partitionKey | Y | Output | The name of the key to extract from the payload (document to be created) that is used as the partition key. This name must match the partition key specified upon creation of the Cosmos DB container. | `"OrderId"`, `"message"` |
 
 For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items).
 
@@ -55,6 +55,31 @@ For more information see [Azure Cosmos DB resource model](https://docs.microsoft
 This component supports **output binding** with the following operations:
 
 - `create`
+
+## Best Practices for Production Use
+
+Azure Cosmos DB shares a strict metadata request rate limit across all databases in a single Azure Cosmos DB account. New connections to Azure Cosmos DB assume a large percentage of the allowable request rate limit. (See the [CosmosDB documentation](https://docs.microsoft.com/azure/cosmos-db/sql/troubleshoot-request-rate-too-large#recommended-solution-3))
+
+Therefore several strategies must be applied to avoid simultaneous new connections to Azure Cosmos DB:
+
+- Ensure sidecars of applications only load the Azure Cosmos DB component when they require it to avoid unnecessary database connections. This can be done by [scoping your components to specific applications]({{< ref component-scopes.md >}}#application-access-to-components-with-scopes).
+- Choose deployment strategies that sequentially deploy or start your applications to minimize bursts in new connections to your Azure Cosmos DB accounts.
+- Avoid reusing the same Azure Cosmos DB account for unrelated databases or systems (even outside of Dapr). Distinct Azure Cosmos DB accounts have distinct rate limits.
+- Increase the `initTimeout` value to allow the component to retry connecting to Azure Cosmos DB during side car initialization for up to 5 minutes. The default value is `5s` and should be increased. When using Kubernetes, increasing this value may also require an update to your [Readiness and Liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
+
+```yaml
+spec:
+  type: bindings.azure.cosmosdb
+  version: v1
+  initTimeout: 5m
+  metadata:
+```
+
+## Data format
+
+The **output binding** `create` operation requires the following keys to exist in the payload of every document to be created:
+- `id`: a unique ID for the document to be created
+- `<partitionKey>`: the name of the partition key specified via the `spec.partitionKey` in the component definition. This must also match the partition key specified upon creation of the Cosmos DB container.
 
 ## Related links
 

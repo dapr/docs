@@ -16,7 +16,7 @@ In self hosted mode the Dapr configuration is a configuration file, for example 
 A Dapr sidecar can also apply a configuration by using a ```--config``` flag to the file path with ```dapr run``` CLI command.
 
 #### Kubernetes sidecar
-In Kubernetes mode the Dapr configuration is a Configuration CRD, that is applied to the cluster. For example;
+In Kubernetes mode the Dapr configuration is a Configuration CRD, that is applied to the cluster. For example:
 
 ```bash
 kubectl apply -f myappconfig.yaml
@@ -41,7 +41,7 @@ Note: There are more [Kubernetes annotations]({{< ref "arguments-annotations-ove
 
 ### Sidecar configuration settings
 
-The following configuration settings can be applied to Dapr application sidecars;
+The following configuration settings can be applied to Dapr application sidecars:
 - [Tracing](#tracing)
 - [Metrics](#metrics)
 - [Middleware](#middleware)
@@ -168,7 +168,7 @@ spec:
 ```
 
 ## Control-plane configuration
-There is a single configuration file called `default` installed with the Dapr control plane system services that applies global settings. This is only set up when Dapr is deployed to Kubernetes.
+There is a single configuration file called `daprsystem` installed with the Dapr control plane system services that applies global settings. This is only set up when Dapr is deployed to Kubernetes.
 
 ### Control-plane configuration settings
 A Dapr control plane configuration can configure the following settings:

@@ -14,7 +14,7 @@ Dapr can be configured to run on any supported versions of Kubernetes. To achiev
 - **dapr-placement:** Used for [actors]({{< ref actors >}}) only. Creates mapping tables that map actor instances to pods
 - **dapr-sentry:** Manages mTLS between services and acts as a certificate authority. For more information read the [security overview]({{< ref "security-concept.md" >}}).
 
-<img src="/images/overview_kubernetes.png" width=800>
+<img src="/images/overview_kubernetes.png" width=1000>
 
 ## Deploying Dapr to a Kubernetes cluster
 
@@ -39,7 +39,6 @@ Dapr works seamlessly with any user application container image, regardless of i
 The Dapr control-plane and sidecar images come from the [daprio Docker Hub](https://hub.docker.com/u/daprio) container registry, which is a public registry.
 
 For information about pulling your application images from a private registry, reference the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). If you are using Azure Container Registry with Azure Kubernetes Service, reference the [AKS documentation](https://docs.microsoft.com/azure/aks/cluster-container-registry-integration).
-
 
 ## Quickstart
 
