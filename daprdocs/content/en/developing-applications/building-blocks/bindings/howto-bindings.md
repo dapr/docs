@@ -11,7 +11,7 @@ For a complete sample showing output bindings, visit this [link](https://github.
 
 ## Example:
 
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources via an output binding.
+The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources, in this case a Kafka, via an output binding.
 
 <img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
@@ -93,7 +93,7 @@ spec:
 
 ## 2. Send an event(Output Binding)
 
-Below are code examples that leverage Dapr SDKs for output binding.
+Below are code examples that leverage Dapr SDKs to interact with an output binding.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 

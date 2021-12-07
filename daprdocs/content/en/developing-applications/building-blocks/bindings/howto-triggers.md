@@ -28,11 +28,11 @@ The below code example loosely describes an application that processes orders. I
 
 An input binding represents a resource that Dapr uses to read events from and push to your application.
 
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
+For the purpose of this guide, you'll use a Kafka binding. You can find a list of supported binding components [here]({{< ref setup-bindings >}}).
 
 Create a new binding component with the name of `checkout`.
 
-Inside the `metadata` section, configure Kafka related properties such as the topic to publish the message to and the broker.
+Inside the `metadata` section, configure Kafka related properties, such as the topic to publish the message to and the broker.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
@@ -281,7 +281,7 @@ In order to tell Dapr that you successfully processed an event in your applicati
 
 ### Rejecting an event
 
-In order to tell Dapr that the event was not processed correctly in your application and schedule it for redelivery and handle it gracefully using logs or exceptions.
+In order to tell Dapr that the event wasn't processed correctly in your application and schedule it for redelivery, return any response different from `200 OK`. For example, a `500 Error`.
 
 ### Specifying a custom route
 
