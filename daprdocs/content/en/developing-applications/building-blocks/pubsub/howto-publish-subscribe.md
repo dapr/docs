@@ -545,7 +545,7 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 ## Step 3: Publish a topic
 
-To publish a topic you need to run an instance of a Dapr sidecar to use the pubsub Redis component. You can use the default Redis component installed into your local environment.
+To publish a topic you need to run an instance of a Dapr sidecar to use RabbitMQ component. You can use the default Redis component installed into your local environment.
 
 Start an instance of Dapr with an app-id called `orderprocessing`:
 
@@ -986,13 +986,11 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
 
-//code
 const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 var main = function() {
 <<<<<<< HEAD
@@ -1031,24 +1029,41 @@ start().catch((e) => {
     console.error(e);
     process.exit(1);
 });
+=======
+var main = function() {
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        start(orderId).catch((e) => {
+            console.error(e);
+            process.exit(1);
+        });
+    }
+}
+>>>>>>> 0008ac3b (Modified based on the review comments - 1)
 
 async function start(orderId) {
     const PUBSUB_NAME = "order_pub_sub"
-	const TOPIC_NAME  = "orders"
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
+    const TOPIC_NAME  = "orders"
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    console.log("Published data:" + orderId)
     //Using Dapr SDK to publish a topic
+<<<<<<< HEAD
     await server.pubsub.subscribe(PUBSUB_NAME, TOPIC_NAME, async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
     });
     await server.startServer();
 >>>>>>> f30a0acb (Added full code snippets of pub sub)
+=======
+    await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId);
+>>>>>>> 0008ac3b (Modified based on the review comments - 1)
 }
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+main();
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
