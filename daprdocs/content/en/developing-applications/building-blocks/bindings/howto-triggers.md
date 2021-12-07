@@ -104,7 +104,7 @@ spec:
 
 Now configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specified in `metadata.name` in the file. 
 
-Below are code examples that leverage Dapr SDKs for output binding.
+Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
@@ -281,7 +281,7 @@ In order to tell Dapr that you successfully processed an event in your applicati
 
 ### Rejecting an event
 
-In order to tell Dapr that the event was not processed correctly in your application and schedule it for redelivery, return any response other than `200 OK`. For example, a `500 Error`.
+In order to tell Dapr that the event was not processed correctly in your application and schedule it for redelivery and handle it gracefully using logs or exceptions.
 
 ### Specifying a custom route
 
