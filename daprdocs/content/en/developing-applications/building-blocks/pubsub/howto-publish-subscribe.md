@@ -576,6 +576,7 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> e4e78805 (Modified based on the review comments - 1)
@@ -584,6 +585,10 @@ To publish a topic you need to run an instance of a Dapr sidecar to use RabbitMQ
 >>>>>>> e67fd5fd (Modified based on the review comments - 1)
 =======
 >>>>>>> 1e8d79ce (Removed a line)
+=======
+To publish a topic you need to run an instance of a Dapr sidecar to use RabbitMQ component. You can use the default Redis component installed into your local environment.
+
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 Start an instance of Dapr with an app-id called `orderprocessing`:
 
 ```bash
@@ -607,6 +612,7 @@ Then publish a message to the `orders` topic:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
 =======
 dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data '{"orderId": "100"}'
@@ -620,12 +626,16 @@ dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic ord
 dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data 100
 >>>>>>> e67fd5fd (Modified based on the review comments - 1)
 >>>>>>> 91002c8f (Modified based on the review comments - 1)
+=======
+dapr publish --publish-app-id testpubsub --pubsub pubsub --topic orders --data 100
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 Then publish a message to the `orders` topic:
 ```bash
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -642,12 +652,16 @@ curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content
 curl -X POST http://localhost:3601/v1.0/publish/pubsub/orders -H "Content-Type: application/json" -d 100
 >>>>>>> e67fd5fd (Modified based on the review comments - 1)
 >>>>>>> 91002c8f (Modified based on the review comments - 1)
+=======
+curl -X POST http://localhost:3601/v1.0/publish/pubsub/orders -H "Content-Type: application/json" -d 100
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 Then publish a message to the `orders` topic:
 ```powershell
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -664,6 +678,9 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId"
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body 100 -Uri 'http://localhost:3601/v1.0/publish/pubsub/orders'
 >>>>>>> e67fd5fd (Modified based on the review comments - 1)
 >>>>>>> 91002c8f (Modified based on the review comments - 1)
+=======
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body 100 -Uri 'http://localhost:3601/v1.0/publish/pubsub/orders'
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 ```
 {{% /codetab %}}
 
@@ -1196,12 +1213,11 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
 
 const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1247,6 +1263,8 @@ start().catch((e) => {
 =======
 =======
 >>>>>>> e4e78805 (Modified based on the review comments - 1)
+=======
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 var main = function() {
     for(var i=0;i<10;i++) {
         sleep(5000);
@@ -1257,6 +1275,7 @@ var main = function() {
         });
     }
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 0008ac3b (Modified based on the review comments - 1)
 
@@ -1288,18 +1307,16 @@ start().catch((e) => {
     console.error(e);
     process.exit(1);
 });
+=======
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 
 async function start(orderId) {
     const PUBSUB_NAME = "order_pub_sub"
-	const TOPIC_NAME  = "orders"
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
+    const TOPIC_NAME  = "orders"
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    console.log("Published data:" + orderId)
     //Using Dapr SDK to publish a topic
+<<<<<<< HEAD
 >>>>>>> 08f856a0 (Added full code snippets of pub sub)
     await server.pubsub.subscribe(PUBSUB_NAME, TOPIC_NAME, async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
@@ -1339,15 +1356,23 @@ main();
     await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId);
 }
 
+=======
+    await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId);
+}
+
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 main();
+<<<<<<< HEAD
 >>>>>>> e4e78805 (Modified based on the review comments - 1)
 =======
 }
 >>>>>>> 08f856a0 (Added full code snippets of pub sub)
+=======
+>>>>>>> e67fd5fd (Modified based on the review comments - 1)
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
