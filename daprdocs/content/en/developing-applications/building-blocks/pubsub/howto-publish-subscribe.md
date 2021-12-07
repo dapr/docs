@@ -561,12 +561,15 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> e4e78805 (Modified based on the review comments - 1)
 To publish a topic you need to run an instance of a Dapr sidecar to use RabbitMQ component. You can use the default Redis component installed into your local environment.
 
 >>>>>>> e67fd5fd (Modified based on the review comments - 1)
+=======
+>>>>>>> 1e8d79ce (Removed a line)
 Start an instance of Dapr with an app-id called `orderprocessing`:
 
 ```bash
