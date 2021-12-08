@@ -281,7 +281,7 @@ In order to tell Dapr that you successfully processed an event in your applicati
 
 ### Rejecting an event
 
-In order to tell Dapr that the event wasn't processed correctly in your application and schedule it for redelivery, return any response different from `200 OK`. For example, a `500 Error`.
+In order to tell Dapr that the event was not processed correctly in your application and schedule it for redelivery, return any response other than `200 OK`. For example, a `500 Error`.
 
 ### Specifying a custom route
 
