@@ -205,40 +205,34 @@ with DaprClient() as client:
 ```go
 //dependencies 
 import (
-    "context"
-    "log"
-    dapr "github.com/dapr/go-sdk/client"
+	"context"
+	"log"
+
+	dapr "github.com/dapr/go-sdk/client"
 )
 
 //code
 func main() {
-    client, err := dapr.NewClient()
-    SECRET_STORE_NAME := "localsecretstore"
-    if err != nil {
-        panic(err)
-    }
-    defer client.Close()
-    ctx := context.Background()
-    //Using Dapr SDK to get a secret
-    secret, err := client.GetSecret(ctx, SECRET_STORE_NAME, "secret", nil)
-    if err != nil {
-        return nil, errors.Wrap(err, "Got error for accessing key")
-    }
-
-    if secret != nil {
-        log.Println("Result : ")
-        log.Println(secret)
-    }
+	client, err := dapr.NewClient()
+	SECRET_STORE_NAME := "localsecretstore"
+	if err != nil {
+		panic(err)
+	}
+	defer client.Close()
+	ctx := context.Background()
+     //Using Dapr SDK to get a secret
+	secret, err := client.GetSecret(ctx, SECRET_STORE_NAME, "secret", nil)
+	if secret != nil {
+		log.Println("Result : ")
+		log.Println(secret)
+	}
     //Using Dapr SDK to get bulk secrets
-    secretRandom, err := client.GetBulkSecret(ctx, SECRET_STORE_NAME, nil)
-    if err != nil {
-        return nil, errors.Wrap(err, "Got error for accessing key")
-    }
+	secretBulk, err := client.GetBulkSecret(ctx, SECRET_STORE_NAME, nil)
 
-    if secret != nil {
-        log.Println("Result for bulk: ")
-        log.Println(secretRandom)
-    }
+	if secret != nil {
+		log.Println("Result for bulk: ")
+		log.Println(secretBulk)
+	}
 }
 ```
 {{% /codetab %}}
