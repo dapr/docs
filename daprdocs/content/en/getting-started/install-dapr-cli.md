@@ -113,6 +113,7 @@ Usage:
   dapr [command]
 
 Available Commands:
+  build-info     Print build info of Dapr CLI and runtime
   completion     Generates shell completion scripts
   components     List all Dapr components. Supported platforms: Kubernetes
   configurations List all Dapr configurations. Supported platforms: Kubernetes
@@ -126,13 +127,14 @@ Available Commands:
   publish        Publish a pub-sub event. Supported platforms: Self-hosted
   run            Run Dapr and (optionally) your application side by side. Supported platforms: Self-hosted
   status         Show the health status of Dapr services. Supported platforms: Kubernetes
-  stop           Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
+  stop           Stop Dapr instances and their associated apps. Supported platforms: Self-hosted
   uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
-  upgrade        Upgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
+  upgrade        Upgrades or downgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
 
 Flags:
-  -h, --help      help for dapr
-  -v, --version   version for dapr
+  -h, --help          help for dapr
+      --log-as-json   Log output in JSON format
+  -v, --version       version for dapr
 
 Use "dapr [command] --help" for more information about a command.
 ```
