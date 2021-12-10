@@ -57,18 +57,18 @@ spec:
 
 ## Cache for secret stores
 
-For performance purposes, dapr provides a caching feature for the secret store.
+For performance purposes, Dapr provides a caching feature for the secret store.
 Cache for secret stores can easily be configured by metadata configuration. Each secret store can have its own cache configuration.
 
 ### Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| cacheEnable               | N        | Enable cache for this secret store or not. Defaults to `false`.| `true`、`false`
+| cacheEnable               | N        | Enable cache for this secret store. Defaults to `false`.| `true`、`false`
 | cacheTTL               | N        | TTL for cache items. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are “ns”, “us” (or “µs”), “ms”, “s”, “m”, “h”. Defaults to `5m`  | `5000`、`15m`
-| cacheMemoryLimit               | N        | Maximum length in bytes of the memory usages for cache. Since the value in memory is encrypted, so the memory usage will be lagger than the original secret bytes. When exceeds the limit old items will be evicted. Defaults to `10485760` (1M).  | `10485760`
+| cacheMemoryLimit               | N        | Maximum length in bytes of the memory usages for cache. Since the value in memory is encrypted, the memory usage will be larger than the original secret bytes. When it exceeds this limit, old items will be evicted. Defaults to `10485760` (1M).  | `10485760`
 
-Below is an example of secret store configuration with cache enabled.
+Below is an example of a secret store configuration with cache enabled.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

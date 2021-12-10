@@ -35,11 +35,11 @@ GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata
 ```
 
 ##### Common metadata parameters
-The following optional meta can be used when cache is enabled. And will be ignored if cache is disabled.
+The following optional metadata can be used when cache is enabled. This will be ignored if cache is disabled.
 
 Query Parameter | Description
 --------- | -----------
-metadata.refresh_cache | refresh cache data immediately when setting to `"true"`
+metadata.refresh_cache | when this is set to `"true"`, cache data is immediately refreshed.
 
 ##### GCP Secret Manager
 The following optional meta can be provided to the GCP Secret Manager component
