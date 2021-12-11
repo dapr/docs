@@ -97,10 +97,8 @@ No worries - You can easily replay your changes, sign them and force push them!
 
 ```
 git checkout <branch-name>
-git reset $(git merge-base main <branch-name>)
-git add -A
-git commit -s -m "one commit on <branch-name>"
-git push --force
+git commit --amend --no-edit --signoff
+git push --force-with-lease <remote-name> <branch-name>
 ```
 
 ## Code of Conduct
