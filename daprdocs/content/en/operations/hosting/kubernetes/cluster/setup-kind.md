@@ -104,7 +104,7 @@ the output should look like this:
 dapr dashboard -k -p 9999
 ```
 
-So that you can validate that the setup finished successfully by navigating to [http://localhost:9999](http://localhost:9999).
+So that you can validate that the setup finished successfully by navigating to `http://localhost:9999`.
 
 ## Next steps
 - [Try out a Dapr quickstart]({{< ref quickstarts.md >}})
