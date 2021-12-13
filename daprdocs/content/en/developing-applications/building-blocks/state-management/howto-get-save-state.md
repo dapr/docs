@@ -195,7 +195,7 @@ while True:
         #Using Dapr SDK to save and get state
         client.save_state(DAPR_STORE_NAME, "order_1", str(orderId)) 
         result = client.get_state(DAPR_STORE_NAME, "order_1")
-        logging.info('Result after get: ' + str(result))
+        logging.info('Result after get: ' + result.data.decode('utf-8'))
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
