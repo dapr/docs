@@ -27,6 +27,7 @@ The below code example loosely describes an application that processes orders. I
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
 ## Step 1: Setup the Pub/Sub component
+
 The following example creates applications to publish and subscribe to a topic called `orders`.
 
 The first step is to setup the Pub/Sub component:
@@ -110,7 +111,6 @@ Dapr allows two methods by which you can subscribe to topics:
 
 {{% alert title="Note" color="primary" %}}
  Both declarative and programmatic approaches support the same features. The declarative approach removes the Dapr dependency from your code and allows, for example, existing applications to subscribe to topics, without having to change code. The programmatic approach implements the subscription in your code.
-
 {{% /alert %}}
 
 ### Declarative subscriptions
@@ -194,7 +194,9 @@ kubectl apply -f subscription.yaml
 
 {{< /tabs >}}
 
-Below are code examples that leverage Dapr SDKs to subscribe to a topic.
+### Programmatic subscriptions
+
+Below are code examples that leverage Dapr SDKs to programmatically subscribe to a topic.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
