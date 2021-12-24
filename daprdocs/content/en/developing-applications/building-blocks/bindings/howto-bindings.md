@@ -91,7 +91,7 @@ spec:
 
 {{< /tabs >}}
 
-## 2. Send an event(Output Binding)
+## 2. Send an event (Output binding)
 
 Below are code examples that leverage Dapr SDKs to interact with an output binding.
 
