@@ -6,6 +6,7 @@ description: "How to authenticate Azure components using Azure AD and/or Managed
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault-managed-identity/"
   - "/reference/components-reference/supported-secret-stores/azure-keyvault-managed-identity/"
+weight: 1000
 ---
 
 ## Common Azure authentication layer
@@ -206,7 +207,7 @@ Note that the value above is the ID of the **Service Principal** which is differ
 
 Keep in mind that the Service Principal that was just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
 
-> Note: this step is different from the [official documentation](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) as the short-hand commands included there create a Service Principal that has broad read-write access to all Azure resources in your subscription.  
+> Note: this step is different from the [official documentation](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli) as the short-hand commands included there create a Service Principal that has broad read-write access to all Azure resources in your subscription.  
 > Not only doing that would grant our Service Principal more access than you are likely going to desire, but this also applies only to the Azure management plane (Azure Resource Manager, or ARM), which is irrelevant for Dapr anyways (all Azure components are designed to interact with the data plane of various services, and not ARM).
 
 ### Example usage in a Dapr component

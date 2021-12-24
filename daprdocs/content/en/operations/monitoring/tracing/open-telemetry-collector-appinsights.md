@@ -17,7 +17,7 @@ A installation of Dapr on Kubernetes.
 ### Setup Application Insights
 
 1. First, you'll need an Azure account. See instructions [here](https://azure.microsoft.com/free/) to apply for a **free** Azure account.
-2. Follow instructions [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource) to create a new Application Insights resource.
+2. Follow instructions [here](https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource) to create a new Application Insights resource.
 3. Get the Application Insights Intrumentation key from your Application Insights page.
 
 ### Run OpenTelemetry Collector to push to your Application Insights instance

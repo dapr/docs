@@ -38,9 +38,6 @@ spec:
   - name: ttlInSeconds
     value: <int> # Optional
 ```
-**TLS:** If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS `true` or `false`.
-
-**Failover:** When set to `true` enables the failover feature. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -65,7 +62,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | maxRetryBackoff    | N         | Minimum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
-| failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
+| failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel). Defaults to `"false"` | `"true"`, `"false"`
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/topics/sentinel) | `""`,  `"127.0.0.1:6379"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
 | processingTimeout  | N        | The amount time a message must be pending before attempting to redeliver it. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`
@@ -88,12 +85,13 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 
 ## Setup Redis
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. If you already have a Redis store, move on to the [Configuration](#configuration) section.
+Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service. 
 
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
 {{% codetab %}}
 A Redis instance is automatically created as a Docker container when you run `dapr init`
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -149,9 +147,6 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 {{< /tabs >}}
 
-{{% alert title="Note" color="primary" %}}
-The Dapr CLI automatically deploys a local redis instance in self hosted mode as part of the `dapr init` command.
-{{% /alert %}}
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

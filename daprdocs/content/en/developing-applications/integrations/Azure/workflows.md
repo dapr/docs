@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "Build workflows with Logic Apps"
-linkTitle: "Workflows"
-description: "Learn how to build workflows using Dapr Workflows and Logic Apps"
-weight: 4000
+title: "Build workflow applications with Logic Apps"
+linkTitle: "Logic Apps workflows"
+description: "Learn how to build workflows applications using Dapr Workflows and Logic Apps runtime"
+weight: 3000
 ---
 
-Dapr Workflows is a lightweight host that allows developers to run cloud-native workflows locally, on-premises or any cloud environment using the [Azure Logic Apps](https://docs.microsoft.com/en-us/azure/logic-apps/logic-apps-overview) workflow engine and Dapr.
+Dapr Workflows is a lightweight host that allows developers to run cloud-native workflows locally, on-premises or any cloud environment using the [Azure Logic Apps](https://docs.microsoft.com/azure/logic-apps/logic-apps-overview) workflow engine and Dapr.
 
 ## Benefits
 
@@ -31,21 +31,21 @@ Once a workflow request comes in, Dapr Workflows uses the Logic Apps SDK to exec
 
 ### Supported actions and triggers
 
-- [HTTP](https://docs.microsoft.com/en-us/azure/connectors/connectors-native-http)
-- [Schedule](https://docs.microsoft.com/en-us/azure/logic-apps/concepts-schedule-automated-recurring-tasks-workflows)
-- [Request / Response](https://docs.microsoft.com/en-us/azure/connectors/connectors-native-reqres)
+- [HTTP](https://docs.microsoft.com/azure/connectors/connectors-native-http)
+- [Schedule](https://docs.microsoft.com/azure/logic-apps/concepts-schedule-automated-recurring-tasks-workflows)
+- [Request / Response](https://docs.microsoft.com/azure/connectors/connectors-native-reqres)
 
 ### Supported control workflows
 
-- [All control workflows](https://docs.microsoft.com/en-us/azure/connectors/apis-list#control-workflow)
+- [All control workflows](https://docs.microsoft.com/azure/connectors/apis-list#control-workflow)
 
 ### Supported data manipulation
 
-- [All data operations](https://docs.microsoft.com/en-us/azure/connectors/apis-list#manage-or-manipulate-data)
+- [All data operations](https://docs.microsoft.com/azure/connectors/apis-list#manage-or-manipulate-data)
 
 ### Not supported
 
-- [Managed connectors](https://docs.microsoft.com/en-us/azure/connectors/apis-list#managed-connectors)
+- [Managed connectors](https://docs.microsoft.com/azure/connectors/apis-list#managed-connectors)
 
 ## Example
 
@@ -67,7 +67,7 @@ Since Dapr supports many pluggable state stores and bindings, the workflow becom
 Prerequisites:
 
 1. Install the [Dapr CLI]({{< ref install-dapr-cli.md >}})
-2. [Azure blob storage account](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-create-account-block-blob?tabs=azure-portal)
+2. [Azure blob storage account](https://docs.microsoft.com/azure/storage/blobs/storage-blob-create-account-block-blob?tabs=azure-portal)
 
 ### Self-hosted
 
@@ -128,7 +128,7 @@ Prerequisites:
 1. Create a Config Map for the workflow:
 
    ```bash
-   kubectl create configmap workflows --from-file ./samples/workflow1.   json
+   kubectl create configmap workflows --from-file ./samples/workflow1.json
    ```
 
 1. Create a secret containing the Azure Storage Account credentials. Replace the account name and key values below with the actual credentials:

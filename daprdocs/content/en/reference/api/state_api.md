@@ -292,6 +292,132 @@ None.
 curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "If-Match: xxxxxxx"
 ```
 
+## Query state
+
+This endpoint lets you query the key/value state.
+
+{{% alert title="alpha" color="warning" %}}
+This API is in alpha stage.
+{{% /alert %}}
+
+### HTTP Request
+
+```
+POST/PUT http://localhost:<daprPort>/v1.0-alpha1/state/<storename>/query
+```
+
+#### URL Parameters
+
+Parameter | Description
+--------- | -----------
+daprPort | the Dapr port
+storename | ```metadata.name``` field in the user configured state store component yaml. Refer to the Dapr state store configuration structure mentioned above.
+metadata | (optional) metadata as query parameters to the state store
+
+> Note, all URL parameters are case-sensitive.
+
+#### Response Codes
+
+Code | Description
+---- | -----------
+200  | State query successful
+400  | State store is missing or misconfigured
+500  | State query failed
+
+#### Response Body
+An array of JSON-encoded values
+
+### Example
+
+```shell
+curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
+  -H "Content-Type: application/json" \
+  -d '{
+        "query": {
+          "filter": {
+            "OR": [
+              {
+                "EQ": { "value.person.org": "Dev Ops" }
+              },
+              {
+                "AND": [
+                  {
+                    "EQ": { "value.person.org": "Finance" }
+                  },
+                  {
+                    "IN": { "value.state": [ "CA", "WA" ] }
+                  }
+                ]
+              }
+            ]
+          },
+          "sort": [
+            {
+              "key": "value.state",
+              "order": "DESC"
+            },
+            {
+              "key": "value.person.id"
+            }
+          ],
+          "pagination": {
+            "limit": 3
+          }
+        }
+      }'
+```
+
+> The above command returns an array of objects along with a token:
+
+```json
+{
+  "results": [
+    {
+      "key": "1",
+      "data": {
+        "person": {
+          "org": "Dev Ops",
+          "id": 1036
+        },
+        "city": "Seattle",
+        "state": "WA"
+      },
+      "etag": "6f54ad94-dfb9-46f0-a371-e42d550adb7d"
+    },
+    {
+      "key": "4",
+      "data": {
+        "person": {
+          "org": "Dev Ops",
+          "id": 1042
+        },
+        "city": "Spokane",
+        "state": "WA"
+      },
+      "etag": "7415707b-82ce-44d0-bf15-6dc6305af3b1"
+    },
+    {
+      "key": "10",
+      "data": {
+        "person": {
+          "org": "Dev Ops",
+          "id": 1054
+        },
+        "city": "New York",
+        "state": "NY"
+      },
+      "etag": "26bbba88-9461-48d1-8a35-db07c374e5aa"
+    }
+  ],
+  "token": "3"
+}
+```
+To pass metadata as query parammeter:
+
+```
+POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.partitionKey=mypartitionKey
+```
+
 ## State transactions
 
 Persists the changes to the state store as a multi-item transaction.

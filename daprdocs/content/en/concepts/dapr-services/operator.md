@@ -1,11 +1,11 @@
 ---
 type: docs
-title: "Dapr operator service overview"
+title: "Dapr Operator control plane service overview"
 linkTitle: "Operator"
-description: "Overview of the Dapr operator process"
+description: "Overview of the Dapr operator service"
 ---
 
-When running Dapr in [Kubernetes mode]({{< ref kubernetes >}}), a pod running the Dapr operator service manages [Dapr component]({{< ref components >}}) updates and provides Kubernetes services endpoints for Dapr.
+When running Dapr in [Kubernetes mode]({{< ref kubernetes >}}), a pod running the Dapr Operator service manages [Dapr component]({{< ref components >}}) updates and provides Kubernetes services endpoints for Dapr.
 
 ## Running the operator service
 

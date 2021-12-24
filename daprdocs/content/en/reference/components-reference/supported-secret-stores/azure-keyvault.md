@@ -258,6 +258,43 @@ To use a **certificate**:
     kubectl apply -f azurekeyvault.yaml
     ```
 
+To use **Azure managed identity**:
+
+1. Ensure your AKS cluster has managed identity enabled and follow the [guide for using managed identities](https://docs.microsoft.com/azure/aks/use-managed-identity).
+2. Create an `azurekeyvault.yaml` component file.
+
+    The component yaml refers to a particular KeyVault name. The managed identity you will use in a later step must be given read access to this particular KeyVault instance.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: azurekeyvault
+      namespace: default
+    spec:
+      type: secretstores.azure.keyvault
+      version: v1
+      metadata:
+      - name: vaultName
+        value: "[your_keyvault_name]"
+    ```
+
+3. Apply the `azurekeyvault.yaml` component:
+
+    ```bash
+    kubectl apply -f azurekeyvault.yaml
+    ```
+4. Create and use a managed identity / pod identity by following [this guide](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity). After creating an AKS pod identity, [give this identity read permissions on your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy), and finally in your application deployment inject the pod identity via a label annotation:
+
+  ```yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: mydaprdemoapp
+    labels:
+      aadpodidbinding: $POD_IDENTITY_NAME
+  ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -265,7 +302,7 @@ To use a **certificate**:
 ## References
 
 - [Authenticating to Azure]({{< ref authenticating-azure.md >}})
-- [Azure CLI: keyvault commands](https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
+- [Azure CLI: keyvault commands](https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
 - [How-To: Reference secrets in Dapr components]({{< ref component-secrets.md >}})
