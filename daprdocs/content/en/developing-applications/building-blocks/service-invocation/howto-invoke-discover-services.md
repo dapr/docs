@@ -264,8 +264,7 @@ public class OrderProcessingServiceApplication {
 ```python
 #dependencies
 import random
-from time import sleep    
-import requests
+from time import sleep
 import logging
 from dapr.clients import DaprClient
 
