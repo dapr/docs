@@ -6,7 +6,7 @@ description: "How to configure your Dapr application to autoscale using KEDA"
 weight: 2000
 ---
 
-Dapr, with its modular building-block approach, along with the 10+ different [pub/sub components]({{< ref pubsub >}}), make it easy to write message processing applications. Since Dapr can run in many environments (e.g. VM, bare-metal, Cloud, or Edge) the autoscaling of Dapr applications is managed by the hosting later.
+Dapr, with its modular building-block approach, along with the 10+ different [pub/sub components]({{< ref pubsub >}}), make it easy to write message processing applications. Since Dapr can run in many environments (e.g. VM, bare-metal, Cloud, or Edge) the autoscaling of Dapr applications is managed by the hosting layer.
 
 For Kubernetes, Dapr integrates with [KEDA](https://github.com/kedacore/keda), an event driven autoscaler for Kubernetes. Many of Dapr's pub/sub components overlap with the scalers provided by [KEDA](https://github.com/kedacore/keda) so it's easy to configure your Dapr deployment on Kubernetes to autoscale based on the back pressure using KEDA.
 
