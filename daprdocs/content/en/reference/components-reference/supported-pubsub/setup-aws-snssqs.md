@@ -26,16 +26,29 @@ spec:
       value: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
     - name: region
       value: "us-east-1"
-    - name: sessionToken
-      value: "TOKEN"
-    - name: messageVisibilityTimeout
-      value: 10
-    - name: messageRetryLimit
-      value: 10
-    - name: messageWaitTimeSeconds
-      value: 1
-    - name: messageMaxNumber
-      value: 10
+    # - name: sessionToken  # Optional (mandatory if using AssignedRole, i.e. temporary accessKey and secretKey)
+    #   value: "TOKEN"
+    # - name: messageVisibilityTimeout # Optional
+    #   value: 10
+    # - name: messageRetryLimit # Optional
+    #   value: 10
+    # - name: messageReceiveLimit # Optional
+    #   value: 10
+    # - name: sqsDeadLettersQueueName # Optional
+    # - value: "myapp-dlq"
+    # - name: messageWaitTimeSeconds # Optional
+    #   value: 1
+    # - name: messageMaxNumber # Optional
+    #   value: 10
+    # - name: fifo # Optional
+    #   value: "true"
+    # - name: fifoMessageGroupID # Optional
+    #   value: "app1-mgi"
+    # - name: disableEntityManagement # Optional
+    #   value: "false"
+
+
+
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -46,15 +59,25 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| accessKey          | Y  | ID of the AWS account with appropriate permissions to SNS and SQS. Can be `secretKeyRef` to use a secret reference  | `"AKIAIOSFODNN7EXAMPLE"`
-| secretKey          | Y  | Secret for the AWS user. Can be `secretKeyRef` to use a secret reference   |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
-| region             | Y  | The AWS region to the instance. See this page for valid regions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html. Ensure that SNS and SQS are available in that region.| `"us-east-1"`
-| endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
-| sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
-| messageVisibilityTimeout | N  |Amount of time in seconds that a message is hidden from receive requests after it is sent to a subscriber. Default: `10`   | `10`
-| messageRetryLimit        | N  |Number of times to resend a message after processing of that message fails before removing that message from the queue. Default: `10`   | `10`
-| messageWaitTimeSeconds   | N  |amount of time to await receipt of a message before making another request. Default: `1`   | `1`
-| messageMaxNumber         | N  |maximum number of messages to receive from the queue at a time. Default: `10`, Maximum: `10`   | `10`
+| accessKey          | Y  | ID of the AWS account/role with appropriate permissions to SNS and SQS (see below) | `"AKIAIOSFODNN7EXAMPLE"`
+| secretKey          | Y  | Secret for the AWS user/role. If using an `AssumeRole` access, you will also need to provide a `sessionToken` |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
+| region             | Y  | The AWS region where the SNS/SQS assets are located or be created in. See [this page](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/?p=ugi&l=na) for valid regions. Ensure that SNS and SQS are available in that region | `"us-east-1"`
+| endpoint          | N  | AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS | `"http://localhost:4566"`
+| sessionToken      | N  | AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
+| messageReceiveLimit | N  | Number of times a message is received, after processing of that message fails, that once reached, results in removing of that message from the queue. If `sqsDeadLettersQueueName` is specified, `messageReceiveLimit` is the number of times a message is received, after processing of that message fails, that once reached, results in moving of the message to the SQS dead-letters queue. Default: `10` | `10`
+| sqsDeadLettersQueueName | N  | Name of the dead letters queue for this application | `"myapp-dlq"`
+| messageVisibilityTimeout | N  | Amount of time in seconds that a message is hidden from receive requests after it is sent to a subscriber. Default: `10` | `10`
+| messageRetryLimit        | N  | Number of times to resend a message after processing of that message fails before removing that message from the queue. Default: `10` | `10`
+| messageWaitTimeSeconds   | N  | The duration (in seconds) for which the call waits for a message to arrive in the queue before returning. If a message is available, the call returns sooner than `messageWaitTimeSeconds`. If no messages are available and the wait time expires, the call returns successfully with an empty list of messages. Default: `1` | `1`
+| messageMaxNumber         | N  | Maximum number of messages to receive from the queue at a time. Default: `10`, Maximum: `10` | `10`
+| fifo | N  | Use SQS FIFO queue to provide message ordering and deduplication.  Default: `"false"`. See further details about [SQS FIFO](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html) | `"false"`
+| fifoMessageGroupID | N | If `fifo` is enabled, instructs Dapr to use a custom [Message Group ID](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html) for the pubsub deployment. This is not mandatory as Dapr creates a custom Message Group ID for each producer, thus ensuring ordering of messages per a Dapr producer. Default: `""` | `"app1-mgi"`
+| disableEntityManagement | N  | When set to true, SNS topics, SQS queues and the SQS subscriptions to SNS do not get created automatically. Default: `"false"` | `"true"`, `"false"`
+
+* Dapr created SNS topic and SQS queue names conform with [AWS specifications](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html). By default, Dapr creates an SQS queue name based on the consumer `app-id`, therefore Dapr might perform name standardization to meet with AWS specifications.
+* Using SQS FIFO (`fifo` metadata field set to `"true"`), per AWS specifications, provides message ordering and deduplication, but incurs a lower SQS processing throughput, among other caveats
+* Please be aware that specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) post to better understand the topic of Message Group IDs and FIFO queues.
+
 
 ## Create an SNS/SQS instance
 
@@ -133,8 +156,71 @@ spec:
 {{% /codetab %}}
 
 {{% codetab %}}
-In order to run in AWS, you should create an IAM user with permissions to the SNS and SQS services.
+In order to run in AWS, you should create or assign an IAM user with permissions to the SNS and SQS services having a Policy such as:
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "YOUR_POLICY_NAME",
+      "Effect": "Allow",
+      "Action": [
+        "sqs:CreateQueue",
+        "sqs:DeleteMessage",
+        "sqs:ReceiveMessage",
+        "sqs:ChangeMessageVisibility",
+        "sqs:GetQueueUrl",
+        "sqs:GetQueueAttributes",
+        "sqs:SetQueueAttributes",
+        "sns:CreateTopic",
+        "sns:ListSubscriptionsByTopic",
+        "sns:Publish",
+        "sns:Subscribe",
+        "sns:ListSubscriptionsByTopic",
+        "sns:GetTopicAttributes"
+
+      ],
+      "Resource": [
+        "arn:aws:sns:AWS_REGION:AWS_ACCOUNT_ID:*",
+        "arn:aws:sqs:AWS_REGION:AWS_ACCOUNT_ID:*"
+      ]
+    }
+  ]
+}
+```
 Use the `AWS account ID` and `AWS account secret` and plug them into the `accessKey` and `secretKey` in the component metadata using Kubernetes secrets and `secretKeyRef`.
+
+
+Alternatively, if you want to provision the SNS and SQS assets using your own tool of choice (e.g. Terraform), while preventing Dapr from doing so dynamically, you will need to enable `disableEntityManagement` and assign your Dapr-using application with an IAM Role having a Policy such as:
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "YOUR_POLICY_NAME",
+      "Effect": "Allow",
+      "Action": [
+        "sqs:DeleteMessage",
+        "sqs:ReceiveMessage",
+        "sqs:ChangeMessageVisibility",
+        "sqs:GetQueueUrl",
+        "sqs:GetQueueAttributes",
+        "sns:Publish",
+        "sns:ListSubscriptionsByTopic",
+        "sns:GetTopicAttributes"
+
+      ],
+      "Resource": [
+        "arn:aws:sns:AWS_REGION:AWS_ACCOUNT_ID:APP_TOPIC_NAME",
+        "arn:aws:sqs:AWS_REGION:AWS_ACCOUNT_ID:APP_ID"
+      ]
+    }
+  ]
+}
+```
+
+If you are running your applications on an EKS cluster with dynamic assets creation (the default Dapr behavior)
 {{% /codetab %}}
 
 {{< /tabs >}}
