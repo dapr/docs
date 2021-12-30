@@ -25,7 +25,7 @@ Virtual actor capabilities are one of the building blocks that Dapr provides in 
 
 Creating a new actor follows a local call like `http://localhost:3500/v1.0/actors/<actorType>/<actorId>/…`. For example, `http://localhost:3500/v1.0/actors/myactor/50/method/getData` calls the `getData` method on the newly created `myactor` with id `50`.
 
-The Dapr runtime SDKs have language-specific actor frameworks. For example, the .NET SDK has C# actors. The goal is for all the Dapr language SDKs to have an actor framework. Currently .NET, Java and Python SDK have actor frameworks.
+The Dapr runtime SDKs have language-specific actor frameworks. For example, the .NET SDK has C# actors. The goal is for all the Dapr language SDKs to have an actor framework. Currently .NET, Java, Go and Python SDK have actor frameworks.
 
 ## Developer language SDKs and frameworks
 

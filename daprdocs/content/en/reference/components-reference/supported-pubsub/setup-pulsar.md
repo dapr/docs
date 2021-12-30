@@ -54,6 +54,39 @@ spec:
 | backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
 | backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"15m"` | `"15m"` |
 
+
+### Delay queue
+
+When invoking the Pulsar pub/sub, it's possible to provide an optional delay queue by using the `metadata` query parameters in the request url.
+
+These optional parameter names are `metadata.deliverAt` or `metadata.deliverAfter`:
+- `deliverAt`: Delay message to deliver at a specified time (RFC3339 format), e.g. `"2021-09-01T10:00:00Z"`
+- `deliverAfter`: Delay message to deliver after a specified amount of time, e.g.`"4h5m3s"`
+
+Examples:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAt='2021-09-01T10:00:00Z' \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
+Or 
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAfter='4h5m3s' \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
 ## Create a Pulsar instance
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
