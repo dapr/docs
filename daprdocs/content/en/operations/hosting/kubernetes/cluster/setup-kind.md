@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Setup a KiND cluster"
+title: "Set up a KiND cluster"
 linkTitle: "KiND"
 weight: 1100
 description: >
