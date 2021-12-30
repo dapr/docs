@@ -4,7 +4,7 @@ title: "Set up a KiND cluster"
 linkTitle: "KiND"
 weight: 1100
 description: >
-  How to setup Dapr on a KiND cluster.
+  How to set up Dapr on a KiND cluster.
 ---
 
 # Set up a KiND cluster
