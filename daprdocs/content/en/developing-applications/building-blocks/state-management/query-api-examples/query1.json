@@ -1,13 +1,11 @@
 {
-    "query": {
-        "filter": {
-            "EQ": { "value.state": "CA" }
-        },
-        "sort": [
-            {
-                "key": "value.person.id",
-                "order": "DESC"
-            }
-        ]
-    }
+    "filter": {
+        "EQ": { "value.state": "CA" }
+    },
+    "sort": [
+        {
+            "key": "value.person.id",
+            "order": "DESC"
+        }
+    ]
 }

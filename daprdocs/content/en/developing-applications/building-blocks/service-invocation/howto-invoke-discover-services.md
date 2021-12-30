@@ -183,9 +183,15 @@ Below are code examples that leverage Dapr SDKs for service invocation.
 
 {{% codetab %}}
 ```csharp
-
 //dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 //code
 namespace EventService
@@ -194,113 +200,164 @@ namespace EventService
     {
         static async Task Main(string[] args)
         {
-          int orderId = 100;
-          CancellationTokenSource source = new CancellationTokenSource();
-          CancellationToken cancellationToken = source.Token;
-          //Using Dapr SDK to invoke a method
-          using var client = new DaprClientBuilder().Build();
-          var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
-          await client.InvokeMethodAsync(result);
+           while(true) {
+                System.Threading.Thread.Sleep(5000);
+                Random random = new Random();
+                int orderId = random.Next(1,1000);
+                CancellationTokenSource source = new CancellationTokenSource();
+                CancellationToken cancellationToken = source.Token;
+                using var client = new DaprClientBuilder().Build();
+                //Using Dapr SDK to invoke a method
+                var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
+                await client.InvokeMethodAsync(result);
+                Console.WriteLine("Order requested: " + orderId);
+                Console.WriteLine("Result: " + result);
+		    }
         }
     }
 }
-
 ```
 {{% /codetab %}}
 
 
 {{% codetab %}}
 ```java
-
 //dependencies
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.HttpExtension;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 //code
 @SpringBootApplication
 public class OrderProcessingServiceApplication {
-	public static void main(String[] args) throws InterruptedException {
-      int orderId = 100;
-      //Using Dapr SDK to invoke a method
-      DaprClient client = new DaprClientBuilder().build();
-      var result = client.invokeMethod(
-          "checkout",
-          "checkout/" + orderId,
-          null,
-          HttpExtension.GET,
-          String.class
-      );
+
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
+	public static void main(String[] args) throws InterruptedException{
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
+			DaprClient daprClient = new DaprClientBuilder().build();
+            //Using Dapr SDK to invoke a method
+			var result = daprClient.invokeMethod(
+					"checkout",
+					"checkout/" + orderId,
+					null,
+					HttpExtension.GET,
+					String.class
+			);
+			log.info("Order requested: " + orderId);
+			log.info("Result: " + result);
+		}
 	}
 }
-
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 ```python
-
 #dependencies
+import random
+from time import sleep
+import logging
 from dapr.clients import DaprClient
 
 #code
-orderId = 100
-#Using Dapr SDK to invoke a method
-with DaprClient() as client:
-    result = client.invoke_method(
-        "checkout",
-            f"checkout/{orderId}",
-            data=b'',
-            http_verb="GET"
-    ) 
-
+logging.basicConfig(level = logging.INFO) 
+while True:
+    sleep(random.randrange(50, 5000) / 1000)
+    orderId = random.randint(1, 1000)
+    with DaprClient() as daprClient:
+        #Using Dapr SDK to invoke a method
+        result = daprClient.invoke_method(
+            "checkout",
+               f"checkout/{orderId}",
+               data=b'',
+               http_verb="GET"
+        )    
+    logging.basicConfig(level = logging.INFO)
+    logging.info('Order requested: ' + str(orderId))
+    logging.info('Result: ' + str(result))
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 ```go
-
 //dependencies
 import (
+	"context"
+	"log"
+	"math/rand"
+	"time"
 	"strconv"
 	dapr "github.com/dapr/go-sdk/client"
 
 )
 
 //code
-func main() {
-  orderId := 100
-  //Using Dapr SDK to invoke a method
-  client, err := dapr.NewClient()
-  if err != nil {
-    panic(err)
-  }
-  defer client.Close()
-  ctx := context.Background()
-  result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get")
+type Order struct {
+	orderName string
+	orderNum  string
 }
 
+func main() {
+	for i := 0; i < 10; i++ {
+		time.Sleep(5000)
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+        //Using Dapr SDK to invoke a method
+		result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get")
+		log.Println("Order requested: " + strconv.Itoa(orderId))
+		log.Println("Result: ")
+		log.Println(result)
+	}
+}
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 ```javascript
-
 //dependencies
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
 //code
-const daprHost = "127.0.0.1";
+const daprHost = "127.0.0.1"; 
 
 var main = function() {
-  var orderId = 100;
-  //Using Dapr SDK to invoke a method
-  const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-  const result = await client.invoker.invoke('checkout' , "checkout/" + orderId , HttpMethod.GET);
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        start(orderId).catch((e) => {
+            console.error(e);
+            process.exit(1);
+        });
+    }
+}
+
+async function start(orderId) {
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    //Using Dapr SDK to invoke a method
+    const result = await client.invoker.invoke('checkoutservice' , "checkout/" + orderId , HttpMethod.GET);
+    console.log("Order requested: " + orderId);
+    console.log("Result: " + result);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 main();
-
 ```
 {{% /codetab %}}
 
