@@ -53,7 +53,7 @@ Similarly to the OpenTelemetry instrumentation, you can also leverage a New Reli
 
 In case Dapr and your applications run in the context of a Kubernetes environment, you can enable additional metrics and logs.
 
-The easiest way to install the New Relic Kubernetes integration is to use the [automated installer](https://one.newrelic.com/launcher/nr1-core.settings?pane=eyJuZXJkbGV0SWQiOiJrOHMtY2x1c3Rlci1leHBsb3Jlci1uZXJkbGV0Lms4cy1zZXR1cCJ9) to generate a manifest. It bundles not just the integration DaemonSets, but also other New Relic Kubernetes configurations, like [Kubernetes events](https://docs.newrelic.com/docs/integrations/kubernetes-integration/kubernetes-events/install-kubernetes-events-integration), [Prometheus OpenMetrics](https://docs.newrelic.com/docs/integrations/prometheus-integrations/get-started/send-prometheus-metric-data-new-relic/), and [New Relic log monitoring](https://docs.newrelic.com/docs/logs).
+The easiest way to install the New Relic Kubernetes integration is to use the [automated installer](https://one.newrelic.com/launcher/nr1-core.settings?pane=eyJuZXJkbGV0SWQiOiJrOHMtY2x1c3Rlci1leHBsb3Jlci1uZXJkbGV0Lms4cy1zZXR1cCJ9) to generate a manifest. It bundles not just the integration DaemonSets, but also other New Relic Kubernetes configurations, like [Kubernetes events](https://docs.newrelic.com/docs/integrations/kubernetes-integration/kubernetes-events/install-kubernetes-events-integration), [Prometheus OpenMetrics](https://docs.newrelic.com/docs/integrations/prometheus-integrations/get-started/send-prometheus-metric-data-new-relic/), and [New Relic log monitoring](https://docs.newrelic.com/docs/logs/ui-data/use-logs-ui/).
 
 ### New Relic Kubernetes Cluster Explorer
 
@@ -101,7 +101,7 @@ And the exact same dashboard templates from Dapr can be imported to visualize Da
 
 ## New Relic Alerts
 
-All the data that is collected from Dapr, Kubernetes or any services that run on top of can be used to set-up alerts and notifications into the preferred channel of your choice. See [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence).
+All the data that is collected from Dapr, Kubernetes or any services that run on top of can be used to set-up alerts and notifications into the preferred channel of your choice. See [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence/new-relic-alerts/learn-alerts/alerts-ai-transition-guide-2022/).
 
 ## Related Links/References
 
@@ -111,4 +111,4 @@ All the data that is collected from Dapr, Kubernetes or any services that run on
 * [New Relic Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/introduction-trace-api/)
 * [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/)
 * [New Relic OpenTelemetry User Experience](https://blog.newrelic.com/product-news/opentelemetry-user-experience/)
-* [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence)
+* [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence/new-relic-alerts/learn-alerts/alerts-ai-transition-guide-2022/)
