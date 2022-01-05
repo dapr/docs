@@ -53,17 +53,25 @@ For this example, you will need:
     git clone git@github.com:amulyavarote/dapr-quickstarts-examples.git
     ```
 
-1. Navigate to the invoke-simple project directory:
+1. Navigate to the Pub/Sub python project directory:
 
     ```bash
     cd pub_sub/python
     ```
 
-### Install the Dapr Python-SDK
+### Install the SDKs
 
-```bash
-pip3 install dapr dapr-ext-grpc
-```
+1. Install the Dapr Python-SDK.
+
+  ```bash
+  pip3 install dapr dapr-ext-grpc
+  ```
+
+1. Install the cloudevents SDK.
+
+  ```bash
+  pip3 install cloudevents
+  ```
 
 ### Set up the Pub/Sub component
 
@@ -166,95 +174,130 @@ Both declarative and programmatic approaches support the same features.
 - The programmatic approach:
   - Implements the subscription in your code.
 
-### Run the services
+In this example, we'll work with **declarative subscriptions** and subscribe to a topic using the following Custom Resources Definition (CRD).
 
-{{< tabs "Self-Hosted Mode" "Kubernetes" >}}
+1. Navigate to your dapr your `./components` directory.
 
-{{% codetab %}}
+  - By default, Dapr loads subscriptions along with components from:
+    - `$HOME/.dapr/components` on MacOS/Linux.
+    - `%USERPROFILE%\.dapr\components` on Windows.
+  - If you choose to set up your own directory, point the Dapr CLI to your own component path when running the app.
 
-#### Run in self-hosted mode
+1. Within the  directory, create a file named `subscriptionl.yaml` and paste the following:
 
-In order to run the Pub/Sub quickstart locally, each of the microservices need to run with Dapr
-
-1. Run the dapr sidecar alongside your `invoke-receiver` service. 
-    * Expose gRPC server receiver on port 50051.
-
-    ```bash
-    dapr run --app-id invoke-receiver --app-protocol grpc --app-port 50051 python3 invoke-receiver.py
+    ```yml
+    apiVersion: dapr.io/v1alpha1
+    kind: Subscription
+    metadata:
+      name: order_pub_sub
+    spec:
+      topic: orders
+      route: /checkout
+      pubsubname: order_pub_sub
+    scopes:
+    - orderprocessing
+    - checkout
     ```
 
-1. Run the dapr sidecar alongside your `invoke-caller` service.
+  In the file above, you've set an event subscription to topic `orders`, for the pubsub component `order_pub_sub`.
+    - The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
+    - The `scopes` field enables this subscription for apps with the `orderprocessing` and `checkout` IDs.
+
+1. Navigate to the directory containing your subscriber application.
 
     ```bash
-    dapr run --app-id invoke-caller --app-protocol grpc --dapr-http-port 3500 python3 invoke-caller.py
+    cd pub_sub/python
     ```
 
-Notice in the terminal output that the caller service is repeatedly calling the `mymethod` in the `invoker-receiver` service.
-
-### Clean up
-
-Remove your resources with the following dapr CLI commands:
-
-```bash
-dapr stop --app-id invoke-caller
-dapr stop --app-id invoke-receiver
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-#### Run in Kubernetes
-
-1. Build the docker image. Make sure to include the period to use the Dockerfile from the current directory.
+1. Run the following command to launch a Dapr sidecar and run the CheckoutService.py application.
 
    ```bash
-   docker build -t [your registry]/invokesimple:latest .
+   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
    ```
 
-2. Push the docker image.
+    The CheckoutService.py application contents:
+  
+    ```py
+    from cloudevents.sdk.event import v1
+    from dapr.ext.grpc import App
+    import logging
+    
+    import json
+    
+    app = App()
+    
+    logging.basicConfig(level = logging.INFO)
+    
+    @app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+    def mytopic(event: v1.Event) -> None:
+        data = json.loads(event.Data())
+        logging.info('Subscriber received: ' + str(data))
+    
+    app.run(6002)
+    ```
+
+    Notice the `/checkout` endpoint matches the `route` defined in the `subscriptions.yaml` file you created earlier. Dapr will send all topic messages here.
+
+### Publish a topic
+
+1. Navigate to the following directory.
+
+    ```bash
+    cd pub_sub/python
+    ```
+
+1. Run the following command to launch a Dapr sidecar and run the OrderProcessingService.py application.
 
    ```bash
-   docker push [your registry]/invokesimple:latest
+   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
    ```
 
-3. Edit image name to `[your registry]/invokesimple:latest` in deploy/*.yaml.
+   The OrderProcessingService.py application contents:
 
-4. Deploy the applications.
+   ```python
+   import random
+   from time import sleep    
+   import requests
+   import logging
+   import json
+   from dapr.clients import DaprClient
+   
+   logging.basicConfig(level = logging.INFO)
 
-   ```bash
-   kubectl apply -f ./deploy/
+   while True:
+       sleep(random.randrange(50, 5000) / 1000)
+       orderId = random.randint(1, 1000)
+       PUBSUB_NAME = 'order_pub_sub'
+       TOPIC_NAME = 'orders'
+       with DaprClient() as client:
+           result = client.publish_event(
+               pubsub_name=PUBSUB_NAME,
+               topic_name=TOPIC_NAME,
+               data=json.dumps(orderId),
+               data_content_type='application/json',
+           )
+       logging.info('Published data: ' + str(orderId))
    ```
 
-5. Run the following commands to view logs for the apps and sidecars:
+1. Publish a message to the orders topic:
 
-   - Logs for caller sidecar:
+   ```powershell
+   Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+   ```
 
-       ```bash
-       dapr logs -a invoke-caller -k
-       ```
+   Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
-   - Logs for caller app:
+### ACK-ing a message
 
-       ```bash
-       kubectl logs -l app="invokecaller" -c invokecaller
-       ```
+In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 
-   - Logs for receiver sidecar:
+### Send a custom `cloudevent`
 
-       ```bash
-       dapr logs -a invoke-receiver -k
-       ```
+Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope.
+If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
 
-   - Logs for receiver app:
+Read about content types [here](#content-types), and about the [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
 
-       ```bash
-       kubectl logs -l app="invokereceiver" -c invokereceiver
-       ```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
 
 ### Explore more of the Python SDK
 
