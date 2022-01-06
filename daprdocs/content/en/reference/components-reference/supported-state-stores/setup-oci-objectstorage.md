@@ -74,7 +74,7 @@ In order to setup OCI Object Storage as a state store, you will need the followi
 
 ## What Happens at Runtime?
 
-Every state entry is represented by an object in OCI Object Storage. The OCI Object Storage state store uses the `key` property provided in the requests to the Dapr API to determine the name of the object. The `value` is stored as the (literal) content of the object. Each object is assigned a unique ETag value - whenever it is created or updated (aka overwritten).
+Every state entry is represented by an object in OCI Object Storage. The OCI Object Storage state store uses the `key` property provided in the requests to the Dapr API to determine the name of the object. The `value` is stored as the (literal) content of the object. Each object is assigned a unique ETag value - whenever it is created or updated (aka overwritten); this is native behavior of OCI Object Storage. The state store assigns a meta data tag to every object it writes; the tag is __category__ and its value is __dapr-state-store__. This allows the objects created as state for Daprized applications to be identified.
 
 For example, the following operation 
 
@@ -91,11 +91,66 @@ curl -X POST http://localhost:3500/v1.0/state \
 
 will create the following object:
 
-| Bucket | Object Name  | Object Content |
-| ------------ | ------- | ----- |
-| as specified with **bucketName** in components.yaml    | nihilus | darth |
+| Bucket | Directory | Object Name  | Object Content | Meta Tags |
+| ------------ | ------- | ----- | ----- | ---- |
+| as specified with **bucketName** in components.yaml | - (root)  | nihilus | darth | category: dapr-state-store
+
+
+Dapr uses a fixed key scheme with *composite keys* to partition state across applications. For general states, the key format is:
+`App-ID||state key`
+The OCI Object Storage state store maps the first key segment (for App-ID) to a directory within a bucket, using the [Prefixes and Hierarchy used for simulating a directory structure as described in the OCI Object Storage documentation](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/managingobjects.htm#nameprefix). 
+
+The following operation therefore (notice the composite key) 
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state \
+  -H "Content-Type: application/json"
+  -d '[
+        {
+          "key": "myApplication||nihilus",
+          "value": "darth"
+        }
+      ]'
+```
+
+will create the following object:
+
+| Bucket | Directory | Object Name  | Object Content | Meta Tags |
+| ------------ | ------- | ----- | ----- | ---- |
+| as specified with **bucketName** in components.yaml | myApplication  | nihilus | darth | category: dapr-state-store
+
 
 You will be able to inspect all state stored through the OCI Object Storage state store by inspecting the contents of the bucket through the console, the APIs, CLI or SDKs. By going directly to the bucket, you can prepare state that will be available as state to your application at runtime.
+
+## Time To Live and State Expiration
+The OCI Object Storage state store supports Dapr's Time To Live logic that ensure that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{< ref "state-store-ttl.md" >}}) for details.
+
+OCI Object Storage does not have native support for a Time To Live setting. The implementation in this component uses a meta data tag put on each object for which a TTL has been specified. The tag is called **expiry-time-from-ttl** and it contains a string in ISO date time format with the UTC based expiry time. When state is retrieved through a call to Get, this component checks if it has the **expiry-time-from-ttl** set and if so it checks whether it is in the past. In that case, no state is returned. 
+
+The following operation therefore (notice the composite key) 
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state \
+  -H "Content-Type: application/json"
+  -d '[
+        {
+          "key": "temporary",
+          "value": "ephemeral",
+          "metadata": {"ttlInSeconds": "120"}}
+        }
+      ]'
+```
+
+will create the following object:
+
+| Bucket | Directory | Object Name  | Object Content | Meta Tags |
+| ------------ | ------- | ----- | ----- | ---- |
+| as specified with **bucketName** in components.yaml | -  | nihilus | darth | category: dapr-state-store , expiry-time-from-ttl: 2022-01-06T08:34:32 
+
+The exact value of the expiry-time-from-ttl depends of course on the time at which the state was created and will be 120 seconds later than that moment.
+
+
+Note that expired state is not removed from the state store by this component. An application operator may decide to run a periodic job that does a form of garbage collection in order to explicitly remove all state that has an  **expiry-time-from-ttl** label with a timestamp in the past.
 
 ## Concurrency
 
