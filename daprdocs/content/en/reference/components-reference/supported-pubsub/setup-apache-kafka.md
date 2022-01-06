@@ -73,8 +73,9 @@ The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref ku
 
 ### Authentication
 
-Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. With the added authentication methods, the `authRequired` field has been deprecated
-and instead the `authType` field should be used. If `authRequired` is set to `true`, Dapr will attempt to configure `authType` correctly based on the value of `saslPassword`. There are four valid values for `authType`: `none`, `password`, `mtls`, and `oidc`. Note this is authentication only; authorization is still configured within Kafka.
+Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. With the added authentication methods, the `authRequired` field has
+been deprecated from the v1.6 release and instead the `authType` field should be used. If `authRequired` is set to `true`, Dapr will attempt to configure `authType` correctly
+based on the value of `saslPassword`. There are four valid values for `authType`: `none`, `password`, `mtls`, and `oidc`. Note this is authentication only; authorization is still configured within Kafka.
 
 #### None
 
@@ -110,7 +111,7 @@ spec:
 
 #### SASL Password
 
-Setting `authType` to `password` will enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication using the **PLAIN** mechanism. This requires setting
+Setting `authType` to `password` enables [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication using the **PLAIN** mechanism. This requires setting
 the `saslUsername` and `saslPassword` fields. 
 
 ```yaml
@@ -151,9 +152,9 @@ spec:
 
 #### Mutual TLS
 
-Setting `authType` to `mtls` will use a x509 client certificate (the `clientCert` field) and key (the `clientKey` field) to authenticate. Note that mTLS as an
+Setting `authType` to `mtls` uses a x509 client certificate (the `clientCert` field) and key (the `clientKey` field) to authenticate. Note that mTLS as an
 authentication mechanism is distinct from using TLS to secure the transport layer via encryption. mTLS requires TLS transport (meaning `disableTls` must be `false`), but securing
-the transport layer does not require using mTLS. See _Communication using TLS_ for configuring underlying TLS transport.
+the transport layer does not require using mTLS. See [Communication using TLS](#communication-using-tls) for configuring underlying TLS transport.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -195,12 +196,12 @@ spec:
 
 #### OAuth2 or OpenID Connect
 
-Setting `authType` to `oidc` will enable SASL authentication via the **OAUTHBEARER** mechanism. This supports specifying a bearer
+Setting `authType` to `oidc` enables SASL authentication via the **OAUTHBEARER** mechanism. This supports specifying a bearer
 token from an external OAuth2 or [OIDC](https://en.wikipedia.org/wiki/OpenID) identity provider. Currenly only the **client_credentials** grant is supported. Configure `oidcTokenEndpoint` to
 the full URL for the identity provider access token endpoint. Set `oidcClientID` and `oidcClientSecret` to the client credentials provisioned in the identity provider. If `caCert`
-is specified in the component configuration, the certificate will be appended to the system CA trust for verifying the identity provider certificate. Similarly, if `skipVerify`
-is specified in the component configuration, it will also be applied when accessing the identity provider. By default, the only scope requested for the token is `openid` but it is highly recommended
-that additional scopes be specified via `oidcScopes` in a comma-separated list and validated by the Kafka broken. If additional scopes are not used to narrow the validity of the access token,
+is specified in the component configuration, the certificate is appended to the system CA trust for verifying the identity provider certificate. Similarly, if `skipVerify`
+is specified in the component configuration, verification will also be skipped when accessing the identity provider. By default, the only scope requested for the token is `openid`; it is **highly** recommended
+that additional scopes be specified via `oidcScopes` in a comma-separated list and validated by the Kafka broker. If additional scopes are not used to narrow the validity of the access token,
 a compromised Kafka broker could replay the token to access other services as the Dapr clientID.
 
 ```yaml
