@@ -13,11 +13,11 @@ Let's take a look at the Publish and Subscribe (Pub/Sub) building block. With Da
 
 [Learn more about the publish and subscribe building block and how it works]({{< ref pubsub >}}).
 
-In this quickstart, you will set up create a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/Sub pattern.
+In this quickstart, you will set up a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/Sub pattern.
 
 1. The publisher service repeatedly publishes messages to a topic.
-1. A redis component stores those messages.
-1. The subscriber to that topic pulls and processes the messages.
+1. A redis component queues or brokers those messages.
+1. The subscriber to that topic pulls messages from the queue and processes them.
 
 ## Select your preferred language SDK
 
@@ -75,7 +75,7 @@ For this example, you will need:
 
 ### Set up the Pub/Sub component
 
-The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file:
+The `pubsub.yaml` is created by default on your local machine when running `dapr init`. Verify by opening your components file:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
 - On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
@@ -111,11 +111,6 @@ scopes:
   - orderprocessing
   - checkout
 ```
-
-You can override this RabbitMQ file with another Redis instance or another pubsub component:
-
-1. Create a components directory containing the file.
-1. Use the flag `--components-path` with the `dapr run` CLI command.
 
 {{% /codetab %}}
 
@@ -168,48 +163,6 @@ scopes:
 
 ### Subscribe to topics
 
-Dapr allows two methods by which you can subscribe to topics:
-
-- **Declaratively**: subscriptions are defined in an external file.
-- **Programmatically**: subscriptions are defined in user code.
-
-Both declarative and programmatic approaches support the same features.
-
-- The declarative approach:
-  - Removes the Dapr dependency from your code.
-  - Allows, for example, existing applications to subscribe to topics without changing code.
-- The programmatic approach:
-  - Implements the subscription in your code.
-
-In this example, we'll work with **declarative subscriptions** and subscribe to a topic using the following Custom Resources Definition (CRD).
-
-1. Navigate to your dapr your `./components` directory.
-
-  - By default, Dapr loads subscriptions along with components from:
-    - `$HOME/.dapr/components` on MacOS/Linux.
-    - `%USERPROFILE%\.dapr\components` on Windows.
-  - If you choose to set up your own directory, point the Dapr CLI to your own component path when running the app.
-
-1. Within the  directory, create a file named `subscriptionl.yaml` and paste the following:
-
-    ```yml
-    apiVersion: dapr.io/v1alpha1
-    kind: Subscription
-    metadata:
-      name: order_pub_sub
-    spec:
-      topic: orders
-      route: /checkout
-      pubsubname: order_pub_sub
-    scopes:
-    - orderprocessing
-    - checkout
-    ```
-
-  In the file above, you've set an event subscription to topic `orders`, for the pubsub component `order_pub_sub`.
-    - The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
-    - The `scopes` field enables this subscription for apps with the `orderprocessing` and `checkout` IDs.
-
 1. Navigate to the directory containing your subscriber application.
 
     ```bash
@@ -222,7 +175,7 @@ In this example, we'll work with **declarative subscriptions** and subscribe to 
    dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
    ```
 
-    The CheckoutService.py application contents:
+    The CheckoutService.py subscriber contains the following:
   
     ```py
     from cloudevents.sdk.event import v1
@@ -243,11 +196,11 @@ In this example, we'll work with **declarative subscriptions** and subscribe to 
     app.run(6002)
     ```
 
-    Notice the `/checkout` endpoint matches the `route` defined in the `subscriptions.yaml` file you created earlier. Dapr will send all topic messages here.
+    Notice the `pubsub_name` called in CheckoutService.py matches the metadata name field in your `pubsub.yaml` file.
 
 ### Publish a topic
 
-1. Navigate to the following directory.
+1. Navigate to the directory holding the OrderProcessingService.py publisher.
 
     ```bash
     cd pub_sub/python
@@ -259,7 +212,7 @@ In this example, we'll work with **declarative subscriptions** and subscribe to 
    dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
    ```
 
-   The OrderProcessingService.py application contents:
+   The OrderProcessingService.py publisher contains the following:  
 
    ```python
    import random
@@ -285,6 +238,8 @@ In this example, we'll work with **declarative subscriptions** and subscribe to 
            )
        logging.info('Published data: ' + str(orderId))
    ```
+
+   The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
 
 1. Publish a message to the orders topic:
 
