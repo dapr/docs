@@ -63,15 +63,15 @@ For this example, you will need:
 
 1. Install the Dapr Python-SDK.
 
-  ```bash
-  pip3 install dapr dapr-ext-grpc
-  ```
+   ```bash
+   pip3 install dapr dapr-ext-grpc
+   ```
 
 1. Install the cloudevents SDK.
 
-  ```bash
-  pip3 install cloudevents
-  ```
+   ```bash
+   pip3 install cloudevents
+   ```
 
 ### Set up the Pub/Sub component
 
@@ -113,6 +113,7 @@ scopes:
 ```
 
 You can override this RabbitMQ file with another Redis instance or another pubsub component:
+
 1. Create a components directory containing the file.
 1. Use the flag `--components-path` with the `dapr run` CLI command.
 
@@ -154,6 +155,12 @@ scopes:
 1. Save as `pubsub.yaml`.
 
 1. Run `kubectl apply -f pubsub.yaml`.
+
+1. Start a RabbitMQ message broker by entering the following command:
+
+   ```bash
+   docker run -d -p 5672:5672 -p 15672:15672 --name dtc-rabbitmq rabbitmq:3-management-alpine
+   ```
 
 {{% /codetab %}}
 
@@ -289,17 +296,22 @@ In this example, we'll work with **declarative subscriptions** and subscribe to 
 
 ### ACK-ing a message
 
-In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
+Tell Dapr that a message was processed successfully by returning a `200 OK` response. Dapr will attempt to redeliver the message following at-least-once semantics if:
+
+- Dapr receives any return status code other than `200`, or
+- If your app crashes.
 
 ### Send a custom `cloudevent`
 
-Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope.
-If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
+Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope. To use your own custom CloudEvent, specify the content type as `application/cloudevents+json`.
 
-Read about content types [here](#content-types), and about the [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
-
+Learn more about [content types](#content-types) and [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
 
 ### Explore more of the Python SDK
+
+- [Python SDK Docs]({{< ref python >}})
+- [Python SDK Repository](https://github.com/dapr/python-sdk)
+- [Publish and Subscribe Overview]({{< ref pubsub-overview >}})
 
 {{% /codetab %}}
 
@@ -330,9 +342,59 @@ Read about content types [here](#content-types), and about the [Cloud Events mes
 
 {{< /tabs >}}
 
-### Related Links
-* [Python SDK Docs]({{< ref python >}})
-* [Python SDK Repository](https://github.com/dapr/python-sdk)
-* [Publish and Subscribe Overview]({{< ref pubsub-overview >}})
+
+## Clean up
+
+Stop and remove the applications you've created for this quickstart with the following commands.
+
+{{< tabs "gRPC" "Http" "Python" ".NET SDK" "Java SDK" "Go SDK" "JavaScript SDK" "PHP SDK" >}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id orderprocessing
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Next steps
+
+- Learn about [PubSub routing]({{< ref howto-route-messages >}})
+- Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
+- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
+- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- List of [pub/sub components]({{< ref setup-pubsub >}})
+- Read the [API reference]({{< ref pubsub_api.md >}})
 
 {{< button text="Explore More Quickstarts  >>" page="more-quickstarts" >}}
