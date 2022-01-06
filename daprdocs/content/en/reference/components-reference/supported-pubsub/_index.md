@@ -29,7 +29,7 @@ Table captions:
 | [In Memory]({{< ref setup-inmemory.md >}})            | Alpha  | v1 | 1.4 |
 | [JetStream]({{< ref setup-jetstream.md >}})           | Alpha  | v1 | 1.4 |
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | v1 | 1.0 |
-| [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Stable | v1 | 1.6 |
+| [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Beta  | v1 | 1.6 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Stable | v1 | 1.0 |
 
 ### Amazon Web Services (AWS)
