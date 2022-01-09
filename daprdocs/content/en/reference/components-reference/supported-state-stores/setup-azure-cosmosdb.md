@@ -64,6 +64,25 @@ In order to setup CosmosDB as a state store, you need the following properties:
 - **Database**: The name of the database
 - **Collection**: The name of the collection
 
+## Best Practices for Production Use
+
+Azure Cosmos DB shares a strict metadata request rate limit across all databases in a single Azure Cosmos DB account. New connections to Azure Cosmos DB assume a large percentage of the allowable request rate limit. (See the [CosmosDB documentation](https://docs.microsoft.com/azure/cosmos-db/sql/troubleshoot-request-rate-too-large#recommended-solution-3))
+
+Therefore several strategies must be applied to avoid simultaneous new connections to Azure Cosmos DB:
+
+- Ensure sidecars of applications only load the Azure Cosmos DB component when they require it to avoid unnecessary database connections. This can be done by [scoping your components to specific applications]({{< ref component-scopes.md >}}#application-access-to-components-with-scopes).
+- Choose deployment strategies that sequentially deploy or start your applications to minimize bursts in new connections to your Azure Cosmos DB accounts.
+- Avoid reusing the same Azure Cosmos DB account for unrelated databases or systems (even outside of Dapr). Distinct Azure Cosmos DB accounts have distinct rate limits.
+- Increase the `initTimeout` value to allow the component to retry connecting to Azure Cosmos DB during side car initialization for up to 5 minutes. The default value is `5s` and should be increased. When using Kubernetes, increasing this value may also require an update to your [Readiness and Liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
+
+```yaml
+spec:
+  type: state.azure.cosmosdb
+  version: v1
+  initTimeout: 5m
+  metadata:
+```
+
 ## Data format
 
 To use the CosmosDB state store, your data must be sent to Dapr in JSON-serialized.  Having it just JSON *serializable* will not work.

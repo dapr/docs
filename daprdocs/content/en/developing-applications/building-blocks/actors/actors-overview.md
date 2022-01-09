@@ -3,7 +3,7 @@ type: docs
 title: "Actors overview"
 linkTitle: "Overview"
 weight: 10
-description: Overview of the actors building block
+description: "Overview of the actors API building block"
 aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
