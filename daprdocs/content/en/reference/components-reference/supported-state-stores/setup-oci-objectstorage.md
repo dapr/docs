@@ -21,19 +21,21 @@ spec:
   type: state.oci.objectstorage
   version: v1
   metadata:
+ - name: instancePrincipalAuthentication
+   value: <"true" or "false">  # Optional. default: "false" 
  - name: tenancyOCID
-   value: <REPLACE-WITH-TENANCY-OCID>
+   value: <REPLACE-WITH-TENANCY-OCID>  # Not used when instancePrincipalAuthentication == "true" 
  - name: userOCID
-   value: <REPLACE-WITH-USER-OCID>
+   value: <REPLACE-WITH-USER-OCID>  # Not used when instancePrincipalAuthentication == "true" 
  - name: fingerPrint
-   value: <REPLACE-WITH-FINGERPRINT>
- - name: privateKey
+   value: <REPLACE-WITH-FINGERPRINT>  # Not used when instancePrincipalAuthentication == "true" 
+ - name: privateKey  # Not used when instancePrincipalAuthentication == "true" 
    value: |
           -----BEGIN RSA PRIVATE KEY-----
           REPLACE-WIH-PRIVATE-KEY-AS-IN-PEM-FILE
-          -----END RSA PRIVATE KEY-----
+          -----END RSA PRIVATE KEY-----    
  - name: region
-   value: <REPLACE-WITH-OCI-REGION>
+   value: <REPLACE-WITH-OCI-REGION>  # Not used when instancePrincipalAuthentication == "true" 
  - name: bucketName
 	 value: <REPLACE-WITH-BUCKET-NAME>
  - name: compartmentOCID
@@ -49,25 +51,31 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| tenancyOCID        | Y        | The OCI tenancy identifier.  | `"ocid1.tenancy.oc1..aaaaaaaag7c7sljhsdjhsdyuwe723"`.
-| userOCID         | Y        | The OCID for an OCI account (this account requires permissions to access OCI Object Storage).| `"ocid1.user.oc1..aaaaaaaaby4oyyyuqwy7623yuwe76"`
-| fingerPrint         | Y        | Fingerprint of the public key.  | `"02:91:6c:49:e2:94:21:15:a7:6b:0e:a7:34:e1:3d:1b"`
-| privateKey         | Y        | Private key of the RSA key pair | `"MIIEoyuweHAFGFG2727as+7BTwQRAIW4V"`
-| region         | Y        | OCI Region | `"us-ashburn-1"`
+| instancePrincipalAuthentication        | N        | Boolean to indicate whether instance principal based authentication is used. Default: `"false"`  | `"true"` or  `"false"` .
+| tenancyOCID        | Y        | The OCI tenancy identifier. Not required nor used when instancePrincipalAuthentication is true. | `"ocid1.tenancy.oc1..aaaaaaaag7c7sljhsdjhsdyuwe723"`.
+| userOCID           | Y        | The OCID for an OCI account (this account requires permissions to access OCI Object Storage). Not required nor used when instancePrincipalAuthentication is true.| `"ocid1.user.oc1..aaaaaaaaby4oyyyuqwy7623yuwe76"`
+| fingerPrint        | Y        | Fingerprint of the public key. Not required nor used when instancePrincipalAuthentication is true. | `"02:91:6c:49:e2:94:21:15:a7:6b:0e:a7:34:e1:3d:1b"`
+| privateKey         | Y        | Private key of the RSA key pair. Not required nor used when instancePrincipalAuthentication is true. | `"MIIEoyuweHAFGFG2727as+7BTwQRAIW4V"`
+| region             | Y        | OCI Region. Not required nor used when instancePrincipalAuthentication is true. | `"us-ashburn-1"`
 | bucketName         | Y        | Name of the bucket written to and read from (and if necessary created) | `"application-state-store-bucket"`
-| compartmentOCID         | Y        | The OCID for the compartment that contains the bucket | `"ocid1.compartment.oc1..aaaaaaaacsssekayyuq7asjh78"`
+| compartmentOCID    | Y        | The OCID for the compartment that contains the bucket | `"ocid1.compartment.oc1..aaaaaaaacsssekayyuq7asjh78"`
 
 ## Setup OCI Object Storage
-The OCI Object Storage state store needs to interact through an OCI account that has permissions to create, read and delete objects through OCI Object Storage in the indicated bucket and that is allowed to create a bucket in the specified compartment if the bucket is not created beforehand. The OCI documentation [describes how to create an OCI Account](https://docs.oracle.com/en-us/iaas/Content/GSG/Tasks/addingusers.htm#Adding_Users). The interaction by the state store is performed using the public key's fingerprint and a private key from an RSA Key Pair generated for the OCI account. The [instructions for generating the key pair and getting hold of the required information](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) are available in the OCI documentation. 
+The OCI Object Storage state store needs to interact with Oracle Cloud Infrastructure. The state store supports two different approaches to authentication. One is based on an identity (a user or service account) and the other is instance principal authentication leveraging the permissions granted to the cmopute instance running the application workload.
+
+Dapr-applications running on Oracle Cloud Infrastructure - in a compute instance, a container on Kubernetes or as a function - can leverage instance principal authentication. See the [OCI documentation on calling OCI Services from instances](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm) for more background. In short: The instance needs to be member of a Dynamic Group and this Dynamic Group needs to get permissions for interacting with the Object Storage service through IAM policies. In case of such instance principal authentication, specify property instancePrincipalAuthentication as `"true"`. You do not need to configure the properties tenancyOCID, userOCID, region, fingerPrint and privateKey - these will be ignored if you define values for them. 
+
+Identity based authentication interact with OCI through an OCI account that has permissions to create, read and delete objects through OCI Object Storage in the indicated bucket and that is allowed to create a bucket in the specified compartment if the bucket is not created beforehand. The OCI documentation [describes how to create an OCI Account](https://docs.oracle.com/en-us/iaas/Content/GSG/Tasks/addingusers.htm#Adding_Users). The interaction by the state store is performed using the public key's fingerprint and a private key from an RSA Key Pair generated for the OCI account. The [instructions for generating the key pair and getting hold of the required information](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) are available in the OCI documentation. 
 
 If you wish to create the bucket for Dapr to use, you can do so beforehand. However, Object Storage state provider will create one - in the specified compartment - for you automatically if it doesn't exist.
 
 In order to setup OCI Object Storage as a state store, you will need the following properties:
-- **tenancyOCID**: The identifier for the OCI cloud tenancy in which the state is to be stored.
-- **userOCID**: The identifier for the account used by the state store component to connect to OCI; this must be an account with appropriate permissions on the OCI Object Storage service in the specified compartment and bucket 
-- **fingerPrint**: The fingerprint for the public key in the RSA key pair generated for the account indicated by **userOCID** 
-- **privateKey**: The private key in the RSA key pair generated for the account indicated by **userOCID** 
-- **region**: The OCI region - for example **us-ashburn-1**, **eu-amsterdam-1**, **ap-mumbai-1**
+- **instancePrincipalAuthentication**: The flag that indicates if instance principal based authentication should be used.
+- **tenancyOCID**: The identifier for the OCI cloud tenancy in which the state is to be stored. Not used when **instancePrincipalAuthentication** is true.
+- **userOCID**: The identifier for the account used by the state store component to connect to OCI; this must be an account with appropriate permissions on the OCI Object Storage service in the specified compartment and bucket. Not used when **instancePrincipalAuthentication** is true.
+- **fingerPrint**: The fingerprint for the public key in the RSA key pair generated for the account indicated by **userOCID**. Not used when **instancePrincipalAuthentication** is true. 
+- **privateKey**: The private key in the RSA key pair generated for the account indicated by **userOCID**. Not used when **instancePrincipalAuthentication** is true. 
+- **region**: The OCI region - for example **us-ashburn-1**, **eu-amsterdam-1**, **ap-mumbai-1**. Not used when **instancePrincipalAuthentication** is true.
 - **bucketName**: The name of the bucket on OCI Object Storage in which state will be created. This bucket can exist already when the state store is initialized or it will be created during initialization of the state store. Note that the name of buckets is unique within a namespace
 - **compartmentOCID**: The identifier of the compartment within the tenancy in which the bucket exists or will be created. 
 
