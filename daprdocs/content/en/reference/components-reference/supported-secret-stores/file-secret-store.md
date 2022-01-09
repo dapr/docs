@@ -33,6 +33,12 @@ spec:
     value: ":"
   - name: multiValued
     value: "false"
+  - name: cacheEnable # enable cache
+    value: "true"
+  - name: cacheTTL # TTL for cache items.
+    value: "5m" # 5 minutes
+  - name: cacheMemoryLimit # Maximum length in bytes of the memory usages for cache.
+    value: "10485760" # 10M
 ```
 
 ## Spec metadata fields

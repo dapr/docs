@@ -30,7 +30,12 @@ spec:
   type: secretstores.kubernetes
   version: v1
   metadata:
-  - name: ""
+  - name: cacheEnable # enable cache
+    value: "true"
+  - name: cacheTTL # TTL for cache items.
+    value: "5m" # 5 minutes
+  - name: cacheMemoryLimit # Maximum length in bytes of the memory usages for cache.
+    value: "10485760" # 10M
 ```
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
