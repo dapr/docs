@@ -24,14 +24,17 @@ spec:
     value: "localhost:6650"
   - name: enableTLS
     value: "false"
+  - name: token
+    value: "eyJrZXlJZCI6InB1bHNhci1wajU0cXd3ZHB6NGIiLCJhbGciOiJIUzI1NiJ9.eyJzd"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"`|
+| host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"` OR `"http://pulsar-pj54qwwdpz4b-pulsar.ap-sg.public.pulsar.com:8080"`|
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`|
+| token          | N  | Enable Authentication.  |-| 
 
 
 ### Delay queue
