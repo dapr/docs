@@ -41,9 +41,10 @@ Select your preferred language and SDK example before proceeding with the quicks
 
 For this example, you will need:
 
-- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started)
-- [Python 3.7+ installed](https://www.python.org/downloads/)
-- [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html)
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Python SDK](https://docs.dapr.io/developing-applications/sdks/python/python-client/). Verify you have `cloudevents` installed.
+- [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html).
 
 ### Clone the example
 
@@ -60,6 +61,8 @@ For this example, you will need:
     ```
 
 ### Install the SDKs
+
+Follow the Python SDK installation quickstart to import the Python client package. Verify you have the following extensions installed:
 
 1. Install the Dapr Python-SDK.
 
@@ -241,11 +244,35 @@ scopes:
 
    The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
 
-1. Publish a message to the orders topic:
+1. Within the `pub_sub/python` directory, publish a message to the orders topic:
 
-   ```powershell
-   Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
-   ```
+{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
+
+```bash
+dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
    Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
@@ -272,7 +299,253 @@ Learn more about [content types](#content-types) and [Cloud Events message forma
 
  <!-- .NET -->
 {{% codetab %}}
-## TODO .NET
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [.NET Core 3.1 or .NET 5+ installed](https://dotnet.microsoft.com/en-us/download/dotnet).
+- [.NET SDK](https://docs.dapr.io/developing-applications/sdks/python/python-client/). 
+- [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html).
+
+### Clone the example
+
+1. Clone the sample we've set up specifically for the Python SDK:
+
+    ```bash
+    git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
+    ```
+
+### Set up the Pub/Sub component
+
+The `pubsub.yaml` is created by default on your local machine when running `dapr init`. Verify by opening your components file:
+
+- On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
+- On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
+
+{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+
+{{% codetab %}}
+
+In this example, we use RabbitMQ for publish and subscribe. Replace the default `pubsub.yaml` file with the following content:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order_pub_sub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqp://localhost:5672"
+  - name: durable
+    value: "false"
+  - name: deletedWhenUnused
+    value: "false"
+  - name: autoAck
+    value: "false"
+  - name: reconnectWait
+    value: "0"
+  - name: concurrency
+    value: parallel
+scopes:
+  - orderprocessing
+  - checkout
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+To deploy the example into a Kubernetes cluster:
+
+1. Fill in the `metadata` connection details of your [default Pub/Sub component yaml]({{< ref setup-pubsub >}}) with the content below.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order_pub_sub
+  namespace: default
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqp://localhost:5672"
+  - name: durable
+    value: "false"
+  - name: deletedWhenUnused
+    value: "false"
+  - name: autoAck
+    value: "false"
+  - name: reconnectWait
+    value: "0"
+  - name: concurrency
+    value: parallel
+scopes:
+  - orderprocessing
+  - checkout
+```
+
+1. Save as `pubsub.yaml`.
+
+1. Run `kubectl apply -f pubsub.yaml`.
+
+1. Start a RabbitMQ message broker by entering the following command:
+
+   ```bash
+   docker run -d -p 5672:5672 -p 15672:15672 --name dtc-rabbitmq rabbitmq:3-management-alpine
+   ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+### Subscribe to topics
+
+1. Navigate to the directory containing your subscriber application.
+
+    ```bash
+    cd pub_sub/csharp/CheckoutService/Controllers
+    ```
+
+1. Run the following command to launch a Dapr sidecar and run the CheckoutServiceController.cs application.
+
+   ```bash
+   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
+   ```
+
+    The CheckoutServiceController.cs subscriber contains the following:
+  
+    ```cs
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System;
+    using Microsoft.AspNetCore.Mvc;
+    using Dapr;
+    using Dapr.Client;
+    
+    namespace CheckoutService.controller
+    {
+        [ApiController]
+        public class CheckoutServiceController : Controller
+        {
+            [Topic("order_pub_sub", "orders")]
+            [HttpPost("checkout")]
+            public void getCheckout([FromBody] int orderId)
+            {
+                Console.WriteLine("Subscriber received : " + orderId);
+            }
+        }
+    }
+    ```
+
+    Notice:
+      - The `pubsub_name` called in CheckoutServiceController.cs matches the metadata name field in your `pubsub.yaml` file.
+      - `Dapr` and `Dapr.Client` are called out as dependencies.
+
+### Publish a topic
+
+1. Navigate to the directory holding the "Order Processing Service" Program.cs publisher.
+
+    ```bash
+    cd pub_sub/csharp/OrderProcessingService
+    ```
+
+1. Run the following command to launch a Dapr sidecar and run the Program.cs application.
+
+   ```bash
+   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
+   ```
+
+   The Program.cs publisher contains the following:  
+
+   ```cs
+   using System;
+   using System.Collections.Generic;
+   using System.Net.Http;
+   using System.Net.Http.Headers;
+   using System.Threading.Tasks;
+   using Dapr.Client;
+   using Microsoft.AspNetCore.Mvc;
+   using System.Threading;
+   
+   namespace EventService
+   {
+       class Program
+       {
+           static async Task Main(string[] args)
+           {
+              string PUBSUB_NAME = "order_pub_sub";
+              string TOPIC_NAME = "orders";
+              while(true) {
+                   System.Threading.Thread.Sleep(5000);
+                   Random random = new Random();
+                   int orderId = random.Next(1,1000);
+                   CancellationTokenSource source = new CancellationTokenSource();
+                   CancellationToken cancellationToken = source.Token;
+                   using var client = new DaprClientBuilder().Build();
+                   await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
+                   Console.WriteLine("Published data: " + orderId);
+              }
+           }
+       }
+   }
+   ```
+
+   The Dapr SDK you installed earlier imports the `Dapr.Client` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
+
+1. Within the `pub_sub/csharp/OrderProcessingService` directory, publish a message to the orders topic:
+
+{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
+
+```bash
+dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
+
+### ACK-ing a message
+
+Tell Dapr that a message was processed successfully by returning a `200 OK` response. Dapr will attempt to redeliver the message following at-least-once semantics if:
+
+- Dapr receives any return status code other than `200`, or
+- If your app crashes.
+
+### Send a custom `cloudevent`
+
+Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope. To use your own custom CloudEvent, specify the content type as `application/cloudevents+json`.
+
+Learn more about [content types](#content-types) and [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
+
+### Explore more of the .NET SDK
+
 {{% /codetab %}}
 
  <!-- Java -->
