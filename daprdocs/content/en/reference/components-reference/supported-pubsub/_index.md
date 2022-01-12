@@ -35,8 +35,8 @@ Table captions:
 ### Amazon Web Services (AWS)
 
 | Name                                              | Status | Component version | Since |
-|---------------------------------------------------|--------| ---- |---------------|
-| [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Alpha  | v1 | 1.0 |
+|---------------------------------------------------|--------| ---- | --------------|
+| [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Beta   | v1 | 1.6 |
 
 ### Google Cloud Platform (GCP)
 
