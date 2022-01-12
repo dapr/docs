@@ -50,7 +50,7 @@ For this example, you will need:
 1. Clone the sample we've set up specifically for the Python SDK:
 
     ```bash
-    git clone git@github.com:amulyavarote/dapr-quickstarts-examples.git
+    git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
     ```
 
 1. Navigate to the Pub/Sub python project directory:
