@@ -80,7 +80,7 @@ Details for the identity and identity's credentials to be used for interaction w
 
 If you wish to create the bucket for Dapr to use, you can do so beforehand. However, Object Storage state provider will create one - in the specified compartment - for you automatically if it doesn't exist.
 
-In order to setup OCI Object Storage as a state store, you will need the following properties:
+In order to setup OCI Object Storage as a state store, you need the following properties:
 - **instancePrincipalAuthentication**: The flag that indicates if instance principal based authentication should be used.
 - **configFileAuthentication**: The flag that indicates if the OCI identity credential details are provided through a configuration file. Not used when **instancePrincipalAuthentication** is true.
 - **configFilePath**: Full path name to the OCI configuration file. Not used when **instancePrincipalAuthentication** is true or **configFileAuthentication** is not true.
@@ -111,7 +111,7 @@ curl -X POST http://localhost:3500/v1.0/state \
       ]'
 ```
 
-will create the following object:
+creates the following object:
 
 | Bucket | Directory | Object Name  | Object Content | Meta Tags |
 | ------------ | ------- | ----- | ----- | ---- |
@@ -163,7 +163,7 @@ curl -X POST http://localhost:3500/v1.0/state \
       ]'
 ```
 
-will create the following object:
+creates the following object:
 
 | Bucket | Directory | Object Name  | Object Content | Meta Tags |
 | ------------ | ------- | ----- | ----- | ---- |
@@ -176,7 +176,7 @@ Note that expired state is not removed from the state store by this component. A
 
 ## Concurrency
 
-OCI Object Storage state concurrency is achieved by using `ETag`s. Each object in OCI Object Storage is assigned a unique ETag when it is created or updated (aka replaced). When the Set and Delete requests for this state store specify the FirstWrite concurrency policy, then the request need to provide the actual ETag value for the state to be written or removed for the request to be successful. 
+OCI Object Storage state concurrency is achieved by using `ETag`s. Each object in OCI Object Storage is assigned a unique ETag when it is created or updated (aka replaced). When the `Set` and `Delete` requests for this state store specify the FirstWrite concurrency policy, then the request need to provide the actual ETag value for the state to be written or removed for the request to be successful. 
 
 ## Consistency
 
