@@ -148,6 +148,9 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 helm uninstall dapr --namespace dapr-system
 ```
 
+## Install Dapr on Azure Kubernetes Service (AKS) using the AKS Dapr Extension
+[Follow these instructions to install Dapr on Azure Kubernetes Service (AKS) using the AKS Dapr Extension]({{<ref "setup-aks.md#install-dapr-using-the-aks-dapr-extension" >}})
+
 ### More information
 
 - Read [this guide]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups

@@ -95,9 +95,13 @@ After announcing a future breaking change, the change will happen in 2 releases 
 ## Upgrade on Hosting platforms
 Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})
 
-### Supported Kubernetes versions
-
-Dapr follows [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy).
+### Supported Dapr dependency versions
+| Dependency            |   Supported Version  |
+|-----------------------|-------------------------|
+| Kubernetes            |                         |
+| OTEL                  |                         |
+| Prometheus            |                         |
+| fluentd               |                         |
 
 ## Related links
 * Read the [Versioning policy]({{< ref support-versioning.md >}})
