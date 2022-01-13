@@ -34,7 +34,7 @@ spec:
 |--------------------|:--------:|---------|---------|
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"` OR `"http://pulsar-pj54qwwdpz4b-pulsar.ap-sg.public.pulsar.com:8080"`|
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"`|
-| token          | N  | Enable Authentication.  |-| 
+| token          | N  | Enable Authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)| 
 
 
 ### Delay queue
