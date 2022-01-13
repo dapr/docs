@@ -3,20 +3,13 @@ type: docs
 title: "Publish and Subscribe Quickstart"
 linkTitle: "Publish and Subscribe Quickstart"
 weight: 60
-description: "Quickstart aimed at helping developers get started with Dapr's Publish and Subscribe building block"
+description: "Get started with Dapr's Publish and Subscribe building block"
 ---
 
-Let's take a look at the Publish and Subscribe (Pub/Sub) building block. With Dapr's extensible Pub/Sub system:
+Let's take a look at Dapr's [Publish and Subscribe (Pub/Sub) building block]({{< ref pubsub >}}). In this quickstart, you will set up a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/Sub pattern.
 
-- Developers can publish and subscribe to topics.
-- Operators can use their preferred infrastructure with components for Pub/Sub (Redis Streams, Kafka, etc.).
-
-[Learn more about the publish and subscribe building block and how it works]({{< ref pubsub >}}).
-
-In this quickstart, you will set up a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/Sub pattern.
-
-1. The publisher service repeatedly publishes messages to a topic.
-1. A redis component queues or brokers those messages.
+1. Using a publisher service, developers can repeatedly publish messages to a topic.
+1. [A Pub/Sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.)
 1. The subscriber to that topic pulls messages from the queue and processes them.
 
 ## Select your preferred language SDK
@@ -43,7 +36,6 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
-- [Python SDK](https://docs.dapr.io/developing-applications/sdks/python/python-client/). Verify you have `cloudevents` installed.
 - [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html).
 
 ### Clone the example
@@ -60,20 +52,18 @@ For this example, you will need:
     cd pub_sub/python
     ```
 
-### Install the SDKs
+### Install the Python dependencies
 
-Follow the Python SDK installation quickstart to import the Python client package. Verify you have the following extensions installed:
-
-1. Install the Dapr Python-SDK.
+1. Run the following to install the dependencies for this quickstart:
 
    ```bash
-   pip3 install dapr dapr-ext-grpc
+   pip3 install -r requirements.txt
    ```
 
-1. Install the cloudevents SDK.
+   Or:
 
    ```bash
-   pip3 install cloudevents
+   python -m pip install -r requirements.txt
    ```
 
 ### Set up the Pub/Sub component
@@ -242,52 +232,39 @@ scopes:
        logging.info('Published data: ' + str(orderId))
    ```
 
-   The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
+   Notice:
 
-1. Within the `pub_sub/python` directory, publish a message to the orders topic:
+   - The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
+   - Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
-{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+1. The Pub/Sub output should look like:
+   
+   ```output
+   Updating metadata for app command: python OrderProcessingService.py
+   You're up and running! Both Dapr and your app logs will appear here.
+   
+   == APP == INFO:root:Published data: 464
+   == APP == INFO:root:Published data: 260
+   == APP == INFO:root:Published data: 187
+   == APP == INFO:root:Published data: 271
+   == APP == INFO:root:Published data: 499
+   == APP == INFO:root:Published data: 67
+   == APP == INFO:root:Published data: 484
+   == APP == INFO:root:Published data: 20
+   == APP == INFO:root:Published data: 547
+   == APP == INFO:root:Published data: 856
+   == APP == INFO:root:Published data: 472
+   == APP == INFO:root:Published data: 482
+   ```
 
-{{% codetab %}}
-
-```bash
-dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-   Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
-
+   ![Screenshot of Python pub/sub output.](.\daprdocs\static\images\pubsub-quickstart\pubsub-python-output.png)
+   
 ### ACK-ing a message
 
 Tell Dapr that a message was processed successfully by returning a `200 OK` response. Dapr will attempt to redeliver the message following at-least-once semantics if:
 
 - Dapr receives any return status code other than `200`, or
 - If your app crashes.
-
-### Send a custom `cloudevent`
-
-Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope. To use your own custom CloudEvent, specify the content type as `application/cloudevents+json`.
-
-Learn more about [content types](#content-types) and [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
 
 ### Explore more of the Python SDK
 
@@ -575,46 +552,10 @@ Learn more about [content types](#content-types) and [Cloud Events message forma
 
 Stop and remove the applications you've created for this quickstart with the following commands.
 
-{{< tabs "gRPC" "Http" "Python" ".NET SDK" "Java SDK" "Go SDK" "JavaScript SDK" "PHP SDK" >}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
 ```bash
 dapr stop --app-id checkout
 dapr stop --app-id orderprocessing
 ```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-{{% /codetab %}}
-
-{{< /tabs >}}
 
 ## Next steps
 
