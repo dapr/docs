@@ -177,7 +177,7 @@ spec:
 
 {{% codetab %}}
 In order to run in AWS, you should create or assign an IAM user with permissions to the SNS and SQS services having a Policy such as:
-```
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -213,7 +213,7 @@ Use the `AWS account ID` and `AWS account secret` and plug them into the `access
 
 Alternatively, if you want to provision the SNS and SQS assets using your own tool of choice (e.g. Terraform), while preventing Dapr from doing so dynamically, you need to enable `disableEntityManagement` and assign your Dapr-using application with an IAM Role having a Policy such as:
 
-```
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
