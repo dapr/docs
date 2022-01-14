@@ -15,7 +15,7 @@ description: >
 
 ## Deploy an Azure Kubernetes Service cluster
 
-This guide walks you through installing an Azure Kubernetes Service cluster. If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/azure/aks/kubernetes-walkthrough)
+This guide walks you through installing an Azure Kubernetes Service cluster with Dapr using the [AKS Dapr extension](https://docs.microsoft.com/en-us/azure/aks/dapr). If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/azure/aks/kubernetes-walkthrough)
 
 1. Login to Azure
 
@@ -50,7 +50,7 @@ az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
 ## Install Dapr using the AKS Dapr extension
-By using the AKS Dapr extension to provision Dapr on your AKS cluster, you eliminate the requirement of downloading Dapr specific tooling and manually installing and managing the runtime on your AKS cluster. Additionally, the extension offers support for all native Dapr configuration capabilities through simple command-line arguments.
+By using the AKS Dapr extension to provision Dapr on your AKS cluster, you have the option of eliminating the requirement of managing the runtime on your AKS cluster. Additionally, the extension offers support for all native Dapr configuration capabilities through simple command-line arguments.
 
 {{% alert title="Note" color="warning" %}}
 If you install Dapr through the AKS extension, our recommendation is to continue using the extension for future management of Dapr instead of the Dapr CLI. Combining the two tools can cause conflicts and result in undesired behavior.
@@ -124,16 +124,4 @@ Once the k8-extension finishes provisioning, you can confirm that the Dapr contr
 kubectl get pods -n dapr-system
 ```
 
-For further information such as configuration options and targeting specific versions of Dapr, please see the official [Azure AKS Dapr Extension Docs](https://docs.microsoft.com/en-us/azure/aks/dapr).
-
-## (optional) Install Helm v3
-
-1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
-
-> **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
-
-2. In case you need permissions  the kubernetes dashboard (i.e. configmaps is forbidden: User "system:serviceaccount:kube-system:kubernetes-dashboard" cannot list configmaps in the namespace "default", etc.) execute this command
-
-```bash
-kubectl create clusterrolebinding kubernetes-dashboard -n kube-system --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
-```
+For further information such as configuration options and targeting specific versions of Dapr, please see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/en-us/azure/aks/dapr).
