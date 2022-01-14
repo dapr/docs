@@ -10,12 +10,12 @@ description: >
 ## Prerequisites
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
-- [Azure Subscription](https://azure.microsoft.com/en-us/free/?WT.mc_id=A261C142F)
+- [Azure Subscription](https://azure.microsoft.com/free/?WT.mc_id=A261C142F)
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
 
 ## Deploy an Azure Kubernetes Service cluster
 
-This guide walks you through installing an Azure Kubernetes Service cluster with Dapr using the [AKS Dapr extension](https://docs.microsoft.com/en-us/azure/aks/dapr). If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/azure/aks/kubernetes-walkthrough)
+This guide walks you through installing an Azure Kubernetes Service cluster with Dapr using the [AKS Dapr extension](https://docs.microsoft.com/azure/aks/dapr). If you need more information, refer to [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/azure/aks/kubernetes-walkthrough)
 
 1. Login to Azure
 
@@ -124,4 +124,4 @@ Once the k8-extension finishes provisioning, you can confirm that the Dapr contr
 kubectl get pods -n dapr-system
 ```
 
-For further information such as configuration options and targeting specific versions of Dapr, please see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/en-us/azure/aks/dapr).
+For further information such as configuration options and targeting specific versions of Dapr, please see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/azure/aks/dapr).
