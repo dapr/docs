@@ -46,6 +46,10 @@ spec:
     #   value: "app1-mgi"
     # - name: disableEntityManagement # Optional
     #   value: "false"
+    # - name: disableDeleteOnRetryLimit # Optional
+    #   value: "false"
+    # - name: assetsManagementTimeoutSeconds # Optional
+    #   value: 5
 
 
 
@@ -70,13 +74,17 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | messageRetryLimit        | N  | Number of times to resend a message after processing of that message fails before removing that message from the queue. Default: `10` | `10`
 | messageWaitTimeSeconds   | N  | The duration (in seconds) for which the call waits for a message to arrive in the queue before returning. If a message is available, the call returns sooner than `messageWaitTimeSeconds`. If no messages are available and the wait time expires, the call returns successfully with an empty list of messages. Default: `1` | `1`
 | messageMaxNumber         | N  | Maximum number of messages to receive from the queue at a time. Default: `10`, Maximum: `10` | `10`
-| fifo | N  | Use SQS FIFO queue to provide message ordering and deduplication.  Default: `"false"`. See further details about [SQS FIFO](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html) | `"false"`
+| fifo | N  | Use SQS FIFO queue to provide message ordering and deduplication.  Default: `"false"`. See further details about [SQS FIFO](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html) | `"true"`, `"false"`
 | fifoMessageGroupID | N | If `fifo` is enabled, instructs Dapr to use a custom [Message Group ID](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagegroupid-property.html) for the pubsub deployment. This is not mandatory as Dapr creates a custom Message Group ID for each producer, thus ensuring ordering of messages per a Dapr producer. Default: `""` | `"app1-mgi"`
 | disableEntityManagement | N  | When set to true, SNS topics, SQS queues and the SQS subscriptions to SNS do not get created automatically. Default: `"false"` | `"true"`, `"false"`
+| disableDeleteOnRetryLimit | N  | When set to true, after retrying and failing of `messageRetryLimit` times processing a message, reset the message visibility timeout so that other consumers can try processing, instead of deleting the message from SQS (the default behvior). Default: `"false"` | `"true"`, `"false"`
+| assetsManagementTimeoutSeconds | N  | Amount of time in seconds, for an AWS asset management operation, before it times out and cancelled. Asset management operations are any operations performed on STS, SNS and SQS, except message publish and consume operations that implement the default Dapr component retry behavior. The value can be set to any non-negative float/integer. Default: `5` | `0.5`, `10`
+
 
 * Dapr created SNS topic and SQS queue names conform with [AWS specifications](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html). By default, Dapr creates an SQS queue name based on the consumer `app-id`, therefore Dapr might perform name standardization to meet with AWS specifications.
 * Using SQS FIFO (`fifo` metadata field set to `"true"`), per AWS specifications, provides message ordering and deduplication, but incurs a lower SQS processing throughput, among other caveats
 * Be aware that specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) post to better understand the topic of Message Group IDs and FIFO queues.
+
 
 
 ## Create an SNS/SQS instance
