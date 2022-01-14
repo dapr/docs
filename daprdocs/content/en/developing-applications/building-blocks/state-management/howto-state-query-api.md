@@ -17,8 +17,13 @@ The state query API provides a way of querying the key/value data stored in stat
 Even though the state store is a key/value store, the `value` might be a JSON document with its own hierarchy, keys, and values.
 The query API allows you to use those keys and values to retrive corresponding documents.
 
-This query API does not support querying of actor state stored in a state store. For that you need to use the query API for the specific database.
-See [querying actor state]({{< ref "state-management-overview.md#querying-actor-state" >}}).
+### Limitations
+The state query API has the following limitations:
+
+ - The API does not support querying of actor state stored in a state store. For that you need to use the query API for the specific database. See [querying actor state]({{< ref "state-management-overview.md#querying-actor-state" >}}).
+ - The API does not work with Dapr [encrypted state stores]({{<ref howto-encrypt-state>}}) capability. Since the encryption is done by the Dapr runtime and stored as encrypted data, then this effectively prevents server side querying. 
+ 
+ 
 
 You can find additional information in the [related links]({{< ref "#related-links" >}}) section.
 
