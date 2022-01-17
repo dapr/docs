@@ -55,9 +55,7 @@ with DaprClient() as d:
         pubsub_name='pubsub',
         topic='TOPIC_A',
         data=json.dumps(req_data),
-        metadata=(
-                     ('ttlInSeconds', '120')
-                 )
+        publish_metadata={'ttlInSeconds': '120'}
     )
     # Print the request
     print(req_data, flush=True)
