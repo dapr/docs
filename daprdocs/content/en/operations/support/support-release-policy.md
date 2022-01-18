@@ -95,14 +95,14 @@ After announcing a future breaking change, the change will happen in 2 releases 
 ## Upgrade on Hosting platforms
 Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})
 
-### Supported versions Dapr versions
+### Supported versions of dependencies 
 Below is a list of software that the latest version of Dapr (v{{% dapr-latest-version long="true" %}}) has been tested against. 
 
 | Dependency            |   Supported Version                                                                                                              |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| Kubernetes                                                | Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/)|
-| OTEL                                                     |                                                                                                                            v0.4.0|
-| [Prometheus](https://prometheus.io/download/)            |                                                                                                                             v2.28|
+| Kubernetes                                                |  Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/) |
+| [Open Telemetry (OTEL)](https://github.com/open-telemetry)|                                                                                                                              v0.4.0|
+| [Prometheus](https://prometheus.io/download/)             |                                                                                                                              v2.28 |
 
 ## Related links
 * Read the [Versioning policy]({{< ref support-versioning.md >}})
