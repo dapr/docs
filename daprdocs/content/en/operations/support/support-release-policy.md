@@ -101,7 +101,7 @@ Below is a list of software that the latest version of Dapr (v{{% dapr-latest-ve
 | Dependency            |   Supported Version                                                                                                              |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | Kubernetes                                                |  Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/) |
-| [Open Telemetry (OTEL)](https://github.com/open-telemetry)|                                                                                                                              v0.4.0|
+| [Open Telemetry collector (OTEL)](https://github.com/open-telemetry/opentelemetry-collector/releases)|                                                                                                                              v0.4.0|
 | [Prometheus](https://prometheus.io/download/)             |                                                                                                                              v2.28 |
 
 ## Related links
