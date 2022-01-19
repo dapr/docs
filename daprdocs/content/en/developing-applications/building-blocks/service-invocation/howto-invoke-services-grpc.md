@@ -90,7 +90,7 @@ spec:
 Run the sidecar and the Go server:
 
 ```bash
-dapr run --app-id server --app-protocol grpc --app-port 50051 --config config.yaml -- go run main.go
+dapr run --app-id server --app-port 50051 --config config.yaml -- go run main.go
 ```
 
 Using the Dapr CLI, we're assigning a unique id to the app, `server`, using the `--app-id` flag.
