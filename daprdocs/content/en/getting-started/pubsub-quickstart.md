@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Publish and Subscribe Quickstart"
-linkTitle: "Publish and Subscribe Quickstart"
+title: "Quickstart: Set up Publish and Subscribe"
+linkTitle: "Quickstart: Set up Publish and Subscribe"
 weight: 60
 description: "Get started with Dapr's Publish and Subscribe building block"
 ---
@@ -14,19 +14,9 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/Sub) building block]({{<
 
 ## Select your preferred language SDK
 
-Select your preferred language and SDK example before proceeding with the quickstart. 
+Select your preferred language before proceeding with the quickstart.
 
-{{< tabs "gRPC" "Http" "Python" ".NET SDK" "Java SDK" "Go SDK" "JavaScript SDK" "PHP SDK" >}}
- <!-- gRPC -->
-{{% codetab %}}
-## TODO gRPC
-{{% /codetab %}}
-
- <!-- Http -->
-{{% codetab %}}
-## TODO Http
-{{% /codetab %}}
-
+{{< tabs "Python" ".NET" "JavaScript" >}}
  <!-- Python -->
 {{% codetab %}}
 
@@ -36,11 +26,10 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
-- [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html).
 
-### Clone the example
+### Set up the environment
 
-1. Clone the sample we've set up specifically for the Python SDK:
+1. Clone the sample we've set up:
 
     ```bash
     git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
@@ -52,9 +41,7 @@ For this example, you will need:
     cd pub_sub/python
     ```
 
-### Install the Python dependencies
-
-1. Run the following to install the dependencies for this quickstart:
+1. Install the dependencies:
 
    ```bash
    pip3 install -r requirements.txt
@@ -66,89 +53,60 @@ For this example, you will need:
    python -m pip install -r requirements.txt
    ```
 
-### Set up the Pub/Sub component
+### View the Pub/Sub component
 
-The `pubsub.yaml` is created by default on your local machine when running `dapr init`. Verify by opening your components file:
+When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
 - On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+For this quickstart, we've included a default Redis `pubsub.yaml` file within the cloned repository that contains the following:
+
+{{< tabs "Self-Hosted (CLI)" "Kubernetes" >}}
 
 {{% codetab %}}
-
-In this example, we use RabbitMQ for publish and subscribe. Replace the default `pubsub.yaml` file with the following content:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: pubsub
+  namespace: default
 spec:
-  type: pubsub.rabbitmq
+  type: pubsub.redis
   version: v1
   metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
-scopes:
-  - orderprocessing
-  - checkout
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
 
-To deploy the example into a Kubernetes cluster:
-
-1. Fill in the `metadata` connection details of your [default Pub/Sub component yaml]({{< ref setup-pubsub >}}) with the content below.
+Run `kubectl apply -f pubsub.yaml` to apply the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: pubsub
   namespace: default
 spec:
-  type: pubsub.rabbitmq
+  type: pubsub.redis
   version: v1
   metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
-scopes:
-  - orderprocessing
-  - checkout
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
 ```
-
-1. Save as `pubsub.yaml`.
-
-1. Run `kubectl apply -f pubsub.yaml`.
-
-1. Start a RabbitMQ message broker by entering the following command:
-
-   ```bash
-   docker run -d -p 5672:5672 -p 15672:15672 --name dtc-rabbitmq rabbitmq:3-management-alpine
-   ```
 
 {{% /codetab %}}
 
@@ -234,37 +192,27 @@ scopes:
 
    Notice:
 
-   - The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
-   - Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
+    - The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.
+    - Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
-1. The Pub/Sub output should look like:
-   
-   ```output
-   Updating metadata for app command: python OrderProcessingService.py
-   You're up and running! Both Dapr and your app logs will appear here.
-   
-   == APP == INFO:root:Published data: 464
-   == APP == INFO:root:Published data: 260
-   == APP == INFO:root:Published data: 187
-   == APP == INFO:root:Published data: 271
-   == APP == INFO:root:Published data: 499
-   == APP == INFO:root:Published data: 67
-   == APP == INFO:root:Published data: 484
-   == APP == INFO:root:Published data: 20
-   == APP == INFO:root:Published data: 547
-   == APP == INFO:root:Published data: 856
-   == APP == INFO:root:Published data: 472
-   == APP == INFO:root:Published data: 482
-   ```
+  **Output:**
 
-   ![Screenshot of Python pub/sub output.](.\daprdocs\static\images\pubsub-quickstart\pubsub-python-output.png)
-   
-### ACK-ing a message
+   <img src="/images/pubsub-quickstart/pubsub-python-output.png" width=800>
 
-Tell Dapr that a message was processed successfully by returning a `200 OK` response. Dapr will attempt to redeliver the message following at-least-once semantics if:
+### ACK a message
+
+Dapr will attempt to redeliver the message if:
 
 - Dapr receives any return status code other than `200`, or
-- If your app crashes.
+- Your app crashes.
+
+You might not want your message to be sent more than once. For example, if Dapr doesn't receive a `200 OK` response after processing a payment event, it may continue to trigger the payment event until it does.
+
+Tell Dapr your message was processed successfully with a `200 OK` response trigger.
+
+```python
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+```
 
 ### Explore more of the Python SDK
 
@@ -286,97 +234,80 @@ For this example, you will need:
 - [.NET SDK](https://docs.dapr.io/developing-applications/sdks/python/python-client/). 
 - [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html).
 
-### Clone the example
+### Set up the environment
 
-1. Clone the sample we've set up specifically for the Python SDK:
+1. Clone the sample we've set up:
 
     ```bash
     git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
     ```
 
-### Set up the Pub/Sub component
+1. Navigate to the Pub/Sub C# project directory:
 
-The `pubsub.yaml` is created by default on your local machine when running `dapr init`. Verify by opening your components file:
+   ```bash
+   cd pub_sub/csharp
+   ```
+
+1. Install the dependencies:
+
+   ```bash
+    
+   ```
+
+### View the Pub/Sub component
+
+When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
 - On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
 
-{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+For this quickstart, we've included a default Redis `pubsub.yaml` file within the cloned repository that contains the following:
+
+{{< tabs "Self-Hosted (CLI)" "Kubernetes" >}}
 
 {{% codetab %}}
-
-In this example, we use RabbitMQ for publish and subscribe. Replace the default `pubsub.yaml` file with the following content:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: pubsub
+  namespace: default
 spec:
-  type: pubsub.rabbitmq
+  type: pubsub.redis
   version: v1
   metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
-scopes:
-  - orderprocessing
-  - checkout
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
 
-To deploy the example into a Kubernetes cluster:
-
-1. Fill in the `metadata` connection details of your [default Pub/Sub component yaml]({{< ref setup-pubsub >}}) with the content below.
+Run `kubectl apply -f pubsub.yaml` to apply the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: pubsub
   namespace: default
 spec:
-  type: pubsub.rabbitmq
+  type: pubsub.redis
   version: v1
   metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
-scopes:
-  - orderprocessing
-  - checkout
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
 ```
-
-1. Save as `pubsub.yaml`.
-
-1. Run `kubectl apply -f pubsub.yaml`.
-
-1. Start a RabbitMQ message broker by entering the following command:
-
-   ```bash
-   docker run -d -p 5672:5672 -p 15672:15672 --name dtc-rabbitmq rabbitmq:3-management-alpine
-   ```
 
 {{% /codetab %}}
 
@@ -422,7 +353,7 @@ scopes:
     ```
 
     Notice:
-      - The `pubsub_name` called in CheckoutServiceController.cs matches the metadata name field in your `pubsub.yaml` file.
+      - The `Topic` called in CheckoutServiceController.cs matches the metadata name field in your `pubsub.yaml` file.
       - `Dapr` and `Dapr.Client` are called out as dependencies.
 
 ### Publish a topic
@@ -476,86 +407,225 @@ scopes:
 
    The Dapr SDK you installed earlier imports the `Dapr.Client` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
 
-1. Within the `pub_sub/csharp/OrderProcessingService` directory, publish a message to the orders topic:
+### ACK a message
 
-{{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
-
-{{% codetab %}}
-
-```bash
-dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
-
-### ACK-ing a message
-
-Tell Dapr that a message was processed successfully by returning a `200 OK` response. Dapr will attempt to redeliver the message following at-least-once semantics if:
+Dapr will attempt to redeliver the message if:
 
 - Dapr receives any return status code other than `200`, or
-- If your app crashes.
+- Your app crashes.
 
-### Send a custom `cloudevent`
+You might not want your message to be sent more than once. For example, if Dapr doesn't receive a `200 OK` response after processing a payment event, it may continue to trigger the payment event until it does.
 
-Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope. To use your own custom CloudEvent, specify the content type as `application/cloudevents+json`.
+Tell Dapr your message was processed successfully with a `200 OK` response trigger.
 
-Learn more about [content types](#content-types) and [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
+```csharp
+    res.sendStatus(200);
+```
 
-### Explore more of the .NET SDK
-
-{{% /codetab %}}
-
- <!-- Java -->
-{{% codetab %}}
-## TODO Java
-{{% /codetab %}}
-
- <!-- Go -->
-{{% codetab %}}
-## TODO Go
 {{% /codetab %}}
 
  <!-- JavaScript -->
 {{% codetab %}}
-## TODO JavaScript
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest Node.js installed](https://nodejs.org/en/download/).
+
+### Set up the environment
+
+1. Clone the sample we've set up:
+
+    ```bash
+    git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
+    ```
+
+1. Navigate to the Pub/Sub C# project directory:
+
+   ```bash
+   cd pub_sub/javascript
+   ```
+
+1. Verify you have the following files included in the service directories:
+
+  - `package.json`
+  - `package-lock.json`
+
+### View the Pub/Sub component
+
+When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
+
+- On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
+- On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
+
+For this quickstart, we've included a default Redis `pubsub.yaml` file within the cloned repository that contains the following:
+
+{{< tabs "Self-Hosted (CLI)" "Kubernetes" >}}
+
+{{% codetab %}}
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: default
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
+```
+
 {{% /codetab %}}
 
- <!-- PHP -->
 {{% codetab %}}
-## TODO PHP
+
+Run `kubectl apply -f pubsub.yaml` to apply the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: default
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
+```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
+### Subscribe to topics
 
-## Clean up
+1. Navigate to the directory containing the subscriber.
 
-Stop and remove the applications you've created for this quickstart with the following commands.
+    ```bash
+    cd pub_sub/javascript/CheckoutService
+    ```
+
+1. Run the following command to launch a Dapr sidecar and run the CheckoutService/server.js application.
+
+   ```bash
+   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
+   ```
+
+    The `CheckoutService/server.js` subscriber contains the following:
+  
+    ```js
+    import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+    
+    const daprHost = "127.0.0.1"; 
+    const serverHost = "127.0.0.1";
+    const serverPort = "6002"; 
+    
+    start().catch((e) => {
+        console.error(e);
+        process.exit(1);
+    });
+    
+    async function start(orderId) {
+        const PUBSUB_NAME = "order_pub_sub"
+        const TOPIC_NAME  = "orders"
+        const server = new DaprServer(
+            serverHost, 
+            serverPort, 
+            daprHost, 
+            process.env.DAPR_HTTP_PORT, 
+            CommunicationProtocolEnum.HTTP
+         );
+        await server.pubsub.subscribe(PUBSUB_NAME, TOPIC_NAME, async (orderId) => {
+            console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+        });
+        await server.startServer();
+    }
+    ```
+
+    Notice:
+      - The `PUBSUB_NAME` called in CheckoutService/server.js matches the metadata name field in your `pubsub.yaml` file.
+      - `Dapr.Client` is called out as a dependency.
+
+### Publish a topic
+
+1. Navigate to the directory holding the publisher.
+
+    ```bash
+    cd pub_sub/javascript/OrderProcessingService
+    ```
+
+1. Run the following command to launch a Dapr sidecar and run the OrderProcessingService/server.js application.
+
+   ```bash
+   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
+   ```
+
+   The OrderProcessingService/server.js publisher contains the following:  
+
+   ```js
+   import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
+   
+   const daprHost = "127.0.0.1"; 
+   
+   var main = function() {
+       for(var i=0;i<10;i++) {
+           sleep(5000);
+           var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+           start(orderId).catch((e) => {
+               console.error(e);
+               process.exit(1);
+           });
+       }
+   }
+   
+   async function start(orderId) {
+       const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+       console.log("Published data:" + orderId)
+       await client.pubsub.publish("order_pub_sub", "orders", orderId);
+   }
+   
+   function sleep(ms) {
+       return new Promise(resolve => setTimeout(resolve, ms));
+   }
+   
+   main();
+   ```
+
+   The Dapr SDK you installed earlier imports the `DaprClient` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
+
+### ACK a message
+
+Dapr will attempt to redeliver the message if:
+
+- Dapr receives any return status code other than `200`, or
+- Your app crashes.
+
+You might not want your message to be sent more than once. For example, if Dapr doesn't receive a `200 OK` response after processing a payment event, it may continue to trigger the payment event until it does.
+
+Tell Dapr your message was processed successfully with a `200 OK` response trigger.
 
 ```bash
-dapr stop --app-id checkout
-dapr stop --app-id orderprocessing
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Next steps
 
