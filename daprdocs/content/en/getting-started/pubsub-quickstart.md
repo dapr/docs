@@ -71,17 +71,17 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
   metadata:
   - name: redisHost
-    value: redis-master.default.svc.cluster.local:6379
+    value: localhost:6379
   - name: redisPassword
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
 ```
 
 {{% /codetab %}}
@@ -95,7 +95,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
@@ -103,9 +102,10 @@ spec:
   - name: redisHost
     value: redis-master.default.svc.cluster.local:6379
   - name: redisPassword
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
 ```
 
 {{% /codetab %}}
@@ -197,7 +197,7 @@ spec:
 
   **Output:**
 
-   <img src="/images/pubsub-quickstart/pubsub-python-output.png" width=800>
+   <img src="/images/pubsub-quickstart/pubsub-python-output.png" width=600>
 
 ### ACK a message
 
@@ -213,12 +213,6 @@ Tell Dapr your message was processed successfully with a `200 OK` response trigg
 ```python
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 ```
-
-### Explore more of the Python SDK
-
-- [Python SDK Docs]({{< ref python >}})
-- [Python SDK Repository](https://github.com/dapr/python-sdk)
-- [Publish and Subscribe Overview]({{< ref pubsub-overview >}})
 
 {{% /codetab %}}
 
@@ -272,17 +266,17 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
   metadata:
   - name: redisHost
-    value: redis-master.default.svc.cluster.local:6379
+    value: localhost:6379
   - name: redisPassword
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
 ```
 
 {{% /codetab %}}
@@ -296,7 +290,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
@@ -304,9 +297,10 @@ spec:
   - name: redisHost
     value: redis-master.default.svc.cluster.local:6379
   - name: redisPassword
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
 ```
 
 {{% /codetab %}}
@@ -471,17 +465,17 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
   metadata:
   - name: redisHost
-    value: redis-master.default.svc.cluster.local:6379
+    value: localhost:6379
   - name: redisPassword
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
 ```
 
 {{% /codetab %}}
@@ -495,7 +489,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
@@ -503,9 +496,10 @@ spec:
   - name: redisHost
     value: redis-master.default.svc.cluster.local:6379
   - name: redisPassword
-    secretKeyRef:
-      name: redis
-      key: redis-password
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
 ```
 
 {{% /codetab %}}
