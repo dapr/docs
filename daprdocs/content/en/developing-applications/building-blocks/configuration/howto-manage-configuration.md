@@ -11,6 +11,12 @@ This HowTo uses the Redis configuration store component as an example on how to 
 
 *This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.*
 
+## Example:
+
+The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to get the configuration from redis configuration store.
+
+<img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
+
 ## Step 1: Create a configuration item in store
 
 First, create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component.
@@ -31,7 +37,7 @@ redis-cli -p 6379
 Save a configuration item:
 
 ```
-set myconfig "wookie"
+SET orderId "100||1"
 ```
 
 ### Configure a Dapr configuration store
@@ -42,7 +48,7 @@ Save the following component file, for example to the [default components folder
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: redisconfigstore
+  name: configurationstore
 spec:
   type: configuration.redis
   metadata:
@@ -54,9 +60,16 @@ spec:
 
 ### Get configuration items using gRPC API
 
-Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto). The following examples show Java, C#, Python and Javascript clients.
+Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto).
 
-{{< tabs Java Dotnet Python Javascript >}}
+{{< tabs Dotnet Java Python Javascript >}}
+
+{{% codetab %}}
+```csharp
+
+var call = client.GetConfigurationAlpha1(new GetConfigurationRequest { StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
+```
+{{% /codetab %}}
 
 {{% codetab %}}
 ```java
@@ -67,22 +80,24 @@ stub.GetConfigurationAlpha1(new GetConfigurationRequest{ StoreName = "redisconfi
 {{% /codetab %}}
 
 {{% codetab %}}
-```csharp
-
-var call = client.GetConfigurationAlpha1(new GetConfigurationRequest { StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
-```
-{{% /codetab %}}
-
-{{% codetab %}}
 ```python
-response = stub.GetConfigurationAlpha1(request={ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
+#dependencies
+from dapr.clients import DaprClient
+#code
+with DaprClient() as d:
+        storeName = 'configurationstore'
+        key = 'orderId'
+        d.wait(20)
+        configuration = d.get_configuration(store_name=storeName, keys=[key], config_metadata={})
+        print(f"Got key={configuration.items[0].key} value={configuration.items[0].value} version={configuration.items[0].version}")
 ```
-{{% /codetab %}}
 
-{{% codetab %}}
-```javascript
-client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing python3 OrderProcessingService.py
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
