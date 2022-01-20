@@ -70,7 +70,7 @@ For this quickstart, we've included a default Redis `pubsub.yaml` file within th
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: order_pub_sub
 spec:
   type: pubsub.redis
   version: v1
@@ -94,7 +94,7 @@ Run `kubectl apply -f pubsub.yaml` to apply the following:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: order_pub_sub
 spec:
   type: pubsub.redis
   version: v1
@@ -123,7 +123,7 @@ scopes:
 1. Run the following command to launch a Dapr sidecar and run the CheckoutService.py application.
 
    ```bash
-   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
+   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
    ```
 
     The CheckoutService.py subscriber contains the following:
@@ -160,7 +160,7 @@ scopes:
 1. Run the following command to launch a Dapr sidecar and run the OrderProcessingService.py application.
 
    ```bash
-   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
+   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
    ```
 
    The OrderProcessingService.py publisher contains the following:  
@@ -225,8 +225,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [.NET Core 3.1 or .NET 5+ installed](https://dotnet.microsoft.com/en-us/download/dotnet).
-- [.NET SDK](https://docs.dapr.io/developing-applications/sdks/python/python-client/). 
-- [Latest version of RabbitMQ installed](https://www.rabbitmq.com/download.html).
+- [Latest NuGet package installed](https://www.nuget.org/downloads). 
 
 ### Set up the environment
 
@@ -242,10 +241,10 @@ For this example, you will need:
    cd pub_sub/csharp
    ```
 
-1. Install the dependencies:
+1. Verify you have the latest NuGet packages installed:
 
    ```bash
-    
+    nuget install packages.config
    ```
 
 ### View the Pub/Sub component
@@ -265,7 +264,7 @@ For this quickstart, we've included a default Redis `pubsub.yaml` file within th
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: order_pub_sub
 spec:
   type: pubsub.redis
   version: v1
@@ -289,7 +288,7 @@ Run `kubectl apply -f pubsub.yaml` to apply the following:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: order_pub_sub
 spec:
   type: pubsub.redis
   version: v1
@@ -318,7 +317,7 @@ scopes:
 1. Run the following command to launch a Dapr sidecar and run the CheckoutServiceController.cs application.
 
    ```bash
-   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
+   dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl --components-path ../../components dotnet run
    ```
 
     The CheckoutServiceController.cs subscriber contains the following:
@@ -361,7 +360,7 @@ scopes:
 1. Run the following command to launch a Dapr sidecar and run the Program.cs application.
 
    ```bash
-   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
+   dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl --components-path ../../components dotnet run
    ```
 
    The Program.cs publisher contains the following:  
@@ -401,6 +400,10 @@ scopes:
 
    The Dapr SDK you installed earlier imports the `Dapr.Client` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
 
+  **Output:**
+
+   <img src="/images/pubsub-quickstart/pubsub-dotnet-output.png" width=600>
+
 ### ACK a message
 
 Dapr will attempt to redeliver the message if:
@@ -413,7 +416,7 @@ You might not want your message to be sent more than once. For example, if Dapr 
 Tell Dapr your message was processed successfully with a `200 OK` response trigger.
 
 ```csharp
-    res.sendStatus(200);
+    public override string Status { get; set; }
 ```
 
 {{% /codetab %}}
@@ -442,6 +445,12 @@ For this example, you will need:
    cd pub_sub/javascript
    ```
 
+1. Install `dapr-client`:
+
+   ```bash
+   npm install dapr-client
+   ```
+
 1. Verify you have the following files included in the service directories:
 
   - `package.json`
@@ -464,7 +473,7 @@ For this quickstart, we've included a default Redis `pubsub.yaml` file within th
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: order_pub_sub
 spec:
   type: pubsub.redis
   version: v1
@@ -488,7 +497,7 @@ Run `kubectl apply -f pubsub.yaml` to apply the following:
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: pubsub
+  name: order_pub_sub
 spec:
   type: pubsub.redis
   version: v1
@@ -602,6 +611,10 @@ scopes:
 
    The Dapr SDK you installed earlier imports the `DaprClient` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
 
+  **Output:**
+
+   <img src="/images/pubsub-quickstart/pubsub-js-output.png" width=600>
+
 ### ACK a message
 
 Dapr will attempt to redeliver the message if:
@@ -613,8 +626,8 @@ You might not want your message to be sent more than once. For example, if Dapr 
 
 Tell Dapr your message was processed successfully with a `200 OK` response trigger.
 
-```bash
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+```js
+    res.sendStatus(200); 
 ```
 
 {{% /codetab %}}
