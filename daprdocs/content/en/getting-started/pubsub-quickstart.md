@@ -9,7 +9,7 @@ description: "Get started with Dapr's Publish and Subscribe building block"
 Let's take a look at Dapr's [Publish and Subscribe (Pub/Sub) building block]({{< ref pubsub >}}). In this quickstart, you will set up a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/Sub pattern.
 
 1. Using a publisher service, developers can repeatedly publish messages to a topic.
-1. [A Pub/Sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.)
+1. [A Pub/Sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.).
 1. The subscriber to that topic pulls messages from the queue and processes them.
 
 ## Select your preferred language SDK
@@ -32,7 +32,7 @@ For this example, you will need:
 1. Clone the sample we've set up:
 
     ```bash
-    git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
+    git clone https://github.com/dapr/quickstarts.git
     ```
 
 1. Navigate to the Pub/Sub python project directory:
@@ -126,7 +126,7 @@ scopes:
    dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
    ```
 
-    The CheckoutService.py subscriber contains the following:
+    In the CheckoutService.py subscriber, we're subscribing to the Redis instance called `order_pub_sub` (as defined in the `pubsub.yaml` component) and topic `orders`.
   
     ```py
     from cloudevents.sdk.event import v1
@@ -147,7 +147,11 @@ scopes:
     app.run(6002)
     ```
 
-    Notice the `pubsub_name` called in CheckoutService.py matches the metadata name field in your `pubsub.yaml` file.
+    This enables your app code to talk to the Redis component instance through the Dapr sidecar. With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
+
+    **Output:**
+
+    <img src="/images/pubsub-quickstart/pubsub-python-subscriber-output.png" width=600>
 
 ### Publish a topic
 
@@ -163,7 +167,7 @@ scopes:
    dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
    ```
 
-   The OrderProcessingService.py publisher contains the following:  
+   In the OrderProcessingService.py publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` (as defined in the `pubsub.yaml` component) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:  
 
    ```python
    import random
@@ -190,29 +194,11 @@ scopes:
        logging.info('Published data: ' + str(orderId))
    ```
 
-   Notice:
+   **Output:**
 
-    - The Dapr SDK you installed earlier imports the `DaprClient`, called `client` in the code above. When OrderProcessingService.py runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.
-    - Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
+   <img src="/images/pubsub-quickstart/pubsub-python-publisher-output.png" width=600>
 
-  **Output:**
-
-   <img src="/images/pubsub-quickstart/pubsub-python-output.png" width=600>
-
-### ACK a message
-
-Dapr will attempt to redeliver the message if:
-
-- Dapr receives any return status code other than `200`, or
-- Your app crashes.
-
-You might not want your message to be sent more than once. For example, if Dapr doesn't receive a `200 OK` response after processing a payment event, it may continue to trigger the payment event until it does.
-
-Tell Dapr your message was processed successfully with a `200 OK` response trigger.
-
-```python
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
-```
+Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
 {{% /codetab %}}
 
@@ -224,27 +210,21 @@ Tell Dapr your message was processed successfully with a `200 OK` response trigg
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET Core 3.1 or .NET 5+ installed](https://dotnet.microsoft.com/en-us/download/dotnet).
-- [Latest NuGet package installed](https://www.nuget.org/downloads). 
+- [.NET and ASP.NET Core installed](https://dotnet.microsoft.com/en-us/download/dotnet/5.0/runtime).
+- [Latest NuGet package installed](https://www.nuget.org/downloads).
 
 ### Set up the environment
 
 1. Clone the sample we've set up:
 
     ```bash
-    git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
+    git clone https://github.com/dapr/quickstarts.git
     ```
 
 1. Navigate to the Pub/Sub C# project directory:
 
    ```bash
    cd pub_sub/csharp
-   ```
-
-1. Verify you have the latest NuGet packages installed:
-
-   ```bash
-    nuget install packages.config
    ```
 
 ### View the Pub/Sub component
@@ -320,8 +300,8 @@ scopes:
    dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl --components-path ../../components dotnet run
    ```
 
-    The CheckoutServiceController.cs subscriber contains the following:
-  
+    In the CheckoutServiceController.cs subscriber, we're subscribing to the Redis instance called `order_pub_sub` (as defined in the `pubsub.yaml` component) and topic `orders`.
+
     ```cs
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -345,9 +325,11 @@ scopes:
     }
     ```
 
-    Notice:
-      - The `Topic` called in CheckoutServiceController.cs matches the metadata name field in your `pubsub.yaml` file.
-      - `Dapr` and `Dapr.Client` are called out as dependencies.
+    This enables your app code to talk to the Redis component instance through the Dapr sidecar. With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
+
+    **Output:**
+
+    <img src="/images/pubsub-quickstart/pubsub-dotnet-subscriber-output.png" width=600>
 
 ### Publish a topic
 
@@ -363,7 +345,7 @@ scopes:
    dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl --components-path ../../components dotnet run
    ```
 
-   The Program.cs publisher contains the following:  
+   In the Program.cs publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` (as defined in the `pubsub.yaml` component) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:  
 
    ```cs
    using System;
@@ -398,26 +380,11 @@ scopes:
    }
    ```
 
-   The Dapr SDK you installed earlier imports the `Dapr.Client` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
+   **Output:**
 
-  **Output:**
+   <img src="/images/pubsub-quickstart/pubsub-dotnet-publisher-output.png" width=600>
 
-   <img src="/images/pubsub-quickstart/pubsub-dotnet-output.png" width=600>
-
-### ACK a message
-
-Dapr will attempt to redeliver the message if:
-
-- Dapr receives any return status code other than `200`, or
-- Your app crashes.
-
-You might not want your message to be sent more than once. For example, if Dapr doesn't receive a `200 OK` response after processing a payment event, it may continue to trigger the payment event until it does.
-
-Tell Dapr your message was processed successfully with a `200 OK` response trigger.
-
-```csharp
-    public override string Status { get; set; }
-```
+Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
 {{% /codetab %}}
 
@@ -436,7 +403,7 @@ For this example, you will need:
 1. Clone the sample we've set up:
 
     ```bash
-    git clone https://github.com/amulyavarote/dapr-quickstarts-examples.git
+    git clone https://github.com/dapr/quickstarts.git
     ```
 
 1. Navigate to the Pub/Sub C# project directory:
@@ -529,8 +496,8 @@ scopes:
    dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
    ```
 
-    The `CheckoutService/server.js` subscriber contains the following:
-  
+    In the CheckoutService/server.js subscriber, we're subscribing to the Redis instance called `order_pub_sub` (as defined in the `pubsub.yaml` component) and topic `orders`.
+
     ```js
     import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
     
@@ -560,9 +527,11 @@ scopes:
     }
     ```
 
-    Notice:
-      - The `PUBSUB_NAME` called in CheckoutService/server.js matches the metadata name field in your `pubsub.yaml` file.
-      - `Dapr.Client` is called out as a dependency.
+    This enables your app code to talk to the Redis component instance through the Dapr sidecar. With the pubsub.yaml component, you can easily swap out underlying components without application code changes.
+
+    **Output:**
+
+    <img src="/images/pubsub-quickstart/pubsub-js-subscriber-output.png" width=600>
 
 ### Publish a topic
 
@@ -578,7 +547,7 @@ scopes:
    dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
    ```
 
-   The OrderProcessingService/server.js publisher contains the following:  
+   In the OrderProcessingService/server.js publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` (as defined in the `pubsub.yaml` component) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:  
 
    ```js
    import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
@@ -609,26 +578,11 @@ scopes:
    main();
    ```
 
-   The Dapr SDK you installed earlier imports the `DaprClient` dependency, called `client` in the code above. When Program.cs runs, `client` publishes the messaging event from the `PUBSUB_NAME = 'order_pub_sub'` Pub/Sub component defined in your `pubsub.yaml` file.  
+   **Output:**
 
-  **Output:**
+   <img src="/images/pubsub-quickstart/pubsub-js-publisher-output.png" width=600>
 
-   <img src="/images/pubsub-quickstart/pubsub-js-output.png" width=600>
-
-### ACK a message
-
-Dapr will attempt to redeliver the message if:
-
-- Dapr receives any return status code other than `200`, or
-- Your app crashes.
-
-You might not want your message to be sent more than once. For example, if Dapr doesn't receive a `200 OK` response after processing a payment event, it may continue to trigger the payment event until it does.
-
-Tell Dapr your message was processed successfully with a `200 OK` response trigger.
-
-```js
-    res.sendStatus(200); 
-```
+Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
 {{% /codetab %}}
 
