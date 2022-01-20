@@ -13,7 +13,7 @@ This HowTo uses the Redis configuration store component as an example on how to 
 
 ## Example:
 
-The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to get the configuration from redis configuration store.
+The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to retrieve the configuration from a Redis configuration store.
 
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
 
@@ -87,12 +87,13 @@ from dapr.clients import DaprClient
 with DaprClient() as d:
         storeName = 'configurationstore'
         key = 'orderId'
+        #Startup time for dapr
         d.wait(20)
         configuration = d.get_configuration(store_name=storeName, keys=[key], config_metadata={})
         print(f"Got key={configuration.items[0].key} value={configuration.items[0].value} version={configuration.items[0].version}")
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
 
 ```bash
 dapr run --app-id orderprocessing python3 OrderProcessingService.py
