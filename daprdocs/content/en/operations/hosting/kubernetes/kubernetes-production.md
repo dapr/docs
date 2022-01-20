@@ -87,8 +87,9 @@ helm search repo dapr --devel --versions
 # create a values file to store variables
 touch values.yml
 cat << EOF >> values.yml
-global.ha.enabled: true
-
+global:
+  ha:
+    enabled: true
 EOF
 
 # run install/upgrade

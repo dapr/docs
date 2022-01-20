@@ -46,3 +46,9 @@ Table captions:
 | Name                                                                                  | Status | Component version | Since |
 |---------------------------------------------------------------------------------------|--------| ---- |--------------|
 | [Azure Key Vault]({{< ref azure-keyvault.md >}})                                      | Stable | v1   | 1.0 |
+
+### Alibaba Cloud
+
+| Name                                                                                  | Status | Component version | Since |
+|---------------------------------------------------------------------------------------|--------| ---- |--------------|
+| [AlibabaCloud OOS Parameter Store]({{< ref alicloud-oos-parameter-store.md >}})       | Alpha  | v1   | 1.6 |
