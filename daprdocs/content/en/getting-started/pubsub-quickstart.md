@@ -590,11 +590,11 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
 
 ## Next steps
 
-- Learn about [PubSub routing]({{< ref howto-route-messages >}})
+- Learn about [Pub/Sub routing]({{< ref howto-route-messages >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [pub/sub components]({{< ref setup-pubsub >}})
+- List of [Pub/Sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
 
 {{< button text="Explore More Quickstarts  >>" page="more-quickstarts" >}}
