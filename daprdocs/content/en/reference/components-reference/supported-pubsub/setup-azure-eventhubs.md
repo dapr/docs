@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.eventhubs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
-Apart from the configuration metadata fields shown below, Azure Event Hubs also support [Azure Authentication]({{< ref "authenticating-azure.md" >}}) mechanisms. 
+Apart from the configuration metadata fields shown below, Azure Event Hubs also supports [Azure Authentication]({{< ref "authenticating-azure.md" >}}) mechanisms. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
