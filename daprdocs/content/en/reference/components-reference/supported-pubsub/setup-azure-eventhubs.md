@@ -9,6 +9,7 @@ aliases:
 
 ## Component format
 To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.eventhubs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+Apart from the configuration metadata fields shown below, Azure Event Hubs also support [Azure Authentication]({{< ref "authenticating-azure.md" >}}) mechanisms. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -20,8 +21,23 @@ spec:
   type: pubsub.azure.eventhubs
   version: v1
   metadata:
-  - name: connectionString
+  - name: connectionString    # Either connectionString or eventHubNamespace. Should not be used when 
+  # Azure Authentication mechanism is used.
     value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
+  - name: eventHubNamespace   # Either connectionString or eventHubNamespace. Should be used when 
+  # Azure Authentication mechanism is used.
+    value: "namespace"
+  - name: enableEntityManagement
+    value: "false"
+    ## The following four properties are needed only if enableEntityManagement is set to true
+  - name: resourceGroupName
+    value: "test-rg"
+  - name: subscriptionID
+    value: "value of Azure subscription ID"
+  - name: partitionCount
+    value: "1"
+  - name: messageRetentionInDays
+  ## Subscriber attributes
   - name: storageAccountName
     value: "myeventhubstorage"
   - name: storageAccountKey
@@ -38,10 +54,16 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString    | Y  | Connection-string for the Event Hubs  | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"`
+| connectionString    | Y  | Connection-string for the Event Hub or the Event Hub namespace. Mutally exclusive with `eventHubNamespace` field. Not to be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
+| eventHubNamespace | Y | The Event Hub Namespace name. Mutally exclusive with `connectionString` field. To be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `"namespace"` 
 | storageAccountName  | Y  | Storage account name to use for the EventProcessorHost   |`"myeventhubstorage"`
 | storageAccountKey   | Y  | Storage account key  to use for the EventProcessorHost. Can be `secretKeyRef` to use a secret reference   | `"112233445566778899"`
 | storageContainerName | Y | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
+| enableEntityManagement | N | Boolean value to allow management of EventHub namespace. Default: `false` | `"true", "false"`
+| resourceGroupName | N | Name of the resource group the event hub namespace is a part of. Needed when entity management is enabled | `"test-rg"`
+| subscriptionID | N | Azure subscription ID value. Needed when entity management is enabled | `"azure subscription id"`
+| partitionCount | N | Number of partitions for the new event hub. Only used when entity management is enabled. Default: `"1"` | `"2"`
+| messageRetentionInDays | N | Number of days to retain messages for in the newly created event hub. Used only when entity management is enabled. Default: `"1"` | `"90"`
 
 
 ## Create an Azure Event Hub
@@ -57,6 +79,16 @@ For every Dapr app that wants to subscribe to events, create an Event Hubs consu
 For example, a Dapr app running on Kubernetes with `dapr.io/app-id: "myapp"` will need an Event Hubs consumer group named `myapp`.
 
 Note: Dapr passes the name of the Consumer group to the EventHub and so this is not supplied in the metadata.
+
+## Entity Management
+
+When entity management is enabled in configuration, as long as the application has the right role and permissions to manipulate the Event Hub namespace, creation of Event Hubs and consumer groups can be done on the fly. 
+
+The Evet Hub name is the `topic` field in the incoming request to publish or subscribe to, while the consumer group name is the name of the `dapr app` which subscribes to a given Event Hub. For example, a Dapr app running on Kubernetes with name `dapr.io/app-id: "myapp"` requires an Event Hubs consumer group named `myapp`.
+
+Entity management is only possible when using [Azure Authentication]({{< ref "authenticating-azure.md" >}}) mechanisms and not via `connectionString`.
+
+Note: Dapr passes the name of the Consumer group to the EventHub and this is not supplied in the metadata.
 
 ## Subscribing to Azure IoT Hub Events
 
@@ -98,3 +130,4 @@ For example, the headers of a delivered HTTP subscription message would contain:
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
+- [Authentication to Azure]({{< ref "authenticating-azure.md" >}})
