@@ -6,10 +6,10 @@ weight: 60
 description: "Get started with Dapr's Publish and Subscribe building block"
 ---
 
-Let's take a look at Dapr's [Publish and Subscribe (Pub/Sub) building block]({{< ref pubsub >}}). In this quickstart, you will set up a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/Sub pattern.
+Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{< ref pubsub >}}). In this quickstart, you will set up a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/sub pattern.
 
 1. Using a publisher service, developers can repeatedly publish messages to a topic.
-1. [A Pub/Sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.).
+1. [A Pub/sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.).
 1. The subscriber to that topic pulls messages from the queue and processes them.
 
 ## Select your preferred language SDK
@@ -35,7 +35,7 @@ For this example, you will need:
     git clone https://github.com/dapr/quickstarts.git
     ```
 
-1. Navigate to the Pub/Sub python project directory:
+1. Navigate to the Pub/sub python project directory:
 
     ```bash
     cd pub_sub/python
@@ -53,7 +53,7 @@ For this example, you will need:
    python -m pip install -r requirements.txt
    ```
 
-### View the Pub/Sub component
+### View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -221,13 +221,13 @@ For this example, you will need:
     git clone https://github.com/dapr/quickstarts.git
     ```
 
-1. Navigate to the Pub/Sub C# project directory:
+1. Navigate to the Pub/sub C# project directory:
 
    ```bash
    cd pub_sub/csharp
    ```
 
-### View the Pub/Sub component
+### View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -406,7 +406,7 @@ For this example, you will need:
     git clone https://github.com/dapr/quickstarts.git
     ```
 
-1. Navigate to the Pub/Sub C# project directory:
+1. Navigate to the Pub/sub C# project directory:
 
    ```bash
    cd pub_sub/javascript
@@ -423,7 +423,7 @@ For this example, you will need:
   - `package.json`
   - `package-lock.json`
 
-### View the Pub/Sub component
+### View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -590,11 +590,11 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
 
 ## Next steps
 
-- Learn about [Pub/Sub routing]({{< ref howto-route-messages >}})
+- Learn about [Pub/sub routing]({{< ref howto-route-messages >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [Pub/Sub components]({{< ref setup-pubsub >}})
+- Learn [how to configure Pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- List of [Pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
 
 {{< button text="Explore More Quickstarts  >>" page="more-quickstarts" >}}
