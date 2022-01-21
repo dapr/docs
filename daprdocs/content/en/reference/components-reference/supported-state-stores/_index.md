@@ -60,3 +60,9 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Azure CosmosDB]({{< ref setup-azure-cosmosdb.md >}})            | ✅ | ✅           | ✅ | ✅ | ✅ | ✅ | Stable | v1 | 1.0 |
 | [Azure SQL Server]({{< ref setup-sqlserver.md >}})               | ✅ | ✅           | ✅ | ❌ | ✅ | ❌ | Stable | v1 | 1.5 |
 | [Azure Table Storage]({{< ref setup-azure-tablestorage.md >}})   | ✅ | ❌           | ✅ | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
+
+### Oracle Cloud Infrastructure (OCI)
+
+| Name                                                             |CRUD|Transactional|ETag| [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | [Query]({{< ref howto-state-query-api.md >}}) | Status | Component version | Since |
+|------------------------------------------------------------------|----|-------------|----|----|----|----|-------|----|-----|
+| [OCI Object Storage]({{< ref setup-oci-objectstorage.md >}})     | ✅ | ❌           | ✅ | ✅ | ❌ | ❌ | Alpha | v1 | 1.6 |
