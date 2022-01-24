@@ -12,22 +12,20 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{<
 1. [A Pub/sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.).
 1. The subscriber to that topic pulls messages from the queue and processes them.
 
-## Select your preferred language SDK
-
 Select your preferred language before proceeding with the quickstart.
 
 {{< tabs "Python" ".NET" "JavaScript" >}}
  <!-- Python -->
 {{% codetab %}}
 
-### Pre-requisites
+## Pre-requisites
 
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
 
-### Set up the environment
+## Step 1: Set up the environment
 
 1. Clone the sample we've set up:
 
@@ -53,7 +51,7 @@ For this example, you will need:
    python -m pip install -r requirements.txt
    ```
 
-### View the Pub/sub component
+## Step 2: View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -112,7 +110,7 @@ scopes:
 
 {{< /tabs >}}
 
-### Subscribe to topics
+## Step 3: Subscribe to topics
 
 1. Navigate to the directory containing your subscriber application.
 
@@ -153,7 +151,7 @@ scopes:
 
     <img src="/images/pubsub-quickstart/pubsub-python-subscriber-output.png" width=600>
 
-### Publish a topic
+## Step 4: Publish a topic
 
 1. Navigate to the directory holding the OrderProcessingService.py publisher.
 
@@ -205,7 +203,7 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
  <!-- .NET -->
 {{% codetab %}}
 
-### Pre-requisites
+## Pre-requisites
 
 For this example, you will need:
 
@@ -213,7 +211,7 @@ For this example, you will need:
 - [.NET and ASP.NET Core installed](https://dotnet.microsoft.com/en-us/download/dotnet/5.0/runtime).
 - [Latest NuGet package installed](https://www.nuget.org/downloads).
 
-### Set up the environment
+## Step 1: Set up the environment
 
 1. Clone the sample we've set up:
 
@@ -227,7 +225,7 @@ For this example, you will need:
    cd pub_sub/csharp
    ```
 
-### View the Pub/sub component
+## Step 2: View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -286,7 +284,7 @@ scopes:
 
 {{< /tabs >}}
 
-### Subscribe to topics
+## Step 3: Subscribe to topics
 
 1. Navigate to the directory containing your subscriber application.
 
@@ -331,7 +329,7 @@ scopes:
 
     <img src="/images/pubsub-quickstart/pubsub-dotnet-subscriber-output.png" width=600>
 
-### Publish a topic
+## Step 4: Publish a topic
 
 1. Navigate to the directory holding the "Order Processing Service" Program.cs publisher.
 
@@ -391,14 +389,14 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
  <!-- JavaScript -->
 {{% codetab %}}
 
-### Pre-requisites
+## Pre-requisites
 
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Latest Node.js installed](https://nodejs.org/en/download/).
 
-### Set up the environment
+## Step 1: Set up the environment
 
 1. Clone the sample we've set up:
 
@@ -423,7 +421,7 @@ For this example, you will need:
   - `package.json`
   - `package-lock.json`
 
-### View the Pub/sub component
+## Step 2: View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -482,7 +480,7 @@ scopes:
 
 {{< /tabs >}}
 
-### Subscribe to topics
+## Step 3: Subscribe to topics
 
 1. Navigate to the directory containing the subscriber.
 
@@ -533,7 +531,7 @@ scopes:
 
     <img src="/images/pubsub-quickstart/pubsub-js-subscriber-output.png" width=600>
 
-### Publish a topic
+## Step 4: Publish a topic
 
 1. Navigate to the directory holding the publisher.
 
@@ -597,4 +595,4 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
 - List of [Pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
 
-{{< button text="Explore More Quickstarts  >>" page="_index.md" >}}
+{{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

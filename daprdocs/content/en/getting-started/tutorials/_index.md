@@ -9,10 +9,10 @@ no_list: true
 
 Now that you've already initialized Dapr and experimented with some of Dapr's building blocks, walk through our more detailed tutorials.
 
-## Before you begin
+#### Before you begin
 
-- [Set up Dapr]({{< ref "install-dapr-cli.md" >}}).
-- [Set up one of Dapr's building blocks in five minutes via one of our quickstarts]({{< ref "getting-started/quickstarts/_index.md" >}})
+- [Set up your local Dapr environment]({{< ref "install-dapr-cli.md" >}}).
+- [Explore one of Dapr's building blocks via our quickstarts]({{< ref "getting-started/quickstarts/_index.md" >}})
 
 ## Tutorials
 

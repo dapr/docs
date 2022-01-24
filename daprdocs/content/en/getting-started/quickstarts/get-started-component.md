@@ -6,20 +6,17 @@ weight: 70
 description: "Create a component definition file to interact with the Secrets building block"
 ---
 
-When building an app, you most likely would create your own component file definitions depending on the building block and specific component that you'd like to use.
+When building an app, you'd most likely create your own component file definitions, depending on the building block and specific component that you'd like to use.
 
-As an example of how to define custom components for your application, you will now create a component definition file to interact with the [secrets building block]({{< ref secrets >}}).
+In this quickstart, you will create a component definition file to interact with the [Secrets building block]({{< ref secrets >}}):
 
-In this guide you will:
-- Create a local JSON secret store
-- Register the secret store with Dapr using a component definition file
-- Obtain the secret using the Dapr HTTP API
+- Create a local JSON secret store.
+- Register the secret store with Dapr using a component definition file.
+- Obtain the secret using the Dapr HTTP API.
 
 ## Step 1: Create a JSON secret store
 
-While Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), the easiest way to get started is a local JSON file with your secret (note this secret store is meant for development purposes and is not recommended for production use cases as it is not secured).
-
-Begin by saving the following JSON contents into a file named `mysecrets.json`:
+Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), but for this quickstart, create a local JSON file named `mysecrets.json` with the following secret:
 
 ```json
 {
@@ -29,46 +26,59 @@ Begin by saving the following JSON contents into a file named `mysecrets.json`:
 
 ## Step 2: Create a secret store Dapr component
 
-Create a new directory named `my-components` to hold the new component file:
+1. Create a new directory named `my-components` to hold the new component file:
 
-```bash
-mkdir my-components
-```
+   ```bash
+   mkdir my-components
+   ```
 
-Inside this directory create a new file `localSecretStore.yaml` with the following contents:
+1. Navigate into this directory.
 
+   ```bash
+   cd my-components
+   ```
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: my-secret-store
-  namespace: default
-spec:
-  type: secretstores.local.file
-  version: v1
-  metadata:
-  - name: secretsFile
-    value: <PATH TO SECRETS FILE>/mysecrets.json
-  - name: nestedSeparator
-    value: ":"
-```
+1. Create a new file `localSecretStore.yaml` with the following contents:
 
-You can see that the above file definition has a `type: secretstores.local.file` which tells Dapr to use the local file component as a secret store. The metadata fields provide component specific information needed to work with this component (in this case, the path to the secret store JSON is relative to where you call `dapr run` from.)
+   ```yaml
+   apiVersion: dapr.io/v1alpha1
+   kind: Component
+   metadata:
+     name: my-secret-store
+     namespace: default
+   spec:
+     type: secretstores.local.file
+     version: v1
+     metadata:
+     - name: secretsFile
+       value: <PATH TO SECRETS FILE>/mysecrets.json
+     - name: nestedSeparator
+       value: ":"
+   ```
+
+In the above file definition:
+- `type: secretstores.local.file` tells Dapr to use the local file component as a secret store. 
+- The metadata fields provide component-specific information needed to work with this component. In this case, the secret store JSON path is relative to where you call `dapr run`.
 
 ## Step 3: Run the Dapr sidecar
 
-Run the following command to launch a Dapr sidecar that will listen on port 3500 for a blank application named myapp:
+Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 
 ```bash
 dapr run --app-id myapp --dapr-http-port 3500 --components-path ./my-components
 ```
 
-> If you encounter a error message stating the app ID is already in use, it may be that the sidecar you ran in the previous step is still running. Make sure you stop the sidecar before running the above command (e.g. using "Control-C").
+{{% alert title="Tip" color="primary" %}}
+If an error message occurs, stating the `app-id` is already in use, you may need to stop any currently running Dapr sidecars. Stop the sidecar before running the next `dapr run` command by either:
+
+- Pressing Ctrl+C or Command+C.
+- Running the `dapr stop` command in the terminal.
+
+{{% /alert %}}
 
 ## Step 4: Get a secret
 
-In a separate terminal run:
+In a separate terminal, run:
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 {{% codetab %}}
@@ -76,19 +86,22 @@ In a separate terminal run:
 ```bash
 curl http://localhost:3500/v1.0/secrets/my-secret-store/my-secret
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/secrets/my-secret-store/my-secret'
 ```
+
 {{% /codetab %}}
 {{< /tabs >}}
 
-You should see output with the secret you stored in the JSON file.
+**Output:**
 
 ```json
 {"my-secret":"I'm Batman"}
 ```
 
-{{< button text="Next step: Explore Dapr quickstarts >>" page="quickstarts" >}}
+{{< button text="Next step: Set up a Pub/sub broker >>" page="pubsub-quickstart" >}}

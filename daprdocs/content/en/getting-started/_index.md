@@ -13,12 +13,12 @@ Welcome to the Dapr getting started guide!
 If you are looking for an introductory overview of Dapr and learn more about basic Dapr terminology, we recommend starting with the [concepts section]({{<ref concepts>}}).
 {{% /alert %}}
 
-Our Getting Started guide will walk you through a series of steps to install, initialize, experiment with, and start using Dapr. 
+Our getting started guide will walk you through a series of steps to install, initialize, experiment with, and start using Dapr.
 
 <div class="card-deck">
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title"><b>Install and initialize Dapr</b></h5>
+      <h5 class="card-title"><b>Set up Dapr</b></h5>
       <p class="card-text">Set up everything you need to start using and experimenting with Dapr.</p>
       <a href="{{< ref set-up-dapr >}}" class="stretched-link"></a>
     </div>

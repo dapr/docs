@@ -8,8 +8,8 @@ description: "Quickstarts with code samples that are aimed to get you started qu
 
 Hit the ground running with our Dapr quickstarts, complete with code samples aimed to get you started quickly with Dapr.
 
-## Before you begin
+#### Before you begin
 
-- [Set up Dapr]({{< ref "install-dapr-cli.md" >}}).
+- [Set up your local Dapr environment]({{< ref "install-dapr-cli.md" >}}).
 
 ## Quickstarts
