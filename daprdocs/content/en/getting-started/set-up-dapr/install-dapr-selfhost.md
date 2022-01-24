@@ -3,8 +3,9 @@ type: docs
 title: "Initialize Dapr in your local environment"
 linkTitle: "Init Dapr locally"
 weight: 20
+description: "Fetch the Dapr sidecar binaries and install them locally using `dapr-init`"
 aliases:
-  - /getting-started/install-dapr/
+  - /getting-started/set-up-dapr/install-dapr/
 ---
 
 Now that you have the [Dapr CLI installed]({{<ref install-dapr-cli.md>}}), it's time to initialize Dapr on your local machine using the CLI.

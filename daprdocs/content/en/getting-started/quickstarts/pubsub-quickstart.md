@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "Quickstart: Set up Publish and Subscribe"
-linkTitle: "Quickstart: Set up Publish and Subscribe"
-weight: 60
+linkTitle: "Set up Publish and Subscribe"
+weight: 70
 description: "Get started with Dapr's Publish and Subscribe building block"
 ---
 
@@ -597,4 +597,4 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
 - List of [Pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
 
-{{< button text="Explore More Quickstarts  >>" page="more-quickstarts" >}}
+{{< button text="Explore More Quickstarts  >>" page="_index.md" >}}

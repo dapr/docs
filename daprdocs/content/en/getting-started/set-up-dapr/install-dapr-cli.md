@@ -3,6 +3,7 @@ type: docs
 title: "Install the Dapr CLI"
 linkTitle: "Install Dapr CLI"
 weight: 10
+description: "Install the Dapr CLI as the main tool for running Dapr-related tasks"
 ---
 
 The Dapr CLI is the main tool you'll be using for various Dapr related tasks. You can use it to run an application with a Dapr sidecar, as well as review sidecar logs, list running services, and run the Dapr dashboard. The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.

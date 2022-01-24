@@ -3,6 +3,7 @@ type: docs
 title: "Use the Dapr API"
 linkTitle: "Use the Dapr API"
 weight: 30
+description: "Run a Dapr sidecar and try out the state API"
 ---
 
 After running the `dapr init` command in the [previous step]({{<ref install-dapr-selfhost.md>}}), your local environment has the Dapr sidecar binaries as well as default component definitions for both state management and a message broker (both using Redis). You can now try out some of what Dapr has to offer by using the Dapr CLI to run a Dapr sidecar and try out the state API that will allow you to store and retrieve a state. You can learn more about the state building block and how it works in [these docs]({{< ref state-management >}}).
@@ -114,4 +115,4 @@ Exit the redis-cli with:
 exit
 ```
 
-{{< button text="Next step: Define a component >>" page="get-started-component" >}}
+{{< button text="Next step: Dapr Quickstarts >>" page="getting-started/quickstarts" >}}
