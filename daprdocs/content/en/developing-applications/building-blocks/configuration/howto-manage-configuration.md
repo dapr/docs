@@ -108,5 +108,23 @@ message SubscribeConfigurationRequest {
 
 Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language - see the [gRPC examples here](https://grpc.io/docs/languages/) for usage.
 
+### Stop watching configuration items
+
+After you have subscribed to watch configuration items, the gRPC-server stream starts. This stream thread does not close itself, and you have to do by explicitly call the `UnSubscribeConfigurationRequest` API. This method accepts the following request object:
+
+```proto
+// UnSubscribeConfigurationRequest is the message to stop watching the key-value configuration.
+message UnSubscribeConfigurationRequest {
+  // The name of configuration store.
+  string store_name = 1;
+  // Optional. The keys of the configuration item to stop watching.
+  // Store_name and keys should match previous SubscribeConfigurationRequest's keys and store_name.
+  // Once invoked, the subscription that is watching update for the key-value event is stopped
+  repeated string keys = 2;
+}
+```
+
+Using this unsubscribe method, you can stop watching configuration update events. Dapr locates the subscription stream based on the `store_name` and any optional keys supplied and closes it.
+
 ## Next steps
 * Read [configuration API overview]({{< ref configuration-api-overview.md >}})
