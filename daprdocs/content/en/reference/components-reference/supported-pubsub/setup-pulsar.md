@@ -34,7 +34,8 @@ spec:
     value: "constant"
   - name: backOffMaxRetries
     value: "-1"
-
+  - name: disableBatching
+    value: "false"
 ```
 ## Spec metadata fields
 
@@ -53,7 +54,7 @@ spec:
 | backOffRandomizationFactor | N        | Randomization factor, between 1 and 0, including 0 but not 1. Randomized interval = RetryInterval * (1 ± backOffRandomizationFactor). Defaults to `"0.5"`.                 | `"0.5"`                       |
 | backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
 | backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"15m"` | `"15m"` |
-
+| disableBatching | N | disable batching. Default: `"false"` | `"true"`, `"false"`|
 
 ### Delay queue
 
