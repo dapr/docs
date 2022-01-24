@@ -310,6 +310,20 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.partiti
       }'
 ```
 
+### Message headers
+
+All other metadata key/value pairs (that are not `partitionKey`) are set as headers in the Kafka message. Here is an example setting a `correlationId` for the message.
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
 ## Create a Kafka instance
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
