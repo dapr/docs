@@ -58,9 +58,7 @@ spec:
     value: <PASSWORD>
 ```
 
-### Get configuration items using gRPC API
-
-Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto).
+### Get configuration items using Dapr SDKs
 
 {{< tabs Dotnet Java Python>}}
 
