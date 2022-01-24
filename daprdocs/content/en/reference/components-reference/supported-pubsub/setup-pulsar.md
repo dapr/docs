@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To setup Apache Pulsar pubsub create a component of type `pubsub.pulsar`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration. For more information on Apache Pulsar [read the docs]({{< ref "https://pulsar.apache.org/docs/en/concepts-overview/" >}})
+To setup Apache Pulsar pubsub create a component of type `pubsub.pulsar`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration. For more information on Apache Pulsar [read the docs](https://pulsar.apache.org/docs/en/concepts-overview/)
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
