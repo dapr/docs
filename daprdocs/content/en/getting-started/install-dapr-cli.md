@@ -15,13 +15,13 @@ You'll use the Dapr CLI as the main tool for various Dapr-related tasks. You can
 
 The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
 
-## Install the Dapr CLI
+### Step 1: Install the Dapr CLI
 
 {{< tabs Linux Windows MacOS Binaries>}}
 
 {{% codetab %}}
 
-### Install from Terminal
+#### Install from Terminal
 
 Install the latest Linux Dapr CLI to `/usr/local/bin`:
 
@@ -29,7 +29,7 @@ Install the latest Linux Dapr CLI to `/usr/local/bin`:
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 
-### Install without `sudo`
+#### Install without `sudo`
 
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
 
@@ -41,7 +41,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 {{% codetab %}}
 
-### Install from Command Prompt
+#### Install from Command Prompt
 
 Install the latest windows Dapr cli to `C:\dapr` and add this directory to the User PATH environment variable:
 
@@ -49,7 +49,7 @@ Install the latest windows Dapr cli to `C:\dapr` and add this directory to the U
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 
-### Install without administrative rights
+#### Install without administrative rights
 
 If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
 
@@ -79,7 +79,7 @@ To install Rosetta emulation:
 softwareupdate --install-rosetta
 ```
 
-### Install from Homebrew
+#### Install from Homebrew
 
 Install via [Homebrew](https://brew.sh):
 
@@ -95,7 +95,7 @@ For ARM64 Macs, only Homebrew 3.0 and higher versions are supported. Please upda
 arch -arm64 brew install dapr/tap/dapr-cli
 ```
 
-### Install without `sudo`
+#### Install without `sudo`
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
 
 ```bash
