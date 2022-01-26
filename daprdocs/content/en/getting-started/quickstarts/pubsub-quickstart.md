@@ -18,14 +18,14 @@ Select your preferred language before proceeding with the quickstart.
  <!-- Python -->
 {{% codetab %}}
 
-## Pre-requisites
+### Pre-requisites
 
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
 
-## Step 1: Set up the environment
+### Step 1: Set up the environment
 
 Clone the sample we've provided.
 
@@ -51,7 +51,7 @@ Or:
 python -m pip install -r requirements.txt
 ```
 
-## Step 2: View the Pub/sub component
+### Step 2: View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -110,7 +110,7 @@ scopes:
 
 {{< /tabs >}}
 
-## Step 3: Subscribe to topics
+### Step 3: Subscribe to topics
 
 Navigate to the directory containing your subscriber application.
 
@@ -147,7 +147,7 @@ app.run(6002)
 
 This enables your app code to talk to the Redis component instance through the Dapr sidecar. With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-## Step 4: Publish a topic
+### Step 4: Publish a topic
 
 Navigate to the directory holding the OrderProcessingService.py publisher.
 
@@ -204,7 +204,7 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
  <!-- .NET -->
 {{% codetab %}}
 
-## Pre-requisites
+### Pre-requisites
 
 For this example, you will need:
 
@@ -212,7 +212,7 @@ For this example, you will need:
 - [.NET and ASP.NET Core installed](https://dotnet.microsoft.com/en-us/download/dotnet/5.0/runtime).
 - [Latest NuGet package installed](https://www.nuget.org/downloads).
 
-## Step 1: Set up the environment
+### Step 1: Set up the environment
 
 Clone the sample we've set up:
 
@@ -226,7 +226,7 @@ Navigate to the Pub/sub C# project directory:
 cd pub_sub/csharp
 ```
 
-## Step 2: View the Pub/sub component
+### Step 2: View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -285,7 +285,7 @@ scopes:
 
 {{< /tabs >}}
 
-## Step 3: Subscribe to topics
+### Step 3: Subscribe to topics
 
 Navigate to the directory containing your subscriber application.
 
@@ -324,7 +324,7 @@ namespace CheckoutService.controller
 ```
 This enables your app code to talk to the Redis component instance through the Dapr sidecar. With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-## Step 4: Publish a topic
+### Step 4: Publish a topic
 
 Navigate to the directory holding the "Order Processing Service" Program.cs publisher.
 
@@ -392,14 +392,14 @@ Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envel
  <!-- JavaScript -->
 {{% codetab %}}
 
-## Pre-requisites
+### Pre-requisites
 
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Latest Node.js installed](https://nodejs.org/en/download/).
 
-## Step 1: Set up the environment
+### Step 1: Set up the environment
 
 Clone the sample we've set up:
 
@@ -424,7 +424,7 @@ Verify you have the following files included in the service directories:
 - `package.json`
 - `package-lock.json`
 
-## Step 2: View the Pub/sub component
+### Step 2: View the Pub/sub component
 
 When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
 
@@ -483,7 +483,7 @@ scopes:
 
 {{< /tabs >}}
 
-## Step 3: Subscribe to topics
+### Step 3: Subscribe to topics
 
 Navigate to the directory containing the subscriber.
 
@@ -530,7 +530,7 @@ async function start(orderId) {
 
 This enables your app code to talk to the Redis component instance through the Dapr sidecar. With the pubsub.yaml component, you can easily swap out underlying components without application code changes.
 
-## Step 4: Publish a topic
+### Step 4: Publish a topic
 
 Navigate to the directory holding the publisher.
 
