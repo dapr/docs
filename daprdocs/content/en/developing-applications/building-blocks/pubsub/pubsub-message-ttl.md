@@ -55,9 +55,7 @@ with DaprClient() as d:
         pubsub_name='pubsub',
         topic='TOPIC_A',
         data=json.dumps(req_data),
-        metadata=(
-                     ('ttlInSeconds', '120')
-                 )
+        publish_metadata={'ttlInSeconds': '120'}
     )
     # Print the request
     print(req_data, flush=True)
@@ -84,7 +82,7 @@ $app->run(function(\DI\FactoryInterface $factory) {
 
 See [this guide]({{< ref pubsub_api.md >}}) for a reference on the pub/sub API.
 
-## Related links
+## Next steps
 
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})

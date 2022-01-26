@@ -17,15 +17,20 @@ The state query API provides a way of querying the key/value data stored in stat
 Even though the state store is a key/value store, the `value` might be a JSON document with its own hierarchy, keys, and values.
 The query API allows you to use those keys and values to retrive corresponding documents.
 
-This query API does not support querying of actor state stored in a state store. For that you need to use the query API for the specific database.
-See [querying actor state]({{< ref "state-management-overview.md#querying-actor-state" >}}).
+### Limitations
+The state query API has the following limitations:
+
+ - The API does not support querying of actor state stored in a state store. For that you need to use the query API for the specific database. See [querying actor state]({{< ref "state-management-overview.md#querying-actor-state" >}}).
+ - The API does not work with Dapr [encrypted state stores]({{<ref howto-encrypt-state>}}) capability. Since the encryption is done by the Dapr runtime and stored as encrypted data, then this effectively prevents server side querying. 
+ 
+ 
 
 You can find additional information in the [related links]({{< ref "#related-links" >}}) section.
 
 ## Querying the state
 
 You submit query requests via HTTP POST/PUT or gRPC.
-The body of the request is the JSON map with 3 entries: `filter`, `sort`, and `pagination`.
+The body of the request is the JSON map with 3 entries: `filter`, `sort`, and `page`.
 
 The `filter` is an optional section. It specifies the query conditions in the form of a tree of key/value operations, where the key is the operator and the value is the operands.
 
@@ -42,7 +47,7 @@ If `filter` section is omitted, the query returns all entries.
 
 The `sort` is an optional section and is an ordered array of `key:order` pairs, where `key` is a key in the state store, and the `order` is an optional string indicating sorting order: `"ASC"` for ascending and `"DESC"` for descending. If omitted, ascending order is the default.
 
-The `pagination` is an optional section containing `limit` and `token` parameters. `limit` sets the page size. `token` is an iteration token returned by the component, and is used in subsequent queries.
+The `page` is an optional section containing `limit` and `token` parameters. `limit` sets the page size. `token` is an iteration token returned by the component, and is used in subsequent queries.
 
 For some background understanding, this query request is translated into the native query language and executed by the state store component.
 
@@ -87,17 +92,15 @@ First, let's find all employees in the state of California and sort them by thei
 This is the [query](../query-api-examples/query1.json):
 ```json
 {
-    "query": {
-        "filter": {
-            "EQ": { "value.state": "CA" }
-        },
-        "sort": [
-            {
-                "key": "value.person.id",
-                "order": "DESC"
-            }
-        ]
-    }
+    "filter": {
+        "EQ": { "value.state": "CA" }
+    },
+    "sort": [
+        {
+            "key": "value.person.id",
+            "order": "DESC"
+        }
+    ]
 }
 ```
 
@@ -186,10 +189,8 @@ Let's now find all employees from the "Dev Ops" and "Hardware" organizations.
 This is the [query](../query-api-examples/query2.json):
 ```json
 {
-    "query": {
-        "filter": {
-            "IN": { "value.person.org": [ "Dev Ops", "Hardware" ] }
-        }
+    "filter": {
+        "IN": { "value.person.org": [ "Dev Ops", "Hardware" ] }
     }
 }
 ```
@@ -228,36 +229,34 @@ This is the [query](../query-api-examples/query3.json):
 
 ```json
 {
-    "query": {
-        "filter": {
-            "OR": [
-                {
-                    "EQ": { "value.person.org": "Dev Ops" }
-                },
-                {
-                    "AND": [
-                        {
-                            "EQ": { "value.person.org": "Finance" }
-                        },
-                        {
-                            "IN": { "value.state": [ "CA", "WA" ] }
-                        }
-                    ]
-                }
-            ]
-        },
-        "sort": [
+    "filter": {
+        "OR": [
             {
-                "key": "value.state",
-                "order": "DESC"
+                "EQ": { "value.person.org": "Dev Ops" }
             },
             {
-                "key": "value.person.id"
+                "AND": [
+                    {
+                        "EQ": { "value.person.org": "Finance" }
+                    },
+                    {
+                        "IN": { "value.state": [ "CA", "WA" ] }
+                    }
+                ]
             }
-        ],
-        "pagination": {
-            "limit": 3
+        ]
+    },
+    "sort": [
+        {
+            "key": "value.state",
+            "order": "DESC"
+        },
+        {
+            "key": "value.person.id"
         }
+    ],
+    "page": {
+        "limit": 3
     }
 }
 ```
@@ -336,40 +335,52 @@ The pagination token is used "as is" in the [subsequent query](../query-api-exam
 
 ```json
 {
-    "query": {
-        "filter": {
-            "OR": [
-                {
-                    "EQ": { "value.person.org": "Dev Ops" }
-                },
-                {
-                    "AND": [
-                        {
-                            "EQ": { "value.person.org": "Finance" }
-                        },
-                        {
-                            "IN": { "value.state": [ "CA", "WA" ] }
-                        }
-                    ]
-                }
-            ]
-        },
-        "sort": [
+    "filter": {
+        "OR": [
             {
-                "key": "value.state",
-                "order": "DESC"
+                "EQ": { "value.person.org": "Dev Ops" }
             },
             {
-                "key": "value.person.id"
+                "AND": [
+                    {
+                        "EQ": { "value.person.org": "Finance" }
+                    },
+                    {
+                        "IN": { "value.state": [ "CA", "WA" ] }
+                    }
+                ]
             }
-        ],
-        "pagination": {
-            "limit": 3,
-            "token": "3"
+        ]
+    },
+    "sort": [
+        {
+            "key": "value.state",
+            "order": "DESC"
+        },
+        {
+            "key": "value.person.id"
         }
+    ],
+    "page": {
+        "limit": 3,
+        "token": "3"
     }
 }
 ```
+
+{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{% codetab %}}
+```bash
+curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query3-token.json http://localhost:3500/v1.0-alpha1/state/statestore/query | jq .
+```
+{{% /codetab %}}
+{{% codetab %}}
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -InFile query-api-examples/query3-token.json -Uri 'http://localhost:3500/v1.0-alpha1/state/statestore/query'
+```
+{{% /codetab %}}
+{{< /tabs >}}
+
 And the result of this query is:
 ```json
 {

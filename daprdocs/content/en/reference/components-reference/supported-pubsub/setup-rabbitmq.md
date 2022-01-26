@@ -21,34 +21,36 @@ spec:
   metadata:
   - name: host
     value: "amqp://localhost:5672"
+  - name: consumerID
+    value: myapp
   - name: durable
-    value: "false"
+    value: false
   - name: deletedWhenUnused
-    value: "false"
+    value: false
   - name: autoAck
-    value: "false"
+    value: false
   - name: deliveryMode
-    value: "0"
+    value: 0
   - name: requeueInFailure
-    value: "false"
+    value: false
   - name: prefetchCount
-    value: "0"
+    value: 0
   - name: reconnectWait
-    value: "0"
+    value: 0
   - name: concurrencyMode
     value: parallel
   - name: backOffPolicy
-    value: "exponential"
+    value: exponential
   - name: backOffInitialInterval
-    value: "100"
+    value: 100
   - name: backOffMaxRetries
-    value: "16"
+    value: 16
   - name: enableDeadLetter # Optional enable dead Letter or not
-    value: "true"
+    value: true
   - name: maxLen # Optional max message count in a queue
-    value: "3000"
+    value: 3000
   - name: maxLenBytes # Optional maximum length in bytes of a queue.
-    value: "10485760"
+    value: 10485760
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -59,6 +61,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | host               | Y        | Connection-string for the rabbitmq host  | `amqp://user:pass@localhost:5672`
+| consumerID         | N        | Consumer ID a.k.a consumer tag organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. |
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`

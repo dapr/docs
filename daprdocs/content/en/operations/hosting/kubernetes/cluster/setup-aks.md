@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Setup an Azure Kubernetes Service cluster"
-linkTitle: "Azure Kubernetes Service"
+title: "Setup an Azure Kubernetes Service (AKS) cluster"
+linkTitle: "Azure Kubernetes Service (AKS)"
 weight: 2000
 description: >
   How to setup Dapr on an Azure Kubernetes Cluster.

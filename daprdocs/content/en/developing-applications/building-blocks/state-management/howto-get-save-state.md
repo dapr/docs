@@ -19,6 +19,12 @@ In this guide we'll start of with the basics: Using the key/value state API to a
 - [Dapr CLI]({{< ref install-dapr-cli.md >}})
 - Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
 
+## Example:
+
+The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
+
+<img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
+
 ## Step 1: Setup a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
@@ -60,135 +66,287 @@ See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup dif
 
 ## Step 2: Save and retrieve a single state
 
-The following example shows how to a single key/value pair using the Dapr state building block.
+The following example shows how to save and retrieve a single key/value pair using the Dapr state building block.
 
 {{% alert title="Note" color="warning" %}}
 It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
 {{% /alert %}}
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
+Below are code examples that leverage Dapr SDKs for saving and retrieving a single state.
+
+{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-Begin by launching a Dapr sidecar:
 
-```bash
-dapr run --app-id myapp --dapr-http-port 3500
+```csharp
+
+//dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Text.Json;
+
+//code
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_STORE_NAME = "statestore";
+            while(true) {
+                System.Threading.Thread.Sleep(5000);
+                using var client = new DaprClientBuilder().Build();
+                Random random = new Random();
+                int orderId = random.Next(1,1000);
+                //Using Dapr SDK to save and get state
+                await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
+                await client.SaveStateAsync(DAPR_STORE_NAME, "order_2", orderId.ToString());
+                var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, orderId.ToString());
+                Console.WriteLine("Result after get: " + result);
+            }
+        }
+    }
+}
 ```
 
-Then in a separate terminal save a key/value pair into your statestore:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '[{ "key": "key1", "value": "value1"}]' http://localhost:3500/v1.0/state/statestore
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
-Now get the state you just saved:
-```bash
-curl http://localhost:3500/v1.0/state/statestore/key1
-```
-
-You can also restart your sidecar and try retrieving state again to see that state persists separate from the app.
 {{% /codetab %}}
 
+
 {{% codetab %}}
 
-Begin by launching a Dapr sidecar:
+```java
+//dependencies
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.domain.State;
+import io.dapr.client.domain.TransactionalStateOperation;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+//code
+@SpringBootApplication
+public class OrderProcessingServiceApplication {
+
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
+	private static final String STATE_STORE_NAME = "statestore";
+
+	public static void main(String[] args) throws InterruptedException{
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
+			DaprClient client = new DaprClientBuilder().build();
+            //Using Dapr SDK to save and get state
+			client.saveState(STATE_STORE_NAME, "order_1", Integer.toString(orderId)).block();
+			client.saveState(STATE_STORE_NAME, "order_2", Integer.toString(orderId)).block();
+			Mono<State<String>> result = client.getState(STATE_STORE_NAME, "order_1", String.class);
+			log.info("Result after get" + result);
+		}
+	}
+
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp --port 3500 run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
-
-Then in a separate terminal save a key/value pair into your statestore:
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "key1", "value": "value1"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
-```
-
-Now get the state you just saved:
-```powershell
-Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/key1'
-```
-
-You can also restart your sidecar and try retrieving state again to see that state persists separate from the app.
 
 {{% /codetab %}}
 
-{{% codetab %}}
 
-Save the following to a file named `pythonState.py`:
+{{% codetab %}}
 
 ```python
+#dependencies
+import random
+from time import sleep    
+import requests
+import logging
 from dapr.clients import DaprClient
+from dapr.clients.grpc._state import StateItem
+from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
 
-with DaprClient() as d:
-    d.save_state(store_name="statestore", key="myFirstKey", value="myFirstValue" )
-    print("State has been stored")
-
-    data = d.get_state(store_name="statestore", key="myFirstKey").data
-    print(f"Got value: {data}")
-
+#code
+logging.basicConfig(level = logging.INFO)
+DAPR_STORE_NAME = "statestore"
+while True:
+    sleep(random.randrange(50, 5000) / 1000)
+    orderId = random.randint(1, 1000)
+    with DaprClient() as client:
+        #Using Dapr SDK to save and get state
+        client.save_state(DAPR_STORE_NAME, "order_1", str(orderId)) 
+        result = client.get_state(DAPR_STORE_NAME, "order_1")
+        logging.info('Result after get: ' + result.data.decode('utf-8'))
 ```
 
-Once saved run the following command to launch a Dapr sidecar and run the Python application:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp run python pythonState.py
-```
-
-You should get an output similar to the following, which will show both the Dapr and app logs:
-
-```md
-== DAPR == time="2021-01-06T21:34:33.7970377-08:00" level=info msg="starting Dapr Runtime -- version 0.11.3 -- commit a1a8e11" app_id=Braidbald-Boot scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:34:33.8040378-08:00" level=info msg="standalone mode configured" app_id=Braidbald-Boot scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:34:33.8040378-08:00" level=info msg="app id: Braidbald-Boot" app_id=Braidbald-Boot scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:34:33.9750400-08:00" level=info msg="component loaded. name: statestore, type: state.redis" app_id=Braidbald-Boot scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:34:33.9760387-08:00" level=info msg="API gRPC server is running on port 51656" app_id=Braidbald-Boot scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:34:33.9770372-08:00" level=info msg="dapr initialized. Status: Running. Init Elapsed 172.9994ms" app_id=Braidbald-Boot scope=dapr.
-
-Checking if Dapr sidecar is listening on GRPC port 51656
-Dapr sidecar is up and running.
-Updating metadata for app command: python pythonState.py
-You are up and running! Both Dapr and your app logs will appear here.
-
-== APP == State has been stored
-== APP == Got value: b'myFirstValue'
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
 
+
 {{% codetab %}}
 
-Save the following in `state-example.php`:
+```go
+//dependencies
+import (
+	"context"
+	"log"
+	"math/rand"
+	"time"
+	"strconv"
+	dapr "github.com/dapr/go-sdk/client"
+)
 
-```php
-<?php
-require_once __DIR__.'/vendor/autoload.php';
-
-$app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
-        key: 'myFirstKey',
-        value: 'myFirstValue'
-    ));
-    $logger->alert('State has been stored');
-
-    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
-    $logger->alert("Got value: {data}", ['data' => $data]);
-});
+//code
+func main() {
+	for i := 0; i < 10; i++ {
+		time.Sleep(5000)
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		STATE_STORE_NAME := "statestore"
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+        //Using Dapr SDK to save and get state
+		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
+			panic(err)
+		}	
+		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_2")
+		if err != nil {
+			panic(err)
+		}
+		log.Println("Result after get: ")
+		log.Println(result)
+	}
+}
 ```
 
-Once saved run the following command to launch a Dapr sidecar and run the PHP application:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp run -- php state-example.php
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-You should get an output similar to the following, which will show both the Dapr and app logs:
+{{% /codetab %}}
 
-```md
-✅  You're up and running! Both Dapr and your app logs will appear here.
 
-== APP == [2021-02-12T16:30:11.078777+01:00] APP.ALERT: State has been stored [] []
+{{% codetab %}}
 
-== APP == [2021-02-12T16:30:11.082620+01:00] APP.ALERT: Got value: myFirstValue {"data":"myFirstValue"} []
+```javascript
+//dependencies
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+
+//code
+const daprHost = "127.0.0.1"; 
+var main = function() {
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        start(orderId).catch((e) => {
+            console.error(e);
+            process.exit(1);
+        });
+    }
+}
+
+async function start(orderId) {
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const STATE_STORE_NAME = "statestore";
+    //Using Dapr SDK to save and get state
+    await client.state.save(STATE_STORE_NAME, [
+        {
+            key: "order_1",
+            value: orderId.toString()
+        },
+        {
+            key: "order_2",
+            value: orderId.toString()
+        }
+    ]);
+    var result = await client.state.get(STATE_STORE_NAME, "order_1");
+    console.log("Result after get: " + result);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+main();
 ```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
+```
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
+Begin by launching a Dapr sidecar:
+
+```bash
+dapr run --app-id orderprocessing --dapr-http-port 3601
+```
+
+Then in a separate terminal save a key/value pair into your statestore:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250"}]' http://localhost:3601/v1.0/state/statestore
+```
+
+Now get the state you just saved:
+```bash
+curl http://localhost:3601/v1.0/state/statestore/order_1
+```
+
+Restart your sidecar and try retrieving state again to observe that state persists separately from the app.
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Begin by launching a Dapr sidecar:
+
+```bash
+dapr --app-id orderprocessing --port 3601 run
+```
+
+Then in a separate terminal save a key/value pair into your statestore:
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "order_1", "value": "250"}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
+```
+
+Now get the state you just saved:
+```powershell
+Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/state/statestore/order_1'
+```
+
+Restart your sidecar and try retrieving state again to observe that state persists separately from the app.
 
 {{% /codetab %}}
 
@@ -197,243 +355,299 @@ You should get an output similar to the following, which will show both the Dapr
 
 ## Step 3: Delete state
 
-The following example shows how to delete an item by using a key with the state management API:
+Below are code examples that leverage Dapr SDKs for deleting the state.
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
+{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-With the same dapr instance running from above run:
+
+```csharp
+//dependencies
+using Dapr.Client;
+
+//code
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_STORE_NAME = "statestore";
+            //Using Dapr SDK to delete the state
+            using var client = new DaprClientBuilder().Build();
+            await client.DeleteStateAsync(DAPR_STORE_NAME, "order_1", cancellationToken: cancellationToken);
+        }
+    }
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
 ```bash
-curl -X DELETE 'http://localhost:3500/v1.0/state/statestore/key1'
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
-Try getting state again and note that no value is returned.
+
 {{% /codetab %}}
 
-{{% codetab %}}
-With the same dapr instance running from above run:
-```powershell
-Invoke-RestMethod -Method Delete -Uri 'http://localhost:3500/v1.0/state/statestore/key1'
-```
-Try getting state again and note that no value is returned.
-{{% /codetab %}}
 
 {{% codetab %}}
 
-Update `pythonState.py` with:
+```java
+//dependencies
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+//code
+@SpringBootApplication
+public class OrderProcessingServiceApplication {
+	public static void main(String[] args) throws InterruptedException{
+        String STATE_STORE_NAME = "statestore";
+
+        //Using Dapr SDK to delete the state
+        DaprClient client = new DaprClientBuilder().build();
+        String storedEtag = client.getState(STATE_STORE_NAME, "order_1", String.class).block().getEtag();
+        client.deleteState(STATE_STORE_NAME, "order_1", storedEtag, null).block();
+	}
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
+```
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
 
 ```python
-from dapr.clients import DaprClient
+#dependencies
+from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
 
-with DaprClient() as d:
-    d.save_state(store_name="statestore", key="key1", value="value1" )
-    print("State has been stored")
+#code
+logging.basicConfig(level = logging.INFO)
+DAPR_STORE_NAME = "statestore"
 
-    data = d.get_state(store_name="statestore", key="key1").data
-    print(f"Got value: {data}")
-
-    d.delete_state(store_name="statestore", key="key1")
-
-    data = d.get_state(store_name="statestore", key="key1").data
-    print(f"Got value after delete: {data}")
+#Using Dapr SDK to delete the state
+with DaprClient() as client:
+    client.delete_state(store_name=DAPR_STORE_NAME, key="order_1")
 ```
 
-Now run your program with:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp run python pythonState.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-You should see an output similar to the following:
-
-```md
-Starting Dapr with id Yakchocolate-Lord. HTTP Port: 59457. gRPC Port: 59458
-
-== DAPR == time="2021-01-06T22:55:36.5570696-08:00" level=info msg="starting Dapr Runtime -- version 0.11.3 -- commit a1a8e11" app_id=Yakchocolate-Lord scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:55:36.5690367-08:00" level=info msg="standalone mode configured" app_id=Yakchocolate-Lord scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:55:36.7220140-08:00" level=info msg="component loaded. name: statestore, type: state.redis" app_id=Yakchocolate-Lord scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:55:36.7230148-08:00" level=info msg="API gRPC server is running on port 59458" app_id=Yakchocolate-Lord scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:55:36.7240207-08:00" level=info msg="dapr initialized. Status: Running. Init Elapsed 154.984ms" app_id=Yakchocolate-Lord scope=dapr.runtime type=log ver=0.11.3
-
-Checking if Dapr sidecar is listening on GRPC port 59458
-Dapr sidecar is up and running.
-Updating metadata for app command: python pythonState.py
-You're up and running! Both Dapr and your app logs will appear here.
-
-== APP == State has been stored
-== APP == Got value: b'value1'
-== APP == Got value after delete: b''
-```
 {{% /codetab %}}
+
 
 {{% codetab %}}
 
-Update `state-example.php` with the following contents:
+```go
+//dependencies
+import (
+	"context"
+	dapr "github.com/dapr/go-sdk/client"
 
-```php
-<?php
-require_once __DIR__.'/vendor/autoload.php';
+)
 
-$app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $stateManager->save_state(store_name: 'statestore', item: new \Dapr\State\StateItem(
-        key: 'myFirstKey',
-        value: 'myFirstValue'
-    ));
-    $logger->alert('State has been stored');
+//code
+func main() {
+    STATE_STORE_NAME := "statestore"
+    //Using Dapr SDK to delete the state
+    client, err := dapr.NewClient()
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+    ctx := context.Background()
 
-    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
-    $logger->alert("Got value: {data}", ['data' => $data]);
-
-    $stateManager->delete_keys(store_name: 'statestore', keys: ['myFirstKey']);
-    $data = $stateManager->load_state(store_name: 'statestore', key: 'myFirstKey')->value;
-    $logger->alert("Got value after delete: {data}", ['data' => $data]);
-});
+    if err := client.DeleteState(ctx, STATE_STORE_NAME, "order_1"); err != nil {
+        panic(err)
+    }
+}
 ```
 
-Now run it with:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp run -- php state-example.php
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
-You should see something similar the following output:
+{{% /codetab %}}
 
-```md
-✅  You're up and running! Both Dapr and your app logs will appear here.
 
-== APP == [2021-02-12T16:38:00.839201+01:00] APP.ALERT: State has been stored [] []
+{{% codetab %}}
 
-== APP == [2021-02-12T16:38:00.841997+01:00] APP.ALERT: Got value: myFirstValue {"data":"myFirstValue"} []
+```javascript
+//dependencies
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
-== APP == [2021-02-12T16:38:00.845721+01:00] APP.ALERT: Got value after delete:  {"data":null} []
+//code
+const daprHost = "127.0.0.1"; 
+var main = function() {
+    const STATE_STORE_NAME = "statestore";
+    //Using Dapr SDK to save and get state
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    await client.state.delete(STATE_STORE_NAME, "order_1"); 
+}
+
+main();
 ```
 
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+With the same Dapr instance running from above run:
+```bash
+curl -X DELETE 'http://localhost:3601/v1.0/state/statestore/order_1'
+```
+Try getting state again and note that no value is returned.
+{{% /codetab %}}
+
+{{% codetab %}}
+With the same Dapr instance running from above run:
+```powershell
+Invoke-RestMethod -Method Delete -Uri 'http://localhost:3601/v1.0/state/statestore/order_1'
+```
+Try getting state again and note that no value is returned.
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## Step 4: Save and retrieve multiple states
 
-Dapr also allows you to save and retrieve multiple states in the same call.
+Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
+{{< tabs Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-With the same dapr instance running from above save two key/value pairs into your statestore:
-```bash
-curl -X POST -H "Content-Type: application/json" -d '[{ "key": "key1", "value": "value1"}, { "key": "key2", "value": "value2"}]' http://localhost:3500/v1.0/state/statestore
+
+```java
+//dependencies
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.domain.State;
+import java.util.Arrays;
+
+//code
+@SpringBootApplication
+public class OrderProcessingServiceApplication {
+
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
+	public static void main(String[] args) throws InterruptedException{
+        String STATE_STORE_NAME = "statestore";
+        //Using Dapr SDK to retrieve multiple states
+        DaprClient client = new DaprClientBuilder().build();
+        Mono<List<State<String>>> resultBulk = client.getBulkState(STATE_STORE_NAME,
+        Arrays.asList("order_1", "order_2"), String.class);
+	}
+}
 ```
 
-Now get the states you just saved:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"keys":["key1", "key2"]}' http://localhost:3500/v1.0/state/statestore/bulk
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same dapr instance running from above save two key/value pairs into your statestore:
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "key1", "value": "value1"}, { "key": "key2", "value": "value2"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
-```
-
-Now get the states you just saved:
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["key1", "key2"]}' -Uri 'http://localhost:3500/v1.0/state/statestore/bulk'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-The `StateItem` object can be used to store multiple Dapr states with the `save_states` and `get_states` methods.
-
-Update your `pythonState.py` file with the following code:
 
 ```python
+#dependencies
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 
-with DaprClient() as d:
-    s1 = StateItem(key="key1", value="value1")
-    s2 = StateItem(key="key2", value="value2")
-
-    d.save_bulk_state(store_name="statestore", states=[s1,s2])
-    print("States have been stored")
-
-    items = d.get_bulk_state(store_name="statestore", keys=["key1", "key2"]).items
-    print(f"Got items: {[i.data for i in items]}")
+#code
+logging.basicConfig(level = logging.INFO)
+DAPR_STORE_NAME = "statestore"
+orderId = 100
+#Using Dapr SDK to save and retrieve multiple states
+with DaprClient() as client:
+    client.save_bulk_state(store_name=DAPR_STORE_NAME, states=[StateItem(key="order_2", value=str(orderId))])
+    result = client.get_bulk_state(store_name=DAPR_STORE_NAME, keys=["order_1", "order_2"], states_metadata={"metakey": "metavalue"}).items
+    logging.info('Result after get bulk: ' + str(result)) 
 ```
 
-Now run your program with:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp run python pythonState.py
-```
-
-You should see an output similar to the following:
-
-```md
-== DAPR == time="2021-01-06T21:54:56.7262358-08:00" level=info msg="starting Dapr Runtime -- version 0.11.3 -- commit a1a8e11" app_id=Musesequoia-Sprite scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:54:56.7401933-08:00" level=info msg="standalone mode configured" app_id=Musesequoia-Sprite scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:54:56.8754240-08:00" level=info msg="Initialized name resolution to standalone" app_id=Musesequoia-Sprite scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:54:56.8844248-08:00" level=info msg="component loaded. name: statestore, type: state.redis" app_id=Musesequoia-Sprite scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:54:56.8854273-08:00" level=info msg="API gRPC server is running on port 60614" app_id=Musesequoia-Sprite scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T21:54:56.8854273-08:00" level=info msg="dapr initialized. Status: Running. Init Elapsed 145.234ms" app_id=Musesequoia-Sprite scope=dapr.runtime type=log ver=0.11.3
-
-Checking if Dapr sidecar is listening on GRPC port 60614
-Dapr sidecar is up and running.
-Updating metadata for app command: python pythonState.py
-You're up and running! Both Dapr and your app logs will appear here.
-
-== APP == States have been stored
-== APP == Got items: [b'value1', b'value2']
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
 
-To batch load and save state with PHP, just create a "Plain Ole' PHP Object" (POPO) and annotate it with
-the StateStore annotation.
+```javascript
+//dependencies
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
-Update the `state-example.php` file:
-
-```php
-<?php
-
-require_once __DIR__.'/vendor/autoload.php';
-
-#[\Dapr\State\Attributes\StateStore('statestore', \Dapr\consistency\EventualLastWrite::class)]
-class MyState {
-    public string $key1 = 'value1';
-    public string $key2 = 'value2';
+//code
+const daprHost = "127.0.0.1"; 
+var main = function() {
+    const STATE_STORE_NAME = "statestore";
+    var orderId = 100;
+    //Using Dapr SDK to save and retrieve multiple states
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    await client.state.save(STATE_STORE_NAME, [
+        {
+            key: "order_1",
+            value: orderId.toString()
+        },
+        {
+            key: "order_2",
+            value: orderId.toString()
+        }
+    ]);
+    result = await client.state.getBulk(STATE_STORE_NAME, ["order_1", "order_2"]);
 }
 
-$app = \Dapr\App::create();
-$app->run(function(\Dapr\State\StateManager $stateManager, \Psr\Log\LoggerInterface $logger) {
-    $obj = new MyState();
-    $stateManager->save_object(item: $obj);
-    $logger->alert('States have been stored');
-
-    $stateManager->load_object(into: $obj);
-    $logger->alert("Got value: {data}", ['data' => $obj]);
-});
+main();
 ```
 
-Run the app:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr --app-id myapp run -- php state-example.php
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
-And see the following output:
+{{% /codetab %}}
 
-```md
-✅  You're up and running! Both Dapr and your app logs will appear here.
+{{% codetab %}}
+With the same Dapr instance running from above save two key/value pairs into your statestore:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250"}, { "key": "order_2", "value": "550"}]' http://localhost:3601/v1.0/state/statestore
+```
 
-== APP == [2021-02-12T16:55:02.913801+01:00] APP.ALERT: States have been stored [] []
+Now get the states you just saved:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
+```
+{{% /codetab %}}
 
-== APP == [2021-02-12T16:55:02.917850+01:00] APP.ALERT: Got value: [object MyState] {"data":{"MyState":{"key1":"value1","key2":"value2"}}} []
+{{% codetab %}}
+With the same Dapr instance running from above save two key/value pairs into your statestore:
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "order_1", "value": "250"}, { "key": "order_2", "value": "550"}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
+```
+
+Now get the states you just saved:
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```
 
 {{% /codetab %}}
@@ -446,138 +660,239 @@ And see the following output:
 State transactions require a state store that supports multi-item transactions. Visit the [supported state stores page]({{< ref supported-state-stores >}}) page for a full list. Note that the default Redis container created in a self-hosted environment supports them.
 {{% /alert %}}
 
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)" "Python SDK" "PHP SDK">}}
+Below are code examples that leverage Dapr SDKs for performing state transactions.
+
+{{< tabs Dotnet Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-With the same dapr instance running from above perform two state transactions:
-```bash
-curl -X POST -H "Content-Type: application/json" -d '{"operations": [{"operation":"upsert", "request": {"key": "key1", "value": "newValue1"}}, {"operation":"delete", "request": {"key": "key2"}}]}' http://localhost:3500/v1.0/state/statestore/transaction
+
+```csharp
+//dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Text.Json;
+
+//code
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_STORE_NAME = "statestore";
+            while(true) {
+                System.Threading.Thread.Sleep(5000);
+                Random random = new Random();
+                int orderId = random.Next(1,1000);
+                using var client = new DaprClientBuilder().Build();
+                var requests = new List<StateTransactionRequest>()
+                {
+                    new StateTransactionRequest("order_3", JsonSerializer.SerializeToUtf8Bytes(orderId.ToString()), StateOperationType.Upsert),
+                    new StateTransactionRequest("order_2", null, StateOperationType.Delete)
+                };
+                CancellationTokenSource source = new CancellationTokenSource();
+                CancellationToken cancellationToken = source.Token;
+                //Using Dapr SDK to perform the state transactions
+                await client.ExecuteStateTransactionAsync(DAPR_STORE_NAME, requests, cancellationToken: cancellationToken);
+                Console.WriteLine("Order requested: " + orderId);
+                Console.WriteLine("Result: " + result);
+            }
+        }
+    }
+}
 ```
 
-Now see the results of your state transactions:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"keys":["key1", "key2"]}' http://localhost:3500/v1.0/state/statestore/bulk
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
+```java
+//dependencies
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.domain.State;
+import io.dapr.client.domain.TransactionalStateOperation;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+//code
+@SpringBootApplication
+public class OrderProcessingServiceApplication {
+
+	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+
+	private static final String STATE_STORE_NAME = "statestore";
+
+	public static void main(String[] args) throws InterruptedException{
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
+			DaprClient client = new DaprClientBuilder().build();
+			List<TransactionalStateOperation<?>> operationList = new ArrayList<>();
+			operationList.add(new TransactionalStateOperation<>(TransactionalStateOperation.OperationType.UPSERT,
+					new State<>("order_3", Integer.toString(orderId), "")));
+			operationList.add(new TransactionalStateOperation<>(TransactionalStateOperation.OperationType.DELETE,
+					new State<>("order_2")));
+            //Using Dapr SDK to perform the state transactions
+			client.executeStateTransaction(STATE_STORE_NAME, operationList).block();
+			log.info("Order requested: " + orderId);
+		}
+	}
+
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same dapr instance running from above save two key/value pairs into your statestore:
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "key1", "value": "newValue1"}}, {"operation":"delete", "request": {"key": "key2"}}]}' -Uri 'http://localhost:3500/v1.0/state/statestore'
-```
-
-Now see the results of your state transactions:
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["key1", "key2"]}' -Uri 'http://localhost:3500/v1.0/state/statestore/bulk'
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-The `TransactionalStateOperation` can perform a state transaction if your state stores need to be transactional.
-
-Update your `pythonState.py` file with the following code:
-
 ```python
+#dependencies
+import random
+from time import sleep    
+import requests
+import logging
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
 
-with DaprClient() as d:
-    s1 = StateItem(key="key1", value="value1")
-    s2 = StateItem(key="key2", value="value2")
+#code
+logging.basicConfig(level = logging.INFO)    
+DAPR_STORE_NAME = "statestore"
+while True:
+    sleep(random.randrange(50, 5000) / 1000)
+    orderId = random.randint(1, 1000)
+    with DaprClient() as client:
+        #Using Dapr SDK to perform the state transactions
+        client.execute_state_transaction(store_name=DAPR_STORE_NAME, operations=[
+            TransactionalStateOperation(
+                operation_type=TransactionOperationType.upsert,
+                key="order_3",
+                data=str(orderId)),
+            TransactionalStateOperation(key="order_3", data=str(orderId)),
+            TransactionalStateOperation(
+                operation_type=TransactionOperationType.delete,
+                key="order_2",
+                data=str(orderId)),
+            TransactionalStateOperation(key="order_2", data=str(orderId))
+        ])
 
-    d.save_bulk_state(store_name="statestore", states=[s1,s2])
-    print("States have been stored")
-
-    d.execute_state_transaction(
-        store_name="statestore",
-        operations=[
-            TransactionalStateOperation(key="key1", data="newValue1", operation_type=TransactionOperationType.upsert),
-            TransactionalStateOperation(key="key2", data="value2", operation_type=TransactionOperationType.delete)
-        ]
-    )
-    print("State transactions have been completed")
-
-    items = d.get_bulk_state(store_name="statestore", keys=["key1", "key2"]).items
-    print(f"Got items: {[i.data for i in items]}")
+    client.delete_state(store_name=DAPR_STORE_NAME, key="order_1")
+    logging.basicConfig(level = logging.INFO)
+    logging.info('Order requested: ' + str(orderId))
+    logging.info('Result: ' + str(result))
 ```
 
-Now run your program with:
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
 
 ```bash
-dapr run python pythonState.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
-You should see an output similar to the following:
+{{% /codetab %}}
 
-```md
-Starting Dapr with id Singerchecker-Player. HTTP Port: 59533. gRPC Port: 59534
-== DAPR == time="2021-01-06T22:18:14.1246721-08:00" level=info msg="starting Dapr Runtime -- version 0.11.3 -- commit a1a8e11" app_id=Singerchecker-Player scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:18:14.1346254-08:00" level=info msg="standalone mode configured" app_id=Singerchecker-Player scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:18:14.2747063-08:00" level=info msg="component loaded. name: statestore, type: state.redis" app_id=Singerchecker-Player scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:18:14.2757062-08:00" level=info msg="API gRPC server is running on port 59534" app_id=Singerchecker-Player scope=dapr.runtime type=log ver=0.11.3
-== DAPR == time="2021-01-06T22:18:14.2767059-08:00" level=info msg="dapr initialized. Status: Running. Init Elapsed 142.0805ms" app_id=Singerchecker-Player scope=dapr.runtime type=log ver=0.11.3
 
-Checking if Dapr sidecar is listening on GRPC port 59534
-Dapr sidecar is up and running.
-Updating metadata for app command: python pythonState.py
-You're up and running! Both Dapr and your app logs will appear here.
+{{% codetab %}}
 
-== APP == State transactions have been completed
-== APP == Got items: [b'value1', b'']
+```javascript
+//dependencies
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+
+//code
+const daprHost = "127.0.0.1"; 
+var main = function() {
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        start(orderId).catch((e) => {
+            console.error(e);
+            process.exit(1);
+        });
+    }
+}
+
+async function start(orderId) {
+    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const STATE_STORE_NAME = "statestore";
+    //Using Dapr SDK to save and retrieve multiple states
+    await client.state.transaction(STATE_STORE_NAME, [
+        {
+        operation: "upsert",
+        request: {
+            key: "order_3",
+            value: orderId.toString()
+        }
+        },
+        {
+        operation: "delete",
+        request: {
+            key: "order_2"
+        }
+        }
+    ]);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+main();
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
-
-Transactional state is supported by extending `TransactionalState` base object which hooks into your
-object via setters and getters to provide a transaction. Before you created your own transactional object,
-but now you'll ask the Dependency Injection framework to build one for you.
-
-Modify the `state-example.php` file again:
-
-```php
-<?php
-
-require_once __DIR__.'/vendor/autoload.php';
-
-#[\Dapr\State\Attributes\StateStore('statestore', \Dapr\consistency\EventualLastWrite::class)]
-class MyState extends \Dapr\State\TransactionalState {
-    public string $key1 = 'value1';
-    public string $key2 = 'value2';
-}
-
-$app = \Dapr\App::create();
-$app->run(function(MyState $obj, \Psr\Log\LoggerInterface $logger, \Dapr\State\StateManager $stateManager) {
-    $obj->begin();
-    $obj->key1 = 'hello world';
-    $obj->key2 = 'value3';
-    $obj->commit();
-    $logger->alert('Transaction committed!');
-
-    // begin a new transaction which reloads from the store
-    $obj->begin();
-    $logger->alert("Got value: {key1}, {key2}", ['key1' => $obj->key1, 'key2' => $obj->key2]);
-});
-```
-
-Run the application:
-
+With the same Dapr instance running from above perform two state transactions:
 ```bash
-dapr --app-id myapp run -- php state-example.php
+curl -X POST -H "Content-Type: application/json" -d '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' http://localhost:3601/v1.0/state/statestore/transaction
 ```
 
-Observe the following output:
+Now see the results of your state transactions:
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
+```
+{{% /codetab %}}
 
-```md
-✅  You're up and running! Both Dapr and your app logs will appear here.
+{{% codetab %}}
+With the same Dapr instance running from above save two key/value pairs into your statestore:
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore'
+```
 
-== APP == [2021-02-12T17:10:06.837110+01:00] APP.ALERT: Transaction committed! [] []
-
-== APP == [2021-02-12T17:10:06.840857+01:00] APP.ALERT: Got value: hello world, value3 {"key1":"hello world","key2":"value3"} []
+Now see the results of your state transactions:
+```powershell
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```
 
 {{% /codetab %}}
