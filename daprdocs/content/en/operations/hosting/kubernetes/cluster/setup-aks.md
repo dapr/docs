@@ -50,14 +50,14 @@ az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
 ```
 
 ## Install Dapr using the AKS Dapr extension
-By using the AKS Dapr extension to provision Dapr on your AKS cluster, you have the option of eliminating the requirement of managing the runtime on your AKS cluster. Additionally, the extension offers support for all native Dapr configuration capabilities through simple command-line arguments.
+You have the option of using the AKS Dapr extension to provision Dapr on your AKS cluster. By using the extension, you have the option of eliminating all requirements of managing the runtime on your AKS cluster. Also the AKS Dapr extension offers support for all native Dapr configuration capabilities through command-line arguments via the Azure CLI.
 
 {{% alert title="Note" color="warning" %}}
 If you install Dapr through the AKS extension, our recommendation is to continue using the extension for future management of Dapr instead of the Dapr CLI. Combining the two tools can cause conflicts and result in undesired behavior.
 {{% /alert %}}
 
-### How it works
-The AKS Dapr extension uses the Azure CLI to provision the Dapr control plane on your AKS cluster. This will create:
+### How the extension works
+The Dapr extension uses the Azure CLI to provision the Dapr control plane on your AKS cluster. The Dapr control plane consists of:
 
 - **dapr-operator**: Manages component updates and Kubernetes services endpoints for Dapr (state stores, pub/subs, etc.)
 - **dapr-sidecar-injector**: Injects Dapr into annotated deployment pods and adds the environment variables DAPR_HTTP_PORT and DAPR_GRPC_PORT to enable user-defined applications to easily communicate with Dapr without hard-coding Dapr port values.
@@ -65,37 +65,37 @@ The AKS Dapr extension uses the Azure CLI to provision the Dapr control plane on
 - **dapr-sentry**: Manages mTLS between services and acts as a certificate authority. For more information read the security overview.
 
 ### Extension Prerequisites 
-To create an AKS cluster that can use the Dapr extension, you must enable the `AKS-ExtensionManager` and `AKS-Dapr` feature flags on your subscription.
+In order to create an AKS cluster that can use the Dapr extension, you must first enable the `AKS-ExtensionManager` and `AKS-Dapr` feature flags on your Azure subscription.
 
-Register the `AKS-ExtensionManager` and `AKS-Dapr` feature flags by using the az feature register command, as shown in the following example:
+The below command will register the `AKS-ExtensionManager` and `AKS-Dapr` feature flags:
 
 ```bash
 az feature register --namespace "Microsoft.ContainerService" --name "AKS-ExtensionManager"
 az feature register --namespace "Microsoft.ContainerService" --name "AKS-Dapr"
 ```
 
-It takes a few minutes for the status to show Registered. Verify the registration status by using the az feature list command:
+After a few minutes, check the status to show Registered. Confirm the registration status by using the az feature list command:
 
 ```bash
 az feature list -o table --query "[?contains(name, 'Microsoft.ContainerService/AKS-ExtensionManager')].{Name:name,State:properties.state}"
 az feature list -o table --query "[?contains(name, 'Microsoft.ContainerService/AKS-Dapr')].{Name:name,State:properties.state}"
 ```
 
-When ready, refresh the registration of the `Microsoft.KubernetesConfiguration` and `Microsoft.ContainerService` resource providers by using the az provider register command:
+Next, refresh the registration of the `Microsoft.KubernetesConfiguration` and `Microsoft.ContainerService` resource providers by using the az provider register command:
 
 ```bash
 az provider register --namespace Microsoft.KubernetesConfiguration
 az provider register --namespace Microsoft.ContainerService
 ```
 
-#### Set up the Azure CLI extension for cluster extensions
+#### Enable the Azure CLI extension for cluster extensions
 You will also need the `k8s-extension` Azure CLI extension. Install this by running the following commands:
 
 ```bash
 az extension add --name k8s-extension
 ```
 
-If the `k8s-extension` extension is already installed, you can update it to the latest version using the following command:
+If the `k8s-extension` extension is already present, you can update it to the latest version using the below command:
 
 ```bash
 az extension update --name k8s-extension
@@ -112,7 +112,7 @@ az k8s-extension create --cluster-type managedClusters \
 --extension-type Microsoft.Dapr
 ```
 
-You also have the option of allowing Dapr to auto-update its minor version by specifying the `--auto-upgrade-minor-version` parameter and setting the value to true:
+Additionally, you also have the option of allowing Dapr to auto-update its minor version by specifying the `--auto-upgrade-minor-version` parameter and setting the value to true:
 
 ```bash
 --auto-upgrade-minor-version true
