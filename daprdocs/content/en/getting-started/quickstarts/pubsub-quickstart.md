@@ -12,7 +12,7 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{<
 1. [A Pub/sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages (using Redis Streams, RabbitMQ, Kafka, etc.).
 1. The subscriber to that topic pulls messages from the queue and processes them.
 
-Select your preferred language before proceeding with the quickstart.
+Select your preferred language-specific Dapr SDK before proceeding with the quickstart.
 
 {{< tabs "Python" ".NET" "JavaScript" >}}
  <!-- Python -->
@@ -24,6 +24,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
 
@@ -53,16 +54,22 @@ python -m pip install -r requirements.txt
 
 ### Step 2: View the Pub/sub component
 
-When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
+When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine. Verify by finding the YAML file in your components directory:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
 - On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
 
-For this quickstart, we've included a default Redis `pubsub.yaml` file within the cloned repository that contains the following:
+The Redis `pubsub.yaml` file included for this quickstart contains the following:
 
 {{< tabs "Self-Hosted (CLI)" "Kubernetes" >}}
 
 {{% codetab %}}
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -85,6 +92,12 @@ scopes:
 {{% /codetab %}}
 
 {{% codetab %}}
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
 
 Run `kubectl apply -f pubsub.yaml` to apply the following:
 
@@ -211,6 +224,7 @@ For this example, you will need:
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [.NET and ASP.NET Core installed](https://dotnet.microsoft.com/en-us/download/dotnet/5.0/runtime).
 - [Latest NuGet package installed](https://www.nuget.org/downloads).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
 
@@ -228,16 +242,22 @@ cd pub_sub/csharp
 
 ### Step 2: View the Pub/sub component
 
-When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
+When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine. Verify by finding the YAML file in your components directory:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
 - On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
 
-For this quickstart, we've included a default Redis `pubsub.yaml` file within the cloned repository that contains the following:
+The Redis `pubsub.yaml` file included for this quickstart contains the following:
 
 {{< tabs "Self-Hosted (CLI)" "Kubernetes" >}}
 
 {{% codetab %}}
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -260,6 +280,12 @@ scopes:
 {{% /codetab %}}
 
 {{% codetab %}}
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
 
 Run `kubectl apply -f pubsub.yaml` to apply the following:
 
@@ -398,6 +424,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Latest Node.js installed](https://nodejs.org/en/download/).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
 
@@ -426,16 +453,22 @@ Verify you have the following files included in the service directories:
 
 ### Step 2: View the Pub/sub component
 
-When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your local machine. Verify by opening your components directory:
+When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine. Verify by finding the YAML file in your components directory:
 
 - On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
 - On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
 
-For this quickstart, we've included a default Redis `pubsub.yaml` file within the cloned repository that contains the following:
+The Redis `pubsub.yaml` file included for this quickstart contains the following:
 
 {{< tabs "Self-Hosted (CLI)" "Kubernetes" >}}
 
 {{% codetab %}}
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -458,6 +491,12 @@ scopes:
 {{% /codetab %}}
 
 {{% codetab %}}
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
 
 Run `kubectl apply -f pubsub.yaml` to apply the following:
 
