@@ -57,16 +57,6 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-pr
 In the OrderProcessingService.py publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
 
 ```python
-import random
-from time import sleep    
-import requests
-import logging
-import json
-from dapr.clients import DaprClient
-
-logging.basicConfig(level = logging.INFO)
-while True:
-    sleep(random.randrange(50, 5000) / 1000)
     # Publisher
     orderId = random.randint(1, 1000)
     PUBSUB_NAME = 'order_pub_sub'
@@ -91,29 +81,10 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol 
 
 In the CheckoutService.py subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
-  
 ```py
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
-import logging
-
-import json
-
-app = App()
-
-logging.basicConfig(level = logging.INFO)
-
 # Subscriber
 @app.subscribe(pubsub_name='order_pub_sub', topic='orders')
-def mytopic(event: v1.Event) -> None:
-    data = json.loads(event.Data())
-    logging.info('Subscriber received: ' + str(data))
-
-app.run(6002)
 ```
-
-**Note:**  
-Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `data_content_type` attribute.
 
 ### Step 4: View the Pub/sub outputs
 
@@ -211,32 +182,12 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 In the OrderProcessingService/server.js publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:  
 
 ```js
-import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
-
-const daprHost = "127.0.0.1"; 
-
-var main = function() {
-    for(var i=0;i<10;i++) {
-        sleep(5000);
-        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
-        start(orderId).catch((e) => {
-            console.error(e);
-            process.exit(1);
-        });
-    }
-}
-
+// Publisher
 async function start(orderId) {
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     console.log("Published data:" + orderId)
     await client.pubsub.publish("order_pub_sub", "orders", orderId);
 }
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-main();
 ```
 
 ### Step 3: Subscribe to topics
@@ -250,17 +201,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 In the CheckoutService/server.js subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```js
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
-
-const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
-
-start().catch((e) => {
-    console.error(e);
-    process.exit(1);
-});
-
+// Subscriber
 async function start(orderId) {
     const PUBSUB_NAME = "order_pub_sub"
     const TOPIC_NAME  = "orders"
@@ -364,35 +305,21 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 In the Program.cs publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
 
 ```cs
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-
-namespace EventService
+// Publisher
+static async Task Main(string[] args)
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-           string PUBSUB_NAME = "order_pub_sub";
-           string TOPIC_NAME = "orders";
-           while(true) {
-                System.Threading.Thread.Sleep(5000);
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                CancellationTokenSource source = new CancellationTokenSource();
-                CancellationToken cancellationToken = source.Token;
-                using var client = new DaprClientBuilder().Build();
-                await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
-                Console.WriteLine("Published data: " + orderId);
-           }
-        }
-    }
+   string PUBSUB_NAME = "order_pub_sub";
+   string TOPIC_NAME = "orders";
+   while(true) {
+        System.Threading.Thread.Sleep(5000);
+        Random random = new Random();
+        int orderId = random.Next(1,1000);
+        CancellationTokenSource source = new CancellationTokenSource();
+        CancellationToken cancellationToken = source.Token;
+        using var client = new DaprClientBuilder().Build();
+        await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
+        Console.WriteLine("Published data: " + orderId);
+   }
 }
 ```
 
@@ -407,25 +334,12 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 In the CheckoutServiceController.cs subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```cs
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Dapr;
-using Dapr.Client;
-
-namespace CheckoutService.controller
+// Subscriber
+[Topic("order_pub_sub", "orders")]
+[HttpPost("checkout")]
+public void getCheckout([FromBody] int orderId)
 {
-    [ApiController]
-    public class CheckoutServiceController : Controller
-    {
-        [Topic("order_pub_sub", "orders")]
-        [HttpPost("checkout")]
-        public void getCheckout([FromBody] int orderId)
-        {
-            Console.WriteLine("Subscriber received : " + orderId);
-        }
-    }
+    Console.WriteLine("Subscriber received : " + orderId);
 }
 ```
 
