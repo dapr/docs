@@ -51,7 +51,7 @@ pip3 install -r requirements.txt
 In the `pub_sub/python` directory, run the OrderProcessingService.py service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
 ```
 
 In the OrderProcessingService.py publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
@@ -76,7 +76,7 @@ In the OrderProcessingService.py publisher, we're publishing the orderId message
 In the `pub_sub/python` directory, run the CheckoutService.py service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
+dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
 ```
 
 In the CheckoutService.py subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
@@ -176,7 +176,7 @@ Verify you have the following files included in the service directories:
 In the `pubsub/javascript/OrderProcessingService` directory, run the OrderProcessingService/server.js service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
+dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
 ```
 
 In the OrderProcessingService/server.js publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:  
@@ -195,7 +195,7 @@ async function start(orderId) {
 In the `pubsub/javascript/CheckoutService` directory, run the CheckoutService/server.js service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
+dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
 ```
 
 In the CheckoutService/server.js subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
@@ -299,7 +299,7 @@ cd pub_sub/csharp
 In the `pub_sub/csharp/OrderProcessingService` directory, run Program.cs service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl --components-path ../../components dotnet run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --dapr-grpc-port 60001 --app-ssl --components-path ../../components dotnet run
 ```
 
 In the Program.cs publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
@@ -328,7 +328,7 @@ static async Task Main(string[] args)
 In the `pub_sub/csharp/CheckoutService/Controllers` directory, run the CheckoutServiceController.cs service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl --components-path ../../components dotnet run
+dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --dapr-grpc-port 60002 --app-ssl --components-path ../../components dotnet run
 ```
 
 In the CheckoutServiceController.cs subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
