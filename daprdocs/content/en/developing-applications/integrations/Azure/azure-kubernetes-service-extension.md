@@ -19,10 +19,10 @@ If you install Dapr through the AKS extension, our recommendation is to continue
 {{% /alert %}}
 
 ### How the extension works
-The Dapr extension uses the Azure CLI to provision the Dapr control plane on your AKS cluster. The Dapr control plane consists of:
+The Dapr extension works by provisioning the Dapr control plane on your AKS cluster through the Azure CLI. The dapr control plane consists of:
 
 - **dapr-operator**: Manages component updates and Kubernetes services endpoints for Dapr (state stores, pub/subs, etc.)
-- **dapr-sidecar-injector**: Injects Dapr into annotated deployment pods and adds the environment variables DAPR_HTTP_PORT and DAPR_GRPC_PORT to enable user-defined applications to easily communicate with Dapr without hard-coding Dapr port values.
+- **dapr-sidecar-injector**: Injects Dapr into annotated deployment pods and adds the environment variables `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT`. This enables user-defined applications to communicate with Dapr without the need to hard-code Dapr port values. 
 - **dapr-placement**: Used for actors only. Creates mapping tables that map actor instances to pods
 - **dapr-sentry**: Manages mTLS between services and acts as a certificate authority. For more information read the security overview.
 
@@ -64,7 +64,7 @@ az extension update --name k8s-extension
 ```
 
 #### Create the extension and install Dapr on your AKS cluster
-Once your subscription is registered to use Kubernetes extensions, you can create the Dapr extension, which installs Dapr on your AKS cluster. For example:
+After your subscription is registered to use Kubernetes extensions, install Dapr on your cluster by creating the Dapr extension. For example:
 
 ```bash
 az k8s-extension create --cluster-type managedClusters \
@@ -74,7 +74,7 @@ az k8s-extension create --cluster-type managedClusters \
 --extension-type Microsoft.Dapr
 ```
 
-Additionally, you also have the option of allowing Dapr to auto-update its minor version by specifying the `--auto-upgrade-minor-version` parameter and setting the value to true:
+Additionally, Dapr can automatically update its minor version. To enable this, set the `--auto-upgrade-minor-version` parameter to true:
 
 ```bash
 --auto-upgrade-minor-version true
