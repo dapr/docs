@@ -156,6 +156,41 @@ dapr run --app-id orderprocessing --components-path ./components python3 OrderPr
 
 {{< /tabs >}}
 
+### Get configuration items using gRPC API
+
+Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto). The following examples show Java, C#, Python and Javascript clients.
+
+{{< tabs Java Dotnet Python Javascript >}}
+
+{{% codetab %}}
+```java
+
+Dapr.ServiceBlockingStub stub = Dapr.newBlockingStub(channel);
+stub.GetConfigurationAlpha1(new GetConfigurationRequest{ StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+
+var call = client.GetConfigurationAlpha1(new GetConfigurationRequest { StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+response = stub.GetConfigurationAlpha1(request={ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```javascript
+client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 ### Watch configuration items
 
 Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Then use the proto method `SubscribeConfigurationAlpha1` on your client stub to start subscribing to events. The method accepts the following request object:
