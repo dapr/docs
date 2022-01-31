@@ -191,7 +191,7 @@ client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig
 
 {{< /tabs >}}
 
-### Watch configuration items
+##### Watch configuration items
 
 Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Then use the proto method `SubscribeConfigurationAlpha1` on your client stub to start subscribing to events. The method accepts the following request object:
 
@@ -212,7 +212,7 @@ message SubscribeConfigurationRequest {
 
 Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language - see the [gRPC examples here](https://grpc.io/docs/languages/) for usage.
 
-### Stop watching configuration items
+##### Stop watching configuration items
 
 After you have subscribed to watch configuration items, the gRPC-server stream starts. This stream thread does not close itself, and you have to do by explicitly call the `UnSubscribeConfigurationRequest` API. This method accepts the following request object:
 
