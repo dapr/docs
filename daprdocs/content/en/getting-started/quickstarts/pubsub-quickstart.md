@@ -60,7 +60,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --components-path ../components  python3 app.py
 ```
 
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```python
 from dapr.clients import DaprClient
@@ -221,50 +221,76 @@ Verify you have the following files included in the service directories:
 
 ### Step 2: Publish a topic
 
-In the `pubsub/javascript/OrderProcessingService` directory, run the OrderProcessingService/server.js service alongside a Dapr sidecar.
+Navigate to the `checkout` directory.
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
+cd checkout
 ```
 
-In the OrderProcessingService/server.js publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:  
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --app-port 6001 --dapr-grpc-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
+```
+
+In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:  
 
 ```js
-// Publisher
-async function start(orderId) {
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-    console.log("Published data:" + orderId)
-    await client.pubsub.publish("order_pub_sub", "orders", orderId);
+import { DaprClient } from 'dapr-client';
+import { v4 as uuidv4 } from 'uuid';
+
+const SIDECAR_HOST = process.env.SIDECAR_HOST || "127.0.0.1";
+const SIDECAR_PORT = process.env.SIDECAR_PORT || 3500;
+
+async function main() {
+  const client = new DaprClient(SIDECAR_HOST, SIDECAR_PORT);
+
+  while (true) {
+    await client.pubsub.publish("order_pub_sub", "orders", { orderId: uuidv4() });
+    await sleep(1000);
+  }
 }
+
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+main().catch(e => console.error(e)) 
 ```
 
 ### Step 3: Subscribe to topics
 
-In the `pubsub/javascript/CheckoutService` directory, run the CheckoutService/server.js service alongside a Dapr sidecar.
+Navigate to the `order-processor` directory.
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
+cd order-processor
 ```
 
-In the CheckoutService/server.js subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+Run the `order-processor` subscriber service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --app-port 6002 --dapr-grpc-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
+```
+
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```js
-// Subscriber
-async function start(orderId) {
-    const PUBSUB_NAME = "order_pub_sub"
-    const TOPIC_NAME  = "orders"
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-     );
-    await server.pubsub.subscribe(PUBSUB_NAME, TOPIC_NAME, async (orderId) => {
-        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
-    });
-    await server.startServer();
+// Order Processing = Server which processes items
+// Checkout will do the pub sub
+import { DaprServer } from 'dapr-client';
+
+const SIDECAR_HOST = process.env.SIDECAR_HOST || "127.0.0.1";
+const SIDECAR_PORT = process.env.SIDECAR_PORT || 3500;
+const SERVER_HOST = process.env.SERVER_HOST || "127.0.0.1";
+const SERVER_PORT = process.env.SERVER_PORT || 5000;
+
+async function main() {
+  const server = new DaprServer(SERVER_HOST, SERVER_PORT, SIDECAR_HOST, SIDECAR_PORT);
+  server.pubsub.subscribe("order_pub_sub", "orders", (data) => console.log(data));
+  await server.start();
 }
+
+main().catch(e => console.error(e)); 
 ```
 
 ### Step 4: View the Pub/sub outputs
@@ -277,7 +303,7 @@ Publisher output:
 
 Subscriber output:
 
-<img src="/images/pubsub-quickstart/pubsub-js-subscriber-output.png" width=600style="padding-bottom:25px;">
+<img src="/images/pubsub-quickstart/pubsub-js-subscriber-output.png" width=600 style="padding-bottom:25px;">
 
 #### `pubsub.yaml` component file
 
@@ -362,7 +388,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --components-path ../../components dotnet run
 ```
 
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```cs
 // Publisher
