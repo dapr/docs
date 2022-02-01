@@ -208,10 +208,10 @@ Navigate to the Pub/sub C# project directory:
 cd pub_sub/javascript
 ```
 
-Install `dapr-client`:
+Update to include `dapr-client`:
 
 ```bash
-npm install dapr-client
+npm install
 ```
 
 Verify you have the following files included in the service directories:
@@ -230,7 +230,7 @@ cd checkout
 Run the `checkout` publisher service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-port 6001 --dapr-grpc-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3501 --components-path ./components -- npm run start
 ```
 
 In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:  
@@ -269,7 +269,7 @@ cd order-processor
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --app-port 6002 --dapr-grpc-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
+dapr run --app-port 5000 --app-id order-processing --app-protocol http --dapr-http-port 3500 --components-path ./components -- npm run start
 ```
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
