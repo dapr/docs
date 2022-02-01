@@ -48,42 +48,90 @@ pip3 install -r requirements.txt
 
 ### Step 2: Publish a topic
 
-In the `pub_sub/python` directory, run the OrderProcessingService.py service alongside a Dapr sidecar.
+Navigate to the `checkout` directory.
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
+cd checkout
 ```
 
-In the OrderProcessingService.py publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --components-path ../components  python3 app.py
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
 
 ```python
-    # Publisher
-    orderId = random.randint(1, 1000)
-    PUBSUB_NAME = 'order_pub_sub'
-    TOPIC_NAME = 'orders'
+from dapr.clients import DaprClient
+import json
+import time
+import random
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+while True:
+    order = {"orderid": random.randint(1, 1000)}
+
     with DaprClient() as client:
-        result = client.publish_event(
-            pubsub_name=PUBSUB_NAME,
-            topic_name=TOPIC_NAME,
-            data=json.dumps(orderId),
-            data_content_type='application/json',
+        result = client.publish_event(  # publish an event using Dapr pub-sub
+            pubsub_name="order_pub_sub",
+            topic_name="orders",
+            data=json.dumps(order),
+            data_content_type="application/json",
         )
-    logging.info('Published data: ' + str(orderId))
+
+    logging.info("Published data: " + json.dumps(order))
+    time.sleep(1)
 ```
 
 ### Step 3: Subscribe to topics
 
-In the `pub_sub/python` directory, run the CheckoutService.py service alongside a Dapr sidecar.
+In a new terminal window, navigate to the `order-processor` directory.
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
+cd order-processor
 ```
 
-In the CheckoutService.py subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+Run the `order-processor` subscriber service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --app-port 5001 --components-path ../components  python3 app.py
+```
+
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```py
-# Subscriber
-@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+import flask
+from flask import request, jsonify
+# from cloudevents.sdk.event import v1
+# from dapr.ext.grpc import App
+import json
+
+app = flask.Flask(__name__)
+# app = App()
+# @app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+# def orders_subscribe(event: v1.Event) -> None:
+#     data = json.loads(event.Data())
+#     logging.info('Subscriber received: ' + str(data))
+#     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/dapr/subscribe', methods=['GET'])
+def subscribe():
+    subscriptions = [{'pubsubname': 'order_pub_sub', 'topic': 'orders', 'route': 'orders'}]
+    return jsonify(subscriptions)
+
+
+@app.route('/orders', methods=['POST'])
+def a_subscriber():
+    print(f'orders: {request.json}', flush=True)
+    print('Received message "{}" on topic "{}"'.format(request.json['data']['orderid'], request.json['topic']), flush=True)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+
+
+app.run(port=5001)
 ```
 
 ### Step 4: View the Pub/sub outputs
@@ -276,8 +324,7 @@ In the YAML file:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET and ASP.NET Core installed](https://dotnet.microsoft.com/en-us/download/dotnet/5.0/runtime).
-- [Latest NuGet package installed](https://www.nuget.org/downloads).
+- [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/en-us/download).
 - [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
@@ -288,59 +335,118 @@ Clone the sample we've set up:
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-Navigate to the Pub/sub C# project directory:
+In a terminal window, navigate to the Pub/sub C# project directory:
 
 ```bash
 cd pub_sub/csharp
 ```
 
-### Step 2: Publish a topic
-
-In the `pub_sub/csharp/OrderProcessingService` directory, run Program.cs service alongside a Dapr sidecar.
+Recall NuGet packages:
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --dapr-grpc-port 60001 --app-ssl --components-path ../../components dotnet run
+dotnet restore
+dotnet build
 ```
 
-In the Program.cs publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
+### Step 2: Publish a topic
+
+Navigate to the `checkout` publisher directory.
+
+```bash
+cd checkout
+```
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --components-path ../../components dotnet run
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the OrderProcessingService.py starts, it publishes in a loop:
 
 ```cs
 // Publisher
-static async Task Main(string[] args)
-{
-   string PUBSUB_NAME = "order_pub_sub";
-   string TOPIC_NAME = "orders";
-   while(true) {
-        System.Threading.Thread.Sleep(5000);
-        Random random = new Random();
-        int orderId = random.Next(1,1000);
-        CancellationTokenSource source = new CancellationTokenSource();
-        CancellationToken cancellationToken = source.Token;
-        using var client = new DaprClientBuilder().Build();
-        await client.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, orderId, cancellationToken);
-        Console.WriteLine("Published data: " + orderId);
-   }
+using System;
+using Dapr.Client;
+using System.Threading;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+
+while(true) {
+    Random random = new Random();
+    var order = new Order(random.Next(1,1000));
+    var data = JsonSerializer.Serialize<Order>(order);
+    CancellationTokenSource source = new CancellationTokenSource();
+    CancellationToken cancellationToken = source.Token;
+    using var client = new DaprClientBuilder().Build();
+    await client.PublishEventAsync("order_pub_sub", "orders", data, cancellationToken);
+    Console.WriteLine("Published data: " + data);
+    System.Threading.Thread.Sleep(1000);
 }
+
+public record Order([property: JsonPropertyName("orderid")] int order_id);
 ```
 
 ### Step 3: Subscribe to topics
 
-In the `pub_sub/csharp/CheckoutService/Controllers` directory, run the CheckoutServiceController.cs service alongside a Dapr sidecar.
+In a new terminal window, navigate to the `order-processor` directory.
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --dapr-grpc-port 60002 --app-ssl --components-path ../../components dotnet run
+cd pub_sub/csharp/order-processor
 ```
 
-In the CheckoutServiceController.cs subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+Run the `order-processor` subscriber service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --components-path ../../components --app-port 5001 dotnet run
+```
+
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```cs
 // Subscriber
-[Topic("order_pub_sub", "orders")]
-[HttpPost("checkout")]
-public void getCheckout([FromBody] int orderId)
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    Console.WriteLine("Subscriber received : " + orderId);
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
+
+app.MapGet("/dapr/subscribe", () => {
+    var subscriptions = "[{'pubsubname': 'order_pub_sub', 'topic': 'orders', 'route': 'orders'}]";
+    return subscriptions;
+});
+
+app.MapPost("/orders", (Order order) => {
+    Console.WriteLine("Subscriber received : " + order.ToString());
+    return Results.Ok(order.ToString());
+});
+
+        // [Topic("order_pub_sub", "orders")]
+        // [HttpPost("order-processor")]
+        // public HttpResponseMessage getCheckout([FromBody] int orderId)
+        // {
+        //     Console.WriteLine("Subscriber received : " + orderId);
+        //     return new HttpResponseMessage(HttpStatusCode.OK);
+        // }
+
+await app.RunAsync();
+
+app.Run();
+
+public record Order([property: JsonPropertyName("orderid")] int order_id);
 ```
 
 ### Step 4: View the Pub/sub outputs
