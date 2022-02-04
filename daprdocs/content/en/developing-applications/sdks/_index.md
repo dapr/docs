@@ -36,7 +36,7 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 | [Java]({{< ref java >}}) | Stable | ✔ | Spring Boot | ✔ |
 | [Go]({{< ref go >}}) | Stable | ✔ | ✔ | ✔ |
 | [PHP]({{< ref php >}}) | Stable | ✔ | ✔ | ✔ |
-| [Javascript](https://github.com/dapr/js-sdk) | Stable| ✔ | | ✔ |
+| [Javascript]({{< ref js >}}) | Stable| ✔ | | ✔ |
 | [C++](https://github.com/dapr/cpp-sdk) | In development | ✔ | |
 | [Rust](https://github.com/dapr/rust-sdk) | In development | ✔ | |  |
 
