@@ -66,4 +66,5 @@ The following stores are supported, at various levels, by the Dapr state managem
 
 | Name                                                             |CRUD|Transactional|ETag| [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | [Query]({{< ref howto-state-query-api.md >}}) | Status | Component version | Since |
 |------------------------------------------------------------------|----|-------------|----|----|----|----|-------|----|-----|
-| [OCI Object Storage]({{< ref setup-oci-objectstorage.md >}})     | ✅ | ❌           | ✅ | ✅ | ❌ | ❌ | Alpha | v1 | 1.6 |
+| [Autonomous Database (ATP and ADW)]({{< ref setup-oracledatabase.md >}})      | ✅ | ✅          | ✅  | ✅ | ✅ | ❌ | Alpha  | v1 | 1.7 |
+| [Object Storage]({{< ref setup-oci-objectstorage.md >}})     | ✅ | ❌           | ✅ | ✅ | ❌ | ❌ | Alpha | v1 | 1.6 |
