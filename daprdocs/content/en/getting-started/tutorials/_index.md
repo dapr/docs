@@ -26,9 +26,10 @@ Thanks to our expansive Dapr community, we offer tutorials hosted both on Dapr D
 
 | GitHub tutorials               | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Hello World](https://github.com/dapr/quickstarts/tree/v1.5.0/hello-world)            | *Recommended* <br> Demonstrates how to run Dapr locally. Highlights service invocation and state management.
-| [Hello World Kubernetes](https://github.com/dapr/quickstarts/tree/v1.5.0/hello-kubernetes)       | *Recommended* <br> Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.
+| [Hello World](https://github.com/dapr/quickstarts/tree/v1.5.0/hello-world)            | *Recommended* <br> Demonstrates how to run Dapr locally. Highlights service invocation and state management.  |
+| [Hello World Kubernetes](https://github.com/dapr/quickstarts/tree/v1.5.0/hello-kubernetes)       | *Recommended* <br> Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.  |
 | [Distributed Calculator](https://github.com/dapr/quickstarts/tree/v1.5.0/distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
+| [Pub/Sub](https://github.com/dapr/quickstarts/tree/v1.6.0/pub-sub)                | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.  |
 | [Bindings](https://github.com/dapr/quickstarts/tree/v1.6.0/bindings)            | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
 | [Observability](https://github.com/dapr/quickstarts/tree/v1.6.0/observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [Secret Store](https://github.com/dapr/quickstarts/tree/v1.6.0/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
