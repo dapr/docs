@@ -100,13 +100,17 @@ creates the following object:
 
 with the EXPIRATION_TIME set to a timestamp 2 minutes (120 seconds) (later than the CREATION_TIME) 
 
-Note that expired state is not removed from the state store by this component. An application operator may decide to run a periodic job that does a form of garbage collection in order to explicitly remove all state records with an EXPIRATION_TIME in the past.
+Note that expired state is not removed from the state store by this component. An application operator may decide to run a periodic job that does a form of garbage collection in order to explicitly remove all state records with an EXPIRATION_TIME in the past. The SQL statement for collecting the expired garbage records:
+   ```SQL
+    delete dapr_state 
+    where  expiration_time < SYS_EXTRACT_UTC(SYSTIMESTAMP);
+   ```
 
 ## Concurrency
 
-Concurrency in the Oracle Database state store is achieved by using `ETag`s. Each piece of state recorded in the Oracle Database state store is assigned a unique ETag - a generated, unique string stored in the column ETag - when it is created or updated.
+Concurrency in the Oracle Database state store is achieved by using `ETag`s. Each piece of state recorded in the Oracle Database state store is assigned a unique ETag - a generated, unique string stored in the column ETag - when it is created or updated. Note: the column UPDATE_TIME is also updated whenever a `Set` operation is performed on an existing record. 
 
- Note: the column UPDATE_TIME is also updated whenever a `Set` operation is performed on an existing record. When the `Set` and `Delete` requests for this state store specify the FirstWrite concurrency policy, then the request need to provide the actual ETag value for the state to be written or removed for the request to be successful. 
+Only when the `Set` and `Delete` requests for this state store specify the *FirstWrite* concurrency policy, then the request needs to provide the actual ETag value for the state to be written or removed for the request to be successful. If a different or no concurrency policy is specified, then no check is performed on the ETag value.
 
 ## Consistency
 
@@ -126,22 +130,45 @@ Oracle Database state store does not currently support the Query API.
 
 {{% codetab %}}
 
-1. Run an instance of Oracle Database. You can run a local instance of Oracle Database in Docker CE with the following command:
-
-     This example does not describe a production configuration because it sets the password for users `SYS` and `SYSTEM` in plain text.
-
+1. Run an instance of Oracle Database. You can run a local instance of Oracle Database in Docker CE with the following command - or of course use an existing Oracle Database:     
      ```bash
      docker run -d -p 1521:1521 -e ORACLE_PASSWORD=TheSuperSecret1509! gvenzl/oracle-xe
      ```
+    This example does not describe a production configuration because it sets the password for users `SYS` and `SYSTEM` in plain text.
 
-2. Create a schema for state data.
-Create a new user schema for storing state data. Grant this user (schema) privileges for creating a table and storing data in the associated tablespace.
+     When the output from the conmmand indicates that the container is running, learn the container id using the `docker ps` command. Then start a shell session using:
+     ```bash
+     docker exec -it <container id> /bin/bash
+     ```
+     and subsequently run the SQL*Plus client, connecting to the database as the SYS user:
+     ```bash
+     sqlplus sys/TheSuperSecret1509! as sysdba
+     ```
+
+2. Create a database schema for state data. Create a new user schema - for example called *dapr* - for storing state data. Grant this user (schema) privileges for creating a table and storing data in the associated tablespace.
 
     To create a new user schema in Oracle Database, run the following SQL command:
 
     ```SQL
-    create user dapr_state identified by DaprState4239 default tablespace users quota unlimited on users;
-    grant create session, create table to dapr_state;
+    create user dapr identified by DaprPassword4239 default tablespace users quota unlimited on users;
+    grant create session, create table to dapr;
+    ```
+
+3. (optional) Create table for storing state records.
+The Oracle Database state store component checks if the table for storing state already exists in the database user schema it connects to and if it does not, it creates that table. However, instead of having the Oracle Database state store component create the table for storing state records at run time, you can also create the table in advance. That gives you - or the DBA for the database - more control over the physical configuration of the table. This also means you do not have to grant the *create table* privilege to the user schema. 
+
+    Run the following DDL statement to create the table for storing the state in the *dapr* database user schema :
+
+    ```SQL
+    CREATE TABLE dapr_state (
+			key varchar2(2000) NOT NULL PRIMARY KEY,
+			value clob NOT NULL,
+			binary_yn varchar2(1) NOT NULL,
+			etag varchar2(50)  NOT NULL,
+			creation_time TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL ,
+			expiration_time TIMESTAMP WITH TIME ZONE NULL,
+			update_time TIMESTAMP WITH TIME ZONE NULL
+      )
     ```
 {{% /codetab %}}
 
@@ -149,17 +176,35 @@ Create a new user schema for storing state data. Grant this user (schema) privil
 
 1. Create a free (or paid for) Autonomous Transaction Processing (ATP) or ADW (Autonomous Data Warehouse) instance on Oracle Cloud Infrastructure, as described in the [OCI documentation for the always free autonomous database](https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/autonomous-always-free.html#GUID-03F9F3E8-8A98-4792-AB9C-F0BACF02DC3E).
 
-You need to provide the password for user ADMIN. You use this account (initially at least) for database administration activities. You can work both in the web based SQL Developer tool, from its desktop counterpart or from any of a plethora of database development tools.  
+    You need to provide the password for user ADMIN. You use this account (initially at least) for database administration activities. You can work both in the web based SQL Developer tool, from its desktop counterpart or from any of a plethora of database development tools.  
 
 2. Create a schema for state data.
-Create a new user schema for storing state data - for example using the ADMIN account. Grant this new user (schema) privileges for creating a table and storing data in the associated tablespace.
+Create a new user schema in the Oracle Database for storing state data - for example using the ADMIN account. Grant this new user (schema) privileges for creating a table and storing data in the associated tablespace.
 
     To create a new user schema in Oracle Database, run the following SQL command:
 
     ```SQL
-    create user dapr_state identified by DaprState4239 default tablespace users quota unlimited on users;
-    grant create session, create table to dapr_state;
+    create user dapr identified by DaprPassword4239 default tablespace users quota unlimited on users;
+    grant create session, create table to dapr;
     ```
+
+3. (optional) Create table for storing state records.
+The Oracle Database state store component checks if the table for storing state already exists in the database user schema it connects to and if it does not, it creates that table. However, instead of having the Oracle Database state store component create the table for storing state records at run time, you can also create the table in advance. That gives you - or the DBA for the database - more control over the physical configuration of the table. This also means you do not have to grant the *create table* privilege to the user schema. 
+
+    Run the following DDL statement to create the table for storing the state in the *dapr* database user schema :
+
+    ```SQL
+    CREATE TABLE dapr_state (
+			key varchar2(2000) NOT NULL PRIMARY KEY,
+			value clob NOT NULL,
+			binary_yn varchar2(1) NOT NULL,
+			etag varchar2(50)  NOT NULL,
+			creation_time TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL ,
+			expiration_time TIMESTAMP WITH TIME ZONE NULL,
+			update_time TIMESTAMP WITH TIME ZONE NULL
+      )
+    ```
+
 {{% /codetab %}}
 
 
