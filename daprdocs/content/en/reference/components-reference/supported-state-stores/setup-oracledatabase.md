@@ -7,9 +7,11 @@ aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-oracledatabase/"
 ---
 
-## Create a Dapr component
+## Component format
 
-Create a component properties yaml file, for example called `oracle.yaml` (but it could be named anything ), paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard Oracle Database connection string, composed as: `"oracle://user/password@host:port/servicename"` for example `"oracle://demo:demo@localhost:1521/xe"`. In case you connect to the database using an Oracle Wallet, you should specify a value for the `oracleWalletLocation` property, for example: `"/home/app/state/Wallet_daprDB/"`; this should refer to the local file system directory that contains the file `cwallet.sso` that is extracted from the Oracle Wallet archive file.
+Create a component properties yaml file, for example called `oracle.yaml` (but it could be named anything ), paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard Oracle Database connection string, composed as: `"oracle://user/password@host:port/servicename"` for example `"oracle://demo:demo@localhost:1521/xe"`. 
+
+In case you connect to the database using an Oracle Wallet, you should specify a value for the `oracleWalletLocation` property, for example: `"/home/app/state/Wallet_daprDB/"`; this should refer to the local file system directory that contains the file `cwallet.sso` that is extracted from the Oracle Wallet archive file.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -41,9 +43,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | tableName    | N         | Name of the database table in which this instance of the state store records the data default `"STATE"`| `"MY_APP_STATE_STORE"`
 
 ## What Happens at Runtime?
-When the state store component initializes, it connects to the Oracle Database and it checks if a table with the name specified with `tableName` already exists. If it does not, it will create this table (with columns Key, Value, Binary_YN, ETag, Creation_Time, Update_Time, Expiration_time). 
+When the state store component initializes, it connects to the Oracle Database and checks if a table with the name specified with `tableName` exists. If it does not, it creates this table (with columns Key, Value, Binary_YN, ETag, Creation_Time, Update_Time, Expiration_time). 
 
-Every state entry is represented by a record in the database table. The `key` property provided in the requests to the Dapr API to determine the name of the object is stored literally in the KEY column. The `value` is stored as the (literal) content of the object. Binary content is stored as Base64 encoded text. Each object is assigned a unique ETag value - whenever it is created or updated (aka overwritten). 
+Every state entry is represented by a record in the database table. The `key` property provided in the request is used to determine the name of the object stored literally in the KEY column. The `value` is stored as the content of the object. Binary content is stored as Base64 encoded text. Each object is assigned a unique ETag value whenever it is created or updated.
 
 For example, the following operation 
 
@@ -68,15 +70,15 @@ creates the following records in table STATE:
 Dapr uses a fixed key scheme with *composite keys* to partition state across applications. For general states, the key format is:
 `App-ID||state key`. The Oracle Database state store maps this key in its entirety to the KEY column. 
 
-You can easily inspect all state stored with SQL queries against the STATE table. 
+You can easily inspect all state stored with SQL queries against the `tableName` table, for example the STATE table. 
 
 
 ## Time To Live and State Expiration
-The state store components supports Dapr's Time To Live logic that ensures that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{< ref "state-store-ttl.md" >}}) for details.
+The Oracle Database state store component supports Dapr's Time To Live logic that ensures that state cannot be retrieved after it has expired. See [this How To on Setting State Time To Live]({{< ref "state-store-ttl.md" >}}) for details.
 
-The Oracle Database does not have native support for a Time To Live setting. The implementation in this component uses a column called `EXPIRATION_TIME` to hold the time after which the record is considered *expired*. The values in this column is set only when a TTL was specified in Set request. It is calculated as the current UTC timestamp with the TTL period added to it. When state is retrieved through a call to Get, this component checks if it has the `EXPIRATION_TIME` set and if so it checks whether it is in the past. In that case, no state is returned. 
+The Oracle Database does not have native support for a Time-To-Live setting. The implementation in this component uses a column called `EXPIRATION_TIME` to hold the time after which the record is considered *expired*. The value in this column is set only when a TTL was specified in a `Set` request. It is calculated as the current UTC timestamp with the TTL period added to it. When state is retrieved through a call to `Get`, this component checks if it has the `EXPIRATION_TIME` set and if so, it checks whether it is in the past. In that case, no state is returned. 
 
-The following operation therefore: 
+The following operation : 
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state \
@@ -102,11 +104,15 @@ Note that expired state is not removed from the state store by this component. A
 
 ## Concurrency
 
-Concurrency in the Oracle Database state store is achieved by using `ETag`s. Each piece of state recorded in the Oracle Database State Store is assigned a unique ETag - a generated, unique string stored in the column ETag - when it is created or updated (aka replaced). Note: the column UPDATE_TIME is also updated whenever a Set operation is performed on an existing record. When the `Set` and `Delete` requests for this state store specify the FirstWrite concurrency policy, then the request need to provide the actual ETag value for the state to be written or removed for the request to be successful. 
+Concurrency in the Oracle Database state store is achieved by using `ETag`s. Each piece of state recorded in the Oracle Database state store is assigned a unique ETag - a generated, unique string stored in the column ETag - when it is created or updated.
+
+ Note: the column UPDATE_TIME is also updated whenever a `Set` operation is performed on an existing record. When the `Set` and `Delete` requests for this state store specify the FirstWrite concurrency policy, then the request need to provide the actual ETag value for the state to be written or removed for the request to be successful. 
 
 ## Consistency
 
-Oracle Database state store supports Transactions. Multiple Set and Delete commands can be combined a single request that is processed as a single, atomic transaction. Note: simple Set and Delete operations are a transaction on their own; when a Set or Delete requests returns an HTTP-20X result, the database transaction has been committed successfully. 
+The Oracle Database state store supports Transactions. Multiple `Set` and `Delete` commands can be combined in a request that is processed as a single, atomic transaction. 
+
+Note: simple `Set` and `Delete` operations are a transaction on their own; when a `Set` or `Delete` requests returns an HTTP-20X result, the database transaction has been committed successfully. 
 
 ## Query
 
@@ -114,7 +120,7 @@ Oracle Database state store does not currently support the Query API.
 
 
 
-## Create Oracle Database and User Schema
+## Create an Oracle Database and User Schema
 
 {{< tabs "Self-Hosted" "Autonomous Database on OCI">}}
 
