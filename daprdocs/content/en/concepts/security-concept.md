@@ -7,24 +7,31 @@ description: >
   How Dapr is designed with security in mind
 ---
 
-This article addresses multiple security considerations when using Dapr in a distributed application including:
+This article addresses multiple security considerations and features when using Dapr in a distributed application. 
 
-Several of the areas above are addressed through encryption of data in transit. One of the security mechanisms that Dapr employs for encrypting data in transit is [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. mTLS offers a few key features for network traffic inside your application:
+## Dapr to application API token security
+
+The Dapr sidecar runs close to the application through **localhost**, and is recommended to run under the same network boundary as the app. While many cloud-native systems today consider the pod level (on Kubernetes, for example) as a trusted security boundary, Dapr provides the user with API level authentication using tokens. 
+
+This feature guarantees that even on localhost, only an authenticated caller may call into Dapr and equally an application can check that Dpar is calling it.
+
+### Configuring API token security
+- [Using an API token to authentication to requests from an application to Dapr]({{< ref api-token.md >}}).
+- [Using an API token to authentication to requests from Dapr to the application]({{< ref app-api-token.md >}}).
+
+## Dapr to Dapr communication
+Dapr enables mTLS with no extra code or complex configuration inside your production systems. Equally Dapr side cars by default prevent all IP addresses other than local host from calling it unless explicitly listed.
+
+### Encryption of data using mTLS
+One of the security mechanisms that Dapr employs for encrypting data in transit is [mutual authentication TLS](https://en.wikipedia.org/wiki/Mutual_authentication) or mTLS. mTLS offers a few key features for network traffic inside your application:
 
 - Two way authentication - the client proving its identity to the server, and vice-versa
 - An encrypted channel for all in-flight communication, after two-way authentication is established
 
 Mutual TLS is useful in almost all scenarios, but especially so for systems subject to regulations such as [HIPAA](https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act) and [PCI](https://en.wikipedia.org/wiki/Payment_Card_Industry_Data_Security_Standard).
 
-Dapr enables mTLS and all the features described in this document in your application with little to no extra code or complex configuration inside your production systems
-
-## Sidecar-to-app communication
-
-The Dapr sidecar runs close to the application through **localhost**, and is recommended to run under the same network boundary as the app. While many cloud-native systems today consider the pod level (on Kubernetes, for example) as a trusted security boundary, Dapr provides the user with API level authentication using tokens. This feature guarantees that even on localhost, only an authenticated caller may call into Dapr.
-
-## Sidecar-to-sidecar communication
-
 Dapr includes an "on by default", automatic mutual TLS that provides in-transit encryption for traffic between Dapr sidecars.
+
 To achieve this, Dapr leverages a system service named `Sentry` which acts as a Certificate Authority (CA) and signs workload (app) certificate requests originating from the Dapr sidecar.
 
 Dapr also manages workload certificate rotation, and does so with zero downtime to the application.
@@ -35,28 +42,34 @@ When root certs are replaced (secret in Kubernetes mode and filesystem for self-
 
 When a new Dapr sidecar initializes, it first checks if mTLS is enabled. If it is, an ECDSA private key and certificate signing request are generated and sent to Sentry via a gRPC interface. The communication between the Dapr sidecar and Sentry is authenticated using the trust chain cert, which is injected into each Dapr instance by the Dapr Sidecar Injector system service.
 
-In a Kubernetes cluster, the secret that holds the root certificates is scoped to the namespace in which the Dapr components are deployed and is only accessible by the Dapr system pods.
-
-Dapr also supports strong identities when deployed on Kubernetes, relying on a pod's Service Account token which is sent as part of the certificate signing request (CSR) to Sentry.
-
 By default, a workload cert is valid for 24 hours and the clock skew is set to 15 minutes.
 
+#### Configuring mTLS
 Mutual TLS can be turned off/on by editing the default configuration that is deployed with Dapr via the `spec.mtls.enabled` field.
+
 This can be done for both Kubernetes and self-hosted modes. Details for how to do this can be found [here]({{< ref mtls.md >}}).
 
-### mTLS self hosted
-The diagram below shows how the Sentry system service issues certificates for applications based on the root/issuer certificate that is provided by an operator or generated by the Sentry service as stored in a file
+#### mTLS in self hosted mode
+The diagram below shows how the Sentry system service issues certificates for applications based on the root/issuer certificate that is provided by an operator or generated by the Sentry service as stored in a file.
 
 <img src="/images/security-mTLS-sentry-selfhosted.png" width=1000>
 
-### mTLS in Kubernetes
+#### mTLS in Kubernetes mode
+In a Kubernetes cluster, the secret that holds the root certificates is scoped to the namespace in which the Dapr components are deployed and is only accessible by the Dapr control plane system pods.
+
+Dapr also supports strong identities when deployed on Kubernetes, relying on a pod's Service Account token which is sent as part of the certificate signing request (CSR) to Sentry.
+
 The diagram below shows how the Sentry system service issues certificates for applications based on the root/issuer certificate that is provided by an operator or generated by the Sentry service and stored as a Kubernetes secret
 
 <img src="/images/security-mTLS-sentry-kubernetes.png" width=1000>
 
-## Sidecar to system services communication
+### Preventing IP addresses to a Dapr instance
 
-In addition to automatic mTLS between Dapr sidecars, Dapr offers mandatory mTLS between the Dapr sidecar and the Dapr system services, namely the Sentry service (Certificate Authority), Placement service (actor placement) and the Kubernetes Operator.
+To prevent Dapr side cars from being called on any IP address especially in production environments such as Kubernetes, Dapr restricts its listening IP addresses to only local host. See the [dapr-listen-addresses](https://docs.dapr.io/reference/arguments-annotations-overview/) setting if there are other addresses you need to enable.
+
+## Dapr to control plane communication
+
+In addition to automatic mTLS between Dapr sidecars, Dapr offers mandatory mTLS between the Dapr sidecar and the Dapr control plane system services, namely the Sentry service (a Certificate Authority), the Placement service (actor placement) and the Kubernetes Operator service.
 
 When mTLS is enabled, Sentry writes the root and issuer certificates to a Kubernetes secret that is scoped to the namespace where the control plane is installed. In self-hosted mode, Sentry writes the certificates to a configurable file system path.
 
@@ -73,11 +86,13 @@ The diagram below shows secure communication between the Dapr sidecar and the Da
 
 ## Component namespace scopes and secrets
 
-Dapr components are namespaced. That means a Dapr runtime sidecar instance can only access the components that have been deployed to the same namespace. See the [components scope documentation]({{<ref "component-scopes.md">}}) for more details.
+Dapr components are namespaced. That means a Dapr runtime sidecar instance can only access the components that have been deployed to the same namespace. Read [How-To: Scope components to one or more applications using namespaces]({{<ref "component-scopes.md">}}) for more details.
 
 Dapr components uses Dapr's built-in secret management capability to manage secrets. See the [secret store overview]({{<ref "secrets-overview.md">}}) for more details.
 
-In addition, Dapr offers application-level scoping for components by allowing users to specify which applications can consume given components. For more information about application level scoping, see [here]({{<ref "component-scopes.md#application-access-to-components-with-scopes">}}).
+In addition, Dapr offers application-level scoping for components by allowing users to specify which applications can consume specific components. For more information about application level scoping, see [restricting application access to components with scopes]({{<ref "component-scopes.md#application-access-to-components-with-scopes">}}).
+
+## Example application 
 
 ## Network security
 
