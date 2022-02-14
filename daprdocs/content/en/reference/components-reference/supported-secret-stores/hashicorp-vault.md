@@ -41,8 +41,8 @@ spec:
     value : "[vault_prefix]"
   - name: vaultKVUsePrefix # Optional. default: "true"
     value: "[true/false]"
-  - name: enginePath # Optional. default: "sectet"
-    value: "sectet"
+  - name: enginePath # Optional. default: "secret"
+    value: "secret"
   - name: vaultValueType # Optional. default: "map"
     value: "map"
 ```
