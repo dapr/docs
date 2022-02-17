@@ -549,7 +549,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
 
 ### Invoke reminder
 
-Invokes a reminder for an actor with the specified reminderName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
+Invokes a reminder for an actor with the specified reminderName. If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 
@@ -587,7 +587,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
 
 ### Invoke timer
 
-Invokes a timer for an actor rwith the specified timerName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
+Invokes a timer for an actor with the specified timerName. If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 

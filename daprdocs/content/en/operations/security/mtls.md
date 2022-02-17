@@ -91,6 +91,10 @@ kubectl logs --selector=app=dapr-sentry --namespace <DAPR_NAMESPACE>
 
 Using Helm, you can provide the PEM encoded root cert, issuer cert and private key that will be populated into the Kubernetes secret used by the Sentry service.
 
+{{% alert title="Avoiding downtime" color="warning" %}}
+To avoid downtime when rotating expiring certificates always sign your certificates with the same private root key.
+{{% /alert %}}
+
 _Note: This example uses the OpenSSL command line tool, this is a widely distributed package, easily installed on Linux via the package manager. On Windows OpenSSL can be installed [using chocolatey](https://community.chocolatey.org/packages/openssl). On MacOS it can be installed using brew `brew install openssl`_
 
 Create config files for generating the certificates, this is necessary for generating v3 certificates with the SAN (Subject Alt Name) extension fields. First save the following to a file named `root.conf`:
@@ -125,6 +129,7 @@ basicConstraints = critical, CA:true, pathlen:0
 Run the following to generate the root cert and key
 
 ```bash
+# skip the following line to reuse an existing root key, required for rotating expiring certificates
 openssl ecparam -genkey -name prime256v1 | openssl ec -out root.key
 openssl req -new -nodes -sha256 -key root.key -out root.csr -config root.conf -extensions v3_req
 openssl x509 -req -sha256 -days 365 -in root.csr -signkey root.key -outform PEM -out root.pem -extfile root.conf -extensions v3_req
@@ -133,6 +138,7 @@ openssl x509 -req -sha256 -days 365 -in root.csr -signkey root.key -outform PEM 
 Next run the following to generate the issuer cert and key:
 
 ```bash
+# skip the following line to reuse an existing issuer key, required for rotating expiring certificates
 openssl ecparam -genkey -name prime256v1 | openssl ec -out issuer.key
 openssl req -new -sha256 -key issuer.key -out issuer.csr -config issuer.conf -extensions v3_req
 openssl x509 -req -in issuer.csr -CA root.pem -CAkey root.key -CAcreateserial -outform PEM -out issuer.pem -days 365 -sha256 -extfile issuer.conf -extensions v3_req
@@ -156,24 +162,50 @@ helm install \
 
 If the Root or Issuer certs are about to expire, you can update them and restart the required system services.
 
+{{% alert title="Avoiding downtime when rotating certificates" color="warning" %}}
+To avoid downtime when rotating expiring certificates your new certificates must be signed with the same private root key as the previous certificates.
+{{% /alert %}}
+
 First, issue new certificates using the step above in [Bringing your own certificates](#bringing-your-own-certificates).
 
-Now that you have the new certificates, you can update the Kubernetes secret that holds them.
-Edit the Kubernetes secret:
+Now that you have the new certificates, use Helm to upgrade the certificates:
 
+```bash
+helm upgrade \
+  --set-file dapr_sentry.tls.issuer.certPEM=issuer.pem \
+  --set-file dapr_sentry.tls.issuer.keyPEM=issuer.key \
+  --set-file dapr_sentry.tls.root.certPEM=root.pem \
+  --namespace dapr-system \
+  dapr \
+  dapr/dapr
 ```
+
+Alternatively, you can update the Kubernetes secret that holds them:
+
+```bash
 kubectl edit secret dapr-trust-bundle -n <DAPR_NAMESPACE>
 ```
 
 Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secret with their corresponding values from the new certificates.
 *__Note: The values must be base64 encoded__*
 
-If you signed the new cert root with a different private key, restart all Dapr-enabled pods.
+If you signed the new cert root with the same private key the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
+
+If you signed the new cert root with a different private key, you must restart the Dapr sentry service.
+
+```bash
+kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
+```
+
+Next, you must restart all Dapr-enabled pods.
 The recommended way to do this is to perform a rollout restart of your deployment:
 
 ```
 kubectl rollout restart deploy/myapp
 ```
+
+You will experience potential downtime due to mismatching certificates until all deployments have successfully been restarted (and hence loaded the new Dapr certificates).
+
 ### Kubernetes video demo 
 Watch this video to show how to update mTLS certificates on Kubernetes
 
