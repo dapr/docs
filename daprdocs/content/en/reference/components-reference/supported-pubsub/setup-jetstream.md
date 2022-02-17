@@ -84,7 +84,7 @@ with NATS, find the service with: `kubectl get svc my-nats`.
 
 ## Create JetStream
 
-It is essential to create a NATS JetStream for a specific subject, e.g. for a NATS server running locally:
+It is essential to create a NATS JetStream for a specific subject. For example, for a NATS server running locally use:
 
 ```bash
 nats -s localhost:4222 stream add myStream --subjects mySubject
