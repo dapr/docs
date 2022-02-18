@@ -84,7 +84,7 @@ This is much more unusual. There may be occasions where you specifically chose t
 Theses are the specific trace context headers that are generated and propagated by Dapr for HTTP and gRPC.
 
 ### Trace context HTTP headers format
-When propogating a trace context header from an HTTP response to an HTTP request, these are the headers that you need to copy.
+When propagating a trace context header from an HTTP response to an HTTP request, these are the headers that you need to copy.
 
 #### Traceparent Header
 The traceparent header represents the incoming request in a tracing system in a common format, understood by all vendors.
