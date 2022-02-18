@@ -39,6 +39,8 @@ spec:
       key: saslPasswordSecret
   - name: maxMessageBytes # Optional.
     value: 1024
+  - name: version # Optional.
+    value: 1.0.0
 ```
 
 ## Spec metadata fields
@@ -54,6 +56,7 @@ spec:
 | saslPassword | N | Input/Output | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"` |
 | initialOffset   | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"` |
 | maxMessageBytes | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048` |
+| version | N | Kafka cluster version. Defaults to 1.0.0 | `1.0.0`
 
 ## Binding support
 
