@@ -336,15 +336,15 @@ curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
         "filter": {
           "OR": [
             {
-              "EQ": { "value.person.org": "Dev Ops" }
+              "EQ": { "person.org": "Dev Ops" }
             },
             {
               "AND": [
                 {
-                  "EQ": { "value.person.org": "Finance" }
+                  "EQ": { "person.org": "Finance" }
                 },
                 {
-                  "IN": { "value.state": [ "CA", "WA" ] }
+                  "IN": { "state": [ "CA", "WA" ] }
                 }
               ]
             }
@@ -352,11 +352,11 @@ curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
         },
         "sort": [
           {
-            "key": "value.state",
+            "key": "state",
             "order": "DESC"
           },
           {
-            "key": "value.person.id"
+            "key": "person.id"
           }
         ],
         "page": {
