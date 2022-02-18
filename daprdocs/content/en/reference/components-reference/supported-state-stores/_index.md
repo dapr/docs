@@ -36,7 +36,8 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Memcached]({{< ref setup-memcached.md >}})        | ✅ | ❌          | ❌  | ✅ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [MongoDB]({{< ref setup-mongodb.md >}})            | ✅ | ✅          | ✅  | ❌ | ✅ | ✅ | Stable | v1 | 1.0 |
 | [MySQL]({{< ref setup-mysql.md >}})                | ✅ | ✅          | ✅  | ❌ | ✅ | ❌ | Alpha  | v1 | 1.0 |
-| [PostgreSQL]({{< ref setup-postgresql.md >}})      | ✅ | ✅          | ✅  | ❌ | ✅ | ❌ | Alpha  | v1 | 1.0 |
+| [Oracle Database]({{< ref setup-oracledatabase.md >}})      | ✅ | ✅          | ✅  | ✅ | ✅ | ❌ | Alpha  | v1 | 1.7 |
+| [PostgreSQL]({{< ref setup-postgresql.md >}})      | ✅ | ✅          | ✅  | ❌ | ✅ | ✅ | Alpha  | v1 | 1.0 |
 | [Redis]({{< ref setup-redis.md >}})                | ✅ | ✅          | ✅  | ✅ | ✅ | ❌ | Stable | v1 | 1.0 |
 | [RethinkDB]({{< ref setup-rethinkdb.md >}})        | ✅ | ✅          | ✅  | ❌ | ✅ | ❌ | Alpha  | v1 | 1.0 |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})        | ✅ | ❌          | ✅  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
@@ -65,4 +66,5 @@ The following stores are supported, at various levels, by the Dapr state managem
 
 | Name                                                             |CRUD|Transactional|ETag| [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | [Query]({{< ref howto-state-query-api.md >}}) | Status | Component version | Since |
 |------------------------------------------------------------------|----|-------------|----|----|----|----|-------|----|-----|
-| [OCI Object Storage]({{< ref setup-oci-objectstorage.md >}})     | ✅ | ❌           | ✅ | ✅ | ❌ | ❌ | Alpha | v1 | 1.6 |
+| [Autonomous Database (ATP and ADW)]({{< ref setup-oracledatabase.md >}})      | ✅ | ✅          | ✅  | ✅ | ✅ | ❌ | Alpha  | v1 | 1.7 |
+| [Object Storage]({{< ref setup-oci-objectstorage.md >}})     | ✅ | ❌           | ✅ | ✅ | ❌ | ❌ | Alpha | v1 | 1.6 |
