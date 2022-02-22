@@ -51,6 +51,8 @@ spec:
     value: 3000
   - name: maxLenBytes # Optional maximum length in bytes of a queue.
     value: 10485760
+  - name: exchangeKind
+    value: fanout
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -81,6 +83,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | enableDeadLetter      | N        | Enable forwarding Messages that cannot be handled to a dead-letter topic. Defaults to `"false"` | `"true"`, `"false"` |
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
+| exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
 
 
 ### Backoff policy introduction
@@ -122,6 +125,31 @@ For example, if installing using the example above, the RabbitMQ server client a
 
 {{< /tabs >}}
 
+## Use topic exchange to route messages
+Setting `exchangeKind` to `"topic"` will use the topic exchanges, which are commonly used for the multicast routing of messages. 
+Messages with routing key will be routed to one or many queues based on the routing key defined in the netadata when subscribing.
+Routing key is defined by the `routingKey` metadata. For example, if app configured with routing key `keya`:
+```
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: order_pub_sub
+spec:
+  topic: B
+  route: /B
+  pubsubname: pubsub
+  metadata:
+    routingKey: keya
+```
+will receive messages with routing key `keya`, and messages with other routing key will not be received.
+```
+// publish messages with routing key `keya`, and this will be received by the above example app.
+client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keya"}))
+// publish messages with routing key `keyb`, and this will not be received by the above example app.
+client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyb"}))
+```
+
+For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
