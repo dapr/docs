@@ -24,15 +24,15 @@ spec:
   - name: table
     value: "mytable"
   - name: accessKey
-    value: "abcd" # Optional
+    value: "AKIAIOSFODNN7EXAMPLE" # Optional
   - name: secretKey
-    value: "abcd" # Optional
+    value: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" # Optional
   - name: endpoint
     value: "http://localhost:8080" # Optional
   - name: region
     value: "eu-west-1" # Optional
   - name: sessionToken
-    value: "abcd" # Optional
+    value: "myTOKEN" # Optional
   - name: ttlAttributeName
     value: "abcd" # Optional
 ```
