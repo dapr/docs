@@ -169,7 +169,7 @@ To avoid downtime when rotating expiring certificates your new certificates must
 
 #### Dapr-generated self-signed certificates
 
-1. Clear the existing Dapr Trust Bundle secret by saving the following YAML to a file (e.g. `clear-trust-bundle.yaml`) and applying this configuration.
+1. Clear the existing Dapr Trust Bundle secret by saving the following YAML to a file (e.g. `clear-trust-bundle.yaml`) and applying this secret.
 ```yaml
 apiVersion: v1
 kind: Secret
