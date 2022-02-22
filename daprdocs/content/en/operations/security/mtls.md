@@ -405,4 +405,4 @@ To replace with your own certificates, first generate new certificates using the
 Copy `ca.crt`, `issuer.crt` and `issuer.key` to the filesystem path of every configured system service, and restart the process or container.
 By default, system services will look for the credentials in `/var/run/dapr/credentials`. The examples above use `$HOME/.dapr/certs` as a custom location.
 
-*Note:If you signed the cert root with a different private key, restart the Dapr instances.*
+*Note: If you signed the cert root with a different private key, restart the Dapr instances.*
