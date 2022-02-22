@@ -235,7 +235,7 @@ Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secre
 
 If you signed the new cert root with the **same private key** the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
 
-If you signed the new cert root with a different private key, you must restart the Dapr sentry service, followed by the remainder of the Dapr control plane.
+If you signed the new cert root with a **different private key**, you must restart the Dapr Sentry service, followed by the remainder of the Dapr control plane service.
 
 ```bash
 kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
