@@ -233,7 +233,7 @@ kubectl edit secret dapr-trust-bundle -n <DAPR_NAMESPACE>
 Replace the `ca.crt`, `issuer.crt` and `issuer.key` keys in the Kubernetes secret with their corresponding values from the new certificates.
 *__Note: The values must be base64 encoded__*
 
-If you signed the new cert root with the same private key the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
+If you signed the new cert root with the **same private key** the Dapr Sentry service will pick up the new certificates automatically. You can restart your application deployments using `kubectl rollout restart` with zero downtime. It is not necessary to restart all deployments at once, as long as deployments are restarted before original certificate expiration.
 
 If you signed the new cert root with a different private key, you must restart the Dapr sentry service, followed by the remainder of the Dapr control plane.
 
