@@ -44,11 +44,42 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | seedKey            |        N | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`"|
 | bucket             |        Y | JetStream KV bucket name | `"<bucketName>"`|
 
-## Creating a JetStream bucket
+## Create a NATS server
+
+{{< tabs "Self-Hosted" "Kubernetes">}}
+
+{{% codetab %}}
+You can run a NATS Server with JetStream enabled locally using Docker:
+
+```bash
+docker run -d -p 4222:4222 nats:latest -js
+```
+
+You can then interact with the server using the client port: `localhost:4222`.
+{{% /codetab %}}
+
+{{% codetab %}}
+Install NATS JetStream on Kubernetes by using the [helm](https://github.com/nats-io/k8s/tree/main/helm/charts/nats#jetstream):
+
+```bash
+helm repo add nats https://nats-io.github.io/k8s/helm/charts/
+helm install my-nats nats/nats
+```
+
+This installs a single NATS server into the `default` namespace. To interact
+with NATS, find the service with: `kubectl get svc my-nats`.
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Creating a JetStream KV bucket
+
+It is necessary to create a key value bucket, this can easily done via NATS cli.
 
 ```bash
 nats kv add <bucketName>
 ```
+
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
