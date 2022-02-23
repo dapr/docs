@@ -74,7 +74,7 @@ with NATS, find the service with: `kubectl get svc my-nats`.
 
 ## Creating a JetStream KV bucket
 
-It is necessary to create a key value bucket, this can easily done via NATS cli.
+It is necessary to create a key value bucket, this can easily done via NATS CLI.
 
 ```bash
 nats kv add <bucketName>
