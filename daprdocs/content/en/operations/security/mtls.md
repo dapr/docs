@@ -201,7 +201,7 @@ kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 4. Restart your Dapr applications to pick up the latest trust bundle.
 
 {{% alert title="Potential application downtime with mTLS enabled." color="warning" %}}
-Because the newly generated trust bundle uses a different root password mTLS communication with both the control plane and other applications will fail until the applications have been restarted to reload the new Dapr Trust Bundle.
+Restarts of deployments using service to service invocation using mTLS will fail until the callee service has also been restarted (thereby loading the new Dapr Trust Bundle). Additionally, the placement service will not be able to assign new actors (while existing actors remain unaffected) until applications have been restarted to load the new Dapr Trust Bundle.
 {{% /alert %}}
 
 ```bash
