@@ -18,7 +18,7 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: state.aws.dynamodb
+  type: state.jetstream
   version: v1
   metadata:
   - name: natsURL
