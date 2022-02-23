@@ -126,9 +126,9 @@ For example, if installing using the example above, the RabbitMQ server client a
 {{< /tabs >}}
 
 ## Use topic exchange to route messages
-Setting `exchangeKind` to `"topic"` will use the topic exchanges, which are commonly used for the multicast routing of messages. 
-Messages with routing key will be routed to one or many queues based on the routing key defined in the netadata when subscribing.
-Routing key is defined by the `routingKey` metadata. For example, if app configured with routing key `keya`:
+Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages. 
+Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
+The routing key is defined by the `routingKey` metadata. For example, if an app configured with a routing key `keyA`:
 ```
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
@@ -139,14 +139,14 @@ spec:
   route: /B
   pubsubname: pubsub
   metadata:
-    routingKey: keya
+    routingKey: keyA
 ```
-will receive messages with routing key `keya`, and messages with other routing key will not be received.
+will receive messages with routing key `keyA`, and messages with other routing keys are not received.
 ```
-// publish messages with routing key `keya`, and this will be received by the above example app.
-client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keya"}))
-// publish messages with routing key `keyb`, and this will not be received by the above example app.
-client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyb"}))
+// publish messages with routing key `keyA`, and these will be received by the above example app.
+client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyA"}))
+// publish messages with routing key `keyB`, and these will not be received by the above example app.
+client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyB"}))
 ```
 
 For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
