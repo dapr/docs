@@ -193,7 +193,6 @@ kubectl rollout restart -n <DAPR_NAMESPACE> deployment/dapr-sentry
 3. Once the Sentry service has been restarted, restart the rest of the Dapr control plane to pick up the new Dapr Trust Bundle.
 
 ```bash
-kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 ```
@@ -244,7 +243,6 @@ kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 Once Sentry has been completely restarted run:
 
 ```bash
-kubectl rollout restart deploy/dapr-sentry -n <DAPR_NAMESPACE>
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 ```
