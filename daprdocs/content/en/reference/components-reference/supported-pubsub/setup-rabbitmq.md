@@ -128,7 +128,7 @@ For example, if installing using the example above, the RabbitMQ server client a
 ## Use topic exchange to route messages
 Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages. 
 Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
-The routing key is defined by the `routingKey` metadata. For example, if an app configured with a routing key `keyA`:
+The routing key is defined by the `routingKey` metadata. For example, if an app is configured with a routing key `keyA`:
 ```
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
@@ -141,11 +141,11 @@ spec:
   metadata:
     routingKey: keyA
 ```
-will receive messages with routing key `keyA`, and messages with other routing keys are not received.
+It will receive messages with routing key `keyA`, and messages with other routing keys are not received.
 ```
-// publish messages with routing key `keyA`, and these will be received by the above example app.
+// publish messages with routing key `keyA`, and these will be received by the above example.
 client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyA"}))
-// publish messages with routing key `keyB`, and these will not be received by the above example app.
+// publish messages with routing key `keyB`, and these will not be received by the above example.
 client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyB"}))
 ```
 
