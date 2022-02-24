@@ -34,7 +34,7 @@ spec:
   - name: sessionToken
     value: "myTOKEN" # Optional
   - name: ttlAttributeName
-    value: "abcd" # Optional
+    value: "expiresAt" # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
