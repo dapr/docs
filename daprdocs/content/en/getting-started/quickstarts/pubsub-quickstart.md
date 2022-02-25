@@ -12,6 +12,8 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{<
 1. [A Pub/sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages. Our example below uses Redis, you can use RabbitMQ, Kafka, etc.
 1. The subscriber to that topic pulls messages from the queue and processes them.
 
+<img src="/images/pubsub-quickstart/pubsub-diagram.png" width=800 style="padding-bottom:15px;">
+
 Select your preferred language-specific Dapr SDK before proceeding with the quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" >}}

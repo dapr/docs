@@ -21,8 +21,13 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 
 ## Quickstarts
 
-| Quickstarts               | Description                                                                                                                                                                                    |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Publish and Subscribe]({{< ref pubsub-quickstart.md >}})            | Get started with Dapr's Publish and Subscribe building block. |
-| State Management            | Coming soon. |
-| Service Invocation            | Coming soon. |
+| Quickstarts | Description |
+| ----------- | ----------- |
+| [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) | Get started with Dapr's Publish and Subscribe building block. |
+| State Management   | Coming soon. |
+| Service Invocation | Coming soon. |
+| Bindings           | Coming soon. |
+| Actors             | Coming soon. |
+| Observability      | Coming soon. |
+| Secrets Management | Coming soon. |
+| Configuration      | Coming soon. |
