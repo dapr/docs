@@ -24,19 +24,19 @@ Table captions:
 |-------------------------------------------------------|--------| -----| ------------- |
 | [Apache Kafka]({{< ref setup-apache-kafka.md >}})     | Stable | v1 | 1.5 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})           | Alpha  | v1 | 1.0 |
-| [MQTT]({{< ref setup-mqtt.md >}})                     | Alpha  | v1 | 1.0 |
+| [MQTT]({{< ref setup-mqtt.md >}})                     | Beta  | v1 | 1.6 |
 | [NATS Streaming]({{< ref setup-nats-streaming.md >}}) | Beta   | v1 | 1.0 |
 | [In Memory]({{< ref setup-inmemory.md >}})            | Alpha  | v1 | 1.4 |
 | [JetStream]({{< ref setup-jetstream.md >}})           | Alpha  | v1 | 1.4 |
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | v1 | 1.0 |
-| [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Alpha  | v1 | 1.0 |
+| [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Beta  | v1 | 1.6 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Stable | v1 | 1.0 |
 
 ### Amazon Web Services (AWS)
 
 | Name                                              | Status | Component version | Since |
-|---------------------------------------------------|--------| ---- |---------------|
-| [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Alpha  | v1 | 1.0 |
+|---------------------------------------------------|--------| ---- | --------------|
+| [AWS SNS/SQS]({{< ref setup-aws-snssqs.md >}})    | Beta   | v1 | 1.6 |
 
 ### Google Cloud Platform (GCP)
 
@@ -48,5 +48,5 @@ Table captions:
 
 | Name                                                      | Status | Component version | Since |
 |-----------------------------------------------------------|--------| ----------------| -- |
-| [Azure Event Hubs]({{< ref setup-azure-eventhubs.md >}})  | Alpha  | v1 | 1.0 |
+| [Azure Event Hubs]({{< ref setup-azure-eventhubs.md >}})  | Beta  | v1 | 1.6 |
 | [Azure Service Bus]({{< ref setup-azure-servicebus.md >}})| Stable | v1 | 1.0 |

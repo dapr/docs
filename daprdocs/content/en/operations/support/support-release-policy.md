@@ -41,13 +41,14 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Jun 16th 2021 | 1.2.2</br> | 1.2.0 | Java 1.1.0 </br>Go 1.1.0 </br>PHP 1.1.0 </br>Python 1.1.0 </br>.NET 1.2.0 | 0.6.0 | Unsupported         |
 | Jul 26th 2021 | 1.3</br>   | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Unsupported           |
 | Sep 14th 2021 | 1.3.1</br> | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Unsupported           |
-| Sep 15th 2021 | 1.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported           |
-| Sep 22nd 2021 | 1.4.1</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported
-| Sep 24th 2021 | 1.4.2</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported           |
-| Oct 7th 2021  | 1.4.3</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported |
-| Dev 6th 2021  | 1.4.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Supported |
-| Nov 11th 2021 | 1.5.0</br>   | 1.5.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Supported (current) |
-| Dec 6th 2021  | 1.5.1</br>   | 1.5.1 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Supported (current) |
+| Sep 15th 2021 | 1.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported           |
+| Sep 22nd 2021 | 1.4.1</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported
+| Sep 24th 2021 | 1.4.2</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported           |
+| Oct 7th 2021  | 1.4.3</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported |
+| Dev 6th 2021  | 1.4.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported |
+| Nov 11th 2021 | 1.5.0</br>   | 1.5.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Supported |
+| Dec 6th 2021  | 1.5.1</br>   | 1.5.1 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Supported |
+| Jan 25th 2022 | 1.6.0</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Supported (current) |
  
 ## Upgrade paths
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example an upgrade from v1.0 to v1.2 may need go pass through v1.1
@@ -63,20 +64,27 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 |                          |                 1.2.2 |                    1.3.1 |
 |                          |                 1.3.1 |                    1.4.4 |
 |                          |                 1.4.4 |                    1.5.1 |
+|                          |                 1.5.1 |                    1.6.0 |
 | 1.1.0 to 1.1.2           |                   N/A |                    1.2.2 |
 |                          |                 1.2.2 |                    1.3.1 |
 |                          |                 1.3.1 |                    1.4.4 |
 |                          |                 1.4.4 |                    1.5.1 |
+|                          |                 1.5.1 |                    1.6.0 |
 | 1.2.0 to 1.2.2           |                   N/A |                    1.3.1 |
 |                          |                 1.3.1 |                    1.4.4 |
 |                          |                 1.4.4 |                    1.5.1 |
+|                          |                 1.5.1 |                    1.6.0 |
 | 1.3.0                    |                   N/A |                    1.3.1 |
 |                          |                 1.3.1 |                    1.4.4 |
 |                          |                 1.4.4 |                    1.5.1 |
+|                          |                 1.5.1 |                    1.6.0 |
 | 1.3.1                    |                   N/A |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.0 |
+|                          |                 1.4.4 |                    1.5.1 |
+|                          |                 1.5.1 |                    1.6.0 |
 | 1.4.0 to 1.4.2           |                   N/A |                    1.4.4 |
 |                          |                 1.4.4 |                    1.5.1 |
+|                          |                 1.5.1 |                    1.6.0 |
+| 1.5.0 to 1.5.1           |                   N/A |                    1.6.0 |
 
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
@@ -95,9 +103,14 @@ After announcing a future breaking change, the change will happen in 2 releases 
 ## Upgrade on Hosting platforms
 Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})
 
-### Supported Kubernetes versions
+### Supported versions of dependencies 
+Below is a list of software that the latest version of Dapr (v{{% dapr-latest-version long="true" %}}) has been tested against. 
 
-Dapr follows [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy).
+| Dependency            |   Supported Version                                                                                                              |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| Kubernetes                                                |  Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/) |
+| [Open Telemetry collector (OTEL)](https://github.com/open-telemetry/opentelemetry-collector/releases)|                                                                                                                              v0.4.0|
+| [Prometheus](https://prometheus.io/download/)             |                                                                                                                              v2.28 |
 
 ## Related links
 * Read the [Versioning policy]({{< ref support-versioning.md >}})

@@ -333,36 +333,34 @@ An array of JSON-encoded values
 curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
   -H "Content-Type: application/json" \
   -d '{
-        "query": {
-          "filter": {
-            "OR": [
-              {
-                "EQ": { "value.person.org": "Dev Ops" }
-              },
-              {
-                "AND": [
-                  {
-                    "EQ": { "value.person.org": "Finance" }
-                  },
-                  {
-                    "IN": { "value.state": [ "CA", "WA" ] }
-                  }
-                ]
-              }
-            ]
-          },
-          "sort": [
+        "filter": {
+          "OR": [
             {
-              "key": "value.state",
-              "order": "DESC"
+              "EQ": { "value.person.org": "Dev Ops" }
             },
             {
-              "key": "value.person.id"
+              "AND": [
+                {
+                  "EQ": { "value.person.org": "Finance" }
+                },
+                {
+                  "IN": { "value.state": [ "CA", "WA" ] }
+                }
+              ]
             }
-          ],
-          "pagination": {
-            "limit": 3
+          ]
+        },
+        "sort": [
+          {
+            "key": "value.state",
+            "order": "DESC"
+          },
+          {
+            "key": "value.person.id"
           }
+        ],
+        "page": {
+          "limit": 3
         }
       }'
 ```

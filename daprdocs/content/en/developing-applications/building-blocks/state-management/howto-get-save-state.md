@@ -107,7 +107,7 @@ namespace EventService
                 //Using Dapr SDK to save and get state
                 await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
                 await client.SaveStateAsync(DAPR_STORE_NAME, "order_2", orderId.ToString());
-                var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, orderId.ToString());
+                var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order_1");
                 Console.WriteLine("Result after get: " + result);
             }
         }

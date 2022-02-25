@@ -64,6 +64,32 @@ In order to further diagnose any issue, check the logs of the Dapr sidecar injec
 
 *Note: If you installed Dapr to a different namespace, replace dapr-system above with the desired namespace*
 
+If you are deploying Dapr on Amazon EKS and using an overlay network such as Calico, you will need to set `hostNetwork` parameter to true, this is a limitation of EKS with such CNIs.
+
+You can set this parameter using Helm `values.yaml` file:
+
+```
+helm upgrade --install dapr dapr/dapr \
+  --namespace dapr-system \
+  --create-namespace \
+  --values values.yaml
+```
+
+`values.yaml`
+```yaml
+dapr_sidecar_injector:
+  hostNetwork: true
+```
+
+or using command line:
+
+```
+helm upgrade --install dapr dapr/dapr \
+  --namespace dapr-system \
+  --create-namespace \
+  --set dapr_sidecar_injector.hostNetwork=true
+```
+
 ## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar
 
 If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes.
