@@ -289,7 +289,7 @@ None.
 ### Example
 
 ```shell
-curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "If-Match: xxxxxxx"
+curl -X DELETE http://localhost:3500/v1.0/state/starwars/planet -H "If-Match: xxxxxxx"
 ```
 
 ## Query state
@@ -330,7 +330,7 @@ An array of JSON-encoded values
 ### Example
 
 ```shell
-curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
+curl -X POST http://localhost:3500/v1.0-alpha1/state/myStore/query \
   -H "Content-Type: application/json" \
   -d '{
         "filter": {

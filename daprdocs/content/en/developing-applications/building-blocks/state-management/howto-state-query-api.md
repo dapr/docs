@@ -82,9 +82,9 @@ First, you need to create an instance of MongoDB, which is your state store.
 docker run -d --rm -p 27017:27017 --name mongodb mongo:5
 ```
 
-Next is to start a Dapr application. Refer to this [component configuration file](../query-api-examples/components/mongodb.yml), which instructs Dapr to use MongoDB as its state store.
+Next is to start a Dapr application. Refer to this [component configuration file](../query-api-examples/components/mongodb/mongodb.yml), which instructs Dapr to use MongoDB as its state store.
 ```bash
-dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components
+dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/mongodb
 ```
 
 Now populate the state store with the employee dataset, so you can then query it later.
@@ -449,3 +449,4 @@ That way you can update the pagination token in the query and iterate through th
  - [Query API reference ]({{< ref "state_api.md#state-query" >}})
  - [State store components with those that implement query support]({{< ref supported-state-stores.md >}})
  - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api)
+ - [Querying Redis state store]({{< ref "setup-redis.md#querying-json-objects" >}})
