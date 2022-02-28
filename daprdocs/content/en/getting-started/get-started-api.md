@@ -13,7 +13,7 @@ Running [`dapr init`]({{<ref install-dapr-selfhost.md>}}) loads your local envir
   - State management, and
   - A message broker.
 
-With this setup, you can run a Dapr sidecar with the Dapr CLI and try out the state API to store and retrieve a state. [Learn more about the state building block and how it works in our concept docs]({{< ref state-management >}}).
+With this setup, run Dapr using the Dapr CLI and try out the state API to store and retrieve a state. [Learn more about the state building block and how it works in our concept docs]({{< ref state-management >}}).
 
 In this guide, you will simulate an application by running the sidecar and calling the API directly. For the purpose of this tutorial you'll run the sidecar without an application.
 
@@ -32,7 +32,7 @@ Since no custom component folder was defined with the above command, Dapr uses t
 - On Windows, under `%UserProfile%\.dapr\components`
 - On Linux/MacOS, under `~/.dapr/components`
 
-These tell Dapr to use the local Redis Docker container as a state store and message broker.
+These tell Dapr to use the local Docker container for Redis as a state store and message broker.
 
 ### Step 2: Save state
 
