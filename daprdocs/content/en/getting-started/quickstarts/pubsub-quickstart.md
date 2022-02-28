@@ -173,7 +173,7 @@ In the YAML file:
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Latest Node.js installed](https://nodejs.org/en/download/).
+- [Latest Node.js installed](https://nodejs.org/download/).
 - [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
