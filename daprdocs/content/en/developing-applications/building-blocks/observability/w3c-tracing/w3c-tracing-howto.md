@@ -175,14 +175,14 @@ with tracer.span(name="cache.get") as span:
 
 ### Create trace context in NodeJS
 
-```nodejs
+```js
 tracer.startRootSpan({name: 'cache.Get'}, rootSpan => {
 });
 ```
 
 ### Create trace context in C++
 
-```cplusplus
+```cpp
 opencensus::trace::Span span = opencensus::trace::Span::StartSpan(
                                             "cache.Get", nullptr, {&sampler});
 ```
