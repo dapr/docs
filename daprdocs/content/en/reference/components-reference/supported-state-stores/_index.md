@@ -33,6 +33,7 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [Couchbase]({{< ref setup-couchbase.md >}})        | ✅ | ❌          | ✅  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [Hashicorp Consul]({{< ref setup-consul.md >}})    | ✅ | ❌          | ❌  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})        | ✅ | ❌          | ❌  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
+| [JetStream KV]({{< ref setup-jetstream-kv.md >}})  | ✅ | ❌          | ❌  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.7 |
 | [Memcached]({{< ref setup-memcached.md >}})        | ✅ | ❌          | ❌  | ✅ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [MongoDB]({{< ref setup-mongodb.md >}})            | ✅ | ✅          | ✅  | ❌ | ✅ | ✅ | Stable | v1 | 1.0 |
 | [MySQL]({{< ref setup-mysql.md >}})                | ✅ | ✅          | ✅  | ❌ | ✅ | ❌ | Alpha  | v1 | 1.0 |
