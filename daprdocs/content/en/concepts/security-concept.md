@@ -69,11 +69,9 @@ The diagram below shows how the Sentry system service issues certificates for ap
 <img src="/images/security-mTLS-sentry-kubernetes.png" width=1000>
 
 ### Preventing IP addresses on Dapr
-
-To prevent Dapr side cars from being called on any IP address especially in production environments such as Kubernetes, Dapr restricts its listening IP addresses to only local host. See the [dapr-listen-addresses](https://docs.dapr.io/reference/arguments-annotations-overview/) setting if there are other addresses you need to enable.
+To prevent Dapr side cars from being called on any IP address especially in production environments such as Kubernetes, Dapr restricts its listening IP addresses to only local host. Before the v1.4 release any Dapr sidecar could call any other sidecar in a cluster by default. This is no longer possible and needs to be enabled explicitly. Use the [dapr-listen-addresses](https://docs.dapr.io/reference/arguments-annotations-overview/) setting if there are other addresses you need to enable.
 
 ## Secure Dapr to application communication
-
 The Dapr sidecar runs close to the application through **localhost**, and is recommended to run under the same network boundary as the app. While many cloud-native systems today consider the pod level (on Kubernetes, for example) as a trusted security boundary, Dapr provides the app with API level authentication using tokens. This feature guarantees that even on localhost, only an authenticated application may call into Dapr and equally an application can check that Dpar is calling it back. For more details on configuring API token security read,
 
 - [Using an API token to authentication requests from an application to Dapr]({{< ref api-token.md >}}).
