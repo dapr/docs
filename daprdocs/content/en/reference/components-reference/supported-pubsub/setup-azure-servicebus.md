@@ -45,7 +45,7 @@ spec:
   # - name: defaultMessageTimeToLiveInSec # Optional
   #   value: 10
   # - name: autoDeleteOnIdleInSec # Optional
-  #   value: 10
+  #   value: 3600
   # - name: maxReconnectionAttempts # Optional
   #   value: 30
   # - name: connectionRecoveryInSec # Optional
@@ -78,7 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxConcurrentHandlers | N  |Defines the maximum number of concurrent message handlers  | `10`
 | prefetchCount         | N  |Defines the number of prefetched messages (use for high throughput / low latency scenarios)| `5`
 | defaultMessageTimeToLiveInSec | N  |Default message time to live. | `10`
-| autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting messages. | `10`
+| autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting idle subscriptions. | `3600`
 | maxReconnectionAttempts | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
 | connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Defaults: `2` | `2`
 | publishMaxRetries | N  | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
