@@ -80,7 +80,7 @@ See [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-name
 
 ## Application access to components with scopes
 Developers and operators might want to limit access to one database from a certain application, or a specific set of applications.
-To achieve this, Dapr allows you to specify `scopes` on the component YAML. Application scopes added to a component limit only the applications with specific IDs to be able to use the component.
+To achieve this, Dapr allows you to specify `scopes` on the component YAML. Application scopes added to a component limit only the applications with specific IDs from using the component.
 
 The following example shows how to give access to two Dapr enabled apps, with the app IDs of `app1` and `app2` to the Redis component named `statestore` which itself is in the `production` namespace
 
