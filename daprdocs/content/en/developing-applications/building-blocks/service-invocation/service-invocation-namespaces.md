@@ -23,7 +23,9 @@ When using service invocation to call an application in a namespace you qualify 
 https://localhost:3500/v1.0/invoke/myapp.production/method/ping
 ```
 
-And calling the same `ping` method using a curl command from an external DNS address, in this case `api.demo.dapr.team` and supplying the Dapr API token for authentication would be like this;
+**Example 3**
+
+Call the same `ping` method as example 2 using a curl command from an external DNS address (in this case, `api.demo.dapr.team`) and supply the Dapr API token for authentication:
 
 MacOS/Linux:
 ```
