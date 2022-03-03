@@ -6,7 +6,7 @@ weight: 1000
 description: "Call between services deployed to different namespaces"
 ---
 
-This article describes how you can call between services deployed to different namespaces. By default, you can invoke services within the *same* namespaces by simply referencing the app ID (`nodeapp`):
+This article describes how you can call between services deployed to different namespaces. By default, you can invoke services within the *same* namespace by simply referencing the app ID (`nodeapp`):
 
 ```sh
 localhost:3500/v1.0/invoke/nodeapp/method/neworder
