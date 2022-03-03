@@ -72,7 +72,11 @@ In this example, the Redis component is only accessible to Dapr instances runnin
 
 {{< /tabs >}}
 
-Note: It is possible to have the component YAML applied to namespace "A" *reference* the implementation in namespace "B". For example, a component YAML for Redis in namespace "production-A" can set the Redis host address to point to the Redis instance deployed in namespace "production-B". See [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for an example.
+{{% alert title="Note" color="primary" %}}
+The component YAML applied to namespace "A" can *reference* the implementation in namespace "B". For example, a component YAML for Redis in namespace "production-A" can point the Redis host address to the Redis instance deployed in namespace "production-B". 
+
+See [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for an example.
+{{% /alert %}}
 
 ## Application access to components with scopes
 Developers and operators might want to limit access for one database to a certain application, or a specific set of applications.
