@@ -138,7 +138,7 @@ If using a state store other than Redis, refer to the [supported state stores]({
 
 ### Create Pub/sub message broker component
 
-Create a file called redis-pubsub.yaml, and paste the following:
+Create a file called `redis-pubsub.yaml`, and paste the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
