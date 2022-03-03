@@ -11,7 +11,7 @@ This article describes how you can call between services deployed to different n
 ```sh
 localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
-Service invocation also supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace. You can therefore specify both the app ID (`nodeapp`) in addition to the namespace the app runs in (`production`). For example to call the `neworder` method on the `nodeapp`, in the `production` namespace would be like this;
+Service invocation also supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace. You can therefore specify both the app ID (`nodeapp`) in addition to the namespace the app runs in (`production`). For example to call the `neworder` method on the `nodeapp`, in the `production` namespace would look like this:
 
 ```sh
 localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
