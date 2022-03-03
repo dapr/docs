@@ -51,7 +51,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | publicAccessLevel | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only used if the container is created by Dapr). Defaults to `none` | `blob`, `container`, `none` 
 
 ### Azure Active Directory (AAD) authentication
-The Azure Blob Storage binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, please see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Blob Storage binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 
