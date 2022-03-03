@@ -53,7 +53,7 @@ If you wish to use CosmosDb as an actor store, append the following to the yaml.
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ### Azure Active Directory (AAD) authentication
-The Azure Cosmos DB state store component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, please see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Cosmos DB state store component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Setup Azure Cosmos DB
 

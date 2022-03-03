@@ -85,7 +85,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | publishInitialRetryInternalInMs | N  | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
 
 ### Azure Active Directory (AAD) authentication
-The Azure Service Bus pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, please see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Message metadata
 

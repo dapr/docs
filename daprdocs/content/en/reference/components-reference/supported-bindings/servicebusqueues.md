@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | ttlInSeconds | N | Output | Parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days. See [also](#specifying-a-ttl-per-message) | `"60"` |
 
 ### Azure Active Directory (AAD) authentication
-The Azure Service Bus Queues binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, please see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Queues binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 
