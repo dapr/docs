@@ -38,7 +38,7 @@ The following stores are supported, at various levels, by the Dapr state managem
 | [MySQL]({{< ref setup-mysql.md >}})                | ✅ | ✅          | ✅  | ❌ | ✅ | ❌ | Alpha  | v1 | 1.0 |
 | [Oracle Database]({{< ref setup-oracledatabase.md >}})      | ✅ | ✅          | ✅  | ✅ | ✅ | ❌ | Alpha  | v1 | 1.7 |
 | [PostgreSQL]({{< ref setup-postgresql.md >}})      | ✅ | ✅          | ✅  | ❌ | ✅ | ✅ | Alpha  | v1 | 1.0 |
-| [Redis]({{< ref setup-redis.md >}})                | ✅ | ✅          | ✅  | ✅ | ✅ | ❌ | Stable | v1 | 1.0 |
+| [Redis]({{< ref setup-redis.md >}})                | ✅ | ✅          | ✅  | ✅ | ✅ | ✅ | Stable | v1 | 1.0 |
 | [RethinkDB]({{< ref setup-rethinkdb.md >}})        | ✅ | ✅          | ✅  | ❌ | ✅ | ❌ | Alpha  | v1 | 1.0 |
 | [Zookeeper]({{< ref setup-zookeeper.md >}})        | ✅ | ❌          | ✅  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 
