@@ -17,7 +17,7 @@ Service invocation also supports calls across namespaces. On all supported hosti
 localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
 ```
 
-When using service invocation to call an application in a namespace you  qualify it with the namespace. This is especially useful in cross namespace calls in a Kubernetes cluster. As another example, calling the `ping` method on `myapp` which is scoped to the `production` namespace would be like this;
+When using service invocation to call an application in a namespace you qualify it with the namespace. This is especially useful in cross namespace calls in a Kubernetes cluster. As another example, calling the `ping` method on `myapp` which is scoped to the `production` namespace would look like this:
 
 ```bash
 https://localhost:3500/v1.0/invoke/myapp.production/method/ping
