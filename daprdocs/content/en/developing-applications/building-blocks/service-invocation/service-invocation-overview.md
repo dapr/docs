@@ -41,7 +41,7 @@ Service invocation provides several features to make it easy for you to call met
 
 ### Namespace scoping
 
-Applications can be scoped to namespaces for deployment and security and you can call between services deployed to different namespaces. For more information read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
+Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
 ### Service-to-service security
 
