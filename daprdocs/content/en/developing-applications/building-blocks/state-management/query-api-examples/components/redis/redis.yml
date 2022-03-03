@@ -1,0 +1,38 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: querystatestore
+spec:
+  type: state.redis
+  version: v1
+  initTimeout: 1m
+  metadata:
+  - name: redisHost
+    value: "localhost:6379"
+  - name: redisPassword
+    value: ""
+  - name: queryIndexes
+    value: |
+      [
+        {
+          "name": "orgIndx",
+          "indexes": [
+            {
+              "key": "person.org",
+              "type": "TEXT"
+            },
+            {
+              "key": "person.id",
+              "type": "NUMERIC"
+            },
+            {
+              "key": "state",
+              "type": "TEXT"
+            },
+            {
+              "key": "city",
+              "type": "TEXT"
+            }
+          ]
+        }
+      ]
