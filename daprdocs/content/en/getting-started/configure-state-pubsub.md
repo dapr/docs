@@ -50,10 +50,10 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
     ```bash
     $ kubectl get pods
-    NAME             READY   STATUS    RESTARTS   AGE
-    redis-master-0   1/1     Running   0          69s
-    redis-replicas-0    1/1     Running   0          69s
-    redis-replicas-1    1/1     Running   0          22s
+    NAME               READY   STATUS    RESTARTS   AGE
+    redis-master-0     1/1     Running   0          69s
+    redis-replicas-0   1/1     Running   0          69s
+    redis-replicas-1   1/1     Running   0          22s
     ```
 
 Note that the hostname is `redis-master.default.svc.cluster.local:6379`, and a Kubernetes secret, `redis`, is created automatically.
