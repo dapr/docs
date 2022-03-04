@@ -2,7 +2,7 @@
 type: docs
 title: "Service invocation overview"
 linkTitle: "Overview"
-weight: 1000
+weight: 900
 description: "Overview of the service invocation API building block"
 ---
 
@@ -39,23 +39,9 @@ The diagram below is an overview of how Dapr's service invocation works.
 ## Features
 Service invocation provides several features to make it easy for you to call methods between applications.
 
-### Namespaces scoping
+### Namespace scoping
 
-By default, users can invoke services within the same namespaces by simply referencing the app ID (`nodeapp`):
-
-```sh
-localhost:3500/v1.0/invoke/nodeapp/method/neworder
-```
-
-Service invocation also supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace.
-
-Users can specify both the app ID (`nodeapp`) in addition to the namespace the app runs in (`production`):
-
-```sh
-localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
-```
-
-This is especially useful in cross namespace calls in a Kubernetes cluster.
+Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
 ### Service-to-service security
 
