@@ -16,10 +16,8 @@ ActorA -> Actor B -> Actor A
 
 With reentrancy, there can be more complex actor calls without sacrificing the single-threaded behavior of virtual actors.
 
-## Enabling actor reentrancy
-Actor reentrancy is a one step process.
+## Enable Actor Reentrancy with Actor Configuration
 
-### Actor runtime configuration
 The actor that will be reentrant must provide the appropriate configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements. Here is a snipet of an actor written in Golang providing the configuration:
 
 ```go
