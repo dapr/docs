@@ -52,6 +52,9 @@ If you wish to use CosmosDb as an actor store, append the following to the yaml.
 | collection         | Y        | The name of the collection | `"collection"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
+### Azure Active Directory (AAD) authentication
+The Azure Cosmos DB state store component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+
 ## Setup Azure Cosmos DB
 
 [Follow the instructions](https://docs.microsoft.com/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure CosmosDB account.  The database and collection must be created in CosmosDB before Dapr can use it.
