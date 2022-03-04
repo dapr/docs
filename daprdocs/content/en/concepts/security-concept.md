@@ -93,6 +93,8 @@ When the Dapr sidecar initializes, it authenticates with the system pods using t
 The diagram below shows secure communication between the Dapr sidecar and the Dapr Sentry (Certificate Authority), Placement (actor placement) and the Kubernetes Operator system services
 
 <img src="/images/security-mTLS-dapr-system-services.png" width=1000>
+</br>
+
 
 # Operational Security 
 Dapr is designed for operators to manage mTLS certificate and enforce OAuth policies.
@@ -112,7 +114,7 @@ Dapr has an extensive set of security policies that can be applied to your appli
 ## API access policy
 In certain scenarios such as zero trust networks or when exposing the Dapr sidecar to external traffic through a frontend, it’s recommended to only enable the Dapr sidecar APIs that are being used by the app. Doing so reduces the attack surface and helps keep the Dapr APIs scoped to the actual needs of the application. You can control which APIs are accessible to the application by setting an API allow list in configuration, as shown in the diagram below.
 
-<img src="/images/security-mTLS-dapr-system-services.png" width=1000>
+<img src="/images/security-dapr-API-scoping.png" width=1000>
 
 Read [How-To: Selectively enable Dapr APIs on the Dapr sidecar]({{<ref "api-allowlist.md">}}) for more details.
 
