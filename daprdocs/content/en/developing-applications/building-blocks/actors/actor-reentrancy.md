@@ -6,10 +6,6 @@ weight: 30
 description: Learn more about actor reentrancy
 ---
 
-{{% alert title="Preview feature" color="warning" %}}
-Actor reentrancy is currently in [preview]({{< ref preview-features.md >}}).
-{{% /alert %}}
-
 ## Actor reentrancy
 A core tenet of the virtual actor pattern is the single-threaded nature of actor execution. Before reentrancy, this caused the Dapr runtime to lock an actor on any given request. A second request could not start until the first had completed. This behavior means an actor cannot call itself, or have another actor call into it even if it is part of the same chain. Reentrancy solves this by allowing requests from the same chain or context to re-enter into an already locked actor. Examples of chains that reentrancy allows can be seen below:
 
@@ -21,24 +17,10 @@ ActorA -> Actor B -> Actor A
 With reentrancy, there can be more complex actor calls without sacrificing the single-threaded behavior of virtual actors.
 
 ## Enabling actor reentrancy
-Actor reentrancy is currently in preview, so enabling it is a two step process.
-
-### Preview feature configuration
-Before using reentrancy, the feature must be enabled in Dapr. For more information on preview configurations, see [the full guide on opting into preview features in Dapr]({{< ref preview-features.md >}}). Below is an example of the configuration for actor reentrancy:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: reentrantconfig
-spec:
-  features:
-    - name: Actor.Reentrancy
-      enabled: true
-```
+Actor reentrancy is a one step process.
 
 ### Actor runtime configuration
-Once actor reentrancy is enabled as an opt-in preview feature, the actor that will be reentrant must also provide the appropriate configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements. Here is a snipet of an actor written in Golang providing the configuration:
+The actor that will be reentrant must provide the appropriate configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements. Here is a snipet of an actor written in Golang providing the configuration:
 
 ```go
 type daprConfig struct {

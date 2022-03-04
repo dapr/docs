@@ -7,10 +7,6 @@ description: "Automatically encrypt state and manage key rotations"
 
 ---
 
-{{% alert title="Preview feature" color="warning" %}}
-State store encryption is currently in [preview]({{< ref preview-features.md >}}).
-{{% /alert %}}
-
 ## Introduction
 
 Application state often needs to get encrypted at rest to provide stronger security in enterprise workloads or regulated environments. Dapr offers automatic client side encryption based on [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [Galois/Counter Mode (GCM)](https://en.wikipedia.org/wiki/Galois/Counter_Mode), supporting keys of 128, 192, and 256-bits.
@@ -22,20 +18,7 @@ The encryption keys are always fetched from a secret, and cannot be supplied as 
 
 ## Enabling automatic encryption
 
-1. Enable the state encryption preview feature using a standard [Dapr Configuration]({{< ref configuration-overview.md >}}):
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: stateconfig
-spec:
-  features:
-    - name: State.Encryption
-      enabled: true
-```
-
-2. Add the following `metadata` section to any Dapr supported state store:
+1. Add the following `metadata` section to any Dapr supported state store:
 
 ```yaml
 metadata:
