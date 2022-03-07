@@ -50,6 +50,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items).
 
+### Azure Active Directory (AAD) authentication
+The Azure Cosmos DB binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+
 ## Binding support
 
 This component supports **output binding** with the following operations:

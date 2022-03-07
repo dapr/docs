@@ -72,31 +72,15 @@ In this example, the Redis component is only accessible to Dapr instances runnin
 
 {{< /tabs >}}
 
-## Using namespaces with service invocation
+{{% alert title="Note" color="primary" %}}
+The component YAML applied to namespace "A" can *reference* the implementation in namespace "B". For example, a component YAML for Redis in namespace "production-A" can point the Redis host address to the Redis instance deployed in namespace "production-B". 
 
-When using service invocation an application in a namespace you have to qualify it with the namespace. For example calling the `ping` method on `myapp` which is scoped to the `production` namespace would be like this.
-
-```bash
-https://localhost:3500/v1.0/invoke/myapp.production/method/ping
-```
-
-Or using a curl command from an external DNS address, in this case `api.demo.dapr.team` would be like this.
-
-MacOS/Linux:
-```
-curl -i -d '{ "message": "hello" }' \
-     -H "Content-type: application/json" \
-     -H "dapr-api-token: ${API_TOKEN}" \
-     https://api.demo.dapr.team/v1.0/invoke/myapp.production/method/ping
-```
-
-## Using namespaces with pub/sub
-Read [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for more information on using namespaces with pub/sub.
+See [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for an example.
+{{% /alert %}}
 
 ## Application access to components with scopes
-
-Developers and operators might want to limit access for one database to a certain application, or a specific set of applications.
-To achieve this, Dapr allows you to specify `scopes` on the component YAML. Application scopes added to a component limit only the applications with specific IDs to be able to use the component.
+Developers and operators might want to limit access to one database from a certain application, or a specific set of applications.
+To achieve this, Dapr allows you to specify `scopes` on the component YAML. Application scopes added to a component limit only the applications with specific IDs from using the component.
 
 The following example shows how to give access to two Dapr enabled apps, with the app IDs of `app1` and `app2` to the Redis component named `statestore` which itself is in the `production` namespace
 
@@ -116,12 +100,17 @@ scopes:
 - app1
 - app2
 ```
-
-## Example
+### Community call demo
 
 <div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=1763" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
+
+## Using namespaces with service invocation
+Read [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) for more information on using namespaces when calling between services.
+
+## Using namespaces with pub/sub
+Read [Configure Pub/Sub components with multiple namespaces]({{< ref "pubsub-namespaces.md" >}}) for more information on using namespaces with pub/sub.
 
 ## Related links
 
