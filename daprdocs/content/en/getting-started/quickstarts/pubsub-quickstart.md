@@ -289,8 +289,6 @@ Publisher output:
 == APP == Published data: {"orderId":225}
 ```
 
-<img src="/images/pubsub-quickstart/pubsub-js-publisher-output.png" width=600 style="padding-bottom:15px;">
-
 Subscriber output:
 
 ```cli
@@ -306,8 +304,6 @@ Subscriber output:
 == APP == Subscriber received: {"orderId":650}
 == APP == Subscriber received: {"orderId":225}
 ```
-
-<img src="/images/pubsub-quickstart/pubsub-js-subscriber-output.png" width=600 style="padding-bottom:25px;">
 
 #### `pubsub.yaml` component file
 
@@ -467,8 +463,6 @@ Subscriber output:
 == APP == Subscriber received: Order { OrderId = 983 }
 == APP == Subscriber received: Order { OrderId = 886 }
 ```
-
-<img src="/images/pubsub-quickstart/pubsub-dotnet-subscriber-output.png" width=600 style="padding-bottom:25px;">
 
 #### `pubsub.yaml` component file
 
