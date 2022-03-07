@@ -714,31 +714,11 @@ dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --component
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```go
-var (
-	PUBSUB_NAME  = "order_pub_sub"
-	PUBSUB_TOPIC = "orders"
-)
-
-func main() {
-	client, err := dapr.NewClient()
-	if err != nil {
-		panic(err)
-	}
-	defer client.Close()
-	ctx := context.Background()
-	for i := 1; i <= 10; i++ {
-		order := `{"orderId":` + strconv.Itoa(i) + `}`
-
-		// Publish an event using Dapr pub/sub
-		if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
-			panic(err)
-		}
-
-		fmt.Sprintf("Published data: ", order)
-
-		time.Sleep(1000)
-	}
+if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
+panic(err)
 }
+
+fmt.Sprintf("Published data: ", order)
 ```
 
 ### Step 3: Subscribe to topics
@@ -764,23 +744,6 @@ dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-htt
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```go
-var sub = &common.Subscription{
-	PubsubName: "order_pub_sub",
-	Topic:      "orders",
-	Route:      "orders",
-}
-
-func main() {
-	s := daprd.NewService(":6001")
-	http.HandleFunc("/orders", handleRequest)
-	if err := s.AddTopicEventHandler(sub, eventHandler); err != nil {
-		log.Fatalf("error adding topic subscription: %v", err)
-	}
-	if err := s.Start(); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("error listenning: %v", err)
-	}
-}
-
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	fmt.Println("Subscriber received: ", e.Data)
 	return false, nil
