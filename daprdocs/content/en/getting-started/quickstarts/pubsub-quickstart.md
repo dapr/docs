@@ -16,7 +16,7 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{<
 
 Select your preferred language-specific Dapr SDK before proceeding with the quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Java" >}}
+{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
  <!-- Python -->
 {{% codetab %}}
 
@@ -53,7 +53,7 @@ pip3 install -r requirements.txt
 Run the `checkout` publisher service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --components-path ../components -- python3 app.py
+dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
 ```
 
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
@@ -89,7 +89,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --app-port 5001 --components-path ../../components  -- python3 app.py
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
 ```
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
@@ -125,11 +125,33 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 
 Publisher output:
 
-<img src="/images/pubsub-quickstart/pubsub-python-publisher-output.png" width=600 style="padding-bottom:15px;">
+```
+== APP == INFO:root:Published data: {"orderId": 1}
+== APP == INFO:root:Published data: {"orderId": 2}
+== APP == INFO:root:Published data: {"orderId": 3}
+== APP == INFO:root:Published data: {"orderId": 4}
+== APP == INFO:root:Published data: {"orderId": 5}
+== APP == INFO:root:Published data: {"orderId": 6}
+== APP == INFO:root:Published data: {"orderId": 7}
+== APP == INFO:root:Published data: {"orderId": 8}
+== APP == INFO:root:Published data: {"orderId": 9}
+== APP == INFO:root:Published data: {"orderId": 10}
+```
 
 Subscriber output:
 
-<img src="/images/pubsub-quickstart/pubsub-python-subscriber-output.png" width=600 style="padding-bottom:25px;">
+```
+== APP == INFO:root:Subscriber received: {"orderId": 1}
+== APP == INFO:root:Subscriber received: {"orderId": 2}
+== APP == INFO:root:Subscriber received: {"orderId": 3}
+== APP == INFO:root:Subscriber received: {"orderId": 4}
+== APP == INFO:root:Subscriber received: {"orderId": 5}
+== APP == INFO:root:Subscriber received: {"orderId": 6}
+== APP == INFO:root:Subscriber received: {"orderId": 7}
+== APP == INFO:root:Subscriber received: {"orderId": 8}
+== APP == INFO:root:Subscriber received: {"orderId": 9}
+== APP == INFO:root:Subscriber received: {"orderId": 10}
+```
 
 #### `pubsub.yaml` component file
 
@@ -253,9 +275,37 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 
 Publisher output:
 
+```cli
+== APP == Published data: {"orderId":612}
+== APP == Published data: {"orderId":59}
+== APP == Published data: {"orderId":75}
+== APP == Published data: {"orderId":257}
+== APP == Published data: {"orderId":606}
+== APP == Published data: {"orderId":568}
+== APP == Published data: {"orderId":581}
+== APP == Published data: {"orderId":977}
+== APP == Published data: {"orderId":92}
+== APP == Published data: {"orderId":650}
+== APP == Published data: {"orderId":225}
+```
+
 <img src="/images/pubsub-quickstart/pubsub-js-publisher-output.png" width=600 style="padding-bottom:15px;">
 
 Subscriber output:
+
+```cli
+== APP == Subscriber received: {"orderId":612}
+== APP == Subscriber received: {"orderId":59}
+== APP == Subscriber received: {"orderId":75}
+== APP == Subscriber received: {"orderId":257}
+== APP == Subscriber received: {"orderId":606}
+== APP == Subscriber received: {"orderId":568}
+== APP == Subscriber received: {"orderId":581}
+== APP == Subscriber received: {"orderId":977}
+== APP == Subscriber received: {"orderId":92}
+== APP == Subscriber received: {"orderId":650}
+== APP == Subscriber received: {"orderId":225}
+```
 
 <img src="/images/pubsub-quickstart/pubsub-js-subscriber-output.png" width=600 style="padding-bottom:25px;">
 
@@ -390,9 +440,33 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 
 Publisher output:
 
-<img src="/images/pubsub-quickstart/pubsub-dotnet-publisher-output.png" width=600 style="padding-bottom:15px;">
+```dotnetcli
+== APP == Published data: Order { OrderId = 381 }
+== APP == Published data: Order { OrderId = 917 }
+== APP == Published data: Order { OrderId = 292 }
+== APP == Published data: Order { OrderId = 722 }
+== APP == Published data: Order { OrderId = 262 }
+== APP == Published data: Order { OrderId = 507 }
+== APP == Published data: Order { OrderId = 73 }
+== APP == Published data: Order { OrderId = 21 }
+== APP == Published data: Order { OrderId = 983 }
+== APP == Published data: Order { OrderId = 886 }
+```
 
 Subscriber output:
+
+```dotnetcli
+== APP == Subscriber received: Order { OrderId = 381 }
+== APP == Subscriber received: Order { OrderId = 917 }
+== APP == Subscriber received: Order { OrderId = 292 }
+== APP == Subscriber received: Order { OrderId = 722 }
+== APP == Subscriber received: Order { OrderId = 262 }
+== APP == Subscriber received: Order { OrderId = 507 }
+== APP == Subscriber received: Order { OrderId = 73 }
+== APP == Subscriber received: Order { OrderId = 21 }
+== APP == Subscriber received: Order { OrderId = 983 }
+== APP == Subscriber received: Order { OrderId = 886 }
+```
 
 <img src="/images/pubsub-quickstart/pubsub-dotnet-subscriber-output.png" width=600 style="padding-bottom:25px;">
 
@@ -537,11 +611,212 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 
 Publisher output:
 
-<img src="/images/pubsub-quickstart/pubsub-java-publisher-output.png" width=600 style="padding-bottom:15px;">
+```
+== APP == 2171 [main] INFO com.service.CheckoutServiceApplication - Published data: 0
+== APP == 7194 [main] INFO com.service.CheckoutServiceApplication - Published data: 1
+== APP == 12213 [main] INFO com.service.CheckoutServiceApplication - Published data: 2
+== APP == 17233 [main] INFO com.service.CheckoutServiceApplication - Published data: 3
+== APP == 22252 [main] INFO com.service.CheckoutServiceApplication - Published data: 4
+== APP == 27276 [main] INFO com.service.CheckoutServiceApplication - Published data: 5
+== APP == 32320 [main] INFO com.service.CheckoutServiceApplication - Published data: 6
+== APP == 37340 [main] INFO com.service.CheckoutServiceApplication - Published data: 7
+== APP == 42356 [main] INFO com.service.CheckoutServiceApplication - Published data: 8
+== APP == 47386 [main] INFO com.service.CheckoutServiceApplication - Published data: 9
+== APP == 52410 [main] INFO com.service.CheckoutServiceApplication - Published data: 10
+```
 
 Subscriber output:
 
-<img src="/images/pubsub-quickstart/pubsub-java-subscriber-output.png" width=600 style="padding-bottom:25px;">
+```
+== APP == 2022-03-07 13:31:19.551  INFO 43512 --- [nio-8080-exec-1] c.s.c.OrderProcessingServiceController   : Subscriber received: 0
+== APP == 2022-03-07 13:31:19.551  INFO 43512 --- [nio-8080-exec-5] c.s.c.OrderProcessingServiceController   : Subscriber received: 1
+== APP == 2022-03-07 13:31:19.552  INFO 43512 --- [nio-8080-exec-9] c.s.c.OrderProcessingServiceController   : Subscriber received: 2
+== APP == 2022-03-07 13:31:19.551  INFO 43512 --- [nio-8080-exec-6] c.s.c.OrderProcessingServiceController   : Subscriber received: 3
+== APP == 2022-03-07 13:31:19.552  INFO 43512 --- [nio-8080-exec-2] c.s.c.OrderProcessingServiceController   : Subscriber received: 4
+== APP == 2022-03-07 13:31:19.553  INFO 43512 --- [nio-8080-exec-2] c.s.c.OrderProcessingServiceController   : Subscriber received: 5
+== APP == 2022-03-07 13:31:19.553  INFO 43512 --- [nio-8080-exec-9] c.s.c.OrderProcessingServiceController   : Subscriber received: 6
+== APP == 2022-03-07 13:31:22.849  INFO 43512 --- [nio-8080-exec-3] c.s.c.OrderProcessingServiceController   : Subscriber received: 7
+== APP == 2022-03-07 13:31:27.866  INFO 43512 --- [nio-8080-exec-6] c.s.c.OrderProcessingServiceController   : Subscriber received: 8
+== APP == 2022-03-07 13:31:32.895  INFO 43512 --- [nio-8080-exec-6] c.s.c.OrderProcessingServiceController   : Subscriber received: 9
+== APP == 2022-03-07 13:31:37.919  INFO 43512 --- [nio-8080-exec-2] c.s.c.OrderProcessingServiceController   : Subscriber received: 10
+```
+
+#### `pubsub.yaml` component file
+
+When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
+
+- On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
+- On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
+
+With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
+
+The Redis `pubsub.yaml` file included for this quickstart contains the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order_pub_sub
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
+scopes:
+  - orderprocessing
+  - checkout
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component.
+- `spec/metadata` defines the connection to the instance of the component.
+- `scopes` specify which application can use the component.
+
+{{% /codetab %}}
+
+ <!-- Go -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest version of Go](https://go.dev/dl/).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop).
+
+### Step 1: Set up the environment
+
+Clone the sample we've provided.
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Publish a topic
+
+In a terminal window, navigate to the `checkout` directory.
+
+```bash
+cd pub_sub/go/sdk/checkout
+```
+
+Install the dependencies:
+
+```bash
+go build app.go
+```
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```go
+var (
+	PUBSUB_NAME  = "order_pub_sub"
+	PUBSUB_TOPIC = "orders"
+)
+
+func main() {
+	client, err := dapr.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	defer client.Close()
+	ctx := context.Background()
+	for i := 1; i <= 10; i++ {
+		order := `{"orderId":` + strconv.Itoa(i) + `}`
+
+		// Publish an event using Dapr pub/sub
+		if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
+			panic(err)
+		}
+
+		fmt.Sprintf("Published data: ", order)
+
+		time.Sleep(1000)
+	}
+}
+```
+
+### Step 3: Subscribe to topics
+
+In a new terminal window, navigate to the `order-processor` directory.
+
+```bash
+cd pub_sub/go/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+go build app.go
+```
+
+Run the `order-processor` subscriber service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
+```
+
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+
+```go
+var sub = &common.Subscription{
+	PubsubName: "order_pub_sub",
+	Topic:      "orders",
+	Route:      "orders",
+}
+
+func main() {
+	s := daprd.NewService(":6001")
+	http.HandleFunc("/orders", handleRequest)
+	if err := s.AddTopicEventHandler(sub, eventHandler); err != nil {
+		log.Fatalf("error adding topic subscription: %v", err)
+	}
+	if err := s.Start(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("error listenning: %v", err)
+	}
+}
+
+func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
+	fmt.Println("Subscriber received: ", e.Data)
+	return false, nil
+}
+```
+
+### Step 4: View the Pub/sub outputs
+
+Notice, as specified in the code above, the publisher pushes a numbered message to the Dapr sidecar while the subscriber receives it.
+
+Publisher output:
+
+```
+== APP == dapr client initializing for: 127.0.0.1:63293
+```
+
+Subscriber output:
+
+```
+== APP == Subscriber received:  {"orderId":1}
+== APP == Subscriber received:  {"orderId":2}
+== APP == Subscriber received:  {"orderId":3}
+== APP == Subscriber received:  {"orderId":4}
+== APP == Subscriber received:  {"orderId":5}
+== APP == Subscriber received:  {"orderId":6}
+== APP == Subscriber received:  {"orderId":7}
+== APP == Subscriber received:  {"orderId":8}
+== APP == Subscriber received:  {"orderId":9}
+== APP == Subscriber received:  {"orderId":10}
+```
 
 #### `pubsub.yaml` component file
 
@@ -585,10 +860,11 @@ In the YAML file:
 ## Next steps
 
 - Set up Pub/sub using HTTP instead of an SDK.
-  - [Python](https://github.com/dapr/quickstarts/tree/feature/new_quickstarts/pub_sub/python/http)
-  - [JavaScript](https://github.com/dapr/quickstarts/tree/feature/new_quickstarts/pub_sub/javascript/http)
-  - [.NET](https://github.com/dapr/quickstarts/tree/feature/new_quickstarts/pub_sub/csharp/http)
-  - [Java](https://github.com/dapr/quickstarts/tree/feature/new_quickstarts/pub_sub/java/http)
+  - [Python](https://github.com/dapr/quickstarts/pub_sub/python/http)
+  - [JavaScript](https://github.com/dapr/quickstarts/pub_sub/javascript/http)
+  - [.NET](https://github.com/dapr/quickstarts/pub_sub/csharp/http)
+  - [Java](https://github.com/dapr/quickstarts/pub_sub/java/http)
+  - [Go](https://github.com/dapr/quickstarts/pub_sub/go/http)
 - Learn about [Pub/sub routing]({{< ref howto-route-messages >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
