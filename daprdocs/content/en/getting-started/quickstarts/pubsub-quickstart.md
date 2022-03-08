@@ -276,33 +276,33 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 Publisher output:
 
 ```cli
-== APP == Published data: {"orderId":612}
-== APP == Published data: {"orderId":59}
-== APP == Published data: {"orderId":75}
-== APP == Published data: {"orderId":257}
-== APP == Published data: {"orderId":606}
-== APP == Published data: {"orderId":568}
-== APP == Published data: {"orderId":581}
-== APP == Published data: {"orderId":977}
-== APP == Published data: {"orderId":92}
-== APP == Published data: {"orderId":650}
-== APP == Published data: {"orderId":225}
+== APP == Published data: {"orderId":1}
+== APP == Published data: {"orderId":2}
+== APP == Published data: {"orderId":3}
+== APP == Published data: {"orderId":4}
+== APP == Published data: {"orderId":5}
+== APP == Published data: {"orderId":6}
+== APP == Published data: {"orderId":7}
+== APP == Published data: {"orderId":8}
+== APP == Published data: {"orderId":9}
+== APP == Published data: {"orderId":10}
+
 ```
 
 Subscriber output:
 
 ```cli
-== APP == Subscriber received: {"orderId":612}
-== APP == Subscriber received: {"orderId":59}
-== APP == Subscriber received: {"orderId":75}
-== APP == Subscriber received: {"orderId":257}
-== APP == Subscriber received: {"orderId":606}
-== APP == Subscriber received: {"orderId":568}
-== APP == Subscriber received: {"orderId":581}
-== APP == Subscriber received: {"orderId":977}
-== APP == Subscriber received: {"orderId":92}
-== APP == Subscriber received: {"orderId":650}
-== APP == Subscriber received: {"orderId":225}
+== APP == Subscriber received: {"orderId":1}
+== APP == Subscriber received: {"orderId":2}
+== APP == Subscriber received: {"orderId":3}
+== APP == Subscriber received: {"orderId":4}
+== APP == Subscriber received: {"orderId":5}
+== APP == Subscriber received: {"orderId":6}
+== APP == Subscriber received: {"orderId":7}
+== APP == Subscriber received: {"orderId":8}
+== APP == Subscriber received: {"orderId":9}
+== APP == Subscriber received: {"orderId":10}
+
 ```
 
 #### `pubsub.yaml` component file
@@ -437,31 +437,31 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 Publisher output:
 
 ```dotnetcli
-== APP == Published data: Order { OrderId = 381 }
-== APP == Published data: Order { OrderId = 917 }
-== APP == Published data: Order { OrderId = 292 }
-== APP == Published data: Order { OrderId = 722 }
-== APP == Published data: Order { OrderId = 262 }
-== APP == Published data: Order { OrderId = 507 }
-== APP == Published data: Order { OrderId = 73 }
-== APP == Published data: Order { OrderId = 21 }
-== APP == Published data: Order { OrderId = 983 }
-== APP == Published data: Order { OrderId = 886 }
+== APP == Published data: Order { OrderId = 1 }
+== APP == Published data: Order { OrderId = 2 }
+== APP == Published data: Order { OrderId = 3 }
+== APP == Published data: Order { OrderId = 4 }
+== APP == Published data: Order { OrderId = 5 }
+== APP == Published data: Order { OrderId = 6 }
+== APP == Published data: Order { OrderId = 7 }
+== APP == Published data: Order { OrderId = 8 }
+== APP == Published data: Order { OrderId = 9 }
+== APP == Published data: Order { OrderId = 10 }
 ```
 
 Subscriber output:
 
 ```dotnetcli
-== APP == Subscriber received: Order { OrderId = 381 }
-== APP == Subscriber received: Order { OrderId = 917 }
-== APP == Subscriber received: Order { OrderId = 292 }
-== APP == Subscriber received: Order { OrderId = 722 }
-== APP == Subscriber received: Order { OrderId = 262 }
-== APP == Subscriber received: Order { OrderId = 507 }
-== APP == Subscriber received: Order { OrderId = 73 }
-== APP == Subscriber received: Order { OrderId = 21 }
-== APP == Subscriber received: Order { OrderId = 983 }
-== APP == Subscriber received: Order { OrderId = 886 }
+== APP == Subscriber received: Order { OrderId = 1 }
+== APP == Subscriber received: Order { OrderId = 2 }
+== APP == Subscriber received: Order { OrderId = 3 }
+== APP == Subscriber received: Order { OrderId = 4 }
+== APP == Subscriber received: Order { OrderId = 5 }
+== APP == Subscriber received: Order { OrderId = 6 }
+== APP == Subscriber received: Order { OrderId = 7 }
+== APP == Subscriber received: Order { OrderId = 8 }
+== APP == Subscriber received: Order { OrderId = 9 }
+== APP == Subscriber received: Order { OrderId = 10 }
 ```
 
 #### `pubsub.yaml` component file
@@ -606,7 +606,6 @@ Notice, as specified in the code above, the publisher pushes a random number to 
 Publisher output:
 
 ```
-== APP == 2171 [main] INFO com.service.CheckoutServiceApplication - Published data: 0
 == APP == 7194 [main] INFO com.service.CheckoutServiceApplication - Published data: 1
 == APP == 12213 [main] INFO com.service.CheckoutServiceApplication - Published data: 2
 == APP == 17233 [main] INFO com.service.CheckoutServiceApplication - Published data: 3
@@ -622,7 +621,6 @@ Publisher output:
 Subscriber output:
 
 ```
-== APP == 2022-03-07 13:31:19.551  INFO 43512 --- [nio-8080-exec-1] c.s.c.OrderProcessingServiceController   : Subscriber received: 0
 == APP == 2022-03-07 13:31:19.551  INFO 43512 --- [nio-8080-exec-5] c.s.c.OrderProcessingServiceController   : Subscriber received: 1
 == APP == 2022-03-07 13:31:19.552  INFO 43512 --- [nio-8080-exec-9] c.s.c.OrderProcessingServiceController   : Subscriber received: 2
 == APP == 2022-03-07 13:31:19.551  INFO 43512 --- [nio-8080-exec-6] c.s.c.OrderProcessingServiceController   : Subscriber received: 3
