@@ -6,21 +6,16 @@ weight: 70
 description: "Get started with Dapr's Service Invocation building block"
 ---
 
-With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-applications/building-blocks/service-invocation), your application can communicate reliably and securely with other applications. Dapr offers two standard ways to enable service invocation:
-
-- [gRPC](https://grpc.io)
-- [HTTP](https://www.w3.org/Protocols/)
-
-As demonstrated in the diagram below, Dapr invokes an application on any Dapr instance. The sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-applications/building-blocks/service-invocation), your application can communicate reliably and securely with other applications.
 
 <img src="/images/serviceinvocation-quickstart/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
-We recommend enabling with HTTP proxy, as it's easier for you to:
+Dapr offers the invoke url and proxy methods for service invocation, depending on your scenario. We recommend using proxy, as it's easier for you to:
 
-- Leverage your existing HTTP client without changing your endpoints.
-- Perform a REST-like call like any other client native to your language.
+- Leverage your existing HTTP client or Protobufs.
+- Perform a REST-like call, like any other client native to your language.
 
-Based on this recommendation, in this quickstart, you'll enable the `checkout` service to invoke a method using HTTP proxying in the `order-processor` service.
+Based on this recommendation, in this quickstart, you'll enable the `checkout` service to invoke a method using HTTP proxy in the `order-processor` service.
 
 Select your preferred language before proceeding with the quickstart.
 
@@ -108,6 +103,40 @@ def getOrder():
 app.run(port=5001)
 ```
 
+### View the Service Invocation outputs
+
+Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+
+`checkout` service output:
+
+```
+== APP == Order passed: {"orderId": 1}
+== APP == Order passed: {"orderId": 2}
+== APP == Order passed: {"orderId": 3}
+== APP == Order passed: {"orderId": 4}
+== APP == Order passed: {"orderId": 5}
+== APP == Order passed: {"orderId": 6}
+== APP == Order passed: {"orderId": 7}
+== APP == Order passed: {"orderId": 8}
+== APP == Order passed: {"orderId": 9}
+== APP == Order passed: {"orderId": 10}
+```
+
+`order-processor` service output:
+
+```
+== APP == Order received: {"orderId": 1}
+== APP == Order received: {"orderId": 2}
+== APP == Order received: {"orderId": 3}
+== APP == Order received: {"orderId": 4}
+== APP == Order received: {"orderId": 5}
+== APP == Order received: {"orderId": 6}
+== APP == Order received: {"orderId": 7}
+== APP == Order received: {"orderId": 8}
+== APP == Order received: {"orderId": 9}
+== APP == Order received: {"orderId": 10}
+```
+
 {{% /codetab %}}
 
  <!-- JavaScript -->
@@ -188,6 +217,40 @@ app.post('/orders', (req, res) => {
 });
 ```
 
+### View the Service Invocation outputs
+
+Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+
+`checkout` service output:
+
+```
+== APP == Order passed: {"orderId": 1}
+== APP == Order passed: {"orderId": 2}
+== APP == Order passed: {"orderId": 3}
+== APP == Order passed: {"orderId": 4}
+== APP == Order passed: {"orderId": 5}
+== APP == Order passed: {"orderId": 6}
+== APP == Order passed: {"orderId": 7}
+== APP == Order passed: {"orderId": 8}
+== APP == Order passed: {"orderId": 9}
+== APP == Order passed: {"orderId": 10}
+```
+
+`order-processor` service output:
+
+```
+== APP == Order received: {"orderId": 1}
+== APP == Order received: {"orderId": 2}
+== APP == Order received: {"orderId": 3}
+== APP == Order received: {"orderId": 4}
+== APP == Order received: {"orderId": 5}
+== APP == Order received: {"orderId": 6}
+== APP == Order received: {"orderId": 7}
+== APP == Order received: {"orderId": 8}
+== APP == Order received: {"orderId": 9}
+== APP == Order received: {"orderId": 10}
+```
+
 {{% /codetab %}}
 
  <!-- .NET -->
@@ -253,7 +316,8 @@ cd service_invocation/csharp/http/order-processor
 Install the dependencies:
 
 ```bash
-npm install
+dotnet restore
+dotnet build
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
@@ -268,6 +332,40 @@ app.MapPost("/orders", async context => {
     Console.WriteLine("Order received : " + data);
     await context.Response.WriteAsync(data.ToString());
 });
+```
+
+### View the Service Invocation outputs
+
+Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+
+`checkout` service output:
+
+```
+== APP == Order passed: Order { OrderId: 1 }
+== APP == Order passed: Order { OrderId: 2 }
+== APP == Order passed: Order { OrderId: 3 }
+== APP == Order passed: Order { OrderId: 4 }
+== APP == Order passed: Order { OrderId: 5 }
+== APP == Order passed: Order { OrderId: 6 }
+== APP == Order passed: Order { OrderId: 7 }
+== APP == Order passed: Order { OrderId: 8 }
+== APP == Order passed: Order { OrderId: 9 }
+== APP == Order passed: Order { OrderId: 10 }
+```
+
+`order-processor` service output:
+
+```
+== APP == Order received: Order { OrderId: 1 }
+== APP == Order received: Order { OrderId: 2 }
+== APP == Order received: Order { OrderId: 3 }
+== APP == Order received: Order { OrderId: 4 }
+== APP == Order received: Order { OrderId: 5 }
+== APP == Order received: Order { OrderId: 6 }
+== APP == Order received: Order { OrderId: 7 }
+== APP == Order received: Order { OrderId: 8 }
+== APP == Order received: Order { OrderId: 9 }
+== APP == Order received: Order { OrderId: 10 }
 ```
 
 {{% /codetab %}}
@@ -349,6 +447,40 @@ public String processOrders(@RequestBody Order body) {
         System.out.println("Order received: "+ body.getOrderId());
         return "CID" + body.getOrderId();
     }
+```
+
+### View the Service Invocation outputs
+
+Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+
+`checkout` service output:
+
+```
+== APP == Order passed: 1
+== APP == Order passed: 2
+== APP == Order passed: 3
+== APP == Order passed: 4
+== APP == Order passed: 5
+== APP == Order passed: 6
+== APP == Order passed: 7
+== APP == Order passed: 8
+== APP == Order passed: 9
+== APP == Order passed: 10
+```
+
+`order-processor` service output:
+
+```
+== APP == Order received: 1
+== APP == Order received: 2
+== APP == Order received: 3
+== APP == Order received: 4
+== APP == Order received: 5
+== APP == Order received: 6
+== APP == Order received: 7
+== APP == Order received: 8
+== APP == Order received: 9
+== APP == Order received: 10
 ```
 
 {{% /codetab %}}
@@ -439,6 +571,40 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	log.Printf("Order received : %s", string(data))
+```
+
+### View the Service Invocation outputs
+
+Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+
+`checkout` service output:
+
+```
+== APP == Order passed:  "{\"orderId\":1}"
+== APP == Order passed:  "{\"orderId\":2}"
+== APP == Order passed:  "{\"orderId\":3}"
+== APP == Order passed:  "{\"orderId\":4}"
+== APP == Order passed:  "{\"orderId\":5}"
+== APP == Order passed:  "{\"orderId\":6}"
+== APP == Order passed:  "{\"orderId\":7}"
+== APP == Order passed:  "{\"orderId\":8}"
+== APP == Order passed:  "{\"orderId\":9}"
+== APP == Order passed:  "{\"orderId\":10}"
+```
+
+`order-processor` service output:
+
+```
+== APP == Order received :  {"orderId":1}
+== APP == Order received :  {"orderId":2}
+== APP == Order received :  {"orderId":3}
+== APP == Order received :  {"orderId":4}
+== APP == Order received :  {"orderId":5}
+== APP == Order received :  {"orderId":6}
+== APP == Order received :  {"orderId":7}
+== APP == Order received :  {"orderId":8}
+== APP == Order received :  {"orderId":9}
+== APP == Order received :  {"orderId":10}
 ```
 
 {{% /codetab %}}
