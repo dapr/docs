@@ -86,4 +86,4 @@ Once the k8-extension finishes provisioning, you can confirm that the Dapr contr
 kubectl get pods -n dapr-system
 ```
 
-For further information such as configuration options and targeting specific versions of Dapr, please see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/azure/aks/dapr).
+For further information such as configuration options and targeting specific versions of Dapr, see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/azure/aks/dapr).

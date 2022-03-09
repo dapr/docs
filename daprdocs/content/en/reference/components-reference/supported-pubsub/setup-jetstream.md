@@ -25,6 +25,10 @@ spec:
   metadata:
   - name: natsURL
     value: "nats://localhost:4222"
+  - name: jwt
+    value: "eyJhbGciOiJ...6yJV_adQssw5c" # Optional. Used for decentralized JWT authentication
+  - name: seedKey
+    value: "SUACS34K232O...5Z3POU7BNIL4Y" # Optional. Used for decentralized JWT authentication
   - name: name
     value: "connection name"
   - name: durableName
@@ -46,6 +50,8 @@ spec:
 | Field          | Required | Details | Example |
 |----------------|:--------:|---------|---------|
 | natsURL        |        Y | NATS server address URL   | "`nats://localhost:4222`"|
+| jwt            |        N | NATS decentralized authentication JWT | "`eyJhbGciOiJ...6yJV_adQssw5c`"|
+| seedKey        |        N | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`"|
 | name           |        N | NATS connection name | `"my-conn-name"`|
 | durableName    |        N | [Durable name] | `"my-durable"` |
 | queueGroupName |        N | Queue group name | `"my-queue"` |
@@ -82,6 +88,14 @@ with NATS, find the service with: `kubectl get svc my-nats`.
 
 {{< /tabs >}}
 
+## Create JetStream
+
+It is essential to create a NATS JetStream for a specific subject. For example, for a NATS server running locally use:
+
+```bash
+nats -s localhost:4222 stream add myStream --subjects mySubject
+```
+
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
@@ -95,3 +109,4 @@ with NATS, find the service with: `kubectl get svc my-nats`.
 [Start Time]: https://docs.nats.io/jetstream/concepts/consumers#deliverbystarttime
 [Replay Policy]: https://docs.nats.io/jetstream/concepts/consumers#replaypolicy
 [Flow Control]: https://docs.nats.io/jetstream/concepts/consumers#flowcontrol
+[Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt

@@ -38,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|--------|---------|---------|
 | url | Y | Output | The CosmosDBGremlinAPI url | `"wss://******.gremlin.cosmos.azure.com:443/"` |
 | masterKey | Y | Output | The CosmosDBGremlinAPI account master key | `"masterKey"` |
-| database | Y | Output | The username of the CosmosDBGremlinAPI database | `"username"` |
+| username | Y | Output | The username of the CosmosDBGremlinAPI database | `"/dbs/<database_name>/colls/<graph_name>"` |
 
 For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin ](https://docs.microsoft.com/azure/cosmos-db/graph/create-graph-console).
 
@@ -47,6 +47,17 @@ For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin ](http
 This component supports **output binding** with the following operations:
 
 - `query`
+
+## Request payload sample
+
+```json
+{
+  "data": {
+    "gremlin": "g.V().count()"
+    },
+  "operation": "query"
+}
+```
 
 ## Related links
 

@@ -37,6 +37,8 @@ spec:
     value: # Optional
   - name: ttlInSeconds
     value: <int> # Optional
+  - name: queryIndexes
+    value: <string> # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -81,7 +83,8 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
-| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600` 
+| ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600`
+| queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
 
 ## Setup Redis
 
@@ -147,6 +150,269 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 {{< /tabs >}}
 
+### Querying JSON objects
+
+The Redis state store supports querying of JSON objects. To enable this feature, the following steps are required:
+1. The Redis store must support Redis modules and specifically both Redisearch and RedisJson. If you are deploying and running Redis then load [redisearch](https://oss.redis.com/redisearch/) and [redisjson](https://oss.redis.com/redisjson/) modules when deploying the Redis service.
+``
+2. Specify `queryIndexes` entry in the metadata of the component config. The value of the `queryIndexes` is a JSON array of the following format:
+```json
+[
+  {
+    "name": "<indexing name>",
+    "indexes": [
+      {
+        "key": "<JSONPath-like syntax for selected element inside documents>",
+        "type": "<value type (supported types: TEXT, NUMERIC)>",
+      },
+      ...
+    ]
+  },
+  ...
+]
+```
+3. When calling state management API, add the following metadata to the API calls:
+- [Save State]({{< ref "state_api.md#save-state" >}}), [Get State]({{< ref "state_api.md#get-state" >}}), [Delete State]({{< ref "state_api.md#delete-state" >}}):
+  - add `metadata.contentType=application/json` URL query parameter to HTTP API request
+  - add `"contentType": "application/json"` pair to the metadata of gRPC API request
+- [Query State]({{< ref "state_api.md#query-state" >}}):
+  - add `metadata.contentType=application/json&metadata.queryIndexName=<indexing name>` URL query parameters to HTTP API request
+  - add `"contentType" : "application/json"` and `"queryIndexName" : "<indexing name>"` pairs to the metadata of gRPC API request
+
+Consider an example where you store documents like that:
+```json
+{
+  "key": "1",
+  "value": {
+    "person": {
+      "org": "Dev Ops",
+      "id": 1036
+    },
+    "city": "Seattle",
+    "state": "WA"
+}
+```
+
+The component config file containing corresponding indexing schema looks like that:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  version: v1
+  initTimeout: 1m
+  metadata:
+  - name: redisHost
+    value: "localhost:6379"
+  - name: redisPassword
+    value: ""
+  - name: queryIndexes
+    value: |
+      [
+        {
+          "name": "orgIndx",
+          "indexes": [
+            {
+              "key": "person.org",
+              "type": "TEXT"
+            },
+            {
+              "key": "person.id",
+              "type": "NUMERIC"
+            },
+            {
+              "key": "state",
+              "type": "TEXT"
+            },
+            {
+              "key": "city",
+              "type": "TEXT"
+            }
+          ]
+        }
+      ]
+```
+
+Consecutively, you can now store, retrieve, and query these documents.
+
+Consider the example from ["How-To: Query state"]({{< ref "howto-state-query-api.md#example-data-and-query" >}}) guide. Let's run it with Redis.
+
+
+{{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" >}}
+
+{{% codetab %}}
+If you are using a self-hosted deployment of Dapr v1.7 and up, a Redis instance with the required modules is automatically created as a Docker container when you run `dapr init`.
+
+Alternatively, you can create an instance of Redis by running the following command:
+```bash
+docker run -p 6379:6379 --name redis --rm redislabs/rejson:2.0.6
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+Follow instructions for [Redis deployment in Kubernetes](#setup-redis) with one extra detail.
+
+When installing Redis Helm package, provide a configuration file that specifies container image and enables required modules:
+```bash
+helm install redis bitnami/redis -f values.yaml
+```
+where `values.yaml` looks like:
+```yaml
+image:
+  repository: redislabs/rejson
+  tag: 2.0.6
+
+master:
+  extraFlags:
+   - --loadmodule
+   - /usr/lib/redis/modules/rejson.so
+   - --loadmodule
+   - /usr/lib/redis/modules/redisearch.so
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+{{% alert title="Note" color="warning" %}}
+Azure Redis managed service does not support the RedisJson module and cannot be used with query.
+{{% /alert %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+Follow instructions for [Redis deployment in AWS](#setup-redis).
+{{% alert title="Note" color="primary" %}}
+For query support you need to enable RediSearch and RedisJson.
+{{% /alert %}}
+{{% /codetab %}}
+
+{{% codetab %}}
+{{% alert title="Note" color="warning" %}}
+Memory Store does not support modules and cannot be used with query.
+{{% /alert %}}
+{{% /codetab %}}
+
+{{% codetab %}}
+[Redis Enterprise Cloud](https://docs.redis.com/latest/rc/)
+{{% /codetab %}}
+
+{{% codetab %}}
+[Alibaba Cloud](https://www.alibabacloud.com/product/apsaradb-for-redis)
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas.
+```bash
+dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/redis
+```
+
+Now populate the state store with the employee dataset, so you can then query it later.
+```bash
+curl -X POST -H "Content-Type: application/json" -d @query-api-examples/dataset.json \
+  http://localhost:3500/v1.0/state/querystatestore?metadata.contentType=application/json
+```
+
+To make sure the data has been properly stored, you can retrieve a specific object
+```bash
+curl http://localhost:3500/v1.0/state/querystatestore/1?metadata.contentType=application/json
+```
+
+The result will be:
+```json
+{
+  "city": "Seattle",
+  "state": "WA",
+  "person": {
+    "org": "Dev Ops",
+    "id": 1036
+  }
+}
+```
+
+Now, let's find all employees in the state of California and sort them by their employee ID in descending order.
+
+This is the [query](../../../../developing-applications/building-blocks/state-management/query-api-examples/query1.json):
+```json
+{
+    "filter": {
+        "EQ": { "state": "CA" }
+    },
+    "sort": [
+        {
+            "key": "person.id",
+            "order": "DESC"
+        }
+    ]
+}
+```
+
+Execute the query with the following command:
+```bash
+curl -s -X POST -H "Content-Type: application/json" -d @query-api-examples/query1.json \
+  'http://localhost:3500/v1.0-alpha1/state/querystatestore/query?metadata.contentType=application/json&metadata.queryIndexName=orgIndx'
+```
+
+The result will be:
+```json
+{
+  "results": [
+    {
+      "key": "3",
+      "data": {
+        "person": {
+          "org": "Finance",
+          "id": 1071
+        },
+        "city": "Sacramento",
+        "state": "CA"
+      },
+      "etag": "1"
+    },
+    {
+      "key": "7",
+      "data": {
+        "person": {
+          "org": "Dev Ops",
+          "id": 1015
+        },
+        "city": "San Francisco",
+        "state": "CA"
+      },
+      "etag": "1"
+    },
+    {
+      "key": "5",
+      "data": {
+        "person": {
+          "org": "Hardware",
+          "id": 1007
+        },
+        "city": "Los Angeles",
+        "state": "CA"
+      },
+      "etag": "1"
+    },
+    {
+      "key": "9",
+      "data": {
+        "person": {
+          "org": "Finance",
+          "id": 1002
+        },
+        "city": "San Diego",
+        "state": "CA"
+      },
+      "etag": "1"
+    }
+  ]
+}
+```
+
+The query syntax and documentation is available [here]({{< ref howto-state-query-api.md >}})
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

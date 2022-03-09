@@ -15,7 +15,7 @@ The main difference between the two flows is that the `Authorization Code Grant 
 ## Register your application with a authorization server
 
 Different authorization servers provide different application registration experiences. Here are some samples:
-
+<!-- IGNORE_LINKS -->
 * [Azure AAD](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-oauth-code)
 * [Facebook](https://developers.facebook.com/apps)
 * [Fitbit](https://dev.fitbit.com/build/reference/web-api/oauth2/)
@@ -23,7 +23,7 @@ Different authorization servers provide different application registration exper
 * [Google APIs](https://console.developers.google.com/apis/credentials/consen)
 * [Slack](https://api.slack.com/docs/oauth)
 * [Twitter](http://apps.twitter.com/)
-
+<!-- END_IGNORE -->
 To figure the Dapr OAuth middleware, you'll need to collect the following information:
 
 * Client ID (see [here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/))
