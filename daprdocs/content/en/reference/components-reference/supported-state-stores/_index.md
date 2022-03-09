@@ -47,7 +47,7 @@ The following stores are supported, at various levels, by the Dapr state managem
 ### Amazon Web Services (AWS)
 | Name                                               |CRUD|Transactional|ETag| [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | [Query]({{< ref howto-state-query-api.md >}}) | Status | Component version | Since |
 |----------------------------------------------------|----|-------------|----|----|----|----|------|----|-----|
-| [AWS DynamoDB]({{< ref setup-dynamodb.md>}})       | ✅ | ❌           | ❌ | ❌ | ❌ | ❌ | Alpha | v1 | 1.0 |
+| [AWS DynamoDB]({{< ref setup-dynamodb.md>}})       | ✅ | ❌           | ❌ | ✅ | ❌ | ❌ | Alpha | v1 | 1.0 |
 
 ### Google Cloud Platform (GCP)
 | Name                                               |CRUD|Transactional|ETag| [TTL]({{< ref state-store-ttl.md >}}) | [Actors]({{< ref howto-actors.md >}}) | [Query]({{< ref howto-state-query-api.md >}}) | Status | Component version | Since |
