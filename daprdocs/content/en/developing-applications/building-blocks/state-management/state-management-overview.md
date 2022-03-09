@@ -55,6 +55,17 @@ When strong consistency is used, Dapr waits for all replicas (or designated quor
 
 Read the [API reference]({{< ref state_api.md >}}) to learn how to set consistency options.
 
+### Setting content type
+
+Some state store components might have different ways of maintaining and manipulating data, depending on its type.
+Dapr supports passing content type in [State management API](#state-management-api) as part of request metadata.
+
+Setting the content type is optional, and it is up to the component to make use of it. Dapr only provides the means of passing this information to the component.
+
+With the HTTP API, you can set content type via URL query parameter `metadata.contentType`. For example, `http://localhost:3500/v1.0/state/store?metadata.contentType=application/json`
+
+With the gRPC API, you can set content type by adding key/value pair `"contentType" : <content type>` to the request metadata.
+
 ### Bulk operations
 
 Dapr supports two types of bulk operations: **bulk** or **multi**. You can group several requests of the same type into a bulk (or a batch). Dapr submits requests in bulk operations as individual requests to the underlying data store. In other words, bulk operations are not transactional. On the other hand, you can group requests of different types into a multi-operation, which is then handled as an atomic transaction.
