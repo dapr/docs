@@ -20,6 +20,7 @@ We welcome community members giving presentations on Dapr and spreading the word
 
 | Presentation | Recording | Deck |
 |--------------|-----------|------|
+| Running Event-Driven Pub/Sub Microservices In Kubernetes With Dapr | [Link](https://youtu.be/-4sHUvfk2Eg) | N/A
 | Ignite 2019: Mark Russinovich Presents the Future of Cloud Native Applications | [Link](https://www.youtube.com/watch?v=LAUDVk8PaCY) | [Link](/presentations/2019IgniteCloudNativeApps.pdf)
 | Azure Community Live: Build microservice applications using DAPR with Mark Fussell | [Link](https://www.youtube.com/watch?v=CgqI7nen-Ng) | N/A
 | Ready 2020: Mark Russinovich Presents Cloud Native Applications | [Link](https://youtu.be/eJCu6a-x9uo?t=1614) | [Link](/presentations/2020ReadyCloudNativeApps.pdf)
