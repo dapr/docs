@@ -32,7 +32,6 @@ spec:
     value: "[your_service_principal_tenant_id]"
   - name: azureClientId
     value: "[your_service_principal_app_id]"
-    value : "[pfx_certificate_contents]"
   - name: azureCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
