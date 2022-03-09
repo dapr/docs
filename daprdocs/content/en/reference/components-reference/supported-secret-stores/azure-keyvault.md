@@ -23,8 +23,11 @@ spec:
   type: secretstores.azure.keyvault
   version: v1
   metadata:
-  - name: vaultName
+  - name: vaultName # Required
     value: [your_keyvault_name]
+  - name: azureEnvironment # Optional, defaults to AZUREPUBLICCLOUD
+    value: "AZUREPUBLICCLOUD"
+  # See authentication section below for all options
   - name: spnTenantId
     value: "[your_service_principal_tenant_id]"
   - name: spnClientId
@@ -33,10 +36,6 @@ spec:
   - name: spnCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
-{{% /alert %}}
 
 ## Authenticating with Azure AD
 
