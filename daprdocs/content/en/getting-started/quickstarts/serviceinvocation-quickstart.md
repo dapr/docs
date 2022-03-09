@@ -6,13 +6,21 @@ weight: 70
 description: "Get started with Dapr's Service Invocation building block"
 ---
 
-With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-applications/building-blocks/service-invocation), your application can communicate reliably and securely with other applications using standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
+With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-applications/building-blocks/service-invocation), your application can communicate reliably and securely with other applications. Dapr offers two standard ways to enable service invocation:
 
-Using sidecar architecture:
+- [gRPC](https://grpc.io)
+- [HTTP](https://www.w3.org/Protocols/)
+
+As demonstrated in the diagram below, Dapr invokes an application on any Dapr instance. The sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
 <img src="/images/serviceinvocation-quickstart/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
-In this quickstart, you'll enable the `checkout` service to invoke a method using HTTP proxying in the `order-processor` service.
+We recommend enabling with HTTP proxy, as it's easier for you to:
+
+- Leverage your existing HTTP client without changing your endpoints.
+- Perform a REST-like call like any other client native to your language.
+
+Based on this recommendation, in this quickstart, you'll enable the `checkout` service to invoke a method using HTTP proxying in the `order-processor` service.
 
 Select your preferred language before proceeding with the quickstart.
 
