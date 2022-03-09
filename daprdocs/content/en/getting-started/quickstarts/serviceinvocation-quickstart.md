@@ -10,7 +10,7 @@ With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-
 
 <img src="/images/serviceinvocation-quickstart/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
-Dapr offers several methods for service invocation, which you can choose depending on your individual scenario. For this quickstart, you'll enable the `checkout` service to invoke a method using HTTP proxy in the `order-processor` service.
+Dapr offers several methods for service invocation, which you can choose depending on your scenario. For this quickstart, you'll enable the checkout service to invoke a method using HTTP proxy in the order-processor service.
 
 Learn more about Dapr's methods for service invocation in the [overview article]({{< ref service-invocation-overview.md >}}).
 
