@@ -56,7 +56,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header which will specify the ID of the target service. 
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```python
 headers = {'dapr-app-id': 'order-processor'}
@@ -175,7 +175,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header which will specify the ID of the target service. 
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```javascript
 let axiosConfig = {
@@ -290,7 +290,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header which will specify the ID of the target service.
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```csharp
 var client = new HttpClient();
@@ -409,7 +409,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header which will specify the ID of the target service.
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```java
 .header("Content-Type", "application/json")
@@ -521,7 +521,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run app.go
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header which will specify the ID of the target service.
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```go
 req.Header.Add("dapr-app-id", "order-processor")
