@@ -32,7 +32,7 @@ You can find additional information in the [related links]({{< ref "#related-lin
 You submit query requests via HTTP POST/PUT or gRPC.
 The body of the request is the JSON map with 3 entries: `filter`, `sort`, and `page`.
 
-The `filter` is an optional section. It specifies the query conditions in the form of a tree of key/value operations, where the key is the operator and the value is the operands.
+The `filter` is an optional section. It specifies the query conditions in the form of a tree, where each node represents either unary or multi-operand operation.
 
 The following operations are supported:
 
@@ -42,6 +42,24 @@ The following operations are supported:
 | `IN`     | key:[]value | key == value[0] OR key == value[1] OR ... OR key == value[n] |
 | `AND`    | []operation |  operation[0] AND operation[1] AND ... AND operation[n] |
 | `OR`     | []operation |  operation[0] OR operation[1] OR ... OR operation[n] |
+
+The `key` in the operand is similar to the JSONPath notation. Each dot in the key indicates a nested JSON structure. Consider for example this structure:
+```json
+{
+  "shape": {
+    "name": "rectangle",
+    "dimensions": {
+      "height": 24,
+      "width": 10
+    },
+    "color": {
+      "name": "red",
+      "code": "#FF0000"
+    }
+  }
+}
+```
+If you want to compare the value of the color code, the key will be `shape.color.code`
 
 If `filter` section is omitted, the query returns all entries.
 
@@ -64,9 +82,9 @@ First, you need to create an instance of MongoDB, which is your state store.
 docker run -d --rm -p 27017:27017 --name mongodb mongo:5
 ```
 
-Next is to start a Dapr application. Refer to this [component configuration file](../query-api-examples/components/mongodb.yml), which instructs Dapr to use MongoDB as its state store.
+Next is to start a Dapr application. Refer to this [component configuration file](../query-api-examples/components/mongodb/mongodb.yml), which instructs Dapr to use MongoDB as its state store.
 ```bash
-dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components
+dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/mongodb
 ```
 
 Now populate the state store with the employee dataset, so you can then query it later.
@@ -93,11 +111,11 @@ This is the [query](../query-api-examples/query1.json):
 ```json
 {
     "filter": {
-        "EQ": { "value.state": "CA" }
+        "EQ": { "state": "CA" }
     },
     "sort": [
         {
-            "key": "value.person.id",
+            "key": "person.id",
             "order": "DESC"
         }
     ]
@@ -107,9 +125,9 @@ This is the [query](../query-api-examples/query1.json):
 An equivalent of this query in SQL is:
 ```sql
 SELECT * FROM c WHERE
-  value.state = "CA"
+  state = "CA"
 ORDER BY
-  value.person.id DESC
+  person.id DESC
 ```
 
 Execute the query with the following command:
@@ -190,7 +208,7 @@ This is the [query](../query-api-examples/query2.json):
 ```json
 {
     "filter": {
-        "IN": { "value.person.org": [ "Dev Ops", "Hardware" ] }
+        "IN": { "person.org": [ "Dev Ops", "Hardware" ] }
     }
 }
 ```
@@ -198,7 +216,7 @@ This is the [query](../query-api-examples/query2.json):
 An equivalent of this query in SQL is:
 ```sql
 SELECT * FROM c WHERE
-  value.person.org IN ("Dev Ops", "Hardware")
+  person.org IN ("Dev Ops", "Hardware")
 ```
 
 Execute the query with the following command:
@@ -232,15 +250,15 @@ This is the [query](../query-api-examples/query3.json):
     "filter": {
         "OR": [
             {
-                "EQ": { "value.person.org": "Dev Ops" }
+                "EQ": { "person.org": "Dev Ops" }
             },
             {
                 "AND": [
                     {
-                        "EQ": { "value.person.org": "Finance" }
+                        "EQ": { "person.org": "Finance" }
                     },
                     {
-                        "IN": { "value.state": [ "CA", "WA" ] }
+                        "IN": { "state": [ "CA", "WA" ] }
                     }
                 ]
             }
@@ -248,11 +266,11 @@ This is the [query](../query-api-examples/query3.json):
     },
     "sort": [
         {
-            "key": "value.state",
+            "key": "state",
             "order": "DESC"
         },
         {
-            "key": "value.person.id"
+            "key": "person.id"
         }
     ],
     "page": {
@@ -264,11 +282,11 @@ This is the [query](../query-api-examples/query3.json):
 An equivalent of this query in SQL is:
 ```sql
 SELECT * FROM c WHERE
-  value.person.org = "Dev Ops" OR
-  (value.person.org = "Finance" AND value.state IN ("CA", "WA"))
+  person.org = "Dev Ops" OR
+  (person.org = "Finance" AND state IN ("CA", "WA"))
 ORDER BY
-  value.state DESC,
-  value.person.id ASC
+  state DESC,
+  person.id ASC
 LIMIT 3
 ```
 
@@ -338,15 +356,15 @@ The pagination token is used "as is" in the [subsequent query](../query-api-exam
     "filter": {
         "OR": [
             {
-                "EQ": { "value.person.org": "Dev Ops" }
+                "EQ": { "person.org": "Dev Ops" }
             },
             {
                 "AND": [
                     {
-                        "EQ": { "value.person.org": "Finance" }
+                        "EQ": { "person.org": "Finance" }
                     },
                     {
-                        "IN": { "value.state": [ "CA", "WA" ] }
+                        "IN": { "state": [ "CA", "WA" ] }
                     }
                 ]
             }
@@ -354,11 +372,11 @@ The pagination token is used "as is" in the [subsequent query](../query-api-exam
     },
     "sort": [
         {
-            "key": "value.state",
+            "key": "state",
             "order": "DESC"
         },
         {
-            "key": "value.person.id"
+            "key": "person.id"
         }
     ],
     "page": {
@@ -431,3 +449,4 @@ That way you can update the pagination token in the query and iterate through th
  - [Query API reference ]({{< ref "state_api.md#state-query" >}})
  - [State store components with those that implement query support]({{< ref supported-state-stores.md >}})
  - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api)
+ - [Querying Redis state store]({{< ref "setup-redis.md#querying-json-objects" >}})

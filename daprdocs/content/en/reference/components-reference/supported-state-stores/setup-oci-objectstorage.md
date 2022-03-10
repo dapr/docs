@@ -26,7 +26,7 @@ spec:
  - name: configFileAuthentication
    value: <"true" or "false">  # Optional. default: "false" . Not used when instancePrincipalAuthentication == "true" 
  - name: configFilePath
-   value: <REPLACE-WITH-FULL-QUALIFIED-PATH-OF-CONFIG-FILE>  # Optional. default: the operating system specific default location for the OCI config file; on Linux: "~/.oci/config" . Only used when configFileAuthentication == "true" 
+   value: <REPLACE-WITH-FULL-QUALIFIED-PATH-OF-CONFIG-FILE>  # Optional. No default. Only used when configFileAuthentication == "true" 
  - name: configFileProfile
    value: <REPLACE-WITH-NAME-OF-PROFILE-IN-CONFIG-FILE>  # Optional. default: "DEFAULT" . Only used when configFileAuthentication == "true" 
  - name: tenancyOCID
@@ -59,7 +59,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | instancePrincipalAuthentication        | N        | Boolean to indicate whether instance principal based authentication is used. Default: `"false"`  | `"true"` or  `"false"` .
 | configFileAuthentication        | N        | Boolean to indicate whether identity credential details are provided through a configuration file. Default: `"false"` Not required nor used when instancePrincipalAuthentication is true.  | `"true"` or  `"false"` .
-| configFilePath        | N        | Full path name to the OCI configuration file. Default: the default location on your operating system for the OCI confile file, for example `"~/.oci/config"` on Linux. Not used when instancePrincipalAuthentication is true.  | `"/home/apps/configuration-files/myOCIConfig.txt"`.
+| configFilePath        | N        | Full path name to the OCI configuration file. No default value exists. Not used when instancePrincipalAuthentication is true. Note: the ~/ prefix is not supported. | `"/home/apps/configuration-files/myOCIConfig.txt"`.
 | configFileProfile        | N        | Name of profile in configuration file to use. Default: `"DEFAULT"` Not used when instancePrincipalAuthentication is true.  | `"DEFAULT"` or  `"PRODUCTION"` .
 | tenancyOCID        | Y        | The OCI tenancy identifier. Not required nor used when instancePrincipalAuthentication is true. | `"ocid1.tenancy.oc1..aaaaaaaag7c7sljhsdjhsdyuwe723"`.
 | userOCID           | Y        | The OCID for an OCI account (this account requires permissions to access OCI Object Storage). Not required nor used when instancePrincipalAuthentication is true.| `"ocid1.user.oc1..aaaaaaaaby4oyyyuqwy7623yuwe76"`
@@ -76,7 +76,7 @@ Dapr-applications running on Oracle Cloud Infrastructure - in a compute instance
 
 Identity based authentication interacts with OCI through an OCI account that has permissions to create, read and delete objects through OCI Object Storage in the indicated bucket and that is allowed to create a bucket in the specified compartment if the bucket is not created beforehand. The OCI documentation [describes how to create an OCI Account](https://docs.oracle.com/en-us/iaas/Content/GSG/Tasks/addingusers.htm#Adding_Users). The interaction by the state store is performed using the public key's fingerprint and a private key from an RSA Key Pair generated for the OCI account. The [instructions for generating the key pair and getting hold of the required information](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm) are available in the OCI documentation. 
 
-Details for the identity and identity's credentials to be used for interaction with OCI can be provided directly in the Dapr component properties file - using the properties tenancyOCID, userOCID, fingerPrint, privateKey and region - or can be provided from a configuration file as is common for many OCI related tools (such as CLI and Terraform) and SDKs. In the latter case, a default configuration file can be assumed (such as ~/.oci/config on Linux) or the exact file name and path can be provided through property configFilePath. A configuration file can contain multiple profiles; the desired profile can be specified through property configFileProfile. If no value is provided, DEFAULT is used as the name for the profile to be used. Note: if the indicated profile is not found, then the DEFAULT profile (if it exists) is used instead. The OCI SDK documentation gives [details about the definition of the configuration file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm).  
+Details for the identity and identity's credentials to be used for interaction with OCI can be provided directly in the Dapr component properties file - using the properties tenancyOCID, userOCID, fingerPrint, privateKey and region - or can be provided from a configuration file as is common for many OCI related tools (such as CLI and Terraform) and SDKs. In the latter case the exact file name and full path has to be provided through property configFilePath. Note: the ~/ prefix is not supported in the path. A configuration file can contain multiple profiles; the desired profile can be specified through property configFileProfile. If no value is provided, DEFAULT is used as the name for the profile to be used. Note: if the indicated profile is not found, then the DEFAULT profile (if it exists) is used instead. The OCI SDK documentation gives [details about the definition of the configuration file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm).  
 
 If you wish to create the bucket for Dapr to use, you can do so beforehand. However, Object Storage state provider will create one - in the specified compartment - for you automatically if it doesn't exist.
 
@@ -170,7 +170,6 @@ creates the following object:
 | as specified with **bucketName** in components.yaml | -  | nihilus | darth | category: dapr-state-store , expiry-time-from-ttl: 2022-01-06T08:34:32 
 
 The exact value of the expiry-time-from-ttl depends of course on the time at which the state was created and will be 120 seconds later than that moment.
-
 
 Note that expired state is not removed from the state store by this component. An application operator may decide to run a periodic job that does a form of garbage collection in order to explicitly remove all state that has an  **expiry-time-from-ttl** label with a timestamp in the past.
 

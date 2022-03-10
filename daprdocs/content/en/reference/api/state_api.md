@@ -28,11 +28,7 @@ spec:
 
 The ```metadata.name``` is the name of the state store.
 
-the ```spec/metadata``` section is an open key value pair metadata that allows a binding to define connection properties.
-
-Starting with 0.4.0 release, support for multiple state stores was added. This is a breaking change from previous releases as the state APIs were changed to support this new scenario.
-
-Please refer https://github.com/dapr/dapr/blob/master/docs/decision_records/api/API-008-multi-state-store-api-design.md for more details.
+The ```spec/metadata``` section is an open key value pair metadata that allows a binding to define connection properties.
 
 ## Key scheme
 
@@ -64,6 +60,11 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+
+The optional request metadata is passed via URL query parameters. For example,
+```
+POST http://localhost:3500/v1.0/state/myStore?metadata.contentType=application/json
+```
 
 > Note, all URL parameters are case-sensitive.
 
@@ -98,7 +99,7 @@ None.
 ### Example
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/state/starwars \
+curl -X POST http://localhost:3500/v1.0/state/starwars?metadata.contentType=application/json \
   -H "Content-Type: application/json" \
   -d '[
         {
@@ -135,6 +136,11 @@ key | the key of the desired state
 consistency | (optional) read consistency mode, see [state operation options](#optional-behaviors)
 metadata | (optional) metadata as query parameters to the state store
 
+The optional request metadata is passed via URL query parameters. For example,
+```
+GET http://localhost:3500/v1.0/state/myStore/myKey?metadata.contentType=application/json
+```
+
 > Note, all URL parameters are case-sensitive.
 
 ### HTTP Response
@@ -160,8 +166,7 @@ JSON-encoded value
 ### Example
 
 ```shell
-curl http://localhost:3500/v1.0/state/starwars/planet \
-  -H "Content-Type: application/json"
+curl http://localhost:3500/v1.0/state/starwars/planet?metadata.contentType=application/json
 ```
 
 > The above command returns the state:
@@ -175,7 +180,7 @@ curl http://localhost:3500/v1.0/state/starwars/planet \
 To pass metadata as query parammeter:
 
 ```
-GET http://localhost:3500/v1.0/state/starwars/planet?metadata.partitionKey=mypartitionKey
+GET http://localhost:3500/v1.0/state/starwars/planet?metadata.partitionKey=mypartitionKey&metadata.contentType=application/json
 ```
 
 ## Get bulk state
@@ -195,6 +200,11 @@ Parameter | Description
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
 metadata | (optional) metadata as query parameters to the state store
+
+The optional request metadata is passed via URL query parameters. For example,
+```
+POST/PUT http://localhost:3500/v1.0/state/myStore/bulk?metadata.partitionKey=mypartitionKey
+```
 
 > Note, all URL parameters are case-sensitive.
 
@@ -238,12 +248,6 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
   }
 ]
 ```
-To pass metadata as query parammeter:
-
-```
-POST http://localhost:3500/v1.0/state/myRedisStore/bulk?metadata.partitionKey=mypartitionKey
-```
-
 
 ## Delete state
 
@@ -264,6 +268,11 @@ storename | ```metadata.name``` field in the user configured state store compone
 key | the key of the desired state
 concurrency | (optional) either *first-write* or *last-write*, see [state operation options](#optional-behaviors)
 consistency | (optional) either *strong* or *eventual*, see [state operation options](#optional-behaviors)
+
+The optional request metadata is passed via URL query parameters. For example,
+```
+DELETE http://localhost:3500/v1.0/state/myStore/myKey?metadata.contentType=application/json
+```
 
 > Note, all URL parameters are case-sensitive.
 
@@ -289,7 +298,7 @@ None.
 ### Example
 
 ```shell
-curl -X "DELETE" http://localhost:3500/v1.0/state/starwars/planet -H "If-Match: xxxxxxx"
+curl -X DELETE http://localhost:3500/v1.0/state/starwars/planet -H "If-Match: xxxxxxx"
 ```
 
 ## Query state
@@ -314,6 +323,11 @@ daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Refer to the Dapr state store configuration structure mentioned above.
 metadata | (optional) metadata as query parameters to the state store
 
+The optional request metadata is passed via URL query parameters. For example,
+```
+POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.contentType=application/json
+```
+
 > Note, all URL parameters are case-sensitive.
 
 #### Response Codes
@@ -330,21 +344,21 @@ An array of JSON-encoded values
 ### Example
 
 ```shell
-curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
+curl -X POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.contentType=application/json \
   -H "Content-Type: application/json" \
   -d '{
         "filter": {
           "OR": [
             {
-              "EQ": { "value.person.org": "Dev Ops" }
+              "EQ": { "person.org": "Dev Ops" }
             },
             {
               "AND": [
                 {
-                  "EQ": { "value.person.org": "Finance" }
+                  "EQ": { "person.org": "Finance" }
                 },
                 {
-                  "IN": { "value.state": [ "CA", "WA" ] }
+                  "IN": { "state": [ "CA", "WA" ] }
                 }
               ]
             }
@@ -352,11 +366,11 @@ curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
         },
         "sort": [
           {
-            "key": "value.state",
+            "key": "state",
             "order": "DESC"
           },
           {
-            "key": "value.person.id"
+            "key": "person.id"
           }
         ],
         "page": {
@@ -410,11 +424,6 @@ curl http://localhost:3500/v1.0-alpha1/state/myStore/query \
   "token": "3"
 }
 ```
-To pass metadata as query parammeter:
-
-```
-POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.partitionKey=mypartitionKey
-```
 
 ## State transactions
 
@@ -450,6 +459,11 @@ Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
 storename | ```metadata.name``` field in the user configured state store component yaml. Please refer Dapr State Store configuration structure mentioned above.
+
+The optional request metadata is passed via URL query parameters. For example,
+```
+POST http://localhost:3500/v1.0/state/myStore/transaction?metadata.contentType=application/json
+```
 
 > Note, all URL parameters are case-sensitive.
 

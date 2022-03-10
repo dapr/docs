@@ -82,8 +82,8 @@ spec:
 ```
 
 #### Production
-
 Jaeger uses Elasticsearch as the backend storage, and you can create a secret in k8s cluster to access Elasticsearch server with access control.
+
 
 ```shell
 kubectl create secret generic jaeger-secret --from-literal=ES_PASSWORD='xxx' --from-literal=ES_USERNAME='xxx' -n ${NAMESPACE}
