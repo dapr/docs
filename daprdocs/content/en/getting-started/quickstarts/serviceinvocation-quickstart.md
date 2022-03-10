@@ -144,7 +144,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+<!-- IGNORE_LINKS -->
 - [Latest Node.js installed](https://nodejs.org/en/download/).
+<!-- END_IGNORE -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
@@ -258,7 +260,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+<!-- IGNORE_LINKS -->
 - [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/en-us/download).
+<!-- END_IGNORE -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
 ### Step 1: Set up the environment
