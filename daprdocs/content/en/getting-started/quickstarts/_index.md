@@ -24,7 +24,7 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | ----------- | ----------- |
 | [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) | Get started with Dapr's Publish and Subscribe building block. |
 | State Management   | Coming soon. |
-| Service Invocation | Coming soon. |
+| [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) | Invoke a method using HTTP proxying with Dapr's Service Invocation building block. |
 | Bindings           | Coming soon. |
 | Actors             | Coming soon. |
 | Observability      | Coming soon. |
