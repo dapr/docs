@@ -85,3 +85,4 @@ To rotate a key, change the `primaryEncryptionKey` to point to a secret containi
 ## Related links
  - [Security overview]({{< ref "security-concept.md" >}})
  - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api)
+ - [State store components]({{< ref "supported-state-stores.md" >}})
