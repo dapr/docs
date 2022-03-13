@@ -11,7 +11,7 @@ aliases:
 In order to get up and running with the state and pub/sub building blocks two components are needed:
 
 1. A state store component for persistence and restoration
-2. As pub/sub message broker component for async-style message delivery
+2. A pub/sub message broker component for async-style message delivery
 
 A full list of supported components can be found here:
 - [Supported state stores]({{< ref supported-state-stores >}})
@@ -136,7 +136,7 @@ This example uses the kubernetes secret that was created when setting up a clust
 If using a state store other than Redis, refer to the [supported state stores]({{< ref supported-state-stores >}}) for information on what options to set.
 {{% /alert %}}
 
-### Create Pub/sub message broker component
+### Create pub/sub message broker component
 
 Create a file called redis-pubsub.yaml, and paste the following:
 
