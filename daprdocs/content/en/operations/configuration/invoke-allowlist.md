@@ -42,7 +42,7 @@ The following tables lists the different properties for access control, policies
 
 | Property | Type   | Description                                                  |
 | -------- | ------ | ------------------------------------------------------------ |
-| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used to under a path to match. Wildcard "\**" can can be used to under multiple paths to match. |
+| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used in a path to match. Wildcard "\**" can be used to match under multiple paths. |
 | httpVerb | list   | List specific http verbs that can be used by the calling app. Wildcard "\*" can be used to match any http verb. Unused for grpc invocation. |
 | action   | string | Access modifier. Accepted values "allow" (default) or "deny" |
 
