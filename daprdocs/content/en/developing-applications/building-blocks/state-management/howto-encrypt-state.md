@@ -68,7 +68,7 @@ spec:
 
 You now have a Dapr state store that's configured to fetch the encryption key from a secret named `mysecret`, containing the actual encryption key in a key named `mykey`.
 
-The actual encryption key *must* be a valid, hex-encoded encryption key. We recommend using 128-bit encryption keys; 192-bit and 256-bit keys are supported too. Dapr will error and exit if the encryption key is invalid.
+The actual encryption key *must* be a valid, hex-encoded encryption key. We recommend using 128-bit encryption keys; 192-bit and 256-bit keys are supported too. Dapr errors and exists if the encryption key is invalid.
 
 > As an example, you can generate a random, hex-encoded 128-bit (16-byte) key with:
 >
