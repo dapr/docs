@@ -24,15 +24,17 @@ spec:
   - name: table
     value: "mytable"
   - name: accessKey
-    value: "abcd" # Optional
+    value: "AKIAIOSFODNN7EXAMPLE" # Optional
   - name: secretKey
-    value: "abcd" # Optional
+    value: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" # Optional
   - name: endpoint
     value: "http://localhost:8080" # Optional
   - name: region
     value: "eu-west-1" # Optional
   - name: sessionToken
-    value: "abcd" # Optional
+    value: "myTOKEN" # Optional
+  - name: ttlAttributeName
+    value: "expiresAt" # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -53,11 +55,20 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 | region             | N  | The AWS region to the instance. See this page for valid regions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html. Ensure that DynamoDB are available in that region.| `"us-east-1"`
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
+| ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
 
 ## Setup AWS DynamoDB
+
 See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
 
+## Time to live (TTL)
+
+In order to use DynamoDB TTL feature, you must enable TTL on your table and define the attribute name.
+The attribute name must be defined in the `ttlAttributeName` field.
+See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html).
+
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})
