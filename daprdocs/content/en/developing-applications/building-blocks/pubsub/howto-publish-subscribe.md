@@ -6,15 +6,15 @@ weight: 2000
 description: "Learn how to send messages to a topic with one service and subscribe to that topic in another service"
 ---
 
-## Introduction
-
-<img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
+## Introduction 
 
 Pub/Sub is a common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
 Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.
 
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides components for pub/sub, that enable operators to use their preferred infrastructure, for example Redis Streams, Kafka, etc.
+
+<img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
 ## Content Types
 

@@ -5,16 +5,15 @@ linkTitle: "How-To: Save & get state"
 weight: 200
 description: "Use key value pairs to persist a state"
 ---
-
-## Introduction
-
-<img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
+## Introduction 
 
 State management is one of the most common needs of any application: new or legacy, monolith or microservice.
 Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.
 
 Dapr provides state management capabilities that include consistency and concurrency options.
 In this guide we'll start of with the basics: Using the key/value state API to allow an application to save, get and delete state.
+
+<img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
 
 ## Setup a state store
 
