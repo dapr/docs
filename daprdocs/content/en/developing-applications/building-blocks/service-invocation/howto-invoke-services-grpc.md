@@ -183,7 +183,7 @@ response = stub.SayHello(request={ name: 'Darth Revan' }, metadata=metadata)
 const metadata = new grpc.Metadata();
 metadata.add('dapr-app-id', 'server');
 
-client.sayHello({ name: "Darth Malgus", metadata })
+client.sayHello({ name: "Darth Malgus" }, metadata)
 ```
 {{% /codetab %}}
 
