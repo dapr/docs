@@ -5,17 +5,14 @@ linkTitle: "How-To: Output bindings"
 description: "Invoke external systems with output bindings"
 weight: 300
 ---
+## Introduction 
 
 Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries.
 For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
 
-## Example:
-
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources, in this case a Kafka, via an output binding.
-
 <img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
-## 1. Create a binding
+## Create a binding
 
 An output binding represents a resource that Dapr uses to invoke and send messages to.
 
@@ -91,7 +88,7 @@ spec:
 
 {{< /tabs >}}
 
-## 2. Send an event (Output binding)
+## Send an event (Output binding)
 
 Below are code examples that leverage Dapr SDKs to interact with an output binding.
 
@@ -133,13 +130,6 @@ namespace EventService
 }
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -177,13 +167,6 @@ public class OrderProcessingServiceApplication {
 }
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -211,13 +194,6 @@ while True:
     logging.info('Sending message: ' + str(orderId))
     
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -255,13 +231,6 @@ func main() {
 }
     
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -301,13 +270,6 @@ function sleep(ms) {
 main();
     
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
-```
-
 {{% /codetab %}}
 
 {{< /tabs >}}

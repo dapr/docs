@@ -5,6 +5,7 @@ linkTitle: "How-To: Input bindings"
 description: "Use Dapr input bindings to trigger event driven applications"
 weight: 200
 ---
+## Introduction 
 
 Using bindings, your code can be triggered with incoming events from different resources which can be anything: a queue, messaging pipeline, cloud-service, filesystem etc.
 
@@ -17,10 +18,6 @@ Dapr bindings allow you to:
 * Focus on business logic and not the event resource implementation
 
 For more info on bindings, read [this overview]({{<ref bindings-overview.md>}}).
-
-## Example:
-
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The checkout service uses Dapr to trigger the application via an input binding.
 
 <img src="/images/building-block-input-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
@@ -133,13 +130,6 @@ namespace CheckoutService.controller
 }
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -164,13 +154,6 @@ public class CheckoutServiceController {
 }
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -191,13 +174,6 @@ def getCheckout(request: BindingRequest):
 app.run(6002)
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -231,13 +207,6 @@ func main() {
 }
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -264,13 +233,6 @@ async function start() {
 }
 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 dotnet npm start
-```
-
 {{% /codetab %}}
 
 {{< /tabs >}}

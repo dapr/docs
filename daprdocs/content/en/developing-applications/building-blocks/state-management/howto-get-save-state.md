@@ -5,8 +5,7 @@ linkTitle: "How-To: Save & get state"
 weight: 200
 description: "Use key value pairs to persist a state"
 ---
-
-## Introduction
+## Introduction 
 
 State management is one of the most common needs of any application: new or legacy, monolith or microservice.
 Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.
@@ -14,18 +13,9 @@ Dealing with different databases libraries, testing them, handling retries and f
 Dapr provides state management capabilities that include consistency and concurrency options.
 In this guide we'll start of with the basics: Using the key/value state API to allow an application to save, get and delete state.
 
-## Pre-requisites
-
-- [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
-
-## Example:
-
-The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
-
 <img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
 
-## Step 1: Setup a state store
+## Setup a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
 
@@ -64,7 +54,7 @@ See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup dif
 
 {{< /tabs >}}
 
-## Step 2: Save and retrieve a single state
+## Save and retrieve a single state
 
 The following example shows how to save and retrieve a single key/value pair using the Dapr state building block.
 
@@ -72,24 +62,13 @@ The following example shows how to save and retrieve a single key/value pair usi
 It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
 {{% /alert %}}
 
-Below are code examples that leverage Dapr SDKs for saving and retrieving a single state.
-
 {{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
 ```csharp
-
 //dependencies
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Text.Json;
 
 //code
 namespace EventService
@@ -99,28 +78,19 @@ namespace EventService
         static async Task Main(string[] args)
         {
             string DAPR_STORE_NAME = "statestore";
-            while(true) {
-                System.Threading.Thread.Sleep(5000);
-                using var client = new DaprClientBuilder().Build();
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                //Using Dapr SDK to save and get state
-                await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
-                await client.SaveStateAsync(DAPR_STORE_NAME, "order_2", orderId.ToString());
-                var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order_1");
-                Console.WriteLine("Result after get: " + result);
-            }
+
+            using var client = new DaprClientBuilder().Build();
+            Random random = new Random();
+            int orderId = random.Next(1,1000);
+
+            //Using Dapr SDK to save and get state
+            await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
+
+            var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order_1");
         }
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
-```
-
 {{% /codetab %}}
 
 
@@ -132,44 +102,25 @@ import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.State;
 import io.dapr.client.domain.TransactionalStateOperation;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 //code
 @SpringBootApplication
 public class OrderProcessingServiceApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
-
 	private static final String STATE_STORE_NAME = "statestore";
 
 	public static void main(String[] args) throws InterruptedException{
-		while(true) {
-			TimeUnit.MILLISECONDS.sleep(5000);
-			Random random = new Random();
-			int orderId = random.nextInt(1000-1) + 1;
-			DaprClient client = new DaprClientBuilder().build();
-            //Using Dapr SDK to save and get state
-			client.saveState(STATE_STORE_NAME, "order_1", Integer.toString(orderId)).block();
-			client.saveState(STATE_STORE_NAME, "order_2", Integer.toString(orderId)).block();
-			Mono<State<String>> result = client.getState(STATE_STORE_NAME, "order_1", String.class);
-			log.info("Result after get" + result);
-		}
-	}
+		Random random = new Random();
+	    int orderId = random.nextInt(1000-1) + 1;
+	    DaprClient client = new DaprClientBuilder().build();
 
+        //Using Dapr SDK to save and get state
+		client.saveState(STATE_STORE_NAME, "order_1", Integer.toString(orderId)).block();
+
+		Mono<State<String>> result = client.getState(STATE_STORE_NAME, "order_1", String.class);
+	}
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 
@@ -177,81 +128,53 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```python
 #dependencies
-import random
-from time import sleep    
-import requests
-import logging
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
 
 #code
-logging.basicConfig(level = logging.INFO)
 DAPR_STORE_NAME = "statestore"
-while True:
-    sleep(random.randrange(50, 5000) / 1000)
-    orderId = random.randint(1, 1000)
-    with DaprClient() as client:
-        #Using Dapr SDK to save and get state
-        client.save_state(DAPR_STORE_NAME, "order_1", str(orderId)) 
-        result = client.get_state(DAPR_STORE_NAME, "order_1")
-        logging.info('Result after get: ' + result.data.decode('utf-8'))
+sleep(random.randrange(50, 5000) / 1000)
+orderId = random.randint(1, 1000)
+
+with DaprClient() as client:
+    #Using Dapr SDK to save and get state
+    client.save_state(DAPR_STORE_NAME, "order_1", str(orderId)) 
+    result = client.get_state(DAPR_STORE_NAME, "order_1")
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
-```
-
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
 ```go
 //dependencies
 import (
-	"context"
-	"log"
-	"math/rand"
-	"time"
-	"strconv"
 	dapr "github.com/dapr/go-sdk/client"
 )
 
 //code
 func main() {
-	for i := 0; i < 10; i++ {
-		time.Sleep(5000)
-		orderId := rand.Intn(1000-1) + 1
-		client, err := dapr.NewClient()
-		STATE_STORE_NAME := "statestore"
-		if err != nil {
-			panic(err)
-		}
-		defer client.Close()
-		ctx := context.Background()
-        //Using Dapr SDK to save and get state
-		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
-			panic(err)
-		}	
-		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_2")
-		if err != nil {
-			panic(err)
-		}
-		log.Println("Result after get: ")
-		log.Println(result)
+    orderId := rand.Intn(1000-1) + 1
+	client, err := dapr.NewClient()
+	STATE_STORE_NAME := "statestore"
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer client.Close()
+	ctx := context.Background()
+
+    //Using Dapr SDK to save and get state
+	if err := client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
+		panic(err)
+	}	
+
+	if err != nil {
+		panic(err)
 	}
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
-```
-
 {{% /codetab %}}
 
 
@@ -263,48 +186,22 @@ import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client';
 
 //code
 const daprHost = "127.0.0.1"; 
-var main = function() {
-    for(var i=0;i<10;i++) {
-        sleep(5000);
-        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
-        start(orderId).catch((e) => {
-            console.error(e);
-            process.exit(1);
-        });
-    }
-}
 
-async function start(orderId) {
+var main = function() {
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     const STATE_STORE_NAME = "statestore";
+
     //Using Dapr SDK to save and get state
     await client.state.save(STATE_STORE_NAME, [
         {
             key: "order_1",
             value: orderId.toString()
-        },
-        {
-            key: "order_2",
-            value: orderId.toString()
         }
     ]);
+
     var result = await client.state.get(STATE_STORE_NAME, "order_1");
-    console.log("Result after get: " + result);
 }
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-main();
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
-```
-
 {{% /codetab %}}
 
 
@@ -353,9 +250,8 @@ Restart your sidecar and try retrieving state again to observe that state persis
 {{< /tabs >}}
 
 
-## Step 3: Delete state
-
-Below are code examples that leverage Dapr SDKs for deleting the state.
+## Delete state
+The following example shows how to delete single key/value pair using the Dapr state building block.
 
 {{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -373,6 +269,7 @@ namespace EventService
         static async Task Main(string[] args)
         {
             string DAPR_STORE_NAME = "statestore";
+
             //Using Dapr SDK to delete the state
             using var client = new DaprClientBuilder().Build();
             await client.DeleteStateAsync(DAPR_STORE_NAME, "order_1", cancellationToken: cancellationToken);
@@ -380,13 +277,6 @@ namespace EventService
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
-```
-
 {{% /codetab %}}
 
 
@@ -396,7 +286,6 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 //dependencies
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //code
 @SpringBootApplication
@@ -411,13 +300,6 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 
@@ -428,20 +310,12 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
 
 #code
-logging.basicConfig(level = logging.INFO)
 DAPR_STORE_NAME = "statestore"
 
 #Using Dapr SDK to delete the state
 with DaprClient() as client:
     client.delete_state(store_name=DAPR_STORE_NAME, key="order_1")
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
-```
-
 {{% /codetab %}}
 
 
@@ -471,13 +345,6 @@ func main() {
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
-```
-
 {{% /codetab %}}
 
 
@@ -498,13 +365,6 @@ var main = function() {
 
 main();
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -525,9 +385,8 @@ Try getting state again and note that no value is returned.
 
 {{< /tabs >}}
 
-## Step 4: Save and retrieve multiple states
-
-Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
+## Save and retrieve multiple states
+The following example shows how to retrieve multiple  key/value pairs using the Dapr state building block.
 
 {{< tabs Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -555,13 +414,6 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -581,13 +433,6 @@ with DaprClient() as client:
     result = client.get_bulk_state(store_name=DAPR_STORE_NAME, keys=["order_1", "order_2"], states_metadata={"metakey": "metavalue"}).items
     logging.info('Result after get bulk: ' + str(result)) 
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -618,13 +463,6 @@ var main = function() {
 
 main();
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -654,13 +492,13 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["
 
 {{< /tabs >}}
 
-## Step 5: Perform state transactions
+## Perform state transactions
 
 {{% alert title="Note" color="warning" %}}
 State transactions require a state store that supports multi-item transactions. Visit the [supported state stores page]({{< ref supported-state-stores >}}) page for a full list. Note that the default Redis container created in a self-hosted environment supports them.
 {{% /alert %}}
 
-Below are code examples that leverage Dapr SDKs for performing state transactions.
+The following example shows how to perform state transactions using the Dapr state building block.
 
 {{< tabs Dotnet Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -707,13 +545,6 @@ namespace EventService
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
-```
-
 {{% /codetab %}}
 
 
@@ -761,13 +592,6 @@ public class OrderProcessingServiceApplication {
 
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -807,13 +631,6 @@ while True:
     logging.info('Order requested: ' + str(orderId))
     logging.info('Result: ' + str(result))
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
-```
-
 {{% /codetab %}}
 
 
@@ -863,13 +680,6 @@ function sleep(ms) {
 
 main();
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}

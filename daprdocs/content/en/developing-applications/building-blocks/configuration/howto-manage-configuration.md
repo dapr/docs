@@ -5,19 +5,15 @@ linkTitle: "How-To: Manage configuration from a store"
 weight: 2000
 description: "Learn how to get application configuration and subscribe for changes"
 ---
+## Introduction 
 
-## Introduction
 This HowTo uses the Redis configuration store component as an example on how to retrieve a configuration item.
 
 *This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.*
 
-## Example:
-
-The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to retrieve the configuration from a Redis configuration store.
-
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
 
-## Step 1: Create a configuration item in store
+## Create a configuration item in store
 
 First, create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component.
 
@@ -88,11 +84,6 @@ namespace ConfigurationApi
 }
 ```
 
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
-
-```bash
-dapr run --app-id orderprocessing --components-path ./components -- dotnet run
-```
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -124,12 +115,6 @@ public static void main(String[] args) throws Exception {
     }
 }
 ```
-
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
-
-```bash
-dapr run --app-id orderprocessing --components-path ./components mvn spring-boot:run
-```
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -144,12 +129,6 @@ with DaprClient() as d:
         d.wait(20)
         configuration = d.get_configuration(store_name=CONFIG_STORE_NAME, keys=[keys], config_metadata={})
         print(f"Got key={configuration.items[0].key} value={configuration.items[0].value} version={configuration.items[0].version}")
-```
-
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
-
-```bash
-dapr run --app-id orderprocessing --components-path ./components python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}

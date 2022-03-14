@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn how to send messages to a topic with one service and subscribe to that topic in another service"
 ---
 
-## Introduction
+## Introduction 
 
 Pub/Sub is a common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
 Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.
@@ -14,29 +14,23 @@ Using Pub/Sub, you can enable scenarios where event consumers are decoupled from
 Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 Dapr provides components for pub/sub, that enable operators to use their preferred infrastructure, for example Redis Streams, Kafka, etc.
 
+<img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
+
 ## Content Types
 
 When publishing a message, it's important to specify the content type of the data being sent.
 Unless specified, Dapr will assume `text/plain`. When using Dapr's HTTP API, the content type can be set in a `Content-Type` header.
 gRPC clients and SDKs have a dedicated content type parameter.
 
-## Example:
-
-The below code example loosely describes an application that processes orders. In the example, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars. The order processing service uses Dapr to publish a message to RabbitMQ and the checkout service subscribes to the topic in the message queue.
-
-<img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
-
-## Step 1: Setup the Pub/Sub component
-The following example creates applications to publish and subscribe to a topic called `orders`.
-
-The first step is to setup the Pub/Sub component:
+## Setup the Pub/Sub component
+First, you need to make sure you have a Pub/Sub component properly set up:
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
 The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
 
-In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yaml` file contents with the below contents.
+In the below example, RabbitMQ is used for publish and subscribe. You can easily swap out underlying components without application code changes by changing the contents within the component yaml. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -60,11 +54,11 @@ spec:
   - name: concurrency
     value: parallel
 scopes:
-  - orderprocessing
   - checkout
+  - orderprocessing
 ```
 
-You can override this file with another Redis instance or another [pubsub component]({{< ref setup-pubsub >}}) by creating a `components` directory containing the file and using the flag `--components-path` with the `dapr run` CLI command.
+You can override this file with another instance or another [pubsub component]({{< ref setup-pubsub >}}) by creating a `components` directory containing the file and using the flag `--components-path` with the `dapr run` CLI command.
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -93,15 +87,15 @@ spec:
   - name: concurrency
     value: parallel
 scopes:
-  - orderprocessing
   - checkout
+  - orderprocessing
 ```
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 
-## Step 2: Subscribe to topics
+## Subscribe to topics
 
 Dapr allows two methods by which you can subscribe to topics:
 
@@ -124,11 +118,11 @@ metadata:
   name: order_pub_sub
 spec:
   topic: orders
-  route: /checkout
+  route: /orders
   pubsubname: order_pub_sub
 scopes:
-- orderprocessing
 - checkout
+- orderprocessing
 ```
 
 The example above shows an event subscription to topic `orders`, for the pubsub component `order_pub_sub`.
@@ -143,60 +137,94 @@ Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/L
 
 You can also override the default directory by pointing the Dapr CLI to a components path:
 
-{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
+{{< tabs Python JavaScript DotNet Java Go >}}
 
 {{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- dotnet run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
 ```
-
 {{% /codetab %}}
-
 {{% codetab %}}
-
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- npm start
+{{% /codetab %}}
+{{% codetab %}}
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- dotnet run
+```
+{{% /codetab %}}
+{{% codetab %}}
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
+```
+{{% /codetab %}}
+{{% codetab %}}
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- go run app.go
 ```
-
 {{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- npm start
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-In Kubernetes, save the CRD to a file and apply it to the cluster:
-```bash
-kubectl apply -f subscription.yaml
-```
-{{% /codetab %}}
-
 {{< /tabs >}}
 
+### Programmatic subscriptions
 Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs Python Javascript Dotnet Java Go >}}
+{{% codetab %}}
+
+```python
+#dependencies
+from cloudevents.sdk.event import v1
+from dapr.ext.grpc import App
+import logging
+import json
+
+#code
+app = App()
+logging.basicConfig(level = logging.INFO)
+#Subscribe to a topic 
+@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+def mytopic(event: v1.Event) -> None:
+    data = json.loads(event.Data())
+    logging.info('Subscriber received: ' + str(data))
+
+app.run(6002)
+```
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
+```javascript
+//dependencies
+import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+
+//code
+const daprHost = "127.0.0.1"; 
+const serverHost = "127.0.0.1";
+const serverPort = "6002"; 
+
+start().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});
+
+async function start(orderId) {
+    const server = new DaprServer(
+        serverHost, 
+        serverPort, 
+        daprHost, 
+        process.env.DAPR_HTTP_PORT, 
+        CommunicationProtocolEnum.HTTP
+    );
+    //Subscribe to a topic
+    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+    });
+    await server.startServer();
+}
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -225,13 +253,6 @@ namespace CheckoutService.controller
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -265,42 +286,6 @@ public class CheckoutServiceController {
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```python
-#dependencies
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
-import logging
-import json
-
-#code
-app = App()
-logging.basicConfig(level = logging.INFO)
-#Subscribe to a topic 
-@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
-def mytopic(event: v1.Event) -> None:
-    data = json.loads(event.Data())
-    logging.info('Subscriber received: ' + str(data))
-
-app.run(6002)
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -339,71 +324,20 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 	return false, nil
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
-```
-
 {{% /codetab %}}
 
-{{% codetab %}}
-
-```javascript
-//dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
-
-//code
-const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
-
-start().catch((e) => {
-    console.error(e);
-    process.exit(1);
-});
-
-async function start(orderId) {
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
-    //Subscribe to a topic
-    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
-        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
-    });
-    await server.startServer();
-}
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
-```
-
-{{% /codetab %}}
 
 {{< /tabs >}}
 
 The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
 
-## Step 3: Publish a topic
+## Publish a topic
 
-Start an instance of Dapr with an app-id called `orderprocessing`:
+You can use the Dapr CLI to publish a message. The below is an example of using the Dapr CLI to publish a message to the `orders` topic.
 
-```bash
-dapr run --app-id orderprocessing --dapr-http-port 3601
-```
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-
-Then publish a message to the `orders` topic:
 
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
@@ -411,14 +345,12 @@ dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic ord
 {{% /codetab %}}
 
 {{% codetab %}}
-Then publish a message to the `orders` topic:
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
-Then publish a message to the `orders` topic:
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
 ```
@@ -469,13 +401,6 @@ namespace EventService
     }
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -519,13 +444,6 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -555,12 +473,6 @@ while True:
             data_content_type='application/json',
         )
     logging.info('Published data: ' + str(orderId))
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
@@ -604,13 +516,6 @@ func main() {
 	}
 }
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -647,18 +552,11 @@ function sleep(ms) {
 
 main();
 ```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
-```
-
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Step 4: ACK-ing a message
+## ACK-ing a message
 
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 

@@ -6,11 +6,9 @@ weight: 2000
 description: "Use the secret store building block to securely retrieve a secret"
 ---
 
+## Introduction 
+
 This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store.
-
-## Example
-
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service, which has a Dapr sidecar. The order processing service uses Dapr to store a secret in a local secret store.
 
 <img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
 
@@ -52,46 +50,6 @@ spec:
 
 To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 ## Get a secret
-
-Run the Dapr sidecar with the application.
-
-{{< tabs Dotnet Java Python Go Javascript>}}
-
-{{% codetab %}}
-```bash
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ./components dotnet run
-```
-{{% /codetab %}}
-
-
-{{% codetab %}}
-```bash
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ./components mvn spring-boot:run
-```
-{{% /codetab %}}
-
-
-{{% codetab %}}
-```bash
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ./components python3 OrderProcessingService.py
-```
-{{% /codetab %}}
-
-
-{{% codetab %}}
-```bash
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ./components go run OrderProcessingService.go
-```
-{{% /codetab %}}
-
-
-{{% codetab %}}
-```bash
-dapr run --app-id orderprocessingservice --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ./components npm start
-```
-{{% /codetab %}}
-
-{{< /tabs >}}
 
 Get the secret by calling the Dapr sidecar using the secrets API:
 
