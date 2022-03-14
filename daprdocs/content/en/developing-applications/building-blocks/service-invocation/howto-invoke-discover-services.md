@@ -11,7 +11,7 @@ This article describe how to deploy services each with an unique application ID,
 
 <img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
-## Step 1: Choose an ID for your service
+## Choose an ID for your service
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
@@ -167,7 +167,7 @@ spec:
 
 {{< /tabs >}}
 
-## Step 2: Invoke the service
+## Invoke the service
 
 To invoke an application using Dapr, you can use the `invoke` API on any Dapr instance.
 
@@ -408,7 +408,7 @@ curl http://localhost:3602/v1.0/invoke/checkout.production/method/checkout/100 -
 
 See the [Cross namespace API spec]({{< ref "service_invocation_api.md#cross-namespace-invocation" >}}) for more information on namespaces.
 
-## Step 3: View traces and logs
+## View traces and logs
 
 The example above showed you how to directly invoke a different service running locally or in Kubernetes. Dapr outputs metrics, tracing and logging information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
 
