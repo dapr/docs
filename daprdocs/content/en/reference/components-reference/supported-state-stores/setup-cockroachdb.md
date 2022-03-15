@@ -11,7 +11,6 @@ aliases:
 
 Create a file called `cockroachdb.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string for CockroachDB follow the same standard for PostgreSQL connection string. For example, `"host=localhost user=root port=26257 connect_timeout=10 database=dapr_test"`. See the CockroachDB [documentation on database connections](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html) for information on how to define a connection string.
 
-If you want to also configure CockroachDB to store actors, add the `actorStateStore` configuration element shown below.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -43,9 +42,9 @@ If you wish to use CockroachDB as an actor store, append the following to the ya
 ```
 
 
-## Create CockroachDB
+## Setup CockroachDB
 
-{{< tabs "Self-Hosted" >}}
+{{< tabs "Self-Hosted" "Kubernetes" >}}
 
 {{% codetab %}}
 
@@ -64,6 +63,10 @@ If you wish to use CockroachDB as an actor store, append the following to the ya
     ```bash
     docker exec -it roach1 ./cockroach sql --insecure -e 'create database dapr_test'
     ```
+{{% /codetab %}}
+
+{{% codetab %}}
+The easiest way to install CockroachDB on Kubernetes is by using the [CockroachDB Operator](https://github.com/cockroachdb/cockroach-operator):
 {{% /codetab %}}
 
 {{% /tabs %}}
