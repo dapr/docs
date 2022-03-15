@@ -48,6 +48,10 @@ spec:
     value: "false"
   - name: enableMessageOrdering
     value: "false"
+  - name: maxReconnectionAttempts # Optional
+    value: 30
+  - name: connectionRecoveryInSec # Optional
+    value: 2
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -70,6 +74,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | clientX509CertUrl | N | If using explicit credentials, this field should contain the `client_x509_cert_url` field from the service account json | `https://www.googleapis.com/robot/v1/metadata/x509/myserviceaccount%40myproject.iam.gserviceaccount.com`
 | disableEntityManagement | N | When set to `"true"`, topics and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | enableMessageOrdering | N | When set to `"true"`, subscribed messages will be received in order, depending on publishing and permissions configuration. | `"true"`, `"false"`
+| maxReconnectionAttempts | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
+| connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Default: `2` | `2`
 
 {{% alert title="Warning" color="warning" %}}
 If `enableMessageOrdering` is set to "true", the roles/viewer or roles/pubsub.viewer role will be required on the service account in order to guarantee ordering in cases where order tokens are not embedded in the messages. If this role is not given, or the call to Subscription.Config() fails for any other reason, ordering by embedded order tokens will still function correctly.
