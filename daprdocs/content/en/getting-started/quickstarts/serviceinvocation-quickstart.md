@@ -143,11 +143,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 
 For this example, you will need:
 
-<!-- IGNORE_LINKS -->
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [Latest Node.js installed](https://nodejs.org/en/download/).
+- [Latest Node.js installed](https://nodejs.org/).
 - [Docker Desktop](https://www.docker.com/products/docker-desktop).
-<!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
@@ -612,13 +610,16 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 
 {{% /tabs %}}
 
+## Tell us what you think!
+We're continuously working to improve our quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+
+Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+
 ## Next Steps
 
 - Learn more about [Service Invocation as a Dapr building block]({{< ref service-invocation-overview.md >}})
 - Learn more about how to invoke Dapr's Service Invocation with:
     - [HTTP]({{< ref howto-invoke-discover-services.md >}}), or
     - [gRPC]({{< ref howto-invoke-services-grpc.md >}})
-- Learn about [Service Invocation namespaces]({{< ref service-invocation-namespaces.md >}})
-- Learn more about [Dapr component scopes]({{< ref component-scopes.md >}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}

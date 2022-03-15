@@ -812,6 +812,11 @@ In the YAML file:
 
 {{< /tabs >}}
 
+## Tell us what you think!
+We're continuously working to improve our quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+
+Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+
 ## Next steps
 
 - Set up Pub/sub using HTTP instead of an SDK.
@@ -820,11 +825,6 @@ In the YAML file:
   - [.NET](https://github.com/dapr/quickstarts/pub_sub/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/pub_sub/java/http)
   - [Go](https://github.com/dapr/quickstarts/pub_sub/go/http)
-- Learn about [Pub/sub routing]({{< ref howto-route-messages >}})
-- Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [how to configure Pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [Pub/sub components]({{< ref setup-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- Learn more about [Pub/sub as a Dapr building block]({{< ref pubsub-overview >}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
