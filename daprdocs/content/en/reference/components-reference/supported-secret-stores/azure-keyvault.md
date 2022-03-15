@@ -110,7 +110,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
     --scope "${RG_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
   ```
 
-Other less restrictive roles like "Key Vault Secrets Officer" and "Key Vault Administrator" can be used as well, depending on your application. For more information about Azure built-in roles for Key Vault see the [Microsoft docs](https://docs.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
+Other less restrictive roles like "Key Vault Secrets Officer" and "Key Vault Administrator" can be used as well, depending on your application. For more information about Azure built-in roles for Key Vault see the [Microsoft docs](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
 
 ## Configure the component
 
