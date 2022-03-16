@@ -102,10 +102,35 @@ public class Startup
 
 {{% /codetab %}}
 
+{{% codetab %}}
+```python
+from fastapi import FastAPI
+from dapr.ext.fastapi import DaprActor
+from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
+from dapr.actor.runtime.runtime import ActorRuntime
+from demo_actor import DemoActor
+
+reentrancyConfig = ActorReentrancyConfig(enabled=True)
+config = ActorRuntimeConfig(reentrancy=reentrancyConfig)
+ActorRuntime.set_actor_config(config)
+app = FastAPI(title=f'{DemoActor.__name__}Service')
+actor = DaprActor(app)
+
+@app.on_event("startup")
+async def startup_event():
+# Register DemoActor
+await actor.register_actor(DemoActor)
+
+@app.get("/MakeExampleReentrantCall")
+def do_something_reentrant():
+# invoke another actor here, reentrancy will be handled automatically
+return
+```
+{{% /codetab %}}
 
 {{< /tabs >}}
 
-Watch this [video](https://youtu.be/QADHQ5v-gww?list=PLcip_LgkYwzuF-OV6zKRADoiBvUvGhkao&t=674) on how to use actor reentrancy.
+Watch this [video](https://www.youtube.com/watch?v=QADHQ5v-gww&list=PLcip_LgkYwzuF-OV6zKRADoiBvUvGhkao&t=674s) on how to use actor reentrancy.
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://youtu.be/QADHQ5v-gww?list=PLcip_LgkYwzuF-OV6zKRADoiBvUvGhkao&t=674" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/QADHQ5v-gww?start=674" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
