@@ -96,5 +96,44 @@ You can set the log level individually for every sidecar by providing the follow
 
 ```yml
 annotations:
+  dapr.io/api-log-level: "info"
+```
+
+or
+
+```yml
+annotations:
   dapr.io/api-log-level: "debug"
 ```
+
+### Viewing Logs on Kubernetes
+
+Dapr logs are written to stdout and stderr. This section will guide you on how to view API logs on Kubernetes.
+
+See the kubernetes API logs by executing the below command.
+
+```bash
+kubectl logs <pod_name> daprd -n <name_space>
+```
+
+The below example is for info level API logging in Kubernetes.
+
+```bash
+time="2022-03-16T18:32:02.487041454Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:02.698387866Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:02.917629403Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:03.137830112Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:03.359097916Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+```
+
+The below example is for debug level API logging in Kubernetes.
+
+```bash
+time="2022-03-16T18:32:02.487041454Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:02.698387866Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:02.917629403Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:03.137830112Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+time="2022-03-16T18:32:03.359097916Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
+```
+
+*Note: Both HTTP and gRPC API call logs are shown based on the type of API or the service*
