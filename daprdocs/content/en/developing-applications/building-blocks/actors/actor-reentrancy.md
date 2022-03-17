@@ -7,7 +7,7 @@ description: Learn more about actor reentrancy
 ---
 
 ## Actor reentrancy
-A core tenet of the virtual actor pattern is the single-threaded nature of actor execution. Before reentrancy, this caused the Dapr runtime to lock an actor on any given request. A second request could not start until the first had completed. This behavior means an actor cannot call itself, or have another actor call into it even if it is part of the same chain. Reentrancy solves this by allowing requests from the same chain or context to re-enter into an already locked actor. Examples of chains that reentrancy allows can be seen below:
+A core tenet of the virtual actor pattern is the single-threaded nature of actor execution. Without reentrancy, the the Dapr runtime locks on all actor requests, even those that are in the same call chain. A second request could not start until the first had completed. This means an actor cannot call itself, or have another actor call into it even if it is part of the same chain. Reentrancy solves this by allowing requests from the same chain, or context, to re-enter into an already locked actor. This is especially useful in scenarios where an actor wants to call a method on itself or when actors are used in workflows where other actors are used to perform work, and they then call back onto the coordinating actor. Examples of chains that reentrancy allows can be seen below:
 
 ```
 Actor A -> Actor A
@@ -16,7 +16,7 @@ ActorA -> Actor B -> Actor A
 
 With reentrancy, there can be more complex actor calls without sacrificing the single-threaded behavior of virtual actors.
 
-The `maxStackDepth` parameter gets a value that controls how many reentrant calls be made to the same actor.
+The `maxStackDepth` parameter sets a value that controls how many reentrant calls be made to the same actor. By default this is set to 32, which is more than sufficient in most cases.
 
 ## Enable Actor Reentrancy with Actor Configuration
 
