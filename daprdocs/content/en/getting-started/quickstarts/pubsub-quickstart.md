@@ -561,8 +561,18 @@ dapr run --app-port 8080 --app-id order-processor --components-path ../../../com
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```java
-logger.info("Subscriber received: " + cloudEvent.getData().getOrderId());
-return ResponseEntity.ok("SUCCESS");
+@Topic(name = "orders", pubsubName = "order_pub_sub")
+@PostMapping(path = "/orders", consumes = MediaType.ALL_VALUE)
+public Mono<ResponseEntity> getCheckout(@RequestBody(required = false) CloudEvent<Order> cloudEvent) {
+    return Mono.fromSupplier(() -> {
+        try {
+            logger.info("Subscriber received: " + cloudEvent.getData().getOrderId());
+            return ResponseEntity.ok("SUCCESS");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    });
+}
 ```
 
 ### Step 4: View the Pub/sub outputs
