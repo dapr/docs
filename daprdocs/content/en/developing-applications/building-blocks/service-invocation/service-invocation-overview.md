@@ -79,7 +79,7 @@ The diagram below shows an example of how this works. If you have 1 instance of 
 
 <img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation">
 
-**Note**: You can have N instances of the same app with the same app ID as app ID is unique per app. And you can have multiple instances of that app where all those instances have the same app ID.
+**Note**: App ID is unique per application, not application instance. This means regardless of how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
 ### Tracing and metrics with observability
 

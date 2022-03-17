@@ -40,11 +40,11 @@ The following tables lists the different properties for access control, policies
 
 ### Operations
 
-| Property | Type   | Description |
-|----------|--------|-------------|
-| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used to under a path to match
-| httpVerb | list   | List specific http verbs that can be used by the calling app. Wildcard "\*" can be used to match any http verb. Unused for grpc invocation
-| action   | string | Access modifier. Accepted values "allow" (default) or "deny"
+| Property | Type   | Description                                                  |
+| -------- | ------ | ------------------------------------------------------------ |
+| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used in a path to match. Wildcard "\**" can be used to match under multiple paths. |
+| httpVerb | list   | List specific http verbs that can be used by the calling app. Wildcard "\*" can be used to match any http verb. Unused for grpc invocation. |
+| action   | string | Access modifier. Accepted values "allow" (default) or "deny" |
 
 ## Policy rules
 
@@ -189,7 +189,30 @@ spec:
       namespace: "ns2"
 ```
 
+<font size=5>Scenario 6: Allow access to all methods except trustDomain = public, namespace = default, appId = app1, operation = /op1/**/a, all http verbs</font>
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  accessControl:
+    defaultAction: allow
+    trustDomain: "public"
+    policies:
+    - appId: app1
+      defaultAction: allow
+      trustDomain: 'public'
+      namespace: "default"
+      operations:
+      - name: /op1/**/a
+        httpVerb: ['*']
+        action: deny
+```
+
 ## Hello world examples
+
 These examples show how to apply access control to the [hello world](https://github.com/dapr/quickstarts#quickstarts) quickstart samples where a python app invokes a node.js app.
 Access control lists rely on the Dapr [Sentry service]({{< ref "security-concept.md" >}}) to generate the TLS certificates with a SPIFFE id for authentication, which means the Sentry service either has to be running locally or deployed to your hosting environment such as a Kubernetes cluster.
 
@@ -264,7 +287,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
    ```
 
     {{% /codetab %}}
-
+    
     {{< /tabs >}}
 
 3. Run daprd to launch a Dapr sidecar for the node.js app with mTLS enabled, referencing the local Sentry service:
@@ -298,7 +321,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
    $env:DAPR_CERT_CHAIN=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.crt)
    $env:DAPR_CERT_KEY=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.key)
    $env:NAMESPACE="default"
-   ```
+  ```
    {{% /codetab %}}
 
    {{< /tabs >}}
@@ -350,7 +373,7 @@ spec:
       containers:
       - name: python
         image: dapriosamples/hello-k8s-python:edge
- ```
+```
 
 ## Community call demo
 Watch this [video](https://youtu.be/j99RN_nxExA?t=1108) on how to apply access control list for service invocation.
