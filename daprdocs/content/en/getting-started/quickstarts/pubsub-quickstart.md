@@ -379,9 +379,9 @@ dapr run --app-id checkout --components-path ../../components -- dotnet run
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```cs
-// Publish an event/message using Dapr PubSub
-   await client.PublishEventAsync("order_pub_sub", "orders", order);
-   Console.WriteLine("Published data: " + order);
+using var client = new DaprClientBuilder().Build();
+await client.PublishEventAsync("order_pub_sub", "orders", order);
+Console.WriteLine("Published data: " + order);
 ```
 
 ### Step 3: Subscribe to topics
@@ -530,7 +530,7 @@ dapr run --app-id checkout --components-path ../../../components -- java -jar ta
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```java
-// Publish an event/message using Dapr PubSub
+DaprClient client = new DaprClientBuilder().build();
 client.publishEvent(
 		PUBSUB_NAME,
 		TOPIC_NAME,
