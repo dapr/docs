@@ -59,17 +59,14 @@ dapr run --app-id checkout --components-path ../../../components/ -- python3 app
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```python
-while True:
-    order = {'orderid': random.randint(1, 1000)}
-
-    with DaprClient() as client:
-        # Publish an event/message using Dapr PubSub
-        result = client.publish_event(
-            pubsub_name='order_pub_sub',
-            topic_name='orders',
-            data=json.dumps(order),
-            data_content_type='application/json',
-        )
+with DaprClient() as client:
+    # Publish an event/message using Dapr PubSub
+    result = client.publish_event(
+        pubsub_name='order_pub_sub',
+        topic_name='orders',
+        data=json.dumps(order),
+        data_content_type='application/json',
+    )
 ```
 
 ### Step 3: Subscribe to topics
@@ -382,19 +379,9 @@ dapr run --app-id checkout --components-path ../../components -- dotnet run
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```cs
-while(true) {
-    Random random = new Random();
-    var order = new Order(random.Next(1,1000));
-    using var client = new DaprClientBuilder().Build();
-
- // Publish an event/message using Dapr PubSub
-    await client.PublishEventAsync("order_pub_sub", "orders", order);
-    Console.WriteLine("Published data: " + order);
-
-    await Task.Delay(TimeSpan.FromSeconds(1));
-}
-
-public record Order([property: JsonPropertyName("orderId")] int OrderId);
+using var client = new DaprClientBuilder().Build();
+await client.PublishEventAsync("order_pub_sub", "orders", order);
+Console.WriteLine("Published data: " + order);
 ```
 
 ### Step 3: Subscribe to topics
@@ -543,23 +530,12 @@ dapr run --app-id checkout --components-path ../../../components -- java -jar ta
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```java
-public static void main(String[] args) throws InterruptedException{
-	String TOPIC_NAME = "orders";
-	String PUBSUB_NAME = "order_pub_sub";
-
-for (int i = 0; i <= 10; i++) {
-	int orderId = i;
-	Order order = new Order(orderId);
-	DaprClient client = new DaprClientBuilder().build();
-
-	// Publish an event/message using Dapr PubSub
-	client.publishEvent(
-			PUBSUB_NAME,
-			TOPIC_NAME,
-			order).block();
-	logger.info("Published data: " + order.getOrderId());
-	TimeUnit.MILLISECONDS.sleep(5000);
-}
+DaprClient client = new DaprClientBuilder().build();
+client.publishEvent(
+		PUBSUB_NAME,
+		TOPIC_NAME,
+		order).block();
+logger.info("Published data: " + order.getOrderId());
 ```
 
 ### Step 3: Subscribe to topics
