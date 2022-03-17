@@ -22,7 +22,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--dapr-grpc-port` | `--dapr-grpc-port` | | not supported | gRPC port for the Dapr API to listen on (default "50001") |
 | `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API |
 | `--dapr-http-max-request-size` | --dapr-http-max-request-size | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB |
-| `--dapr-http-read-buffer-size` | --dapr-http-read-buffer-size | | `dapr.io/http-read-buffer-size` | Increasing max size of read buffer in KB to handle sending multi-KB headers. By default 4 KB. |
+| `--dapr-http-read-buffer-size` | --dapr-http-read-buffer-size | | `dapr.io/http-read-buffer-size` | Increasing max size of read buffer in KB to handle sending multi-KB headers. By default 4 KB.This param limits the maximum header size.  Using bigger than default 4KB size headers should set this to a proper value. |
 | not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is `daprio/daprd:latest` |
 | `--internal-grpc-port` | not supported | | not supported | gRPC port for the Dapr Internal API to listen on |
 | `--enable-metrics` | not supported | | configuration spec | Enable prometheus metric (default true) |
