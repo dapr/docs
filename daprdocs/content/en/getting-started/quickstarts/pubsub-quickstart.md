@@ -806,11 +806,11 @@ Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 ## Next steps
 
 - Set up Pub/sub using HTTP instead of an SDK.
-  - [Python](https://github.com/dapr/quickstarts/pub_sub/python/http)
-  - [JavaScript](https://github.com/dapr/quickstarts/pub_sub/javascript/http)
-  - [.NET](https://github.com/dapr/quickstarts/pub_sub/csharp/http)
-  - [Java](https://github.com/dapr/quickstarts/pub_sub/java/http)
-  - [Go](https://github.com/dapr/quickstarts/pub_sub/go/http)
+  - [Python](https://github.com/dapr/quickstarts/tree/master/pub_sub/python/http)
+  - [JavaScript](https://github.com/dapr/quickstarts/tree/master/pub_sub/javascript/http)
+  - [.NET](https://github.com/dapr/quickstarts/tree/master/pub_sub/csharp/http)
+  - [Java](https://github.com/dapr/quickstarts/tree/master/pub_sub/java/http)
+  - [Go](https://github.com/dapr/quickstarts/tree/master/pub_sub/go/http)
 - Learn more about [Pub/sub as a Dapr building block]({{< ref pubsub-overview >}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
