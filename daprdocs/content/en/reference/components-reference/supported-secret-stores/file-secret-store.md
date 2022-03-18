@@ -61,7 +61,7 @@ If `multiValued` is `"false"`, the store will load the file and create a map wit
 
 | flattened key           | value                           |
 | ---                     | ---                             |
-|"redis"                  | "your redis password"           |
+|"redisPassword"                  | "your redis password"           |
 |"connectionStrings:sql"  | "your sql connection string"    |
 |"connectionStrings:mysql"| "your mysql connection string"  |
 
