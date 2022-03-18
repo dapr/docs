@@ -16,13 +16,64 @@ ActorA -> Actor B -> Actor A
 
 With reentrancy, there can be more complex actor calls without sacrificing the single-threaded behavior of virtual actors.
 
+<img src="/images/actor-reentrancy.png" width=1000 height=500 alt="Diagram showing reentrancy for a coordinator workflow actor calling worker actors or an actor calling an method on itself">
+
 The `maxStackDepth` parameter sets a value that controls how many reentrant calls be made to the same actor. By default this is set to 32, which is more than sufficient in most cases.
 
 ## Enable Actor Reentrancy with Actor Configuration
 
 The actor that will be reentrant must provide configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
-{{< tabs Dotnet Java Python Go JavaScript >}}
+{{< tabs Dotnet Python Go >}}
+
+{{% codetab %}}
+
+```csharp
+public class Startup
+{
+	public void ConfigureServices(IServiceCollection services)
+	{
+		services.AddSingleton<BankService>();
+		services.AddActors(options =>
+		{
+		options.Actors.RegisterActor<DemoActor>();
+		options.ReentrancyConfig = new Dapr.Actors.ActorReentrancyConfig()
+			{
+			Enabled = true,
+			MaxStackDepth = 32,
+			};
+		});
+	}
+}
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+from fastapi import FastAPI
+from dapr.ext.fastapi import DaprActor
+from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
+from dapr.actor.runtime.runtime import ActorRuntime
+from demo_actor import DemoActor
+
+reentrancyConfig = ActorReentrancyConfig(enabled=True)
+config = ActorRuntimeConfig(reentrancy=reentrancyConfig)
+ActorRuntime.set_actor_config(config)
+app = FastAPI(title=f'{DemoActor.__name__}Service')
+actor = DaprActor(app)
+
+@app.on_event("startup")
+async def startup_event():
+	# Register DemoActor
+	await actor.register_actor(DemoActor)
+
+@app.get("/MakeExampleReentrantCall")
+def do_something_reentrant():
+	# invoke another actor here, reentrancy will be handled automatically
+	return
+```
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -79,55 +130,6 @@ func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```csharp
-public class Startup
-{
-	public void ConfigureServices(IServiceCollection services)
-	{
-		services.AddSingleton<BankService>();
-		services.AddActors(options =>
-		{
-		options.Actors.RegisterActor<DemoActor>();
-		options.ReentrancyConfig = new Dapr.Actors.ActorReentrancyConfig()
-			{
-			Enabled = true,
-			MaxStackDepth = 32,
-			};
-		});
-	}
-}
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-```python
-from fastapi import FastAPI
-from dapr.ext.fastapi import DaprActor
-from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
-from dapr.actor.runtime.runtime import ActorRuntime
-from demo_actor import DemoActor
-
-reentrancyConfig = ActorReentrancyConfig(enabled=True)
-config = ActorRuntimeConfig(reentrancy=reentrancyConfig)
-ActorRuntime.set_actor_config(config)
-app = FastAPI(title=f'{DemoActor.__name__}Service')
-actor = DaprActor(app)
-
-@app.on_event("startup")
-async def startup_event():
-# Register DemoActor
-await actor.register_actor(DemoActor)
-
-@app.get("/MakeExampleReentrantCall")
-def do_something_reentrant():
-# invoke another actor here, reentrancy will be handled automatically
-return
-```
 {{% /codetab %}}
 
 {{< /tabs >}}
