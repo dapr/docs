@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr API Logs"
 linkTitle: "API Logs"
-weight: 2000
+weight: 3000
 description: "Understand how API logging works in Dapr and how to view logs"
 ---
 
@@ -10,7 +10,7 @@ This section will assist you in understanding how Dapr API logging works in Dapr
 
 ## Overview
 
-API logs have different, configurable verbosity levels. The API logging is availbale for both HTTP and GRPC calls
+API logs have different, configurable verbosity levels and is applicable for both HTTP and GRPC calls.
 The levels outlined below are the same for both system components and the Dapr sidecar process/container:
 
 1. info
@@ -25,9 +25,9 @@ To set the output level, you can use the `--api-log-level` command-line option. 
 ./daprd --api-log-level debug
 ```
 
-This will start the Dapr runtime binary with a log level of `info` and `debug` accordingly.
+This starts the Dapr runtime with a log level of `info` and `debug` accordingly.
 
-## Logs in stand-alone mode
+## Configuring API logging in self hosted mode
 
 To set the log level when running your app with the Dapr CLI, pass the `api-log-level` param:
 
@@ -35,18 +35,18 @@ To set the log level when running your app with the Dapr CLI, pass the `api-log-
 dapr run --api-log-level info node myapp.js
 ```
 
-As outlined above, every Dapr binary takes a `--api-log-level` argument.
+As outlined above, Dapr binary takes a `--api-log-level` argument.
 
-### Viewing Logs on Standalone Mode
+### Viewing API logs on self hosted mode
 
-When running Dapr with the Dapr CLI, both your app's log output and the runtime's output will be redirected to the same session, for easy debugging.
-For example, this is the output when running Dapr:
+When running Dapr with the Dapr CLI, both your app's log output and the Dapr runtime log output are redirected to the same session, for easy debugging.
 
-The below example is for info level API logging:
+The below example shows `info` level API logging:
 
 ```bash
 dapr run --api-log-level info node myapp.js
-ℹ️  Starting Dapr with id Trackgreat-Lancer on port 56730
+
+ℹ️  Starting Dapr with id order-processor on port 56730
 ✅  You are up and running! Both Dapr and your app logs will appear here.
 .....
 INFO[0000] HTTP API Called: POST /v1.0/state/statestore  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
@@ -56,21 +56,13 @@ INFO[0000] HTTP API Called: GET /v1.0/state/statestore/483  app_id=order-process
 INFO[0000] HTTP API Called: DELETE /v1.0/state/statestore  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
 == APP == INFO:root:Deleted Order: {'orderId': '483'}
 INFO[0000] HTTP API Called: PUT /v1.0/metadata/cliPID    app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-ℹ️  Updating metadata for app command: python3 app.py
-INFO[0000] HTTP API Called: PUT /v1.0/metadata/appCommand  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-✅  You\'re up and running! Both Dapr and your app logs will appear here.
-
-INFO[0001] HTTP API Called: POST /v1.0/state/statestore  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-== APP == INFO:root:Saving Order: {'orderId': '230'}
-INFO[0001] HTTP API Called: GET /v1.0/state/statestore/230  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-== APP == INFO:root:Getting Order: {'orderId': '230'}
 ```
 
 The below example is for debug level API logging
 
 ```bash
-dapr run --api-log-level info node myapp.js
-ℹ️  Starting Dapr with id Trackgreat-Lancer on port 56730
+dapr run --api-log-level debug node myapp.js
+ℹ️  Starting Dapr with id order-processor on port 56730
 ✅  You are up and running! Both Dapr and your app logs will appear here.
 .....
 DEBU[0000] HTTP API Called: POST /v1.0/state/statestore  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
@@ -80,14 +72,6 @@ DEBU[0000] HTTP API Called: GET /v1.0/state/statestore/483  app_id=order-process
 DEBU[0000] HTTP API Called: DELETE /v1.0/state/statestore  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
 == APP == INFO:root:Deleted Order: {'orderId': '483'}
 DEBU[0000] HTTP API Called: PUT /v1.0/metadata/cliPID    app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-ℹ️  Updating metadata for app command: python3 app.py
-DEBU[0000] HTTP API Called: PUT /v1.0/metadata/appCommand  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-✅  You\'re up and running! Both Dapr and your app logs will appear here.
-
-DEBU[0001] HTTP API Called: POST /v1.0/state/statestore  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-== APP == INFO:root:Saving Order: {'orderId': '230'}
-DEBU[0001] HTTP API Called: GET /v1.0/state/statestore/230  app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
-== APP == INFO:root:Getting Order: {'orderId': '230'}
 ```
 
 ## Logs in Kubernetes mode
