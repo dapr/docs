@@ -5,9 +5,6 @@ linkTitle: "How-To: Invoke with gRPC"
 description: "Call between services using service invocation"
 weight: 3000
 ---
-{{% alert title="Preview feature" color="warning" %}}
-gRPC proxying is currently in [preview]({{< ref preview-features.md >}}).
-{{% /alert %}}
 
 This article describe how to use Dapr to connect services using gRPC.
 By using Dapr's gRPC proxying capability, you can use your existing proto based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
@@ -70,27 +67,8 @@ This Go app implements the Greeter proto service and exposes a `SayHello` method
 
 ### Run the gRPC server using the Dapr CLI
 
-Since gRPC proxying is currently a preview feature, you need to opt-in using a configuration file. See https://docs.dapr.io/operations/configuration/preview-features/ for more information.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: serverconfig
-spec:
-  tracing:
-    samplingRate: "1"
-    zipkin:
-      endpointAddress: http://localhost:9411/api/v2/spans
-  features:
-    - name: proxy.grpc
-      enabled: true
-```
-
-Run the sidecar and the Go server:
-
 ```bash
-dapr run --app-id server --app-port 50051 --config config.yaml -- go run main.go
+dapr run --app-id server --app-port 50051 -- go run main.go
 ```
 
 Using the Dapr CLI, we're assigning a unique id to the app, `server`, using the `--app-id` flag.
@@ -205,25 +183,8 @@ context.AddMetadata("dapr-app-id", "Darth Sidious");
 
 ### Run the client using the Dapr CLI
 
-Since gRPC proxying is currently a preview feature, you need to opt-in using a configuration file. See https://docs.dapr.io/operations/configuration/preview-features/ for more information.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: serverconfig
-spec:
-  tracing:
-    samplingRate: "1"
-    zipkin:
-      endpointAddress: http://localhost:9411/api/v2/spans
-  features:
-    - name: proxy.grpc
-      enabled: true
-```
-
 ```bash
-dapr run --app-id client --dapr-grpc-port 50007 --config config.yaml -- go run main.go
+dapr run --app-id client --dapr-grpc-port 50007 -- go run main.go
 ```
 
 ### View telemetry
@@ -232,28 +193,7 @@ If you're running Dapr locally with Zipkin installed, open the browser at `http:
 
 ## Deploying to Kubernetes
 
-### Step 1: Apply the following configuration YAML using `kubectl`
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: serverconfig
-spec:
-  tracing:
-    samplingRate: "1"
-    zipkin:
-      endpointAddress: http://localhost:9411/api/v2/spans
-  features:
-    - name: proxy.grpc
-      enabled: true
-```
-
-```bash
-kubectl apply -f config.yaml
-```
-
-### Step 2: set the following Dapr annotations on your pod
+Set the following Dapr annotations on your deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -277,13 +217,11 @@ spec:
         dapr.io/app-id: "server"
         dapr.io/app-protocol: "grpc"
         dapr.io/app-port: "50051"
-		dapr.io/config: "serverconfig"
 ...
 ```
 *If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}}))*
 
 The `dapr.io/app-protocol: "grpc"` annotation tells Dapr to invoke the app using gRPC.
-The `dapr.io/config: "serverconfig"` annotation tells Dapr to use the configuration applied above that enables gRPC proxying.
 
 ### Namespaces
 
