@@ -461,9 +461,9 @@ actorIdleTimeout | Specifies how long to wait before deactivating an idle actor.
 actorScanInterval | A duration which specifies how often to scan for actors to deactivate idle actors.  Actors that have been idle longer than the actorIdleTimeout will be deactivated.
 drainOngoingCallTimeout | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.
 drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTimeout` to allow a current actor call to complete before trying to deactivate an actor.  If false, do not wait.
-reentrancy | A configuration object that holds the options for actor reentrancy
-enabled | A flag that is needed to enable the reentrancy.
-maxStackDepth | A value that controls how many reentrant calls be made to the same actor.
+reentrancy | A configuration object that holds the options for actor reentrancy.
+enabled | A flag in the reentrancy configuration that is needed to enable reentrancy.
+maxStackDepth | A value in the reentrancy configuration that controls how many reentrant calls be made to the same actor.
 
 ```json
 {
