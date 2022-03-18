@@ -6,7 +6,7 @@ weight: 6000
 description: "Configure a larger http read buffer size"
 ---
 
-By default Dapr has a limit for the read buffer size which is set to 4 KB, however you can change this by defining `dapr.io/http-read-buffer-size` annotation or `--dapr-http-read-buffer-size` flag.
+Dapr has a limit for the read buffer size which is defaults to 4 KB, this param limits the maximum http header size. Using bigger than default 4KB size headers should set this to a proper value. Otherwise, you may encounter a `Too big request header` service invocation error. You can change this config by defining `dapr.io/http-read-buffer-size` annotation or `--dapr-http-read-buffer-size` flag.
 
 
 
