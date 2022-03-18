@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "How-To: Handle large http read buffer size"
-linkTitle: "Http read buffer size"
+title: "How-To: Handle large http header size"
+linkTitle: "HTTP header size"
 weight: 6000
 description: "Configure a larger http read buffer size"
 ---
