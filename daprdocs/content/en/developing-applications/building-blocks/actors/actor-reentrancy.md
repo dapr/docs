@@ -20,11 +20,13 @@ The `maxStackDepth` parameter sets a value that controls how many reentrant call
 
 ## Enable Actor Reentrancy with Actor Configuration
 
-The actor that will be reentrant must provide the appropriate configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements. Here is a snipet of an actor written in Golang providing the configuration:
+The actor that will be reentrant must provide configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
-{{< tabs Go Dotnet Python JavaScript >}}
+{{< tabs Dotnet Java Python Go JavaScript >}}
 
 {{% codetab %}}
+
+Here is a snippet of an actor written in Golang providing the reentrancy configuration via the HTTP API. Reentrancy has not yet been included into the Go SDK.
 
 ```go
 type daprConfig struct {
