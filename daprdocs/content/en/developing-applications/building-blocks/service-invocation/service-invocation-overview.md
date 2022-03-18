@@ -95,7 +95,7 @@ Dapr allows users to keep their own proto services and work natively with gRPC. 
 
 ## Example
 
-Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
+Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
 
 The diagram below shows sequence 1-7 again on a local machine showing the API calls:
 
@@ -115,6 +115,6 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
   - [How-to: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}})
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
   - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
-- Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
+- Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}})
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers
