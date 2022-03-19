@@ -12,7 +12,7 @@ In some scenarios, applications can be spread across namespaces and share a queu
 Namespaces are a Dapr concept used for scoping applications and components. This example uses Kubernetes namespaces, however the Dapr component namespace scoping can be used on any supported platform. Read [How-To: Scope components to one or more applications]({{< ref "component-scopes.md" >}}) for more information on scoping components.
 {{% /alert %}}
 
-This example uses the [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub-sub). The Redis installation and the subscribers are in `namespace-a` while the publisher UI is in `namespace-b`. This solution will also work if Redis is installed on another namespace or if you use a managed cloud service like Azure ServiceBus, AWS SNS/SQS or GCP PubSub.
+This example uses the [PubSub sample](https://github.com/dapr/quickstarts/tree/master/pub_sub). The Redis installation and the subscribers are in `namespace-a` while the publisher UI is in `namespace-b`. This solution will also work if Redis is installed on another namespace or if you use a managed cloud service like Azure ServiceBus, AWS SNS/SQS or GCP PubSub.
 
 This is a diagram of the example using namespaces.
 
@@ -33,7 +33,7 @@ The table below shows which resources are deployed to which namespaces:
 ## Pre-requisites
 
 * [Dapr installed on Kubernetes]({{< ref "kubernetes-deploy.md" >}}) in any namespace since Dapr works at the cluster level.
-* Checkout and cd into the directory for [PubSub quickstart](https://github.com/dapr/quickstarts/tree/master/pub-sub).
+* Checkout and cd into the directory for [PubSub quickstart](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ## Setup `namespace-a`
 
@@ -43,7 +43,7 @@ kubectl create namespace namespace-a
 kubectl config set-context --current --namespace=namespace-a
 ```
 
-Install Redis (master and slave) on `namespace-a`, following [these instructions]({{< ref "configure-state-pubsub.md" >}}).
+Install Redis (master and slave) on `namespace-a`, following [these instructions]({{< ref "getting-started/tutorials/configure-state-pubsub.md" >}}).
 
 Now, configure `deploy/redis.yaml`, paying attention to the hostname containing `namespace-a`.
 
