@@ -117,7 +117,7 @@ The state management API can be found in the [state management API reference]({{
     * [How-To: Query state]({{< ref howto-state-query-api.md >}})
     * [How-To: Encrypt application state]({{< ref howto-encrypt-state.md >}})
     * [State Time-to-Live]({{< ref state-store-ttl.md >}})
-* Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use state management or try the samples in the [Dapr SDKs]({{< ref sdks >}})
+* Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) which shows how to use state management or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 * List of [state store components]({{< ref supported-state-stores.md >}})
 * Read the [state management API reference]({{< ref state_api.md >}})
 * Read the [actors API reference]({{< ref actors_api.md >}})
