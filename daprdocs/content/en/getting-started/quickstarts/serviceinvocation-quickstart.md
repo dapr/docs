@@ -293,7 +293,7 @@ dotnet build
 Run the `checkout` service alongside a Dapr sidecar.
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
@@ -326,7 +326,7 @@ dotnet build
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ```csharp
