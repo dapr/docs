@@ -25,7 +25,7 @@ To set the output level, you can use the `--api-log-level` command-line option. 
 ./daprd --api-log-level debug
 ```
 
-This starts the Dapr runtime with a log level of `info` and `debug` accordingly.
+This starts the Dapr runtime with a api log level of `info` and `debug` accordingly.
 
 ## Configuring API logging in self hosted mode
 
@@ -110,7 +110,7 @@ time="2022-03-16T18:32:03.137830112Z" level=info msg="HTTP API Called: GET /v1.0
 time="2022-03-16T18:32:03.359097916Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
 ```
 
-The below example is for debug level API logging in Kubernetes. The debug level API logs are visible only when the log-level is set ot debug.
+The below example is for debug level API logging in Kubernetes. The debug level API logs are visible only when the log-level is set to debug.
 
 ```bash
 time="2022-03-18T21:03:00.03969986Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-56894979cd-rt87b scope=dapr.runtime.http type=log ver=edge
@@ -119,5 +119,3 @@ time="2022-03-18T21:03:00.492570204Z" level=debug msg="HTTP API Called: GET /v1.
 time="2022-03-18T21:03:00.705486991Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-56894979cd-rt87b scope=dapr.runtime.http type=log ver=edge
 time="2022-03-18T21:03:00.916868445Z" level=debug msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-56894979cd-rt87b scope=dapr.runtime.http type=log ver=edge
 ```
-
-*Note: Both HTTP and gRPC API call logs are shown based on the type of API or the service*
