@@ -13,7 +13,9 @@ Dapr has pre-built Docker remote containers for NodeJS and C#. You can pick the 
 ### Setup a remote dev container
 
 #### Prerequisites
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [VSCode Remote Development extension pack](https://aka.ms/vscode-remote/download/extension)
 
