@@ -43,11 +43,11 @@ In order for the integrations to send data to New Relic Telemetry Data Platform,
 
 ### OpenTelemetry instrumentation
 
-Leverage the different language specific OpenTelemetry implementations, for example [New Relic Telemetry SDK and OpenTelemetry support for .NET](https://github.com/newrelic/newrelic-telemetry-sdk-dotnet). In this case, use the [OpenTelemetry Trace Exporter](https://github.com/newrelic/newrelic-telemetry-sdk-dotnet/tree/main/src/NewRelic.OpenTelemetry). See example [here](https://github.com/harrykimpel/quickstarts/blob/master/tutorials/distributed-calculator/csharp-otel/Startup.cs).
+Leverage the different language specific OpenTelemetry implementations, for example [New Relic Telemetry SDK and OpenTelemetry support for .NET](https://github.com/newrelic/newrelic-telemetry-sdk-dotnet). In this case, use the [OpenTelemetry Trace Exporter](https://github.com/newrelic/newrelic-telemetry-sdk-dotnet/tree/main/src/NewRelic.OpenTelemetry). See example [here](https://github.com/harrykimpel/quickstarts/blob/master/distributed-calculator/csharp-otel/Startup.cs).
 
 ### New Relic Language agent
 
-Similarly to the OpenTelemetry instrumentation, you can also leverage a New Relic language agent. As an example, the [New Relic agent instrumentation for .NET Core](https://docs.newrelic.com/docs/agents/net-agent/other-installation/install-net-agent-docker-container) is part of the Dockerfile. See example [here](https://github.com/harrykimpel/quickstarts/blob/master/tutorials/distributed-calculator/csharp/Dockerfile).
+Similarly to the OpenTelemetry instrumentation, you can also leverage a New Relic language agent. As an example, the [New Relic agent instrumentation for .NET Core](https://docs.newrelic.com/docs/agents/net-agent/other-installation/install-net-agent-docker-container) is part of the Dockerfile. See example [here](https://github.com/harrykimpel/quickstarts/blob/master/distributed-calculator/csharp/Dockerfile).
 
 ## (optional) Enable New Relic Kubernetes integration
 
