@@ -7,7 +7,7 @@ weight: 300
 ---
 
 Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries.
-For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
+For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
 
 ## Example:
 
