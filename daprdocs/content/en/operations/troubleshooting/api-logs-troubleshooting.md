@@ -6,7 +6,7 @@ weight: 3000
 description: "Understand how API logging works in Dapr and how to view logs"
 ---
 
-This section will assist you in understanding how Dapr API logging works in Dapr, viewing logs.
+API logging enables you to see the API calls from your application to the Dapr sidecar and debug issues as a result with different verbosity levels. You can also combine Dapr API logging with Dapr log events (see [configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}}) into the output, if you want to use the logging capabilities together.
 
 ## Overview
 
@@ -74,7 +74,7 @@ DEBU[0000] HTTP API Called: DELETE /v1.0/state/statestore  app_id=order-processo
 DEBU[0000] HTTP API Called: PUT /v1.0/metadata/cliPID    app_id=order-processor instance=QTM-SWATHIKIL-1.redmond.corp.microsoft.com scope=dapr.runtime.http type=log ver=edge
 ```
 
-## Logs in Kubernetes mode
+##  Configuring API logging in Kubernetes
 
 You can set the log level individually for every sidecar by providing the following annotation in your pod spec template:
 
@@ -90,9 +90,9 @@ annotations:
   dapr.io/api-log-level: "debug"
 ```
 
-### Viewing Logs on Kubernetes
+### Viewing API logs on Kubernetes
 
-Dapr logs are written to stdout and stderr. This section will guide you on how to view API logs on Kubernetes.
+Dapr API logs are written to stdout and stderr and you can view API logs on Kubernetes.
 
 See the kubernetes API logs by executing the below command.
 
@@ -100,7 +100,7 @@ See the kubernetes API logs by executing the below command.
 kubectl logs <pod_name> daprd -n <name_space>
 ```
 
-The below example is for info level API logging in Kubernetes.
+The example below show `info` level API logging in Kubernetes.
 
 ```bash
 time="2022-03-16T18:32:02.487041454Z" level=info msg="HTTP API Called: GET /v1.0/invoke/invoke-receiver/method/my-method" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http type=log ver=edge
