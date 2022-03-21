@@ -698,7 +698,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body
 
 ## Next steps
 
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub_sub)
 - Learn about [PubSub routing]({{< ref howto-route-messages >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})

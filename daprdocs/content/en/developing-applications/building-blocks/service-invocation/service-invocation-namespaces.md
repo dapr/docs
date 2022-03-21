@@ -6,18 +6,30 @@ weight: 1000
 description: "Call between services deployed to different namespaces"
 ---
 
-This article describes how you can call between services deployed to different namespaces. By default, you can invoke services within the *same* namespace by simply referencing the app ID (`nodeapp`):
+In this article, you'll learn how you can call between services deployed to different namespaces. By default, service invocation supports invoking services within the *same* namespace by simply referencing the app ID (`nodeapp`):
 
 ```sh
 localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
-Service invocation also supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace. You can therefore specify both the app ID (`nodeapp`) in addition to the namespace the app runs in (`production`). For example to call the `neworder` method on the `nodeapp`, in the `production` namespace would look like this:
+
+Service invocation also supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace. You can specify both:
+
+- The app ID (`nodeapp`), and
+- The namespace the app runs in (`production`).
+
+**Example 1**
+
+Call the `neworder` method on the `nodeapp` in the `production` namespace:
 
 ```sh
 localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
 ```
 
-When using service invocation to call an application in a namespace you qualify it with the namespace. This is especially useful in cross namespace calls in a Kubernetes cluster. As another example, calling the `ping` method on `myapp` which is scoped to the `production` namespace would look like this:
+When calling an application in a namespace using service invocation, you qualify it with the namespace. This proves useful in cross-namespace calls in a Kubernetes cluster.
+
+**Example 2**
+
+Call the `ping` method on `myapp` scoped to the `production` namespace:
 
 ```bash
 https://localhost:3500/v1.0/invoke/myapp.production/method/ping
@@ -28,6 +40,7 @@ https://localhost:3500/v1.0/invoke/myapp.production/method/ping
 Call the same `ping` method as example 2 using a curl command from an external DNS address (in this case, `api.demo.dapr.team`) and supply the Dapr API token for authentication:
 
 MacOS/Linux:
+
 ```
 curl -i -d '{ "message": "hello" }' \
      -H "Content-type: application/json" \

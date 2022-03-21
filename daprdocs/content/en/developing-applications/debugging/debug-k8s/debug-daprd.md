@@ -42,7 +42,7 @@ Then step into 'dapr' directory from your cloned [dapr/dapr repository](https://
 helm install dapr charts/dapr --namespace dapr-system --values values.yml --wait
 ```
 
-To enable debug mode for daprd, you need to put an extra annotation `dapr.io/enable-debug` in your application's deployment file. Let's use [quickstarts/hello-kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes) as an example. Modify 'deploy/node.yaml' like below:
+To enable debug mode for daprd, you need to put an extra annotation `dapr.io/enable-debug` in your application's deployment file. Let's use [quickstarts/hello-kubernetes](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) as an example. Modify 'deploy/node.yaml' like below:
 
 ```diff
 diff --git a/hello-kubernetes/deploy/node.yaml b/hello-kubernetes/deploy/node.yaml
@@ -61,7 +61,7 @@ index 23185a6..6cdb0ae 100644
 
 The annotation `dapr.io/enable-debug` will hint Dapr injector to inject Dapr sidecar into the debug mode. You can also specify the debug port with annotation `dapr.io/debug-port`, otherwise the default port will be "40000".
 
-Deploy the application with the following command. For the complete guide refer to the [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes):
+Deploy the application with the following command. For the complete guide refer to the [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes):
 
 ```bash
 kubectl apply -f ./deploy/node.yaml
@@ -92,4 +92,4 @@ All done. Now you can point to port 40000 and start a remote debug session to da
 - [Overview of Dapr on Kubernetes]({{< ref kubernetes-overview >}})
 - [Deploy Dapr to a Kubernetes cluster]({{< ref kubernetes-deploy >}})
 - [Debug Dapr services on Kubernetes]({{< ref debug-dapr-services >}})
-- [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)
+- [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)
