@@ -50,5 +50,5 @@ Read the [Use output bindings to interface with external resources]({{< ref howt
 * Follow these guides on:
     * [How-To: Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
     * [How-To: Use output bindings to interface with external resources]({{< ref howto-bindings.md >}})
-* Try out the [bindings quickstart](https://github.com/dapr/quickstarts/tree/master/bindings/README.md) which shows how to bind to a Kafka queue
+* Try out the [bindings quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings/README.md) which shows how to bind to a Kafka queue
 * Read the [bindings API specification]({{< ref bindings_api.md >}})

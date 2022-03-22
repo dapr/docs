@@ -45,7 +45,7 @@ Applications can be scoped to namespaces for deployment and security, and you ca
 
 ### Service-to-service security
 
-All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service. The diagram below shows this for self hosted applications.
+All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service.
 
 For more information read the [service-to-service security]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}) article.
 
@@ -95,7 +95,7 @@ Dapr allows users to keep their own proto services and work natively with gRPC. 
 
 ## Example
 
-Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
+Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
 
 The diagram below shows sequence 1-7 again on a local machine showing the API calls:
 
@@ -115,6 +115,6 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
   - [How-to: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}})
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
   - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
-- Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
+- Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}})
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers

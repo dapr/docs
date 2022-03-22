@@ -23,20 +23,18 @@ spec:
   type: secretstores.azure.keyvault
   version: v1
   metadata:
-  - name: vaultName
+  - name: vaultName # Required
     value: [your_keyvault_name]
-  - name: spnTenantId
+  - name: azureEnvironment # Optional, defaults to AZUREPUBLICCLOUD
+    value: "AZUREPUBLICCLOUD"
+  # See authentication section below for all options
+  - name: azureTenantId
     value: "[your_service_principal_tenant_id]"
-  - name: spnClientId
+  - name: azureClientId
     value: "[your_service_principal_app_id]"
-    value : "[pfx_certificate_contents]"
-  - name: spnCertificateFile
+  - name: azureCertificateFile
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
-{{% /alert %}}
 
 ## Authenticating with Azure AD
 
@@ -48,10 +46,11 @@ The Azure Key Vault secret store component supports authentication with Azure AD
 |--------------------|:--------:|---------|---------|
 | `vaultName` | Y | The name of the Azure Key Vault | `"mykeyvault"` |
 | `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"`, `"AZUREGERMANCLOUD"` |
+| Auth metadata | | See [Authenticating to Azure]({{< ref authenticating-azure.md >}}) for more information
 
 Additionally, you must provide the authentication fields as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
 
-## Create the Azure Key Vault and authorize the Service Principal
+## Example: Create an Azure Key Vault and authorize a Service Principal
 
 ### Prerequisites
 
@@ -111,7 +110,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
     --scope "${RG_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
   ```
 
-## Configure the component
+### Configure the component
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
@@ -286,14 +285,14 @@ To use **Azure managed identity**:
     ```
 4. Create and use a managed identity / pod identity by following [this guide](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity). After creating an AKS pod identity, [give this identity read permissions on your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy), and finally in your application deployment inject the pod identity via a label annotation:
 
-  ```yaml
-  apiVersion: v1
-  kind: Pod
-  metadata:
-    name: mydaprdemoapp
-    labels:
-      aadpodidbinding: $POD_IDENTITY_NAME
-  ```
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: mydaprdemoapp
+     labels:
+       aadpodidbinding: $POD_IDENTITY_NAME
+   ```
 
 {{% /codetab %}}
 
