@@ -34,14 +34,6 @@ spec:
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 
-If you wish to use CockroachDB as an actor store, append the following to the yaml.
-
-```yaml
-  - name: actorStateStore
-    value: "true"
-```
-
-
 ## Setup CockroachDB
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
