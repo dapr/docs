@@ -529,7 +529,36 @@ Try getting state again and note that no value is returned.
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{< tabs Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs Dotnet Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
+
+```csharp
+//dependencies
+using Dapr.Client;
+//code
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_STORE_NAME = "statestore";
+            //Using Dapr SDK to retrieve multiple states
+            using var client = new DaprClientBuilder().Build();
+            IReadOnlyList<BulkStateItem> mulitpleStateResult = await client.GetBulkStateAsync(DAPR_STORE_NAME, new List<string> { "order_1", "order_2" }, parallelism: 1);
+        }
+    }
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
