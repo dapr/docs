@@ -73,7 +73,7 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 
 > <sup>[*]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr will return an error.
 
-> <sup>[**]</sup> The `params` field accepts a query string that specifies connection specific options as `<name>=<value>` pairs, separated by `"&"` and prefixed with `"?"`. e.g. to use "daprStore" db as authentication database and enabling SSL/TLS in connection, specify params as `"?authSource=daprStore&ssl=true"`. Please see [the mongodb manual](https://docs.mongodb.com/manual/reference/connection-string/#std-label-connections-connection-options) for the list of available options and their use cases.
+> <sup>[**]</sup> The `params` field accepts a query string that specifies connection specific options as `<name>=<value>` pairs, separated by `"&"` and prefixed with `"?"`. e.g. to use "daprStore" db as authentication database and enabling SSL/TLS in connection, specify params as `"?authSource=daprStore&ssl=true"`. See [the mongodb manual](https://docs.mongodb.com/manual/reference/connection-string/#std-label-connections-connection-options) for the list of available options and their use cases.
 
 ## Setup MongoDB
 
