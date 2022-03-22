@@ -3,27 +3,40 @@ type: docs
 title: "Use the Dapr API"
 linkTitle: "Use the Dapr API"
 weight: 30
+description: "Run a Dapr sidecar and try out the state API"
 ---
 
-After running the `dapr init` command in the [previous step]({{<ref install-dapr-selfhost.md>}}), your local environment has the Dapr sidecar binaries as well as default component definitions for both state management and a message broker (both using Redis). You can now try out some of what Dapr has to offer by using the Dapr CLI to run a Dapr sidecar and try out the state API that will allow you to store and retrieve a state. You can learn more about the state building block and how it works in [these docs]({{< ref state-management >}}).
+Running [`dapr init`]({{<ref install-dapr-selfhost.md>}}) loads your local environment with:
 
-You will now run the sidecar and call the API directly (simulating what an application would do).
+- The Dapr sidecar binaries.
+- Default Redis component definitions for both:
+  - State management, and
+  - A message broker.
 
-## Step 1: Run the Dapr sidecar
+With this setup, run Dapr using the Dapr CLI and try out the state API to store and retrieve a state. [Learn more about the state building block and how it works in our concept docs]({{< ref state-management >}}).
 
-One of the most useful Dapr CLI commands is [`dapr run`]({{< ref dapr-run.md >}}). This command launches an application together with a sidecar. For the purpose of this tutorial you'll run the sidecar without an application.
+In this guide, you will simulate an application by running the sidecar and calling the API directly. For the purpose of this tutorial you'll run the sidecar without an application.
 
-Run the following command to launch a Dapr sidecar that will listen on port 3500 for a blank application named myapp:
+### Step 1: Run the Dapr sidecar
+
+One of the most useful Dapr CLI commands is [`dapr run`]({{< ref dapr-run.md >}}). This command launches an application, together with a sidecar. 
+
+Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 
 ```bash
 dapr run --app-id myapp --dapr-http-port 3500
 ```
 
-With this command, no custom component folder was defined, so Dapr uses the default component definitions that were created during the init flow (these can be found under `$HOME/.dapr/components` on Linux or MacOS and under `%USERPROFILE%\.dapr\components` on Windows). These tell Dapr to use the local Redis Docker container as a state store and message broker.
+Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref install-dapr-selfhost.md >}}), found:
 
-## Step 2: Save state
+- On Windows, under `%UserProfile%\.dapr\components`
+- On Linux/MacOS, under `~/.dapr/components`
 
-We will now update the state with an object. The new state will look like this:
+These tell Dapr to use the local Docker container for Redis as a state store and message broker.
+
+### Step 2: Save state
+
+Update the state with an object. The new state will look like this:
 
 ```json
 [
@@ -36,7 +49,7 @@ We will now update the state with an object. The new state will look like this:
 
 Notice, the object contained in the state has a `key` assigned with the value `name`. You will use the key in the next step.
 
-Run the command shown below to store the new state.
+Store the new state using the following command:
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 {{% codetab %}}
@@ -55,45 +68,46 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 {{< /tabs >}}
 
-## Step 3: Get state
+### Step 3: Get state
 
-Now get the object you just stored in the state by using the state management API with the key `name`:
+Retrieve the object you just stored in the state by using the state management API with the key `name`. Run the following code with the same Dapr instance you ran earlier. :
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
-With the same Dapr instance running from above run:
+
 ```bash
 curl http://localhost:3500/v1.0/state/statestore/name
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above run:
+
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/name'
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Step 4: See how the state is stored in Redis
+### Step 4: See how the state is stored in Redis
 
-You can look in the Redis container and verify Dapr is using it as a state store. Run the following to use the Redis CLI:
+Look in the Redis container and verify Dapr is using it as a state store. Use the Redis CLI with the following command:
 
 ```bash
 docker exec -it dapr_redis redis-cli
 ```
 
-List the redis keys to see how Dapr created a key value pair (with the app-id you provided to `dapr run` as a prefix to the key):
+List the Redis keys to see how Dapr created a key value pair with the app-id you provided to `dapr run` as the key's prefix:
 
 ```bash
 keys *
 ```
 
-```
-1) "myapp||name"
-```
+**Output:**  
+`1) "myapp||name"`
 
 View the state value by running:
 
@@ -101,12 +115,11 @@ View the state value by running:
 hgetall "myapp||name"
 ```
 
-```
-1) "data"
-2) "\"Bruce Wayne\""
-3) "version"
-4) "1"
-```
+**Output:**  
+`1) "data"`  
+`2) "\"Bruce Wayne\""`  
+`3) "version"`  
+`4) "1"`  
 
 Exit the redis-cli with:
 
@@ -114,4 +127,4 @@ Exit the redis-cli with:
 exit
 ```
 
-{{< button text="Next step: Define a component >>" page="get-started-component" >}}
+{{< button text="Next step: Dapr Quickstarts >>" page="getting-started/quickstarts" >}}

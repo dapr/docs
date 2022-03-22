@@ -270,4 +270,4 @@ main();
 - [Configure a secret store]({{<ref setup-secret-store>}})
 - [Supported secrets]({{<ref supported-secret-stores>}})
 - [Using secrets in components]({{<ref component-secrets>}})
-- [Secret stores quickstart](https://github.com/dapr/quickstarts/tree/master/secretstore)
+- [Secret stores quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/secretstore)
