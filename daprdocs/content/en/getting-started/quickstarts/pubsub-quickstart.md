@@ -379,7 +379,7 @@ dotnet build
 Run the `checkout` publisher service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --components-path ../../components -- dotnet run
+dapr run --app-id checkout --components-path ../../../components -- dotnet run
 ```
 
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
@@ -408,7 +408,7 @@ dotnet build
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../components --app-port 5001 -- dotnet run
+dapr run --app-id order-processor --components-path ../../../components --app-port 7001 -- dotnet run
 ```
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
