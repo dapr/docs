@@ -11,7 +11,6 @@ API logging enables you to see the API calls from your application to the Dapr s
 ## Overview
 
 API logs have different, configurable verbosity levels and is applicable for both HTTP and GRPC calls.
-The levels outlined below are the same for both system components and the Dapr sidecar process/container:
 
 1. info
 2. debug
@@ -35,9 +34,7 @@ To set the log level when running your app with the Dapr CLI, pass the `api-log-
 dapr run --api-log-level info node myapp.js
 ```
 
-As outlined above, Dapr binary takes a `--api-log-level` argument.
-
-### Viewing API logs on self hosted mode
+### Viewing API logs in self hosted mode
 
 When running Dapr with the Dapr CLI, both your app's log output and the Dapr runtime log output are redirected to the same session, for easy debugging.
 
