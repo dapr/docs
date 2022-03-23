@@ -30,6 +30,7 @@ The following stores are supported, at various levels, by the Dapr state managem
 |----------------------------------------------------|----|-------------|----|----|----|----|-------|----|-----|
 | [Aerospike]({{< ref setup-aerospike.md >}})        | ✅ | ❌          | ✅  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [Apache Cassandra]({{< ref setup-cassandra.md >}}) | ✅ | ❌          | ❌  | ✅ | ❌ | ❌ | Alpha  | v1 | 1.0 |
+| [CockroachDB]({{< ref setup-cockroachdb.md >}})    | ✅ | ✅          | ✅  | ❌ | ✅ | ✅ | Alpha  | v1 | 1.7 |
 | [Couchbase]({{< ref setup-couchbase.md >}})        | ✅ | ❌          | ✅  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [Hashicorp Consul]({{< ref setup-consul.md >}})    | ✅ | ❌          | ❌  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |
 | [Hazelcast]({{< ref setup-hazelcast.md >}})        | ✅ | ❌          | ❌  | ❌ | ❌ | ❌ | Alpha  | v1 | 1.0 |

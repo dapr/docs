@@ -30,6 +30,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--unix-domain-socket` | `--unix-domain-socket` | `-u` | not supported  | On Linux, when communicating with the Dapr sidecar, use unix domain sockets for lower latency and greater throughput compared to TCP ports. Not available on Windows OS |
 | `--log-as-json` | not supported | | `dapr.io/log-as-json` | Setting this parameter to `true` outputs logs in JSON format. Default is `false` |
 | `--log-level` | `--log-level` | | `dapr.io/log-level` | Sets the log level for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` |
+| `--api-log-level` | `--api-log-level` | | `dapr.io/api-log-level` | Sets the API log level for the Dapr sidecar. Allowed values are `debug`, `info`. Default is `debug` |
 | `--app-max-concurrency` | `--app-max-concurrency` | | `dapr.io/app-max-concurrency` | Limit the concurrency of your application. A valid value is any number larger than `0`
 | `--metrics-port` | `--metrics-port` | | `dapr.io/metrics-port` | Sets the port for the sidecar metrics server. Default is `9090` |
 | `--mode` | not supported | | not supported | Runtime mode for Dapr (default "standalone") |
