@@ -57,7 +57,7 @@ scopes:
 
 ## Programmatic subscription
 
-Alternatively, the programattic approach varies slightly in that the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML.
+Alternatively, the programmatic approach varies slightly in that the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML.
 
 {{< tabs Python Node "C#" Go PHP>}}
 

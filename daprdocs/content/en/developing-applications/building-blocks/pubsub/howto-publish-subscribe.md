@@ -141,62 +141,67 @@ Place the CRD in your `./components` directory. When Dapr starts up, it loads su
 
 Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.
 
-You can also override the default directory by pointing the Dapr CLI to a components path:
-
-{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- dotnet run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- go run app.go
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```bash
-dapr run --app-id myapp --components-path ./myComponents -- npm start
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-In Kubernetes, save the CRD to a file and apply it to the cluster:
-```bash
-kubectl apply -f subscription.yaml
-```
-{{% /codetab %}}
-
-{{< /tabs >}}
-
 Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs Python Javascript ".NET" Java Go >}}
+
+{{% codetab %}}
+
+```python
+#dependencies
+from cloudevents.sdk.event import v1
+from dapr.ext.grpc import App
+import logging
+import json
+
+#code
+app = App()
+logging.basicConfig(level = logging.INFO)
+#Subscribe to a topic 
+@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+def mytopic(event: v1.Event) -> None:
+    data = json.loads(event.Data())
+    logging.info('Subscriber received: ' + str(data))
+
+app.run(6002)
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```javascript
+//dependencies
+import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+
+//code
+const daprHost = "127.0.0.1"; 
+const serverHost = "127.0.0.1";
+const serverPort = "6002"; 
+
+start().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});
+
+async function start(orderId) {
+    const server = new DaprServer(
+        serverHost, 
+        serverPort, 
+        daprHost, 
+        process.env.DAPR_HTTP_PORT, 
+        CommunicationProtocolEnum.HTTP
+    );
+    //Subscribe to a topic
+    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+    });
+    await server.startServer();
+}
+```
+
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -224,12 +229,6 @@ namespace CheckoutService.controller
         }
     }
 }
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
 ```
 
 {{% /codetab %}}
@@ -264,41 +263,6 @@ public class CheckoutServiceController {
         });
     }
 }
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```python
-#dependencies
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
-import logging
-import json
-
-#code
-app = App()
-logging.basicConfig(level = logging.INFO)
-#Subscribe to a topic 
-@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
-def mytopic(event: v1.Event) -> None:
-    data = json.loads(event.Data())
-    logging.info('Subscriber received: ' + str(data))
-
-app.run(6002)
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
 ```
 
 {{% /codetab %}}
@@ -340,57 +304,223 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+{{% /codetab %}}
 
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
+The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
+
+{{< /tabs >}}
+
+### Programmatic subscriptions
+
+The programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. In the example below, we define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
+
+{{< tabs Python JavaScript ".NET" Go PHP>}}
+
+{{% codetab %}}
+```python
+import flask
+from flask import request, jsonify
+from flask_cors import CORS
+import json
+import sys
+
+app = flask.Flask(__name__)
+CORS(app)
+
+@app.route('/dapr/subscribe', methods=['GET'])
+def subscribe():
+    subscriptions = [
+      {
+        'pubsubname': 'pubsub',
+        'topic': 'inventory',
+        'routes': {
+          'rules': [
+            {
+              'match': 'event.type == "widget"',
+              'path': '/widgets'
+            },
+            {
+              'match': 'event.type == "gadget"',
+              'path': '/gadgets'
+            },
+          ],
+          'default': '/products'
+        }
+      }]
+    return jsonify(subscriptions)
+
+@app.route('/products', methods=['POST'])
+def ds_subscriber():
+    print(request.json, flush=True)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+app.run()
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
-
 ```javascript
-//dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+app.use(bodyParser.json({ type: 'application/*+json' }));
 
-//code
-const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
+const port = 3000
 
-start().catch((e) => {
-    console.error(e);
-    process.exit(1);
+app.get('/dapr/subscribe', (req, res) => {
+  res.json([
+    {
+      pubsubname: "pubsub",
+      topic: "inventory",
+      routes: {
+        rules: [
+          {
+            match: 'event.type == "widget"',
+            path: '/widgets'
+          },
+          {
+            match: 'event.type == "gadget"',
+            path: '/gadgets'
+          },
+        ],
+        default: '/products'
+      }
+    }
+  ]);
+})
+
+app.post('/products', (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
 });
 
-async function start(orderId) {
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
-    //Subscribe to a topic
-    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
-        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
-    });
-    await server.startServer();
+app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+        [Topic("pubsub", "inventory", "event.type ==\"widget\"", 1)]
+        [HttpPost("widgets")]
+        public async Task<ActionResult<Stock>> HandleWidget(Widget widget, [FromServices] DaprClient daprClient)
+        {
+            // Logic
+            return stock;
+        }
+
+        [Topic("pubsub", "inventory", "event.type ==\"gadget\"", 2)]
+        [HttpPost("gadgets")]
+        public async Task<ActionResult<Stock>> HandleGadget(Gadget gadget, [FromServices] DaprClient daprClient)
+        {
+            // Logic
+            return stock;
+        }
+
+        [Topic("pubsub", "inventory")]
+        [HttpPost("products")]
+        public async Task<ActionResult<Stock>> HandleProduct(Product product, [FromServices] DaprClient daprClient)
+        {
+            // Logic
+            return stock;
+        }
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```golang
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+const appPort = 3000
+
+type subscription struct {
+	PubsubName string            `json:"pubsubname"`
+	Topic      string            `json:"topic"`
+	Metadata   map[string]string `json:"metadata,omitempty"`
+	Routes     routes            `json:"routes"`
+}
+
+type routes struct {
+	Rules   []rule `json:"rules,omitempty"`
+	Default string `json:"default,omitempty"`
+}
+
+type rule struct {
+	Match string `json:"match"`
+	Path  string `json:"path"`
+}
+
+// This handles /dapr/subscribe
+func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
+	t := []subscription{
+		{
+			PubsubName: "pubsub",
+			Topic:      "inventory",
+			Routes: routes{
+				Rules: []rule{
+					{
+						Match: `event.type == "widget"`,
+						Path:  "/widgets",
+					},
+					{
+						Match: `event.type == "gadget"`,
+						Path:  "/gadgets",
+					},
+				},
+				Default: "/products",
+			},
+		},
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(t)
+}
+
+func main() {
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/dapr/subscribe", configureSubscribeHandler).Methods("GET")
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", appPort), router))
 }
 ```
+{{% /codetab %}}
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+{{% codetab %}}
+```php
+<?php
 
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builder->addDefinitions(['dapr.subscriptions' => [
+    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'inventory', routes: (
+      rules: => [
+        ('match': 'event.type == "widget"', path: '/widgets'),
+        ('match': 'event.type == "gadget"', path: '/gadgets'),
+      ]
+      default: '/products')),
+]]));
+$app->post('/products', function(
+    #[\Dapr\Attributes\FromBody]
+    \Dapr\PubSub\CloudEvent $cloudEvent,
+    \Psr\Log\LoggerInterface $logger
+    ) {
+        $logger->alert('Received event: {event}', ['event' => $cloudEvent]);
+        return ['status' => 'SUCCESS'];
+    }
+);
+$app->start();
 ```
-
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
 
 ## Step 3: Publish a topic
 
