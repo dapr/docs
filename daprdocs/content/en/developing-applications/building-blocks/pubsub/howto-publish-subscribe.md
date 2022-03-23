@@ -141,67 +141,65 @@ Place the CRD in your `./components` directory. When Dapr starts up, it loads su
 
 Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.
 
+You can also override the default directory by pointing the Dapr CLI to a components path:
+
+{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- dotnet run
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- go run app.go
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```bash
+dapr run --app-id myapp --components-path ./myComponents -- npm start
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+In Kubernetes, save the CRD to a file and apply it to the cluster:
+
+```bash
+kubectl apply -f subscription.yaml
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 
-{{< tabs Python Javascript ".NET" Java Go >}}
-
-{{% codetab %}}
-
-```python
-#dependencies
-from cloudevents.sdk.event import v1
-from dapr.ext.grpc import App
-import logging
-import json
-
-#code
-app = App()
-logging.basicConfig(level = logging.INFO)
-#Subscribe to a topic 
-@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
-def mytopic(event: v1.Event) -> None:
-    data = json.loads(event.Data())
-    logging.info('Subscriber received: ' + str(data))
-
-app.run(6002)
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```javascript
-//dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
-
-//code
-const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
-
-start().catch((e) => {
-    console.error(e);
-    process.exit(1);
-});
-
-async function start(orderId) {
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
-    //Subscribe to a topic
-    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
-        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
-    });
-    await server.startServer();
-}
-```
-
-
-{{% /codetab %}}
+{{< tabs Dotnet Java Python Go Javascript>}}
 
 {{% codetab %}}
 
@@ -229,6 +227,12 @@ namespace CheckoutService.controller
         }
     }
 }
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
 ```
 
 {{% /codetab %}}
@@ -263,6 +267,41 @@ public class CheckoutServiceController {
         });
     }
 }
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```python
+#dependencies
+from cloudevents.sdk.event import v1
+from dapr.ext.grpc import App
+import logging
+import json
+
+#code
+app = App()
+logging.basicConfig(level = logging.INFO)
+#Subscribe to a topic 
+@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+def mytopic(event: v1.Event) -> None:
+    data = json.loads(event.Data())
+    logging.info('Subscriber received: ' + str(data))
+
+app.run(6002)
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
 ```
 
 {{% /codetab %}}
@@ -304,11 +343,57 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 }
 ```
 
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
+```
+
 {{% /codetab %}}
 
-The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
+{{% codetab %}}
+
+```javascript
+//dependencies
+import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+
+//code
+const daprHost = "127.0.0.1"; 
+const serverHost = "127.0.0.1";
+const serverPort = "6002"; 
+
+start().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});
+
+async function start(orderId) {
+    const server = new DaprServer(
+        serverHost, 
+        serverPort, 
+        daprHost, 
+        process.env.DAPR_HTTP_PORT, 
+        CommunicationProtocolEnum.HTTP
+    );
+    //Subscribe to a topic
+    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+    });
+    await server.startServer();
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
+```
+
+{{% /codetab %}}
 
 {{< /tabs >}}
+
+The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
 
 ### Programmatic subscriptions
 
@@ -430,7 +515,6 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```golang
 package main
 
-import (
 	"encoding/json"
 	"fmt"
 	"log"
@@ -521,7 +605,6 @@ $app->start();
 
 {{< /tabs >}}
 
-
 ## Step 3: Publish a topic
 
 Start an instance of Dapr with an app-id called `orderprocessing`:
@@ -529,6 +612,7 @@ Start an instance of Dapr with an app-id called `orderprocessing`:
 ```bash
 dapr run --app-id orderprocessing --dapr-http-port 3601
 ```
+
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
