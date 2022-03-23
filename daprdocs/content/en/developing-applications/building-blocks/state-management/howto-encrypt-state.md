@@ -7,35 +7,18 @@ description: "Automatically encrypt state and manage key rotations"
 
 ---
 
-{{% alert title="Preview feature" color="warning" %}}
-State store encryption is currently in [preview]({{< ref preview-features.md >}}).
-{{% /alert %}}
-
 ## Introduction
 
-Application state often needs to get encrypted at rest to provide stronger security in enterprise workloads or regulated environments. Dapr offers automatic client side encryption based on [AES256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
+Application state often needs to get encrypted at rest to provide stronger security in enterprise workloads or regulated environments. Dapr offers automatic client side encryption based on [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [Galois/Counter Mode (GCM)](https://en.wikipedia.org/wiki/Galois/Counter_Mode), supporting keys of 128, 192, and 256-bits.
 
 In addition to automatic encryption, Dapr supports primary and secondary encryption keys to make it easier for developers and ops teams to enable a key rotation strategy.
 This feature is supported by all Dapr state stores.
 
-The encryption keys are fetched from a secret, and cannot be supplied as plaintext values on the `metadata` section.
+The encryption keys are always fetched from a secret, and cannot be supplied as plaintext values on the `metadata` section.
 
 ## Enabling automatic encryption
 
-1. Enable the state encryption preview feature using a standard [Dapr Configuration]({{< ref configuration-overview.md >}}):
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: stateconfig
-spec:
-  features:
-    - name: State.Encryption
-      enabled: true
-```
-
-2. Add the following `metadata` section to any Dapr supported state store:
+1. Add the following `metadata` section to any Dapr supported state store:
 
 ```yaml
 metadata:
@@ -67,7 +50,15 @@ spec:
 ```
 
 You now have a Dapr state store that's configured to fetch the encryption key from a secret named `mysecret`, containing the actual encryption key in a key named `mykey`.
-The actual encryption key *must* be an AES256 encryption key. Dapr will error and exit if the encryption key is invalid.
+
+The actual encryption key *must* be a valid, hex-encoded encryption key. We recommend using 128-bit encryption keys; 192-bit and 256-bit keys are supported too. Dapr errors and exists if the encryption key is invalid.
+
+> As an example, you can generate a random, hex-encoded 128-bit (16-byte) key with:
+>
+> ```sh
+> openssl rand 16 | hexdump -v -e '/1 "%02x"'
+> # Result will be similar to "cb321007ad11a9d23f963bff600d58e0"
+> ```
 
 *Note that the secret store does not have to support keys*
 
@@ -89,8 +80,9 @@ metadata:
 
 When Dapr starts, it will fetch the secrets containing the encryption keys listed in the `metadata` section. Dapr knows which state item has been encrypted with which key automatically, as it appends the `secretKeyRef.name` field to the end of the actual state key.
 
-To rotate a key, simply change the `primaryEncryptionKey` to point to a secret containing your new key, and move the old primary encryption key to the `secondaryEncryptionKey`. New data will be encrypted using the new key, and old data that's retrieved will be decrypted using the secondary key. Any updates to data items encrypted using the old key will be re-encrypted using the new key.
+To rotate a key, change the `primaryEncryptionKey` to point to a secret containing your new key, and move the old primary encryption key to the `secondaryEncryptionKey`. New data will be encrypted using the new key, and old data that's retrieved will be decrypted using the secondary key. Any updates to data items encrypted using the old key will be re-encrypted using the new key. Note that when you rotate a key, data encrypted with the old key is not automatically re-encrypted unless your application writes it again. If you remove the rotated key (the now-secondary encryption key), you will not be able to access data that was encrypted with that.
 
 ## Related links
  - [Security overview]({{< ref "security-concept.md" >}})
  - [State store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api)
+ - [State store components]({{< ref "supported-state-stores.md" >}})

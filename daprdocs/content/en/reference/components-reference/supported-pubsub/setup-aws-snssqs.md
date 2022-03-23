@@ -185,20 +185,20 @@ In order to run in AWS, you should create or assign an IAM user with permissions
       "Sid": "YOUR_POLICY_NAME",
       "Effect": "Allow",
       "Action": [
-        "sqs:CreateQueue",
-        "sqs:DeleteMessage",
-        "sqs:ReceiveMessage",
-        "sqs:ChangeMessageVisibility",
-        "sqs:GetQueueUrl",
-        "sqs:GetQueueAttributes",
-        "sqs:SetQueueAttributes",
         "sns:CreateTopic",
+        "sns:GetTopicAttributes",
         "sns:ListSubscriptionsByTopic",
         "sns:Publish",
         "sns:Subscribe",
-        "sns:ListSubscriptionsByTopic",
-        "sns:GetTopicAttributes"
-
+        "sns:TagResource",
+        "sqs:ChangeMessageVisibility",
+        "sqs:CreateQueue",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:ReceiveMessage",
+        "sqs:SetQueueAttributes",
+        "sqs:TagQueue"
       ],
       "Resource": [
         "arn:aws:sns:AWS_REGION:AWS_ACCOUNT_ID:*",

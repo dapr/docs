@@ -6,12 +6,8 @@ weight: 30
 description: Learn more about actor reentrancy
 ---
 
-{{% alert title="Preview feature" color="warning" %}}
-Actor reentrancy is currently in [preview]({{< ref preview-features.md >}}).
-{{% /alert %}}
-
 ## Actor reentrancy
-A core tenet of the virtual actor pattern is the single-threaded nature of actor execution. Before reentrancy, this caused the Dapr runtime to lock an actor on any given request. A second request could not start until the first had completed. This behavior means an actor cannot call itself, or have another actor call into it even if it is part of the same chain. Reentrancy solves this by allowing requests from the same chain or context to re-enter into an already locked actor. Examples of chains that reentrancy allows can be seen below:
+A core tenet of the virtual actor pattern is the single-threaded nature of actor execution. Without reentrancy, the Dapr runtime locks on all actor requests, even those that are in the same call chain. A second request could not start until the first had completed. This means an actor cannot call itself, or have another actor call into it even if it is part of the same chain. Reentrancy solves this by allowing requests from the same chain, or context, to re-enter into an already locked actor. This is especially useful in scenarios where an actor wants to call a method on itself or when actors are used in workflows where other actors are used to perform work, and they then call back onto the coordinating actor. Examples of chains that reentrancy allows are shown below:
 
 ```
 Actor A -> Actor A
@@ -20,25 +16,68 @@ ActorA -> Actor B -> Actor A
 
 With reentrancy, there can be more complex actor calls without sacrificing the single-threaded behavior of virtual actors.
 
-## Enabling actor reentrancy
-Actor reentrancy is currently in preview, so enabling it is a two step process.
+<img src="/images/actor-reentrancy.png" width=1000 height=500 alt="Diagram showing reentrancy for a coordinator workflow actor calling worker actors or an actor calling an method on itself">
 
-### Preview feature configuration
-Before using reentrancy, the feature must be enabled in Dapr. For more information on preview configurations, see [the full guide on opting into preview features in Dapr]({{< ref preview-features.md >}}). Below is an example of the configuration for actor reentrancy:
+The `maxStackDepth` parameter sets a value that controls how many reentrant calls be made to the same actor. By default this is set to 32, which is more than sufficient in most cases.
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: reentrantconfig
-spec:
-  features:
-    - name: Actor.Reentrancy
-      enabled: true
+## Enable Actor Reentrancy with Actor Configuration
+
+The actor that will be reentrant must provide configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
+
+{{< tabs Dotnet Python Go >}}
+
+{{% codetab %}}
+
+```csharp
+public class Startup
+{
+	public void ConfigureServices(IServiceCollection services)
+	{
+		services.AddSingleton<BankService>();
+		services.AddActors(options =>
+		{
+		options.Actors.RegisterActor<DemoActor>();
+		options.ReentrancyConfig = new Dapr.Actors.ActorReentrancyConfig()
+			{
+			Enabled = true,
+			MaxStackDepth = 32,
+			};
+		});
+	}
+}
 ```
 
-### Actor runtime configuration
-Once actor reentrancy is enabled as an opt-in preview feature, the actor that will be reentrant must also provide the appropriate configuration to use reentrancy. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements. Here is a snipet of an actor written in Golang providing the configuration:
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+from fastapi import FastAPI
+from dapr.ext.fastapi import DaprActor
+from dapr.actor.runtime.config import ActorRuntimeConfig, ActorReentrancyConfig
+from dapr.actor.runtime.runtime import ActorRuntime
+from demo_actor import DemoActor
+
+reentrancyConfig = ActorReentrancyConfig(enabled=True)
+config = ActorRuntimeConfig(reentrancy=reentrancyConfig)
+ActorRuntime.set_actor_config(config)
+app = FastAPI(title=f'{DemoActor.__name__}Service')
+actor = DaprActor(app)
+
+@app.on_event("startup")
+async def startup_event():
+	# Register DemoActor
+	await actor.register_actor(DemoActor)
+
+@app.get("/MakeExampleReentrantCall")
+def do_something_reentrant():
+	# invoke another actor here, reentrancy will be handled automatically
+	return
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Here is a snippet of an actor written in Golang providing the reentrancy configuration via the HTTP API. Reentrancy has not yet been included into the Go SDK.
 
 ```go
 type daprConfig struct {
@@ -69,7 +108,7 @@ func configHandler(w http.ResponseWriter, r *http.Request) {
 ### Handling reentrant requests
 The key to a reentrant request is the `Dapr-Reentrancy-Id` header. The value of this header is used to match requests to their call chain and allow them to bypass the actor's lock.
 
-The header is generated by the Dapr runtime for any actor request that has a reentrant config specified. Once it is generated, it is used to lock the actor and must be passed to all future requests. Below is a snippet of code from an actor handling this is Golang:
+The header is generated by the Dapr runtime for any actor request that has a reentrant config specified. Once it is generated, it is used to lock the actor and must be passed to all future requests. Below are the snippets of code from an actor handling this:
 
 ```go
 func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
@@ -91,4 +130,11 @@ func reentrantCallHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-Currently, no SDK supports actor reentrancy. In the future, the method for handling the reentrancy id may be different based on the SDK that is being used.
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Watch this [video](https://www.youtube.com/watch?v=QADHQ5v-gww&list=PLcip_LgkYwzuF-OV6zKRADoiBvUvGhkao&t=674s) on how to use actor reentrancy.
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/QADHQ5v-gww?start=674" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

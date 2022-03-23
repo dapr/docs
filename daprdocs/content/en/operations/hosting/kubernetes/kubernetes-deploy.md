@@ -173,4 +173,4 @@ dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 
 ## Next steps
 
-- [Configure state store & pubsub message broker]({{< ref configure-state-pubsub.md >}})
+- [Configure state store & pubsub message broker]({{< ref "getting-started/tutorials/configure-state-pubsub.md" >}})
