@@ -42,7 +42,7 @@ For information about pulling your application images from a private registry, r
 
 ## Quickstart
 
-You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes) in the Kubernetes getting started quickstart.
+You can see some examples [here](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) in the Kubernetes getting started quickstart.
 
 ## Supported versions
 Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy).
@@ -52,5 +52,5 @@ Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](htt
 - [Deploy Dapr to a Kubernetes cluster]({{< ref kubernetes-deploy >}})
 - [Upgrade Dapr on a Kubernetes cluster]({{< ref kubernetes-upgrade >}})
 - [Production guidelines for Dapr on Kubernetes]({{< ref kubernetes-production.md >}})
-- [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes)
+- [Dapr Kubernetes Quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes)
 - [Use Bridge to Kubernetes to debug Dapr apps locally, while connected to your Kubernetes cluster]({{< ref bridge-to-kubernetes >}})
