@@ -125,4 +125,4 @@ explorer "%USERPROFILE%\.dapr\"
 
 <br>
 
-{{< button text="Next step: Try Dapr quickstarts >>" page="getting-started/quickstarts" >}}
+{{< button text="Next step: Use the Dapr API >>" "getting-started/get-started-api.md" >}}
