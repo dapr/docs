@@ -47,7 +47,7 @@ Visit [this guide]({{< ref "howto-publish-subscribe.md#step-3-publish-a-topic" >
 ## Related links
 
 - Overview of the Dapr [Pub/Sub building block]({{< ref pubsub-overview.md >}})
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)
 - Read the [guide on publishing and subscribing]({{< ref howto-publish-subscribe.md >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})

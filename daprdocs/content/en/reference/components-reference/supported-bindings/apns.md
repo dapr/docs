@@ -114,10 +114,11 @@ The payload format is documented [here](https://developer.apple.com/documentatio
     "operation": "create"
 }
 ```
-
+<!-- IGNORE_LINKS -->
 The `data` object contains a complete push notification specification as described in the [Apple documentation](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification). The `data` object will be sent directly to the APNs service.
 
 Besides the `device-token` value, the HTTP headers specified in the [Apple documentation](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns) can be sent as metadata fields and will be included in the HTTP request to the APNs service.
+<!-- END_IGNORE -->
 
 ### Response format
 
