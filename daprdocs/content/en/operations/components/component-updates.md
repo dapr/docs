@@ -1,13 +1,12 @@
 ---
 type: docs
-title: "Component updates"
-linkTitle: "Component updates"
+title: "Updating components"
+linkTitle: "Updating components"
 weight: 250
-description: "Updating components in Kubernetes and self hosted environments"
+description: "Updating deployed components used by applications"
 ---
 
-When making an update to an existing component, the Dapr process needs to be restarted in order to pick up the latest version of the components.
-Dapr does not update components automatically.
+When making an update to an existing component, the Dapr sidecar needs to be restarted in order to pick up the latest version of the components. Dapr sidecars do not update components automatically.
 
 ## Kubernetes
 
@@ -18,7 +17,7 @@ When running in Kubernetes, the process of updating a component involves two ste
 
 ## Self Hosted
 
-When running in Self Hosted mode, the process of updating a component involves a single step of stopping the `daprd` process and starting it again to pick up the latest component.
+When running in Self Hosted mode, the process of updating a component involves a single step of stopping the `daprd` sidecar and starting it again to pick up the latest component.
 
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})
