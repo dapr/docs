@@ -73,7 +73,8 @@ with DaprClient() as client:
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the quickstarts clone directory
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/python/sdk/order-processor
@@ -241,7 +242,8 @@ await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the quickstarts clone directory
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/javascript/sdk/order-processor
@@ -392,7 +394,8 @@ Console.WriteLine("Published data: " + order);
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the quickstarts clone directory
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/csharp/sdk/order-processor
@@ -548,7 +551,8 @@ logger.info("Published data: " + order.getOrderId());
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the quickstarts clone directory
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/java/sdk/order-processor
@@ -683,7 +687,7 @@ In a terminal window, navigate to the `checkout` directory.
 cd pub_sub/go/sdk/checkout
 ```
 
-Install the dependencies:
+Install the dependencies and build the application:
 
 ```bash
 go build app.go
@@ -699,7 +703,7 @@ In the `checkout` publisher, we're publishing the orderId message to the Redis i
 
 ```go
 if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
-panic(err)
+    panic(err)
 }
 
 fmt.Sprintf("Published data: ", order)
@@ -707,13 +711,14 @@ fmt.Sprintf("Published data: ", order)
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the quickstarts clone directory
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/go/sdk/order-processor
 ```
 
-Install the dependencies:
+Install the dependencies and build the application:
 
 ```bash
 go build app.go
@@ -742,6 +747,16 @@ Publisher output:
 
 ```
 == APP == dapr client initializing for: 127.0.0.1:63293
+== APP == Published data:  {"orderId":1}
+== APP == Published data:  {"orderId":2}
+== APP == Published data:  {"orderId":3}
+== APP == Published data:  {"orderId":4}
+== APP == Published data:  {"orderId":5}
+== APP == Published data:  {"orderId":6}
+== APP == Published data:  {"orderId":7}
+== APP == Published data:  {"orderId":8}
+== APP == Published data:  {"orderId":9}
+== APP == Published data:  {"orderId":10}
 ```
 
 Subscriber output:
@@ -758,6 +773,8 @@ Subscriber output:
 == APP == Subscriber received:  {"orderId":9}
 == APP == Subscriber received:  {"orderId":10}
 ```
+
+Note: the order in which they are received may vary.
 
 #### `pubsub.yaml` component file
 
