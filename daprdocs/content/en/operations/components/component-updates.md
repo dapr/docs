@@ -17,7 +17,7 @@ When running in Kubernetes, the process of updating a component involves two ste
 
 ## Self Hosted
 
-When running in Self Hosted mode, the process of updating a component involves a single step of stopping the `daprd` sidecar and starting it again to pick up the latest component.
+When running in Self Hosted mode, the process of updating a component involves a single step of stopping the `daprd` process and starting it again to pick up the latest component.
 
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})
