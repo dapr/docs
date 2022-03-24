@@ -30,7 +30,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -152,7 +152,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -270,7 +270,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -394,7 +394,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -510,7 +510,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
