@@ -125,5 +125,5 @@ explorer "%USERPROFILE%\.dapr\"
 
 <br>
 
-{{< button text="Next step: Use the Dapr API >>" "getting-started/get-started-api.md" >}}
+{{< button text="Next step: Use the Dapr API >>" page="getting-started/get-started-api.md" >}}
 
