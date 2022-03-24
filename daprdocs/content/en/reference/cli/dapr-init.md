@@ -33,10 +33,13 @@ dapr init [flags]
 | `--namespace`, `-n`  |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
 | `--runtime-version`  |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
 | `--slim`, `-s`       |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
+| `--image-registry`   |                      |               | Pulls container images required by dapr from given image registry                    |
 
 ### Examples
 
 #### Self-hosted environment
+
+Setup Dapr by pulling container images of Placement, Redis and Zipkin. By default these images will be pulled from Github container registry. To switch to docker as a default you can set `DAPR_DEFAULT_IMAGE_REGISTRY` as environment variable and value as `DOCKERHUB`
 
 ```bash
 dapr init
@@ -53,6 +56,27 @@ Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) 
 ```bash
 dapr init -s
 ```
+
+You can also specify a private registry to pull container images from. These images needs to be published to private registries in below fashion to let dapr init pull them successfully - 
+
+1. Placement container image(dapr) - dapr/dapr:<version>
+2. Redis container image(rejson)   - dapr/3rdparty/rejson
+3. zipkin container image(zipkin)  - dapr/3rdparty/zipkin
+
+> As you can see above, all required images by Dapr needs to be under `dapr` directory.
+
+> The 3rd party images have to be published under `dapr/3rdparty` directory;
+
+> image-registy uri follows this format - `example.io/<owner|username>`
+
+```bash
+dapr init --image-registry example.io/<owner|username>
+```
+Above command will resolve the complete image uri as mentioned below - 
+1. Placement container image(dapr) - example.io/<owner|username>/dapr/dapr:<version>
+2. Redis container image(rejson)   - example.io/<owner|username>/dapr/3rdparty/rejson
+3. zipkin container image(zipkin)  - example.io/<owner|username>/dapr/3rdparty/zipkin
+
 
 #### Kubernetes environment
 
