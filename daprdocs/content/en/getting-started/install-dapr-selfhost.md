@@ -3,7 +3,7 @@ type: docs
 title: "Initialize Dapr in your local environment"
 linkTitle: "Init Dapr locally"
 weight: 20
-description: "Fetch the Dapr sidecar binaries and install them locally using `dapr-init`"
+description: "Fetch the Dapr sidecar binaries and install them locally using `dapr init`"
 aliases:
   - /getting-started/set-up-dapr/install-dapr/
 ---
@@ -125,4 +125,5 @@ explorer "%USERPROFILE%\.dapr\"
 
 <br>
 
-{{< button text="Next step: Try Dapr quickstarts >>" page="getting-started/_index.md" >}}
+{{< button text="Next step: Use the Dapr API >>" page="getting-started/get-started-api.md" >}}
+
