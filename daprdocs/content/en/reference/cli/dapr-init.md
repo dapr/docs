@@ -33,6 +33,7 @@ dapr init [flags]
 | `--namespace`, `-n`  |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
 | `--runtime-version`  |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
 | `--slim`, `-s`       |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
+| `--from-dir`         |                      |               | Path to local directory containing dapr artifacts to init in airgap environment      |
 
 ### Examples
 
@@ -52,6 +53,16 @@ Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) 
 
 ```bash
 dapr init -s
+```
+
+In airgap environment, you can [download](https://github.com/dapr/installer-bundle/releases) bundled dapr artifacts and use it to install dapr instead of pulling from network.
+```bash
+dapr init --from-dir <path-to-bundle-directory>
+```
+
+Dapr can run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) without Docker in airgap environment as well.
+```bash
+dapr init -s --from-dir <path-to-bundle-directory>
 ```
 
 #### Kubernetes environment
