@@ -39,7 +39,7 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-If you wish to use Redis as an actor store, append the following to the yaml.
+If you wish to use RethinkDB as an actor store, append the following to the yaml.
 
 ```yaml
   - name: actorStateStore
