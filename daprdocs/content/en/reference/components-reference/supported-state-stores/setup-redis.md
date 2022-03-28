@@ -244,9 +244,9 @@ Consider the example from ["How-To: Query state"]({{< ref "howto-state-query-api
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" >}}
 
 {{% codetab %}}
-If you are using a self-hosted deployment of Dapr v1.7 and up, a Redis instance with the required modules is automatically created as a Docker container when you run `dapr init`.
+The Redis instance that gets created automatically with `dapr init` cannot be used with query api.
+Use following command to create an instance of redis which can be used with query api:
 
-Alternatively, you can create an instance of Redis by running the following command:
 ```bash
 docker run -p 6379:6379 --name redis --rm redislabs/rejson:2.0.6
 ```
