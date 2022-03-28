@@ -8,7 +8,7 @@ weight: 1000
 
 ### Description
 
-Export the root CA, issuer cert and key from Kubernetes to local files
+Export the root Certificate Authority (CA), issuer cert and issuer key to local files
 
 ### Supported platforms
 

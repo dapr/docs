@@ -30,9 +30,9 @@ dapr mtls [command]
 ### Available Commands
 
 ```txt
-expiry              Checks the expiry of the root certificate
-export              Export the root CA, issuer cert and key from Kubernetes to local files
-renew-certificate   Rotates root CA, issuer cert and issuer key in Kubernetes secret used by Sentry service
+expiry              Checks the expiry of the root Certificate Authority (CA) certificate
+export              Export the root Certificate Authority (CA), issuer cert and issuer key to local files
+renew-certificate   Rotates the existing root Certificate Authority (CA), issuer cert and issuer key
 ```
 
 ### Command Reference
@@ -46,6 +46,6 @@ You can learn more about each sub command from the links below.
 ### Examples
 
 ```bash
-# Check if mTLS is enabled
+# Check if mTLS is enabled on the Kubernetes cluster
 dapr mtls -k
 ```

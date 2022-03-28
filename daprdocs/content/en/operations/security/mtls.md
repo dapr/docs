@@ -450,6 +450,8 @@ By default, system services will look for the credentials in `/var/run/dapr/cred
 *Note: If you signed the cert root with a different private key, restart the Dapr instances.*
 
 ## Community call video on certificate rotation
-Watch this video on how to perform certificate rotation if your certicates are expiring.
+Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certicates are expiring.
 
-<iframe width="1280" height="720" src="https://www.youtube.com/watch?v=Hkcx9kBDrAc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
+</div>
