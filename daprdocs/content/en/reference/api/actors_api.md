@@ -461,6 +461,9 @@ actorIdleTimeout | Specifies how long to wait before deactivating an idle actor.
 actorScanInterval | A duration which specifies how often to scan for actors to deactivate idle actors.  Actors that have been idle longer than the actorIdleTimeout will be deactivated.
 drainOngoingCallTimeout | A duration used when in the process of draining rebalanced actors.  This specifies how long to wait for the current active actor method to finish.  If there is no current actor method call, this is ignored.
 drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTimeout` to allow a current actor call to complete before trying to deactivate an actor.  If false, do not wait.
+reentrancy | A configuration object that holds the options for actor reentrancy.
+enabled | A flag in the reentrancy configuration that is needed to enable reentrancy.
+maxStackDepth | A value in the reentrancy configuration that controls how many reentrant calls be made to the same actor.
 
 ```json
 {
@@ -468,7 +471,11 @@ drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTi
   "actorIdleTimeout": "1h",
   "actorScanInterval": "30s",
   "drainOngoingCallTimeout": "30s",
-  "drainRebalancedActors": true
+  "drainRebalancedActors": true,
+  "reentrancy": {
+    "enabled": true,
+    "maxStackDepth": 32
+  }
 }
 ```
 
@@ -549,7 +556,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/performAction \
 
 ### Invoke reminder
 
-Invokes a reminder for an actor with the specified reminderName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
+Invokes a reminder for an actor with the specified reminderName. If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 
@@ -587,7 +594,7 @@ curl -X POST http://localhost:3000/actors/stormtrooper/50/method/remind/checkReb
 
 ### Invoke timer
 
-Invokes a timer for an actor rwith the specified timerName.  If the actor is not already running, the app side should [activate](#activating-an-actor) it.
+Invokes a timer for an actor with the specified timerName. If the actor is not already running, the app side should [activate](#activating-an-actor) it.
 
 #### HTTP Request
 

@@ -5,34 +5,35 @@ linkTitle: "components"
 description: "Detailed information on the components CLI command"
 ---
 
-## Description
+### Description
 
 List all Dapr components.
 
-## Supported platforms
+### Supported platforms
 
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr components [flags]
 ```
 
-## Flags
+### Flags
+
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--all-namespaces`, `-A` | | `false` | If true, list all Dapr components in all namespaces |
+| `--kubernetes`, `-k` | | `false` | List all Dapr components in a Kubernetes cluster (required) |
+| `--all-namespaces`, `-A` | | `true` | If true, list all Dapr components in all namespaces |
 | `--help`, `-h` | | | Print this help message |
-| `--kubernetes`, `-k` | | `false` | List all Dapr components in a Kubernetes cluster |
-| `--name` | |  | The components name to be printed (optional) |
-| `--namespace`, `-n` | | `default` | List define namespace components in a Kubernetes cluster |
+| `--name`, `-n` | |  | The components name to be printed (optional) |
+| `--namespace` | | | List all components in the specified namespace |
 | `--output`, `-o` | | `list` | Output format (options: json or yaml or list) |
 
-## Examples
+### Examples
 
-### List Kubernetes components
 ```bash
+# List Kubernetes components
 dapr components -k
 ```

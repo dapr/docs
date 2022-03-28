@@ -10,12 +10,6 @@ Access control enables the configuration of policies that restrict what operatio
 
 An access control policy is specified in configuration and be applied to Dapr sidecar for the *called* application. Example access policies are shown below and access to the called app is based on the matched policy action. You can provide a default global action for all calling applications and if no access control policy is specified, the default behavior is to allow all calling applications to access to the called app.
 
-Watch this [video](https://youtu.be/j99RN_nxExA?t=1108) on how to apply access control list for service invocation.
-
-<div class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=1108" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
 ## Concepts
 
 **TrustDomain** - A "trust domain" is a logical group to manage trust relationships. Every application is assigned a trust domain which can be specified in the access control list policy spec. If no policy spec is defined or an empty trust domain is specified, then a default value "public" is used. This trust domain is used to generate the identity of the application in the TLS cert.
@@ -46,11 +40,11 @@ The following tables lists the different properties for access control, policies
 
 ### Operations
 
-| Property | Type   | Description |
-|----------|--------|-------------|
-| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used to under a path to match
-| httpVerb | list   | List specific http verbs that can be used by the calling app. Wildcard "\*" can be used to match any http verb. Unused for grpc invocation
-| action   | string | Access modifier. Accepted values "allow" (default) or "deny"
+| Property | Type   | Description                                                  |
+| -------- | ------ | ------------------------------------------------------------ |
+| name     | string | Path name of the operations allowed on the called app. Wildcard "\*" can be used in a path to match. Wildcard "\**" can be used to match under multiple paths. |
+| httpVerb | list   | List specific http verbs that can be used by the calling app. Wildcard "\*" can be used to match any http verb. Unused for grpc invocation. |
+| action   | string | Access modifier. Accepted values "allow" (default) or "deny" |
 
 ## Policy rules
 
@@ -195,7 +189,30 @@ spec:
       namespace: "ns2"
 ```
 
+<font size=5>Scenario 6: Allow access to all methods except trustDomain = public, namespace = default, appId = app1, operation = /op1/**/a, all http verbs</font>
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  accessControl:
+    defaultAction: allow
+    trustDomain: "public"
+    policies:
+    - appId: app1
+      defaultAction: allow
+      trustDomain: 'public'
+      namespace: "default"
+      operations:
+      - name: /op1/**/a
+        httpVerb: ['*']
+        action: deny
+```
+
 ## Hello world examples
+
 These examples show how to apply access control to the [hello world](https://github.com/dapr/quickstarts#quickstarts) quickstart samples where a python app invokes a node.js app.
 Access control lists rely on the Dapr [Sentry service]({{< ref "security-concept.md" >}}) to generate the TLS certificates with a SPIFFE id for authentication, which means the Sentry service either has to be running locally or deployed to your hosting environment such as a Kubernetes cluster.
 
@@ -241,7 +258,7 @@ spec:
 ```
 
 ### Self-hosted mode
-This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/hello-world/README.md) quickstart.
+This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world/README.md) quickstart.
 
 The following steps run the Sentry service locally with mTLS enabled, set up necessary environment variables to access certificates, and then launch both the node app and python app each referencing the Sentry service to apply the ACLs.
 
@@ -263,14 +280,14 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
 
    {{% codetab %}}
    ```powershell
-   $env:DAPR_TRUST_ANCHORS=$(Get-Content $env:USERPROFILE\.dapr\certs\ca.crt)
-   $env:DAPR_CERT_CHAIN=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.crt)
-   $env:DAPR_CERT_KEY=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.key)
+   $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
+   $env:DAPR_CERT_CHAIN=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.crt)
+   $env:DAPR_CERT_KEY=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.key)
    $env:NAMESPACE="default"
    ```
 
     {{% /codetab %}}
-
+    
     {{< /tabs >}}
 
 3. Run daprd to launch a Dapr sidecar for the node.js app with mTLS enabled, referencing the local Sentry service:
@@ -300,11 +317,11 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
 
    {{% codetab %}}
    ```powershell
-   $env:DAPR_TRUST_ANCHORS=$(Get-Content $env:USERPROFILE\.dapr\certs\ca.crt)
-   $env:DAPR_CERT_CHAIN=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.crt)
-   $env:DAPR_CERT_KEY=$(Get-Content $env:USERPROFILE\.dapr\certs\issuer.key)
+   $env:DAPR_TRUST_ANCHORS=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\ca.crt)
+   $env:DAPR_CERT_CHAIN=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.crt)
+   $env:DAPR_CERT_KEY=$(Get-Content -raw $env:USERPROFILE\.dapr\certs\issuer.key)
    $env:NAMESPACE="default"
-   ```
+  ```
    {{% /codetab %}}
 
    {{< /tabs >}}
@@ -324,7 +341,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
 8. You should see the calls to the node app fail in the python app command prompt based due to the **deny** operation action in the nodeappconfig file. Change this action to **allow** and re-run the apps and you should then see this call succeed.
 
 ### Kubernetes mode
-This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/README.md) quickstart.
+This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes/README.md) quickstart.
 
 You can create and apply the above configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) to the Kubernetes deployments.
 
@@ -356,4 +373,11 @@ spec:
       containers:
       - name: python
         image: dapriosamples/hello-k8s-python:edge
- ```
+```
+
+## Community call demo
+Watch this [video](https://youtu.be/j99RN_nxExA?t=1108) on how to apply access control list for service invocation.
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=1108" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

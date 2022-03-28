@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr's gRPC Interface"
 linkTitle: "gRPC interface"
-weight: 1000
+weight: 6000
 description: "Use the Dapr gRPC API in your application"
 type: docs
 ---
@@ -124,7 +124,7 @@ import (
 	"github.com/golang/protobuf/ptypes/any"
 	"github.com/golang/protobuf/ptypes/empty"
 
-	commonv1pb "github.com/dapr/go-sdk/dapr/proto/common/v1"
+	commonv1pb "github.com/dapr/dapr/pkg/proto/common/v1"
 	pb "github.com/dapr/go-sdk/dapr/proto/runtime/v1"
 	"google.golang.org/grpc"
 )

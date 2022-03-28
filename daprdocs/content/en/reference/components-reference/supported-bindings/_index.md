@@ -17,7 +17,7 @@ Table captions:
 > `Status`: [Component certification]({{<ref "certification-lifecycle.md">}}) status
   - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
   - [Beta]({{<ref "certification-lifecycle.md#beta">}})
-  - [GA]({{<ref "certification-lifecycle.md#general-availability-ga">}})
+  - [Stable]({{<ref "certification-lifecycle.md#stable">}})
 > `Since`: defines from which Dapr Runtime version, the component is in the current status
 
 > `Component version`: defines the version of the component
@@ -28,7 +28,7 @@ Table captions:
 | [Apple Push Notifications (APN)]({{< ref apns.md >}}) |  | ✅ | Alpha | v1 | 1.0 |
 | [Cron (Scheduler)]({{< ref cron.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [GraphQL]({{< ref graghql.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
-| [HTTP]({{< ref http.md >}})           |    | ✅ | GA | v1 | 1.0 |
+| [HTTP]({{< ref http.md >}})           |    | ✅ | Stable| v1 | 1.0 |
 | [InfluxDB]({{< ref influxdb.md >}})       |    | ✅ | Alpha | v1 | 1.0 |
 | [Kafka]({{< ref kafka.md >}})         | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Kubernetes Events]({{< ref "kubernetes-binding.md" >}}) | ✅ |    | Alpha | v1 | 1.0 |
@@ -50,6 +50,7 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| ------ |----------|
 | [Alibaba Cloud DingTalk]({{< ref alicloud-dingtalk.md >}})           |  ✅ | ✅ | Alpha | v1 | 1.2 |
 | [Alibaba Cloud OSS]({{< ref alicloudoss.md >}})           |    | ✅ | Alpha | v1 | 1.0 |
+| [Alibaba Cloud Tablestore]({{< ref alicloudtablestore.md >}})           |    | ✅ | Alpha | v1 | 1.5 |
 
 ### Amazon Web Services (AWS)
 
@@ -73,13 +74,14 @@ Table captions:
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
-| [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Alpha | v1 | 1.0 |
-| [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Alpha | v1 | 1.0 |
+| [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Beta | v1 | 1.0 |
+| [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Beta | v1 | 1.0 |
+| [Azure CosmosDBGremlinAPI]({{< ref cosmosdbgremlinapi.md >}})              |    | ✅ | Alpha | v1 | 1.5 |
 | [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Alpha | v1 | 1.0 |
-| [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Alpha | v1 | 1.0 |
-| [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Alpha | v1 | 1.0 |
+| [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Beta | v1 | 1.0 |
+| [Azure Service Bus Queues]({{< ref servicebusqueues.md >}}) | ✅ | ✅ | Beta | v1 | 1.0 |
 | [Azure SignalR]({{< ref signalr.md >}})                     |    | ✅ | Alpha | v1 | 1.0 |
-| [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | GA | v1 | 1.0 |
+| [Azure Storage Queues]({{< ref storagequeues.md >}})        | ✅ | ✅ | Stable| v1 | 1.0 |
 
 ### Zeebe (Camunda Cloud)
 

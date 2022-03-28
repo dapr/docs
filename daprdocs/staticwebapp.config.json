@@ -1,0 +1,6 @@
+{
+    "globalHeaders": {
+      "X-Frame-Options": "DENY"
+    }
+}
+

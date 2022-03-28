@@ -45,7 +45,7 @@ spec:
   # - name: defaultMessageTimeToLiveInSec # Optional
   #   value: 10
   # - name: autoDeleteOnIdleInSec # Optional
-  #   value: 10
+  #   value: 3600
   # - name: maxReconnectionAttempts # Optional
   #   value: 30
   # - name: connectionRecoveryInSec # Optional
@@ -78,15 +78,52 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxConcurrentHandlers | N  |Defines the maximum number of concurrent message handlers  | `10`
 | prefetchCount         | N  |Defines the number of prefetched messages (use for high throughput / low latency scenarios)| `5`
 | defaultMessageTimeToLiveInSec | N  |Default message time to live. | `10`
-| autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting messages. | `10`
+| autoDeleteOnIdleInSec | N  |Time in seconds to wait before auto deleting idle subscriptions. | `3600`
 | maxReconnectionAttempts | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
 | connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Defaults: `2` | `2`
 | publishMaxRetries | N  | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
 | publishInitialRetryInternalInMs | N  | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
 
+### Azure Active Directory (AAD) authentication
+The Azure Service Bus pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+
+## Message metadata
+
+Azure Service Bus messages extend the Dapr message format with additional contextual metadata. Some metadata fields are set by Azure Service Bus itself (read-only) and others can be set by the client when publishing a message.
+
+### Sending a message with metadata
+
+To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#metadata).
+
+- `metadata.MessageId`
+- `metadata.CorrelationId`
+- `metadata.SessionId`
+- `metadata.Label`
+- `metadata.ReplyTo`
+- `metadata.PartitionKey`
+- `metadata.To`
+- `metadata.ContentType`
+- `metadata.ScheduledEnqueueTimeUtc`
+- `metadata.ReplyToSessionId`
+
+> **NOTE:** The `metadata.MessageId` property does not set the `id` property of the cloud event and should be treated in isolation.
+
+### Receiving a message with metadata
+
+When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
+In addition to the [settable metadata listed above](#sending-a-message-with-metadata), you can also access the following read-only message metadata.
+
+- `metadata.DeliveryCount`
+- `metadata.LockedUntilUtc`
+- `metadata.LockToken`
+- `metadata.EnqueuedTimeUtc`
+- `metadata.SequenceNumber`
+
+To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+
 ## Create an Azure Service Bus
 
-Follow the instructions [here](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
+Follow the instructions [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

@@ -51,7 +51,7 @@ The `Content-Type` header tells Dapr which content type your data adheres to whe
 The value of the `Content-Type` header populates the `datacontenttype` field in the CloudEvent.
 Unless specified, Dapr assumes `text/plain`. If your content type is JSON, use a `Content-Type` header with the value of `application/json`.
 
-If you want to send your own custom CloundEvent, use the `application/cloudevents+json` value for the `Content-Type` header.
+If you want to send your own custom CloudEvent, use the `application/cloudevents+json` value for the `Content-Type` header.
 
 #### Metadata
 
@@ -168,4 +168,4 @@ Dapr Pub/Sub adheres to version 1.0 of CloudEvents.
 ## Related links
 
 * [How to publish to and consume topics]({{< ref howto-publish-subscribe.md >}})
-* [Sample for pub/sub](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+* [Sample for pub/sub](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)

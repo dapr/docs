@@ -1,14 +1,14 @@
 ---
 type: docs
-title: "Setup a Google Kubernetes Engine cluster"
-linkTitle: "Google Kubernetes Engine"
+title: "Setup a Google Kubernetes Engine (GKE) cluster"
+linkTitle: "Google Kubernetes Engine (GKE)"
 weight: 3000
 description: "Setup a Google Kubernetes Engine cluster"
 ---
 
 ### Prerequisites
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Google Cloud SDK](https://cloud.google.com/sdk)
 
 ## Create a new cluster

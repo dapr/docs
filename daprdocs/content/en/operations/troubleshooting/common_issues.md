@@ -64,6 +64,32 @@ In order to further diagnose any issue, check the logs of the Dapr sidecar injec
 
 *Note: If you installed Dapr to a different namespace, replace dapr-system above with the desired namespace*
 
+If you are deploying Dapr on Amazon EKS and using an overlay network such as Calico, you will need to set `hostNetwork` parameter to true, this is a limitation of EKS with such CNIs.
+
+You can set this parameter using Helm `values.yaml` file:
+
+```
+helm upgrade --install dapr dapr/dapr \
+  --namespace dapr-system \
+  --create-namespace \
+  --values values.yaml
+```
+
+`values.yaml`
+```yaml
+dapr_sidecar_injector:
+  hostNetwork: true
+```
+
+or using command line:
+
+```
+helm upgrade --install dapr dapr/dapr \
+  --namespace dapr-system \
+  --create-namespace \
+  --set dapr_sidecar_injector.hostNetwork=true
+```
+
 ## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar
 
 If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes.
@@ -226,3 +252,26 @@ In order for mDNS to function properly, ensure `Micorosft Content Filter` is ina
 Microsoft Content Filter is disabled when the output is "Success".
 
 > Some organizations will re-enable the filter from time to time. If you repeatedly encounter app-id values missing, first check to see if the filter has been re-enabled before doing more extensive troubleshooting.
+
+## Admission webhook denied the request
+
+You may encounter an error similar to the one below due to admission webhook having an allowlist for service accounts to create or modify resources.
+
+```
+root:[dapr]$ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
+Error from server: admission webhook "sidecar-injector.dapr.io" denied the request: service account 'user-xdd5l' not on the list of allowed controller accounts
+```
+
+To resolve this error, you should create a `clusterrolebind` for the current user:
+
+```bash
+kubectl create clusterrolebinding dapr-<name-of-user> --clusterrole=dapr-operator-admin --user <name-of-user>
+```
+
+You can run the below command to get all users in your cluster:
+
+```bash
+kubectl config get-users
+```
+
+You may learn more about webhooks [here](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).

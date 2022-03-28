@@ -7,9 +7,17 @@ description: The supported name resolution providers that interface with Dapr se
 no_list: true
 ---
 
-## Supported name resolution components
+The following components provide name resolution for the service invocation building block.
 
-The following components provide name resolution for the service invocation building block
+Table captions:
+
+> `Status`: [Component certification]({{<ref "certification-lifecycle.md">}}) status
+  - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
+  - [Beta]({{<ref "certification-lifecycle.md#beta">}})
+  - [Stable]({{<ref "certification-lifecycle.md#stable">}})
+> `Since`: defines from which Dapr Runtime version, the component is in the current status
+
+> `Component version`: defines the version of the component
 
 ### Generic
 
@@ -21,19 +29,10 @@ The following components provide name resolution for the service invocation buil
 
 | Name | Status | Component version | Since |
 |------|:------:|:-----------------:|:-----:|
-| [mDNS]({{< ref nr-mdns.md >}}) | GA | v1 | 1.0 |
+| [mDNS]({{< ref nr-mdns.md >}}) | Stable| v1 | 1.0 |
 
 ### Kubernetes
 
 | Name       | Status | Component version | Since |
 |------------|:------:|:-----------------:|:-----:|
-| [Kubernetes]({{< ref nr-kubernetes.md >}}) | GA | v1 | 1.0 |
-
-## Definitions
-
-- **Status**: [component certification]({{<ref "certification-lifecycle.md">}}) status
-   - [Alpha]({{<ref "certification-lifecycle.md#alpha">}})
-   - [Beta]({{<ref "certification-lifecycle.md#beta">}})
-   - [GA]({{<ref "certification-lifecycle.md#general-availability-ga">}})
-- **Since**: defines from which Dapr Runtime version, the component is in the current status
-- **Component version**: defines the version of the component
+| [Kubernetes]({{< ref nr-kubernetes.md >}}) | Stable| v1 | 1.0 |

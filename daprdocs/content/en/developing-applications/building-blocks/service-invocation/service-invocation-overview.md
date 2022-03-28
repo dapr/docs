@@ -2,8 +2,8 @@
 type: docs
 title: "Service invocation overview"
 linkTitle: "Overview"
-weight: 1000
-description: "Overview of the service invocation building block"
+weight: 900
+description: "Overview of the service invocation API building block"
 ---
 
 ## Introduction
@@ -39,27 +39,13 @@ The diagram below is an overview of how Dapr's service invocation works.
 ## Features
 Service invocation provides several features to make it easy for you to call methods between applications.
 
-### Namespaces scoping
+### Namespace scoping
 
-By default, users can invoke services within the same namespaces by simply referencing the app ID (`nodeapp`):
-
-```sh
-localhost:3500/v1.0/invoke/nodeapp/method/neworder
-```
-
-Service invocation also supports calls across namespaces. On all supported hosting platforms, Dapr app IDs conform to a valid FQDN format that includes the target namespace.
-
-Users can specify both the app ID (`nodeapp`) in addition to the namespace the app runs in (`production`):
-
-```sh
-localhost:3500/v1.0/invoke/nodeapp.production/method/neworder
-```
-
-This is especially useful in cross namespace calls in a Kubernetes cluster.
+Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
 ### Service-to-service security
 
-All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service. The diagram below shows this for self hosted applications.
+All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service.
 
 For more information read the [service-to-service security]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}) article.
 
@@ -93,7 +79,7 @@ The diagram below shows an example of how this works. If you have 1 instance of 
 
 <img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation">
 
-**Note**: You can have N instances of the same app with the same app ID as app ID is unique per app. And you can have multiple instances of that app where all those instances have the same app ID.
+**Note**: App ID is unique per application, not application instance. This means regardless of how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
 ### Tracing and metrics with observability
 
@@ -109,7 +95,7 @@ Dapr allows users to keep their own proto services and work natively with gRPC. 
 
 ## Example
 
-Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
+Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
 
 The diagram below shows sequence 1-7 again on a local machine showing the API calls:
 
@@ -129,6 +115,6 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
   - [How-to: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}})
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
   - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
-- Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
+- Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}})
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers

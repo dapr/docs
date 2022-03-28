@@ -21,28 +21,38 @@ spec:
   metadata:
   - name: host
     value: "amqp://localhost:5672"
+  - name: consumerID
+    value: myapp
   - name: durable
-    value: "false"
+    value: false
   - name: deletedWhenUnused
-    value: "false"
+    value: false
   - name: autoAck
-    value: "false"
+    value: false
   - name: deliveryMode
-    value: "0"
+    value: 0
   - name: requeueInFailure
-    value: "false"
+    value: false
   - name: prefetchCount
-    value: "0"
+    value: 0
   - name: reconnectWait
-    value: "0"
+    value: 0
   - name: concurrencyMode
     value: parallel
   - name: backOffPolicy
-    value: "exponential"
+    value: exponential
   - name: backOffInitialInterval
-    value: "100"
+    value: 100
   - name: backOffMaxRetries
-    value: "16"
+    value: 16
+  - name: enableDeadLetter # Optional enable dead Letter or not
+    value: true
+  - name: maxLen # Optional max message count in a queue
+    value: 3000
+  - name: maxLenBytes # Optional maximum length in bytes of a queue.
+    value: 10485760
+  - name: exchangeKind
+    value: fanout
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -53,6 +63,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | host               | Y        | Connection-string for the rabbitmq host  | `amqp://user:pass@localhost:5672`
+| consumerID         | N        | Consumer ID a.k.a consumer tag organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. |
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`
@@ -69,6 +80,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | backOffRandomizationFactor | N        | Randomization factor, between 1 and 0, including 0 but not 1. Randomized interval = RetryInterval * (1 ± backOffRandomizationFactor). Defaults to `"0.5"`.                 | `"0.5"`                       |
 | backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
 | backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"15m"` | `"15m"` |
+| enableDeadLetter      | N        | Enable forwarding Messages that cannot be handled to a dead-letter topic. Defaults to `"false"` | `"true"`, `"false"` |
+| maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
+| maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
+| exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
 
 
 ### Backoff policy introduction
@@ -110,6 +125,31 @@ For example, if installing using the example above, the RabbitMQ server client a
 
 {{< /tabs >}}
 
+## Use topic exchange to route messages
+Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages. 
+Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
+The routing key is defined by the `routingKey` metadata. For example, if an app is configured with a routing key `keyA`:
+```
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: order_pub_sub
+spec:
+  topic: B
+  route: /B
+  pubsubname: pubsub
+  metadata:
+    routingKey: keyA
+```
+It will receive messages with routing key `keyA`, and messages with other routing keys are not received.
+```
+// publish messages with routing key `keyA`, and these will be received by the above example.
+client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyA"}))
+// publish messages with routing key `keyB`, and these will not be received by the above example.
+client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyB"}))
+```
+
+For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section

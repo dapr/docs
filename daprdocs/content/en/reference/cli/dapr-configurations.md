@@ -5,34 +5,35 @@ linkTitle: "configurations"
 description: "Detailed information on the configurations CLI command"
 ---
 
-## Description
+### Description
 
 List all Dapr configurations.
 
-## Supported platforms
+### Supported platforms
 
 - [Kubernetes]({{< ref kubernetes >}})
 
-## Usage
+### Usage
 
 ```bash
 dapr configurations [flags]
 ```
 
-## Flags
+### Flags
+
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
-| `--all-namespaces`, `-A` | | `false` | If true, list all Dapr configurations in all namespaces
-| `--kubernetes`, `-k` | | `false` | List all Dapr configurations in a Kubernetes cluster
-| `--namespace`, `-n` | | `default` | List define namespace configurations in a Kubernetes cluster
-| `--name` | | | The configuration name to be printed (optional)
+| `--kubernetes`, `-k` | | `false` | List all Dapr configurations in Kubernetes cluster (required).
+| `--all-namespaces`, `-A` | | `true` | If true, list all Dapr configurations in all namespaces (optional)
+| `--namespace` | | | List Dapr configurations in specific namespace.
+| `--name`, `-n` | | | Print specific Dapr configuration. (optional)
 | `--output`, `-o` | | `list`| Output format (options: json or yaml or list)
 | `--help`, `-h` | | | Print this help message |
 
-## Examples
+### Examples
 
-### List Kubernetes Dapr configurations
 ```bash
+# List Kubernetes Dapr configurations
 dapr configurations -k
 ```

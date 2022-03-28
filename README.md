@@ -12,10 +12,10 @@ The Dapr docs handles branching differently than most code repositories. Instead
 
 The following branches are currently maintained:
 
-| Branch | Website | Description |
-|--------|---------|-------------|
-| [v1.3](https://github.com/dapr/docs) (primary) | https://docs.dapr.io | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here.
-| [v1.4](https://github.com/dapr/docs/tree/v1.4) (pre-release) | https://v1-4.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.4+ go here.
+| Branch                                                       | Website                    | Description                                                                                      |
+| ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
+| [v1.6](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
+| [v1.7](https://github.com/dapr/docs/tree/v1.7) (pre-release) | https://v1-7.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.7+ go here.                |
 
 For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/contributing-docs/#branch-guidance) document.
 
@@ -25,7 +25,7 @@ Before making your first contribution, make sure to review the [contributing sec
 
 ## Overview
 
-The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme, hosted on an [Azure Static Web App](https://docs.microsoft.com/en-us/azure/static-web-apps/overview).
+The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https://docsy.dev) theme, hosted on an [Azure Static Web App](https://docs.microsoft.com/azure/static-web-apps/overview).
 
 The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, and theme configurations.
 
@@ -38,31 +38,43 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 
 1. Ensure pre-requisites are installed
 2. Clone this repository
+
 ```sh
 git clone https://github.com/dapr/docs.git
 ```
+
 3. Change to daprdocs directory:
+
 ```sh
-cd ./docs/daprdocs
+cd ./daprdocs
 ```
+
 4. Update submodules:
+
 ```sh
 git submodule update --init --recursive
 ```
+
 5. Install npm packages:
+
 ```sh
 npm install
 ```
 
 ## Run local server
+
 1. Make sure you're still in the `daprdocs` directory
 2. Run
+
 ```sh
 hugo server
 ```
+
 3. Navigate to `http://localhost:1313/`
 
+
 ## Update docs
+
 1. Fork repo into your account
 1. Create new branch
 1. Commit and push changes to forked branch
@@ -70,4 +82,5 @@ hugo server
 1. Staging site will automatically get created and linked to PR to review and test
 
 ## Code of Conduct
+
 Please refer to our [Dapr community code of conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md).

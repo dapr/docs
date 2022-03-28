@@ -3,7 +3,7 @@ type: docs
 title: "Publish and subscribe overview"
 linkTitle: "Overview"
 weight: 1000
-description: "Overview of the Pub/Sub building block"
+description: "Overview of the Pub/Sub API building block"
 ---
 
 ## Introduction
@@ -93,7 +93,7 @@ Similarly, if two different applications (different app-IDs) subscribe to the sa
 
 ### Topic scoping
 
-By default, all topics backing the Dapr pub/sub component (e.g. Kafka, Redis Stream, RabbitMQ) are available to every application configured with that component. To limit which application can publish or subscribe to topics, Dapr provides topic scoping. This enables to you say which topics an application is allowed to publish and which topics an application is allowed to subscribe to. For more information read [publish/subscribe topic scoping]({{< ref pubsub-scopes.md >}}).
+By default, all topics backing the Dapr pub/sub component (e.g. Kafka, Redis Stream, RabbitMQ) are available to every application configured with that component. To limit which application can publish or subscribe to topics, Dapr provides topic scoping. This enables you to say which topics an application is allowed to publish and which topics an application is allowed to subscribe to. For more information read [publish/subscribe topic scoping]({{< ref pubsub-scopes.md >}}).
 
 ### Message Time-to-Live (TTL)
 Dapr can set a timeout message on a per message basis, meaning that if the message is not read from the pub/sub component, then the message is discarded. This is to prevent the build up of messages that are not read. A message that has been in the queue for longer than the configured TTL is said to be dead.  For more information read [publish/subscribe message time-to-live]({{< ref pubsub-message-ttl.md >}}).
@@ -112,7 +112,7 @@ The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.m
 * Follow these guides on:
     * [How-To: Publish a message and subscribe to a topic]({{< ref howto-publish-subscribe.md >}})
     * [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-* Try out the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+* Try out the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message time-to-live (TTL)]({{< ref pubsub-message-ttl.md >}})
 * Learn about [pubsub without CloudEvent]({{< ref pubsub-raw.md >}})

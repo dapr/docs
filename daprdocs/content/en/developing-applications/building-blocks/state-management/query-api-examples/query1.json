@@ -1,0 +1,11 @@
+{
+    "filter": {
+        "EQ": { "state": "CA" }
+    },
+    "sort": [
+        {
+            "key": "person.id",
+            "order": "DESC"
+        }
+    ]
+}

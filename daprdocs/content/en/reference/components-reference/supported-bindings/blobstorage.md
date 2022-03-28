@@ -32,6 +32,8 @@ spec:
     value: <bool>
   - name: getBlobRetryCount
     value: <integer>
+  - name: publicAccessLevel
+    value: <publicAccessLevel>
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -46,7 +48,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | container | Y | Output | The name of the Blob Storage container to write to | `myexamplecontainer` |
 | decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | getBlobRetryCount | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `10` | `1`, `2`
+| publicAccessLevel | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only used if the container is created by Dapr). Defaults to `none` | `blob`, `container`, `none` 
 
+### Azure Active Directory (AAD) authentication
+The Azure Blob Storage binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 

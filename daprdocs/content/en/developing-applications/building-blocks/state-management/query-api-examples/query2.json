@@ -1,0 +1,5 @@
+{
+    "filter": {
+        "IN": { "person.org": [ "Dev Ops", "Hardware" ] }
+    }
+}
