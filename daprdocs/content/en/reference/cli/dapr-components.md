@@ -34,6 +34,15 @@ dapr components [flags]
 ### Examples
 
 ```bash
-# List Kubernetes components
+# List Dapr components in all namespaces in Kubernetes mode
 dapr components -k
+
+# List Dapr components in specific namespace in Kubernetes mode
+dapr components -k --namespace default
+
+# Print specific Dapr component in Kubernetes mode
+dapr components -k -n target
+
+# List Dapr components in all namespaces in Kubernetes mode
+dapr components -k --all-namespaces
 ```

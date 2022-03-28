@@ -37,9 +37,15 @@ dapr list [flags]
 # List Dapr instances in self-hosted mode
 dapr list
 
-# List Dapr instances in Kubernetes mode
+# List Dapr instances in all namespaces in Kubernetes mode
 dapr list -k
 
 # List Dapr instances in JSON format
 dapr list -o json
+
+# List Dapr instances in a specific namespace in Kubernetes mode
+dapr list -k --namespace default
+
+# List Dapr instances in all namespaces in  Kubernetes mode
+dapr list -k --all-namespaces
 ```

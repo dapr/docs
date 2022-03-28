@@ -34,6 +34,15 @@ dapr configurations [flags]
 ### Examples
 
 ```bash
-# List Kubernetes Dapr configurations
+# List Dapr configurations in all namespaces in Kubernetes mode
 dapr configurations -k
+
+# List Dapr configurations in specific namespace in Kubernetes mode
+dapr configurations -k --namespace default
+
+# Print specific Dapr configuration in Kubernetes mode
+dapr configurations -k -n target
+
+# List Dapr configurations in all namespaces in Kubernetes mode
+dapr configurations -k --all-namespaces
 ```
