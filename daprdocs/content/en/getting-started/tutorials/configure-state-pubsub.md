@@ -112,7 +112,7 @@ Verify you have an [Azure subscription](https://azure.microsoft.com/free/).
 
 Dapr defines resources to use for building block functionality with components. These steps go through how to connect the resources you created above to Dapr for state and pub/sub.
 
-#### Locate your component filese
+#### Locate your component files
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
