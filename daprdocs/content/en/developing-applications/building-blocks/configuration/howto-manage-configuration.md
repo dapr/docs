@@ -220,7 +220,6 @@ Below are the examples in sdks:
 ```python
 #dependencies
 import asyncio
-from time import sleep
 from dapr.clients import DaprClient
 #code
 async def executeConfiguration():
