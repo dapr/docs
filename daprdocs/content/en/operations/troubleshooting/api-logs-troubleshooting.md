@@ -18,7 +18,7 @@ To enable API logging, you can use the `--enable-api-logging` command-line optio
 ./daprd --enable-api-logging
 ```
 
-This starts the Dapr runtime with a api log level of `info`.
+This starts the Dapr runtime with API logging.
 
 ## Configuring API logging in self hosted mode
 
@@ -32,10 +32,10 @@ dapr run --enable-api-logging node myapp.js
 
 When running Dapr with the Dapr CLI, both your app's log output and the Dapr runtime log output are redirected to the same session, for easy debugging.
 
-The below example shows API logs:
+The example below shows some API logs:
 
 ```bash
-dapr run --enable-api-logging node myapp.js
+dapr run --enable-api-logging -- node myapp.js
 
 ℹ️  Starting Dapr with id order-processor on port 56730
 ✅  You are up and running! Both Dapr and your app logs will appear here.
