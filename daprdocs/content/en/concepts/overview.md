@@ -21,7 +21,7 @@ Today we are experiencing a wave of cloud adoption. Developers are comfortable w
 
 This is where Dapr comes in. Dapr codifies the *best practices* for building microservice applications into open, independent APIs called building blocks, that enable you to build portable applications with the language and framework of your choice. Each building block is completely independent and you can use one, some, or all of them in your application.
 
-Using Dapr you can incrementally migrate your existing applications to a microserivces architecture, thereby adopting cloud native patterns such scale out/in, resiliency and independent deployments.
+Using Dapr you can incrementally migrate your existing applications to a microservices architecture, thereby adopting cloud native patterns such scale out/in, resiliency and independent deployments.
 
 In addition, Dapr is platform agnostic, meaning you can run your applications locally, on any Kubernetes cluster, on virtual or physical machines and in other hosting environments that Dapr integrates with. This enables you to build microservice applications that can run on the cloud and edge.
 
