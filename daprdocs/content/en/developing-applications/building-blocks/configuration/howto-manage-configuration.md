@@ -227,23 +227,17 @@ async def executeConfiguration():
     with DaprClient() as d:
         CONFIG_STORE_NAME = 'configstore'
         key = 'orderId'
-        # Wait for sidecar to be up within 20 seconds.
-        d.wait(20)
         # Subscribe to configuration by key.
         configuration = await d.subscribe_configuration(store_name=CONFIG_STORE_NAME, keys=[key], config_metadata={})
-        for x in range(10):
-            if configuration != None:
-                items = configuration.get_items()
-                for item in items:
-                    print(f"Subscribe key={item.key} value={item.value} version={item.version}", flush=True)
-            else:
-                print("Nothing yet")
-            sleep(5)
+        if configuration != None:
+            items = configuration.get_items()
+            for item in items:
+                print(f"Subscribe key={item.key} value={item.value} version={item.version}", flush=True)
+        else:
+            print("Nothing yet")
 
 asyncio.run(executeConfiguration())
 ```
-
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
 
 ```bash
 dapr run --app-id orderprocessing --components-path components/ -- python3 OrderProcessingService.py
