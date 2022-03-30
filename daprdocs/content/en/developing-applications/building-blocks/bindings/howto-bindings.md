@@ -9,11 +9,11 @@ weight: 300
 
 Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries. An output binding represents a resource that Dapr uses to invoke and send messages to.
 
-For a complete sample demonstrating output bindings, [walk through our quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
+For a complete sample demonstrating output bindings, [walk through the tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
 
 <img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
-We use a Kafka binding for the examples in this guide. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
 
 ## Create a binding
 
@@ -283,7 +283,7 @@ curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bind
 
 As seen above:
 
-1. We invoked the `/binding` endpoint with `checkout`, the name of the binding we wanted to invoke.
+1. The example invoked the `/binding` endpoint with `checkout`, the name of the binding to invoke.
 1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
 1. The `operation` field tells the binding what it needs to do.
 

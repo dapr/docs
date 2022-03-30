@@ -7,14 +7,15 @@ weight: 2000
 ---
 ## Introduction 
 
-In this article, we demonstrate how to deploy services each with an unique application ID for other services to discover and call endpoints on them using service invocation over HTTP.
+This article demonstrates how to deploy services each with an unique application ID for other services to discover and call endpoints on them using service invocation over HTTP.
 
 <img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
+
+For a complete sample demonstrating service invocation, [walk through the service invocation quickstart](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ## Choose an ID for your service
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
-
 
 {{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
 

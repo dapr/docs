@@ -14,9 +14,11 @@ Dapr provides:
 - An extensible Pub/sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
 - Components for Pub/sub that enable operators to use their preferred infrastructure (for example Redis Streams, Kafka, etc).
 
+For a complete sample demonstrating Pub/sub, [walk through the Pub/sub quickstart](https://github.com/dapr/quickstarts/tree/master/pub_sub).
+
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
-In this guide, we use RabbitMQ as an example for publish and subscribe.
+This guide uses RabbitMQ as an example for Pub/sub.
 
 ## Content Types
 

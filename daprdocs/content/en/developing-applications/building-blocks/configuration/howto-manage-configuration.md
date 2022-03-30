@@ -7,7 +7,7 @@ description: "Learn how to get application configuration and subscribe for chang
 ---
 ## Introduction 
 
-In this guide, we use the Redis configuration store component as an example on how to retrieve a configuration item.
+This example uses the Redis configuration store component to demonstrate how to retrieve a configuration item.
 
 {{% alert title="Note" color="primary" %}}
 This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.
@@ -18,7 +18,7 @@ This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 su
 
 ## Create a configuration item in store
 
-Create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component.
+Create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. As mentioned earlier, this example uses the Redis configuration store component.
 
 ### Run Redis with Docker
 

@@ -8,13 +8,13 @@ description: "Use the secret store building block to securely retrieve a secret"
 
 ## Introduction 
 
-In this guide, we demonstrate how to use Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). With the secrets API, you easily retrieve secrets in your application code from a configured secret store.
+This guide demonstrates how to use Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). With the secrets API, you easily retrieve secrets in your application code from a configured secret store.
 
 <img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
 
 ## Set up a secret store
 
-Before retrieving secrets in your application's code, you must configure a secret store component. For this guide, we configure a local secret store which uses a local JSON file to store secrets.
+Before retrieving secrets in your application's code, you must configure a secret store component. This example configures a local secret store which uses a local JSON file to store secrets.
 
 {{% alert title="Warning" color="warning" %}}
 In a production-grade application, local secret stores are not recommended. [Find alternatives]({{<ref supported-secret-stores >}}) to securely manage your secrets.

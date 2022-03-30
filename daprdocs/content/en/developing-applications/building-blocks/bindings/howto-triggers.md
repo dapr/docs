@@ -21,7 +21,7 @@ An input binding represents a resource that Dapr uses to read events from and pu
 
 <img src="/images/building-block-input-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
-We use a Kafka binding for the examples in this guide. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
 
 ## Create a binding
 
