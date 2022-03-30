@@ -8,16 +8,17 @@ description: "Manage state with time-to-live."
 
 ## Introduction
 
-Dapr enables per state set request time-to-live (TTL). This means that applications can set time-to-live per state stored, and these states cannot be retrieved after expiration.
+Dapr enables per state set request time-to-live (TTL). This means that applications can set TTL per state stored, and these states cannot be retrieved after expiration.
 
-Only a subset of Dapr [state store components]({{< ref supported-state-stores >}}) are compatible with state TTL. For supported state stores simply set the `ttlInSeconds` metadata when publishing a message. Other state stores will ignore this value.
+Only a subset of Dapr [state store components]({{< ref supported-state-stores >}}) are compatible with state TTL. For supported state stores, simply set the `ttlInSeconds` metadata when publishing a message. Other state stores will ignore this value.
 
-Some state stores can specify a default expiration on a per-table/container basis. Please refer to the official documentation of these state stores to utilize this feature of desired. Dapr support per-state TTLs for supported state stores.
+Some state stores can specify a default expiration on a per-table/container basis. Refer to the official documentation of these state stores to utilize this feature.
 
 ## Native state TTL support
 
-When state time-to-live has native support in the state store component, Dapr simply forwards the time-to-live configuration without adding any extra logic, keeping predictable behavior. This is helpful when the expired state is handled differently by the component.
-When a TTL is not specified the default behavior of the state store is retained.
+When state TTL has native support in the state store component, Dapr simply forwards the TTL configuration without adding any extra logic, maintaining predictable behavior. This is helpful when the expired state is handled differently by the component.
+
+When a TTL is not specified, the default behavior of the state store is retained.
 
 ## Persisting state (ignoring an existing TTL)
 
@@ -70,7 +71,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "
 
 {{< /tabs >}}
 
-See [this guide]({{< ref state_api.md >}}) for a reference on the state API.
+See [the state API guide]({{< ref state_api.md >}}) for a reference.
 
 ## Related links
 

@@ -8,29 +8,34 @@ description: "Learn how to send messages to a topic with one service and subscri
 
 ## Introduction 
 
-Pub/Sub is a common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging.
-Using Pub/Sub, you can enable scenarios where event consumers are decoupled from event producers.
+Pub/sub is a common pattern in a distributed system with many services that want to utilize decoupled, asynchronous messaging. Using Pub/sub, you can enable scenarios where event consumers are decoupled from event producers.
 
-Dapr provides an extensible Pub/Sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
-Dapr provides components for pub/sub, that enable operators to use their preferred infrastructure, for example Redis Streams, Kafka, etc.
+Dapr provides:
+- An extensible Pub/sub system with At-Least-Once guarantees, allowing developers to publish and subscribe to topics.
+- Components for Pub/sub that enable operators to use their preferred infrastructure (for example Redis Streams, Kafka, etc).
 
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
+In this guide, we use RabbitMQ as an example for publish and subscribe.
+
 ## Content Types
 
-When publishing a message, it's important to specify the content type of the data being sent.
-Unless specified, Dapr will assume `text/plain`. When using Dapr's HTTP API, the content type can be set in a `Content-Type` header.
-gRPC clients and SDKs have a dedicated content type parameter.
+When publishing a message, make sure you specify the content type of the data being sent. Unless specified, Dapr will assume `text/plain`. 
 
-## Setup the Pub/Sub component
-First, you need to make sure you have a Pub/Sub component properly set up:
+For Dapr's HTTP API, you can set the content type in a `Content-Type` header. gRPC clients and SDKs have a dedicated content type parameter.
+
+## Setup the Pub/sub component
+
+Running `dapr init` creates the default `pubsub.yaml` component on your local machine. By default, Dapr loads components from:
+
+- `%UserProfile%\.dapr\components` on Windows.
+- `$HOME/.dapr/components` on Linux/MacOS.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
-The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
 
-In the below example, RabbitMQ is used for publish and subscribe. You can easily swap out underlying components without application code changes by changing the contents within the component yaml. 
+Swap out underlying components without changing application code - simply change the `pubsub.yaml` contents. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -58,11 +63,15 @@ scopes:
   - orderprocessing
 ```
 
-You can override this file with another instance or another [pubsub component]({{< ref setup-pubsub >}}) by creating a `components` directory containing the file and using the flag `--components-path` with the `dapr run` CLI command.
+Override this file with another instance or another [pubsub component]({{< ref setup-pubsub >}}) by:
+
+1. Creating a new `components` directory containing the file.
+1. Using the flag `--components-path` with the `dapr run` CLI command.
+
 {{% /codetab %}}
 
 {{% codetab %}}
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired pubsub component]({{< ref setup-pubsub >}}) in the yaml below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
+To deploy into a Kubernetes cluster, run `kubectl apply -f pubsub.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -93,7 +102,6 @@ scopes:
 {{% /codetab %}}
 
 {{< /tabs >}}
-
 
 ## Subscribe to topics
 
@@ -129,22 +137,22 @@ The example above shows an event subscription to topic `orders`, for the pubsub 
 - The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
 - The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
 
-Set the component with:
-
-Place the CRD in your `./components` directory. When Dapr starts up, it loads subscriptions along with components.
-
-Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.
+Set the component by placing the CRD in your `./components` directory. When Dapr starts up, it loads subscriptions along with components.
 
 You can also override the default directory by pointing the Dapr CLI to a components path:
 
 {{< tabs Python JavaScript DotNet Java Go >}}
 
 {{% codetab %}}
+
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
 ```
+
 {{% /codetab %}}
+
 {{% codetab %}}
+
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- npm start
 {{% /codetab %}}
@@ -152,20 +160,28 @@ dapr run --app-id myapp --components-path ./myComponents -- npm start
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- dotnet run
 ```
+
 {{% /codetab %}}
+
 {{% codetab %}}
+
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
 ```
+
 {{% /codetab %}}
+
 {{% codetab %}}
+
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- go run app.go
 ```
+
 {{% /codetab %}}
 {{< /tabs >}}
 
 ### Programmatic subscriptions
+
 Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 
 {{< tabs Python Javascript Dotnet Java Go >}}
@@ -253,6 +269,7 @@ namespace CheckoutService.controller
     }
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -286,6 +303,7 @@ public class CheckoutServiceController {
     }
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -324,8 +342,8 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 	return false, nil
 }
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{< /tabs >}}
 
@@ -333,7 +351,7 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 ## Publish a topic
 
-You can use the Dapr CLI to publish a message. The below is an example of using the Dapr CLI to publish a message to the `orders` topic.
+Use the Dapr CLI to publish a message. Below is an example of using the Dapr CLI to publish a message to the `orders` topic.
 
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -342,18 +360,23 @@ You can use the Dapr CLI to publish a message. The below is an example of using 
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -401,6 +424,7 @@ namespace EventService
     }
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -444,6 +468,7 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -516,6 +541,7 @@ func main() {
 	}
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -552,20 +578,23 @@ function sleep(ms) {
 
 main();
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## ACK-ing a message
 
-In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
+Tell Dapr that a message was processed successfully by returning a `200 OK` response. Dapr will attempt to redeliver the message following At-Least-Once semantics if:
+
+- Dapr receives any other return status code than `200`.
+- Your app crashes.
 
 ## Sending a custom CloudEvent
 
-Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope.
-If you want to use your own custom CloudEvent, make sure to specify the content type as `application/cloudevents+json`.
+Dapr automatically takes the data sent on the publish request and wraps it in a CloudEvent 1.0 envelope. To use your own custom CloudEvent, specify the content type as `application/cloudevents+json`.
 
-Read about content types [here](#content-types), and about the [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
+[Read about content types](#content-types), and about the [Cloud Events message format]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}).
 
 #### Example
 
@@ -573,33 +602,39 @@ Read about content types [here](#content-types), and about the [Cloud Events mes
 
 {{% codetab %}}
 Publish a custom CloudEvent to the `orders` topic:
+
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 Publish a custom CloudEvent to the `orders` topic:
+
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 Publish a custom CloudEvent to the `orders` topic:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## Next steps
 
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+- Try the [Pub/sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
 - Learn about [PubSub routing]({{< ref howto-route-messages >}})
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn [how to configure Pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - List of [pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})

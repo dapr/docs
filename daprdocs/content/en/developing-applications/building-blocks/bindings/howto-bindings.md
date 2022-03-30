@@ -7,27 +7,27 @@ weight: 300
 ---
 ## Introduction 
 
-Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries.
-For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/bindings).
+Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries. An output binding represents a resource that Dapr uses to invoke and send messages to.
+
+For a complete sample demonstrating output bindings, [walk through our quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
 
 <img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
+We use a Kafka binding for the examples in this guide. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
+
 ## Create a binding
-
-An output binding represents a resource that Dapr uses to invoke and send messages to.
-
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
 
 Create a new binding component with the name of `checkout`.
 
-Inside the `metadata` section, configure Kafka related properties such as the topic to publish the message to and the broker.
+Inside the `metadata` section, configure Kafka-related properties, such as the topic to publish the message to and the broker.
+
+Create the following `binding.yaml` file and save it to a `components` sub-folder in your application directory.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
 
-Create the following YAML file, named `binding.yaml`, and save this to a `components` sub-folder in your application directory.
-(Use the `--components-path` flag with `dapr run` to point to your custom components dir)
+Use the `--components-path` flag with the `dapr run` command to point to your custom components directory.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -57,8 +57,7 @@ spec:
 
 {{% codetab %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired binding component]({{< ref setup-bindings >}}) in the yaml below (in this case kafka), save as `binding.yaml`, and run `kubectl apply -f binding.yaml`.
-
+To deploy into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -274,7 +273,7 @@ main();
 
 {{< /tabs >}}
 
-All that's left now is to invoke the output bindings endpoint on a running Dapr instance.
+Simply invoke the output bindings endpoint on a running Dapr instance.
 
 You can also invoke the output bindings endpoint using HTTP:
 
@@ -282,11 +281,13 @@ You can also invoke the output bindings endpoint using HTTP:
 curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bindings/checkout -d '{ "data": { "orderId": "100" }, "operation": "create" }'
 ```
 
-As seen above, you invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `checkout`.
-The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+As seen above:
 
-You'll also notice that there's an `operation` field that tells the binding what you need it to do.
-You can check [here]({{< ref supported-bindings >}}) which operations are supported for every output binding.
+1. We invoked the `/binding` endpoint with `checkout`, the name of the binding we wanted to invoke.
+1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+1. The `operation` field tells the binding what it needs to do.
+
+You can check [which operations are supported for every output binding]({{< ref supported-bindings >}}).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 

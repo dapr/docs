@@ -8,16 +8,16 @@ description: "Use the secret store building block to securely retrieve a secret"
 
 ## Introduction 
 
-This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store.
+In this guide, we demonstrate how to use Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). With the secrets API, you easily retrieve secrets in your application code from a configured secret store.
 
 <img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
 
 ## Set up a secret store
 
-Before retrieving secrets in your application's code, you must have a secret store component configured. For the purposes of this guide, as an example you will configure a local secret store which uses a local JSON file to store secrets.
+Before retrieving secrets in your application's code, you must configure a secret store component. For this guide, we configure a local secret store which uses a local JSON file to store secrets.
 
 {{% alert title="Warning" color="warning" %}}
-In a production-grade application, local secret stores are not recommended. You can find other alternatives [here]({{<ref supported-secret-stores >}}) to securely manage your secrets.
+In a production-grade application, local secret stores are not recommended. [Find alternatives]({{<ref supported-secret-stores >}}) to securely manage your secrets.
 {{% /alert %}}
 
 Create a file named `secrets.json` with the following contents:
@@ -46,9 +46,12 @@ spec:
     value: ":"
 ```
 
->Note: the path to the secret store JSON is relative to where you call `dapr run` from.
+{{% alert title="Warning" color="warning" %}}
+The path to the secret store JSON is relative to where you call `dapr run` from.
+{{% /alert %}}
 
-To configure a different kind of secret store see the guidance on [how to configure a secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
+For more information, see how to [configure a different kind of secret store]({{<ref setup-secret-store>}}) and review [supported secret stores]({{<ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
+
 ## Get a secret
 
 Get the secret by calling the Dapr sidecar using the secrets API:
@@ -57,7 +60,7 @@ Get the secret by calling the Dapr sidecar using the secrets API:
 curl http://localhost:3601/v1.0/secrets/localsecretstore/secret
 ```
 
-For a full API reference, go [here]({{< ref secrets_api.md >}}).
+See a [full API reference]({{< ref secrets_api.md >}}).
 
 ## Calling the secrets API from your code
 
@@ -66,6 +69,7 @@ Once you have a secret store, call Dapr to get the secrets from your application
 {{< tabs Dotnet Java Python Go Javascript>}}
 
 {{% codetab %}}
+
 ```csharp
 //dependencies
 using System;
@@ -94,6 +98,7 @@ namespace EventService
     }
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -127,6 +132,7 @@ public class OrderProcessingServiceApplication {
     }
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -156,6 +162,7 @@ with DaprClient() as client:
     logging.info('Result for bulk secret: ')
     logging.info(sorted(secret.secrets.items()))
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -193,6 +200,7 @@ func main() {
 	}
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -217,6 +225,7 @@ async function main() {
 
 main();
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
