@@ -84,6 +84,10 @@ spec:
 ...
 ```
 
+## API Logging
+
+API logging enables you to see the API calls from your application to the Dapr sidecar to debug issues. You can combine both Dapr API logging with Dapr log events. See [configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}}) and [configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}}) for more information.
+
 ## Log collectors
 
 If you run Dapr in a Kubernetes cluster, [Fluentd](https://www.fluentd.org/) is a popular container log collector. You can use Fluentd with a [json parser plugin](https://docs.fluentd.org/parser/json) to parse Dapr JSON formatted logs. This [how-to]({{< ref fluentd.md >}}) shows how to configure the Fluentd in your cluster.
@@ -100,3 +104,5 @@ If you are using the Azure Kubernetes Service, you can use [Azure monitor for co
 
 - [How-to : Set up Fleuntd, Elastic search, and Kibana]({{< ref fluentd.md >}})
 - [How-to : Set up Azure Monitor in Azure Kubernetes Service]({{< ref azure-monitor.md >}})
+- [Configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}})
+- [Configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}})
