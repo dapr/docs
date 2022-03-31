@@ -36,6 +36,7 @@ dapr run [flags] [command]
 | `--help`, `-h`                 |                      |                                                                                    | Print this help message                                                                              |
 | `--image`                      |                      |                                                                                    | The image to build the code in. Input is: `repository/image`                                         |
 | `--log-level`                  |                      | `info`                                                                             | The log verbosity. Valid values are: `debug`, `info`, `warn`, `error`, `fatal`, or `panic`           |
+| `--enable-api-logging`                  |                      | `false`                                                                             | Enable the logging of all API calls from application to Dapr      |
 | `--metrics-port`               | `DAPR_METRICS_PORT`  | `9090`                                                                             | The port that Dapr sends its metrics information to                                                  |
 | `--profile-port`               |                      | `7777`                                                                             | The port for the profile server to listen on                                                         |
 | `--unix-domain-socket`, `-u`   |                      |                                                                                    |  Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows OS |
@@ -64,4 +65,7 @@ dapr run --app-id myapp
 
 # Run a gRPC application written in Go (listening on port 3000)
 dapr run --app-id myapp --app-port 5000 --app-protocol grpc -- go run main.go
+
+# Run a NodeJs application that listens to port 3000 with API logging enabled
+dapr run --app-id myapp --app-port 3000 --enable-api-logging  -- node myapp.js
 ```

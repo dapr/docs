@@ -40,6 +40,8 @@ spec:
     value: <REPLACE-WITH-READ-CONCERN> # Optional.
   - name: operationTimeout
     value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "5s"
+  - name: params
+    value: <REPLACE-WITH-ADDITIONAL-PARAMETERS> # Optional. Example: "?authSource=daprStore&ssl=true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -67,8 +69,11 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 | writeconcern       | N        | The write concern to use | `"majority"`
 | readconcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
 | operationTimeout   | N        | The timeout for the operation. Defaults to `"5s"` | `"5s"`
+| params             | N<sup>**</sup> | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
 
 > <sup>[*]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr will return an error.
+
+> <sup>[**]</sup> The `params` field accepts a query string that specifies connection specific options as `<name>=<value>` pairs, separated by `"&"` and prefixed with `"?"`. e.g. to use "daprStore" db as authentication database and enabling SSL/TLS in connection, specify params as `"?authSource=daprStore&ssl=true"`. See [the mongodb manual](https://docs.mongodb.com/manual/reference/connection-string/#std-label-connections-connection-options) for the list of available options and their use cases.
 
 ## Setup MongoDB
 
