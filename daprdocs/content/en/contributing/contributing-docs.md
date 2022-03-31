@@ -42,6 +42,8 @@ Diagrams should be;
 - Named using the convention of a concept or building block so that they are grouped. For example `service-invocation-overview.png`. Also see Images guidance section below.
 - Added to the correct section in the `Dapr-Diagrams.pptx` deck so that they can be amended and updated.
 
+{{< button text="Download the Dapr Diagrams Deck" link="/images/dapr-diagrams.pptx" >}}
+
 
 ## Contributing a new docs page
 - Make sure the documentation you are writing is in the correct place in the hierarchy.
