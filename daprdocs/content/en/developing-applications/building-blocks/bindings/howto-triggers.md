@@ -17,26 +17,25 @@ Dapr bindings allow you to:
 * Replace bindings without changing your code
 * Focus on business logic and not the event resource implementation
 
-For more info on bindings, read [this overview]({{<ref bindings-overview.md>}}).
+An input binding represents a resource that Dapr uses to read events from and push to your application. Read the [bindings overview for more information]({{<ref bindings-overview.md>}}).
 
 <img src="/images/building-block-input-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
-## 1. Create a binding
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
 
-An input binding represents a resource that Dapr uses to read events from and push to your application.
-
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of supported binding components [here]({{< ref setup-bindings >}}).
+## Create a binding
 
 Create a new binding component with the name of `checkout`.
 
-Inside the `metadata` section, configure Kafka related properties, such as the topic to publish the message to and the broker.
+Inside the `metadata` section, configure Kafka-related properties, such as the topic to publish the message to and the broker.
+
+Create the following `binding.yaml` file and save it to a `components` sub-folder in your application directory.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
 
-Create the following YAML file, named `binding.yaml`, and save this to a `components` sub-folder in your application directory.
-(Use the `--components-path` flag with `dapr run` to point to your custom components dir)
+Use the `--components-path` flag with the `dapr run` command to point to your custom components directory.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -66,8 +65,7 @@ spec:
 
 {{% codetab %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired binding component]({{< ref setup-bindings >}}) in the yaml below (in this case kafka), save as `binding.yaml`, and run `kubectl apply -f binding.yaml`.
-
+To deploy into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -97,9 +95,9 @@ spec:
 
 {{< /tabs >}}
 
-## 2. Listen for incoming events (input binding)
+## Listen for incoming events (input binding)
 
-Now configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding as specified in `metadata.name` in the file. 
+Configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. 
 
 Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
 
@@ -239,16 +237,16 @@ async function start() {
 
 ### ACK-ing an event
 
-In order to tell Dapr that you successfully processed an event in your application, return a `200 OK` response from your HTTP handler.
+Tell Dapr you've successfully processed an event in your application by returning a `200 OK` response from your HTTP handler.
 
 ### Rejecting an event
 
-In order to tell Dapr that the event was not processed correctly in your application and schedule it for redelivery, return any response other than `200 OK`. For example, a `500 Error`.
+Tell Dapr the event was not processed correctly in your application and schedule it for redelivery by returning any response other than `200 OK`. For example, a `500 Error`.
 
 ### Specifying a custom route
 
 By default, incoming events will be sent to an HTTP endpoint that corresponds to the name of the input binding.
-You can override this by setting the following metadata property:
+You can override this by setting the following metadata property in `binding.yaml`:
 
 ```yaml
 name: mybinding
@@ -260,6 +258,7 @@ spec:
 ```
 
 ### Event delivery Guarantees
+
 Event delivery guarantees are controlled by the binding implementation. Depending on the binding implementation, the event delivery can be exactly once or at least once.
 
 ## References

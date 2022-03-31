@@ -7,11 +7,11 @@ description: "Use key value pairs to persist a state"
 ---
 ## Introduction 
 
-State management is one of the most common needs of any application: new or legacy, monolith or microservice.
-Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.
+State management is one of the most common needs of any new, legacy, monolith, or microservice application.
 
-Dapr provides state management capabilities that include consistency and concurrency options.
-In this guide we'll start of with the basics: Using the key/value state API to allow an application to save, get and delete state.
+Dealing with and testing different databases libraries, handling retries and faults can be time consuming and hard. Dapr helps to combat these challenges by providing state management capabilities that include consistency and concurrency options.
+
+In this guide, we'll demonstrate the basics of using the key/value state API to allow an application to save, get, and delete state.
 
 <img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
 
@@ -19,19 +19,40 @@ In this guide we'll start of with the basics: Using the key/value state API to a
 
 A state store component represents a resource that Dapr uses to communicate with a database.
 
-For the purpose of this guide we'll use a Redis state store, but any state store from the [supported list]({{< ref supported-state-stores >}}) will work.
+Running `dapr init` creates the default `statestore.yaml` component on your local machine. By default, Dapr loads components from:
+
+- `%UserProfile%\.dapr\components` on Windows.
+- `$HOME/.dapr/components` on Linux/MacOS.
+
+To optionally change the state store being used, replace the YAML file `statestore.yaml` under `/components` with the file of your choice.
+
+For this guide, we'll use a Redis state store. You can use any state store from the [supported list]({{< ref supported-state-stores >}}) will work.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes>}}
 
 {{% codetab %}}
-When using `dapr init` in Standalone mode, the Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML in a `components` directory, which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`
 
-To optionally change the state store being used, replace the YAML file `statestore.yaml` under `/components` with the file of your choice.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired statestore component]({{< ref supported-state-stores >}}) in the yaml below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
+To deploy this into a Kubernetes cluster, run `kubectl apply -f statestore.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -48,7 +69,8 @@ spec:
   - name: redisPassword
     value: ""
 ```
-See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup different state stores on Kubernetes.
+
+To learn how to set up different state stores on Kubernetes, see [the instructions]({{< ref "setup-state-store" >}}).
 
 {{% /codetab %}}
 
@@ -59,7 +81,7 @@ See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup dif
 The following example shows how to save and retrieve a single key/value pair using the Dapr state building block.
 
 {{% alert title="Note" color="warning" %}}
-It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
+Make sure you set an app-id, as the state keys are prefixed with this value. If you don't set an app-id, one is generated for you at runtime. The next time you run the command, a new one will be generated and you will no longer be able to access the previously saved state.
 {{% /alert %}}
 
 {{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
@@ -212,7 +234,7 @@ Begin by launching a Dapr sidecar:
 dapr run --app-id orderprocessing --dapr-http-port 3601
 ```
 
-Then in a separate terminal save a key/value pair into your statestore:
+In a separate terminal, save a key/value pair into your statestore:
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250"}]' http://localhost:3601/v1.0/state/statestore
 ```
@@ -233,7 +255,7 @@ Begin by launching a Dapr sidecar:
 dapr --app-id orderprocessing --dapr-http-port 3601 run
 ```
 
-Then in a separate terminal save a key/value pair into your statestore:
+In a separate terminal, save a key/value pair into your statestore:
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "order_1", "value": "250"}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
@@ -249,8 +271,8 @@ Restart your sidecar and try retrieving state again to observe that state persis
 
 {{< /tabs >}}
 
-
 ## Delete state
+
 The following example shows how to delete single key/value pair using the Dapr state building block.
 
 {{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
@@ -277,8 +299,8 @@ namespace EventService
     }
 }
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -300,8 +322,8 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -316,8 +338,8 @@ DAPR_STORE_NAME = "statestore"
 with DaprClient() as client:
     client.delete_state(store_name=DAPR_STORE_NAME, key="order_1")
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -345,8 +367,8 @@ func main() {
     }
 }
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -365,28 +387,34 @@ var main = function() {
 
 main();
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 With the same Dapr instance running from above run:
+
 ```bash
 curl -X DELETE 'http://localhost:3601/v1.0/state/statestore/order_1'
 ```
+
 Try getting state again and note that no value is returned.
 {{% /codetab %}}
 
 {{% codetab %}}
+
 With the same Dapr instance running from above run:
+
 ```powershell
 Invoke-RestMethod -Method Delete -Uri 'http://localhost:3601/v1.0/state/statestore/order_1'
 ```
+
 Try getting state again and note that no value is returned.
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## Save and retrieve multiple states
-The following example shows how to retrieve multiple  key/value pairs using the Dapr state building block.
+The following example shows how to retrieve multiple key/value pairs using the Dapr state building block.
 
 {{< tabs Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -414,6 +442,7 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -433,6 +462,7 @@ with DaprClient() as client:
     result = client.get_bulk_state(store_name=DAPR_STORE_NAME, keys=["order_1", "order_2"], states_metadata={"metakey": "metavalue"}).items
     logging.info('Result after get bulk: ' + str(result)) 
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -463,27 +493,35 @@ var main = function() {
 
 main();
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 With the same Dapr instance running from above save two key/value pairs into your statestore:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250"}, { "key": "order_2", "value": "550"}]' http://localhost:3601/v1.0/state/statestore
 ```
 
 Now get the states you just saved:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 With the same Dapr instance running from above save two key/value pairs into your statestore:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "order_1", "value": "250"}, { "key": "order_2", "value": "550"}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
 Now get the states you just saved:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```
@@ -545,8 +583,8 @@ namespace EventService
     }
 }
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -592,9 +630,11 @@ public class OrderProcessingServiceApplication {
 
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```python
 #dependencies
 import random
@@ -631,8 +671,8 @@ while True:
     logging.info('Order requested: ' + str(orderId))
     logging.info('Result: ' + str(result))
 ```
-{{% /codetab %}}
 
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -680,27 +720,33 @@ function sleep(ms) {
 
 main();
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 With the same Dapr instance running from above perform two state transactions:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' http://localhost:3601/v1.0/state/statestore/transaction
 ```
 
 Now see the results of your state transactions:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 With the same Dapr instance running from above save two key/value pairs into your statestore:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
 Now see the results of your state transactions:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```

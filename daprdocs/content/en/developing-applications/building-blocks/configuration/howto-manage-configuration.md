@@ -7,17 +7,21 @@ description: "Learn how to get application configuration and subscribe for chang
 ---
 ## Introduction 
 
-This HowTo uses the Redis configuration store component as an example on how to retrieve a configuration item.
+This example uses the Redis configuration store component to demonstrate how to retrieve a configuration item.
 
-*This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.*
+{{% alert title="Note" color="primary" %}}
+This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.
+
+{{% /alert %}}
 
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
 
 ## Create a configuration item in store
 
-First, create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component.
+Create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. As mentioned earlier, this example uses the Redis configuration store component.
 
 ### Run Redis with Docker
+
 ```
 docker run --name my-redis -p 6379:6379 -d redis
 ```
@@ -38,7 +42,15 @@ MSET orderId1 "101||1" orderId2 "102||1"
 
 ### Configure a Dapr configuration store
 
-Save the following component file, for example to the [default components folder]({{<ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized">}}) on your machine. You can use this as the Dapr component YAML for Kubernetes using `kubectl` or when running with the Dapr CLI. Note: The Redis configuration component has identical metadata to the Redis state store component, so you can simply copy and change the Redis state store component type if you already have a Redis state store YAML file. 
+Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine. You can use this as the Dapr component YAML:
+- For Kubernetes using `kubectl`.
+- When running with the Dapr CLI. 
+
+{{% alert title="Note" color="primary" %}}
+ Since the Redis configuration component has identical metadata to the Redis `statestore.yaml` component, you can simply copy/change the Redis state store component type if you already have a Redis `statestore.yaml`. 
+
+{{% /alert %}}
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -172,7 +184,7 @@ client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig
 
 ##### Watch configuration items
 
-Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Then use the proto method `SubscribeConfigurationAlpha1` on your client stub to start subscribing to events. The method accepts the following request object:
+Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Use the `SubscribeConfigurationAlpha1` proto method on your client stub to start subscribing to events. The method accepts the following request object:
 
 ```proto
 message SubscribeConfigurationRequest {
@@ -189,11 +201,11 @@ message SubscribeConfigurationRequest {
 }
 ```
 
-Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language - see the [gRPC examples here](https://grpc.io/docs/languages/) for usage.
+Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language. [See the gRPC examples](https://grpc.io/docs/languages/) for usage.
 
 ##### Stop watching configuration items
 
-After you have subscribed to watch configuration items, the gRPC-server stream starts. This stream thread does not close itself, and you have to do by explicitly call the `UnSubscribeConfigurationRequest` API. This method accepts the following request object:
+After you've subscribed to watch configuration items, the gRPC-server stream starts. Since this stream thread does not close itself, you have to explicitly call the `UnSubscribeConfigurationRequest` API to unsubscribe. This method accepts the following request object:
 
 ```proto
 // UnSubscribeConfigurationRequest is the message to stop watching the key-value configuration.
