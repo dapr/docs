@@ -41,7 +41,7 @@ dapr components -k
 dapr components -k --namespace default
 
 # Print specific Dapr component in Kubernetes mode
-dapr components -k -n target
+dapr components -k -n mycomponent
 
 # List Dapr components in all namespaces in Kubernetes mode
 dapr components -k --all-namespaces
