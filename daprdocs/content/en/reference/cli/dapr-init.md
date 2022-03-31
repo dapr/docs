@@ -60,7 +60,7 @@ In airgap environment, you can [download](https://github.com/dapr/installer-bund
 dapr init --from-dir <path-to-bundle-directory>
 ```
 
-Dapr can run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) without Docker in airgap environment as well.
+Dapr can run slim self-hosted mode without Docker in airgap environment as well.
 ```bash
 dapr init -s --from-dir <path-to-bundle-directory>
 ```
