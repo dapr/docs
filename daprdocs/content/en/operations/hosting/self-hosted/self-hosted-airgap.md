@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Run Dapr in airgap environment"
 linkTitle: "Run in airgap"
 weight: 30000
-description: "How to deploy and run Dapr in self-hosted mode in"
+description: "How to deploy and run Dapr in self-hosted mode in airgap environment"
 ---
 
 ## Overview
