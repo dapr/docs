@@ -36,7 +36,7 @@ These conventions should be followed throughout all Dapr documentation to ensure
 - **Use present tense** - Avoid sentences like "this command will install redis", which implies the action is in the future. Instead use "This command installs redis" which is in the present tense.
 
 ## Diagrams and images
-It is strongly encouraged to create diagrams and images where ever possible for documentation pages. All diagrams are kept in a [Dapr Diagram Deck](/images/dapr-diagrams.pptx) which has guidance on style and icons. The diagram images are saved as PNG files into the [images folder](/images). 
+It is strongly encouraged to create diagrams and images where ever possible for documentation pages. All diagrams are kept in a [Dapr Diagrams Deck](/images/dapr-diagrams.pptx) which has guidance on style and icons. The diagram images are saved as PNG files into the [images folder](/images). 
 Diagrams should be;
 - Saved as PNG files with a high resolution
 - Named using the convention of a concept or building block so that they are grouped. For example `service-invocation-overview.png`. Also see Images guidance section below.
