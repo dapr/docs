@@ -41,7 +41,7 @@ dapr configurations -k
 dapr configurations -k --namespace default
 
 # Print specific Dapr configuration in Kubernetes mode
-dapr configurations -k -n target
+dapr configurations -k -n appconfig
 
 # List Dapr configurations in all namespaces in Kubernetes mode
 dapr configurations -k --all-namespaces
