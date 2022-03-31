@@ -28,7 +28,7 @@ dapr list [flags]
 | `--all-namespaces`, `-A` | | `false` | List all Dapr pods in all namespaces (optional) |
 | `--help`, `-h` | | | Print this help message |
 | `--kubernetes`, `-k` | | `false` | List all Dapr pods in a Kubernetes cluster (optional) |
-| `--namespace`, `-n` | | `default` | List define namespace pods in Kubernetes. Only with `-k` flag (optional) |
+| `--namespace`, `-n` | | `default` | List the Dapr pods in the defined namespace in Kubernetes. Only with `-k` flag (optional) |
 | `--output`, `-o` | | `table` | The output format of the list. Valid values are: `json`, `yaml`, or `table`
 
 ### Examples
