@@ -199,6 +199,17 @@ kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 
 4. Restart your Dapr applications to pick up the latest trust bundle.
 
+{{% alert title="Recommended CLI command to rotate certificates with new ones" color="success" %}}
+The below CLI command can be used to renew root and issuer certificates of your Kubernetes cluster. It also gives an option to provide validity for the new certificates in number of days. 
+
+The 2nd variant of this command provides `--private-key` flag to support use of `private root key` of your existing deployed certificate.
+This command generate new certificates signed by same private key. In this case the `Dapr Sentry service` would be able to pick the new certificate without restarting it.
+{{% /alert %}}
+
+```bash
+dapr mtls renew-certificate -k --valid-unitl <days> --restart
+dapr mtls renew-certificate -k --private-key <private_key_file_path> --valid-until <days>
+```
 {{% alert title="Potential application downtime with mTLS enabled." color="warning" %}}
 Restarts of deployments using service to service invocation using mTLS will fail until the callee service has also been restarted (thereby loading the new Dapr Trust Bundle). Additionally, the placement service will not be able to assign new actors (while existing actors remain unaffected) until applications have been restarted to load the new Dapr Trust Bundle.
 {{% /alert %}}
@@ -245,6 +256,14 @@ Once Sentry has been completely restarted run:
 ```bash
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
+```
+{{% alert title="Recommended CLI command to achieve above steps" color="success" %}}
+To update the provided certificates in Kubernetes cluster, the belowl CLI command can be used.
+**Note - It does not support `valid-until` flag to specify validity.** 
+{{% /alert %}}
+
+```bash
+dapr mtls renew-certificate -k --ca-root-certificate <ca.crt> --issuer-private-key <issuer.key> --issuer-public-certificate <issuer.crt> --restart
 ```
 
 Next, you must restart all Dapr-enabled pods.
