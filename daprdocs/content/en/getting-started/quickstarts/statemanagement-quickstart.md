@@ -6,11 +6,11 @@ weight: 70
 description: "Get started with Dapr's State Store"
 ---
 
-Let's take a look at Dapr's [State Management building block]({{< ref state-management >}}). In this quickstart, you will learn how to store and query data as key/value pairs in the [supported state stores]({{< ref supported-state-stores.md >}}).
+Let's take a look at Dapr's [State Management building block]({{< ref state-management >}}). You can use Dapr's state management consistency and concurrency capabilities to:
+* Maintain and test different databases and libraries.
+* Handle retries and faults.
 
-State management is one of the most common needs of any application: new or legacy, monolith or microservice. Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.
-
-Dapr provides state management capabilities that include consistency and concurrency options. In this guide we’ll start of with the basics: Using the key/value state API to allow an application to save, get and delete state.
+In this quickstart, you use the key/value pairs in the [supported state stores]({{< ref supported-state-stores.md >}}) and allow an application to save, get, and delete state. Our example below uses a Redis instance, but you can use RabbitMQ, Kafka, etc.
 
 <img src="/images/state-management-overview.png" width=800 style="padding-bottom:15px;">
 
@@ -30,7 +30,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -56,7 +56,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
-In the `order-processor` service, we're writing, reading and deleting an orderId key \ value pair to the Redis instance called `statestore` [(as defined in the `statestore.yaml` component)]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
 
 ```python
 with DaprClient() as client:
@@ -76,7 +76,7 @@ with DaprClient() as client:
 
 ### Step 3: View the order-processor outputs
 
-Notice, as specified in the code above, the code saves application state in the Dapr stat store, reads it and then deletes it.
+Notice, as specified in the code above, the code saves application state in the Dapr state store, reads it, then deletes it.
 
 Order-processor output:
 ```
@@ -199,7 +199,7 @@ result.then(function(val) {
 ```
 ### Step 3: View the order-processor outputs
 
-Notice, as specified in the code above, the code saves application state in the Dapr stat store, reads it and then deletes it.
+Notice, as specified in the code above, the code saves application state in the Dapr state store, reads it, then deletes it.
 
 Order-processor output:
 ```
