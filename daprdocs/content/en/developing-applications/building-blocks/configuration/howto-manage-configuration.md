@@ -212,6 +212,40 @@ message SubscribeConfigurationRequest {
 
 Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language - see the [gRPC examples here](https://grpc.io/docs/languages/) for usage.
 
+Below are the examples in sdks:
+
+{{< tabs Python>}}
+
+{{% codetab %}}
+```python
+#dependencies
+import asyncio
+from dapr.clients import DaprClient
+#code
+async def executeConfiguration():
+    with DaprClient() as d:
+        CONFIG_STORE_NAME = 'configstore'
+        key = 'orderId'
+        # Subscribe to configuration by key.
+        configuration = await d.subscribe_configuration(store_name=CONFIG_STORE_NAME, keys=[key], config_metadata={})
+        if configuration != None:
+            items = configuration.get_items()
+            for item in items:
+                print(f"Subscribe key={item.key} value={item.value} version={item.version}", flush=True)
+        else:
+            print("Nothing yet")
+
+asyncio.run(executeConfiguration())
+```
+
+```bash
+dapr run --app-id orderprocessing --components-path components/ -- python3 OrderProcessingService.py
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 ##### Stop watching configuration items
 
 After you have subscribed to watch configuration items, the gRPC-server stream starts. This stream thread does not close itself, and you have to do by explicitly call the `UnSubscribeConfigurationRequest` API. This method accepts the following request object:
