@@ -34,7 +34,7 @@ dapr init [flags]
 | `--runtime-version`  |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
 | `--slim`, `-s`       |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
 | `--image-registry`   |                      |               | Pulls container images required by Dapr from the given image registry                    |
-|                      |DAPR_DEFAULT_IMAGE_REGISTRY|          | In self hosted mode, it is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub as default, just unset this env variable.|
+|        N/A              |DAPR_DEFAULT_IMAGE_REGISTRY|          | In self hosted mode, it is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub as default, just unset this env variable.|
 ### Examples
 
 #### Self hosted environment
