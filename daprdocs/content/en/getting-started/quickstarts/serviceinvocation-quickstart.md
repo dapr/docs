@@ -10,11 +10,11 @@ With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-
 
 <img src="/images/serviceinvocation-quickstart/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
-Dapr offers several methods for service invocation, which you can choose depending on your scenario. For this quickstart, you'll enable the checkout service to invoke a method using HTTP proxy in the order-processor service.
+Dapr offers several methods for service invocation, which you can choose depending on your scenario. For this Quickstart, you'll enable the checkout service to invoke a method using HTTP proxy in the order-processor service.
 
 Learn more about Dapr's methods for service invocation in the [overview article]({{< ref service-invocation-overview.md >}}).
 
-Select your preferred language before proceeding with the quickstart.
+Select your preferred language before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
  <!-- Python -->
@@ -619,7 +619,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 {{% /tabs %}}
 
 ## Tell us what you think!
-We're continuously working to improve our quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
 Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 

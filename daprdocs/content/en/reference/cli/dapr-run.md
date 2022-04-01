@@ -40,7 +40,7 @@ dapr run [flags] [command]
 | `--profile-port`               |                      | `7777`                                                                             | The port for the profile server to listen on                                                         |
 | `--unix-domain-socket`, `-u`   |                      |                                                                                    |  Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows OS |
 | `--dapr-http-max-request-size` |                      | `4`                                                                                | Max size of request body in MB.                                                                      |
-
+| `--dapr-http-read-buffer-size` |                      | `4`                                                                                | Max size of http header read buffer in KB.  The default 4 KB.  When sending bigger than default 4KB http headers, you should set this to a larger value, for example 16 (for 16KB).                                                                     |
 ### Examples
 
 ```bash
