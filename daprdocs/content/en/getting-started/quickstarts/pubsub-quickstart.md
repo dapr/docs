@@ -20,7 +20,7 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
  <!-- Python -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -30,7 +30,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -38,7 +38,7 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Subscribe to topics
+### Step 3: Subscribe to topics
 
 In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
@@ -86,7 +86,7 @@ def orders_subscriber():
 app.run(port=5001)
 ```
 
-### Publish a topic
+### Step 4: Publish a topic
 
 In a new terminal window, navigate to the `checkout` directory.
 
@@ -119,7 +119,7 @@ with DaprClient() as client:
     )
 ```
 
-### View the Pub/sub outputs
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -190,7 +190,7 @@ In the YAML file:
  <!-- JavaScript -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -200,7 +200,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -208,7 +208,7 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Subscribe to topics
+### Step 3: Subscribe to topics
 
 In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
@@ -240,7 +240,7 @@ In the `order-processor` subscriber, we're subscribing to the Redis instance cal
 server.pubsub.subscribe("order_pub_sub", "orders", (data) => console.log("Subscriber received: " + JSON.stringify(data)));
 ```
 
-### Publish a topic
+### Step 4: Publish a topic
 
 In a new terminal window, from the root of the Quickstarts clone directory,
 navigate to the `checkout` directory.
@@ -266,7 +266,7 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- npm run start
 ```
 
-In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:  
+In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```js
 const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
@@ -275,7 +275,7 @@ await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
    console.log("Published data: " + JSON.stringify(order));
 ```
 
-### View the Pub/sub outputs
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -348,7 +348,7 @@ In the YAML file:
  <!-- .NET -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -358,7 +358,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -366,7 +366,7 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Subscribe to topics
+### Step 3: Subscribe to topics
 
 In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
@@ -400,7 +400,7 @@ app.MapPost("/orders", [Topic("order_pub_sub", "orders")] (Order order) => {
 public record Order([property: JsonPropertyName("orderId")] int OrderId);
 ```
 
-### Publish a topic
+### Step 4: Publish a topic
 
 In a new terminal window, from the root of the Quickstarts clone directory,
 navigate to the `checkout` directory.
@@ -430,7 +430,7 @@ await client.PublishEventAsync("order_pub_sub", "orders", order);
 Console.WriteLine("Published data: " + order);
 ```
 
-### View the Pub/sub outputs
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -501,7 +501,7 @@ In the YAML file:
  <!-- Java -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -514,7 +514,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -522,7 +522,7 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Subscribe to topics
+### Step 3: Subscribe to topics
 
 In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
@@ -560,7 +560,7 @@ public Mono<ResponseEntity> getCheckout(@RequestBody(required = false) CloudEven
 }
 ```
 
-### Publish a topic
+### Step 4: Publish a topic
 
 In a new terminal window, from the root of the Quickstarts clone directory,
 navigate to the `checkout` directory.
@@ -592,7 +592,7 @@ client.publishEvent(
 logger.info("Published data: " + order.getOrderId());
 ```
 
-### View the Pub/sub outputs
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -666,7 +666,7 @@ In the YAML file:
  <!-- Go -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -676,7 +676,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -684,7 +684,7 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Subscribe to topics
+### Step 3: Subscribe to topics
 
 In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
@@ -714,7 +714,7 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 }
 ```
 
-### Publish a topic
+### Step 4: Publish a topic
 
 In a new terminal window, from the root of the Quickstarts clone directory,
 navigate to the `checkout` directory.
@@ -747,7 +747,7 @@ if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); er
 fmt.Sprintf("Published data: ", order)
 ```
 
-### View the Pub/sub outputs
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a numbered message to the Dapr sidecar while the subscriber receives it.
 

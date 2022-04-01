@@ -20,7 +20,7 @@ Select your preferred language before proceeding with the Quickstart.
  <!-- Python -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -30,7 +30,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -38,9 +38,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `order-processor` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, from the root of the quickstart clone directory
+In a terminal window, from the root of the Quickstart clone directory
 navigate to `order-processor` directory.
 
 ```bash
@@ -71,9 +71,9 @@ def getOrder():
 app.run(port=7001)
 ```
 
-### Run `checkout` service
+### Step 4: Run `checkout` service
 
-In a new terminal window, from the root of the quickstart clone directory
+In a new terminal window, from the root of the Quickstart clone directory
 navigate to the `checkout` directory.
 
 ```bash
@@ -103,7 +103,7 @@ result = requests.post(
     headers=headers
 )
 ```
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -142,7 +142,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- JavaScript -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -152,7 +152,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -160,9 +160,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `order-processor` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, from the root of the quickstart clone directory
+In a terminal window, from the root of the Quickstart clone directory
 navigate to `order-processor` directory.
 
 ```bash
@@ -188,9 +188,9 @@ app.post('/orders', (req, res) => {
 });
 ```
 
-### Run `checkout` service
+### Step 4: Run `checkout` service
 
-In a new terminal window, from the root of the quickstart clone directory
+In a new terminal window, from the root of the Quickstart clone directory
 navigate to the `checkout` directory.
 
 ```bash
@@ -221,7 +221,7 @@ let axiosConfig = {
   console.log("Order passed: " + res.config.data);
 ```
 
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -260,7 +260,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- .NET -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -270,7 +270,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -278,9 +278,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `order-processor` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, from the root of the quickstart clone directory
+In a terminal window, from the root of the Quickstart clone directory
 navigate to `order-processor` directory.
 
 ```bash
@@ -308,9 +308,9 @@ app.MapPost("/orders", async context => {
 });
 ```
 
-### Run `checkout` service
+### Step 4: Run `checkout` service
 
-In a new terminal window, from the root of the quickstart clone directory
+In a new terminal window, from the root of the Quickstart clone directory
 navigate to the `checkout` directory.
 
 ```bash
@@ -342,7 +342,7 @@ var response = await client.PostAsync($"{baseURL}/orders", content);
     Console.WriteLine("Order passed: " + order);
 ```
 
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -381,7 +381,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- Java -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -394,7 +394,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -402,9 +402,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `order-processor` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, from the root of the quickstart clone directory
+In a terminal window, from the root of the Quickstart clone directory
 navigate to `order-processor` directory.
 
 ```bash
@@ -430,9 +430,9 @@ public String processOrders(@RequestBody Order body) {
     }
 ```
 
-### Run `checkout` service
+### Step 4: Run `checkout` service
 
-In a new terminal window, from the root of the quickstart clone directory
+In a new terminal window, from the root of the Quickstart clone directory
 navigate to the `checkout` directory.
 
 ```bash
@@ -461,7 +461,7 @@ HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandle
 System.out.println("Order passed: "+ orderId)
 ```
 
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -500,7 +500,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- Go -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -510,7 +510,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
@@ -519,9 +519,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `order-processor` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, from the root of the quickstart clone directory
+In a terminal window, from the root of the Quickstart clone directory
 navigate to `order-processor` directory.
 
 ```bash
@@ -552,9 +552,9 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Order received : %s", string(data))
 ```
 
-### Run `checkout` service
+### Step 4: Run `checkout` service
 
-In a new terminal window, from the root of the quickstart clone directory
+In a new terminal window, from the root of the Quickstart clone directory
 navigate to the `checkout` directory.
 
 ```bash
@@ -581,7 +581,7 @@ req.Header.Add("dapr-app-id", "order-processor")
 response, err := client.Do(req)
 ```
 
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
