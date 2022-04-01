@@ -142,7 +142,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've set up:
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -270,7 +270,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've set up:
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -314,7 +314,7 @@ Console.WriteLine("Deleting Order: " + order);
 ```
 ### Step 3: View the order-processor outputs
 
-Notice, as specified in the code above, the code saves application state in the Dapr stat store, reads it and then deletes it.
+Notice, as specified in the code above, the code saves application state in the Dapr state store, reads it, then deletes it.
 
 Order-processor output:
 ```
@@ -386,7 +386,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -437,7 +437,7 @@ try (DaprClient client = new DaprClientBuilder().build()) {
 ```
 ### Step 3: View the order-processor outputs
 
-Notice, as specified in the code above, the code saves application state in the Dapr stat store, reads it and then deletes it.
+Notice, as specified in the code above, the code saves application state in the Dapr state store, reads it, then deletes it.
 
 Order-processor output:
 ```
@@ -503,7 +503,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -547,7 +547,7 @@ In the `order-processor` service, we're writing, reading and deleting an orderId
 
 ### Step 3: View the order-processor outputs
 
-Notice, as specified in the code above, the code saves application state in the Dapr stat store, reads it and then deletes it.
+Notice, as specified in the code above, the code saves application state in the Dapr state store, reads it, then deletes it.
 
 Order-processor output:
 ```
