@@ -256,6 +256,50 @@ kubectl rollout restart deploy/myapp
 
 You will experience potential downtime due to mismatching certificates until all deployments have successfully been restarted (and hence loaded the new Dapr certificates).
 
+### Set up monitoring for Dapr control plane mTLS certificate expiration
+
+Beginning 30 days prior to mTLS root ceritificate expiration the Dapr sentry service will hourly emit warning level logs indicating that the root certificate is about to expire.
+
+As an operational best practice for running Dapr in production we recommend configuring monitoring for these particular sentry service logs so that you are aware of the upcoming certificate expiration.
+
+```bash
+"Dapr root certificate expiration warning: certificate expires in 2 days and 15 hours"
+```
+
+Once the certificate has expired you will see the following message:
+
+```bash
+"Dapr root certificate expiration warning: certificate has expired."
+```
+
+In Kubernetes you can view the sentry service logs like so:
+
+```bash
+kubectl logs deployment/dapr-sentry -n dapr-system
+```
+
+The log output will appear like the following:"
+
+```bash
+{"instance":"dapr-sentry-68cbf79bb9-gdqdv","level":"warning","msg":"Dapr root certificate expiration warning: certificate expires in 2 days and 15 hours","scope":"dapr.sentry","time":"2022-04-01T23:43:35.931825236Z","type":"log","ver":"1.6.0"}
+```
+
+As an additional tool to alert you to the upcoming certificate expiration beginning with release 1.7.0 the CLI now prints the certificate expiration status whenever you interact with a Kubernetes-based deployment.
+
+Example:
+```bash
+dapr status -k
+
+  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION   AGE  CREATED
+  dapr-sentry            dapr-system  True     Running  1         1.7.0     17d  2022-03-15 09:29.45
+  dapr-dashboard         dapr-system  True     Running  1         0.9.0     17d  2022-03-15 09:29.45
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.7.0     17d  2022-03-15 09:29.45
+  dapr-operator          dapr-system  True     Running  1         1.7.0     17d  2022-03-15 09:29.45
+  dapr-placement-server  dapr-system  True     Running  1         1.7.0     17d  2022-03-15 09:29.45
+⚠  Dapr root certificate of your Kubernetes cluster expires in 2 days. Expiry date: Mon, 04 Apr 2022 15:01:03 UTC.
+ Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
+```
+
 ### Kubernetes video demo 
 Watch this video to show how to update mTLS certificates on Kubernetes
 
