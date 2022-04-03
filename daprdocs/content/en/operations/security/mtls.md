@@ -258,7 +258,7 @@ You will experience potential downtime due to mismatching certificates until all
 
 ### Set up monitoring for Dapr control plane mTLS certificate expiration
 
-Beginning 30 days prior to mTLS root ceritificate expiration the Dapr sentry service will hourly emit warning level logs indicating that the root certificate is about to expire.
+Beginning 30 days prior to mTLS root certificate expiration the Dapr sentry service will emit hourly warning level logs indicating that the root certificate is about to expire.
 
 As an operational best practice for running Dapr in production we recommend configuring monitoring for these particular sentry service logs so that you are aware of the upcoming certificate expiration.
 
