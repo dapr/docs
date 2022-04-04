@@ -8,7 +8,7 @@ description: "How to deploy and run Dapr in self-hosted mode in an airgap enviro
 
 ## Overview
 
-By default, Dapr initialization downloads binaries and pulls images from the network to setup the development environment. However, Dapr also supports offline or airgap installation using pre-downloaded artifacts, either with a Docker or slim environment. The artifacts for each Dapr release are built into a Dapr Installer Bundle which can be downloaded from the release. By using this installer bundle with the Dapr CLI `init` command, you can install Dapr into environments that do not have any network access.
+By default, Dapr initialization downloads binaries and pulls images from the network to setup the development environment. However, Dapr also supports offline or airgap installation using pre-downloaded artifacts, either with a Docker or slim environment. The artifacts for each Dapr release are built into a [Dapr Installer Bundle](https://github.com/dapr/installer-bundle) which can be downloaded. By using this installer bundle with the Dapr CLI `init` command, you can install Dapr into environments that do not have any network access.
 ##  Setup
 
 Before airgap initialization, it is required to download a Dapr Installer Bundle beforehand, containing the CLI, runtime and dashboard packaged together. This eliminates the need to download binaries as well as Docker images when initializing Dapr locally.
