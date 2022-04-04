@@ -70,6 +70,7 @@ Dapr can also run in slim self-hosted mode without Docker in an airgap environme
 ```bash
 dapr init -s --from-dir <path-to-installer-bundle-directory>
 ```
+
 You can also specify a private registry to pull container images from. These images need to be published to private registries as shown below to enable Dapr CLI to pull them successfully via the `dapr init` command - 
 
 1. Dapr runtime container image(dapr) (Used to run Placement) - dapr/dapr:<version>
@@ -85,6 +86,7 @@ You can also specify a private registry to pull container images from. These ima
 ```bash
 dapr init --image-registry docker.io/username
 ```
+
 This command resolves the complete image URI as shown below -
 1. Placement container image(dapr) - docker.io/username/dapr/dapr:<version>
 2. Redis container image(rejson)   - docker.io/username/dapr/3rdparty/rejson
