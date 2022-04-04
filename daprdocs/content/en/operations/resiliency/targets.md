@@ -7,23 +7,21 @@ description: "Apply resiliency policies for apps, components and actors"
 ---
 
 ### Targets
-Targets are what policies are applied to. Dapr supports 3 targets apps, components and actors, which estentially covers all the Dapr Builing blocks, with the exception of observability. It's important to note that resiliency capabilities might differ between components as each target is handled differently and may already include resilient behavior, for example service invocation. 
-
+Targets are what named policies are applied to. Dapr supports 3 target types - `apps`, `components` and `actors`, which covers all Dapr builing blocks with the exception of observability. It's worth noting that resilient behaviors might differ between target types, as some targets may already include resilient capabilities, for example service invocation with built-in retries.  
 
 #### Apps
 
-Allows applying of `retry`, `timeout` and `circuitbreaker` policies to service invocation calls to other Dapr apps. Dapr offers [built-in service invocation retries]({{<ref "service-invocation-overview.md#retries">}}), so any resiliency policies added additional.
+<img src="/images/resiliency_svc_invocation.png" width=1000 alt="Diagram showing service invocation resiliency" />
 
-The below diagram demonstrates how resiliency policies are service invocation  work:
+The `apps` target allows for applying `retry`, `timeout` and `circuitbreaker` policies to service invocation calls to other Dapr apps. Under `apps`, each key is the target service's `app-id` that the policies are applied to. Policies are applied when the network failure occurs between sidecar communication (as pictured in the diagram above). Additionally, Dapr provides [built-in service invocation retries]({{<ref "service-invocation-overview.md#retries">}}), so any applied `retry` policies are additional.
 
-<img src="/images/resiliency_svc_invocation.png" width=800 alt="Diagram showing service invocation resiliency">
+Example of policies to a target app with the `app-id` "appB":
 
-Example
 ```yaml
 specs:
   targets:
     apps:
-      appB:
+      appB: # app-id of the target service
         timeout: general
         retry: general
         circuitBreaker: general
@@ -31,14 +29,46 @@ specs:
 
 #### Components
 
-Allows applying of `retry`, `timeout` and `circuitbreaker` policies to components operations. Policy assignments are optional. 
+The `components` target allows for applying of `retry`, `timeout` and `circuitbreaker` policies to components operations. Policy assignments are optional. 
 
-Policies can be applied for `outbound` operations (calls to the Dapr sidecar) or `inbound` (the sidecar calling your app). At this time, inbound only applies to PubSub and InputBinding components.
+Policies can be applied for `outbound` operations (calls to the Dapr sidecar) and/or `inbound` (the sidecar calling your app). At this time, inbound only applies to PubSub and InputBinding components.
 
-The below diagrams demonstrate how resiliency policies are applied to components:
 
-<img src="/images/resiliency_outbound.png" width=800 alt="Diagram showing service invocation resiliency">
-<img src="/images/resiliency_inbound.png" width=800 alt="Diagram showing service invocation resiliency">
+
+##### Outbound
+Calls from the sidecar to a component are `outbound` operations. Persisting or retrieveting state, publishing a message, invoking an output binding are all examples of `outbound` operations. Some components have `retry` capabilities built-in and are configured on a per component basis.
+
+<img src="/images/resiliency_outbound.png" width=1000 alt="Diagram showing service invocation resiliency">
+
+```yaml
+spec:
+  targets:
+    components:
+      myStateStore:
+        outbound:
+          retry: pubsubRetry
+          circuitBreaker: pubsubCB
+```
+
+##### Inbound 
+Call from the sidecar to your application are `inbound` operations. Subscribing to a topic and inbound bindings are examples of `inbound` operations. 
+
+<img src="/images/resiliency_inbound.png" width=1000 alt="Diagram showing service invocation resiliency" />
+
+Example
+```yaml
+spec:
+  targets:
+    components:
+      myInputBinding:
+        inbound: 
+          timeout: general
+          retry: general
+          circuitBreaker: general
+```
+
+##### PubSub
+<img src="/images/resiliency_pubsub.png" width=1000 alt="Diagram showing service invocation resiliency">
 
 Example
 ```yaml

@@ -63,8 +63,6 @@ spec:
 
 ### Complete Example Policy
 
-TODO: What are the `general` retries and circuit breakers in this example? Are they provided by Dapr by default, or is the example just wrong?
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Resiliency
