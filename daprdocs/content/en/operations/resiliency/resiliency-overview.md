@@ -3,20 +3,30 @@ type: docs
 title: "Overview"
 linkTitle: "Overview"
 weight: 4500
-description: "Configure Dapr error retries, timeouts and circuit breakers"
+description: "Configure Dapr error retries, timeouts, and circuit breakers"
 ---
 
-Resiliency is currently a preview feature. Before you can utilize resiliency policies you must first [enable the resiliency preview feature]({{<ref preview-features >}}).
+Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
 
 ## Introduction
 
-Distributed applications are commonly comprised of many moving pieces, there could be dozens or even hundreds of instances for any given service. With this many moving pieces, the likelihood of a system failure increases. An instance can fail for any number of reasons, for example, hardware failures, overwhelming number of requests, application restarts/scale outs. Any of these events can cause a network call between services to fail. Having your application designed with the ability to detect and mitigate these failures allows for your application to respond and recover quickly back to a functioning state.
+Distributed applications are commonly comprised of many moving pieces, with dozens, even hundreds, of instances for any given service. With so many moving pieces, the likelihood of a system failure increases. For example, an instance can fail due to hardware failures, an overwhelming number of requests, application restarts/scale outs, or any other reason. These events can cause a network call between services to fail. Designing and implementing your application with fault tolerance (the ability to detect, mitigate, and respond to failures) allows your application to recover quickly to a functioning state.
 
 ## Overview
 
-Dapr provies a mechanism for defining and applying resiliency policies via a [resiliency spec]({{<ref "resiliency-overview.md#complete-example-policy">}}).  The resiliency spec sits with your components and is applied when the dapr sidecar starts. It's up to the sidecar to know when and how to apply resiliency policies to your Dapr APIs calls. Within the resiliency spec, you define policies for popular resiliency patterns, such as [timeouts]({{<ref "policies.md#timeouts">}}), [retries/back-offs]({{<ref "policies.md#retries">}}) and [circuit breakers]({{<ref "policies.md#circuit-breakers">}}). Policies can then be applied consistently to [targets]({{<ref "targets.md">}}), which include [apps]({{<ref "targets.md#apps">}}) via service invocation, [components]({{<ref "targets.md#components">}}) and [actors]({{<ref "targets.md#actors">}}). 
+Dapr provides a mechanism for defining and applying fault tolerance/resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). The resiliency spec sits with your components and is applied when the Dapr sidecar starts. The sidecar determines when and how to apply resiliency policies to your Dapr API calls. Within the resiliency spec, you define policies for popular resiliency patterns, such as:
 
-Additionally, resiliency policies can be [scoped to specific apps]({{<ref "component-scopes.md#application-access-to-components-with-scopes">}}).
+- [Timeouts]({{< ref "policies.md#timeouts" >}})
+- [Retries/back-offs]({{< ref "policies.md#retries" >}})
+- [Circuit breakers]({{< ref "policies.md#circuit-breakers" >}})
+
+Policies can then be applied consistently to [targets]({{< ref "targets.md" >}}), which include:
+
+- [Apps]({{< ref "targets.md#apps" >}}) via service invocation
+- [Components]({{< ref "targets.md#components" >}})
+- [Actors]({{< ref "targets.md#actors" >}})
+
+Additionally, resiliency policies can be [scoped to specific apps]({{< ref "component-scopes.md#application-access-to-components-with-scopes" >}}).
 
 Below is the general structure of what a resiliency policy looks like:
 
@@ -48,7 +58,8 @@ spec:
     components:
       # components and their applied policies here
 ```
-> Note: In selfhosted mode the resiliency policy must be named `resiliency.yaml` and reside in the components folder provided to the sidecar. In Kubernetes Dapr scans all resiliency policies.
+
+> Note: In self-hosted mode, the resiliency policy must be named `resiliency.yaml` and reside in the components folder provided to the sidecar. In Kubernetes, Dapr scans all resiliency policies.
 
 ### Complete Example Policy
 
