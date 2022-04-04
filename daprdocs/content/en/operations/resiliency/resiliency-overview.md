@@ -14,7 +14,7 @@ Distributed applications are commonly comprised of many moving pieces, with doze
 
 ## Overview
 
-Dapr provides a mechanism for defining and applying fault tolerance/resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). The resiliency spec sits with your components and is applied when the Dapr sidecar starts. The sidecar determines when and how to apply resiliency policies to your Dapr API calls. Within the resiliency spec, you define policies for popular resiliency patterns, such as:
+Dapr provides a mechanism for defining and applying fault tolerance/resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). The resiliency spec is defined in the same location as components and is applied when the Dapr sidecar starts. The sidecar determines when and how to apply resiliency policies to your Dapr API calls. Within the resiliency spec, you define policies for popular resiliency patterns, such as:
 
 - [Timeouts]({{< ref "policies.md#timeouts" >}})
 - [Retries/back-offs]({{< ref "policies.md#retries" >}})
