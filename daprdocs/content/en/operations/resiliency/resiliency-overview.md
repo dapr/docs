@@ -68,20 +68,22 @@ apiVersion: dapr.io/v1alpha1
 kind: Resiliency
 metadata:
   name: resiliency
-# Like in the Subscriptions CRD, scopes lists the Dapr App IDs that this
+# simialrly to Subscriptions CRD, scopes lists the Dapr App IDs that this
 # configuration applies to.
 scopes:
   - app1
   - app2
 spec:
+  # policies is where timeouts, retries and circuit breaker policies are defined. 
+  # each is given a name so they can be referred to from the targets section in the resiliency spec.
   policies:
-    # Timeouts are simple named durations.
+    # timeouts are simple named durations.
     timeouts:
       general: 5s
       important: 60s
       largeResponse: 10s
 
-    # Retries are named templates for retry configurations and are instantiated for life of the operation.
+    # retries are named templates for retry configurations and are instantiated for life of the operation.
     retries:
       pubsubRetry:
         policy: constant
@@ -91,7 +93,7 @@ spec:
       retryForever:
         policy: exponential
         maxInterval: 15s
-        maxRetries: -1 # Retry indefinitely
+        maxRetries: -1 # retry indefinitely
 
       important:
         policy: constant
@@ -107,46 +109,49 @@ spec:
         duration: 5s
         maxRetries: 3
 
-    # Circuit breakers are automatically instantiated per component and app endpoint.
-    # Circuit breakers maintain counters that can live as long as the Dapr sidecar.
+    # circuit breakers are automatically instantiated per component and app endpoint.
+    # circuit breakers maintain counters that can live as long as the Dapr sidecar.
     circuitBreakers:
+      simpleCB:
+        maxRequests: 1
+        timeout: 30s 
+        trip: consecutiveFailures >= 5
+
       pubsubCB:
         maxRequests: 1
         interval: 8s
         timeout: 45s
         trip: consecutiveFailures > 8
 
-  # This section specifies policies for:
-  # * service invocation
-  # * requests to components
+  # targets are what named policies are applied to. Dapr supports 3 target types - apps, components and actors
   targets:
     apps:
       appB:
         timeout: general
         retry: important
-        # Circuit breakers for services are scoped per endpoint (e.g. hostname + port).
-        # When a breaker is tripped, that route is removed from load balancing for the configured `timeout` duration.
-        circuitBreaker: general
+        # circuit breakers for services are scoped per endpoint (e.g. hostname + port).
+        # when a breaker is tripped, that route is removed from load balancing for the configured `timeout` duration.
+        circuitBreaker: simpleCB
 
     actors:
       myActorType: # custom Actor Type Name
         timeout: general
         retry: important
-        # Circuit breakers for actors are scoped by type, id, or both.
-        # When a breaker is tripped, that type or id is removed from the placement table for the configured `timeout` duration.
-        circuitBreaker: general
+        # circuit breakers for actors are scoped by type, id, or both.
+        # when a breaker is tripped, that type or id is removed from the placement table for the configured `timeout` duration.
+        circuitBreaker: simpleCB
         circuitBreakerScope: both
         circuitBreakerCacheSize: 5000
 
     components:
-      # For state stores, policies apply to saving and retrieving state.
+      # for state stores, policies apply to saving and retrieving state.
       statestore1: # any component name -- happens to be a state store here
         outbound:
           timeout: general
-          retry: general
-          # Circuit breakers for components are scoped per component configuration/instance (e.g. redis1).
-          # When this breaker is tripped, all interaction to that component is prevented for the configured `timeout` duration.
-          circuitBreaker: general
+          retry: retryForever
+          # circuit breakers for components are scoped per component configuration/instance (e.g. redis1).
+          # when this breaker is tripped, all interaction to that component is prevented for the configured `timeout` duration.
+          circuitBreaker: simpleCB
 
       pubsub1: # any component name -- happens to be a pubsub broker here
         outbound:
@@ -159,7 +164,6 @@ spec:
           circuitBreaker: pubsubCB
         inbound: # inbound only applies to delivery from sidecar to app
           timeout: general
-          retry: general
-          circuitBreaker: general
-
+          retry: important
+          circuitBreaker: pubsubCB
 ```
