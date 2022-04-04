@@ -6,6 +6,8 @@ weight: 4500
 description: "Configure resiliency policies for timeouts, retries/backoffs and circuit breakers"
 ---
 
+Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first enable the resiliency preview feature.
+
 ### Policies
 Policies is where timeouts, retries and circuit breaker policies are defined. Each is given a name so they can be referred to from the `targets` section in the resiliency spec. 
 

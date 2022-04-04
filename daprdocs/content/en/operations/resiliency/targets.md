@@ -6,6 +6,8 @@ weight: 4500
 description: "Apply resiliency policies for apps, components and actors"
 ---
 
+Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first enable the resiliency preview feature.
+
 ### Targets
 Targets are what named policies are applied to. Dapr supports 3 target types - `apps`, `components` and `actors`, which covers all Dapr builing blocks with the exception of observability. It's worth noting that resilient behaviors might differ between target types, as some targets may already include resilient capabilities, for example service invocation with built-in retries.  
 
@@ -32,8 +34,6 @@ specs:
 The `components` target allows for applying of `retry`, `timeout` and `circuitbreaker` policies to components operations. Policy assignments are optional. 
 
 Policies can be applied for `outbound` operations (calls to the Dapr sidecar) and/or `inbound` (the sidecar calling your app). At this time, inbound only applies to PubSub and InputBinding components.
-
-
 
 ##### Outbound
 Calls from the sidecar to a component are `outbound` operations. Persisting or retrieveting state, publishing a message, invoking an output binding are all examples of `outbound` operations. Some components have `retry` capabilities built-in and are configured on a per component basis.
