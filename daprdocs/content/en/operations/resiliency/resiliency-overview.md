@@ -28,7 +28,7 @@ Policies can then be applied consistently to [targets]({{< ref "targets.md" >}})
 
 Additionally, resiliency policies can be [scoped to specific apps]({{< ref "component-scopes.md#application-access-to-components-with-scopes" >}}).
 
-Below is the general structure of what a resiliency policy looks like:
+Below is the general structure of what a resiliency spec looks like:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
