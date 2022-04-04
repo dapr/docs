@@ -19,6 +19,8 @@ Before airgap initialization, it is required to download a Dapr Installer Bundle
    * For Linux/MacOS - `/usr/local/bin`
    * For Windows, create a directory and add this to your System PATH. For example create a directory called `c:\dapr` and add this directory to your path, by editing your system environment variable.
 
+   > Note: If Dapr CLI is not moved to the desired location, you can use local `dapr` CLI binary in the bundle. The steps above is to move it to the usual location and add it to the path.
+
  ## Initialize Dapr environment
 
 Dapr can be initialized in an airgap environment with or without Docker containers.
