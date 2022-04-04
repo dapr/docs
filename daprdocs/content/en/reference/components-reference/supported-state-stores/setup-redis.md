@@ -244,11 +244,14 @@ Consider the example from ["How-To: Query state"]({{< ref "howto-state-query-api
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" >}}
 
 {{% codetab %}}
-The Redis instance that gets created automatically with `dapr init` cannot be used with query api.
-Use following command to create an instance of redis which can be used with query api:
+The Redis instance that gets created automatically with `dapr init` cannot be used with query API. You can run `redislabs/rejson` docker image on a different port(than already installed `redis` is using) to work with query API. 
+
+`redislabs/rejson` has support only for amd64 arch.
+
+Use following command to create an instance of redis compatiable with query API.
 
 ```bash
-docker run -p 6379:6379 --name redis --rm redislabs/rejson:2.0.6
+docker run -p 9445:9445 --name rejson --rm redislabs/rejson:2.0.6
 ```
 {{% /codetab %}}
 
@@ -305,7 +308,7 @@ Memory Store does not support modules and cannot be used with query.
 
 {{< /tabs >}}
 
-Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas.
+Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Kindly modify the `redisHost` to reflect the port on which `redislabs/rejson` is running.
 ```bash
 dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/redis
 ```
