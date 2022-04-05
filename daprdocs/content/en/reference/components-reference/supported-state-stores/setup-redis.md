@@ -244,9 +244,15 @@ Consider the example from ["How-To: Query state"]({{< ref "howto-state-query-api
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" >}}
 
 {{% codetab %}}
-The Redis instance that gets created automatically with `dapr init` cannot be used with query API. You can run `redislabs/rejson` docker image on a different port(than already installed `redis` is using) to work with query API. 
+If you are using a self-hosted deployment of Dapr, a Redis instance without the JSON module is automatically created as a Docker container when you run `dapr init`.
 
-`redislabs/rejson` has support only for amd64 arch.
+Alternatively, you can create an instance of Redis by running the following command:
+ ```bash
+ docker run -p 6379:6379 --name redis --rm redis
+ ```
+ The Redis container that gets created on dapr init or via the above command, cannot be used with state store query API alone. You can run redislabs/rejson docker image on a different port(than already installed Redis is using) to work with query API.
+
+> Note: `redislabs/rejson` has support only for amd64 architecture.
 
 Use following command to create an instance of redis compatiable with query API.
 
@@ -308,7 +314,7 @@ Memory Store does not support modules and cannot be used with query.
 
 {{< /tabs >}}
 
-Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Kindly modify the `redisHost` to reflect the port on which `redislabs/rejson` is running.
+Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Make sure to modify the `redisHost` to reflect the local forwarding port which `redislabs/rejson` uses.
 ```bash
 dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/redis
 ```
