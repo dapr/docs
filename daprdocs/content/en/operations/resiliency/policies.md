@@ -17,7 +17,7 @@ You define timeouts, retries and circuit breaker policies under `policies`. Each
 Timeouts can be used to early-terminate long-running operations. If you've exceeded timeout:
 
 - The operation in progress will be terminated (if possible).
-- An error is returned. 
+- An error is returned.
 
 Valid values are of the form `15s`, `2m`, `1h30m`, etc. For example:
 
