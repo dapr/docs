@@ -114,13 +114,14 @@ When using a `circuitBreaker` policy, you can specify whether circuit breaking s
 
 - An individual actor ID.
 - All actors across the actor type.
-- Both. 
+- Both.
 
 Specify `circuitBreakerScope` with values `id`, `type`, or `both`.
 
 You can specify a cache size for the number of circuit breakers to keep in memory. Do this by specifying `circuitBreakerCacheSize` and providing an integer value, e.g. `5000`.
 
 Example
+
 ```yaml
 spec:
   targets:
