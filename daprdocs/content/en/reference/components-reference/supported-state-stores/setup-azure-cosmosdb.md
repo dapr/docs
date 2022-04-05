@@ -94,7 +94,7 @@ spec:
 
 To use the Cosmos DB state store, your data must be sent to Dapr in JSON-serialized format. Having it just JSON *serializable* will not work.
 
-If you are using the Dapr SDKs (e.g. the [.NET SDK](https://github.com/dapr/dotnet-sdk)), the SDK will serialize your data to JSON for you, automatically.
+If you are using the Dapr SDKs (for example the [.NET SDK](https://github.com/dapr/dotnet-sdk)), the SDK automatically serializes your data to JSON.
 
 If you want to invoke Dapr's HTTP endpoint directly, take a look at the examples (using curl) in the [Partition keys](#partition-keys) section below.
 
