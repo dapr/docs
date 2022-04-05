@@ -102,7 +102,7 @@ If you want to invoke Dapr's HTTP endpoint directly, take a look at the examples
 
 For **non-actor state** operations, the Azure Cosmos DB state store will use the `key` property provided in the requests to the Dapr API to determine the Cosmos DB partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
 
-The following operation will use `nihilus` as the partition key value sent to Cosmos DB:
+The following operation uses `nihilus` as the partition key value sent to Cosmos DB:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/<store_name> \
