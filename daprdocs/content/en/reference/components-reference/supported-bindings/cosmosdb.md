@@ -99,7 +99,7 @@ Prerequisites:
 - [jq](https://stedolan.github.io/jq/download/)
 - The scripts below are optimized for a bash or zsh shell
 
-> When using the Cosmos DB binding, you don't need to create stored procedures like in the case of the Cosmos DB state store.
+> When using the Cosmos DB binding, you **don't** need to create stored procedures as you do in the case of the Cosmos DB state store.
 
 ### Granting your Azure AD application access to Cosmos DB
 
