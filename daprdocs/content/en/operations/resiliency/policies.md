@@ -6,16 +6,21 @@ weight: 4500
 description: "Configure resiliency policies for timeouts, retries/backoffs and circuit breakers"
 ---
 
-Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first enable the resiliency preview feature.
+> Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first enable the resiliency preview feature.
 
 ### Policies
-Policies is where timeouts, retries and circuit breaker policies are defined. Each is given a name so they can be referred to from the `targets` section in the resiliency spec. 
+
+You define timeouts, retries and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec.
 
 #### Timeouts
 
-Timeouts can be used to early-terminate long-running operations. If a timeout is exceeded the operation in progress will be terminated if possible and an error is returned. Valid values are of the form `15s`, `2m`, `1h30m`, etc
+Timeouts can be used to early-terminate long-running operations. If you've exceeded timeout:
 
-Example definitions:
+- The operation in progress will be terminated (if possible).
+- An error is returned. 
+
+Valid values are of the form `15s`, `2m`, `1h30m`, etc. For example:
+
 ```yaml
 spec:
   policies:
@@ -28,14 +33,17 @@ spec:
 
 #### Retries
 
-Retries allow defining of a retry stragegy for failed operations. Requests failed due to triggering a defined timeout or circuit breaker policy will also be retried per the retry strategy. The following retry options are configurable:
+With `retries`, you can define a retry strategy for failed operations, including requests failed due to triggering a defined timeout or circuit breaker policy. The following retry options are configurable:
 
-- `policy`: determines the backoff and retry interval strategy. Valid values are `constant` and `exponential`. Defaults to `constant`.
-- `duration`: determines the time interval between retries. Default: `5s`. Only applies to the `constant` `policy`. Valid values are of the form `200ms`, `15s`, `2m`, etc
-- `maxInterval`: determines the largest interval between retries to which the `exponential` backoff `policy` can grow. Additional retries will always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc
-- `maxRetries`: The number of retries to attempt. `-1` denotes an indefinite number of retries. Defaults to `-1`.
+| Retry option | Description |
+| ------------ | ----------- |
+| `policy` | Determines the back-off and retry interval strategy. Valid values are `constant` and `exponential`. Defaults to `constant`. |
+| `duration` | Determines the time interval between retries. Default: `5s`. Only applies to the `constant` `policy`. Valid values are of the form `200ms`, `15s`, `2m`, etc. |
+| `maxInterval` | Determines the maximum interval between retries to which the `exponential` back-off `policy` can grow. Additional retries will always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc |
+| `maxRetries` | The maximum number of retries to attempt. `-1` denotes an indefinite number of retries. Defaults to `-1`. |
 
-The exponential backoff window uses the following formula:
+The exponential back-off window uses the following formula:
+
 ```
 BackOffDuration = PreviousBackOffDuration * (Random value from 0.5 to 1.5) * 1.5
 if BackOffDuration > maxInterval {
@@ -44,6 +52,7 @@ if BackOffDuration > maxInterval {
 ```
 
 Example definitions:
+
 ```yaml
 spec:
   policies:
@@ -62,12 +71,14 @@ spec:
 
 ##### Circuit Breakers
 
-Circuit Breakers (CBs) are policies that are used when other applications/services/components are experiencing elevated failure rates. Their purpose is to monitor the requests and, when a certain criteria is met, shut off all traffic to the impacted service. This is to give the service time to recover from their outage instead of flooding them with events. The circuit breaker can also allow partial traffic through to see if the system has healed (half open state). Once successful requests start to occur, the CB can close and allow traffic to resume.
+Circuit breakers (CBs) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met. By doing this, CBs give the service time to recover from their outage instead of flooding them with events. The CB can also allow partial traffic through to see if the system has healed (half-open state). Once successful requests start to occur, the CB can close and allow traffic to resume.
 
-- `maxRequests`: The maximum number of requests allowed to pass through when the CB is half-open (recovering from failure). Defaults to `1`.
-- `interval`: The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this will never clear. Defaults to `0s`.
-- `timeout`: The period of the open state (directly after failure) until the CB switches to half-open. Defaults to `60s`.
-- `trip`: A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Default is `consecutiveFailures > 5`.
+| Retry option | Description |
+| ------------ | ----------- |
+| `maxRequests` | The maximum number of requests allowed to pass through when the CB is half-open (recovering from failure). Defaults to `1`. |
+| `interval` | The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this will never clear. Defaults to `0s`. |
+| `timeout` | The period of the open state (directly after failure) until the CB switches to half-open. Defaults to `60s`. |
+| `trip` | A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Default is `consecutiveFailures > 5`. |
 
 Example:
 
