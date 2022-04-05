@@ -94,7 +94,7 @@ When using the Dapr Cosmos DB binding and authenticating with Azure AD, you ne
 
 Prerequisites:
 
-- You will need a Service Principal created as per the instructions in the [authenticating to Azure]({{< ref authenticating-azure.md >}}) page. You will need the ID of the Service Principal for the commands below (note that this is different from the client ID of your application, or the value you use for `azureClientId` in the metadata).
+- You need a Service Principal created as per the instructions in the [authenticating to Azure]({{< ref authenticating-azure.md >}}) page. You need the ID of the Service Principal for the commands below (note that this is different from the client ID of your application, or the value you use for `azureClientId` in the metadata).
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - The scripts below are optimized for a bash or zsh shell
