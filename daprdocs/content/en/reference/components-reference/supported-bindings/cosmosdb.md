@@ -103,7 +103,7 @@ Prerequisites:
 
 ### Granting your Azure AD application access to Cosmos DB
 
-> You can find more information on the [official documentation](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac), including instructions to assign more granular permissions.
+> You can find more information on the [official documentation](https://docs.microsoft.com/azure/cosmos-db/how-to-setup-rbac), including instructions to assign more granular permissions.
 
 In order to grant your application permissions to access data stored in Cosmos DB, you need to assign it a custom role for the Cosmos DB data plane. In this example you're going to use a built-in role, "Cosmos DB Built-in Data Contributor", which grants your application full read-write access to the data; you can optionally create custom, fine-tuned roles following the instructions in the official docs.
 
