@@ -48,9 +48,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | connectionString | Y | Output | The [EventHubs connection string](https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature). Note that this is the EventHub itself and not the EventHubs namespace. Make sure to use the child EventHub shared access policy connection string | `"Endpoint=sb://****"` |
 | consumerGroup | Y | Output | The name of an [EventHubs Consumer Group](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#consumer-groups) to listen on | `"group1"` |
 | storageAccountName | Y | Output | The name of the account of the Azure Storage account to persist checkpoints data on | `"accountName"` |
-| storageAccountKey | Y | Output | The account key for the Azure Storage account to persist checkpoints data on | `"accountKey"` |
-| storageContainerName | Y | Output | The name of the container in the Azure Storage account to persist checkpoints data on | `"contianerName"` |
+| storageAccountKey | Y* | Output | The account key for the Azure Storage account to persist checkpoints data on. ***Not required if using AAD authentication.** | `"accountKey"` |
+| storageContainerName | Y | Output | The name of the container in the Azure Storage account to persist checkpoints data on | `"containerName"` |
 | partitionID | N | Output | ID of the partition to send and receive events | `0` |
+| eventHub | N | Output | The name of the EventHubs hub. **Required if using AAD authentication.** | `eventHubsNamespace-hubName` |
+| eventHubNamespace | N | Output | The name of the EventHubs namespace. **Required if using AAD authentication.** | `eventHubsNamespace` |
+
+### Azure Active Directory (AAD) authentication
+The Azure Event Hubs pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 
