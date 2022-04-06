@@ -67,7 +67,7 @@ spec:
         maxRetries: -1 # Retry indefinitely
 ```
 
-##### Circuit Breakers
+##### Circuit breakers
 
 Circuit breakers (CBs) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met. By doing this, CBs give the service time to recover from their outage instead of flooding them with events. The CB can also allow partial traffic through to see if the system has healed (half-open state). Once successful requests start to occur, the CB can close and allow traffic to resume.
 
