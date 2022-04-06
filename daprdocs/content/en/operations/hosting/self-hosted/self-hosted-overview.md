@@ -12,7 +12,7 @@ Dapr can be configured to run in self-hosted mode on your local developer machin
 
 ## Initialization
 
-Dapr can be initialized [with Docker]({{< ref self-hosted-with-docker.md >}}) (default) or in [slim-init mode]({{< ref self-hosted-no-docker.md >}}). The default Docker setup provides out of the box functionality with the following containers and configuration:
+Dapr can be initialized [with Docker]({{< ref self-hosted-with-docker.md >}}) (default) or in [slim-init mode]({{< ref self-hosted-no-docker.md >}}). It can also be initialized and run in [offline or airgap environments]({{< ref self-hosted-airgap.md >}}). The default Docker setup provides out of the box functionality with the following containers and configuration:
 - A Redis container configured to serve as the default component for both state management and publish/subscribe.
 - A Zipkin container for diagnostics and tracing.
 - A default Dapr configuration and components installed in `$HOME/.dapr/` (Mac/Linux) or `%USERPROFILE%\.dapr\` (Windows).

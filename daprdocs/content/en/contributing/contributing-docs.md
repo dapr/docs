@@ -19,7 +19,6 @@ Fork the [docs repository](https://github.com/dapr/docs) to work on any changes
 Follow the instructions in the repository [README.md](https://github.com/dapr/docs/blob/master/README.md#environment-setup) to install Hugo locally and build the docs website.
 
 ## Branch guidance
-
 The Dapr docs handles branching differently than most code repositories. Instead of having a `master` or `main` branch, every branch is labeled to match the major and minor version of a runtime release. For the full list visit the [Docs repo](https://github.com/dapr/docs#branch-guidance)
 
 Overall, all updates should go into the docs branch for the latest release of Dapr. You can find this directly at [https://github.com/dapr/docs](https://github.com/dapr/docs), as the latest release will be the default branch. For any docs changes that are applicable to a release candidate or a pre-release version of the docs, make your changes into that particular branch.
@@ -36,6 +35,16 @@ These conventions should be followed throughout all Dapr documentation to ensure
 - **Assume a new developer audience** - Some obvious steps can seem hard. E.g. Now set an environment variable Dapr to a value X. It is better to give the reader the explicit command to do this, rather than having them figure this out.
 - **Use present tense** - Avoid sentences like "this command will install redis", which implies the action is in the future. Instead use "This command installs redis" which is in the present tense.
 
+## Diagrams and images
+It is strongly encouraged to create diagrams and images where ever possible for documentation pages. All diagrams are kept in a Dapr Diagrams Deck, which has guidance on style and icons. The diagram images are saved as PNG files into the [images folder](/images). 
+Diagrams should be;
+- Saved as PNG files with a high resolution
+- Named using the convention of a concept or building block so that they are grouped. For example `service-invocation-overview.png`. Also see Images guidance section below.
+- Added to the correct section in the `Dapr-Diagrams.pptx` deck so that they can be amended and updated.
+
+{{< button text="Download the Dapr Diagrams Deck" link="/presentations/Dapr-Diagrams.zip" >}}
+
+
 ## Contributing a new docs page
 - Make sure the documentation you are writing is in the correct place in the hierarchy.
 - Avoid creating new sections where possible, there is a good chance a proper place in the docs hierarchy already exists.
@@ -50,7 +59,6 @@ These conventions should be followed throughout all Dapr documentation to ensure
 - Where possible reference a practical How-To doc.
 
 ### Contributing a new How-To guide
-
 - `How To` articles are meant to provide step-by-step practical guidance on to readers who wish to enable a feature, integrate a technology or use Dapr in a specific scenario.
 - Sub directory naming - the directory name should be descriptive and if referring to specific component or concept should begin with the relevant name. Example *pubsub-namespaces*.
 - Do not assume the reader is using a specific environment unless the article itself is specific to an environment. This include OS (Windows/Linux/MacOS), deployment target (Kubernetes, IoT etc.) or programming language. If instructions vary between operating systems, provide guidance for all.

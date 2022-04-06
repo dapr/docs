@@ -42,7 +42,7 @@ In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yam
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: order-pub-sub
 spec:
   type: pubsub.rabbitmq
   version: v1
@@ -74,7 +74,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: order-pub-sub
   namespace: default
 spec:
   type: pubsub.rabbitmq
@@ -121,17 +121,17 @@ You can subscribe to a topic using the following Custom Resources Definition (CR
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
 metadata:
-  name: order_pub_sub
+  name: order-pub-sub
 spec:
   topic: orders
   route: /checkout
-  pubsubname: order_pub_sub
+  pubsubname: order-pub-sub
 scopes:
 - orderprocessing
 - checkout
 ```
 
-The example above shows an event subscription to topic `orders`, for the pubsub component `order_pub_sub`.
+The example above shows an event subscription to topic `orders`, for the pubsub component `order-pub-sub`.
 - The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
 - The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
 
@@ -216,7 +216,7 @@ namespace CheckoutService.controller
     public class CheckoutServiceController : Controller
     {
          //Subscribe to a topic 
-        [Topic("order_pub_sub", "orders")]
+        [Topic("order-pub-sub", "orders")]
         [HttpPost("checkout")]
         public void getCheckout([FromBody] int orderId)
         {
@@ -252,7 +252,7 @@ public class CheckoutServiceController {
 
     private static final Logger log = LoggerFactory.getLogger(CheckoutServiceController.class);
      //Subscribe to a topic
-    @Topic(name = "orders", pubsubName = "order_pub_sub")
+    @Topic(name = "orders", pubsubName = "order-pub-sub")
     @PostMapping(path = "/checkout")
     public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
         return Mono.fromRunnable(() -> {
@@ -287,7 +287,7 @@ import json
 app = App()
 logging.basicConfig(level = logging.INFO)
 #Subscribe to a topic 
-@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+@app.subscribe(pubsub_name='order-pub-sub', topic='orders')
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
@@ -318,7 +318,7 @@ import (
 
 //code
 var sub = &common.Subscription{
-	PubsubName: "order_pub_sub",
+	PubsubName: "order-pub-sub",
 	Topic:      "orders",
 	Route:      "/checkout",
 }
@@ -373,7 +373,7 @@ async function start(orderId) {
         CommunicationProtocolEnum.HTTP
     );
     //Subscribe to a topic
-    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+    await server.pubsub.subscribe("order-pub-sub", "orders", async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
     });
     await server.startServer();
@@ -406,21 +406,21 @@ dapr run --app-id orderprocessing --dapr-http-port 3601
 Then publish a message to the `orders` topic:
 
 ```bash
-dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"orderId": "100"}'
+dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{"orderId": "100"}'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 Then publish a message to the `orders` topic:
 ```bash
-curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
+curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 Then publish a message to the `orders` topic:
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
 ```
 {{% /codetab %}}
 
@@ -452,7 +452,7 @@ namespace EventService
     {
         static async Task Main(string[] args)
         {
-           string PUBSUB_NAME = "order_pub_sub";
+           string PUBSUB_NAME = "order-pub-sub";
            string TOPIC_NAME = "orders";
            while(true) {
                 System.Threading.Thread.Sleep(5000);
@@ -501,7 +501,7 @@ public class OrderProcessingServiceApplication {
 	public static void main(String[] args) throws InterruptedException{
 		String MESSAGE_TTL_IN_SECONDS = "1000";
 		String TOPIC_NAME = "orders";
-		String PUBSUB_NAME = "order_pub_sub";
+		String PUBSUB_NAME = "order-pub-sub";
 
 		while(true) {
 			TimeUnit.MILLISECONDS.sleep(5000);
@@ -544,7 +544,7 @@ logging.basicConfig(level = logging.INFO)
 while True:
     sleep(random.randrange(50, 5000) / 1000)
     orderId = random.randint(1, 1000)
-    PUBSUB_NAME = 'order_pub_sub'
+    PUBSUB_NAME = 'order-pub-sub'
     TOPIC_NAME = 'orders'
     with DaprClient() as client:
         #Using Dapr SDK to publish a topic
@@ -580,7 +580,7 @@ import (
 
 //code
 var (
-	PUBSUB_NAME = "order_pub_sub"
+	PUBSUB_NAME = "order-pub-sub"
 	TOPIC_NAME  = "orders"
 )
 
@@ -633,7 +633,7 @@ var main = function() {
 }
 
 async function start(orderId) {
-    const PUBSUB_NAME = "order_pub_sub"
+    const PUBSUB_NAME = "order-pub-sub"
     const TOPIC_NAME  = "orders"
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     console.log("Published data:" + orderId)
@@ -676,21 +676,21 @@ Read about content types [here](#content-types), and about the [Cloud Events mes
 {{% codetab %}}
 Publish a custom CloudEvent to the `orders` topic:
 ```bash
-dapr publish --publish-app-id orderprocessing --pubsub order_pub_sub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
+dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 Publish a custom CloudEvent to the `orders` topic:
 ```bash
-curl -X POST http://localhost:3601/v1.0/publish/order_pub_sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
+curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 Publish a custom CloudEvent to the `orders` topic:
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order_pub_sub/orders'
+Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
 ```
 {{% /codetab %}}
 
