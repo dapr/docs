@@ -144,7 +144,7 @@ spec:
         outbound:
           timeout: general
           retry: retryForever
-          # circuit breakers for components are scoped per component configuration/instance (e.g. redis1).
+          # circuit breakers for components are scoped per component configuration/instance. For example myRediscomponent.
           # when this breaker is tripped, all interaction to that component is prevented for the configured `timeout` duration.
           circuitBreaker: simpleCB
 
