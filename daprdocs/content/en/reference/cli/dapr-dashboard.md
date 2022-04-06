@@ -49,3 +49,13 @@ dapr dashboard -k -p 9999 --address 0.0.0.0
 # Port forward to dashboard service running in Kubernetes on a specified port
 dapr dashboard -k -p 9999
 ```
+### Warning messages - Kubernetes Mode 
+This command can issue warning messages.
+
+#### Root certificate renewal warning
+If the mtls root certificate deployed to the Kubernetes cluster expires in under 30 days the following warning message is displayed:
+
+```
+Dapr root certificate of your Kubernetes cluster expires in <n> days. Expiry date: <date:time> UTC. 
+Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
+```
