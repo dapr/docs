@@ -250,7 +250,7 @@ Alternatively, you can create an instance of Redis by running the following comm
  ```bash
  docker run -p 6379:6379 --name redis --rm redis
  ```
- The Redis container that gets created on dapr init or via the above command, cannot be used with state store query API alone. You can run redislabs/rejson docker image on a different port(than already installed Redis is using) to work with query API.
+ The Redis container that gets created on dapr init or via the above command, cannot be used with state store query API alone. You can run redislabs/rejson docker image on a different port(than the already installed Redis is using) to work with query API.
 
 > Note: `redislabs/rejson` has support only for amd64 architecture.
 
