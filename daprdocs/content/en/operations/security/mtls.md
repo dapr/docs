@@ -158,8 +158,35 @@ helm install \
   dapr \
   dapr/dapr
 ```
+### Root and issuer certificate upgrade using CLI (Recommended)
+The CLI commands below can be used to renew root and issuer certificates in your Kubernetes cluster. 
 
-### Updating root or issuer certs
+#### Generate brand new certificates
+
+1. The command below generates brand new root and issuer certificates, signed by a newly generated private root key.
+
+> **Note: The `Dapr sentry service` followed by rest of the control plane services must be restarted for them to be able to read the new certificates. This can be done by supplying `--restart` flag to the command.**
+
+```bash
+dapr mtls renew-certificate -k --valid-unitl <days> --restart
+```
+2. The command below generates brand new root and issuer certificates, signed by provided private root key.
+
+> **Note: If your existing deployed certificates are signed by this same private root key, the `Dapr Sentry service` can then read these new certificates without restarting.**
+
+```bash
+dapr mtls renew-certificate -k --private-key <private_key_file_path> --valid-until <days>
+```
+#### Renew certificates by using provided custom certificates
+To update the provided certificates in the Kubernetes cluster, the CLI command below can be used.
+
+> **Note - It does not support `valid-until` flag to specify validity for new certificates.**
+
+```bash
+dapr mtls renew-certificate -k --ca-root-certificate <ca.crt> --issuer-private-key <issuer.key> --issuer-public-certificate <issuer.crt> --restart
+```
+
+### Updating root or issuer certs using Kubectl
 
 If the Root or Issuer certs are about to expire, you can update them and restart the required system services.
 
@@ -199,17 +226,6 @@ kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 
 4. Restart your Dapr applications to pick up the latest trust bundle.
 
-{{% alert title="Recommended CLI command to rotate certificates with new ones" color="success" %}}
-The below CLI command can be used to renew root and issuer certificates of your Kubernetes cluster. It also gives an option to provide validity for the new certificates in number of days. 
-
-The 2nd variant of this command provides `--private-key` flag to support use of `private root key` of your existing deployed certificate.
-This command generate new certificates signed by same private key. In this case the `Dapr Sentry service` would be able to pick the new certificate without restarting it.
-{{% /alert %}}
-
-```bash
-dapr mtls renew-certificate -k --valid-unitl <days> --restart
-dapr mtls renew-certificate -k --private-key <private_key_file_path> --valid-until <days>
-```
 {{% alert title="Potential application downtime with mTLS enabled." color="warning" %}}
 Restarts of deployments using service to service invocation using mTLS will fail until the callee service has also been restarted (thereby loading the new Dapr Trust Bundle). Additionally, the placement service will not be able to assign new actors (while existing actors remain unaffected) until applications have been restarted to load the new Dapr Trust Bundle.
 {{% /alert %}}
@@ -257,14 +273,6 @@ Once Sentry has been completely restarted run:
 kubectl rollout restart deploy/dapr-operator -n <DAPR_NAMESPACE>
 kubectl rollout restart statefulsets/dapr-placement-server -n <DAPR_NAMESPACE>
 ```
-{{% alert title="Recommended CLI command to achieve above steps" color="success" %}}
-To update the provided certificates in Kubernetes cluster, the belowl CLI command can be used.
-**Note - It does not support `valid-until` flag to specify validity.** 
-{{% /alert %}}
-
-```bash
-dapr mtls renew-certificate -k --ca-root-certificate <ca.crt> --issuer-private-key <issuer.key> --issuer-public-certificate <issuer.crt> --restart
-```
 
 Next, you must restart all Dapr-enabled pods.
 The recommended way to do this is to perform a rollout restart of your deployment:
@@ -274,6 +282,11 @@ kubectl rollout restart deploy/myapp
 ```
 
 You will experience potential downtime due to mismatching certificates until all deployments have successfully been restarted (and hence loaded the new Dapr certificates).
+
+### Kubernetes video demo 
+Watch this video to show how to update mTLS certificates on Kubernetes
+
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/_U9wJqq-H1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Set up monitoring for Dapr control plane mTLS certificate expiration
 
@@ -318,11 +331,6 @@ dapr status -k
 ⚠  Dapr root certificate of your Kubernetes cluster expires in 2 days. Expiry date: Mon, 04 Apr 2022 15:01:03 UTC.
  Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
 ```
-
-### Kubernetes video demo 
-Watch this video to show how to update mTLS certificates on Kubernetes
-
-<iframe width="1280" height="720" src="https://www.youtube.com/embed/_U9wJqq-H1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Self hosted
 ### Running the control plane Sentry service
