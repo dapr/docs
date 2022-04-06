@@ -31,10 +31,6 @@ spec:
 | `metadata.name` | The name of the state store. |
 | `spec/metadata` | An open key value pair metadata that allows a binding to define connection properties. |
 
-Support for multiple state stores was added, starting with 0.4.0 release. This is a breaking change from previous releases, as the state APIs were changed to support this new scenario.
-
-Refer to [the decision records](https://github.com/dapr/dapr/blob/master/docs/decision_records/api/API-008-multi-state-store-api-design.md) for more details.
-
 ## Key scheme
 
 Dapr state stores are key/value stores. To ensure data compatibility, Dapr requires these data stores follow a fixed key scheme. For general states, the key format is:
