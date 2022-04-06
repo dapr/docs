@@ -172,7 +172,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 ```bash
 dapr run --app-id order-processor --components-path ../../../components/ -- npm run start
 ```
-In the `order-processor` service, we're writing, reading and deleting an orderId key \ value pair to the Redis instance called `statestore` [(as defined in the `statestore.yaml` component)]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
 
 ```js
 // Save state into the state store
@@ -297,7 +297,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
 ```
 
-In the `order-processor` service, we're writing, reading and deleting an orderId key \ value pair to the Redis instance called `statestore` [(as defined in the `statestore.yaml` component)]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
 
 ```cs
 // Save state into the state store
@@ -412,7 +412,7 @@ Run the `order-processor` publisher service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
 ```
 
-In the `order-processor` service, we're writing, reading and deleting an orderId key \ value pair to the Redis instance called `statestore` [(as defined in the `statestore.yaml` component)]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
 
 ```java
 try (DaprClient client = new DaprClientBuilder().build()) {
@@ -529,7 +529,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components -- go run app.go
 ```
 
-In the `order-processor` service, we're writing, reading and deleting an orderId key \ value pair to the Redis instance called `statestore` [(as defined in the `statestore.yaml` component)]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
 
 ```go
   // Save state into the state store
