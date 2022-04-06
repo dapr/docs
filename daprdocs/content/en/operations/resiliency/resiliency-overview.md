@@ -5,27 +5,11 @@ linkTitle: "Overview"
 weight: 4500
 description: "Configure Dapr retries, timeouts, and circuit breakers"
 ---
-
-Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
-
-#### Enable resiliency:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: featureconfig
-spec:
-  features:
-    - name: Resiliency
-      enabled: true
-```
-
-## Introduction
+{{% alert title="Note" color="primary" %}}
+ Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref support-preview-features >}}).
+{{% /alert %}}
 
 Distributed applications are commonly comprised of many moving pieces, with dozens, even hundreds, of instances for any given service. With so many moving pieces, the likelihood of a system failure increases. For example, an instance can fail due to hardware failures, an overwhelming number of requests, application restarts/scale outs, or any other reason. These events can cause a network call between services to fail. Designing and implementing your application with fault tolerance (the ability to detect, mitigate, and respond to failures) allows your application to recover quickly to a functioning state.
-
-## Overview
 
 Dapr provides a mechanism for defining and applying fault tolerance/resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). The resiliency spec is defined in the same location as components and is applied when the Dapr sidecar starts.  The sidecar determines when and how to apply resiliency policies to your Dapr API calls. In self-hosted mode, the resiliency spec must be named `resiliency.yaml`. In Kubernetes Dapr scans all resiliency specs. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
 
@@ -178,3 +162,7 @@ spec:
           retry: important
           circuitBreaker: pubsubCB
 ```
+
+## Related links
+ - [Policies]({{< ref "policies.md" >}})
+ - [Targets]({{< ref "targets.md" >}})

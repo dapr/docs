@@ -6,28 +6,13 @@ weight: 4500
 description: "Configure resiliency policies for timeouts, retries/backoffs and circuit breakers"
 ---
 
-Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
-
-#### Enablethe resiliency:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: featureconfig
-spec:
-  features:
-    - name: Resiliency
-      enabled: true
-```
-
 ### Policies
 
 You define timeouts, retries and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec.
 
 #### Timeouts
 
-Timeouts can be used to early-terminate long-running operations. If you've exceeded timeout:
+Timeouts can be used to early-terminate long-running operations. If you've exceeded a timeout duration:
 
 - The operation in progress will be terminated (if possible).
 - An error is returned.

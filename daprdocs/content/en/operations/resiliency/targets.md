@@ -6,21 +6,6 @@ weight: 4500
 description: "Apply resiliency policies to apps, components and actors"
 ---
 
-Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
-
-#### Enablethe resiliency:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: featureconfig
-spec:
-  features:
-    - name: Resiliency
-      enabled: true
-```
-
 ### Targets
 Named policies are applied to targets. Dapr supports 3 target types that cover all Dapr building blocks, except observability:
 - `apps`
