@@ -104,7 +104,7 @@ spec:
         duration: 5s
         maxRetries: 3
 
-    # circuit breakers are automatically instantiated per component and app endpoint.
+    # circuit breakers are automatically instantiated per component and app instance.
     # circuit breakers maintain counters that live as long as the Dapr sidecar is running. They are not persisted.
     circuitBreakers:
       simpleCB:
@@ -124,7 +124,7 @@ spec:
       appB:
         timeout: general
         retry: important
-        # circuit breakers for services are scoped per endpoint (e.g. hostname + port).
+        # circuit breakers for services are scoped app instance.
         # when a breaker is tripped, that route is removed from load balancing for the configured `timeout` duration.
         circuitBreaker: simpleCB
 

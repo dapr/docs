@@ -3,7 +3,7 @@ type: docs
 title: "Policies"
 linkTitle: "Policies"
 weight: 4500
-description: "Configure resiliency policies for timeouts, retries/backoffs and circuit breakers"
+description: "Configure resiliency policies for timeouts, retries and circuit breakers"
 ---
 
 ### Policies
@@ -14,7 +14,7 @@ You define timeouts, retries and circuit breaker policies under `policies`. Each
 
 Timeouts can be used to early-terminate long-running operations. If you've exceeded a timeout duration:
 
-- The operation in progress will be terminated (if possible).
+- The operation in progress is terminated (if possible).
 - An error is returned.
 
 Valid values are of the form `15s`, `2m`, `1h30m`, etc. 
@@ -37,8 +37,8 @@ With `retries`, you can define a retry strategy for failed operations, including
 | Retry option | Description |
 | ------------ | ----------- |
 | `policy` | Determines the back-off and retry interval strategy. Valid values are `constant` and `exponential`. Defaults to `constant`. |
-| `duration` | Determines the time interval between retries. Default: `5s`. Only applies to the `constant` `policy`. Valid values are of the form `200ms`, `15s`, `2m`, etc. |
-| `maxInterval` | Determines the maximum interval between retries to which the `exponential` back-off `policy` can grow. Additional retries will always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc |
+| `duration` | Determines the time interval between retries. Default: `5s`. Only applies to the `constant` policy. Valid values are of the form `200ms`, `15s`, `2m`, etc. |
+| `maxInterval` | Determines the maximum interval between retries to which the `exponential` back-off policy can grow. Additional retries always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc |
 | `maxRetries` | The maximum number of retries to attempt. `-1` denotes an indefinite number of retries. Defaults to `-1`. |
 
 The exponential back-off window uses the following formula:
@@ -74,11 +74,11 @@ Circuit breakers (CBs) policies are used when other applications/services/compon
 | Retry option | Description |
 | ------------ | ----------- |
 | `maxRequests` | The maximum number of requests allowed to pass through when the CB is half-open (recovering from failure). Defaults to `1`. |
-| `interval` | The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this will never clear. Defaults to `0s`. |
+| `interval` | The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this never clears. Defaults to `0s`. |
 | `timeout` | The period of the open state (directly after failure) until the CB switches to half-open. Defaults to `60s`. |
 | `trip` | A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Default is `consecutiveFailures > 5`. |
 | `circuitBreakerScope` | Specify whether circuit breaking state should be scoped to an individual actor ID, all actors across the actor type, or both. Possible values include `id`, `type`, or `both`|
-| `circuitBreakerCacheSize` | Specify a cache size for the number of circuit breakers to keep in memory. Prvovide an integer value, for example `5000`. |
+| `circuitBreakerCacheSize` | Specify a cache size for the number of CBs to keep in memory. The value should be larger than the expected number of active actor instances.  Provide an integer value, for example `5000`. |
 
 Example:
 ```yaml

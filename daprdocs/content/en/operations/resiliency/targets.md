@@ -7,16 +7,16 @@ description: "Apply resiliency policies to apps, components and actors"
 ---
 
 ### Targets
-Named policies are applied to targets. Dapr supports 3 target types that cover all Dapr building blocks, except observability:
+Named policies are applied to targets. Dapr supports three target types that apply all Dapr building block APIs:
 - `apps`
 - `components`
 - `actors`
 
-Fault tolerance behaviors might differ between target types, as some targets may already include resilient capabilities; for example, [service invocation with built-in retries]({{< ref "service-invocation-overview.md#retries" >}}).  
-
 #### Apps
 
-With the `apps` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to service invocation calls between Dapr apps. Under `targets/apps`, policies are applied to each target service's `app-id`. The policies are invoked when a network failure occurs in communication between sidecars (as pictured in the diagram above).
+With the `apps` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to service invocation calls between Dapr apps. Under `targets/apps`, policies are applied to each target service's `app-id`. The policies are invoked when a failure occurs in communication between sidecars, as shown in the diagram below.
+
+> Dapr provides [built-in service invocation retries]({{< ref "service-invocation-overview.md#retries" >}}), so any applied `retry` policies are additional.
 
 <img src="/images/resiliency_svc_invocation.png" width=1000 alt="Diagram showing service invocation resiliency" />
 
@@ -32,13 +32,12 @@ specs:
         circuitBreaker: general
 ```
 
-> Dapr provides [built-in service invocation retries]({{< ref "service-invocation-overview.md#retries" >}}), so any applied `retry` policies are additional.
 
 #### Components
 
 With the `components` target, you can apply `retry`, `timeout` and `circuitBreaker` policies to component operations.
 
-Policies can be applied for `outbound` operations (calls to the Dapr sidecar) and/or `inbound` (the sidecar calling your app). At this time, *inbound* only applies to PubSub and InputBinding components. 
+Policies can be applied for `outbound` operations (calls to the Dapr sidecar) and/or `inbound` (the sidecar calling your app). 
 
 ##### Outbound
 
@@ -48,9 +47,9 @@ Policies can be applied for `outbound` operations (calls to the Dapr sidecar) an
 - Publishing a message.
 - Invoking an output binding.
 
-<img src="/images/resiliency_outbound.png" width=1000 alt="Diagram showing service invocation resiliency">
+> Some components may have built-in retry capabilities and are configured on a per-component basis.
 
-Some components have built-in `retry` capabilities and are configured on a per-component basis.
+<img src="/images/resiliency_outbound.png" width=1000 alt="Diagram showing service invocation resiliency">
 
 ```yaml
 spec:
@@ -58,8 +57,8 @@ spec:
     components:
       myStateStore:
         outbound:
-          retry: pubsubRetry
-          circuitBreaker: pubsubCB
+          retry: retryForever
+          circuitBreaker: simpleCB
 ```
 
 ##### Inbound
@@ -67,11 +66,11 @@ spec:
 `inbound` operations are calls from the sidecar to your application, such as:
 
 - Subscriptions when delivering a message.
-- Inbound bindings.
+- Input bindings.
+
+> Some components may have built-in retry capabilities and are configured on a per-component basis.
 
 <img src="/images/resiliency_inbound.png" width=1000 alt="Diagram showing service invocation resiliency" />
-
-Some components have built-in `retry` capabilities and are configured on a per-component basis.
 
 ```yaml
 spec:
@@ -106,7 +105,7 @@ spec:
 
 #### Actors
 
-With the `actors` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to actor operations. Policy assignments are optional.
+With the `actors` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to actor operations. 
 
 When using a `circuitBreaker` policy, you can specify whether circuit breaking state should be scoped to:
 
