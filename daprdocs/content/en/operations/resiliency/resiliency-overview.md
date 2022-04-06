@@ -6,7 +6,7 @@ weight: 4500
 description: "Configure Dapr error retries, timeouts, and circuit breakers"
 ---
 
-Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
+> Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
 
 ## Introduction
 
