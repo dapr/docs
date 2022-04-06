@@ -8,7 +8,7 @@ weight: 2000
 
 ### Description
 
-Checks the expiry of the root certificate
+Checks the expiry of the root Certificate Authority (CA) certificate
 
 ### Supported platforms
 
