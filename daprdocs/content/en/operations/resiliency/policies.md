@@ -6,7 +6,20 @@ weight: 4500
 description: "Configure resiliency policies for timeouts, retries/backoffs and circuit breakers"
 ---
 
-> Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first enable the resiliency preview feature.
+Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
+
+#### Enablethe resiliency:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: featureconfig
+spec:
+  features:
+    - name: Resiliency
+      enabled: true
+```
 
 ### Policies
 
@@ -19,8 +32,9 @@ Timeouts can be used to early-terminate long-running operations. If you've excee
 - The operation in progress will be terminated (if possible).
 - An error is returned.
 
-Valid values are of the form `15s`, `2m`, `1h30m`, etc. For example:
+Valid values are of the form `15s`, `2m`, `1h30m`, etc. 
 
+Example:
 ```yaml
 spec:
   policies:
@@ -51,8 +65,7 @@ if BackOffDuration > maxInterval {
 }
 ```
 
-Example definitions:
-
+Example:
 ```yaml
 spec:
   policies:
@@ -79,9 +92,10 @@ Circuit breakers (CBs) policies are used when other applications/services/compon
 | `interval` | The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this will never clear. Defaults to `0s`. |
 | `timeout` | The period of the open state (directly after failure) until the CB switches to half-open. Defaults to `60s`. |
 | `trip` | A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Default is `consecutiveFailures > 5`. |
+| `circuitBreakerScope` | Specify whether circuit breaking state should be scoped to an individual actor ID, all actors across the actor type, or both. Possible values include `id`, `type`, or `both`|
+| `circuitBreakerCacheSize` | Specify a cache size for the number of circuit breakers to keep in memory. Prvovide an integer value, for example `5000`. |
 
 Example:
-
 ```yaml
 spec:
   policies:

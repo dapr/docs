@@ -6,7 +6,20 @@ weight: 4500
 description: "Configure Dapr retries, timeouts, and circuit breakers"
 ---
 
-> Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
+Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
+
+#### Enable resiliency:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: featureconfig
+spec:
+  features:
+    - name: Resiliency
+      enabled: true
+```
 
 ## Introduction
 
@@ -14,13 +27,13 @@ Distributed applications are commonly comprised of many moving pieces, with doze
 
 ## Overview
 
-Dapr provides a mechanism for defining and applying fault tolerance/resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). The resiliency spec is defined in the same location as components and is applied when the Dapr sidecar starts. The sidecar determines when and how to apply resiliency policies to your Dapr API calls. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
+Dapr provides a mechanism for defining and applying fault tolerance/resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). The resiliency spec is defined in the same location as components and is applied when the Dapr sidecar starts.  The sidecar determines when and how to apply resiliency policies to your Dapr API calls. In self-hosted mode, the resiliency spec must be named `resiliency.yaml`. In Kubernetes Dapr scans all resiliency specs. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
 
 - [Timeouts]({{< ref "policies.md#timeouts" >}})
 - [Retries/back-offs]({{< ref "policies.md#retries" >}})
 - [Circuit breakers]({{< ref "policies.md#circuit-breakers" >}})
 
-Policies can then be applied consistently to [targets]({{< ref "targets.md" >}}), which include:
+Policies can then be applied to [targets]({{< ref "targets.md" >}}), which include:
 
 - [Apps]({{< ref "targets.md#apps" >}}) via service invocation
 - [Components]({{< ref "targets.md#components" >}})
@@ -34,7 +47,7 @@ Below is the general structure of a resiliency policy:
 apiVersion: dapr.io/v1alpha1
 kind: Resiliency
 metadata:
-  name: resiliency
+  name: myresiliency
 scopes:
   # optionally scope the policy to specific apps
 spec:
@@ -59,15 +72,13 @@ spec:
       # components and their applied policies here
 ```
 
-> Note: In self-hosted mode, the resiliency policy must be named `resiliency.yaml` and reside in the components folder provided to the sidecar. In Kubernetes, resiliency policies are global and a named policy if loaded by the applications's sidecar .
-
 ### Complete Example Policy
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Resiliency
 metadata:
-  name: resiliency
+  name: myresiliency
 # simialrly to Subscriptions and Configurations specs, scopes lists the Dapr App IDs that this
 # configuration applies to.
 scopes:
@@ -140,7 +151,7 @@ spec:
         # circuit breakers for actors are scoped by type, id, or both.
         # when a breaker is tripped, that type or id is removed from the placement table for the configured `timeout` duration.
         circuitBreaker: simpleCB
-        circuitBreakerScope: both
+        circuitBreakerScope: both ## 
         circuitBreakerCacheSize: 5000
 
     components:

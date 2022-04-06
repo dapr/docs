@@ -3,10 +3,23 @@ type: docs
 title: "Targets"
 linkTitle: "Targets"
 weight: 4500
-description: "Apply resiliency policies for apps, components and actors"
+description: "Apply resiliency policies to apps, components and actors"
 ---
 
-> Resiliency is currently a preview feature. Before you can utilize resiliency policies, you must first enable the resiliency preview feature.
+Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref preview-features >}}).
+
+#### Enablethe resiliency:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: featureconfig
+spec:
+  features:
+    - name: Resiliency
+      enabled: true
+```
 
 ### Targets
 Named policies are applied to targets. Dapr supports 3 target types that cover all Dapr building blocks, except observability:
@@ -14,13 +27,13 @@ Named policies are applied to targets. Dapr supports 3 target types that cover a
 - `components`
 - `actors`
 
-Resilient behaviors might differ between target types, as some targets may already include resilient capabilities; for example, service invocation with built-in retries.  
+Fault tolerance behaviors might differ between target types, as some targets may already include resilient capabilities; for example, [service invocation with built-in retries]({{< ref "service-invocation-overview.md#retries" >}}).  
 
 #### Apps
 
-<img src="/images/resiliency_svc_invocation.png" width=1000 alt="Diagram showing service invocation resiliency" />
+With the `apps` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to service invocation calls between Dapr apps. Under `targets/apps`, policies are applied to each target service's `app-id`. The policies are invoked when a network failure occurs in communication between sidecars (as pictured in the diagram above).
 
-With the `apps` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to service invocation calls between Dapr apps. Under `targets/apps`, policies are applied to each key or target service's `app-id` listed when network failure occurs between sidecar communication (as pictured in the diagram above).
+<img src="/images/resiliency_svc_invocation.png" width=1000 alt="Diagram showing service invocation resiliency" />
 
 Example of policies to a target app with the `app-id` "appB":
 
@@ -38,7 +51,7 @@ specs:
 
 #### Components
 
-With the `components` target, you can apply `retry`, `timeout` and `circuitBreaker` policies to components operations. Policy assignments are optional.
+With the `components` target, you can apply `retry`, `timeout` and `circuitBreaker` policies to component operations.
 
 Policies can be applied for `outbound` operations (calls to the Dapr sidecar) and/or `inbound` (the sidecar calling your app). At this time, *inbound* only applies to PubSub and InputBinding components. 
 
@@ -52,7 +65,7 @@ Policies can be applied for `outbound` operations (calls to the Dapr sidecar) an
 
 <img src="/images/resiliency_outbound.png" width=1000 alt="Diagram showing service invocation resiliency">
 
-Some components have built-in `retry` capabilities and are configured on a per-component basis. 
+Some components have built-in `retry` capabilities and are configured on a per-component basis.
 
 ```yaml
 spec:
@@ -68,7 +81,7 @@ spec:
 
 `inbound` operations are calls from the sidecar to your application, such as:
 
-- Subscribing to a topic.
+- Subscriptions when delivering a message.
 - Inbound bindings.
 
 <img src="/images/resiliency_inbound.png" width=1000 alt="Diagram showing service invocation resiliency" />
