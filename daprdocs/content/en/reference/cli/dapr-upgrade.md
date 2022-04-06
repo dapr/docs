@@ -46,6 +46,16 @@ dapr upgrade -k --runtime-version 1.2
 # Upgrade or downgrade to a specified version of Dapr runtime in Kubernetes with value set
 dapr upgrade -k --runtime-version 1.2 --set global.logAsJson=true
 ```
+### Warning messages
+This command can issue warning messages.
+
+#### Root certificate renewal warning
+If the mtls root certificate deployed to the Kubernetes cluster expires in under 30 days the following warning message is displayed:
+
+```
+Dapr root certificate of your Kubernetes cluster expires in <n> days. Expiry date: <date:time> UTC. 
+Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
+```
 
 ### Related links
 

@@ -46,3 +46,13 @@ dapr configurations -k -n appconfig
 # List Dapr configurations in all namespaces in Kubernetes mode
 dapr configurations -k --all-namespaces
 ```
+### Warning messages
+This command can issue warning messages.
+
+#### Root certificate renewal warning
+If the mtls root certificate deployed to the Kubernetes cluster expires in under 30 days the following warning message is displayed:
+
+```
+Dapr root certificate of your Kubernetes cluster expires in <n> days. Expiry date: <date:time> UTC. 
+Please see docs.dapr.io for certificate renewal instructions to avoid service interruptions.
+```
