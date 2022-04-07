@@ -23,7 +23,7 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | Quickstarts | Description |
 | ----------- | ----------- |
 | [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) | Invoke a method using HTTP proxying with Dapr's Service Invocation building block. |
-| [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) | Get started with Dapr's Publish and Subscribe building block. |
+| [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
 | [State Management]({{< ref statemanagement-quickstart.md >}}) | Create stateful applications using the state management API. |
 | Bindings           | Coming soon. |
 | Actors             | Coming soon. |
