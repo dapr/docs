@@ -32,7 +32,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -202,7 +202,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've set up:
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -236,6 +236,8 @@ dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --component
 In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:  
 
 ```js
+const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
+
 await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
    console.log("Published data: " + JSON.stringify(order));
 ```
@@ -357,7 +359,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've set up:
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -512,7 +514,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -673,7 +675,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -702,6 +704,8 @@ dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --component
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```go
+client, err := dapr.NewClient()
+
 if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
     panic(err)
 }
