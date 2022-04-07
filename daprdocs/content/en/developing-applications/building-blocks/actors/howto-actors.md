@@ -163,6 +163,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
 You can configure the Dapr actor runtime configuration to modify the default runtime behavior.
 
 ### Configuration parameters
+- `entities` - The actor types supported by this host.
 - `actorIdleTimeout` - The timeout before deactivating an idle actor. Checks for timeouts occur every `actorScanInterval` interval. **Default: 60 minutes**
 - `actorScanInterval` - The duration which specifies how often to scan for actors to deactivate idle actors. Actors that have been idle longer than actor_idle_timeout will be deactivated. **Default: 30 seconds**
 - `drainOngoingCallTimeout` - The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. **Default: 60 seconds**
@@ -170,8 +171,9 @@ You can configure the Dapr actor runtime configuration to modify the default run
 - `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
 **Default: 0**
 - `remindersStoragePartitions` - Configure the number of partitions for actor's reminders. If not provided, all reminders are saved as a single record in actor's state store. **Default: 0**
+- `entitiesConfig` - Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. **Default: None**
 
-{{< tabs Java Dotnet Python >}}
+{{< tabs Java Dotnet Python Go >}}
 
 {{% codetab %}}
 ```java
@@ -231,6 +233,52 @@ ActorRuntime.set_actor_config(
         remindersStoragePartitions=7
     )
 )
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```go
+const (
+    defaultActorType = "basicType"
+    reentrantActorType = "reentrantType"
+)
+
+type daprConfig struct {
+	Entities                []string                `json:"entities,omitempty"`
+	ActorIdleTimeout        string                  `json:"actorIdleTimeout,omitempty"`
+	ActorScanInterval       string                  `json:"actorScanInterval,omitempty"`
+	DrainOngoingCallTimeout string                  `json:"drainOngoingCallTimeout,omitempty"`
+	DrainRebalancedActors   bool                    `json:"drainRebalancedActors,omitempty"`
+	Reentrancy              config.ReentrancyConfig `json:"reentrancy,omitempty"`
+	EntitiesConfig          []config.EntityConfig   `json:"entitiesConfig,omitempty"`
+}
+
+var daprConfigResponse = daprConfig{
+	Entities:                []string{defaultActorType, reentrantActorType},
+	ActorIdleTimeout:        actorIdleTimeout,
+	ActorScanInterval:       actorScanInterval,
+	DrainOngoingCallTimeout: drainOngoingCallTimeout,
+	DrainRebalancedActors:   drainRebalancedActors,
+	Reentrancy:              config.ReentrancyConfig{Enabled: false},
+	EntitiesConfig: []config.EntityConfig{
+		{
+            // This actor type must have a matching value in the base level 'entities' field. If it does not, the configuration will be ignored.
+            // If there is a matching entity, the values here will be used to overwrite any values specified in the root configuration.
+            // In the case of this actor, it will have reentrancy enabled and 'defaultActorType' will not have reentrancy enabled.
+			Entities: []string{reentrantActorType},
+			Reentrancy: config.ReentrancyConfig{
+				Enabled:       true,
+				MaxStackDepth: &maxStackDepth,
+			},
+		},
+	},
+}
+
+func configHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(daprConfigResponse)
+}
 ```
 {{% /codetab %}}
 
