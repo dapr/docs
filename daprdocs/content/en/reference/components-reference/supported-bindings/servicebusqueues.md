@@ -11,7 +11,7 @@ aliases:
 
 To setup Azure Service Bus Queues binding create a component of type `bindings.azure.servicebusqueues`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
+### Connection String Authentication
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -23,14 +23,13 @@ spec:
   type: bindings.azure.servicebusqueues
   version: v1
   metadata:
-  - name: connectionString
+  - name: connectionString # Required when not using Azure Authentication.
     value: "Endpoint=sb://************"
   - name: queueName
     value: queue1
   - name: ttlInSeconds
     value: 60
 ```
-
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
@@ -42,9 +41,35 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | connectionString | Y | Input/Output | The Service Bus connection string | `"Endpoint=sb://************"` |
 | queueName | Y | Input/Output | The Service Bus queue name. Queue names are case-insensitive and will always be forced to lowercase. | `"queuename"` |
 | ttlInSeconds | N | Output | Parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days. See [also](#specifying-a-ttl-per-message) | `"60"` |
+| namespaceName| N | Input/Output | Parameter to set the name of the Service Bus namespace. Required if using AAD authentication. | `"namespace"` |
 
 ### Azure Active Directory (AAD) authentication
 The Azure Service Bus Queues binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+
+#### Example Configuration
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+  namespace: <NAMESPACE>
+spec:
+  type: bindings.azure.servicebusqueues
+  version: v1
+  metadata:
+  - name: azureTenantId
+    value: "***"
+  - name: azureClientId
+    value: "***"
+  - name: azureClientSecret
+    value: "***"
+  - name: namespaceName # Required when using Azure Authentication.
+    value: "<SERVICEBUS_NAMESPACE>"
+  - name: queueName
+    value: queue1
+  - name: ttlInSeconds
+    value: 60
+```
 
 ## Binding support
 
