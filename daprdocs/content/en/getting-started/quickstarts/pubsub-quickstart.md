@@ -32,7 +32,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
+Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -202,7 +202,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
+Clone the [sample we've provided in our Quickstart repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -359,7 +359,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
+Clone the [sample we've provided in our Quickstart repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -514,7 +514,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
+Clone the [sample we've provided in our Quickstart repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -675,7 +675,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
+Clone the [sample we've provided in our Quickstart repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -715,7 +715,7 @@ fmt.Sprintf("Published data: ", order)
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, from the root of the quickstarts clone directory,
+In a new terminal window, from the root of the Quickstart clone directory,
 navigate to the `order-processor` directory.
 
 ```bash
