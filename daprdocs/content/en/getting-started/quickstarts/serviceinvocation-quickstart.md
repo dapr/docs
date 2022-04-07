@@ -87,7 +87,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 ```py
@@ -99,7 +99,7 @@ def getOrder():
         'ContentType': 'application/json'}
 
 
-app.run(port=5001)
+app.run(port=7001)
 ```
 
 ### View the Service Invocation outputs
@@ -208,7 +208,7 @@ npm install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ```javascript
