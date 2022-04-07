@@ -32,7 +32,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -153,7 +153,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -269,7 +269,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -391,7 +391,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -505,7 +505,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 
 ```bash
