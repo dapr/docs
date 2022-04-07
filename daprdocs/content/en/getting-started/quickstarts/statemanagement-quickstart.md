@@ -6,11 +6,7 @@ weight: 70
 description: "Get started with Dapr's State Store"
 ---
 
-Let's take a look at Dapr's [State Management building block]({{< ref state-management >}}). You can use Dapr's state management consistency and concurrency capabilities to:
-* Maintain and test different databases and libraries.
-* Handle retries and faults.
-
-In this Quickstart, you use the key/value pairs in the [supported state stores]({{< ref supported-state-stores.md >}}) and allow an application to save, get, and delete state. Our example below uses a Redis instance, but you can use RabbitMQ, Kafka, etc.
+Let's take a look at Dapr's [State Management building block]({{< ref state-management >}}). In this Quickstart, you will save, get, and delete state using a Redis state store, but you can swap this out for any one of the [supported state stores]({{< ref supported-state-stores.md >}}).
 
 <img src="/images/state-management-quickstart.png" width=1000 style="padding-bottom:15px;">
 
@@ -30,7 +26,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -142,7 +138,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -272,7 +268,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -390,7 +386,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -507,7 +503,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
