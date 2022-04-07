@@ -20,7 +20,7 @@ Select your preferred language-specific Dapr SDK before proceeding with the Quic
  <!-- Python -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -30,7 +30,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -38,42 +38,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Publish a topic
-
-In a terminal window, navigate to the `checkout` directory.
-
-```bash
-cd pub_sub/python/sdk/checkout
-```
-
-Install the dependencies:
-
-```bash
-pip3 install -r requirements.txt
-```
-
-Run the `checkout` publisher service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
-```
-
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
-
-```python
-with DaprClient() as client:
-    # Publish an event/message using Dapr PubSub
-    result = client.publish_event(
-        pubsub_name='order_pub_sub',
-        topic_name='orders',
-        data=json.dumps(order),
-        data_content_type='application/json',
-    )
-```
-
 ### Step 3: Subscribe to topics
 
-In a new terminal window, from the root of the Quickstarts clone directory,
+In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
 
 ```bash
@@ -119,7 +86,40 @@ def orders_subscriber():
 app.run(port=5001)
 ```
 
-### Step 4: View the Pub/sub outputs
+### Step 4: Publish a topic
+
+In a new terminal window, navigate to the `checkout` directory.
+
+```bash
+cd pub_sub/python/sdk/checkout
+```
+
+Install the dependencies:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```python
+with DaprClient() as client:
+    # Publish an event/message using Dapr PubSub
+    result = client.publish_event(
+        pubsub_name='order_pub_sub',
+        topic_name='orders',
+        data=json.dumps(order),
+        data_content_type='application/json',
+    )
+```
+
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -190,7 +190,7 @@ In the YAML file:
  <!-- JavaScript -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -200,7 +200,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -208,43 +208,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Publish a topic
-
-In a terminal window, navigate to the `checkout` directory.
-
-```bash
-cd pub_sub/javascript/sdk/checkout
-```
-
-Install dependencies, which will include the `dapr-client` package from the JavaScript SDK:
-
-```bash
-npm install
-```
-
-Verify you have the following files included in the service directory:
-
-- `package.json`
-- `package-lock.json`
-
-Run the `checkout` publisher service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- npm run start
-```
-
-In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:  
-
-```js
-const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
-
-await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
-   console.log("Published data: " + JSON.stringify(order));
-```
-
 ### Step 3: Subscribe to topics
 
-In a new terminal window, from the root of the Quickstarts clone directory,
+In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
 
 ```bash
@@ -274,7 +240,42 @@ In the `order-processor` subscriber, we're subscribing to the Redis instance cal
 server.pubsub.subscribe("order_pub_sub", "orders", (data) => console.log("Subscriber received: " + JSON.stringify(data)));
 ```
 
-### Step 4: View the Pub/sub outputs
+### Step 4: Publish a topic
+
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `checkout` directory.
+
+```bash
+cd pub_sub/javascript/sdk/checkout
+```
+
+Install dependencies, which will include the `dapr-client` package from the JavaScript SDK:
+
+```bash
+npm install
+```
+
+Verify you have the following files included in the service directory:
+
+- `package.json`
+- `package-lock.json`
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- npm run start
+```
+
+In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```js
+const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
+
+await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
+   console.log("Published data: " + JSON.stringify(order));
+```
+
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -347,7 +348,7 @@ In the YAML file:
  <!-- .NET -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -357,7 +358,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -365,38 +366,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Publish a topic
-
-In a terminal window, navigate to the `checkout` directory.
-
-```bash
-cd pub_sub/csharp/sdk/checkout
-```
-
-Recall NuGet packages:
-
-```bash
-dotnet restore
-dotnet build
-```
-
-Run the `checkout` publisher service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-id checkout --components-path ../../../components -- dotnet run
-```
-
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
-
-```cs
-using var client = new DaprClientBuilder().Build();
-await client.PublishEventAsync("order_pub_sub", "orders", order);
-Console.WriteLine("Published data: " + order);
-```
-
 ### Step 3: Subscribe to topics
 
-In a new terminal window, from the root of the Quickstarts clone directory,
+In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
 
 ```bash
@@ -428,7 +400,37 @@ app.MapPost("/orders", [Topic("order_pub_sub", "orders")] (Order order) => {
 public record Order([property: JsonPropertyName("orderId")] int OrderId);
 ```
 
-### Step 4: View the Pub/sub outputs
+### Step 4: Publish a topic
+
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `checkout` directory.
+
+```bash
+cd pub_sub/csharp/sdk/checkout
+```
+
+Recall NuGet packages:
+
+```bash
+dotnet restore
+dotnet build
+```
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --components-path ../../../components -- dotnet run
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```cs
+using var client = new DaprClientBuilder().Build();
+await client.PublishEventAsync("order_pub_sub", "orders", order);
+Console.WriteLine("Published data: " + order);
+```
+
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -499,7 +501,7 @@ In the YAML file:
  <!-- Java -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -512,7 +514,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -520,40 +522,9 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Publish a topic
-
-In a terminal window, navigate to the `checkout` directory.
-
-```bash
-cd pub_sub/java/sdk/checkout
-```
-
-Install the dependencies:
-
-```bash
-mvn clean install
-```
-
-Run the `checkout` publisher service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
-```
-
-In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
-
-```java
-DaprClient client = new DaprClientBuilder().build();
-client.publishEvent(
-		PUBSUB_NAME,
-		TOPIC_NAME,
-		order).block();
-logger.info("Published data: " + order.getOrderId());
-```
-
 ### Step 3: Subscribe to topics
 
-In a new terminal window, from the root of the Quickstarts clone directory,
+In a terminal window, from the root of the Quickstarts clone directory
 navigate to the `order-processor` directory.
 
 ```bash
@@ -589,7 +560,39 @@ public Mono<ResponseEntity> getCheckout(@RequestBody(required = false) CloudEven
 }
 ```
 
-### Step 4: View the Pub/sub outputs
+### Step 4: Publish a topic
+
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `checkout` directory.
+
+```bash
+cd pub_sub/java/sdk/checkout
+```
+
+Install the dependencies:
+
+```bash
+mvn clean install
+```
+
+Run the `checkout` publisher service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+```
+
+In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
+
+```java
+DaprClient client = new DaprClientBuilder().build();
+client.publishEvent(
+		PUBSUB_NAME,
+		TOPIC_NAME,
+		order).block();
+logger.info("Published data: " + order.getOrderId());
+```
+
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
 
@@ -663,7 +666,7 @@ In the YAML file:
  <!-- Go -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -673,7 +676,7 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
 Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/pub_sub).
 
@@ -681,9 +684,40 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Publish a topic
+### Step 3: Subscribe to topics
 
-In a terminal window, navigate to the `checkout` directory.
+In a terminal window, from the root of the Quickstarts clone directory
+navigate to the `order-processor` directory.
+
+```bash
+cd pub_sub/go/sdk/order-processor
+```
+
+Install the dependencies and build the application:
+
+```bash
+go build app.go
+```
+
+Run the `order-processor` subscriber service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
+```
+
+In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
+
+```go
+func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
+	fmt.Println("Subscriber received: ", e.Data)
+	return false, nil
+}
+```
+
+### Step 4: Publish a topic
+
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `checkout` directory.
 
 ```bash
 cd pub_sub/go/sdk/checkout
@@ -713,37 +747,7 @@ if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); er
 fmt.Sprintf("Published data: ", order)
 ```
 
-### Step 3: Subscribe to topics
-
-In a new terminal window, from the root of the Quickstart clone directory,
-navigate to the `order-processor` directory.
-
-```bash
-cd pub_sub/go/sdk/order-processor
-```
-
-Install the dependencies and build the application:
-
-```bash
-go build app.go
-```
-
-Run the `order-processor` subscriber service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
-```
-
-In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
-
-```go
-func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
-	fmt.Println("Subscriber received: ", e.Data)
-	return false, nil
-}
-```
-
-### Step 4: View the Pub/sub outputs
+### Step 5: View the Pub/sub outputs
 
 Notice, as specified in the code above, the publisher pushes a numbered message to the Dapr sidecar while the subscriber receives it.
 
