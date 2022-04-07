@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup RethinkDB state store create a component of type `state.rethinkdb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup RethinkDB state store, create a component of type `state.rethinkdb`. See [the how-to guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -36,18 +36,17 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-If you wish to use Redis as an actor store, append the following to the yaml.
+If you wish to use RethinkDB as an actor store, append the following to the YAML.
 
 ```yaml
   - name: actorStateStore
     value: "true"
 ```
 
-
-RethinkDB state store supports transactions so it can be used to persist Dapr Actor state. By default, the state will be stored in table name `daprstate` in the specified database.
+RethinkDB state store supports transactions, so it can be used to persist Dapr Actor state. By default, the state will be stored in table named `daprstate` in the specified database.
 
 Additionally, if the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr.
 
@@ -81,8 +80,7 @@ open "http://$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' rethin
 {{% /codetab %}}
 {{% /codetab %}}
 
-
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
-- [State management building block]({{< ref state-management >}})
+- Read [the how-to guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components.
+- [State management building block]({{< ref state-management >}}).
