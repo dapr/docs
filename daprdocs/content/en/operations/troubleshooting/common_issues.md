@@ -163,17 +163,6 @@ Search the Dapr runtime logs and look for any pub/sub errors:
 kubectl logs <name-of-pod> daprd
 ```
 
-## The Dapr Operator pod keeps crashing
-
-Check that there's only one installation of the Dapr Operator in your cluster.
-Find out by running
-
-```bash
-kubectl get pods -l app=dapr-operator --all-namespaces
-```
-
-If two pods appear, delete the redundant Dapr installation.
-
 ## I'm getting 500 Error responses when calling Dapr
 
 This means there are some internal issue inside the Dapr runtime.

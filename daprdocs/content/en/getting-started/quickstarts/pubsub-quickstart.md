@@ -6,7 +6,7 @@ weight: 70
 description: "Get started with Dapr's Publish and Subscribe building block"
 ---
 
-Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{< ref pubsub >}}). In this quickstart, you will run a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/sub pattern.
+Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{< ref pubsub >}}). In this Quickstart, you will run a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a Pub/sub pattern.
 
 1. Using a publisher service, developers can repeatedly publish messages to a topic.
 1. [A Pub/sub component](https://docs.dapr.io/concepts/components-concept/#pubsub-brokers) queues or brokers those messages. Our example below uses Redis, you can use RabbitMQ, Kafka, etc.
@@ -14,7 +14,7 @@ Let's take a look at Dapr's [Publish and Subscribe (Pub/sub) building block]({{<
 
 <img src="/images/pubsub-quickstart/pubsub-diagram.png" width=800 style="padding-bottom:15px;">
 
-Select your preferred language-specific Dapr SDK before proceeding with the quickstart.
+Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
  <!-- Python -->
@@ -73,7 +73,8 @@ with DaprClient() as client:
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/python/sdk/order-processor
@@ -161,7 +162,7 @@ When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a 
 
 With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-The Redis `pubsub.yaml` file included for this quickstart contains the following:
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -241,7 +242,8 @@ await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/javascript/sdk/order-processor
@@ -315,7 +317,7 @@ When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a 
 
 With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-The Redis `pubsub.yaml` file included for this quickstart contains the following:
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -392,7 +394,8 @@ Console.WriteLine("Published data: " + order);
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/csharp/sdk/order-processor
@@ -466,7 +469,7 @@ When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a 
 
 With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-The Redis `pubsub.yaml` file included for this quickstart contains the following:
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -548,7 +551,8 @@ logger.info("Published data: " + order.getOrderId());
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the Quickstarts clone directory,
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/java/sdk/order-processor
@@ -626,7 +630,7 @@ When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a 
 
 With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-The Redis `pubsub.yaml` file included for this quickstart contains the following:
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -683,7 +687,7 @@ In a terminal window, navigate to the `checkout` directory.
 cd pub_sub/go/sdk/checkout
 ```
 
-Install the dependencies:
+Install the dependencies and build the application:
 
 ```bash
 go build app.go
@@ -699,7 +703,7 @@ In the `checkout` publisher, we're publishing the orderId message to the Redis i
 
 ```go
 if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
-panic(err)
+    panic(err)
 }
 
 fmt.Sprintf("Published data: ", order)
@@ -707,13 +711,14 @@ fmt.Sprintf("Published data: ", order)
 
 ### Step 3: Subscribe to topics
 
-In a new terminal window, navigate to the `order-processor` directory.
+In a new terminal window, from the root of the quickstarts clone directory,
+navigate to the `order-processor` directory.
 
 ```bash
 cd pub_sub/go/sdk/order-processor
 ```
 
-Install the dependencies:
+Install the dependencies and build the application:
 
 ```bash
 go build app.go
@@ -742,6 +747,16 @@ Publisher output:
 
 ```
 == APP == dapr client initializing for: 127.0.0.1:63293
+== APP == Published data:  {"orderId":1}
+== APP == Published data:  {"orderId":2}
+== APP == Published data:  {"orderId":3}
+== APP == Published data:  {"orderId":4}
+== APP == Published data:  {"orderId":5}
+== APP == Published data:  {"orderId":6}
+== APP == Published data:  {"orderId":7}
+== APP == Published data:  {"orderId":8}
+== APP == Published data:  {"orderId":9}
+== APP == Published data:  {"orderId":10}
 ```
 
 Subscriber output:
@@ -759,6 +774,8 @@ Subscriber output:
 == APP == Subscriber received:  {"orderId":10}
 ```
 
+Note: the order in which they are received may vary.
+
 #### `pubsub.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
@@ -768,7 +785,7 @@ When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a 
 
 With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes.
 
-The Redis `pubsub.yaml` file included for this quickstart contains the following:
+The Redis `pubsub.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -799,7 +816,7 @@ In the YAML file:
 {{< /tabs >}}
 
 ## Tell us what you think!
-We're continuously working to improve our quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
 Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 

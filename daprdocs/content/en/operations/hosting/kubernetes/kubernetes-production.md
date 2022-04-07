@@ -3,15 +3,13 @@ type: docs
 title: "Production guidelines on Kubernetes"
 linkTitle: "Production guidelines"
 weight: 40000
-description: "Recommendations and practices for deploying Dapr to a Kubernetes cluster in a production ready configuration"
+description: "Recommendations and practices for deploying Dapr to a Kubernetes cluster in a production-ready configuration"
 ---
 
 ## Cluster capacity requirements
 
-For a production ready Kubernetes cluster deployment, it is recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
-Use the following resource settings might serve as a starting point. Requirements will vary depending on cluster size and other factors, so individual testing is needed to find the right values for your environment:
-
-*Note: For more info on CPU and Memory resource units and their meaning, see [this](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes) link*
+For a production-ready Kubernetes cluster deployment, it is recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
+Use the following resource settings as a starting point. Requirements will vary depending on cluster size and other factors, so perform individual testing to find the right values for your environment:
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
@@ -20,6 +18,11 @@ Use the following resource settings might serve as a starting point. Requirement
 | **Sentry**    | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
 | **Placement** | Limit: 1, Request: 250m  | Limit: 150Mi, Request: 75Mi
 | **Dashboard** | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
+
+{{% alert title="Note" color="primary" %}}
+For more info, read the [concept article on CPU and Memory resource units and their meaning](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
+
+{{% /alert %}}
 
 ### Helm
 
@@ -43,23 +46,26 @@ The specific annotations related to resource constraints are:
 - `dapr.io/sidecar-cpu-request`
 - `dapr.io/sidecar-memory-request`
 
-If not set, the dapr sidecar will run without resource settings, which may lead to issues. For a production-ready setup it is strongly recommended to configure these settings.
+If not set, the Dapr sidecar will run without resource settings, which may lead to issues. For a production-ready setup it is strongly recommended to configure these settings.
 
 For more details on configuring resource in Kubernetes see [Assign Memory Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/) and [Assign CPU Resources to Containers and Pods](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/).
 
-Example settings for the dapr sidecar in a production-ready setup:
+Example settings for the Dapr sidecar in a production-ready setup:
 
 | CPU | Memory |
 |-----|--------|
 | Limit: 300m, Request: 100m | Limit: 1000Mi, Request: 250Mi
 
-*Note: Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr enable you to drastically reduce the resource allocations for the application*
+{{% alert title="Note" color="primary" %}}
+Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr enable you to drastically reduce the resource allocations for the application.
+
+{{% /alert %}}
 
 The CPU and memory limits above account for the fact that Dapr is intended to a high number of I/O bound operations. It is strongly recommended that you use a monitoring tool to baseline the sidecar (and app) containers and tune these settings based on those baselines.
 
 ## Highly-available mode
 
-When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows for the Dapr control plane to survive node failures and other outages.
+When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows the Dapr control plane to retain 3 running instances and survive node failures and other outages.
 
 For a new Dapr deployment, the HA mode can be set with both the [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}) and with [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}}).
 
@@ -67,10 +73,10 @@ For an existing Dapr deployment, enabling the HA mode requires additional steps.
 
 ## Deploying Dapr with Helm
 
-For a full guide on deploying Dapr with Helm visit [this guide]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
+[Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
 
 ### Parameters file
-It is recommended to create a values file instead of specifying parameters on the command-line. This file should be checked in to source control so that you can track changes made to it.
+Instead of specifying parameters on the command line, it's recommended to create a values file. This file should be checked into source control so that you can track its changes.
 
 For a full list of all available options you can set in the values file (or by using the `--set` command-line option), see https://github.com/dapr/dapr/blob/master/charts/dapr/README.md.
 
@@ -106,7 +112,10 @@ kubectl get pods --namespace dapr-system
 
 This command will run 3 replicas of each control plane service in the dapr-system namespace.
 
-*Note: The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref "kubernetes-hybrid-clusters.md" >}})*
+{{% alert title="Note" color="primary" %}}
+The Dapr Helm chart automatically deploys with affinity for nodes with the label `kubernetes.io/os=linux`. You can deploy the Dapr control plane to Windows nodes, but most users should not need to. For more information see [Deploying to a Hybrid Linux/Windows K8s Cluster]({{< ref "kubernetes-hybrid-clusters.md" >}}).
+
+{{% /alert %}}
 
 ## Upgrading Dapr with Helm
 
@@ -144,18 +153,21 @@ nodeapp    3000      16h  2020-07-29 17:16.22
 
 ### Enabling high-availability in an existing Dapr deployment
 
-Enabling HA mode for an existing Dapr deployment requires two steps.
+Enabling HA mode for an existing Dapr deployment requires two steps:
 
-First, delete the existing placement stateful set:
-```bash
-kubectl delete statefulset.apps/dapr-placement-server -n dapr-system
-```
-Second, issue the upgrade command:
-```bash
-helm upgrade dapr ./charts/dapr -n dapr-system --set global.ha.enabled=true
-```
+1. Delete the existing placement stateful set:
 
-The reason for deletion of the placement stateful set is because in the HA mode, the placement service adds [Raft](https://raft.github.io/) for leader election. However, Kubernetes only allows for limited fields in stateful sets to be patched, subsequently failing upgrade of the placement service.
+   ```bash
+   kubectl delete statefulset.apps/dapr-placement-server -n dapr-system
+   ```
+
+1. Issue the upgrade command:
+
+   ```bash
+   helm upgrade dapr ./charts/dapr -n dapr-system --set global.ha.enabled=true
+   ```
+
+You delete the placement stateful set because, in the HA mode, the placement service adds [Raft](https://raft.github.io/) for leader election. However, Kubernetes only allows for limited fields in stateful sets to be patched, subsequently failing upgrade of the placement service.
 
 Deletion of the existing placement stateful set is safe. The agents will reconnect and re-register with the newly created placement service, which will persist its table in Raft.
 
