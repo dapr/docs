@@ -244,11 +244,20 @@ Consider the example from ["How-To: Query state"]({{< ref "howto-state-query-api
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" "Redis Enterprise Cloud" "Alibaba Cloud" >}}
 
 {{% codetab %}}
-If you are using a self-hosted deployment of Dapr v1.7 and up, a Redis instance with the required modules is automatically created as a Docker container when you run `dapr init`.
+If you are using a self-hosted deployment of Dapr, a Redis instance without the JSON module is automatically created as a Docker container when you run `dapr init`.
 
 Alternatively, you can create an instance of Redis by running the following command:
+ ```bash
+ docker run -p 6379:6379 --name redis --rm redis
+ ```
+ The Redis container that gets created on dapr init or via the above command, cannot be used with state store query API alone. You can run redislabs/rejson docker image on a different port(than the already installed Redis is using) to work with they query API.
+
+> Note: `redislabs/rejson` has support only for amd64 architecture.
+
+Use following command to create an instance of redis compatiable with query API.
+
 ```bash
-docker run -p 6379:6379 --name redis --rm redislabs/rejson:2.0.6
+docker run -p 9445:9445 --name rejson --rm redislabs/rejson:2.0.6
 ```
 {{% /codetab %}}
 
@@ -305,7 +314,7 @@ Memory Store does not support modules and cannot be used with query.
 
 {{< /tabs >}}
 
-Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas.
+Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Make sure to modify the `redisHost` to reflect the local forwarding port which `redislabs/rejson` uses.
 ```bash
 dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/redis
 ```

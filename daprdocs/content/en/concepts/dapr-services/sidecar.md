@@ -6,7 +6,7 @@ weight: 100
 description: "Overview of the Dapr sidecar process"
 ---
 
-Dapr uses a [sidecar pattern]({{< ref "overview.md#sidecar-architecture" >}}), meaning the Dapr APIs are run and exposed on a separate process (i.e. the Dapr sidecar) running alongside your application. The Dapr sidecar process is named `daprd` and is launched in different ways depending on the hosting environment.
+Dapr uses a [sidecar pattern]({{< ref "concepts/overview.md#sidecar-architecture" >}}), meaning the Dapr APIs are run and exposed on a separate process (i.e. the Dapr sidecar) running alongside your application. The Dapr sidecar process is named `daprd` and is launched in different ways depending on the hosting environment.
 
 <img src="/images/overview-sidecar-model.png" width=700>
 

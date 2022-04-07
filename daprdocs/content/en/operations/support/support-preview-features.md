@@ -19,3 +19,5 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | **Pub/Sub routing** | Allow the use of expressions to route cloud events to different URIs/paths and event handlers in your application. | `PubSub.Routing` | [How-To: Publish a message and subscribe to a topic]({{<ref howto-route-messages>}}) | v1.7 |
 | **ARM64 Mac Support** | Dapr CLI, sidecar, and Dashboard are now natively compiled for ARM64 Macs, along with Dapr CLI installation via Homebrew. | N/A | [Install the Dapr CLI]({{<ref install-dapr-cli>}}) | v1.5 |
 | **--image-registry** flag with Dapr CLI| In self hosted mode you can set this flag to specify any private registry to pull the container images required to install Dapr| N/A | [init CLI command reference]({{<ref "dapr-init.md#self-hosted-environment" >}}) | v1.7 |
+| **Resiliency** | Allows configuring of fine-grained policies for retries, timeouts and circuitbreaking. | `Resiliency` | [Configure Resiliency Policies]({{<ref "resiliency-overview">}}) | 
+
