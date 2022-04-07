@@ -10,11 +10,11 @@ Let's take a look at Dapr's [State Management building block]({{< ref state-mana
 * Maintain and test different databases and libraries.
 * Handle retries and faults.
 
-In this quickstart, you use the key/value pairs in the [supported state stores]({{< ref supported-state-stores.md >}}) and allow an application to save, get, and delete state. Our example below uses a Redis instance, but you can use RabbitMQ, Kafka, etc.
+In this Quickstart, you use the key/value pairs in the [supported state stores]({{< ref supported-state-stores.md >}}) and allow an application to save, get, and delete state. Our example below uses a Redis instance, but you can use RabbitMQ, Kafka, etc.
 
-<img src="/images/state-management-overview.png" width=800 style="padding-bottom:15px;">
+<img src="/images/state-management-quickstart.png" width=1000 style="padding-bottom:15px;">
 
-Select your preferred language-specific Dapr SDK before proceeding with the quickstart.
+Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
  <!-- Python -->
@@ -30,7 +30,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -56,7 +56,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```python
 with DaprClient() as client:
@@ -142,7 +142,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -172,29 +172,31 @@ Run the `order-processor` service alongside a Dapr sidecar.
 ```bash
 dapr run --app-id order-processor --components-path ../../../components/ -- npm run start
 ```
-The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```js
-// Save state into the state store
-client.state.save(STATE_STORE_NAME, [
-    {
-        key: orderId.toString(),
-        value: order
-    }
-]);
-console.log("Saving Order: ", order);
+  const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
 
-// Get state from the state store
-var result = client.state.get(STATE_STORE_NAME, orderId.toString());
-result.then(function(val) {
-    console.log("Getting Order: ", val);
-});
+  // Save state into the state store
+  client.state.save(STATE_STORE_NAME, [
+      {
+          key: orderId.toString(),
+          value: order
+      }
+  ]);
+  console.log("Saving Order: ", order);
 
-// Delete state from the state store
-client.state.delete(STATE_STORE_NAME, orderId.toString());    
-result.then(function(val) {
-    console.log("Deleting Order: ", val);
-});
+  // Get state from the state store
+  var result = client.state.get(STATE_STORE_NAME, orderId.toString());
+  result.then(function(val) {
+      console.log("Getting Order: ", val);
+  });
+
+  // Delete state from the state store
+  client.state.delete(STATE_STORE_NAME, orderId.toString());    
+  result.then(function(val) {
+      console.log("Deleting Order: ", val);
+  });
 
 ```
 ### Step 3: View the order-processor outputs
@@ -270,7 +272,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -297,9 +299,11 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```cs
+var client = new DaprClientBuilder().Build();
+
 // Save state into the state store
 await client.SaveStateAsync(DAPR_STORE_NAME, orderId.ToString(), order.ToString());
 Console.WriteLine("Saving Order: " + order);
@@ -386,7 +390,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -412,28 +416,28 @@ Run the `order-processor` publisher service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```java
 try (DaprClient client = new DaprClientBuilder().build()) {
-    for (int i = 1; i <= 10; i++) {
-        int orderId = i;
-        Order order = new Order();
-        order.setOrderId(orderId);
+  for (int i = 1; i <= 10; i++) {
+    int orderId = i;
+    Order order = new Order();
+    order.setOrderId(orderId);
 
-        // Save state into the state store
-        client.saveState(DAPR_STATE_STORE, String.valueOf(orderId), order).block();
-        LOGGER.info("Saving Order: " + order.getOrderId());
+    // Save state into the state store
+    client.saveState(DAPR_STATE_STORE, String.valueOf(orderId), order).block();
+    LOGGER.info("Saving Order: " + order.getOrderId());
 
-        // Get state from the state store
-        State<Order> response = client.getState(DAPR_STATE_STORE, String.valueOf(orderId), Order.class).block();
-        LOGGER.info("Getting Order: " + response.getValue().getOrderId());
+    // Get state from the state store
+    State<Order> response = client.getState(DAPR_STATE_STORE, String.valueOf(orderId), Order.class).block();
+    LOGGER.info("Getting Order: " + response.getValue().getOrderId());
 
-        // Delete state from the state store
-        client.deleteState(DAPR_STATE_STORE, String.valueOf(orderId)).block();
-        LOGGER.info("Deleting Order: " + orderId);
-        TimeUnit.MILLISECONDS.sleep(1000);
-    }
+    // Delete state from the state store
+    client.deleteState(DAPR_STATE_STORE, String.valueOf(orderId)).block();
+    LOGGER.info("Deleting Order: " + orderId);
+    TimeUnit.MILLISECONDS.sleep(1000);
+  }
 ```
 ### Step 3: View the order-processor outputs
 
@@ -464,7 +468,7 @@ When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and run
 
 With the `statestore.yaml` component, you can easily swap out the [state store](/reference/components-reference/supported-state-stores/) without making code changes.
 
-The Redis `statestore.yaml` file included for this quickstart contains the following:
+The Redis `statestore.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -503,7 +507,7 @@ For this example, you will need:
 
 ### Step 1: Set up the environment
 
-Clone the [sample we've provided in our quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
+Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/state_management).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -529,9 +533,11 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components -- go run app.go
 ```
 
-The `order-processor` service writes, reads, and deletes an `orderId` key\value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop:
+The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```go
+  client, err := dapr.NewClient()
+
   // Save state into the state store
   _ = client.SaveState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId), []byte(order))
   log.Print("Saving Order: " + string(order))
@@ -578,7 +584,7 @@ When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and run
 
 With the `statestore.yaml` component, you can easily swap out the [state store](/reference/components-reference/supported-state-stores/) without making code changes.
 
-The Redis `statestore.yaml` file included for this quickstart contains the following:
+The Redis `statestore.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -607,7 +613,7 @@ In the YAML file:
 {{< /tabs >}}
 
 ## Tell us what you think!
-We're continuously working to improve our quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
 
 Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 
