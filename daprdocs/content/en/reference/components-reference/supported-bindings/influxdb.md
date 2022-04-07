@@ -50,6 +50,22 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 This component supports **output binding** with the following operations:
 
 - `create`
+- `query`
+
+### Query
+
+In order to query InfluxDB, use a `query` operation along with a `raw` key in the call's metadata, with the query as the value:
+
+```
+curl -X POST http://localhost:3500/v1.0/bindings/myInfluxBinding \
+  -H "Content-Type: application/json" \
+  -d "{
+        \"metadata\": {
+          \"raw\": "SELECT * FROM 'sith_lords'"
+        },
+        \"operation\": \"query\"
+      }"
+```
 
 ## Related links
 
