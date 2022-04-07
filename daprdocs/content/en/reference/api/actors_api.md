@@ -464,6 +464,7 @@ drainRebalancedActors | A bool.  If true, Dapr will wait for `drainOngoingCallTi
 reentrancy | A configuration object that holds the options for actor reentrancy.
 enabled | A flag in the reentrancy configuration that is needed to enable reentrancy.
 maxStackDepth | A value in the reentrancy configuration that controls how many reentrant calls be made to the same actor.
+entitiesConfig | Array of entity configurations that allow per actor type settings. Any configuration defined here must have an entity that maps back into the root level entities.
 
 ```json
 {
@@ -475,7 +476,17 @@ maxStackDepth | A value in the reentrancy configuration that controls how many r
   "reentrancy": {
     "enabled": true,
     "maxStackDepth": 32
-  }
+  },
+  "entitiesConfig": [
+      {
+          "entities": ["actorType1"],
+          "actorIdleTimeout": "1m",
+          "drainOngoingCallTimeout": "10s",
+          "reentrancy": {
+              "enabled": false
+          }
+      }
+  ]
 }
 ```
 
