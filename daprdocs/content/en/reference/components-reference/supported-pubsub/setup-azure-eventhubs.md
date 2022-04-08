@@ -68,6 +68,45 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 ### Azure Active Directory (AAD) authentication
 The Azure Event Hubs pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
+#### Example Configuration
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: eventhubs-pubsub
+  namespace: default
+spec:
+  type: pubsub.azure.eventhubs
+  version: v1
+  metadata:
+  # Azure Authentication Used
+  - name: azureTenantId
+    value: "***"
+  - name: azureClientId
+    value: "***"
+  - name: azureClientSecret
+    value: "***"
+  - name: eventHubNamespace 
+    value: "namespace"
+  - name: enableEntityManagement
+    value: "false"
+    ## The following four properties are needed only if enableEntityManagement is set to true
+  - name: resourceGroupName
+    value: "test-rg"
+  - name: subscriptionID
+    value: "value of Azure subscription ID"
+  - name: partitionCount
+    value: "1"
+  - name: messageRetentionInDays
+  ## Subscriber attributes
+  - name: storageAccountName
+    value: "myeventhubstorage"
+  - name: storageAccountKey
+    value: "112233445566778899"
+  - name: storageContainerName
+    value: "myeventhubstoragecontainer"
+```
+
 ## Create an Azure Event Hub
 
 Follow the instructions [here](https://docs.microsoft.com/azure/event-hubs/event-hubs-create) on setting up Azure Event Hubs.

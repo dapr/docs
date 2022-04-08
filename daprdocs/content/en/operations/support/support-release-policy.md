@@ -39,18 +39,20 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | May 26th 2021 | 1.2.0</br> | 1.2.0 | Java 1.1.0 </br>Go 1.1.0 </br>PHP 1.1.0 </br>Python 1.1.0 </br>.NET 1.2.0 | 0.6.0 | Unsupported         |
 | Jun 16th 2021 | 1.2.1</br> | 1.2.0 | Java 1.1.0 </br>Go 1.1.0 </br>PHP 1.1.0 </br>Python 1.1.0 </br>.NET 1.2.0 | 0.6.0 | Unsupported         |
 | Jun 16th 2021 | 1.2.2</br> | 1.2.0 | Java 1.1.0 </br>Go 1.1.0 </br>PHP 1.1.0 </br>Python 1.1.0 </br>.NET 1.2.0 | 0.6.0 | Unsupported         |
-| Jul 26th 2021 | 1.3</br>   | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Unsupported           |
-| Sep 14th 2021 | 1.3.1</br> | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Unsupported           |
-| Sep 15th 2021 | 1.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported           |
-| Sep 22nd 2021 | 1.4.1</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported
-| Sep 24th 2021 | 1.4.2</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported           |
-| Oct 7th 2021  | 1.4.3</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported |
-| Dev 6th 2021  | 1.4.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported |
-| Nov 11th 2021 | 1.5.0</br>   | 1.5.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Supported |
-| Dec 6th 2021  | 1.5.1</br>   | 1.5.1 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Supported |
-| Jan 25th 2022 | 1.6.0</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Supported (current) |
+| Jul 26th 2021 | 1.3</br>   | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Unsupported         |
+| Sep 14th 2021 | 1.3.1</br> | 1.3.0 | Java 1.2.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.2.0 </br>.NET 1.3.0 | 0.7.0 | Unsupported         |
+| Sep 15th 2021 | 1.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported         |
+| Sep 22nd 2021 | 1.4.1</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported       |
+| Sep 24th 2021 | 1.4.2</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported       |
+| Oct 7th 2021  | 1.4.3</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported       |
+| Dev 6th 2021  | 1.4.4</br>   | 1.4.0 | Java 1.3.0 </br>Go 1.2.0 </br>PHP 1.1.0 </br>Python 1.3.0 </br>.NET 1.4.0 | 0.8.0 | Unsupported       |
+| Nov 11th 2021 | 1.5.0</br>   | 1.5.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Unsupported |
+| Dec 6th 2021  | 1.5.1</br>   | 1.5.1 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Unsupported |
+| Mar 25th 2022 | 1.5.2</br>   | 1.6.0 | Java 1.3.0 </br>Go 1.3.0 </br>PHP 1.1.0 </br>Python 1.4.0 </br>.NET 1.5.0 </br>JS 1.0.2 | 0.9.0 | Unsupported |
+| Jan 25th 2022 | 1.6.0</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Supported |
+| Mar 25th 2022 | 1.6.1</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Supported |
+| Apr 7th 2022 | 1.7.0</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported (current) |
 
- 
 ## Upgrade paths
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example an upgrade from v1.0 to v1.2 may need go pass through v1.1
 
@@ -60,32 +62,16 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 
 |  Current Runtime version | Must upgrade through  | Target Runtime version   |
 |--------------------------|-----------------------|------------------------- |
-| 1.0.0 or 1.0.1           |                   N/A |                    1.1.2 |
-|                          |                 1.1.2 |                    1.2.2 |
-|                          |                 1.2.2 |                    1.3.1 |
-|                          |                 1.3.1 |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.1 |
-|                          |                 1.5.1 |                    1.6.0 |
-| 1.1.0 to 1.1.2           |                   N/A |                    1.2.2 |
-|                          |                 1.2.2 |                    1.3.1 |
-|                          |                 1.3.1 |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.1 |
-|                          |                 1.5.1 |                    1.6.0 |
-| 1.2.0 to 1.2.2           |                   N/A |                    1.3.1 |
-|                          |                 1.3.1 |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.1 |
-|                          |                 1.5.1 |                    1.6.0 |
-| 1.3.0                    |                   N/A |                    1.3.1 |
-|                          |                 1.3.1 |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.1 |
-|                          |                 1.5.1 |                    1.6.0 |
-| 1.3.1                    |                   N/A |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.1 |
-|                          |                 1.5.1 |                    1.6.0 |
 | 1.4.0 to 1.4.2           |                   N/A |                    1.4.4 |
-|                          |                 1.4.4 |                    1.5.1 |
-|                          |                 1.5.1 |                    1.6.0 |
-| 1.5.0 to 1.5.1           |                   N/A |                    1.6.0 |
+|                          |                 1.4.4 |                    1.5.2 |
+|                          |                 1.5.2 |                    1.6.0 |
+|                          |                 1.6.0 |                    1.6.1 |
+|                          |                 1.6.0 |                    1.7.0 |
+| 1.5.0 to 1.5.2           |                   N/A |                    1.6.0 |
+|                          |                 1.6.0 |                    1.6.1 |
+|                          |                 1.6.0 |                    1.7.0 |
+| 1.6.0                    |                   N/A |                    1.6.1 |
+| 1.6.0                    |                   N/A |                    1.7.0 |
 
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
@@ -100,6 +86,8 @@ After announcing a future breaking change, the change will happen in 2 releases 
 | Feature               |   Deprecation announcement   | Removal       |
 |-----------------------|-----------------------|------------------------- |
 | GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
+| Java domain builder classes deprecated (Users should use [setters](https://github.com/dapr/java-sdk/issues/587) instead) | Java SDK 1.3.0 | Java SDK 1.5.0 |
+| Service invocation will no longer provide a default content type header of `application/json` when no content-type is specified. You must explictly [set a content-type header]({{<ref "service_invocation_api.md#request-contents" >}}) for service invocation if your invoked apps rely on this header. |                 1.7.0 |                    1.9.0 |
 
 ## Upgrade on Hosting platforms
 Dapr can support multiple hosting platforms for production. With the 1.0 release the two supported platforms are Kubernetes and physical machines. For Kubernetes upgrades see [Production guidelines on Kubernetes]({{< ref kubernetes-production.md >}})

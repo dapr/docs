@@ -3,11 +3,11 @@ name: Azure Static Web App Root
 on:
   push:
     branches:
-      - v1.6
+      - v1.7
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - v1.6
+      - v1.7
 
 jobs:
   build_and_deploy_job:
