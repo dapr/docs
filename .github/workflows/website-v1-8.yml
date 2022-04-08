@@ -1,13 +1,13 @@
-name: Azure Static Web App v1.7
+name: Azure Static Web App v1.8
 
 on:
   push:
     branches:
-      - v1.7
+      - v1.8
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - v1.7
+      - v1.8
 
 jobs:
   build_and_deploy_job:
