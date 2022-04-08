@@ -199,7 +199,7 @@ kubectl apply -f subscription.yaml
 
 Below are code examples that leverage Dapr SDKs to subscribe to a topic.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs ".NET" Java Python Javascript Go>}}
 
 {{% codetab %}}
 
@@ -308,6 +308,46 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol 
 
 {{% codetab %}}
 
+```javascript
+//dependencies
+import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+
+//code
+const daprHost = "127.0.0.1"; 
+const serverHost = "127.0.0.1";
+const serverPort = "6002"; 
+
+start().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});
+
+async function start(orderId) {
+    const server = new DaprServer(
+        serverHost, 
+        serverPort, 
+        daprHost, 
+        process.env.DAPR_HTTP_PORT, 
+        CommunicationProtocolEnum.HTTP
+    );
+    //Subscribe to a topic
+    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+    });
+    await server.startServer();
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+
+```bash
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```go
 //dependencies
 import (
@@ -351,46 +391,6 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 {{% /codetab %}}
 
-{{% codetab %}}
-
-```javascript
-//dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
-
-//code
-const daprHost = "127.0.0.1"; 
-const serverHost = "127.0.0.1";
-const serverPort = "6002"; 
-
-start().catch((e) => {
-    console.error(e);
-    process.exit(1);
-});
-
-async function start(orderId) {
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
-    //Subscribe to a topic
-    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
-        console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
-    });
-    await server.startServer();
-}
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
-```
-
-{{% /codetab %}}
-
 {{< /tabs >}}
 
 The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
@@ -399,42 +399,52 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 The programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. In the example below, we define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
-{{< tabs Python JavaScript ".NET" Go PHP>}}
+{{< tabs ".NET" JavaScript ".NET" Go PHP>}}
 
 {{% codetab %}}
+
+```csharp
+[Topic("order_pub_sub", "checkout", event.type ==\"order\"")]
+[HttpPost("orders")]
+public async Task<ActionResult<Stock>> HandleCheckout(Checkout checkout, [FromServices] DaprClient daprClient)
+{
+    // Logic
+    return stock;
+}
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```java
+
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```python
-import flask
-from flask import request, jsonify
-from flask_cors import CORS
-import json
-import sys
-
-app = flask.Flask(__name__)
-CORS(app)
-
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
     subscriptions = [
       {
-        'pubsubname': 'pubsub',
-        'topic': 'inventory',
+        'pubsubname': 'order_pub_sub',
+        'topic': 'checkout',
         'routes': {
           'rules': [
             {
-              'match': 'event.type == "widget"',
-              'path': '/widgets'
-            },
-            {
-              'match': 'event.type == "gadget"',
-              'path': '/gadgets'
+              'match': 'event.type == "order"',
+              'path': '/orders'
             },
           ],
-          'default': '/products'
+          'default': '/orders'
         }
       }]
     return jsonify(subscriptions)
 
-@app.route('/products', methods=['POST'])
+@app.route('/orders', methods=['POST'])
 def ds_subscriber():
     print(request.json, flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
@@ -444,6 +454,7 @@ app.run()
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```javascript
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -455,17 +466,13 @@ const port = 3000
 app.get('/dapr/subscribe', (req, res) => {
   res.json([
     {
-      pubsubname: "pubsub",
-      topic: "inventory",
+      pubsubname: "order_pub_sub",
+      topic: "checkout",
       routes: {
         rules: [
           {
-            match: 'event.type == "widget"',
-            path: '/widgets'
-          },
-          {
-            match: 'event.type == "gadget"',
-            path: '/gadgets'
+            match: 'event.type == "order"',
+            path: '/orders'
           },
         ],
         default: '/products'
@@ -474,45 +481,19 @@ app.get('/dapr/subscribe', (req, res) => {
   ]);
 })
 
-app.post('/products', (req, res) => {
+app.post('/orders', (req, res) => {
   console.log(req.body);
   res.sendStatus(200);
 });
 
 app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-```csharp
-        [Topic("pubsub", "inventory", "event.type ==\"widget\"", 1)]
-        [HttpPost("widgets")]
-        public async Task<ActionResult<Stock>> HandleWidget(Widget widget, [FromServices] DaprClient daprClient)
-        {
-            // Logic
-            return stock;
-        }
 
-        [Topic("pubsub", "inventory", "event.type ==\"gadget\"", 2)]
-        [HttpPost("gadgets")]
-        public async Task<ActionResult<Stock>> HandleGadget(Gadget gadget, [FromServices] DaprClient daprClient)
-        {
-            // Logic
-            return stock;
-        }
-
-        [Topic("pubsub", "inventory")]
-        [HttpPost("products")]
-        public async Task<ActionResult<Stock>> HandleProduct(Product product, [FromServices] DaprClient daprClient)
-        {
-            // Logic
-            return stock;
-        }
-```
-{{% /codetab %}}
-
-{{% codetab %}}
-```golang
+```go
 package main
 
 	"encoding/json"
@@ -546,20 +527,16 @@ type rule struct {
 func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 	t := []subscription{
 		{
-			PubsubName: "pubsub",
-			Topic:      "inventory",
+			PubsubName: "order_pub_sub",
+			Topic:      "checkout",
 			Routes: routes{
 				Rules: []rule{
 					{
-						Match: `event.type == "widget"`,
-						Path:  "/widgets",
-					},
-					{
-						Match: `event.type == "gadget"`,
-						Path:  "/gadgets",
+						Match: `event.type == "order"`,
+						Path:  "/orders",
 					},
 				},
-				Default: "/products",
+				Default: "/orders",
 			},
 		},
 	}
@@ -573,33 +550,6 @@ func main() {
 	router.HandleFunc("/dapr/subscribe", configureSubscribeHandler).Methods("GET")
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", appPort), router))
 }
-```
-{{% /codetab %}}
-
-{{% codetab %}}
-```php
-<?php
-
-require_once __DIR__.'/vendor/autoload.php';
-
-$app = \Dapr\App::create(configure: fn(\DI\ContainerBuilder $builder) => $builder->addDefinitions(['dapr.subscriptions' => [
-    new \Dapr\PubSub\Subscription(pubsubname: 'pubsub', topic: 'inventory', routes: (
-      rules: => [
-        ('match': 'event.type == "widget"', path: '/widgets'),
-        ('match': 'event.type == "gadget"', path: '/gadgets'),
-      ]
-      default: '/products')),
-]]));
-$app->post('/products', function(
-    #[\Dapr\Attributes\FromBody]
-    \Dapr\PubSub\CloudEvent $cloudEvent,
-    \Psr\Log\LoggerInterface $logger
-    ) {
-        $logger->alert('Received event: {event}', ['event' => $cloudEvent]);
-        return ['status' => 'SUCCESS'];
-    }
-);
-$app->start();
 ```
 {{% /codetab %}}
 
