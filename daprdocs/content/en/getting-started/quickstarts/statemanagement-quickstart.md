@@ -22,7 +22,9 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
-- [Docker Desktop](https://www.docker.com/products/docker-desktop).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
@@ -134,7 +136,9 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Latest Node.js installed](https://nodejs.org/download/).
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
@@ -264,7 +268,9 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/download).
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
@@ -382,7 +388,9 @@ For this example, you will need:
   - [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11), or
   - [OpenJDK](https://jdk.java.net/13/)
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
@@ -499,7 +507,9 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Latest version of Go](https://go.dev/dl/).
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
 
