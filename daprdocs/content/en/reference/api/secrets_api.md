@@ -87,9 +87,9 @@ curl http://localhost:3500/v1.0/secrets/vault/db-secret
 Code | Description
 ---- | -----------
 200  | OK
-204  | Secret not found
 400  | Secret store is missing or misconfigured
 403  | Access denied
+404  | Secret not found
 500  | Failed to get secret or no secret stores defined
 
 ### Examples

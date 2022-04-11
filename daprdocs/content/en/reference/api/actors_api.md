@@ -512,8 +512,8 @@ DELETE http://localhost:<appPort>/actors/<actorType>/<actorId>
 Code | Description
 ---- | -----------
 200  | Request successful
+400  | Actor not found
 500  | Request failed
-404  | Actor not found
 
 #### URL Parameters
 
