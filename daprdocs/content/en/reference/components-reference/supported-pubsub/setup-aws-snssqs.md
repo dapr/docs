@@ -82,7 +82,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | disableEntityManagement | N  | When set to true, SNS topics, SQS queues and the SQS subscriptions to SNS do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | disableDeleteOnRetryLimit | N  | When set to true, after retrying and failing of `messageRetryLimit` times processing a message, reset the message visibility timeout so that other consumers can try processing, instead of deleting the message from SQS (the default behvior). Default: `"false"` | `"true"`, `"false"`
 | assetsManagementTimeoutSeconds | N  | Amount of time in seconds, for an AWS asset management operation, before it times out and cancelled. Asset management operations are any operations performed on STS, SNS and SQS, except message publish and consume operations that implement the default Dapr component retry behavior. The value can be set to any non-negative float/integer. Default: `5` | `0.5`, `10`
-| concurrencyMode | N  | When a bulk of messages is pulled from SQS, call the subscriber sequencially (“single” message at a time), or concurrently (in “parallel”). Default: `"parallel"` | `"single"`, `"parallel"`
+| concurrencyMode | N  | When messages are received in bulk from SQS, call the subscriber sequentially (“single” message at a time), or concurrently (in “parallel”). Default: `"parallel"` | `"single"`, `"parallel"`
 
 
 * Dapr created SNS topic and SQS queue names conform with [AWS specifications](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html). By default, Dapr creates an SQS queue name based on the consumer `app-id`, therefore Dapr might perform name standardization to meet with AWS specifications.
