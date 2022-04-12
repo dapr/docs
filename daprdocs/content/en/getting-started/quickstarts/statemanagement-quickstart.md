@@ -285,7 +285,7 @@ git clone https://github.com/dapr/quickstarts.git
 In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
-cd pub_sub/csharp/sdk/order-processor
+cd state_management/csharp/sdk/order-processor
 ```
 
 Recall NuGet packages:
