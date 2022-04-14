@@ -115,7 +115,7 @@ You can also specify a specific runtime version.
 dapr init -k --runtime-version 1.4.0
 ```
 
-You can configure a set of [Helm Chart values](https://github.com/dapr/dapr/tree/master/charts/dapr#configuration) during Dapr installation to help set up a Kubernetes cluster.
+Use the `--set` flag to configure a set of [Helm Chart values](https://github.com/dapr/dapr/tree/master/charts/dapr#configuration) during Dapr installation to help set up a Kubernetes cluster.
 
 ```bash
 dapr init -k --set global.tag=1.0.0 --set dapr_operator.logLevel=error
