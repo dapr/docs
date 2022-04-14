@@ -86,7 +86,7 @@ The `python-output-binding-sdk` uses the Kafka Output Binding [defined in the `b
 
 ```python
 with DaprClient() as d:
-    bindingName = "sample-topic"
+    bindingName = "orders"
     operation = "create"
     n = 0
     while n < 10:
@@ -94,7 +94,7 @@ with DaprClient() as d:
         req_data = {
             'orderId': n
         }
-        print ('Python - Kafka SDK output binding: orderId: ' + str(n),flush=True)
+        print ('Output binding: orderId: ' + str(n),flush=True)
 
         # Output message to Kafka using an output bindin
         resp = d.invoke_binding(bindingName, operation, json.dumps(req_data))
@@ -108,16 +108,16 @@ Notice, as specified above, the code invokes the Output Binding with the `orderI
 
 Output Binding `print` statement output:
 ```
-== APP == Python - Kafka SDK output binding: orderId: 1
-== APP == Python - Kafka SDK output binding: orderId: 2
-== APP == Python - Kafka SDK output binding: orderId: 3
-== APP == Python - Kafka SDK output binding: orderId: 4
-== APP == Python - Kafka SDK output binding: orderId: 5
-== APP == Python - Kafka SDK output binding: orderId: 6
-== APP == Python - Kafka SDK output binding: orderId: 7
-== APP == Python - Kafka SDK output binding: orderId: 8
-== APP == Python - Kafka SDK output binding: orderId: 9
-== APP == Python - Kafka SDK output binding: orderId: 10
+== APP == Output binding: orderId: 1
+== APP == Output binding: orderId: 2
+== APP == Output binding: orderId: 3
+== APP == Output binding: orderId: 4
+== APP == Output binding: orderId: 5
+== APP == Output binding: orderId: 6
+== APP == Output binding: orderId: 7
+== APP == Output binding: orderId: 8
+== APP == Output binding: orderId: 9
+== APP == Output binding: orderId: 10
 ```
 
 ### Step 5: Consume the Kafka messages with an Input Binding
@@ -130,9 +130,11 @@ dapr run --app-id python-input-binding-sdk --app-protocol grpc --app-port 50051 
 The `python-input-binding-sdk` uses the Kafka Input Binding [defined in the `bindings.yaml` component]({{< ref "#bindingsyaml-component-file" >}}) to receive the `orderId` key/value pair from the Kafka topic. The service is invoked every time a message is added to the Kafka topic.
 
 ```python
+bindingName = "orders"
+
 @app.binding(bindingName)
 def binding(request: BindingRequest):
-    print('Python - Kafka SDK input binding: {}'.format(request.text()), flush=True)
+    print('Input binding: {}'.format(request.text()), flush=True)
 ```
 
 ### Step 6: View the Input Binding log
@@ -141,16 +143,16 @@ Notice, as specified above, the code is invoked every time a message is added to
 
 Input Binding `print` statement output:
 ```
-== APP == Python - Kafka SDK input binding: {"orderId":1}
-== APP == Python - Kafka SDK input binding: {"orderId":2}
-== APP == Python - Kafka SDK input binding: {"orderId":3}
-== APP == Python - Kafka SDK input binding: {"orderId":4}
-== APP == Python - Kafka SDK input binding: {"orderId":5}
-== APP == Python - Kafka SDK input binding: {"orderId":6}
-== APP == Python - Kafka SDK input binding: {"orderId":7}
-== APP == Python - Kafka SDK input binding: {"orderId":8}
-== APP == Python - Kafka SDK input binding: {"orderId":9}
-== APP == Python - Kafka SDK input binding: {"orderId":10}
+== APP == Input binding: {"orderId": 1}
+== APP == Input binding: {"orderId": 2}
+== APP == Input binding: {"orderId": 3}
+== APP == Input binding: {"orderId": 4}
+== APP == Input binding: {"orderId": 5}
+== APP == Input binding: {"orderId": 6}
+== APP == Input binding: {"orderId": 7}
+== APP == Input binding: {"orderId": 8}
+== APP == Input binding: {"orderId": 9}
+== APP == Input binding: {"orderId": 10}
 ```
 
 #### `bindings.yaml` component file
@@ -165,7 +167,7 @@ The Kafka `bindings.yaml` file included for this Quickstart contains the followi
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sample-topic
+  name: orders
 spec:
   type: bindings.kafka
   version: v1
@@ -253,17 +255,18 @@ dapr run --app-id javascript-output-binding-sdk --app-port 6001 --dapr-http-port
 The `javascript-output-binding-sdk` uses the Kafka Output Binding [defined in the `bindings.yaml` component]({{< ref "#bindingsyaml-component-file" >}}) to send the `orderId` key/value pair to a Kafka topic. As soon as the service starts, it performs a loop.
 
 ```js
-  const client = new DaprClient(daprHost, httpPort);
-  const bindingName = "sample-topic";
-  for(var i = 1; i <= 10; i++) {
-    const order = {orderId:  i};
-    
-    // Publish a Kafka event using an output binding
-    await client.binding.send(bindingName, "create", order);
-    console.log("Javascript - Kafka SDK output binding: " + JSON.stringify(order));
+const client = new DaprClient(daprHost, httpPort);
+const bindingName = "orders";
+for(var i = 1; i <= 10; i++) {
+  const order = {orderId:  i};
+  
+  // Publish a Kafka event using an output binding
+  await client.binding.send(bindingName, "create", order);
+  console.log("Output binding: " + JSON.stringify(order));
 
-    await sleep(100);
+  await sleep(100);
   }
+}
 ```
 ## Step 4: View the Output Binding log
 
@@ -271,16 +274,16 @@ Notice, as specified above, the code invokes the Output Binding with the `orderI
 
 Output Binding `console.log` statement output:
 ```
-== APP == Javascript - Kafka SDK output binding: {"orderId":1}
-== APP == Javascript - Kafka SDK output binding: {"orderId":2}
-== APP == Javascript - Kafka SDK output binding: {"orderId":3}
-== APP == Javascript - Kafka SDK output binding: {"orderId":4}
-== APP == Javascript - Kafka SDK output binding: {"orderId":5}
-== APP == Javascript - Kafka SDK output binding: {"orderId":6}
-== APP == Javascript - Kafka SDK output binding: {"orderId":7}
-== APP == Javascript - Kafka SDK output binding: {"orderId":8}
-== APP == Javascript - Kafka SDK output binding: {"orderId":9}
-== APP == Javascript - Kafka SDK output binding: {"orderId":10}
+== APP == Output binding: {"orderId":1}
+== APP == Output binding: {"orderId":2}
+== APP == Output binding: {"orderId":3}
+== APP == Output binding: {"orderId":4}
+== APP == Output binding: {"orderId":5}
+== APP == Output binding: {"orderId":6}
+== APP == Output binding: {"orderId":7}
+== APP == Output binding: {"orderId":8}
+== APP == Output binding: {"orderId":9}
+== APP == Output binding: {"orderId":10}
 ```
 
 ### Step 5: Consume the Kafka messages with an Input Binding
@@ -293,10 +296,9 @@ dapr run --app-id javascript-input-binding-sdk --app-protocol http --app-port 35
 The `javascript-input-binding-sdk` uses the Kafka Input Binding [defined in the `bindings.yaml` component]({{< ref "#bindingsyaml-component-file" >}}) to receive the `orderId` key/value pair from the Kafka topic. The service is invoked every time a message is added to the Kafka topic.
 
 ```js
-  const server = new DaprServer(serverHost, serverPort, daprHost, daprPort);;
-  const bindingName = "sample-topic";
-  const response = await server.binding.receive(bindingName, async (data) => console.log(`Javascript - Kafka SDK input binding: ${JSON.stringify(data)}`));
-  await server.start();
+const server = new DaprServer(serverHost, serverPort, daprHost, daprPort);
+await server.binding.receive(bindingName, async (data) => console.log(`Input binding: ${JSON.stringify(data)}`));
+await server.start();
 ```
 
 ### Step 6: View the Input Binding log
@@ -305,17 +307,16 @@ Notice, as specified above, the code is invoked every time a message is added to
 
 Input Binding `console.log` statement output:
 ```
-== APP == [Dapr-JS] Server Started
-== APP == Javascript - Kafka SDK input binding: {"orderId":1}
-== APP == Javascript - Kafka SDK input binding: {"orderId":2}
-== APP == Javascript - Kafka SDK input binding: {"orderId":3}
-== APP == Javascript - Kafka SDK input binding: {"orderId":4}
-== APP == Javascript - Kafka SDK input binding: {"orderId":5}
-== APP == Javascript - Kafka SDK input binding: {"orderId":6}
-== APP == Javascript - Kafka SDK input binding: {"orderId":7}
-== APP == Javascript - Kafka SDK input binding: {"orderId":8}
-== APP == Javascript - Kafka SDK input binding: {"orderId":9}
-== APP == Javascript - Kafka SDK input binding: {"orderId":10}
+== APP == Input binding: {"orderId":1}
+== APP == Input binding: {"orderId":2}
+== APP == Input binding: {"orderId":3}
+== APP == Input binding: {"orderId":4}
+== APP == Input binding: {"orderId":5}
+== APP == Input binding: {"orderId":6}
+== APP == Input binding: {"orderId":7}
+== APP == Input binding: {"orderId":8}
+== APP == Input binding: {"orderId":9}
+== APP == Input binding: {"orderId":10}
 ```
 
 #### `bindings.yaml` component file
@@ -330,7 +331,7 @@ The Kafka `bindings.yaml` file included for this Quickstart contains the followi
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sample-topic
+  name: orders
 spec:
   type: bindings.kafka
   version: v1
@@ -421,15 +422,16 @@ Run the `csharp-output-binding-sdk` service alongside a Dapr sidecar.
 The `csharp-output-binding-sdk` uses the Kafka Output Binding [defined in the `bindings.yaml` component]({{< ref "#bindingsyaml-component-file" >}}) to send the `orderId` key/value pair to a Kafka topic. As soon as the service starts, it performs a loop.
 
 ```cs
-var bindingName = "sample-topic";
+var bindingName = "orders";
+var opration = "create";
 
 for (int i = 1; i <= 10; i++) {
     var order = new Order(i);
     using var client = new DaprClientBuilder().Build();
 
     // Publish a Kafka message using output binding
-    await client.InvokeBindingAsync(bindingName, "create", order);
-    Console.WriteLine("C# - Kafka SDK output binding: " + order);
+    await client.InvokeBindingAsync(bindingName, opration, order);
+    Console.WriteLine("Output binding: " + order);
 
     await Task.Delay(TimeSpan.FromSeconds(0.2));
 }
@@ -441,21 +443,27 @@ Notice, as specified above, the code invokes the Output Binding with the `orderI
 
 Output Binding `Console.WriteLine` statement output:
 ```
-== APP == C# - Kafka SDK output binding: Order { OrderId = 1 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 2 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 3 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 4 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 5 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 6 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 7 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 8 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 9 }
-== APP == C# - Kafka SDK output binding: Order { OrderId = 10 }
+== APP == Output binding: Order { OrderId = 1 }
+== APP == Output binding: Order { OrderId = 2 }
+== APP == Output binding: Order { OrderId = 3 }
+== APP == Output binding: Order { OrderId = 4 }
+== APP == Output binding: Order { OrderId = 5 }
+== APP == Output binding: Order { OrderId = 6 }
+== APP == Output binding: Order { OrderId = 7 }
+== APP == Output binding: Order { OrderId = 8 }
+== APP == Output binding: Order { OrderId = 9 }
+== APP == Output binding: Order { OrderId = 10 }
 ```
 
 ### Step 5: Consume the Kafka messages with an Input Binding
 
-In the same terminal window, navigate to the  `http/input` directory. Run the `csharp-input-binding-http` service alongside a Dapr sidecar.
+In the same terminal window, navigate to the  `http/input` directory. 
+
+```bash
+cd ../../http/input
+```
+
+Run the `csharp-input-binding-http` service alongside a Dapr sidecar.
 
 ```bash
 dapr run --app-id csharp-input-binding-http --app-port 7001 --components-path ../../../components -- dotnet run --project input.csproj
@@ -464,15 +472,17 @@ The `csharp-input-binding-sdk` uses the Kafka Input Binding [defined in the `bin
 
 ```cs
 var builder = WebApplication.CreateBuilder(args);
+
 var app = builder.Build();
+var bindingName = "orders";
+
 if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
 // Dapr Kafka input binding
-app.MapPost("/sample-topic", (Order requestData) => {
-    Console.WriteLine("C# - Kafka HTTP input binding: { \"orderId\": " + requestData.OrderId + "}");
+app.MapPost(bindingName, (Order requestData) => {
+    Console.WriteLine("Input binding: { \"orderId\": " + requestData.OrderId + "}");
     return Results.Ok(requestData.OrderId);
 });
-
 await app.RunAsync();
 public record Order([property: JsonPropertyName("orderId")] int OrderId);
 ```
@@ -483,16 +493,16 @@ Notice, as specified above, the code is invoked every time a message is added to
 
 Input Binding `Console.WriteLine` statement output:
 ```
-== APP == C# - Kafka HTTP input binding: { "orderId": 1}
-== APP == C# - Kafka HTTP input binding: { "orderId": 2}
-== APP == C# - Kafka HTTP input binding: { "orderId": 3}
-== APP == C# - Kafka HTTP input binding: { "orderId": 4}
-== APP == C# - Kafka HTTP input binding: { "orderId": 5}
-== APP == C# - Kafka HTTP input binding: { "orderId": 6}
-== APP == C# - Kafka HTTP input binding: { "orderId": 7}
-== APP == C# - Kafka HTTP input binding: { "orderId": 8}
-== APP == C# - Kafka HTTP input binding: { "orderId": 9}
-== APP == C# - Kafka HTTP input binding: { "orderId": 10}
+== APP == Input binding: { "orderId": 1}
+== APP == Input binding: { "orderId": 2}
+== APP == Input binding: { "orderId": 3}
+== APP == Input binding: { "orderId": 4}
+== APP == Input binding: { "orderId": 5}
+== APP == Input binding: { "orderId": 6}
+== APP == Input binding: { "orderId": 7}
+== APP == Input binding: { "orderId": 8}
+== APP == Input binding: { "orderId": 9}
+== APP == Input binding: { "orderId": 10}
 ```
 
 #### `bindings.yaml` component file
@@ -507,7 +517,7 @@ The Kafka `bindings.yaml` file included for this Quickstart contains the followi
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sample-topic
+  name: orders
 spec:
   type: bindings.kafka
   version: v1
@@ -596,7 +606,7 @@ Run the `go-output-binding-sdk` service alongside a Dapr sidecar.
 The `go-output-binding-sdk` uses the Kafka Output Binding [defined in the `bindings.yaml` component]({{< ref "#bindingsyaml-component-file" >}}) to send the `orderId` key/value pair to a Kafka topic. As soon as the service starts, it performs a loop.
 
 ```go
-bindingName := "sample-topic"
+bindingName := "orders"
 bindingOperation := "create"
 for i := 1; i <= 10; i++ {
   time.Sleep(5000)
@@ -610,8 +620,7 @@ for i := 1; i <= 10; i++ {
   //Using Dapr SDK to invoke output binding
   in := &dapr.InvokeBindingRequest{Name: bindingName, Operation: bindingOperation, Data: []byte(order)}
   err = client.InvokeOutputBinding(ctx, in)
-  fmt.Println("Golang - Kafka SDK output binding: ", order)
-}
+  fmt.Println("Output binding: ", order)
 ```
 ## Step 4: View the Output Binding log
 
@@ -619,17 +628,17 @@ Notice, as specified above, the code invokes the Output Binding with the `orderI
 
 Output Binding `fmt.Println` statement output:
 ```
-== APP == dapr client initializing for: 127.0.0.1:52104
-== APP == Golang - Kafka SDK output binding:  {"OrderId":1}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":2}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":3}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":4}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":5}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":6}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":7}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":8}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":9}
-== APP == Golang - Kafka SDK output binding:  {"OrderId":10}
+== APP == dapr client initializing for: 127.0.0.1:63280
+== APP == Output binding:  {"OrderId":1}
+== APP == Output binding:  {"OrderId":2}
+== APP == Output binding:  {"OrderId":3}
+== APP == Output binding:  {"OrderId":4}
+== APP == Output binding:  {"OrderId":5}
+== APP == Output binding:  {"OrderId":6}
+== APP == Output binding:  {"OrderId":7}
+== APP == Output binding:  {"OrderId":8}
+== APP == Output binding:  {"OrderId":9}
+== APP == Output binding:  {"OrderId":10}
 ```
 ### Step 5: Consume the Kafka messages with an Input Binding
 
@@ -641,10 +650,25 @@ dapr run --app-id go-input-binding-sdk --app-port 6101 --components-path ../../c
 The `go-input-binding-sdk` uses the Kafka Input Binding [defined in the `bindings.yaml` component]({{< ref "#bindingsyaml-component-file" >}}) to receive the `orderId` key/value pair from the Kafka topic. The service is invoked every time a message is added to the Kafka topic.
 
 ```go
+func main() {
+	bindingName := "/orders"
+	daprPort := ":6101"
+	s := daprd.NewService(daprPort)
+
+	if err := s.AddBindingInvocationHandler(bindingName, runHandler); err != nil {
+		log.Fatalf("error adding binding handler: %v", err)
+	}
+
+	if err := s.Start(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("error listenning: %v", err)
+	}
+}
+
 func runHandler(ctx context.Context, in *common.BindingEvent) (out []byte, err error) {
-	fmt.Println("Golang - Kafka SDK input binding: ", string(in.Data))
+	fmt.Println("Input binding: ", string(in.Data))
 	return nil, nil
 }
+
 ```
 ### Step 6: View the Input Binding log
 
@@ -652,16 +676,16 @@ Notice, as specified above, the code is invoked every time a message is added to
 
 Input Binding `fmt.Println` statement output:
 ```
-== APP == Golang - Kafka SDK input binding:  {"OrderId":1}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":2}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":3}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":4}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":5}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":6}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":7}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":8}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":9}
-== APP == Golang - Kafka SDK input binding:  {"OrderId":10}
+== APP == Input binding:  {"OrderId":1}
+== APP == Input binding:  {"OrderId":2}
+== APP == Input binding:  {"OrderId":3}
+== APP == Input binding:  {"OrderId":4}
+== APP == Input binding:  {"OrderId":5}
+== APP == Input binding:  {"OrderId":6}
+== APP == Input binding:  {"OrderId":7}
+== APP == Input binding:  {"OrderId":8}
+== APP == Input binding:  {"OrderId":9}
+== APP == Input binding:  {"OrderId":10}
 ```
 
 #### `bindings.yaml` component file
@@ -676,7 +700,7 @@ The Kafka `bindings.yaml` file included for this Quickstart contains the followi
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sample-topic
+  name: orders
 spec:
   type: bindings.kafka
   version: v1
