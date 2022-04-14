@@ -443,7 +443,7 @@ POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.partitionKey
 
 ## State transactions
 
-Persists the changes to the state store as a multi-item transaction.
+Persists the changes to the state store as a [multi-item transaction]({{< ref "state-management-overview.md#transactional-operations" >}}).
 
 > This operation depends on a state store component that supports multi-item transactions.
 
@@ -484,7 +484,14 @@ Field | Description
 `operations` | A JSON array of state operation
 `metadata` | (optional) The metadata for transaction that applies to all operations
 
-Each state operation is comprised with the following fields:
+All transactional databases implement the following required operations:
+
+Operation | Description
+--------- | -----------
+`upsert` | Adds or updates the value
+`delete` | Deletes the value
+
+Each operation is comprised of the following fields:
 
 Field | Description
 ---- | -----------

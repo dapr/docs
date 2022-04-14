@@ -66,11 +66,17 @@ With the HTTP API, you can set content type via URL query parameter `metadata.co
 
 With the gRPC API, you can set content type by adding key/value pair `"contentType" : <content type>` to the request metadata.
 
-### Bulk operations
+### Operations
 
-Dapr supports two types of bulk operations: **bulk** or **multi**. You can group several requests of the same type into a bulk (or a batch). Dapr submits requests in bulk operations as individual requests to the underlying data store. In other words, bulk operations are not transactional. On the other hand, you can group requests of different types into a multi-operation, which is then handled as an atomic transaction.
+Dapr supports two types of bulk operations: **bulk** or **transactional**. Read the [API reference]({{< ref state_api.md >}}) to learn how use bulk and multi options.
 
-Read the [API reference]({{< ref state_api.md >}}) to learn how use bulk and multi options.
+#### Bulk operations
+
+You can group several requests of the same type into a bulk (or batch). Dapr submits requests in bulk operations as individual requests to the underlying data store.
+
+#### Transactional operations
+
+You can group requests of different types into a multi-item operation, which is then handled as an atomic transaction. Requests will succeed or fail as a group.
 
 ### State encryption
 Dapr supports automatic client encryption of application state with support for key rotations. This is supported on all Dapr state stores. For more info, read the [How-To: Encrypt application state]({{< ref howto-encrypt-state.md >}}) topic.
