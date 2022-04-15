@@ -46,4 +46,6 @@ git reset --hard
 ```
 
 ## Related links
+<!-- IGNORE_LINKS -->
 - [GitHub documentation](https://docs.github.com/github/developing-online-with-codespaces/about-codespaces)
+<!-- END_IGNORE -->
