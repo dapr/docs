@@ -445,7 +445,7 @@ POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.partitionKey
 
 Persists the changes to the state store as a [multi-item transaction]({{< ref "state-management-overview.md#transactional-operations" >}}).
 
-> This operation depends on a state store component that supports multi-item transactions.
+> This API depends on a state store component that supports transactions.
 
 Refer to the [state store component spec]({{< ref "supported-state-stores.md" >}}) for a full, current list of state stores that support transactions.
 
@@ -481,8 +481,8 @@ POST http://localhost:3500/v1.0/state/myStore/transaction?metadata.contentType=a
 
 Field | Description
 ---- | -----------
-`operations` | A JSON array of state operation
-`metadata` | (optional) The metadata for transaction that applies to all operations
+`operations` | A JSON array of state `operation`
+`metadata` | (optional) The `metadata` for the transaction that applies to all operations
 
 All transactional databases implement the following required operations:
 
@@ -491,17 +491,18 @@ Operation | Description
 `upsert` | Adds or updates the value
 `delete` | Deletes the value
 
-Each operation is comprised of the following fields:
+Each operation has an associated `request` that is comprised of the following fields:
 
-Field | Description
+Request | Description
 ---- | -----------
 `key` | State key
 `value` | State value, which can be any byte array
 `etag` | (optional) State ETag
-`metadata` | (optional) Additional key-value pairs to be passed to the state store
+`metadata` | (optional) Additional key-value pairs to be passed to the state store that apply for this operation
 `options` | (optional) State operation options; see [state operation options](#optional-behaviors)
 
 #### Examples
+The example below shows an `upsert` operation for `key1` and a `delete` operation for `key2`. This is applied to the partition named 'planet' in the state store. Both operations either succeed or fail in the transaction.
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/starwars/transaction \
