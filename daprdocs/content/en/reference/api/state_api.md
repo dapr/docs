@@ -443,7 +443,7 @@ POST http://localhost:3500/v1.0-alpha1/state/myStore/query?metadata.partitionKey
 
 ## State transactions
 
-Persists the changes to the state store as a [multi-item transaction]({{< ref "state-management-overview.md#transactional-operations" >}}).
+Persists the changes to the state store as a [transactional operation]({{< ref "state-management-overview.md#transactional-operations" >}}).
 
 > This API depends on a state store component that supports transactions.
 
