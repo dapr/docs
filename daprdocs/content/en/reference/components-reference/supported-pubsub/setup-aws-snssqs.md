@@ -88,7 +88,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 * Dapr created SNS topic and SQS queue names conform with [AWS specifications](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html). By default, Dapr creates an SQS queue name based on the consumer `app-id`, therefore Dapr might perform name standardization to meet with AWS specifications.
 * Using SQS FIFO (`fifo` metadata field set to `"true"`), per AWS specifications, provides message ordering and deduplication, but incurs a lower SQS processing throughput, among other caveats
 * Be aware that specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) post to better understand the topic of Message Group IDs and FIFO queues.
-
+* Since v1.8.0, the component supports the `"parallel"` `concurrencyMode` as its default mode. In prior versions, the component default behavior was calling the subscriber a single message at a time and waiting for its response. 
 
 
 ## Create an SNS/SQS instance
