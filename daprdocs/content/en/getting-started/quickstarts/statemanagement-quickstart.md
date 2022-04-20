@@ -285,7 +285,7 @@ git clone https://github.com/dapr/quickstarts.git
 In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
-cd pub_sub/csharp/sdk/order-processor
+cd state_management/csharp/sdk/order-processor
 ```
 
 Recall NuGet packages:
@@ -414,7 +414,7 @@ Install the dependencies:
 mvn clean install
 ```
 
-Run the `order-processor` publisher service alongside a Dapr sidecar.
+Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
 dapr run --app-id order-processor --components-path ../../../components -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
