@@ -168,7 +168,7 @@ The CLI commands below can be used to renew root and issuer certificates in your
 > **Note: The `Dapr sentry service` followed by rest of the control plane services must be restarted for them to be able to read the new certificates. This can be done by supplying `--restart` flag to the command.**
 
 ```bash
-dapr mtls renew-certificate -k --valid-unitl <days> --restart
+dapr mtls renew-certificate -k --valid-until <days> --restart
 ```
 2. The command below generates brand new root and issuer certificates, signed by provided private root key.
 
