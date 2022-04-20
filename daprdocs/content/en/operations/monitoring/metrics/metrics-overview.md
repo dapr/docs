@@ -52,7 +52,7 @@ spec:
 
 To disable the metrics collection in the Dapr side cars running in a specific namespace:
 
-- Use the `metric` spec configuration.
+- Use the `metrics` spec configuration.
 - Set `enabled: false` to disable the metrics in the Dapr runtime.
 
 ```yaml
