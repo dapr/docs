@@ -22,19 +22,22 @@ dapr init [flags]
 
 ### Flags
 
-| Name                 | Environment Variable | Default       | Description                                                                          |
-| -------------------- | -------------------- | ------------- | ------------------------------------------------------------------------------------ |
-| `--enable-ha`        |                      | `false`       | Enable high availability (HA) mode                                                   |
-| `--enable-mtls`      |                      | `true`        | Enable mTLS in your cluster                                                          |
-| `--help`, `-h`       |                      |               | Print this help message                                                              |
-| `--kubernetes`, `-k` |                      | `false`       | Deploy Dapr to a Kubernetes cluster                                                  |
-| `--wait`             |                      | `false`       | Wait for Kubernetes initialization to complete                                       |
-| `--timeout`          |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
-| `--namespace`, `-n`  |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
-| `--runtime-version`  |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
-| `--slim`, `-s`       |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
-| `--from-dir`         |                      |               | Path to a local directory containing a downloaded "Dapr Installer Bundle" release which is used to `init` the airgap environment      |
-| `--image-registry`   |                      |               | Pulls container images required by Dapr from the given image registry                    |
+| Name                  | Environment Variable | Default       | Description                                                                          |
+| --------------------- | -------------------- | ------------- | ------------------------------------------------------------------------------------ |
+| `--dashboard-version` |                      | `latest`       | The version of the Dapr dashboard to install, for example: `1.0.0`                                                   |
+| `--enable-ha`         |                      | `false`       | Enable high availability (HA) mode                                                   |
+| `--enable-mtls`       |                      | `true`        | Enable mTLS in your cluster                                                          |
+| `--from-dir`          |                      |               | Path to a local directory containing a downloaded "Dapr Installer Bundle" release which is used to `init` the airgap environment      |
+| `--help`, `-h`        |                      |               | Print this help message                                                              |
+| `--image-registry`    |                      |               | Pulls container images required by Dapr from the given image registry                    |
+| `--kubernetes`, `-k`  |                      | `false`       | Deploy Dapr to a Kubernetes cluster                                                  |
+| `--namespace`, `-n`   |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
+| `--network`           |                      |               | The Docker network on which to install and deploy the Dapr runtime                                          |
+| `--runtime-version`   |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
+| `--set`               |                      |               | Configure options on the command line to be passed to the Dapr Helm chart and the Kubernetes cluster upon install. Can specify multiple values in a comma-separated list, for example: `key1=val1,key2=val2`                     |
+| `--slim`, `-s`        |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
+| `--timeout`           |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
+| `--wait`              |                      | `false`       | Wait for Kubernetes initialization to complete                                       |
 |        N/A              |DAPR_DEFAULT_IMAGE_REGISTRY|          | In self hosted mode, it is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub as default, just unset this env variable.|
 
 ### Examples
@@ -110,4 +113,10 @@ You can also specify a specific runtime version.
 
 ```bash
 dapr init -k --runtime-version 1.4.0
+```
+
+Use the `--set` flag to configure a set of [Helm Chart values](https://github.com/dapr/dapr/tree/master/charts/dapr#configuration) during Dapr installation to help set up a Kubernetes cluster.
+
+```bash
+dapr init -k --set global.tag=1.0.0 --set dapr_operator.logLevel=error
 ```
