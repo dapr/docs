@@ -6,7 +6,7 @@ weight: 30
 description: "Run a Dapr sidecar and try out the state API"
 ---
 
-In this quickstart, you'll simulate an application by running the sidecar and calling the API directly. After running Dapr using the Dapr CLI, you'll:
+In this guide, you'll simulate an application by running the sidecar and calling the API directly. After running Dapr using the Dapr CLI, you'll:
 
 - Store two state object names.
 - Perform a bulk get on the two names.
@@ -34,17 +34,13 @@ Since no custom component folder was defined with the above command, Dapr uses t
 
 ### Step 2: Save state
 
-Update the state with two objects. The new state will look like this:
+Update the state with an object. The new state will look like this:
 
 ```json
 [
   {
     "key": "name",
     "value": "Bruce Wayne"
-  }
-  {
-    "key": "name2",
-    "value": "Batman"
   }
 ]
 ```
@@ -58,7 +54,6 @@ Store the new states using the following commands:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": "Bruce Wayne"}]' http://localhost:3500/v1.0/state/statestore
-curl -v -X POST -H "Content-Type: application/json" -d '[{ "key": "name2", "value": "Batman"}]' http://localhost:3500/v1.0/state/statestore 
 ```
 
 {{% /codetab %}}
@@ -67,7 +62,6 @@ curl -v -X POST -H "Content-Type: application/json" -d '[{ "key": "name2", "valu
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "name", "value": "Bruce Wayne"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "name2", "value": "Batman"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
 ```
 
 {{% /codetab %}}
@@ -76,14 +70,14 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 ### Step 3: Get state
 
-Retrieve the object you just stored in the state by using the state management API with the keys `name` and `name2`. In the same terminal window, run the following bulk get code:
+Retrieve the object you just stored in the state by using the state management API with the key `name`. In the same terminal window, run the following command:
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
 ```bash
-curl -v http://localhost:3500/v1.0/state/statestore/bulk -H "Content-Type: application/json" -d '{ "keys": [ "name", "name2" ], "parallelism": 10 }' 
+curl http://localhost:3500/v1.0/state/statestore/name 
 ```
 
 {{% /codetab %}}
@@ -91,7 +85,7 @@ curl -v http://localhost:3500/v1.0/state/statestore/bulk -H "Content-Type: appli
 {{% codetab %}}
 
 ```powershell
-Invoke-RestMethod -H "Content-Type: application/json" -Body '{ "keys": [ "name", "name2" ], "parallelism": 10 }' -Uri 'http://localhost:3500/v1.0/state/statestore/bulk'
+Invoke-RestMethod -Uri 'http://localhost:3500/v1.0/state/statestore/name'
 ```
 
 {{% /codetab %}}
@@ -114,7 +108,6 @@ keys *
 
 **Output:**  
 `1) "myapp||name"`
-`2) "myapp||name2"`
 
 View the state values by running:
 
@@ -128,97 +121,22 @@ hgetall "myapp||name"
 `3) "version"`  
 `4) "1"`  
 
-```bash
-hgetall "myapp||name2"
-```
-
-**Output:**
-`1) "data"`
-`2) "\"Batman\""`
-`3) "version"`
-`4) "1"`
-
 Exit the Redis CLI with:
 
 ```bash
 exit
 ```
 
-### Step 5: Run a transactional operation
+### Step 5: Delete stores
 
-Run the following command to:
-
-- Add a new state object, `name3`.
-- Delete the `name` object using a transactional operation. 
+In the same terminal window, delete `name` from the state store.
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
 ```bash
-curl -v -X POST http://localhost:3500/v1.0/state/statestore/transaction -H "Content-Type: application/json" -d '{ "operations": [ { "operation": "upsert", "request": { "key": "name3", "value": "Joker" } }, { "operation": "delete", "request": { "key": "name" } } ]}' 
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{ "operations": [ { "operation": "upsert", "request": { "key": "name3", "value": "Joker" } }, { "operation": "delete", "request": { "key": "name" } } ]}' -Uri 'http://localhost:3500/v1.0/state/statestore/transaction'
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-Check the Redis container and list the Redis keys to verify the `upsert` and `delete` operations were a success:
-
-```bash
-docker exec -it dapr_redis redis-cli
-keys *
-```
-
-**Output:**  
-`1) "myapp||name3"`
-`2) "myapp||name2"`
-
-```bash
-hgetall "myapp||name3"
-```
-
-**Output:**  
-1) "data"
-2) "\"Joker\""
-3) "version"
-4) "1"
-
-```bash
-hgetall "myapp||name2"
-```
-
-**Output:**
-`1) "data"`
-`2) "\"Batman\""`
-`3) "version"`
-`4) "1"`
-
-Exit the Redis CLI with:
-
-```bash
-exit
-```
-
-### Step 6: Delete stores
-
-In the same terminal window, exit the docker command and delete `name2` and `name3` from the state store.
-
-{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
-
-{{% codetab %}}
-
-```bash
-curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0/state/statestore/name2 
-curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0/state/statestore/name3 
+curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0/state/statestore/name
 ```
 
 {{% /codetab %}}
@@ -227,13 +145,10 @@ curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "name", "value": "Bruce Wayne"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "name2", "value": "Batman"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
 ```
 
 {{% /codetab %}}
 
 {{< /tabs >}}
-
-Learn more about transactional operations in the [state management overview article]({{< ref "state-management-overview.md#transactional-operations" >}}) or the [state API reference doc]({{< ref "state_api.md#state-transactions" >}}).
 
 {{< button text="Next step: Dapr Quickstarts >>" page="getting-started/quickstarts" >}}
