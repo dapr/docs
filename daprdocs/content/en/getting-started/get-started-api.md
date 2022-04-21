@@ -30,7 +30,7 @@ Launch a Dapr sidecar that will listen on port 3500 for a blank application name
 dapr run --app-id myapp --dapr-http-port 3500
 ```
 
-Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized >}}).
+Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}).
 
 ### Step 2: Save state
 
@@ -234,6 +234,6 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": 
 
 {{< /tabs >}}
 
-Learn more about transactional operations in the [state management overview article]({{< ref state-management-overview.md#transactional-operations >}}) or the [state API reference doc]({{< ref state_api.md#state-transactions >}}).
+Learn more about transactional operations in the [state management overview article]({{< ref "state-management-overview.md#transactional-operations" >}}) or the [state API reference doc]({{< ref "state_api.md#state-transactions" >}}).
 
 {{< button text="Next step: Dapr Quickstarts >>" page="getting-started/quickstarts" >}}
