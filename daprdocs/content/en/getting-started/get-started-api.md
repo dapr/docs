@@ -30,7 +30,7 @@ Launch a Dapr sidecar that will listen on port 3500 for a blank application name
 dapr run --app-id myapp --dapr-http-port 3500
 ```
 
-Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref install-dapr-selfhost.md##step-5-verify-components-directory-has-been-initialized >}}).
+Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized >}}).
 
 ### Step 2: Save state
 
