@@ -8,10 +8,9 @@ description: "Run a Dapr sidecar and try out the state API"
 
 In this guide, you'll simulate an application by running the sidecar and calling the API directly. After running Dapr using the Dapr CLI, you'll:
 
-- Store two state object names.
-- Perform a bulk get on the two names.
-- Run a transaction operation, adding a third name and removing the first name.
-- Delete the state object names.
+- Save a state object.
+- Read/get the state object.
+- Delete the state object.
 
 [Learn more about the state building block and how it works in our concept docs]({{< ref state-management >}}).
 
