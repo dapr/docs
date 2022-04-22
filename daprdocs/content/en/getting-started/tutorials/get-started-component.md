@@ -8,7 +8,7 @@ description: "Create a component definition file to interact with the secrets bu
 
 When building an app, you'd most likely create your own component file definitions, depending on the building block and specific component that you'd like to use.
 
-In this tutorial, you will create a component definition file to interact with the [Secrets building block]({{< ref secrets >}}):
+In this tutorial, you will create a component definition file to interact with the [secrets building block API]({{< ref secrets >}}):
 
 - Create a local JSON secret store.
 - Register the secret store with Dapr using a component definition file.
