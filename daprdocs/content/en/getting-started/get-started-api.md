@@ -128,7 +128,7 @@ exit
 
 ### Step 5: Delete state
 
-In the same terminal window, delete `name` from the state store.
+In the same terminal window, delete the`name` state object from the state store.
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
