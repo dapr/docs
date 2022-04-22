@@ -1,14 +1,14 @@
 ---
 type: docs
-title: "Quickstart: Define a component"
+title: "Define a component"
 linkTitle: "Define a component"
 weight: 70
-description: "Create a component definition file to interact with the Secrets building block"
+description: "Create a component definition file to interact with the secrets building block"
 ---
 
 When building an app, you'd most likely create your own component file definitions, depending on the building block and specific component that you'd like to use.
 
-In this quickstart, you will create a component definition file to interact with the [Secrets building block]({{< ref secrets >}}):
+In this tutorial, you will create a component definition file to interact with the [secrets building block API]({{< ref secrets >}}):
 
 - Create a local JSON secret store.
 - Register the secret store with Dapr using a component definition file.
@@ -16,7 +16,7 @@ In this quickstart, you will create a component definition file to interact with
 
 ## Step 1: Create a JSON secret store
 
-Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), but for this quickstart, create a local JSON file named `mysecrets.json` with the following secret:
+Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), but for this tutorial, create a local JSON file named `mysecrets.json` with the following secret:
 
 ```json
 {
