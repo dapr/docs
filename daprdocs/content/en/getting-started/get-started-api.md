@@ -126,7 +126,7 @@ Exit the Redis CLI with:
 exit
 ```
 
-### Step 5: Delete stores
+### Step 5: Delete state
 
 In the same terminal window, delete `name` from the state store.
 
