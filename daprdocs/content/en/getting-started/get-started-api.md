@@ -44,7 +44,7 @@ Update the state with an object. The new state will look like this:
 ]
 ```
 
-Notice, the objects contained in the state each have a `key` assigned with the value `name`. You will use the key in the next step.
+Notice, that objects contained in the state each have a `key` assigned with the value `name`. You will use the key in the next step.
 
 Store the new states using the following commands:
 
