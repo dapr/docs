@@ -143,7 +143,7 @@ curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0
 {{% codetab %}}
 
 ```powershell
-Invoke-RestMethod -Method Delete -ContentType 'application/json' -Body '[{ "key": "name", "value": "Bruce Wayne"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
+Invoke-RestMethod -Method Delete -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0/state/statestore/name'
 ```
 
 {{% /codetab %}}
