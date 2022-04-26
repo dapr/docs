@@ -23,17 +23,17 @@ spec:
   type: bindings.commercetools
   version: v1
   metadata:
-  - name: Region # required.
+  - name: region # required.
     value: region
-  - name: Provider # required.
+  - name: provider # required.
     value: provider (gcp/aws)
-  - name: ProjectKey # required.
+  - name: projectKey # required.
     value: project-key
-  - name: ClientID # required.
+  - name: clientID # required.
     value: *****************
-  - name: ClientSecret # required.
+  - name: clientSecret # required.
     value: *****************
-  - name: Scopes # required.
+  - name: scopes # required.
     value: scopes
 
 ```
