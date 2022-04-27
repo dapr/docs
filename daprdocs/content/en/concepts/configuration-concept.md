@@ -25,14 +25,14 @@ spec:
 
 This configuration configures tracing for metrics recording. It can be loaded in local self-hosted mode by editing the default configuration file called `config.yaml` file in your `.dapr` directory, or by applying it to your Kubernetes cluster with kubectl/helm.
 
-Here is an example of the Dapr control plane configuration in the `daprsystem` namespace.
+Here is an example of the Dapr control plane configuration called `daprsystem` in the `dapr-system` namespace.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: daprsystem
-  namespace: default
+  namespace: dapr-system
 spec:
   mtls:
     enabled: true

@@ -68,7 +68,7 @@ With the gRPC API, you can set content type by adding key/value pair `"contentTy
 
 ### Multiple operations
 
-Dapr supports two types of mult-read or multi-write operations: **bulk** or **transactional**. Read the [API reference]({{< ref state_api.md >}}) to learn how use bulk and multi options.
+Dapr supports two types of multi-read or multi-write operations: **bulk** or **transactional**. Read the [API reference]({{< ref state_api.md >}}) to learn how use bulk and multi options.
 
 #### Bulk read operations
 
