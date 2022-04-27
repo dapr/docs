@@ -9,7 +9,10 @@ The Dapr Sentry service manages mTLS between services and acts as a certificate 
 
 ## Self-hosted mode
 
-The sentry service Docker container is started automatically as part of [`dapr init`]({{< ref self-hosted-with-docker.md >}}). It can also be run manually as a process if you are running in [slim-init mode]({{< ref self-hosted-no-docker.md >}}).
+The Sentry service Docker container is not started automatically as part of [`dapr init`]({{< ref self-hosted-with-docker.md >}}). However it can be executed manually by following the instructions for setting up [mutual TLS]({{< ref "mtls.md#self-hosted" >}}).
+
+
+It can also be run manually as a process if you are running in [slim-init mode]({{< ref self-hosted-no-docker.md >}}).
 
 <img src="/images/security-mTLS-sentry-selfhosted.png" width=1000>
 
