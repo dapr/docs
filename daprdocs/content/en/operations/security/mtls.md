@@ -178,12 +178,21 @@ dapr mtls renew-certificate -k --valid-until <days> --restart
 dapr mtls renew-certificate -k --private-key <private_key_file_path> --valid-until <days>
 ```
 #### Renew certificates by using provided custom certificates
-To update the provided certificates in the Kubernetes cluster, the CLI command below can be used.
+3. To update the provided certificates in the Kubernetes cluster, the CLI command below can be used.
 
 > **Note - It does not support `valid-until` flag to specify validity for new certificates.**
 
 ```bash
 dapr mtls renew-certificate -k --ca-root-certificate <ca.crt> --issuer-private-key <issuer.key> --issuer-public-certificate <issuer.crt> --restart
+```
+
+{{% alert title="Restart Dapr-enabled pods" color="warning" %}}
+Irrespective of which command was used to renew the certificates, you must restart all Dapr-enabled pods.
+You will experience potential downtime due to mismatching certificates until all deployments have successfully been restarted.
+{{% /alert %}}
+The recommended way to do this is to perform a rollout restart of your deployment:
+```
+kubectl rollout restart deploy/myapp
 ```
 
 ### Updating root or issuer certs using Kubectl
