@@ -6,20 +6,22 @@ weight: 30
 description: "Run a Dapr sidecar and try out the state API"
 ---
 
-Running [`dapr init`]({{<ref install-dapr-selfhost.md>}}) loads your local environment with:
+In this guide, you'll simulate an application by running the sidecar and calling the API directly. After running Dapr using the Dapr CLI, you'll:
 
-- The Dapr sidecar binaries.
-- Default Redis component definitions for both:
-  - State management, and
-  - A message broker.
+- Save a state object.
+- Read/get the state object.
+- Delete the state object.
 
-With this setup, run Dapr using the Dapr CLI and try out the state API to store and retrieve a state. [Learn more about the state building block and how it works in our concept docs]({{< ref state-management >}}).
+[Learn more about the state building block and how it works in our concept docs]({{< ref state-management >}}).
 
-In this guide, you will simulate an application by running the sidecar and calling the API directly. For the purpose of this tutorial you'll run the sidecar without an application.
+### Pre-requisites
+
+- [Install  Dapr CLI]({{< ref install-dapr-cli.md >}}).
+- [Run `dapr init`]({{< ref install-dapr-selfhost.md>}}).
 
 ### Step 1: Run the Dapr sidecar
 
-One of the most useful Dapr CLI commands is [`dapr run`]({{< ref dapr-run.md >}}). This command launches an application, together with a sidecar. 
+The [`dapr run`]({{< ref dapr-run.md >}}) command launches an application, together with a sidecar.
 
 Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 
@@ -27,12 +29,7 @@ Launch a Dapr sidecar that will listen on port 3500 for a blank application name
 dapr run --app-id myapp --dapr-http-port 3500
 ```
 
-Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref install-dapr-selfhost.md >}}), found:
-
-- On Windows, under `%UserProfile%\.dapr\components`
-- On Linux/MacOS, under `~/.dapr/components`
-
-These tell Dapr to use the local Docker container for Redis as a state store and message broker.
+Since no custom component folder was defined with the above command, Dapr uses the default component definitions created during the [`dapr init` flow]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}).
 
 ### Step 2: Save state
 
@@ -47,9 +44,9 @@ Update the state with an object. The new state will look like this:
 ]
 ```
 
-Notice, the object contained in the state has a `key` assigned with the value `name`. You will use the key in the next step.
+Notice, that objects contained in the state each have a `key` assigned with the value `name`. You will use the key in the next step.
 
-Store the new state using the following command:
+Save a new state object using the following command:
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 {{% codetab %}}
@@ -57,6 +54,7 @@ Store the new state using the following command:
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": "Bruce Wayne"}]' http://localhost:3500/v1.0/state/statestore
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -64,20 +62,21 @@ curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "name", "value": "Bruce Wayne"}]' -Uri 'http://localhost:3500/v1.0/state/statestore'
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ### Step 3: Get state
 
-Retrieve the object you just stored in the state by using the state management API with the key `name`. Run the following code with the same Dapr instance you ran earlier. :
+Retrieve the object you just stored in the state by using the state management API with the key `name`. In the same terminal window, run the following command:
 
 {{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
 ```bash
-curl http://localhost:3500/v1.0/state/statestore/name
+curl http://localhost:3500/v1.0/state/statestore/name 
 ```
 
 {{% /codetab %}}
@@ -109,7 +108,7 @@ keys *
 **Output:**  
 `1) "myapp||name"`
 
-View the state value by running:
+View the state values by running:
 
 ```bash
 hgetall "myapp||name"
@@ -121,10 +120,34 @@ hgetall "myapp||name"
 `3) "version"`  
 `4) "1"`  
 
-Exit the redis-cli with:
+Exit the Redis CLI with:
 
 ```bash
 exit
 ```
+
+### Step 5: Delete state
+
+In the same terminal window, delete the`name` state object from the state store.
+
+{{< tabs "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+
+{{% codetab %}}
+
+```bash
+curl -v -X DELETE -H "Content-Type: application/json" http://localhost:3500/v1.0/state/statestore/name
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```powershell
+Invoke-RestMethod -Method Delete -ContentType 'application/json' -Uri 'http://localhost:3500/v1.0/state/statestore/name'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 {{< button text="Next step: Dapr Quickstarts >>" page="getting-started/quickstarts" >}}

@@ -53,7 +53,7 @@ You can provide the method parameters and values in the body of the request, for
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '{
         "destination": "Hoth"
       }'
@@ -63,7 +63,7 @@ or
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/x-wing/33/method/fly \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d "{\"destination\":\"Hoth\"}"
 ```
 
@@ -103,7 +103,7 @@ Parameter | Description
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
   -d '[
        {
          "operation": "upsert",
@@ -242,7 +242,7 @@ Parameter | Description
 
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/reminders/checkRebels \
-  -H "Content-Type: application/json"
+  -H "Content-Type: application/json" \
 -d '{
       "data": "someData",
       "dueTime": "1m",
@@ -383,7 +383,7 @@ Parameter | Description
 
 ```shell
 curl http://localhost:3500/v1.0/actors/stormtrooper/50/timers/checkRebels \
-    -H "Content-Type: application/json"
+    -H "Content-Type: application/json" \
 -d '{
       "data": "someData",
       "dueTime": "1m",
