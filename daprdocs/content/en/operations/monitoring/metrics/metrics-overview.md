@@ -19,6 +19,8 @@ The default metrics port is `9090`. You can override this by passing the command
 
 You can also disable the metrics exporter for a specific application by setting the `dapr.io/enable-metrics: "false"` annotation to your application deployment. With the metrics exporter disabled, `daprd` will not open the metrics listening port.
 
+The follow example shows metrics are explicitly enabled with the port specified as "9090".
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -65,7 +67,7 @@ spec:
   tracing:
     samplingRate: "1"
   metrics:
-    enabled: true
+    enabled: false
 ```
 
 ## Metrics
