@@ -309,7 +309,9 @@ Memory Store does not support modules and cannot be used with query.
 {{% /codetab %}}
 
 {{% codetab %}}
+<!-- IGNORE_LINKS -->
 [Alibaba Cloud](https://www.alibabacloud.com/product/apsaradb-for-redis)
+<!-- END_IGNORE -->
 {{% /codetab %}}
 
 {{< /tabs >}}

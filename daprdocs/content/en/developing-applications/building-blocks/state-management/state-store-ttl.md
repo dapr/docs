@@ -45,9 +45,9 @@ from dapr.clients import DaprClient
 DAPR_STORE_NAME = "statestore"
 
 with DaprClient() as client:
-        client.save_state(DAPR_STORE_NAME, "order_1", str(orderId), metadata=(
-            ('ttlInSeconds', '120')
-        )) 
+        client.save_state(DAPR_STORE_NAME, "order_1", str(orderId), state_metadata={
+            'ttlInSeconds': '120'
+        }) 
 
 ```
 
