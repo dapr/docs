@@ -167,6 +167,6 @@ scopes:
 
 ## Next steps
 
-- Learn more about [how to publish and subscribe]({{< ref howto-publish-subscribe.md >}})
+- Learn more about [publishing and subscribing messages]({{< ref pubsub-overview.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
