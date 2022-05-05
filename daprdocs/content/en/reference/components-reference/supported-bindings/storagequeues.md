@@ -32,6 +32,8 @@ spec:
     value: "60"
   - name: decodeBase64
     value: "false"
+  - name: queueEndpoint
+    value: "https://account1.example.com:10001"
 ```
 
 {{% alert title="Warning" color="warning" %}}
