@@ -41,17 +41,17 @@ The diagram below is an overview of how Dapr's service invocation works.
 ## Features
 Service invocation provides several features to make it easy for you to call methods between applications.
 
-### Pluggable service discovery
+#### Pluggable service discovery
 
 Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment including Kubernetes or self-hosted.
 
-### Service-to-service security
+#### Service-to-service security
 
 All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service.
 
 For more information read the [service-to-service security]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}) article.
 
-### Retries
+#### Retries
 
 Service invocation performs automatic retries with backoff time periods in the event of call failures and transient errors.
 
@@ -63,11 +63,11 @@ Errors that cause retries are:
 Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.
 Connection establishment via gRPC to the target sidecar has a timeout of 5 seconds.
 
-### Tracing and metrics with observability
+#### Tracing and metrics with observability
 
 By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications, which is especially important in production scenarios. This gives you call graphs and metrics on the calls between your services. For more information read about [observability]({{< ref observability-concept.md >}}).
 
-### Round robin load balancing with mDNS
+#### Round robin load balancing with mDNS
 
 Dapr provides round robin load balancing of service invocation requests with the mDNS protocol, for example with a single machine or with multiple, networked, physical machines.
 
@@ -77,17 +77,17 @@ The diagram below shows an example of how this works. If you have 1 instance of 
 
 **Note**: App ID is unique per application, not application instance. This means regardless of how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
-### Access control
+#### Access control
 
 Applications can control which other applications are allowed to call them and what they are authorized to do via access policies. This enables you to restrict sensitive applications, that say have personnel information, from being accessed by unauthorized applications, and combined with service-to-service secure communication, provides for soft multi-tenancy deployments.
 
 For more information read the [access control allow lists for service invocation]({{< ref invoke-allowlist.md >}}) article.
 
-### Namespace scoping
+#### Namespace scoping
 
 Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
-### gRPC proxying
+#### gRPC proxying
 
 Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 
