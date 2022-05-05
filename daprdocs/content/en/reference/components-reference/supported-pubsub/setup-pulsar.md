@@ -8,6 +8,7 @@ aliases:
 ---
 
 ## Component format
+
 To setup Apache Pulsar pubsub create a component of type `pubsub.pulsar`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration. For more information on Apache Pulsar [read the docs](https://pulsar.apache.org/docs/en/concepts-overview/)
 
 ```yaml
@@ -39,13 +40,14 @@ spec:
   - name: disableBatching
     value: "false"
 ```
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"` OR `"http://pulsar-pj54qwwdpz4b-pulsar.ap-sg.public.pulsar.com:8080"`|
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"` |
-| token              | N  | Enable Authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)| 
+| token              | N  | Enable Authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
 | tenant             | N  | The topic tenant within the instance. Tenants are essential to multi-tenancy in Pulsar, and spread across clusters.  Default: `"public"` | `"public"` |
 | namespace          | N  | The administrative unit of the topic, which acts as a grouping mechanism for related topics.  Default: `"default"` | `"default"`
 | persistent         | N  | Pulsar supports two kind of topics: [persistent](https://pulsar.apache.org/docs/en/concepts-architecture-overview#persistent-storage) and [non-persistent](https://pulsar.apache.org/docs/en/concepts-messaging/#non-persistent-topics). With persistent topics, all messages are durably persisted on disks (if the broker is not standalone, messages are durably persisted on multiple disks), whereas data for non-persistent topics is not persisted to storage disks. Note: the default retry behavior is to retry until it succeeds, so when you use a non-persistent theme, you can reduce or prohibit retries by defining `backOffMaxRetries` to `0`. Default: `"true"` | `"true"`, `"false"`
@@ -58,12 +60,15 @@ spec:
 | backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
 | backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"15m"` | `"15m"` |
 | disableBatching | N | disable batching. Default: `"false"` | `"true"`, `"false"`|
+| batchingMaxMessages | N | BatchingMaxMessages set the maximum number of messages permitted in a batch. Default: `"1000"` | `"1000"`|
+| batchingMaxSize | N | BatchingMaxSize sets the maximum number of bytes permitted in a batch. Default: `"128KB"` | `"131072"`|
 
 ### Delay queue
 
 When invoking the Pulsar pub/sub, it's possible to provide an optional delay queue by using the `metadata` query parameters in the request url.
 
 These optional parameter names are `metadata.deliverAt` or `metadata.deliverAfter`:
+
 - `deliverAt`: Delay message to deliver at a specified time (RFC3339 format), e.g. `"2021-09-01T10:00:00Z"`
 - `deliverAfter`: Delay message to deliver after a specified amount of time, e.g.`"4h5m3s"`
 
@@ -79,7 +84,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
       }'
 ```
 
-Or 
+Or
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.deliverAfter='4h5m3s' \
@@ -96,6 +101,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
+
 ```
 docker run -it \
   -p 6650:6650 \
@@ -106,6 +112,7 @@ docker run -it \
   bin/pulsar standalone
 
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -115,6 +122,7 @@ Refer to the following [Helm chart](https://pulsar.apache.org/docs/en/kubernetes
 {{< /tabs >}}
 
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})
