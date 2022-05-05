@@ -114,6 +114,6 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
   - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - Try out a quickstart:
-  - [Service Invocation quickstart guide]({{< serviceinvocation-quickstart.md >}})
+  - [Service Invocation quickstart guide]({{< ref serviceinvocation-quickstart.md >}})
   - [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers
