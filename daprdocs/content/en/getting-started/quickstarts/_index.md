@@ -25,7 +25,7 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) |  Call a method on another service using the service invocation API. |
 | [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
 | [State Management]({{< ref statemanagement-quickstart.md >}}) | Create stateful applications using the state management API. |
-| Bindings           | Coming soon. |
+| [Bindings]({{< ref bindings-quickstart.md >}}) | Use Dapr's input and output bindings to send and receive Kafka messages. |
 | Actors             | Coming soon. |
 | Observability      | Coming soon. |
 | Secrets Management | Coming soon. |
