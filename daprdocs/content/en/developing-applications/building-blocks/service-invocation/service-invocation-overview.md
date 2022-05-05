@@ -23,7 +23,7 @@ Dapr addresses these challenges by providing a service invocation API that acts 
 Dapr uses a sidecar architecture. To invoke an application using Dapr, you use the `invoke` API on any Dapr instance. The sidecar programming model encourages each applications to talk to its own instance of Dapr. The Dapr instances discover and communicate with one another.
 
 
-## Service invocation diagram
+#### Service invocation diagram
 
 The diagram below is an overview of how Dapr's service invocation works.
 
