@@ -117,14 +117,14 @@ The Dapr docs contain multiple quickstarts that leverage the service invocation 
 ### Start using service invocation directly in your app
 Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application. 
 
-After [Dapr is installed](https://docs.dapr.io/getting-started), you can start using the service invocation API (via HTTP) by first assigning a unique ID for your app, and then invoking your service with with the `dapr-app-id` header (our reccomended setup). There are multiple ways to get started with the service invocation API but with the `dapr-app-id` header there's no need to change your existing app endpoint URLs — just add the header and you're ready to go. 
+After [Dapr is installed](https://docs.dapr.io/getting-started), you can start using the service invocation API by first assigning a unique ID for your app, and then invoking your service with with the `dapr-app-id` header (our reccomended setup). There are multiple ways to get started with the service invocation API but with the `dapr-app-id` header there's no need to change your existing app endpoint URLs — just add the header and you're ready to go. 
 
 For the full guide on invoking services using HTTP calls, [check here]({{< ref howto-invoke-discover-services.md >}}).
 
 ## Next steps
-- Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide describes how to invoke a method on another service.
 - For gRPC, follow these guides on:
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
   - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
+- Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide for service invocation describes how to invoke methods on other services.
 - Try out the [Dapr SDKs]({{< ref sdks >}}). The SDKs are the fastest way to get Dapr into your application.
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers
