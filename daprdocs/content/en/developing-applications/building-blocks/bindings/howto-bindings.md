@@ -95,7 +95,7 @@ spec:
 
 Below are code examples that leverage Dapr SDKs to interact with an output binding.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs Dotnet Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
@@ -117,9 +117,10 @@ namespace EventService
     {
         static async Task Main(string[] args)
         {
-           string BINDING_NAME = "checkout";
-		   string BINDING_OPERATION = "create";
-           while(true) {
+            string BINDING_NAME = "checkout";
+            string BINDING_OPERATION = "create";
+            while(true)
+            {
                 System.Threading.Thread.Sleep(5000);
                 Random random = new Random();
                 int orderId = random.Next(1,1000);
@@ -127,7 +128,7 @@ namespace EventService
                 //Using Dapr SDK to invoke output binding
                 await client.InvokeBindingAsync(BINDING_NAME, BINDING_OPERATION, orderId);
                 Console.WriteLine("Sending message: " + orderId);
-		    }
+            }
         }
     }
 }
@@ -268,38 +269,36 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-
-import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, CommunicationProtocolEnum } from "dapr-client";
 
 //code
-const daprHost = "127.0.0.1"; 
+const daprHost = "127.0.0.1";
 
-var main = function() {
-    for(var i=0;i<10;i++) {
-        sleep(5000);
-        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
-        start(orderId).catch((e) => {
+(async function () {
+    for (var i = 0; i < 10; i++) {
+        await sleep(2000);
+        const orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        try {
+            await sendOrder(orderId)
+        } catch (err) {
             console.error(e);
             process.exit(1);
-        });
+        }
     }
-}
+})();
 
-async function start(orderId) {
+async function sendOrder(orderId) {
     const BINDING_NAME = "checkout";
     const BINDING_OPERATION = "create";
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     //Using Dapr SDK to invoke output binding
-    const result = await client.binding.send(BINDING_NAME, BINDING_OPERATION, { orderId: orderId });
+    const result = await client.binding.send(BINDING_NAME, BINDING_OPERATION, orderId);
     console.log("Sending message: " + orderId);
 }
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-main();
-    
 ```
 
 Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
@@ -317,7 +316,7 @@ All that's left now is to invoke the output bindings endpoint on a running Dapr 
 You can also invoke the output bindings endpoint using HTTP:
 
 ```bash
-curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bindings/checkout -d '{ "data": { "orderId": "100" }, "operation": "create" }'
+curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bindings/checkout -d '{ "data": 100, "operation": "create" }'
 ```
 
 As seen above, you invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `checkout`.
