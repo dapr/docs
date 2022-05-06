@@ -106,7 +106,7 @@ Now configure your application to receive incoming events. If using HTTP, you ne
 
 Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs Dotnet Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
