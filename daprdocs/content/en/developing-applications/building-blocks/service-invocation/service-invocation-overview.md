@@ -115,11 +115,11 @@ The Dapr docs contain multiple quickstarts that leverage the service invocation 
 - [Hello world kubernetes](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-kubernetes/README.md). This tutorial walks through using Dapr in kubernetes and covers both the service invocation and state management building blocks as well.
 
 ### Start using service invocation directly in your app
-Want to skip the quickstart? Not a problem. You can try out the service invocation building block directly in your application. 
+Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application. 
 
-After the [Dapr is installed](https://docs.dapr.io/getting-started), you can start using the service invocation API (via HTTP) by first assigning a unique ID for your app, and then just invoking your service with with the dapr-app-id header (our reccomended setup). There are multiple ways to get started with the service invocation API but with the dapr-app-id header there's no need to change your existing app endpoint URLs - just add the header and you're ready to go. 
+After [Dapr is installed](https://docs.dapr.io/getting-started), you can start using the service invocation API (via HTTP) by first assigning a unique ID for your app, and then just invoking your service with with the dapr-app-id header (our reccomended setup). There are multiple ways to get started with the service invocation API but with the dapr-app-id header there's no need to change your existing app endpoint URLs — just add the header and you're ready to go. 
 
-For the full [guide on invoking services using HTTP calls, check here] ({{< ref howto-invoke-discover-services.md >}}).
+For the full [guide on invoking services using HTTP calls, check here]({{< ref howto-invoke-discover-services.md >}}).
 
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide describes how to invoke a method on another service.
