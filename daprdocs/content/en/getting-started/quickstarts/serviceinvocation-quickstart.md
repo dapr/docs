@@ -10,17 +10,17 @@ With [Dapr's Service Invocation building block](https://docs.dapr.io/developing-
 
 <img src="/images/serviceinvocation-quickstart/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
-Dapr offers several methods for service invocation, which you can choose depending on your scenario. For this quickstart, you'll enable the checkout service to invoke a method using HTTP proxy in the order-processor service.
+Dapr offers several methods for service invocation, which you can choose depending on your scenario. For this Quickstart, you'll enable the checkout service to invoke a method using HTTP proxy in the order-processor service.
 
 Learn more about Dapr's methods for service invocation in the [overview article]({{< ref service-invocation-overview.md >}}).
 
-Select your preferred language before proceeding with the quickstart.
+Select your preferred language before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
  <!-- Python -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -30,23 +30,57 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `checkout` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, navigate to the `checkout` directory.
+In a terminal window, from the root of the Quickstart clone directory
+navigate to `order-processor` directory.
+
+```bash
+cd service_invocation/python/http/order-processor
+```
+
+Install the dependencies and build the application:
+
+```bash
+pip3 install -r requirements.txt 
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+```
+
+```py
+@app.route('/orders', methods=['POST'])
+def getOrder():
+    data = request.json
+    print('Order received : ' + json.dumps(data), flush=True)
+    return json.dumps({'success': True}), 200, {
+        'ContentType': 'application/json'}
+
+
+app.run(port=7001)
+```
+
+### Step 4: Run `checkout` service
+
+In a new terminal window, from the root of the Quickstart clone directory
+navigate to the `checkout` directory.
 
 ```bash
 cd service_invocation/python/http/checkout
 ```
 
-Install the dependencies:
+Install the dependencies and build the application:
 
 ```bash
 pip3 install -r requirements.txt 
@@ -55,7 +89,7 @@ pip3 install -r requirements.txt
 Run the `checkout` service alongside a Dapr sidecar.
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
@@ -69,40 +103,7 @@ result = requests.post(
     headers=headers
 )
 ```
-
-### Run `order-processor` service
-
-In a new terminal window, navigate to `order-processor` directory.
-
-```bash
-cd service_invocation/python/http/order-processor
-```
-
-Install the dependencies:
-
-```bash
-pip3 install -r requirements.txt 
-```
-
-Run the `order-processor` service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
-```
-
-```py
-@app.route('/orders', methods=['POST'])
-def getOrder():
-    data = request.json
-    print('Order received : ' + json.dumps(data), flush=True)
-    return json.dumps({'success': True}), 200, {
-        'ContentType': 'application/json'}
-
-
-app.run(port=5001)
-```
-
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -141,7 +142,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- JavaScript -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -151,49 +152,18 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `checkout` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, navigate to the `checkout` directory.
-
-```bash
-cd service_invocation/javascript/http/checkout
-```
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-Run the `checkout` service alongside a Dapr sidecar.
-
-```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
-```
-
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
-
-```javascript
-let axiosConfig = {
-  headers: {
-      "dapr-app-id": "order-processor"
-  }
-};
-  const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , axiosConfig);
-  console.log("Order passed: " + res.config.data);
-```
-
-### Run `order-processor` service
-
-In a new terminal window, navigate to `order-processor` directory.
+In a terminal window, from the root of the Quickstart clone directory
+navigate to `order-processor` directory.
 
 ```bash
 cd service_invocation/javascript/http/order-processor
@@ -218,7 +188,40 @@ app.post('/orders', (req, res) => {
 });
 ```
 
-### View the Service Invocation outputs
+### Step 4: Run `checkout` service
+
+In a new terminal window, from the root of the Quickstart clone directory
+navigate to the `checkout` directory.
+
+```bash
+cd service_invocation/javascript/http/checkout
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+Run the `checkout` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
+```
+
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
+
+```javascript
+let axiosConfig = {
+  headers: {
+      "dapr-app-id": "order-processor"
+  }
+};
+  const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , axiosConfig);
+  console.log("Order passed: " + res.config.data);
+```
+
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -257,7 +260,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- .NET -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -267,17 +270,48 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `checkout` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, navigate to the `checkout` directory.
+In a terminal window, from the root of the Quickstart clone directory
+navigate to `order-processor` directory.
+
+```bash
+cd service_invocation/csharp/http/order-processor
+```
+
+Install the dependencies:
+
+```bash
+dotnet restore
+dotnet build
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
+```
+
+```csharp
+app.MapPost("/orders", async context => {
+    var data = await context.Request.ReadFromJsonAsync<Order>();
+    Console.WriteLine("Order received : " + data);
+    await context.Response.WriteAsync(data.ToString());
+});
+```
+
+### Step 4: Run `checkout` service
+
+In a new terminal window, from the root of the Quickstart clone directory
+navigate to the `checkout` directory.
 
 ```bash
 cd service_invocation/csharp/http/checkout
@@ -308,36 +342,7 @@ var response = await client.PostAsync($"{baseURL}/orders", content);
     Console.WriteLine("Order passed: " + order);
 ```
 
-### Run `order-processor` service
-
-In a new terminal window, navigate to `order-processor` directory.
-
-```bash
-cd service_invocation/csharp/http/order-processor
-```
-
-Install the dependencies:
-
-```bash
-dotnet restore
-dotnet build
-```
-
-Run the `order-processor` service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
-```
-
-```csharp
-app.MapPost("/orders", async context => {
-    var data = await context.Request.ReadFromJsonAsync<Order>();
-    Console.WriteLine("Order received : " + data);
-    await context.Response.WriteAsync(data.ToString());
-});
-```
-
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -376,7 +381,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- Java -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -389,17 +394,46 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `checkout` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, navigate to the `checkout` directory.
+In a terminal window, from the root of the Quickstart clone directory
+navigate to `order-processor` directory.
+
+```bash
+cd service_invocation/java/http/order-processor
+```
+
+Install the dependencies:
+
+```bash
+mvn clean install
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --app-port 6001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+```
+
+```java
+public String processOrders(@RequestBody Order body) {
+        System.out.println("Order received: "+ body.getOrderId());
+        return "CID" + body.getOrderId();
+    }
+```
+
+### Step 4: Run `checkout` service
+
+In a new terminal window, from the root of the Quickstart clone directory
+navigate to the `checkout` directory.
 
 ```bash
 cd service_invocation/java/http/checkout
@@ -427,34 +461,7 @@ HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandle
 System.out.println("Order passed: "+ orderId)
 ```
 
-### Run `order-processor` service
-
-In a new terminal window, navigate to `order-processor` directory.
-
-```bash
-cd service_invocation/java/http/order-processor
-```
-
-Install the dependencies:
-
-```bash
-mvn clean install
-```
-
-Run the `order-processor` service alongside a Dapr sidecar.
-
-```bash
-dapr run --app-id order-processor --app-port 6001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
-```
-
-```java
-public String processOrders(@RequestBody Order body) {
-        System.out.println("Order received: "+ body.getOrderId());
-        return "CID" + body.getOrderId();
-    }
-```
-
-### View the Service Invocation outputs
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
@@ -493,7 +500,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
  <!-- Go -->
 {{% codetab %}}
 
-### Pre-requisites
+### Step 1: Pre-requisites
 
 For this example, you will need:
 
@@ -503,57 +510,19 @@ For this example, you will need:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
-### Step 1: Set up the environment
+### Step 2: Set up the environment
 
-Clone the sample we've provided.
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Run `checkout` service
+### Step 3: Run `order-processor` service
 
-In a terminal window, navigate to the `checkout` directory.
-
-```bash
-cd service_invocation/go/http/checkout
-```
-
-Install the dependencies:
-
-```bash
-go build app.go
-```
-
-Run the `checkout` service alongside a Dapr sidecar.
-
-```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run app.go
-```
-
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
-
-```go
-req.Header.Add("dapr-app-id", "order-processor")
-
-response, err := client.Do(req)
-
-if err != nil {
-			fmt.Print(err.Error())
-			os.Exit(1)
-		}
-
-		result, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.Println("Order passed: ", string(result))
-```
-
-### Run `order-processor` service
-
-In a new terminal window, navigate to `order-processor` directory.
+In a terminal window, from the root of the Quickstart clone directory
+navigate to `order-processor` directory.
 
 ```bash
 cd service_invocation/go/http/order-processor
@@ -568,8 +537,11 @@ go build app.go
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run app.go
+dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run app.go
 ```
+
+Each order is received via an HTTP POST request and processed by the
+`getOrder` function.
 
 ```go
 func getOrder(w http.ResponseWriter, r *http.Request) {
@@ -580,23 +552,52 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Order received : %s", string(data))
 ```
 
-### View the Service Invocation outputs
+### Step 4: Run `checkout` service
+
+In a new terminal window, from the root of the Quickstart clone directory
+navigate to the `checkout` directory.
+
+```bash
+cd service_invocation/go/http/checkout
+```
+
+Install the dependencies:
+
+```bash
+go build app.go
+```
+
+Run the `checkout` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run app.go
+```
+
+In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
+
+```go
+req.Header.Add("dapr-app-id", "order-processor")
+
+response, err := client.Do(req)
+```
+
+### Step 5: View the Service Invocation outputs
 
 Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
 
 `checkout` service output:
 
 ```
-== APP == Order passed:  "{\"orderId\":1}"
-== APP == Order passed:  "{\"orderId\":2}"
-== APP == Order passed:  "{\"orderId\":3}"
-== APP == Order passed:  "{\"orderId\":4}"
-== APP == Order passed:  "{\"orderId\":5}"
-== APP == Order passed:  "{\"orderId\":6}"
-== APP == Order passed:  "{\"orderId\":7}"
-== APP == Order passed:  "{\"orderId\":8}"
-== APP == Order passed:  "{\"orderId\":9}"
-== APP == Order passed:  "{\"orderId\":10}"
+== APP == Order passed:  {"orderId":1}
+== APP == Order passed:  {"orderId":2}
+== APP == Order passed:  {"orderId":3}
+== APP == Order passed:  {"orderId":4}
+== APP == Order passed:  {"orderId":5}
+== APP == Order passed:  {"orderId":6}
+== APP == Order passed:  {"orderId":7}
+== APP == Order passed:  {"orderId":8}
+== APP == Order passed:  {"orderId":9}
+== APP == Order passed:  {"orderId":10}
 ```
 
 `order-processor` service output:
@@ -619,7 +620,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 {{% /tabs %}}
 
 ## Tell us what you think!
-We're continuously working to improve our quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
 Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 
