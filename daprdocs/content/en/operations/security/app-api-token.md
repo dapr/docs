@@ -11,13 +11,13 @@ To enable the application to authenticate requests that are arriving from the Da
 
 ## Create a token
 
-Dapr uses [JWT](https://jwt.io/) tokens for API authentication.
+Dapr uses shared tokens for API authentication. You are free to define the API token to use.
 
-> Note, while Dapr itself is actually not the JWT token issuer in this implementation, being explicit about the use of JWT standard enables federated implementations in the future (e.g. OAuth2).
+Although Dapr does not impose any format for the shared token, a good idea is to generate a random byte sequence and encode it to Base64. For example, this command generates a random 32-byte key and encodes that as Base64:
 
-To configure API authentication, start by generating your token using any JWT token compatible tool (e.g. https://jwt.io/) and your secret.
-
-> Note, that secret is only necessary to generate the token, and Dapr doesn't need to know about or store it
+```sh
+openssl rand 16 | base64
+```
 
 ## Configure app API token authentication in Dapr
 
@@ -25,17 +25,17 @@ The token authentication configuration is slightly different for either Kubernet
 
 ### Self-hosted
 
-In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environment variable. If that environment variable is set while `daprd` process launches, Dapr includes the token when calling an app:
+In self-hosting scenario, Dapr looks for the presence of `APP_API_TOKEN` environment variable. If that environment variable is set when the `daprd` process launches, Dapr includes the token when calling an app:
 
 ```shell
 export APP_API_TOKEN=<token>
 ```
 
-To rotate the configured token, simply set the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
+To rotate the configured token, update the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
 
 ### Kubernetes
 
-In Kubernetes deployment, Dapr leverages Kubernetes secrets store to hold the JWT token. Start by creating a new secret:
+In a Kubernetes deployment, Dapr leverages Kubernetes secrets store to hold the shared token. To start, create a new secret:
 
 ```shell
 kubectl create secret generic app-api-token --from-literal=token=<token>
@@ -57,11 +57,11 @@ When deployed, the Dapr Sidecar Injector automatically creates a secret referenc
 
 ### Self-hosted
 
-To rotate the configured token in self-hosted, simply set the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
+To rotate the configured token in self-hosted, update the `APP_API_TOKEN` environment variable to the new value and restart the `daprd` process.
 
 ### Kubernetes
 
-To rotate the configured token in Kubernates, update the previously created secret with the new token in each namespace. You can do that using `kubectl patch` command, but the easiest way to update these in each namespace is by using manifest:
+To rotate the configured token in Kubernates, update the previously-created secret with the new token in each namespace. You can do that using `kubectl patch` command, but a simpler way to update these in each namespace is by using a manifest:
 
 ```yaml
 apiVersion: v1
@@ -85,18 +85,17 @@ To tell Dapr to start using the new token, trigger a rolling upgrade to each one
 kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name>
 ```
 
-> Note, assuming your service is configured with more than one replica, the key rotation process does not result in any downtime.
-
+> Assuming your service is configured with more than one replica, the key rotation process does not result in any downtime.
 
 ## Authenticating requests from Dapr
 
-Once app token authentication is configured in Dapr, all requests *coming from Dapr* include the token:
+Once app token authentication is configured in Dapr, all requests *coming from Dapr* include the token.
 
 ### HTTP
 
-In case of HTTP, inspect the incoming request for presence of `dapr-api-token` parameter in HTTP header:
+In case of HTTP, in your code look for the HTTP header `dapr-api-token` in incoming requests:
 
-```shell
+```text
 dapr-api-token: <token>
 ```
 
@@ -104,7 +103,7 @@ dapr-api-token: <token>
 
 When using gRPC protocol, inspect the incoming calls for the API token on the gRPC metadata:
 
-```shell
+```text
 dapr-api-token[0].
 ```
 
@@ -115,7 +114,7 @@ dapr-api-token[0].
 In Kubernetes, it's recommended to mount the secret to your pod as an environment variable.
 Assuming we created a secret with the name `app-api-token` to hold the token:
 
-```
+```yaml
 containers:
   - name: mycontainer
     image: myregistry/myapp
@@ -128,7 +127,7 @@ containers:
 
 In self-hosted mode, you can set the token as an environment variable for your app:
 
-```
+```sh
 export APP_API_TOKEN=<my-app-token>
 ```
 
