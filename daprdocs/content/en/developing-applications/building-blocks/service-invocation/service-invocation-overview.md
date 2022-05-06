@@ -12,11 +12,11 @@ Using service invocation, your application can reliably and securely communicate
 
 In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle inter-service problems like:
 
-- Service discovery - how do I discover my different services?
-- Standardizing API calls between services - how do I invoke methods between services?
-- Secure inter-service communication - how do I call other services securely with encryption and apply access control on the methods?
-- Mitigating request timeouts or failures - how do I handle retries and transient errors?
-- Implamenting observability and tracing - how do I use tracing to see a call graph with metrics to diagnose issues in production?
+- Service discovery. How do I discover my different services?
+- Standardizing API calls between services. How do I invoke methods between services?
+- Secure inter-service communication. How do I call other services securely with encryption and apply access control on the methods?
+- Mitigating request timeouts or failures. How do I handle retries and transient errors?
+- Implamenting observability and tracing. How do I use tracing to see a call graph with metrics to diagnose issues in production?
 
 Dapr addresses these challenges by providing a service invocation API that acts similar to a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing, metrics, error handling, encryption and more.
 
@@ -107,7 +107,7 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 6. Dapr forwards the response to the Python Dapr sidecar
 7. The Python app receives the response.
 
-## Try out service invocation 
+## Try out the service invocation building block yourself
 ### Quickstarts & tutorials
 The Dapr docs contain multiple quickstarts that leverage the service invocation building block in different example architectures. To get a stright-forward understanding of the service invocation api and it's features we reccomend starting with our quickstarts: 
 - [Service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}). This quickstart gets you interacting directly with the service invocation building block.
@@ -115,10 +115,11 @@ The Dapr docs contain multiple quickstarts that leverage the service invocation 
 - [Hello world kubernetes](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-kubernetes/README.md). This tutorial walks through using Dapr in kubernetes and covers both the service invocation and state management building blocks as well.
 
 ### Start using service invocation directly in your app
-Don't want to try a quickstart? No problem, you can try out service invocation directly in your application. After the [Dapr CLI is installed](https://docs.dapr.io/getting-started), you can start using the service invocation api (via HTTP calls) by simply assigning a global unique ID for your app, and then invoking your service with with the dapr-app-id header (our reccomended way). There are multiple ways to get started with the service invocation api but with our reccomended way there's no need to change your existing app endpoint URLs
-- just add the header and you're ready to go. 
+Don't want to skip the quickstart? No problem, you can try out service invocation directly in your application. 
 
-Full guide on invoking services using HTTP can be found [here]({{< ref howto-invoke-discover-services.md >}}).
+After the [Dapr CLI is installed](https://docs.dapr.io/getting-started), you can start using the service invocation API (via HTTP) by first assigning a global unique ID for your app, and then invoking your service with with the dapr-app-id header (our reccomended setup). There are multiple ways to get started with the service invocation API but with the dapr-app-id header there's no need to change your existing app endpoint URLs - just add the header and you're ready to go. 
+
+[Full guide on invoking services using HTTP calls can be found here]({{< ref howto-invoke-discover-services.md >}}).
 
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide describes how to invoke a method on another service.
