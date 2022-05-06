@@ -60,6 +60,7 @@ spec:
 | backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
 | backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"15m"` | `"15m"` |
 | disableBatching | N | disable batching. Default: `"false"` | `"true"`, `"false"`|
+| batchingMaxPublishDelay | N | BatchingMaxPublishDelay set the time period within which the messages sent will be batched. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Default: `"10ms"` | `"10ms"`, `"10"`|
 | batchingMaxMessages | N | BatchingMaxMessages set the maximum number of messages permitted in a batch. Default: `"1000"` | `"1000"`|
 | batchingMaxSize | N | BatchingMaxSize sets the maximum number of bytes permitted in a batch. Default: `"128KB"` | `"131072"`|
 
