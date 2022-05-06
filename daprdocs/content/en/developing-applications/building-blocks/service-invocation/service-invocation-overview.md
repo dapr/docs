@@ -8,22 +8,22 @@ description: "Overview of the service invocation API building block"
 
 ## Introduction
 
-Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) protocol or HTTP (REST) protocols.
+Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
-In many microservice-based applications multiple services need the ability to communicate with each other. This inter-service communication requires that application developers handle inter-service problems like:
+In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle inter-service problems like:
 
-- Service Discovery (How do I discover my different services?)
-- Standardizing API calls between services (How do I invoke methods between services?)
-- Secure inter-service communication (How do I call other services securely with encryption and apply access control on the methods?)
-- Mitigating request timeouts or failures (How do I handle retries and transient errors?)
-- Implamenting observability and tracing (How do I use tracing to see a call graph with metrics to diagnose issues in production?)
+- Service discovery - how do I discover my different services?
+- Standardizing API calls between services - how do I invoke methods between services?
+- Secure inter-service communication - how do I call other services securely with encryption and apply access control on the methods?
+- Mitigating request timeouts or failures - how do I handle retries and transient errors?
+- Implamenting observability and tracing - how do I use tracing to see a call graph with metrics to diagnose issues in production?
 
-Dapr addresses these challenges by providing a service invocation API that acts like a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing, metrics, error handling, encryption and more.
+Dapr addresses these challenges by providing a service invocation API that acts similar to a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing, metrics, error handling, encryption and more.
 
 Dapr uses a sidecar architecture. To invoke an application using Dapr, you use the `invoke` API on any Dapr instance. The sidecar programming model encourages each applications to talk to its own instance of Dapr. The Dapr instances discover and communicate with one another.
 
 
-#### Service invocation diagram
+### Service invocation service diagram
 
 The diagram below is an overview of how Dapr's service invocation works.
 
@@ -41,17 +41,17 @@ The diagram below is an overview of how Dapr's service invocation works.
 ## Features
 Service invocation provides several features to make it easy for you to call methods between applications.
 
-#### Pluggable service discovery
+### Pluggable service discovery
 
 Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment including Kubernetes or self-hosted.
 
-#### Service-to-service security
+### Service-to-service security
 
 All calls between Dapr applications can be made secure with mutual (mTLS) authentication on hosted platforms, including automatic certificate rollover, via the Dapr Sentry service.
 
 For more information read the [service-to-service security]({{< ref "security-concept.md#sidecar-to-sidecar-communication" >}}) article.
 
-#### Retries
+### Retries
 
 Service invocation performs automatic retries with backoff time periods in the event of call failures and transient errors.
 
@@ -63,11 +63,11 @@ Errors that cause retries are:
 Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.
 Connection establishment via gRPC to the target sidecar has a timeout of 5 seconds.
 
-#### Tracing and metrics with observability
+### Tracing and metrics with observability
 
 By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications, which is especially important in production scenarios. This gives you call graphs and metrics on the calls between your services. For more information read about [observability]({{< ref observability-concept.md >}}).
 
-#### Round robin load balancing with mDNS
+### Round robin load balancing with mDNS
 
 Dapr provides round robin load balancing of service invocation requests with the mDNS protocol, for example with a single machine or with multiple, networked, physical machines.
 
@@ -77,21 +77,21 @@ The diagram below shows an example of how this works. If you have 1 instance of 
 
 **Note**: App ID is unique per application, not application instance. This means regardless of how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
-#### Access control
+### Access control
 
 Applications can control which other applications are allowed to call them and what they are authorized to do via access policies. This enables you to restrict sensitive applications, that say have personnel information, from being accessed by unauthorized applications, and combined with service-to-service secure communication, provides for soft multi-tenancy deployments.
 
 For more information read the [access control allow lists for service invocation]({{< ref invoke-allowlist.md >}}) article.
 
-#### Namespace scoping
+### Namespace scoping
 
 Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
-#### gRPC proxying
+### gRPC proxying
 
 Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 
-## Example
+## Example Architecture
 
 Following the above call sequence, suppose you have the applications as described in the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".
 
@@ -107,13 +107,23 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 6. Dapr forwards the response to the Python Dapr sidecar
 7. The Python app receives the response.
 
+## Try out service invocation 
+### Quickstarts & tutorials
+The Dapr docs contain multiple quickstarts that leverage the service invocation building block in different example architectures. To get a stright-forward understanding of the service invocation api and it's features we reccomend starting with our quickstarts: 
+- [Service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}). This quickstart gets you interacting directly with the service invocation building block.
+- [Hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md). This tutorial shows how to use both the service invocation and state management building blocks all running locally on your machine.
+- [Hello world kubernetes](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-kubernetes/README.md). This tutorial walks through using Dapr in kubernetes and covers both the service invocation and state management building blocks as well.
+
+### Start using service invocation directly in your app
+Don't want to try a quickstart? No problem, you can try out service invocation directly in your application. After the [Dapr CLI is installed](https://docs.dapr.io/getting-started), you can start using the service invocation api (via HTTP calls) by simply assigning a global unique ID for your app, and then invoking your service with with the dapr-app-id header (our reccomended way). There are multiple ways to get started with the service invocation api but with our reccomended way there's no need to change your existing app endpoint URLs
+- just add the header and you're ready to go. 
+
+Full guide on invoking services using HTTP can be found [here]({{< ref howto-invoke-discover-services.md >}}).
+
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide describes how to invoke a method on another service.
-- Follow these guides on:
-  - [How-to: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}})
+- For gRPC, follow these guides on:
   - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
   - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
-- Try out a quickstart:
-  - [Service Invocation quickstart guide]({{< ref serviceinvocation-quickstart.md >}})
-  - [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) which shows how to use HTTP service invocation or try the samples in the [Dapr SDKs]({{< ref sdks >}})
+- Try out the [Dapr SDKs]({{< ref sdks >}}). The SDKs are the fastest way to get Dapr into your application.
 - Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers
