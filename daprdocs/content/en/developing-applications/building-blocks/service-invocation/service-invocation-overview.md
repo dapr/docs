@@ -107,7 +107,7 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 6. Dapr forwards the response to the Python Dapr sidecar
 7. The Python app receives the response.
 
-## Try out the service invocation building block yourself
+## Try out service invocation 
 ### Quickstarts & tutorials
 The Dapr docs contain multiple quickstarts that leverage the service invocation building block in different example architectures. To get a stright-forward understanding of the service invocation api and it's features we reccomend starting with our quickstarts: 
 - [Service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}). This quickstart gets you interacting directly with the service invocation building block.
