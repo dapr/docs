@@ -47,7 +47,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|------------|-----|---------|
 | region | Y | Output | The region of the commercetools project | `"europe-west1"` |
 | provider | Y | Output | The cloud provider, either gcp or aws | `"gcp"` |
-| projectKey | Y | Output | The commercetools project key | `"aproject-key"` |
+| projectKey | Y | Output | The commercetools project key | `"project-key"` |
 | clientID | Y | Output | The commercetools client ID for the project | `"client ID"` |
 | clientSecret | Y | Output | The commercetools client secret for the project | `"client secret"` |
 | scopes | Y | Output | The commercetools scopes for the project | `"manage_project:project-key"` |
