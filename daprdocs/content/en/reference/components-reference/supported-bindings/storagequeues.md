@@ -32,7 +32,7 @@ spec:
     value: "60"
   - name: decodeBase64
     value: "false"
-  - name: queueEndpoint
+  - name: queueEndpointUrl
     value: "https://account1.example.com:10001"
 ```
 
@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | queue | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
 | ttlInSeconds | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
 | decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
-| queueEndpoint | N | Input/Output | Optional custom endpoint URL. This is useful, for example, with "[production-style URLs](https://github.com/Azure/azurite#production-style-url)" when using the [Storage emulator](https://github.com/Azure/azurite) | `"https://accountName.queue.example.com:10001"` |
+| queueEndpointUrl | N | Input/Output | Optional custom endpoint URL. This is useful, for example, with "[production-style URLs](https://github.com/Azure/azurite#production-style-url)" when using the [Storage emulator](https://github.com/Azure/azurite) | `"https://accountName.queue.example.com:10001"` |
 
 ## Binding support
 
