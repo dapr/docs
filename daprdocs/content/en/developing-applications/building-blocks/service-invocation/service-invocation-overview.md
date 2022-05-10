@@ -119,7 +119,7 @@ Want to skip the quickstarts? Not a problem. You can try out the service invocat
 
 Invoke services using:
 - **HTTP Protocols** *(recommended method)* - If you're already using HTTP protocols in your application, then using the dapr HTTP header might be the easiest way to get started. Theres's no need to change your existing endpoint URLs, just add the `dapr-app-id` header and you're ready to go. For more information on this, [check out the Invoke Services HTTP docs here.]({{< ref howto-invoke-discover-services.md >}})
-- **gRPC Protocols** *(recommended method)* - For gRPC based applications, the service invocaiton API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. For more information on this, check out docs on [configuring Dapr to use gRPC]({{< ref grpc >}}) and [invoking services with gRPC]({{< ref dapr-invoke.md >}})
+- **gRPC Protocols** *(recommended method)* - For gRPC based applications, the service invocaiton API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. For more information on this, check out docs on [configuring Dapr to use gRPC]({{< ref grpc >}}) and [invoking services with gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - **CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. For more information on this, [check out the CLI docs here.]({{< ref dapr-invoke.md >}}) 
 - **The SDK** -  If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. For more information on this, [check out the SDK docs here.]({{< ref sdks.md >}}) 
 
