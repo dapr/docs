@@ -115,16 +115,17 @@ The Dapr docs contain multiple quickstarts that leverage the service invocation 
 - [Hello world kubernetes](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-kubernetes/README.md). This tutorial walks through using Dapr in kubernetes and covers both the service invocation and state management building blocks as well.
 
 ### Start using service invocation directly in your app
-Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application. 
+Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application to securely communicate with other services. After [Dapr is installed](https://docs.dapr.io/getting-started), you can begin using the service invocation API in the folliwing ways.
 
-After [Dapr is installed](https://docs.dapr.io/getting-started), you can start using the service invocation API by first assigning a unique ID for your app, and then invoking your service with with the `dapr-app-id` header (our reccomended setup). There are multiple ways to get started with the service invocation API but with the `dapr-app-id` header there's no need to change your existing app endpoint URLs — just add the header and you're ready to go. 
+Invoke services using:
+- *(Recommended method)* HTTP Protocols: If you're already using HTTP protocols in your application, then using the dapr HTTP header might be the easiest way to get started. Theres's no need to change your existing endpoint URLs, just add the `dapr-app-id` header and you're ready to go. For more information on this, [check out the Invoke Services HTTP docs here.]
+- *(Recommended method)* gRPC Protocols ({{< ref howto-invoke-services-grpc.md >}}): For gRPC based applications, the service invocaiton API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. For more information on this, check out docs on [configuring Dapr to use gRPC]({{< ref grpc >}}) and [invoking services with gRPC]({{< ref dapr-invoke.md >}})
+- [CLI command]: Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. For more information on this, [check out the CLI docs here.]({{< ref sdks.md >}}) 
+- [SDK]: If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. For more information on this, [check out the SDK docs here.]({{< ref sdks.md >}}) 
 
-For the full guide on invoking services using HTTP calls, [check here]({{< ref howto-invoke-discover-services.md >}}).
 
 ## Next steps
-- For gRPC, follow these guides on:
-  - [How-To: Configure Dapr to use gRPC]({{< ref grpc >}})
-  - [How-to: Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide for service invocation describes how to invoke methods on other services.
-- Try out the [Dapr SDKs]({{< ref sdks >}}). The SDKs are the fastest way to get Dapr into your application.
-- Understand the [service invocation performance]({{< ref perf-service-invocation.md >}}) numbers
+- Understand the [service invocation performance numbers]({{< ref perf-service-invocation.md >}})
+- Take a look at [Dapr observability]({{< ref monitoring.md >}}). Here you can dig into Dapr's monotoring tools like tracing, metrics and logging.
+- Read up on our [security practices]({{< ref monitoring.md >}}) around mTLS encryption, token authentication, and endpoint authorization
