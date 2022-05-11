@@ -52,3 +52,9 @@ Table captions:
 | Name                                                                                  | Status | Component version | Since |
 |---------------------------------------------------------------------------------------|--------| ---- |--------------|
 | [AlibabaCloud OOS Parameter Store]({{< ref alicloud-oos-parameter-store.md >}})       | Alpha  | v1   | 1.6 |
+
+### Huawei Cloud
+
+| Name                                                                                  | Status | Component version | Since |
+|---------------------------------------------------------------------------------------|--------| ---- |--------------|
+| [HuaweiCloud Cloud Secret Management Service]({{< ref huaweicloud-csms.md >}})        | Alpha  | v1   | 1.8 |
