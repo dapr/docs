@@ -41,9 +41,9 @@ The diagram below is an overview of how Dapr's service invocation works.
 ## Features
 Service invocation provides several features to make it easy for you to call methods between applications.
 
-### Pluggable service discovery
-
-Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment including Kubernetes or self-hosted.
+### Proxying
+- HTTP Proxying - If you're already using HTTP protocols in your application, then using the dapr HTTP header might be the easiest way to get started. Theres's no need to change your existing endpoint URLs, just add the `dapr-app-id` header and you're ready to go. For more information on this, [check out the Invoke Services HTTP docs here.]({{< ref howto-invoke-discover-services.md >}}) 
+- gRPC Proxying. Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 
 ### Service-to-service security
 
@@ -67,15 +67,6 @@ Connection establishment via gRPC to the target sidecar has a timeout of 5 secon
 
 By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications, which is especially important in production scenarios. This gives you call graphs and metrics on the calls between your services. For more information read about [observability]({{< ref observability-concept.md >}}).
 
-### Round robin load balancing with mDNS
-
-Dapr provides round robin load balancing of service invocation requests with the mDNS protocol, for example with a single machine or with multiple, networked, physical machines.
-
-The diagram below shows an example of how this works. If you have 1 instance of an application with app ID `FrontEnd` and 3 instances of application with app ID `Cart` and you call from `FrontEnd` app to `Cart` app, Dapr round robins' between the 3 instances. These instance can be on the same machine or on different machines. .
-
-<img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation">
-
-**Note**: App ID is unique per application, not application instance. This means regardless of how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
 ### Access control
 
@@ -87,9 +78,19 @@ For more information read the [access control allow lists for service invocation
 
 Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
-### gRPC proxying
+### Round robin load balancing with mDNS
 
-Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
+Dapr provides round robin load balancing of service invocation requests with the mDNS protocol, for example with a single machine or with multiple, networked, physical machines.
+
+The diagram below shows an example of how this works. If you have 1 instance of an application with app ID `FrontEnd` and 3 instances of application with app ID `Cart` and you call from `FrontEnd` app to `Cart` app, Dapr round robins' between the 3 instances. These instance can be on the same machine or on different machines. .
+
+<img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation">
+
+**Note**: App ID is unique per application, not application instance. This means regardless of how many instances of that application exist (due to scaling), all of them will share the same app ID.
+
+### Pluggable service discovery
+
+Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment including Kubernetes or self-hosted.
 
 ## Example Architecture
 
@@ -118,11 +119,13 @@ The Dapr docs contain multiple quickstarts that leverage the service invocation 
 Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application to securely communicate with other services. After [Dapr is installed](https://docs.dapr.io/getting-started), you can begin using the service invocation API in the folliwing ways.
 
 Invoke services using:
-- **HTTP Protocols** *(recommended method)* - If you're already using HTTP protocols in your application, then using the dapr HTTP header might be the easiest way to get started. Theres's no need to change your existing endpoint URLs, just add the `dapr-app-id` header and you're ready to go. For more information on this, [check out the Invoke Services HTTP docs here.]({{< ref howto-invoke-discover-services.md >}})
-- **gRPC Protocols** *(recommended method)* - For gRPC based applications, the service invocaiton API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. For more information on this, check out docs on [configuring Dapr to use gRPC]({{< ref grpc >}}) and [invoking services with gRPC]({{< ref howto-invoke-services-grpc.md >}})
-- **CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. For more information on this, [check out the CLI docs here.]({{< ref dapr-invoke.md >}}) 
-- **The SDK** -  If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. For more information on this, [check out the SDK docs here.]({{< ref sdks.md >}}) 
+- Proxying *(recommended set up method)*
+  - HTTP Proxying - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}})
+  - gRPC Proxying  - For gRPC based applications, the service invocaiton API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. Read more on this here, [Configuring Dapr to use gRPC.]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
+- The SDK - If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. Read more on this here, [Dapr SDKs.]({{< ref sdks.md >}}) 
 
+For quick testing, try using the Dapr CLI for service invocation:
+- **CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this here, [Dapr CLI.]({{< ref dapr-invoke.md >}}) 
 
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide for service invocation describes how to invoke methods on other services.
