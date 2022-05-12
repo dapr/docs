@@ -29,3 +29,5 @@ Table captions:
 | [Bearer]({{< ref middleware-bearer.md >}})                                     | Verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API | Alpha                      | v1|
 | [Open Policy Agent]({{< ref middleware-opa.md >}})                             | Applies [Rego/OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests                                    | Alpha                      | v1|
 | [Uppercase]({{< ref middleware-uppercase.md >}})                               | Converts the body of the request to uppercase letters                                                                           | Stable(For local development) | v1|
+| [Sentinel]({{< ref middleware-sentinel.md >}}) | Use Sentinel middleware to guarantee the reliability and resiliency of your application | Alpha | v1|
+| [RouterChecker]({{< ref middleware-routerchecker.md >}})                       | Validates HTTP requests using regexp and filters out invalid requests                                                           | Alpha                      | v1|
