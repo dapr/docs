@@ -42,8 +42,8 @@ The diagram below is an overview of how Dapr's service invocation works.
 Service invocation provides several features to make it easy for you to call methods between applications.
 
 ### Proxying
-- HTTP Proxying. - If you're already using HTTP protocols in your application, then using the dapr HTTP header might be the easiest way to get started. Theres's no need to change your existing endpoint URLs, just add the `dapr-app-id` header and you're ready to go. For more information, see [Invoke Services using HTTP]({{< ref howto-invoke-discover-services.md >}}) 
-- gRPC Proxying. Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
+- HTTP Proxying - If you're already using HTTP protocols in your application, then using the dapr HTTP header might be the easiest way to get started. Theres's no need to change your existing endpoint URLs, just add the `dapr-app-id` header and you're ready to go. For more information, see [Invoke Services using HTTP]({{< ref howto-invoke-discover-services.md >}}) 
+- gRPC Proxying - Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 
 ### Service-to-service security
 
