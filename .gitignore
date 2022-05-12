@@ -6,3 +6,4 @@ daprdocs/public
 daprdocs/resources/_gen
 .venv/
 .hugo_build.lock
+.dccache
