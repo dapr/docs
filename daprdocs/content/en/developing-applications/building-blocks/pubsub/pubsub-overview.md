@@ -3,12 +3,12 @@ type: docs
 title: "Publish and subscribe overview"
 linkTitle: "Overview"
 weight: 1000
-description: "Overview of the Pub/sub API building block"
+description: "Overview of the Pub/Sub API building block"
 ---
 
 ## Publish and subscribe pattern
 
-The publish and subscribe pattern (Pub/sub) allows microservices to communicate with each other using messages.
+The publish and subscribe pattern (Pub/Sub) enables microservices to communicate with each other using messages for event-driven architectures.
 
 - The producer, or **publisher**, writes messages to an input channel and sends them to a topic, unaware which application will receive them.
 - The consumer, or **subscriber**, subscribes to the topic and receives messages from an output channel, unaware which service produced these messages.
@@ -19,22 +19,22 @@ An intermediary message broker copies each message from a publisher's input chan
 
 <br></br>
 
-## Pub/sub API in Dapr
+## Pub/Sub API in Dapr
 
-The Pub/sub API in Dapr:
+The Pub/Sub API in Dapr:
 - Provides a platform-agnostic API to send and receive messages.
-- Offers an at-least-once guarantee.
+- Offers at-least-once message delivery guarantee.
 - Integrates with various message brokers and queuing systems. 
 
-The specific implementation used by your service is pluggable and configured as a Dapr Pub/sub component at runtime. This approach removes the dependency from your service and, as a result, makes your service more portable and flexible to changes.
+The specific message broker used by your service is pluggable and configured as a Dapr Pub/Sub component at runtime. This removes the dependency from your service and makes your service more portable and flexible to changes.
 
-When using the Pub/sub API in Dapr:
+When using Pub/Sub in Dapr:
 
-1. Your service makes a network call to a Dapr Pub/sub building block, exposed as a sidecar.
-1. The Pub/sub building block makes calls into a Dapr Pub/sub component that encapsulates a specific message broker product.
-1. To receive topics, Dapr subscribes to the Dapr Pub/sub component on behalf of your service and delivers the messages to an endpoint when they arrive.
+1. Your service makes a network call to a Dapr Pub/Sub building block API.
+1. The Pub/Sub building block makes calls into a Dapr Pub/Sub component that encapsulates a specific message broker.
+1. To receive messages on a topic, Dapr subscribes to the Pub/Sub component on behalf of your service with a topic and delivers the messages to an endpoint on your service when they arrive.
 
-In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads Pub/sub component configuration files that point to the same Pub/sub message bus component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP Pub/Sub.
+In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads Pub/Sub component configuration files that point to the same Pub/Sub message bus component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP Pub/Sub.
 
 <img src="/images/pubsub-overview-components.png" width=1000>
 <br></br>
@@ -44,25 +44,46 @@ In the diagram below, the Dapr API posts an "order" topic from the publishing "c
 <img src="/images/pubsub-overview-publish-API.png" width=1000>
 <br></br>
 
-[View the complete list of Pub/sub components that Dapr supports]({{< ref supported-pubsub >}}).
+[View the complete list of Pub/Sub components that Dapr supports]({{< ref supported-pubsub >}}).
 
-## Dapr Pub/sub API features
+## Dapr Pub/Sub API features
 
-The Pub/sub building block brings several features to your application.
+The Pub/Sub building block brings several features to your application.
 
-### Cloud Events message format
+### Sending messages using Cloud Events
 
-To enable message routing and provide additional context with each message, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a Cloud Events envelope, using [`Content-Type` header value]({{< ref "pubsub-overview.md#content-types" >}}) for `datacontenttype` attribute.
+Dapr Pub/Sub sends messages between services. To enable message routing and provide additional context with each message, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a Cloud Events envelope, using [`Content-Type` header value]({{< ref "pubsub-overview.md#content-types" >}}) for `datacontenttype` attribute.
 
-Dapr implements the following Cloud Events fields:
+Dapr implements the following Cloud Events fields when creating a message topic.
 
 * `id`
 * `source`
 * `specversion`
 * `type`
+* `traceparent`
 * `datacontenttype` (optional)
 
-The following example shows an XML content in CloudEvent v1.0 serialized as JSON:
+The following example demonstrates an `orders` topic message sent by Dapr that includes a W3C `traceid` unique to the message, the `data` and the fields for the CloudEvent where the data content is serialized as JSON.
+
+```json
+{
+    "topic": "orders",
+    "pubsubname": "order_pub_sub",
+    "traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
+    "tracestate": "",
+    "data": {
+    "orderId": 1
+    },
+    "id": "5929aaac-a5e2-4ca1-859c-edfe73f11565",
+    "specversion": "1.0",
+    "datacontenttype": "application/json; charset=utf-8",
+    "source": "checkout",
+    "type": "com.dapr.event.sent",
+    "traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
+}
+```
+
+As another example of a v1.0 CloudEvent, the following shows data as XML content in a CloudEvent message serialized as JSON:
 
 ```json
 {
@@ -77,7 +98,7 @@ The following example shows an XML content in CloudEvent v1.0 serialized as JSON
 }
 ```
 
-#### Content types
+#### Setting message content types
 
 When publishing a message, it's important to specify the content type of the data being sent.
 Unless specified, Dapr will assume `text/plain`.
@@ -86,7 +107,11 @@ For Dapr's HTTP API, the content type can be set in a `Content-Type` header.
 
 gRPC clients and SDKs have a dedicated content type parameter.
 
-### Message subscription
+#### Message delivery
+
+In principle, Dapr considers a message successfully delivered once the subscriber processes the message and responds with a non-error response. For more granular control, Dapr's Pub/Sub API also provides explicit statuses, defined in the response payload, with which the subscriber indicates specific handling instructions to Dapr (for example, `RETRY` or `DROP`).
+
+### Receiving messages with topic subscriptions
 
 Dapr applications can subscribe to published topics via two methods that support the same features: declarative and programmatic.
 
@@ -97,15 +122,17 @@ Dapr applications can subscribe to published topics via two methods that support
 
 For more information, read [about the subscriptions in the how-to]({{< ref howto-publish-subscribe.md >}}).
 
-### Message delivery
+### Message routing
 
-In principle, Dapr considers a message successfully delivered once the subscriber processes the message and responds with a non-error response. For more granular control, Dapr's Pub/sub API also provides explicit statuses, defined in the response payload, with which the subscriber indicates specific handling instructions to Dapr (for example, `RETRY` or `DROP`).
+Dapr provides [content-based routing](https://www.enterpriseintegrationpatterns.com/ContentBasedRouter.html) pattern. [Pub/Sub routing]({{< ref howto-route-messages.md >}}) is an implementation of this pattern that allows developers to use expressions to route [CloudEvents](https://cloudevents.io) based on their contents to different URIs/paths and event handlers in your application. If no route matches, an optional default route is used. This is useful as your applications expands to support multiple event versions or special cases.
 
-For more information on message routing, read [Dapr Pub/sub API reference]({{< ref "pubsub_api.md#provide-routes-for-dapr-to-deliver-topic-events" >}})
+This feature is available to both the declarative and programmatic subscription approaches.
+
+For more information on message routing, read [Dapr Pub/Sub API reference]({{< ref "pubsub_api.md#provide-routes-for-dapr-to-deliver-topic-events" >}})
 
 ### At-least-once guarantee
 
-Dapr guarantees at-least-once semantics for message delivery. When an application publishes a message to a topic using the Pub/sub API, Dapr ensures the message will be delivered *at least once* to every subscriber.
+Dapr guarantees at-least-once semantics for message delivery. When an application publishes a message to a topic using the Pub/Sub API, Dapr ensures the message is delivered *at least once* to every subscriber.
 
 ### Consumer groups and competing consumers pattern
 
@@ -116,15 +143,15 @@ Dapr automatically handles the burden of dealing with concepts like consumer gro
 
 Similarly, if two different applications (with different app-IDs) subscribe to the same topic, Dapr delivers each message to *only one instance of **each** application*.
 
-### Topic scoping
+### Scoping topics for added security
 
-By default, all topics backing the Dapr Pub/sub component are available to every application configured with that component. You can limit which application can publish or subscribe to topics with Dapr topic scoping. For more information, read: [Pub/sub topic scoping]({{< ref pubsub-scopes.md >}}).
+By default, all topics backing the Dapr Pub/Sub component are available to every application configured with that component. You can limit which application can publish or subscribe to topics with Dapr topic scoping. For more information, read: [Pub/Sub topic scoping]({{< ref pubsub-scopes.md >}}).
 
 ### Message Time-to-Live (TTL)
 
-Dapr can set a timeout message on a per-message basis, meaning that if the message is not read from the Pub/sub component, then the message is discarded. This timeout message prevents a build up of unread messages. If a message has been in the queue longer than the configured TTL, it is marked as dead.
+Dapr can set a timeout message on a per-message basis, meaning that if the message is not read from the Pub/Sub component, then the message is discarded. This timeout message prevents a build up of unread messages. If a message has been in the queue longer than the configured TTL, it is marked as dead.
 
-For more information, read [Pub/sub message TTL]({{< ref pubsub-message-ttl.md >}}).
+For more information, read [Pub/Sub message TTL]({{< ref pubsub-message-ttl.md >}}).
 
 {{% alert title="Note" color="primary" %}}
  You can also set message TTL for a given queue at component creation. Look at the specific characteristic of the component that you are using.
@@ -133,26 +160,26 @@ For more information, read [Pub/sub message TTL]({{< ref pubsub-message-ttl.md >
 
 ### Communication with applications not using Dapr and CloudEvents
 
-If one of your applications uses Dapr while another doesn't, you can disable CloudEvent wrapping for a publisher or subscriber. This allows partial adoption of Dapr Pub/sub in applications that cannot adopt Dapr all at once.
+If one of your applications uses Dapr while another doesn't, you can disable the CloudEvent wrapping for a publisher or subscriber. This allows partial adoption of Dapr Pub/Sub in applications that cannot adopt Dapr all at once.
 
-For more information, read [how to use Pub/sub without CloudEvent]({{< ref pubsub-raw.md >}}).
+For more information, read [how to use Pub/Sub without CloudEvents]({{< ref pubsub-raw.md >}}).
 
 ## Try it out
 
-Want to put the Dapr Pub/sub API to the test? Walk through the following quickstart and tutorials to see Pub/sub in action:
+Want to put the Dapr Pub/Sub API to the test? Walk through the following quickstart and tutorials to see Pub/Sub in action:
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Pub/sub quickstart]({{< ref pubsub-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
-| [Pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub) | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component. |
+| [Pub/Sub quickstart]({{< ref pubsub-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
+| [Pub/Sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub) | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component. |
 
 ## Next steps
 
-* Learn [how Dapr Pub/sub can work in your environment]({{< ref howto-publish-subscribe.md >}}).
-* Follow the [How-To: Configure Pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+* Learn [how Dapr Pub/Sub can work in your environment]({{< ref howto-publish-subscribe.md >}}).
+* Follow the [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
-* Learn about [Pub/sub without CloudEvent]({{< ref pubsub-raw.md >}})
-* List of [Pub/sub components]({{< ref supported-pubsub.md >}})
-* Read the [Pub/sub API reference]({{< ref pubsub_api.md >}})
+* Learn about [Pub/Sub without CloudEvent]({{< ref pubsub-raw.md >}})
+* List of [Pub/Sub components]({{< ref supported-pubsub.md >}})
+* Read the [Pub/Sub API reference]({{< ref pubsub_api.md >}})
 
