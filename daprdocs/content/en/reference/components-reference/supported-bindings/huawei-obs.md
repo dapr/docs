@@ -43,8 +43,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|------------|-----|---------|
 | bucket | Y | Output | The name of the Huawei OBS bucket to write to | `"My-OBS-Bucket"` |
 | endpoint | Y | Output | The specific Huawei OBS endpoint | `"obs.cn-north-4.myhuaweicloud.com"` |
-| accessKey | Y | Output | The Huawei Access Key (AK) to access this resource | `"\*\*\*\*\*\*\*\*\*\*\*\*"` |
-| secretKey | Y | Output | The Huawei Secret Key (SK) to access this resource | `"\*\*\*\*\*\*\*\*\*\*\*\*"` |
+| accessKey | Y | Output | The Huawei Access Key (AK) to access this resource | `"************"` |
+| secretKey | Y | Output | The Huawei Secret Key (SK) to access this resource | `"************"` |
 | region | N | Output | The specific Huawei region of the bucket | `"cn-north-4"` |
 
 
