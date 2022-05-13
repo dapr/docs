@@ -123,7 +123,7 @@ The Dapr docs contain multiple quickstarts that leverage the service invocation 
 Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application to securely communicate with other services. After [Dapr is installed](https://docs.dapr.io/getting-started), you can begin using the service invocation API in the following ways.
 
 Invoke services using:
-- **Proxying** *(recommended set up method)*
+- **Proxying** (recommended set up method)
   - *HTTP Proxying* - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}})
   - *gRPC Proxying* - For gRPC based applications, the service invocation API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. Read more on this here, [Configuring Dapr to use gRPC.]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - **The SDK** - If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. Read more on this here, [Dapr SDKs.]({{< ref sdks.md >}}) 
