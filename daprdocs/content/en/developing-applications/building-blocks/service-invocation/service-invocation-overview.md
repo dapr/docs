@@ -111,9 +111,13 @@ The diagram below shows sequence 1-7 again on a local machine showing the API ca
 ## Try out service invocation 
 ### Quickstarts & tutorials
 The Dapr docs contain multiple quickstarts that leverage the service invocation building block in different example architectures. To get a straight-forward understanding of the service invocation api and it's features we recommend starting with our quickstarts: 
-- [Service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}). This quickstart gets you interacting directly with the service invocation building block.
-- [Hello world quickstart](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md). This tutorial shows how to use both the service invocation and state management building blocks all running locally on your machine.
-- [Hello world kubernetes](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-kubernetes/README.md). This tutorial walks through using Dapr in kubernetes and covers both the service invocation and state management building blocks as well.
+
+| Quickstart/tutorial | Description |
+| ------------------- | ----------- |
+| [Service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}) | This quickstart gets you interacting directly with the service invocation building block. |
+| [Hello world tutorial](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md) | This tutorial shows how to use both the service invocation and state management building blocks all running locally on your machine. |
+| [Hello world kubernetes tutorial](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-kubernetes/README.md) | This tutorial walks through using Dapr in kubernetes and covers both the service invocation and state management building blocks as well. |
+
 
 ### Start using service invocation directly in your app
 Want to skip the quickstarts? Not a problem. You can try out the service invocation building block directly in your application to securely communicate with other services. After [Dapr is installed](https://docs.dapr.io/getting-started), you can begin using the service invocation API in the following ways.
