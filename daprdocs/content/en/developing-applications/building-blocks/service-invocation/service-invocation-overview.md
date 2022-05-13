@@ -124,12 +124,12 @@ Want to skip the quickstarts? Not a problem. You can try out the service invocat
 
 Invoke services using:
 - Proxying *(recommended set up method)*
-  - **HTTP Proxying** - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}})
-  - **gRPC Proxying** - For gRPC based applications, the service invocation API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. Read more on this here, [Configuring Dapr to use gRPC.]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
+  - HTTP Proxying - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}})
+  - gRPC Proxying - For gRPC based applications, the service invocation API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. Read more on this here, [Configuring Dapr to use gRPC.]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - The SDK - If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. Read more on this here, [Dapr SDKs.]({{< ref sdks.md >}}) 
 
 For quick testing, try using the Dapr CLI for service invocation:
-- **CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this here, [Dapr CLI.]({{< ref dapr-invoke.md >}}) 
+- CLI command - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this here, [Dapr CLI.]({{< ref dapr-invoke.md >}}) 
 
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide for service invocation describes how to invoke methods on other services.
