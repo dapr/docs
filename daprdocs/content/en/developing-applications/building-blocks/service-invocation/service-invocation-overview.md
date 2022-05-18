@@ -34,7 +34,7 @@ The diagram below is an overview of how Dapr's service invocation works.
 1. Service A makes an HTTP or gRPC call targeting Service B. The call goes to the local Dapr sidecar.
 2. Dapr discovers Service B's location using the [name resolution component]({{< ref supported-name-resolution >}}) which is running on the given [hosting platform]({{< ref "hosting" >}}).
 3. Dapr forwards the message to Service B's Dapr sidecar
-   - **Note**: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC
+   - **Note**: All calls between Dapr sidecars go over gRPC for performance. Only calls between services and Dapr sidecars can be either HTTP or gRPC.
 4. Service B's Dapr sidecar forwards the request to the specified endpoint (or method) on Service B.  Service B then runs its business logic code.
 5. Service B sends a response to Service A.  The response goes to Service B's sidecar.
 6. Dapr forwards the response to Service A's Dapr sidecar.
@@ -126,8 +126,7 @@ Want to skip the quickstarts? Not a problem. You can try out the service invocat
 
 Invoke services using:
 - **Proxying** (recommended set up method)
-  - *HTTP Proxying* - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}})
-  Suggested change 
+  - *HTTP Proxying* - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}}). 
   - *gRPC proxying* - For gRPC based applications, the service invocation API is also available. Run the gRPC server, then invoke services using the Dapr CLI. Read more on this in [Configuring Dapr to use gRPC]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 - **The SDK** - If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. Read more on this here, [Dapr SDKs.]({{< ref sdks.md >}}) 
 - **Direct call to the API.** in addition to the proxy, you can also just directly call the service invocation API andb invoke a GET endpoint. This method is recomended for non-production scenarios like quick demos or general app testing with Dapr.
@@ -137,6 +136,6 @@ For quick testing, try using the Dapr CLI for service invocation:
 
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide for service invocation describes how to invoke methods on other services.
-- Understand the [service invocation performance numbers]({{< ref perf-service-invocation.md >}})
+- Understand the [service invocation performance numbers]({{< ref perf-service-invocation.md >}}).
 - Take a look at [Dapr observability]({{< ref monitoring.md >}}). Here you can dig into Dapr's monitoring tools like tracing, metrics and logging.
-- Read up on our [security practices]({{< ref monitoring.md >}}) around mTLS encryption, token authentication, and endpoint authorization
+- Read up on our [security practices]({{< ref monitoring.md >}}) around mTLS encryption, token authentication, and endpoint authorization.
