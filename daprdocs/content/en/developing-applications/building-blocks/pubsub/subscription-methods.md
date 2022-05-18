@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Declarative vs. programmatic subscription methods"
-linkTitle: "Declarative vs. programmatic"
+title: "Declarative and programmatic subscription methods"
+linkTitle: "Subscription methods"
 weight: 3000
 description: "Learn more about the two methods by which Dapr allows you to subscribe to topics."
 ---
@@ -348,6 +348,6 @@ func main() {
 * Learn more about [declarative and programmatic subscription methods]({{< ref subscription-methods >}}). 
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
-* Learn about [Pub/sub without CloudEvent]({{< ref pubsub-raw.md >}})
+* Learn more about [Pub/Sub with and without CloudEvent]({{< ref pubsub-cloudevents.md >}})
 * List of [Pub/sub components]({{< ref supported-pubsub.md >}})
 * Read the [Pub/sub API reference]({{< ref pubsub_api.md >}})
