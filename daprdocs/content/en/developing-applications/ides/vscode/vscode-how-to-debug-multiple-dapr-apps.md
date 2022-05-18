@@ -48,7 +48,7 @@ In the case of the hello world quickstart, two applications are launched, each w
          "skipFiles": [
              "<node_internals>/**"
          ],
-         "program": "${workspaceFolder}/app.js",
+         "program": "${workspaceFolder}/node/app.js",
          "preLaunchTask": "daprd-debug-node",
          "postDebugTask": "daprd-down-node"
        },
@@ -56,7 +56,7 @@ In the case of the hello world quickstart, two applications are launched, each w
          "type": "python",
          "request": "launch",
          "name": "Pythonapp with Dapr",
-         "program": "${workspaceFolder}/app.py",
+         "program": "${workspaceFolder}/python/app.py",
          "console": "integratedTerminal",
          "preLaunchTask": "daprd-debug-python",
          "postDebugTask": "daprd-down-python"
@@ -123,7 +123,7 @@ For this example the compound configuration is:
 ```json
 {
    "version": "2.0.0",
-   "tasks": [...],
+   "configurations": [...],
    "compounds": [
       {
         "name": "Node/Python Dapr",
