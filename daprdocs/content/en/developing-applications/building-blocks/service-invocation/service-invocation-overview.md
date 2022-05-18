@@ -129,7 +129,7 @@ Invoke services using:
   - *HTTP Proxying* - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}}). 
   - *gRPC proxying* - For gRPC based applications, the service invocation API is also available. Run the gRPC server, then invoke services using the Dapr CLI. Read more on this in [Configuring Dapr to use gRPC]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}}).
 - **The SDK** - If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. Read more on this here, [Dapr SDKs.]({{< ref sdks.md >}}) 
-- **Direct call to the API** - in addition to the proxy, you can also just directly call the service invocation API andb invoke a GET endpoint. This method is recomended for non-production scenarios like quick demos or general app testing with Dapr.
+- **Direct call to the API** - in addition to the proxy, you can also just directly call the service invocation API and invoke a GET endpoint. This method is recomended for non-production scenarios like quick demos or general app testing with Dapr.
 
 For quick testing, try using the Dapr CLI for service invocation:
 - **Dapr CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this here, [Dapr CLI.]({{< ref dapr-invoke.md >}}) 
