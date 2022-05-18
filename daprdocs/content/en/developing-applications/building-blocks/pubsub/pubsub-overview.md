@@ -175,7 +175,7 @@ Want to put the Dapr Pub/Sub API to the test? Walk through the following quickst
 
 ## Next steps
 
-* Learn [how Dapr Pub/Sub can work in your environment]({{< ref howto-publish-subscribe.md >}}).
+* Learn [how to use Pub/Sub]({{< ref howto-publish-subscribe.md >}}).
 * Follow the [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
