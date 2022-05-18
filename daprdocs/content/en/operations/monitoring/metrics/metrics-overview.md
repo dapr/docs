@@ -6,13 +6,20 @@ weight: 4000
 description: "Observing Dapr metrics in Kubernetes"
 ---
 
-Dapr exposes a [Prometheus](https://prometheus.io/) metrics endpoint that you can scrape to gain a greater understanding of how Dapr is behaving and to setup alerts for specific conditions.
+Dapr exposes a [Prometheus](https://prometheus.io/) metrics endpoint that you can scrape to:
+
+- Gain a greater understanding of how Dapr is behaving.
+- Set up alerts for specific conditions.
 
 ## Configuration
 
-The metrics endpoint is enabled by default, you can disable it by passing the command line argument `--enable-metrics=false` to Dapr system processes.
+The metrics endpoint is enabled by default. You can disable it by passing the command line argument `--enable-metrics=false` to Dapr system processes.
 
-The default metrics port is `9090`. This can be overridden by passing the command line argument `--metrics-port` to Daprd. Additionally, the metrics exporter can be disabled for a specific application by setting the `dapr.io/enable-metrics: "false"` annotation to your application deployment. With the metrics exporter disabled, `daprd` will not open the metrics listening port.
+The default metrics port is `9090`. You can override this by passing the command line argument `--metrics-port` to Daprd. 
+
+You can also disable the metrics exporter for a specific application by setting the `dapr.io/enable-metrics: "false"` annotation to your application deployment. With the metrics exporter disabled, `daprd` will not open the metrics listening port.
+
+The follow example shows metrics are explicitly enabled with the port specified as "9090".
 
 ```yaml
 apiVersion: apps/v1
@@ -45,7 +52,10 @@ spec:
         imagePullPolicy: Always
 ```
 
-To disable the metrics collection in the Dapr side cars running in a specific namespace, you can use the `metric` spec configuration and set `enabled: false` to disable the metrics in the Dapr runtime.
+To disable the metrics collection in the Dapr side cars running in a specific namespace:
+
+- Use the `metrics` spec configuration.
+- Set `enabled: false` to disable the metrics in the Dapr runtime.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -56,13 +66,13 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
-  metric:
-    enabled: true
+  metrics:
+    enabled: false
 ```
 
 ## Metrics
 
-Each Dapr system process emits Go runtime/process metrics by default and have their own metrics:
+By default, each Dapr system process emits Go runtime/process metrics and have their own metrics:
 
 - [Dapr metric list](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
 

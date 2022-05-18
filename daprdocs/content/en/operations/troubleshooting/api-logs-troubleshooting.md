@@ -55,7 +55,7 @@ You can enable the API logs for every sidecar by providing the following annotat
 
 ```yml
 annotations:
-  dapr.io/enable-api-logging: true
+  dapr.io/enable-api-logging: "true"
 ```
 
 ### Viewing API logs on Kubernetes

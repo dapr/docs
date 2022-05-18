@@ -63,7 +63,7 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 
 ## Create Azure SQL instance
 
-[Follow the instructions](https://docs.microsoft.com/azure/sql-database/sql-database-single-database-get-started?tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
+[Follow the instructions](https://docs.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
 
 **Note: SQL Server state store also supports SQL Server running on VMs and in Docker.**
 
