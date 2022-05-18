@@ -23,7 +23,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API |
 | `--dapr-http-max-request-size` | --dapr-http-max-request-size | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB |
 | `--dapr-http-read-buffer-size` | --dapr-http-read-buffer-size | | `dapr.io/http-read-buffer-size` | Increasing max size of http header read buffer in KB to handle when sending multi-KB headers. The default 4 KB.  When sending bigger than default 4KB http headers, you should set this to a larger value, for example 16 (for 16KB) |
-| not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is `daprio/daprd:latest`. Use this when building your own custom image of Dapr and the Kubernetes Sidecar Injector will use this image instead of the default version of Dapr |
+| not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is `daprio/daprd:latest`. Use this when building your own custom image of Dapr and the Dapr sidecar will use this image instead of the default image of Dapr |
 | `--internal-grpc-port` | not supported | | not supported | gRPC port for the Dapr Internal API to listen on |
 | `--enable-metrics` | not supported | | configuration spec | Enable prometheus metric (default true) |
 | `--enable-mtls` | not supported | | configuration spec | Enables automatic mTLS for daprd to daprd communication channels |
