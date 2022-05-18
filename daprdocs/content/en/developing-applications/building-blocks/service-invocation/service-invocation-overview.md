@@ -12,11 +12,11 @@ Using service invocation, your application can reliably and securely communicate
 
 In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle inter-service problems like:
 
-- Service discovery. How do I discover my different services?
-- Standardizing API calls between services. How do I invoke methods between services?
-- Secure inter-service communication. How do I call other services securely with encryption and apply access control on the methods?
-- Mitigating request timeouts or failures. How do I handle retries and transient errors?
--  Implementing observability and tracing. How do I use tracing to see a call graph with metrics to diagnose issues in production?
+- **Service discovery.** How do I discover my different services?
+- **Standardizing API calls between services.** How do I invoke methods between services?
+- **Secure inter-service communication.** How do I call other services securely with encryption and apply access control on the methods?
+- **Mitigating request timeouts or failures.** How do I handle retries and transient errors?
+-  **Implementing observability and tracing.** How do I use tracing to see a call graph with metrics to diagnose issues in production?
 
 Dapr addresses these challenges by providing a service invocation API that acts similar to a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing, metrics, error handling, encryption and more.
 
@@ -127,6 +127,7 @@ Invoke services using:
   - *HTTP Proxying* - Allows you to just add the `dapr-app-id` header and you're ready to get started. Read more on this here, [Invoke Services using HTTP.]({{< ref howto-invoke-discover-services.md >}})
   - *gRPC Proxying* - For gRPC based applications, the service invocation API is also available. Just run the gRPC server, and then invoke services using the Dapr CLI. Read more on this here, [Configuring Dapr to use gRPC.]({{< ref grpc >}}) and [Invoke services using gRPC]({{< ref howto-invoke-services-grpc.md >}})
 - **The SDK** - If you're using a Dapr SDK you'll be able to directly use service invocation through the SDK. Just select the SDK you need, and use the dapr client to invoke a service. Read more on this here, [Dapr SDKs.]({{< ref sdks.md >}}) 
+- **Direct call to the API.** in addition to the proxy, you can also just directly call the service invocation API andb invoke a GET endpoint. This method is recomended for non-production scenarios like quick demos or general app testing with Dapr.
 
 For quick testing, try using the Dapr CLI for service invocation:
 - **Dapr CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this here, [Dapr CLI.]({{< ref dapr-invoke.md >}}) 
