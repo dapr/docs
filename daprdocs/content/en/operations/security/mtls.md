@@ -168,7 +168,7 @@ The CLI commands below can be used to renew root and issuer certificates in your
 > **Note: The `Dapr sentry service` followed by rest of the control plane services must be restarted for them to be able to read the new certificates. This can be done by supplying `--restart` flag to the command.**
 
 ```bash
-dapr mtls renew-certificate -k --valid-unitl <days> --restart
+dapr mtls renew-certificate -k --valid-until <days> --restart
 ```
 2. The command below generates brand new root and issuer certificates, signed by provided private root key.
 
@@ -184,6 +184,15 @@ To update the provided certificates in the Kubernetes cluster, the CLI command b
 
 ```bash
 dapr mtls renew-certificate -k --ca-root-certificate <ca.crt> --issuer-private-key <issuer.key> --issuer-public-certificate <issuer.crt> --restart
+```
+
+{{% alert title="Restart Dapr-enabled pods" color="warning" %}}
+Irrespective of which command was used to renew the certificates, you must restart all Dapr-enabled pods.
+Due to certificate mismatches, you might experience some downtime till all deployments have successfully been restarted.
+{{% /alert %}}
+The recommended way to do this is to perform a rollout restart of your deployment:
+```
+kubectl rollout restart deploy/myapp
 ```
 
 ### Updating root or issuer certs using Kubectl

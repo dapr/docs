@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To setup NATS Streaming pubsub create a component of type `pubsub.natsstreaming`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To set up NATS Streaming pub/sub, create a component of type `pubsub.natsstreaming`. See [the how-to guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -51,12 +51,11 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to [use a secret store for the secrets]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
 {{% alert title="Warning" color="warning" %}}
-NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning).
-Please consider using [NATS JetStream]({{< ref setup-jetstream >}}) going forward.
+NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning). Consider using [NATS JetStream]({{< ref setup-jetstream >}}) going forward.
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -75,20 +74,20 @@ Please consider using [NATS JetStream]({{< ref setup-jetstream >}}) going forwar
 | deliverAll         | N | Subscription Options. Only one can be used. Deliver all available messages  | `"true"`, `"false"` |
 | startAtTimeDelta   | N | Subscription Options. Only one can be used. Sets the desired start time position and state using the delta  | `"10m"`, `"23s"` |
 | startAtTime        | N | Subscription Options. Only one can be used. Sets the desired start time position and state  | `"Feb 3, 2013 at 7:54pm (PST)"` |
-| startAtTimeDelta   | N | Must be used with `startAtTime`. Sets the format for the time  | `"Jan 2, 2006 at 3:04pm (MST)"` |
+| startAtTimeFormat   | N | Must be used with `startAtTime`. Sets the format for the time  | `"Jan 2, 2006 at 3:04pm (MST)"` |
 
 ## Create a NATS server
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
-You can run a NATS server locally using Docker:
+Run a NATS server locally using Docker:
 
 ```bash
 docker run -d --name nats-streaming -p 4222:4222 -p 8222:8222 nats-streaming
 ```
 
-You can then interact with the server using the client port: `localhost:4222`.
+Interact with the server using the client port: `localhost:4222`.
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -102,18 +101,23 @@ kubectl apply -f https://raw.githubusercontent.com/nats-io/k8s/master/nats-serve
 kubectl apply -f https://raw.githubusercontent.com/nats-io/k8s/master/nats-streaming-server/single-server-stan.yml
 ```
 
-This installs a single NATS-Streaming and Nats into the `default` namespace.
-To interact with NATS, find the service with: `kubectl get svc stan`.
+This installs a single NATS-Streaming and NATS into the `default` namespace. To interact with NATS, find the service with:
+
+```bash
+kubectl get svc stan
+```
 
 For example, if installing using the example above, the NATS Streaming address would be:
 
 `<YOUR-HOST>:4222`
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
-- [NATS Streaming Deprecation Notice](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning)
+
+- [Basic schema for a Dapr component]({{< ref component-schema >}}).
+- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components.
+- [Pub/Sub building block]({{< ref pubsub >}}).
+- [NATS Streaming Deprecation Notice](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning).

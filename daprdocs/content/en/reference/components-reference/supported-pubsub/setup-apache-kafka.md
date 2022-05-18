@@ -41,6 +41,8 @@ spec:
     value: 200ms
   - name: version # Optional.
     value: 0.10.2.0
+  - name: disableTls # Optional. Disable TLS. This is not safe for production!! You should read the `Mutual TLS` section for how to use TLS.
+    value: "true"
 ```
 
 ## Spec metadata fields
