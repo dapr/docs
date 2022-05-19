@@ -120,7 +120,9 @@ If one of your applications uses Dapr while another doesn't, you can disable the
 
 For more information, read [how to use Pub/Sub without CloudEvents]({{< ref pubsub-raw.md >}}).
 
-## Try it out
+## Try out Pub/Sub
+
+### Quickstarts and tutorials
 
 Want to put the Dapr Pub/Sub API to the test? Walk through the following quickstart and tutorials to see Pub/Sub in action:
 
@@ -129,13 +131,13 @@ Want to put the Dapr Pub/Sub API to the test? Walk through the following quickst
 | [Pub/Sub quickstart]({{< ref pubsub-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
 | [Pub/Sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub) | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component. |
 
+### Start using Pub/Sub directly in your app
+
+Want to skip the quickstarts? Not a problem. You can try out the Pub/Sub building block directly in your application to publish messages and subscribe to a topic. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the Pub/Sub API starting with [the Pub/Sub how-to guide]({{< ref howto-publish-subscribe.md >}}).
+
 ## Next steps
 
-* Learn [how Dapr Pub/Sub can work in your environment]({{< ref howto-publish-subscribe.md >}}).
-* Follow the [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-* Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-* Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
-* Learn more about [Pub/Sub with and without CloudEvent]({{< ref pubsub-raw.md >}})
-* List of [Pub/Sub components]({{< ref supported-pubsub.md >}})
-* Read the [Pub/Sub API reference]({{< ref pubsub_api.md >}})
-
+- Learn about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}) and when you might want to [send messages without CloudEvents]({{< ref pubsub-raw.md >}}).
+- Follow [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}}).
+- Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
+- Read the [API reference]({{< ref pubsub_api.md >}}).

@@ -1,29 +1,42 @@
 ---
 type: docs
-title: "Publish a message and subscribe to a topic"
-linkTitle: "Publish & subscribe to topics"
+title: "How to: Publish a message and subscribe to a topic"
+linkTitle: "How to: Publish & subscribe to topics"
 weight: 2000
 description: "Learn how to send messages to a topic with one service and subscribe to that topic in another service"
 ---
 
 Now that you've learned what the Dapr Pub/sub building block provides, learn how it can work in your service. The below code example loosely describes an application that processes orders with two services, each with Dapr sidecars:
 
-- An order processing service using Dapr to publish a message to RabbitMQ.
 - A checkout service using Dapr to subscribe to the topic in the message queue.
+- An order processing service using Dapr to publish a message to RabbitMQ.
+
 
 <img src="/images/building-block-pub-sub-example.png" width=1000 alt="Diagram showing state management of example service">
 
-## Setup the Pub/Sub component
-The following example creates applications to publish and subscribe to a topic called `orders`.
+Dapr automatically wraps the user payload in a CloudEvents v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute. [Learn more about messages with CloudEvents.]({{< ref pubsub-cloudevents.md >}})
 
-The first step is to setup the Pub/Sub component:
+The following example demonstrates how your applications publish and subscribe to a topic called `orders`.
+
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the new quickstart]({{< ref pubsub-quickstart.md >}}) for a quick walk-through on how to use Pub/Sub.
+
+{{% /alert %}}
+
+
+## Set up the Pub/Sub component
+
+The first step is to set up the Pub/Sub component:
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
-The pubsub.yaml is created by default on your local machine when running `dapr init`. Verify by opening your components file under `%UserProfile%\.dapr\components\pubsub.yaml` on Windows or `~/.dapr/components/pubsub.yaml` on Linux/MacOS.
+When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a Redis container on your local machine, located:
 
-In this example, RabbitMQ is used for publish and subscribe. Replace `pubsub.yaml` file contents with the below contents.
+- On Windows, under `%UserProfile%\.dapr\components\pubsub.yaml`
+- On Linux/MacOS, under `~/.dapr/components/pubsub.yaml`
+
+With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes. In this example, RabbitMQ is used.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -51,81 +64,9 @@ scopes:
   - checkout
 ```
 
-You can override this file with another Redis instance or another [pubsub component]({{< ref setup-pubsub >}}) by creating a `components` directory containing the file and using the flag `--components-path` with the `dapr run` CLI command.
-{{% /codetab %}}
+You can override this file with another [pubsub component]({{< ref setup-pubsub >}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--components-path` with the `dapr run` CLI command.
 
-{{% codetab %}}
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired pubsub component]({{< ref setup-pubsub >}}) in the yaml below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: order-pub-sub
-  namespace: default
-spec:
-  type: pubsub.rabbitmq
-  version: v1
-  metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
-scopes:
-  - orderprocessing
-  - checkout
-```
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-
-## Step 2: Subscribe to topics
-
-Dapr allows two methods by which you can subscribe to topics:
-
-- **Declaratively**, where subscriptions are defined in an external file.
-- **Programmatically**, where subscriptions are defined in user code.
-
-Learn more in the [declarative and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example will demonstrate a declarative subscription.
-
-Create a file named `subscription.yaml` and paste the following:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Subscription
-metadata:
-  name: order-pub-sub
-spec:
-  topic: orders
-  route: /checkout
-  pubsubname: order-pub-sub
-scopes:
-- orderprocessing
-- checkout
-```
-
-The example above shows an event subscription to topic `orders`, for the pubsub component `order-pub-sub`.
-- The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
-- The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
-
-Set the component with:
-
-Place the CRD in your `./components` directory. When Dapr starts up, it loads subscriptions along with components.
-
-Note: By default, Dapr loads components from `$HOME/.dapr/components` on MacOS/Linux and `%USERPROFILE%\.dapr\components` on Windows.
-
-You can also override the default directory by pointing the Dapr CLI to a components path:
-
-{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
+{{< tabs Dotnet Java Python Go Javascript >}}
 
 {{% codetab %}}
 
@@ -164,19 +105,79 @@ dapr run --app-id myapp --components-path ./myComponents -- go run app.go
 ```bash
 dapr run --app-id myapp --components-path ./myComponents -- npm start
 ```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-In Kubernetes, save the CRD to a file and apply it to the cluster:
-```bash
-kubectl apply -f subscription.yaml
-```
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-Below are code examples that leverage Dapr SDKs to subscribe to a topic.
+{{% /codetab %}}
+
+{{% codetab %}}
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [Pub/Sub component]({{< ref setup-pubsub >}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order-pub-sub
+  namespace: default
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqp://localhost:5672"
+  - name: durable
+    value: "false"
+  - name: deletedWhenUnused
+    value: "false"
+  - name: autoAck
+    value: "false"
+  - name: reconnectWait
+    value: "0"
+  - name: concurrency
+    value: parallel
+scopes:
+  - orderprocessing
+  - checkout
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Subscribe to topics
+
+Dapr allows two methods by which you can subscribe to topics:
+
+- **Declaratively**, where subscriptions are defined in an external file.
+- **Programmatically**, where subscriptions are defined in user code.
+
+Learn more in the [declarative and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example will demonstrate a **declarative** subscription.
+
+Create a file named `subscription.yaml` and paste the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: order-pub-sub
+spec:
+  topic: orders
+  route: /checkout
+  pubsubname: order-pub-sub
+scopes:
+- orderprocessing
+- checkout
+```
+
+The example above shows an event subscription to topic `orders`, for the pubsub component `order-pub-sub`.
+
+- The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
+- The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
+
+Place `subscription.yaml` in the same directory as your `pubsub.yaml` component. When Dapr starts up, it loads subscriptions along with the components.
+
+Below are code examples that leverage Dapr SDKs to subscribe to the topic you defined in `subscription.yaml`.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
@@ -208,7 +209,7 @@ namespace CheckoutService.controller
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
@@ -248,7 +249,7 @@ public class CheckoutServiceController {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 mvn spring-boot:run
@@ -277,7 +278,7 @@ def mytopic(event: v1.Event) -> None:
 app.run(6002)
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc -- python3 CheckoutService.py
@@ -322,7 +323,7 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 go run CheckoutService.go
@@ -362,7 +363,7 @@ async function start(orderId) {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 npm start
@@ -372,43 +373,43 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 {{< /tabs >}}
 
-The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
-
-## Step 3: Publish a topic
+## Publish a message
 
 Start an instance of Dapr with an app-id called `orderprocessing`:
 
 ```bash
 dapr run --app-id orderprocessing --dapr-http-port 3601
 ```
+
+Then publish a message to the `orders` topic:
+
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
-Then publish a message to the `orders` topic:
-
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{"orderId": "100"}'
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-Then publish a message to the `orders` topic:
+
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-Then publish a message to the `orders` topic:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"orderId": "100"}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
-
-Dapr automatically wraps the user payload in a Cloud Events v1.0 compliant envelope, using `Content-Type` header value for `datacontenttype` attribute.
 
 Below are code examples that leverage Dapr SDKs to publish a topic.
 
@@ -452,7 +453,7 @@ namespace EventService
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the publisher application:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
@@ -502,7 +503,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the publisher application:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -539,7 +540,7 @@ while True:
     logging.info('Published data: ' + str(orderId))
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the publisher application:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
@@ -587,7 +588,7 @@ func main() {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the publisher application:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
@@ -630,7 +631,7 @@ function sleep(ms) {
 main();
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the publisher application:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -640,18 +641,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{< /tabs >}}
 
-
-## Step 4: ACK-ing a message
+## ACK message
 
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 
-
 ## Next steps
 
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)
-- Learn about [PubSub routing]({{< ref howto-route-messages >}})
-- Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-- Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
-- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-- List of [pub/sub components]({{< ref setup-pubsub >}})
-- Read the [API reference]({{< ref pubsub_api.md >}})
+- Try the [Pub/Sub tutorial]({{https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub}}).
+- Learn about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}) and when you might want to [send messages without CloudEvents]({{< ref pubsub-raw.md >}}).
+- Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
+- Read the [API reference]({{< ref pubsub_api.md >}}).
