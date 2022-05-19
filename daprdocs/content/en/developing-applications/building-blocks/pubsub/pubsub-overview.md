@@ -52,62 +52,18 @@ The Pub/Sub building block brings several features to your application.
 
 ### Sending messages using Cloud Events
 
-Dapr Pub/Sub sends messages between services. To enable message routing and provide additional context with each message, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a Cloud Events envelope, using [`Content-Type` header value]({{< ref "pubsub-overview.md#content-types" >}}) for `datacontenttype` attribute.
+To enable message routing and provide additional context with each message between services, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a Cloud Events envelope, using [`Content-Type` header value]({{< ref "pubsub-overview.md#content-types" >}}) for `datacontenttype` attribute.
 
-Dapr implements the following Cloud Events fields when creating a message topic.
+For more information, read about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}), or [sending raw messages without CloudEvents]({{< ref pubsub-raw.md >}}).
 
-* `id`
-* `source`
-* `specversion`
-* `type`
-* `traceparent`
-* `datacontenttype` (optional)
+### Setting message content types
 
-The following example demonstrates an `orders` topic message sent by Dapr that includes a W3C `traceid` unique to the message, the `data` and the fields for the CloudEvent where the data content is serialized as JSON.
+When publishing a message, it's important to specify the content type of the data being sent. Unless specified, Dapr will assume `text/plain`.
 
-```json
-{
-    "topic": "orders",
-    "pubsubname": "order_pub_sub",
-    "traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
-    "tracestate": "",
-    "data": {
-    "orderId": 1
-    },
-    "id": "5929aaac-a5e2-4ca1-859c-edfe73f11565",
-    "specversion": "1.0",
-    "datacontenttype": "application/json; charset=utf-8",
-    "source": "checkout",
-    "type": "com.dapr.event.sent",
-    "traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
-}
-```
+- HTTP client: the content type can be set in a `Content-Type` header
+- gRPC client and SDK: have a dedicated content type parameter
 
-As another example of a v1.0 CloudEvent, the following shows data as XML content in a CloudEvent message serialized as JSON:
-
-```json
-{
-    "specversion" : "1.0",
-    "type" : "xml.message",
-    "source" : "https://example.com/message",
-    "subject" : "Test XML Message",
-    "id" : "id-1234-5678-9101",
-    "time" : "2020-09-23T06:23:21Z",
-    "datacontenttype" : "text/xml",
-    "data" : "<note><to>User1</to><from>user2</from><message>hi</message></note>"
-}
-```
-
-#### Setting message content types
-
-When publishing a message, it's important to specify the content type of the data being sent.
-Unless specified, Dapr will assume `text/plain`.
-
-For Dapr's HTTP API, the content type can be set in a `Content-Type` header.
-
-gRPC clients and SDKs have a dedicated content type parameter.
-
-#### Message delivery
+### Message delivery
 
 In principle, Dapr considers a message successfully delivered once the subscriber processes the message and responds with a non-error response. For more granular control, Dapr's Pub/Sub API also provides explicit statuses, defined in the response payload, with which the subscriber indicates specific handling instructions to Dapr (for example, `RETRY` or `DROP`).
 
@@ -120,7 +76,7 @@ Dapr applications can subscribe to published topics via two methods that support
 | **Declarative** | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
 | **Programmatic** | Subscription is defined in the **user code**. The programmatic approach implements the subscription in your code. |
 
-For more information, read [about the subscriptions in the how-to]({{< ref howto-publish-subscribe.md >}}).
+For more information, read [about the subscriptions in Subscription Methods]({{< ref subscription-methods.md >}}).
 
 ### Message routing
 

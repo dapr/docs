@@ -14,7 +14,6 @@ Dapr uses CloudEvents to provide additional context to the event payload, enabli
 - Deduplication by message Id
 - Content-type for proper deserialization of event data
 
-
 ## CloudEvents example
 
 Dapr implements the following CloudEvents fields when creating a message topic.
@@ -61,10 +60,9 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 }
 ```
 
+## Publish your own CloudEvent
 
-## Custom CloudEvents
-
-Dapr automatically takes the data sent on the publish request and [wraps it in a CloudEvent 1.0 envelope]({{< ref "pubsub-overview.md#cloud-events-message-format" >}}). If you want to use your own custom CloudEvent, make sure to specify the [content type]({{< ref "pubsub-overview.md#content-types" >}}) as `application/cloudevents+json`.
+If you want to use your own CloudEvent, make sure to specify the [content type]({{< ref "pubsub-overview.md#setting-message-content-types" >}}) as `application/cloudevents+json`.
 
 ### Example
 
@@ -72,7 +70,7 @@ Dapr automatically takes the data sent on the publish request and [wraps it in a
 
 {{% codetab %}}
 
-Publish a custom CloudEvent to the `orders` topic:
+Publish a CloudEvent to the `orders` topic:
 
 ```bash
 dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic orders --data '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
@@ -82,7 +80,7 @@ dapr publish --publish-app-id orderprocessing --pubsub order-pub-sub --topic ord
 
 {{% codetab %}}
 
-Publish a custom CloudEvent to the `orders` topic:
+Publish a CloudEvent to the `orders` topic:
 
 ```bash
 curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content-Type: application/cloudevents+json" -d '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}'
@@ -92,7 +90,7 @@ curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders -H "Content
 
 {{% codetab %}}
 
-Publish a custom CloudEvent to the `orders` topic:
+Publish a CloudEvent to the `orders` topic:
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body '{"specversion" : "1.0", "type" : "com.dapr.cloudevent.sent", "source" : "testcloudeventspubsub", "subject" : "Cloud Events Test", "id" : "someCloudEventId", "time" : "2021-08-02T09:00:00Z", "datacontenttype" : "application/cloudevents+json", "data" : {"orderId": "100"}}' -Uri 'http://localhost:3601/v1.0/publish/order-pub-sub/orders'
@@ -104,6 +102,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body
 
 ## Next steps
 
+- Learn why you might [not want to use CloudEvents]({{< ref pubsub-raw.md >}})
 - Try out the [Pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
 - List of [Pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
