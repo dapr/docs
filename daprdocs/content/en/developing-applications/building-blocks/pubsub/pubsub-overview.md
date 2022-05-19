@@ -162,7 +162,7 @@ For more information, read [Pub/Sub message TTL]({{< ref pubsub-message-ttl.md >
 
 If one of your applications uses Dapr while another doesn't, you can disable the CloudEvent wrapping for a publisher or subscriber. This allows partial adoption of Dapr Pub/Sub in applications that cannot adopt Dapr all at once.
 
-For more information, read [how to use Pub/Sub without CloudEvents]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}).
+For more information, read [how to use Pub/Sub without CloudEvents]({{< ref pubsub-raw.md >}}).
 
 ## Try it out
 
@@ -179,7 +179,7 @@ Want to put the Dapr Pub/Sub API to the test? Walk through the following quickst
 * Follow the [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
-* Learn more about [Pub/Sub with and without CloudEvent]({{< ref pubsub-cloudevents.md >}})
+* Learn more about [Pub/Sub with and without CloudEvent]({{< ref pubsub-raw.md >}})
 * List of [Pub/Sub components]({{< ref supported-pubsub.md >}})
 * Read the [Pub/Sub API reference]({{< ref pubsub_api.md >}})
 

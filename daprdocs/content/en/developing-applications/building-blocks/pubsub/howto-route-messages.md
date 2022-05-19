@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Route messages to different event handlers"
 linkTitle: "How-To: Route events"
-weight: 2100
+weight: 2300
 description: "Learn how to route messages from a topic to different event handlers based on CloudEvent fields"
 ---
 
