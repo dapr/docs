@@ -10,7 +10,7 @@ description: "Overview of the service invocation API building block"
 
 Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
-In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle inter-service problems like:
+In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle problems like:
 
 - **Service discovery.** How do I discover my different services?
 - **Standardizing API calls between services.** How do I invoke methods between services?
