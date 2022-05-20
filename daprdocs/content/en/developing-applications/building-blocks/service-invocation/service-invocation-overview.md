@@ -21,7 +21,7 @@ In many microservice-based applications multiple services need the ability to co
 Dapr addresses these challenges by providing a service invocation API that acts similar to a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing, metrics, error handling, encryption and more.
 
 Dapr uses a sidecar architecture. To invoke an application using Dapr:
-- You use the `invoke` API on any Dapr instance. 
+- You use the `invoke` API on the Dapr instance. 
 - The sidecar programming model encourages each application to talk to its own instance of Dapr. 
 - The Dapr instances discover and communicate with each other.
 
