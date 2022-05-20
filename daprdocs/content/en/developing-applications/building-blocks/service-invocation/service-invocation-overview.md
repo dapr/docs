@@ -67,7 +67,7 @@ Connection establishment via gRPC to the target sidecar has a timeout of 5 secon
 
 ### Tracing and metrics with observability
 
-By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications, which is especially important in production scenarios. This gives you call graphs and metrics on the calls between your services. For more information read about [observability]({{< ref observability-concept.md >}}).
+By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications. This is especially important in production scenarios, providing call graphs and metrics on the calls between your services. For more information read about [observability]({{< ref observability-concept.md >}}).
 
 
 ### Access control
