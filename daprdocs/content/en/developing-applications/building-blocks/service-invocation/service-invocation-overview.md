@@ -138,7 +138,7 @@ Invoke services using:
 
 
 For quick testing, try using the Dapr CLI for service invocation:
-- **Dapr CLI command** - Once the Dapr CLI is set up simply use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this here, [Dapr CLI.]({{< ref dapr-invoke.md >}}) 
+- **Dapr CLI command** - Once the Dapr CLI is set up, use `dapr invoke --method <method-name>` command along with the method flag and the method of interest. Read more on this in [Dapr CLI]({{< ref dapr-invoke.md >}}). 
 
 ## Next steps
 - Read the [service invocation API specification]({{< ref service_invocation_api.md >}}). This reference guide for service invocation describes how to invoke methods on other services.
