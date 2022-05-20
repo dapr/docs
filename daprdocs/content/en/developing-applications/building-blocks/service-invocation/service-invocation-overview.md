@@ -75,7 +75,7 @@ By default, all calls between applications are traced and metrics are gathered t
 With access policies, applications can control:
 
 - Which applications are allowed to call them.
-- What applications are authorized to do so. 
+- What applications are authorized to do. 
 
 For example, you can restrict sensitive applications with personnel information from being accessed by unauthorized applications. Combined with service-to-service secure communication, you can provide for soft multi-tenancy deployments.
 
