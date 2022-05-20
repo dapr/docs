@@ -72,7 +72,12 @@ By default, all calls between applications are traced and metrics are gathered t
 
 ### Access control
 
-Applications can control which other applications are allowed to call them and what they are authorized to do via access policies. This enables you to restrict sensitive applications, that say have personnel information, from being accessed by unauthorized applications, and combined with service-to-service secure communication, provides for soft multi-tenancy deployments.
+With access policies, applications can control:
+
+- Which applications are allowed to call them.
+- What applications are authorized to do. 
+
+For example, you can restrict sensitive applications with personnel information from being accessed by unauthorized applications. Combined with service-to-service secure communication, you can provide for soft multi-tenancy deployments.
 
 For more information read the [access control allow lists for service invocation]({{< ref invoke-allowlist.md >}}) article.
 
