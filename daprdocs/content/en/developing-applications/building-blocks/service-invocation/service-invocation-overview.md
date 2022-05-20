@@ -55,7 +55,7 @@ For more information read the [service-to-service security]({{< ref "security-co
 
 ### Retries
 
-Service invocation performs automatic retries with backoff time periods in the event of call failures and transient errors.
+In the event of call failures and transient errors, service invocation performs automatic retries with backoff time periods.
 
 Errors that cause retries are:
 
