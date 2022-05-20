@@ -83,7 +83,7 @@ For more information read the [access control allow lists for service invocation
 
 ### Namespace scoping
 
-Applications can be scoped to namespaces for deployment and security, and you can call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
+You can scope applications to namespaces for deployment and security and call between services deployed to different namespaces. For more information, read the [Service invocation across namespaces]({{< ref "service-invocation-namespaces.md" >}}) article.
 
 ### Round robin load balancing with mDNS
 
