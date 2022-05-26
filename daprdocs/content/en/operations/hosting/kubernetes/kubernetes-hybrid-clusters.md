@@ -101,7 +101,8 @@ In order to launch a Dapr application on Windows, you'll first need to create a 
    ```
 
 ### Linux applications
-If you have already got a dapr application with runs on Linux, you'll still need to add affinity rules as above, but choose Linux affinity instead.
+
+If you already have a Dapr application that runs on Linux, you'll still need to add affinity rules as above, but choose Linux affinity instead.
 
 1. Create a deployment YAML
 
