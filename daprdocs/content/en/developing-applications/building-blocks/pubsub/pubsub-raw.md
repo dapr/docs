@@ -6,7 +6,7 @@ weight: 2200
 description: "Learn when you might not use CloudEvents and how to disable them."
 ---
 
-When adding Dapr to your application, some services may still need to communicate via raw Pub/Sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. Dapr enables apps to [publish and subscribe to raw events]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}) not wrapped in a CloudEvent.
+When adding Dapr to your application, some services may still need to communicate via pub/sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. These are referred to as "raw" pub/sub messages. Dapr enables apps to [publish and subscribe to raw events]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}) not wrapped in a CloudEvent for compatibility.
 
 ## Publishing raw messages
 
@@ -138,7 +138,7 @@ $app->start();
 
 ## Declaratively subscribe to raw events
 
-Similarly, you can subscribe to raw events declaratively by adding the `rawPayload` metadata entry to your Subscription Custom Resource Definition (CRD):
+Similarly, you can subscribe to raw events declaratively by adding the `rawPayload` metadata entry to your subscription specification.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -161,6 +161,3 @@ scopes:
 - Learn more about [publishing and subscribing messages]({{< ref pubsub-overview.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
-
-
-

@@ -15,7 +15,7 @@ Dapr applications can subscribe to published topics via two methods that support
 | [**Declarative**]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
 | [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **user code**. The programmatic approach implements the subscription in your code. |
 
-The examples below demonstrate Pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr Pub/sub component used first declaratively, then programmatically.
+The examples below demonstrate pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr pub/sub component used first declaratively, then programmatically.
 
 ### Declarative subscriptions
 
@@ -35,7 +35,7 @@ scopes:
 - checkout
 ```
 
-Notice, the Pub/sub component `order_pub_sub` subscribes to topic `orders`.
+Notice, the pub/sub component `order_pub_sub` subscribes to topic `orders`.
 - The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
 - The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
 
@@ -95,7 +95,7 @@ kubectl apply -f subscription.yaml
 
 {{< /tabs >}}
 
-In your application code, subscribe to the topic specified in the Dapr Pub/sub component.
+In your application code, subscribe to the topic specified in the Dapr pub/sub component.
 
 {{< tabs ".NET" Java Python JavaScript Go >}}
 
@@ -343,11 +343,11 @@ func main() {
 
 ## Next Steps
 
-* Try out the [Pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
-* Follow: [How-To: Configure Pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+* Try out the [pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
+* Follow: [How-To: Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 * Learn more about [declarative and programmatic subscription methods]({{< ref subscription-methods >}}). 
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message TTL]({{< ref pubsub-message-ttl.md >}})
-* Learn more about [Pub/Sub with and without CloudEvent]({{< ref pubsub-cloudevents.md >}})
-* List of [Pub/sub components]({{< ref supported-pubsub.md >}})
-* Read the [Pub/sub API reference]({{< ref pubsub_api.md >}})
+* Learn more about [pub/sub with and without CloudEvent]({{< ref pubsub-cloudevents.md >}})
+* List of [pub/sub components]({{< ref supported-pubsub.md >}})
+* Read the [pub/sub API reference]({{< ref pubsub_api.md >}})

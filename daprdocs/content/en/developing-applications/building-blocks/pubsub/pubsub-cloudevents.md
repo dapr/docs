@@ -3,7 +3,7 @@ type: docs
 title: "Publishing & subscribing messages with Cloudevents"
 linkTitle: "Messages with Cloudevents"
 weight: 2100
-description: "Learn why Dapr uses CloudEvents, how they work in Dapr Pub/Sub, and how to create CloudEvents."
+description: "Learn why Dapr uses CloudEvents, how they work in Dapr pub/sub, and how to create CloudEvents."
 ---
 
 To enable message routing and provide additional context with each message, Dapr uses the [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/tree/v1.0) as its message format. Any message sent by an application to a topic using Dapr is automatically wrapped in a CloudEvents envelope, using the [`Content-Type` header value]({{< ref "pubsub-overview.md#content-types" >}}) for `datacontenttype` attribute.
@@ -62,7 +62,7 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 
 ## Publish your own CloudEvent
 
-If you want to use your own CloudEvent, make sure to specify the [content type]({{< ref "pubsub-overview.md#setting-message-content-types" >}}) as `application/cloudevents+json`.
+If you want to use your own CloudEvent, make sure to specify the [`datacontenttype`]({{< ref "pubsub-overview.md#setting-message-content-types" >}}) as `application/cloudevents+json`.
 
 ### Example
 
@@ -103,7 +103,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/cloudevents+json' -Body
 ## Next steps
 
 - Learn why you might [not want to use CloudEvents]({{< ref pubsub-raw.md >}})
-- Try out the [Pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
-- List of [Pub/sub components]({{< ref setup-pubsub >}})
+- Try out the [pub/sub Quickstart]({{< ref pubsub-quickstart.md >}})
+- List of [pub/sub components]({{< ref setup-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
 

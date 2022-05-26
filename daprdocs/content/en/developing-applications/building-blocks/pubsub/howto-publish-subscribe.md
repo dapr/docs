@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn how to send messages to a topic with one service and subscribe to that topic in another service"
 ---
 
-Now that you've learned what the Dapr Pub/sub building block provides, learn how it can work in your service. The below code example loosely describes an application that processes orders with two services, each with Dapr sidecars:
+Now that you've learned what the Dapr pub/sub building block provides, learn how it can work in your service. The below code example loosely describes an application that processes orders with two services, each with Dapr sidecars:
 
 - A checkout service using Dapr to subscribe to the topic in the message queue.
 - An order processing service using Dapr to publish a message to RabbitMQ.
@@ -19,14 +19,13 @@ Dapr automatically wraps the user payload in a CloudEvents v1.0 compliant envelo
 The following example demonstrates how your applications publish and subscribe to a topic called `orders`.
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the new quickstart]({{< ref pubsub-quickstart.md >}}) for a quick walk-through on how to use Pub/Sub.
+ If you haven't already, [try out the pub/sub quickstart]({{< ref pubsub-quickstart.md >}}) for a quick walk-through on how to use pub/sub.
 
 {{% /alert %}}
 
-
 ## Set up the Pub/Sub component
 
-The first step is to set up the Pub/Sub component:
+The first step is to set up the pub/sub component:
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
@@ -112,7 +111,7 @@ dapr run --app-id myapp --components-path ./myComponents -- npm start
 {{% /codetab %}}
 
 {{% codetab %}}
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [Pub/Sub component]({{< ref setup-pubsub >}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [pub/sub component]({{< ref setup-pubsub >}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -147,12 +146,12 @@ scopes:
 
 ## Subscribe to topics
 
-Dapr allows two methods by which you can subscribe to topics:
+Dapr provides two methods by which you can subscribe to topics:
 
 - **Declaratively**, where subscriptions are defined in an external file.
 - **Programmatically**, where subscriptions are defined in user code.
 
-Learn more in the [declarative and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example will demonstrate a **declarative** subscription.
+Learn more in the [declarative and programmatic subscriptions doc]({{< ref subscription-methods.md >}}). This example demonstrates a **declarative** subscription.
 
 Create a file named `subscription.yaml` and paste the following:
 
@@ -641,13 +640,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{< /tabs >}}
 
-## ACK message
+## Message acknowledgement and retries
 
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 
 ## Next steps
 
-- Try the [Pub/Sub tutorial]({{https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub}}).
+- Try the [pub/sub tutorial]({{https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub}}).
 - Learn about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}) and when you might want to [send messages without CloudEvents]({{< ref pubsub-raw.md >}}).
 - Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
 - Read the [API reference]({{< ref pubsub_api.md >}}).

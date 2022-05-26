@@ -7,10 +7,10 @@ description: "Learn how to route messages from a topic to different event handle
 ---
 
 {{% alert title="Preview feature" color="warning" %}}
-Pub/Sub message routing is currently in [preview]({{< ref preview-features.md >}}).
+Pub/sub message routing is currently in [preview]({{< ref preview-features.md >}}).
 {{% /alert %}}
 
-Pub/Sub routing is an implementation of [content-based routing](https://www.enterpriseintegrationpatterns.com/ContentBasedRouter.html), a messaging pattern that utilizes a DSL instead of imperative application code. With Pub/Sub routing, you use expressions to route [CloudEvents](https://cloudevents.io) (based on their contents) to different URIs/paths and event handlers in your application. If no route matches, then an optional default route is used. This proves useful as your applications expand to support multiple event versions or special cases.
+Pub/sub routing is an implementation of [content-based routing](https://www.enterpriseintegrationpatterns.com/ContentBasedRouter.html), a messaging pattern that utilizes a DSL instead of imperative application code. With pub/sub routing, you use expressions to route [CloudEvents](https://cloudevents.io) (based on their contents) to different URIs/paths and event handlers in your application. If no route matches, then an optional default route is used. This proves useful as your applications expand to support multiple event versions or special cases.
 
 While routing can be implemented with code, keeping routing rules external from the application can improve portability.
 
@@ -473,8 +473,8 @@ Watch [this video](https://www.youtube.com/watch?v=QqJgRmbH82I&t=1063s) on how t
 
 ## Next steps
 
-- Try the [Pub/Sub routing sample](https://github.com/dapr/samples/tree/master/pub-sub-routing).
+- Try the [pub/sub routing sample](https://github.com/dapr/samples/tree/master/pub-sub-routing).
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}}) and [message time-to-live]({{< ref pubsub-message-ttl.md >}}).
-- [Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}}).
+- [Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}}).
 - Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
 - Read the [API reference]({{< ref pubsub_api.md >}}).
