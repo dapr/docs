@@ -119,7 +119,7 @@ The response JSON body contains the `statusCode` and the `versionId` fields. The
 
 To upload a binary file (for example, _.jpg_, _.zip_), invoke the Huawei OBS binding with a `POST` method and the following JSON body:
 
-> Note: by default, a random UUID is generated, if we don't specify the `key`. See the example below for Metadata support to set the destination file name. This API can still be used to upload a regular file (i.e., plain text).
+> Note: by default, a random UUID is generated, if you don't specify the `key`. See the example below for metadata support to set the destination file name. This API can be used to upload a regular file, such as a plain text file.
 
 ```json
 {
