@@ -163,7 +163,7 @@ other | warning is logged and message to be retried
 
 ## Message envelope
 
-Dapr Pub/Sub adheres to version 1.0 of CloudEvents.
+Dapr pub/sub adheres to version 1.0 of CloudEvents.
 
 ## Related links
 
