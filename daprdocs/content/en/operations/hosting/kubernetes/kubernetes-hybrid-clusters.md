@@ -3,10 +3,10 @@ type: docs
 title: "Deploy to hybrid Linux/Windows Kubernetes clusters"
 linkTitle: "Hybrid clusters"
 weight: 60000
-description: "How to run Dapr apps on Kubernetes clusters with windows nodes"
+description: "How to run Dapr apps on Kubernetes clusters with Windows nodes"
 ---
 
-Dapr supports running on kubernetes clusters with windows nodes. You can run your Dapr microservices exclusively on Windows, exclusively on Linux, or a combination of both. This is helpful to users who may be doing a piecemeal migration of a legacy application into a Dapr Kubernetes cluster.
+Dapr supports running on Kubernetes clusters with Windows nodes. You can run your Dapr microservices exclusively on Windows, exclusively on Linux, or a combination of both. This is helpful to users who may be doing a piecemeal migration of a legacy application into a Dapr Kubernetes cluster.
 
 Kubernetes uses a concept called node affinity so that you can denote whether you want your application to be launched on a Linux node or a Windows node. When deploying to a cluster which has both Windows and Linux nodes, you must provide affinity rules for your applications, otherwise the Kubernetes scheduler might launch your application on the wrong type of node.
 
@@ -38,7 +38,7 @@ If you are installing using the Dapr CLI or via a helm chart, simply follow the 
 
 Affinity will be automatically set for `kubernetes.io/os=linux`. This will be sufficient for most users, as Kubernetes requires at least one Linux node pool.
 
-> **Note:** Dapr control plane containers are built and tested for both windows and linux, however, we generally recommend using the linux control plane containers. They tend to be smaller and have a much larger user base.
+> **Note:** Dapr control plane containers are built and tested for both Windows and Linux, however, we generally recommend using the Linux control plane containers. They tend to be smaller and have a much larger user base.
 
 If you understand the above, but want to deploy the Dapr control plane to Windows, you can do so by setting:
 
@@ -101,7 +101,8 @@ In order to launch a Dapr application on Windows, you'll first need to create a 
    ```
 
 ### Linux applications
-If you have already got a dapr application with runs on Linux, you'll still need to add affinity rules as above, but choose linux affinity instead.
+
+If you already have a Dapr application that runs on Linux, you'll still need to add affinity rules as above, but choose Linux affinity instead.
 
 1. Create a deployment YAML
 
