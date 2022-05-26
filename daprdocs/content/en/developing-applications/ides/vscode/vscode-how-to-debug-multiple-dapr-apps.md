@@ -48,7 +48,7 @@ In the case of the hello world quickstart, two applications are launched, each w
          "skipFiles": [
              "<node_internals>/**"
          ],
-         "program": "${workspaceFolder}/app.js",
+         "program": "${workspaceFolder}/node/app.js",
          "preLaunchTask": "daprd-debug-node",
          "postDebugTask": "daprd-down-node"
        },
@@ -56,7 +56,7 @@ In the case of the hello world quickstart, two applications are launched, each w
          "type": "python",
          "request": "launch",
          "name": "Pythonapp with Dapr",
-         "program": "${workspaceFolder}/app.py",
+         "program": "${workspaceFolder}/python/app.py",
          "console": "integratedTerminal",
          "preLaunchTask": "daprd-debug-python",
          "postDebugTask": "daprd-down-python"
@@ -65,7 +65,7 @@ In the case of the hello world quickstart, two applications are launched, each w
 }
 ```
 
-Each configuration requires a `request`, `type` and `name`. These parameters help VSCode identify the task configurations in the `.vscode/task.json` files.
+Each configuration requires a `request`, `type` and `name`. These parameters help VSCode identify the task configurations in the `.vscode/tasks.json` files.
 
 - `type` defines the language used.  Depending on the language, it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
 - `name` is a unique name for the configuration. This is used for compound configurations when calling multiple configurations in your project.
@@ -74,9 +74,9 @@ Each configuration requires a `request`, `type` and `name`. These parameters hel
 
 For more information on VSCode debugging parameters see [VS Code launch attributes](https://code.visualstudio.com/Docs/editor/debugging#_launchjson-attributes).
 
-## Step 2: Configure task.json
+## Step 2: Configure tasks.json
 
-For each [task](https://code.visualstudio.com/docs/editor/tasks) defined in `.vscode/launch.json` , a corresponding task definition must exist in `.vscode/task.json`.
+For each [task](https://code.visualstudio.com/docs/editor/tasks) defined in `.vscode/launch.json` , a corresponding task definition must exist in `.vscode/tasks.json`.
 
 For the quickstart, each service needs a task to launch a Dapr sidecar with the `daprd` type, and a task to stop the sidecar with `daprd-down`. The parameters `appId`, `httpPort`, `metricsPort`, `label` and `type` are required. Additional optional parameters are available, see the [reference table here](#daprd-parameter-table").
 
@@ -123,7 +123,7 @@ For this example the compound configuration is:
 ```json
 {
    "version": "2.0.0",
-   "tasks": [...],
+   "configurations": [...],
    "compounds": [
       {
         "name": "Node/Python Dapr",
