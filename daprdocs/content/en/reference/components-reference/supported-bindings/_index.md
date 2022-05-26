@@ -90,3 +90,9 @@ Table captions:
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Zeebe Command]({{< ref zeebe-command.md >}})            |    | ✅ | Alpha | v1 | 1.2 |
 | [Zeebe Job Worker]({{< ref zeebe-jobworker.md >}})       | ✅ |    | Alpha | v1 | 1.2 |
+
+### Huawei Cloud
+
+| Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
+|------|:----------------:|:-----------------:|--------| --------- | ---------- |
+| [Huawei Object Storage Service (OBS)]({{< ref huawei-obs.md >}})            |    | ✅ | Alpha | v1 | 1.8 |
