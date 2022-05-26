@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Huawei OBS (output) binding create a component of type `bindings.huawei.obs`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup Huawei Object Storage Service (OBS) (output) binding create a component of type `bindings.huawei.obs`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -117,7 +117,7 @@ The response JSON body contains the `statusCode` and the `versionId` fields. The
 
 ### Upload file
 
-To upload a binary file (e.g., _.jpg_, _.zip_), invoke the Huawei OBS binding with a `POST` method and the following JSON body:
+To upload a binary file (for example, _.jpg_, _.zip_), invoke the Huawei OBS binding with a `POST` method and the following JSON body:
 
 > Note: by default, a random UUID is generated, if we don't specify the `key`. See the example below for Metadata support to set the destination file name. This API can still be used to upload a regular file (i.e., plain text).
 
@@ -239,7 +239,7 @@ The metadata parameters are:
 
 #### Response
 
-An HTTP 204 (No Content) and empty body will be retuned if successful.
+An HTTP 204 (No Content) and empty body are returned if successful.
 
 
 ### List objects

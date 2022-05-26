@@ -95,4 +95,4 @@ Table captions:
 
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
-| [Huawei OBS]({{< ref huawei-obs.md >}})            |    | ✅ | Alpha | v1 | 1.8 |
+| [Huawei Object Storage Service (OBS)]({{< ref huawei-obs.md >}})            |    | ✅ | Alpha | v1 | 1.8 |
