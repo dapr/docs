@@ -265,6 +265,25 @@ The data parameters are:
 - `marker` - (optional) marker is where you want Huawei OBS to start listing from. Huawei OBS starts listing after this specified key. Marker can be any key in the bucket. The marker value may then be used in a subsequent call to request the next set of list items.
 - `delimiter` - (optional) A delimiter is a character you use to group keys. It returns objects/files with their object key other than that is specified by the delimiter pattern.
 
+#### Example
+
+{{< tabs Windows Linux >}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ \"operation\": \"list\", \"data\": { \"maxResults\": 5, \"prefix\": \"dapr-\", \"marker\": \"obstest\", \"delimiter\": \"jpg\" }}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+  {{% codetab %}}
+  ```bash
+  curl -d '{ "operation": "list", "data": { "maxResults": 5, "prefix": "dapr-", "marker": "obstest", "delimiter": "jpg" }}' \
+        http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+  {{% /codetab %}}
+
+{{< /tabs >}}
+
 #### Response
 
 The response body contains the list of found objects.
