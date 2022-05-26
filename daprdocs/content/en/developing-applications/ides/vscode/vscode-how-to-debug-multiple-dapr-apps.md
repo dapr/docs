@@ -65,6 +65,28 @@ In the case of the hello world quickstart, two applications are launched, each w
 }
 ```
 
+If you're using ports other than the default ports baked into the code, set the `DAPR_HTTP_PORT` and `DAPR_GRPC_PORT` environment variables in the `launch.json` debug configuration. Match with the `httpPort` and `grpcPort` in the daprd `tasks.json`. For example, `launch.json`:
+
+```json
+{
+  // Set the non-default HTTP and gRPC ports
+  "env": {
+      "DAPR_HTTP_PORT": "3502",
+      "DAPR_GRPC_PORT": "50002"
+  },
+}
+```
+
+`tasks.json`:
+
+```json
+{
+  // Match with ports set in launch.json
+  "httpPort": 3502,
+  "grpcPort": 50002
+}
+```
+
 Each configuration requires a `request`, `type` and `name`. These parameters help VSCode identify the task configurations in the `.vscode/tasks.json` files.
 
 - `type` defines the language used.  Depending on the language, it might require an extension found in the marketplace, such as the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
