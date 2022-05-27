@@ -14,11 +14,11 @@ For more information on different types of Volumes, check [Volumes | Kubernetes]
 
 {{% codetab %}}
 
-You can set the following annotations in your App deployment YAML:
+You can set the following annotations in your deployment YAML:
 1. **dapr.io/volume-mounts**: for read-only volume mounts
 1. **dapr.io/volume-mounts-rw**: for read-write volume mounts
 
-Make sure that the corresponding Volumes exist in the Pod spec.
+These annotations are comma separated pairs of `volume:path`. Make sure that the corresponding Volumes exist in the Pod spec.
 
 ```yaml
 apiVersion: apps/v1
