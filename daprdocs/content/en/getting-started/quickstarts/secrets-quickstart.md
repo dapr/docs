@@ -1,0 +1,470 @@
+---
+type: docs
+title: "Quickstart: Secrets Management"
+linkTitle: "Secrets Management"
+weight: 74
+description: "Get started with Dapr's Secrets Management building block"
+---
+
+Dapr provides a dedicated secrets API that allows developers to retrieve secrets from a secrets store. In this quickstart, you:
+
+1. Run a microservice with a secret store component.
+1. Retrieve secrets using the Dapr secrets API in the application code.
+
+Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
+
+{{< tabs "Python" "JavaScript" ".NET" "Java" >}}
+ <!-- Python -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Python 3.7+ installed](https://www.python.org/downloads/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/secrets_management).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Retrieve the secret
+
+In a terminal window, navigate to the `order-processor` directory.
+
+```bash
+cd secrets_management/python/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+```
+
+#### Behind the scenes
+
+**`order-processor` service**
+
+Notice how the `order-processor` service below points to:
+
+- The `DAPR_SECRET_STORE` defined in the `local-secret-store.yaml` component.
+- The secret defined in `secrets.json`.
+
+```python
+# app.py
+DAPR_SECRET_STORE = 'localsecretstore'
+SECRET_NAME = 'secret'
+with DaprClient() as client:
+        secret = client.get_secret(store_name=DAPR_SECRET_STORE, key=SECRET_NAME)
+        logging.info('Fetched Secret: %s', secret.secret)
+```
+
+**`local-secret-store.yaml` component**
+
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localsecretstore
+  namespace: default
+spec:
+  type: secretstores.local.file
+  version: v1
+  metadata:
+  - name: secretsFile
+    value: secrets.json
+  - name: nestedSeparator
+    value: ":"
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_STORE` in the code sample).
+- `spec/metadata` defines the connection to the secret used by the component.
+
+**`secrets.json` file**
+
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/python/sdk/order-processor/secrets.json):
+
+```json
+{
+    "secret": "YourPasskeyHere"
+}
+```
+
+### Step 3: View the order-processor outputs
+
+As specified in the application code above, the `order-processor` service retrieves the secret via the Dapr secret store and displays it in the console.
+
+Order-processor output:
+
+```
+== APP == INFO:root:Fetched Secret: {'secret': 'YourPasskeyHere'}
+```
+
+{{% /codetab %}}
+
+ <!-- JavaScript -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest Node.js installed](https://nodejs.org/download/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/secrets_management).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Retrieve the secret
+
+In a terminal window, navigate to the `order-processor` directory.
+
+```bash
+cd secrets_management/javascript/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --components-path ../../../components/ -- npm start
+```
+
+#### Behind the scenes
+
+**`order-processor` service**
+
+Notice how the `order-processor` service below points to:
+
+- The `DAPR_SECRET_STORE` defined in the `local-secret-store.yaml` component.
+- The secret defined in `secrets.json`.
+
+```javascript
+// index.js
+const DAPR_SECRET_STORE = "localsecretstore";
+const SECRET_NAME = "secret";
+
+async function main() {
+    // ...
+    const secret = await client.secret.get(DAPR_SECRET_STORE, SECRET_NAME);
+    console.log("Fetched Secret: " + JSON.stringify(secret));
+}
+```
+
+**`local-secret-store.yaml` component**
+
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localsecretstore
+  namespace: default
+spec:
+  type: secretstores.local.file
+  version: v1
+  metadata:
+  - name: secretsFile
+    value: secrets.json
+  - name: nestedSeparator
+    value: ":"
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_STORE` in the code sample).
+- `spec/metadata` defines the connection to the secret used by the component.
+
+**`secrets.json` file**
+
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/javascript/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+
+```json
+{
+    "secret": "YourPasskeyHere"
+}
+```
+
+### Step 3: View the order-processor outputs
+
+As specified in the application code above, the `order-processor` service retrieves the secret via the Dapr secret store and displays it in the console.
+
+Order-processor output:
+
+```
+== APP ==
+== APP == > order-processor@1.0.0 start
+== APP == > node index.js
+== APP ==
+== APP == Fetched Secret: {"secret":"YourPasskeyHere"}
+```
+
+{{% /codetab %}}
+
+ <!-- .NET -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/download).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/secrets_management).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Retrieve the secret
+
+In a terminal window, navigate to the `order-processor` directory.
+
+```bash
+cd secrets_management/csharp/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+dotnet restore
+dotnet build
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
+```
+
+#### Behind the scenes
+
+**`order-processor` service**
+
+Notice how the `order-processor` service below points to:
+
+- The `DAPR_SECRET_STORE` defined in the `local-secret-store.yaml` component.
+- The secret defined in `secrets.json`.
+
+```csharp
+// Program.cs
+const string DAPR_SECRET_STORE = "localsecretstore";
+const string SECRET_NAME = "secret";
+var client = new DaprClientBuilder().Build();
+
+var secret = await client.GetSecretAsync(DAPR_SECRET_STORE, SECRET_NAME);
+var secretValue = string.Join(", ", secret);
+Console.WriteLine($"Fetched Secret: {secretValue}");
+```
+
+**`local-secret-store.yaml` component**
+
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localsecretstore
+  namespace: default
+spec:
+  type: secretstores.local.file
+  version: v1
+  metadata:
+  - name: secretsFile
+    value: secrets.json
+  - name: nestedSeparator
+    value: ":"
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_NAME` in the code sample).
+- `spec/metadata` defines the connection to the secret used by the component.
+
+**`secrets.json` file**
+
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/csharp/sdk/order-processor/secrets.json):
+
+```json
+{
+    "secret": "YourPasskeyHere"
+}
+```
+
+### Step 3: View the order-processor outputs
+
+As specified in the application code above, the `order-processor` service retrieves the secret via the Dapr secret store and displays it in the console.
+
+Order-processor output:
+
+```
+== APP == Fetched Secret: [secret, YourPasskeyHere]
+```
+
+{{% /codetab %}}
+
+ <!-- Java -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- Java JDK 11 (or greater):
+  - [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11), or
+  - [OpenJDK](https://jdk.java.net/13/)
+- [Apache Maven](https://maven.apache.org/install.html), version 3.x.
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/secrets_management).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Retrieve the secret
+
+In a terminal window, navigate to the `order-processor` directory.
+
+```bash
+cd secrets_management/java/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
+```
+
+#### Behind the scenes
+
+**`order-processor` service**
+
+Notice how the `order-processor` service below points to:
+
+- The `DAPR_SECRET_STORE` defined in the `local-secret-store.yaml` component.
+- The secret defined in `secrets.json`.
+
+```java
+// OrderProcessingServiceApplication.java
+private static final String SECRET_STORE_NAME = "localsecretstore";
+// ...
+    Map<String, String> secret = client.getSecret(SECRET_STORE_NAME, "secret").block();
+    System.out.println("Fetched Secret: " + secret);
+```
+
+**`local-secret-store.yaml` component**
+
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localsecretstore
+  namespace: default
+spec:
+  type: secretstores.local.file
+  version: v1
+  metadata:
+  - name: secretsFile
+    value: secrets.json
+  - name: nestedSeparator
+    value: ":"
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_NAME` in the code sample).
+- `spec/metadata` defines the connection to the secret used by the component.
+
+**`secrets.json` file**
+
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/java/sdk/order-processor/secrets.json):
+
+```json
+{
+    "secret": "YourPasskeyHere"
+}
+```
+
+### Step 3: View the order-processor outputs
+
+As specified in the application code above, the `order-processor` service retrieves the secret via the Dapr secret store and displays it in the console.
+
+Order-processor output:
+
+```
+== APP == Fetched Secret: {secret=YourPasskeyHere}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Tell us what you think!
+
+We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+
+Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+
+## Next steps
+
+- Use Dapr Secrets Management with HTTP instead of an SDK.
+  - [Python](https://github.com/dapr/quickstarts/tree/master/secrets_management/python/http)
+  - [JavaScript](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/http)
+  - [.NET](https://github.com/dapr/quickstarts/tree/master/secrets_management/csharp/http)
+  - [Java](https://github.com/dapr/quickstarts/tree/master/secrets_management/java/http)
+- Learn more about the [Secrets Management building block]({{< ref secrets-overview >}})
+
+{{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
