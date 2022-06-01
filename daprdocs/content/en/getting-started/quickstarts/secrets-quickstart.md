@@ -95,7 +95,7 @@ spec:
 
 In the YAML file:
 
-- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_STORE` in the code sample).
+- `metadata/name` is how your application references the component (called `DAPR_SECRET_STORE` in the code sample).
 - `spec/metadata` defines the connection to the secret used by the component.
 
 **`secrets.json` file**
@@ -204,7 +204,7 @@ spec:
 
 In the YAML file:
 
-- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_STORE` in the code sample).
+- `metadata/name` is how your application references the component (called `DAPR_SECRET_STORE` in the code sample).
 - `spec/metadata` defines the connection to the secret used by the component.
 
 **`secrets.json` file**
@@ -317,7 +317,7 @@ spec:
 
 In the YAML file:
 
-- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_NAME` in the code sample).
+- `metadata/name` is how your application references the component (called `DAPR_SECRET_NAME` in the code sample).
 - `spec/metadata` defines the connection to the secret used by the component.
 
 **`secrets.json` file**
@@ -425,7 +425,7 @@ spec:
 
 In the YAML file:
 
-- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_NAME` in the code sample).
+- `metadata/name` is how your application references the component (called `DAPR_SECRET_NAME` in the code sample).
 - `spec/metadata` defines the connection to the secret used by the component.
 
 **`secrets.json` file**
@@ -532,7 +532,7 @@ spec:
 
 In the YAML file:
 
-- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_NAME` in the code sample).
+- `metadata/name` is how your application references the component (called `DAPR_SECRET_NAME` in the code sample).
 - `spec/metadata` defines the connection to the secret used by the component.
 
 **`secrets.json` file**
