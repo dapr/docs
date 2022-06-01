@@ -58,7 +58,7 @@ Configuration stores are used to save application data, which can then be read b
 
 ## Middleware
 
-Dapr allows custom [middleware]({{<ref "middleware.md">}})  to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the request is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
+Dapr allows custom [middleware]({{<ref "middleware.md">}})  to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the response is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
 
 - [List of supported middleware components]({{< ref supported-middleware >}})
 - [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)
