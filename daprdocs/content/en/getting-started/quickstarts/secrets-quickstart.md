@@ -377,7 +377,7 @@ cd secrets_management/java/sdk/order-processor
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+mvn clean install
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
@@ -450,11 +450,118 @@ Order-processor output:
 
 {{% /codetab %}}
 
+ <!-- Go -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest version of Go](https://go.dev/dl/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/secrets_management).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Retrieve the secret
+
+In a terminal window, navigate to the `order-processor` directory.
+
+```bash
+cd secrets_management/go/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+Run the `order-processor` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
+```
+
+#### Behind the scenes
+
+**`order-processor` service**
+
+Notice how the `order-processor` service below points to:
+
+- The `DAPR_SECRET_STORE` defined in the `local-secret-store.yaml` component.
+- The secret defined in `secrets.json`.
+
+```go
+const DAPR_SECRET_STORE = "localsecretstore"
+	const SECRET_NAME = "secret"
+  // ...
+	secret, err := client.GetSecret(ctx, DAPR_SECRET_STORE, SECRET_NAME, nil)
+	if secret != nil {
+		fmt.Println("Fetched Secret: ", secret[SECRET_NAME])
+	}
+```
+
+**`local-secret-store.yaml` component**
+
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localsecretstore
+  namespace: default
+spec:
+  type: secretstores.local.file
+  version: v1
+  metadata:
+  - name: secretsFile
+    value: secrets.json
+  - name: nestedSeparator
+    value: ":"
+```
+
+In the YAML file:
+
+- `metadata/name` is how your application talks to the component (called `DAPR_SECRET_NAME` in the code sample).
+- `spec/metadata` defines the connection to the secret used by the component.
+
+**`secrets.json` file**
+
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/java/sdk/order-processor/secrets.json):
+
+```json
+{
+    "secret": "YourPasskeyHere"
+}
+```
+
+### Step 3: View the order-processor outputs
+
+As specified in the application code above, the `order-processor` service retrieves the secret via the Dapr secret store and displays it in the console.
+
+Order-processor output:
+
+```
+== APP == Fetched Secret:  YourPasskeyHere
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Tell us what you think!
 
-We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
+We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
 Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 
@@ -465,6 +572,7 @@ Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
   - [JavaScript](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/http)
   - [.NET](https://github.com/dapr/quickstarts/tree/master/secrets_management/csharp/http)
   - [Java](https://github.com/dapr/quickstarts/tree/master/secrets_management/java/http)
+  - [Go](https://github.com/dapr/quickstarts/tree/master/secrets_management/go/http)
 - Learn more about the [Secrets Management building block]({{< ref secrets-overview >}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
