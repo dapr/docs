@@ -8,6 +8,11 @@ description: "Use the secret store building block to securely retrieve a secret"
 
 This article provides guidance on using Dapr's secrets API in your code to leverage the [secrets store building block]({{<ref secrets-overview>}}). The secrets API allows you to easily retrieve secrets in your application code from a configured secret store.
 
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the secrets management quickstart]({{< ref secrets-quickstart.md >}}) for a quick walk-through on how to retrieve a secret.
+
+{{% /alert %}}
+
 ## Example
 
 The below code example loosely describes an application that processes orders. In the example, there is an order processing service, which has a Dapr sidecar. The order processing service uses Dapr to store a secret in a local secret store.

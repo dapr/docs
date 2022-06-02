@@ -646,7 +646,7 @@ In order to tell Dapr that a message was processed successfully, return a `200 O
 
 ## Next steps
 
-- Try the [pub/sub tutorial]({{https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub}}).
+- Try the [pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub).
 - Learn about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}) and when you might want to [send messages without CloudEvents]({{< ref pubsub-raw.md >}}).
 - Review the list of [pub/sub components]({{< ref setup-pubsub >}}).
 - Read the [API reference]({{< ref pubsub_api.md >}}).
