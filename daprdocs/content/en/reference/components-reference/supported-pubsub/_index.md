@@ -33,7 +33,6 @@ Table captions:
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Stable | v1 | 1.0 |
 | [RocketMQ]({{< ref setup-rocketmq.md >}})             | Alpha | v1 | 1.8 |
 
-
 ### Amazon Web Services (AWS)
 
 | Name                                              | Status | Component version | Since |

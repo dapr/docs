@@ -10,54 +10,26 @@ aliases:
 ## Component format
 To setup RocketMQ pubsub, create a component of type `pubsub.rocketmq`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
-### HTTP
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
+  name: rocketmq-pubsub
+  namespace: default
 spec:
   type: pubsub.rocketmq
   version: v1
   metadata:
-    - name: accessProto
-      value: "http"
-    - name: endpoint
-      value: "http://localhost:9876"
-    - name: accessKey
-      value: "****************"
-    - name: secretKey
-      value: "****************"
-    - name: consumerGroup
-      value: "GID_******"
-    - name: instanceId
-      value: "MQ_INST_******"
-```
-
-### TCP
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: pubsub.rocketmq
-  version: v1
-  metadata:
-    - name: accessProto
-      value: "tcp"
     - name: nameServer
       value: "http://localhost:9876"
     - name: accessKey
-      value: "****************"
+      value: "admin"
     - name: secretKey
-      value: "****************"
+      value: "password"
     - name: consumerGroup
-      value: "GID_******"
-    - name: instanceId
-      value: "MQ_INST_******"
+      value: "GID_0001"
+    - name: retries
+      value: 10
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -67,18 +39,16 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 ## Spec metadata fields
 | Field              | Required | Details | Example |
 |--------------------|:--------:|--------|---------|
-| nameServer                | N        | RocketMQ's name server, optional| `"http://*************.aliyuncs.com:80"`
-| endpoint                | Y        | RocketMQ's endpoint, optional, just for HTTP proto | `"http://********.cn-qingdao-public.aliyuncs.com"`
-| accessProto                | Y        |sdk proto (HTTP or TCP),default TCP| `"tcp"`
-| accessKey                | N        | RocketMQ Credentials| `"****************"`
-| secretKey                | N        | RocketMQ Credentials | `"****************"`
-| consumerGroup                | N        | consumer group for RocketMQ's subscribers, suggested to provide | `"GID_******"`
-| consumerBatchSize                | N        | consumer group for RocketMQ's subscribers, suggested to provide, just for HTTP proto | `1024`
-| consumerThreadNums                | N        |consumer group for RocketMQ's subscribers, suggested to provide, just for cgo proto | `20`
-| instanceId                | N       | RocketMQ's namespace, optional | `"MQ_INST_******"`
-| nameServerDomain                | N        |RocketMQ's name server domain, optional| `"mqrest.cn.aliyuncs.com"`
-| retries                | N        | retry times to connect rocketmq's broker, optional | `0`
-| content-type                | N        | msg's content-type eg:"application/cloudevents+json; charset=utf-8", application/octet-stream | `"text/plain"`
+| accessKey          | N        | Access Key (Username) | `"admin"`
+| secretKey          | N        | Secret Key (Password) | `"password"`
+| nameServer         | N        | Name server address | `"127.0.0.1:9876;127.0.0.2:9877"`
+| nameServerDomain   | N        | Name server domain | `"https://my-app.net:8080/nsaddr"`
+| nameSpace          | N        | Namespace of the producer/consumer | `"namespace"` |
+| groupName          | N        | Producer group name for RocketMQ publishers | `"my_unique_group_name"` |
+| consumerGroup      | N        | Consumer group name for RocketMQ subscribers| `"my_unique_group_name"`
+| content-type       | N        | Message content-type, e.g., `"application/cloudevents+json; charset=utf-8"`, `"application/octet-stream"` | `"text/plain"`
+| retries            | N        | Number of times to retry to connect rocketmq's broker, optional | `0`
+| sendTimeOut        | N        | Timeout duration for publishing a message in nanoseconds | `0`
 
 ## Setup RocketMQ
 See https://rocketmq.apache.org/docs/quick-start/ to setup a local RocketMQ instance.
