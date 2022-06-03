@@ -96,7 +96,7 @@ spec:
   version: v1
   metadata:
   - name: secretsFile
-    value: /usr/secrets/secret.json
+    value: /usr/secrets/secrets.json
 ```
 3. Use the secrets.
 ```
