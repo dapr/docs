@@ -150,7 +150,7 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 {{< /tabs >}}
 
-### Querying JSON objects
+## Querying JSON objects (optional)
 
 In addition to supporting storing and querying state data as key/value pairs, the Redis state store optionally supports querying of JSON objects to meet more complex querying or filtering requirements. To enable this feature, the following steps are required:
 
