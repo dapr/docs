@@ -1,0 +1,28 @@
+{{- $groups := dict
+" Generic" $.Site.Data.components.pubsub.generic
+"Microsoft Azure" $.Site.Data.components.pubsub.azure
+"Google Cloud Platform (GCP)" $.Site.Data.components.pubsub.gcp
+"Amazon Web Services (AWS)" $.Site.Data.components.pubsub.aws
+}}
+
+{{ range $group, $components := $groups }}
+<h3>{{ $group }}</h3>
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>Status</th>
+        <th>Component version</th>
+        <th>Since runtime version</th>
+    </tr>
+    {{ range sort $components "component" }}
+    <tr>
+        <td><a href="/reference/components-reference/supported-pubsub/{{ .link }}/" }}>{{ .component
+                }}</a>
+        </td>
+        <td>{{ .state }}</td>
+        <td>{{ .version }}</td>
+        <td>{{ .since }}</td>
+    </tr>
+    {{ end }}
+</table>
+{{ end }}

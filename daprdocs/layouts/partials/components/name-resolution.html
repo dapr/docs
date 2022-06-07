@@ -1,0 +1,27 @@
+{{- $groups := dict
+" Generic" $.Site.Data.components.name_resolution.generic
+"Self-Hosted" $.Site.Data.components.name_resolution.selfhosted
+"Kubernetes" $.Site.Data.components.name_resolution.kubernetes
+}}
+
+{{ range $group, $components := $groups }}
+<h3>{{ $group }}</h3>
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>Status</th>
+        <th>Component version</th>
+        <th>Since runtime version</th>
+    </tr>
+    {{ range sort $components "component" }}
+    <tr>
+        <td><a href="/reference/components-reference/supported-name-resolution/{{ .link }}/" }}>{{ .component
+                }}</a>
+        </td>
+        <td>{{ .state }}</td>
+        <td>{{ .version }}</td>
+        <td>{{ .since }}</td>
+    </tr>
+    {{ end }}
+</table>
+{{ end }}

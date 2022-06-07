@@ -1,0 +1,64 @@
+- component: Azure CosmosDBGremlinAPI
+  link: cosmosdbgremlinapi
+  state: Alpha
+  version: v1
+  since: "1.5"
+  features:
+    input: false
+    output: true
+- component: Azure Event Grid
+  link: eventgrid
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: Azure SignalR
+  link: signalr
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Azure Blob Storage
+  link: blobstorage
+  state: Beta
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Azure CosmosDB
+  link: cosmosdb
+  state: Beta
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Azure Event Hubs
+  link: eventhubs
+  state: Beta
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: Azure Service Bus Queues
+  link: servicebusqueues
+  state: Beta
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: Azure Storage Queues
+  link: storagequeues
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true

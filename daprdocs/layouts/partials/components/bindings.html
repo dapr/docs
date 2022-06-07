@@ -1,0 +1,34 @@
+{{- $groups := dict
+" Generic" $.Site.Data.components.bindings.generic
+"Microsoft Azure" $.Site.Data.components.bindings.azure
+"Alibaba Cloud" $.Site.Data.components.bindings.alibaba
+"Google Cloud Platform (GCP)" $.Site.Data.components.bindings.gcp
+"Amazon Web Services (AWS)" $.Site.Data.components.bindings.aws
+"Zeebe (Camunda Cloud)" $.Site.Data.components.bindings.zeebe
+}}
+
+{{ range $group, $components := $groups }}
+<h3>{{ $group }}</h3>
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>Input Binding</th>
+        <th>Output Binding</th>
+        <th>Status</th>
+        <th>Component version</th>
+        <th>Since runtime version</th>
+    </tr>
+    {{ range sort $components "component" }}
+    <tr>
+        <td><a href="/reference/components-reference/supported-bindings/{{ .link }}/" }}>{{ .component
+                }}</a>
+        </td>
+        <td>{{ if .features.input }}✅{{ end }}</td>
+        <td>{{ if .features.output }}✅{{ end }}</td>
+        <td>{{ .state }}</td>
+        <td>{{ .version }}</td>
+        <td>{{ .since }}</td>
+    </tr>
+    {{ end }}
+</table>
+{{ end }}
