@@ -58,7 +58,7 @@ spec:
 ## Example
 
 ### Custom secrets storage using local file secret store
-Since any type of Kubernetes Volume can be attached to the sidecar, you can use the local file secret store to read secrets from a variety of places. Example, if you have an NFS server running at `10.201.202.203`, with secrets stored at `/secrets/stage/secrets.json`, you can use that as a secrets storage.
+Since any type of Kubernetes Volume can be attached to the sidecar, you can use the local file secret store to read secrets from a variety of places. For example, if you have a Network File Share (NFS) server running at `10.201.202.203`, with secrets stored at `/secrets/stage/secrets.json`, you can use that as a secrets storage.
 
 1. Configure the application pod to mount the NFS and attach it to the Dapr sidecar.
 ```yaml
@@ -84,7 +84,7 @@ spec:
             path: /secrets/stage
 ...
 ```
-2. Point the secret store component to the attached file.
+2. Point the local file secret store component to the attached file.
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
