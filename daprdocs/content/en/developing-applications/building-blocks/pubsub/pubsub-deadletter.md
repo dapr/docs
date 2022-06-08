@@ -12,7 +12,7 @@ Dead letter topics are used to hold messages that cannot be delivered to any rec
 
 When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic will be put on the dead letter topic.
 
-Dapr enables dead letter topics for every all of it's pub/sub components, regardless if the underlying system supports this feature natively or not.
+Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively.
 
 ## Configuring a dead letter topic through YAML
 
@@ -52,7 +52,7 @@ app.get('/dapr/subscribe', (_req, res) => {
 ## Retries and dead letter topics
 
 By default, when a dead letter topic is set, any failing message will immediately go to the dead letter topic.
-To allow Dapr to retry the message before sending it to the dead letter topic, you can use a [retry resiliency policy]({{< ref "policies.md#retries" >}}):
+To allow Dapr to retry the message before sending it to the dead letter topic, you can use a [retry resiliency policy]({{< ref "policies.md#retries" >}}).
 
 This example shows how to set a constant retry, with 10 maximum delivery attempts every 5 seconds for the `nats` pub/sub components.
 
