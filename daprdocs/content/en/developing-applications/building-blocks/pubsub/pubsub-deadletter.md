@@ -10,7 +10,7 @@ description: "Use dead letter topics to capture undeliverable messages"
 
 Dead letter topics are used to hold messages that cannot be delivered to any receiver. This eases the pressure on receivers by freeing them from dealing with poison messages, while allowing developers to write code that reads from the dead letter topic and either fix the message or abandon it completely.
 
-When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic will be put on the dead letter topic.
+When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic is put on the dead letter topic.
 
 Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively.
 
