@@ -2,7 +2,7 @@
 type: docs
 title: "Dead Letter Topics"
 linkTitle: "Dead Letter Topics"
-weight: 2250
+weight: 4000
 description: "Use dead letter topics to capture undeliverable messages"
 ---
 
@@ -70,9 +70,10 @@ spec:
         maxRetries: 10
   targets:
     components:
-      nats:
+      pubsub:
         inbound:
           retry: pubsubRetry
 ```
 
-For more information on resiliency policies, read [here]({{< ref resiliency-overview.md >}}).
+For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
+For more information on topic subscriptions, read [Declarative and programmatic subscription methods]({{< ref subscription-methods.md >}}).
