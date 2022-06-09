@@ -16,34 +16,34 @@ Dapr enables dead letter topics for all of it's pub/sub components, even if the 
 
 ## Configuring a dead letter topic through YAML
 
-The following YAML shows how to configure a dead letter topic named `poison` for messages consumed from the `orders` topic.
+The following YAML shows how to configure a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
 metadata:
-  name: orders
+  name: order
 spec:
   topic: orders
   route: /checkout
-  pubsubname: nats
-  deadLetterTopic: poison
+  pubsubname: pubsub
+  deadLetterTopic: poisonMessages
 scopes:
 - checkout
 ```
 
 ## Configuring a dead letter topic programatically
 
-The JSON returned from the `/subscribe` endpoint shows how to configure a dead letter topic named `poison` for messages consumed from the `orders` topic.
+The JSON returned from the `/subscribe` endpoint shows how to configure a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic.
 
 ```javascript
 app.get('/dapr/subscribe', (_req, res) => {
     res.json([
         {
-            pubsubname: "nats",
+            pubsubname: "pubsub",
             topic: "orders",
             route: "/checkout",
-            deadLetterTopic: "poison"
+            deadLetterTopic: "poisonMessages"
         }
     ]);
 });
