@@ -89,11 +89,11 @@ Transactional state stores can be used to store actor state. To specify which st
 
 ### Querying state 
 There are two ways to query the state:
- * Using the [state management query API]({{< ref "#state-query-api" >}}) provided in Dapr runtime.
- * Querying state store [directly]({{< ref "#query-state-store-directly" >}}) with the store's native SDK.
+ * Using the state management query API provided in Dapr runtime.
+ * Querying state store directly with the store's native SDK.
 
 #### Query API
-The query API provides a way of querying the key/value data saved using state management in state stores regardless of underlying database or storage technology. It is an optional state management API. Using the state management query API you can filter, sort and paginate the key/value data. For more details read [How-To: Query state]({{< ref howto-state-query-api.md >}}).
+The [query API]({{< ref "reference/api/state_api.md#query-state" >}}) provides a way of querying the key/value data saved using state management in state stores regardless of underlying database or storage technology. It is an optional state management API. Using the state management query API you can filter, sort and paginate the key/value data. For more details read [How-To: Query state]({{< ref howto-state-query-api.md >}}).
 
 #### Querying state store directly
 Dapr saves and retrieves state values without any transformation. You can query and aggregate state directly from the [underlying state store]({{< ref query-state-store >}}).
