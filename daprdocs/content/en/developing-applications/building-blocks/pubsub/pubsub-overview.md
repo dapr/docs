@@ -78,6 +78,10 @@ Dapr applications can subscribe to published topics. Dapr allows two methods by 
 
 In principle, Dapr considers message successfully delivered when the subscriber responds with a non-error response after processing the message. For more granular control, Dapr's publish/subscribe API also provides explicit statuses, defined in the response payload, which the subscriber can use to indicate the specific handling instructions to Dapr (e.g. `RETRY` or `DROP`). For more information on message routing read [Dapr publish/subscribe API documentation]({{< ref "pubsub_api.md#provide-routes-for-dapr-to-deliver-topic-events" >}})
 
+### Handling failed messages with dead letter topics
+
+Dapr allows developers to set dead letter topics to deal with messages that cannot be delivered to any receiver. This feature is available on all pub/sub components and prevents consumers from endlessly retrying a failed message. For more information, read [Dead Letter Topics]({{< ref "pubsub-deadletter.md">}})
+
 ### At-least-once guarantee
 
 Dapr guarantees "At-Least-Once" semantics for message delivery. That means that when an application publishes a message to a topic using the publish/subscribe API, Dapr ensures that this message will be delivered at least once to every subscriber.
@@ -106,6 +110,8 @@ For scenarios where one application uses Dapr but another doesn't, CloudEvent wr
 ### Publish/Subscribe API
 
 The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.md >}}).
+
+
 
 ## Next steps
 
