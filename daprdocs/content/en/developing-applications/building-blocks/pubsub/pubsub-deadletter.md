@@ -54,7 +54,7 @@ app.get('/dapr/subscribe', (_req, res) => {
 By default, when a dead letter topic is set, any failing message immediately goes to the dead letter topic.
 To allow Dapr to retry the message before sending it to the dead letter topic, you can use a [retry resiliency policy]({{< ref "policies.md#retries" >}}).
 
-This example shows how to set a constant retry, with 10 maximum delivery attempts every 5 seconds for the `nats` pub/sub components.
+This example shows how to set a constant retry, with 10 maximum delivery attempts every 5 seconds for the `pubsub` pub/sub component.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
