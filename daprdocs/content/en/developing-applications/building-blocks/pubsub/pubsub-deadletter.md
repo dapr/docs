@@ -76,4 +76,4 @@ spec:
 ```
 
 For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
-For more information on topic subscriptions, read [Declarative and programmatic subscription methods]({{< ref subscription-methods.md >}}).
+For more information on topic subscriptions, read [Declarative and programmatic subscription methods]({{< ref pubsub-overview.md#message-subscription >}}).
