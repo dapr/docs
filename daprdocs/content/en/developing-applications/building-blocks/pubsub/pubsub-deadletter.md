@@ -18,7 +18,7 @@ Dapr enables dead letter topics for all of it's pub/sub components, even if the 
 
 ## Configuring a dead letter topic with a declarative subscription
 
-The following YAML shows how to configure a subscription with a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic This subscription is scoped an app with a `checkout` ID
+The following YAML shows how to configure a subscription with a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic. This subscription is scoped to an app with a `checkout` ID.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -75,6 +75,23 @@ spec:
       pubsub:
         inbound:
           retry: pubsubRetry
+```
+
+## Configuring a subscription for handling the dead letter topics
+
+Remember to now configure a subscription to handling the dead letter topics. For example you can create another declarative subscription to receive these on the same or a different application. The example below shows the checkout application subscribing to the `poisonMessages` topic with another subscription and sending these to be handled by the `/failedmessages` endpoint.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: deadlettertopics
+spec:
+  topic: poisonMessages
+  route: /failedMessages
+  pubsubname: pubsub
+scopes:
+- checkout
 ```
 
 For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
