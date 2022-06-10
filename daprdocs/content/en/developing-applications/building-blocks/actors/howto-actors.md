@@ -315,24 +315,10 @@ Since version 1.3, applications can now enable partitioning of actor reminders i
 If the number of partitions is not enough, it can be changed and Dapr's sidecar will automatically redistribute the reminders's set.
 
 ### Enabling actor reminders partitioning
-Actor reminders partitioning is currently in preview, so enabling it is a two step process.
+Actor reminders partitioning is a fully supported feature since Dapr version `1.8`.
 
-#### Preview feature configuration
-Before using reminders partitioning, actor type metadata must be enabled in Dapr. For more information on preview configurations, see [the full guide on opting into preview features in Dapr]({{< ref preview-features.md >}}). Below is an example of the configuration:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: myconfig
-spec:
-  features:
-    - name: Actor.TypeMetadata
-      enabled: true
-```
-
-#### Actor runtime configuration
-Once actor type metadata is enabled as an opt-in preview feature, the actor runtime must also provide the appropriate configuration to partition actor reminders. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
+#### Actor runtime configuration for actor reminders partitioning
+First, the actor runtime must provide the appropriate configuration to partition actor reminders. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
 
 {{< tabs Java Dotnet Python Go >}}
 
@@ -428,10 +414,7 @@ The following, is an example of a valid configuration for reminder partitioning:
 ```
 
 #### Handling configuration changes
-For production scenarios, there are some points to be considered before enabling this feature:
-
-* Enabling actor type metadata can only be reverted if the number of partitions remains zero, otherwise the reminders' set will be reverted to an previous state.
-* Number of partitions can only be increased and not decreased. This allows Dapr to automatically redistribute the data on a rolling restart where one or more partition configurations might be active.
+To configure actor reminders partitioning, Dapr persists the actor type metadata in the actor's state store. This allows the configuration changes to be applied globally and not only in a single sidecar instance. Also the **number of partitions can only be increased and not decreased**. This allows Dapr to automatically redistribute the data on a rolling restart where one or more partition configurations might be active.
 
 #### Demo
-* [Actor reminder partitioning community call video](https://youtu.be/ZwFOEUYe1WA?t=1493)
+* [Actor reminder partitioning presented in community call](https://youtu.be/ZwFOEUYe1WA?t=1493)
