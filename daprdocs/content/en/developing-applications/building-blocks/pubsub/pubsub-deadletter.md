@@ -8,7 +8,9 @@ description: "Use dead letter topics to capture undeliverable messages"
 
 ## Introduction
 
-Dead letter topics are used to hold messages that cannot be delivered to any receiver. This eases the pressure on receivers by freeing them from dealing with poison messages, while allowing developers to write code that reads from the dead letter topic and either fix the message or abandon it completely.
+There are times when applications might not be able to handle messages for a variety of reasons. For example, there could be transient issues retrieving data needed to process a message or the app business logic fails returning an error.  Dead letter topics are used to forward messages that cannot be delivered to a subscribing app. This eases the pressure on app by freeing them from dealing with these failed messages, allowing developers to write code that reads from the dead letter topic and either fixes the message and resends this, or abandons it completely.
+
+Dead letter topics are typically used in along with a retry resiliency policy and a dead letter subscription that handles the required logic for dealing with the messages forwarded from the dead letter topic.
 
 When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic is put on the dead letter topic.
 
