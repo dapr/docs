@@ -12,7 +12,7 @@ There are times when applications might not be able to handle messages for a var
 
 Dead letter topics are typically used in along with a retry resiliency policy and a dead letter subscription that handles the required logic for dealing with the messages forwarded from the dead letter topic.
 
-When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic is put on the dead letter topic.
+When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic is put on the dead letter topic to be forwarded to a subscription that handles these messages. This could be the same app or a completely different one.
 
 Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively.
 
