@@ -16,6 +16,10 @@ When a dead letter topic is set, any message that failed to be delivered to an a
 
 Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively. For example the [AWS SNS Component]({{< ref "setup-aws-snssqs" >}}) has a dead letter queue and [RabbitMQ]({{< ref "setup-rabbitmq" >}}) has the dead letter topics. You will need to ensure that you configure components like this appropriately.
 
+The diagram below is an example of how dead letter topics work. First a message is sent from a publisher on an `orders` topic. Dapr receives the message on behalf of a subscriber application, however the orders topic message fails to be delivered to the `/checkout` endpoint on the application, even after retries. As a result of the failure to deliver, the message is forwarded to the `poisonMessages` topic which delivers this to the `/failedMessages` endpoint to be processed, in this case on the same application. The `failedMessages` processing code could drop the message or resend a new message.
+
+<img src="/images/pubsub_deadletter.png" width=1200>
+
 ## Configuring a dead letter topic with a declarative subscription
 
 The following YAML shows how to configure a subscription with a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic. This subscription is scoped to an app with a `checkout` ID.
