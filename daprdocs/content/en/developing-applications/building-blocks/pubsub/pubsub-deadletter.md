@@ -34,7 +34,7 @@ scopes:
 - checkout
 ```
 
-## Configuring a dead letter topic programatically
+## Configuring a dead letter topic with programmatic subscription
 
 The JSON returned from the `/subscribe` endpoint shows how to configure a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic.
 
