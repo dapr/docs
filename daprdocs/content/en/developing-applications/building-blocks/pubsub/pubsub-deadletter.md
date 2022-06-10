@@ -18,7 +18,7 @@ Dapr enables dead letter topics for all of it's pub/sub components, even if the 
 
 ## Configuring a dead letter topic with a declarative subscription
 
-The following YAML shows how to configure a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic.
+The following YAML shows how to configure a subscription with a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic This subscription is scoped an app with a `checkout` ID
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
