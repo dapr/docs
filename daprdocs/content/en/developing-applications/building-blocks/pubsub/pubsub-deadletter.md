@@ -3,7 +3,7 @@ type: docs
 title: "Dead Letter Topics"
 linkTitle: "Dead Letter Topics"
 weight: 4000
-description: "Use dead letter topics to capture undeliverable messages"
+description: "Use subscription dead letter topics to forward undeliverable messages"
 ---
 
 ## Introduction
