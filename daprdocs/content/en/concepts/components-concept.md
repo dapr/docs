@@ -14,57 +14,57 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
 ## Component configuration
 
-Components are configured at design-time via use of a CustomResourceDefinition (CRD) YAML file which is stored in either a `components/local` folder within your solution, or globally in the `.dapr` folder created when invoking `dapr init`.
+Components are configured at design-time via use of a CustomResourceDefinition (CRD) YAML file which is stored in either a `components/local` folder within your solution, or globally in the `.dapr` folder created when invoking `dapr init`. These YAML files adhere to the generic [Dapr component schema]({{<ref "component-schema.md">}}).
 
-It is important to understand that configuration values, particularly spec metdata, can change between Components of the same general Component type (i.e. state stores), and that some design-time configuraion values can be overridden at runtime when making requests to the Component's API.
+It is important to understand that configuration values, particularly spec metadata, can change between Components of the same general Component type (i.e. state stores), and that some design-time configuraion values can be overridden at runtime when making requests to a Component's API. As a result, it is strongly recommended to review [component specs]({{<ref "components-reference">}}), paying particular attention to sample payloads for requests used to interact with the component.
 
-If you are working with one Component type during development (i.e. Redis) and intend to switch to another on release (i.e. MySQL) you should review the differences between their configurations and API formats and ensure you understand any impact. Additionally, review the Component's spec, paying particular attention to sample payloads for requests.
+## Available component types
 
 The following are the component types provided by Dapr:
 
-## State stores
+### State stores
 
 State store components are data stores (databases, files, memory) that store key-value pairs as part of the [state management]({{< ref "state-management-overview.md" >}}) building block.
 
 - [List of state stores]({{< ref supported-state-stores >}})
 - [State store implementations](https://github.com/dapr/components-contrib/tree/master/state)
 
-## Name resolution
+### Name resolution
 
 Name resolution components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment and provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
 
 - [List of name resolution components]({{< ref supported-name-resolution >}})
 - [Name resolution implementations](https://github.com/dapr/components-contrib/tree/master/nameresolution)
 
-## Pub/sub brokers
+### Pub/sub brokers
 
 Pub/sub broker components are message brokers that can pass messages to/from services as part of the [publish & subscribe]({{< ref pubsub-overview.md >}}) building block.
 
 - [List of pub/sub brokers]({{< ref supported-pubsub >}})
 - [Pub/sub broker implementations](https://github.com/dapr/components-contrib/tree/master/pubsub)
 
-## Bindings
+### Bindings
 
 External resources can connect to Dapr in order to trigger a method on an application or be called from an application as part of the [bindings]({{< ref bindings-overview.md >}}) building block.
 
 - [List of supported bindings]({{< ref supported-bindings >}})
 - [Binding implementations](https://github.com/dapr/components-contrib/tree/master/bindings)
 
-## Secret stores
+### Secret stores
 
 A [secret]({{<ref "secrets-overview.md">}}) is any piece of private information that you want to guard against unwanted access. Secrets stores are used to store secrets that can be retrieved and used in applications.
 
 - [List of supported secret stores]({{< ref supported-secret-stores >}})
 - [Secret store implementations](https://github.com/dapr/components-contrib/tree/master/secretstores)
 
-## Configuration stores
+### Configuration stores
 
 Configuration stores are used to save application data, which can then be read by application instances on startup or notified of when changes occur. This allows for dynamic configuration.
 
 - [List of supported configuration stores]({{< ref supported-configuration-stores >}})
 - [Configuration store implementations](https://github.com/dapr/components-contrib/tree/master/configuration)
 
-## Middleware
+### Middleware
 
 Dapr allows custom [middleware]({{<ref "middleware.md">}})  to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request, such as authentication, encryption and message transformation before the request is routed to the user code, or before the response is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
 
