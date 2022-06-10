@@ -12,6 +12,14 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
  You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
 
+## Component configuration
+
+Components are configured at design-time via use of a CustomResourceDefinition (CRD) YAML file which is stored in either a `components/local` folder within your solution, or globally in the `.dapr` folder created when invoking `dapr init`.
+
+It is important to understand that configuration values, particularly spec metdata, can change between Components of the same general Component type (i.e. state stores), and that some design-time configuraion values can be overridden at runtime when making requests to the Component's API.
+
+If you are working with one Component type during development (i.e. Redis) and intend to switch to another on release (i.e. MySQL) you should review the differences between their configurations and API formats and ensure you understand any impact. Additionally, review the Component's spec, paying particular attention to sample payloads for requests.
+
 The following are the component types provided by Dapr:
 
 ## State stores
