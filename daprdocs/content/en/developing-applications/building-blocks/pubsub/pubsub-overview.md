@@ -80,7 +80,7 @@ In principle, Dapr considers message successfully delivered when the subscriber 
 
 ### Handling failed messages with dead letter topics
 
-Dapr allows developers to set dead letter topics to deal with messages that cannot be delivered to any receiver. This feature is available on all pub/sub components and prevents consumers from endlessly retrying a failed message. For more information, read [Dead Letter Topics]({{< ref "pubsub-deadletter.md">}})
+Sometimes, messages can't be processed because of a variety of possible issues, such as erroneous conditions within the producer or consumer application or an unexpected state change that causes an issue with your application code. Dapr allows developers to set dead letter topics to deal with messages that cannot be delivered to an application. This feature is available on all pub/sub components and prevents consumer applications from endlessly retrying a failed message. For more information, read about [dead letter topics]({{< ref "pubsub-deadletter.md">}})
 
 ### At-least-once guarantee
 
