@@ -111,5 +111,6 @@ For a new component requiring a certification change from Beta to Stable, a requ
     - The requestor details the test environment requirements in the created PR, including any manual steps or credentials needed
     - A Dapr maintainer reviews the test plan, provides feedback or approves it, and eventually merges the PR
 - Requestor submits a PR for the automated certification tests, including scripts to provision resources when applicable
-- After the test environment setup is completed and credentials provisioned, Dapr maintainers review the PR and, if approved, merges the PR
-- Requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level
+- After the test environment setup is completed and credentials provisioned, 2 maintainers in `components-contrib` repository review the PR and, if approved, merge it
+- Requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level to `Stable Candidate`
+- After the component has been in `Stable Candidate` for 1 minor version release, requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level to `Stable`
