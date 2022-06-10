@@ -14,7 +14,7 @@ Dead letter topics are typically used in along with a retry resiliency policy an
 
 When a dead letter topic is set, any message that failed to be delivered to an app for a configured topic is put on the dead letter topic to be forwarded to a subscription that handles these messages. This could be the same app or a completely different one.
 
-Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively.
+Dapr enables dead letter topics for all of it's pub/sub components, even if the underlying system does not support this feature natively. For example the [AWS SNS Component]({{< ref "setup-aws-snssqs" >}}) has a dead letter queue and [RabbitMQ]({{< ref "setup-rabbitmq" >}}) has the dead letter topics. You will need to ensure that you configure components like this appropriately.
 
 ## Configuring a dead letter topic through YAML
 
