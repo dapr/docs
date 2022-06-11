@@ -31,6 +31,7 @@ Table captions:
 | [Pulsar]({{< ref setup-pulsar.md >}})                 | Alpha  | v1 | 1.0 |
 | [RabbitMQ]({{< ref setup-rabbitmq.md >}})             | Beta  | v1 | 1.6 |
 | [Redis Streams]({{< ref setup-redis-pubsub.md >}})    | Stable | v1 | 1.0 |
+| [RocketMQ]({{< ref setup-rocketmq.md >}})             | Alpha | v1 | 1.8 |
 
 ### Amazon Web Services (AWS)
 
