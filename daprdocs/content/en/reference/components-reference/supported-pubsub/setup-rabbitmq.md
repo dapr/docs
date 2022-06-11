@@ -155,6 +155,7 @@ client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another
 
 ### Bind multiple `routingKey`
 
+Multiple routing Keys can be separated by commas.  
 In the example, three "routingkey" including `keyA`, `keyB` and `""` will be bind.
 
 ```
@@ -169,6 +170,8 @@ spec:
   metadata:
     routingKey: keyA,keyB,
 ```
+
+Note:the binding method of empty keys
 
 For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
 
