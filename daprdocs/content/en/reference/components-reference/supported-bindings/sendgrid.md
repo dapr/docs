@@ -24,10 +24,18 @@ spec:
   metadata:
   - name: emailFrom
     value: "testapp@dapr.io" # optional
+  - name: emailFromName
+    value: "test app" # optional
   - name: emailTo
     value: "dave@dapr.io" # optional
+  - name: emailToName
+    value: "dave" # optional
   - name: subject
     value: "Hello!" # optional
+  - name: emailCc
+    value: "jill@dapr.io" # optional
+  - name: emailBcc
+    value: "bob@dapr.io" # optional
   - name: apiKey
     value: "YOUR_API_KEY" # required, this is your SendGrid key
 ```
