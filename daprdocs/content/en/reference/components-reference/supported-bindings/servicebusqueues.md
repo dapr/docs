@@ -31,6 +31,10 @@ spec:
   #   value: 60
   # - name: maxRetriableErrorsPerSec # Optional
   #   value: 10
+  # - name: minConnectionRecoveryInSec # Optional
+  #   value: 2
+  # - name: maxConnectionRecoveryInSec # Optional
+  #   value: 300
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
