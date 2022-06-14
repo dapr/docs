@@ -136,6 +136,20 @@ This component supports **output binding** with the following operations:
 
 - `create`
 
+## Set topic per-request
+
+You can specify the topic to send the message to on a per-request basis using request metadata:
+
+```json
+{
+  "operation": "create",
+  "metadata": {
+    "topic": "myTopic"
+  },
+  "data": "<h1>Testing Dapr Bindings</h1>This is a test.<br>Bye!"
+}
+```
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
