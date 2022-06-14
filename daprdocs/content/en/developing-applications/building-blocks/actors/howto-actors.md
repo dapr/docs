@@ -315,7 +315,6 @@ Since version 1.3, applications can now enable partitioning of actor reminders i
 If the number of partitions is not enough, it can be changed and Dapr's sidecar will automatically redistribute the reminders's set.
 
 ### Enabling actor reminders partitioning
-Actor reminders partitioning is a fully supported feature since Dapr version `1.8`.
 
 #### Actor runtime configuration for actor reminders partitioning
 First, the actor runtime must provide the appropriate configuration to partition actor reminders. This is done by the actor's endpoint for `GET /dapr/config`, similar to other actor configuration elements.
