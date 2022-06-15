@@ -24,6 +24,8 @@ spec:
     value: "nats://localhost:4222"
   - name: natsStreamingClusterID
     value: "clusterId"
+  - name: concurrencyMode
+    value: parallel
     # below are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
@@ -75,6 +77,7 @@ NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-s
 | startAtTimeDelta   | N | Subscription Options. Only one can be used. Sets the desired start time position and state using the delta  | `"10m"`, `"23s"` |
 | startAtTime        | N | Subscription Options. Only one can be used. Sets the desired start time position and state  | `"Feb 3, 2013 at 7:54pm (PST)"` |
 | startAtTimeFormat   | N | Must be used with `startAtTime`. Sets the format for the time  | `"Jan 2, 2006 at 3:04pm (MST)"` |
+| concurrencyMode | N  | Call the subscriber sequentially (“single” message at a time), or concurrently (in “parallel”). Default: `"parallel"` | `"single"`, `"parallel"`
 
 ## Create a NATS server
 
