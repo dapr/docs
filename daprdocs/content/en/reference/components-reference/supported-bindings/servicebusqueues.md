@@ -35,6 +35,8 @@ spec:
   #   value: 2
   # - name: maxConnectionRecoveryInSec # Optional
   #   value: 300
+  # - name: timeoutInSec # Optional
+  #   value: 60
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -47,10 +49,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `connectionString` | Y | Input/Output | The Service Bus connection string. Required unless using Azure AD authentication. | `"Endpoint=sb://************"` |
 | `namespaceName`| N | Input/Output | Parameter to set the name of the Service Bus namespace. Required if using Azure AD authentication. | `"namespace"` |
 | `queueName` | Y | Input/Output | The Service Bus queue name. Queue names are case-insensitive and will always be forced to lowercase. | `"queuename"` |
-| `ttlInSeconds` | N | Output | Parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days. See [also](#specifying-a-ttl-per-message) | `"60"` |
+| `ttlInSeconds` | N | Output | Parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days. See [also](#specifying-a-ttl-per-message) | `86400` |
 | `maxRetriableErrorsPerSec` | N | Input | Maximum number of retriable errors that are processed per second. If a message fails to be processed with a retriable error, the component adds a delay before it starts processing another message, to avoid immediately re-processing messages that have failed. Default: `10` | `10` |
 | `minConnectionRecoveryInSec` | N | Input | Minimum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. Default: `2` | `5` |
 | `maxConnectionRecoveryInSec` | N | Input | Maximum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. After each attempt, the binding waits a random number of seconds, increasing every time, between the minimum and the maximum. Default: `300` (5 minutes) | `600` |
+| `maxActiveMessages`     | N  |Defines the maximum number of messages to be processing or in the buffer at once. This should be at least as big as the maximum concurrent handlers. Default: `1` | `1`
+| `maxConcurrentHandlers` | N  |Defines the maximum number of concurrent message handlers. Default: `1`. | `1`
+| `lockRenewalInSec`      | N  |Defines the frequency at which buffered message locks will be renewed. Default: `20`. | `20`
+| `timeoutInSec` | N | Input/Output | Timeout for all invocations to the Azure Service Bus endpoint, in seconds. *Note that this option impacts network calls and it's unrelated to the TTL applies to messages*. Default: `60` | `60` |
 
 ### Azure Active Directory (AAD) authentication
 
