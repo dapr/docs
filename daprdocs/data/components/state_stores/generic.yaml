@@ -121,7 +121,7 @@
     query: false
 - component: PostgreSQL
   link: setup-postgresql
-  state: Alpha
+  state: Stable
   version: v1
   since: "1.0"
   features:
