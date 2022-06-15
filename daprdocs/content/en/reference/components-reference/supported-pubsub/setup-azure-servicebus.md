@@ -46,10 +46,10 @@ spec:
   #   value: 10
   # - name: autoDeleteOnIdleInSec # Optional
   #   value: 3600
-  # - name: maxReconnectionAttempts # Optional
-  #   value: 30
-  # - name: connectionRecoveryInSec # Optional
+  # - name: minConnectionRecoveryInSec # Optional
   #   value: 2
+  # - name: maxConnectionRecoveryInSec # Optional
+  #   value: 300
   # - name: maxRetriableErrorsPerSec # Optional
   #   value: 10
   # - name: publishMaxRetries # Optional
@@ -81,8 +81,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `maxConcurrentHandlers` | N  |Defines the maximum number of concurrent message handlers. | `10`
 | `defaultMessageTimeToLiveInSec` | N  |Default message time to live. | `10`
 | `autoDeleteOnIdleInSec` | N  |Time in seconds to wait before auto deleting idle subscriptions. | `3600`
-| `maxReconnectionAttempts` | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
-| `connectionRecoveryInSec` | N  |Time in seconds to wait between connection recovery attempts. Default: `2` | `2`
+| `minConnectionRecoveryInSec` | N | Minimum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. Default: `2` | `5`
+| `maxConnectionRecoveryInSec` | N | Maximum interval (in seconds) to wait before attempting to reconnect to Azure Service Bus in case of a connection failure. After each attempt, the component waits a random number of seconds, increasing every time, between the minimum and the maximum. Default: `300` (5 minutes) | `600`
 | `maxRetriableErrorsPerSec` | N | Maximum number of retriable errors that are processed per second. If a message fails to be processed with a retriable error, the component adds a delay before it starts processing another message, to avoid immediately re-processing messages that have failed. Default: `10` | `10`
 | `publishMaxRetries` | N  | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
 | `publishInitialRetryInternalInMs` | N  | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
