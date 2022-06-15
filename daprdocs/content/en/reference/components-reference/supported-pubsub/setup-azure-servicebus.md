@@ -46,6 +46,10 @@ spec:
   #   value: 10
   # - name: autoDeleteOnIdleInSec # Optional
   #   value: 3600
+  # - name: minConnectionRecoveryInSec # Optional
+  #   value: 2
+  # - name: maxConnectionRecoveryInSec # Optional
+  #   value: 300
   # - name: maxRetriableErrorsPerSec # Optional
   #   value: 10
   # - name: publishMaxRetries # Optional
