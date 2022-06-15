@@ -35,6 +35,12 @@ spec:
   #   value: 2
   # - name: maxConnectionRecoveryInSec # Optional
   #   value: 300
+  # - name: maxActiveMessages # Optional
+  #   value: 1
+  # - name: maxConcurrentHandlers # Optional
+  #   value: 1
+  # - name: lockRenewalInSec # Optional
+  #   value: 20
   # - name: timeoutInSec # Optional
   #   value: 60
 ```
