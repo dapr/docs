@@ -55,7 +55,7 @@ Code | Description
 Name                   | Type                                                                  | Description
 ----                   | ----                                                                  | -----------
 id                     | string                                                                | Application ID
-actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of Registered Actors metadata.
+actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of registered actors metadata.
 extended.attributeName | string                                                                | List of custom attributes as key-value pairs, where key is the attribute name.
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
 
