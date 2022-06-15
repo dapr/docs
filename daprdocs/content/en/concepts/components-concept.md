@@ -14,7 +14,7 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
 ## Component configuration
 
-Components are configured at design-time via use of a CustomResourceDefinition (CRD) YAML file which is stored in either a `components/local` folder within your solution, or globally in the `.dapr` folder created when invoking `dapr init`. These YAML files adhere to the generic [Dapr component schema]({{<ref "component-schema.md">}}).
+Each component has a specification (or spec) that it conforms to. Components are configured at design-time with a YAML file which is stored in either a `components/local` folder within your solution, or globally in the `.dapr` folder created when invoking `dapr init`. These YAML files adhere to the generic [Dapr component schema]({{<ref "component-schema.md">}}), but each is specific to the component specification. 
 
 It is important to understand that configuration values, particularly spec metadata, can change between Components of the same general Component type (i.e. state stores), and that some design-time configuraion values can be overridden at runtime when making requests to a Component's API. As a result, it is strongly recommended to review [component specs]({{<ref "components-reference">}}), paying particular attention to sample payloads for requests used to interact with the component.
 
