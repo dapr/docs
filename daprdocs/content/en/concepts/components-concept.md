@@ -12,7 +12,7 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
  You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
 
-## Component configuration
+## Component specification
 
 Each component has a specification (or spec) that it conforms to. Components are configured at design-time with a YAML file which is stored in either a `components/local` folder within your solution, or globally in the `.dapr` folder created when invoking `dapr init`. These YAML files adhere to the generic [Dapr component schema]({{<ref "component-schema.md">}}), but each is specific to the component specification. 
 
