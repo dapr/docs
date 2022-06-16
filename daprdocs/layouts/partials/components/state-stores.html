@@ -14,6 +14,7 @@
         <th>CRUD</th>
         <th>Transactional</th>
         <th>ETag</th>
+        <th>TTL</th>
         <th>Actors</th>
         <th>Query</th>
         <th>Status</th>
@@ -28,6 +29,7 @@
         <td>{{ if .features.crud }}✅{{ end }}</td>
         <td>{{ if .features.transactions }}✅{{ end }}</td>
         <td>{{ if .features.etag }}✅{{ end }}</td>
+        <td>{{ if .features.ttl }}✅{{ end }}</td>
         <td>{{ if (and .features.transactions .features.etag) }}✅{{ end }}</td>
         <td>{{ if .features.query }}✅{{ end }}</td>
         <td>{{ .state }}</td>
