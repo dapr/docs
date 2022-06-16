@@ -204,7 +204,19 @@ public async Task<ActionResult<Stock>> HandleCheckout(Checkout checkout, [FromSe
 {{% codetab %}}
 
 ```java
+private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+@Topic(name = "checkout", pubsubName = "order_pub_sub")
+@PostMapping(path = "/orders")
+public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
+  return Mono.fromRunnable(() -> {
+    try {
+      System.out.println("Subscriber received: " + cloudEvent.getData());
+      System.out.println("Subscriber received: " + OBJECT_MAPPER.writeValueAsString(cloudEvent));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  });
 ```
 
 {{% /codetab %}}

@@ -20,7 +20,10 @@ metadata:
 spec:
   type: pubsub.in-memory
   version: v1
+  metadata: []
 ```
+
+> Note: in-memory does not require any specific metadata for the component to work, however spec.metadata is a required field.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section

@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Service Invocation"
 linkTitle: "Service Invocation"
-weight: 70
+weight: 71
 description: "Get started with Dapr's Service Invocation building block"
 ---
 
@@ -420,7 +420,7 @@ mvn clean install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --app-port 6001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ```java
