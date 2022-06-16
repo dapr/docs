@@ -1,20 +1,19 @@
 ---
 type: docs
-title: "Quickstart: Bindings"
-linkTitle: "Dapr Bindings"
+title: "Quickstart: Input & Output Bindings"
+linkTitle: "Bindings"
 weight: 70
 description: "Get started with Dapr's Binding building block"
 ---
 
-Let's take a look at Dapr's [Binding building block]({{< ref bindings >}}). In this Quickstart, you will schedule a batch script to run every 10 seconds using an input [Cron](https://docs.dapr.io/reference/components-reference/supported-bindings/cron/) binding. The script will process a Json file and output data to an external SQL database using the [PostgreSQL](https://docs.dapr.io/reference/components-reference/supported-bindings/postgres) Dapr binding.
+Let's take a look at Dapr's [Bindings building block]({{< ref bindings >}}). Using bindings, you can:
 
-Using bindings in Dapr, you can easily interface with a number of external systems.  E.g. you can trigger your app with events coming in from external systems, or interface with external systems. Bindings provide several benefits for you and your code:
- - Remove the complexities of connecting to, and polling from, messaging systems such as system resources, database, queues and message buses.
- - Focus on business logic and not implementation details of how to interact with a system, keeping your code free from SDKs or SDK specific logic.  
- - Add best practices like resiliency to your interactions with external systems.  
- - Build portable applications where environment-specific bindings are set-up and no code changes are required to switch between bindings at runtime.
+- Trigger your app with events coming in from external systems.
+- Interface with external systems.
 
-<img src="/images/binding-quickstart/Bindings_Quickstart.png" width=800 style="padding-bottom:15px;">
+In this Quickstart, you will schedule a batch script to run every 10 seconds using an input [Cron](https://docs.dapr.io/reference/components-reference/supported-bindings/cron/) binding. The script will process a JSON file and output data to an external SQL database using the [PostgreSQL](https://docs.dapr.io/reference/components-reference/supported-bindings/postgres) Dapr binding.
+
+<img src="/images/binding-quickstart/bindings-quickstart.png" width=800 style="padding-bottom:15px;">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
@@ -33,27 +32,35 @@ For this example, you will need:
 ### Step 1: Set up the environment
 
 Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
-### Step 2: Run PostgreSQL Docker Container Locally
 
-In order to run the PostgreSQL bindings quickstart locally, you will run the [PostgreSQL instance](https://www.postgresql.org/) in a docker container on your machine.  For convenience, we provided a Docker Compose file to customize, build, run, and initialize the `postgres` container with a default `orders` table for you locally.
+### Step 2: Run PostgreSQL Docker container locally
 
-In a terminal window, from the root of the Quickstarts clone directory
-navigate to the `bindings\db` directory.
+You will run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker container on your machine. The Quickstart sample includes a Docker Compose file to locally customize, build, run, and initialize the `postgres` container with a default `orders` table.
 
-To run the container locally, in another new terminal window:
+In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings\db` directory.
+
+```bash
+cd quickstarts/bindings/db
+```
+
+Run the following command to set up the container:
+
 ```bash
 docker compose up
 ```
 
-To see the container running locally, run:
+Verify that the container is running locally.
+
 ```bash
 docker ps
 ```
 
-The output should be similar to this:
+The output should include:
+
 ```bash
 CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES
 55305d1d378b   postgres   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds   0.0.0.0:5432->5432/tcp   sql_db
@@ -61,7 +68,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 
 ### Step 3: Schedule a Cron job and write to the database
 
-In a new terminal window, navigate to the `quickstarts/bindings/python/sdk` directory.
+In a new terminal window, navigate to the SDK directory.
 
 ```bash
 cd quickstarts/bindings/python/sdk
@@ -76,10 +83,10 @@ pip3 install -r requirements.txt
 Run the `python-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id python-quickstart-binding-sdk --app-protocol grpc --app-port 50051 --components-path ../../components python3 batch.py
+dapr run --app-id python-quickstart-binding-sdk --app-port 50051 --components-path ../../components python3 batch.py
 ```
 
-Code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory).  The binding trigger looks simply like a route getting called via HTTP POST in your Flask application, which is called by the Dapr sidecar.
+The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
 
 ```python
 # Triggered by Dapr input binding
@@ -87,58 +94,80 @@ Code inside the `process_batch` function is executed every 10 seconds (defined i
 def process_batch():
 ```
 
-The `python-quickstart-binding-sdk` uses the PostgreSQL Output Binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer` and `Price` records into the `orders` table. 
+The `python-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```python
-    with DaprClient() as d:
-        sqlCmd = ('insert into orders (orderid, customer, price) values' +
-                  '(%s, \'%s\', %s)' % (order_line['orderid'],
-                                        order_line['customer'],
-                                        order_line['price']))
-        payload = {'sql': sqlCmd}
+with DaprClient() as d:
+    sqlCmd = ('insert into orders (orderid, customer, price) values' +
+              '(%s, \'%s\', %s)' % (order_line['orderid'],
+                                    order_line['customer'],
+                                    order_line['price']))
+    payload = {'sql': sqlCmd}
 
-        print(sqlCmd, flush=True)
+    print(sqlCmd, flush=True)
 
-        try:
-            # Insert order using Dapr output binding via HTTP Post
-            resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
-                                    binding_metadata=payload, data='')
-            return resp
-        except Exception as e:
-            print(e, flush=True)
-            raise SystemExit(e)
+    try:
+        # Insert order using Dapr output binding via HTTP Post
+        resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
+                                binding_metadata=payload, data='')
+        return resp
+    except Exception as e:
+        print(e, flush=True)
+        raise SystemExit(e)
 ```
 
 ### Step 4: View the output of the job
 
-Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer` and `Price` as a payload.
+Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer`, and `Price` as a payload.
 
-Output Binding `print` statement output in your application:
+Your output binding's `print` statement output:
+
 ```
 == APP == {"sql": "insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);"}
 == APP == {"sql": "insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4);"}
 == APP == {"sql": "insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);"}
 ```
 
-You can also see the same data has been inserted into the database.  To inspect the `postgres` container, run the following in a new terminal to start the interactive Postgres CLI
+In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
+
+```bash
+cd quickstarts/bindings/db
+```
+
+Run the following to start the interactive Postgres CLI:
 
 ```bash
 docker exec -i -t postgres psql --username postgres  -p 5432 -h localhost --no-password
 ```
 
 At the `admin=#` prompt, change to the `orders` table:
+
 ```bash
 \c orders;
 ```
 
 At the `orders=#` prompt, select all rows:
+
 ```bash
 select * from orders;
 ```
 
+The output should look like this:
+
+```
+ orderid |  customer  | price
+---------+------------+--------
+       1 | John Smith | 100.32
+       2 | Jane Bond  |   15.4
+       3 | Tony James |  35.56
+```
+
 #### `components\binding-cron.yaml` component file
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the Cron [Binding building block]({{< ref bindings >}}) and calls the binding endpoint (`batch`) every 10 seconds.
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the Cron [Binding building block]({{< ref bindings >}})
+- Calls the binding endpoint (`batch`) every 10 seconds
 
 The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
@@ -156,11 +185,14 @@ spec:
     value: "@every 10s" # valid cron schedule
 ```
 
-**Note:** The `metadata` section of `binding-cron.yaml` contains a [cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
+**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
 
 #### `component\bindings-postgres.yaml` component file
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the PostgreSQL [Binding building block](/reference/components-reference/supported-bindings/postgres/) and connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file.
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the PostgreSQL [Binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
 With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
 
@@ -177,7 +209,7 @@ spec:
   version: v1
   metadata:
   - name: url # Required
-    value: "user=admin password=admin host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+    value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
 ```
 
 In the YAML file:
@@ -201,60 +233,46 @@ For this example, you will need:
 ### Step 1: Set up the environment
 
 Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Run PostgreSQL Docker Container Locally
+### Step 2: Run PostgreSQL Docker container locally
 
-In order to run the PostgreSQL bindings quickstart locally, you will run the [PostgreSQL instance](https://www.postgresql.org/) in a docker container on your machine.
+You will run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker container on your machine. The Quickstart sample includes a Docker Compose file to locally customize, build, run, and initialize the `postgres` container with a default `orders` table.
 
-To run the container locally, run:
+In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings\db` directory.
 
 ```bash
-docker run --name sql_db -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin -d postgres
+cd quickstarts/bindings/db
 ```
 
-To see the container running locally, run:
+Run the following command to set up the container:
+
+```bash
+docker compose up
+```
+
+Verify that the container is running locally.
+
 ```bash
 docker ps
 ```
 
-The output should be similar to this:
+The output should include:
+
 ```bash
 CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES
 55305d1d378b   postgres   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds   0.0.0.0:5432->5432/tcp   sql_db
 ```
 
-### Step 3: Setup the database schema
+### Step 3: Schedule a Cron job and write to the database
 
-Connect to the local PostgreSQL instance. 
-```bash
-docker exec -i -t sql_db psql --username admin  -p 5432 -h localhost --no-password
-```
-This will launch the PostgreSQL cli.
-```bash
-psql (14.2 (Debian 14.2-1.pgdg110+1))
-Type "help" for help.
-
-admin=#
-```
-Create a new `orders` database.
-```bash
-create database orders;
-```
-Connect to the new database and create the `orders` table.
-```bash
-\c orders;
-create table orders ( orderid int, customer text, price float ); select * from orders;
-```
-
-### Step 4: Schedule a Cron job and write to the database
-
-In a terminal window, navigate to the `sdk` directory.
+In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd bindings/javascript/sdk
+cd quickstarts/bindings/javascript/sdk
 ```
 
 Install the dependencies:
@@ -266,11 +284,18 @@ npm install
 Run the `javascript-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 3500 --dapr-http-port 5051 node batch.js --components-path ../../components
+dapr run --app-id javascript-quickstart-binding-sdk --app-port 3500 --dapr-http-port 5051 --components-path ../../components node batch.js 
 ```
-The `javascript-quickstart-binding-sdk` uses the PostgreSQL Output Binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer` and `Price` records into the `orders` table. This code is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory).
 
-```js
+The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
+
+```javascript
+
+```
+
+The `javascript-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+
+```javascript
 async function processBatch(){
     const loc = '../../orders.json';
     fs.readFile(loc, 'utf8', (err, data) => {
@@ -287,43 +312,67 @@ async function processBatch(){
 }
 ```
 
-### Step 5: View the Output Binding log
+### Step 4: View the output of the job
 
-Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer` and `Price` as a payload.
+Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer`, and `Price` as a payload.
 
-Output Binding `console.log` statement output:
+Your output binding's `print` statement output:
+
 ```
-== APP == [Dapr-JS] Server Started
-== APP == {  "sql": "insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);" }
-== APP == {  "sql": "insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4);" }
-== APP == {  "sql": "insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);" }
-== APP == Finished processing batch
-```
-
-### Step 6: Process the `orders.json` file on a schedule
-
-The `javascript-quickstart-binding-sdk` uses the Cron Input Binding defined in the [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) component to process a json file containing order information.
-
-```js
-const server = new DaprServer(serverHost, serverPort, daprHost, daprPort);
-
-async function start() {
-    await server.binding.receive(cronBindingName,processBatch);
-    await server.start();
-}
+== APP == Processing batch..
+== APP == insert into orders (orderid, customer, price) values(1, 'John Smith', 100.32)
+== APP == insert into orders (orderid, customer, price) values(2, 'Jane Bond', 15.4)
+== APP == insert into orders (orderid, customer, price) values(3, 'Tony James', 35.56)
 ```
 
-#### `cron.yaml` component file
+In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the Cron [Binding building block]({{< ref bindings >}}) and calls the binding endpoint (`batch`) every 10 seconds.
+```bash
+cd quickstarts/bindings/db
+```
 
-The Cron `cron.yaml` file included for this Quickstart contains the following:
+Run the following to start the interactive Postgres CLI:
+
+```bash
+docker exec -i -t postgres psql --username postgres  -p 5432 -h localhost --no-password
+```
+
+At the `admin=#` prompt, change to the `orders` table:
+
+```bash
+\c orders;
+```
+
+At the `orders=#` prompt, select all rows:
+
+```bash
+select * from orders;
+```
+
+The output should look like this:
+
+```
+ orderid |  customer  | price
+---------+------------+--------
+       1 | John Smith | 100.32
+       2 | Jane Bond  |   15.4
+       3 | Tony James |  35.56
+```
+
+#### `components\binding-cron.yaml` component file
+
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the Cron [Binding building block]({{< ref bindings >}})
+- Calls the binding endpoint (`batch`) every 10 seconds
+
+The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: batch
+  name: cron
   namespace: quickstarts
 spec:
   type: bindings.cron
@@ -333,28 +382,31 @@ spec:
     value: "@every 10s" # valid cron schedule
 ```
 
-**Note:** The `metadata` section of `cron.yaml` contains a [cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
+**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
 
-#### `bindings.yaml` component file
+#### `component\bindings-postgres.yaml` component file
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the PostgreSQL [Binding building block](/reference/components-reference/supported-bindings/postgres/) and connects to PostgreSQL using the settings specified in the `bindings.yaml` file.
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
-With the `bindings.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
+- Initiates the PostgreSQL [Binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
-The PostgreSQL `bindings.yaml` file included for this Quickstart contains the following:
+With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
+
+The PostgreSQL `bindings-postgres.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: SqlDB
+  name: sqldb
   namespace: quickstarts
 spec:
   type: bindings.postgres
   version: v1
   metadata:
   - name: url # Required
-    value: "user=admin password=admin host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+    value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
 ```
 
 In the YAML file:
@@ -378,60 +430,46 @@ For this example, you will need:
 ### Step 1: Set up the environment
 
 Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-### Step 2: Run PostgreSQL Docker Container Locally
+### Step 2: Run PostgreSQL Docker container locally
 
-In order to run the PostgreSQL bindings quickstart locally, you will run the [PostgreSQL instance](https://www.postgresql.org/) in a docker container on your machine.
+You will run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker container on your machine. The Quickstart sample includes a Docker Compose file to locally customize, build, run, and initialize the `postgres` container with a default `orders` table.
 
-To run the container locally, run:
+In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings\db` directory.
 
 ```bash
-docker run --name sql_db -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin -d postgres
+cd quickstarts/bindings/db
 ```
 
-To see the container running locally, run:
+Run the following command to set up the container:
+
+```bash
+docker compose up
+```
+
+Verify that the container is running locally.
+
 ```bash
 docker ps
 ```
 
-The output should be similar to this:
+The output should include:
+
 ```bash
 CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES
 55305d1d378b   postgres   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds   0.0.0.0:5432->5432/tcp   sql_db
 ```
 
-### Step 3: Setup the database schema
+### Step 3: Schedule a Cron job and write to the database
 
-Connect to the local PostgreSQL instance. 
-```bash
-docker exec -i -t sql_db psql --username admin  -p 5432 -h localhost --no-password
-```
-This will launch the PostgreSQL cli.
-```bash
-psql (14.2 (Debian 14.2-1.pgdg110+1))
-Type "help" for help.
-
-admin=#
-```
-Create a new `orders` database.
-```bash
-create database orders;
-```
-Connect to the new database and create the `orders` table.
-```bash
-\c orders;
-create table orders ( orderid int, customer text, price float ); select * from orders;
-```
-
-### Step 4: Schedule a Cron job and write to the database
-
-In a terminal window, navigate to the `sdk` directory.
+In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd bindings/csharp/sdk
+cd quickstarts/bindings/csharp/sdk
 ```
 
 Install the dependencies:
@@ -446,57 +484,89 @@ Run the `csharp-quickstart-binding-sdk` service alongside a Dapr sidecar.
 ```bash
 dapr run --app-id csharp-quickstart-binding-sdk --app-port 7001 --components-path ../../components -- dotnet run --project batch.csproj
 ```
-The `csharp-quickstart-binding-sdk` uses the PostgreSQL Output Binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer` and `Price` records into the `orders` table. This code is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory).
 
-```cs
-foreach( Order ord in ordersArr.orders){
-    var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
-    var command = new Dictionary<string,string>(){
-        {"sql",
-        sqlText}
-    };
-    await client.InvokeBindingAsync(sqlBindingName, "exec", command,command);
-    Console.WriteLine(sqlText);
-}
+The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
+
+```csharp
+Console.WriteLine("Processing batch..");
+string jsonFile = File.ReadAllText("../../orders.json");
+var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
 ```
 
-### Step 5: View the Output Binding log
+The `csharp-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
-Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer` and `Price` as a payload.
-
-Output Binding `Console.WriteLine` statement output:
-```
-== APP == insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);
-== APP == insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4);
-== APP == insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);
-```
-
-### Step 6: Process the `orders.json` file on a schedule
-
-The `csharp-quickstart-binding-sdk` uses the Cron Input Binding defined in the [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) component to process a json file containing order information.
-
-```cs
-app.MapPost(cronBindingName, async () => {
-
-    string text = File.ReadAllText("../../orders.json");
-    var ordersArr = JsonSerializer.Deserialize<Orders>(text);
-    using var client = new DaprClientBuilder().Build();
-    ...
-    }
-});
+```csharp
+using var client = new DaprClientBuilder().Build();
+    foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
+        var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
+        var command = new Dictionary<string,string>(){
+            {"sql",
+            sqlText}
+        };
+        Console.WriteLine(sqlText);
 ```
 
-#### `cron.yaml` component file
+### Step 4: View the output of the job
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the Cron [Binding building block]({{< ref bindings >}}) and calls the binding endpoint (`batch`) every 10 seconds.
+Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer`, and `Price` as a payload.
 
-The Cron `cron.yaml` file included for this Quickstart contains the following:
+Your output binding's `print` statement output:
+
+```
+== APP == Processing batch..
+== APP == insert into orders (orderid, customer, price) values(1, 'John Smith', 100.32)
+== APP == insert into orders (orderid, customer, price) values(2, 'Jane Bond', 15.4)
+== APP == insert into orders (orderid, customer, price) values(3, 'Tony James', 35.56)
+```
+
+In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
+
+```bash
+cd quickstarts/bindings/db
+```
+
+Run the following to start the interactive Postgres CLI:
+
+```bash
+docker exec -i -t postgres psql --username postgres  -p 5432 -h localhost --no-password
+```
+
+At the `admin=#` prompt, change to the `orders` table:
+
+```bash
+\c orders;
+```
+
+At the `orders=#` prompt, select all rows:
+
+```bash
+select * from orders;
+```
+
+The output should look like this:
+
+```
+ orderid |  customer  | price
+---------+------------+--------
+       1 | John Smith | 100.32
+       2 | Jane Bond  |   15.4
+       3 | Tony James |  35.56
+```
+
+#### `components\binding-cron.yaml` component file
+
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the Cron [Binding building block]({{< ref bindings >}})
+- Calls the binding endpoint (`batch`) every 10 seconds
+
+The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: batch
+  name: cron
   namespace: quickstarts
 spec:
   type: bindings.cron
@@ -506,28 +576,31 @@ spec:
     value: "@every 10s" # valid cron schedule
 ```
 
-**Note:** The `metadata` section of `cron.yaml` contains a [cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
+**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
 
-#### `bindings.yaml` component file
+#### `component\bindings-postgres.yaml` component file
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the PostgreSQL [Binding building block](/reference/components-reference/supported-bindings/postgres/) and connects to PostgreSQL using the settings specified in the `bindings.yaml` file.
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
-With the `bindings.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
+- Initiates the PostgreSQL [Binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
-The PostgreSQL `bindings.yaml` file included for this Quickstart contains the following:
+With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
+
+The PostgreSQL `bindings-postgres.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: SqlDB
+  name: sqldb
   namespace: quickstarts
 spec:
   type: bindings.postgres
   version: v1
   metadata:
   - name: url # Required
-    value: "user=admin password=admin host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+    value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
 ```
 
 In the YAML file:
@@ -551,59 +624,46 @@ For this example, you will need:
 ### Step 1: Set up the environment
 
 Clone the [sample we've provided in our Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+
 ```bash
 git clone https://github.com/dapr/quickstarts.git
 ```
-### Step 2: Run PostgreSQL Docker Container Locally
 
-In order to run the PostgreSQL bindings quickstart locally, you will run the [PostgreSQL instance](https://www.postgresql.org/) in a docker container on your machine.
+### Step 2: Run PostgreSQL Docker container locally
 
-To run the container locally, run:
+You will run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker container on your machine. The Quickstart sample includes a Docker Compose file to locally customize, build, run, and initialize the `postgres` container with a default `orders` table.
+
+In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings\db` directory.
 
 ```bash
-docker run --name sql_db -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin -d postgres
+cd quickstarts/bindings/db
 ```
 
-To see the container running locally, run:
+Run the following command to set up the container:
+
+```bash
+docker compose up
+```
+
+Verify that the container is running locally.
+
 ```bash
 docker ps
 ```
 
-The output should be similar to this:
+The output should include:
+
 ```bash
 CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES
 55305d1d378b   postgres   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds   0.0.0.0:5432->5432/tcp   sql_db
 ```
 
-### Step 3: Setup the database schema
+### Step 3: Schedule a Cron job and write to the database
 
-Connect to the local PostgreSQL instance. 
-```bash
-docker exec -i -t sql_db psql --username admin  -p 5432 -h localhost --no-password
-```
-This will launch the PostgreSQL cli.
-```bash
-psql (14.2 (Debian 14.2-1.pgdg110+1))
-Type "help" for help.
-
-admin=#
-```
-Create a new `orders` database.
-```bash
-create database orders;
-```
-Connect to the new database and create the `orders` table.
-```bash
-\c orders;
-create table orders ( orderid int, customer text, price float ); select * from orders;
-```
-
-### Step 4: Schedule a Cron job and write to the database
-
-In a terminal window, navigate to the `sdk` directory.
+In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd bindings/go/sdk
+cd quickstarts/bindings/go/sdk
 ```
 
 Install the dependencies:
@@ -612,102 +672,96 @@ Install the dependencies:
 go build batch.go
 ```
 
-Run the `go-input-binding-sdk` service alongside a Dapr sidecar.
+Run the `go-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 go run batch.go --components-path ../../components
-```
-The `go-input-binding-sdk` uses the PostgreSQL Output Binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer` and `Price` records into the `orders` table. This code is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory).
-
-```go
-func sqlBindings(order Order) (err error) {
-
-	bindingName := "SqlDB"
-
-	client, err := dapr.NewClient()
-	if err != nil {
-		return err
-	}
-
-	ctx := context.Background()
-
-	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
-	fmt.Println(sqlCmd)
-	in := &dapr.InvokeBindingRequest{
-		Name:      bindingName,
-		Operation: "exec",
-		Data:      []byte(""),
-		Metadata:  map[string]string{"sql": sqlCmd},
-	}
-	err = client.InvokeOutputBinding(ctx, in)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 --components-path ../../components go run batch.go 
 ```
 
-### Step 5: View the Output Binding log
-
-Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer` and `Price` as a payload.
-
-Output Binding `console.log` statement output:
-```
-== APP == The File is opened successfully...
-== APP == dapr client initializing for: 127.0.0.1:60002
-== APP == insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);
-== APP == insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.40);
-== APP == insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);
-== APP == Finished processing batch
-```
-
-### Step 6: Process the `orders.json` file on a schedule
-
-The `go-input-binding-sdk` uses the Cron Input Binding defined in the [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) component to process a json file containing order information.
+The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
 
 ```go
 func processCron(w http.ResponseWriter, r *http.Request) {
-
 	fileContent, err := os.Open("../../orders.json")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	fmt.Println("The File is opened successfully...")
-
-	defer fileContent.Close()
-
-	byteResult, _ := ioutil.ReadAll(fileContent)
-
-	var orders Orders
-
-	json.Unmarshal(byteResult, &orders)
-
-	for i := 0; i < len(orders.Orders); i++ {
-		err := sqlBindings(orders.Orders[i])
-		if err != nil {
-			log.Fatal(err)
-			os.Exit(1)
-		}
-	}
-	fmt.Println("Finished processing batch")
-	os.Exit(0)
 }
-
 ```
 
-#### `cron.yaml` component file
+The `go-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`bindings.yaml`]({{< ref "#bindingsyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the Cron [Binding building block]({{< ref bindings >}}) and calls the binding endpoint (`batch`) every 10 seconds.
+```go
+client, err := dapr.NewClient()
+ // ...
+sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
+fmt.Println(sqlCmd)
+in := &dapr.InvokeBindingRequest{
+	Name:      bindingName,
+	Operation: "exec",
+	Data:      []byte(""),
+	Metadata:  map[string]string{"sql": sqlCmd},
+}
+```
 
-The Cron `cron.yaml` file included for this Quickstart contains the following:
+### Step 4: View the output of the job
+
+Notice, as specified above, the code invokes the Output Binding with the `OrderId`, `Customer`, and `Price` as a payload.
+
+Your output binding's `print` statement output:
+
+```
+== APP == Processing batch..
+== APP == insert into orders (orderid, customer, price) values(1, 'John Smith', 100.32)
+== APP == insert into orders (orderid, customer, price) values(2, 'Jane Bond', 15.4)
+== APP == insert into orders (orderid, customer, price) values(3, 'Tony James', 35.56)
+```
+
+In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
+
+```bash
+cd quickstarts/bindings/db
+```
+
+Run the following to start the interactive Postgres CLI:
+
+```bash
+docker exec -i -t postgres psql --username postgres  -p 5432 -h localhost --no-password
+```
+
+At the `admin=#` prompt, change to the `orders` table:
+
+```bash
+\c orders;
+```
+
+At the `orders=#` prompt, select all rows:
+
+```bash
+select * from orders;
+```
+
+The output should look like this:
+
+```
+ orderid |  customer  | price
+---------+------------+--------
+       1 | John Smith | 100.32
+       2 | Jane Bond  |   15.4
+       3 | Tony James |  35.56
+```
+
+#### `components\binding-cron.yaml` component file
+
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the Cron [Binding building block]({{< ref bindings >}})
+- Calls the binding endpoint (`batch`) every 10 seconds
+
+The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: batch
+  name: cron
   namespace: quickstarts
 spec:
   type: bindings.cron
@@ -717,28 +771,31 @@ spec:
     value: "@every 10s" # valid cron schedule
 ```
 
-**Note:** The `metadata` section of `cron.yaml` contains a [cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
+**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression](/reference/components-reference/supported-bindings/cron/) that specifies how often the binding will be invoked.
 
-#### `bindings.yaml` component file
+#### `component\bindings-postgres.yaml` component file
 
-When you execute the `dapr run` command and specify the location of the component file, the Dapr sidecar initiates the PostgreSQL [Binding building block](/reference/components-reference/supported-bindings/postgres/) and connects to PostgreSQL using the settings specified in the `bindings.yaml` file.
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
-With the `bindings.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
+- Initiates the PostgreSQL [Binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
-The PostgreSQL `bindings.yaml` file included for this Quickstart contains the following:
+With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
+
+The PostgreSQL `bindings-postgres.yaml` file included for this Quickstart contains the following:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: SqlDB
+  name: sqldb
   namespace: quickstarts
 spec:
   type: bindings.postgres
   version: v1
   metadata:
   - name: url # Required
-    value: "user=admin password=admin host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+    value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
 ```
 
 In the YAML file:
@@ -751,6 +808,7 @@ In the YAML file:
 {{< /tabs >}}
 
 ## Tell us what you think!
+
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
 
 Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
