@@ -138,7 +138,7 @@ This component supports **output binding** with the following operations:
 
 ## Set topic per-request
 
-You can specify the topic to send the message to on a per-request basis using request metadata:
+You can override the topic in component metadata on a per-request basis:
 
 ```json
 {
