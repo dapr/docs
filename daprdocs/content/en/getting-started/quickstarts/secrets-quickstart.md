@@ -482,7 +482,7 @@ cd secrets_management/go/sdk/order-processor
 Install the dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+go build app.go
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
