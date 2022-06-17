@@ -210,38 +210,39 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 {{% codetab %}}
 
 ```go
-//dependencies
+// dependencies
 import (
 	"context"
 	"log"
 	"math/rand"
-	"time"
 	"strconv"
+	"time"
+
 	dapr "github.com/dapr/go-sdk/client"
 )
 
-//code
+// code
 func main() {
+	const STATE_STORE_NAME = "statestore"
+	rand.Seed(time.Now().UnixMicro())
 	for i := 0; i < 10; i++ {
-		time.Sleep(5000)
 		orderId := rand.Intn(1000-1) + 1
 		client, err := dapr.NewClient()
-		STATE_STORE_NAME := "statestore"
 		if err != nil {
 			panic(err)
 		}
 		defer client.Close()
 		ctx := context.Background()
-        //Using Dapr SDK to save and get state
-		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
-			panic(err)
-		}	
-		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_2")
+		err = client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId)), nil)
 		if err != nil {
 			panic(err)
 		}
-		log.Println("Result after get: ")
-		log.Println(result)
+		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_1", nil)
+		if err != nil {
+			panic(err)
+		}
+		log.Println("Result after get:", string(result.Value))
+		time.Sleep(2 * time.Second)
 	}
 }
 ```
