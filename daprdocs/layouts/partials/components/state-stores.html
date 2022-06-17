@@ -26,12 +26,13 @@
         <td><a href="/reference/components-reference/supported-state-stores/{{ .link }}/" }}>{{ .component
                 }}</a>
         </td>
-        <td>{{ if .features.crud }}✅{{ end }}</td>
-        <td>{{ if .features.transactions }}✅{{ end }}</td>
-        <td>{{ if .features.etag }}✅{{ end }}</td>
-        <td>{{ if .features.ttl }}✅{{ end }}</td>
-        <td>{{ if (and .features.transactions .features.etag) }}✅{{ end }}</td>
-        <td>{{ if .features.query }}✅{{ end }}</td>
+        <td align="center">{{ if .features.crud }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.transactions }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.etag }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.ttl }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if (and .features.transactions .features.etag) }}✅{{else}}<img
+                src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.query }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
         <td>{{ .state }}</td>
         <td>{{ .version }}</td>
         <td>{{ .since }}</td>
