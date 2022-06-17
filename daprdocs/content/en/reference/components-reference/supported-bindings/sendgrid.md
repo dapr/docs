@@ -60,6 +60,7 @@ You can specify any of the optional metadata properties on the output binding re
 
 ```json
 {
+  "operation": "create",
   "metadata": {
     "emailTo": "changeme@example.net",
     "subject": "An email from Dapr SendGrid binding"
@@ -67,6 +68,7 @@ You can specify any of the optional metadata properties on the output binding re
   "data": "<h1>Testing Dapr Bindings</h1>This is a test.<br>Bye!"
 }
 ```
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
