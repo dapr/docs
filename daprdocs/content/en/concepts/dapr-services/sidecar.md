@@ -6,8 +6,13 @@ weight: 100
 description: "Overview of the Dapr sidecar process"
 ---
 
-Dapr uses a [sidecar pattern]({{< ref "concepts/overview.md#sidecar-architecture" >}}), meaning the Dapr APIs are run and exposed on a separate process (i.e. the Dapr sidecar) running alongside your application. The Dapr sidecar process is named `daprd` and is launched in different ways depending on the hosting environment.
+Dapr uses a [sidecar pattern]({{< ref "concepts/overview.md#sidecar-architecture" >}}), meaning the Dapr APIs are run and exposed on a separate process, the Dapr sidecar, running alongside your application. The Dapr sidecar process is named `daprd` and is launched in different ways depending on the hosting environment.
 
+The Dapr sidecar exposes [building block APIs]({{<ref building-blocks-concept>}}) used by your application business logic, a [metadata API]({{<ref metadata_api>}}) for discoverability of capabiliites and to set attributes and a [health API]({{<ref sidecar-health>}}) to determine health status. 
+
+<img src="/images/overview-sidecar-apis.png" width=700>
+
+The sidecar APIs are called from your application over local http or gRPC endpoints. 
 <img src="/images/overview-sidecar-model.png" width=700>
 
 ## Self-hosted with `dapr run`
@@ -20,13 +25,13 @@ On [Kubernetes]({{< ref kubernetes.md >}}), the Dapr control plane includes the 
 
 ## Running the sidecar directly
 
-In most cases you do not need to run `daprd` explicitly, as the sidecar is either launched by the CLI (self-hosted mode) or by the dapr-sidecar-injector service (Kubernetes). For advanced use cases (debugging, scripted deployments, etc.) the `daprd` process can be launched directly.
+In most cases you do not need to run `daprd` explicitly, as the sidecar is either launched by the [CLI]({{<ref cli-overview>}}) (self-hosted mode) or by the dapr-sidecar-injector service (Kubernetes). For advanced use cases (debugging, scripted deployments, etc.) the `daprd` process can be launched directly.
 
 For a detailed list of all available arguments run `daprd --help` or see this [table]({{< ref arguments-annotations-overview.md >}}) which outlines how the `daprd` arguments relate to the CLI arguments and Kubernetes annotations.
 
 ### Examples
 
-1. Start a sidecar along an application by specifying its unique ID. Note `--app-id` is a required field:
+1. Start a sidecar along with an application by specifying its unique ID. Note `--app-id` is a required field:
 
    ```bash
    daprd --app-id myapp
