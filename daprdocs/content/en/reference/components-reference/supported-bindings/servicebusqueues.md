@@ -28,7 +28,7 @@ spec:
   - name: queueName
     value: queue1
   # - name: ttlInSeconds # Optional
-  #   value: 60
+  #   value: 86400
   # - name: maxRetriableErrorsPerSec # Optional
   #   value: 10
   # - name: minConnectionRecoveryInSec # Optional
