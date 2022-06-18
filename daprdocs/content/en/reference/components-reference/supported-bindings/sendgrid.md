@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | apiKey | Y | Output | SendGrid API key, this should be considered a secret value | `"apikey"` |
-| emailFrom | N | Output | If set this specifies the 'from' email address of the email message. Optional field, see [below](#example-request-payload) | `"me@example.com"` |
+| emailFrom | N | Output | If set this specifies the 'from' email address of the email message. Only a single email address is allowed. Optional field, see [below](#example-request-payload) | `"me@example.com"` |
 | emailFromName | N | Output | If set this specifies the 'from' name of the email message. Optional field, see [below](#example-request-payload) | `"me"` |
 | emailTo | N | Output | If set this specifies the 'to' email address of the email message. Only a single email address is allowed. Optional field, see [below](#example-request-payload) | `"me@example.com"` |
 | emailToName | N | Output | If set this specifies the 'to' name of the email message. Optional field, see [below](#example-request-payload) | `"me"` |
