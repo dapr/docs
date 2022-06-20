@@ -289,9 +289,9 @@ As seen above:
 
 1. The example invoked the `/binding` endpoint with `checkout`, the name of the binding to invoke.
 1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
-1. The `operation` field tells the binding what it needs to do.
+1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref 'kafka.md#binding-support' >}}).
 
-You can check [which operations are supported for every output binding]({{< ref supported-bindings >}}).
+You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 
