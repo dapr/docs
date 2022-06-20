@@ -692,7 +692,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["
 
 ## Perform state transactions
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 State transactions require a state store that supports multi-item transactions. Visit the [supported state stores page]({{< ref supported-state-stores >}}) for a full list.
 {{% /alert %}}
 
