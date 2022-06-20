@@ -191,7 +191,7 @@ The programmatic approach returns the `routes` JSON structure within the code, u
 {{% codetab %}}
 
 ```csharp
-[Topic("pubsub", "checkout", event.type ==\"order\"")]
+[Topic("pubsub", "withdraw", "event.type ==\"withdraw.v2\"", 1)]
 [HttpPost("orders")]
 public async Task<ActionResult<Stock>> HandleCheckout(Checkout checkout, [FromServices] DaprClient daprClient)
 {
