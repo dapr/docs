@@ -7,8 +7,6 @@ description: "Automatically encrypt state and manage key rotations"
 
 ---
 
-## Introduction
-
 Application state often needs to get encrypted at rest to provide stronger security in enterprise workloads or regulated environments. Dapr offers automatic client side encryption based on [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [Galois/Counter Mode (GCM)](https://en.wikipedia.org/wiki/Galois/Counter_Mode), supporting keys of 128, 192, and 256-bits.
 
 In addition to automatic encryption, Dapr supports primary and secondary encryption keys to make it easier for developers and ops teams to enable a key rotation strategy.
