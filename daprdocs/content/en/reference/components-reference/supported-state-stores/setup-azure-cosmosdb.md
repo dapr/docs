@@ -59,6 +59,7 @@ The Azure Cosmos DB state store component supports authentication using all Azu
 You can read additional information for setting up Cosmos DB with Azure AD authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
 
 ## Setup Azure Cosmos DB
+> Note: For an Azure Cosmos DB that uses the Mongo DB API, use the [Mongo DB state store component]({{< ref setup-mongodb.md >}}).
 
 [Follow the instructions](https://docs.microsoft.com/azure/cosmos-db/how-to-manage-database-account) from the Azure documentation on how to create an Azure Cosmos DB account.  The database and collection must be created in Cosmos DB before Dapr can use it.
 
