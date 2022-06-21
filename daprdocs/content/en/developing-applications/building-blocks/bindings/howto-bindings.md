@@ -6,31 +6,28 @@ description: "Invoke external systems with output bindings"
 weight: 300
 ---
 
-Output bindings enable you to invoke external resources without taking dependencies on special SDK or libraries.
-For a complete sample showing output bindings, visit this [link](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
-
-## Example:
-
-The below code example loosely describes an application that processes orders. In the example, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to invoke external resources, in this case a Kafka, via an output binding.
+With output bindings, you can invoke external resources without depending on special SDK or libraries. An output binding represents a resource that Dapr uses to invoke and send messages to. For a complete sample showing output bindings, [walk through the tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
 
 <img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
 
-## 1. Create a binding
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
 
-An output binding represents a resource that Dapr uses to invoke and send messages to.
-
-For the purpose of this guide, you'll use a Kafka binding. You can find a list of the different binding specs [here]({{< ref setup-bindings >}}).
+## Create a binding
 
 Create a new binding component with the name of `checkout`.
 
-Inside the `metadata` section, configure Kafka related properties such as the topic to publish the message to and the broker.
+Within the `metadata` section, configure Kafka-related properties, such as:
+
+- The topic to which you'll publish the message
+- The broker
+
+Create the following `binding.yaml` file and save to a `components` sub-folder in your application directory.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
 
-Create the following YAML file, named `binding.yaml`, and save this to a `components` sub-folder in your application directory.
-(Use the `--components-path` flag with `dapr run` to point to your custom components dir)
+Use the `--components-path` flag with `dapr run` to point to your custom components directory.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -60,8 +57,7 @@ spec:
 
 {{% codetab %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired binding component]({{< ref setup-bindings >}}) in the yaml below (in this case kafka), save as `binding.yaml`, and run `kubectl apply -f binding.yaml`.
-
+To deploy the following `binding.yaml` file into a Kubernetes cluster, run `kubectl apply -f binding.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -91,7 +87,7 @@ spec:
 
 {{< /tabs >}}
 
-## 2. Send an event (Output binding)
+## Send an event (output binding)
 
 Below are code examples that leverage Dapr SDKs to interact with an output binding.
 
@@ -135,12 +131,6 @@ namespace EventService
 
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -179,12 +169,6 @@ public class OrderProcessingServiceApplication {
 
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -211,12 +195,6 @@ while True:
     logging.basicConfig(level = logging.INFO)
     logging.info('Sending message: ' + str(orderId))
     
-```
-
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
@@ -257,12 +235,6 @@ func main() {
     
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
-```
-
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -299,19 +271,14 @@ async function sendOrder(orderId) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
 ```
 
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-All that's left now is to invoke the output bindings endpoint on a running Dapr instance.
+Invoke the output bindings endpoint on a running Dapr instance.
 
 You can also invoke the output bindings endpoint using HTTP:
 
@@ -319,11 +286,13 @@ You can also invoke the output bindings endpoint using HTTP:
 curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bindings/checkout -d '{ "data": 100, "operation": "create" }'
 ```
 
-As seen above, you invoked the `/binding` endpoint with the name of the binding to invoke, in our case its `checkout`.
-The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+As seen above:
 
-You'll also notice that there's an `operation` field that tells the binding what you need it to do.
-You can check [here]({{< ref supported-bindings >}}) which operations are supported for every output binding.
+1. The example invoked the `/binding` endpoint with `checkout`, the name of the binding to invoke.
+1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref "kafka.md#binding-support" >}}).
+
+You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 
