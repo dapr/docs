@@ -44,6 +44,11 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | accessKey          | Y        | The AWS Access Key to access this resource                              | `"key"`             |
 | secretKey          | Y        | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | sessionToken       | N        | The AWS session token to use                                            | `"sessionToken"`    |
+
+{{% alert title="Important" color="warning" %}}
+When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
+{{% /alert %}}
+
 ## Create an AWS SSM Parameter Store instance
 
 Setup AWS SSM Parameter Store using the AWS documentation: https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html.

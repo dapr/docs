@@ -3,7 +3,7 @@ type: docs
 title: "Message Time-to-Live (TTL)"
 linkTitle: "Message TTL"
 weight: 6000
-description: "Use time-to-live in Pub/Sub messages."
+description: "Use time-to-live in pub/sub messages."
 ---
 
 ## Introduction
@@ -17,6 +17,11 @@ In some components, such as Kafka, time-to-live can be configured in the topic v
 ## Native message TTL support
 
 When message time-to-live has native support in the pub/sub component, Dapr simply forwards the time-to-live configuration without adding any extra logic, keeping predictable behavior. This is helpful when the expired messages are handled differently by the component. For example, with Azure Service Bus, where expired messages are stored in the dead letter queue and are not simply deleted.
+
+{{% alert title="Note" color="primary" %}}
+ You can also set message TTL for a given message broker at creation. Look at the specific characteristic of the component that you are using to see if this is suitable.
+
+{{% /alert %}}
 
 ### Supported components
 
@@ -85,6 +90,6 @@ See [this guide]({{< ref pubsub_api.md >}}) for a reference on the pub/sub API.
 ## Next steps
 
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
-- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn [how to configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
