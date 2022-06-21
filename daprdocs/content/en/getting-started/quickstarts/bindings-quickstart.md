@@ -388,7 +388,7 @@ spec:
 
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
-- Initiates the PostgreSQL [binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Initiates the PostgreSQL [binding building block]({{< ref postgres.md >}})
 - Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
 With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
@@ -582,7 +582,7 @@ spec:
 
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
-- Initiates the PostgreSQL [binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Initiates the PostgreSQL [binding building block]({{< ref postgres.md >}})
 - Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
 With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
@@ -777,7 +777,7 @@ spec:
 
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
-- Initiates the PostgreSQL [binding building block]({{< ref /reference/components-reference/supported-bindings/postgres.md >}})
+- Initiates the PostgreSQL [binding building block]({{< ref postgres.md >}})
 - Connects to PostgreSQL using the settings specified in the `bindings-postgres.yaml` file
 
 With the `bindings-postgres.yaml` component, you can easily swap out the backend database [binding](/reference/components-reference/supported-bindings/) without making code changes.
