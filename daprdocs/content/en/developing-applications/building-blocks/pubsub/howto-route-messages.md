@@ -6,10 +6,6 @@ weight: 2300
 description: "Learn how to route messages from a topic to different event handlers based on CloudEvent fields"
 ---
 
-{{% alert title="Preview feature" color="warning" %}}
-Pub/sub message routing is currently in [preview]({{< ref preview-features.md >}}).
-{{% /alert %}}
-
 Pub/sub routing is an implementation of [content-based routing](https://www.enterpriseintegrationpatterns.com/ContentBasedRouter.html), a messaging pattern that utilizes a DSL instead of imperative application code. With pub/sub routing, you use expressions to route [CloudEvents](https://cloudevents.io) (based on their contents) to different URIs/paths and event handlers in your application. If no route matches, then an optional default route is used. This proves useful as your applications expand to support multiple event versions or special cases.
 
 While routing can be implemented with code, keeping routing rules external from the application can improve portability.
