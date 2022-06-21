@@ -1,0 +1,144 @@
+- component: Apple Push Notifications (APN)
+  link: apns
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Cron (Scheduler)
+  link: cron
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: GraphQL
+  link: graghql
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: InfluxDB
+  link: influxdb
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Kafka
+  link: kafka
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: Kubernetes Events
+  link: kubernetes-binding
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: Local Storage
+  link: localstorage
+  state: Alpha
+  version: v1
+  since: "1.1"
+  features:
+    input: false
+    output: true
+- component: MQTT
+  link: mqtt
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: MySQL
+  link: mysql
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: PostgreSql
+  link: postgres
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Postmark
+  link: postmark
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: RabbitMQ
+  link: rabbitmq
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: Redis
+  link: redis
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: SMTP
+  link: smtp
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Twilio
+  link: twilio
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Twitter
+  link: twitter
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: SendGrid
+  link: sendgrid
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: HTTP
+  link: http
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
