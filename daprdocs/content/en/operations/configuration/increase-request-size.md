@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Handle large http body requests"
-linkTitle: "Http request body size"
+linkTitle: "HTTP request body size"
 weight: 6000
 description: "Configure http requests that are bigger than 4 MB"
 ---

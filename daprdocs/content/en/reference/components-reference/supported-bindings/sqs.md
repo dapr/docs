@@ -50,6 +50,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | secretKey          | Y        | Input/Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | sessionToken       | N        | Input/Output | The AWS session token to use                                            | `"sessionToken"`    |
 
+{{% alert title="Important" color="warning" %}}
+When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
+{{% /alert %}}
 
 ## Binding support
 
