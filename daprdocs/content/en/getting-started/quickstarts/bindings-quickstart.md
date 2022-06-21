@@ -71,7 +71,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/python/sdk
+cd quickstarts/bindings/python/sdk/batch
 ```
 
 Install the dependencies:
@@ -83,7 +83,7 @@ pip3 install -r requirements.txt
 Run the `python-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id python-quickstart-binding-sdk --app-port 50051 --components-path ../../components python3 batch.py
+dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -123,9 +123,11 @@ Notice, as specified above, the code invokes the output binding with the `OrderI
 Your output binding's `print` statement output:
 
 ```
-== APP == {"sql": "insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);"}
-== APP == {"sql": "insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4);"}
-== APP == {"sql": "insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);"}
+== APP == Processing batch..
+== APP == insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32)
+== APP == insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4)
+== APP == insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56)
+== APP == Finished processing batch
 ```
 
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
@@ -272,7 +274,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/javascript/sdk
+cd quickstarts/bindings/javascript/sdk/batch
 ```
 
 Install the dependencies:
@@ -284,7 +286,7 @@ npm install
 Run the `javascript-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 3500 --dapr-http-port 5051 --components-path ../../components node batch.js 
+dapr run --app-id javascript-quickstart-binding-sdk --app-port 5001 --dapr-http-port 3500 --components-path ../../../components -- node index.js 
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -469,7 +471,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/csharp/sdk
+cd quickstarts/bindings/csharp/sdk/batch
 ```
 
 Install the dependencies:
@@ -482,7 +484,7 @@ dotnet build batch.csproj
 Run the `csharp-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id csharp-quickstart-binding-sdk --app-port 7001 --components-path ../../components -- dotnet run --project batch.csproj
+dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../../components -- dotnet run
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -514,9 +516,10 @@ Your output binding's `print` statement output:
 
 ```
 == APP == Processing batch..
-== APP == insert into orders (orderid, customer, price) values(1, 'John Smith', 100.32)
-== APP == insert into orders (orderid, customer, price) values(2, 'Jane Bond', 15.4)
-== APP == insert into orders (orderid, customer, price) values(3, 'Tony James', 35.56)
+== APP == insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);
+== APP == insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4);
+== APP == insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);
+== APP == Finished processing batch
 ```
 
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
@@ -663,19 +666,19 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/go/sdk
+cd quickstarts/bindings/go/sdk/batch
 ```
 
 Install the dependencies:
 
 ```bash
-go build batch.go
+go build app.go
 ```
 
 Run the `go-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 --components-path ../../components go run batch.go 
+dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go 
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`cron.yaml`]({{< ref "#cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks like a route called via HTTP POST in your Flask application by the Dapr sidecar.
