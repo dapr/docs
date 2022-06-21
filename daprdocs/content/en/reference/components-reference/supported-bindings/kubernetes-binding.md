@@ -33,7 +33,7 @@ spec:
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | namespace | Y | Input  | The Kubernetes namespace to read events from | `"default"` |
-| resyncPeriodInSec | N | Te period of time to refresh event list from Kubernetes API server. Defaults to `"10"` | `"15"`
+| resyncPeriodInSec | N | Input | The period of time to refresh event list from Kubernetes API server. Defaults to `"10"` | `"15"`
 
 ## Binding support
 
