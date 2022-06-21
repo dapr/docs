@@ -678,7 +678,7 @@ Install the dependencies:
 go build app.go
 ```
 
-Run the `go-quickstart-binding-sdk` service alongside a Dapr sidecar.
+Run the `go-input-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
 dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go 
