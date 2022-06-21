@@ -76,7 +76,7 @@ Table captions:
 | Name | Input<br>Binding | Output<br>Binding | Status | Component version | Since |
 |------|:----------------:|:-----------------:|--------| --------- | ---------- |
 | [Azure Blob Storage]({{< ref blobstorage.md >}})            |    | ✅ | Beta | v1 | 1.0 |
-| [Azure CosmosDB]({{< ref cosmosdb.md >}})                   |    | ✅ | Beta | v1 | 1.0 |
+| [Azure CosmosDB (SQL API)]({{< ref cosmosdb.md >}})                   |    | ✅ | Beta | v1 | 1.0 |
 | [Azure CosmosDBGremlinAPI]({{< ref cosmosdbgremlinapi.md >}})              |    | ✅ | Alpha | v1 | 1.5 |
 | [Azure Event Grid]({{< ref eventgrid.md >}})                | ✅ | ✅ | Alpha | v1 | 1.0 |
 | [Azure Event Hubs]({{< ref eventhubs.md >}})                 | ✅ | ✅ | Beta | v1 | 1.0 |
