@@ -13,7 +13,7 @@ Let's take a look at Dapr's [Bindings building block]({{< ref bindings >}}). Usi
 
 In this Quickstart, you will schedule a batch script to run every 10 seconds using an input [Cron](https://docs.dapr.io/reference/components-reference/supported-bindings/cron/) binding. The script processes a JSON file and outputs data to a SQL database using the [PostgreSQL](https://docs.dapr.io/reference/components-reference/supported-bindings/postgres) Dapr binding.
 
-<img src="/images/binding-quickstart/bindings-quickstart.png" width=800 style="padding-bottom:15px;">
+<img src="/images/bindings-quickstart/bindings-quickstart.png" width=800 style="padding-bottom:15px;">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
