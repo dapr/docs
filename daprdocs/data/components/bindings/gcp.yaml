@@ -1,0 +1,16 @@
+- component: GCP Cloud Pub/Sub
+  link: gcppubsub
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: GCP Storage Bucket
+  link: gcpbucket
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
