@@ -12,23 +12,6 @@ While routing can be implemented with code, keeping routing rules external from 
 
 This feature is available to both the [declarative and programmatic subscription approaches]({{< ref subscription-methods.md >}}).
 
-## Enable message routing
-
-To enable this preview feature, add the `PubSub.Routing` feature entry to your application configuration:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: pubsubroutingconfig
-spec:
-  features:
-    - name: PubSub.Routing
-      enabled: true
-```
-
-Learn more about enabling [preview features]({{< ref preview-features >}}).
-
 ## Declarative subscription
 
 For declarative subscriptions, use `dapr.io/v2alpha1` as the `apiVersion`. Here is an example of `subscriptions.yaml` using routing:
