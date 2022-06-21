@@ -1,0 +1,10 @@
+- component: Azure Event Hubs
+  link: setup-azure-eventhubs
+  state: Beta
+  version: v1
+  since: "1.6"
+- component: Azure Service Bus
+  link: setup-azure-servicebus
+  state: Stable
+  version: v1
+  since: "1.0"
