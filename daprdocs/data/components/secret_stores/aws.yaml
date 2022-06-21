@@ -1,0 +1,10 @@
+- component: AWS Secrets Manager
+  link: aws-secret-manager
+  state: Alpha
+  version: v1
+  since: "1.0"
+- component: AWS SSM Parameter Store
+  link: aws-parameter-store
+  state: Alpha
+  version: v1
+  since: "1.1"

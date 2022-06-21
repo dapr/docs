@@ -1,0 +1,5 @@
+- component: mDNS
+  link: nr-mdns
+  state: Stable
+  version: v1
+  since: "1.0"

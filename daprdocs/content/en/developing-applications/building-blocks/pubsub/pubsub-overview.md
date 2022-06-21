@@ -132,8 +132,6 @@ Want to put the Dapr pub/sub API to the test? Walk through the following quickst
 
 Want to skip the quickstarts? Not a problem. You can try out the pub/sub building block directly in your application to publish messages and subscribe to a topic. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the pub/sub API starting with [the pub/sub how-to guide]({{< ref howto-publish-subscribe.md >}}).
 
-
-
 ## Next steps
 
 - Learn about [messaging with CloudEvents]({{< ref pubsub-cloudevents.md >}}) and when you might want to [send messages without CloudEvents]({{< ref pubsub-raw.md >}}).
