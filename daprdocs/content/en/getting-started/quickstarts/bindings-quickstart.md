@@ -286,7 +286,7 @@ npm install
 Run the `javascript-quickstart-binding-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 5001 --dapr-http-port 3500 --components-path ../../../components -- node index.js 
+dapr run --app-id javascript-quickstart-binding-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js 
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
