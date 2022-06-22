@@ -26,7 +26,7 @@ spec:
   metadata: []
 ```
 
-> Note: in-memory does not require any specific metadata for the component to work, however spec.metadata is a required field.
+> Note: While in-memory does not require any specific metadata for the component to work, `spec.metadata` is a required field.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
