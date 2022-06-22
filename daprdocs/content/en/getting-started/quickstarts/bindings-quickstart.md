@@ -17,7 +17,7 @@ In this Quickstart, you will schedule a batch script to run every 10 seconds usi
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
-{{< tabs "Python" "JavaScript" ".NET" "Go" >}}
+{{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
  <!-- Python -->
 {{% codetab %}}
 
@@ -616,6 +616,216 @@ In the YAML file:
 
 {{% /codetab %}}
 
+ <!-- Java -->
+{{% codetab %}}
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- Java JDK 11 (or greater):
+  - [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11), or
+  - [OpenJDK](https://jdk.java.net/13/)
+- [Apache Maven](https://maven.apache.org/install.html), version 3.x.
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/bindings).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+### Step 2: Run PostgreSQL Docker container locally
+
+Run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker container on your machine. The Quickstart sample includes a Docker Compose file to locally customize, build, run, and initialize the `postgres` container with a default `orders` table.
+
+In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings/db` directory.
+
+```bash
+cd quickstarts/bindings/db
+```
+
+Run the following command to set up the container:
+
+```bash
+docker compose up
+```
+
+Verify that the container is running locally.
+
+```bash
+docker ps
+```
+
+The output should include:
+
+```bash
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES
+55305d1d378b   postgres   "docker-entrypoint.s…"   3 seconds ago   Up 2 seconds   0.0.0.0:5432->5432/tcp   sql_db
+```
+
+### Step 3: Schedule a Cron job and write to the database
+
+In a new terminal window, navigate to the SDK directory.
+
+```bash
+cd quickstarts/bindings/java/sdk/batch
+```
+
+Install the dependencies:
+
+```bash
+mvn clean install
+```
+
+Run the `java-binding-quickstart-sdk` service alongside a Dapr sidecar.
+
+```bash
+dapr run --app-id java-binding-quickstart-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
+```
+
+The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
+
+```java
+@PostMapping(path = cronBindingPath, consumes = MediaType.ALL_VALUE)
+public ResponseEntity<String> processBatch() throws IOException, Exception
+```
+
+The `java-binding-quickstart-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+
+```java
+try (DaprClient client = new DaprClientBuilder().build()) {
+
+    for (Order order : ordList.orders) {
+        String sqlText = String.format(
+            "insert into orders (orderid, customer, price) " +
+            "values (%s, '%s', %s);", 
+            order.orderid, order.customer, order.price);
+        logger.info(sqlText);
+    
+        Map<String, String> metadata = new HashMap<String, String>();
+        metadata.put("sql", sqlText);
+ 
+        // Invoke sql output binding using Dapr SDK
+        client.invokeBinding(sqlBindingName, "exec", null, metadata).block();
+    } 
+
+    logger.info("Finished processing batch");
+
+    return ResponseEntity.ok("Finished processing batch");
+}
+```
+
+### Step 4: View the output of the job
+
+Notice, as specified above, the code invokes the output binding with the `OrderId`, `Customer`, and `Price` as a payload.
+
+Your output binding's `print` statement output:
+
+```
+== APP == 2022-06-22 16:39:17.012  INFO 35772 --- [nio-8080-exec-4] c.s.c.BatchProcessingServiceController   : Processing batch..
+== APP == 2022-06-22 16:39:17.268  INFO 35772 --- [nio-8080-exec-4] c.s.c.BatchProcessingServiceController   : insert into orders (orderid, customer, price) values (1, 'John Smith', 100.32);
+== APP == 2022-06-22 16:39:17.838  INFO 35772 --- [nio-8080-exec-4] c.s.c.BatchProcessingServiceController   : insert into orders (orderid, customer, price) values (2, 'Jane Bond', 15.4);
+== APP == 2022-06-22 16:39:17.844  INFO 35772 --- [nio-8080-exec-4] c.s.c.BatchProcessingServiceController   : insert into orders (orderid, customer, price) values (3, 'Tony James', 35.56);
+== APP == 2022-06-22 16:39:17.848  INFO 35772 --- [nio-8080-exec-4] c.s.c.BatchProcessingServiceController   : Finished processing batch
+```
+
+In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
+
+```bash
+cd quickstarts/bindings/db
+```
+
+Run the following to start the interactive Postgres CLI:
+
+```bash
+docker exec -i -t postgres psql --username postgres  -p 5432 -h localhost --no-password
+```
+
+At the `admin=#` prompt, change to the `orders` table:
+
+```bash
+\c orders;
+```
+
+At the `orders=#` prompt, select all rows:
+
+```bash
+select * from orders;
+```
+
+The output should look like this:
+
+```
+ orderid |  customer  | price
+---------+------------+--------
+       1 | John Smith | 100.32
+       2 | Jane Bond  |   15.4
+       3 | Tony James |  35.56
+```
+
+#### `components\binding-cron.yaml` component file
+
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the Cron [binding building block]({{< ref bindings >}})
+- Calls the binding endpoint (`batch`) every 10 seconds
+
+The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: cron
+  namespace: quickstarts
+spec:
+  type: bindings.cron
+  version: v1
+  metadata:
+  - name: schedule
+    value: "@every 10s" # valid cron schedule
+```
+
+**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
+
+#### `component\binding-postgres.yaml` component file
+
+When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
+
+- Initiates the PostgreSQL [binding building block]({{< ref postgres.md >}})
+- Connects to PostgreSQL using the settings specified in the `binding-postgres.yaml` file
+
+With the `binding-postgres.yaml` component, you can easily swap out the backend database [binding]({{< ref supported-bindings.md >}}) without making code changes.
+
+The PostgreSQL `binding-postgres.yaml` file included for this Quickstart contains the following:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: sqldb
+  namespace: quickstarts
+spec:
+  type: bindings.postgres
+  version: v1
+  metadata:
+  - name: url # Required
+    value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+```
+
+In the YAML file:
+
+- `spec/type` specifies that PostgreSQL is used for this binding.
+- `spec/metadata` defines the connection to the PostgreSQL instance used by the component.
+
+{{% /codetab %}}
+
  <!-- Go -->
 {{% codetab %}}
 
@@ -825,6 +1035,7 @@ Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
   - [Python](https://github.com/dapr/quickstarts/tree/master/bindings/python/http)
   - [JavaScript](https://github.com/dapr/quickstarts/tree/master/bindings/javascript/http)
   - [.NET](https://github.com/dapr/quickstarts/tree/master/bindings/csharp/http)
+  - [Java](https://github.com/dapr/quickstarts/tree/master/bindings/java/http)
   - [Go](https://github.com/dapr/quickstarts/tree/master/bindings/go/http)
 - Learn more about [Binding building block]({{< ref bindings >}})
 
