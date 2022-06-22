@@ -55,6 +55,10 @@ spec:
     value: "[aws_session_token]"
 ```
 
+{{% alert title="Important" color="warning" %}}
+When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
+{{% /alert %}}
+
 ## Apply the configuration
 
 Once you have created the component's YAML file, follow these instructions to apply it based on your hosting environment:

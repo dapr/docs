@@ -150,9 +150,10 @@ We can use [Helm](https://helm.sh/) to quickly create a Redis instance in our Ku
 
 {{< /tabs >}}
 
-### Querying JSON objects
+## Querying JSON objects (optional)
 
-The Redis state store supports querying of JSON objects. To enable this feature, the following steps are required:
+In addition to supporting storing and querying state data as key/value pairs, the Redis state store optionally supports querying of JSON objects to meet more complex querying or filtering requirements. To enable this feature, the following steps are required:
+
 1. The Redis store must support Redis modules and specifically both Redisearch and RedisJson. If you are deploying and running Redis then load [redisearch](https://oss.redis.com/redisearch/) and [redisjson](https://oss.redis.com/redisjson/) modules when deploying the Redis service.
 ``
 2. Specify `queryIndexes` entry in the metadata of the component config. The value of the `queryIndexes` is a JSON array of the following format:

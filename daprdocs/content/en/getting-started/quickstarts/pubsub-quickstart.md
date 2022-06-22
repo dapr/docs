@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Publish and Subscribe"
 linkTitle: "Publish and Subscribe"
-weight: 70
+weight: 73
 description: "Get started with Dapr's Publish and Subscribe building block"
 ---
 
