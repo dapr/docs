@@ -67,6 +67,9 @@ spec:
       value: "false"
 ```
 
+The consumerID metadata values can also contain a `{podName}` tag that is replaced with the Kubernetes POD's name when the Dapr sidecar starts up. This can be used to have a persisted behavior where the ConsumerID does not change on restart when using StatefulSets in Kubernetes.
+
+
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})
 - [Reference secrets in component definitions]({{< ref component-secrets.md >}})

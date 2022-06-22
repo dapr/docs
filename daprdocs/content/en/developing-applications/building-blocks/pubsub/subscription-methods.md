@@ -3,7 +3,7 @@ type: docs
 title: "Declarative and programmatic subscription methods"
 linkTitle: "Subscription methods"
 weight: 3000
-description: "Learn more about the two methods by which Dapr allows you to subscribe to topics."
+description: "Learn more about the methods by which Dapr allows you to subscribe to topics."
 ---
 
 ## Pub/sub API subscription methods
@@ -13,7 +13,7 @@ Dapr applications can subscribe to published topics via two methods that support
 | Subscription method | Description |
 | ------------------- | ----------- |
 | [**Declarative**]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
-| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **user code**. The programmatic approach implements the subscription in your code. |
+| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the subscription in your code. |
 
 The examples below demonstrate pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr pub/sub component used first declaratively, then programmatically.
 
@@ -25,21 +25,22 @@ You can subscribe declaratively to a topic using an external component file. Thi
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
 metadata:
-  name: order_pub_sub
+  name: order
 spec:
   topic: orders
   route: /checkout
-  pubsubname: order_pub_sub
+  pubsubname: pubsub
 scopes:
 - orderprocessing
 - checkout
 ```
 
-Notice, the pub/sub component `order_pub_sub` subscribes to topic `orders`.
-- The `route` field tells Dapr to send all topic messages to the `/checkout` endpoint in the app.
-- The `scopes` field enables this subscription for apps with IDs `orderprocessing` and `checkout`.
+Here the subscription called `order`: 
+- Uses the pub/sub component called `pubsub` to subscribes to the topic called `orders`.
+- Sets the `route` field to send all topic messages to the `/checkout` endpoint in the app.
+- Sets `scopes` field to scope this subscription for access only by apps with IDs `orderprocessing` and `checkout`.
 
-When running Dapr, call out the YAML component file path to point Dapr to the component.
+When running Dapr, set the YAML component file path to point Dapr to the component.
 
 {{< tabs ".NET" Java Python JavaScript Go Kubernetes>}}
 
@@ -103,7 +104,7 @@ In your application code, subscribe to the topic specified in the Dapr pub/sub c
 
 ```csharp
  //Subscribe to a topic 
-[Topic("order_pub_sub", "orders")]
+[Topic("pubsub", "orders")]
 [HttpPost("checkout")]
 public void getCheckout([FromBody] int orderId)
 {
@@ -117,7 +118,7 @@ public void getCheckout([FromBody] int orderId)
 
 ```java
  //Subscribe to a topic
-@Topic(name = "orders", pubsubName = "order_pub_sub")
+@Topic(name = "orders", pubsubName = "pubsub")
 @PostMapping(path = "/checkout")
 public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
     return Mono.fromRunnable(() -> {
@@ -136,7 +137,7 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 
 ```python
 #Subscribe to a topic 
-@app.subscribe(pubsub_name='order_pub_sub', topic='orders')
+@app.subscribe(pubsub_name='pubsub', topic='orders')
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
@@ -150,7 +151,7 @@ app.run(6002)
 
 ```javascript
 //Subscribe to a topic
-await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+await server.pubsub.subscribe("pubsub", "orders", async (orderId) => {
     console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
 });
 await server.startServer();
@@ -179,18 +180,18 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 
 {{< /tabs >}}
 
-The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr will send all topic messages to.
+The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr sends all topic messages to.
 
 ### Programmatic subscriptions
 
-The programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. In the example below, we define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
+The programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
 {{< tabs ".NET" Java Python JavaScript Go>}}
 
 {{% codetab %}}
 
 ```csharp
-[Topic("order_pub_sub", "checkout", event.type ==\"order\"")]
+[Topic("pubsub", "checkout", event.type ==\"order\"")]
 [HttpPost("orders")]
 public async Task<ActionResult<Stock>> HandleCheckout(Checkout checkout, [FromServices] DaprClient daprClient)
 {
@@ -206,7 +207,7 @@ public async Task<ActionResult<Stock>> HandleCheckout(Checkout checkout, [FromSe
 ```java
 private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-@Topic(name = "checkout", pubsubName = "order_pub_sub")
+@Topic(name = "checkout", pubsubName = "pubsub")
 @PostMapping(path = "/orders")
 public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
   return Mono.fromRunnable(() -> {
@@ -228,7 +229,7 @@ public Mono<Void> handleMessage(@RequestBody(required = false) CloudEvent<String
 def subscribe():
     subscriptions = [
       {
-        'pubsubname': 'order_pub_sub',
+        'pubsubname': 'pubsub',
         'topic': 'checkout',
         'routes': {
           'rules': [
@@ -264,7 +265,7 @@ const port = 3000
 app.get('/dapr/subscribe', (req, res) => {
   res.json([
     {
-      pubsubname: "order_pub_sub",
+      pubsubname: "pubsub",
       topic: "checkout",
       routes: {
         rules: [
@@ -325,7 +326,7 @@ type rule struct {
 func configureSubscribeHandler(w http.ResponseWriter, _ *http.Request) {
 	t := []subscription{
 		{
-			PubsubName: "order_pub_sub",
+			PubsubName: "pubsub",
 			Topic:      "checkout",
 			Routes: routes{
 				Rules: []rule{
