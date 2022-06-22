@@ -51,7 +51,7 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 #### Install without administrative rights
 
-If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. The below script will create the directory if it does not exist.
+If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. The script below creates the directory if it does not exist.
 
 ```powershell
 $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
