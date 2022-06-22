@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Azure Cosmos DB"
-linkTitle: "Azure Cosmos DB"
-description: Detailed information on the Azure Cosmos DB state store component
+title: "Azure Cosmos DB (SQL API)"
+linkTitle: "Azure Cosmos DB (SQL API)"
+description: Detailed information on the Azure Cosmos DB (SQL API) state store component
 aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-azure-cosmosdb/"
 ---

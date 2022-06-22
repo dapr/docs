@@ -1,31 +1,22 @@
 ---
 type: docs
-title: "Pub/Sub without CloudEvents"
-linkTitle: "Pub/Sub without CloudEvents"
-weight: 7000
-description: "Use Pub/Sub without CloudEvents."
+title: "Publishing & subscribing messages without CloudEvents"
+linkTitle: "Messages without CloudEvents"
+weight: 2200
+description: "Learn when you might not use CloudEvents and how to disable them."
 ---
 
-## Introduction
-
-Dapr uses CloudEvents to provide additional context to the event payload, enabling features like:
-* Tracing
-* Deduplication by message Id
-* Content-type for proper deserialization of event's data
-
-For more information about CloudEvents, read the [CloudEvents specification](https://github.com/cloudevents/spec).
-
-When adding Dapr to your application, some services may still need to communicate via raw pub/sub messages not encapsulated in CloudEvents. This may be for compatibility reasons, or because some apps are not using Dapr. Dapr enables apps to publish and subscribe to raw events that are not wrapped in a CloudEvent.
-
-{{% alert title="Warning" color="warning" %}}
-Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built using the CloudEvent schema.
-{{% /alert %}}
+When adding Dapr to your application, some services may still need to communicate via pub/sub messages not encapsulated in CloudEvents, due to either compatibility reasons or some apps not using Dapr. These are referred to as "raw" pub/sub messages. Dapr enables apps to [publish and subscribe to raw events]({{< ref "pubsub-cloudevents.md#publishing-raw-messages" >}}) not wrapped in a CloudEvent for compatibility.
 
 ## Publishing raw messages
 
 Dapr apps are able to publish raw events to pub/sub topics without CloudEvent encapsulation, for compatibility with non-Dapr apps.
 
 <img src="/images/pubsub_publish_raw.png" alt="Diagram showing how to publish with Dapr when subscriber does not use Dapr or CloudEvent" width=1000>
+
+{{% alert title="Warning" color="warning" %}}
+Not using CloudEvents disables support for tracing, event deduplication per messageId, content-type metadata, and any other features built using the CloudEvent schema.
+{{% /alert %}}
 
 To disable CloudEvent wrapping, set the `rawPayload` metadata to `true` as part of the publishing request. This allows subscribers to receive these messages without having to parse the CloudEvent schema.
 
@@ -147,7 +138,7 @@ $app->start();
 
 ## Declaratively subscribe to raw events
 
-Similarly, you can subscribe to raw events declaratively by adding the `rawPayload` metadata entry to your Subscription Custom Resource Definition (CRD):
+Similarly, you can subscribe to raw events declaratively by adding the `rawPayload` metadata entry to your subscription specification.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -167,6 +158,6 @@ scopes:
 
 ## Next steps
 
-- Learn more about [how to publish and subscribe]({{< ref howto-publish-subscribe.md >}})
+- Learn more about [publishing and subscribing messages]({{< ref pubsub-overview.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})
