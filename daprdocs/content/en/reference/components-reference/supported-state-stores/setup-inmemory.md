@@ -9,7 +9,10 @@ aliases:
 
 The In Memory state store component is useful for development purposes and works inside of a single machine boundary.
 
-This component **shouldn't be used for production**. It is developer only and will never be stable. If you come across a scenario and want to use it in production, you can submit an issue and discuss it with the community.
+{{% alert title="Warning" color="warning" %}}
+ This component **shouldn't be used for production**. It is developer only and will never be stable. If you come across a scenario and want to use it in production, you can submit an issue and discuss it with the community.
+
+{{% /alert %}}
 
 ## Component format
 To setup in-memory state store, create a component of type `state.in-memory`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
