@@ -1,0 +1,5 @@
+- component: GCP Pub/Sub
+  link: setup-gcp-pubsub
+  state: Alpha
+  version: v1
+  since: "1.0"

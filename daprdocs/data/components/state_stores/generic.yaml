@@ -1,0 +1,165 @@
+- component: Aerospike
+  link: setup-aerospike
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: false
+    query: false
+- component: Apache Cassandra
+  link: setup-cassandra
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: true
+    query: false
+- component: CockroachDB
+  link: setup-cockroachdb
+  state: Alpha
+  version: v1
+  since: "1.7"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: false
+    query: true
+- component: Couchbase
+  link: setup-couchbase
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: false
+    query: false
+- component: Hashicorp Consul
+  link: setup-consul
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: false
+    query: false
+- component: Hazelcast
+  link: setup-hazelcast
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: false
+    query: false
+- component: JetStream KV
+  link: setup-jetstream-kv
+  state: Alpha
+  version: v1
+  since: "1.7"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: false
+    query: false
+- component: Memcached
+  link: setup-memcached
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: true
+    query: false
+- component: MongoDB
+  link: setup-mongodb
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: false
+    query: true
+- component: MySQL
+  link: setup-mysql
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: false
+    query: false
+- component: Oracle Database
+  link: setup-oracledatabase
+  state: Alpha
+  version: v1
+  since: "1.7"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
+- component: PostgreSQL
+  link: setup-postgresql
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: false
+    query: true
+- component: Redis
+  link: setup-redis
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: true
+- component: RethinkDB
+  link: setup-rethinkdb
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: false
+    query: false
+- component: Zookeeper
+  link: setup-zookeeper
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: false
+    query: false
