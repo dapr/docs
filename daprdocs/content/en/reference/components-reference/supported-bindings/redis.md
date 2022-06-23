@@ -68,6 +68,27 @@ This component supports **output binding** with the following operations:
 
 - `create`
 
+You can store a record in Redis using the `create` operation. This sets a key to hold a value. If the key already exists, the value is overwritten.
+
+### Request
+
+```json
+{
+  "operation": "create",
+  "metadata": {
+    "key": "key1"
+  },
+  "data": {
+    "Hello": "World",
+    "Lorem": "Ipsum"
+  }
+}
+```
+
+### Response
+
+An HTTP 204 (No Content) and empty body is returned if successful.
+
 ## Create a Redis instance
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later.
