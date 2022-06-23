@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Input & Output Bindings"
 linkTitle: "Bindings"
-weight: 75
+weight: 74
 description: "Get started with Dapr's Binding building block"
 ---
 
