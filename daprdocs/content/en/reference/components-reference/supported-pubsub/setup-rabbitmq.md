@@ -158,7 +158,7 @@ client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another
 
 ### Bind multiple `routingKey`
 
-Multiple routing Keys can be separated by commas.  
+Multiple routing keys can be separated by commas.  
 In the example, three "routingkey" including `keyA`, `keyB` and `""` will be bind.
 
 ```
