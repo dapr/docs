@@ -1,0 +1,44 @@
+- component: Azure Blob Storage
+  link: setup-azure-blobstorage
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: false
+    query: false
+- component: Azure CosmosDB
+  link: setup-azure-cosmosdb
+  state: Stable
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: true
+- component: Azure SQL Server
+  link: setup-sqlserver
+  state: Stable
+  version: v1
+  since: "1.5"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: false
+    query: false
+- component: Azure Table Storage
+  link: setup-azure-tablestorage
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: false
+    query: false

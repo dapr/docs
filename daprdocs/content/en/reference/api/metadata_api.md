@@ -6,15 +6,28 @@ description: "Detailed documentation on the Metadata API"
 weight: 800
 ---
 
-Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns among other things, a list of the components loaded and the activated actors (if present).
+Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns a list of the components loaded, the activated actors (if present) and attributes with information attached.
 
-The Dapr metadata API also allows you to store additional information in the format of key-value pairs.
+## Components
+Each loaded component provides its name, type and version and also information about supported features in the form of component capabilities. 
+These features are available for the [state store]({{< ref supported-state-stores.md >}}), [pub/sub]({{< ref supported-pubsub.md >}}) and [binding]({{< ref supported-bindings.md >}}) component types. The table below shows the component type and the list of capabilities for a given version. This list might grow in future and only represents the capabilities of the loaded components.
 
-Note: The Dapr metatada endpoint is for instance being used by the Dapr CLI when running dapr in standalone mode to store the PID of the process hosting the sidecar and the command used to run the application.
+Component type | Capabilites
+---------------| ------------
+State Store    | ETAG, TRANSACTION, ACTOR, QUERY_API
+Pub/Sub        | TTL
+Binding        | INPUT_BINDING, OUTPUT_BINDING
+
+## Attributes
+
+The metadata API allows you to store additional attribute information in the format of key-value pairs. These are ephemeral in-memory and are not persisted if a sidecar is reloaded. This information should be added at the time of a sidecar creation, for example, after the application has started. 
 
 ## Get the Dapr sidecar information
 
 Gets the Dapr sidecar information provided by the Metadata Endpoint.
+
+### Usecase:
+The Get Metadata API can be used for discovering different capabilities supported by loaded components. It can help operators in determining which components to provision, for required capabilities.
 
 ### HTTP Request
 
@@ -42,7 +55,7 @@ Code | Description
 Name                   | Type                                                                  | Description
 ----                   | ----                                                                  | -----------
 id                     | string                                                                | Application ID
-actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of Registered Actors metadata.
+actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of registered actors metadata.
 extended.attributeName | string                                                                | List of custom attributes as key-value pairs, where key is the attribute name.
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
 
@@ -60,6 +73,7 @@ Name    | Type   | Description
 name    | string | Name of the component.
 type    | string | Component type.
 version | string | Component version.
+capabilities | array | Supported capabilities for this component type and version. 
 
 ### Examples
 
@@ -86,20 +100,25 @@ curl http://localhost:3500/v1.0/metadata
         {
             "name":"pubsub",
             "type":"pubsub.redis",
-            "version":""
+            "version":"v1",
+            "capabilities": [""]
         },
         {
             "name":"statestore",
             "type":"state.redis",
-            "version":""
+            "version":"v1",
+            "capabilities": ["ETAG", "TRANSACTION", "ACTOR", "QUERY_API"]
         }
     ]
 }
 ```
 
-## Add a custom attribute to the Dapr sidecar information
+## Add a custom label to the Dapr sidecar information
 
-Adds a custom attribute to the Dapr sidecar information stored by the Metadata Endpoint.
+Adds a custom label to the Dapr sidecar information stored by the Metadata endpoint.
+
+### Usecase:
+The metadata endpoint is, for example, used by the Dapr CLI when running dapr in self hosted mode to store the PID of the process hosting the sidecar and store the command used to run the application.  Applications can also add attributes as keys after startup.
 
 ### HTTP Request
 
@@ -166,12 +185,14 @@ Get the metadata information to confirm your custom attribute was added:
         {
             "name":"pubsub",
             "type":"pubsub.redis",
-            "version":""
+            "version":"v1",
+            "capabilities": [""]
         },
         {
             "name":"statestore",
             "type":"state.redis",
-            "version":""
+            "version":"v1",
+            "capabilities": ["ETAG", "TRANSACTION", "ACTOR", "QUERY_API"]
         }
     ]
 }

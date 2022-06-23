@@ -6,22 +6,21 @@ weight: 2000
 description: "Learn how to get application configuration and subscribe for changes"
 ---
 
-## Introduction
-This HowTo uses the Redis configuration store component as an example on how to retrieve a configuration item.
+This example uses the Redis configuration store component to demonstrate how to retrieve a configuration item.
 
-*This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.*
+{{% alert title="Note" color="primary" %}}
+This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.
 
-## Example:
-
-The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to retrieve the configuration from a Redis configuration store.
+{{% /alert %}}
 
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
 
-## Step 1: Create a configuration item in store
+## Create a configuration item in store
 
-First, create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. For this example, we'll use the Redis configuration store component.
+Create a configuration item in a supported configuration store. This can be a simple key-value item, with any key of your choice. As mentioned earlier, this example uses the Redis configuration store component.
 
 ### Run Redis with Docker
+
 ```
 docker run --name my-redis -p 6379:6379 -d redis
 ```
@@ -42,7 +41,15 @@ MSET orderId1 "101||1" orderId2 "102||1"
 
 ### Configure a Dapr configuration store
 
-Save the following component file, for example to the [default components folder]({{<ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized">}}) on your machine. You can use this as the Dapr component YAML for Kubernetes using `kubectl` or when running with the Dapr CLI. Note: The Redis configuration component has identical metadata to the Redis state store component, so you can simply copy and change the Redis state store component type if you already have a Redis state store YAML file. 
+Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine. You can use this as the Dapr component YAML:
+
+- For Kubernetes using `kubectl`.
+- When running with the Dapr CLI. 
+
+{{% alert title="Note" color="primary" %}}
+ Since the Redis configuration component has identical metadata to the Redis `statestore.yaml` component, you can simply copy/change the Redis state store component type if you already have a Redis `statestore.yaml`. 
+
+{{% /alert %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -63,6 +70,7 @@ spec:
 {{< tabs Dotnet Java Python>}}
 
 {{% codetab %}}
+
 ```csharp
 //dependencies
 using System;
@@ -88,14 +96,10 @@ namespace ConfigurationApi
 }
 ```
 
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
-
-```bash
-dapr run --app-id orderprocessing --components-path ./components -- dotnet run
-```
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```java
 //dependencies
 import io.dapr.client.DaprClientBuilder;
@@ -125,14 +129,10 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
-
-```bash
-dapr run --app-id orderprocessing --components-path ./components mvn spring-boot:run
-```
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```python
 #dependencies
 from dapr.clients import DaprClient
@@ -146,12 +146,6 @@ with DaprClient() as d:
         print(f"Got key={configuration.items[0].key} value={configuration.items[0].value} version={configuration.items[0].version}")
 ```
 
-Navigate to the directory containing the above code and run the following command to launch the application along with a Dapr sidecar:
-
-```bash
-dapr run --app-id orderprocessing --components-path ./components python3 OrderProcessingService.py
-```
-
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -163,37 +157,45 @@ Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr g
 {{< tabs Java Dotnet Python Javascript >}}
 
 {{% codetab %}}
+
 ```java
 
 Dapr.ServiceBlockingStub stub = Dapr.newBlockingStub(channel);
 stub.GetConfigurationAlpha1(new GetConfigurationRequest{ StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```csharp
 
 var call = client.GetConfigurationAlpha1(new GetConfigurationRequest { StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```python
 response = stub.GetConfigurationAlpha1(request={ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```javascript
 client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-##### Watch configuration items
+#### Watch configuration items
 
-Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Then use the proto method `SubscribeConfigurationAlpha1` on your client stub to start subscribing to events. The method accepts the following request object:
+Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Use the `SubscribeConfigurationAlpha1` proto method on your client stub to start subscribing to events. The method accepts the following request object:
 
 ```proto
 message SubscribeConfigurationRequest {
@@ -210,45 +212,11 @@ message SubscribeConfigurationRequest {
 }
 ```
 
-Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language - see the [gRPC examples here](https://grpc.io/docs/languages/) for usage.
+Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language. [See the gRPC examples](https://grpc.io/docs/languages/) for usage.
 
-Below are the examples in sdks:
+#### Stop watching configuration items
 
-{{< tabs Python>}}
-
-{{% codetab %}}
-```python
-#dependencies
-import asyncio
-from dapr.clients import DaprClient
-#code
-async def executeConfiguration():
-    with DaprClient() as d:
-        CONFIG_STORE_NAME = 'configstore'
-        key = 'orderId'
-        # Subscribe to configuration by key.
-        configuration = await d.subscribe_configuration(store_name=CONFIG_STORE_NAME, keys=[key], config_metadata={})
-        if configuration != None:
-            items = configuration.get_items()
-            for item in items:
-                print(f"Subscribe key={item.key} value={item.value} version={item.version}", flush=True)
-        else:
-            print("Nothing yet")
-
-asyncio.run(executeConfiguration())
-```
-
-```bash
-dapr run --app-id orderprocessing --components-path components/ -- python3 OrderProcessingService.py
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-##### Stop watching configuration items
-
-After you have subscribed to watch configuration items, the gRPC-server stream starts. This stream thread does not close itself, and you have to do by explicitly call the `UnSubscribeConfigurationRequest` API. This method accepts the following request object:
+After you've subscribed to watch configuration items, the gRPC-server stream starts. Since this stream thread does not close itself, you have to explicitly call the `UnSubscribeConfigurationRequest` API to unsubscribe. This method accepts the following request object:
 
 ```proto
 // UnSubscribeConfigurationRequest is the message to stop watching the key-value configuration.
@@ -265,4 +233,5 @@ message UnSubscribeConfigurationRequest {
 Using this unsubscribe method, you can stop watching configuration update events. Dapr locates the subscription stream based on the `store_name` and any optional keys supplied and closes it.
 
 ## Next steps
+
 * Read [configuration API overview]({{< ref configuration-api-overview.md >}})

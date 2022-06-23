@@ -90,6 +90,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 * Be aware that specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) post to better understand the topic of Message Group IDs and FIFO queues.
 * Since v1.8.0, the component supports the `"parallel"` `concurrencyMode` as its default mode. In prior versions, the component default behavior was calling the subscriber a single message at a time and waiting for its response. 
 
+{{% alert title="Important" color="warning" %}}
+When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
+{{% /alert %}}
 
 ## Create an SNS/SQS instance
 
