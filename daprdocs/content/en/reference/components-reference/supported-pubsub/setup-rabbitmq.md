@@ -159,7 +159,7 @@ client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another
 ### Bind multiple `routingKey`
 
 Multiple routing keys can be separated by commas.  
-In the example, three "routingkey" including `keyA`, `keyB` and `""` will be bind.
+The example below binds three `routingKey`: `keyA`, `keyB`, and `""`. Note the binding method of empty keys.
 
 ```
 apiVersion: dapr.io/v1alpha1
