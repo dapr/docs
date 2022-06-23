@@ -26,7 +26,7 @@ spec:
   - name: qos
     value: 1
   - name: retain
-    value: "true"
+    value: "false"
   - name: cleanSession
     value: "false"
   - name: backOffMaxRetries
@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | url    | Y  | Address of the MQTT broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`tcp://`** URI scheme for non-TLS communication. <br> Use the **`ssl://`** URI scheme for TLS communication. | `"tcp://[username][:password]@host.domain[:port]"`
 | consumerID | N | The client ID used to connect to the MQTT broker. Defaults to the Dapr app ID. | `"myMqttClientApp"`
 | qos    | N  | Indicates the Quality of Service Level (QoS) of the message ([more info](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/)). Defaults to `1`. |`0`, `1`, `2`
-| retain | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Defaults to `"true"`.  | `"true"`, `"false"`
+| retain | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Defaults to `"false"`.  | `"true"`, `"false"`
 | cleanSession | N | Sets the `clean_session` flag in the connection message to the MQTT broker if `"true"` ([more info](http://www.steves-internet-guide.com/mqtt-clean-sessions-example/)). Defaults to `"false"`.  | `"true"`, `"false"`
 | caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
@@ -70,7 +70,7 @@ spec:
   - name: qos
     value: 1
   - name: retain
-    value: "true"
+    value: "false"
   - name: cleanSession
     value: "false"
   - name: backoffMaxRetries
@@ -121,7 +121,7 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-Note that in the case, the value of the consumer ID is random every time Dapr restarts, so we are setting `retain` to false and `cleanSession` to true as well.
+Note that in the case, the value of the consumer ID is random every time Dapr restarts, so we are setting `cleanSession` to true as well.
 
 ## Create a MQTT broker
 
