@@ -27,7 +27,8 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Python 3.7+ installed](https://www.python.org/downloads/).
-- <!-- IGNORE_LINKS -->[Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- IGNORE_LINKS --> 
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
 
 ### Step 1: Set up the environment
