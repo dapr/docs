@@ -1,0 +1,27 @@
+{{- $groups := dict
+" HTTP" $.Site.Data.components.middleware.http
+}}
+
+{{ range $group, $components := $groups }}
+<h3>{{ $group }}</h3>
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Component version</th>
+    </tr>
+    {{ range sort $components "component" }}
+    <tr>
+        <td><a href="/reference/components-reference/supported-middleware/{{ .link }}/" }}>{{ .component
+                }}</a>
+        </td>
+        <td>{{ .description | markdownify}}</td>
+        <td>{{ .state }}</td>
+        <td>{{ .version }}</td>
+    </tr>
+    {{ end }}
+</table>
+{{ end }}
+
+{{ partial "components/componenttoc.html" . }}
