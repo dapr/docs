@@ -189,7 +189,7 @@ spec:
     value: "@every 10s" # valid cron schedule
 ```
 
-**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{ ref cron.md }}) that specifies how often the binding is invoked.
+**Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
 
 #### `component\binding-postgres.yaml` component file
 
