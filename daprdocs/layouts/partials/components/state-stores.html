@@ -1,0 +1,44 @@
+{{- $groups := dict
+" Generic" $.Site.Data.components.state_stores.generic
+"Microsoft Azure" $.Site.Data.components.state_stores.azure
+"Google Cloud Platform (GCP)" $.Site.Data.components.state_stores.gcp
+"Amazon Web Services (AWS)" $.Site.Data.components.state_stores.aws
+"Oracle Cloud" $.Site.Data.components.state_stores.oracle
+}}
+
+{{ range $group, $components := $groups }}
+<h3>{{ $group }}</h3>
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>CRUD</th>
+        <th>Transactional</th>
+        <th>ETag</th>
+        <th>TTL</th>
+        <th>Actors</th>
+        <th>Query</th>
+        <th>Status</th>
+        <th>Component version</th>
+        <th>Since runtime version</th>
+    </tr>
+    {{ range sort $components "component" }}
+    <tr>
+        <td><a href="/reference/components-reference/supported-state-stores/{{ .link }}/" }}>{{ .component
+                }}</a>
+        </td>
+        <td align="center">{{ if .features.crud }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.transactions }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.etag }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.ttl }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if (and .features.transactions .features.etag) }}✅{{else}}<img
+                src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.query }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td>{{ .state }}</td>
+        <td>{{ .version }}</td>
+        <td>{{ .since }}</td>
+    </tr>
+    {{ end }}
+</table>
+{{ end }}
+
+{{ partial "components/componenttoc.html" . }}
