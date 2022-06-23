@@ -82,10 +82,10 @@ Install the dependencies:
 pip3 install -r requirements.txt
 ```
 
-Run the `python-binding-quickstart-sdk` service alongside a Dapr sidecar.
+Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
+dapr run --app-id batch-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -96,7 +96,7 @@ The code inside the `process_batch` function is executed every 10 seconds (defin
 def process_batch():
 ```
 
-The `python-binding-quickstart-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```python
 with DaprClient() as d:
@@ -287,10 +287,10 @@ Install the dependencies:
 npm install
 ```
 
-Run the `javascript-quickstart-binding-sdk` service alongside a Dapr sidecar.
+Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js 
+dapr run --app-id batch-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js 
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -302,7 +302,7 @@ async function start() {
 }
 ```
 
-The `javascript-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "##componentsbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "##componentsbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```javascript
 async function processBatch(){
@@ -490,10 +490,10 @@ dotnet restore
 dotnet build batch.csproj
 ```
 
-Run the `csharp-quickstart-binding-sdk` service alongside a Dapr sidecar.
+Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../../components -- dotnet run
+dapr run --app-id batch-sdk --app-port 7002 --components-path ../../../components -- dotnet run
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -504,7 +504,7 @@ string jsonFile = File.ReadAllText("../../orders.json");
 var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
 ```
 
-The `csharp-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```csharp
 using var client = new DaprClientBuilder().Build();
@@ -689,10 +689,10 @@ Install the dependencies:
 mvn clean install
 ```
 
-Run the `java-binding-quickstart-sdk` service alongside a Dapr sidecar.
+Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id java-binding-quickstart-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id batch-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -702,7 +702,7 @@ The code inside the `process_batch` function is executed every 10 seconds (defin
 public ResponseEntity<String> processBatch() throws IOException, Exception
 ```
 
-The `java-binding-quickstart-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```java
 try (DaprClient client = new DaprClientBuilder().build()) {
@@ -896,10 +896,10 @@ Install the dependencies:
 go build app.go
 ```
 
-Run the `go-input-binding-sdk` service alongside a Dapr sidecar.
+Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go 
+dapr run --app-id batch-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go 
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
@@ -910,7 +910,7 @@ func processCron(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-The `go-quickstart-binding-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```go
 client, err := dapr.NewClient()
