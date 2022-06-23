@@ -47,7 +47,7 @@ If you wish to use Cosmos DB as an actor store, append the following to the yam
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | url                | Y        | The Cosmos DB url | `"https://******.documents.azure.com:443/"`.
-| masterKey          | Y        | The key to authenticate to the Cosmos DB account | `"key"`
+| masterKey          | Y*        | The key to authenticate to the Cosmos DB account. Only required when not using Azure AD authentication. | `"key"`
 | database           | Y        | The name of the database  | `"db"`
 | collection         | Y        | The name of the collection (container) | `"collection"`
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
@@ -67,7 +67,7 @@ You can read additional information for setting up Cosmos DB with Azure AD aut
 In order to setup Cosmos DB as a state store, you need the following properties:
 
 - **URL**: the Cosmos DB url. for example: `https://******.documents.azure.com:443/`
-- **Master Key**: The key to authenticate to the Cosmos DB account
+- **Master Key**: The key to authenticate to the Cosmos DB account. Skip this if using Azure AD authentication.
 - **Database**: The name of the database
 - **Collection**: The name of the collection (or container)
 
