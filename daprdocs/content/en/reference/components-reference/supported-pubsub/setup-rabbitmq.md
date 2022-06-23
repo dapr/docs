@@ -174,7 +174,6 @@ spec:
     routingKey: keyA,keyB,
 ```
 
-Note:the binding method of empty keys
 
 For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
 
