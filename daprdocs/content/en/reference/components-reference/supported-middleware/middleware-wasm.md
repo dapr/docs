@@ -1,13 +1,14 @@
 ---
 type: docs
-title: "Wasm"
-linkTitle: "Wasm"
-description: "Use Wasm middleware in your HTTP pipeline"
+title: "WASM"
+linkTitle: "WASM"
+description: "Use WASM middleware in your HTTP pipeline"
 aliases:
 - /developing-applications/middleware/supported-middleware/middleware-wasm/
 ---
 
-The Wasm [HTTP middleware]({{< ref middleware.md >}}) component enables you to use a Wasm file to handle requests and responses.
+The Wasm [HTTP middleware]({{< ref middleware.md >}}) component enables you to use a Wasm module to handle requests and responses.
+Using Wasm modules allow developers to write middleware components in any WASM supported language and extend Dapr using external files that are not pre-compiled into the `daprd` binary.
 
 ## Component format
 
@@ -31,8 +32,8 @@ spec:
 
 | Field | Details | Example |
 |-------|---------|---------|
-| path | The path to the Wasm binary | "./hello.wasm" |
-| runtime | The Wasm runtime of your Wasm binary. Only`wazero` is supported | "wazero" |
+| path | The path to the WASM binary | "./hello.wasm" |
+| runtime | The WASM runtime of your WASM binary. Only`wazero` is supported | "wazero" |
 
 
 ## Dapr configuration
