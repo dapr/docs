@@ -32,7 +32,7 @@ spec:
 
 | Field | Details | Example |
 |-------|---------|---------|
-| path | The path of your WASM binary | "./hello.wasm" |
+| path | The path to the Wasm binary | "./hello.wasm" |
 | runtime | The runtime of your WASM binary, now only support `wazero` | "wazero" |
 
 
