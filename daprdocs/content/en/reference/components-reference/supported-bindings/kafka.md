@@ -53,7 +53,7 @@ spec:
 | brokers | Y | Input/Output | A comma-separated string of Kafka brokers. | `"localhost:9092,dapr-kafka.myapp.svc.cluster.local:9093"` |
 | clientID            | N | Input/Output | A user-provided string sent with every request to the Kafka brokers for logging, debugging, and auditing purposes. | `"my-dapr-app"` |
 | consumerGroup | N | Input | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. | `"group1"` |
-| consumeRetryEnabled | N | Input/Output | Enable consume retry by setting to `"true"` | `"true"`, `"false"` |
+| consumeRetryEnabled | N | Input/Output | Enable consume retry by setting to `"true"`. Default to `false` in Kafka binding component. | `"true"`, `"false"` |
 | publishTopic | Y | Output | The topic to publish to. | `"mytopic"` |
 | authRequired | N | *Deprecated* | Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"` |
 | authType            | Y | Input/Output | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"` |
