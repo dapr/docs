@@ -191,6 +191,18 @@ The programmatic approach returns the `routes` JSON structure within the code, u
 {{% codetab %}}
 
 ```csharp
+[Topic("pubsub", "orders")]
+[HttpPost("/checkout")]
+public async Task<ActionResult<Order>>Checkout(Order order, [FromServices] DaprClient daprClient)
+{
+    // Logic
+    return order;
+}
+```
+
+or
+
+```csharp
 // Dapr subscription in [Topic] routes orders topic to this route
 app.MapPost("/checkout", [Topic("pubsub", "orders")] (Order order) => {
     Console.WriteLine("Subscriber received : " + order);
