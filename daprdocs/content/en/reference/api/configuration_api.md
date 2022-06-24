@@ -13,7 +13,7 @@ This endpoint lets you get configuration from a store.
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0/configuration/<storename>
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>
 ```
 
 #### URL Parameters
@@ -29,13 +29,13 @@ If no query parameters are provided, all configuration items are returned.
 To specifiy the keys of the configuration items to get, use one or more `key` query parameters. For example:
 
 ```
-GET http://localhost:<daprPort>/v1.0/configuration/mystore?key=config1&key=config2
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore?key=config1&key=config2
 ```
 
 To retrieve all configuration items:
 
 ```
-GET http://localhost:<daprPort>/v1.0/configuration/mystore
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore
 ```
 
 #### Request Body
@@ -75,7 +75,7 @@ This endpoint lets you subscribe to configuration changes.
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0/configuration/<storename>/subscribe
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/subscribe
 ```
 
 #### URL Parameters
@@ -91,7 +91,7 @@ If no query parameters are provided, all configuration items will subscribed to.
 To specifiy the keys of the configuration items to subscribe to, use one or more `key` query parameters. For example:
 
 ```
-GET http://localhost:<daprPort>/v1.0/configuration/mystore/subscribe?key=config1&key=config2
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore/subscribe?key=config1&key=config2
 ```
 
 #### Request Body
@@ -135,7 +135,7 @@ This endpoint lets you unsubscribe to configuration changes.
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0/configuration/<subscription-id>/unsubscribe
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<subscription-id>/unsubscribe
 ```
 
 #### URL Parameters
