@@ -11,7 +11,6 @@ The Wasm [HTTP middleware]({{< ref middleware.md >}}) component enables you to u
 
 ## Component format
 
-In the following definition, it make content of request body into uppercase:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
