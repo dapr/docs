@@ -54,4 +54,17 @@ For more information read [referencing secret stores in components]({{< ref comp
 
 To provide more granular control on access to secrets, Dapr provides the ability to define scopes and restricting access permissions. Learn more about [using secret scoping]({{<ref secrets-scopes>}})
 
+## Try out secrets management
 
+### Quickstarts and tutorials
+
+Want to put the Dapr secrets management API to the test? Walk through the following quickstart and tutorials to see Dapr secrets in action:
+
+| Quickstart/tutorial | Description |
+| ------------------- | ----------- |
+| [Secrets management quickstart]({{< ref secrets-quickstart.md >}}) | Retrieve secrets in the application code from a configured secret store using the secrets management API. |
+| [Secret Store tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
+
+### Start managing secrets directly in your app
+
+Want to skip the quickstarts? Not a problem. You can try out the secret management building block directly in your application to retrieve and manage secrets. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the secrets management API starting with [the secrets how-to guide]({{< ref howto-secrets.md >}}).
