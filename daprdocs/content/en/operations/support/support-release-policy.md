@@ -47,7 +47,8 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Apr 7th 2022 | 1.7.0</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported |
 | Apr 20th 2022 | 1.7.1</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported |
 | Apr 22th 2022 | 1.7.2</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported |
-| May 17th 2022 | 1.7.3</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported (current) |
+| May 17th 2022 | 1.7.3</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported |
+| May 31st 2022 | 1.7.4</br>   | 1.7.0 | Java 1.5.0 </br>Go 1.4.0 </br>PHP 1.1.0 </br>Python 1.6.0 </br>.NET 1.7.0 </br>JS 2.1.0 | 0.10.0 | Supported (current) |
 
 ## Upgrade paths
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example an upgrade from v1.0 to v1.2 may need go pass through v1.1
@@ -62,12 +63,12 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 |                          |                 1.4.4 |                    1.5.2 |
 |                          |                 1.5.2 |                    1.6.0 |
 |                          |                 1.6.0 |                    1.6.2 |
-|                          |                 1.6.0 |                    1.7.3 |
+|                          |                 1.6.0 |                    1.7.4 |
 | 1.5.0 to 1.5.2           |                   N/A |                    1.6.0 |
 |                          |                 1.6.0 |                    1.6.2 |
-|                          |                 1.6.0 |                    1.7.3 |
+|                          |                 1.6.0 |                    1.7.4 |
 | 1.6.0                    |                   N/A |                    1.6.2 |
-| 1.6.0                    |                   N/A |                    1.7.3 |
+| 1.6.0                    |                   N/A |                    1.7.4 |
 
 ## Feature and deprecations
 There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.

@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Scope Pub/Sub topic access"
+title: "Scope Pub/sub topic access"
 linkTitle: "Scope topic access"
 weight: 5000
-description: "Use scopes to limit Pub/Sub topics to specific applications"
+description: "Use scopes to limit pub/sub topics to specific applications"
 ---
 
 ## Introduction
@@ -164,7 +164,7 @@ The table below shows which application is allowed to subscribe to the topics:
 
 ## Next steps
 
-- Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+- Learn [how to configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
 - List of [pub/sub components]({{< ref supported-pubsub >}})
 - Read the [API reference]({{< ref pubsub_api.md >}})

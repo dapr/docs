@@ -135,7 +135,7 @@ You can create a trace context using the recommended OpenCensus SDKs. OpenCensus
 | Language | SDK |
 |:-------:|:----:|
 | Go | [Link](https://pkg.go.dev/go.opencensus.io?tab=overview)
-| Java | [Link](https://www.javadoc.io/doc/io.opencensus/opencensus-api/latest/index.html)
+| Java | [Link](https://github.com/census-instrumentation/opencensus-java)
 | C# | [Link](https://github.com/census-instrumentation/opencensus-csharp/)
 | C++ | [Link](https://github.com/census-instrumentation/opencensus-cpp)
 | Node.js | [Link](https://github.com/census-instrumentation/opencensus-node)

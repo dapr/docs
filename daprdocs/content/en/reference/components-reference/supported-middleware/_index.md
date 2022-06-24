@@ -8,6 +8,7 @@ no_list: true
 aliases:
 - /developing-applications/middleware/supported-middleware/
 ---
+{{< partial "components/description.html" >}}
 
 Table captions:
 
@@ -30,3 +31,6 @@ Table captions:
 | [Open Policy Agent]({{< ref middleware-opa.md >}})                             | Applies [Rego/OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests                                    | Alpha                      | v1|
 | [Uppercase]({{< ref middleware-uppercase.md >}})                               | Converts the body of the request to uppercase letters                                                                           | Stable(For local development) | v1|
 | [Wasm]({{< ref middleware-wasm.md >}})                                     | Run a WASM file | Alpha                      | v1|
+
+{{< partial "components/middleware.html" >}}
+
