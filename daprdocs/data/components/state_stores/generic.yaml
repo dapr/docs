@@ -64,6 +64,17 @@
     etag: false
     ttl: false
     query: false
+- component: In Memory
+  link: setup-inmemory
+  state: Developer-only
+  version: v1
+  since: "1.8"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
 - component: JetStream KV
   link: setup-jetstream-kv
   state: Alpha
