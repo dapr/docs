@@ -179,11 +179,11 @@ None
 curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
 ```
 
-## Optional Application (User Code) Routes
+## Optional application (user code) routes
 
 ### Provide a route for Dapr to send configuration changes
 
-When subscribing to configuration changes, Dapr will invoke the application whenever a configuration item changes.
+When subscribing to configuration changes, Dapr invokes the application whenever a configuration item changes.
 
 #### HTTP Request
 
