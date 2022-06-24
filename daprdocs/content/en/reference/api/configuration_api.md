@@ -65,7 +65,7 @@ None
 
 Code | Description
 ---- | -----------
-`200`  | Get operation successful
+`204`  | Get operation successful
 `400`  | Configuration store is missing or misconfigured or malformed request
 `500`  | Failed to get configuration
 
@@ -176,7 +176,7 @@ None
 
 Code | Description
 ---- | -----------
-`200`  | Unsubscribe operation successful
+`204`  | Unsubscribe operation successful
 `400`  | Configuration store is missing or misconfigured or malformed request
 `500`  | Failed to unsubscribe to configuration changes
 
