@@ -1,0 +1,24 @@
+- component: Alibaba Cloud DingTalk
+  link: alicloud-dingtalk
+  state: Alpha
+  version: v1
+  since: "1.2"
+  features:
+    input: true
+    output: true
+- component: Alibaba Cloud OSS
+  link: alicloudoss
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Alibaba Cloud Tablestore
+  link: alicloudtablestore
+  state: Alpha
+  version: v1
+  since: "1.5"
+  features:
+    input: false
+    output: true
