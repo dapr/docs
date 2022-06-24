@@ -70,7 +70,7 @@ curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore?key=myConfi
 
 ## Subscribe Configuration
 
-This endpoint lets you subscribe to configuration changes.
+This endpoint lets you subscribe to configuration changes. Notifications happen when values are updated or deleted in the configuration store. This enables the application to react to configuration changes.
 
 ### HTTP Request
 
@@ -87,7 +87,7 @@ Parameter | Description
 
 #### Query Parameters
 
-If no query parameters are provided, all configuration items will subscribed to.
+If no query parameters are provided, all configuration items are subscribed to.
 To specifiy the keys of the configuration items to subscribe to, use one or more `key` query parameters. For example:
 
 ```
