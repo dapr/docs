@@ -190,7 +190,7 @@ First, download the code of the stored procedures for the version of Dapr that y
 
 ```sh
 # Set this to the version of Dapr that you're using
-DAPR_VERSION="v1.7.0"
+DAPR_VERSION="release-{{% dapr-latest-version short="true" %}}"
 curl -LfO "https://raw.githubusercontent.com/dapr/components-contrib/${DAPR_VERSION}/state/azure/cosmosdb/storedprocedures/__daprver__.js"
 curl -LfO "https://raw.githubusercontent.com/dapr/components-contrib/${DAPR_VERSION}/state/azure/cosmosdb/storedprocedures/__dapr_v2__.js"
 ```
