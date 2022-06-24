@@ -21,7 +21,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field in the user-configured `configuration.yaml` component file. Refer to the [Dapr configuration store component file structure](#component-file) mentioned above.
+`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
 
 #### Query Parameters
 
@@ -83,7 +83,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/subscribe
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field in the user-configured `configuration.yaml` component file. Refer to the [Dapr configuration store component file structure](#component-file) mentioned above.
+`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
 
 #### Query Parameters
 
@@ -196,8 +196,7 @@ POST http://localhost:<appPort>/configuration/<store-name>/<key>
 Parameter | Description
 --------- | -----------
 `appPort` | The application port
-`storename` | The `metadata.name` field in the user-configured `configuration.yaml` component file. Refer to the [Dapr configuration store component file structure](#component-file) mentioned above
-`key` | The key of the changed configuration item
+`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
 
 #### Request Body
 
@@ -228,5 +227,5 @@ Parameter | Description
 
 ## Next Steps
 
-- [Configuration api overview]({{< ref configuration-api-overview.md >}})
-- [How-To: Manage configuration]({{< ref howto-manage-configuration.md >}})
+- [Configuration API overview]({{< ref configuration-api-overview.md >}})
+- [How-To: Manage configuration from a store]({{< ref howto-manage-configuration.md >}})
