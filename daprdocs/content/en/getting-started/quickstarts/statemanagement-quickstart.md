@@ -2,8 +2,8 @@
 type: docs
 title: "Quickstart: State Management"
 linkTitle: "State Management"
-weight: 70
-description: "Get started with Dapr's State Store"
+weight: 72
+description: "Get started with Dapr's State Management building block"
 ---
 
 Let's take a look at Dapr's [State Management building block]({{< ref state-management >}}). In this Quickstart, you will save, get, and delete state using a Redis state store, but you can swap this out for any one of the [supported state stores]({{< ref supported-state-stores.md >}}).

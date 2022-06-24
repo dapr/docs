@@ -1,0 +1,16 @@
+- component: Zeebe Command
+  link: zeebe-command
+  state: Alpha
+  version: v1
+  since: "1.2"
+  features:
+    input: false
+    output: true
+- component: Zeebe Job Worker
+  link: zeebe-jobworker
+  state: Alpha
+  version: v1
+  since: "1.2"
+  features:
+    input: true
+    output: false
