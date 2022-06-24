@@ -8,7 +8,7 @@ aliases:
 ---
 
 The Wasm [HTTP middleware]({{< ref middleware.md >}}) component enables you to use a Wasm module to handle requests and responses.
-Using Wasm modules allow developers to write middleware components in any WASM supported language and extend Dapr using external files that are not pre-compiled into the `daprd` binary.
+Using WASM modules allow developers to write middleware components in any WASM supported language and extend Dapr using external files that are not pre-compiled into the `daprd` binary.
 
 WASM modules are loaded from a filesystem path. On Kubernetes, see [mounting volumes to the Dapr sidecar]({{> kubernetes-volume-mounts.md >}}) to configure a filesystem mount that can contain WASM modules.
 
