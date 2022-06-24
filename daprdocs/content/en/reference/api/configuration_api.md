@@ -94,6 +94,12 @@ To specifiy the keys of the configuration items to subscribe to, use one or more
 GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore/subscribe?key=config1&key=config2
 ```
 
+To subscribe to all changes:
+
+```
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore/subscribe
+```
+
 #### Request Body
 
 None
