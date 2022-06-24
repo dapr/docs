@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-wasm/
 ---
 
-The wasm [HTTP middleware]({{< ref middleware.md >}}) use a WASM file to handle request and response.
+The Wasm [HTTP middleware]({{< ref middleware.md >}}) component enables you to use a Wasm file to handle requests and responses.
 
 ## Component format
 
