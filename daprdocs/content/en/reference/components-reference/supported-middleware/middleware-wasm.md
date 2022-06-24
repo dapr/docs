@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Wasm middleware"
+title: "Wasm"
 linkTitle: "Wasm"
 description: "Use Wasm middleware in your HTTP pipeline"
 aliases:
