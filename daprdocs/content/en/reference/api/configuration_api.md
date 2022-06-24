@@ -54,7 +54,7 @@ Code | Description
 
 #### Response Body
 
-JSON-encoded value
+JSON-encoded value of key/value pairs for each configuration item.
 
 ### Example
 
@@ -132,7 +132,7 @@ curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/subscribe?k
 }
 ```
 
-The returned `id` parameter can be used to unsubscribe to the keys provided on the API call.
+The returned `id` parameter can be used to unsubscribe to the specific set of keys provided on the subscribe API call. This should be retained by the application.
 
 ## Unsubscribe Configuration
 
