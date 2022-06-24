@@ -74,6 +74,10 @@ This component supports **output binding** with the following operations:
 
 - `create`
 
+## Authentication
+
+Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. [Learn more about Kafka's authentication method for both bindings and pub/sub]({{< ref "setup-apache-kafka.md#authentication" >}}).
+
 ## Specifying a partition key
 
 When invoking the Kafka binding, its possible to provide an optional partition key by using the `metadata` section in the request body.
