@@ -6,29 +6,6 @@ description: "Detailed documentation on the configuration API"
 weight: 650
 ---
 
-## Component file
-
-A Dapr `configuration.yaml` component file has the following structure:
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-  namespace: <NAMESPACE>
-spec:
-  type: configuration.<TYPE>
-  version: v1
-  metadata:
-  - name:<KEY>
-    value:<VALUE>
-```
-
-| Setting | Description                                                                            |
-| ------- |----------------------------------------------------------------------------------------|
-| `metadata.name` | The name of the configuration store.                                                   |
-| `spec.metadata` | An open key value pair metadata that allows a binding to define connection properties. |
-
 ## Get Configuration
 
 This endpoint lets you get configuration from a store.
