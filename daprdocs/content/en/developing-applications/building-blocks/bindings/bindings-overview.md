@@ -35,7 +35,7 @@ In order to receive events from an input binding:
 2. Listen on an HTTP endpoint for the incoming event, or use the gRPC proto library to get incoming events.
 
 {{% alert title="Note" color="primary" %}}
- On startup, Dapr sends an OPTIONS request for all defined input bindings to the application and expects a status code 2xx or 405 if this application wants to subscribe to the binding.
+ On startup, Dapr sends [an OPTIONS request]({{< ref "bindings_api.md#invoking-service-code-through-input-bindings" >}}) for all defined input bindings to the application and expects a status code 2xx or 405 if this application wants to subscribe to the binding.
 
 {{% /alert %}}
 
