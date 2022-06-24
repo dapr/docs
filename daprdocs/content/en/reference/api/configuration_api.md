@@ -121,7 +121,7 @@ JSON-encoded value
 ### Example
 
 ```shell
-curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/subscribe?key=myConfigKey' 
+curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/subscribe?key=myConfigKey' 
 ```
 
 > The above command returns the following JSON:
