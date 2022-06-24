@@ -33,7 +33,7 @@ spec:
 | Field | Details | Example |
 |-------|---------|---------|
 | path | The path to the Wasm binary | "./hello.wasm" |
-| runtime | The runtime of your WASM binary, now only support `wazero` | "wazero" |
+| runtime | The Wasm runtime of your Wasm binary. Only`wazero` is supported | "wazero" |
 
 
 ## Dapr configuration
