@@ -27,16 +27,16 @@ spec:
 | Setting | Description                                                                            |
 | ------- |----------------------------------------------------------------------------------------|
 | `metadata.name` | The name of the configuration store.                                                   |
-| `spec/metadata` | An open key value pair metadata that allows a binding to define connection properties. |
+| `spec.metadata` | An open key value pair metadata that allows a binding to define connection properties. |
 
 ## Get Configuration
 
-This endpoint lets you get configuration from store.
+This endpoint lets you get configuration from a store.
 
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0/configuration/<storename>
+GET http://localhost:<daprPort>/v1.0/configuration/<storename>
 ```
 
 #### URL Parameters
@@ -46,9 +46,13 @@ Parameter | Description
 `daprPort` | The Dapr port
 `storename` | The `metadata.name` field in the user-configured `configuration.yaml` component file. Refer to the [Dapr configuration store component file structure](#component-file) mentioned above.
 
-The optional request, like configuration key and metadata are passed via URL query parameters. For example:
+#### Query Parameters
+
+If no query parameters are provided, all configuration items will be returned.
+To specifiy the keys of the configuration items to get, use one or more `key` query parameters. For example:
+
 ```
-GET http://localhost:3500/v1.0/configuration/myConfigurationStore?key=myConfigKey&metadata.contentType=application/json
+GET http://localhost:3500/v1.0/configuration/mystore?key=config1&key=config2
 ```
 
 #### Request Body
@@ -61,7 +65,7 @@ None
 
 Code | Description
 ---- | -----------
-`200`  | Get successful
+`200`  | Get operation successful
 `400`  | Configuration store is missing or misconfigured or malformed request
 `500`  | Failed to get configuration
 
@@ -72,10 +76,10 @@ JSON-encoded value
 ### Example
 
 ```shell
-curl -H "dapr-app-id:configuration-api" -X GET 'http://localhost:3500/v1.0-alpha1/configuration/example-config?key=myConfigKey' 
+curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/example-config?key=myConfigKey' 
 ```
 
-> The above command returns the configuration:
+> The above command returns the following JSON:
 
 ```json
 [{"key":"myConfigKey","value":"myConfigValue"}]
