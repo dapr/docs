@@ -2,7 +2,7 @@
 type: docs
 title: "Wasm middleware"
 linkTitle: "Wasm"
-description: "Test your HTTP pipeline is functioning with the wasm middleware"
+description: "Use Wasm middleware in your HTTP pipeline"
 aliases:
 - /developing-applications/middleware/supported-middleware/middleware-wasm/
 ---
