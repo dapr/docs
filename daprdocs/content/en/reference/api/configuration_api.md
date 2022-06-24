@@ -25,7 +25,7 @@ Parameter | Description
 
 #### Query Parameters
 
-If no query parameters are provided, all configuration items will be returned.
+If no query parameters are provided, all configuration items are returned.
 To specifiy the keys of the configuration items to get, use one or more `key` query parameters. For example:
 
 ```
