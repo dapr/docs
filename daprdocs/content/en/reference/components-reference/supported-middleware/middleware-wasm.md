@@ -34,8 +34,8 @@ spec:
 
 | Field | Details | Example |
 |-------|---------|---------|
-| path | The path to the WASM binary | "./hello.wasm" |
-| runtime | The WASM runtime of your WASM binary. Only`wazero` is supported | "wazero" |
+| path | A relative or absolute path to the WASM module | "./hello.wasm" |
+| runtime | The WASM runtime of your WASM binary. Only `wazero` is supported | ["wazero"](https://github.com/tetratelabs/wazero) |
 
 
 ## Dapr configuration
