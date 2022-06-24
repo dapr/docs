@@ -1,0 +1,22 @@
+- component: Autonomous Database (ATP and ADW)
+  link: setup-oracledatabase
+  state: Alpha
+  version: v1
+  since: "1.7"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
+- component: Object Storage
+  link: setup-oci-objectstorage
+  state: Alpha
+  version: v1
+  since: "1.6"
+  features:
+    crud: true
+    transactions: false
+    etag: true
+    ttl: true
+    query: false

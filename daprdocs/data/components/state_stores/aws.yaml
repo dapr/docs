@@ -1,0 +1,11 @@
+- component: AWS DynamoDB
+  link: setup-dynamodb
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    crud: true
+    transactions: false
+    etag: false
+    ttl: true
+    query: false

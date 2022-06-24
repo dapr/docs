@@ -1,0 +1,48 @@
+- component: AWS DynamoDB
+  link: dynamodb
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: AWS S3
+  link: s3
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: AWS SES
+  link: ses
+  state: Alpha
+  version: v1
+  since: "1.4"
+  features:
+    input: false
+    output: true
+- component: AWS SNS
+  link: sns
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: AWS SQS
+  link: sqs
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
+- component: AWS Kinesis
+  link: kinesis
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: true
+    output: true
