@@ -183,7 +183,7 @@ curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/bf3aa454-312d-403c-
 
 ### Provide a route for Dapr to send configuration changes
 
-When subscribing to configuration changes, Dapr invokes the application whenever a configuration item changes.
+subscribing to configuration changes, Dapr invokes the application whenever a configuration item changes. Your application can have a `/configuration` endpoint that is called for all key updates that are subscribed to. The endpoint(s) can be made more specific for a given configuration store by adding `/<store-name>` and for a specific key by adding `/<store-name>/<key>` to the route.
 
 #### HTTP Request
 
@@ -197,8 +197,11 @@ Parameter | Description
 --------- | -----------
 `appPort` | The application port
 `storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
+`key` | The key subscribed to
 
 #### Request Body
+
+A list of configuration items for a given subscription id. Configuration items can have a version associated with them, which is returned in the notification.
 
 ```json
 {
