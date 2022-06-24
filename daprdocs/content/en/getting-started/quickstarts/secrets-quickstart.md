@@ -352,7 +352,7 @@ For this example, you will need:
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - Java JDK 11 (or greater):
   - [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11), or
-  - [OpenJDK](https://jdk.java.net/projects/jdk/13/)
+  - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
