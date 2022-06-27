@@ -497,25 +497,26 @@ The code inside the `process_batch` function is executed every 10 seconds (defin
 
 ```csharp
 app.MapPost("/" + cronBindingName, async () => {
-
-    Console.WriteLine("Processing batch..");
-    string jsonFile = File.ReadAllText("../../../orders.json");
-    var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
-    using var client = new DaprClientBuilder().Build();
-    foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
-        var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
-        var command = new Dictionary<string,string>(){
-            {"sql",
-            sqlText}
-        };
-        Console.WriteLine(sqlText);
-    }
+// ...
 });
 ```
 
 The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```csharp
+// ...
+string jsonFile = File.ReadAllText("../../../orders.json");
+var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
+using var client = new DaprClientBuilder().Build();
+foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
+    var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
+    var command = new Dictionary<string,string>(){
+        {"sql",
+        sqlText}
+    };
+// ...
+}
+
 // Insert order using Dapr output binding via Dapr Client SDK
 await client.InvokeBindingAsync(bindingName: sqlBindingName, operation: "exec", data: "", metadata: command);
 ```
