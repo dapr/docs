@@ -99,7 +99,16 @@ def process_batch():
 The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```python
-try:
+with DaprClient() as d:
+        sqlCmd = ('insert into orders (orderid, customer, price) values ' +
+                  '(%s, \'%s\', %s)' % (order_line['orderid'],
+                                        order_line['customer'],
+                                        order_line['price']))
+        payload = {'sql': sqlCmd}
+
+        print(sqlCmd, flush=True)
+
+  try:
     # Insert order using Dapr output binding via HTTP Post
     resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
                             binding_metadata=payload, data='')
@@ -906,6 +915,18 @@ The code inside the `process_batch` function is executed every 10 seconds (defin
 The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```go
+func sqlOutput(order Order) (err error) {
+
+	client, err := dapr.NewClient()
+	if err != nil {
+		return err
+	}
+
+	ctx := context.Background()
+
+	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
+	fmt.Println(sqlCmd)
+
 	// Insert order using Dapr output binding via Dapr SDK
 	in := &dapr.InvokeBindingRequest{
 		Name:      sqlBindingName,
@@ -913,7 +934,13 @@ The `batch-sdk` service uses the PostgreSQL output binding defined in the [`bind
 		Data:      []byte(""),
 		Metadata:  map[string]string{"sql": sqlCmd},
 	}
+	err = client.InvokeOutputBinding(ctx, in)
+	if err != nil {
+		return err
+	}
 
+	return nil
+}
 ```
 
 ### Step 4: View the output of the job
