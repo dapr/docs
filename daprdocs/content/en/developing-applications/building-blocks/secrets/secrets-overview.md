@@ -17,8 +17,9 @@ Using Dapr's secret store building block typically involves the following:
 1. Retrieving secrets using the Dapr secrets API in the application code.
 1. Optionally, referencing secrets in Dapr component files.
 
-Note: Dapr currently, by default, enables a built-in kubernetes secret store in kubernetes mode.
-But, considering that an application developer may not want to use any Secrets API or may want to use a different Secret Store, there should be an option to disable the default kubernetes secret store as well. That is why a new setting `disable-builtin-k8s-secret-store` is provided, which can be set to `true`, if required. By default, it is kept as `false` to not disturb the on-going default behavior of Dapr.
+{{% alert title="Note" color="primary" %}}
+By default, Dapr currently enables a built-in Kubernetes secret store in Kubernetes mode (deployed via the Helm defaults or `dapr init -k`). If you are using another secret store, you can disable the Dapr Kubernetes secret store using the `disable-builtin-k8s-secret-store` setting, when set to `true`. The default is `false`.
+{{% /alert %}}
 
 ## Setting up a secret store
 
