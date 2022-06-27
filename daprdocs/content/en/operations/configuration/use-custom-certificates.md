@@ -6,20 +6,20 @@ weight: 6500
 description: "Configure the Dapr sidecar container to trust custom certificates"
 ---
 
-The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted, e.g., using the HTTP binding, configuring an outbound proxy for the sidecar, etc.
+The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted, e.g., using the HTTP binding, configuring an outbound proxy for the sidecar, etc. Note, both custom CA certificates and leaf certificates are supported.
 
 {{< tabs Self-hosted Kubernetes >}}
 
 {{% codetab %}}
 
-When the sidecar is running as a process, certificates must be installed on the host operating system. 
+When the sidecar is not running inside a container, certificates must be directly installed on the host operating system. 
 
-When the sidecar is running as a container,
+When the sidecar is running as a container:
 1. Certificates must be available to the sidecar container. This can be configured using volume mounts.
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
-1. Additionally for Windows containers, the container needs to be run with administrator privileges. This is required by the Windows entrypoint script to install the certificates.
+1. For Windows containers only, the container needs to run with administrator privileges to be able to install the certificates.
 
-This is an example using Docker compose:
+This is an example using Docker Compose:
 ```yaml
 version: '3'
 services:
@@ -35,7 +35,8 @@ services:
         - "./certificates:/certificates" # (STEP 1) Mount the certificates folder to the sidecar container
     environment:
       - "SSL_CERT_DIR=/certificates" # (STEP 2) Set the environment variable to the path of the certificates folder
-    user: ContainerAdministrator # (STEP 3) Optional, required for Windows containers
+    # Uncomment this for Windows containers
+    # user: ContainerAdministrator
 ```
 
 {{% /codetab %}}
@@ -43,7 +44,7 @@ services:
 
 {{% codetab %}}
 
-On Kubernetes, 
+On Kubernetes:
 1. Certificates must be available to the sidecar container using a volume mount.
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 
@@ -79,7 +80,7 @@ spec:
 ...
 ```
 
-Note, when using Windows container, the sidecar injector injects the sidecar with admin privileges. This is required by the Windows entrypoint script to install the certificates.
+**Note for Windows containers:** When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
 
 {{% /codetab %}}
 
