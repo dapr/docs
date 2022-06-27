@@ -2,32 +2,28 @@
 type: docs
 title: "How-To: Use custom certificates in the Dapr sidecar"
 linkTitle: "Use custom certificates"
-weight: 7000
+weight: 6500
 description: "Configure the Dapr sidecar container to trust custom certificates"
 ---
 
-The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This can be useful in scenarios where a self-signed certificate needs to be trusted, e.g., using the HTTP binding, configuring an outbound proxy for the sidecar, etc.
+The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted, e.g., using the HTTP binding, configuring an outbound proxy for the sidecar, etc.
 
 {{< tabs Self-hosted Kubernetes >}}
 
 {{% codetab %}}
 
-When the sidecar is running as a process, the certificates must be installed on the host operating system. 
+When the sidecar is running as a process, certificates must be installed on the host operating system. 
 
 When the sidecar is running as a container,
-1. The certificates must be available to the sidecar container. This can be done by mounting a volume to the sidecar container.
-1. Set the environment variable `SSL_CERT_DIR` in the sidecar container to the path of the directory containing the certificates.
-1. Additionally, if you are using Windows container, the container needs to be run with administrator privileges. This is required by the Windows entrypoint script to install the certificates.
+1. Certificates must be available to the sidecar container. This can be configured using volume mounts.
+1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
+1. Additionally for Windows containers, the container needs to be run with administrator privileges. This is required by the Windows entrypoint script to install the certificates.
 
 This is an example using Docker compose:
 ```yaml
 version: '3'
 services:
-  # app container
-  # ...
-
-  # sidecar container
-  my-dapr:
+  dapr-sidecar:
     image: "daprio/daprd:edge"
     command: [
       "./daprd",
@@ -39,10 +35,7 @@ services:
         - "./certificates:/certificates" # (STEP 1) Mount the certificates folder to the sidecar container
     environment:
       - "SSL_CERT_DIR=/certificates" # (STEP 2) Set the environment variable to the path of the certificates folder
-    # user: ContainerAdministrator # (STEP 3) Optional, required for Windows containers
-    depends_on:
-      - myapp
-    network_mode: "service:myapp"
+    user: ContainerAdministrator # (STEP 3) Optional, required for Windows containers
 ```
 
 {{% /codetab %}}
@@ -51,9 +44,10 @@ services:
 {{% codetab %}}
 
 On Kubernetes, 
-1. The certificates must be available to the sidecar container using a volume mount.
-1. Set the environment variable `SSL_CERT_DIR` in the sidecar container to the path of the directory containing the certificates.
+1. Certificates must be available to the sidecar container using a volume mount.
+1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 
+This is an example deployment YAML:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
