@@ -99,23 +99,11 @@ def process_batch():
 The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
 
 ```python
-with DaprClient() as d:
-    sqlCmd = ('insert into orders (orderid, customer, price) values' +
-              '(%s, \'%s\', %s)' % (order_line['orderid'],
-                                    order_line['customer'],
-                                    order_line['price']))
-    payload = {'sql': sqlCmd}
-
-    print(sqlCmd, flush=True)
-
-    try:
-        # Insert order using Dapr output binding via HTTP Post
-        resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
-                                binding_metadata=payload, data='')
-        return resp
-    except Exception as e:
-        print(e, flush=True)
-        raise SystemExit(e)
+try:
+    # Insert order using Dapr output binding via HTTP Post
+    resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
+                            binding_metadata=payload, data='')
+    return resp
 ```
 
 ### Step 4: View the output of the job
@@ -499,15 +487,12 @@ dapr run --app-id batch-sdk --app-port 7002 --components-path ../../../component
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
 
 ```csharp
-Console.WriteLine("Processing batch..");
-string jsonFile = File.ReadAllText("../../orders.json");
-var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
-```
+app.MapPost("/" + cronBindingName, async () => {
 
-The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
-
-```csharp
-using var client = new DaprClientBuilder().Build();
+    Console.WriteLine("Processing batch..");
+    string jsonFile = File.ReadAllText("../../../orders.json");
+    var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
+    using var client = new DaprClientBuilder().Build();
     foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
         var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
         var command = new Dictionary<string,string>(){
@@ -515,6 +500,15 @@ using var client = new DaprClientBuilder().Build();
             sqlText}
         };
         Console.WriteLine(sqlText);
+    }
+});
+```
+
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+
+```csharp
+// Insert order using Dapr output binding via Dapr Client SDK
+await client.InvokeBindingAsync(bindingName: sqlBindingName, operation: "exec", data: "", metadata: command);
 ```
 
 ### Step 4: View the output of the job
@@ -905,24 +899,21 @@ dapr run --app-id batch-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-po
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
 
 ```go
-func processCron(w http.ResponseWriter, r *http.Request) {
-	fileContent, err := os.Open("../../orders.json")
-}
+	// Triggered by Dapr input binding
+	r.HandleFunc("/"+cronBindingName, processBatch).Methods("POST")
 ```
 
 The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```go
-client, err := dapr.NewClient()
- // ...
-sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
-fmt.Println(sqlCmd)
-in := &dapr.InvokeBindingRequest{
-	Name:      bindingName,
-	Operation: "exec",
-	Data:      []byte(""),
-	Metadata:  map[string]string{"sql": sqlCmd},
-}
+	// Insert order using Dapr output binding via Dapr SDK
+	in := &dapr.InvokeBindingRequest{
+		Name:      sqlBindingName,
+		Operation: "exec",
+		Data:      []byte(""),
+		Metadata:  map[string]string{"sql": sqlCmd},
+	}
+
 ```
 
 ### Step 4: View the output of the job
