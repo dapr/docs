@@ -70,7 +70,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "myapp"
         dapr.io/app-port: "8000"
-        dapr.io/volume-mounts-rw: "certificates-vol:/tmp/certificates" # (STEP 1) Mount the certificates folder to the sidecar container
+        dapr.io/volume-mounts: "certificates-vol:/tmp/certificates" # (STEP 1) Mount the certificates folder to the sidecar container
         dapr.io/env: "SSL_CERT_DIR=/tmp/certificates" # (STEP 2) Set the environment variable to the path of the certificates folder
     spec:
       volumes:
@@ -80,7 +80,7 @@ spec:
 ...
 ```
 
-**Note for Windows containers:** When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
+> ℹ️ **Note for Windows containers:** When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
 
 {{% /codetab %}}
 
