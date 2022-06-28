@@ -6,7 +6,7 @@ weight: 6500
 description: "Configure the Dapr sidecar container to trust custom certificates"
 ---
 
-The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted, e.g., using the HTTP binding, configuring an outbound proxy for the sidecar, etc. Note, both custom CA certificates and leaf certificates are supported.
+The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted, e.g., using an HTTP binding, configuring an outbound proxy for the sidecar, etc. Both custom CA certificates and leaf certificates are supported.
 
 {{< tabs Self-hosted Kubernetes >}}
 
@@ -19,7 +19,7 @@ When the sidecar is running as a container:
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 1. For Windows containers only, the container needs to run with administrator privileges to be able to install the certificates.
 
-This is an example using Docker Compose:
+Below is an example that uses Docker Compose:
 ```yaml
 version: '3'
 services:
@@ -48,7 +48,7 @@ On Kubernetes:
 1. Certificates must be available to the sidecar container using a volume mount.
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 
-This is an example deployment YAML:
+Below is an example of a deployment YAML:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
