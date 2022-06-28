@@ -88,14 +88,10 @@ Run `docker ps` and verify `my-nats` is running:
 
 ```
 CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS                    PORTS           NAMES
-e0d1b07595d7   9938a89f7aa8        "/prometheus-nats-ex…"   12 minutes ago   Up 12 minutes
-                  k8s_metrics_my-nats-0_default_32375dda-9b95-4644-b4c8-55518156b0e4_2
-acc025ff5ac1   b08752b7d37f        "nats-server-config-…"   12 minutes ago   Up 12 minutes
-                  k8s_reloader_my-nats-0_default_32375dda-9b95-4644-b4c8-55518156b0e4_2
-3ff50ac19984   2b71a26d5083        "tail -f /dev/null"      12 minutes ago   Up 12 minutes
-                  k8s_nats-box_my-nats-box-75bb48bdbf-k4q2f_default_afc76d65-4a32-42b3-bfe1-4ea8a4d4d34c_2
-da03824b1d05   f48fd9739aa3        "nats-server --confi…"   12 minutes ago   Up 12 minutes
-                  k8s_nats_my-nats-0_default_32375dda-9b95-4644-b4c8-55518156b0e4_2
+e0d1b07595d7   9938a89f7aa8        "/prometheus-nats-ex…"   12 minutes ago   Up 12 minutes                  k8s_metrics_my-nats-0_default_32375dda-9b95-4644-b4c8-55518156b0e4_2
+acc025ff5ac1   b08752b7d37f        "nats-server-config-…"   12 minutes ago   Up 12 minutes                  k8s_reloader_my-nats-0_default_32375dda-9b95-4644-b4c8-55518156b0e4_2
+3ff50ac19984   2b71a26d5083        "tail -f /dev/null"      12 minutes ago   Up 12 minutes                  k8s_nats-box_my-nats-box-75bb48bdbf-k4q2f_default_afc76d65-4a32-42b3-bfe1-4ea8a4d4d34c_2
+da03824b1d05   f48fd9739aa3        "nats-server --confi…"   12 minutes ago   Up 12 minutes                  k8s_nats_my-nats-0_default_32375dda-9b95-4644-b4c8-55518156b0e4_2
 ```
 
 Open the `nats_my-nats` cluster.
