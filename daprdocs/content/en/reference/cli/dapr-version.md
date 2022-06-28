@@ -38,4 +38,4 @@ dapr version --output json
 You can get `daprd` version directly by invoking `daprd --version` command.
 
 
-You can also get the normal version output by running `dapr --version` flag also.
+You can also get the normal version output by running `dapr --version` flag.
