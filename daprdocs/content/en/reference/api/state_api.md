@@ -78,7 +78,6 @@ Field | Description
 `value` | State value, which can be any byte array
 `etag` | (optional) State ETag
 `metadata` | (optional) Additional key-value pairs to be passed to the state store
-`ttlInSeconds` | (optional) The number of seconds for the message to expire, as [described here]({{< ref state-store-ttl.md >}})
 `options` | (optional) State operation options; see [state operation options](#optional-behaviors)
 
 > **ETag format:** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store.
