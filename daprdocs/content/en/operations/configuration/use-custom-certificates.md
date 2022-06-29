@@ -80,7 +80,9 @@ spec:
 ...
 ```
 
-> ℹ️ **Note for Windows containers:** When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
+{{% alert title="Note" color="primary" %}}
+When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
+{{% /alert %}}
 
 {{% /codetab %}}
 
