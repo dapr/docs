@@ -17,14 +17,14 @@ When the sidecar is not running inside a container, certificates must be directl
 When the sidecar is running as a container:
 1. Certificates must be available to the sidecar container. This can be configured using volume mounts.
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
-1. For Windows containers only, the container needs to run with administrator privileges to be able to install the certificates.
+1. For Windows containers, the container needs to run with administrator privileges to be able to install the certificates.
 
 Below is an example that uses Docker Compose:
 ```yaml
 version: '3'
 services:
   dapr-sidecar:
-    image: "daprio/daprd:edge"
+    image: "daprio/daprd:edge" # dapr version must be at least 1.8
     command: [
       "./daprd",
      "-app-id", "myapp",
