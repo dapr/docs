@@ -8,7 +8,9 @@ description: "Configure resiliency policies for timeouts, retries and circuit br
 
 ### Policies
 
-You define timeouts, retries and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec.
+You define timeouts, retries and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec. 
+
+> Note: Dapr offers default retries for specific APIs. [See here]({{< ref "#override-default-retries" >}}) to learn how you can overwrite Dapr's default retry logic with custom retry policies.
 
 #### Timeouts
 
@@ -90,4 +92,42 @@ spec:
         interval: 8s
         timeout: 45s
         trip: consecutiveFailures > 8
+```
+
+##### Override Default Retries
+
+Dapr provides default retries for certain request failures and transient errors.  Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords (for example, defining a policy with the name `DaprBuiltInServiceRetries`, will override default retries for failures between sidecars via service-to-service requests). Policy overrides are not applied to specific targets. 
+
+> Note: Although you can override default values with more robust retries, you cannot override with lesser values than the provided default value, or completely remove default retries. This prevents unexpected downtime. 
+
+Below is a table that describes Dapr's default retries and the policy keywords to override them: 
+
+| Capability             | Override Keyword                 | Default Retry Behavior                                                                                                                                                               | Description                                                                                                                           |
+| ------------------     | -------------------------        | ------------------------------                                                                                                                                                       | -----------------------------------------------------------------------------------------------------------                           |
+| Service Invocation     | DaprBuiltInServiceRetries        | Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.                                                                                     | Sidecar-to-sidecar requets (via a service invocation call) that fails and results in a gRPC code `Unavailable` or `Unauthenticated`   | 
+| Actors                 | DaprBuiltInActorRetries          | Per call retries are performed with a backoff interval of 1 second up to a threshold of 3 times.                                                                                     | Sidecar-to-sidecar requests (to a remote actor) that fails and results in a gRPC code `Unavailable` or `Unauthenticated`              |
+| Actor Reminders        | DaprBuiltInActorReminderRetries  | Per call retries are performed with an exponential backoff wtih an initial interval of 500ms and up to a maximum of 60s for a duration of 15m                                        | Requests that fail to persist an actor reminder to a state store                                                                      | 
+| Initialization Retries | DaprBuiltInInitializationRetries | Per call retries are performed 3 times wtih an exponential backoff with an initial interval of 500ms and for a duration of 10s                                                       | Failures when making a request to an application to retrieve a given spec. For example, failure to retrieve a Subscription spec       | 
+
+
+Example of overriding default retries for Service Invocation:
+```yaml
+spec:
+  policies:
+    # Retries are named templates for retry configurations and are instantiated for life of the operation.
+    retries:
+      DaprBuiltInServiceRetries: # Overrides default retry behaivor for service-to-service calls
+        policy: constant
+        duration: 5s
+        maxRetries: 10
+
+      retryForever: # A custom retry policy will replace default retries and the target will rely soley on the named policy. 
+        policy: exponential
+        maxInterval: 15s
+        maxRetries: -1 # Retry indefinitely
+
+  targets:
+    apps:
+      appB: # app-id of the target service
+        retry: retryForever
 ```
