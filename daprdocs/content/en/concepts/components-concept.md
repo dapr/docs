@@ -18,6 +18,9 @@ Each component has a specification (or spec) that it conforms to. Components are
 
 It is important to understand that the component spec values, particularly the spec `metadata`, can change between components of the same component type, for example between different state stores, and that some design-time spec values can be overridden at runtime when making requests to a component's API. As a result, it is strongly recommended to review a [component's specs]({{<ref "components-reference">}}), paying particular attention to the sample payloads for requests to set the metadata used to interact with the component.
 
+The diagram below shows some examples of the components for each component type
+<img src="/images/concepts-components.png" width=1200>
+
 ## Available component types
 
 The following are the component types provided by Dapr:
@@ -63,6 +66,13 @@ Configuration stores are used to save application data, which can then be read b
 
 - [List of supported configuration stores]({{< ref supported-configuration-stores >}})
 - [Configuration store implementations](https://github.com/dapr/components-contrib/tree/master/configuration)
+
+### Locks
+
+Lock components are used as a distributed lock to provide mutually exclusive access to a resource such as a queue or database.
+
+- [List of supported configuration stores]({{< ref supported-locks >}})
+- [Configuration store implementations](https://github.com/dapr/components-contrib/tree/master/lock)
 
 ### Middleware
 

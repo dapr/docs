@@ -3,5 +3,5 @@ type: docs
 title: "Distributed lock"
 linkTitle: "Distributed lock"
 weight: 90
-description: Manage and be notified of application configuration changes
+description: Distributed locks provide mutually exclusive access to shared resources in a distributed environment.
 ---

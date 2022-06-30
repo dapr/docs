@@ -3,13 +3,11 @@ type: docs
 title: "Redis"
 linkTitle: "Redis"
 description: Detailed information on the Redis lock component
-aliases:
-  - "/operations/components/setup-locks/supported-locks/setup-redis/"
 ---
 
 ## Component format
 
-To setup Redis lock create a component of type `lock.redis`. See [this guide]({{< ref "howto-use-distributed-locks" >}}) on how to create a lock.
+To setup Redis lock create a component of type `lock.redis`. See [this guide]({{< ref "howto-use-distributed-lock" >}}) on how to create a lock.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -108,5 +106,4 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- Read [How-To: Manage configuration from a store]({{< ref "howto-manage-configuration" >}}) for instructions on how to use Redis as a configuration store.
-- [Configuration building block]({{< ref configuration-api-overview >}})
+- [Distributed lock building block]({{< ref distributed-lock-api-overview >}})

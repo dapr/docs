@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Configuration store component specs"
-linkTitle: "Configuration stores"
+title: "Lock component specs"
+linkTitle: "Locks"
 weight: 4500
 description: The supported locks that interface with Dapr
 no_list: true
