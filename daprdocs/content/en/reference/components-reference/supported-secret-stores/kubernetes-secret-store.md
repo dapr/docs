@@ -30,8 +30,11 @@ spec:
   type: secretstores.kubernetes
   version: v1
   metadata:
-  - name: ""
 ```
+
+## Spec metadata fields
+For the Kubernetes secret store component there are no additional metadata attributes that need to be set during setup.
+
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
