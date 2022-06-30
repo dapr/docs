@@ -18,7 +18,12 @@ Each lock has a name. The application determines the resources that the named lo
 
 For example, in the competing consumer pattern, multiple instances of an application access a queue. You can decide that you want to lock the queue while the application is running its business logic.
 
-The diagram belows shows an example of two instances of the same application, `App1`, using the [Redis lock component]({{< ref redis-lock >}}) to take a lock on a shared resource. The first app intance acquires the named lock, and gets exclusive access to the resource for updates. The second app instance is unable to aquire the lock and therefore is not allowed to access the resource, until the lock is released, either explicitly by the application through the unlock API or is released after a period of time, due to a lease timeout. 
+In the diagram below, two instances of the same application, `App1`, use the [Redis lock component]({{< ref redis-lock >}}) to take a lock on a shared resource. 
+
+- The first app instance acquires the named lock and gets exclusive access to the resource for updates. 
+- The second app instance is unable to acquire the lock and therefore is not allowed to access the resource until the lock is released, either:
+   - Explicitly by the application through the unlock API, or 
+   - After a period of time, due to a lease timeout. 
 
 <img src="/images/lock-overview.png" width=900>
 
