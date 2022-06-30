@@ -35,7 +35,7 @@ In the diagram below, two instances of the same application, `App1`, use the [Re
 At any given moment, only one application can hold a named lock.
 
 ### Deadlock free using leases
-Dapr distributed locks use a lease-based locking mechanism. If an application acquires a lock and then encounters an exception and cannot free the lock, the lock is automatically released after a period of time using a lease. This prevents resource deadlocks in the event of application failures.
+Dapr distributed locks use a lease-based locking mechanism. If an application acquires a lock, encounters an exception, and cannot free the lock, the lock is automatically released after a period of time using a lease. This prevents resource deadlocks in the event of application failures.
 
 ## Next steps
 Follow these guides on:
