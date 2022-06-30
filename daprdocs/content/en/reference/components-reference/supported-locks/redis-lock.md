@@ -7,7 +7,7 @@ description: Detailed information on the Redis lock component
 
 ## Component format
 
-To setup Redis lock create a component of type `lock.redis`. See [this guide]({{< ref "howto-use-distributed-lock" >}}) on how to create a lock.
+To set up the Redis lock, create a component of type `lock.redis`. See [this guide]({{< ref "howto-use-distributed-lock" >}}) on how to create a lock.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
