@@ -42,7 +42,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Redis
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service.
+Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
