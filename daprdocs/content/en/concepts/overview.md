@@ -43,7 +43,7 @@ Each of these building block APIs is independent, meaning that you can use one, 
 |  [**Observability**]({{<ref "observability-concept.md">}}) | Dapr emits metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools.
 | [**Secrets**]({{<ref "secrets-overview.md">}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 | [**Configuration**]({{<ref "configuration-api-overview.md">}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
-| [**Distributed lock**]({{<ref "distributed-lock-api-overview.md">}})  | The distributed lock API enables your application to aquire a lock for any resource that gives is exclusive access until either the lock is released by the application, or a lock lease timeout occurs. 
+| [**Distributed lock**]({{<ref "distributed-lock-api-overview.md">}})  | The distributed lock API enables your application to aquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 
 ## Sidecar architecture
 
