@@ -7,7 +7,12 @@ description: "Overview of the distributed lock API building block"
 ---
 
 ## Introduction
-Locks are used to provide mutually exclusive access to a resource. For example, you can use a lock to provide exclusive access to a database row, a table or even an entire database. Or a lock could be used to lock reading message from a queue in a sequential manner. Any resource that is shared where updates occur can be the target for a lock. Locks are not normally used on reads, only on operations that mutate state.
+Locks are used to provide mutually exclusive access to a resource. For example, you can use a lock to:
+
+- Provide exclusive access to a database row, table, or an entire database
+- Lock reading messages from a queue in a sequential manner
+
+Any resource that is shared where updates occur can be the target for a lock. Locks are usually used on operations that mutate state, not on reads.
 
 A lock has a name and it is up to the application to determine the resources that this named lock accesses. Typically you have multiple instance of the same application (multiple applications with the same app ID) which use this named lock to exclusively access the resource to perform updates. For example, in the competing consumer pattern, multiple instances of an application access a queue amd you could decide that you want to lock the queue whilst the application is running its business logic.
 
