@@ -82,7 +82,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% codetab %}}
 **Note**: this approach requires having an Azure Subscription.
 
-1. Open [this link](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Cache for Redis  creation flow. Log in if necessary.
+1. [Start the Azure Cache for Redis creation flow](https://ms.portal.azure.com/#create/Microsoft.Cache). Log in if necessary.
 2. Fill out necessary information and **check the "Unblock port 6379" box**, which will allow us to persist state without SSL.
 3. Click "Create" to kickoff deployment of your Redis instance.
 4. Once your instance is created, you'll need to grab the Host name (FQDN) and your access key.
