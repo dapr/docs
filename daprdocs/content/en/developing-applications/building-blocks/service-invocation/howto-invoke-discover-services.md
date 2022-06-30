@@ -6,21 +6,20 @@ description: "Call between services using service invocation"
 weight: 2000
 ---
 
-This article describe how to deploy services each with an unique application ID, so that other services can discover and call endpoints on them using service invocation API.
-
-## Example:
-
-The below code examples loosely describes an application that processes orders. In the examples, there are two services - an order processing service and a checkout service. Both services have Dapr sidecars and the order processing service uses Dapr to invoke the checkout method in the checkout service.
+This article demonstrates how to deploy services each with an unique application ID for other services to discover and call endpoints on them using service invocation over HTTP.
 
 <img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
-## Step 1: Choose an ID for your service
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}) for a quick walk-through on how to use the service invocation API.
+
+{{% /alert %}}
+
+## Choose an ID for your service
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
-
 {{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
-
 
 {{% codetab %}}
 
@@ -88,7 +87,6 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /codetab %}}
 
-
 {{% codetab %}}
 
 ```bash
@@ -111,7 +109,6 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /codetab %}}
 
-
 {{% codetab %}}
 
 ```bash
@@ -133,7 +130,6 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -164,24 +160,23 @@ spec:
         dapr.io/app-port: "6001"
 ...
 ```
+
 *If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}}))*
 
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Step 2: Invoke the service
+## Invoke the service
 
-To invoke an application using Dapr, you can use the `invoke` API on any Dapr instance.
-
-The sidecar programming model encourages each application to interact with its own instance of Dapr. The Dapr sidecars discover and communicate with one another.
+To invoke an application using Dapr, you can use the `invoke` API on any Dapr instance. The sidecar programming model encourages each application to interact with its own instance of Dapr. The Dapr sidecars discover and communicate with one another.
 
 Below are code examples that leverage Dapr SDKs for service invocation.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
-
 {{% codetab %}}
+
 ```csharp
 //dependencies
 using System;
@@ -217,10 +212,11 @@ namespace EventService
     }
 }
 ```
+
 {{% /codetab %}}
 
-
 {{% codetab %}}
+
 ```java
 //dependencies
 import io.dapr.client.DaprClient;
@@ -258,9 +254,11 @@ public class OrderProcessingServiceApplication {
 	}
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```python
 #dependencies
 import random
@@ -285,9 +283,11 @@ while True:
     logging.info('Order requested: ' + str(orderId))
     logging.info('Result: ' + str(result))
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```go
 //dependencies
 import (
@@ -324,9 +324,11 @@ func main() {
 	}
 }
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```javascript
 //dependencies
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
@@ -359,6 +361,7 @@ function sleep(ms) {
 
 main();
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -366,17 +369,18 @@ main();
 ### Additional URL formats
 
 To invoke a 'GET' endpoint:
+
 ```bash
 curl http://localhost:3602/v1.0/invoke/checkout/method/checkout/100
 ```
 
-In order to avoid changing URL paths as much as possible, Dapr provides the following ways to call the service invocation API:
-
+To avoid changing URL paths as much as possible, Dapr provides the following ways to call the service invocation API:
 
 1. Change the address in the URL to `localhost:<dapr-http-port>`.
 2. Add a `dapr-app-id` header to specify the ID of the target service, or alternatively pass the ID via HTTP Basic Auth: `http://dapr-app-id:<service-id>@localhost:3602/path`.
 
-For example, the following command
+For example, the following command:
+
 ```bash
 curl http://localhost:3602/v1.0/invoke/checkout/method/checkout/100
 ```
@@ -403,7 +407,7 @@ dapr invoke --app-id checkout --method checkout/100
 
 When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `checkout.production`
 
-For example, invoking the example service with a namespace would be:
+For example, invoking the example service with a namespace would look like:
 
 ```bash
 curl http://localhost:3602/v1.0/invoke/checkout.production/method/checkout/100 -X POST
@@ -411,13 +415,17 @@ curl http://localhost:3602/v1.0/invoke/checkout.production/method/checkout/100 -
 
 See the [Cross namespace API spec]({{< ref "service_invocation_api.md#cross-namespace-invocation" >}}) for more information on namespaces.
 
-## Step 3: View traces and logs
+## View traces and logs
 
-The example above showed you how to directly invoke a different service running locally or in Kubernetes. Dapr outputs metrics, tracing and logging information allowing you to visualize a call graph between services, log errors and optionally log the payload body.
+Our example above showed you how to directly invoke a different service running locally or in Kubernetes. Dapr:
 
-For more information on tracing and logs see the [observability]({{< ref observability-concept.md >}}) article.
+- Outputs metrics, tracing, and logging information,
+- Allows you to visualize a call graph between services and log errors, and
+- Optionally, log the payload body.
 
- ## Related Links
+For more information on tracing and logs, see the [observability]({{< ref observability-concept.md >}}) article.
 
-* [Service invocation overview]({{< ref service-invocation-overview.md >}})
-* [Service invocation API specification]({{< ref service_invocation_api.md >}})
+## Related Links
+
+- [Service invocation overview]({{< ref service-invocation-overview.md >}})
+- [Service invocation API specification]({{< ref service_invocation_api.md >}})

@@ -79,11 +79,17 @@ Install NATS JetStream on Kubernetes by using the [helm](https://github.com/nats
 
 ```bash
 helm repo add nats https://nats-io.github.io/k8s/helm/charts/
-helm install my-nats nats/nats
+helm install --set nats.jetstream.enabled=true my-nats nats/nats
 ```
 
-This installs a single NATS server into the `default` namespace. To interact
-with NATS, find the service with: `kubectl get svc my-nats`.
+This installs a single NATS server into the `default` namespace. To interact with NATS, find the service with: 
+
+```bash
+kubectl get svc my-nats
+```
+
+For more information on helm chart settings, see the [Helm chart documentation](https://helm.sh/docs/helm/helm_install/). 
+
 {{% /codetab %}}
 
 {{< /tabs >}}
