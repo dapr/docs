@@ -71,8 +71,8 @@ Configuration stores are used to save application data, which can then be read b
 
 Lock components are used as a distributed lock to provide mutually exclusive access to a resource such as a queue or database.
 
-- [List of supported configuration stores]({{< ref supported-locks >}})
-- [Configuration store implementations](https://github.com/dapr/components-contrib/tree/master/lock)
+- [List of supported locks]({{< ref supported-locks >}})
+- [Lock implementations](https://github.com/dapr/components-contrib/tree/master/lock)
 
 ### Middleware
 
