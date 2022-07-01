@@ -33,7 +33,7 @@ spec:
 ```
 
 ## Spec metadata fields
-For the Kubernetes secret store component there are no additional metadata attributes that need to be set during setup.
+For the Kubernetes secret store component, there are no metadata attributes.
 
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
