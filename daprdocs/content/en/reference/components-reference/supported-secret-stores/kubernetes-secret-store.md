@@ -29,7 +29,7 @@ metadata:
 spec:
   type: secretstores.kubernetes
   version: v1
-  metadata:
+  metadata:[]
 ```
 
 ## Spec metadata fields
