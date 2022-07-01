@@ -43,6 +43,7 @@ Each of these building block APIs is independent, meaning that you can use one, 
 |  [**Observability**]({{<ref "observability-concept.md">}}) | Dapr emits metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools.
 | [**Secrets**]({{<ref "secrets-overview.md">}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 | [**Configuration**]({{<ref "configuration-api-overview.md">}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
+| [**Distributed lock**]({{<ref "distributed-lock-api-overview.md">}})  | The distributed lock API enables your application to aquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 
 ## Sidecar architecture
 
@@ -60,7 +61,7 @@ In [self-hosted mode]({{< ref self-hosted-overview.md >}}) Dapr runs as a separa
 
 You can use the [Dapr CLI](https://github.com/dapr/cli#launch-dapr-and-your-app) to run a Dapr-enabled application on your local machine. The diagram below show Dapr's local development environment when configured with the CLI `init` command. Try this out with the [getting started samples]({{< ref getting-started >}}). 
 
-<img src="/images/overview_standalone.png" width=1200 alt="Architecture diagram of Dapr in self-hosted mode">
+<img src="/images/overview-standalone.png" width=1200 alt="Architecture diagram of Dapr in self-hosted mode">
 
 ### Kubernetes
 
@@ -72,7 +73,7 @@ The `dapr-sentry` service is a certificate authority that enables mutual TLS bet
 
 Deploying and running a Dapr-enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. Visit the [Dapr on Kubernetes docs]({{< ref kubernetes >}})
 
-<img src="/images/overview_kubernetes.png" width=1200 alt="Architecture diagram of Dapr in Kubernetes mode">
+<img src="/images/overview-kubernetes.png" width=1200 alt="Architecture diagram of Dapr in Kubernetes mode">
 
 ### Clusters of physical or virtual machines
 
@@ -107,9 +108,9 @@ Dapr can be used from any developer framework. Here are some that have been inte
 | Language | Frameworks | Description |
 |----------|------------|-------------|
 | [.NET]({{< ref dotnet >}}) | [ASP.NET Core]({{< ref dotnet-aspnet.md >}}) | Brings stateful routing controllers that respond to pub/sub events from other services. Can also take advantage of [ASP.NET Core gRPC Services](https://docs.microsoft.com/aspnet/core/grpc/).
-| [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/)
-| [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}})
-| [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/)
+| [Java]({{< ref java >}}) | [Spring Boot](https://spring.io/) | Build Spring boot applications with Dapr APIs
+| [Python]({{< ref python >}}) | [Flask]({{< ref python-flask.md >}}) | Build Flask applications with Dapr APIs
+| [Javascript](https://github.com/dapr/js-sdk) | [Express](http://expressjs.com/) | Build Express applications with Dapr APIs
 | [PHP]({{< ref php >}}) | | You can serve with Apache, Nginx, or Caddyserver.
 
 #### Integrations and extensions

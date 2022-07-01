@@ -1,0 +1,5 @@
+- component: Redis
+  link: redis-lock
+  state: Alpha
+  version: v1
+  since: "1.8"
