@@ -96,7 +96,7 @@ spec:
 
 ## Listen for incoming events (input binding)
 
-Configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. 
+Configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. Additionally make sure that your application allows dapr to make an `OPTIONS` request for this endpoint.
 
 Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
 
