@@ -58,7 +58,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Setup Redis
 
-Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service.
+Dapr can use any Redis instance: containerized, running on your local dev machine, or a managed cloud service.
 
 {{< tabs "Self-Hosted" "Kubernetes" "Azure" "AWS" "GCP" >}}
 
@@ -98,13 +98,19 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% codetab %}}
 **Note**: this approach requires having an Azure Subscription.
 
-1. Open [this link](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Cache for Redis  creation flow. Log in if necessary.
+1. [Start the Azure Cache for Redis creation flow](https://ms.portal.azure.com/#create/Microsoft.Cache). Log in if necessary.
 2. Fill out necessary information and **check the "Unblock port 6379" box**, which will allow us to persist state without SSL.
 3. Click "Create" to kickoff deployment of your Redis instance.
-4. Once your instance is created, you'll need to grab the Host name (FQDN) and your access key.
-   - for the Host name navigate to the resources "Overview" and copy "Host name"
-   - for your access key navigate to "Access Keys" under "Settings" and copy your key.
-5. Finally, we need to add our key and our host to a `redis.yaml` file that Dapr can apply to our cluster. If you're running a sample, you'll add the host and key to the provided `redis.yaml`. If you're creating a project from the ground up, you'll create a `redis.yaml` file as specified in [Configuration](#configuration). Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you copied in step 4. **Note:** In a production-grade application, follow [secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
+4. Once your instance is created, you'll need to grab the Host name (FQDN) and your access key:
+   - For the Host name: navigate to the resource's "Overview" and copy "Host name".
+   - For your access key: navigate to "Settings" > "Access Keys" to copy and save your key.
+5. Add your key and your host to a `redis.yaml` file that Dapr can apply to your cluster. 
+   - If you're running a sample, add the host and key to the provided `redis.yaml`. 
+   - If you're creating a project from the ground up, create a `redis.yaml` file as specified in [Configuration](#configuration). 
+   
+   Set the `redisHost` key to `[HOST NAME FROM PREVIOUS STEP]:6379` and the `redisPassword` key to the key you saved earlier. 
+   
+   **Note:** In a production-grade application, follow [secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
 
 > **NOTE:** Dapr pub/sub uses [Redis Streams](https://redis.io/topics/streams-intro) that was introduced by Redis 5.0, which isn't currently available on Azure Managed Redis Cache. Consequently, you can use Azure Managed Redis Cache only for state persistence.
 {{% /codetab %}}
@@ -118,7 +124,6 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 {{% /codetab %}}
 
 {{< /tabs >}}
-
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
