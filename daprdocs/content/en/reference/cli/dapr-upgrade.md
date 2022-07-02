@@ -33,6 +33,7 @@ dapr upgrade [flags]
 | `--kubernetes`, `-k` |                      | `false`  | Upgrade/Downgrade Dapr in a Kubernetes cluster                                                            |
 | `--runtime-version`  |                      | `latest` | The version of the Dapr runtime to upgrade/downgrade to, for example: `1.0.0`                             |
 | `--set`              |                      |          | Set values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2) |
+|  `--image-registry`  |                    |          | Pulls container images required by Dapr from the given image registry |
 
 ### Examples
 
@@ -46,6 +47,14 @@ dapr upgrade -k --runtime-version 1.2
 # Upgrade or downgrade to a specified version of Dapr runtime in Kubernetes with value set
 dapr upgrade -k --runtime-version 1.2 --set global.logAsJson=true
 ```
+```bash
+# Upgrade or downgrade using private registry, if you are using private registry for hosting dapr images and have used it while doing `dapr init -k`
+# Scenario 1 : dapr image hosted directly under root folder in private registry - 
+dapr init -k --image-registry docker.io/username
+# Scenario 2 : dapr image hosted under a new/different directory in private registry - 
+dapr init -k --image-registry docker.io/username/<directory-name>
+```
+
 ### Warning messages
 This command can issue warning messages.
 

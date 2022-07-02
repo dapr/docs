@@ -14,9 +14,9 @@ Consuming application configuration is a common task when writing applications a
 
 It is worth noting that this configuration API should not be confused with the [Dapr sidecar and control plane configuration]({{<ref "configuration-overview">}}) which is used to set policies and settings on instances of Dapr sidecars or the installed Dapr control plane.
 
-## Features
+*This API is currently in `Alpha` state*
 
-*This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.*
+## Features
 
 ## Next steps
 Follow these guides on:
