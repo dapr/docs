@@ -38,7 +38,7 @@ dapr init [flags]
 | `--slim`, `-s`        |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
 | `--timeout`           |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
 | `--wait`              |                      | `false`       | Wait for Kubernetes initialization to complete                                       |
-|        N/A              |DAPR_DEFAULT_IMAGE_REGISTRY|          | In self hosted mode, it is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub as default, just unset this env variable.|
+|        N/A              |DAPR_DEFAULT_IMAGE_REGISTRY|          | It is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub, unset the environment variable or leave it blank|
 
 ### Examples
 
@@ -119,4 +119,15 @@ Use the `--set` flag to configure a set of [Helm Chart values](https://github.co
 
 ```bash
 dapr init -k --set global.tag=1.0.0 --set dapr_operator.logLevel=error
+```
+
+You can also specify a private registry to pull container images from. As of now `dapr init -k` does not use specific images for sentry, operator, placement and sidecar. It relies on only Dapr runtime container image `dapr` for all these images.
+
+Scenario 1 : dapr image hosted directly under root folder in private registry - 
+```bash
+dapr init -k --image-registry docker.io/username
+```
+Scenario 2 : dapr image hosted under a new/different directory in private registry - 
+```bash
+dapr init -k --image-registry docker.io/username/<directory-name>
 ```
