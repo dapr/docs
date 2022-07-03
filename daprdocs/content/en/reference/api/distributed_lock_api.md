@@ -8,7 +8,7 @@ weight: 660
 
 ## Lock
 
-This endpoint lets you acquire a lock.
+This endpoint lets you acquire a lock by supplying a named lock owner and the resource ID to lock.
 
 ### HTTP Request
 
@@ -47,6 +47,12 @@ The lock endpoint receives the following JSON payload:
     "expiryInSeconds": 0
 }
 ```
+
+Field | Description
+---- | -----------
+resourceId  | The ID of the resource to lock
+lockOwner  | The name of the lock owner. Should be set to a unique value per-request
+expiryInSeconds  | The time in seconds to hold the lock before it expires
 
 ### HTTP Response Body
 
