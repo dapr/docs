@@ -50,7 +50,7 @@ The lock endpoint receives the following JSON payload:
 
 Field | Description
 ---- | -----------
-resourceId  | The ID of the resource to lock
+resourceId  | The ID of the resource to lock. Can be any value
 lockOwner  | The name of the lock owner. Should be set to a unique value per-request
 expiryInSeconds  | The time in seconds to hold the lock before it expires
 
