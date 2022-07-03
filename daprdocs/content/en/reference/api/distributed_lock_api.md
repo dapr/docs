@@ -76,7 +76,7 @@ curl -X POST http://localhost:3500/v1.0-alpha/lock/redisStore \
 
 ## Unlock
 
-This endpoint lets you unlock an existing lock.
+This endpoint lets you unlock an existing lock based on the lock owner and resource Id
 
 ### HTTP Request
 
