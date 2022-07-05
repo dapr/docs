@@ -8,12 +8,12 @@ description: Overview of the bindings API building block
 
 Using Dapr's bindings API, you can trigger your app with events coming in from external systems and interface with external systems. With the bindings API, you can:
 
-- Avoid the complexities of connecting to and polling from messaging systems, such as queues and message buses
-- Focus on business logic, instead of the implementation details of interacting with a system
-- Keep your code free from SDKs or libraries
-- Handle retries and failure recovery
-- Switch between bindings at runtime
-- Build portable applications with environment-specific bindings set-up and no required code changes
+- Avoid the complexities of connecting to and polling from messaging systems, such as queues and message buses.
+- Focus on business logic, instead of the implementation details of interacting with a system.
+- Keep your code free from SDKs or libraries.
+- Handle retries and failure recovery.
+- Switch between bindings at runtime.
+- Build portable applications with environment-specific bindings set-up and no required code changes.
 
 For example, with bindings, your microservice can respond to incoming Twilio/SMS messages without:
 
@@ -53,7 +53,7 @@ To invoke an output binding:
 
 Read the [Use output bindings to interface with external resources guide]({{< ref howto-bindings.md >}}) to get started with output bindings.
 
-## Try out pub/sub
+## Try out bindings
 
 ### Quickstarts and tutorials
 
