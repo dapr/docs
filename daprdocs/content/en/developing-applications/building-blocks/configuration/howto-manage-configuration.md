@@ -39,7 +39,7 @@ Save a configuration item:
 MSET orderId1 "101||1" orderId2 "102||1"
 ```
 
-### Configure a Dapr configuration store
+## Configure a Dapr configuration store
 
 Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine. You can use this as the Dapr component YAML:
 
@@ -65,6 +65,7 @@ spec:
     value: <PASSWORD>
 ```
 
+## Retrieve Configuration Items
 ### Get configuration items using Dapr SDKs
 
 {{< tabs Dotnet Java Python>}}
@@ -193,7 +194,70 @@ client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig
 
 {{< /tabs >}}
 
-#### Watch configuration items
+### Watch configuration items using Dapr SDKs
+
+{{< tabs "Dotnet Extension" "Dotnet Client">}}
+{{% codetab %}}
+
+```csharp
+[Obsolete("Configuration API is an Alpha API. Obsolete will be removed when the API is no longer Alpha")]
+public static void Main(string[] args)
+{
+    CreateHostBuilder(args).Build().Run();
+}
+
+public static IHostBuilder CreateHostBuilder(string[] args)
+{
+    var client = new DaprClientBuilder().Build();
+    return Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration(config =>
+        {
+            // Get the initial value from the configuration component.
+            config.AddDaprConfigurationStore("redisconfig", new List<string>() { "withdrawVersion" }, client, TimeSpan.FromSeconds(20));
+
+            // Watch the keys in the configuration component and update it in local configurations.
+            config.AddStreamingDaprConfigurationStore("redisconfig", new List<string>() { "withdrawVersion", "source" }, client, TimeSpan.FromSeconds(20));
+        })
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+        });
+}
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```csharp
+public IDictionary<string, string> Data { get; set; } = new Dictionary<string, string>();
+public string Id { get; set; } = string.Empty;
+
+public async Task WatchConfiguration(DaprClient daprClient, string store, IReadOnlyList<string> keys, Dictionary<string, string> metadata, CancellationToken token = default)
+{
+    // Initialize the gRPC Stream that will provide configuration updates.
+    var subscribeConfigurationResponse = await daprClient.SubscribeConfiguration(store, keys, metadata, token);
+
+    // The response contains a data source which is an IAsyncEnumerable, so it can be iterated through via an awaited foreach.
+    await foreach (var items in subscribeConfigurationResponse.Source.WithCancellation(token))
+    {
+        // Each iteration from the stream can contain all the keys that were queried for, so it must be individually iterated through.
+        var data = new Dictionary<string, string>(Data);
+        foreach (var item in items)
+        {
+            // The Id in the response is used to unsubscribe.
+            Id = subscribeConfigurationResponse.Id;
+            data[item.Key] = item.Value;
+        }
+        Data = data;
+    }
+}
+```
+
+{{% /codetab %}}
+{{< /tabs >}}
+
+### Watch configuration items using gRPC API
 
 Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Use the `SubscribeConfigurationAlpha1` proto method on your client stub to start subscribing to events. The method accepts the following request object:
 
