@@ -6,29 +6,36 @@ description: "Use Dapr input bindings to trigger event driven applications"
 weight: 200
 ---
 
-Using bindings, your code can be triggered with incoming events from different resources which can be anything: a queue, messaging pipeline, cloud-service, filesystem etc.
+With input bindings, you can trigger your application when an event from an external resource occurs. An external resource could be a queue, messaging pipeline, cloud-service, filesystem, etc. An optional payload and metadata may be sent with the request.
 
-This is ideal for event-driven processing, data pipelines, or generally reacting to events and performing further processing.
+Input bindings are ideal for event-driven processing, data pipelines, or generally reacting to events and performing further processing. Dapr input bindings allow you to:
 
-Dapr bindings allow you to:
+- Receive events without including specific SDKs or libraries
+- Replace bindings without changing your code
+- Focus on business logic and not the event resource implementation
 
-* Receive events without including specific SDKs or libraries
-* Replace bindings without changing your code
-* Focus on business logic and not the event resource implementation
+<img src="/images/howto-triggers/kafka-input-binding.png" width=1000 alt="Diagram showing bindings of example service">
 
-An input binding represents a resource that Dapr uses to read events from and push to your application. Read the [bindings overview for more information]({{<ref bindings-overview.md>}}).
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}). In this guide:
 
-<img src="/images/building-block-input-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
+1. The example invokes the `/binding` endpoint with `checkout`, the name of the binding to invoke.
+1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref "kafka.md#binding-support" >}}).
+   - You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
 
-This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the bindings quickstart]({{< ref bindings-quickstart.md >}}) for a quick walk-through on how to use the bindings API.
+
+{{% /alert %}}
 
 ## Create a binding
 
-Create a new binding component with the name of `checkout`.
+Create a `binding.yaml` file and save to a `components` sub-folder in your application directory.
 
-Inside the `metadata` section, configure Kafka-related properties, such as the topic to publish the message to and the broker.
+Create a new binding component named `checkout`. Within the `metadata` section, configure the following Kafka-related properties:
 
-Create the following `binding.yaml` file and save it to a `components` sub-folder in your application directory.
+- The topic to which you'll publish the message
+- The broker
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
@@ -96,7 +103,9 @@ spec:
 
 ## Listen for incoming events (input binding)
 
-Configure your application to receive incoming events. If using HTTP, you need to listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. Additionally make sure that your application allows dapr to make an `OPTIONS` request for this endpoint.
+Configure your application to receive incoming events. If you're using HTTP, you need to:
+- Listen on a `POST` endpoint with the name of the binding, as specified in `metadata.name` in the `binding.yaml` file. 
+- Verify your application allows Dapr to make an `OPTIONS` request for this endpoint.
 
 Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
 
@@ -249,8 +258,7 @@ Tell Dapr the event was not processed correctly in your application and schedule
 
 ### Specifying a custom route
 
-By default, incoming events will be sent to an HTTP endpoint that corresponds to the name of the input binding.
-You can override this by setting the following metadata property in `binding.yaml`:
+By default, incoming events will be sent to an HTTP endpoint that corresponds to the name of the input binding. You can override this by setting the following metadata property in `binding.yaml`:
 
 ```yaml
 name: mybinding
@@ -267,7 +275,7 @@ Event delivery guarantees are controlled by the binding implementation. Dependin
 
 ## References
 
-* [Bindings building block]({{< ref bindings >}})
-* [Bindings API]({{< ref bindings_api.md >}})
-* [Components concept]({{< ref components-concept.md >}})
-* [Supported bindings]({{< ref supported-bindings >}})
+- [Bindings building block]({{< ref bindings >}})
+- [Bindings API]({{< ref bindings_api.md >}})
+- [Components concept]({{< ref components-concept.md >}})
+- [Supported bindings]({{< ref supported-bindings >}})
