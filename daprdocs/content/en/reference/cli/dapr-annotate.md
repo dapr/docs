@@ -5,10 +5,6 @@ linkTitle: "annotate"
 description: "Add dapr annotatations to a Kubernetes configuration"
 ---
 
-{{% alert title="Warning" color="warning" %}}
-This command is in preview. The functionality might change in the future till the command is made stable.
-{{% /alert %}}
-
 ### Description
 
 Add dapr annotations to a Kubernetes configuration.
@@ -27,6 +23,7 @@ dapr annotate [flags] CONFIG-FILE
 
 | Name | Environment Variable | Default | Description
 | --- | --- | --- | --- |
+| `--kubernetes, -k` | | | Apply annotations to Kubernetes resources. Required |
 | `--api-token-secret` | | | The secret to use for the API token |
 | `--app-id, -a` | | | The app id to annotate |
 | `--app-max-concurrency` | | `-1` | The maximum number of concurrent requests to allow |
@@ -52,6 +49,7 @@ dapr annotate [flags] CONFIG-FILE
 | `--liveness-probe-timeout` | | `-1` | The timeout used by the sidecar for the liveness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | `--log-level` | | | The log level to use |
 | `--max-request-body-size` | | `-1` | The maximum request body size to use |
+| `--http-read-buffer-size` | | `-1` | The maximum size of HTTP header read buffer in kilobytes | 
 | `--memory-limit` | | | The memory limit to set for the sidecar. See valid values [here](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/) |
 | `--memory-request`| | | The memory request to set for the sidecar |
 | `--metrics-port` | | `-1` | The port to expose the metrics on |
@@ -61,24 +59,30 @@ dapr annotate [flags] CONFIG-FILE
 | `--readiness-probe-threshold` | | `-1` | The threshold to use for the readiness probe in the sidecar. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | `--readiness-probe-timeout` | | `-1` | The timeout to use for the readiness probe in the sidecar. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | `--resource, -r` | | | The resource to target to annotate |
+| `--enable-api-logging` | | | Enable API logging for the Dapr sidecar |
+| `--unix-domain-socket-path` | | | Linux domain socket path to use for communicating with the Dapr sidecar | 
+| `--volume-mounts` | | | List of pod volumes to be mounted to the sidecar container in read-only mode | 
+| `--volume-mounts-rw` | | | List of pod volumes to be mounted to the sidecar container in read-write mode | 
+| `--disable-builtin-k8s-secret-store` | | | Disable the built-in Kubernetes secret store |
+| `--placement-host-address` | | | Comma separated list of addresses for Dapr actor placement servers |
 
 {{% alert title="Warning" color="warning" %}}
-If an application ID is not provided using `--app-id, -a`, we will generate one using the format `<namespace>-<kind>-<name>`.
+If an application ID is not provided using `--app-id, -a`, an ID is generated using the format `<namespace>-<kind>-<name>`.
 {{% /alert %}}
 
 ### Examples
 
 ```bash 
 # Annotate the first deployment found in the input
-kubectl get deploy -l app=node -o yaml | dapr annotate - | kubectl apply -f -
+kubectl get deploy -l app=node -o yaml | dapr annotate -k - | kubectl apply -f -
 
 # Annotate multiple deployments by name in a chain
-kubectl get deploy -o yaml | dapr annotate -r nodeapp - | dapr annotate -r pythonapp - | kubectl apply -f -
+kubectl get deploy -o yaml | dapr annotate -k -r nodeapp - | dapr annotate -k -r pythonapp - | kubectl apply -f -
 
 # Annotate deployment in a specific namespace from file or directory by name
-dapr annotate -r nodeapp -n namespace mydeploy.yaml | kubectl apply -f -
+dapr annotate -k -r nodeapp -n namespace mydeploy.yaml | kubectl apply -f -
 
 # Annotate deployment from url by name
-dapr annotate -r nodeapp --log-level debug https://raw.githubusercontent.com/dapr/quickstarts/master/tutorials/hello-kubernetes/deploy/node.yaml | kubectl apply -f -
+dapr annotate -k -r nodeapp --log-level debug https://raw.githubusercontent.com/dapr/quickstarts/master/tutorials/hello-kubernetes/deploy/node.yaml | kubectl apply -f -
 ```
 
