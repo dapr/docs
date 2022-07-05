@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Set state Time-to-Live (TTL)"
-linkTitle: "How-To: Set state TTL"
+title: "State Time-to-Live (TTL)"
+linkTitle: "State TTL"
 weight: 500
-description: "Manage state with time-to-live."
+description: "Manage state with TTL."
 ---
 
 ## Introduction
