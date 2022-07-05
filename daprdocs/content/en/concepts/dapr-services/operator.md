@@ -44,3 +44,8 @@ If you're using Helm, you can configure the injector watchdog with the [`dapr_op
 > The injector watchdog is safe to use when the operator service is running in HA (High Availability) mode with more than one replica. In this case, Kubernetes automatically elects a "leader" instance which is the only one that runs the injector watchdog service.  
 
 > However, when in HA mode, if you configure the injector watchdog to run "once", the watchdog polling is actually started every time an instance of the operator service is elected as leader. This means that, should the leader of the operator service crash and a new leader be elected, that would trigger the injector watchdog again.
+
+Watch this video for an overview of the injector watchdog:
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/ecFvpp24lpo?start=1848" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
