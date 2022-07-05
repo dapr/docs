@@ -38,7 +38,7 @@ spec:
     value: false
   - name: maxPriority
     value: 5
-- name: contentType
+  - name: contentType
     value: "text/plain"
 ```
 

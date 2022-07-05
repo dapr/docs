@@ -22,11 +22,11 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 
 | Quickstarts | Description |
 | ----------- | ----------- |
-| [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) |  Call a method on another service using the service invocation API. |
-| [State Management]({{< ref statemanagement-quickstart.md >}}) | Create stateful applications using the state management API. |
-| [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
-| [Bindings]({{< ref bindings-quickstart.md >}}) | Schedule a database insert job using the input and output bindings API. |
-| [Secrets Management]({{< ref secrets-quickstart.md >}}) | Retrieve secrets in the application code from a configured secret store using the secrets management API. |
+| [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) |  Asynchronous communication between two services using messaging. |
+| [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) | Asynchronous communication between two services using HTTP. |
+| [State Management]({{< ref statemanagement-quickstart.md >}}) | Store a service's data as key/value pairs in supported state stores. |
+| [Bindings]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
+| [Secrets Management]({{< ref secrets-quickstart.md >}}) | Securely fetch secrets. |
 | Actors             | Coming soon. |
 | Observability      | Coming soon. |
 | Configuration      | Coming soon. |
