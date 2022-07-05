@@ -114,7 +114,6 @@ Example of overriding default retries for Service Invocation:
 ```yaml
 spec:
   policies:
-    # Retries are named templates for retry configurations and are instantiated for life of the operation.
     retries:
       DaprBuiltInServiceRetries: # Overrides default retry behaivor for service-to-service calls
         policy: constant
