@@ -165,7 +165,7 @@ func main() {
     }
     defer client.Close()
     
-    resp, err := testClient.UnlockAlpha1(ctx, "lockstore", &UnlockRequest{
+    resp, err := client.UnlockAlpha1(ctx, "lockstore", &UnlockRequest{
 			OwnerID:    "random_id_abc123",
 			ResourceID: "my_file_name",
 		})
