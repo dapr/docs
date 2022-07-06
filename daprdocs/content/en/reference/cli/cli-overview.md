@@ -73,6 +73,7 @@ You can learn more about each Dapr command from the links below.
  - [`dapr stop`]({{< ref dapr-stop.md >}})
  - [`dapr uninstall`]({{< ref dapr-uninstall.md >}})
  - [`dapr upgrade`]({{< ref dapr-upgrade.md >}})
+ - [`dapr-version`]({{< ref dapr-version.md >}})
 
 ### Environment Variables
 
