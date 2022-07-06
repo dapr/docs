@@ -35,8 +35,6 @@ spec:
     secretKeyRef:
       name: kafka-secrets
       key: saslPasswordSecret
-  - name: saslMechanism
-    value: "SHA-512"
   - name: maxMessageBytes # Optional.
     value: 1024
   - name: consumeRetryInterval # Optional.
@@ -58,7 +56,6 @@ spec:
 | authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"`
 | saslUsername        | N | The SASL username used for authentication. Only required if `authType` is set to `"password"`. | `"adminuser"`
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authType is set to `"password"`. | `""`, `"KeFg23!"`
-| saslMechanism      | N | The SASL Authentication Mechanism you wish to use. Only required if `authType` is set to `"password"`. Defaults to `PLAINTEXT` | `"SHA-512", "SHA-256", "PLAINTEXT"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
@@ -116,7 +113,8 @@ spec:
 
 #### SASL Password
 
-Setting `authType` to `password` enables [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication. This requires setting the `saslUsername` and `saslPassword` fields.
+Setting `authType` to `password` enables [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication using the **PLAIN** mechanism. This requires setting
+the `saslUsername` and `saslPassword` fields. 
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -142,8 +140,6 @@ spec:
     secretKeyRef:
       name: kafka-secrets
       key: saslPasswordSecret
-  - name: saslMechanism
-    value: "SHA-512"
   - name: maxMessageBytes # Optional.
     value: 1024
   - name: consumeRetryInterval # Optional.
