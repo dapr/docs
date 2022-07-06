@@ -1,0 +1,27 @@
+{{- $groups := dict
+" Generic" $.Site.Data.components.locks.generic
+}}
+
+{{ range $group, $components := $groups }}
+<h3>{{ $group }}</h3>
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>Status</th>
+        <th>Component version</th>
+        <th>Since runtime version</th>
+    </tr>
+    {{ range sort $components "component" }}
+    <tr>
+        <td><a href="/reference/components-reference/supported-locks/{{ .link }}/" }}>{{ .component
+                }}</a>
+        </td>
+        <td>{{ .state }}</td>
+        <td>{{ .version }}</td>
+        <td>{{ .since }}</td>
+    </tr>
+    {{ end }}
+</table>
+{{ end }}
+
+{{ partial "components/componenttoc.html" . }}
