@@ -110,7 +110,9 @@ Below is a table that describes Dapr's default retries and the policy keywords t
 | Initialization Retries | DaprBuiltInInitializationRetries | Per call retries are performed 3 times with an exponential backoff, an initial interval of 500ms and for a duration of 10s                                                       | Failures when making a request to an application to retrieve a given spec. For example, failure to retrieve a subscription, component or resiliency specification       | 
 
 
-Example of overriding default retries for Service Invocation:
+The resiliency spec example below shows overriding the default retries for _all_ service invocation requests by using the reserved, named keyword 'DaprBuiltInServiceRetries'. 
+
+Also defined is a retry policy called 'retryForever' that is only applied to the appB target.  appB uses the 'retryForever' retry policy, while all other application service invocation retry failures, use the overridden 'DaprBuiltInServiceRetries' default policy.
 ```yaml
 spec:
   policies:
