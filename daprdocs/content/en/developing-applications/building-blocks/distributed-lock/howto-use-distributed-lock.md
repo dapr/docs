@@ -11,9 +11,13 @@ Now that you've learned what the Dapr distributed lock API building block provid
 The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied.
 
 <img src="/images/building-block-lock-example.png" width=1000 alt="The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied">
+
 The diagram below shows two instances of the same application, where one instance releases the lock and the other instance is then able to acquire the lock.
 
 <img src="/images/building-block-lock-unlock-example.png" width=1000 alt="Diagram showing releasing a lock from multiple instances of same application">
+
+The diagram below shows two instances of different applications, acquiring different locks on the same resource.
+
 <img src="/images/building-block-lock-multiple-example.png" width=1000 alt="The diagram below shows two instances of different applications, acquiring different locks on the same resource">
 
 ### Configure a lock component
