@@ -3,20 +3,33 @@ type: docs
 title: "Azure Cosmos DB"
 linkTitle: "Azure Cosmos DB"
 weight: 1000
-description: "Use Azure Cosmos DB as a backend state store"
+description: "Use Azure Cosmos DB as a state store"
 ---
 
-Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [Dapr state management spec]({{< ref state_api.md >}}). You can directly interact with the underlying store to manipulate the state data, such querying states, creating aggregated views and making backups.
+Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [the state management spec]({{< ref state_api.md >}}). You can directly interact with the underlying store to manipulate the state data, such as:
 
-> **NOTE:** Azure Cosmos DB is a multi-modal database that supports multiple APIs. The default Dapr Cosmos DB state store implementation uses the [Azure Cosmos DB SQL API](https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started).
+- Querying states.
+- Creating aggregated views.
+- Making backups.
 
-## 1. Connect to Azure Cosmos DB
+{{% alert title="Note" color="primary" %}}
+Azure Cosmos DB is a multi-modal database that supports multiple APIs. The default Dapr Cosmos DB state store implementation uses the [Azure Cosmos DB SQL API](https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started).
 
-The easiest way to connect to your Cosmos DB instance is to use the Data Explorer on [Azure Management Portal](https://portal.azure.com). Alternatively, you can use [various SDKs and tools](https://docs.microsoft.com/azure/cosmos-db/mongodb-introduction).
+{{% /alert %}}
 
-> **NOTE:** The following samples use Cosmos DB [SQL API](https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started). When you configure an Azure Cosmos DB for Dapr, you need to specify the exact database and collection to use. The follow samples assume you've already connected to the right database and a collection named "states".
+## Connect to Azure Cosmos DB
 
-## 2. List keys by App ID
+To connect to your Cosmos DB instance, you can either:
+
+- Use the Data Explorer on [Azure Management Portal](https://portal.azure.com). 
+- Use [various SDKs and tools](https://docs.microsoft.com/azure/cosmos-db/mongodb-introduction).
+
+{{% alert title="Note" color="primary" %}}
+When you configure an Azure Cosmos DB for Dapr, specify the exact database and collection to use. The following Cosmos DB [SQL API](https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started) samples assume you've already connected to the right database and a collection named "states".
+
+{{% /alert %}}
+
+## List keys by App ID
 
 To get all state keys associated with application "myapp", use the query:
 
@@ -24,9 +37,9 @@ To get all state keys associated with application "myapp", use the query:
 SELECT * FROM states WHERE CONTAINS(states.id, 'myapp||')
 ```
 
-The above query returns all documents with id containing "myapp-", which is the prefix of the state keys.
+The above query returns all documents with an id containing "myapp-", which is the prefix of the state keys.
 
-## 3. Get specific state data
+## Get specific state data
 
 To get the state data by a key "balance" for the application "myapp", use the query:
 
@@ -34,15 +47,13 @@ To get the state data by a key "balance" for the application "myapp", use the qu
 SELECT * FROM states WHERE states.id = 'myapp||balance'
 ```
 
-Then, read the **value** field of the returned document.
-
-To get the state version/ETag, use the command:
+Read the **value** field of the returned document. To get the state version/ETag, use the command:
 
 ```sql
 SELECT states._etag FROM states WHERE states.id = 'myapp||balance'
 ```
 
-## 4. Read actor state
+## Read actor state
 
 To get all the state keys associated with an actor with the instance ID "leroy" of actor type "cat" belonging to the application with ID "mypets", use the command:
 
@@ -56,4 +67,7 @@ And to get a specific actor state such as "food", use the command:
 SELECT * FROM states WHERE states.id = 'mypets||cat||leroy||food'
 ```
 
-> **WARNING:** You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime.
+{{% alert title="Warning" color="warning" %}}
+You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime. **The only exception:** it is often required to delete actor records in a state store, _once you know that these are no longer in use_, to prevent a build up of unused actor instances that may never be loaded again.
+
+{{% /alert %}}
