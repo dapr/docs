@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn how to use distributed locks to provide exclusive access to a resource"
 ---
 
-Now that you've learned what the Dapr distributed lock API building block provides, learn how it can work in your service. The example below describes an application that aquires a lock. This example uses the Redis lock component to demonstrate how to lock resources.
+Now that you've learned what the Dapr distributed lock API building block provides, learn how it can work in your service. The example below describes an application that aquires a lock. This example uses the Redis lock component to demonstrate how to lock resources. For a list of supported lock stores, see [this list](/reference/components-reference/supported-locks/).
 
 <img src="/images/building-block-lock-example.png" width=1000 alt="Diagram showing aquiring a lock from multiple instances of same application">
 <img src="/images/building-block-lock-unlock-example.png" width=1000 alt="Diagram showing releasing a lock from multiple instances of same application">
@@ -20,7 +20,7 @@ Save the following component file to the [default components folder]({{< ref "in
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: lock
+  name: lockstore
 spec:
   type: lock.redis
   metadata:
@@ -30,36 +30,153 @@ spec:
     value: <PASSWORD>
 ```
 
-### Get configuration items using Dapr SDKs
+### Acquire Lock
 
-{{< tabs Dotnet Java Python>}}
+{{< tabs HTTP Dotnet Go >}}
+
+{{% codetab %}}
+
+```bash
+curl -X POST http://localhost:3500/v1.0-alpha1/lock/lockstore
+   -H 'Content-Type: application/json'
+   -d '{"resourceId":"my_file_name", "lockOwner":"random_id_abc123", "expiryInSeconds": 60}'
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
 ```csharp
+using System;
+using Dapr.Client;
 
+namespace LockService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_LOCK_NAME = "lockstore";
+            var client = new DaprClientBuilder().Build();
+
+            using (var fileLock = await client.Lock(DAPR_LOCK_NAME, "my_file_name", "random_id_abc123", 60))
+            {
+                if (fileLock.Success)
+                {
+                    Console.WriteLine("Success");
+                }
+                else
+                {
+                    Console.WriteLine($"Failed to lock {fileName}.");
+                }
+            }
+        }
+    }
+}
 ```
 
 {{% /codetab %}}
 
 {{% codetab %}}
 
-```java
+```go
+package main
 
-```
+import (
+    "fmt"
 
-{{% /codetab %}}
+    dapr "github.com/dapr/go-sdk/client"
+)
 
-{{% codetab %}}
+func main() {
+    client, err := dapr.NewClient()
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+    
+    resp, err := client.TryLockAlpha1(ctx, testLockStore, &dapr.LockRequest{
+			OwnerID:         "random_id_abc123",
+			ResourceID:      "my_file_name",
+			ExpiryInSeconds: 60,
+		})
 
-```python
-
+    fmt.Println(resp.Success)
+}
 ```
 
 {{% /codetab %}}
 
 {{< /tabs >}}
 
+### Unlock Existing Lock
+
+{{< tabs HTTP Dotnet Go >}}
+
+{{% codetab %}}
+
+```bash
+curl -X POST http://localhost:3500/v1.0-alpha1/unlock/lockstore
+   -H 'Content-Type: application/json'
+   -d '{"resourceId":"my_file_name", "lockOwner":"random_id_abc123"}'
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```csharp
+using System;
+using Dapr.Client;
+
+namespace LockService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_LOCK_NAME = "lockstore";
+            var client = new DaprClientBuilder().Build();
+
+            var response = await client.Unlock(DAPR_LOCK_NAME, "my_file_name", "random_id_abc123"));
+            Console.WriteLine(response.LockStatus);
+        }
+    }
+}
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+package main
+
+import (
+    "fmt"
+
+    dapr "github.com/dapr/go-sdk/client"
+)
+
+func main() {
+    client, err := dapr.NewClient()
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+    
+    resp, err := testClient.UnlockAlpha1(ctx, "lockstore", &UnlockRequest{
+			OwnerID:    "random_id_abc123",
+			ResourceID: "my_file_name",
+		})
+
+    fmt.Println(resp.Status)
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Next steps
 
