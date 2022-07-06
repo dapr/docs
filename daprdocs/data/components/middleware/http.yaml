@@ -23,6 +23,11 @@
   state: Alpha
   version: v1
   description: Applies [Rego/OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests
+- component: RouterChecker
+  link: middleware-routerchecker
+  state: Stable
+  version: v1
+  description: Use RouterChecker middleware to block invalid http request routing
 - component: Uppercase
   link: middleware-uppercase
   state: Stable
