@@ -104,7 +104,7 @@ func main() {
     defer client.Close()
     
     resp, err := client.TryLockAlpha1(ctx, "lockstore", &dapr.LockRequest{
-			OwnerID:         "random_id_abc123",
+			LockOwner:         "random_id_abc123",
 			ResourceID:      "my_file_name",
 			ExpiryInSeconds: 60,
 		})
@@ -174,7 +174,7 @@ func main() {
     defer client.Close()
     
     resp, err := client.UnlockAlpha1(ctx, "lockstore", &UnlockRequest{
-			OwnerID:    "random_id_abc123",
+			LockOwner:    "random_id_abc123",
 			ResourceID: "my_file_name",
 		})
 
