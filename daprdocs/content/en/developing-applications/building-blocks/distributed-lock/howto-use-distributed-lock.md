@@ -8,9 +8,9 @@ description: "Learn how to use distributed locks to provide exclusive access to 
 
 Now that you've learned what the Dapr distributed lock API building block provides, learn how it can work in your service. The example below describes an application that aquires a lock. This example uses the Redis lock component to demonstrate how to lock resources. For a list of supported lock stores, see [this list](/reference/components-reference/supported-locks/).
 
-<img src="/images/building-block-lock-example.png" width=1000 alt="The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied.">
+<img src="/images/building-block-lock-example.png" width=1000 alt="The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied">
 <img src="/images/building-block-lock-unlock-example.png" width=1000 alt="Diagram showing releasing a lock from multiple instances of same application">
-<img src="/images/building-block-lock-multiple-example.png" width=1000 alt="Diagram showing aquiring multiple locks from different applications">
+<img src="/images/building-block-lock-multiple-example.png" width=1000 alt="The diagram below shows two instances of different applications, acquiring different locks on the same resource">
 
 ### Configure a lock component
 
