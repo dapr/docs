@@ -3,14 +3,14 @@ type: docs
 title: "Redis"
 linkTitle: "Redis"
 weight: 2000
-description: "Use Redis as a backend state store"
+description: "Use Redis as a state store"
 ---
 
 Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [the state management spec]({{< ref state_api.md >}}). You can directly interact with the underlying store to manipulate the state data, such as:
 
-- Querying states
-- Creating aggregated views
-- Making backups
+- Querying states.
+- Creating aggregated views.
+- Making backups.
 
 {{% alert title="Note" color="primary" %}}
 The following examples uses Redis CLI against a Redis store using the default Dapr state store implementation.
@@ -44,8 +44,8 @@ The above command returns a list of existing keys, for example:
 
 Dapr saves state values as hash values. Each hash value contains a "data" field, which contains:
 
-- The state data
-- A "version" field, with an ever-incrementing version serving as the ETag
+- The state data.
+- A "version" field, with an ever-incrementing version serving as the ETag.
 
 For example, to get the state data by a key "balance" for the application "myapp", use the command:
 
@@ -74,6 +74,6 @@ HGET mypets||cat||leroy||food value
 ```
 
 {{% alert title="Warning" color="warning" %}}
-You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime.
+You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime. **The only exception:** it is often required to delete actor records in a state store, _once you know that these are no longer in use_, to prevent a build up of unused actor instances that may never be loaded again.
 
 {{% /alert %}}

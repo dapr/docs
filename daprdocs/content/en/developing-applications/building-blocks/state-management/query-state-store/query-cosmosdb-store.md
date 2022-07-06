@@ -3,14 +3,14 @@ type: docs
 title: "Azure Cosmos DB"
 linkTitle: "Azure Cosmos DB"
 weight: 1000
-description: "Use Azure Cosmos DB as a backend state store"
+description: "Use Azure Cosmos DB as a state store"
 ---
 
 Dapr doesn't transform state values while saving and retrieving states. Dapr requires all state store implementations to abide by a certain key format scheme (see [the state management spec]({{< ref state_api.md >}}). You can directly interact with the underlying store to manipulate the state data, such as:
 
-- Querying states
-- Creating aggregated views
-- Making backups
+- Querying states.
+- Creating aggregated views.
+- Making backups.
 
 {{% alert title="Note" color="primary" %}}
 Azure Cosmos DB is a multi-modal database that supports multiple APIs. The default Dapr Cosmos DB state store implementation uses the [Azure Cosmos DB SQL API](https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started).
@@ -68,6 +68,6 @@ SELECT * FROM states WHERE states.id = 'mypets||cat||leroy||food'
 ```
 
 {{% alert title="Warning" color="warning" %}}
-You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime.
+You should not manually update or delete states in the store. All writes and delete operations should be done via the Dapr runtime. **The only exception:** it is often required to delete actor records in a state store, _once you know that these are no longer in use_, to prevent a build up of unused actor instances that may never be loaded again.
 
 {{% /alert %}}

@@ -85,7 +85,7 @@ As a dataset, consider a [collection of employee records](../query-api-examples/
 - `key` is the unique ID
 - `value` is the JSON object with employee record.
 
-To better illustrate functionality, organization name (org) and employee ID (id) will be a nested JSON person object.
+To better illustrate functionality, organization name (org) and employee ID (id) are a nested JSON person object.
 
 Get started by creating an instance of MongoDB, which is your state store.
 

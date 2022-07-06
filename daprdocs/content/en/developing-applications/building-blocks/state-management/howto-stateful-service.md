@@ -15,7 +15,7 @@ For the purpose of this guide, we'll use the default Redis state store.
 
 ### Using the Dapr CLI
 
-When you run `dapr init` in standalone mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
+When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
 
 - On Windows, under `%UserProfile%\.dapr\components\statestore.yaml`
 - On Linux/MacOS, under `~/.dapr/components/statestore.yaml`
@@ -30,12 +30,12 @@ See [how to setup different state stores on Kubernetes]({{<ref setup-state-store
 
 ## Strong and eventual consistency
 
-Using strong consistency, Dapr will make sure the underlying state store:
+Using strong consistency, Dapr makes sure that the underlying state store:
 
-- Returns the response once the data has been written to all replicas
-- Receives an ack from a quorum before writing or deleting state
+- Returns the response once the data has been written to all replicas.
+- Receives an ACK from a quorum before writing or deleting state.
 
-For get requests, Dapr will make sure the store returns the most up-to-date data consistently among replicas. The default is eventual consistency, unless specified otherwise in the request to the state API.
+For get requests, Dapr ensures the store returns the most up-to-date data consistently among replicas. The default is eventual consistency, unless specified otherwise in the request to the state API.
 
 The following examples illustrate how to save, get, and delete state using strong consistency. The example is written in Python, but is applicable to any programming language.
 
@@ -88,15 +88,15 @@ Dapr uses version numbers to determine whether a specific key has been updated. 
 1. Retain the version number when reading the data for a key.
 1. Use the version number during updates such as writes and deletes. 
 
-If the version information has changed since the version number was retrieved, an error is thrown, requiring the you to perform another read to get the latest version information and state.
+If the version information has changed since the version number was retrieved, an error is thrown, requiring you to perform another read to get the latest version information and state.
 
-Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header. Using ETags, you know that a resource has been updated since the last time they checked by erroring during an ETag mismatch.
+Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header. Using ETags, your application knows that a resource has been updated since the last time they checked by erroring during an ETag mismatch.
 
 The following example shows how to:
 
-- Get an ETag
-- Use the ETag to save state
-- Delete the state
+- Get an ETag.
+- Use the ETag to save state.
+- Delete the state.
 
 The following example is written in Python, but is applicable to any programming language.
 

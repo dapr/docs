@@ -47,7 +47,7 @@ Dapr supports Optimistic Concurrency Control (OCC) using ETags. When a state val
 
 The `write` operation succeeds when the provided ETag matches the ETag in the state store.
 
-##### Why Dapr chooses OCC
+##### Why Dapr chooses optimistic concurrency control (OCC)
 
 Data update conflicts are rare in many applications, since clients are naturally partitioned by business contexts to operate on different data. However, if your application chooses to use ETags, mismatched ETags may cause a request rejection. It's recommended you use a retry policy in your code to compensate for conflicts when using ETags.
 
@@ -103,8 +103,8 @@ Different applications' needs vary when it comes to sharing state. In one scenar
 
 Dapr enables states to be:
 
-- Isolated to an application
-- Shared in a state store between applications
+- Isolated to an application.
+- Shared in a state store between applications.
 - Shared between multiple applications across different state stores. 
 
 For more details read [How-To: Share state between applications]({{< ref howto-share-state.md >}}),
@@ -149,7 +149,7 @@ SELECT AVG(value) FROM StateTable WHERE Id LIKE '<app-id>||<thermometer>||*||tem
 
 ### State Time-to-Live (TTL)
 
-Dapr enables per state set request time-to-live (TTL). This means that applications can set time-to-live per state stored, and these states cannot be retrieved after expiration.
+Dapr enables [per state set request time-to-live (TTL)]({{< ref state-store-ttl.md >}}). This means that applications can set time-to-live per state stored, and these states cannot be retrieved after expiration.
 
 ### State management API
 

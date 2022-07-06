@@ -6,13 +6,13 @@ weight: 200
 description: "Use key value pairs to persist a state"
 ---
 
-State management is one of the most common needs of any new, legacy, monolith, or microservice application. Dealing with and testing different database libraries and handling retries and faults can be both diffictult and time consuming.
+State management is one of the most common needs of any new, legacy, monolith, or microservice application. Dealing with and testing different database libraries and handling retries and faults can be both difficult and time consuming.
 
 In this guide, you'll learn the basics of using the key/value state API to allow an application to save, get, and delete state.
 
 ## Example
 
-The below code example _loosely_ describes an application that processes orders with an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
+The code example below _loosely_ describes an application that processes orders with an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
 
 <img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
 
@@ -26,7 +26,7 @@ For the purpose of this guide we'll use a Redis state store, but any state store
 
 {{% codetab %}}
 
-When you run `dapr init` in standalone mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
+When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
 
 - On Windows, under `%UserProfile%\.dapr\components\statestore.yaml`
 - On Linux/MacOS, under `~/.dapr/components/statestore.yaml`
@@ -37,7 +37,7 @@ With the `statestore.yaml` component, you can easily swap out underlying compone
 
 {{% codetab %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired state store component]({{< ref supported-state-stores >}}) in the yaml below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [state store component]({{< ref supported-state-stores >}}) in the YAML below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -62,12 +62,12 @@ See [how to setup different state stores on Kubernetes]({{< ref "setup-state-sto
 {{< /tabs >}}
 
 {{% alert title="Important" color="warning" %}}
-Set an app-id, as the state keys are prefixed with this value. If you don't set an app-id, one is generated for you at runtime. The next time you run the command, a new app-id will be generated and you will no longer have access to the previously saved state.
+Set an `app-id`, as the state keys are prefixed with this value. If you don't set an `app-id`, one is generated for you at runtime. The next time you run the command, a new `app-id` is generated and you will no longer have access to the previously saved state.
 {{% /alert %}}
 
 ## Save and retrieve a single state
 
-The following example shows how to save and retrieve a single key/value pair using the Dapr state building block.
+The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.
 
 {{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -110,7 +110,7 @@ namespace EventService
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
@@ -158,7 +158,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -191,7 +191,7 @@ while True:
         logging.info('Result after get: ' + result.data.decode('utf-8'))
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
@@ -239,7 +239,7 @@ func main() {
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
@@ -291,7 +291,7 @@ function sleep(ms) {
 main();
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -377,7 +377,7 @@ namespace EventService
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
@@ -407,7 +407,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -430,7 +430,7 @@ with DaprClient() as client:
     client.delete_state(store_name=DAPR_STORE_NAME, key="order_1")
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
@@ -465,7 +465,7 @@ func main() {
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
@@ -491,7 +491,7 @@ var main = function() {
 main();
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -552,7 +552,7 @@ namespace EventService
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
@@ -585,7 +585,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -611,7 +611,7 @@ with DaprClient() as client:
     logging.info('Result after get bulk: ' + str(result)) 
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
@@ -648,7 +648,7 @@ var main = function() {
 main();
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -693,7 +693,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["
 ## Perform state transactions
 
 {{% alert title="Note" color="primary" %}}
-State transactions require a state store that supports multi-item transactions. Visit the [supported state stores page]({{< ref supported-state-stores >}}) for a full list.
+State transactions require a state store that supports multi-item transactions. See the [supported state stores page]({{< ref supported-state-stores >}}) for a full list.
 {{% /alert %}}
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
@@ -744,7 +744,7 @@ namespace EventService
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
@@ -797,7 +797,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -843,7 +843,7 @@ while True:
     logging.info('Result: ' + str(result))
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
@@ -898,7 +898,7 @@ function sleep(ms) {
 main();
 ```
 
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
