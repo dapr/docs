@@ -2,12 +2,12 @@
 type: docs
 title: "annotate CLI command reference"
 linkTitle: "annotate"
-description: "Add dapr annotatations to a Kubernetes configuration"
+description: "Add Dapr annotatations to a Kubernetes configuration"
 ---
 
 ### Description
 
-Add dapr annotations to a Kubernetes configuration.
+Add Dapr annotations to a Kubernetes configuration. This enables you to add/change the Dapr annotations on a deployment files. See [Kubernetes annotations]({{< ref arguments-annotations-overview >}}) for a full description of each annotation available in the following list of flags.
 
 ### Supported platforms
 
@@ -58,7 +58,7 @@ dapr annotate [flags] CONFIG-FILE
 | `--readiness-probe-period` | | `-1` | The period to use for the readiness probe in the sidecar. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | `--readiness-probe-threshold` | | `-1` | The threshold to use for the readiness probe in the sidecar. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | `--readiness-probe-timeout` | | `-1` | The timeout to use for the readiness probe in the sidecar. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
-| `--resource, -r` | | | The resource to target to annotate |
+| `--resource, -r` | | | The Kubernetes resource target to annotate |
 | `--enable-api-logging` | | | Enable API logging for the Dapr sidecar |
 | `--unix-domain-socket-path` | | | Linux domain socket path to use for communicating with the Dapr sidecar | 
 | `--volume-mounts` | | | List of pod volumes to be mounted to the sidecar container in read-only mode | 
