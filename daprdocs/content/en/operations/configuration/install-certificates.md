@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Install certificates in the Dapr sidecar"
-linkTitle: "install certificates"
+linkTitle: "Install sidecar certificates"
 weight: 6500
 description: "Configure the Dapr sidecar container to trust certificates"
 ---

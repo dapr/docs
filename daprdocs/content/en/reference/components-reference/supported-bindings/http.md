@@ -174,7 +174,7 @@ curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "p
 The HTTP binding can also be used with HTTPS endpoints by configuring the Dapr sidecar to trust the server's SSL certificate.
 
 1. Update the binding component's YAML to use `https` instead of `http`
-1. Refer [How-To: Install certificates in the Dapr sidecar]({{ ref install-certificates }}), to install the SSL certificate in the sidecar.
+1. Refer [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}}), to install the SSL certificate in the sidecar.
 
 
 ## Related links
@@ -184,4 +184,4 @@ The HTTP binding can also be used with HTTPS endpoints by configuring the Dapr s
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
-- [How-To: Install certificates in the Dapr sidecar]({{ ref install-certificates }})
+- [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}})
