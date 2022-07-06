@@ -48,7 +48,7 @@ On Kubernetes:
 1. Certificates must be available to the sidecar container using a volume mount.
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 
-The YAML below is an exxample of a deployment that attaches a pod volume to the sidecar, and sets `SSL_CERT_DIR` to install the certificates.
+The YAML below is an example of a deployment that attaches a pod volume to the sidecar, and sets `SSL_CERT_DIR` to install the certificates.
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
