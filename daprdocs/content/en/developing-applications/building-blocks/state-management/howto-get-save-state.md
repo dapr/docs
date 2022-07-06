@@ -6,26 +6,17 @@ weight: 200
 description: "Use key value pairs to persist a state"
 ---
 
-## Introduction
+State management is one of the most common needs of any new, legacy, monolith, or microservice application. Dealing with and testing different database libraries and handling retries and faults can be both difficult and time consuming.
 
-State management is one of the most common needs of any application: new or legacy, monolith or microservice.
-Dealing with different databases libraries, testing them, handling retries and faults can be time consuming and hard.
+In this guide, you'll learn the basics of using the key/value state API to allow an application to save, get, and delete state.
 
-Dapr provides state management capabilities that include consistency and concurrency options.
-In this guide we'll start of with the basics: Using the key/value state API to allow an application to save, get and delete state.
+## Example
 
-## Pre-requisites
-
-- [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- Initialized [Dapr environment]({{< ref install-dapr-selfhost.md >}})
-
-## Example:
-
-The below code examples loosely describe an application that processes orders. In the examples, there is an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
+The code example below _loosely_ describes an application that processes orders with an order processing service which has a Dapr sidecar. The order processing service uses Dapr to store state in a Redis state store.
 
 <img src="/images/building-block-state-management-example.png" width=1000 alt="Diagram showing state management of example service">
 
-## Step 1: Setup a state store
+## Set up a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
 
@@ -34,14 +25,19 @@ For the purpose of this guide we'll use a Redis state store, but any state store
 {{< tabs "Self-Hosted (CLI)" Kubernetes>}}
 
 {{% codetab %}}
-When using `dapr init` in Standalone mode, the Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML in a `components` directory, which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`
 
-To optionally change the state store being used, replace the YAML file `statestore.yaml` under `/components` with the file of your choice.
+When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
+
+- On Windows, under `%UserProfile%\.dapr\components\statestore.yaml`
+- On Linux/MacOS, under `~/.dapr/components/statestore.yaml`
+
+With the `statestore.yaml` component, you can easily swap out underlying components without application code changes.
+
 {{% /codetab %}}
 
 {{% codetab %}}
 
-To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [desired statestore component]({{< ref supported-state-stores >}}) in the yaml below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
+To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of your [state store component]({{< ref supported-state-stores >}}) in the YAML below, save as `statestore.yaml`, and run `kubectl apply -f statestore.yaml`.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -58,21 +54,20 @@ spec:
   - name: redisPassword
     value: ""
 ```
-See the instructions [here]({{< ref "setup-state-store" >}}) on how to setup different state stores on Kubernetes.
+
+See [how to setup different state stores on Kubernetes]({{< ref "setup-state-store" >}}).
 
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Step 2: Save and retrieve a single state
-
-The following example shows how to save and retrieve a single key/value pair using the Dapr state building block.
-
-{{% alert title="Note" color="warning" %}}
-It is important to set an app-id, as the state keys are prefixed with this value. If you don't set it one is generated for you at runtime, and the next time you run the command a new one will be generated and you will no longer be able to access previously saved state.
+{{% alert title="Important" color="warning" %}}
+Set an `app-id`, as the state keys are prefixed with this value. If you don't set an `app-id`, one is generated for you at runtime. The next time you run the command, a new `app-id` is generated and you will no longer have access to the previously saved state.
 {{% /alert %}}
 
-Below are code examples that leverage Dapr SDKs for saving and retrieving a single state.
+## Save and retrieve a single state
+
+The following example shows how to save and retrieve a single key/value pair using the Dapr state management API.
 
 {{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
@@ -115,14 +110,13 @@ namespace EventService
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -164,14 +158,13 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -198,14 +191,13 @@ while True:
         logging.info('Result after get: ' + result.data.decode('utf-8'))
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -247,14 +239,13 @@ func main() {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -300,7 +291,7 @@ function sleep(ms) {
 main();
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -308,41 +299,46 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% /codetab %}}
 
-
 {{% codetab %}}
-Begin by launching a Dapr sidecar:
+
+Launch a Dapr sidecar:
 
 ```bash
 dapr run --app-id orderprocessing --dapr-http-port 3601
 ```
 
-Then in a separate terminal save a key/value pair into your statestore:
+In a separate terminal, save a key/value pair into your statestore:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250"}]' http://localhost:3601/v1.0/state/statestore
 ```
 
 Now get the state you just saved:
+
 ```bash
 curl http://localhost:3601/v1.0/state/statestore/order_1
 ```
 
 Restart your sidecar and try retrieving state again to observe that state persists separately from the app.
+
 {{% /codetab %}}
 
 {{% codetab %}}
 
-Begin by launching a Dapr sidecar:
+Launch a Dapr sidecar:
 
 ```bash
 dapr --app-id orderprocessing --dapr-http-port 3601 run
 ```
 
-Then in a separate terminal save a key/value pair into your statestore:
+In a separate terminal, save a key/value pair into your statestore:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{"key": "order_1", "value": "250"}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
 Now get the state you just saved:
+
 ```powershell
 Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/state/statestore/order_1'
 ```
@@ -353,8 +349,7 @@ Restart your sidecar and try retrieving state again to observe that state persis
 
 {{< /tabs >}}
 
-
-## Step 3: Delete state
+## Delete state
 
 Below are code examples that leverage Dapr SDKs for deleting the state.
 
@@ -382,14 +377,13 @@ namespace EventService
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -413,14 +407,13 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -437,14 +430,13 @@ with DaprClient() as client:
     client.delete_state(store_name=DAPR_STORE_NAME, key="order_1")
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -473,14 +465,13 @@ func main() {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -500,7 +491,7 @@ var main = function() {
 main();
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -509,24 +500,32 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above run:
+
+With the same Dapr instance running from above, run:
+
 ```bash
 curl -X DELETE 'http://localhost:3601/v1.0/state/statestore/order_1'
 ```
-Try getting state again and note that no value is returned.
+
+Try getting state again. Note that no value is returned.
+
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above run:
+
+With the same Dapr instance running from above, run:
+
 ```powershell
 Invoke-RestMethod -Method Delete -Uri 'http://localhost:3601/v1.0/state/statestore/order_1'
 ```
-Try getting state again and note that no value is returned.
+
+Try getting state again. Note that no value is returned.
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Step 4: Save and retrieve multiple states
+## Save and retrieve multiple states
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
@@ -553,7 +552,7 @@ namespace EventService
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
@@ -586,7 +585,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -612,7 +611,7 @@ with DaprClient() as client:
     logging.info('Result after get bulk: ' + str(result)) 
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
@@ -649,7 +648,7 @@ var main = function() {
 main();
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -658,24 +657,31 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above save two key/value pairs into your statestore:
+
+With the same Dapr instance running from above, save two key/value pairs into your statestore:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "order_1", "value": "250"}, { "key": "order_2", "value": "550"}]' http://localhost:3601/v1.0/state/statestore
 ```
 
 Now get the states you just saved:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above save two key/value pairs into your statestore:
+
+With the same Dapr instance running from above, save two key/value pairs into your statestore:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '[{ "key": "order_1", "value": "250"}, { "key": "order_2", "value": "550"}]' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
 Now get the states you just saved:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```
@@ -684,10 +690,10 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["
 
 {{< /tabs >}}
 
-## Step 5: Perform state transactions
+## Perform state transactions
 
-{{% alert title="Note" color="warning" %}}
-State transactions require a state store that supports multi-item transactions. Visit the [supported state stores page]({{< ref supported-state-stores >}}) page for a full list. Note that the default Redis container created in a self-hosted environment supports them.
+{{% alert title="Note" color="primary" %}}
+State transactions require a state store that supports multi-item transactions. See the [supported state stores page]({{< ref supported-state-stores >}}) for a full list.
 {{% /alert %}}
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
@@ -738,14 +744,13 @@ namespace EventService
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -792,7 +797,7 @@ public class OrderProcessingServiceApplication {
 }
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
@@ -838,14 +843,13 @@ while True:
     logging.info('Result: ' + str(result))
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
-
 
 {{% codetab %}}
 
@@ -894,7 +898,7 @@ function sleep(ms) {
 main();
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch a Dapr sidecar and run the application:
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 npm start
@@ -903,24 +907,31 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above perform two state transactions:
+
+With the same Dapr instance running from above, perform two state transactions:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' http://localhost:3601/v1.0/state/statestore/transaction
 ```
 
 Now see the results of your state transactions:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_2"]}' http://localhost:3601/v1.0/state/statestore/bulk
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-With the same Dapr instance running from above save two key/value pairs into your statestore:
+
+With the same Dapr instance running from above, save two key/value pairs into your statestore:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore'
 ```
 
 Now see the results of your state transactions:
+
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"keys":["order_1", "order_2"]}' -Uri 'http://localhost:3601/v1.0/state/statestore/bulk'
 ```

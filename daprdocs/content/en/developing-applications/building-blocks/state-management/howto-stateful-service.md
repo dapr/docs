@@ -6,38 +6,40 @@ weight: 300
 description: "Use state management with a scaled, replicated service"
 ---
 
-In this article you'll learn how you can create a stateful service which can be horizontally scaled, using opt-in concurrency and consistency models.
+In this article, you'll learn how to create a stateful service which can be horizontally scaled, using opt-in concurrency and consistency models. Consuming the state management API frees developers from difficult state coordination, conflict resolution, and failure handling.
 
-This frees developers from difficult state coordination, conflict resolution and failure handling, and allows them instead to consume these capabilities as APIs from Dapr.
-
-## Setup a state store
+## Set up a state store
 
 A state store component represents a resource that Dapr uses to communicate with a database.
-For the purpose of this guide, we'll use a Redis state store.
-
-See a list of supported state stores [here]({{< ref supported-state-stores >}})
+For the purpose of this guide, we'll use the default Redis state store.
 
 ### Using the Dapr CLI
 
-The Dapr CLI automatically provisions a state store (Redis) and creates the relevant YAML when running your app with `dapr run`.
-To change the state store being used, replace the YAML under `/components` with the file of your choice.
+When you run `dapr init` in self-hosted mode, Dapr creates a default Redis `statestore.yaml` and runs a Redis state store on your local machine, located:
+
+- On Windows, under `%UserProfile%\.dapr\components\statestore.yaml`
+- On Linux/MacOS, under `~/.dapr/components/statestore.yaml`
+
+With the `statestore.yaml` component, you can easily swap out underlying components without application code changes.
+
+See a [list of supported state stores]({{< ref supported-state-stores >}}).
 
 ### Kubernetes
 
-See the instructions [here]({{<ref setup-state-store>}}) on how to setup different state stores on Kubernetes.
+See [how to setup different state stores on Kubernetes]({{<ref setup-state-store>}}).
 
-## Strong and Eventual consistency
+## Strong and eventual consistency
 
-Using strong consistency, Dapr will make sure the underlying state store returns the response once the data has been written to all replicas or received an ack from a quorum before writing or deleting state.
+Using strong consistency, Dapr makes sure that the underlying state store:
 
-For get requests, Dapr will make sure the store returns the most up to date data consistently among replicas.
-The default is eventual consistency, unless specified otherwise in the request to the state API.
+- Returns the response once the data has been written to all replicas.
+- Receives an ACK from a quorum before writing or deleting state.
 
-The following examples illustrates using strong consistency:
+For get requests, Dapr ensures the store returns the most up-to-date data consistently among replicas. The default is eventual consistency, unless specified otherwise in the request to the state API.
+
+The following examples illustrate how to save, get, and delete state using strong consistency. The example is written in Python, but is applicable to any programming language.
 
 ### Saving state
-
-*The following example is written in Python, but is applicable to any programming language*
 
 ```python
 import requests
@@ -51,8 +53,6 @@ response = requests.post(dapr_state_url, json=stateReq)
 
 ### Getting state
 
-*The following example is written in Python, but is applicable to any programming language*
-
 ```python
 import requests
 import json
@@ -65,8 +65,6 @@ print(response.headers['ETag'])
 
 ### Deleting state
 
-*The following example is written in Python, but is applicable to any programming language*
-
 ```python
 import requests
 import json
@@ -76,24 +74,31 @@ dapr_state_url = "http://localhost:3500/v1.0/state/{}".format(store_name)
 response = requests.delete(dapr_state_url + "/key1", headers={"consistency":"strong"})
 ```
 
-Last-write concurrency is the default concurrency mode if the `concurrency` option is not specified.
+If the `concurrency` option hasn't been specified, the default is last-write concurrency mode.
 
-## First-write-wins and Last-write-wins
+## First-write-wins and last-write-wins
 
-Dapr allows developers to opt-in for two common concurrency patterns when working with data stores: First-write-wins and Last-write-wins.
-First-Write-Wins is useful in situations where you have multiple instances of an application, all writing to the same key concurrently.
+Dapr allows developers to opt-in for two common concurrency patterns when working with data stores: 
 
-The default mode for Dapr is Last-write-wins.
+- **First-write-wins**: useful in situations where you have multiple instances of an application, all writing to the same key concurrently.
+- **Last-write-wins**: Default mode for Dapr.
 
-Dapr uses version numbers to determine whether a specific key has been updated. Clients retain the version number when reading the data for a key and then use the version number during updates such as writes and deletes. If the version information has changed since the client retrieved, an error is thrown, which then requires the client to perform a read again to get the latest version information and state.
+Dapr uses version numbers to determine whether a specific key has been updated. You can:
 
-Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header.
+1. Retain the version number when reading the data for a key.
+1. Use the version number during updates such as writes and deletes. 
 
-Using ETags, clients know that a resource has been updated since the last time they checked by erroring when there's an ETag mismatch.
+If the version information has changed since the version number was retrieved, an error is thrown, requiring you to perform another read to get the latest version information and state.
 
-The following example shows how to get an ETag, and then use it to save state and then delete the state:
+Dapr utilizes ETags to determine the state's version number. ETags are returned from state requests in an `ETag` header. Using ETags, your application knows that a resource has been updated since the last time they checked by erroring during an ETag mismatch.
 
-*The following example is written in Python, but is applicable to any programming language*
+The following example shows how to:
+
+- Get an ETag.
+- Use the ETag to save state.
+- Delete the state.
+
+The following example is written in Python, but is applicable to any programming language.
 
 ```python
 import requests
@@ -111,7 +116,7 @@ response = requests.delete(dapr_state_url + "/key1", headers={"If-Match": "{}".f
 
 ### Handling version mismatch failures
 
-In this example, we'll see how to retry a save state operation when the version has changed:
+In the following example, you'll see how to retry a save state operation when the version has changed:
 
 ```python
 import requests
