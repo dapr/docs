@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How-To: Set state Time-to-Live (TTL)"
-linkTitle: "How-To: Set state TTL"
+title: "State Time-to-Live (TTL)"
+linkTitle: "State TTL"
 weight: 500
-description: "Manage state with time-to-live."
+description: "Manage state with TTL."
 ---
 
 Dapr enables per state set request time-to-live (TTL). This means that applications can set time-to-live per state stored, and these states cannot be retrieved after expiration.
