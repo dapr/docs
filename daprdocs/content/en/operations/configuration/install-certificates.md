@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "How-To: Use custom certificates in the Dapr sidecar"
-linkTitle: "Use custom certificates"
+title: "How-To: Install certificates in the Dapr sidecar"
+linkTitle: "install certificates"
 weight: 6500
-description: "Configure the Dapr sidecar container to trust custom certificates"
+description: "Configure the Dapr sidecar container to trust certificates"
 ---
 
-The Dapr sidecar can be configured to trust custom certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted, e.g., using an HTTP binding, configuring an outbound proxy for the sidecar, etc. Both custom CA certificates and leaf certificates are supported.
+The Dapr sidecar can be configured to trust certificates for communicating with external services. This is useful in scenarios where a self-signed certificate needs to be trusted. For example, using an HTTP binding or configuring an outbound proxy for the sidecar. Both certificate authority (CA) certificates and leaf certificates are supported.
 
 {{< tabs Self-hosted Kubernetes >}}
 
@@ -19,12 +19,12 @@ When the sidecar is running as a container:
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 1. For Windows containers, the container needs to run with administrator privileges to be able to install the certificates.
 
-Below is an example that uses Docker Compose:
+Below is an example that uses Docker Compose to install certificates (present locally in the `./certificates` directory) in the sidecar container:
 ```yaml
 version: '3'
 services:
   dapr-sidecar:
-    image: "daprio/daprd:edge" # dapr version must be at least 1.8
+    image: "daprio/daprd:edge" # dapr version must be at least v1.8
     command: [
       "./daprd",
      "-app-id", "myapp",
@@ -35,7 +35,7 @@ services:
         - "./certificates:/certificates" # (STEP 1) Mount the certificates folder to the sidecar container
     environment:
       - "SSL_CERT_DIR=/certificates" # (STEP 2) Set the environment variable to the path of the certificates folder
-    # Uncomment this for Windows containers
+    # Uncomment the line below for Windows containers
     # user: ContainerAdministrator
 ```
 
@@ -48,7 +48,7 @@ On Kubernetes:
 1. Certificates must be available to the sidecar container using a volume mount.
 1. The environment variable `SSL_CERT_DIR` must be set in the sidecar container, pointing to the directory containing the certificates.
 
-Below is an example of a deployment YAML:
+The YAML below is an exxample of a deployment that attaches a pod volume to the sidecar, and sets `SSL_CERT_DIR` to install the certificates.
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -83,6 +83,10 @@ spec:
 {{% alert title="Note" color="primary" %}}
 When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
 {{% /alert %}}
+
+Note, all the certificates in the directory pointed by `SSL_CERT_DIR` are installed. 
+1. On Linux containers, all the certificate extensions supported by OpenSSL are supported. For more information, see https://www.openssl.org/docs/man1.1.1/man1/openssl-rehash.html
+1. On Windows container, all the certificate extensions supported by certoc.exe are supported. For more information, see certoc.exe present in [Windows Server Core](https://hub.docker.com/_/microsoft-windows-servercore)
 
 {{% /codetab %}}
 
