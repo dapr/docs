@@ -98,5 +98,14 @@ scopes:
 - checkout
 ```
 
-For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
-For more information on topic subscriptions, read [Declarative and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
+## Demo
+
+Watch [this video for an overview of the dead letter topics](https://youtu.be/wLYYOJLt_KQ?t=69):
+
+<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/wLYYOJLt_KQ?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+## Next steps
+
+- For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
+- For more information on topic subscriptions, read [Declarative and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
