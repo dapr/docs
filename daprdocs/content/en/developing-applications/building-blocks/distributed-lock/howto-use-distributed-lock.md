@@ -99,7 +99,7 @@ func main() {
     }
     defer client.Close()
     
-    resp, err := client.TryLockAlpha1(ctx, testLockStore, &dapr.LockRequest{
+    resp, err := client.TryLockAlpha1(ctx, "lockstore", &dapr.LockRequest{
 			OwnerID:         "random_id_abc123",
 			ResourceID:      "my_file_name",
 			ExpiryInSeconds: 60,
