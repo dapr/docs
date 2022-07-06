@@ -122,7 +122,7 @@ spec:
         duration: 5s
         maxRetries: 10
 
-      retryForever: # A custom retry policy will replace default retries and the target will rely soley on the named policy. 
+      retryForever: # A user defined retry policy replaces default retries. Targets rely solely on the applied policy. 
         policy: exponential
         maxInterval: 15s
         maxRetries: -1 # Retry indefinitely
