@@ -6,49 +6,72 @@ weight: 100
 description: Overview of the bindings API building block 
 ---
 
-## Introduction
+Using Dapr's bindings API, you can trigger your app with events coming in from external systems and interface with external systems. With the bindings API, you can:
 
-Using bindings, you can trigger your app with events coming in from external systems, or interface with external systems. This building block provides several benefits for you and your code:
+- Avoid the complexities of connecting to and polling from messaging systems, such as queues and message buses.
+- Focus on business logic, instead of the implementation details of interacting with a system.
+- Keep your code free from SDKs or libraries.
+- Handle retries and failure recovery.
+- Switch between bindings at runtime.
+- Build portable applications with environment-specific bindings set-up and no required code changes.
 
-- Remove the complexities of connecting to, and polling from, messaging systems such as queues and message buses
-- Focus on business logic and not implementation details of how to interact with a system
-- Keep your code free from SDKs or libraries
-- Handle retries and failure recovery
-- Switch between bindings at run time
-- Build portable applications where environment-specific bindings are set-up and no code changes are required
+For example, with bindings, your microservice can respond to incoming Twilio/SMS messages without:
 
-For a specific example, bindings would allow your microservice to respond to incoming Twilio/SMS messages without adding or configuring a third-party Twilio SDK, worrying about polling from Twilio (or using websockets, etc.).
+- Adding or configuring a third-party Twilio SDK
+- Worrying about polling from Twilio (or using WebSockets, etc.)
 
-Bindings are developed independently of Dapr runtime. You can view and contribute to the bindings [here](https://github.com/dapr/components-contrib/tree/master/bindings).
+{{% alert title="Note" color="primary" %}}
+Bindings are developed independently of Dapr runtime. You can [view and contribute to the bindings](https://github.com/dapr/components-contrib/tree/master/bindings).
+{{% /alert %}}
 
 ## Input bindings
 
-Input bindings are used to trigger your application when an event from an external resource has occurred.
-An optional payload and metadata may be sent with the request.
+With input bindings, you can trigger your application when an event from an external resource occurs. An optional payload and metadata may be sent with the request.
 
-In order to receive events from an input binding:
+To receive events from an input binding:
 
-1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
-2. Listen on an HTTP endpoint for the incoming event, or use the gRPC proto library to get incoming events
+1. Define the component YAML that describes the binding type and its metadata (connection info, etc.).
+1. Listen for the incoming event using:
+   - An HTTP endpoint
+   - The gRPC proto library to get incoming events.
 
-> On startup Dapr sends a `OPTIONS` request for all defined input bindings to the application and expects a status code other than `NOT FOUND (404)` if this application wants to subscribe to the binding.
+{{% alert title="Note" color="primary" %}}
+ On startup, Dapr sends [an OPTIONS request]({{< ref "bindings_api.md#invoking-service-code-through-input-bindings" >}}) for all defined input bindings to the application. If the application wants to subscribe to the binding, Dapr expects a status code of 2xx or 405.
 
-Read the [Create an event-driven app using input bindings]({{< ref howto-triggers.md >}}) page to get started with input bindings.
+{{% /alert %}}
+
+Read the [Create an event-driven app using input bindings guide]({{< ref howto-triggers.md >}}) to get started with input bindings.
 
 ## Output bindings
 
-Output bindings allow you to invoke external resources. An optional payload and metadata can be sent with the invocation request.
+With output bindings, you can invoke external resources. An optional payload and metadata can be sent with the invocation request.
 
-In order to invoke an output binding:
+To invoke an output binding:
 
-1. Define the component YAML that describes the type of binding and its metadata (connection info, etc.)
-2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload
+1. Define the component YAML that describes the binding type and its metadata (connection info, etc.).
+2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload.
 
-Read the [Use output bindings to interface with external resources]({{< ref howto-bindings.md >}}) page to get started with output bindings.
+Read the [Use output bindings to interface with external resources guide]({{< ref howto-bindings.md >}}) to get started with output bindings.
+
+## Try out bindings
+
+### Quickstarts and tutorials
+
+Want to put the Dapr bindings API to the test? Walk through the following quickstart and tutorials to see bindings in action:
+
+| Quickstart/tutorial | Description |
+| ------------------- | ----------- |
+| [Bindings quickstart]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
+| [Bindings tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings) | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka. |
+
+### Start using bindings directly in your app
+
+Want to skip the quickstarts? Not a problem. You can try out the bindings building block directly in your application to invoke output bindings and trigger input bindings. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the bindings API starting with [the input bindings how-to guide]({{< ref howto-triggers.md >}}).
 
 ## Next Steps
-* Follow these guides on:
-    * [How-To: Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
-    * [How-To: Use output bindings to interface with external resources]({{< ref howto-bindings.md >}})
-* Try out the [bindings quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings/README.md) which shows how to bind to a Kafka queue
-* Read the [bindings API specification]({{< ref bindings_api.md >}})
+
+- Follow these guides on:
+  - [How-To: Trigger a service from different resources with input bindings]({{< ref howto-triggers.md >}})
+  - [How-To: Use output bindings to interface with external resources]({{< ref howto-bindings.md >}})
+- Try out the [bindings tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings/README.md) to experiment with binding to a Kafka queue.
+- Read the [bindings API specification]({{< ref bindings_api.md >}})

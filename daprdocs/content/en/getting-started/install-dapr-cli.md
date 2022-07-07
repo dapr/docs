@@ -49,6 +49,8 @@ Install the latest windows Dapr cli to `C:\dapr` and add this directory to the U
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
 
+**Note:** Updates to PATH might not be visible until you restart your terminal application.
+
 #### Install without administrative rights
 
 If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. The script below creates the directory if it does not exist.
