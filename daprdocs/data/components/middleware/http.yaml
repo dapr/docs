@@ -23,8 +23,23 @@
   state: Alpha
   version: v1
   description: Applies [Rego/OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests
+- component: Sentinel
+  link: middleware-sentinel
+  state: Alpha
+  version: v1
+  description: Use Sentinel middleware to guarantee the reliability and resiliency of your application
+- component: RouterChecker
+  link: middleware-routerchecker
+  state: Alpha
+  version: v1
+  description: Use RouterChecker middleware to block invalid http request routing
 - component: Uppercase
   link: middleware-uppercase
   state: Stable
   version: v1
   description: Converts the body of the request to uppercase letters (demo)
+- component: WASM
+  link: middleware-wasm
+  state: Alpha
+  version: v1
+  description: Use WASM middleware in your HTTP pipeline

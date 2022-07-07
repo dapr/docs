@@ -6,22 +6,30 @@ description: "Invoke external systems with output bindings"
 weight: 300
 ---
 
-With output bindings, you can invoke external resources without depending on special SDK or libraries. An output binding represents a resource that Dapr uses to invoke and send messages to. For a complete sample showing output bindings, [walk through the tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings).
+With output bindings, you can invoke external resources. An optional payload and metadata can be sent with the invocation request.
 
-<img src="/images/building-block-output-binding-example.png" width=1000 alt="Diagram showing bindings of example service">
+<img src="/images/howto-bindings/kafka-output-binding.png" width=1000 alt="Diagram showing bindings of example service">
 
-This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}).
+This guide uses a Kafka binding as an example. You can find your preferred binding spec from [the list of bindings components]({{< ref setup-bindings >}}). In this guide:
+
+1. The example invokes the `/binding` endpoint with `checkout`, the name of the binding to invoke.
+1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
+1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref "kafka.md#binding-support" >}}).
+   - You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
+
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the bindings quickstart]({{< ref bindings-quickstart.md >}}) for a quick walk-through on how to use the bindings API.
+
+{{% /alert %}}
 
 ## Create a binding
 
-Create a new binding component with the name of `checkout`.
+Create a `binding.yaml` file and save to a `components` sub-folder in your application directory.
 
-Within the `metadata` section, configure Kafka-related properties, such as:
+Create a new binding component named `checkout`. Within the `metadata` section, configure the following Kafka-related properties:
 
 - The topic to which you'll publish the message
 - The broker
-
-Create the following `binding.yaml` file and save to a `components` sub-folder in your application directory.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
@@ -89,7 +97,7 @@ spec:
 
 ## Send an event (output binding)
 
-Below are code examples that leverage Dapr SDKs to interact with an output binding.
+The code examples below leverage Dapr SDKs to invoke the output bindings endpoint on a running Dapr instance. 
 
 {{< tabs Dotnet Java Python Go JavaScript>}}
 
@@ -277,21 +285,11 @@ function sleep(ms) {
 
 {{< /tabs >}}
 
-Invoke the output bindings endpoint on a running Dapr instance.
-
 You can also invoke the output bindings endpoint using HTTP:
 
 ```bash
 curl -X POST -H 'Content-Type: application/json' http://localhost:3601/v1.0/bindings/checkout -d '{ "data": 100, "operation": "create" }'
 ```
-
-As seen above:
-
-1. The example invoked the `/binding` endpoint with `checkout`, the name of the binding to invoke.
-1. The payload goes inside the mandatory `data` field, and can be any JSON serializable value.
-1. The `operation` field tells the binding what action it needs to take. For example, [the Kafka binding supports the `create` operation]({{< ref "kafka.md#binding-support" >}}).
-
-You can check [which operations (specific to each component) are supported for every output binding]({{< ref supported-bindings >}}).
 
 Watch this [video](https://www.youtube.com/watch?v=ysklxm81MTs&feature=youtu.be&t=1960) on how to use bi-directional output bindings.
 
