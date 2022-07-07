@@ -236,7 +236,7 @@ The sidecar can read the SSL certificate from a variety of sources. See [How-to:
 kubectl create secret generic myapp-cert --from-file /tmp/ssl/cert.pem
 ```
 
-The YAML below is an example of the kubernetes deployment that mounts the above secret to the sidecar and sets `SSL_CERT_DIR` to install the certificates.
+The YAML below is an example of the Kubernetes deployment that mounts the above secret to the sidecar and sets `SSL_CERT_DIR` to install the certificates.
 
 ```yaml
 apiVersion: apps/v1
