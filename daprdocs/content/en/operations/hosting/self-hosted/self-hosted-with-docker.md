@@ -137,8 +137,9 @@ services:
     command: ["./placement", "-port", "50006"]
     ports:
       - "50006:50006"
-    networks:
-      - hello-dapr
+  
+  networks:
+    hello-dapr: null
 ```
 
 > For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.
