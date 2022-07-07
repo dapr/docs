@@ -82,6 +82,16 @@ Field | Description
 
 > **ETag format:** Dapr runtime treats ETags as opaque strings. The exact ETag format is defined by the corresponding data store.
 
+#### Metadata
+
+Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.`, as shown below.
+
+Parameter | Description
+--------- | -----------
+`metadata.ttlInSeconds` | The number of seconds for the message to expire, as [described here]({{< ref state-store-ttl.md >}})
+
+> **TTL:** Only certain state stores support the TTL option, according the [supported state stores]({{< ref supported-state-stores.md >}}).
+
 ### HTTP Response
 
 #### Response Codes
