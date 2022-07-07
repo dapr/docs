@@ -80,17 +80,18 @@ spec:
 ...
 ```
 
-{{% alert title="Note" color="primary" %}}
-When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
-{{% /alert %}}
+**Note**: When using Windows containers, the sidecar container is started with admin privileges, which is required to install the certificates. This does not apply to Linux containers.
 
 {{% /codetab %}}
 
-Note, all the certificates in the directory pointed by `SSL_CERT_DIR` are installed. 
+{{< /tabs >}}
+
+<hr/>
+
+All the certificates in the directory pointed by `SSL_CERT_DIR` are installed.
+
 1. On Linux containers, all the certificate extensions supported by OpenSSL are supported. For more information, see https://www.openssl.org/docs/man1.1.1/man1/openssl-rehash.html
 1. On Windows container, all the certificate extensions supported by certoc.exe are supported. For more information, see certoc.exe present in [Windows Server Core](https://hub.docker.com/_/microsoft-windows-servercore)
-
-{{< /tabs >}}
 
 ## Related links
 - [(Kubernetes) How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
