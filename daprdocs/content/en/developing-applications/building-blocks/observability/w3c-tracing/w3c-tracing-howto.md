@@ -294,4 +294,4 @@ You can now correlate the calls in your app and across services with Dapr using 
 - [How To set up Application Insights for distributed tracing with OpenTelemetry]({{< ref open-telemetry-collector.md >}})
 - [How to set up Zipkin for distributed tracing]({{< ref zipkin.md >}})
 - [W3C trace context specification](https://www.w3.org/TR/trace-context/)
-- [Observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability)
+- [Observability tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/observability)
