@@ -104,7 +104,7 @@ The API for state management can be found in the [state management API reference
     * [How-To: Save and get state]({{< ref howto-get-save-state.md >}})
     * [How-To: Build a stateful service]({{< ref howto-stateful-service.md >}})
     * [How-To: Share state between applications]({{< ref howto-share-state.md >}})
-* Try out the [hello world quickstart](https://github.com/dapr/quickstarts/blob/master/hello-world/README.md) which shows how to use state management or try the samples in the [Dapr SDKs]({{< ref sdks >}})
+* Try out the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world) which shows how to use state management or try the samples in the [Dapr SDKs]({{< ref sdks >}})
 * List of [state store components]({{< ref supported-state-stores.md >}})
 * Read the [state management API reference]({{< ref state_api.md >}})
 * Read the [actors API reference]({{< ref actors_api.md >}})
