@@ -35,9 +35,11 @@ Dapr has pre-built Docker remote containers for each of the language SDKs. You c
 ### Setup a remote dev container
 
 #### Prerequisites
+<!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [VSCode Remote Development extension pack](https://aka.ms/vscode-remote/download/extension)
+<!-- END_IGNORE -->
 
 #### Create remote Dapr container
 1. Open your application workspace in VS Code
