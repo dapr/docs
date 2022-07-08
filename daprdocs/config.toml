@@ -142,11 +142,32 @@ archived_version = true
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
+  version = "v1.9 (preview)"
+  url = "https://v1-9.docs.dapr.io"
+[[params.versions]]
+  version = "v1.8 (latest)"
+  url = "#"
+[[params.versions]]
+  version = "v1.7"
+  url = "https://v1-7.docs.dapr.io"
+[[params.versions]]
+  version = "v1.6"
+  url = "https://v1-6.docs.dapr.io"
+[[params.versions]]
+  version = "v1.5"
+  url = "https://v1-5.docs.dapr.io"
+[[params.versions]]
+  version = "v1.4"
+  url = "https://v1-4.docs.dapr.io"
+[[params.versions]]
+  version = "v1.3"
+  url = "https://v1-3.docs.dapr.io"
+[[params.versions]]
   version = "v1.2"
-  url = "https://docs.dapr.io"
+  url = "https://v1-2.docs.dapr.io"
 [[params.versions]]
   version = "v1.1"
-  url = "#"
+  url = "https://v1-1.docs.dapr.io"
 [[params.versions]]
   version = "v1.0"
   url = "https://v1-0.docs.dapr.io"
