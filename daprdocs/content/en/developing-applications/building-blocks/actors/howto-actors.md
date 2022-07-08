@@ -168,8 +168,8 @@ You can configure the Dapr actor runtime configuration to modify the default run
 - `actorScanInterval` - The duration which specifies how often to scan for actors to deactivate idle actors. Actors that have been idle longer than actor_idle_timeout will be deactivated. **Default: 30 seconds**
 - `drainOngoingCallTimeout` - The duration when in the process of draining rebalanced actors. This specifies the timeout for the current active actor method to finish. If there is no current actor method call, this is ignored. **Default: 60 seconds**
 - `drainRebalancedActors` - If true, Dapr will wait for `drainOngoingCallTimeout` duration to allow a current actor call to complete before trying to deactivate an actor. **Default: true**
-- `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is diabled. **Default: disabled**
-**Default: 0**
+- `reentrancy` (ActorReentrancyConfig) - Configure the reentrancy behavior for an actor. If not provided, reentrancy is disabled. **Default: disabled**
+**Default: false**
 - `remindersStoragePartitions` - Configure the number of partitions for actor's reminders. If not provided, all reminders are saved as a single record in actor's state store. **Default: 0**
 - `entitiesConfig` - Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. **Default: None**
 
@@ -208,7 +208,19 @@ public void ConfigureServices(IServiceCollection services)
         options.DrainOngoingCallTimeout = TimeSpan.FromSeconds(60);
         options.DrainRebalancedActors = true;
         options.RemindersStoragePartitions = 7;
-        // reentrancy not implemented in the .NET SDK at this time
+        options.ReentrancyConfig = new() { Enabled = false };
+
+        // Add a configuration for a specific actor type.
+        // This actor type must have a matching value in the base level 'entities' field. If it does not, the configuration will be ignored.
+        // If there is a matching entity, the values here will be used to overwrite any values specified in the root configuration.
+        // In this example, `ReentrantActor` has reentrancy enabled; however, 'MyActor' will not have reentrancy enabled.
+        options.Actors.RegisterActor<ReentrantActor>(typeOptions: new()
+        {
+            ReentrancyConfig = new()
+            {
+                Enabled = true,
+            }
+        });
     });
 
     // Register additional services for use with actors
@@ -262,9 +274,10 @@ var daprConfigResponse = daprConfig{
 	Reentrancy:              config.ReentrancyConfig{Enabled: false},
 	EntitiesConfig: []config.EntityConfig{
 		{
+            // Add a configuration for a specific actor type.
             // This actor type must have a matching value in the base level 'entities' field. If it does not, the configuration will be ignored.
             // If there is a matching entity, the values here will be used to overwrite any values specified in the root configuration.
-            // In the case of this actor, it will have reentrancy enabled and 'defaultActorType' will not have reentrancy enabled.
+            // In this example, `reentrantActorType` has reentrancy enabled; however, 'defaultActorType' will not have reentrancy enabled.
 			Entities: []string{reentrantActorType},
 			Reentrancy: config.ReentrancyConfig{
 				Enabled:       true,
@@ -345,7 +358,6 @@ public void ConfigureServices(IServiceCollection services)
         options.ActorIdleTimeout = TimeSpan.FromMinutes(60);
         options.ActorScanInterval = TimeSpan.FromSeconds(30);
         options.RemindersStoragePartitions = 7;
-        // reentrancy not implemented in the .NET SDK at this time
     });
 
     // Register additional services for use with actors
