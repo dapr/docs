@@ -12,7 +12,7 @@ description: "Set-up New Relic for Dapr observability"
 
 ## Configure Dapr tracing
 
-Dapr natively captures metrics and traces that can be send directly to New Relic. The easiest way to export these is by configuring Dapr to send the traces to [New Relic's Trace API](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/trace-api/report-zipkin-format-traces-trace-api#existing-zipkin) using the Zipkin trace format.
+Dapr natively captures metrics and traces that can be send directly to New Relic. The easiest way to export these is by configuring Dapr to send the traces to [New Relic's Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/report-zipkin-format-traces-trace-api#existing-zipkin) using the Zipkin trace format.
 
 In order for the integration to send data to New Relic [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform), you need a [New Relic Insights Insert API key](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#insights-insert-key). 
 
@@ -108,7 +108,7 @@ All the data that is collected from Dapr, Kubernetes or any services that run on
 * [New Relic Account Signup](https://newrelic.com/signup)
 * [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform)
 * [Distributed Tracing](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/get-started/introduction-distributed-tracing)
-* [New Relic Trace API](https://docs.newrelic.com/docs/understand-dependencies/distributed-tracing/trace-api)
+* [New Relic Trace API](https://docs.newrelic.com/docs/distributed-tracing/trace-api/introduction-trace-api)
 * [New Relic Metric API](https://docs.newrelic.com/docs/telemetry-data-platform/get-data/apis/introduction-metric-api)
 * [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys)
 * [New Relic OpenTelemetry User Experience](https://blog.newrelic.com/product-news/opentelemetry-user-experience/)
