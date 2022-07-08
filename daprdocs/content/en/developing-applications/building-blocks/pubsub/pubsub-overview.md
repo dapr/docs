@@ -112,7 +112,7 @@ The publish/subscribe API is located in the [API reference]({{< ref pubsub_api.m
 * Follow these guides on:
     * [How-To: Publish a message and subscribe to a topic]({{< ref howto-publish-subscribe.md >}})
     * [How-To: Configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
-* Try out the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+* Try out the [Pub/Sub tutorial sample](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)
 * Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 * Learn about [message time-to-live (TTL)]({{< ref pubsub-message-ttl.md >}})
 * Learn about [pubsub without CloudEvent]({{< ref pubsub-raw.md >}})
