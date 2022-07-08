@@ -238,7 +238,7 @@ spec:
 ```     
 
 ### Self-hosted mode
-This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/hello-world/README.md) quickstart.
+This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world) quickstart.
 
 The following steps run the Sentry service locally with mTLS enabled, set up necessary environment variables to access certificates, and then launch both the node app and python app each referencing the Sentry service to apply the ACLs.
 
