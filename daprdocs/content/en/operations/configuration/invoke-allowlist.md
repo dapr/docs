@@ -238,7 +238,7 @@ spec:
 ```
 
 ### Self-hosted mode
-This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/hello-world/README.md) quickstart.
+This example uses the [hello world](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) tutorial.
 
 The following steps run the Sentry service locally with mTLS enabled, set up necessary environment variables to access certificates, and then launch both the node app and python app each referencing the Sentry service to apply the ACLs.
 
@@ -321,7 +321,7 @@ The following steps run the Sentry service locally with mTLS enabled, set up nec
 8. You should see the calls to the node app fail in the python app command prompt based due to the **deny** operation action in the nodeappconfig file. Change this action to **allow** and re-run the apps and you should then see this call succeed.
 
 ### Kubernetes mode
-This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes/README.md) quickstart.
+This example uses the [hello kubernetes](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) tutorial.
 
 You can create and apply the above configuration files `nodeappconfig.yaml` and `pythonappconfig.yaml` as described in the [configuration]({{< ref "configuration-concept.md" >}}) to the Kubernetes deployments.
 

@@ -82,4 +82,3 @@ After the components-contrib change has been accepted, submit another pull reque
 * [Middleware pipelines concept]({{< ref middleware-concept.md >}})
 * [Component schema]({{< ref component-schema.md >}})
 * [Configuration overview]({{< ref configuration-overview.md >}})
-* [Middleware quickstart](https://github.com/dapr/quickstarts/tree/master/middleware)
