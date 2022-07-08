@@ -484,7 +484,7 @@ Read about content types [here](#content-types), and about the [Cloud Events mes
 
 ## Next steps
 
-- Try the [Pub/Sub quickstart sample](https://github.com/dapr/quickstarts/tree/master/pub-sub)
+- Try the [Pub/Sub tutorial sample](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub)
 - Learn about [topic scoping]({{< ref pubsub-scopes.md >}})
 - Learn about [message time-to-live]({{< ref pubsub-message-ttl.md >}})
 - Learn [how to configure Pub/Sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})

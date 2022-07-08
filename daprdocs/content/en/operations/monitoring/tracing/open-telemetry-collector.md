@@ -57,7 +57,7 @@ spec:
         dapr.io/config: "appconfig"
 ```
 
-Some of the quickstarts such as [distributed calculator](https://github.com/dapr/quickstarts/tree/master/distributed-calculator) already configure these settings, so if you are using those no additional settings are needed.
+Some of the tutorials such as [distributed calculator](https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator) already configure these settings, so if you are using those no additional settings are needed.
 
 That's it! There's no need include any SDKs or instrument your application code. Dapr automatically handles the distributed tracing for you.
 
@@ -66,6 +66,6 @@ That's it! There's no need include any SDKs or instrument your application code.
 Deploy and run some applications. Wait for the trace to propagate to your tracing backend and view them there.
 
 ## Related links
-* Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/observability/README.md)
+* Try out the [observability tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/observability)
 * How to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
 
