@@ -39,6 +39,8 @@ spec:
     value: 0
   - name: concurrencyMode
     value: parallel
+  - name: publisherConfirm
+    value: false
   - name: backOffPolicy
     value: exponential
   - name: backOffInitialInterval
@@ -54,6 +56,7 @@ spec:
   - name: exchangeKind
     value: fanout
 ```
+
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
@@ -70,6 +73,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | deliveryMode  | N        | Persistence mode when publishing messages. Defaults to `"0"`. RabbitMQ treats `"2"` as persistent, all other numbers as non-persistent | `"0"`, `"2"`
 | requeueInFailure  | N        | Whether or not to requeue when sending a [negative acknowledgement](https://www.rabbitmq.com/nack.html) in case of a failure. Defaults to `"false"` | `"true"`, `"false"`
 | prefetchCount  | N        | Number of messages to [prefetch](https://www.rabbitmq.com/consumer-prefetch.html). Consider changing this to a non-zero value for production environments. Defaults to `"0"`, which means that all available messages will be pre-fetched. | `"2"`
+| publisherConfirm  | N        | If enabled, client waits for [publisher confirms](https://www.rabbitmq.com/confirms.html#publisher-confirms) after publishing a message. Defaults to `"false"` | `"true"`, `"false"`
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
 | concurrencyMode | N        | `parallel` is the default, and allows processing multiple messages in parallel (limited by the `app-max-concurrency` annotation, if configured). Set to `single` to disable parallel processing. In most situations there's no reason to change this. | `parallel`, `single`
 | backOffPolicy              | N        | Retry policy, `"constant"` is a backoff policy that always returns the same backoff delay. `"exponential"` is a backoff policy that increases the backoff period for each retry attempt using a randomization function that grows exponentially. Defaults to `"constant"`. | `constant`、`exponential` |
@@ -85,12 +89,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
 
-
 ### Backoff policy introduction
+
 Backoff retry strategy can instruct the dapr sidecar how to resend the message. By default, the retry strategy is turned off, which means that the sidecar will send a message to the service once. When the service returns a result, the message will be marked as consumption regardless of whether it is correct or not. The above is based on the condition of `autoAck` and `requeueInFailure` is setting to false(if `requeueInFailure` is set to true, the message will get a second chance).
 
 But in some cases, you may want dapr to retry pushing message with an (exponential or constant) backoff strategy until the message is processed normally or the number of retries is exhausted. This maybe useful when your service breaks down abnormally but the sidecar is not stopped together. Adding backoff policy will retry the message pushing during the service downtime, instead of marking these message as consumed.
-
 
 ## Create a RabbitMQ server
 
@@ -126,9 +129,11 @@ For example, if installing using the example above, the RabbitMQ server client a
 {{< /tabs >}}
 
 ## Use topic exchange to route messages
-Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages. 
+
+Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages.
 Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
 The routing key is defined by the `routingKey` metadata. For example, if an app is configured with a routing key `keyA`:
+
 ```
 apiVersion: dapr.io/v1alpha1
 kind: Subscription
@@ -141,7 +146,9 @@ spec:
   metadata:
     routingKey: keyA
 ```
+
 It will receive messages with routing key `keyA`, and messages with other routing keys are not received.
+
 ```
 // publish messages with routing key `keyA`, and these will be received by the above example.
 client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyA"}))
@@ -149,9 +156,29 @@ client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is a messa
 client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another message"), dapr.PublishEventWithMetadata(map[string]string{"routingKey": "keyB"}))
 ```
 
+### Bind multiple `routingKey`
+
+Multiple routing keys can be separated by commas.  
+The example below binds three `routingKey`: `keyA`, `keyB`, and `""`. Note the binding method of empty keys.
+
+```
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: order_pub_sub
+spec:
+  topic: B
+  route: /B
+  pubsubname: pubsub
+  metadata:
+    routingKey: keyA,keyB,
+```
+
+
 For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
 
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
 - [Pub/Sub building block]({{< ref pubsub >}})

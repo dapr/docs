@@ -163,17 +163,20 @@ github_subdir = "daprdocs"
 github_branch = "v1.7"
 
 # Versioning
-version_menu = "v1.7 (latest)"
-version = "v1.7"
+version_menu = "v1.8 (latest)"
+version = "v1.8"
 archived_version = false
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.8 (preview)"
-  url = "https://v1-8.docs.dapr.io"
+  version = "v1.9 (preview)"
+  url = "https://v1-9.docs.dapr.io"
 [[params.versions]]
-  version = "v1.7 (latest)"
+  version = "v1.8 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.7"
+  url = "https://v1-7.docs.dapr.io"
 [[params.versions]]
   version = "v1.6"
   url = "https://v1-6.docs.dapr.io"

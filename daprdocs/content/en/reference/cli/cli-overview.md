@@ -24,6 +24,7 @@ Usage:
   dapr [command]
 
 Available Commands:
+  annotate       Add dapr annotations to a Kubernetes configuration. Supported platforms: Kubernetes
   build-info     Print build info of Dapr CLI and runtime
   completion     Generates shell completion scripts
   components     List all Dapr components. Supported platforms: Kubernetes
@@ -54,6 +55,7 @@ Use "dapr [command] --help" for more information about a command.
 
 You can learn more about each Dapr command from the links below.
 
+ - [`dapr annotate`]({{< ref dapr-annotate.md >}})
  - [`dapr build-info`]({{< ref dapr-build-info.md >}})
  - [`dapr completion`]({{< ref dapr-completion.md >}})
  - [`dapr components`]({{< ref dapr-components.md >}})
@@ -71,6 +73,7 @@ You can learn more about each Dapr command from the links below.
  - [`dapr stop`]({{< ref dapr-stop.md >}})
  - [`dapr uninstall`]({{< ref dapr-uninstall.md >}})
  - [`dapr upgrade`]({{< ref dapr-upgrade.md >}})
+ - [`dapr-version`]({{< ref dapr-version.md >}})
 
 ### Environment Variables
 
