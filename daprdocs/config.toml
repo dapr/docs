@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-5.docs.dapr.io/"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -116,6 +116,18 @@ id = "UA-149338238-3"
     source = "../translations/docs-zh/content/sdks_dotnet"
     target = "content/developing-applications/sdks/dotnet"
     lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_go"
+    target = "content/developing-applications/sdks/go"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_java"
+    target = "content/developing-applications/sdks/java"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_js"
+    target = "content/developing-applications/sdks/js"
+    lang = "zh-hans"
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -163,9 +175,9 @@ github_subdir = "daprdocs"
 github_branch = "v1.5"
 
 # Versioning
-version_menu = "v1.5 (latest)"
+version_menu = "v1.5"
 version = "v1.5"
-archived_version = false
+archived_version = true
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
