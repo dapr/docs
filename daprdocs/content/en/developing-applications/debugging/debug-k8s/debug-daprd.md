@@ -42,7 +42,7 @@ Then step into 'dapr' directory from your cloned [dapr/dapr repository](https://
 helm install dapr charts/dapr --namespace dapr-system --values values.yml --wait
 ```
 
-To enable debug mode for daprd, you need to put an extra annotation `dapr.io/enable-debug` in your application's deployment file. Let's use [quickstarts/hello-kubernetes](https://github.com/dapr/quickstarts/tree/master/hello-kubernetes) as an example. Modify 'deploy/node.yaml' like below:
+To enable debug mode for daprd, you need to put an extra annotation `dapr.io/enable-debug` in your application's deployment file. Let's use [quickstarts/hello-kubernetes](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) as an example. Modify 'deploy/node.yaml' like below:
 
 ```diff
 diff --git a/hello-kubernetes/deploy/node.yaml b/hello-kubernetes/deploy/node.yaml
