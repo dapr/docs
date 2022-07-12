@@ -74,4 +74,3 @@ After the components-contrib change has been accepted, submit another pull reque
 
 * [Component schema]({{< ref component-schema.md >}})
 * [Configuration overview]({{< ref configuration-overview.md >}})
-* [Middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
