@@ -117,6 +117,7 @@ dapr-prom-prometheus-server-694fd8d7c-q5d59         2/2     Running   0         
 </div>
 
 ## References
-
+<!-- IGNORE_LINKS -->
 * [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+<!-- END_IGNORE -->

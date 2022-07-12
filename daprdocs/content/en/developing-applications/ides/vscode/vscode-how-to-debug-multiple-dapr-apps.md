@@ -18,12 +18,12 @@ dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 app.js
 
 One approach to attaching the debugger to your service is to first run daprd with the correct arguments from the command line and then launch your code and attach the debugger. While this is a perfectly acceptable solution, it does require a few extra steps and some instruction to developers who might want to clone your repo and hit the "play" button to begin debugging.
 
-If your application is a collection of microservices, each with a Dapr sidecar, it will be useful to debug them together in Visual Studio Code. This page will use the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/hello-world) to showcase how to configure VSCode to debug multiple Dapr application using [VSCode debugging](https://code.visualstudio.com/Docs/editor/debugging).
+If your application is a collection of microservices, each with a Dapr sidecar, it will be useful to debug them together in Visual Studio Code. This page will use the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world) to showcase how to configure VSCode to debug multiple Dapr application using [VSCode debugging](https://code.visualstudio.com/Docs/editor/debugging).
 
 ## Prerequisites
 
 - Install the [Dapr extension]({{< ref vscode-dapr-extension.md >}}). You will be using the [tasks](https://code.visualstudio.com/docs/editor/tasks) it offers later on.
-- Optionally clone the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/hello-world)
+- Optionally clone the [hello world quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world)
 
 ## Step 1: Configure launch.json
 
