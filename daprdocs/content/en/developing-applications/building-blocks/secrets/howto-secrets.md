@@ -55,7 +55,6 @@ To configure a different kind of secret store see the guidance on [how to config
 
 Run the Dapr sidecar with the application.
 
-
 {{< tabs Dotnet Java Python Go Javascript>}}
 
 {{% codetab %}}
@@ -110,9 +109,16 @@ Once you have a secret store, call Dapr to get the secrets from your application
 
 {{% codetab %}}
 ```csharp
-
 //dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Text.Json;
 
 //code
 namespace EventService
@@ -126,54 +132,59 @@ namespace EventService
             //Using Dapr SDK to get a secret
             var secret = await client.GetSecretAsync(SECRET_STORE_NAME, "secret");
             Console.WriteLine($"Result: {string.Join(", ", secret)}");
-            Console.WriteLine($"Result for bulk: {string.Join(", ", secret.Keys)}");
         }
     }
 }
-
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 
 ```java
-
 //dependencies
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Map;
+
 
 //code
 @SpringBootApplication
 public class OrderProcessingServiceApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
-	private static final ObjectMapper JSON_SERIALIZER = new ObjectMapper();
+    private static final Logger log = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
+    private static final ObjectMapper JSON_SERIALIZER = new ObjectMapper();
 
-	private static final String SECRET_STORE_NAME = "localsecretstore";
+    private static final String SECRET_STORE_NAME = "localsecretstore";
 
-	public static void main(String[] args) throws InterruptedException, JsonProcessingException {
-		DaprClient client = new DaprClientBuilder().build();
+    public static void main(String[] args) throws InterruptedException, JsonProcessingException {
+        DaprClient client = new DaprClientBuilder().build();
         //Using Dapr SDK to get a secret
-		Map<String, String> secret = client.getSecret(SECRET_STORE_NAME, "secret").block();
-		log.info("Result: " + JSON_SERIALIZER.writeValueAsString(secret));
-	}
+        Map<String, String> secret = client.getSecret(SECRET_STORE_NAME, "secret").block();
+        log.info("Result: " + JSON_SERIALIZER.writeValueAsString(secret));
+    }
 }
-
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 
 ```python
-
 #dependencies 
+import random
+from time import sleep    
+import requests
+import logging
 from dapr.clients import DaprClient
 from dapr.clients.grpc._state import StateItem
 from dapr.clients.grpc._request import TransactionalStateOperation, TransactionOperationType
 
 #code
 logging.basicConfig(level = logging.INFO)
-    
 DAPR_STORE_NAME = "localsecretstore"
 key = 'secret'
 
@@ -182,21 +193,21 @@ with DaprClient() as client:
     secret = client.get_secret(store_name=DAPR_STORE_NAME, key=key)
     logging.info('Result: ')
     logging.info(secret.secret)
+    #Using Dapr SDK to get bulk secrets
     secret = client.get_bulk_secret(store_name=DAPR_STORE_NAME)
     logging.info('Result for bulk secret: ')
     logging.info(sorted(secret.secrets.items()))
-
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 
 ```go
-
 //dependencies 
 import (
 	"context"
 	"log"
+
 	dapr "github.com/dapr/go-sdk/client"
 )
 
@@ -209,35 +220,26 @@ func main() {
 	}
 	defer client.Close()
 	ctx := context.Background()
-
+     //Using Dapr SDK to get a secret
 	secret, err := client.GetSecret(ctx, SECRET_STORE_NAME, "secret", nil)
-	if err != nil {
-		return nil, errors.Wrap(err, "Got error for accessing key")
-	}
-
 	if secret != nil {
 		log.Println("Result : ")
 		log.Println(secret)
 	}
-
-	secretRandom, err := client.GetBulkSecret(ctx, SECRET_STORE_NAME, nil)
-	if err != nil {
-		return nil, errors.Wrap(err, "Got error for accessing key")
-	}
+    //Using Dapr SDK to get bulk secrets
+	secretBulk, err := client.GetBulkSecret(ctx, SECRET_STORE_NAME, nil)
 
 	if secret != nil {
 		log.Println("Result for bulk: ")
-		log.Println(secretRandom)
+		log.Println(secretBulk)
 	}
 }
-
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 
 ```javascript
-
 //dependencies 
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
 
@@ -247,14 +249,15 @@ const daprHost = "127.0.0.1";
 async function main() {
     const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
     const SECRET_STORE_NAME = "localsecretstore";
+    //Using Dapr SDK to get a secret
     var secret = await client.secret.get(SECRET_STORE_NAME, "secret");
     console.log("Result: " + secret);
+    //Using Dapr SDK to get bulk secrets
     secret = await client.secret.getBulk(SECRET_STORE_NAME);
     console.log("Result for bulk: " + secret);
 }
 
 main();
-
 ```
 {{% /codetab %}}
 
@@ -268,3 +271,4 @@ main();
 - [Supported secrets]({{<ref supported-secret-stores>}})
 - [Using secrets in components]({{<ref component-secrets>}})
 - [Secret stores tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/secretstore)
+
