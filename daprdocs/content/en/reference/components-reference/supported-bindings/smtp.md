@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: smtp
-  namespace: default
 spec:
   type: bindings.smtp
   version: v1

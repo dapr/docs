@@ -44,7 +44,6 @@ For self hosted mode, create a Dapr configuration file locally and reference it 
    kind: Configuration
    metadata:
      name: zipkin
-     namespace: default
    spec:
      tracing:
        samplingRate: "1"
@@ -90,7 +89,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: zipkin
-  namespace: default
 spec:
   tracing:
     samplingRate: "1"

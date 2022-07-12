@@ -14,7 +14,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: rabbitmq-pubsub
-  namespace: default
 spec:
   type: pubsub.rabbitmq
   version: v1
@@ -118,8 +117,7 @@ helm install rabbitmq stable/rabbitmq
 
 Look at the chart output and get the username and password.
 
-This will install RabbitMQ into the `default` namespace.
-To interact with RabbitMQ, find the service with: `kubectl get svc rabbitmq`.
+This will install RabbitMQ into the `default` namespace. To interact with RabbitMQ, find the service with: `kubectl get svc rabbitmq`.
 
 For example, if installing using the example above, the RabbitMQ server client address would be:
 

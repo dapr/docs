@@ -24,7 +24,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: daprsystem
-  namespace: default
 spec:
   mtls:
     enabled: true
@@ -374,7 +373,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: daprsystem
-  namespace: default
 spec:
   mtls:
     enabled: true
@@ -427,7 +425,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: daprsystem
-  namespace: default
 spec:
   mtls:
     enabled: true

@@ -36,7 +36,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
-  namespace: default
 spec:
   tracing:
     samplingRate: "1"
@@ -148,7 +147,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: tracing
-  namespace: default
 spec:
   tracing:
     samplingRate: "1"

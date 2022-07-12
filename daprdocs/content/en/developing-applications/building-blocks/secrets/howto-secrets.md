@@ -38,7 +38,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: localsecretstore
-  namespace: default
 spec:
   type: secretstores.local.file
   version: v1

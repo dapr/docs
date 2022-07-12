@@ -15,7 +15,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: [COMPONENT-NAME]
-  namespace: [COMPONENT-NAMESPACE]
 spec:
   type: [COMPONENT-TYPE]
   version: v1
