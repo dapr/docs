@@ -169,11 +169,14 @@ archived_version = true
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.8 (preview)"
-  url = "https://v1-8.docs.dapr.io"
+  version = "v1.9 (preview)"
+  url = "https://v1-9.docs.dapr.io"
 [[params.versions]]
-  version = "v1.7 (latest)"
+  version = "v1.8 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.7"
+  url = "https://v1-7.docs.dapr.io"
 [[params.versions]]
   version = "v1.6"
   url = "https://v1-6.docs.dapr.io"
