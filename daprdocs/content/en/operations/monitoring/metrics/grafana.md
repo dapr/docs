@@ -165,13 +165,13 @@ First you need to connect Prometheus as a data source to Grafana.
    {{% /alert %}}
 
 ## References
-
+<!-- IGNORE_LINKS -->
 * [Dapr Observability]({{<ref observability-concept.md >}})
 * [Prometheus Installation](https://github.com/prometheus-community/helm-charts)
 * [Prometheus on Kubernetes](https://github.com/coreos/kube-prometheus)
 * [Prometheus Query Language](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 * [Supported Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
-
+<!-- END_IGNORE -->
 ## Example
 
 <div class="embed-responsive embed-responsive-16by9">
