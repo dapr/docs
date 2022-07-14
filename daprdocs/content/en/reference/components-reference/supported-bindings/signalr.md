@@ -35,9 +35,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| connectionString | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"` |
+| connectionString | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"`. If the connection string does not contain the `AccessKey` option Azure Active Directory authentication will be attempted. |
 | hub | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
 
+### Azure Active Directory (Azure AD) authentication
+
+The Azure Cosmos DB state store component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Azure AD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+
+You can read additional information for setting up Cosmos DB with Azure AD authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
 
 ## Binding support
 
