@@ -55,6 +55,9 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
+
+
 #### Behind the scenes
 
 **`order-processor` service**
