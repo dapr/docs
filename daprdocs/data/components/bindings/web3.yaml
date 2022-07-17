@@ -1,0 +1,8 @@
+- component: IPFS
+  link: web3-ipfs
+  state: Alpha
+  version: v1
+  since: "1.9"
+  features:
+    input: false
+    output: true
