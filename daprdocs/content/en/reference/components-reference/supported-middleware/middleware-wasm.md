@@ -7,10 +7,18 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-wasm/
 ---
 
-The WASM [HTTP middleware]({{< ref middleware.md >}}) component enables you to use a WASM module to handle requests and responses.
-Using WASM modules allow developers to write middleware components in any WASM supported language and extend Dapr using external files that are not pre-compiled into the `daprd` binary.
+WebAssembly is a way to safely run code compiled in other languages. Runtimes
+execute WebAssembly Modules (Wasm), which are most often binaries with a `.wasm`
+extension.
 
-WASM modules are loaded from a filesystem path. On Kubernetes, see [mounting volumes to the Dapr sidecar]({{> kubernetes-volume-mounts.md >}}) to configure a filesystem mount that can contain WASM modules.
+The Wasm [HTTP middleware]({{< ref middleware.md >}}) allows you to rewrite a
+request URI with custom logic compiled to a Wasm binary. In other words, you
+can extend Dapr using external files that are not pre-compiled into the `daprd`
+binary. Dapr embeds [wazero][https://wazero.io] to accomplish this without CGO. 
+
+Wasm modules are loaded from a filesystem path. On Kubernetes, see [mounting
+volumes to the Dapr sidecar]({{> kubernetes-volume-mounts.md >}}) to configure
+a filesystem mount that can contain Wasm modules.
 
 ## Component format
 
@@ -32,15 +40,15 @@ spec:
 
 ## Spec metadata fields
 
-| Field | Details | Example |
-|-------|---------|---------|
-| path | A relative or absolute path to the WASM module | "./hello.wasm" |
-| runtime | The WASM runtime of your WASM binary. Only `wazero` is supported | ["wazero"](https://github.com/tetratelabs/wazero) |
-
+| Field    | Details                                        | Example        |
+|----------|------------------------------------------------|----------------|
+| path     | A relative or absolute path to the Wasm binary | "./hello.wasm" |
+| poolSize | The instance count of the Wasm binary          | 10             |
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}).
+See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -54,8 +62,42 @@ spec:
       type: middleware.http.wasm.basic
 ```
 
+### Generating Wasm
+
+This component allows you to rewrite a request URI with custom logic compiled
+to a Wasm using the waPC protocol. The `rewrite` function receives the request
+URI and returns an update as necessary.
+
+To compile your Wasm, you must compile source using a waPC guest SDK such as
+[TinyGo](https://github.com/wapc/wapc-guest-tinygo).
+
+Here's an example in TinyGo:
+```go
+package main
+
+import "github.com/wapc/wapc-guest-tinygo"
+
+func main() {
+	wapc.RegisterFunctions(wapc.Functions{"rewrite": rewrite})
+}
+
+// rewrite returns a new URI if necessary.
+func rewrite(requestURI []byte) ([]byte, error) {
+	if string(requestURI) == "/v1.0/hi" {
+		return []byte("/v1.0/hello"), nil
+	}
+	return requestURI, nil
+}
+```
+
+If using TinyGo, compile like so and set the `path` attribute to the output:
+```bash
+tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go`
+```
+
 ## Related links
 
 - [Middleware]({{< ref middleware.md >}})
 - [Configuration concept]({{< ref configuration-concept.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})
+- [waPC protocol](https://wapc.io/docs/spec/)
