@@ -54,6 +54,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: oauth2
+  namespace: default
 spec:
   type: middleware.http.oauth2
   version: v1
@@ -90,6 +91,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: pipeline
+  namespace: default
 spec:
   httpPipeline:
     handlers:
@@ -147,6 +149,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
   name: pipeline
+  namespace: default
 spec:
   httpPipeline:
     handlers:
