@@ -156,7 +156,7 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/javascript/sdk/order-processor
 ```
 
-Install dependencies, which will include the `dapr-client` package from the JavaScript SDK:
+Install dependencies, which will include the `@dapr/dapr` package from the JavaScript SDK:
 
 ```bash
 npm install
