@@ -48,6 +48,10 @@ Install the latest windows Dapr cli to `C:\dapr` and add this directory to the U
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 ```
+If the above command does not run try using: 
+```
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 '))
+```
 
 **Note:** Updates to PATH might not be visible until you restart your terminal application.
 
