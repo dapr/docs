@@ -20,4 +20,7 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | DAPR_API_TOKEN  | Dapr sidecar     | The token used for Dapr API authentication for requests from the application. [Enable API token authentication in Dapr]({{< ref api-token >}}). |
 | NAMESPACE | Dapr sidecar | Used to specify a component's [namespace in self-hosted mode]({{< ref component-scopes >}}). |
 | DAPR_DEFAULT_IMAGE_REGISTRY | Dapr CLI | In self-hosted mode, it is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr`, it pulls the required images from Github container registry. To default to Docker hub, unset this environment variable. |
-| SSL_CERT_DIR | Dapr sidecar | Specifies the location where the public certificates for all the trusted certificate authorities (CA) are located. Not applicable when the sidecar is running as a process in self-hosted mode.
+| SSL_CERT_DIR | Dapr sidecar | Specifies the location where the public certificates for all the trusted certificate authorities (CA) are located. Not applicable when the sidecar is running as a process in self-hosted mode.|
+| HELM_CHART_REPO_URL | Your private dapr helm chart url  | Specifies a private dapr helm chart url, defaultly Official Helm Chart: `https://dapr.github.io/helm-charts`|
+| HELM_CHART_REPO_USERNAME | A username for a private helm chart | The username required to access a private dapr helm chart. If it can be accessed publicly, the env variable does not need to be set| 
+| HELM_CHART_REPO_PASSWORD | A password for a private helm chart  |The password required to access a private dapr helm chart. If it can be accessed publicly, the env variable does not need to be set| |
