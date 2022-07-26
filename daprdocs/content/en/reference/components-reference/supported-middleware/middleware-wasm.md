@@ -47,8 +47,8 @@ concurrency while consuming more memory.
 
 | Field    | Details                                                        | Required | Example        |
 |----------|----------------------------------------------------------------|----------|----------------|
-| path     | A relative or absolute path to the Wasm binary to instantiate. | false    | "./hello.wasm" |
-| poolSize | Number of concurrent instances of the Wasm binary. Default: 10 | true     | 1              |
+| path     | A relative or absolute path to the Wasm binary to instantiate. | true     | "./hello.wasm" |
+| poolSize | Number of concurrent instances of the Wasm binary. Default: 10 | false    | 1              |
 
 ## Dapr configuration
 
