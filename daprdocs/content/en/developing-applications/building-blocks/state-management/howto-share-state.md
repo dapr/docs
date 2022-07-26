@@ -33,6 +33,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
+  namespace: production
 spec:
   type: state.redis
   version: v1
