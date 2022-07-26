@@ -93,6 +93,16 @@ All the certificates in the directory pointed by `SSL_CERT_DIR` are installed.
 1. On Linux containers, all the certificate extensions supported by OpenSSL are supported. For more information, see https://www.openssl.org/docs/man1.1.1/man1/openssl-rehash.html
 1. On Windows container, all the certificate extensions supported by certoc.exe are supported. For more information, see certoc.exe present in [Windows Server Core](https://hub.docker.com/_/microsoft-windows-servercore)
 
+## Example
+
+Watch the demo on using installing SSL certificates and securely using the HTTP binding in community call 64:
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/M0VM7GlphAU?start=800" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+
 ## Related links
+- [HTTP binding spec]({{< ref http.md >}})
 - [(Kubernetes) How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 - [Dapr Kubernetes pod annotations spec]({{< ref arguments-annotations-overview.md >}})
