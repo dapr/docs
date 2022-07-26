@@ -59,6 +59,8 @@ Run the `order-processor` subscriber service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
 ```
 
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
+
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
 
 ```py
@@ -105,6 +107,8 @@ Run the `checkout` publisher service alongside a Dapr sidecar.
 ```bash
 dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
 ```
+
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `order_pub_sub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 

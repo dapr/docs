@@ -54,6 +54,8 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
+
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```python
