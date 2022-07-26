@@ -116,6 +116,19 @@ id = "UA-149338238-3"
     source = "../translations/docs-zh/content/sdks_dotnet"
     target = "content/developing-applications/sdks/dotnet"
     lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_go"
+    target = "content/developing-applications/sdks/go"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_java"
+    target = "content/developing-applications/sdks/java"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/content/sdks_js"
+    target = "content/developing-applications/sdks/js"
+    lang = "zh-hans"
+
 
 # Markdown Engine - Allow inline html
 [markup]
