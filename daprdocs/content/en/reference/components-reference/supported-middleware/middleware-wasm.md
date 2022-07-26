@@ -90,7 +90,7 @@ func rewrite(requestURI []byte) ([]byte, error) {
 }
 ```
 
-If using TinyGo, compile like so and set the `path` attribute to the output:
+If using TinyGo, compile as shown below and set the `path` attribute to the output:
 ```bash
 tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go`
 ```
