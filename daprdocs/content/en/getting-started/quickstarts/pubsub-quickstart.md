@@ -221,7 +221,7 @@ navigate to the `order-processor` directory.
 cd pub_sub/javascript/sdk/order-processor
 ```
 
-Install dependencies, which will include the `dapr-client` package from the JavaScript SDK:
+Install dependencies, which will include the `@dapr/dapr` package from the JavaScript SDK:
 
 ```bash
 npm install
@@ -253,7 +253,7 @@ navigate to the `checkout` directory.
 cd pub_sub/javascript/sdk/checkout
 ```
 
-Install dependencies, which will include the `dapr-client` package from the JavaScript SDK:
+Install dependencies, which will include the `@dapr/dapr` package from the JavaScript SDK:
 
 ```bash
 npm install

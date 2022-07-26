@@ -223,7 +223,7 @@ func main() {
 
 ```javascript
 //dependencies 
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
