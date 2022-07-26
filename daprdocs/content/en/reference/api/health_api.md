@@ -34,6 +34,6 @@ daprPort | The Dapr port.
 ### Examples
 
 ```shell
-curl http://localhost:3500/v1.0/healthz
+curl -i http://localhost:3500/v1.0/healthz
 ```
 
