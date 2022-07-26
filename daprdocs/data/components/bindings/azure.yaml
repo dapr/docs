@@ -24,7 +24,7 @@
     output: true
 - component: Azure Blob Storage
   link: blobstorage
-  state: Beta
+  state: Stable
   version: v1
   since: "1.0"
   features:
