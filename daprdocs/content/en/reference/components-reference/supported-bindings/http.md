@@ -14,7 +14,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.http
   version: v1
@@ -173,8 +172,125 @@ curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "p
 
 The HTTP binding can also be used with HTTPS endpoints by configuring the Dapr sidecar to trust the server's SSL certificate.
 
-1. Update the binding component's YAML to use `https` instead of `http`
+
+1. Update the binding URL to use `https` instead of `http`.
 1. Refer [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}}), to install the SSL certificate in the sidecar.
+
+### Example
+
+#### Update the binding component
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+  namespace: <NAMESPACE>
+spec:
+  type: bindings.http
+  version: v1
+  metadata:
+  - name: url
+    value: https://my-secured-website.com # Use HTTPS
+```
+
+#### Install the SSL certificate in the sidecar
+
+
+{{< tabs Self-Hosted Kubernetes >}}
+
+{{% codetab %}}
+When the sidecar is not running inside a container, the SSL certificate can be directly installed on the host operating system.
+
+Below is an example when the sidecar is running as a container. The SSL certificate is located on the host computer at `/tmp/ssl/cert.pem`.
+
+```yaml
+version: '3'
+services:
+  my-app:
+    # ...
+  dapr-sidecar:
+    image: "daprio/daprd:1.8.0"
+    command: [
+      "./daprd",
+     "-app-id", "myapp",
+     "-app-port", "3000",
+     ]
+    volumes:
+        - "./components/:/components"
+        - "/tmp/ssl/:/certificates" # Mount the certificates folder to the sidecar container at /certificates
+    environment:
+      - "SSL_CERT_DIR=/certificates" # Set the environment variable to the path of the certificates folder
+    depends_on:
+      - my-app
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+The sidecar can read the SSL certificate from a variety of sources. See [How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts >}}) for more. In this example, we store the SSL certificate as a Kubernetes secret.
+
+```bash
+kubectl create secret generic myapp-cert --from-file /tmp/ssl/cert.pem
+```
+
+The YAML below is an example of the Kubernetes deployment that mounts the above secret to the sidecar and sets `SSL_CERT_DIR` to install the certificates.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  namespace: default
+  labels:
+    app: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "myapp"
+        dapr.io/app-port: "8000"
+        dapr.io/volume-mounts: "cert-vol:/certificates" # Mount the certificates folder to the sidecar container at /certificates
+        dapr.io/env: "SSL_CERT_DIR=/certificates" # Set the environment variable to the path of the certificates folder
+    spec:
+      volumes:
+        - name: cert-vol
+          secret:
+            secretName: myapp-cert
+...
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+#### Invoke the binding securely
+
+{{< tabs Windows Linux >}}
+
+{{% codetab %}}
+```bash
+curl -d "{ \"operation\": \"get\" }" \
+      https://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl -d '{ "operation": "get" }' \
+      https://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 
 ## Related links

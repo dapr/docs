@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mytablestore
-  namespace: default
 spec:
   type: bindings.alicloud.tablestore
   version: v1

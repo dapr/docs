@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: my-policy
-  namespace: default
 spec:
   type: middleware.http.opa
   version: v1

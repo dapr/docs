@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -88,7 +87,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-noauth
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -121,7 +119,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-sasl
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -163,7 +160,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-mtls
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -214,7 +210,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -262,7 +257,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
