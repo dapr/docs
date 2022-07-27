@@ -74,7 +74,7 @@ curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh 
 
 **For ARM64 Macs:**
 
-When installing from the terminal, native ARM64 binaries are downloaded once available. For older releases, AMD64 binaries are downloaded and must be run with Rosetta2 emulation enabled.
+When installing from the terminal, native ARM64 binaries are available. 
 
 To install Rosetta emulation:
 
