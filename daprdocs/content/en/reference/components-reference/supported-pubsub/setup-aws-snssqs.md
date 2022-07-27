@@ -15,7 +15,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: snssqs-pubsub
-  namespace: default
 spec:
   type: pubsub.snssqs
   version: v1
@@ -136,13 +135,12 @@ spec:
 {{% codetab %}}
 To run localstack on Kubernetes, you can apply the configuration below. Localstack is then
 reachable at the DNS name `http://localstack.default.svc.cluster.local:4566`
-(assuming this was applied to the default namespace) and this should be used as the `endpoint`
+and this should be used as the `endpoint`
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: localstack
-  namespace: default
 spec:
   # using the selector, we will expose the running deployments
   # this is how Kubernetes knows, that a given service belongs to a deployment

@@ -27,7 +27,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -47,7 +46,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -106,7 +104,6 @@ The following example shows you how to create a Kubernetes secret to hold the co
     kind: Component
     metadata:
       name: eventhubs
-      namespace: default
     spec:
       type: bindings.azure.eventhubs
       version: v1

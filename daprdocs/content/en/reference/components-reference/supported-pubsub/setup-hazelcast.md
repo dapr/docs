@@ -15,7 +15,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: hazelcast-pubsub
-  namespace: default
 spec:
   type: pubsub.hazelcast
   version: v1

@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.mqtt
   version: v1
@@ -63,7 +62,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mqtt-binding
-  namespace: default
 spec:
   type: bindings.mqtt
   version: v1
