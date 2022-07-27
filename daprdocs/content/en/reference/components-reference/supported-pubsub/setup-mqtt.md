@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mqtt-pubsub
-  namespace: default
 spec:
   type: pubsub.mqtt
   version: v1
@@ -60,7 +59,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mqtt-pubsub
-  namespace: default
 spec:
   type: pubsub.mqtt
   version: v1
@@ -98,7 +96,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mqtt-pubsub
-  namespace: default
 spec:
   type: pubsub.mqtt
   version: v1
