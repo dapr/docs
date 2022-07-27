@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: ses
-  namespace: default
 spec:
   type: bindings.aws.ses
   version: v1
