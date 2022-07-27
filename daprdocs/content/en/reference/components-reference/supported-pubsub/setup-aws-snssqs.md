@@ -8,7 +8,8 @@ aliases:
 ---
 
 ## Component format
-To setup AWS SNS/SQS for pub/sub, you create a component of type `pubsub.snssqs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+
+To setup AWS SNS/SQS for pub/sub, create a component of type `pubsub.snssqs`. [Learn more on how to create and apply a pubsub configuration]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -59,7 +60,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use [a secret store for the secrets]]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -84,14 +85,33 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | assetsManagementTimeoutSeconds | N  | Amount of time in seconds, for an AWS asset management operation, before it times out and cancelled. Asset management operations are any operations performed on STS, SNS and SQS, except message publish and consume operations that implement the default Dapr component retry behavior. The value can be set to any non-negative float/integer. Default: `5` | `0.5`, `10`
 | concurrencyMode | N  | When messages are received in bulk from SQS, call the subscriber sequentially (“single” message at a time), or concurrently (in “parallel”). Default: `"parallel"` | `"single"`, `"parallel"`
 
+### Additional info
 
-* Dapr created SNS topic and SQS queue names conform with [AWS specifications](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html). By default, Dapr creates an SQS queue name based on the consumer `app-id`, therefore Dapr might perform name standardization to meet with AWS specifications.
-* Using SQS FIFO (`fifo` metadata field set to `"true"`), per AWS specifications, provides message ordering and deduplication, but incurs a lower SQS processing throughput, among other caveats
-* Be aware that specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) post to better understand the topic of Message Group IDs and FIFO queues.
-* Since v1.8.0, the component supports the `"parallel"` `concurrencyMode` as its default mode. In prior versions, the component default behavior was calling the subscriber a single message at a time and waiting for its response. 
+#### Conforming with AWS specifications
+
+Dapr created SNS topic and SQS queue names conform with [AWS specifications](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html). By default, Dapr creates an SQS queue name based on the consumer `app-id`, therefore Dapr might perform name standardization to meet with AWS specifications.
+
+#### SNS/SQS component behavior
+
+When the pub/sub SNS/SQS component provisions SNS topics, the SQS queues and the subscription behave differently in situations where the component is operating on behalf of a message producer (with no subscriber app deployed), than in situations where a subscriber app is present (with no publisher deployed).
+
+Due to how SNS works without SQS subscription _in publisher only setup_, the SQS queues and the subscription behave as a "classic" pub/sub system that relies on subscribers listening to topic messages. Without those subscribers, messages:
+
+- Cannot be passed onwards and are effectively dropped
+- Are not available for future subscribers (no replay of message when the subscriber finally subscribes)
+
+#### SQS FIFO
+
+Using SQS FIFO (`fifo` metadata field set to `"true"`) per AWS specifications provides message ordering and deduplication, but incurs a lower SQS processing throughput, among other caveats.
+
+Specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this AWS blog post](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) to better understand the topic of Message Group IDs and FIFO queues.
+
+#### Default parallel `concurrencyMode`
+
+Since v1.8.0, the component supports the `"parallel"` `concurrencyMode` as its default mode. In prior versions, the component default behavior was calling the subscriber a single message at a time and waiting for its response.
 
 {{% alert title="Important" color="warning" %}}
-When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
+When running the Dapr sidecar (`daprd`) with your application on EKS (AWS Kubernetes) node/pod already attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec.  
 {{% /alert %}}
 
 ## Create an SNS/SQS instance
@@ -99,18 +119,17 @@ When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernet
 {{< tabs "Self-Hosted" "Kubernetes" "AWS" >}}
 
 {{% codetab %}}
-For local development the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow the instructions [here](https://github.com/localstack/localstack#running) to run localstack.
+For local development, the [localstack project](https://github.com/localstack/localstack) is used to integrate AWS SNS/SQS. Follow [these instructions](https://github.com/localstack/localstack#running) to run localstack.
 
 To run localstack locally from the command line using Docker, apply the following cmd:
+
 ```shell
 docker run --rm -it -p 4566:4566 -p 4571:4571 -e SERVICES="sts,sns,sqs" -e AWS_DEFAULT_REGION="us-east-1" localstack/localstack
 ```
 
+In order to use localstack with your pub/sub binding, you need to provide the `endpoint` configuration in the component metadata. The `endpoint` is unnecessary when running against production AWS.
 
-In order to use localstack with your pubsub binding, you need to provide the `endpoint` configuration
-in the component metadata. The `endpoint` is unncessary when running against production AWS.
-
-See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes
+See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information about authentication-related attributes.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -131,12 +150,13 @@ spec:
     - name: region
       value: us-east-1
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
 To run localstack on Kubernetes, you can apply the configuration below. Localstack is then
-reachable at the DNS name `http://localstack.default.svc.cluster.local:4566`
-(assuming this was applied to the default namespace) and this should be used as the `endpoint`
+reachable at the DNS name `http://localstack.default.svc.cluster.local:4566` (assuming this was applied to the default namespace), which should be used as the `endpoint`.
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -178,10 +198,12 @@ spec:
   type: LoadBalancer
 
 ```
+
 {{% /codetab %}}
 
 {{% codetab %}}
-In order to run in AWS, you should create or assign an IAM user with permissions to the SNS and SQS services having a Policy such as:
+In order to run in AWS, create or assign an IAM user with permissions to the SNS and SQS services, with a policy like:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -213,10 +235,10 @@ In order to run in AWS, you should create or assign an IAM user with permissions
   ]
 }
 ```
-Use the `AWS account ID` and `AWS account secret` and plug them into the `accessKey` and `secretKey` in the component metadata using Kubernetes secrets and `secretKeyRef`.
 
+Plug the `AWS account ID` and `AWS account secret` into the `accessKey` and `secretKey` in the component metadata, using Kubernetes secrets and `secretKeyRef`.
 
-Alternatively, if you want to provision the SNS and SQS assets using your own tool of choice (e.g. Terraform), while preventing Dapr from doing so dynamically, you need to enable `disableEntityManagement` and assign your Dapr-using application with an IAM Role having a Policy such as:
+Alternatively, let's say you want to provision the SNS and SQS assets using your own tool of choice (e.g. Terraform) while preventing Dapr from doing so dynamically. You need to enable `disableEntityManagement` and assign your Dapr-using application with an IAM Role, with a policy like:
 
 ```json
 {
@@ -245,16 +267,17 @@ Alternatively, if you want to provision the SNS and SQS assets using your own to
 }
 ```
 
-If you are running your applications on an EKS cluster with dynamic assets creation (the default Dapr behavior)
+In the above example, you are running your applications on an EKS cluster with dynamic assets creation (the default Dapr behavior).
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
-- [Pub/Sub building block]({{< ref pubsub >}})
-- Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
-- [AWS SNS API reference](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
-- [AWS SQS API reference](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)
+- [Pub/Sub building block overview and how-to guides]({{< ref pubsub >}})
 - [Authenticating to AWS]({{< ref authenticating-aws.md >}})
+- AWS docs:
+  - [AWS SQS as subscriber to SNS](https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html)
+  - [AWS SNS API reference](https://docs.aws.amazon.com/sns/latest/api/Welcome.html)
+  - [AWS SQS API reference](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/Welcome.html)
