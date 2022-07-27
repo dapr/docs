@@ -250,7 +250,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
@@ -476,7 +476,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
@@ -622,7 +622,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
@@ -854,7 +854,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
