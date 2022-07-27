@@ -14,7 +14,7 @@ Dapr can be configured to run on any supported versions of Kubernetes. To achiev
 - **dapr-placement:** Used for [actors]({{< ref actors >}}) only. Creates mapping tables that map actor instances to pods
 - **dapr-sentry:** Manages mTLS between services and acts as a certificate authority. For more information read the [security overview]({{< ref "security-concept.md" >}}).
 
-<img src="/images/overview_kubernetes.png" width=1000>
+<img src="/images/overview-kubernetes.png" width=1000>
 
 ## Deploying Dapr to a Kubernetes cluster
 

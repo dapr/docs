@@ -25,7 +25,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mycustomsecretstore
-  namespace: default
 spec:
   type: secretstores.kubernetes
   version: v1

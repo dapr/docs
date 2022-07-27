@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: vault
-  namespace: default
 spec:
   type: secretstores.hashicorp.vault
   version: v1

@@ -74,7 +74,7 @@ curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh 
 
 **For ARM64 Macs:**
 
-ARM64 Macs support is available as a *preview feature*. When installing from the terminal, native ARM64 binaries are downloaded once available. For older releases, AMD64 binaries are downloaded and must be run with Rosetta2 emulation enabled.
+When installing from the terminal, native ARM64 binaries are available. 
 
 To install Rosetta emulation:
 
@@ -92,7 +92,7 @@ brew install dapr/tap/dapr-cli
 
 **For ARM64 Macs:**
 
-For ARM64 Macs, only Homebrew 3.0 and higher versions are supported. Please update Homebrew to 3.0.0 or higher and then run the command below:
+For ARM64 Macs, Homebrew 3.0 and higher versions are supported. Update Homebrew to 3.0.0 or higher and then run the command below:
 
 ```bash
 arch -arm64 brew install dapr/tap/dapr-cli

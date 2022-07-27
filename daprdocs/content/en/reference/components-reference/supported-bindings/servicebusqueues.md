@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.azure.servicebusqueues
   version: v1
@@ -53,7 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|-----------------|----------|---------|
 | `connectionString` | Y | Input/Output | The Service Bus connection string. Required unless using Azure AD authentication. | `"Endpoint=sb://************"` |
-| `namespaceName`| N | Input/Output | Parameter to set the name of the Service Bus namespace. Required if using Azure AD authentication. | `"namespace"` |
+| `namespaceName`| N | Input/Output | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
 | `queueName` | Y | Input/Output | The Service Bus queue name. Queue names are case-insensitive and will always be forced to lowercase. | `"queuename"` |
 | `ttlInSeconds` | N | Output | Parameter to set the default message [time to live](https://docs.microsoft.com/azure/service-bus-messaging/message-expiration). If this parameter is omitted, messages will expire after 14 days. See [also](#specifying-a-ttl-per-message) | `86400` |
 | `maxRetriableErrorsPerSec` | N | Input | Maximum number of retriable errors that are processed per second. If a message fails to be processed with a retriable error, the component adds a delay before it starts processing another message, to avoid immediately re-processing messages that have failed. Default: `10` | `10` |
@@ -75,7 +74,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.azure.servicebusqueues
   version: v1
@@ -86,8 +84,10 @@ spec:
     value: "***"
   - name: azureClientSecret
     value: "***"
-  - name: namespaceName # Required when using Azure Authentication.
-    value: "<SERVICEBUS_NAMESPACE>"
+  - name: namespaceName
+    # Required when using Azure Authentication.
+    # Must be a fully-qualified domain name
+    value: "servicebusnamespace.servicebus.windows.net"
   - name: queueName
     value: queue1
   - name: ttlInSeconds

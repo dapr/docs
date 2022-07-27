@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: jetstream-pubsub
-  namespace: default
 spec:
   type: pubsub.jetstream
   version: v1

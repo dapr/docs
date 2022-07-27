@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: awsparameterstore
-  namespace: default
 spec:
   type: secretstores.aws.parameterstore
   version: v1
