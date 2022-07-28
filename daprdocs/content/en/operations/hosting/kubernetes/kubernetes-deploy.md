@@ -37,7 +37,7 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 
 You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
-### Install Dapr (a official Dapr Helm chart)
+### Install Dapr (from an official Dapr Helm chart)
 
 The `-k` flag initializes Dapr on the Kubernetes cluster in your current context.
 
@@ -122,7 +122,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 2. Add Helm repo and update
 
     ```bash
-    // Add a official Dapr Helm chart.
+    // Add the official Dapr Helm chart.
     helm repo add dapr https://dapr.github.io/helm-charts/
     // Or also add a private Dapr Helm chart.
     helm repo add dapr http://helm.custom-domain.com/dapr/dapr/ \
