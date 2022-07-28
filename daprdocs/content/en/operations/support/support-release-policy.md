@@ -7,8 +7,7 @@ description: "Runtime and SDK release support and upgrade policies "
 ---
 
 ## Introduction
-
-This topic details the supported versions of Dapr releases, the upgrade policies, and how deprecations and breaking changes are communicated.
+This topic details the supported versions of Dapr releases, the upgrade policies and how deprecations and breaking changes are communicated in all Dapr repositories (runtime, CLI, SDKs, etc) at versions 1.x and above.
 
 Dapr releases use `MAJOR.MINOR.PATCH` versioning. For example, 1.0.0.
 
@@ -16,7 +15,7 @@ Dapr releases use `MAJOR.MINOR.PATCH` versioning. For example, 1.0.0.
 | ---------- | ----------- |
 | `MAJOR`    | Updated when there’s a non-backward compatible change to the runtime, such as an API change. A `MAJOR` release can also occur then there is a considered a significant addition/change of functionality that needs to differentiate from the previous version. |
 | `MINOR`    | Updated as part of the regular release cadence, including new features, bug, and security fixes. |
-| `PATCH`    | Incremented for bug and security hot fixes. |
+| `PATCH`    | Incremented for a critical issue (P0) and security hot fixes. |
 
 A supported release means:
 
@@ -79,8 +78,21 @@ General guidance on upgrading can be found for [self hosted mode]({{<ref self-ho
 | 1.8.0                    |                   N/A |                    1.8.2 |
 
 
-## Feature and deprecations
-There is a process for announcing feature deprecations.  Deprecations are applied two (2) releases after the release in which they were announced. For example Feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
+## Breaking Changes and Deprecations
+
+Breaking change is defined as a change to any code behavior, schema, default configuration value, command line argument, published metric, Kubernetes CRD template, publicly accessible API or publicly visible SDK interface, method, class or attribute that causes a compilation error or undesirable runtime behavior change to an existing 3rd party consumer application or script after upgrading to the next stable minor version of a Dapr artifact (SDK, CLI, runtime, etc).
+
+Breaking changes can be applied right away to the following cases:
+ * Projects versioned at 0.x.y
+ * Preview feature
+ * Alpha API
+ * Preview or Alpha interface, class, method or attribute in SDK
+ * Dapr Component in Alpha or Beta
+ * Components-Contrib interface
+ * URLs in Docs and Blog
+ * An **exceptional** case where it is **required** to fix a critical bug or security vulnerability.
+
+There is a process for applying breaking changes. First, a deprecation notice must be posted as part of a release. The breaking changes are applied two (2) releases after the release in which the deprecation was announced. For example, feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
 
 Deprecations appear in release notes under a section named “Deprecations”, which indicates:
 - The point in the future the now-deprecated feature will no longer be supported. For example release x.y.z.  This is at least two (2) releases prior.
@@ -88,7 +100,7 @@ Deprecations appear in release notes under a section named “Deprecations”, w
 
 After announcing a future breaking change, the change will happen in 2 releases or 6 months, whichever is greater. Deprecated features should respond with warning but do nothing otherwise.
 
-### Announced deprecations
+### Announced Deprecations
 | Feature               |   Deprecation announcement   | Removal       |
 |-----------------------|-----------------------|------------------------- |
 | GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
