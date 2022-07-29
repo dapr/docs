@@ -43,7 +43,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 #### Install from Command Prompt
 
-Install the latest windows Dapr cli to `C:\dapr` and add this directory to the User PATH environment variable:
+Install the latest windows Dapr cli to `$Env:SystemDrive\dapr` and add this directory to the User PATH environment variable:
 
 ```powershell
 powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
