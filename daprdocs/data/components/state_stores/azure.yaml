@@ -1,6 +1,6 @@
 - component: Azure Blob Storage
   link: setup-azure-blobstorage
-  state: Stable
+  state: Stable Candidate
   version: v1
   since: "1.0"
   features:
