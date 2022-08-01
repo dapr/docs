@@ -59,6 +59,8 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
+
 ```py
 @app.route('/orders', methods=['POST'])
 def getOrder():
@@ -91,6 +93,8 @@ Run the `checkout` service alongside a Dapr sidecar.
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
+
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 

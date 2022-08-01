@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.apns
   version: v1
@@ -52,7 +51,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: apns
-  namespace: default
 spec:
   type: bindings.apns
   metadata:
@@ -73,7 +71,6 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: apns-secrets
-    namespace: default
 stringData:
     private-key: |
         -----BEGIN PRIVATE KEY-----
