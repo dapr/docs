@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: huaweicloudcsms
-  namespace: default
 spec:
   type: secretstores.huaweicloud.csms
   version: v1

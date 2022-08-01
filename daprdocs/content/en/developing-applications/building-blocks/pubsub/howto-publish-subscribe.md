@@ -118,7 +118,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: order-pub-sub
-  namespace: default
 spec:
   type: pubsub.rabbitmq
   version: v1
