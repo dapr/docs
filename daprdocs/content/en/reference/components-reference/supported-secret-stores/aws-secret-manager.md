@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: awssecretmanager
-  namespace: default
 spec:
   type: secretstores.aws.secretmanager
   version: v1

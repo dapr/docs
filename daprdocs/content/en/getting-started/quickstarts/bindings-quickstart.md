@@ -88,6 +88,8 @@ Run the `batch-sdk` service alongside a Dapr sidecar.
 dapr run --app-id batch-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
 ```
 
+> **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
+
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
 
 ```python

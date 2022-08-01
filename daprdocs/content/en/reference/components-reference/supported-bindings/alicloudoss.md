@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: alicloudobjectstorage
-  namespace: default
 spec:
   type: bindings.alicloud.oss
   version: v1
