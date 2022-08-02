@@ -52,7 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Azure Active Directory (Azure AD) authentication
 
-The Azure Cosmos DB state store component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Azure AD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Cosmos DB state store component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
 
 You can read additional information for setting up Cosmos DB with Azure AD authentication in the [section below](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
 
