@@ -46,18 +46,20 @@ spec:
 
 ## Spec metadata fields
 
-| Field          | Required | Details                                    | Example                          |
-| -------------- | :------: | ------------------------------------------ | -------------------------------- |
-| natsURL        |    Y     | NATS server address URL                    | "`nats://localhost:4222`"        |
-| jwt            |    N     | NATS decentralized authentication JWT      | "`eyJhbGciOiJ...6yJV_adQssw5c`"  |
-| seedKey        |    N     | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`" |
-| name           |    N     | NATS connection name                       | `"my-conn-name"`                 |
-| durableName    |    N     | [Durable name]                             | `"my-durable"`                   |
-| queueGroupName |    N     | Queue group name                           | `"my-queue"`                     |
-| startSequence  |    N     | [Start Sequence]                           | `1`                              |
-| startTime      |    N     | [Start Time] in Unix format                | `1630349391`                     |
-| deliverAll     |    N     | Set deliver all as [Replay Policy]         | `true`                           |
-| flowControl    |    N     | [Flow Control]                             | `true`                           |
+| Field           | Required | Details                                    | Example                          |
+| --------------- | :------: | ------------------------------------------ | -------------------------------- |
+| natsURL         |    Y     | NATS server address URL                    | "`nats://localhost:4222`"        |
+| jwt             |    N     | NATS decentralized authentication JWT      | "`eyJhbGciOiJ...6yJV_adQssw5c`"  |
+| seedKey         |    N     | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`" |
+| tls_client_cert |    N     | NATS TLS Client Authentication Certificate | `"/path/to/tls.crt"`             |
+| tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
+| name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
+| durableName     |    N     | [Durable name]                             | `"my-durable"`                   |
+| queueGroupName  |    N     | Queue group name                           | `"my-queue"`                     |
+| startSequence   |    N     | [Start Sequence]                           | `1`                              |
+| startTime       |    N     | [Start Time] in Unix format                | `1630349391`                     |
+| deliverAll      |    N     | Set deliver all as [Replay Policy]         | `true`                           |
+| flowControl     |    N     | [Flow Control]                             | `true`                           |
 
 ## Create a NATS server
 
