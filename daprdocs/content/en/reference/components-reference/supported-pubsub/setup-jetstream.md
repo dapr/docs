@@ -46,18 +46,18 @@ spec:
 
 ## Spec metadata fields
 
-| Field          | Required | Details | Example |
-|----------------|:--------:|---------|---------|
-| natsURL        |        Y | NATS server address URL   | "`nats://localhost:4222`"|
-| jwt            |        N | NATS decentralized authentication JWT | "`eyJhbGciOiJ...6yJV_adQssw5c`"|
-| seedKey        |        N | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`"|
-| name           |        N | NATS connection name | `"my-conn-name"`|
-| durableName    |        N | [Durable name] | `"my-durable"` |
-| queueGroupName |        N | Queue group name | `"my-queue"` |
-| startSequence  |        N | [Start Sequence] | `1` |
-| startTime      |        N | [Start Time] in Unix format | `1630349391` |
-| deliverAll     |        N | Set deliver all as [Replay Policy] | `true` |
-| flowControl    |        N | [Flow Control] | `true` |
+| Field          | Required | Details                                    | Example                          |
+| -------------- | :------: | ------------------------------------------ | -------------------------------- |
+| natsURL        |    Y     | NATS server address URL                    | "`nats://localhost:4222`"        |
+| jwt            |    N     | NATS decentralized authentication JWT      | "`eyJhbGciOiJ...6yJV_adQssw5c`"  |
+| seedKey        |    N     | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`" |
+| name           |    N     | NATS connection name                       | `"my-conn-name"`                 |
+| durableName    |    N     | [Durable name]                             | `"my-durable"`                   |
+| queueGroupName |    N     | Queue group name                           | `"my-queue"`                     |
+| startSequence  |    N     | [Start Sequence]                           | `1`                              |
+| startTime      |    N     | [Start Time] in Unix format                | `1630349391`                     |
+| deliverAll     |    N     | Set deliver all as [Replay Policy]         | `true`                           |
+| flowControl    |    N     | [Flow Control]                             | `true`                           |
 
 ## Create a NATS server
 
@@ -81,13 +81,13 @@ helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 helm install --set nats.jetstream.enabled=true my-nats nats/nats
 ```
 
-This installs a single NATS server into the `default` namespace. To interact with NATS, find the service with: 
+This installs a single NATS server into the `default` namespace. To interact with NATS, find the service with:
 
 ```bash
 kubectl get svc my-nats
 ```
 
-For more information on helm chart settings, see the [Helm chart documentation](https://helm.sh/docs/helm/helm_install/). 
+For more information on helm chart settings, see the [Helm chart documentation](https://helm.sh/docs/helm/helm_install/).
 
 {{% /codetab %}}
 
