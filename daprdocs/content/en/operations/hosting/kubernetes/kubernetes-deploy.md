@@ -60,9 +60,9 @@ dapr init -k
 
 ### Install Dapr (a private Dapr Helm chart)
 
-export HELM_CHART_REPO_URL="https://helm.custom-domain.com/dapr/dapr"
-export HELM_CHART_REPO_USERNAME="username_xxx"
-export HELM_CHART_REPO_PASSWORD="passwd_xxx"
+export DAPR_HELM_REPO_URL="https://helm.custom-domain.com/dapr/dapr"
+export DAPR_HELM_REPO_USERNAME="username_xxx"
+export DAPR_HELM_REPO_PASSWORD="passwd_xxx"
 
 Setting the above parameters will allow `dapr init -k` to install Dapr images from the configured Helm repository.
 
