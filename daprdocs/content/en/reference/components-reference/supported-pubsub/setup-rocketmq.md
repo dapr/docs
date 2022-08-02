@@ -15,7 +15,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: rocketmq-pubsub
-  namespace: default
 spec:
   type: pubsub.rocketmq
   version: v1
