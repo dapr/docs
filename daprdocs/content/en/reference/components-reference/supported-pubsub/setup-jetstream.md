@@ -48,9 +48,9 @@ spec:
 
 | Field           | Required | Details                                    | Example                          |
 | --------------- | :------: | ------------------------------------------ | -------------------------------- |
-| natsURL         |    Y     | NATS server address URL                    | "`nats://localhost:4222`"        |
-| jwt             |    N     | NATS decentralized authentication JWT      | "`eyJhbGciOiJ...6yJV_adQssw5c`"  |
-| seedKey         |    N     | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`" |
+| natsURL         |    Y     | NATS server address URL                    | `"nats://localhost:4222"`        |
+| jwt             |    N     | NATS decentralized authentication JWT      | `"eyJhbGciOiJ...6yJV_adQssw5c"`  |
+| seedKey         |    N     | NATS decentralized authentication seed key | `"SUACS34K232O...5Z3POU7BNIL4Y"` |
 | tls_client_cert |    N     | NATS TLS Client Authentication Certificate | `"/path/to/tls.crt"`             |
 | tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
 | name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
