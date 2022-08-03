@@ -54,7 +54,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 The Azure Storage queue binding component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
 
-
 ## Binding support
 
 This component supports both **input and output** binding interfaces.
