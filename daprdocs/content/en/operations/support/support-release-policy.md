@@ -7,7 +7,6 @@ description: "Runtime and SDK release support and upgrade policies "
 ---
 
 ## Introduction
-
 This topic details the supported versions of Dapr releases, the upgrade policies and how deprecations and breaking changes are communicated in all Dapr repositories (runtime, CLI, SDKs, etc) at versions 1.x and above.
 
 Dapr releases use `MAJOR.MINOR.PATCH` versioning. For example, 1.0.0.
@@ -123,6 +122,7 @@ Deprecations appear in release notes under a section named “Deprecations”, w
 - Document any steps the user must take to modify their code, operations, etc if applicable in the release notes.
 
 After announcing a future breaking change, the change will happen in 2 releases or 6 months, whichever is greater. Deprecated features should respond with warning but do nothing otherwise.
+
 
 ### Announced deprecations
 
