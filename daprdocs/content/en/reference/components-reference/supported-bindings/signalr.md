@@ -42,7 +42,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 The Azure SignalR binding component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
 
-Read more about [setting up Cosmos DB with Azure AD authentication](#setting-up-cosmos-db-for-authenticating-with-azure-ad).
 
 ## Binding support
 
