@@ -4,7 +4,7 @@ title: "IPFS binding spec"
 linkTitle: "IPFS"
 description: "Detailed documentation on the IPFS binding component"
 aliases:
-  - "/operations/components/setup-bindings/supported-bindings/web3.ipfs/"
+  - "/operations/components/setup-bindings/supported-bindings/ipfs/"
 ---
 
 This binding allows interacting with [IPFS](https://ipfs.io/), the peer-to-peer network for content distribution.
@@ -20,7 +20,7 @@ metadata:
   name: <NAME>
   namespace: <NAMESPACE>
 spec:
-  type: bindings.web3.ipfs
+  type: bindings.ipfs
   version: v1
   metadata:
     ### Optional values:
