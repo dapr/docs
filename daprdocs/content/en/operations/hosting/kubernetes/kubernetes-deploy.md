@@ -59,6 +59,10 @@ dapr init -k
 ```
 
 ### Install Dapr (a private Dapr Helm chart)
+There are some scenarios where it's necessary to install Dapr from a private Helm chart, such as:
+- needing more granular control of the Dapr Helm chart
+- having a custom Dapr deployment
+- pulling Helm charts from trusted registries that are managed and maintained by your organization
 
 export DAPR_HELM_REPO_URL="https://helm.custom-domain.com/dapr/dapr"
 export DAPR_HELM_REPO_USERNAME="username_xxx"
