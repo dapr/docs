@@ -11,9 +11,9 @@
     query: false
 - component: Apache Cassandra
   link: setup-cassandra
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.9"
   features:
     crud: true
     transactions: false

@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.azure.storagequeues
   version: v1
@@ -45,11 +44,15 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | storageAccount | Y | Input/Output |  The Azure Storage account name | `"account1"` |
-| storageAccessKey | Y | Input/Output | The Azure Storage access key | `"accessKey"` |
+| storageAccessKey | Y* | Input/Output | The Azure Storage access key. Only required when not using Azure AD authentication. | `"accessKey"` |
 | queue | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
 | ttlInSeconds | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
 | decodeBase64 | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | queueEndpointUrl | N | Input/Output | Optional custom endpoint URL. This is useful, for example, with "[production-style URLs](https://github.com/Azure/azurite#production-style-url)" when using the [Storage emulator](https://github.com/Azure/azurite). This is also potentially useful when using custom domains for Azure Storage, although this hasn't been tested (yet). Other possible use-cases include integration testing, debugging, or any other scenario in which one might have the inclination to instruct this Dapr binding to direct its API requests to a specific URL. | `"https://accountName.queue.example.com:10001"` |
+
+### Azure Active Directory (Azure AD) authentication
+
+The Azure Storage queue binding component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
 
 ## Binding support
 

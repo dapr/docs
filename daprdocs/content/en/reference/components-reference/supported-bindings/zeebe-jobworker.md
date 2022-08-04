@@ -9,14 +9,13 @@ description: "Detailed documentation on the Zeebe JobWorker binding component"
 
 To setup Zeebe JobWorker binding create a component of type `bindings.zeebe.jobworker`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-See [this](https://docs.camunda.io/docs/product-manuals/concepts/job-workers) for Zeebe JobWorker documentation.
+See [this](https://docs.camunda.io/docs/components/concepts/job-workers/) for Zeebe JobWorker documentation.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.zeebe.jobworker
   version: v1
@@ -47,6 +46,8 @@ spec:
     value: 0.3
   - name: fetchVariables
     value: productId, productName, productKey
+  - name: autocomplete
+    value: true  
 ```
 
 ## Spec metadata fields
@@ -66,6 +67,7 @@ spec:
 | pollInterval            | N | Input | Set the maximal interval between polling for new jobs. Defaults to 100 milliseconds                                              | `100ms` |
 | pollThreshold           | N | Input | Set the threshold of buffered activated jobs before polling for new jobs, i.e. threshold * maxJobsActive. Defaults to 0.3        | `0.3` |
 | fetchVariables          | N | Input | A list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the scope of the job will be returned | `productId, productName, productKey` |
+| autocomplete            | N | Input | Indicates if a job should be autocompleted or not. If not set, all jobs will be auto-completed by default. Disable it if the worker should manually complete or fail the job with either a business error or an incident | `true,false` |
 
 ## Binding support
 
@@ -97,8 +99,8 @@ Note: if the `fetchVariables` metadata field will not be passed, all process var
 #### Headers
 
 The Zeebe process engine has the ability to pass custom task headers to a job worker. These headers can be defined for every
-[service task](https://stage.docs.zeebe.io/bpmn-workflows/service-tasks/service-tasks.html). Task headers will be passed
-by the binding as metadata (HTTP headers) to the job worker.
+[service task](https://docs.camunda.io/docs/components/best-practices/development/service-integration-patterns/#service-task). 
+Task headers will be passed by the binding as metadata (HTTP headers) to the job worker.
 
 The binding will also pass the following job related variables as metadata. The values will be passed as string. The table contains also the
 original data type so that it can be converted back to the equivalent data type in the used programming language for the worker.

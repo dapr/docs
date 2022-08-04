@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: servicebus-pubsub
-  namespace: default
 spec:
   type: pubsub.azure.servicebus
   version: v1
@@ -69,7 +68,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `connectionString`   | Y  | Shared access policy connection-string for the Service Bus. Required unless using Azure AD authentication. | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
-| `namespaceName`| N | Parameter to set the name of the Service Bus namespace. Required if using Azure AD authentication. | `"namespace"` |
+| `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
 | `consumerID`         | N        | Consumer ID a.k.a consumer tag organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
@@ -98,13 +97,14 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: servicebus-pubsub
-  namespace: default
 spec:
   type: pubsub.azure.servicebus
   version: v1
   metadata:
-  - name: namespaceName # Required when using Azure Authentication.
-    value: "servicebusnamespace"
+  - name: namespaceName
+    # Required when using Azure Authentication.
+    # Must be a fully-qualified domain name
+    value: "servicebusnamespace.servicebus.windows.net"
   - name: azureTenantId
     value: "***"
   - name: azureClientId

@@ -20,7 +20,7 @@ metadata:
   name: routerchecker 
 spec:
   type: middleware.http.routerchecker
-  version: v1gi
+  version: v1
   metadata:
   - name: rule
     value: "^[A-Za-z0-9/._-]+$"
