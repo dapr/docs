@@ -38,7 +38,10 @@ dapr init [flags]
 | `--slim`, `-s`        |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
 | `--timeout`           |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
 | `--wait`              |                      | `false`       | Wait for Kubernetes initialization to complete                                       |
-|        N/A              |DAPR_DEFAULT_IMAGE_REGISTRY|          | It is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub, unset the environment variable or leave it blank|
+|        N/A            |DAPR_DEFAULT_IMAGE_REGISTRY|          | It is used to specify the default container registry to pull images from. When its value is set to `GHCR` or `ghcr` it pulls the required images from Github container registry. To default to Docker hub, unset the environment variable or leave it blank|
+|        N/A            |DAPR_HELM_REPO_URL|          | Specifies a private Dapr Helm chart url|
+|        N/A            | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
+|        N/A            | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set| |
 
 ### Examples
 
