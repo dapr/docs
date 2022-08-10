@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup an Alibaba Cloud SLS Storage binding create a component of type `bindings.alicloud.sls`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup an Alibaba Cloud SLS binding create a component of type `bindings.alicloud.sls`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -62,26 +62,14 @@ To perform a log store operation, invoke the binding with a `POST` method and th
 ```
 
 {{% alert title="Note" color="primary" %}}
-Note, you should provide the value of "project"，"logstore"，"topic" and "source" property in the metadata properties.
+Note, the value of "project"，"logstore"，"topic" and "source" property should provide in the metadata properties.
 {{% /alert %}}
 
 #### Example
 
-**Saving logs**
-
-{{< tabs "Windows" "Linux/MacOS" >}}
-
-{{% codetab %}}
-
-{{% codetab %}}
-
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"metadata":{"project":"project-name","logstore":"logstore-name","topic":"topic-name","source":"source-name"},"data":{"log-filed":"log info"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
 
 ### Response format
 As Alibaba Cloud SLS producer api is asynchronous mode, so there is no response for this binding and implemented a callback interface to accept the response of success or faild, only record faliure reason to the console log.
