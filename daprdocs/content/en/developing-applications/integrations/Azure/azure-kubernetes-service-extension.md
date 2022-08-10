@@ -86,4 +86,24 @@ Once the k8-extension finishes provisioning, you can confirm that the Dapr contr
 kubectl get pods -n dapr-system
 ```
 
+The confirmation output should look like:
+
+```
+~  kubectl get pods -n dapr-system
+NAME                                    READY   STATUS    RESTARTS   AGE
+dapr-dashboard-5f49d48796-rnt5t         1/1     Running   0          1h
+dapr-operator-98579b8b4-fpz7k           1/1     Running   0          1h
+dapr-operator-98579b8b4-nn5vm           1/1     Running   0          1h
+dapr-operator-98579b8b4-pplqr           1/1     Running   0          1h
+dapr-placement-server-0                 1/1     Running   0          1h
+dapr-placement-server-1                 1/1     Running   0          1h
+dapr-placement-server-2                 1/1     Running   0          1h
+dapr-sentry-775bccdddb-htcl7            1/1     Running   0          1h
+dapr-sentry-775bccdddb-vtfxj            1/1     Running   0          1h
+dapr-sentry-775bccdddb-w4l8x            1/1     Running   0          1h
+dapr-sidecar-injector-9555889bc-klb9g   1/1     Running   0          1h
+dapr-sidecar-injector-9555889bc-rpjwl   1/1     Running   0          1h
+dapr-sidecar-injector-9555889bc-rqjgt   1/1     Running   0          1h
+```
+
 For further information such as configuration options and targeting specific versions of Dapr, see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/azure/aks/dapr).
