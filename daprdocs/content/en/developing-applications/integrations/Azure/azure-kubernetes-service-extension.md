@@ -86,7 +86,7 @@ Once the k8-extension finishes provisioning, you can confirm that the Dapr contr
 kubectl get pods -n dapr-system
 ```
 
-The output should look like:
+In the example output below, note how the Dapr control plane is installed with high availability mode, enabled by default.
 
 ```
 ~  kubectl get pods -n dapr-system
