@@ -67,9 +67,27 @@ Note, the value of "project"，"logstore"，"topic" and "source" property should
 
 #### Example
 
+{{< tabs "Windows" "Linux/MacOS" >}}
+
+{{% codetab %}}
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d "{\"metadata\":{\"project\":\"project-name\",\"logstore\":\"logstore-name\",\"topic\":\"topic-name\",\"source\":\"source-name\"},\"data\":{\"log-filed\":\"log info\"}" http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"metadata":{"project":"project-name","logstore":"logstore-name","topic":"topic-name","source":"source-name"},"data":{"log-filed":"log info"}' http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+<br />
 
 ### Response format
 As Alibaba Cloud SLS producer api is asynchronous mode, so there is no response for this binding and implemented a callback interface to accept the response of success or faild, only record faliure reason to the console log.
