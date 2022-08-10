@@ -86,7 +86,7 @@ Once the k8-extension finishes provisioning, you can confirm that the Dapr contr
 kubectl get pods -n dapr-system
 ```
 
-The confirmation output should look like:
+The output should look like:
 
 ```
 ~  kubectl get pods -n dapr-system
