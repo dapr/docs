@@ -22,3 +22,11 @@
   features:
     input: false
     output: true
+- component: Alibaba Cloud SLS
+  link: alicloudsls
+  state: Alpha
+  version: v1
+  since: "1.5"
+  features:
+    input: false
+    output: true
