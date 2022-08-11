@@ -22,7 +22,7 @@ Create a configuration item in a supported configuration store. This can be a si
 ### Run Redis with Docker
 
 ```
-docker run --name my-redis -p 6379:6379 -d redis
+docker run --name my-redis -p 6379:6379 -d redis:6
 ```
 
 ### Save an item 
