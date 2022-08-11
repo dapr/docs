@@ -306,8 +306,9 @@ Follow instructions for [Redis deployment in Kubernetes](#setup-redis) with one 
 
 When installing Redis Helm package, provide a configuration file that specifies container image and enables required modules:
 ```bash
-helm install redis bitnami/redis -f values.yaml
+helm install redis bitnami/redis --set image.tag=6.2 -f values.yaml
 ```
+
 where `values.yaml` looks like:
 ```yaml
 image:
