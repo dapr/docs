@@ -56,7 +56,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafkaevent
-  namespace: default
 spec:
   type: bindings.kafka
   version: v1
@@ -99,7 +98,7 @@ OPTIONS http://localhost:<appPort>/<name>
 Code | Description
 ---- | -----------
 404  | Application does not want to bind to the binding
-all others  | Application wants to bind to the binding
+2xx or 405  | Application wants to bind to the binding
 
 #### URL Parameters
 

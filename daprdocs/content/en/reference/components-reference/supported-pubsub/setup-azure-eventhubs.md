@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: eventhubs-pubsub
-  namespace: default
 spec:
   type: pubsub.azure.eventhubs
   version: v1
@@ -74,7 +73,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: eventhubs-pubsub
-  namespace: default
 spec:
   type: pubsub.azure.eventhubs
   version: v1

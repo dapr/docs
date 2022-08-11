@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: gcpsecretmanager
-  namespace: default
 spec:
   type: secretstores.gcp.secretmanager
   version: v1

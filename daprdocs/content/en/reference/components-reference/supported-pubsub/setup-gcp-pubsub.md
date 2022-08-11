@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: gcp-pubsub
-  namespace: default
 spec:
   type: pubsub.gcp.pubsub
   version: v1

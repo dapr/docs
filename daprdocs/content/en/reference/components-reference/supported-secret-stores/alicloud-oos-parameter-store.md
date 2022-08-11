@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: alibabacloudparameterstore
-  namespace: default
 spec:
   type: secretstores.alicloud.parameterstore
   version: v1

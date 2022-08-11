@@ -10,6 +10,11 @@ This guide demonstrates how to use Dapr's secrets API in your code to leverage t
 
 <img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
 
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the secrets management quickstart]({{< ref secrets-quickstart.md >}}) for a quick walk-through on how to use the secrets API.
+
+{{% /alert %}}
+
 ## Set up a secret store
 
 Before retrieving secrets in your application's code, you must configure a secret store component. This example configures a local secret store which uses a local JSON file to store secrets.
@@ -33,7 +38,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: localsecretstore
-  namespace: default
 spec:
   type: secretstores.local.file
   version: v1
@@ -205,7 +209,7 @@ func main() {
 
 ```javascript
 //dependencies 
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 

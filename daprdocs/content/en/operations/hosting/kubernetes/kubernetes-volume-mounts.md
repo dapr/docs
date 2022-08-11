@@ -17,7 +17,9 @@ You can set the following annotations in your deployment YAML:
 1. **dapr.io/volume-mounts**: for read-only volume mounts
 1. **dapr.io/volume-mounts-rw**: for read-write volume mounts
 
-These annotations are comma separated pairs of `volume:path`. Make sure that the corresponding Volumes exist in the Pod spec.
+These annotations are comma separated pairs of `volume-name:path/in/container`. Make sure that the corresponding Volumes exist in the Pod spec.
+
+In the snippet below, `my-volume1` and `my-volume2` are available inside the sidecar container at `/tmp/sample1` and `/tmp/sample2` respectively, in read-only mode. `my-volume3` is available inside the sidecar container at `/tmp/sample3` in read-write mode.
 
 ```yaml
 apiVersion: apps/v1
@@ -90,7 +92,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: local-secret-store
-  namespace: default
 spec:
   type: secretstores.local.file
   version: v1

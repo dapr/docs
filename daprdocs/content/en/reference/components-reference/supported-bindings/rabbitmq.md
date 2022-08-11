@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.rabbitmq
   version: v1
@@ -38,7 +37,7 @@ spec:
     value: false
   - name: maxPriority
     value: 5
-- name: contentType
+  - name: contentType
     value: "text/plain"
 ```
 

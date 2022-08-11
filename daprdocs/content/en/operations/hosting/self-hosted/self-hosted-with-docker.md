@@ -120,12 +120,13 @@ services:
     image: "daprio/daprd:edge"
     command: [
       "./daprd",
-     "-app-id", "nodeapp",
-     "-app-port", "3000",
-     "-placement-host-address", "placement:50006" # Dapr's placement service can be reach via the docker DNS entry
+     "--app-id", "nodeapp",
+     "--app-port", "3000",
+     "--placement-host-address", "placement:50006", # Dapr's placement service can be reach via the docker DNS entry
+     "--components-path", "./components"
      ]
     volumes:
-        - "./components/:/components" # Mount our components folder for the runtime to use
+        - "./components/:/components" # Mount our components folder for the runtime to use. The mounted location must match the --components-path argument.
     depends_on:
       - nodeapp
     network_mode: "service:nodeapp" # Attach the nodeapp-dapr service to the nodeapp network namespace
@@ -134,11 +135,12 @@ services:
 
   placement:
     image: "daprio/dapr"
-    command: ["./placement", "-port", "50006"]
+    command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
-    networks:
-      - hello-dapr
+  
+  networks:
+    hello-dapr: null
 ```
 
 > For those running the Docker daemon on a Linux host, you can also use `network_mode: host` to leverage host networking if needed.

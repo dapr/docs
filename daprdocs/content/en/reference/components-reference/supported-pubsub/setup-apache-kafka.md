@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -58,18 +57,18 @@ spec:
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authType is set to `"password"`. | `""`, `"KeFg23!"`
 | initialOffset       | N | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"`
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
-| consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms`
-| version               | N | Kafka cluster version. Defaults to 2.0.0.0 | `0.10.2.0`
+| consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
+| consumeRetryEnabled | N | Disable consume retry by setting `"false"` | `"true"`, `"false"` |
+| version               | N | Kafka cluster version. Defaults to 2.0.0.0 | `0.10.2.0` |
 | caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert | N | Client certificate, required for `authType` `mtls`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | N | Client key, required for `authType` `mtls` Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 | skipVerify | N | Skip TLS verification, this is not recommended for use in production. Defaults to `"false"` | `"true"`, `"false"` |
-| disableTls | N | Disable TLS for transport security. This is not recommended for use in production. Defaults to `"false"` | `"true"`, `"false"` |
+| disableTls | N | Disable TLS for transport security. To disable, you're not required to set value to `"true"`. This is not recommended for use in production. Defaults to `"false"`. | `"true"`, `"false"` |
 | oidcTokenEndpoint | N | Full URL to an OAuth2 identity provider access token endpoint. Required when `authType` is set to `oidc` | "https://identity.example.com/v1/token" |
-| oidcClientID | N | The OAuth2 client ID that has been provisioned in the identity provider. Required when `authType is set to `oidc` | `dapr-kafka` |
+| oidcClientID | N | The OAuth2 client ID that has been provisioned in the identity provider. Required when `authType` is set to `oidc` | `dapr-kafka` |
 | oidcClientSecret | N | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
-| oidcScopes | N | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | '"openid,kafka-prod"` |
-
+| oidcScopes | N | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | `"openid,kafka-prod"` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
@@ -88,7 +87,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-noauth
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -121,7 +119,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-sasl
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -163,7 +160,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-mtls
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -198,12 +194,15 @@ spec:
 
 #### OAuth2 or OpenID Connect
 
-Setting `authType` to `oidc` enables SASL authentication via the **OAUTHBEARER** mechanism. This supports specifying a bearer
-token from an external OAuth2 or [OIDC](https://en.wikipedia.org/wiki/OpenID) identity provider. Currenly only the **client_credentials** grant is supported. Configure `oidcTokenEndpoint` to
-the full URL for the identity provider access token endpoint. Set `oidcClientID` and `oidcClientSecret` to the client credentials provisioned in the identity provider. If `caCert`
-is specified in the component configuration, the certificate is appended to the system CA trust for verifying the identity provider certificate. Similarly, if `skipVerify`
-is specified in the component configuration, verification will also be skipped when accessing the identity provider. By default, the only scope requested for the token is `openid`; it is **highly** recommended
-that additional scopes be specified via `oidcScopes` in a comma-separated list and validated by the Kafka broker. If additional scopes are not used to narrow the validity of the access token,
+Setting `authType` to `oidc` enables SASL authentication via the **OAUTHBEARER** mechanism. This supports specifying a bearer token from an external OAuth2 or [OIDC](https://en.wikipedia.org/wiki/OpenID) identity provider. Currently, only the **client_credentials** grant is supported. 
+
+Configure `oidcTokenEndpoint` to the full URL for the identity provider access token endpoint. 
+
+Set `oidcClientID` and `oidcClientSecret` to the client credentials provisioned in the identity provider. 
+
+If `caCert` is specified in the component configuration, the certificate is appended to the system CA trust for verifying the identity provider certificate. Similarly, if `skipVerify` is specified in the component configuration, verification will also be skipped when accessing the identity provider. 
+
+By default, the only scope requested for the token is `openid`; it is **highly** recommended that additional scopes be specified via `oidcScopes` in a comma-separated list and validated by the Kafka broker. If additional scopes are not used to narrow the validity of the access token,
 a compromised Kafka broker could replay the token to access other services as the Dapr clientID.
 
 ```yaml
@@ -211,7 +210,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -259,7 +257,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1

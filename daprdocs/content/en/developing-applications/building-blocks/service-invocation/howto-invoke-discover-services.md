@@ -10,7 +10,10 @@ This article demonstrates how to deploy services each with an unique application
 
 <img src="/images/building-block-service-invocation-example.png" width=1000 height=500 alt="Diagram showing service invocation of example service">
 
-For a complete sample demonstrating service invocation, [walk through the service invocation quickstart](https://github.com/dapr/quickstarts/tree/master/service_invocation).
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the service invocation quickstart]({{< ref serviceinvocation-quickstart.md >}}) for a quick walk-through on how to use the service invocation API.
+
+{{% /alert %}}
 
 ## Choose an ID for your service
 
@@ -328,7 +331,7 @@ func main() {
 
 ```javascript
 //dependencies
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
