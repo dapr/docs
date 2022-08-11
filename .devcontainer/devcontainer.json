@@ -14,7 +14,8 @@
 	"extensions": [
 		"bungcip.better-toml",
 		"davidanson.vscode-markdownlint",
-        "budparr.language-hugo-vscode"
+        "budparr.language-hugo-vscode",
+		"eamodio.gitlens",
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
