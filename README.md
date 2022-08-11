@@ -61,6 +61,42 @@ git submodule update --init --recursive
 npm install
 ```
 
+## Alternative: Environment setup with devcontainer
+You may have dependencies on your machine setup exactly as you want them and do not want risk adding or updating dependencies that may break your machine for your paying job.  For that, we have a [devcontainer](https://code.visualstudio.com/docs/remote/containers).
+1. Clone this repository
+
+```sh
+git clone https://github.com/dapr/docs.git
+```
+
+2. Open in VSCode 
+```sh
+code .
+```
+
+3. When prompted with, *"Folder contains a Dev Container configuration file. Reopen folder to develop in a container."*, choose `Reopen in Container`
+
+4. In the VSCode terminal, change to daprdocs directory:
+
+```sh
+cd ./daprdocs
+```
+
+5. Update submodules:
+
+```sh
+git submodule update --init --recursive
+```
+
+6. Install npm packages:
+
+```sh
+npm install
+```
+
+You are now ready to run a local server as usual.
+
+
 ## Run local server
 
 1. Make sure you're still in the `daprdocs` directory
