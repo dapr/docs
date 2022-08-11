@@ -141,10 +141,6 @@ RUN set -euo pipefail && \
 VOLUME /src
 WORKDIR /src
 
-# fatal: detected dubious ownership in repository at '/workspaces/dapr-docs'
-# https://stackoverflow.com/a/73100228/5167537
-RUN git config --global --add safe.directory '*'
-
 # expose live-refresh server on default port
 EXPOSE 1313
 
