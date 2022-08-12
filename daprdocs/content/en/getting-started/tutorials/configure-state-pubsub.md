@@ -42,7 +42,7 @@ Install Redis into your cluster:
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm install redis bitnami/redis
+helm install redis bitnami/redis --set image.tag=6.2
 ```
 
 For Dapr's Pub/sub functionality, you'll need at least Redis version 5. For state store, you can use a lower version. 
