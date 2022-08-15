@@ -65,7 +65,9 @@ There are some scenarios where it's necessary to install Dapr from a private Hel
 - pulling Helm charts from trusted registries that are managed and maintained by your organization
 
 export DAPR_HELM_REPO_URL="https://helm.custom-domain.com/dapr/dapr"
+
 export DAPR_HELM_REPO_USERNAME="username_xxx"
+
 export DAPR_HELM_REPO_PASSWORD="passwd_xxx"
 
 Setting the above parameters will allow `dapr init -k` to install Dapr images from the configured Helm repository.
