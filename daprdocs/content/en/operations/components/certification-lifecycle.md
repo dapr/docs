@@ -47,6 +47,7 @@ All components start at the Alpha stage.
 - The component must have component [certification tests](#certification-tests) validating functionality and resiliency
 - The component is maintained by Dapr maintainers and supported by the community
 - The component is well documented and tested
+- The component has been available as Alpha or Beta for at least 1 minor version release of Dapr runtime prior
 - A maintainer will address component security, core functionality and test issues according to the Dapr support policy and issue a patch release that includes the patched stable component
 
 ### Previous Generally Available (GA) components
