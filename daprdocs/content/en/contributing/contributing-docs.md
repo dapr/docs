@@ -1,10 +1,9 @@
 ---
 type: docs
-title: "Docs contributions"
-linkTitle: "Docs"
-weight: 2000
-description: >
-  Guidelines for contributing to the Dapr Docs
+title: "Docs contributions overview"
+linkTitle: "Docs overview"
+weight: 1100
+description: Get started with contributing to the Dapr docs
 ---
 
 This guide contains information about contributions to the [Dapr docs repository](https://github.com/dapr/docs). Please review the guidelines below before making a contribution to the Dapr docs. This guide assumes you have already reviewed the [general guidance]({{< ref contributing-overview>}}) which applies to any Dapr project contributions.
