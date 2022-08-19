@@ -706,3 +706,40 @@ The following example shows how to construct a key for the state of an actor ins
 `myapp||cat||hobbit||food`
 
 In the example above, we are getting the value for the state key `food`, for the actor ID `hobbit` with an actor type of `cat`, under the App ID namespace of `myapp`.
+
+## Pub/sub for Actors
+
+Sends an event to be consumed by Actors using the pub/sub model. This endpoint publishes an event and invokes an actor's method previously declared in the Actor Runtime Configuration. The parameters help Dapr match which actor type and id to call.
+
+#### HTTP Request
+
+```
+POST http://localhost:3500/v1.0-alpha1/actors/<actorType>/<actorId>/publish/<PubsubName>/<Topic>
+```
+
+#### HTTP Response Codes
+
+Code | Description
+---- | -----------
+204  | Message delivered
+403  | Message forbidden by access controls
+404  | No pub/sub name or topic given
+500  | Delivery failed
+
+#### Examples
+
+Example of publishing for actors:
+
+```shell
+curl -X POST http://localhost:3000/v1.0-alpha1/actors/stormtrooper/50/publish/empirePubsub/tasksTopic -H "Content-Type: application/json" -d '{"status": "done"}'
+```
+Include the message to be handled by the actor's method by adding “-d” flag.
+
+#### URL Parameters
+
+Parameter    | Description
+---------    | -----------
+`ActorType`  | The actor type.
+`ActorID`    | The actor id.
+`PubsubName` | Name of the pub/sub component. 
+`Topic`      | Name of the topic.
