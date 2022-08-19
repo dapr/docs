@@ -707,8 +707,9 @@ The following example shows how to construct a key for the state of an actor ins
 
 In the example above, we are getting the value for the state key `food`, for the actor ID `hobbit` with an actor type of `cat`, under the App ID namespace of `myapp`.
 
-## Pubsub for Actors
-Send an event to be consumed by Actors using the Pubsub model. This endpoint will publish an event and invoke an Actor. The parameters information will help Dapr match which Actor type and id to call.
+## Pub/sub for Actors
+
+Sends an event to be consumed by Actors using the pub/sub model. This endpoint publishes an event and invokes an actor's method previously declared in the Actor Runtime Configuration. The parameters help Dapr match which actor type and id to call.
 
 #### HTTP Request
 
@@ -721,8 +722,8 @@ POST http://localhost:3500/v1.0-alpha1/actors/<actorType>/<actorId>/publish/<Pub
 Code | Description
 ---- | -----------
 204  | Message delivered
-403  | Message forbidden be access controls
-404  | No Pubsub name or topic given
+403  | Message forbidden by access controls
+404  | No pub/sub name or topic given
 500  | Delivery failed
 
 #### Examples
@@ -732,13 +733,13 @@ Example of publishing for actors:
 ```shell
 curl -X POST http://localhost:3000/v1.0-alpha1/actors/stormtrooper/50/publish/empirePubsub/tasksTopic -H "Content-Type: application/json" -d '{"status": "done"}'
 ```
-You can include the message to be handled by the actor method by adding “-d” flag.
+Include the message to be handled by the actor's method by adding “-d” flag.
 
 #### URL Parameters
 
 Parameter    | Description
 ---------    | -----------
-`ActorType`  | The Actor Type.
-`ActorID`    | The Actor id.
-`PubsubName` | Name of the Pubsub component. 
-`Topic`      | The name of the topic.
+`ActorType`  | The actor type.
+`ActorID`    | The actor id.
+`PubsubName` | Name of the pub/sub component. 
+`Topic`      | Name of the topic.

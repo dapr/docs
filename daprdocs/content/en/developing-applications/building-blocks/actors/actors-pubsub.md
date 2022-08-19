@@ -1,30 +1,34 @@
 ---
 type: docs
-title: "How-to: Enable and use Pubsub with Actors"
-linkTitle: "How-to: Pubsub for Actors"
+title: "How-to: Enable and use pub/sub with actors"
+linkTitle: "How-to: Pub/sub for actors"
 weight: 40
-description: "Overview on how to use Pubsub service with Dapr virtual Actors"
+description: "Overview on how to use pub/sub service with Dapr Virtual Actors"
 aliases:
   - "/developing-applications/building-blocks/actors/actors-pubsub"
 ---
 
-## Pubsub for Actors 
-Actors can be invoked and executed based on events using Pubsub. It is possible to use Actors as subscribers for a specific topic by configuring an Actor Pubsub Component and declaring the subscriptions in the Actor Runtime Configuration. Dapr sidecar will handle the received events and invoke the method of the right Actor. 
+## Pub/sub for Actors 
+Actors can be invoked and executed based on events using pub/sub. This can help the user invoke actors with event-driven applications maintaining scalability and isolation. It is possible to use actors as subscribers for a specific topic by configuring an actor pub/sub component and declaring the subscriptions in the Actor Runtime Configuration. Dapr sidecar handles the received events and invokes the method of the right actor. 
 
-<img src="/images/actor-pubsub.png" width=1000 height=500 alt="Diagram showing the flow of an event from a the publishing to the declared actor type and id">
+<img src="/images/actor-pubsub.png" width=1000 height=500 alt="Diagram showing the flow of an event from publishing to invoking the declared actor type and id">
 
->You must configure a Pubsub component to use Actors Pubsub. Reference to the Components Schema of Dapr. https://docs.dapr.io/operations/components/component-schema/ 
+>The application must have configured a pub/sub component to use pub/sub for actors. More information on how to set a [pub/sub component](https://docs.dapr.io/operations/components/component-schema/)
 
 
 ### Publishing
-You can publish an event for an Actor by using the HTTP/gRPC endpoints:
+You can publish an event for an actor by using the HTTP/gRPC endpoints:
 ```bash
 POST http://localhost:3500/v1.0-alpha1/actors/<actorType>/<actorId>/publish/<PubsubName>/<Topic>
 ```
-> Actors Pubsub is an alpha version and currently just available with the Python SDK
+> Actors pub/sub is an alpha version and currently just available with the Python SDK
 {{< tabs Python >}}
 {{% codetab %}}
 ```python
+import json
+import time
+
+from dapr.clients import DaprClient
 with DaprClient() as d:
 resp = d.publish_actor_event(
             pubsub_name='mypubsub',
@@ -39,13 +43,14 @@ resp = d.publish_actor_event(
 {{< /tabs >}}
 
 ### Subscribing
-For an Actor to receive events from the message broker, the subscription must be declared in the Actor Runtime Configuration.
+For an actor to receive events from the [message broker](https://docs.dapr.io/reference/components-reference/supported-pubsub/), the subscription must be declared in the Actor Runtime Configuration.
 
 Example: 
 {{< tabs Python Go>}}
 {{% codetab %}}
 ```python
-# Actor Runtime Configuration with pubsub subscriptions
+from dapr.actor.runtime.config import PubsubConfig
+# Actor Runtime Configuration with pub/sub subscriptions
 config = ActorRuntimeConfig(pubsub=[PubsubConfig(
     pubsubName="mypubsub",
     topic="mytopic",
@@ -60,46 +65,16 @@ config = ActorRuntimeConfig(pubsub=[PubsubConfig(
     )])
 ```
 {{% /codetab %}}
-{{% codetab %}}
-```go
-// Example on how to declare the subscriptions with Go
-var daprConfigResponse = daprConfig{
-    Entities:                 []string{"DemoActor"}
-    ActorIdleTimeout:         "1h",
-    ActorScanInterval:        "30s",
-    DrainOngoingCallTimeout:  "30s",
-    DrainRebalancedActors:    True,
-    Pubsub: []config.PubSubConfig{ // Subscription
-        {
-            PubSubName:  "myPubsub",
-            Topic:       "myTopic",
-            ActorType:   "DemoActor",
-            Method:      "mymethod1",
-            actorIdDataAttribute: "id",
-        },
-    },
-    EntitiesConfig: []config.EntityConfig{
-        {
-            Entities: []string{"DemoActor"},
-            Reentrancy: config.ReentrancyConfig{
-                Enabled:       true,
-                MaxStackDepth: 5,
-            },
-        },
-    },
-}
-```
-{{% /codetab %}}
 {{< /tabs >}}
 
 | Parameter | Description | 
 | ----------- | ----------- | 
-| PubsubConfig | Structure of the subscription. You can declare multiple PubsubConfigs to have different subscriptions with different Actor types or topics.| 
-| PubsubName | Pubsub name of the component declared and used with the sidecar. | 
-| Topic | The topic that the Actor will subscribe. | 
-| Actor Type | The Actor type that will be invoked and executed when receiving an event. |
-| Method | The method that will be called for that specific Actor type. Actor type must be have this method. | 
-| ActorIdDataAttribute _(Optional)_ | This string will be searched in the event to act as an Actor ID. Used when the published event doesn’t include an Actor ID.| 
+| PubsubConfig | Structure of the subscription. The actor runtime configuration can have multiple PubsubConfigs to manage different subscriptions with more than one actor type or topics.| 
+| PubsubName | Pub/sub name of the declared pub/sub component. | 
+| Topic | The topic that the actor is subscribed to. | 
+| Actor Type | The actor type that is invoked and executed when receiving an event. |
+| Method | The method that is called for that specific actor type. The actor type must have this method. | 
+| ActorIdDataAttribute _(Optional)_ | This string is searched in the event to act as an actor id. Used when the published event doesn’t include an actor id.| 
  
-When an event is published, the method that was declare in the Actor Runtime Configuration will be executed. The consumer pattern model will also apply to the Actors implementation. Therefore, if multiple sidecars with the same consumer id subscribe to the same topic and Actor type, they will all compete for the message. 
-> In-order processing of messages is not guaranteed. Other sidecars will not wait until a subscribe sidecar finishes to continue processing new incoming events.
+When an event is published, the method that is declared in the Actor Runtime Configuration executes. The consumer pattern model also applies to the actors' implementation. Therefore, if multiple sidecars with the same consumer id subscribe to the same topic and actor type, they compete for the message. 
+> In-order processing of messages is not guaranteed. Other sidecars do not wait until a subscribed sidecar finishes to continue processing new incoming events.
