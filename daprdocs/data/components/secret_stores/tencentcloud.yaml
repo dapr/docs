@@ -1,0 +1,5 @@
+- component: Tencent SSM(Secrets Manager)
+  link: tencentcloud-ssm
+  state: Alpha
+  version: v1
+  since: "1.8"
