@@ -13,7 +13,7 @@ Actors can be invoked and executed based on events using pub/sub. This can help 
 
 <img src="/images/actor-pubsub.png" width=1000 height=500 alt="Diagram showing the flow of an event from publishing to invoking the declared actor type and id">
 
->The application must have configured a pub/sub component to use pub/sub for actors. More information on how to set a [pub/sub component](https://docs.dapr.io/operations/components/component-schema/)
+>The application must have configured a pub/sub component to use pub/sub for actors. More information on how to set a [pub/sub component]({{< ref "../../../operations/components/component-schema.md">}})
 
 
 ### Publishing
@@ -43,8 +43,7 @@ resp = d.publish_actor_event(
 {{< /tabs >}}
 
 ### Subscribing
-For an actor to receive events from the [message broker](https://docs.dapr.io/reference/components-reference/supported-pubsub/), the subscription must be declared in the Actor Runtime Configuration.
-
+For an actor to receive events from the [message broker]({{< ref "../../../reference/components-reference/supported-pubsub">}}), the subscription must be declared in the Actor Runtime Configuration.
 Example: 
 {{< tabs Python Go>}}
 {{% codetab %}}
