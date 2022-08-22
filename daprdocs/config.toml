@@ -102,7 +102,7 @@ id = "UA-149338238-3"
     lang = "zh-hans"
   [[module.mounts]]
     source = "../translations/docs-zh/content/contributing"
-    target = "content/contributing/docs-contrib"
+    target = "content/contributing/docs-contrib/docs-templates"
     lang = "zh-hans"
   [[module.mounts]]
     source = "../translations/docs-zh/content/sdks_python"

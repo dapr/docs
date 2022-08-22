@@ -11,7 +11,7 @@ Dapr docs must align with features and updates included in the Dapr project rele
 - All new features or updates have been sufficiently documented and reviewed.
 - Docs PRs for the upcoming release point to the release branch.
 
-For these steps, we will treat `v1.0` as the latest release and `v1.1` as the upcoming release.
+For these steps, treat `v1.0` as the latest release and `v1.1` as the upcoming release.
 
 ## Release process overview
 
