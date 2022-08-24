@@ -13,7 +13,7 @@
     </tr>
     {{ range sort $components "component" }}
     <tr>
-        <td><a href="/reference/components-reference/supported-middleware/{{ .link }}/" }}>{{ .component
+        <td><a href="{{ .link }}/" }}>{{ .component
                 }}</a>
         </td>
         <td>{{ .description | markdownify}}</td>
