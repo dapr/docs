@@ -48,7 +48,7 @@ Dapr utilizes the Event Processor Host so an Azure Storage Account is required:
    1. The name of this consumer group equals the app id passed by the Dapr Run CLI flag `--app-id` or Kubernetes flag `dapr.io/app-id` (e.g. `dapr run --app-id example` or `dapr.io/app-id: "example"` requires a consumer group named `example`)
 4. Decide which authentication mechanism to use (see example below)
    1. [Azure Authentication]({{< ref authenticating-azure.md >}})
-   2. [Connection String]((https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature)) (copy connection string for the **specific event hub** - this ends on `EntityPath={EventHub}`)
+   2. [Connection String]((https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature)) (copy connection string for the event hub. This can include `EntityPath={EventHub}` if you wish to use just one event hub or omit this to be able to use all event hubs.
 
 ### 3. Configure your Dapr Component
 
