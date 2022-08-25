@@ -56,7 +56,7 @@ func (m *customMiddleware) GetHandler(metadata Metadata) (func(fasthttp.RequestH
   var err error
   return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
     return func(ctx *fasthttp.RequestCtx) {
-      // inboud logic
+      // inbound logic
       h(ctx)  // call the downstream handler
       // outbound logic
     }
