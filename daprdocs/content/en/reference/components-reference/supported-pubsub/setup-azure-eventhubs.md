@@ -143,7 +143,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | partitionCount | N | Number of partitions for the new event hub. Only used when entity management is enabled. Default: `"1"` | `"2"`
 | messageRetentionInDays | N | Number of days to retain messages for in the newly created event hub. Used only when entity management is enabled. Default: `"1"` | `"90"`
 
-## IoT hub Support
+## Azure IoT Hub Support
 
 Azure IoT Hub provides an [endpoint that is compatible with Event Hubs](https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messages-read-builtin#read-from-the-built-in-endpoint), so the Azure Event Hubs pubsub component can also be used to subscribe to Azure IoT Hub events.
 
