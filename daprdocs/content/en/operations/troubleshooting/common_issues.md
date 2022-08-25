@@ -264,3 +264,15 @@ kubectl config get-users
 ```
 
 You may learn more about webhooks [here](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
+
+## How to use the proxy when installing `darp runtime` via `darp init`
+
+The Dapr CLI uses the local environment to determine whether to use a proxy for downloads. The environment variables `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` (or the lowercase versions thereof) are all supported.
+
+The environment values may be either complete URL or `host[:port]`.The schemes `http`, `https`, and `socks5` are supported.
+
+For example:
+
+```bash
+export HTTPS_PROXY=http://YOUR_PROXY_HOST:YOUR_PROXY_PORT
+```
