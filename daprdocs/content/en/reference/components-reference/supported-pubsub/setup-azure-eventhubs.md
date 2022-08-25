@@ -50,6 +50,10 @@ Dapr utilizes the Event Processor Host so an Azure Storage Account is required:
    1. [Azure Authentication]({{< ref authenticating-azure.md >}})
    2. [Connection String]((https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature)) (copy connection string for the event hub. This can include `EntityPath={EventHub}` if you wish to use just one event hub or omit this to be able to use all event hubs.
 
+{{% alert title="Warning" color="warning" %}}
+When setting up an Azure Event Hub with the basic sku you will only have 1 consumer group available (named `$Default`). This means your app will be limited to using `--app-id '$Default'`!
+{{% /alert %}}
+
 ### 3. Configure your Dapr Component
 
 Create a Dapr Component and configure it through one of the [examples below](#examples)
