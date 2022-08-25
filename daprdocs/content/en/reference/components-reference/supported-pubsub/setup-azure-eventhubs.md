@@ -21,23 +21,25 @@ spec:
   type: pubsub.azure.eventhubs
   version: v1
   metadata:
-  - name: connectionString    # Either connectionString or eventHubNamespace. Should not be used when 
-  # Azure Authentication mechanism is used.
+  # Authentication with ConnectionString
+  - name: connectionString    # use either connectionString or eventHubNamespace.
     value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
-  - name: eventHubNamespace   # Either connectionString or eventHubNamespace. Should be used when 
-  # Azure Authentication mechanism is used.
+  # Authentication with Azure Authentication Mechanism
+  # see: https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/
+  - name: eventHubNamespace   # use either connectionString or eventHubNamespace.
     value: "namespace"
+  # Entity Management
+  # use resourceGroupName, subscriptionId and partitionCount
   - name: enableEntityManagement
     value: "false"
-    ## The following four properties are needed only if enableEntityManagement is set to true
   - name: resourceGroupName
     value: "test-rg"
   - name: subscriptionID
     value: "value of Azure subscription ID"
   - name: partitionCount
     value: "1"
+  # Other
   - name: messageRetentionInDays
-  ## Subscriber attributes
   - name: storageAccountName
     value: "myeventhubstorage"
   - name: storageAccountKey
