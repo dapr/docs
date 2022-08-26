@@ -34,6 +34,7 @@ dapr init [flags]
 | `--namespace`, `-n`   |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
 | `--network`           |                      |               | The Docker network on which to install and deploy the Dapr runtime                                          |
 | `--runtime-version`   |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
+| `--image-variant`   |                      |                 | The image variant to use for the Dapr runtime, for example: `mariner`               |
 | `--set`               |                      |               | Configure options on the command line to be passed to the Dapr Helm chart and the Kubernetes cluster upon install. Can specify multiple values in a comma-separated list, for example: `key1=val1,key2=val2`                     |
 | `--slim`, `-s`        |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
 | `--timeout`           |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
@@ -57,6 +58,12 @@ You can also specify a specific runtime version. Be default, the latest version 
 
 ```bash
 dapr init --runtime-version 1.4.0
+```
+
+You can also install Dapr with a particular image variant, for example: `mariner`.
+
+```bash
+dapr init --image-variant mariner
 ```
 
 Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) without Docker.
