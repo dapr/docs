@@ -40,9 +40,9 @@
     output: true
 - component: Azure Event Hubs
   link: eventhubs
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.8"
   features:
     input: true
     output: true
