@@ -88,9 +88,9 @@
     output: true
 - component: RabbitMQ
   link: rabbitmq
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.9"
   features:
     input: true
     output: true
