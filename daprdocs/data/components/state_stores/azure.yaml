@@ -33,9 +33,9 @@
     query: false
 - component: Azure Table Storage
   link: setup-azure-tablestorage
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     crud: true
     transactions: false

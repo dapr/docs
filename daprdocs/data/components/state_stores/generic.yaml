@@ -13,7 +13,7 @@
   link: setup-cassandra
   state: Beta
   version: v1
-  since: "1.9"
+  since: "1.7"
   features:
     crud: true
     transactions: false
@@ -22,7 +22,7 @@
     query: false
 - component: CockroachDB
   link: setup-cockroachdb
-  state: Alpha
+  state: Beta
   version: v1
   since: "1.7"
   features:
@@ -110,9 +110,9 @@
     query: true
 - component: MySQL
   link: setup-mysql
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     crud: true
     transactions: true
