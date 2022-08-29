@@ -48,9 +48,9 @@
     output: true
 - component: Local Storage
   link: localstorage
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.1"
+  since: "1.9"
   features:
     input: false
     output: true
@@ -88,7 +88,7 @@
     output: true
 - component: RabbitMQ
   link: rabbitmq
-  state: Beta
+  state: Stable
   version: v1
   since: "1.9"
   features:
