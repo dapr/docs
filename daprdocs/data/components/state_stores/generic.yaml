@@ -159,8 +159,8 @@
   since: "1.0"
   features:
     crud: true
-    transactions: true
-    etag: true
+    transactions: false
+    etag: false
     ttl: false
     query: false
 - component: Zookeeper
