@@ -33,7 +33,7 @@
     query: false
 - component: Azure Table Storage
   link: setup-azure-tablestorage
-  state: Stable
+  state: Beta
   version: v1
   since: "1.7"
   features:
