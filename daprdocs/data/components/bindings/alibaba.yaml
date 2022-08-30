@@ -26,7 +26,7 @@
   link: alicloudsls
   state: Alpha
   version: v1
-  since: "1.5"
+  since: "1.9"
   features:
     input: false
     output: true

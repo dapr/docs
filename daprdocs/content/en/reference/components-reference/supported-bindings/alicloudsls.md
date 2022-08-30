@@ -33,7 +33,7 @@ spec:
 | Field         | Required | Binding support  | Details | Example |
 |---------------|----------|---------|---------|---------|
 | `AccessKeyID`    | Y | Output |  Access key ID credential. | 
-| `AccessKeySecret` | Y | Output |Alicloud SLS accoun access key secret |
+| `AccessKeySecret` | Y | Output | Access key credential secret |
 | `Endpoint`   | Y | Output | Alicloud SLS endpoint.  | 
 
 ## Binding support
@@ -90,7 +90,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"metadata":{"project":"pro
 <br />
 
 ### Response format
-As Alibaba Cloud SLS producer api is asynchronous mode, so there is no response for this binding and implemented a callback interface to accept the response of success or faild, only record faliure reason to the console log.
+As Alibaba Cloud SLS producer API is asynchronous, there is no response for this binding (there is no callback interface to accept the response of success or failure, only a record for failure any reason to the console log).
 
 ## Related links
 
