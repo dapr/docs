@@ -32,7 +32,7 @@ spec:
 
 | Field         | Required | Binding support  | Details | Example |
 |---------------|----------|---------|---------|---------|
-| `AccessKeyID`    | Y | Output | Alicloud SLS account access key id. | 
+| `AccessKeyID`    | Y | Output |  Access key ID credential. | 
 | `AccessKeySecret` | Y | Output |Alicloud SLS accoun access key secret |
 | `Endpoint`   | Y | Output | Alicloud SLS endpoint.  | 
 
