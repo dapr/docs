@@ -15,5 +15,4 @@ The following stores are supported, at various levels, by the Dapr state managem
 
 > State stores can be used for actors if it supports both transactional operations and etag.
 
-
 {{< partial "components/state-stores.html" >}}

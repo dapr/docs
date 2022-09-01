@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Azure Cosmos DB binding spec"
-linkTitle: "Azure Cosmos DB"
-description: "Detailed documentation on the Azure Cosmos DB binding component"
+title: "Azure Cosmos DB (SQL API) binding spec"
+linkTitle: "Azure Cosmos DB (SQL API)"
+description: "Detailed documentation on the Azure Cosmos DB (SQL API) binding component"
 aliases:
   - "/operations/components/setup-bindings/supported-bindings/cosmosdb/"
 ---
@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.azure.cosmosdb
   version: v1

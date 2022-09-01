@@ -1,13 +1,13 @@
-name: Azure Static Web App v1.7
+name: Azure Static Web App Root
 
 on:
   push:
     branches:
-      - v1.7
+      - v1.8
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - v1.7
+      - v1.8
 
 jobs:
   build_and_deploy_job:
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-          fetch-depth: 0          
+          fetch-depth: 0
       - name: Setup Docsy
         run: cd daprdocs && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
       - name: Build And Deploy
@@ -28,7 +28,7 @@ jobs:
           HUGO_ENV: production
           HUGO_VERSION: "0.100.2"
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_V1_7 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           skip_deploy_on_missing_secrets: true
           action: "upload"
@@ -49,6 +49,6 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_V1_7 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
           skip_deploy_on_missing_secrets: true
           action: "close"

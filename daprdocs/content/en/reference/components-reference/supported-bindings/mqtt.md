@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.mqtt
   version: v1
@@ -63,7 +62,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mqtt-binding
-  namespace: default
 spec:
   type: bindings.mqtt
   version: v1
@@ -135,6 +133,20 @@ This component supports both **input and output** binding interfaces.
 This component supports **output binding** with the following operations:
 
 - `create`
+
+## Set topic per-request
+
+You can override the topic in component metadata on a per-request basis:
+
+```json
+{
+  "operation": "create",
+  "metadata": {
+    "topic": "myTopic"
+  },
+  "data": "<h1>Testing Dapr Bindings</h1>This is a test.<br>Bye!"
+}
+```
 
 ## Related links
 

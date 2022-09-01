@@ -25,13 +25,15 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mycustomsecretstore
-  namespace: default
 spec:
   type: secretstores.kubernetes
   version: v1
-  metadata:
-  - name: ""
+  metadata:[]
 ```
+
+## Spec metadata fields
+For the Kubernetes secret store component, there are no metadata attributes.
+
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})

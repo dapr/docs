@@ -53,10 +53,11 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 #### Install without administrative rights
 
-If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable.
+If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. The script below creates the directory if it does not exist.
 
 ```powershell
-$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$HOME/dapr"
+$Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
+$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$Env:DAPR_INSTALL_DIR"
 ```
 
 {{% /codetab %}}
@@ -73,7 +74,7 @@ curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh 
 
 **For ARM64 Macs:**
 
-ARM64 Macs support is available as a *preview feature*. When installing from the terminal, native ARM64 binaries are downloaded once available. For older releases, AMD64 binaries are downloaded and must be run with Rosetta2 emulation enabled.
+When installing from the terminal, native ARM64 binaries are available. 
 
 To install Rosetta emulation:
 
@@ -91,7 +92,7 @@ brew install dapr/tap/dapr-cli
 
 **For ARM64 Macs:**
 
-For ARM64 Macs, only Homebrew 3.0 and higher versions are supported. Please update Homebrew to 3.0.0 or higher and then run the command below:
+For ARM64 Macs, Homebrew 3.0 and higher versions are supported. Update Homebrew to 3.0.0 or higher and then run the command below:
 
 ```bash
 arch -arm64 brew install dapr/tap/dapr-cli

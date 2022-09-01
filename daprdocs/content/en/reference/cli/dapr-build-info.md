@@ -2,12 +2,12 @@
 type: docs
 title: "build-info CLI command reference"
 linkTitle: "build-info"
-description: "Detailed build information on dapr-cli and daprd executables"
+description: "Detailed build information on dapr CLI and daprd executables"
 ---
 
 ### Description
 
-Get the version and git commit data for `dapr-cli` and `daprd` executables.
+Get the version and git commit data for `dapr` and `daprd` executables.
 
 ### Supported platforms
 

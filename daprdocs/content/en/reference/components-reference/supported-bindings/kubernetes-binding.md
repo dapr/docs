@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.kubernetes
   version: v1
@@ -90,7 +89,6 @@ One of the rules need to be of the form as below to give permissions to `get, wa
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: <NAMESPACE>
   name: <ROLENAME>
 rules:
 - apiGroups: [""]
@@ -105,11 +103,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE> # same as above
 subjects:
 - kind: ServiceAccount
   name: default # or as need be, can be changed
-  namespace: <NAMESPACE> # same as above
 roleRef:
   kind: Role
   name: <ROLENAME> # same as the one above

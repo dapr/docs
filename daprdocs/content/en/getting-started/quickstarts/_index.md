@@ -30,3 +30,4 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | Actors             | Coming soon. |
 | Observability      | Coming soon. |
 | Configuration      | Coming soon. |
+| Distributed Lock     | Coming soon. |

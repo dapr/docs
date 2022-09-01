@@ -109,7 +109,7 @@ Configure your application to receive incoming events. If you're using HTTP, you
 
 Below are code examples that leverage Dapr SDKs to demonstrate an output binding.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs Dotnet Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
@@ -223,7 +223,7 @@ func main() {
 
 ```javascript
 //dependencies 
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 

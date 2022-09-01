@@ -8,8 +8,9 @@ description: "Recommendations and practices for deploying Dapr to a Kubernetes c
 
 ## Cluster capacity requirements
 
-For a production-ready Kubernetes cluster deployment, it is recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
-Use the following resource settings as a starting point. Requirements will vary depending on cluster size and other factors, so perform individual testing to find the right values for your environment:
+For a production-ready Kubernetes cluster deployment, we recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
+
+Use the following resource settings as a starting point. Requirements will vary depending on cluster size and other factors, so you should perform individual testing to find the right values for your environment:
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
@@ -21,20 +22,23 @@ Use the following resource settings as a starting point. Requirements will vary 
 
 {{% alert title="Note" color="primary" %}}
 For more info, read the [concept article on CPU and Memory resource units and their meaning](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
-
 {{% /alert %}}
 
 ### Helm
 
-When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment. The [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) has detailed information and examples. For local/dev installations, you might simply want to skip configuring the `resources` options.
+When installing Dapr using Helm, no default limit/request values are set. Each component has a `resources` option (for example, `dapr_dashboard.resources`), which you can use to tune the Dapr control plane to fit your environment.
+
+The [Helm chart readme](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) has detailed information and examples.
+
+For local/dev installations, you might simply want to skip configuring the `resources` options.
 
 ### Optional components
 
 The following Dapr control plane deployments are optional:
 
-- **Placement** - Needed for Dapr Actors
-- **Sentry** - Needed for mTLS for service to service invocation
-- **Dashboard** - Needed for operational view of the cluster
+- **Placement**: needed to use Dapr Actors
+- **Sentry**: needed for mTLS for service to service invocation
+- **Dashboard**: needed to get an operational view of the cluster
 
 ## Sidecar resource settings
 
@@ -58,14 +62,13 @@ Example settings for the Dapr sidecar in a production-ready setup:
 
 {{% alert title="Note" color="primary" %}}
 Since Dapr is intended to do much of the I/O heavy lifting for your app, it's expected that the resources given to Dapr enable you to drastically reduce the resource allocations for the application.
-
 {{% /alert %}}
 
-The CPU and memory limits above account for the fact that Dapr is intended to a high number of I/O bound operations. It is strongly recommended that you use a monitoring tool to baseline the sidecar (and app) containers and tune these settings based on those baselines.
+The CPU and memory limits above account for the fact that Dapr is intended to support a high number of I/O bound operations. It is strongly recommended that you use a monitoring tool to get a baseline for the sidecar (and app) containers and tune these settings based on those baselines.
 
 ## Highly-available mode
 
-When deploying Dapr in a production-ready configuration, it's recommended to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows the Dapr control plane to retain 3 running instances and survive node failures and other outages.
+When deploying Dapr in a production-ready configuration, it is recommend to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows the Dapr control plane to retain 3 running instances and survive individual node failures and other outages.
 
 For a new Dapr deployment, the HA mode can be set with both the [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}) and with [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}}).
 
@@ -76,6 +79,7 @@ For an existing Dapr deployment, enabling the HA mode requires additional steps.
 [Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
 
 ### Parameters file
+
 Instead of specifying parameters on the command line, it's recommended to create a values file. This file should be checked into source control so that you can track its changes.
 
 For a full list of all available options you can set in the values file (or by using the `--set` command-line option), see https://github.com/dapr/dapr/blob/master/charts/dapr/README.md.
@@ -83,8 +87,11 @@ For a full list of all available options you can set in the values file (or by u
 Instead of using either `helm install` or `helm upgrade` as shown below, you can also run `helm upgrade --install` - this will dynamically determine whether to install or upgrade.
 
 ```bash
-# add/update the helm repo
+# Add/update a official Dapr Helm repo.
 helm repo add dapr https://dapr.github.io/helm-charts/
+# or add/update a private Dapr Helm repo.
+helm repo add dapr http://helm.custom-domain.com/dapr/dapr/ \
+   --username=xxx --password=xxx
 helm repo update
 
 # See which chart versions are available
@@ -119,7 +126,7 @@ The Dapr Helm chart automatically deploys with affinity for nodes with the label
 
 ## Upgrading Dapr with Helm
 
-Dapr supports zero downtime upgrades. The upgrade path includes the following steps:
+Dapr supports zero-downtime upgrades. The upgrade path includes the following steps:
 
 1. Upgrading a CLI version (optional but recommended)
 2. Updating the Dapr control plane
@@ -189,7 +196,6 @@ It is recommended that a production-ready deployment includes the following sett
 
 6. Dapr also supports **scoping components for certain applications**. This is not a required practice, and can be enabled according to your security needs. See [here]({{< ref "component-scopes.md" >}}) for more info.
 
-
 ## Tracing and metrics configuration
 
 Dapr has tracing and metrics enabled by default. It is *recommended* that you set up distributed tracing and metrics for your applications and the Dapr control plane in production.
@@ -197,15 +203,26 @@ Dapr has tracing and metrics enabled by default. It is *recommended* that you se
 If you already have your own observability set-up, you can disable tracing and metrics for Dapr.
 
 ### Tracing
+
 To configure a tracing backend for Dapr visit [this]({{< ref "setup-tracing.md" >}}) link.
 
 ### Metrics
+
 For metrics, Dapr exposes a Prometheus endpoint listening on port 9090 which can be scraped by Prometheus.
 
 To setup Prometheus, Grafana and other monitoring tools with Dapr, visit [this]({{< ref "monitoring" >}}) link.
 
+## Injector watchdog
+
+The Dapr Operator service includes an _injector watchdog_ which can be used to detect and remediate situations where your application's pods may be deployed without the Dapr sidecar (the `daprd` container) when they should have been. For example, it can assist with recovering the applications after a total cluster failure.
+
+The injector watchdog is disabled by default when running Dapr in Kubernetes mode and it is recommended that you consider enabling it with values that are appropriate for your specific situation.
+
+Refer to the documentation for the [Dapr operator]({{< ref operator >}}) service for more details on the injector watchdog and how to enable it.
+
 ## Best Practices 
+
 Watch this video for a deep dive into the best practices for running Dapr in production with Kubernetes
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="360" height="315" src="https://www.youtube.com/embed/_U9wJqq-H1g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/_U9wJqq-H1g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

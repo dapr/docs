@@ -37,7 +37,7 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 
 You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
-### Install Dapr
+### Install Dapr (from an official Dapr Helm chart)
 
 The `-k` flag initializes Dapr on the Kubernetes cluster in your current context.
 
@@ -57,6 +57,18 @@ dapr init -k
 ✅  Deploying the Dapr control plane to your cluster...
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run "dapr status -k" in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
+
+### Install Dapr (a private Dapr Helm chart)
+There are some scenarios where it's necessary to install Dapr from a private Helm chart, such as:
+- needing more granular control of the Dapr Helm chart
+- having a custom Dapr deployment
+- pulling Helm charts from trusted registries that are managed and maintained by your organization
+
+export DAPR_HELM_REPO_URL="https://helm.custom-domain.com/dapr/dapr"
+export DAPR_HELM_REPO_USERNAME="username_xxx"
+export DAPR_HELM_REPO_PASSWORD="passwd_xxx"
+
+Setting the above parameters will allow `dapr init -k` to install Dapr images from the configured Helm repository.
 
 ### Install in custom namespace
 
@@ -114,7 +126,11 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 2. Add Helm repo and update
 
     ```bash
+    // Add the official Dapr Helm chart.
     helm repo add dapr https://dapr.github.io/helm-charts/
+    // Or also add a private Dapr Helm chart.
+    helm repo add dapr http://helm.custom-domain.com/dapr/dapr/ \
+       --username=xxx --password=xxx
     helm repo update
     # See which chart versions are available
     helm search repo dapr --devel --versions
@@ -169,6 +185,25 @@ dapr-operator-7bd6cbf5bf-xglsr           1/1       Running   0          40s
 dapr-placement-7f8f76778f-6vhl2          1/1       Running   0          40s
 dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
+```
+
+## Using Mariner-based images
+
+When deploying Dapr, whether on Kubernetes or in Docker self-hosted, the default container images that are pulled are based on [*distroless*](https://github.com/GoogleContainerTools/distroless).
+
+Alternatively, you can use Dapr container images based on Mariner 2 (minimal distroless). [Mariner](https://github.com/microsoft/CBL-Mariner/), officially known as CBL-Mariner, is a free and open-source Linux distribution and container base image maintained by Microsoft. For some Dapr users, leveraging container images based on Mariner can help you meet compliance requirements.
+
+To use Mariner-based images for Dapr, you need to add `-mariner` to your Docker tags. For example, while `ghcr.io/dapr/dapr:latest` is the Docker image based on *distroless*, `ghcr.io/dapr/dapr:latest-mariner` is based on Mariner. Tags pinned to a specific version are also available, such as `{{% dapr-latest-version short="true" %}}-mariner`.
+
+With Kubernetes and Helm, you can use Mariner-based images by setting the `global.tag` option and adding `-mariner`. For example:
+
+```sh
+helm upgrade --install dapr dapr/dapr \
+  --version={{% dapr-latest-version short="true" %}} \
+  --namespace dapr-system \
+  --create-namespace \
+  --set global.tag={{% dapr-latest-version long="true" %}}-mariner \
+  --wait
 ```
 
 ## Next steps

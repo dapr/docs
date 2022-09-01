@@ -38,7 +38,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: localsecretstore
-  namespace: default
 spec:
   type: secretstores.local.file
   version: v1
@@ -210,7 +209,7 @@ func main() {
 
 ```javascript
 //dependencies 
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
