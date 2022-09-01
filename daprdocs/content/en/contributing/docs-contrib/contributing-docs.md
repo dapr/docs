@@ -61,9 +61,9 @@ Select the topic type below to view a suggested template to help you get started
 
 | Topic type | What is it? |
 | ---------- | ----------- |
-| [Concept]({{< ref "docs-templates/concept-template.md" >}}) | Answers the question, "What problems does this help me solve?" Avoid repeating the API or component spec; provide more details. |
-| [Quickstart]({{< ref "docs-templates/quickstart-template.md" >}}) | Provides a "Five minutes to _wow_" experience. Walk the reader quickly through a feature or API and how it works in a controlled example. |
-| [How-to]({{< ref "docs-templates/howto-template.md" >}}) | Provides a detailed, practical step-by-step through a Dapr feature or technology. Encourage the reader to try with their own scenario, rather than the controlled scenario provided in a quickstart. |
+| [Concept]({{< ref "concept-template.md" >}}) | Answers the question, "What problems does this help me solve?" Avoid repeating the API or component spec; provide more details. |
+| [Quickstart]({{< ref "quickstart-template.md" >}}) | Provides a "Five minutes to _wow_" experience. Walk the reader quickly through a feature or API and how it works in a controlled example. |
+| [How-to]({{< ref "howto-template.md" >}}) | Provides a detailed, practical step-by-step through a Dapr feature or technology. Encourage the reader to try with their own scenario, rather than the controlled scenario provided in a quickstart. |
 
 ## Requirements for docs.dapr.io
 
