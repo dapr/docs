@@ -11,9 +11,9 @@
     query: false
 - component: Apache Cassandra
   link: setup-cassandra
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     crud: true
     transactions: false
@@ -22,7 +22,7 @@
     query: false
 - component: CockroachDB
   link: setup-cockroachdb
-  state: Alpha
+  state: Beta
   version: v1
   since: "1.7"
   features:
@@ -110,9 +110,9 @@
     query: true
 - component: MySQL
   link: setup-mysql
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     crud: true
     transactions: true
@@ -159,8 +159,8 @@
   since: "1.0"
   features:
     crud: true
-    transactions: true
-    etag: true
+    transactions: false
+    etag: false
     ttl: false
     query: false
 - component: Zookeeper
