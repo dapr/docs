@@ -51,3 +51,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
           skip_deploy_on_missing_secrets: true
+          action: "close"
