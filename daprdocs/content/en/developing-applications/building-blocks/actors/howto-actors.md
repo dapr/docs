@@ -64,7 +64,7 @@ Supported formats:
 * [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. Example: `PT2H30M`
 
 ---
-The actor runtime validates correctess of the scheduling configuration and returns error on invalid input.
+The actor runtime validates correctness of the scheduling configuration and returns error on invalid input.
 
 When you specify both the number of repetitions in `period` as well as `ttl`, the timer/reminder will be stopped when either condition is met.
 

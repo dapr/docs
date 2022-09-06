@@ -294,7 +294,7 @@ Alternatively, you can create an instance of Redis by running the following comm
 
 > Note: `redislabs/rejson` has support only for amd64 architecture.
 
-Use following command to create an instance of redis compatiable with query API.
+Use following command to create an instance of redis compatible with query API.
 
 ```bash
 docker run -p 9445:9445 --name rejson --rm redislabs/rejson:2.0.6
