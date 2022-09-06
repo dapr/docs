@@ -87,7 +87,7 @@ You can also specify a private registry to pull container images from. These ima
 
 > The 3rd party images have to be published under `dapr/3rdparty` path.
 
-> image-registy uri follows this format - `docker.io/<username>`
+> image-registry uri follows this format - `docker.io/<username>`
 
 ```bash
 dapr init --image-registry docker.io/username
