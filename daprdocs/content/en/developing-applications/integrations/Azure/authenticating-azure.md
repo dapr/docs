@@ -128,7 +128,7 @@ az ad app credential reset \
   --password $(openssl rand -base64 30)
 ```
 
-The ouput of the command above will be similar to this:
+The output of the command above will be similar to this:
 
 ```json
 {

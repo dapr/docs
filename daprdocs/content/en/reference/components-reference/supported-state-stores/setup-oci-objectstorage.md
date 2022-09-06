@@ -37,7 +37,7 @@ spec:
  - name: privateKey  # Not used when configFileAuthentication == "true" or instancePrincipalAuthentication == "true" 
    value: |
           -----BEGIN RSA PRIVATE KEY-----
-          REPLACE-WIH-PRIVATE-KEY-AS-IN-PEM-FILE
+          REPLACE-WITH-PRIVATE-KEY-AS-IN-PEM-FILE
           -----END RSA PRIVATE KEY-----    
  - name: region
    value: <REPLACE-WITH-OCI-REGION>  # Not used when configFileAuthentication == "true" or instancePrincipalAuthentication == "true" 
