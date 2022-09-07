@@ -1,8 +1,8 @@
 - component: Azure Event Hubs
   link: setup-azure-eventhubs
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.6"
+  since: "1.8"
 - component: Azure Service Bus
   link: setup-azure-servicebus
   state: Stable
