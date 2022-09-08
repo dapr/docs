@@ -7,6 +7,68 @@ aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-azure-eventhubs/"
 ---
 
+## Component Spec
+
+```yaml
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: eventhubs-pubsub
+  namespace: default
+spec:
+  type: pubsub.azure.eventhubs
+  version: v1
+  metadata:
+  # Authentication with ConnectionString
+  - name: connectionString    # use either connectionString or eventHubNamespace.
+    value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
+  # Authentication with Azure
+  - name: azureTenantId
+    value: "***"
+  - name: azureClientId
+    value: "***"
+  - name: azureClientSecret
+    value: "***"
+  - name: eventHubNamespace 
+    value: "namespace"
+  - name: enableEntityManagement
+    value: "false"
+    ## The following four properties are needed only if enableEntityManagement is set to true
+  - name: resourceGroupName
+    value: "test-rg"
+  - name: subscriptionID
+    value: "value of Azure subscription ID"
+  - name: partitionCount
+    value: "1"
+  - name: messageRetentionInDays
+  # Other
+  - name: messageRetentionInDays
+    value: "7" # default on standard plan
+  - name: storageAccountName
+    value: "myeventhubstorage"
+  - name: storageAccountKey
+    value: "112233445566778899"
+  - name: storageContainerName
+    value: "myeventhubstoragecontainer"
+```
+
+## Component Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| connectionString    | Y*  | Connection-string for the Event Hub or the Event Hub namespace. *Mutally exclusive with `eventHubNamespace` field. *Not to be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
+| eventHubNamespace | N* | The Event Hub Namespace name. *Mutally exclusive with `connectionString` field. *To be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `"namespace"` 
+| storageAccountName  | Y  | Storage account name to use for the EventProcessorHost   |`"myeventhubstorage"`
+| storageAccountKey   | Y*  | Storage account key  to use for the EventProcessorHost. Can be `secretKeyRef` to use a secret reference. *Omit if using [Azure Authentication]({{< ref "authenticating-azure.md" >}}) and AAD authentication to the storage account is preferred.    | `"112233445566778899"`
+| storageContainerName | Y | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
+| enableEntityManagement | N | Boolean value to allow management of EventHub namespace. Default: `false` | `"true", "false"`
+| resourceGroupName | N | Name of the resource group the event hub namespace is a part of. Needed when entity management is enabled | `"test-rg"`
+| subscriptionID | N | Azure subscription ID value. Needed when entity management is enabled | `"azure subscription id"`
+| partitionCount | N | Number of partitions for the new event hub. Only used when entity management is enabled. Default: `"1"` | `"2"`
+| messageRetentionInDays | N | Number of days to retain messages for in the newly created event hub. Used only when entity management is enabled. Default: `"1"` | `"90"`
+
 ## Component format
 
 To setup Azure Event Hubs pubsub create a component of type `pubsub.azure.eventhubs`. 
@@ -53,99 +115,6 @@ Dapr utilizes the Event Processor Host so an Azure Storage Account is required:
 {{% alert title="Warning" color="warning" %}}
 When setting up an Azure Event Hub with the basic sku you will only have 1 consumer group available (named `$Default`). This means your app will be limited to using `--app-id '$Default'`!
 {{% /alert %}}
-
-### 3. Configure your Dapr Component
-
-Create a Dapr Component and configure it through one of the [examples below](#examples)
-
-## Example Configuration
-
-### Azure Authentication
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: eventhubs-pubsub
-  namespace: default
-spec:
-  type: pubsub.azure.eventhubs
-  version: v1
-  metadata:
-  # Authentication with Azure
-  - name: azureTenantId
-    value: "***"
-  - name: azureClientId
-    value: "***"
-  - name: azureClientSecret
-    value: "***"
-  - name: eventHubNamespace 
-    value: "namespace"
-  - name: enableEntityManagement
-    value: "false"
-    ## The following four properties are needed only if enableEntityManagement is set to true
-  - name: resourceGroupName
-    value: "test-rg"
-  - name: subscriptionID
-    value: "value of Azure subscription ID"
-  - name: partitionCount
-    value: "1"
-  - name: messageRetentionInDays
-  # Other
-  - name: messageRetentionInDays
-    value: "7" # default on standard plan
-  - name: storageAccountName
-    value: "myeventhubstorage"
-  - name: storageAccountKey
-    value: "112233445566778899"
-  - name: storageContainerName
-    value: "myeventhubstoragecontainer"
-```
-
-### Connection String Authentication
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: eventhubs-pubsub
-  namespace: default
-spec:
-  type: pubsub.azure.eventhubs
-  version: v1
-  metadata:
-  # Authentication with ConnectionString
-  - name: connectionString    # use either connectionString or eventHubNamespace.
-    value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
-  # Other
-  - name: messageRetentionInDays
-    value: "7" # default on standard plan
-  - name: storageAccountName
-    value: "myeventhubstorage"
-  - name: storageAccountKey
-    value: "112233445566778899"
-  - name: storageContainerName
-    value: "myeventhubstoragecontainer"
-```
-
-{{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
-{{% /alert %}}
-
-## Spec metadata fields
-
-| Field              | Required | Details | Example |
-|--------------------|:--------:|---------|---------|
-| connectionString    | Y*  | Connection-string for the Event Hub or the Event Hub namespace. *Mutally exclusive with `eventHubNamespace` field. *Not to be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
-| eventHubNamespace | N* | The Event Hub Namespace name. *Mutally exclusive with `connectionString` field. *To be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `"namespace"` 
-| storageAccountName  | Y  | Storage account name to use for the EventProcessorHost   |`"myeventhubstorage"`
-| storageAccountKey   | Y*  | Storage account key  to use for the EventProcessorHost. Can be `secretKeyRef` to use a secret reference. *Omit if using [Azure Authentication]({{< ref "authenticating-azure.md" >}}) and AAD authentication to the storage account is preferred.    | `"112233445566778899"`
-| storageContainerName | Y | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
-| enableEntityManagement | N | Boolean value to allow management of EventHub namespace. Default: `false` | `"true", "false"`
-| resourceGroupName | N | Name of the resource group the event hub namespace is a part of. Needed when entity management is enabled | `"test-rg"`
-| subscriptionID | N | Azure subscription ID value. Needed when entity management is enabled | `"azure subscription id"`
-| partitionCount | N | Number of partitions for the new event hub. Only used when entity management is enabled. Default: `"1"` | `"2"`
-| messageRetentionInDays | N | Number of days to retain messages for in the newly created event hub. Used only when entity management is enabled. Default: `"1"` | `"90"`
 
 ## Azure IoT Hub Support
 
