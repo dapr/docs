@@ -16,6 +16,8 @@ kind: Component
 metadata:
   name: [COMPONENT-NAME]
   namespace: [COMPONENT-NAMESPACE]
+auth:
+  secretStore: [SECRETSTORES-NAME]
 spec:
   type: [COMPONENT-TYPE]
   version: v1
@@ -24,6 +26,9 @@ spec:
   metadata:
   - name: [METADATA-NAME]
     value: [METADATA-VALUE]
+    secretKeyRef: 
+    - name: [SECRET-NAME]
+      key: [SECERT-KEY]
 ```
 
 ## Fields
@@ -35,12 +40,17 @@ spec:
 | **metadata**       | -        | **Information about the component registration** |
 | metadata.name      | Y        | The name of the component | `prod-statestore`
 | metadata.namespace | N        | The namespace for the component for hosting environments with namespaces | `myapp-namespace`
-| **spec**           | -        | **Detailed information on the component resource**
+| **auth**           | - | Auth represents authentication details for the component.| 
+| spec.secretStore   | N |  The secretstores's name for the initiallization of the component | 
+| **spec**           | -        | **Detailed information on the component resource** |
 | spec.type          | Y        | The type of the component | `state.redis`
 | spec.version       | Y        | The version of the component | `v1`
 | spec.initTimeout   | N        | The timeout duration for the initialization of the component. Default is 5s  | `5m`, `1h`, `20s`
 | spec.ignoreErrors  | N        | Tells the Dapr sidecar to continue initialization if the component fails to load. Default is false  | `false`
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
+| **spec.metadata.secretKeyRef**| - | **SecretKeyRef is a reference to a secret holding the value for the metadata item. Name is the secret name, and key is the field in the secret.** |
+| spec.metadata.SecretKeyRef.name | N |Name is the secret name.|
+| spec.metadata.SecretKeyRef.key | N |Key is the field in the secret. When dapr sidecar is in standalone mode, key is unset.|
 
 ### Special metadata values
 
