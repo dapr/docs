@@ -108,11 +108,7 @@ First, create the Azure AD application with:
 APP_NAME="dapr-application"
 
 # Create the app
-APP_ID=$(az ad app create \
-  --display-name "${APP_NAME}" \
-  --enable-access-token-issuance false \
-  --enable-id-token-issuance false
-  | jq -r .appId)
+APP_ID=$(az ad app create --display-name "${APP_NAME}"  | jq -r .appId)
 ```
 
 {{< tabs "Client secret" "Certificate">}}
