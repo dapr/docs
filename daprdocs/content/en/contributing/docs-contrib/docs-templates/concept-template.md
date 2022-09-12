@@ -75,22 +75,20 @@ Include diagrams or images throughout, where applicable.
 ## Try out <concept>
 
 <!-- 
-If applicable, include a section with links to the related quickstart, how-to guides, or tutorials. For example, in pub/sub:
-
-## Try out pub/sub
+If applicable, include a section with links to the related quickstart, how-to guides, or tutorials. --> 
 
 ### Quickstarts and tutorials
 
-Want to put the Dapr pub/sub API to the test? Walk through the following quickstart and tutorials to see pub/sub in action:
+Want to put the Dapr <topic> API to the test? Walk through the following quickstart and tutorials to see <topic> in action:
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Pub/sub quickstart](link) | Send and receive messages using the publish and subscribe API. |
-| [Pub/sub tutorial](link) | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component. |
+| [<topic> quickstart](link) | Description of the quickstart. |
+| [<topic> tutorial](link) | Description of the tutorial. |
 
-### Start using pub/sub directly in your app
+### Start using <topic> directly in your app
 
-Want to skip the quickstarts? Not a problem. You can try out the pub/sub building block directly in your application to publish messages and subscribe to a topic. After [Dapr is installed](link), you can begin using the pub/sub API starting with [the pub/sub how-to guide](link).
+Want to skip the quickstarts? Not a problem. You can try out the <topic> building block directly in your application. After [Dapr is installed](link), you can begin using the <topic> API, starting with [the <topic> how-to guide](link).
 
 
 -->

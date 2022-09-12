@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Docs contributors guide"
-linkTitle: "Docs contributors guide"
+title: "Contributors guide"
+linkTitle: "Contributors guide"
 weight: 10
 description: Get started with contributing to the Dapr docs
 ---

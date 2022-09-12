@@ -51,12 +51,10 @@ Include a diagram or image, if possible.
 -->
 
 <!--
-If applicable, link to the related quickstart in a shortcode note or alert.
+If applicable, link to the related quickstart in a shortcode note or alert with text like:
 
-{{% alert title="Note" color="primary" %}}
  If you haven't already, [try out the <topic> quickstart](link) for a quick walk-through on how to use <topic>.
 
-{{% /alert %}}
 -->
 
 <!-- 

@@ -85,10 +85,8 @@ Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
 Link to related pages and examples. For example, the building block overview, the HTTP version of an SDK quickstart sample, etc.
 -->
 
-{{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
-
 <!--
-Use the button to direct readers to more in-depth, related scenarios, like the Dapr tutorials.
+Use the button shortcode to direct readers to more in-depth, related scenarios, like the Dapr tutorials.
 -->
 
 ```
