@@ -226,7 +226,7 @@ Next, create a new Azure Static Web App for the future Dapr release, which will 
 1. Select **Review + create**, and then deploy the static web app.
 1. Wait for deployment, and navigate to the new static web app resource.
 1. Select **Manage deployment token** and copy the value.
-1. Navigate to the [docs repo secrets management page](https://github.com/dapr/docs/settings/secrets/actions) and create a new secret named `AZURE_STATIC_WEB_APPS_V1_2`, and provide the value of the deployment token.
+1. Navigate to the docs repo **Secrets management** page under **Settings** and create a new secret named `AZURE_STATIC_WEB_APPS_V1_2`, and provide the value of the deployment token.
 
 #### Configure DNS
 
