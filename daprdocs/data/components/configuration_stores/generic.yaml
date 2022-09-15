@@ -3,3 +3,8 @@
   state: Alpha
   version: v1
   since: "1.5"
+- component: Postgres
+  link: postgres-configuration-store
+  state: Alpha
+  version: v1
+  since: "1.9"
