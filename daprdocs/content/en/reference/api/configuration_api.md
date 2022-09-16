@@ -26,7 +26,7 @@ Parameter | Description
 #### Query Parameters
 
 If no query parameters are provided, all configuration items are returned.
-To specifiy the keys of the configuration items to get, use one or more `key` query parameters. For example:
+To specify the keys of the configuration items to get, use one or more `key` query parameters. For example:
 
 ```
 GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore?key=config1&key=config2
@@ -88,7 +88,7 @@ Parameter | Description
 #### Query Parameters
 
 If no query parameters are provided, all configuration items are subscribed to.
-To specifiy the keys of the configuration items to subscribe to, use one or more `key` query parameters. For example:
+To specify the keys of the configuration items to subscribe to, use one or more `key` query parameters. For example:
 
 ```
 GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore/subscribe?key=config1&key=config2
