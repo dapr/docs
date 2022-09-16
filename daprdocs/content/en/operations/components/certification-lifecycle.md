@@ -93,6 +93,7 @@ The test plan must be approved by a Dapr maintainer and be published in a `READM
 ## Component certification process
 
 In order for a component to be certified, tests are run in an environment maintained by the Dapr project.
+Certification test should have a line coverage of 60% for increased test coverage of the compoent.
 
 ### New component certification: Alpha->Beta
 
