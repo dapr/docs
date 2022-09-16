@@ -103,8 +103,14 @@ AFTER INSERT OR UPDATE OR DELETE ON configTable
 7. In the subscribe request add an additional metadata field with key as `trigger` and 
 value should be set to same `channel name` mentioned in `pg_notify`. From the above example, it should be set to `config`
 
-{{% alert title="Warning" color="warning" %}}
-Use the same channel name for pg_notify AND in subscribe request.
+{{% alert title="Note" color="primary" %}}
+When calling `subscribe` API, `metadata.trigger` should be used to specify the name of the channel  to listen
+for notifications from postgres configuration store. 
+
+Example of subscribe HTTP API - 
+```ps
+curl --location --request GET 'http://<host>:<dapr-http-port>/configuration/postgres/subscribe?key=<keyname1>&key=<keyname2>&metadata.trigger=<channel name>'
+```
 {{% /alert %}}
 
 ## Related links
