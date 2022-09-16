@@ -80,7 +80,7 @@ Test plan for stable components should include the following scenarios:
 - Client reconnection: in case the client library cannot connect to the service for a moment, Dapr sidecar should not require a restart once the service is back online.
 - Authentication options: validate the component can authenticate with all the supported options.
 - Validate resource provisioning: validate if the component automatically provisions resources on initialization, if applicable.
-- All scenarios relevant to the corresponding building block and component.
+- All scenarios covering both positive and failure paths relevant to the corresponding building block and component.
 
 The test plan must be approved by a Dapr maintainer and be published in a `README.md` file along with the component code.
 
@@ -88,12 +88,13 @@ The test plan must be approved by a Dapr maintainer and be published in a `READM
 
 - The tests should validate the functional behavior and robustness of the component based on the component specification, reflecting the scenarios from the test plan
 - The tests must run successfully as part of the continuous integration of the [components-contrib](https://github.com/dapr/components-contrib) repository
+- The tests need to have atleast 60% of the code coverage on a successful test run ensuring all functional flows of the component is covered
 
 
 ## Component certification process
 
 In order for a component to be certified, tests are run in an environment maintained by the Dapr project.
-Certification test should have a line coverage of 60% for increased test coverage of the compoent.
+
 
 ### New component certification: Alpha->Beta
 
