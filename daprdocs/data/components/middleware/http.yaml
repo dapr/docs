@@ -19,7 +19,7 @@
   version: v1
   description: Verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API
 - component: Rego/OPA Policies
-  link: /reference/components-reference/supported-middleware/middleware-opa.md#L12
+  link: /reference/components-reference/supported-middleware/middleware-opa
   state: Alpha
   version: v1
   description: Applies [Rego/OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests
