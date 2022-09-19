@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: configuration.redis
   version: v1
@@ -72,7 +71,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 1. Install Redis into your cluster. Note that we're explicitly setting an image tag to get a version greater than 5, which is what Dapr' pub/sub functionality requires. If you're intending on using Redis as just a state store (and not for pub/sub), you do not have to set the image version.
     ```bash
     helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm install redis bitnami/redis
+    helm install redis bitnami/redis --set image.tag=6.2
     ```
 
 2. Run `kubectl get pods` to see the Redis containers now running in your cluster.

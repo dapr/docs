@@ -118,7 +118,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: order-pub-sub
-  namespace: default
 spec:
   type: pubsub.rabbitmq
   version: v1
@@ -334,7 +333,7 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 ```javascript
 //dependencies
-import { DaprServer, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
@@ -599,7 +598,7 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```javascript
 //dependencies
-import { DaprServer, DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprServer, DaprClient, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 const daprHost = "127.0.0.1"; 
 

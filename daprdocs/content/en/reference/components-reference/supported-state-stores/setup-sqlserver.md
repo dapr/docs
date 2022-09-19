@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: state.sqlserver
   version: v1
@@ -29,7 +28,7 @@ spec:
   - name: keyType
     value: <REPLACE-WITH-KEY-TYPE>  # Optional. defaults to "string"
   - name: keyLength
-    value: <KEY-LENGTH> # Optional. defaults to 200. Yo be used with "string" keyType
+    value: <KEY-LENGTH> # Optional. defaults to 200. You be used with "string" keyType
   - name: schema
     value: <SCHEMA> # Optional. defaults to "dbo"
   - name: indexedProperties
