@@ -98,16 +98,17 @@ CREATE TRIGGER config
 AFTER INSERT OR UPDATE OR DELETE ON configTable
     FOR EACH ROW EXECUTE PROCEDURE notify_event();
 ```
-7. In the subscribe request add an additional metadata field with key as `trigger` and 
-value should be set to same `channel name` mentioned in `pg_notify`. From the above example, it should be set to `config`
+7. In the subscribe request add an additional metadata field with key as `pgNotifyChannel` and value should be set to same `channel name` mentioned in `pg_notify`. From the above example, it should be set to `config`
 
 {{% alert title="Note" color="primary" %}}
-When calling `subscribe` API, `metadata.trigger` should be used to specify the name of the channel  to listen
+When calling `subscribe` API, `metadata.pgNotifyChannel` should be used to specify the name of the channel  to listen
 for notifications from postgres configuration store. 
+
+Any number of keys can be added to a subscription request. Each subscription uses a exclusive database connectio. So, it is strongly recommended to subscribe to multiple keys within a single subscription. This helps optimize the number of connections to the database.
 
 Example of subscribe HTTP API - 
 ```ps
-curl --location --request GET 'http://<host>:<dapr-http-port>/configuration/postgres/subscribe?key=<keyname1>&key=<keyname2>&metadata.trigger=<channel name>'
+curl --location --request GET 'http://<host>:<dapr-http-port>/configuration/postgres/subscribe?key=<keyname1>&key=<keyname2>&metadata.pgNotifyChannel=<channel name>'
 ```
 {{% /alert %}}
 
