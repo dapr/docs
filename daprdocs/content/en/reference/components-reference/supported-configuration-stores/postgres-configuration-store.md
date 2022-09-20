@@ -37,10 +37,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string for PostgreSQL | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`
-| table    | Y         | table name for configuration information. No defaults | `configTable`
-| connMaxIdleTime|Y|Maximum time to wait for response from Postgres. No defaults| `15s`
-
+| connectionString   | Y        | The connection string for PostgreSQL. Default pool_max_conns = 5 | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test pool_max_conns=10"`
+| table    | Y         | table name for configuration information. | `configTable`
 
 ## Set up Postgres as Configuration Store
 
