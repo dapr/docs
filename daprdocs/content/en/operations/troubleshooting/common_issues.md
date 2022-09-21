@@ -230,9 +230,9 @@ This is usually due to one of the following issues
 
 ## Service invocation is failing and my Dapr service is missing an appId (macOS)
 
-Some organizations will implement software that filters out all UPD traffic, which is what mDNS is based on. Mostly commonly, on MacOS, `Microsoft Content Filter` is the culprit.
+Some organizations will implement software that filters out all UDP traffic, which is what mDNS is based on. Mostly commonly, on MacOS, `Microsoft Content Filter` is the culprit.
 
-In order for mDNS to function properly, ensure `Micorosft Content Filter` is inactive.
+In order for mDNS to function properly, ensure `Microsoft Content Filter` is inactive.
 
 - Open a terminal shell.
 - Type `mdatp system-extension network-filter disable` and hit enter.
