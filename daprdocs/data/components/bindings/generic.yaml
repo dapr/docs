@@ -72,9 +72,9 @@
     output: true
 - component: PostgreSql
   link: postgres
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
   features:
     input: false
     output: true
