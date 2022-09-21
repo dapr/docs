@@ -83,7 +83,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/subscribe
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}}).
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 
 #### Query Parameters
 
@@ -149,7 +149,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/<subscript
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}}).
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 `subscription-id` | The value from the `id` field returned from the response of the subscribe endpoint
 
 #### Query Parameters
@@ -201,7 +201,7 @@ POST http://localhost:<appPort>/configuration/<store-name>/<key>
 Parameter | Description
 --------- | -----------
 `appPort` | The application port
-`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}}).
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 `key` | The key subscribed to
 
 #### Request Body
