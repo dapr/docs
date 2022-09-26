@@ -28,7 +28,7 @@ dapr uninstall [flags]
 | `--help`, `-h`       |                      |               | Print this help message                                                                                                                             |
 | `--kubernetes`, `-k` |                      | `false`       | Uninstall Dapr from a Kubernetes cluster                                                                                                            |
 | `--namespace`, `-n`  |                      | `dapr-system` | The Kubernetes namespace to uninstall Dapr from                                                                                                     |
-|  `--container-runtime`  |              |    docker      | It is used to pass in a different container runtime other than docker. Supported container runtime are docker/podman|
+|  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
 
 ### Examples
 
@@ -44,7 +44,7 @@ You can also use option `--all` to remove .dapr directory, Redis, Placement and 
 dapr uninstall --all
 ```
 
-You can specify a different container runtime while uninstalling dapr. If you omit this flag then default container runtime is docker.
+You can specify a different container runtime while setting up Dapr. If you omit the `--container-runtime` flag, the default container runtime is Docker.
 
 ```bash
 dapr uninstall --all --container-runtime podman
