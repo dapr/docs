@@ -3,3 +3,8 @@
   state: Alpha
   version: v1
   since: "1.5"
+- component: Azure App Configuration
+  link: azure-appconfig-configuration-store
+  state: Alpha
+  version: v1
+  since: "1.9"
