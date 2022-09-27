@@ -20,7 +20,7 @@ Before contributing to the Dapr docs:
 
 The Dapr docs handles branching differently than most code repositories. Instead of a `main` branch, every branch is labeled to match the major and minor version of a runtime release. For the full list visit the [Docs repo](https://github.com/dapr/docs#branch-guidance)
 
-Generally, all of your docs updates should point to [docs branch for the latest release of Dapr](https://github.com/dapr/docs). The latest release will be the default branch [https://github.com/dapr/docs]. For example, if you are fixing a typo, adding notes, or clarifying a point, make your changes into the default Dapr branch.
+Generally, all of your docs updates should point to [docs branch for the latest release of Dapr](https://github.com/dapr/docs). The latest release is the default branch [https://github.com/dapr/docs]. For example, if you are fixing a typo, adding notes, or clarifying a point, make your changes into the default Dapr branch.
 
 For any docs changes applicable to a release candidate or a pre-release version of the docs, point your changes into that particular branch. For example, if you are documenting an upcoming change to a component or the runtime, make your changes to the pre-release branch.
 

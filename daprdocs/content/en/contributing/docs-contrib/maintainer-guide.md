@@ -200,18 +200,20 @@ These steps will prepare the upcoming release branch for promotion to latest rel
 
 ### Create new website for future release
 
-Next, create a new website for the future Dapr release, which will be pointed to from the latest website. To do this, you'll need to:
+Next, create a new website for the future Dapr release, which you point to from the latest website. To do this, you'll need to:
 
 - Deploy an Azure Static Web App.
 - Configure DNS via request from CNCF.
 
-These steps require authentication. 
-
-### Create new website for future release
-
-Next, create a new Azure Static Web App for the future Dapr release, which will be pointed to from the latest website. For this example, we will use v1.2 as the future release.
+These steps require authentication.
 
 #### Deploy Azure Static Web App
+
+Deploy a new Azure Static Web App for the future Dapr release. For this example, we use v1.2 as the future release.
+
+{{% alert title="Important" color="primary" %}}
+You need Microsoft employee access to create a new Azure Static Web App.
+{{% /alert %}}
 
 1. Use Azure PIM to [elevate into the Owner role](https://eng.ms/docs/cloud-ai-platform/devdiv/devdiv-azure-service-dmitryr/azure-devex-philon/dapr/dapr/assets/azure) for the Dapr Prod subscription.
 1. Navigate to the [docs-website](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/38875a89-0178-4f27-a141-dc6fc01f183d/resourceGroups/docs-website/overview) resource group.
