@@ -90,7 +90,9 @@ You need an Azure subscription to set up Azure App Configuration.
 
 ## Azure App Configuration request metadata 
 
-The Azure App Configuration store supports the following optional metadata property:
+In Azure App Configuration, you can use labels to define different values for the same key. For example, you can define a single key with different values for development and production. You can specify which label to load when connecting to App Configuration
+
+The Azure App Configuration store component supports the following optional `label` metadata property:
 
 `label`: The label of the configuration to retrieve. If not present, the configuration store returns the configuration for the specified key and a null label.
 
