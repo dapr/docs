@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 ## Set up Postgres as Configuration Store
 
 1. Start Postgres Database 
-1. Connect to the Postgres Database and setup configuration table with following schema -
+1. Connect to the Postgres database and setup a configuration table with following schema -
 
 | Field              | Datatype | Nullable |Details |
 |--------------------|:--------:|---------|---------|
@@ -92,7 +92,7 @@ notification = json_build_object(
                           'data', data);
 ```
 5. The channel mentioned as attribute to `pg_notify` should be used when subscribing for configuration notifications
-6. Since we created a generic trigger, map this trigger to `configuration table`
+6. Since this is a generic created trigger, map this trigger to `configuration table`
 ```console
 CREATE TRIGGER config
 AFTER INSERT OR UPDATE OR DELETE ON configTable
@@ -101,10 +101,9 @@ AFTER INSERT OR UPDATE OR DELETE ON configTable
 7. In the subscribe request add an additional metadata field with key as `pgNotifyChannel` and value should be set to same `channel name` mentioned in `pg_notify`. From the above example, it should be set to `config`
 
 {{% alert title="Note" color="primary" %}}
-When calling `subscribe` API, `metadata.pgNotifyChannel` should be used to specify the name of the channel  to listen
-for notifications from postgres configuration store. 
+When calling `subscribe` API, `metadata.pgNotifyChannel` should be used to specify the name of the channel to listen for notifications from Postgres configuration store. 
 
-Any number of keys can be added to a subscription request. Each subscription uses a exclusive database connectio. So, it is strongly recommended to subscribe to multiple keys within a single subscription. This helps optimize the number of connections to the database.
+Any number of keys can be added to a subscription request. Each subscription uses an exclusive database connection. It is strongly recommended to subscribe to multiple keys within a single subscription. This helps optimize the number of connections to the database.
 
 Example of subscribe HTTP API - 
 ```ps
