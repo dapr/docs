@@ -97,7 +97,7 @@ The Azure App Configuration store supports the following optional metadata prope
 The label can be populated using query parameters in the request URL:
 
 ```bash
-GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<secret-store-name>?key=<key name>&metadata.label=<label value>
+GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<store-name>?key=<key name>&metadata.label=<label value>
 ```
 
 ## Related links
