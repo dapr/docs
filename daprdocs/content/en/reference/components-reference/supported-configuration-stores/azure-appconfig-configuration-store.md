@@ -88,7 +88,7 @@ You need an Azure subscription to set up Azure App Configuration.
    In a production-grade application, follow [the secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
    {{% /alert %}}
 
-## Azure App Configuration Request Metadata 
+## Azure App Configuration request metadata 
 
 The Azure App Configuration store supports the following optional metadata property:
 
