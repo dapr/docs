@@ -92,7 +92,7 @@ You need an Azure subscription to set up Azure App Configuration.
 
 The Azure App Configuration store supports the following optional metadata property:
 
-`label`: The label of the configuration to retrieve. If not present, the configuration store will return the configuration for the specified key and null label.
+`label`: The label of the configuration to retrieve. If not present, the configuration store returns the configuration for the specified key and a null label.
 
 The label can be populated using query parameters in the request URL:
 
