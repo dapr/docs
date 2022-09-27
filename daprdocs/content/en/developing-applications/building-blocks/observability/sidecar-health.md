@@ -19,8 +19,6 @@ When deploying Dapr to a hosting platform (for example, Kubernetes), the Dapr he
  Dapr actors also have a health API endpoint where Dapr probes the application for a response to a signal from Dapr that the actor application is healthy and running. See [actor health API]({{< ref "actors_api.md#health-check" >}}).
 {{% /alert %}} 
 
-Note: Dapr actors also have a health API endpoint where Dapr probes the application for a response to a signal from Dapr that the actor application is healthy and running. See [actor health API]({{< ref "actors_api.md#health-check" >}})
-
 ## Health endpoint: Integration with Kubernetes
 
 Kubernetes uses *readiness* and *liveness* probes to determines the health of the container.
