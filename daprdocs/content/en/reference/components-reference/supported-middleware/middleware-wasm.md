@@ -100,7 +100,7 @@ If using TinyGo, compile as shown below and set the spec metadata field named
 "path" to the location of the output (ex "example.wasm"):
 
 ```bash
-tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go`
+tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go
 ```
 
 ## Related links
