@@ -181,7 +181,7 @@ Code | Description
 ### Example
 
 ```shell
-curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/myconfigstore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
+curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
 ```
 
 ## Optional application (user code) routes
