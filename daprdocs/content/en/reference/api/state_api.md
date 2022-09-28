@@ -250,12 +250,12 @@ curl http://localhost:3500/v1.0/state/myRedisStore/bulk \
 [
   {
     "key": "key1",
-    "data": "value1",
+    "value": "value1",
     "etag": "1"
   },
   {
     "key": "key2",
-    "data": "value2",
+    "value": "value2",
     "etag": "1"
   }
 ]

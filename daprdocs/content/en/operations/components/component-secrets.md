@@ -127,7 +127,7 @@ Dapr can restrict access to secrets in a secret store using its configuration. R
 
 ### Default namespace
 
-When running in Kubernetes, Dapr, during installtion, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
+When running in Kubernetes, Dapr, during installation, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
 
 ### Non-default namespaces
 
