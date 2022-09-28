@@ -31,7 +31,7 @@ In your project directory, create a file named `secrets.json` with the following
 }
 ```
 
-Create a new directory named `components`. Navigate into that directory and create a component file named `localSecretStore.yaml` with the following contents:
+Create a new directory named `components`. Navigate into that directory and create a component file named `local-secret-store.yaml` with the following contents:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
