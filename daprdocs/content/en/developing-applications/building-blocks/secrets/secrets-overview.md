@@ -6,13 +6,11 @@ weight: 1000
 description: "Overview of secrets management API building block"
 ---
 
-## Secrets management pattern
-
-Applications usually store sensitive information in secrets by using a dedicated secret store. For example, you authenticate databases, services, and external systems with connection strings, keys, tokens, and other application-level secrets stored in a secret store, such as [Azure Key Vault, Hashicorp Vault, etc]({{< ref supported-secret-stores >}}).
+Applications usually store sensitive information in secrets by using a dedicated secret store. For example, you authenticate databases, services, and external systems with connection strings, keys, tokens, and other application-level secrets stored in a secret store, such as [AWS Secrets Manager, Azure Key Vault, Hashicorp Vault, etc]({{< ref supported-secret-stores >}}).
 
 To access these secret stores, the application imports the secret store SDK, often requiring a fair amount of unrelated boilerplate code. This poses an even greater challenge in multi-cloud scenarios, where different vendor-specific secret stores may be used.
 
-## Secrets management API in Dapr
+## Secrets management API
 
 Dapr's dedicated secrets building block API makes it easier for developers to consume application secrets from a secret store. To use Dapr's secret store building block, you:
 
@@ -20,22 +18,13 @@ Dapr's dedicated secrets building block API makes it easier for developers to co
 1. Retrieve secrets using the Dapr secrets API in the application code.
 1. Optionally, reference secrets in Dapr component files.
 
-{{% alert title="Note" color="primary" %}}
-By default, Dapr enables a built-in [Kubernetes secret store in Kubernetes mode]({{< ref "kubernetes-secret-store.md" >}}), deployed via:
+## Features
 
-- The Helm defaults, or
-- `dapr init -k`
-
-If you are using another secret store, you can disable (not configure) the Dapr Kubernetes secret store by setting `disable-builtin-k8s-secret-store` to `true` through the Helm settings. The default is `false`.
-{{% /alert %}}
-
-## Dapr secrets management API features
-
-The secrets management building block brings several features to your application.
+The secrets management API building block brings several features to your application.
 
 ### Configure secrets without changing application code
 
-You can call the secrets API in your application code to retrieve and use secrets from Dapr supported secret stores. Watch [this video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=1818) for an example of how the secrets API can be used in your application.
+You can call the secrets API in your application code to retrieve and use secrets from Dapr supported secret stores. Watch [this video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=1818) for an example of how the secrets management API can be used in your application.
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/OtbYCBt9C34?start=1818" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -43,7 +32,14 @@ For example, the diagram below shows an application requesting the secret called
 
 <img src="/images/secrets-overview-cloud-stores.png" width=600>
 
-Applications can also use the secrets API to access secrets from a Kubernetes secret store. In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
+Applications can also use the secrets API to access secrets from a Kubernetes secret store. By default, Dapr enables a built-in [Kubernetes secret store in Kubernetes mode]({{< ref "kubernetes-secret-store.md" >}}), deployed via:
+
+- The Helm defaults, or
+- `dapr init -k`
+
+If you are using another secret store, you can disable (not configure) the Dapr Kubernetes secret store by setting `disable-builtin-k8s-secret-store` to `true` through the Helm settings. The default is `false`.
+
+In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
 
 <img src="/images/secrets-overview-kubernetes-store.png" width=600>
 
@@ -54,7 +50,7 @@ In Azure, you can configure Dapr to retrieve secrets using managed identities to
 
 <img src="/images/secrets-overview-azure-aks-keyvault.png" width=600>
 
-In all of the examples above, the application code did not have to change to get the same secret. Dapr did all the heavy lifting using the secret components via the secrets building block API.
+In the examples above, the application code did not have to change to get the same secret. Dapr uses the secret management components via the secrets management building block API.
 
 [Try out the secrets API]({{< ref "#try-out-secrets-management" >}}) using one of our quickstarts or tutorials.
 
