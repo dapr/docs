@@ -2,7 +2,7 @@
 type: docs
 title: "Contribution overview"
 linkTitle: "Overview"
-weight: 1000
+weight: 10
 description: >
   General guidance for contributing to any of the Dapr project repositories
 ---
