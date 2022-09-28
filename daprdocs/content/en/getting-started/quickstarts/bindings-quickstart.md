@@ -98,7 +98,7 @@ The code inside the `process_batch` function is executed every 10 seconds (defin
 def process_batch():
 ```
 
-The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```python
 with DaprClient() as d:
@@ -155,7 +155,7 @@ At the `orders=#` prompt, select all rows:
 select * from orders;
 ```
 
-The output should look like this:
+The output should look like this with new records added every 10 seconds:
 
 ```
  orderid |  customer  | price
@@ -170,7 +170,7 @@ The output should look like this:
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
 - Initiates the Cron [binding building block]({{< ref bindings >}})
-- Calls the binding endpoint (`batch`) every 10 seconds
+- Calls the binding endpoint (`/cron`) every 10 seconds
 
 The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
@@ -301,7 +301,7 @@ async function start() {
 }
 ```
 
-The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "##componentsbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "##componentsbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```javascript
 async function processBatch(){
@@ -357,7 +357,7 @@ At the `orders=#` prompt, select all rows:
 select * from orders;
 ```
 
-The output should look like this:
+The output should look like this with new records added every 10 seconds:
 
 ```
  orderid |  customer  | price
@@ -372,7 +372,7 @@ The output should look like this:
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
 - Initiates the Cron [binding building block]({{< ref bindings >}})
-- Calls the binding endpoint (`batch`) every 10 seconds
+- Calls the binding endpoint (`/cron`) every 10 seconds
 
 The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
@@ -503,7 +503,7 @@ app.MapPost("/" + cronBindingName, async () => {
 });
 ```
 
-The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```csharp
 // ...
@@ -561,7 +561,7 @@ At the `orders=#` prompt, select all rows:
 select * from orders;
 ```
 
-The output should look like this:
+The output should look like this with new records added every 10 seconds:
 
 ```
  orderid |  customer  | price
@@ -576,7 +576,7 @@ The output should look like this:
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
 - Initiates the Cron [binding building block]({{< ref bindings >}})
-- Calls the binding endpoint (`batch`) every 10 seconds
+- Calls the binding endpoint (`/cron`) every 10 seconds
 
 The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
@@ -701,14 +701,14 @@ Run the `batch-sdk` service alongside a Dapr sidecar.
 dapr run --app-id batch-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
+The code inside the `processBatch` method is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Spring Boot application by the Dapr sidecar.
 
 ```java
 @PostMapping(path = cronBindingPath, consumes = MediaType.ALL_VALUE)
 public ResponseEntity<String> processBatch() throws IOException, Exception
 ```
 
-The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table. 
+The `BatchProcessingServiceApplication` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
 
 ```java
 try (DaprClient client = new DaprClientBuilder().build()) {
@@ -771,7 +771,7 @@ At the `orders=#` prompt, select all rows:
 select * from orders;
 ```
 
-The output should look like this:
+The output should look like this with new records added every 10 seconds:
 
 ```
  orderid |  customer  | price
@@ -786,7 +786,7 @@ The output should look like this:
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
 - Initiates the Cron [binding building block]({{< ref bindings >}})
-- Calls the binding endpoint (`batch`) every 10 seconds
+- Calls the binding endpoint (`/cron`) every 10 seconds
 
 The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
@@ -983,7 +983,7 @@ At the `orders=#` prompt, select all rows:
 select * from orders;
 ```
 
-The output should look like this:
+The output should look like this with new records added every 10 seconds:
 
 ```
  orderid |  customer  | price
@@ -998,7 +998,7 @@ The output should look like this:
 When you execute the `dapr run` command and specify the component path, the Dapr sidecar:
 
 - Initiates the Cron [binding building block]({{< ref bindings >}})
-- Calls the binding endpoint (`batch`) every 10 seconds
+- Calls the binding endpoint (`/cron`) every 10 seconds
 
 The Cron `binding-cron.yaml` file included for this Quickstart contains the following:
 
