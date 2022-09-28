@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.mysql
   version: v1
@@ -39,6 +38,7 @@ spec:
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+Note that you can not use secret just for username/password. If you use secret, it has to be for the complete connection string. 
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -59,6 +59,14 @@ If your server requires SSL your connection string must end of `&tls=custom` for
 "<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true&tls=custom"
 ```
  You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using [MySQL on Azure](http://bit.ly/AzureMySQLSSL) see the Azure [documentation on SSL database connections](http://bit.ly/MySQLSSL), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
+
+Also note that by default [MySQL go driver](https://github.com/go-sql-driver/mysql) only supports one SQL statement per query/command.
+To allow multiple statements in one query you need to add `multiStatements=true` to a query string, for example: 
+```bash
+"<user>:<password>@tcp(<server>:3306)/<database>?multiStatements=true"
+```
+While this allows batch queries, it also greatly increases the risk of SQL injections. Only the result of the first query is returned, 
+all other results are silently discarded.
 
 ## Binding support
 
@@ -124,13 +132,16 @@ The `query` operation is used for `SELECT` statements, which returns the metadat
     "end-time": "2020-09-24T11:13:46.420566Z",
     "sql": "SELECT * FROM foo WHERE id < 3"
   },
-  "data": "[
-    [0,\"test-0\",\"2020-09-24T04:13:46Z\"],
-    [1,\"test-1\",\"2020-09-24T04:13:46Z\"],
-    [2,\"test-2\",\"2020-09-24T04:13:46Z\"]
-  ]"
+  "data": [
+    {column_name: value, column_name: value, ...},
+    {column_name: value, column_name: value, ...},
+    {column_name: value, column_name: value, ...},
+  ]
 }
 ```
+
+Here column_name is the name of the column returned by query, and value is a value of this column. Note that values are returned as string
+or numbers (language specific data type)
 
 ### close
 

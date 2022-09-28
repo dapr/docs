@@ -81,7 +81,7 @@ with DaprClient() as client:
 
 **`local-secret-store.yaml` component**
 
-`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/tree/master/secrets_management/components/local-secret-store.yaml):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -106,7 +106,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/python/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -190,7 +190,7 @@ async function main() {
 
 **`local-secret-store.yaml` component**
 
-`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/tree/master/secrets_management/components/local-secret-store.yaml):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -215,7 +215,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/javascript/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/javascript/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -303,7 +303,7 @@ Console.WriteLine($"Fetched Secret: {secretValue}");
 
 **`local-secret-store.yaml` component**
 
-`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/tree/master/secrets_management/components/local-secret-store.yaml):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -328,7 +328,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/csharp/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -411,7 +411,7 @@ private static final String SECRET_STORE_NAME = "localsecretstore";
 
 **`local-secret-store.yaml` component**
 
-`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/tree/master/secrets_management/components/local-secret-store.yaml):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -436,7 +436,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/java/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -518,7 +518,7 @@ const DAPR_SECRET_STORE = "localsecretstore"
 
 **`local-secret-store.yaml` component**
 
-`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/blob/master/secrets_management/components/local-secret-store.yaml):
+`DAPR_SECRET_STORE` is defined in the `local-secret-store.yaml` component file, located in [secrets_management/components](https://github.com/dapr/quickstarts/tree/master/secrets_management/components/local-secret-store.yaml):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -543,7 +543,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/blob/master/secrets_management/java/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
 
 ```json
 {

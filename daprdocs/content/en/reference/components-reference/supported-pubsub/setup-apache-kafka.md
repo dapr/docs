@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -88,7 +87,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-noauth
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -121,7 +119,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-sasl
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -163,7 +160,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub-mtls
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -214,7 +210,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1
@@ -252,7 +247,7 @@ spec:
 ### Communication using TLS
 
 By default TLS is enabled to secure the transport layer to Kafka. To disable TLS, set `disableTls` to `true`. When TLS is enabled, you can
-control server certificate verification using `skipVerify` to disable verificaiton (*NOT* recommended in production environments) and `caCert` to
+control server certificate verification using `skipVerify` to disable verification (*NOT* recommended in production environments) and `caCert` to
 specify a trusted TLS certificate authority (CA). If no `caCert` is specified, the system CA trust will be used. To also configure mTLS authentication,
 see the section under _Authentication_.
 Below is an example of a Kafka pubsub component configured to use transport layer TLS:
@@ -262,7 +257,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-pubsub
-  namespace: default
 spec:
   type: pubsub.kafka
   version: v1

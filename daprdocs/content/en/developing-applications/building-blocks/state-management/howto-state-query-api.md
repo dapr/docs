@@ -510,5 +510,5 @@ You can find additional information in the [related links]({{< ref "#related-lin
 
 - Refer to the [query API reference]({{< ref "state_api.md#state-query" >}}).
 - See the [state store components that implement query support]({{< ref supported-state-stores.md >}}).
-- View the [state store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/Readme.md#implementing-state-query-api).
+- View the [state store query API implementation guide](https://github.com/dapr/components-contrib/blob/master/state/README.md#implementing-state-query-api).
 - See how to [query Redis state store]({{< ref "setup-redis.md#querying-json-objects" >}}).

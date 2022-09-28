@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: state.rethinkdb
   version: v1
@@ -39,16 +38,7 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-If you wish to use RethinkDB as an actor store, append the following to the YAML.
-
-```yaml
-  - name: actorStateStore
-    value: "true"
-```
-
-RethinkDB state store supports transactions, so it can be used to persist Dapr Actor state. By default, the state will be stored in table named `daprstate` in the specified database.
-
-Additionally, if the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr.
+If the optional `archive` metadata is set to `true`, on each state change, the RethinkDB state store will also log state changes with timestamp in the `daprstate_archive` table. This allows for time series analyses of the state managed by Dapr.
 
 ## Spec metadata fields
 

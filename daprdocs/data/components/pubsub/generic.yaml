@@ -1,13 +1,13 @@
 - component: Hazelcast
   link: setup-hazelcast
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
 - component: In Memory
   link: setup-inmemory
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.4"
+  since: "1.7"
 - component: Apache Kafka
   link: setup-apache-kafka
   state: Stable
@@ -25,14 +25,14 @@
   since: "1.4"
 - component: Pulsar
   link: setup-pulsar
-  state: Alpha
-  version: v1
-  since: "1.0"
-- component: MQTT
-  link: setup-mqtt
   state: Beta
   version: v1
-  since: "1.6"
+  since: "1.7"
+- component: MQTT
+  link: setup-mqtt
+  state: Stable
+  version: v1
+  since: "1.7"
 - component: NATS Streaming
   link: setup-nats-streaming
   state: Beta
@@ -40,6 +40,6 @@
   since: "1.0"
 - component: RabbitMQ
   link: setup-rabbitmq
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.6"
+  since: "1.7"

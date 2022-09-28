@@ -27,7 +27,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -47,7 +46,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -106,7 +104,6 @@ The following example shows you how to create a Kubernetes secret to hold the co
     kind: Component
     metadata:
       name: eventhubs
-      namespace: default
     spec:
       type: bindings.azure.eventhubs
       version: v1
@@ -130,7 +127,7 @@ Dapr can restrict access to secrets in a secret store using its configuration. R
 
 ### Default namespace
 
-When running in Kubernetes, Dapr, during installtion, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
+When running in Kubernetes, Dapr, during installation, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
 
 ### Non-default namespaces
 
