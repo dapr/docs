@@ -2,7 +2,7 @@
 type: docs
 title: "Contributing with GitHub Codespaces"
 linkTitle: "GitHub Codespaces"
-weight: 2500
+weight: 60
 description: "How to work with Dapr repos in GitHub Codespaces"
 aliases:
   - "/developing-applications/ides/codespaces/"
