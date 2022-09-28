@@ -21,7 +21,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 
 #### Query Parameters
 
@@ -83,7 +83,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/subscribe
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 
 #### Query Parameters
 
@@ -141,7 +141,7 @@ This endpoint lets you unsubscribe to configuration changes.
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<subscription-id>/unsubscribe
+GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/<subscription-id>/unsubscribe
 ```
 
 #### URL Parameters
@@ -149,6 +149,7 @@ GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<subscription-id>/unsu
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 `subscription-id` | The value from the `id` field returned from the response of the subscribe endpoint
 
 #### Query Parameters
@@ -165,18 +166,22 @@ None
 
 Code | Description
 ---- | -----------
-`204`  | Unsubscribe operation successful
+`200`  | Unsubscribe operation successful
 `400`  | Configuration store is missing or misconfigured or malformed request
 `500`  | Failed to unsubscribe to configuration changes
 
 #### Response Body
 
-None
+```
+{
+    "ok" : true
+}
+```
 
 ### Example
 
 ```shell
-curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
+curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
 ```
 
 ## Optional application (user code) routes
@@ -196,7 +201,7 @@ POST http://localhost:<appPort>/configuration/<store-name>/<key>
 Parameter | Description
 --------- | -----------
 `appPort` | The application port
-`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 `key` | The key subscribed to
 
 #### Request Body
