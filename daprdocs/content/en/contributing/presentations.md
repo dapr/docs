@@ -2,7 +2,7 @@
 type: docs
 title: "Giving a presentation on Dapr"
 linkTitle: "Presentations"
-weight: 1500
+weight: 20
 description: How to give a presentation on Dapr and examples
 ---
 

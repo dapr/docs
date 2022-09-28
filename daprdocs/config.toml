@@ -57,7 +57,7 @@ id = "UA-149338238-3"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/python/daprdocs/content/en/python-sdk-contributing"
-    target = "content/contributing/"
+    target = "content/contributing/sdk-contrib/"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/php/daprdocs/content/en/php-sdk-docs"
@@ -69,7 +69,7 @@ id = "UA-149338238-3"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
-    target = "content/contributing/"
+    target = "content/contributing/sdk-contrib/"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/go/daprdocs/content/en/go-sdk-docs"
@@ -77,7 +77,7 @@ id = "UA-149338238-3"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/go/daprdocs/content/en/go-sdk-contributing"
-    target = "content/contributing/"
+    target = "content/contributing/sdk-contrib/"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/java/daprdocs/content/en/java-sdk-docs"
@@ -85,7 +85,7 @@ id = "UA-149338238-3"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/java/daprdocs/content/en/java-sdk-contributing"
-    target = "content/contributing/"
+    target = "content/contributing/sdk-contrib/"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/js/daprdocs/content/en/js-sdk-docs"
@@ -93,7 +93,7 @@ id = "UA-149338238-3"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/js/daprdocs/content/en/js-sdk-contributing"
-    target = "content/contributing/"
+    target = "content/contributing/sdk-contrib/"
     lang = "en"
 
   [[module.mounts]]
@@ -102,7 +102,7 @@ id = "UA-149338238-3"
     lang = "zh-hans"
   [[module.mounts]]
     source = "../translations/docs-zh/content/contributing"
-    target = "content/contributing/"
+    target = "content/contributing/docs-contrib/docs-templates"
     lang = "zh-hans"
   [[module.mounts]]
     source = "../translations/docs-zh/content/sdks_python"
