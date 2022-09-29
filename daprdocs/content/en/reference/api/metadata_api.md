@@ -12,7 +12,7 @@ Dapr has a metadata API that returns information about the sidecar allowing runt
 Each loaded component provides its name, type and version and also information about supported features in the form of component capabilities. 
 These features are available for the [state store]({{< ref supported-state-stores.md >}}) and [binding]({{< ref supported-bindings.md >}}) component types. The table below shows the component type and the list of capabilities for a given version. This list might grow in future and only represents the capabilities of the loaded components.
 
-Component type | Capabilites
+Component type | Capabilities
 ---------------| ------------
 State Store    | ETAG, TRANSACTION, ACTOR, QUERY_API
 Binding        | INPUT_BINDING, OUTPUT_BINDING

@@ -118,7 +118,7 @@ Also defined is a retry policy called 'retryForever' that is only applied to the
 spec:
   policies:
     retries:
-      DaprBuiltInServiceRetries: # Overrides default retry behaivor for service-to-service calls
+      DaprBuiltInServiceRetries: # Overrides default retry behavior for service-to-service calls
         policy: constant
         duration: 5s
         maxRetries: 10
