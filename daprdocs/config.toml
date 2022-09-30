@@ -160,7 +160,7 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "v1.7"
+github_branch = "v1.8"
 
 # Versioning
 version_menu = "v1.8 (latest)"
