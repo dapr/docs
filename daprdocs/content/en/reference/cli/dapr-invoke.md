@@ -12,6 +12,7 @@ Invoke a method on a given Dapr application.
 ### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ### Usage
 
@@ -38,4 +39,10 @@ dapr invoke --app-id target --method sample --data '{"key":"value"}'
 
 # Invoke a sample method on target app with GET Verb
 dapr invoke --app-id target --method sample --verb GET
+
+# Invoke a sample method on target app with POST Verb in Kubernetes mode
+dapr invoke --kubernetes --app-id target --method sample --data '{"key":"value"}'
+
+# Invoke a sample method on target app with GET Verb in Kubernetes mode
+dapr invoke --kubernetes --app-id target --method sample --verb GET
 ```
