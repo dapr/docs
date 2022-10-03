@@ -1,8 +1,8 @@
 - component: HashiCorp Vault
   link: hashicorp-vault
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.9"
 - component: Local environment variables
   link: envvar-secret-store
   state: Stable
