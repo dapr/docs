@@ -1,6 +1,6 @@
 - component: HashiCorp Vault
   link: hashicorp-vault
-  state: Beta
+  state: Stable
   version: v1
   since: "1.9"
 - component: Local environment variables
