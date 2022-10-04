@@ -87,8 +87,11 @@ For a full list of all available options you can set in the values file (or by u
 Instead of using either `helm install` or `helm upgrade` as shown below, you can also run `helm upgrade --install` - this will dynamically determine whether to install or upgrade.
 
 ```bash
-# add/update the helm repo
+# Add/update a official Dapr Helm repo.
 helm repo add dapr https://dapr.github.io/helm-charts/
+# or add/update a private Dapr Helm repo.
+helm repo add dapr http://helm.custom-domain.com/dapr/dapr/ \
+   --username=xxx --password=xxx
 helm repo update
 
 # See which chart versions are available

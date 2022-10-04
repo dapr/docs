@@ -23,7 +23,7 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | Quickstarts | Description |
 | ----------- | ----------- |
 | [Publish and Subscribe]({{< ref pubsub-quickstart.md >}}) |  Asynchronous communication between two services using messaging. |
-| [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) | Asynchronous communication between two services using HTTP. |
+| [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) | Synchronous communication between two services using HTTP or gRPC. |
 | [State Management]({{< ref statemanagement-quickstart.md >}}) | Store a service's data as key/value pairs in supported state stores. |
 | [Bindings]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
 | [Secrets Management]({{< ref secrets-quickstart.md >}}) | Securely fetch secrets. |

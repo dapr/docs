@@ -24,17 +24,17 @@
     output: true
 - component: InfluxDB
   link: influxdb
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     input: false
     output: true
 - component: Kafka
   link: kafka
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.8"
   features:
     input: true
     output: true
@@ -48,17 +48,17 @@
     output: true
 - component: Local Storage
   link: localstorage
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.1"
+  since: "1.9"
   features:
     input: false
     output: true
 - component: MQTT
   link: mqtt
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     input: true
     output: true
@@ -72,9 +72,9 @@
     output: true
 - component: PostgreSql
   link: postgres
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
   features:
     input: false
     output: true
@@ -88,17 +88,17 @@
     output: true
 - component: RabbitMQ
   link: rabbitmq
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
   features:
     input: true
     output: true
 - component: Redis
   link: redis
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     input: false
     output: true
