@@ -133,7 +133,7 @@ scopes:
   - backend
 ```
 
-You should also [scope](https://docs.Dapr.io/operations/components/component-scopes/) your component to make sure that only the target configured application will try to connect with the pluggable component since it will only be running in its Deployment, otherwise the runtime will fail when initializing the component.
+You should also [scope]({{< ref component-scopes >}}) your component to make sure that only the target configured application will try to connect with the pluggable component since it will only be running in its Deployment, otherwise the runtime will fail when initializing the component.
 
 > Note: Replace `your_socket_goes_here` by your component socket name without any extension, and `your_component_type` by your component type.
 

@@ -8,7 +8,7 @@ description: "Extending Dapr with external gRPC-based components"
 
 ## Pluggable Components Overview
 
-Out of the box, Dapr [building blocks] come with integrations to a wide range of cloud providers and open source solutions. We call each of these individual integrations _"[components]"_. For instance, a input biding integration for MySql is a _[component]_ and a state store integration for MySQL would be a different component.
+Out of the box, Dapr [building blocks] come with integrations to a wide range of cloud providers and open source solutions. We call each of these individual integrations _"components"_. For instance, a input biding integration for MySql is a _[component]_ and a state store integration for MySQL would be a different component.
 
 <img src="/images/concepts-building-blocks.png" width=250>
 
@@ -62,11 +62,11 @@ For this tutorial, you must:
 
 For simplicity, all code samples uses the generated code from the [protoc](https://developers.google.com/protocol-buffers/docs/downloads) tool or supported gRPC build tools by languages.
 
-As previously mentioned, Dapr uses a Unix Domain Socket to communicate with gRPC-based components, which means that as a prerequisite you also need a UNIX-like system, or for Windows users, [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) should be sufficient.
+As previously mentioned, Dapr uses a Unix Domain Socket to communicate with gRPC-based components, which means that as a prerequisite you also need a UNIX-like system, or for Windows users, [WSL](https://learn.microsoft.com/windows/wsl/install) should be sufficient.
 
-Install [.NET Core 6+](https://dotnet.microsoft.com/en-us/download)
+Install [.NET Core 6+](https://dotnet.microsoft.com/download)
 
-This tutorial is based on the [official Microsoft documentation for development using Protocol Buffers](https://learn.microsoft.com/en-us/aspnet/core/grpc/basics?view=aspnetcore-6.0#c-tooling-support-for-proto-files).
+This tutorial is based on the [official Microsoft documentation for development using Protocol Buffers](https://learn.microsoft.com/aspnet/core/grpc/basics?view=aspnetcore-6.0#c-tooling-support-for-proto-files).
 
 ### Step 2: Downloading the base template project
 
