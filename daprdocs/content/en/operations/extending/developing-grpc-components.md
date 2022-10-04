@@ -36,7 +36,15 @@ gRPC Pluggable Components as an alternative way of adding new integrations and f
 - They integrate with Dapr by means well defined SPI (Service Provider Interface) defined using [gRPC] through [Unix Domain Sockets][uds].
 - They can be distributed independently from Dapr itself, on their own repository, with their own release cycle.
 
-`Insert picture of a pluggable component here`
+<img src="/images/grpc-components.png" width=800 alt="Diagram showing pluggable components">
+
+Pluggable components are automatically discovered by creating sockets in a shared volume. The process is the following:
+
+1. The Component listens to an [UDS] placed on the shared volume.
+2. The Dapr runtime lists all [UDS] in the shared volume.
+3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
+
+A single component can implement multiple [building blocks] at once.
 
 <!-- Component: is a piece of (Go) code that bridges Dapr concepts, formats and behavior to the ones used by the new integration. -->
 
