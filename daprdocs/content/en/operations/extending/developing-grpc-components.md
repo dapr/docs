@@ -86,8 +86,9 @@ This template contains all the required changes to start developing a gRPC-based
 
 At this point, you are ready to build and run the component. Let's test it out by running `dotnet build`
 
-```
-$  DaprMemStoreComponent dotnet build
+```shell
+$ cd DaprMemStoreComponent
+$ dotnet build
 MSBuild version 17.3.0+92e077650 for .NET
   Determining projects to restore...
   All projects are up-to-date for restore.
@@ -104,8 +105,8 @@ Great! You've just built your first gRPC-based pluggable component: an in-memory
 
 Now, let's run this StateStore service by issuing a `dotnet run`
 
-```
-$  DaprMemStoreComponent dotnet run
+```shell
+$ dotnet run
 Building...
 warn: Microsoft.AspNetCore.Server.Kestrel[0]
       Overriding address(es) 'http://localhost:5259, https://localhost:7089'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
@@ -122,8 +123,8 @@ To see it working, you can use the [grpc_cli](https://github.com/grpc/grpc/blob/
 
 Once properly downloaded and installed, open a new terminal instance, and let's invoke the `Features` method from the StateStore service, using the following command: `grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Features ''`
 
-```
-$ memstore-dotnet grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Features ''
+```shell
+$ grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Features ''
 connecting to unix:///tmp/Dapr-components-sockets/memstore.sock
 Received trailing metadata from server:
 content-length : 0
@@ -171,8 +172,8 @@ Let's make the same call as you did before: `grpc_cli call unix:///tmp/Dapr-comp
 
 Now you should get the OK as a response;
 
-```
-$ memstore-dotnet grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Features ''
+```shell
+$ grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Features ''
 connecting to unix:///tmp/Dapr-components-sockets/memstore.sock
 Received initial metadata from server:
 date : Fri, 30 Sep 2022 14:36:56 GMT
@@ -271,8 +272,8 @@ grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Dapr.proto.compo
 
 You should receive an OK
 
-```
-$ memstore-dotnet grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Dapr.proto.components.v1.StateStore/Set "key:'my_key', value:'my_value'"
+```shell
+$ grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Dapr.proto.components.v1.StateStore/Set "key:'my_key', value:'my_value'"
 connecting to unix:///tmp/Dapr-components-sockets/memstore.sock
 Received initial metadata from server:
 date : Fri, 30 Sep 2022 14:49:38 GMT
@@ -286,8 +287,8 @@ Now let's retrieve the value,
 grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Dapr.proto.components.v1.StateStore/Get "key:'my_key'"
 ```
 
-```
-$  memstore-dotnet grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Dapr.proto.components.v1.StateStore/Get "key:'my_key'"
+```shell
+$  grpc_cli call unix:///tmp/Dapr-components-sockets/memstore.sock Dapr.proto.components.v1.StateStore/Get "key:'my_key'"
 
 connecting to unix:///tmp/Dapr-components-sockets/memstore.sock
 Received initial metadata from server:
