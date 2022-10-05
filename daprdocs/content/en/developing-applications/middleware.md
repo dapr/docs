@@ -5,8 +5,8 @@ linkTitle: "Middleware"
 weight: 50
 description: "Customize processing pipelines by adding middleware components"
 aliases:
-- /developing-applications/middleware/middleware-overview/
-- /concepts/middleware-concept/
+  - /developing-applications/middleware/middleware-overview/
+  - /concepts/middleware-concept/
 ---
 
 Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. A request goes through all defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
@@ -28,19 +28,42 @@ metadata:
 spec:
   httpPipeline:
     handlers:
-    - name: oauth2
-      type: middleware.http.oauth2
-    - name: uppercase
-      type: middleware.http.uppercase
+      - name: oauth2
+        type: middleware.http.oauth2
+      - name: uppercase
+        type: middleware.http.uppercase
 ```
 
 As with other building block components, middleware components are extensible and can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
 
 {{< button page="supported-middleware" text="See all middleware components">}}
 
+## App Middleware (Preview)
+
+Http middleware are executed when invoking Dapr HTTP API directly. There are other types of middlewares that should be applied in the context of app protocol, they are called app middleware and they are also executed when making service-to-service invocations. Valid use cases are token validation in a zero-trust environment or request transformation for a specific app endpoint.
+
+The same set of middlewares that can be applied to http middleware can also be applied to app middleware but instead of using `httpPipeline` you should use `appHttpPipeline`.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: pipeline
+  namespace: default
+spec:
+  appHttpPipeline:
+    handlers:
+      - name: uppercase
+        type: middleware.http.uppercase
+```
+
+Keep in mind that app middleware are always executed regardless of used Dapr Protocol, when declaring both, app and http middleware, both pipelines are executed.
+
+<img src="/images/app-middleware.png" width=800>
+
 ## Writing a custom middleware
 
-Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns  **fasthttp.RequestHandler** and **error**:
+Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns **fasthttp.RequestHandler** and **error**:
 
 ```go
 type Middleware interface {
