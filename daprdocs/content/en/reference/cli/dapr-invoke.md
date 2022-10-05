@@ -26,6 +26,8 @@ dapr invoke [flags]
 | ------------------- | -------------------- | ------- | ----------------------------------------------------- |
 | `--app-id`, `-a`    | `APP_ID`             |         | The application id to invoke                          |
 | `--help`, `-h`      |                      |         | Print this help message                               |
+| `--kubernetes`, `-k`|                      | false   | Invoke this method on an app in a Kubernetes cluster  |
+| `--help`, `-h`      |                      |         | Print this help message                               |
 | `--method`, `-m`    |                      |         | The method to invoke                                  |
 | `--data`, `-d`      |                      |         | The JSON serialized data string (optional)            |
 | `--data-file`, `-f` |                      |         | A file containing the JSON serialized data (optional) |
@@ -44,5 +46,5 @@ dapr invoke --app-id target --method sample --verb GET
 dapr invoke --kubernetes --app-id target --method sample --data '{"key":"value"}'
 
 # Invoke a sample method on target app with GET Verb in Kubernetes mode
-dapr invoke --kubernetes --app-id target --method sample --verb GET
+dapr invoke -k --app-id target --method sample --verb GET
 ```
