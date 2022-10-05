@@ -60,6 +60,31 @@ $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
 $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$Env:DAPR_INSTALL_DIR"
 ```
 
+#### Install using winget
+
+Install the latest windows Dapr cli to `$Env:SystemDrive\dapr` and add this directory to the User PATH environment variable:
+
+```powershell
+winget install Dapr.CLI
+```
+
+**For Preview Releases:**
+
+Install the latest Preview release:
+
+```powershell
+winget install Dapr.CLI.Preview
+```
+
+#### Install using MSI Installer
+
+Each release of Dapr CLI also includes MSI installer for windows. You can manually download and run the installer to install Dapr CLI locally:
+
+1. Download the MSI Package `dapr.msi` from latest [Dapr Release](https://github.com/dapr/cli/releases).
+2. Navigate to the downloaded MSI file and double-click the file to run it.
+3. Follow the installation wizard's prompts to accept the License and select the installation directory. Selected folder is added to User PATH environment variable. Default value is set to `$Env:SystemDrive\dapr`.
+4. Click `Install` to start the installation. You will see a final message once the installation is complete.
+
 {{% /codetab %}}
 
 {{% codetab %}}
