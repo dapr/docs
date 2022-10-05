@@ -6,30 +6,11 @@ weight: 250
 description: "Extending Dapr with external gRPC-based components"
 ---
 
-## Pluggable Components Overview
-
-Out of the box, Dapr [building blocks] come with integrations to a wide range of cloud providers and open source solutions. We call each of these individual integrations _"components"_. For instance, a input biding integration for MySql is a _[component]_ and a state store integration for MySQL would be a different component.
-
-<img src="/images/concepts-building-blocks.png" width=250>
-
-Sometimes one needs to integrate Dapr with something for which there is no existing component. When that happens, it might be time to invest on the creation of a new component.
-
-Traditionally, Dapr components are
-
-- written in Go,
-- are run as part of the same executable as Dapr itself,
-- integrated directly with Dapr codebase,
-- are distributed and hosted with the rest of Dapr codebase.
-
-Creating a new component for Dapr is not a huge undertaking and doing so helps not only a single developer or team but the whole Dapr community.
-
-There are circumstances for which creating a traditional Dapr component might not be feasible. For instance, for teams with no familiarity with Go. Or teams that don't want to depend on Dapr release cycle or community process for onboarding new components. Or even teams that don't want or, for a variety of reasons, can't integrate their component codebase with Dapr. For those situations there is an alternative method of extending Dapr with new functionality: gRPC Pluggable Components.
-
 ### gRPC Pluggable Components
 
 <!-- TODO what of gRPC pluggable components? -->
 
-gRPC Pluggable Components as an alternative way of adding new integrations and functionality to Dapr. They differ from "traditional" or (embedded?) components in the following ways:
+gRPC Pluggable Components as an alternative way of adding new integrations and functionality to Dapr. They differ from "traditional" components in the following ways:
 
 - They can be written in any [gRPC-supported programming language](https://grpc.io/docs/languages/).
 - They run in a distinct process, container or pod than Dapr itself.
