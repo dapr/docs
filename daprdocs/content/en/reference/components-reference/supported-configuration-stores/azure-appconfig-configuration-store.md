@@ -89,6 +89,20 @@ You need an Azure subscription to set up Azure App Configuration.
    In a production-grade application, follow [the secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
    {{% /alert %}}
 
+## Azure App Configuration request metadata 
+
+In Azure App Configuration, you can use labels to define different values for the same key. For example, you can define a single key with different values for development and production. You can specify which label to load when connecting to App Configuration
+
+The Azure App Configuration store component supports the following optional `label` metadata property:
+
+`label`: The label of the configuration to retrieve. If not present, the configuration store returns the configuration for the specified key and a null label.
+
+The label can be populated using query parameters in the request URL:
+
+```bash
+GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<store-name>?key=<key name>&metadata.label=<label value>
+```
+
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Configuration building block]({{< ref configuration-api-overview >}})
