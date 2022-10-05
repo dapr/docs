@@ -79,6 +79,13 @@ For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+
+## Multiple Key-Values per Secret
+
+HashiCorp Vault supports for multiple keys in a secret. When retrieving secrets, a JSON payload is returned with the key names as fields and their respective values.
+
+
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})

@@ -57,6 +57,8 @@ If a secret store has support for multiple keys in a secret, a JSON payload is r
 
 In case of a secret store that only has name/value semantics, a JSON payload is returned with the name of the secret as the field and the value of the secret as the value.
 
+The list of secret stores that support multiple keys in a secret and those that do not is provided in [the list of Supported Secret Stores]({{< ref supported-secret-stores.md >}})
+
 ##### Response with multiple keys in a secret (eg. Kubernetes):
 
 ```shell
