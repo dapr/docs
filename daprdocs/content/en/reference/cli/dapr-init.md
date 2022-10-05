@@ -60,7 +60,7 @@ You can also specify a specific runtime version. Be default, the latest version 
 dapr init --runtime-version 1.4.0
 ```
 
-You can also install Dapr with a particular image variant, for example: [mariner](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/#using-mariner-based-images).
+You can also install Dapr with a particular image variant, for example: [mariner]({{< ref "kubernetes-deploy.md#using-mariner-based-images" >}}).
 
 ```bash
 dapr init --image-variant mariner
