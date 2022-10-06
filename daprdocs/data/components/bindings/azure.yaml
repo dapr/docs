@@ -8,9 +8,9 @@
     output: true
 - component: Azure Event Grid
   link: eventgrid
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     input: true
     output: true
@@ -32,9 +32,9 @@
     output: true
 - component: Azure CosmosDB
   link: cosmosdb
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     input: false
     output: true
@@ -48,9 +48,9 @@
     output: true
 - component: Azure Service Bus Queues
   link: servicebusqueues
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.7"
   features:
     input: true
     output: true
