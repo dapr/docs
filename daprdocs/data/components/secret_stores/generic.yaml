@@ -1,18 +1,18 @@
 - component: HashiCorp Vault
   link: hashicorp-vault
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
 - component: Local environment variables
   link: envvar-secret-store
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
 - component: Local file
   link: file-secret-store
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
 - component: Kubernetes secrets
   link: kubernetes-secret-store
   state: Stable
