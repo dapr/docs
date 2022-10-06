@@ -22,3 +22,5 @@
   state: Stable
   version: v1
   since: "1.0"
+  features:
+    multipleKeyValuesPerSecret: true

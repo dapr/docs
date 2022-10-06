@@ -83,7 +83,31 @@ For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-
 
 ## Multiple Key-Values per Secret
 
-HashiCorp Vault supports for multiple keys in a secret. When retrieving secrets, a JSON payload is returned with the key names as fields and their respective values.
+HashiCorp Vault supports multiple key-values in a secret. While this behavior is ultimately dependent on the underlying [secret engine](https://www.vaultproject.io/docs/secrets#secrets-engines) configured by `enginePath`, it is something that might change the way you store and retrieve keys from Vault. For instance, multiple key-values in a secret is the behavior exposed the `secret` engine, the default engined configured by the `enginePath` field, but also by the `kv` secret engine and others.
+
+
+Suppose you add a secret to your Vault setup as follows:
+
+```shell
+vault kv put secret/dapr/mysecret firstKey=aValue secondKey=anotherValue thirdKey=yetAnotherDistinctValue
+```
+
+Retrieving it from dapr using a command such as `curl http://localhost:3501/v1.0/secrets/my-hashicorp-vault/mysecret` would result in the following output
+
+```json
+{
+  "firstKey": "aValue",
+  "secondKey": "anotherValue",
+  "thirdKey": "yetAnotherDistinctValue"
+}
+```
+
+Notice that the name of the secret (`mysecret`) is not repeated in the result. 
+
+
+When retrieving secrets, a JSON payload is returned with the key names as fields and their respective values.
+
+TODO FINISH this
 
 
 ## Related links
