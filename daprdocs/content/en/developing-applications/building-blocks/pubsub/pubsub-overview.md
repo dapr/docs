@@ -96,6 +96,10 @@ For more information on message routing, read [Dapr pub/sub API reference]({{< r
 
 Sometimes, messages can't be processed because of a variety of possible issues, such as erroneous conditions within the producer or consumer application or an unexpected state change that causes an issue with your application code. Dapr allows developers to set dead letter topics to deal with messages that cannot be delivered to an application. This feature is available on all pub/sub components and prevents consumer applications from endlessly retrying a failed message. For more information, read about [dead letter topics]({{< ref "pubsub-deadletter.md">}})
 
+### Namespace consumer groups
+
+Dapr solves multi-tenancy at-scale with its [namespace consumer groups construct]({{< ref howto-namespace >}}). Simply include the `"{namespace}"` value in your component metadata to allow multiple namespaces with applications of the same `app-id` to publish and subscribe to the same centralized message bus.
+
 ### At-least-once guarantee
 
 Dapr guarantees at-least-once semantics for message delivery. When an application publishes a message to a topic using the pub/sub API, Dapr ensures the message is delivered *at least once* to every subscriber.
