@@ -12,7 +12,7 @@ Dapr solves multi-tenancy at-scale with its pub/sub namespace consumer groups co
 
 ## Without namespace consumer groups
 
-Let's say you have a Kubernetes cluster, with two applications (App1 and App2) deployed to the same namespace (Namespace A). App2 publishes to a topic called `order`, while App1 subscribes to the topic called `order`. This will create two consumer groups, named after your applications (App1 and App2).
+Let's say you have a Kubernetes cluster, with two applications (App1 and App2) deployed to the same namespace (namespace-a). App2 publishes to a topic called `order`, while App1 subscribes to the topic called `order`. This will create two consumer groups, named after your applications (App1 and App2).
 
 <img src="/images/howto-namespace/basic-pubsub.png" width=1000 alt="Diagram showing basic pubsub process.">
 
