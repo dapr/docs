@@ -36,18 +36,25 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 {{% /alert %}}
 
 ## Spec metadata fields
-| Field              | Required | Details | Example |
-|--------------------|:--------:|--------|---------|
-| accessKey          | N        | Access Key (Username) | `"admin"`
-| secretKey          | N        | Secret Key (Password) | `"password"`
-| nameServer         | N        | Name server address | `"127.0.0.1:9876;127.0.0.2:9877"`
-| nameServerDomain   | N        | Name server domain | `"https://my-app.net:8080/nsaddr"`
-| nameSpace          | N        | Namespace of the producer/consumer | `"namespace"` |
-| groupName          | N        | Producer group name for RocketMQ publishers | `"my_unique_group_name"` |
-| consumerGroup      | N        | Consumer group name for RocketMQ subscribers| `"my_unique_group_name"`
-| content-type       | N        | Message content-type, e.g., `"application/cloudevents+json; charset=utf-8"`, `"application/octet-stream"` | `"text/plain"`
-| retries            | N        | Number of times to retry to connect rocketmq's broker, optional | `0`
-| sendTimeOut        | N        | Timeout duration for publishing a message in nanoseconds | `0`
+| Field            | Required | Details                                                                                                   | Example                            |
+| ---------------- | :------: | --------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| accessKey        |    N     | Access Key (Username)                                                                                     | `"admin"`                          |
+| secretKey        |    N     | Secret Key (Password)                                                                                     | `"password"`                       |
+| nameServer       |    N     | Name server address                                                                                       | `"127.0.0.1:9876;127.0.0.2:9877"`  |
+| nameServerDomain |    N     | Name server domain                                                                                        | `"https://my-app.net:8080/nsaddr"` |
+| nameSpace        |    N     | Namespace of the producer/consumer                                                                        | `"namespace"`                      |
+| producerGroup    |    N     | Producer group name for RocketMQ publishers                                                               | `"my_unique_group_name"`           |
+| consumerGroup    |    N     | Consumer group name for RocketMQ subscribers                                                              | `"my_unique_group_name"`           |
+| content-type     |    N     | Message content-type, e.g., `"application/cloudevents+json; charset=utf-8"`, `"application/octet-stream"` | `"text/plain"`                     |
+| retries          |    N     | Number of times to retry to connect rocketmq's broker, optional                                           | `0`                                |
+| sendTimeOutSec   |    N     | Timeout duration for publishing a message in seconds                                                      | `0`                                |
+
+For backwards-compatibility reasons, the following values in the metadata are supported, although their use is discouraged.
+
+| Field (supported but deprecated) | Required | Details                                                  | Example                  |
+| -------------------------------- | :------: | -------------------------------------------------------- | ------------------------ |
+| groupName                        |    N     | Producer group name for RocketMQ publishers              | `"my_unique_group_name"` |
+| sendTimeOut                      |    N     | Timeout duration for publishing a message in nanoseconds | `0`                      |
 
 ## Setup RocketMQ
 See https://rocketmq.apache.org/docs/quick-start/ to setup a local RocketMQ instance.
