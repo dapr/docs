@@ -74,7 +74,7 @@ curl http://localhost:3500/v1.0/secrets/kubernetes/db-secret
 
 Notice here that the name of the secret (`db-secret`) is **not** returned as part of the result. Contrast this with the result from a secret store with name/value semantics as shown bellow.
 
-##### Response from a secret store that only has name/value semantics:
+##### Response from a secret store with name/value semantics:
 
 ```shell
 curl http://localhost:3500/v1.0/secrets/vault/db-secret
