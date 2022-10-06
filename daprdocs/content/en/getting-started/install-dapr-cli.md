@@ -62,7 +62,7 @@ $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/inst
 
 #### Install using winget
 
-Install the latest windows Dapr cli to `$Env:SystemDrive\dapr` and add this directory to the User PATH environment variable:
+Install the latest Windows Dapr CLI to `$Env:SystemDrive\dapr` and add this directory to the user PATH environment variable:
 
 ```powershell
 winget install Dapr.CLI
