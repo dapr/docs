@@ -45,11 +45,11 @@ spec:
     value: "{namespace}"
 ```
 
-By calling `consumerID` with the `{namespace}` value, you'll be able to use the same `app-id` with the same topics from different namespaces.
+By configuring `consumerID` with the `{namespace}` value, you'll be able to use the same `app-id` with the same topics from different namespaces.
 
 <img src="/images/howto-namespace/with-namespace.png" width=1000 alt="Diagram showing how namespace consumer groups help with multi-tenancy.">
 
-In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same centralized message bus `orders. This time, however, Dapr has created consumer group names prefixed with the namespace in which they're running. 
+In the diagram above, you have two namespaces, each with applications of the same `app-id`, publishing and subscribing to the same centralized message bus `orders`. This time, however, Dapr has created consumer group names prefixed with the namespace in which they're running. 
 
 Without you needing to change your code/`app-id`, the namespace consumer group allows you to:
 - Add more namespaces
