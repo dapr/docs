@@ -34,7 +34,7 @@ When using pub/sub in Dapr:
 1. The pub/sub building block makes calls into a Dapr pub/sub component that encapsulates a specific message broker.
 1. To receive messages on a topic, Dapr subscribes to the pub/sub component on behalf of your service with a topic and delivers the messages to an endpoint on your service when they arrive.
 
-In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message bus component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP pub/sub.
+In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message broker component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP pub/sub.
 
 <img src="/images/pubsub-overview-components.png" width=1000>
 <br></br>
@@ -98,7 +98,7 @@ Sometimes, messages can't be processed because of a variety of possible issues, 
 
 ### Namespace consumer groups
 
-Dapr solves multi-tenancy at-scale with its [namespace consumer groups construct]({{< ref howto-namespace >}}). Simply include the `"{namespace}"` value in your component metadata to allow multiple namespaces with applications of the same `app-id` to publish and subscribe to the same centralized message bus.
+Dapr solves multi-tenancy at-scale with [namespaces for consumer groups]({{< ref howto-namespace >}}). Simply include the `"{namespace}"` value in your component metadata for consumer groups to allow multiple namespaces with applications of the same `app-id` to publish and subscribe to the same message broker.
 
 ### At-least-once guarantee
 
