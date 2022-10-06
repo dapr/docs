@@ -48,7 +48,7 @@ Generates new root and issuer certificates for the Kubernetes cluster with a giv
 ```bash
 dapr mtls renew-certificate -k --valid-until <no of days>
 ```
-Generates new root and issuer certificates for the Kubernetes cluster with a given validity time and restarts the Dapr control place services.
+Generates new root and issuer certificates for the Kubernetes cluster with a given validity time and restarts the Dapr control plane services.
 ```bash
 dapr mtls renew-certificate -k --valid-until <no of days> --restart
 ```

@@ -43,7 +43,7 @@ Each of these building block APIs is independent, meaning that you can use one, 
 |  [**Observability**]({{<ref "observability-concept.md">}}) | Dapr emits metrics, logs, and traces to debug and monitor both Dapr and user applications. Dapr supports distributed tracing to easily diagnose and serve inter-service calls in production using the W3C Trace Context standard and Open Telemetry to send to different monitoring tools.
 | [**Secrets**]({{<ref "secrets-overview.md">}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 | [**Configuration**]({{<ref "configuration-api-overview.md">}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
-| [**Distributed lock**]({{<ref "distributed-lock-api-overview.md">}})  | The distributed lock API enables your application to aquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
+| [**Distributed lock**]({{<ref "distributed-lock-api-overview.md">}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 
 ## Sidecar architecture
 
@@ -53,7 +53,7 @@ Dapr exposes its HTTP and gRPC APIs as a sidecar architecture, either as a conta
 
 ## Hosting environments
 
-Dapr can be hosted in multiple environments, including self-hosted on a Windows/Linux/macOS machines for local developement and on Kubernetes or clusters of physical or virtual machines in production.
+Dapr can be hosted in multiple environments, including self-hosted on a Windows/Linux/macOS machines for local development and on Kubernetes or clusters of physical or virtual machines in production.
 
 ### Self-hosted local development
 
@@ -69,7 +69,9 @@ Kubernetes can be used for either local development (for example with [minikube]
 
 Dapr has control plane services. The `dapr-sidecar-injector` and `dapr-operator` services provide first-class integration to launch Dapr as a sidecar container in the same pod as the service container and provide notifications of Dapr component updates provisioned in the cluster.
 
+<!-- IGNORE_LINKS -->
 The `dapr-sentry` service is a certificate authority that enables mutual TLS between Dapr sidecar instances for secure data encryption, as well as providing identity via [Spiffe](https://spiffe.io/). For more information on the `Sentry` service, read the [security overview]({{< ref "security-concept.md#dapr-to-dapr-communication" >}})
+<!-- END_IGNORE -->
 
 Deploying and running a Dapr-enabled application into your Kubernetes cluster is as simple as adding a few annotations to the deployment schemes. Visit the [Dapr on Kubernetes docs]({{< ref kubernetes >}})
 

@@ -11,6 +11,9 @@ Dapr provides a dedicated secrets API that allows developers to retrieve secrets
 1. Run a microservice with a secret store component.
 1. Retrieve secrets using the Dapr secrets API in the application code.
 
+<img src="/images/secretsmanagement-quickstart/secrets-mgmt-quickstart.png" width=1000 alt="Diagram showing secrets management of example service.">
+
+
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
@@ -485,13 +488,13 @@ cd secrets_management/go/sdk/order-processor
 Install the dependencies:
 
 ```bash
-go build app.go
+go build
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
+dapr run --app-id order-processor --components-path ../../../components/ -- go run
 ```
 
 #### Behind the scenes

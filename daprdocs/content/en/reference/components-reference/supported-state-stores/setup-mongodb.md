@@ -33,9 +33,9 @@ spec:
     value: <REPLACE-WITH-DATABASE-NAME> # Optional. default: "daprStore"
   - name: collectionName
     value: <REPLACE-WITH-COLLECTION-NAME> # Optional. default: "daprCollection"
-  - name: writeconcern
+  - name: writeConcern
     value: <REPLACE-WITH-WRITE-CONCERN> # Optional.
-  - name: readconcern
+  - name: readConcern
     value: <REPLACE-WITH-READ-CONCERN> # Optional.
   - name: operationTimeout
     value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "5s"
@@ -65,8 +65,8 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 | password           | N        | The password of the user (applicable in conjunction with `host`) | `"password"`
 | databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
 | collectionName     | N        | The name of the collection to use. Defaults to `"daprCollection"` | `"daprCollection"`
-| writeconcern       | N        | The write concern to use | `"majority"`
-| readconcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
+| writeConcern       | N        | The write concern to use | `"majority"`
+| readConcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
 | operationTimeout   | N        | The timeout for the operation. Defaults to `"5s"` | `"5s"`
 | params             | N<sup>**</sup> | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
 
