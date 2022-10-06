@@ -63,6 +63,12 @@ Simply include the `"{namespace}"` consumer group construct in your component me
 If you add the namespace consumer group to your metadata afterwards, Dapr will update everything for you.
 {{% /alert %}}
 
+## Demo
+
+Watch [this video for an overview on pub/sub multi-tenancy](https://youtu.be/eK463jugo0c?t=1188):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/eK463jugo0c?start=1188" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Next steps
 
 - Learn more about [pub/sub namespaces]({{< ref pubsub-namespaces >}}).
