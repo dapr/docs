@@ -2,7 +2,7 @@
 type: docs
 title: "Distributed tracing"
 linkTitle: "Distributed tracing"
-weight: 1000
+weight: 100
 description: "Use Dapr tracing to get visibility for distributed application"
 ---
 

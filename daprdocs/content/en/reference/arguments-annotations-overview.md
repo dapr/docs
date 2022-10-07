@@ -8,7 +8,7 @@ aliases:
   - "/operations/hosting/kubernetes/kubernetes-annotations/"
 ---
 
-This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts--via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
+This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts–via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
 
 | daprd | Dapr CLI | CLI shorthand | Kubernetes annotations | Description|
 |----- | ------- | -----------| ----------| ------------ |
@@ -38,6 +38,11 @@ This table is meant to help users understand the equivalent options for running 
 | `--placement-host-address` | `--placement-host-address` | | `dapr.io/placement-host-address` | Comma separated list of addresses for Dapr Actor Placement servers. When no annotation is set, the default value is set by the Sidecar Injector. When the annotation is set and the value is empty, the sidecar does not connect to Placement server. This can be used when there are no actors running in the sidecar. When the annotation is set and the value is not empty, the sidecar connects to the configured address. For example: `127.0.0.1:50057,127.0.0.1:50058` |
 | `--profiling-port` | `--profiling-port` | | not supported | The port for the profile server (default "7777") |
 | `--app-protocol` | `--app-protocol` | `-P` | `dapr.io/app-protocol` | Tells Dapr which protocol your application is using. Valid options are `http` and `grpc`. Default is `http` |
+| `--enable-app-health-check` | `--enable-app-health-check` | | `dapr.io/enable-app-health-check` | Boolean that enables the health checks. Default is `false`.  |
+| `--app-health-check-path` | `--app-health-check-path` | | `dapr.io/app-health-check-path` | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC). Requires app health checks to be enabled. Default is `/health` |
+| `--app-health-probe-interval` | `--app-health-probe-interval` | | `dapr.io/app-health-probe-interval` | Number of *seconds* between each health probe. Requires app health checks to be enabled. Default is `5` |
+| `--app-health-probe-timeout` | `--app-health-probe-timeout` | | `dapr.io/app-health-probe-timeout` | Timeout in *milliseconds* for health probe requests. Requires app health checks to be enabled. Default is `500` |
+| `--app-health-threshold` | `--app-health-threshold` | | `dapr.io/app-health-threshold"` | Max number of consecutive failures before the app is considered un-healthy. Requires app health checks to be enabled. Default is `3` |
 | `--sentry-address` | `--sentry-address` | | not supported | Address for the Sentry CA service |
 | `--version` | `--version` | `-v` | not supported | Prints the runtime version |
 | `--dapr-graceful-shutdown-seconds` | not supported | | `dapr.io/graceful-shutdown-seconds` | Graceful shutdown duration in seconds for Dapr, the maximum duration before forced shutdown when waiting for all in-progress requests to complete. Defaults to `5`. If you are running in Kubernetes mode, this value should not be larger than the Kubernetes termination grace period, who's default value is `30`.|
