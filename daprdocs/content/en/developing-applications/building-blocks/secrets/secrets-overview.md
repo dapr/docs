@@ -6,57 +6,63 @@ weight: 1000
 description: "Overview of secrets management API building block"
 ---
 
-It's common for applications to store sensitive information such as connection strings, keys and tokens that are used to authenticate with databases, services and external systems in secrets by using a dedicated secret store.
+Applications usually store sensitive information in secrets by using a dedicated secret store. For example, you authenticate databases, services, and external systems with connection strings, keys, tokens, and other application-level secrets stored in a secret store, such as [AWS Secrets Manager, Azure Key Vault, Hashicorp Vault, etc]({{< ref supported-secret-stores >}}).
 
-Usually this involves setting up a secret store such as Azure Key Vault, Hashicorp Vault and others and storing the application level secrets there. To access these secret stores, the application needs to import the secret store SDK, and use it to access the secrets. This may require a fair amount of boilerplate code that is not related to the actual business domain of the app, and so becomes an even greater challenge in multi-cloud scenarios where different vendor specific secret stores may be used.
+To access these secret stores, the application imports the secret store SDK, often requiring a fair amount of unrelated boilerplate code. This poses an even greater challenge in multi-cloud scenarios, where different vendor-specific secret stores may be used.
 
-To make it easier for developers everywhere to consume application secrets, Dapr has a dedicated secrets building block API that allows developers to get secrets from a secret store.
+## Secrets management API
 
-Using Dapr's secret store building block typically involves the following:
-1. Setting up a component for a specific secret store solution.
-1. Retrieving secrets using the Dapr secrets API in the application code.
-1. Optionally, referencing secrets in Dapr component files.
+Dapr's dedicated secrets building block API makes it easier for developers to consume application secrets from a secret store. To use Dapr's secret store building block, you:
 
-{{% alert title="Note" color="primary" %}}
-By default, Dapr enables a built-in [Kubernetes secret store in Kubernetes mode]({{<ref "kubernetes-secret-store.md">}}) deployed either via the Helm defaults or `dapr init -k`. If you are using another secret store, you can disable (not configure) the Dapr Kubernetes secret store using the `disable-builtin-k8s-secret-store` setting, when set to `true` through the Helm settings. The default is `false`.
-{{% /alert %}}
+1. Set up a component for a specific secret store solution.
+1. Retrieve secrets using the Dapr secrets API in the application code.
+1. Optionally, reference secrets in Dapr component files.
 
-## Setting up a secret store
+## Features
 
-See [Setup secret stores]({{< ref howto-secrets.md >}}) for guidance on how to setup a secret store with Dapr.
+The secrets management API building block brings several features to your application.
 
-## Using secrets in your application
+### Configure secrets without changing application code
 
-Application code can call the secrets building block API to retrieve secrets from Dapr supported secret stores that can be used in your code.
-Watch this [video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=1818) for an example of how the secrets API can be used in your application.
+You can call the secrets API in your application code to retrieve and use secrets from Dapr supported secret stores. Watch [this video](https://www.youtube.com/watch?v=OtbYCBt9C34&t=1818) for an example of how the secrets management API can be used in your application.
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/OtbYCBt9C34?start=1818" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 For example, the diagram below shows an application requesting the secret called "mysecret" from a secret store called "vault" from a configured cloud secret store.
 
 <img src="/images/secrets-overview-cloud-stores.png" width=600>
 
-Applications can use the secrets API to access secrets from a Kubernetes secret store. In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
+Applications can also use the secrets API to access secrets from a Kubernetes secret store. By default, Dapr enables a built-in [Kubernetes secret store in Kubernetes mode]({{< ref "kubernetes-secret-store.md" >}}), deployed via:
+
+- The Helm defaults, or
+- `dapr init -k`
+
+If you are using another secret store, you can disable (not configure) the Dapr Kubernetes secret store by setting `disable-builtin-k8s-secret-store` to `true` through the Helm settings. The default is `false`.
+
+In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
 
 <img src="/images/secrets-overview-kubernetes-store.png" width=600>
 
-In Azure Dapr can be configured to use Managed Identities to authenticate with Azure Key Vault in order to retrieve secrets. In the example below, an Azure Kubernetes Service (AKS) cluster is configured to use managed identities. Then Dapr uses [pod identities](https://docs.microsoft.com/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application.
+In Azure, you can configure Dapr to retrieve secrets using managed identities to authenticate with Azure Key Vault. In the example below:
+
+1. An [Azure Kubernetes Service (AKS) cluster](https://docs.microsoft.com/azure/aks) is configured to use managed identities. 
+1. Dapr uses [pod identities](https://docs.microsoft.com/azure/aks/operator-best-practices-identity#use-pod-identities) to retrieve secrets from Azure Key Vault on behalf of the application.
 
 <img src="/images/secrets-overview-azure-aks-keyvault.png" width=600>
 
-Notice that in all of the examples above the application code did not have to change to get the same secret. Dapr did all the heavy lifting here via the secrets building block API and using the secret components.
+In the examples above, the application code did not have to change to get the same secret. Dapr uses the secret management components via the secrets management building block API.
 
-See [Access Application Secrets using the Secrets API]({{< ref howto-secrets.md >}}) for a How To guide to use secrets in your application.
+[Try out the secrets API]({{< ref "#try-out-secrets-management" >}}) using one of our quickstarts or tutorials.
 
-For detailed API information read [Secrets API]({{< ref secrets_api.md >}}).
+### Reference secret stores in Dapr components
 
-## Referencing secret stores in Dapr components
+When configuring Dapr components such as state stores, you're often required to include credentials in components files. Alternatively, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is the preferred approach and recommended best practice, especially in production environments.
 
-When configuring Dapr components such as state stores it is often required to include credentials in components files. Instead of doing that, you can place the credentials within a Dapr supported secret store and reference the secret within the Dapr component. This is preferred approach and is a recommended best practice especially in production environments.
+For more information, read [referencing secret stores in components]({{< ref component-secrets.md >}}).
 
-For more information read [referencing secret stores in components]({{< ref component-secrets.md >}})
+### Limit access to secrets
 
-## Limiting access to secrets
-
-To provide more granular control on access to secrets, Dapr provides the ability to define scopes and restricting access permissions. Learn more about [using secret scoping]({{<ref secrets-scopes>}})
+To provide more granular control on access to secrets, Dapr provides the ability to define scopes and restricting access permissions. Learn more about [using secret scoping]({{< ref secrets-scopes >}})
 
 ## Try out secrets management
 
@@ -72,3 +78,8 @@ Want to put the Dapr secrets management API to the test? Walk through the follow
 ### Start managing secrets directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the secret management building block directly in your application to retrieve and manage secrets. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the secrets management API starting with [the secrets how-to guide]({{< ref howto-secrets.md >}}).
+
+## Next steps
+
+- Learn [how to use secret scoping]({{< ref secrets-scopes.md >}}).
+- Read the [secrets API reference doc]({{< ref secrets_api.md >}}).
