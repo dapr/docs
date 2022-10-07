@@ -53,7 +53,7 @@ metadata.version_stage | version stage for the given secret key
 
 #### Response Body
 
-If a secret store has support for multiple keys in a secret, a JSON payload is returned with the key names as fields and their respective values.
+If a secret store has support for multiple key-values in a secret, a JSON payload is returned with the key names as fields and their respective values.
 
 In case of a secret store that only has name/value semantics, a JSON payload is returned with the name of the secret as the field and the value of the secret as the value.
 
