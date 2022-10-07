@@ -6,9 +6,7 @@ weight: 1000
 description: "Overview of the pub/sub API building block"
 ---
 
-## Publish and subscribe pattern
-
-The publish and subscribe pattern (pub/sub) enables microservices to communicate with each other using messages for event-driven architectures.
+Publish and subscribe (pub/sub) enables microservices to communicate with each other using messages for event-driven architectures.
 
 - The producer, or **publisher**, writes messages to an input channel and sends them to a topic, unaware which application will receive them.
 - The consumer, or **subscriber**, subscribes to the topic and receives messages from an output channel, unaware which service produced these messages.
@@ -19,7 +17,7 @@ An intermediary message broker copies each message from a publisher's input chan
 
 <br></br>
 
-## Pub/sub API in Dapr
+## Pub/sub API
 
 The pub/sub API in Dapr:
 - Provides a platform-agnostic API to send and receive messages.
@@ -46,9 +44,9 @@ In the diagram below, the Dapr API posts an "order" topic from the publishing "c
 
 [View the complete list of pub/sub components that Dapr supports]({{< ref supported-pubsub >}}).
 
-## Dapr pub/sub API features
+## Features
 
-The pub/sub building block brings several features to your application.
+The pub/sub API building block brings several features to your application.
 
 ### Sending messages using Cloud Events
 
