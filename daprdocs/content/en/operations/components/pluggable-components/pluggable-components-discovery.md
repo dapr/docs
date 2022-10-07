@@ -44,7 +44,7 @@ gRPC-based Pluggable Components are defined using the [Component Spec]({{< ref c
 Place the following file in the defined components-path (replace `your_socket_goes_here` by your component socket name without any extension and `your_component_type` by your component type).
 
 ```yaml
-apiVersion: Dapr.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: prod-mystore
@@ -62,7 +62,7 @@ Using `memstore.sock` as a concrete example we have the following, and assuming 
 The full configuration for `memstore` would be:
 
 ```yaml
-apiVersion: Dapr.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: prod-mystore
@@ -140,13 +140,13 @@ spec:
       labels:
         app: app
       annotations:
-        Dapr.io/unix-domain-socket-path: "/tmp/Dapr-components-sockets" ## required, the default path where Dapr will discovery components.
-        Dapr.io/app-id: "my-app"
-        Dapr.io/enabled: "true"
-        Dapr.io/sidecar-listen-addresses: "0.0.0.0"
+        dapr.io/unix-domain-socket-path: "/tmp/dapr-components-sockets" ## required, the default path where Dapr will discovery components.
+        dapr.io/app-id: "my-app"
+        dapr.io/enabled: "true"
+        dapr.io/sidecar-listen-addresses: "0.0.0.0"
     spec:
       volumes: ## required, the sockets volume
-        - name: Dapr-unix-domain-socket
+        - name: dapr-unix-domain-socket
           emptyDir: {}
       containers:
         ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
@@ -155,12 +155,12 @@ spec:
         ### This is the pluggable component container.
         - name: component
           volumeMounts: # required, the sockets volume mount
-            - name: Dapr-unix-domain-socket
-              mountPath: /Dapr-unix-domain-sockets
+            - name: dapr-unix-domain-socket
+              mountPath: /dapr-unix-domain-sockets
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
           env:
             - name: DAPR_COMPONENTS_SOCKETS_FOLDER # Tells the component where the sockets should be created.
-              value: /Dapr-unix-domain-sockets
+              value: /dapr-unix-domain-sockets
 ```
 
 Great, do not apply the Deployment yet, let's add one more configuration: The Component Spec.
@@ -170,7 +170,7 @@ Great, do not apply the Deployment yet, let's add one more configuration: The Co
 gRPC-based Pluggable Componets are defined using the [Component Spec]({{< ref component-schema.md >}}) and its `type` is derived from the socket name (without the file extension).
 
 ```yaml
-apiVersion: Dapr.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: prod-mystore
