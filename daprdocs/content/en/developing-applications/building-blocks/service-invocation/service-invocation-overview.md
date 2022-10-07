@@ -6,8 +6,6 @@ weight: 900
 description: "Overview of the service invocation API building block"
 ---
 
-## Introduction
-
 Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
 In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle problems like:
@@ -18,14 +16,14 @@ In many microservice-based applications multiple services need the ability to co
 - **Mitigating request timeouts or failures.** How do I handle retries and transient errors?
 -  **Implementing observability and tracing.** How do I use tracing to see a call graph with metrics to diagnose issues in production?
 
+## Service invocation API
+
 Dapr addresses these challenges by providing a service invocation API that acts similar to a reverse proxy with built-in service discovery, while leveraging built-in distributed tracing, metrics, error handling, encryption and more.
 
 Dapr uses a sidecar architecture. To invoke an application using Dapr:
 - You use the `invoke` API on the Dapr instance. 
 - Each application communicates with its own instance of Dapr. 
 - The Dapr instances discover and communicate with each other.
-
-### Service invocation diagram
 
 The diagram below is an overview of how Dapr's service invocation works.
 
