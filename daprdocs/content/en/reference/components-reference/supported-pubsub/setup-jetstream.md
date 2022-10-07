@@ -24,23 +24,27 @@ spec:
   metadata:
   - name: natsURL
     value: "nats://localhost:4222"
-  - name: jwt
-    value: "eyJhbGciOiJ...6yJV_adQssw5c" # Optional. Used for decentralized JWT authentication
-  - name: seedKey
-    value: "SUACS34K232O...5Z3POU7BNIL4Y" # Optional. Used for decentralized JWT authentication
-  - name: name
-    value: "connection name"
-  - name: durableName
-    value: "consumer durable name"
-  - name: queueGroupName
-    value: "queue group name"
-  - name: startSequence
+  - name: jwt # Optional. Used for decentralized JWT authentication.
+    value: "eyJhbGciOiJ...6yJV_adQssw5c" 
+  - name: seedKey # Optional. Used for decentralized JWT authentication.
+    value: "SUACS34K232O...5Z3POU7BNIL4Y" 
+  - name: tls_client_cert # Optional. Used for TLS Client authentication.
+    value: "/path/to/tls.crt" 
+  - name: tls_client_key # Optional. Used for TLS Client authentication.
+    value: "/path/to/tls.key" 
+  - name: name 
+    value: "my-conn-name"
+  - name: durableName 
+    value: "my-durable"
+  - name: queueGroupName 
+    value: "my-queue"
+  - name: startSequence 
     value: 1
-  - name: startTime # in Unix format
+  - name: startTime # In Unix format
     value: 1630349391
-  - name: deliverAll
+  - name: deliverAll 
     value: false
-  - name: flowControl
+  - name: flowControl 
     value: false
 ```
 
