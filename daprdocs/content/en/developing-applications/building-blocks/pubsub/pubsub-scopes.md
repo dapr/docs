@@ -2,7 +2,7 @@
 type: docs
 title: "Scope Pub/sub topic access"
 linkTitle: "Scope topic access"
-weight: 5000
+weight: 6000
 description: "Use scopes to limit pub/sub topics to specific applications"
 ---
 
