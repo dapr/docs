@@ -29,7 +29,7 @@ The [`dapr run` CLI command]({{< ref dapr-run.md >}}) can be used to launch a Da
 dapr run --app-id myapp --app-port 5000 -- dotnet run
 ```
 
-This command will launch both the daprd sidecar binary and run `dotnet run`, launching your application.
+This command launches both the daprd sidecar and your application.
 
 ## Run app as a process and sidecar as a Docker container
 
