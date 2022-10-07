@@ -10,10 +10,10 @@ description: "How-To: Making Dapr discover a pluggable component"
 
 <img src="/images/grpc-components.png" width=400>
 
-[gRPC-based](https://grpc.io/) Dapr components are typically run as containers or processes that communicate with the Dapr main process via [Unix Domain Sockets](https://en.wikipedia.org/wiki/Unix_domain_socket). They are automatically discovered and registered in runtime by Dapr using the following steps:
+[gRPC-based](https://grpc.io/) Dapr components are typically run as containers or processes that communicate with the Dapr main process via [Unix Domain Sockets][uds]. They are automatically discovered and registered in runtime by Dapr using the following steps:
 
-1. The Component listens to an [Unix Domain Socket](https://en.wikipedia.org/wiki/Unix_domain_socket) placed on the shared volume.
-2. The Dapr runtime lists all [Unix Domain Socket](https://en.wikipedia.org/wiki/Unix_domain_socket) in the shared volume.
+1. The Component listens to an [Unix Domain Socket][uds] placed on the shared volume.
+2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
 3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
 
 A single component can implement multiple [building blocks](http://localhost:1313/concepts/building-blocks-concept/) at once.
@@ -21,9 +21,9 @@ A single component can implement multiple [building blocks](http://localhost:131
 Dapr's built-in components come ready to be used out of the box: you just need to have provide Dapr with their YAML configuration and you are ready to go. That is not the case with gRPC-based Components, which require a few setup steps before they can be used with Dapr. Namely:
 
 1. gGRPC-based Components need to be started and ready to take requests _before_ Dapr itself is started;
-2. The [Unix Domain Socket](https://en.wikipedia.org/wiki/Unix_domain_socket) file used used for the Pluggable Component communication need to be made accessible to both Dapr and gRPC Component and, as expected,
+2. The [Unix Domain Socket][uds] file used used for the Pluggable Component communication need to be made accessible to both Dapr and gRPC Component and, as expected,
 
-Dapr does not take part on orchestrating gRPC-components creation and deployment. This is left for its users and it will be different depending on whether Dapr and gRPC-based components are ran in standalone mode, as processes or as containers in Kubernetes. This will also change the mechanisms available to share Unix Domain Socket files between Dapr and gRPC-based components.
+Dapr does not take part on orchestrating gRPC-components creation and deployment. This is left for its users and it will be different depending on whether Dapr and gRPC-based components are ran in standalone mode, as processes or as containers in Kubernetes. This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and gRPC-based components.
 
 In the next sections, we will discuss how to make your component discoveriable by Dapr based on the running environment.
 
@@ -35,7 +35,7 @@ In the next sections, we will discuss how to make your component discoveriable b
 
 As mentioned previously, your component must be up and running and the Unix Socket must be created running before Dapr starts.
 
-By default, Dapr looks for [Unix Domain Socket](https://en.wikipedia.org/wiki/Unix_domain_socket) files in the folder in `/tmp/dapr-components-sockets`. The name of the file without any extension will be the name of the component, for `memstore.sock`, the component name will be `memstore`. Since you are running Dapr in the same host as the component, all we have to ensure is that this folder and the files within it are accessible and writable by both our component and Dapr.
+By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`. The name of the file without any extension will be the name of the component, for `memstore.sock`, the component name will be `memstore`. Since you are running Dapr in the same host as the component, all we have to ensure is that this folder and the files within it are accessible and writable by both our component and Dapr.
 
 ## Step 2: Declaring a gRPC-based Pluggable Component
 
