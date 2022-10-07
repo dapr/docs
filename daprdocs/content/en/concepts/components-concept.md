@@ -91,8 +91,8 @@ Dapr allows for users to create their own self-hosted components, they are calle
 Creating your own pluggable component can be helpful for scenarios where the Dapr project doesn't provide a component integration you need. Pluggable components are also useful for scenarios where  writing a traditional Dapr component might not be feasible (e.g., unfamiliar with Go, remaining untethered to Dapr release cycle, not interested in contributing custom component to Dapr project etc.). For these situations creating a pluggable component could be a better option.
 
 The following pages provide more context on this subject:
-* [Pluggable components overview](({{< ref extending-dapr/overview >}}))
-* [Writing a pluggable component](({{< ref developing-pluggable-components >}}))
+* [Pluggable components overview]()
+* [Writing a pluggable component]()
 
 
 **Note:** Since pluggable components are not required to be written in Go, they follow a different implementation process than built-in Dapr components. For more information on that process read the documentation for [Developing new components](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)
