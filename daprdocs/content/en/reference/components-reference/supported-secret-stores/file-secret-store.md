@@ -56,12 +56,12 @@ Given the following JSON loaded from `secretsFile`:
 }
 ```
 
-The flag `multiValued` will decide whether the secret store will present a [name/value semantic behavior or a multi key-value per key behavior]({{< ref "secrets_api.md#response-body" >}}).
+The flag `multiValued` will decide whether the secret store will present a [name/value behavior or a multiple key-value per secret behavior]({{< ref "secrets_api.md#response-body" >}}).
 
 ### Name/Value semantics
 
 
-If `multiValued` is `"false"`, the store will load the file and create a map with the following key value pairs:
+If `multiValued` is `false`, the store will load the file and create a map with the following key value pairs:
 
 | flattened key           | value                           |
 | ---                     | ---                             |
@@ -75,7 +75,6 @@ With this settings, invoking a `GET` request on the key `connectionStrings` will
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
 ```
-
 ```json
 {
   "errorCode": "ERR_SECRET_GET",
@@ -90,7 +89,6 @@ On the other hand, requesting for flattened key `connectionStrings:sql` would re
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:sql
 ```
-
 ```json
 {
   "connectionStrings:sql": "your sql connection string"
@@ -99,7 +97,7 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:s
 
 ### Multiple key-values behavior
 
-If `multiValued` is `true`, this secret store will present a multiple key-value behavior.
+If `multiValued` is `true`, this secret store will present a multiple key-value per secret behavior.
 Nested structures after the top level will be flattened.
 It will parse the same file into this table:
 
