@@ -133,3 +133,63 @@ spec:
       appB: # app-id of the target service
         retry: retryForever
 ```
+
+#### Utilize Generic Policies
+
+Dapr Resiliency also lets you define policies that can have a broader scope than the standard ones defined above. This is done through the usage of keywords that let Dapr know when to apply the given policy. There are 3 base policies:
+
+- DefaultRetryPolicy
+- DefaultTimeoutPolicy
+- DefaultCircuitBreakerPolicy
+
+If these policies are defined, they would be used for every operation to a service, application, or component. They can also be modified to be more specific through the usage of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`. Where the `%s` is replaced by the new target of the policy. Below you can see a table of all possible default policy names.
+
+| Keyword                        | Target Operation                                     | Policy Name                                 | 
+| ------------------------------ | ---------------------------------------------------- | ------------------------------------------- | 
+| App                            | Service invocation.                                  | DefaultAppRetryPolicy                       | 
+| Actor                          | Actor invocation.                                    | DefaultActorRetryPolicy                     | 
+| Component                      | All component operations.                            | DefaultComponentRetryPolicy                 | 
+| ComponentInbound               | All inbound component operations.                    | DefaultComponentInboundPolicy               | 
+| ComponentOutbound              | All outbound component operations.                   | DefaultComponentOutboundPolicy              | 
+| StatestoreComponentOutbound    | All statestore component operations.                 | DefaultStatestoreComponentOutboundPolicy    | 
+| PubsubComponentOutbound        | All outbound pubusub (publish) component operations. | DefaultPubsubComponentOutboundPolicy        | 
+| PubsubComponentInbound         | All inbound pubsub (subscribe) component operations. | DefaultPubsubComponentInboundPolicy         | 
+| BindingComponentOutbound       | All outbound binding (invoke) component operations.  | DefaultBindingComponentOutboundPolicy       | 
+| BindingComponentInbound        | All inbound binding (read) component operations.     | DefaultBindingComponentInboundPolicy        | 
+| SecretstoreComponentOutbound   | All secretstore component operations.                | DefaultSecretstoreComponentPolicy           | 
+| ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundPolicy | 
+| LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundPolicy          | 
+
+For all generic policies, they will only be used if the operation being executed matches the policy and if there is no more specific policy targeting it.
+
+For example, we have a system with 3 applications, AppA, AppB, and AppC. The following resiliency configuration is applied to the cluster:
+
+```yaml
+spec:
+  policies:
+    retries:
+      DefaultRetryPolicy:
+        policy: constant
+        duration: 5s
+        maxRetries: 10
+      
+      fastRetries:
+        policy: constant
+        duration: 1s
+        maxRetries: 3
+
+      retryForever:
+        policy: exponential
+        maxInterval: 15s
+        maxRetries: -1 # Retry indefinitely
+
+  targets:
+    apps:
+      appA:
+        retry: fastRetries
+
+      appB:
+        retry: retryForever
+```
+
+In this scenario, when AppA is called, the `fastRetries` policy will be used. For AppB, `retryForever` will be used. Finally, when calling AppC, `DefaultRetryPolicy` will be called even though it was never applied via a target.
