@@ -21,7 +21,7 @@ A single component can implement multiple [building blocks](http://localhost:131
 Dapr's built-in components come ready to be used out of the box: you just need to have provide Dapr with their YAML configuration and you are ready to go. That is not the case with gRPC-based Components, which require a few setup steps before they can be used with Dapr. Namely:
 
 1. gGRPC-based Components need to be started and ready to take requests _before_ Dapr itself is started;
-2. The [Unix Domain Socket][uds] file used used for the Pluggable Component communication need to be made accessible to both Dapr and gRPC Component and, as expected,
+2. The [Unix Domain Socket][uds] file used used for the Pluggable Component communication need to be made accessible to both Dapr and gRPC Component.
 
 Dapr does not take part on orchestrating gRPC-components creation and deployment. This is left for its users and it will be different depending on whether Dapr and gRPC-based components are ran in standalone mode, as processes or as containers in Kubernetes. This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and gRPC-based components.
 
