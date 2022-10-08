@@ -12,7 +12,12 @@ With pluggable components, you can configure Dapr to use components that are not
 
 ## Pluggable components vs. Built-in components
 
-Dapr provides two pathways for creating new components -- the pluggable component route, or the same route used to create Built-in components found in Dapr's [Components Contrib repository ](https://github.com/dapr/components-contrib). Both options result in components that can leverage Dapr's building block APIs but each have different implementation processes.
+Dapr provides two pathways for creating new components:
+
+ - The pluggable component route
+ - The built-in components route found in the [components-contrib repository ](https://github.com/dapr/components-contrib). 
+ 
+While both component options leverage Dapr's building block APIs, each have different implementation processes.
 
 | Component details            | [Built-in Component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)  | Pluggable Components                                                                                                                                                                                                                                        |
 | ---------------------------- | :--------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
