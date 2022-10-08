@@ -75,8 +75,8 @@ Notice how the `order-processor` service below points to:
 DAPR_SECRET_STORE = 'localsecretstore'
 SECRET_NAME = 'secret'
 with DaprClient() as client:
-        secret = client.get_secret(store_name=DAPR_SECRET_STORE, key=SECRET_NAME)
-        logging.info('Fetched Secret: %s', secret.secret)
+    secret = client.get_secret(store_name=DAPR_SECRET_STORE, key=SECRET_NAME)
+    logging.info('Fetched Secret: %s', secret.secret)
 ```
 
 **`local-secret-store.yaml` component**
@@ -488,13 +488,13 @@ cd secrets_management/go/sdk/order-processor
 Install the dependencies:
 
 ```bash
-go build
+go build app.go
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run
+dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
 ```
 
 #### Behind the scenes
@@ -508,12 +508,12 @@ Notice how the `order-processor` service below points to:
 
 ```go
 const DAPR_SECRET_STORE = "localsecretstore"
-	const SECRET_NAME = "secret"
-  // ...
-	secret, err := client.GetSecret(ctx, DAPR_SECRET_STORE, SECRET_NAME, nil)
-	if secret != nil {
-		fmt.Println("Fetched Secret: ", secret[SECRET_NAME])
-	}
+const SECRET_NAME = "secret"
+// ...
+secret, err := client.GetSecret(ctx, DAPR_SECRET_STORE, SECRET_NAME, nil)
+if secret != nil {
+    fmt.Println("Fetched Secret: ", secret[SECRET_NAME])
+}
 ```
 
 **`local-secret-store.yaml` component**

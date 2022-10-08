@@ -102,19 +102,22 @@ The `batch-sdk` service uses the PostgreSQL output binding defined in the [`bind
 
 ```python
 with DaprClient() as d:
-        sqlCmd = ('insert into orders (orderid, customer, price) values ' +
-                  '(%s, \'%s\', %s)' % (order_line['orderid'],
-                                        order_line['customer'],
-                                        order_line['price']))
-        payload = {'sql': sqlCmd}
+    sqlCmd = ('insert into orders (orderid, customer, price) values ' +
+              '(%s, \'%s\', %s)' % (order_line['orderid'],
+                                    order_line['customer'],
+                                    order_line['price']))
+    payload = {'sql': sqlCmd}
 
-        print(sqlCmd, flush=True)
+    print(sqlCmd, flush=True)
 
-  try:
-    # Insert order using Dapr output binding via HTTP Post
-    resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
-                            binding_metadata=payload, data='')
-    return resp
+    try:
+        # Insert order using Dapr output binding via HTTP Post
+        resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
+                                binding_metadata=payload, data='')
+        return resp
+    except Exception as e:
+        print(e, flush=True)
+        raise SystemExit(e)
 ```
 
 ### Step 4: View the output of the job
@@ -899,20 +902,20 @@ cd quickstarts/bindings/go/sdk/batch
 Install the dependencies:
 
 ```bash
-go build
+go build app.go
 ```
 
 Run the `batch-sdk` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id batch-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run 
+dapr run --app-id batch-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go
 ```
 
 The code inside the `process_batch` function is executed every 10 seconds (defined in [`binding-cron.yaml`]({{< ref "#componentsbinding-cronyaml-component-file" >}}) in the `components` directory). The binding trigger looks for a route called via HTTP POST in your Flask application by the Dapr sidecar.
 
 ```go
-	// Triggered by Dapr input binding
-	r.HandleFunc("/"+cronBindingName, processBatch).Methods("POST")
+// Triggered by Dapr input binding
+r.HandleFunc("/"+cronBindingName, processBatch).Methods("POST")
 ```
 
 The `batch-sdk` service uses the PostgreSQL output binding defined in the [`binding-postgres.yaml`]({{< ref "#componentbinding-postgresyaml-component-file" >}}) component to insert the `OrderId`, `Customer`, and `Price` records into the `orders` table.
