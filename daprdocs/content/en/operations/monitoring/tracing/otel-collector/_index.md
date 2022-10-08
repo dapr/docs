@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Tracing"
-linkTitle: "Tracing"
-weight: 100
+title: "Open Telemetry Collector"
+linkTitle: "Open Telemetry Collector"
+weight: 700
 description: "How to setup your observability tools to receive application traces"
 ---
