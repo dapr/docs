@@ -91,7 +91,7 @@ Where possible we encourage donating components to the Dapr project and communit
 
 However, pluggable components are used in scenarios where you want to create your own private component and choose not to include this into the Dapr project.  This may be because you cannot include your component into the Dapr component repo since it is specific to your company or due to IP concerns. Or you want decouple your component updates from the Dapr release cycle.
 
-The following pages provide more context on this subject:
+For more information read [Pluggable components overview]({{<ref "pluggable-components-overview">}})
 
 - [Pluggable components overview]({{<ref "pluggable-components-overview">}})
 
