@@ -1,47 +1,58 @@
 ---
 type: docs
-title: "Plugging in"
-linkTitle: "Plugging in"
+title: "How-To: Discover a pluggable component"
+linkTitle: "How to: Discover a pluggable component"
 weight: 4500
-description: "How-To: Making Dapr discover a pluggable component"
+description: "Learn how to help Dapr discover your pluggable component"
 ---
 
 ## Service Discovery Process
 
-<img src="/images/grpc-components.png" width=400>
 
-[gRPC-based](https://grpc.io/) Dapr components are typically run as containers or processes that communicate with the Dapr main process via [Unix Domain Sockets][uds]. They are automatically discovered and registered in runtime by Dapr using the following steps:
+Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr main process via [Unix Domain Sockets][uds]. They are automatically discovered and registered in runtime by Dapr using the following steps:
 
 1. The Component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
 3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
+<img src="/images/grpc-components.png" width=400>
+A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
 
-A single component can implement multiple [building blocks](http://localhost:1313/concepts/building-blocks-concept/) at once.
+While Dapr's built-in components come [ready to be used out of the box](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md, pluggable components require a few setup steps before they can be used with Dapr.
 
-Dapr's built-in components come ready to be used out of the box: you just need to have provide Dapr with their YAML configuration and you are ready to go. That is not the case with gRPC-based Components, which require a few setup steps before they can be used with Dapr. Namely:
-
-1. gGRPC-based Components need to be started and ready to take requests _before_ Dapr itself is started;
+1. Pluggable components need to be started and ready to take requests _before_ Dapr itself is started.
 2. The [Unix Domain Socket][uds] file used used for the Pluggable Component communication need to be made accessible to both Dapr and gRPC Component.
 
-Dapr does not take part on orchestrating gRPC-components creation and deployment. This is left for its users and it will be different depending on whether Dapr and gRPC-based components are ran in standalone mode, as processes or as containers in Kubernetes. This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and gRPC-based components.
+Dapr does not interfere with orchestrating gRPC-components creation and deployment. This is your domain, and it will be different depending on how Dapr and your gRPC-based components are run:
 
-In the next sections, we will discuss how to make your component discoveriable by Dapr based on the running environment.
+- In standalone mode, as processes, or 
+- In Kubernetes, as containers. 
+
+This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and gRPC-based components.
+
+Select your running environment to begin making your component discoverable by Dapr.
 
 {{< tabs "Standalone" "Kubernetes" >}}
 
 {{% codetab %}}
 
-## Step 1: Running the component
+## Run the component
 
-As mentioned previously, your component must be up and running and the Unix Socket must be created running before Dapr starts.
+As mentioned previously, your component and the Unix Socket must be up and running before Dapr starts.
 
-By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`. The name of the file without any extension will be the name of the component, for `memstore.sock`, the component name will be `memstore`. Since you are running Dapr in the same host as the component, all we have to ensure is that this folder and the files within it are accessible and writable by both our component and Dapr.
+By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`. 
 
-## Step 2: Declaring a gRPC-based Pluggable Component
+The name of the file without any extension will be the name of the component. For example, for `memstore.sock`, the component name will be `memstore`. 
 
-gRPC-based Pluggable Components are defined using the [Component Spec]({{< ref component-schema.md >}}) and its `type` is derived from the socket name (without the file extension).
+Since you are running Dapr in the same host as the component, simply verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
-Place the following file in the defined components-path (replace `your_socket_goes_here` by your component socket name without any extension and `your_component_type` by your component type).
+## Declare a gRPC-based pluggable component
+
+Define your gRPC-based pluggable components using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name (without the file extension). 
+
+Place the following YAML file in the defined components-path, replacing:
+
+- `your_socket_goes_here` with your component socket name (no extension)
+- `your_component_type` with your component type
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -54,10 +65,10 @@ spec:
   metadata:
 ```
 
-Using `memstore.sock` as a concrete example we have the following, and assuming that `memstore` implements the StateStoreService.
+Using the previous `memstore.sock` example:
 
 - `your_component_type` would be replaced by `state`, as it is a state store.
-- `your_socket_goes_here` would be replaced by `memstore`: `memstore.sock` without any extension.
+- `your_socket_goes_here` would be replaced by `memstore`.
 
 The full configuration for `memstore` would be:
 
@@ -74,54 +85,53 @@ spec:
 
 Save this file as `component.yaml` in Dapr's configuration folder.
 
-## Step 3: Running Dapr
+## Run Dapr
 
-Initialize Dapr by following the [tutorial]({{< ref get-started-api.md >}}), and make sure that your component Spec is placed in the right folder.
+[Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component spec is placed in the right folder.
 
-> Note: 1.9.0 is the minimum Dapr version that supports gRPC-based Pluggable Components
-> specify the runtime version by using `--runtime-version` flag
+{{% alert title="Note" color="primary" %}}
+Dapr v1.9.0 is the minimum version that supports gRPC-based pluggable components. Run the following command specify the runtime version: `dapr init --runtime-version 1.9.0`
+{{% /alert %}}
 
 <!-- We should list the actual command line the user will be typing here -->
 
-That's it! Now we are able to call the statestore APIs via Dapr API.
+That's it! Now you're able to call the state store APIs via Dapr API. See it in action by running the following. Replace `$PORT` with the Dapr HTTP port:
 
-See it working by running
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": "Bruce Wayne", "metadata": {}}]' http://localhost:$PORT/v1.0/state/prod-mystore
 ```
 
-Retrieve the value
+Retrieve the value, replacing `$PORT` with the Dapr HTTP port:
 
 ```shell
 curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
 
-> replace $PORT by Dapr http port
 
 {{% /codetab %}}
 
 {{% codetab %}}
 
-## Step 1: Build and Publish a container for your gRPC-based Component
+## Build and publish a container for your gRPC-based component
 
-As a prerequisite for running on kubernetes mode, your component must run as a container. Which means that it should be published first and accessible by your kubernetes cluster.
+Make sure your component is running as a container, published first and accessible to your Kubernetes cluster.
 
-## Step 2: Deploying Dapr on a Kubernetes cluster
+## Deploy Dapr on a Kubernetes cluster
 
-Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref kubernetes-deploy.md >}}) docs and make sure you have a kubernetes cluster configured with Dapr version 1.9+.
+Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref kubernetes-deploy.md >}}) docs and make sure you have a Kubernetes cluster configured with Dapr version 1.9+.
 
-## Step 3: Adding Pluggable Component Container in your Deployments
+## Add the pluggable component container in your deployments
 
-When running on kubernetes mode, gRPC-based Pluggable Components are side-car containers.
+When running on Kubernetes mode, gRPC-based pluggable components are sidecar containers.
 
-As gRPC-based Pluggable Components are backed by [Unix Domain Sockets][uds], the first step is configuring the deployment spec to ensure that the socket created by your Pluggable Component are accessible by Dapr runtime, to do that, you have to:
+Since gRPC-based pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec:
 
-1. mount volumes,
-2. hint Dapr where the mounted unix socket volume is and also,
-3. attach such volume to your Pluggable Component container.
+1. Mount volumes
+2. Hint to Dapr the mounted Unix socket volume location
+3. Attach volume to your pluggable component container
 
-Below you can see an example of a Deployment that configures a Pluggable Component:
+Below is an example of a deployment that configures a pluggable component:
 
 ```yaml
 apiVersion: apps/v1
@@ -163,11 +173,13 @@ spec:
               value: /dapr-unix-domain-sockets
 ```
 
-Great, do not apply the Deployment yet, let's add one more configuration: The Component Spec.
+Before applying the deployment, let's add one more configuration: the component spec.
 
-## Step 4: Declaring a gRPC-based Pluggable Component
+## Declare a gRPC-based pluggable component
 
-gRPC-based Pluggable Componets are defined using the [Component Spec]({{< ref component-schema.md >}}) and its `type` is derived from the socket name (without the file extension).
+gRPC-based pluggable components are defined using a [component spec]({{< ref component-schema.md >}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
+- `your_socket_goes_here` with your component socket name (no extension)
+- `your_component_type` with your component type
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -182,25 +194,23 @@ scopes:
   - backend
 ```
 
-You should also [scope]({{< ref component-scopes >}}) your component to make sure that only the target configured application will try to connect with the pluggable component since it will only be running in its Deployment, otherwise the runtime will fail when initializing the component.
+[Scope]({{< ref component-scopes >}}) your component to make sure that only the target configured application will try to connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime will fail when initializing the component.
 
-> Note: Replace `your_socket_goes_here` by your component socket name without any extension, and `your_component_type` by your component type.
-> That's it! **[Apply the created manifests to your kubernetes cluster](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-apply)**, and then you are able to call the statestore APIs via Dapr API,
+That's it! **[Apply the created manifests to your Kubernetes cluster](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-apply)**, and call the state store APIs via Dapr API.
 
-> Use [kubernetes pod forwarder](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/) to access the Daprd runtime.
-> See it working by running
+Use [Kubernetes pod forwarder](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/) to access the `daprd` runtime.
+See it in action by running the following. Replace `$PORT` with the Dapr HTTP port:
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": "Bruce Wayne", "metadata": {}}]' http://localhost:$PORT/v1.0/state/prod-mystore
 ```
 
-Retrieve the value
+Retrieve the value, replacing `$PORT` with the Dapr HTTP port:
 
 ```shell
 curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
 
-> replace $PORT by Dapr http port
 
 {{% /codetab %}}
 {{< /tabs >}}
