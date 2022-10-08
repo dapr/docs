@@ -2,7 +2,7 @@
 type: docs
 title: "Pluggable components overview"
 linkTitle: "Pluggable components overview"
-weight: 4500
+weight: 4400
 description: "Overview of pluggable component anatomy and supported component types"
 ---
 
