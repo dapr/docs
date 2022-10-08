@@ -83,7 +83,7 @@ Dapr allows custom [middleware]({{<ref "middleware.md">}}) to be plugged into th
 - [List of supported middleware components]({{< ref supported-middleware >}})
 - [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)
 
-## Pluggable Components
+## Pluggable components
 
 Dapr allows for users to create their own self-hosted components called pluggable components. These are  components that do not need to be written in Go, exist outside the Dapr runtime and are able to "plug" into Dapr to utilize existing building block APIs.
 
