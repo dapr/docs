@@ -209,4 +209,4 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 
 ## Next Steps
 
-- Getting started with your own .NET Pluggable Component using our [sample code](https://github.com/mcandeia/dapr-samples/tree/sample/pluggable-components/pluggable-components-dotnet-template)
+Get started with your own .NET pluggable component using our [sample code](https://github.com/mcandeia/dapr-samples/tree/sample/pluggable-components/pluggable-components-dotnet-template)
