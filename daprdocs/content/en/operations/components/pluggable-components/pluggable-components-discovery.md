@@ -8,14 +8,13 @@ description: "Learn how to help Dapr discover your pluggable component"
 
 ## Service Discovery Process
 
-
 Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr main process via [Unix Domain Sockets][uds]. They are automatically discovered and registered in runtime by Dapr using the following steps:
 
 1. The Component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
 3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
-<img src="/images/grpc-components.png" width=400>
-A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
+   <img src="/images/grpc-components.png" width=400>
+   A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
 
 While Dapr's built-in components come [ready to be used out of the box](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md, pluggable components require a few setup steps before they can be used with Dapr.
 
@@ -24,8 +23,8 @@ While Dapr's built-in components come [ready to be used out of the box](https://
 
 Dapr does not interfere with orchestrating gRPC-components creation and deployment. This is your domain, and it will be different depending on how Dapr and your gRPC-based components are run:
 
-- In standalone mode, as processes, or 
-- In Kubernetes, as containers. 
+- In standalone mode, as processes or containers, or
+- In Kubernetes, as containers.
 
 This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and gRPC-based components.
 
@@ -39,15 +38,15 @@ Select your running environment to begin making your component discoverable by D
 
 As mentioned previously, your component and the Unix Socket must be up and running before Dapr starts.
 
-By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`. 
+By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-The name of the file without any extension will be the name of the component. For example, for `memstore.sock`, the component name will be `memstore`. 
+The name of the file without any extension will be the name of the component. For example, for `memstore.sock`, the component name will be `memstore`.
 
 Since you are running Dapr in the same host as the component, simply verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
 ## Declare a gRPC-based pluggable component
 
-Define your gRPC-based pluggable components using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name (without the file extension). 
+Define your gRPC-based pluggable components using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name (without the file extension).
 
 Place the following YAML file in the defined components-path, replacing:
 
@@ -97,7 +96,6 @@ Dapr v1.9.0 is the minimum version that supports gRPC-based pluggable components
 
 That's it! Now you're able to call the state store APIs via Dapr API. See it in action by running the following. Replace `$PORT` with the Dapr HTTP port:
 
-
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '[{ "key": "name", "value": "Bruce Wayne", "metadata": {}}]' http://localhost:$PORT/v1.0/state/prod-mystore
 ```
@@ -107,7 +105,6 @@ Retrieve the value, replacing `$PORT` with the Dapr HTTP port:
 ```shell
 curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
-
 
 {{% /codetab %}}
 
@@ -178,6 +175,7 @@ Before applying the deployment, let's add one more configuration: the component 
 ## Declare a gRPC-based pluggable component
 
 gRPC-based pluggable components are defined using a [component spec]({{< ref component-schema.md >}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
+
 - `your_socket_goes_here` with your component socket name (no extension)
 - `your_component_type` with your component type
 
@@ -210,7 +208,6 @@ Retrieve the value, replacing `$PORT` with the Dapr HTTP port:
 ```shell
 curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 ```
-
 
 {{% /codetab %}}
 {{< /tabs >}}

@@ -14,19 +14,19 @@ With pluggable components, you can configure Dapr to use components that are not
 
 Dapr provides two pathways for creating new components:
 
- - The pluggable component route
- - The built-in components route found in the [components-contrib repository ](https://github.com/dapr/components-contrib). 
- 
+- The pluggable component route
+- The built-in components route found in the [components-contrib repository ](https://github.com/dapr/components-contrib).
+
 While both component options leverage Dapr's building block APIs, each have different implementation processes.
 
-| Component details            | [Built-in Component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)  | Pluggable Components                                                                                                                                                                                                                                        |
-| ---------------------------- | :--------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Component details            | [Built-in Component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)  | Pluggable Components                                                                                                                                                                                                                                       |
+| ---------------------------- | :--------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Language**                 | Can only be written in Go                                                                                  | [Can be written in any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#:~:text=Protocol%20buffer%20versions,-While%20protocol%20buffers&text=Proto3%20is%20currently%20available%20in,with%20more%20languages%20in%20development) |
-| **Where it runs**            | As part of the Dapr executable itself                                                                      | As distinct process, container or pod. Runs seperate from Dapr itself                                                                                                                                                                                       |
-| **Integration with Dapr**    | Integrated directly into Dapr codebase                                                                     | Integrates with Dapr via Unix Domain Sockets (using gRPC )                                                                                                                                                                                                  |
-| **Hosting**                  | Hosted in Dapr repository                                                                                  | Hosted in your own repository                                                                                                                                                                                                                               |
+| **Where it runs**            | As part of the Dapr executable itself                                                                      | As distinct process, container or pod. Runs seperate from Dapr itself                                                                                                                                                                                      |
+| **Integration with Dapr**    | Integrated directly into Dapr codebase                                                                     | Integrates with Dapr via Unix Domain Sockets (using gRPC )                                                                                                                                                                                                 |
+| **Hosting**                  | Hosted in Dapr repository                                                                                  | Hosted in your own repository                                                                                                                                                                                                                              |
 | **Distribution**             | Distributed with Dapr release (i.e., new features added to component need to be aligned with Dapr releases | Distributed independently from Dapr itself (i.e., new features can be added _whenever_ and follow your release cycle)                                                                                                                                      |
-| **How component is started** | Dapr starts component (automatic)                                                                          | User starts component (manual)                                                                                                                                                                                                                              |
+| **How component is started** | Dapr starts component (automatic)                                                                          | User starts component (manual)                                                                                                                                                                                                                             |
 
 ## When to create a pluggable component
 
@@ -34,7 +34,9 @@ While both component options leverage Dapr's building block APIs, each have diff
 - You want to keep your component seperate from the Dapr release process.
 - You are not as familiar with Go, or implementing your component in Go is not ideal.
 
-## Supported component types
+#### Implementing a gRPC service requires three main steps:
+
+1. **Find the proto definition file.** Proto definitions are provided for each supported service interface (state store, pub/sub, bindings).
 
 Pluggable components is a **preview feature**. Currently, only the following are supported:
 
@@ -47,22 +49,14 @@ Read more about [preview features]({{< ref "support-preview-features.md" >}}).
 |  Component  |    Type    | gRPC definition  |                       Built-in Reference Implementation                        | Docs                                                                                                                                                                  |
 | :---------: | :--------: | :--------------: | :----------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | State Store |  `state`   |  [state.proto]   |  [Redis](https://github.com/dapr/components-contrib/tree/master/state/redis)   | [concept]({{<ref "state-management-overview">}}), [howto]({{<ref "howto-get-save-state">}}), [api spec]({{<ref "state_api">}})                                        |
-|   Pub/sub    |  `pubsub`  |  [pubsub.proto]  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{<ref "pubsub-overview">}}), [howto]({{<ref "howto-publish-subscribe">}}), [api spec]({{<ref "pubsub_api">}})                                              |
+|   Pub/sub   |  `pubsub`  |  [pubsub.proto]  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{<ref "pubsub-overview">}}), [howto]({{<ref "howto-publish-subscribe">}}), [api spec]({{<ref "pubsub_api">}})                                              |
 |  Bindings   | `bindings` | [bindings.proto] | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{<ref "bindings-overview">}}), [input howto]({{<ref "howto-triggers">}}), [output howto]({{<ref "howto-bindings">}}), [api spec]({{<ref "bindings_api">}}) |
 
-## Anatomy of a pluggable component
-
-At high level, a pluggable component is a server that implements and exposes one or more of the gRPC service interfaces defined in the provided [gRPC protobuf files](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1).
-
-#### Implementing a gRPC service requires three main steps:
-
-1. **Find the proto definition file.** Proto definitions are provided for each supported service interface (state store, pub/sub, bindings).
 2. **Create service scaffolding.** Use [protocol buffers and gRPC tools](https://grpc.io) to create the necessary scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
-3. **Define the service.** Provide a concrete implementation of the desired service.
 
 Here's an example of a gRPC service definition file used to create a pluggable component state store ([state.proto]).
 
-```protobuf=
+```protobuf
 // StateStore service provides a gRPC interface for state store components.
 service StateStore {
   // Initializes the state store component with the given metadata.
@@ -93,17 +87,19 @@ The interface for the `StateStore` service exposes 9 methods:
 - 3 methods for CRUD, health-ness, or liveness check
 - 3 methods for bulk operations
 
+3. **Define the service.** Provide a concrete implementation of the desired service.
+
 As a first step, protocol buffers tools are used to create the server code for this service. After that, the next step is to define concrete implementations for these 9 methods.
 
 Each component has a service definition for its core functionality. For example:
 
-- **State stores**  
-    Every pluggable state store **must** provide an implementation for its `StateStore` service interface. In addition to this core functionality, some components might also expose functionality under other **optional** services. You can add extra functionality by defining the implementation for a `QueriableStateStore` service and a `TransactionalStateStore` service.
+- **State stores**
+  Every pluggable state store **must** provide an implementation for its `StateStore` service interface. In addition to this core functionality, some components might also expose functionality under other **optional** services. You can add extra functionality by defining the implementation for a `QueriableStateStore` service and a `TransactionalStateStore` service.
 
-- **Pub/sub**  
-   Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interface.   
+- **Pub/sub**
+  Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interface.
 - **Bindings**
-   Pluggable input and output bindings have a single core service definition on [bindings.proto].
+  Pluggable input and output bindings have a single core service definition on [bindings.proto].
 
 ### Leveraging multiple building blocks for a component
 
