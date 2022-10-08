@@ -6,7 +6,7 @@ weight: 4500
 description: "Anatomy and supported types"
 ---
 
-With pluggable components, Dapr can be configured to use components that are not natively supported by the Dapr runtime [(supported Dapr components)]({{<ref "components">}}). These components can leverage existing Dapr building block APIs but are configured differently from community-maintained built-in Dapr components found in the [Components Contrib repository ](https://github.com/dapr/components-contrib)
+With pluggable components, you can configure Dapr to use components that are not natively supported by the runtime. These components leverage existing Dapr building block APIs, but are configured differently from [community-maintained built-in Dapr components](https://github.com/dapr/components-contrib).
 
 <img src="/images/concepts-building-blocks.png" width=400>
 
