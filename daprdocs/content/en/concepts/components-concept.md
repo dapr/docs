@@ -87,7 +87,9 @@ Dapr allows custom [middleware]({{<ref "middleware.md">}}) to be plugged into th
 
 Dapr allows for users to create their own self-hosted components called pluggable components. These are  components that do not need to be written in Go, exist outside the Dapr runtime and are able to "plug" into Dapr to utilize existing building block APIs.
 
-Creating your own pluggable component can be helpful for scenarios where the Dapr project doesn't provide a component integration you need. Pluggable components are also useful for scenarios where writing a traditional Dapr component might not be feasible (e.g., unfamiliar with Go, remaining untethered to Dapr release cycle, not interested in contributing custom component to Dapr project etc.). For these situations creating a pluggable component could be a better option.
+Where possible we encourage donating components to the Dapr project and community. 
+
+However, pluggable components are used in scenarios where you want to create your own private component and choose not to include this into the Dapr project.  This may be because you cannot include your component into the Dapr component repo since it is specific to your company or due to IP concerns. Or you want decouple your component updates from the Dapr release cycle.
 
 The following pages provide more context on this subject:
 
