@@ -36,7 +36,13 @@ While both component options leverage Dapr's building block APIs, each have diff
 
 ## Supported component types
 
-Pluggable components is a **preview feature**. Currently, only State Stores (type `state`), PubSub (type `pubsub`) and Bindings (type `bindings`) are supported. Read more about [preview features
+Pluggable components is a **preview feature**. Currently, only the following are supported:
+
+- State stores
+- Pub/sub
+- Bindings
+
+Read more about [preview features]({{< ref "support-preview-features.md" >}}).
 ]({{< ref "support-preview-features.md" >}})
 
 |  Component  |    Type    | gRPC definition  |                       Built-in Reference Implementation                        | Docs                                                                                                                                                                  |
