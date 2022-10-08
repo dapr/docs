@@ -10,10 +10,10 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
 You can contribute implementations and extend Dapr's component interfaces capabilities via:
 
-- The [components-contrib repository](https://github.com/dapr/components-contrib) 
-- [Pluggable components]({{< ref "components-concept.md#pluggable-components >}}).
+- The [components-contrib repository](https://github.com/dapr/components-contrib)
+- [Pluggable components]({{<ref "components-concept.md#pluggable-components" >}}).
 
-A building block can use any combination of components. For example, the [actors]({{<ref "actors-overview.md">}}) and the [state management]({{<ref "state-management-overview.md">}}) building blocks both use [state components](https://github.com/dapr/components-contrib/tree/master/state). 
+A building block can use any combination of components. For example, the [actors]({{<ref "actors-overview.md">}}) and the [state management]({{<ref "state-management-overview.md">}}) building blocks both use [state components](https://github.com/dapr/components-contrib/tree/master/state).
 
 As another example, the [pub/sub]({{<ref "pubsub-overview.md">}}) building block uses [pub/sub components](https://github.com/dapr/components-contrib/tree/master/pubsub).
 
@@ -23,8 +23,8 @@ You can get a list of current components available in the hosting environment us
 
 Each component has a specification (or spec) that it conforms to. Components are configured at design-time with a YAML file which is stored in either:
 
-- A `components/local` folder within your solution, or 
-- Globally in the `.dapr` folder created when invoking `dapr init`. 
+- A `components/local` folder within your solution, or
+- Globally in the `.dapr` folder created when invoking `dapr init`.
 
 These YAML files adhere to the generic [Dapr component schema]({{<ref "component-schema.md">}}), but each is specific to the component specification.
 
@@ -95,17 +95,13 @@ Dapr allows custom [middleware]({{<ref "middleware.md">}}) to be plugged into th
 
 ## Pluggable components
 
-Dapr allows for users to create their own self-hosted components called pluggable components. These are  components that do not need to be written in Go, exist outside the Dapr runtime and are able to "plug" into Dapr to utilize existing building block APIs.
+Dapr allows for users to create their own self-hosted components called pluggable components. These are components that do not need to be written in Go, exist outside the Dapr runtime and are able to "plug" into Dapr to utilize existing building block APIs.
 
-Where possible we encourage donating components to the Dapr project and community. 
+Where possible we encourage donating components to the Dapr project and community.
 
-However, pluggable components are used in scenarios where you want to create your own private component and choose not to include this into the Dapr project.  This may be because you cannot include your component into the Dapr component repo since it is specific to your company or due to IP concerns. Or you want decouple your component updates from the Dapr release cycle.
+However, pluggable components are used in scenarios where you want to create your own private component and choose not to include this into the Dapr project. This may be because you cannot include your component into the Dapr component repo since it is specific to your company or due to IP concerns. Or you want decouple your component updates from the Dapr release cycle.
 
 For more information read [Pluggable components overview]({{<ref "pluggable-components-overview">}})
 
-
-
 {{% alert title="Note" color="primary" %}} Since pluggable components are not required to be written in Go, they follow a different implementation process than built-in Dapr components. For more information on developing built-in components read [developing new components](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)
 {{% /alert %}}
-
-

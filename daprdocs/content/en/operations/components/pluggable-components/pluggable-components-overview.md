@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Overview"
-linkTitle: "Overview"
+title: "Pluggable components overview"
+linkTitle: "Pluggable components overview"
 weight: 4500
-description: "Anatomy and supported types"
+description: "Overview of pluggable component anatomy and supported component types"
 ---
 
 With pluggable components, you can configure Dapr to use components that are not natively supported by the runtime. These components leverage existing Dapr building block APIs, but are configured differently from [community-maintained built-in Dapr components](https://github.com/dapr/components-contrib).

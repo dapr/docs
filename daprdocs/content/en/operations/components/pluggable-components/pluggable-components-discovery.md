@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Discover a pluggable component"
-linkTitle: "How to: Discover a pluggable component"
+linkTitle: "How To: Discover a pluggable component"
 weight: 4500
 description: "Learn how to help Dapr discover your pluggable component"
 ---
@@ -13,20 +13,22 @@ Pluggable, [gRPC-based](https://grpc.io/) components are typically run as contai
 1. The Component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
 3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
-   <img src="/images/grpc-components.png" width=400>
-   A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
 
-While Dapr's built-in components come [ready to be used out of the box](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md, pluggable components require a few setup steps before they can be used with Dapr.
+A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
+
+<img src="/images/grpc-components.png" width=50%>
+
+While Dapr's built-in components come [ready to be used out of the box](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md), pluggable components require a few setup steps before they can be used with Dapr.
 
 1. Pluggable components need to be started and ready to take requests _before_ Dapr itself is started.
-2. The [Unix Domain Socket][uds] file used used for the Pluggable Component communication need to be made accessible to both Dapr and gRPC Component.
+2. The [Unix Domain Socket][uds] file used used for the pluggable component communication need to be made accessible to both Dapr and pluggable component.
 
-Dapr does not interfere with orchestrating gRPC-components creation and deployment. This is your domain, and it will be different depending on how Dapr and your gRPC-based components are run:
+Dapr does not interfere with orchestrating components containers creation and deployment. This is your domain, and it will be different depending on how Dapr and your components are run:
 
 - In standalone mode, as processes or containers, or
 - In Kubernetes, as containers.
 
-This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and gRPC-based components.
+This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 
 Select your running environment to begin making your component discoverable by Dapr.
 
@@ -44,9 +46,9 @@ The name of the file without any extension will be the name of the component. Fo
 
 Since you are running Dapr in the same host as the component, simply verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
-## Declare a gRPC-based pluggable component
+## Declare a pluggable component
 
-Define your gRPC-based pluggable components using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name (without the file extension).
+Define your pluggable components using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name (without the file extension).
 
 Place the following YAML file in the defined components-path, replacing:
 
@@ -89,7 +91,8 @@ Save this file as `component.yaml` in Dapr's configuration folder.
 [Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component spec is placed in the right folder.
 
 {{% alert title="Note" color="primary" %}}
-Dapr v1.9.0 is the minimum version that supports gRPC-based pluggable components. Run the following command specify the runtime version: `dapr init --runtime-version 1.9.0`
+Dapr v1.9.0 is the minimum version that supports pluggable components.
+Run the following command specify the runtime version: dapr init --runtime-version 1.9.0
 {{% /alert %}}
 
 <!-- We should list the actual command line the user will be typing here -->
@@ -110,7 +113,7 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 
 {{% codetab %}}
 
-## Build and publish a container for your gRPC-based component
+## Build and publish a container for your Pluggable component
 
 Make sure your component is running as a container, published first and accessible to your Kubernetes cluster.
 
@@ -120,9 +123,9 @@ Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref k
 
 ## Add the pluggable component container in your deployments
 
-When running on Kubernetes mode, gRPC-based pluggable components are sidecar containers.
+When running on Kubernetes mode, pluggable components are sidecar containers.
 
-Since gRPC-based pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec:
+Since pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec:
 
 1. Mount volumes
 2. Hint to Dapr the mounted Unix socket volume location
@@ -172,9 +175,9 @@ spec:
 
 Before applying the deployment, let's add one more configuration: the component spec.
 
-## Declare a gRPC-based pluggable component
+## Declare a pluggable component
 
-gRPC-based pluggable components are defined using a [component spec]({{< ref component-schema.md >}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
+Pluggable components are defined using a [component spec]({{< ref component-schema.md >}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
 
 - `your_socket_goes_here` with your component socket name (no extension)
 - `your_component_type` with your component type
