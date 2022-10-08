@@ -6,6 +6,8 @@ weight: 4500
 description: "Learn how to help Dapr discover your pluggable component"
 ---
 
+[uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
+
 ## Service Discovery Process
 
 Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr main process via [Unix Domain Sockets][uds]. They are automatically discovered and registered in runtime by Dapr using the following steps:
@@ -30,11 +32,16 @@ Dapr does not interfere with orchestrating components containers creation and de
 
 This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 
+{{% alert title="Note" color="primary" %}}
+As a prerequisite the running operating system must supports Unix Domain Sockets, any UNIX or UNIX-like system (Mac, Linux, or for local development [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for Windows users) should be sufficient.
+{{% /alert %}}
+
 Select your running environment to begin making your component discoverable by Dapr.
 
 {{< tabs "Standalone" "Kubernetes" >}}
 
 {{% codetab %}}
+[uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
 ## Run the component
 
@@ -112,6 +119,8 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 {{% /codetab %}}
 
 {{% codetab %}}
+
+[uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
 ## Build and publish a container for your Pluggable component
 
@@ -214,8 +223,6 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 
 {{% /codetab %}}
 {{< /tabs >}}
-
-[uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
 ## Next Steps
 
