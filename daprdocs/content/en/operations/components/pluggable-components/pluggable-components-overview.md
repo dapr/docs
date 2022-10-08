@@ -30,7 +30,7 @@ While both component options leverage Dapr's building block APIs, each have diff
 
 ## When to create a pluggable component
 
-- There are homegrown components you want to use with Dapr APIs and those homegrown cannot be contributed to the project.
+- You have homegrown components you want to use with Dapr APIs that can't be contributed to the project.
 - You want to keep your component seperate from the Dapr release process.
 - You are not as familiar with Go, or implementing your component in Go is not ideal.
 
