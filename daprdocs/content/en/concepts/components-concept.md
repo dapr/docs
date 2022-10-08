@@ -93,6 +93,5 @@ However, pluggable components are used in scenarios where you want to create you
 
 For more information read [Pluggable components overview]({{<ref "pluggable-components-overview">}})
 
-- [Pluggable components overview]({{<ref "pluggable-components-overview">}})
 
 **Note:** Since pluggable components are not required to be written in Go, they follow a different implementation process than built-in Dapr components. For more information on that process read the documentation for [Developing new components](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)
