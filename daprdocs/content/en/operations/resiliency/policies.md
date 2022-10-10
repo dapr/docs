@@ -192,4 +192,4 @@ spec:
         retry: retryForever
 ```
 
-In this scenario, when AppA is called, the `fastRetries` policy will be used. For AppB, `retryForever` will be used. Finally, when calling AppC, `DefaultRetryPolicy` will be called even though it was never applied via a target.
+In this scenario, when AppA is called, the `fastRetries` policy is used. For AppB, `retryForever` is used. Finally, when calling AppC, `DefaultRetryPolicy` is called even though it was never applied to a target.
