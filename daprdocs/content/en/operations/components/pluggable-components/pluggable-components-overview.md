@@ -92,31 +92,31 @@ The interface for the `StateStore` service exposes 9 methods:
 
 As a first step, protocol buffers tools are used to create the server code for this service. After that, the next step is to define concrete implementations for these 9 methods.
 
-Each component has a service definition for its core functionality. For example:
+Each component has a gRPC service definition for its core functionality which is the same as the core component interface. For example:
 
 - **State stores**
-  Every pluggable state store **must** provide an implementation for its `StateStore` service interface. In addition to this core functionality, some components might also expose functionality under other **optional** services. You can add extra functionality by defining the implementation for a `QueriableStateStore` service and a `TransactionalStateStore` service.
+A pluggable state store **must** provide an implementation of the `StateStore` service interface. In addition to this core functionality, some components might also expose functionality under other **optional** services. For example, you can add extra functionality by defining the implementation for a `QueriableStateStore` service and a `TransactionalStateStore` service.
 
 - **Pub/sub**
-  Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interface.
+ Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interfaces.
 - **Bindings**
-  Pluggable input and output bindings have a single core service definition on [bindings.proto].
+ Pluggable input and output bindings have a single core service definition on [bindings.proto]. They have no optional service interfaces.
 
 ### Leveraging multiple building blocks for a component
 
-In addition to implementing multiple gRPC services from the same component (e.g., `StateStore`, `QueriableStateStore`, `TransactionalStateStore` etc.), a single pluggable component can also expose implementations for other component types. This means that a single pluggable component can function as a state store, pub/sub, and input or output binding, all at the same time.
+In addition to implementing multiple gRPC services from the same component (for example `StateStore`, `QueriableStateStore`, `TransactionalStateStore` etc.), a pluggable component can also expose implementations for other component interfaces. This means that a single pluggable component can function as a state store, pub/sub, and input or output binding, all at the same time. In other words you can implement multiple component interfaces into a pluggable component and exposes these as gRPC services.
 
-While exposing multiple building blocks behind the same pluggable component lowers the operational burden of deploying multiple components, it makes implementing and debugging your component harder. If in doubt, stick to a "separation of concerns" strategy by merging multiple components under the same pluggable component only when absolutely necessary.
+While exposing multiple component interfaces on the same pluggable component lowers the operational burden of deploying multiple components, it makes implementing and debugging your component harder. If in doubt, stick to a "separation of concerns" by merging multiple components interfaces into the same pluggable component only when necessary.
 
 ## Operationalizing a pluggable component
 
-Built-in components and pluggable components share one thing in common: the operational effort required to use each of them. However, aside from needing to conform to a [component specification]({{<ref "components-concept.md#component-specification">}}), built-in components do not require any extra steps. Dapr starts them automatically.
+Built-in components and pluggable components share one thing in common: both need a [component specification]({{<ref "components-concept.md#component-specification">}}). Built-in components do not require any extra steps to be used: Dapr is ready to use them automatically.
 
-In contrast, pluggable components require additional steps before they can communicate with Dapr. You need to first start the component and facilitate Dapr-Component communication to kick off the Service Discovery process.
+In contrast, pluggable components require additional steps before they can communicate with Dapr. You need to first run the component and facilitate Dapr-component communication to kick off the registration process.
 
 ## Next steps
 
-- [Pluggable Component Service Discovery]({{<ref "pluggable-components-discovery">}})
+- [Pluggable component registration]({{<ref "pluggable-components-discovery">}})
 
 [state.proto]: https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/state.proto
 [pubsub.proto]: https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/pubsub.proto
