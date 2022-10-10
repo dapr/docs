@@ -9,13 +9,13 @@ description: >
 
 When building an application, understanding how the system is behaving is an important part of operating it–this includes having the ability to observe the internal calls of an application, gauging its performance and becoming aware of problems as soon as they occur. This is challenging for any system, but even more so for a distributed system comprised of multiple microservices where a flow, made of several calls, may start in one microservice but continue in another. Observability is critical in production environments, but also useful during development to understand bottlenecks, improve performance, and perform basic debugging across the span of microservices.
 
-While some data points about an application can be gathered from the underlying infrastructure (e.g. memory consumption, CPU usage), other meaningful information must be collected from an "application-aware" layer: one that can show how an important series of calls is executed across microservices. This usually means a developer must add some code to instrument an application for this purpose. Often, instrumentation code is simply meant to send collected data such as traces and metrics to an external monitoring tool or service that can help store, visualize and analyze all this information.
+While some data points about your application can be gathered from the underlying infrastructure (memory consumption, CPU usage, etc.), other meaningful information must be collected from an "application-aware" layer. This layer can show how an important series of calls is executed across microservices. Typically, you implement this layer by adding some code to instrument an application for this purpose. Instrumentation code is not part of the core logic of the application, but is simply meant to send collected data (traces and metrics) to an external monitoring tool or service that stores, visualizes, and analyzes the information.
 
-Having to maintain this code, which is not part of the core logic of the application, is another burden on the developer, sometimes requiring understanding the monitoring tools' APIs, using additional SDKs, etc. This may also add to the portability challenges of an application, requiring different instrumentation depending on where the application is deployed. For example, different cloud providers offer different monitoring solutions and an on-premises deployment might require a self-hosted solution.
+Maintaining instrumentation code can be cumbersome, requiring you to understand the monitoring tools' APIs, use additional SDKs, etc. It can also decrease your application's portability, requiring different instrumentation depending on where the application is deployed. For example, different cloud providers offer different monitoring solutions and an on-premises deployment might require a self-hosted solution.
 
 ## Observability for your application with Dapr
 
-When building an application which leverages Dapr building blocks to perform service-to-service calls and pub/sub messaging, Dapr offers an advantage with respect to [distributed tracing]({{<ref tracing>}}). Because this inter-service communication flows through the Dapr sidecar, Dapr is in a unique position to offload the burden of application-level instrumentation.
+Dapr offers an advantage to applications that leverage its service-to-service invocation and pub/sub building blocks in respect to [distributed tracing]({{<ref tracing>}}). Because this inter-service communication flows through the Dapr sidecar, Dapr is in a unique position to offload the burden of application-level instrumentation.
 
 ### Distributed tracing
 
@@ -51,4 +51,4 @@ Metrics are the series of measured values and counts that are collected and stor
 
 The Dapr sidecar exposes an HTTP endpoint for [health checks]({{<ref sidecar-health.md>}}). With this API, user code or hosting environments can probe the Dapr sidecar to determine its status and identify issues with sidecar readiness.
 
-Conversely, Dapr can be configured to probe for the [health of your application]({{ <ref app-health.md> }}), and react to changes in the app's health including by stopping pub/sub subscriptions and short-circuiting service invocation calls.
+Conversely, Dapr can be configured to probe for the [health of your application]({{ <ref app-health.md> }}), and react to changes in the app's health, including stopping pub/sub subscriptions and short-circuiting service invocation calls.

@@ -6,7 +6,7 @@ weight: 200
 description: Dapr sidecar health checks
 ---
 
-Dapr provides a way to[determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
+Dapr provides a way to [determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
 
 - Probed for its health
 - Determined for readiness and liveness
@@ -49,7 +49,7 @@ In the pod configuration file, the liveness probe is added in the containers spe
       periodSeconds: 3
 ```
 
-In the above example, the `periodSeconds` field specifies that the kubelet should perform a liveness probe every 3 seconds. The `initialDelaySeconds` field tells the kubelet that it should wait 3 seconds before performing the first probe. To perform a probe, the kubelet sends an HTTP GET request to the server that is running in the container and listening on port 8080 in this example. If the handler for the server's `/healthz` path returns a success code, the kubelet considers the container to be alive and healthy. If the handler returns a failure code, the kubelet kills the container and restarts it.
+In the above example, the `periodSeconds` field specifies that the kubelet should perform a liveness probe every 3 seconds. The `initialDelaySeconds` field tells the kubelet that it should wait 3 seconds before performing the first probe. To perform a probe, the kubelet sends an HTTP GET request to the server that is running in the container and listening on port 8080. If the handler for the server's `/healthz` path returns a success code, the kubelet considers the container to be alive and healthy. If the handler returns a failure code, the kubelet kills the container and restarts it.
 
 Any HTTP status code between 200 and 399 indicates success; any other status code indicates failure.
 
@@ -70,7 +70,7 @@ Readiness probes are configured similarly to liveness probes. The only differenc
 
 As mentioned above, this configuration is done automatically by the Sidecar Injector service. This section describes the specific values that are set on the liveness and readiness probes.
 
-Dapr has its HTTP health endpoint `/v1.0/healthz` on port 3500, This can be used with Kubernetes for readiness and liveness probe. When the Dapr sidecar is injected, the readiness and liveness probes are configured in the pod configuration file with the following values:
+Dapr has its HTTP health endpoint `/v1.0/healthz` on port 3500. This can be used with Kubernetes for readiness and liveness probe. When the Dapr sidecar is injected, the readiness and liveness probes are configured in the pod configuration file with the following values:
 
 ```yaml
     livenessProbe:
