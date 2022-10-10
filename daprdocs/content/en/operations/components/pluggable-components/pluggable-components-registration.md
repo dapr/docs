@@ -1,20 +1,20 @@
 ---
 type: docs
 title: "How-To: Register a pluggable component"
-linkTitle: "How To: Discover a pluggable component"
+linkTitle: "How To: Register a pluggable component"
 weight: 4500
 description: "Learn how to register a pluggable component"
 ---
 
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
-## Service Discovery Process
+## Component Registration Process
 
 Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
 
 1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
-3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
+3. The Dapr runtime connects with each socket and uses gRPC reflection to discover all proto services from a given building block API that the component implements.
 
 A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
 
@@ -159,10 +159,9 @@ spec:
       labels:
         app: app
       annotations:
-        dapr.io/unix-domain-socket-path: "/tmp/dapr-components-sockets" ## required, the default path where Dapr will discovery components.
+        dapr.io/unix-domain-socket-path: "/tmp/dapr-components-sockets" ## required, the default path where Dapr uses for registering components.
         dapr.io/app-id: "my-app"
         dapr.io/enabled: "true"
-        dapr.io/sidecar-listen-addresses: "0.0.0.0"
     spec:
       volumes: ## required, the sockets volume
         - name: dapr-unix-domain-socket
