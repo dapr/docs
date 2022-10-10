@@ -1,18 +1,18 @@
 ---
 type: docs
-title: "How-To: Discover a pluggable component"
+title: "How-To: Register a pluggable component"
 linkTitle: "How To: Discover a pluggable component"
 weight: 4500
-description: "Learn how to help Dapr discover your pluggable component"
+description: "Learn how to register a pluggable component"
 ---
 
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
 ## Service Discovery Process
 
-Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr main process via [Unix Domain Sockets][uds]. They are automatically discovered and registered in runtime by Dapr using the following steps:
+Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
 
-1. The Component listens to an [Unix Domain Socket][uds] placed on the shared volume.
+1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
 3. The Dapr runtime connects with the socket and uses gRPC reflection to discover all services that such component implements.
 
@@ -20,17 +20,17 @@ A single component can implement multiple [building blocks]({{< ref building-blo
 
 <img src="/images/grpc-components.png" width=50%>
 
-While Dapr's built-in components come [ready to be used out of the box](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md), pluggable components require a few setup steps before they can be used with Dapr.
+While Dapr's built-in components come [are included with the runtime](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md), pluggable components require a few setup steps before they can be used with Dapr.
 
 1. Pluggable components need to be started and ready to take requests _before_ Dapr itself is started.
-2. The [Unix Domain Socket][uds] file used used for the pluggable component communication need to be made accessible to both Dapr and pluggable component.
+2. The [Unix Domain Socket][uds] file used for the pluggable component communication need to be made accessible to both Dapr and pluggable component.
 
-Dapr does not interfere with orchestrating components containers creation and deployment. This is your domain, and it will be different depending on how Dapr and your components are run:
+Dapr does not launch any pluggable components processes or containers. This is something that you need to do, and it will be different depending on how Dapr and your components are run:
 
-- In standalone mode, as processes or containers, or
+- In self-hosted mode as processes or containers.
 - In Kubernetes, as containers.
 
-This will also change the mechanisms available to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
+This also changes the approach to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 
 {{% alert title="Note" color="primary" %}}
 As a prerequisite the running operating system must supports Unix Domain Sockets, any UNIX or UNIX-like system (Mac, Linux, or for local development [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for Windows users) should be sufficient.
