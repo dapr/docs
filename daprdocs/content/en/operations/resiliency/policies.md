@@ -142,25 +142,47 @@ In resiliency you can set default policies, which can have a broader scope. This
 - DefaultTimeoutPolicy
 - DefaultCircuitBreakerPolicy
 
-If these policies are defined, they would be used for every operation to a service, application, or component. They can also be modified to be more specific through the usage of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`. Where the `%s` is replaced by the new target of the policy. Below you can see a table of all possible default policy names.
+If these policies are defined, they would be used for every operation to a service, application, or component. They can also be modified to be more specific through the usage of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`, `Default%sTimeoutPolicy`, and `Default%sCircuitBreakerPolicy`. Where the `%s` is replaced by the new target of the policy. Below you can see a table of all possible default policy keywords and how they translate into a policy name.
 
-| Keyword                        | Target Operation                                     | Policy Name                                 | 
-| ------------------------------ | ---------------------------------------------------- | ------------------------------------------- | 
-| App                            | Service invocation.                                  | DefaultAppRetryPolicy                       | 
-| Actor                          | Actor invocation.                                    | DefaultActorRetryPolicy                     | 
-| Component                      | All component operations.                            | DefaultComponentRetryPolicy                 | 
-| ComponentInbound               | All inbound component operations.                    | DefaultComponentInboundPolicy               | 
-| ComponentOutbound              | All outbound component operations.                   | DefaultComponentOutboundPolicy              | 
-| StatestoreComponentOutbound    | All statestore component operations.                 | DefaultStatestoreComponentOutboundPolicy    | 
-| PubsubComponentOutbound        | All outbound pubusub (publish) component operations. | DefaultPubsubComponentOutboundPolicy        | 
-| PubsubComponentInbound         | All inbound pubsub (subscribe) component operations. | DefaultPubsubComponentInboundPolicy         | 
-| BindingComponentOutbound       | All outbound binding (invoke) component operations.  | DefaultBindingComponentOutboundPolicy       | 
-| BindingComponentInbound        | All inbound binding (read) component operations.     | DefaultBindingComponentInboundPolicy        | 
-| SecretstoreComponentOutbound   | All secretstore component operations.                | DefaultSecretstoreComponentPolicy           | 
-| ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundPolicy | 
-| LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundPolicy          | 
+| Keyword                        | Target Operation                                     | Example Policy Name                                       |
+| ------------------------------ | ---------------------------------------------------- | --------------------------------------------------------- |
+| App                            | Service invocation.                                  | DefaultAppRetryPolicy                                     |
+| Actor                          | Actor invocation.                                    | DefaultActorTimeoutPolicy                                 |
+| Component                      | All component operations.                            | DefaultComponentCircuitBreakerPolicy                      |
+| ComponentInbound               | All inbound component operations.                    | DefaultComponentInboundRetryPolicy                        |
+| ComponentOutbound              | All outbound component operations.                   | DefaultComponentOutboundTimeoutPolicy                     |
+| StatestoreComponentOutbound    | All statestore component operations.                 | DefaultStatestoreComponentOutboundCircuitBreakerPolicy    |
+| PubsubComponentOutbound        | All outbound pubusub (publish) component operations. | DefaultPubsubComponentOutboundRetryPolicy                 |
+| PubsubComponentInbound         | All inbound pubsub (subscribe) component operations. | DefaultPubsubComponentInboundTimeoutPolicy                |
+| BindingComponentOutbound       | All outbound binding (invoke) component operations.  | DefaultBindingComponentOutboundCircuitBreakerPolicy       |
+| BindingComponentInbound        | All inbound binding (read) component operations.     | DefaultBindingComponentInboundRetryPolicy                 |
+| SecretstoreComponentOutbound   | All secretstore component operations.                | DefaultSecretstoreComponentTimeoutPolicy                  |
+| ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundCircuitBreakerPolicy |
+| LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundRetryPolicy                   | 
 
-Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it.
+##### Policy Hierarchy
+
+Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it. For each target type (app, actor, and component), the policy with the highest priority is a Named Policy, one that targets that construct specifically. If none exists, the policies are applied from most specific to most broad. 
+
+For applications, this yields:
+
+1. Named Policies in App Targets
+2. Default App Policies
+3. Default Policies
+
+For actors, this yields:
+
+1. Named Policies in Actor Targets
+2. Default Actor Policies
+3. Default Policies
+
+For components, this yields:
+
+1. Named Policies in Component Targets
+2. Default Component Type + Component Direction Policies
+3. Default Component Direction Policies
+4. Default Component Policies
+5. Default Policies
 
 For example, we have a system with 3 applications, AppA, AppB, and AppC. The following resiliency configuration is applied to the cluster:
 
