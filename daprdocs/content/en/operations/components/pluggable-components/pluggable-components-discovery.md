@@ -128,13 +128,13 @@ Make sure your component is running as a container, published first and accessib
 
 ## Deploy Dapr on a Kubernetes cluster
 
-Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref kubernetes-deploy.md >}}) docs and make sure you have a Kubernetes cluster configured with Dapr version 1.9+.
+Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref kubernetes-deploy.md >}}) docs.
 
 ## Add the pluggable component container in your deployments
 
-When running on Kubernetes mode, pluggable components are sidecar containers.
+When running in Kubernetes mode, pluggable components are deployed as containers in the same pod as your application.
 
-Since pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec:
+Since pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec to:
 
 1. Mount volumes
 2. Hint to Dapr the mounted Unix socket volume location
@@ -184,7 +184,7 @@ spec:
 
 Before applying the deployment, let's add one more configuration: the component spec.
 
-## Declare a pluggable component
+## Define a component
 
 Pluggable components are defined using a [component spec]({{< ref component-schema.md >}}). The component `type` is derived from the socket name (without the file extension). In the following example YAML, replace:
 
@@ -204,7 +204,7 @@ scopes:
   - backend
 ```
 
-[Scope]({{< ref component-scopes >}}) your component to make sure that only the target configured application will try to connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime will fail when initializing the component.
+[Scope]({{< ref component-scopes >}}) your component to make sure that only the target application can connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime fails when initializing the component.
 
 That's it! **[Apply the created manifests to your Kubernetes cluster](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-apply)**, and call the state store APIs via Dapr API.
 

@@ -6,18 +6,18 @@ weight: 4400
 description: "Overview of pluggable component anatomy and supported component types"
 ---
 
-With pluggable components, you can configure Dapr to use components that are not natively supported by the runtime. These components leverage existing Dapr building block APIs, but are configured differently from [community-maintained built-in Dapr components](https://github.com/dapr/components-contrib).
+Pluggable components are Dapr components. With pluggable components, you can configure Dapr to use components that are not included as part the runtime for example in scenarios where you want to have a private component. These pluggable components leverage the building block APIs, however are registered differently from the built-in Dapr components](https://github.com/dapr/components-contrib).
 
 <img src="/images/concepts-building-blocks.png" width=400>
 
-## Pluggable components vs. Built-in components
+## Pluggable components vs. built-in components
 
-Dapr provides two pathways for creating new components:
+Dapr provides two approaches for registering and creating components:
 
-- The pluggable component route
-- The built-in components route found in the [components-contrib repository ](https://github.com/dapr/components-contrib).
+- The built-in components included in the runtime and found in the [components-contrib repository ](https://github.com/dapr/components-contrib).
+- Pluggable components which are deployed and registered independently. 
 
-While both component options leverage Dapr's building block APIs, each have different implementation processes.
+While both registration options leverage Dapr's building block APIs, each has a different implementation processes.
 
 | Component details            | [Built-in Component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)  | Pluggable Components                                                                                                                                                                                                                                       |
 | ---------------------------- | :--------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
