@@ -22,11 +22,15 @@ These changes are meant to be temporary, and Dapr will resume normal operations 
 
 App health checks are disabled by default.
 
-> App health checks in Dapr are meant to be complementary to, and not replace, any platform-level health checks, for example [liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) when running on Kubernetes.  
+### App health checks vs platform-level health checks
+
+App health checks in Dapr are meant to be complementary to, and not replace, any platform-level health checks, like [liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) when running on Kubernetes.  
+
 Platform-level health checks (or liveness probes) generally ensure that the application is running, and cause the platform to restart the application (or, in case of Kubernetes, pod) in case of failures.  
 Unlike platform-level health checks, Dapr's app health checks focus on pausing work to an application that is currently unable to accept it, but is expected to be able to resume accepting work *eventually*. Goals include:
+
 - Not bringing more load to an application that is already overloaded.
-- "Politely" not taking messages from queues or pub/subs when Dapr knows the application won't be able to process them. 
+- Do the "polite" thing by not taking messages from queues or pub/subs when Dapr knows the application won't be able to process them.
 
 In this regard, Dapr's app health checks are "softer", waiting for an application to be able to process work, rather than terminating the running process in a "hard" way.
 
