@@ -160,7 +160,7 @@ If these policies are defined, they would be used for every operation to a servi
 | ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundPolicy | 
 | LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundPolicy          | 
 
-For all generic policies, they will only be used if the operation being executed matches the policy and if there is no more specific policy targeting it.
+Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it.
 
 For example, we have a system with 3 applications, AppA, AppB, and AppC. The following resiliency configuration is applied to the cluster:
 
