@@ -1,12 +1,12 @@
 ---
 type: docs
 title: "Pluggable components overview"
-linkTitle: "Pluggable components overview"
+linkTitle: "Overview"
 weight: 4400
 description: "Overview of pluggable component anatomy and supported component types"
 ---
 
-Pluggable components are Dapr components. With pluggable components, you can configure Dapr to use components that are not included as part the runtime for example in scenarios where you want to have a private component. These pluggable components leverage the building block APIs, however are registered differently from the [built-in Dapr components](https://github.com/dapr/components-contrib).
+Pluggable components are Dapr components that are not included as part the runtime. You can configure Dapr to use components that leverage the building block APIs, but are registered differently from the [built-in Dapr components](https://github.com/dapr/components-contrib). For example, you can configure a pluggable component for scenarios where you require a private component. 
 
 <img src="/images/concepts-building-blocks.png" width=400>
 
@@ -24,7 +24,7 @@ While both registration options leverage Dapr's building block APIs, each has a 
 | **Language**                 | Can only be written in Go                                                                                  | [Can be written in any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#protocol-buffer-versions) |
 | **Where it runs**            | As part of the Dapr runtime executable                                                                      | As a distinct process or container in a pod. Runs separate from Dapr itself.                                                                                                                                                                                      |
 | **Registers with Dapr**    | Included into the Dapr codebase                                                                     | Registers with Dapr via Unix Domain Sockets (using gRPC )                                                                                                                                                                                                 |
-| **Distribution**             | Distributed with Dapr release. New features added to component are aligned with Dapr releases | Distributed independently from Dapr itself. New features can be added when needed and follows it's own release cycle.                                                                                                                                 |
+| **Distribution**             | Distributed with Dapr release. New features added to component are aligned with Dapr releases | Distributed independently from Dapr itself. New features can be added when needed and follows its own release cycle.                                                                                                                                 |
 | **How component is activated** | Dapr starts runs the component (automatic)                                                                          | User starts component (manual)                                                                                                                                                                                                                             |
 
 ## When to create a pluggable component
@@ -53,7 +53,7 @@ Currently, the following component APIs are supported:
 
 2. **Create service scaffolding.** Use the [protocol buffers and gRPC tools](https://grpc.io) to create the scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
 
-As an example, we provide bellow a snippet from the protocol buffer definition file service that defines the gRPC service definition for pluggable component state stores ([state.proto]).
+As an example, below is a snippet from the protocol buffer definition file service that defines the gRPC service definition for pluggable component state stores ([state.proto]).
 
 ```protobuf
 // StateStore service provides a gRPC interface for state store components.

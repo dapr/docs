@@ -99,7 +99,7 @@ Save this file as `component.yaml` in Dapr's component configuration folder.
 
 {{% alert title="Note" color="primary" %}}
 Dapr v1.9.0 is the minimum version that supports pluggable components.
-Run the following command specify the runtime version: dapr init --runtime-version 1.9.0
+Run the following command specify the runtime version: `dapr init --runtime-version 1.9.0`
 {{% /alert %}}
 
 <!-- We should list the actual command line the user will be typing here -->
