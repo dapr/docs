@@ -40,7 +40,12 @@ In this regard, Dapr's app health checks are "softer", waiting for an applicatio
 App health checks are currently a **preview feature** and require the `AppHealthCheck` feature flag to be enabled. Refer to the documentation for [enabling preview features]({{<ref support-preview-features>}}).
 {{% /alert %}}
 
-App health checks are enabled with the `--enable-app-health-check` CLI flag, or the `dapr.io/enable-app-health-check: true` annotation when running on Kubernetes; they are disabled by default. Adding this flag is both necessary and sufficient to enable app health checks with the default options.
+App health checks are disabled by default, but can be enabled with either:
+
+- The `--enable-app-health-check` CLI flag; or
+- The `dapr.io/enable-app-health-check: true` annotation when running on Kubernetes.
+
+Adding this flag is both necessary and sufficient to enable app health checks with the default options.
 
 The full list of options are listed in this table:
 
