@@ -136,7 +136,7 @@ spec:
 
 #### Utilize Generic Policies
 
-Dapr Resiliency also lets you define policies that can have a broader scope than the standard ones defined above. This is done through the usage of keywords that let Dapr know when to apply the given policy. There are 3 base policies:
+In resiliency you can set default policies, which can have a broader scope. This is done through reserved keywords that let Dapr know when to apply the given policy. There are 3 default policies types: 
 
 - DefaultRetryPolicy
 - DefaultTimeoutPolicy
