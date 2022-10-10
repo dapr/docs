@@ -7,7 +7,15 @@ description: >
   Monitor applications through tracing, metrics, logs and health
 ---
 
-When building an application, understanding how the system is behaving is an important part of operating it–this includes having the ability to observe the internal calls of an application, gauging its performance and becoming aware of problems as soon as they occur. This is challenging for any system, but even more so for a distributed system comprised of multiple microservices where a flow, made of several calls, may start in one microservice but continue in another. Observability is critical in production environments, but also useful during development to understand bottlenecks, improve performance, and perform basic debugging across the span of microservices.
+When building and operating an application, it's important to understand how the system is behaving. You need to be able to:
+- Observe the internal calls of an application.
+- Gauge the application's performance.
+- Become aware of problems as soon as they occur. 
+
+This is challenging for any system, especially a distributed system comprised of multiple microservices where a flow, made of several calls, may start in one microservice and continue in another. Observability is critical in production environments, and proves useful during development to:
+- Understand bottlenecks
+- Improve performance
+- Perform basic debugging across the span of microservices
 
 While some data points about your application can be gathered from the underlying infrastructure (memory consumption, CPU usage, etc.), other meaningful information must be collected from an "application-aware" layer. This layer can show how an important series of calls is executed across microservices. Typically, you implement this layer by adding some code to instrument an application for this purpose. Instrumentation code is not part of the core logic of the application, but is simply meant to send collected data (traces and metrics) to an external monitoring tool or service that stores, visualizes, and analyzes the information.
 
