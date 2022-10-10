@@ -134,7 +134,7 @@ spec:
         retry: retryForever
 ```
 
-#### Utilize Generic Policies
+#### Setting Default Policies
 
 In resiliency you can set default policies, which can have a broader scope. This is done through reserved keywords that let Dapr know when to apply the given policy. There are 3 default policies types: 
 
