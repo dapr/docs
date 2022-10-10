@@ -40,9 +40,9 @@ As with other building block components, middleware components are extensible an
 
 ## App Middleware (Preview)
 
-Http middleware are executed when invoking Dapr HTTP API directly. There are other types of middlewares that should be applied in the context of app protocol, they are called app middleware and they are also executed when making service-to-service invocations. Valid use cases are token validation in a zero-trust environment or request transformation for a specific app endpoint.
+HTTP middleware components are executed when invoking Dapr HTTP APIs using the `httpPipeline` configuration. You can also use any middleware components when making service-to-service invocation calls for example for token validation in a zero-trust environment, request transformation for a specific app endpoint or apply OAuth policies.
 
-The same set of middlewares that can be applied to http middleware can also be applied to app middleware but instead of using `httpPipeline` you should use `appHttpPipeline`.
+Any middleware component that can be applied to HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using`appHttpPipeline` configuration. The example below adds the `uppercase` middleware component for all outbound calls from the application that this configuration is applied to.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -57,7 +57,7 @@ spec:
         type: middleware.http.uppercase
 ```
 
-Keep in mind that app middleware are always executed regardless of used Dapr Protocol, when declaring both, app and http middleware, both pipelines are executed.
+Service-to-service innovation middleware components work for both HTTP and gRPC endpoints.
 
 <img src="/images/app-middleware.png" width=800>
 
