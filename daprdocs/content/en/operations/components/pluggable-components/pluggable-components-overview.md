@@ -21,30 +21,31 @@ While both registration options leverage Dapr's building block APIs, each has a 
 
 | Component details            | [Built-in Component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md)  | Pluggable Components                                                                                                                                                                                                                                       |
 | ---------------------------- | :--------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Language**                 | Can only be written in Go                                                                                  | [Can be written in any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#:~:text=Protocol%20buffer%20versions,-While%20protocol%20buffers&text=Proto3%20is%20currently%20available%20in,with%20more%20languages%20in%20development) |
-| **Where it runs**            | As part of the Dapr executable itself                                                                      | As distinct process, container or pod. Runs seperate from Dapr itself                                                                                                                                                                                      |
-| **Integration with Dapr**    | Integrated directly into Dapr codebase                                                                     | Integrates with Dapr via Unix Domain Sockets (using gRPC )                                                                                                                                                                                                 |
+| **Language**                 | Can only be written in Go                                                                                  | [Can be written in any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#protocol-buffer-versions) |
+| **Where it runs**            | As part of the Dapr runtime executable                                                                      | As a distinct process or container in a pod. Runs separate from Dapr itself.                                                                                                                                                                                      |
+| **Registers with Dapr**    | Included into the Dapr codebase                                                                     | Registers with Dapr via Unix Domain Sockets (using gRPC )                                                                                                                                                                                                 |
 | **Hosting**                  | Hosted in Dapr repository                                                                                  | Hosted in your own repository                                                                                                                                                                                                                              |
-| **Distribution**             | Distributed with Dapr release (i.e., new features added to component need to be aligned with Dapr releases | Distributed independently from Dapr itself (i.e., new features can be added _whenever_ and follow your release cycle)                                                                                                                                      |
-| **How component is started** | Dapr starts component (automatic)                                                                          | User starts component (manual)                                                                                                                                                                                                                             |
+| **Distribution**             | Distributed with Dapr release. New features added to component are aligned with Dapr releases | Distributed independently from Dapr itself. New features can be added when needed and follows it's own release cycle.                                                                                                                                 |
+| **How component is activated** | Dapr starts runs the component (automatic)                                                                          | User starts component (manual)                                                                                                                                                                                                                             |
 
 ## When to create a pluggable component
 
 - You have homegrown components you want to use with Dapr APIs that can't be contributed to the project.
-- You want to keep your component seperate from the Dapr release process.
+- You want to keep your component separate from the Dapr release process.
 - You are not as familiar with Go, or implementing your component in Go is not ideal.
 
-#### Implementing a gRPC service requires three main steps:
+#### Implementing a pluggable component
+
+In order to implement a pluggable component you need to implement a gRPC service in the component. Implementing the gRPC service requires three steps:
 
 1. **Find the proto definition file.** Proto definitions are provided for each supported service interface (state store, pub/sub, bindings).
 
-Pluggable components is a **preview feature**. Currently, only the following are supported:
+Currently, the following component APIs are supported:
 
 - State stores
 - Pub/sub
 - Bindings
 
-Read more about [preview features]({{< ref "support-preview-features.md" >}}).
 
 |  Component  |    Type    | gRPC definition  |                       Built-in Reference Implementation                        | Docs                                                                                                                                                                  |
 | :---------: | :--------: | :--------------: | :----------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -52,7 +53,7 @@ Read more about [preview features]({{< ref "support-preview-features.md" >}}).
 |   Pub/sub   |  `pubsub`  |  [pubsub.proto]  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{<ref "pubsub-overview">}}), [howto]({{<ref "howto-publish-subscribe">}}), [api spec]({{<ref "pubsub_api">}})                                              |
 |  Bindings   | `bindings` | [bindings.proto] | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{<ref "bindings-overview">}}), [input howto]({{<ref "howto-triggers">}}), [output howto]({{<ref "howto-bindings">}}), [api spec]({{<ref "bindings_api">}}) |
 
-2. **Create service scaffolding.** Use [protocol buffers and gRPC tools](https://grpc.io) to create the necessary scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
+2. **Create service scaffolding.** Use the [protocol buffers and gRPC tools](https://grpc.io) to create the scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
 
 Here's an example of a gRPC service definition file used to create a pluggable component state store ([state.proto]).
 
