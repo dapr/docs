@@ -33,10 +33,10 @@ Dapr does not launch any pluggable components processes or containers. This is s
 This also changes the approach to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 
 {{% alert title="Note" color="primary" %}}
-As a prerequisite the running operating system must supports Unix Domain Sockets, any UNIX or UNIX-like system (Mac, Linux, or for local development [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for Windows users) should be sufficient.
+As a prerequisite the operating system must supports Unix Domain Sockets, any UNIX or UNIX-like system (Mac, Linux, or for local development [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for Windows users) should be sufficient.
 {{% /alert %}}
 
-Select your running environment to begin making your component discoverable by Dapr.
+Select your environment to begin making your component discoverable.
 
 {{< tabs "Standalone" "Kubernetes" >}}
 
@@ -45,19 +45,19 @@ Select your running environment to begin making your component discoverable by D
 
 ## Run the component
 
-As mentioned previously, your component and the Unix Socket must be up and running before Dapr starts.
+Both your component and the Unix Socket must be running before Dapr starts.
 
 By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-The name of the file without any extension will be the name of the component. For example, for `memstore.sock`, the component name will be `memstore`.
+The name of the file without any extension is the name of the component. For example, for `memstore.sock`, the component name is `memstore`.
 
-Since you are running Dapr in the same host as the component, simply verify this folder and the files within it are accessible and writable by both your component and Dapr.
+Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
-## Declare a pluggable component
+## Define the component
 
-Define your pluggable components using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name (without the file extension).
+Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name, without the file extension.
 
-Place the following YAML file in the defined components-path, replacing:
+Save the component YAML file in the components-path, replacing:
 
 - `your_socket_goes_here` with your component socket name (no extension)
 - `your_component_type` with your component type
@@ -91,7 +91,7 @@ spec:
   metadata:
 ```
 
-Save this file as `component.yaml` in Dapr's configuration folder.
+Save this file as `component.yaml` in Dapr's component configuration folder.
 
 ## Run Dapr
 
@@ -122,7 +122,7 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
-## Build and publish a container for your Pluggable component
+## Build and publish a container for your pluggable component
 
 Make sure your component is running as a container, published first and accessible to your Kubernetes cluster.
 
