@@ -90,7 +90,7 @@ The interface for the `StateStore` service exposes 9 methods:
 
 3. **Define the service.** Provide a concrete implementation of the desired service.
 
-As a first step, protocol buffers tools are used to create the server code for this service. After that, the next step is to define concrete implementations for these 9 methods.
+As a first step, [protocol buffers](https://developers.google.com/protocol-buffers/docs/overview) and [gRPC](https://grpc.io/docs/what-is-grpc/introduction/) tools are used to create the server code for this service. After that, the next step is to define concrete implementations for these 9 methods.
 
 Each component has a gRPC service definition for its core functionality which is the same as the core component interface. For example:
 
