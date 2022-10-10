@@ -63,7 +63,7 @@ Additionally, app health checks are impacted by the protocol used for the app ch
 
 ### Health check paths
 
-When using HTTP for `app-protocol`, Dapr will perform health probes by making a HTTP call to the path specified in `app-health-check-path`, which is `/health` by default.  
+When using HTTP for `app-protocol`, Dapr will perform health probes by making an HTTP call to the path specified in `app-health-check-path`, which is `/health` by default.  
 For your app to be considered healthy, the response must have an HTTP status code in the 200-299 range. Any other status code is considered a failure. Dapr is only concerned with the status code of the response, and will ignore any response header or body.
 
 When using gRPC for the app channel, Dapr will invoke the method `/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck` in your application. Most likely, you will use a Dapr SDK to implement the handler for this method.
