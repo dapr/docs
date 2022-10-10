@@ -34,6 +34,7 @@ dapr init [flags]
 | `--namespace`, `-n`   |                      | `dapr-system` | The Kubernetes namespace to install Dapr in                                          |
 | `--network`           |                      |               | The Docker network on which to install and deploy the Dapr runtime                                          |
 | `--runtime-version`   |                      | `latest`      | The version of the Dapr runtime to install, for example: `1.0.0`                     |
+| `--image-variant`   |                      |                 | The image variant to use for the Dapr runtime, for example: `mariner`               |
 | `--set`               |                      |               | Configure options on the command line to be passed to the Dapr Helm chart and the Kubernetes cluster upon install. Can specify multiple values in a comma-separated list, for example: `key1=val1,key2=val2`                     |
 | `--slim`, `-s`        |                      | `false`       | Exclude placement service, Redis and Zipkin containers from self-hosted installation |
 | `--timeout`           |                      | `300`         | The wait timeout for the Kubernetes installation                                     |
@@ -42,7 +43,7 @@ dapr init [flags]
 |        N/A            |DAPR_HELM_REPO_URL|          | Specifies a private Dapr Helm chart url|
 |        N/A            | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
 |        N/A            | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set| |
-
+|  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
 ### Examples
 
 #### Self hosted environment
@@ -57,6 +58,12 @@ You can also specify a specific runtime version. Be default, the latest version 
 
 ```bash
 dapr init --runtime-version 1.4.0
+```
+
+You can also install Dapr with a particular image variant, for example: [mariner]({{< ref "kubernetes-deploy.md#using-mariner-based-images" >}}).
+
+```bash
+dapr init --image-variant mariner
 ```
 
 Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) without Docker.
@@ -98,6 +105,11 @@ This command resolves the complete image URI as shown below -
 2. Redis container image(rejson)   - docker.io/username/dapr/3rdparty/rejson
 3. zipkin container image(zipkin)  - docker.io/username/dapr/3rdparty/zipkin
 
+You can specify a different container runtime while setting up Dapr. If you omit the `--container-runtime` flag, the default container runtime is Docker.
+
+```bash
+dapr init --container-runtime podman
+```
 
 #### Kubernetes environment
 
