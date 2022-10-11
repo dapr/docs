@@ -38,11 +38,11 @@ As with other building block components, middleware components are extensible an
 
 {{< button page="supported-middleware" text="See all middleware components">}}
 
-## App Middleware (Preview)
+## App middleware
 
 HTTP middleware components are executed when invoking Dapr HTTP APIs using the `httpPipeline` configuration. You can also use any middleware components when making service-to-service invocation calls for example for token validation in a zero-trust environment, request transformation for a specific app endpoint or apply OAuth policies.
 
-Any middleware component that can be applied to HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using`appHttpPipeline` configuration. The example below adds the `uppercase` middleware component for all outbound calls from the application that this configuration is applied to.
+Any middleware component that can be applied to HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using `appHttpPipeline` configuration. The example below adds the `uppercase` middleware component for all outgoing calls from the Dapr to the application that this configuration is applied to.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -57,7 +57,7 @@ spec:
         type: middleware.http.uppercase
 ```
 
-Service-to-service innovation middleware components work for both HTTP and gRPC endpoints.
+Service-to-service invocation middleware components applies for all outgoing calls from Dapr to the target application.
 
 <img src="/images/app-middleware.png" width=800>
 
@@ -95,6 +95,6 @@ After the components-contrib change has been accepted, submit another pull reque
 
 ## Related links
 
-* [Component schema]({{< ref component-schema.md >}})
-* [Configuration overview]({{< ref configuration-overview.md >}})
-* [Middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
+- [Component schema]({{< ref component-schema.md >}})
+- [Configuration overview]({{< ref configuration-overview.md >}})
+- [Middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
