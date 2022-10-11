@@ -9,13 +9,20 @@ aliases:
   - /concepts/middleware-concept/
 ---
 
-Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. A request goes through all defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
+Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. There are two places that you can use a middleware pipeline;
+
+1) Building block APIs - HTTP middleware components are executed when invoking any Dapr HTTP APIs.
+2) Service-to-Service innvocation - HTTP middleware components can also be applied to service-to-service invocation calls.
+
+## Configuring API middleware pipelines
+
+When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default the pipeline consists of [tracing middleware]({{< ref tracing-overview.md >}}) and CORS middleware. Additional middleware, configured by a Dapr [configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, secrets, configuration, distributed lock and others.
+
+A request goes through all the defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
 
 <img src="/images/middleware.png" width=800>
 
-## Configuring middleware pipelines
-
-When launched, a Dapr sidecar constructs a middleware processing pipeline. By default the pipeline consists of [tracing middleware]({{< ref tracing-overview.md >}}) and CORS middleware. Additional middleware, configured by a Dapr [configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, security and others.
+HTTP middleware components are executed when invoking Dapr HTTP APIs using the `httpPipeline` configuration.
 
 The following configuration example defines a custom pipeline that uses a [OAuth 2.0 middleware]({{< ref middleware-oauth2.md >}}) and an [uppercase middleware component]({{< ref middleware-uppercase.md >}}). In this case, all requests are authorized through the OAuth 2.0 protocol, and transformed to uppercase text, before they are forwarded to user code.
 
@@ -34,13 +41,17 @@ spec:
         type: middleware.http.uppercase
 ```
 
-As with other building block components, middleware components are extensible and can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
+As with other components, middleware components can be found in the [supported Middleware reference]({{< ref supported-middleware >}}) and in the [components-contrib repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
 
 {{< button page="supported-middleware" text="See all middleware components">}}
 
-## App middleware
+## Configuring app middleware pipelines
 
-HTTP middleware components are executed when invoking Dapr HTTP APIs using the `httpPipeline` configuration. You can also use any middleware components when making service-to-service invocation calls for example for token validation in a zero-trust environment, request transformation for a specific app endpoint or apply OAuth policies.
+You can also use any middleware components when making service-to-service invocation calls for example for token validation in a zero-trust environment, a request transformation for a specific app endpoint or to apply OAuth policies.
+
+Service-to-service invocation middleware components apply to all outgoing calls from Dapr sidecar to the receiving application (service) as shown in the diagram below.
+
+<img src="/images/app-middleware.png" width=800>
 
 Any middleware component that can be applied to HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using `appHttpPipeline` configuration. The example below adds the `uppercase` middleware component for all outgoing calls from the Dapr to the application that this configuration is applied to.
 
@@ -57,9 +68,6 @@ spec:
         type: middleware.http.uppercase
 ```
 
-Service-to-service invocation middleware components applies for all outgoing calls from Dapr to the target application.
-
-<img src="/images/app-middleware.png" width=800>
 
 ## Writing a custom middleware
 
@@ -97,4 +105,5 @@ After the components-contrib change has been accepted, submit another pull reque
 
 - [Component schema]({{< ref component-schema.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})
-- [Middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
+- [API middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
+- [App middleware sample](https://github.com/dapr/samples/tree/master/pluggable-components-dotnet-template)
