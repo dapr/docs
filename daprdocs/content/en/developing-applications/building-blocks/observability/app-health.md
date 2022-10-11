@@ -55,7 +55,7 @@ The full list of options are listed in this table:
 | `--app-health-check-path`     | `dapr.io/app-health-check-path`     | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC) | `/health` |
 | `--app-health-probe-interval` | `dapr.io/app-health-probe-interval` | Number of *seconds* between each health probe | `5` |
 | `--app-health-probe-timeout`  | `dapr.io/app-health-probe-timeout`  | Timeout in *milliseconds* for health probe requests | `500` |
-| `--app-health-threshold`      | `dapr.io/app-health-threshold"`     | Max number of consecutive failures before the app is considered unhealthy | `3` |
+| `--app-health-threshold`      | `dapr.io/app-health-threshold`     | Max number of consecutive failures before the app is considered unhealthy | `3` |
 
 > See the [full Dapr arguments and annotations reference]({{<ref arguments-annotations-overview>}}) for all options and how to enable them.
 
@@ -84,3 +84,61 @@ If you set the threshold to 1, any failure will cause Dapr to assume your app is
 A threshold greater than 1 can help exclude transient failures due to external circumstances. The right value for your application depends on your requirements.
 
 Thresholds only apply to failures. A single successful response is enough for Dapr to consider your app to be healthy and resume normal operations.
+
+## Example
+
+Because app health checks are currently a preview feature, make sure to enable the `AppHealthCheck` feature flag. Refer to the documentation for [enabling preview features]({{<ref support-preview-features>}}) before following the examples below.
+
+{{< tabs "Self-Hosted (CLI)" Kubernetes >}}
+
+{{% codetab %}}
+
+Use the CLI flags with the `dapr run` command to enable app health checks:
+
+```sh
+dapr run \
+  --app-id my-app \
+  --app-port 7001 \
+  --app-protocol http \
+  --enable-app-health-check \
+  --app-health-check-path=/healthz \
+  --app-health-probe-interval 3 \
+  --app-health-probe-timeout 200 \
+  --app-health-threshold 2 \
+  -- \
+    <command to execute>
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+To enable app health checks in Kubernetes, add the relevant annotations to your Deployment:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: my-app
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "my-app"
+        dapr.io/app-port: "7001"
+        dapr.io/app-protocol: "http"
+        dapr.io/enable-app-health-check: "true"
+        dapr.io/app-health-check-path: "/healthz"
+        dapr.io/app-health-probe-interval: "3"
+        dapr.io/app-health-probe-timeout: "200"
+        dapr.io/app-health-threshold: "2"
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
