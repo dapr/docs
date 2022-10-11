@@ -56,12 +56,12 @@ Given the following JSON loaded from `secretsFile`:
 }
 ```
 
-The flag `multiValued` will decide whether the secret store will present a [name/value behavior or a multiple key-value per secret behavior]({{< ref "secrets_api.md#response-body" >}}).
+The flag `multiValued` determines whether the secret store presents a [name/value behavior or a multiple key-value per secret behavior]({{< ref "secrets_api.md#response-body" >}}).
 
 ### Name/Value semantics
 
 
-If `multiValued` is `false`, the store will load [the JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) and create a map with the following key-value pairs:
+If `multiValued` is `false`, the store loads [the JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) and create a map with the following key-value pairs:
 
 | flattened key           | value                           |
 | ---                     | ---                             |
@@ -97,9 +97,9 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:s
 
 ### Multiple key-values behavior
 
-If `multiValued` is `true`, the secret store will demonstrate multiple key-value per secret behavior:
+If `multiValued` is `true`, the secret store enables multiple key-value per secret behavior:
 - Nested structures after the top level will be flattened.
-- It will parse the [same JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) into this table:
+- It parses the [same JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) into this table:
 
 | key                | value                           |
 | ---                | ---                             |
@@ -110,7 +110,7 @@ Notice that in the above table:
 - `connectionStrings` is now a JSON object with two keys: `mysql` and `sql`. 
 - The `connectionStrings:sql` and `connectionStrings:mysql` flattened keys from the [table mapped for name/value semantics]({{< ref "#namevalue-semantics" >}}) are missing.
 
-Invoking a `GET` request on the key `connectionStrings` will now result in a successful HTTP response similar to the following:
+Invoking a `GET` request on the key `connectionStrings` now results in a successful HTTP response similar to the following:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
@@ -159,7 +159,7 @@ Here is how it would look in memory:
 |"connectionStrings" | `{ "mysql:username": "your mysql username", "mysql:password": "your mysql password" }`    |
 
 
-Once again, requesting for key `connectionStrings` will result in a successful HTTP response but its contents, as shown in the table above, would be flattened:
+Once again, requesting for key `connectionStrings` results in a successful HTTP response but its contents, as shown in the table above, would be flattened:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
