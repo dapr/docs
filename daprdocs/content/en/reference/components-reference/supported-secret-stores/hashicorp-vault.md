@@ -93,7 +93,9 @@ Suppose you add a secret to your Vault setup as follows:
 vault kv put secret/dapr/mysecret firstKey=aValue secondKey=anotherValue thirdKey=yetAnotherDistinctValue
 ```
 
-In the example above, the secret is named `mysecret` and it has 3 key-values under it. Retrieving it from Dapr would result in the following output:
+In the example above, the secret is named `mysecret` and it has 3 key-values under it. 
+Observe that the secret is created under a `dapr` prefix, as this is the default value for the `vaultKVPrefix` flag.
+Retrieving it from Dapr would result in the following output:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/my-hashicorp-vault/mysecret

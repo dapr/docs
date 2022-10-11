@@ -70,7 +70,7 @@ If `multiValued` is `false`, the store loads [the JSON file]({{< ref "#setup-jso
 |"connectionStrings:mysql"| `"your mysql connection string"`  |
 
 
-If the `multiValued` setting set to `false`, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message. For example:
+If the `multiValued` setting set to true, invoking a `GET` request on the key `connectionStrings` results in a 500 HTTP response and an error message. For example:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
