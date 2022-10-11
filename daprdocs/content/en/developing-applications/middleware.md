@@ -100,4 +100,3 @@ func (m *customMiddleware) GetHandler(metadata Metadata) (func(fasthttp.RequestH
 - [Component schema]({{< ref component-schema.md >}})
 - [Configuration overview]({{< ref configuration-overview.md >}})
 - [API middleware sample](https://github.com/dapr/samples/tree/master/middleware-oauth-google)
-- [App middleware sample](https://github.com/dapr/samples/tree/master/pluggable-components-dotnet-template)
