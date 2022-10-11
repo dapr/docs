@@ -12,7 +12,7 @@ aliases:
 Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. There are two places that you can use a middleware pipeline;
 
 1) Building block APIs - HTTP middleware components are executed when invoking any Dapr HTTP APIs.
-2) Service-to-Service innvocation - HTTP middleware components can also be applied to service-to-service invocation calls.
+2) Service-to-Service invocation - HTTP middleware components are applied to service-to-service invocation calls.
 
 ## Configuring API middleware pipelines
 
