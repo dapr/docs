@@ -41,6 +41,7 @@ spec:
 | secretsFile        | Y        | The path to the file where secrets are stored   | `"path/to/file.json"` |
 | nestedSeparator    | N        | Used by the store when flattening the JSON hierarchy to a map. Defaults to `":"` | `":"` 
 | multiValued        | N        | Allows one level of multi-valued key/value pairs before flattening JSON hierarchy. Defaults to `"false"` | `"true"` |
+| multiValued        | N        | `"true"` sets the `multipleKeyValuesPerSecret` behavior. Allows one level of multi-valued key/value pairs before flattening JSON hierarchy. Defaults to `"false"` | `"true"` |
 
 ## Setup JSON file to hold the secrets
 
@@ -56,24 +57,65 @@ Given the following JSON loaded from `secretsFile`:
 }
 ```
 
-If `multiValued` is `"false"`, the store will load the file and create a map with the following key value pairs:
+The flag `multiValued` determines whether the secret store presents a [name/value behavior or a multiple key-value per secret behavior]({{< ref "secrets_api.md#response-body" >}}).
+
+### Name/Value semantics
+
+
+If `multiValued` is `false`, the store loads [the JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) and create a map with the following key-value pairs:
 
 | flattened key           | value                           |
 | ---                     | ---                             |
-|"redisPassword"                  | "your redis password"           |
-|"connectionStrings:sql"  | "your sql connection string"    |
-|"connectionStrings:mysql"| "your mysql connection string"  |
+|"redisPassword"          | `"your redis password"`           |
+|"connectionStrings:sql"  | `"your sql connection string"`    |
+|"connectionStrings:mysql"| `"your mysql connection string"`  |
 
-Use the flattened key (`connectionStrings:sql`) to access the secret. The following JSON map returned:
 
+If the `multiValued` setting set to true, invoking a `GET` request on the key `connectionStrings` results in a 500 HTTP response and an error message. For example:
+
+```shell
+$ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
+```
+```json
+{
+  "errorCode": "ERR_SECRET_GET",
+  "message": "failed getting secret with key connectionStrings from secret store local-secret-store: secret connectionStrings not found"
+}
+```
+
+This error is expected, since the `connectionStrings` key is not present, per the table above.
+
+However, requesting for flattened key `connectionStrings:sql` would result in a successful response, with the following:
+
+```shell
+$ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:sql
+```
 ```json
 {
   "connectionStrings:sql": "your sql connection string"
 }
 ```
 
-If `multiValued` is `"true"`, you would instead use the top level key. In this example, `connectionStrings` would return the following map:
+### Multiple key-values behavior
 
+If `multiValued` is `true`, the secret store enables multiple key-value per secret behavior:
+- Nested structures after the top level will be flattened.
+- It parses the [same JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) into this table:
+
+| key                | value                           |
+| ---                | ---                             |
+|"redisPassword"     | `"your redis password"`           |
+|"connectionStrings" | `{"mysql":"your mysql connection string","sql":"your sql connection string"}`    |
+
+Notice that in the above table:
+- `connectionStrings` is now a JSON object with two keys: `mysql` and `sql`. 
+- The `connectionStrings:sql` and `connectionStrings:mysql` flattened keys from the [table mapped for name/value semantics]({{< ref "#namevalue-semantics" >}}) are missing.
+
+Invoking a `GET` request on the key `connectionStrings` now results in a successful HTTP response similar to the following:
+
+```shell
+$ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
+```
 ```json
 {
   "sql": "your sql connection string",
@@ -81,9 +123,21 @@ If `multiValued` is `"true"`, you would instead use the top level key. In this e
 }
 ```
 
-Nested structures after the top level will be flattened. In this example, `connectionStrings` would return the following map:
+Meanwhile, requesting for the flattened key `connectionStrings:sql` would now return a 500 HTTP error response with the following:
 
-JSON from `secretsFile`:
+```json
+{
+  "errorCode": "ERR_SECRET_GET",
+  "message": "failed getting secret with key connectionStrings:sql from secret store local-secret-store: secret connectionStrings:sql not found"
+}
+```
+
+
+#### Handling deeper nesting levels
+
+Notice that, as stated in the [spec metadata fields table](#spec-metadata-fields), `multiValued` only handles a single nesting level.
+
+Let's say you have a local file secret store with `multiValued` enabled, pointing to a `secretsFile` with the following JSON content:
 
 ```json
 {
@@ -96,9 +150,21 @@ JSON from `secretsFile`:
     }
 }
 ```
+The contents of key `mysql` under `connectionStrings` has a nesting level greater than 1 and would be flattened.
 
-Response:
+Here is how it would look in memory:
 
+| key                | value                           |
+| ---                | ---                             |
+|"redisPassword"     | `"your redis password"`           |
+|"connectionStrings" | `{ "mysql:username": "your mysql username", "mysql:password": "your mysql password" }`    |
+
+
+Once again, requesting for key `connectionStrings` results in a successful HTTP response but its contents, as shown in the table above, would be flattened:
+
+```shell
+$ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
+```
 ```json
 {
   "mysql:username": "your mysql username",
