@@ -53,7 +53,7 @@ Service-to-service invocation middleware components apply to all outgoing calls 
 
 <img src="/images/app-middleware.png" width=800>
 
-Any middleware component that can be applied to HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using `appHttpPipeline` configuration. The example below adds the `uppercase` middleware component for all outgoing calls from the Dapr to the application that this configuration is applied to.
+Any middleware component that can be applied to HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using `appHttpPipeline` configuration. The example below adds the `uppercase` middleware component for all outgoing calls from the Dapr sidecar to the application that this configuration is applied to.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
