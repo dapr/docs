@@ -7,7 +7,7 @@ description: "The component certification lifecycle from submission to productio
 ---
 
 {{% alert title="Note" color="primary" %}}
-Certification lifecycle does not apply for [pluggable components]({{<ref "components-concept.md#pluggable-components" >}}).
+Certification lifecycle only applies to built-in components and does not apply to [pluggable components]({{<ref "components-concept.md#Built-in-and-pluggable-components" >}}).
 {{% /alert %}}
 
 ## Overview
@@ -16,9 +16,9 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 
 In general a component needs to be:
 
-- compliant with the defined Dapr interfaces
-- functionally correct and robust
-- well documented and maintained
+- Compliant with the defined Dapr interfaces
+- Functionally correct and robust
+- Well documented and maintained
 
 To make sure a component conforms to the standards set by Dapr, there are a set of tests run against a component in a Dapr maintainers managed environment. Once the tests pass consistently, the maturity level can be determined for a component.
 
