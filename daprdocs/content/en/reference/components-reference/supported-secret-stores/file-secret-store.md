@@ -70,7 +70,7 @@ If `multiValued` is `false`, the store will load the file and create a map with 
 |"connectionStrings:mysql"| `"your mysql connection string"`  |
 
 
-With this settings, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message:
+With this setting enabled, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
@@ -82,9 +82,9 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
 }
 ```
 
-That is the expected behavior as that that key is not present in the table above.
+That is the expected behavior as the key is not present in the table above.
 
-On the other hand, requesting for flattened key `connectionStrings:sql` would result in a successful response with the following contents:
+On the other hand, requesting for flattened key `connectionStrings:sql` would result in a successful response with the following:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:sql
@@ -97,7 +97,7 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:s
 
 ### Multiple key-values behavior
 
-If `multiValued` is `true`, this secret store will present a multiple key-value per secret behavior.
+If `multiValued` is `true`, the secret store will present multiple key-value per secret behavior.
 Nested structures after the top level will be flattened.
 It will parse the same file into this table:
 

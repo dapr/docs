@@ -72,7 +72,7 @@ curl http://localhost:3500/v1.0/secrets/kubernetes/db-secret
 }
 ```
 
-Notice here that the name of the secret (`db-secret`) is **not** returned as part of the result. Contrast this with the result from a secret store with name/value semantics as shown bellow.
+Notice the name of the secret (`db-secret`) is **not** returned as part of the result. Contrast this with the result from a secret store with name/value semantics as shown bellow.
 
 ##### Response from a secret store with name/value semantics:
 
@@ -86,7 +86,7 @@ curl http://localhost:3500/v1.0/secrets/vault/db-secret
 }
 ```
 
-Observe that the result has a single key-value pair and that name of the secret (`db-secret`) **is** returned as the key in that key-value pair.
+The result has a single key-value pair and the name of the secret (`db-secret`) **is** returned as the key in that key-value pair.
 
 #### Response Codes
 
