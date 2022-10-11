@@ -8,7 +8,7 @@ description: "Learn how to register a pluggable component"
 
 [uds]: https://en.wikipedia.org/wiki/Unix_domain_socket
 
-## Component Registration Process
+## Component registration process
 
 Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
 
@@ -16,16 +16,16 @@ Pluggable, [gRPC-based](https://grpc.io/) components are typically run as contai
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
 3. The Dapr runtime connects with each socket and uses gRPC reflection to discover all proto services from a given building block API that the component implements.
 
-A single component can implement multiple [building blocks]({{< ref building-blocks-concept.md >}}) at once.
+A single component can implement multiple component interfaces at once.
 
 <img src="/images/grpc-components.png" width=50%>
 
-While Dapr's built-in components come [are included with the runtime](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md), pluggable components require a few setup steps before they can be used with Dapr.
+While Dapr's built-in components come [included with the runtime](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md), pluggable components require a few setup steps before they can be used with Dapr.
 
 1. Pluggable components need to be started and ready to take requests _before_ Dapr itself is started.
 2. The [Unix Domain Socket][uds] file used for the pluggable component communication need to be made accessible to both Dapr and pluggable component.
 
-Dapr does not launch any pluggable components processes or containers. This is something that you need to do, and it will be different depending on how Dapr and your components are run:
+Dapr does not launch any pluggable components processes or containers. This is something that you need to do, and it is different depending on how Dapr and your components are run:
 
 - In self-hosted mode as processes or containers.
 - In Kubernetes, as containers.
@@ -78,7 +78,7 @@ Using the previous `memstore.sock` example:
 - `your_component_type` would be replaced by `state`, as it is a state store.
 - `your_socket_goes_here` would be replaced by `memstore`.
 
-The full configuration for `memstore` would be:
+The configuration example for `memstore` is below:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -95,7 +95,7 @@ Save this file as `component.yaml` in Dapr's component configuration folder.
 
 ## Run Dapr
 
-[Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component spec is placed in the right folder.
+[Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component file is placed in the right folder.
 
 {{% alert title="Note" color="primary" %}}
 Dapr v1.9.0 is the minimum version that supports pluggable components.
@@ -208,6 +208,7 @@ scopes:
 That's it! **[Apply the created manifests to your Kubernetes cluster](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-apply)**, and call the state store APIs via Dapr API.
 
 Use [Kubernetes pod forwarder](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/) to access the `daprd` runtime.
+
 See it in action by running the following. Replace `$PORT` with the Dapr HTTP port:
 
 ```shell
