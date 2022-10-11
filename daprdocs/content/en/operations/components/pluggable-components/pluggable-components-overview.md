@@ -32,7 +32,7 @@ While both registration options leverage Dapr's building block APIs, each has a 
 - You want to keep your component separate from the Dapr release process.
 - You are not as familiar with Go, or implementing your component in Go is not ideal.
 
-#### Implementing a pluggable component
+## Implementing a pluggable component
 
 In order to implement a pluggable component you need to implement a gRPC service in the component. Implementing the gRPC service requires three steps:
 
@@ -51,9 +51,7 @@ Currently, the following component APIs are supported:
 |   Pub/sub   |  `pubsub`  |  [pubsub.proto]  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{<ref "pubsub-overview">}}), [howto]({{<ref "howto-publish-subscribe">}}), [api spec]({{<ref "pubsub_api">}})                                              |
 |  Bindings   | `bindings` | [bindings.proto] | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{<ref "bindings-overview">}}), [input howto]({{<ref "howto-triggers">}}), [output howto]({{<ref "howto-bindings">}}), [api spec]({{<ref "bindings_api">}}) |
 
-2. **Create service scaffolding.** Use the [protocol buffers and gRPC tools](https://grpc.io) to create the scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
-
-As an example, below is a snippet from the protocol buffer definition file service that defines the gRPC service definition for pluggable component state stores ([state.proto]).
+Here's a snippet of the gRPC service definition for pluggable component state stores ([state.proto]).
 
 ```protobuf
 // StateStore service provides a gRPC interface for state store components.
@@ -62,14 +60,16 @@ service StateStore {
   rpc Init(InitRequest) returns (InitResponse) {}
   // Returns a list of implemented state store features.
   rpc Features(FeaturesRequest) returns (FeaturesResponse) {}
+  // Ping the state store. Used for liveness purposes.
+  rpc Ping(PingRequest) returns (PingResponse) {}
+  
   // Deletes the specified key from the state store.
   rpc Delete(DeleteRequest) returns (DeleteResponse) {}
   // Get data from the given key.
   rpc Get(GetRequest) returns (GetResponse) {}
   // Sets the value of the specified key.
   rpc Set(SetRequest) returns (SetResponse) {}
-  // Ping the state store. Used for liveness purposes.
-  rpc Ping(PingRequest) returns (PingResponse) {}
+
 
   // Deletes many keys at once.
   rpc BulkDelete(BulkDeleteRequest) returns (BulkDeleteResponse) {}
@@ -87,6 +87,11 @@ The interface for the `StateStore` service exposes 9 methods:
 - 3 methods for CRUD (Get, Set, Delete)
 - 3 methods for bulk CRUD operations (BulkGet, BulkSet, BulkDelete)
 
+2. **Create service scaffolding.** Use [protocol buffers and gRPC tools](https://grpc.io) to create the necessary scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
+
+The tools can generate code targeting [any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#protocol-buffer-versions). This code will serve as the base for your server and it provide functionality to handle client calls along with infrastructure to decode incoming requests, execute service methods, and encode service responses.
+
+The generated code is not complete. It will be missing concrete implementation for the methods your target service defines, i.e., the core of your pluggable component. This is further explored in the next item. Additionally, you will also have to provide code on how to handle Unix Socket Domain integration, which is Dapr specific, and code handling integration with your downstream services.
 3. **Define the service.** Provide a concrete implementation of the desired service.
 
 As a first step, [protocol buffers](https://developers.google.com/protocol-buffers/docs/overview) and [gRPC](https://grpc.io/docs/what-is-grpc/introduction/) tools are used to create the server code for this service. After that, the next step is to define concrete implementations for these 9 methods.
@@ -100,6 +105,10 @@ A pluggable state store **must** provide an implementation of the `StateStore` s
  Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interfaces.
 - **Bindings**
  Pluggable input and output bindings have a single core service definition on [bindings.proto]. They have no optional service interfaces.
+
+Following the State Store example from step 1, after generating its service scaffolding code using gRPC and protocol buffers tools (step 2), 
+the next step is to define concrete implementations for the 9 methods defined under `service StateStore`, along with code to initialize and communicate with your dependencies.
+This concrete implementation and auxiliary code are the core of your pluggable component: they define how your component behaves when handling gRPC requests from Dapr.
 
 ### Leveraging multiple building blocks for a component
 
