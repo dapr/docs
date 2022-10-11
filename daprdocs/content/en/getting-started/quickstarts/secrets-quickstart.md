@@ -488,13 +488,13 @@ cd secrets_management/go/sdk/order-processor
 Install the dependencies:
 
 ```bash
-go build app.go
+go build .
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
+dapr run --app-id order-processor --components-path ../../../components/ -- go run .
 ```
 
 #### Behind the scenes
