@@ -61,7 +61,7 @@ The flag `multiValued` will decide whether the secret store will present a [name
 ### Name/Value semantics
 
 
-If `multiValued` is `false`, the store will load the file and create a map with the following key value pairs:
+If `multiValued` is `false`, the store will load [the JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) and create a map with the following key-value pairs:
 
 | flattened key           | value                           |
 | ---                     | ---                             |
@@ -70,7 +70,7 @@ If `multiValued` is `false`, the store will load the file and create a map with 
 |"connectionStrings:mysql"| `"your mysql connection string"`  |
 
 
-With the `multiValued` setting set to true, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message:
+If the `multiValued` setting set to true, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message. For example:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
@@ -82,9 +82,9 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
 }
 ```
 
-That is the expected behavior as the key is not present in the table above.
+This error is expected, since the `connectionStrings` key is not present, per the table above.
 
-On the other hand, requesting for flattened key `connectionStrings:sql` would result in a successful response with the following:
+However, requesting for flattened key `connectionStrings:sql` would result in a successful response, with the following:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:sql
@@ -97,18 +97,20 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings:s
 
 ### Multiple key-values behavior
 
-If `multiValued` is `true`, the secret store will present multiple key-value per secret behavior.
-Nested structures after the top level will be flattened.
-It will parse the same file into this table:
+If `multiValued` is `true`, the secret store will demonstrate multiple key-value per secret behavior:
+- Nested structures after the top level will be flattened.
+- It will parse the [same JSON file]({{< ref "#setup-json-file-to-hold-the-secrets" >}}) into this table:
 
 | key                | value                           |
 | ---                | ---                             |
 |"redisPassword"     | `"your redis password"`           |
 |"connectionStrings" | `{"mysql":"your mysql connection string","sql":"your sql connection string"}`    |
 
-Notice here how `connectionStrings` is now a JSON object with two keys: `mysql` and `sql`. Also notice how the two flattened keys `connectionStrings:sql` and `connectionStrings:mysql` are missing from the table above.
+Notice that in the above table:
+- `connectionStrings` is now a JSON object with two keys: `mysql` and `sql`. 
+- The `connectionStrings:sql` and `connectionStrings:mysql` flattened keys from the [table mapped for name/value semantics]({{< ref "#namevalue-semantics" >}}) are missing.
 
-Invoking a `GET` request on the key `connectionStrings` will result in a successful HTTP response with the following content:
+Invoking a `GET` request on the key `connectionStrings` will now result in a successful HTTP response similar to the following:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
@@ -120,7 +122,7 @@ $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
 }
 ```
 
-Requesting for the flattened key `connectionStrings:sql` would now understandably return in a 500 HTTP error response with the following body:
+Meanwhile, requesting for the flattened key `connectionStrings:sql` would now return a 500 HTTP error response with the following:
 
 ```json
 {
@@ -129,13 +131,12 @@ Requesting for the flattened key `connectionStrings:sql` would now understandabl
 }
 ```
 
- In this example, `connectionStrings` would return the following map:
 
 #### Handling deeper nesting levels
 
-Notice that, as stated in our [Spec metadata fields table](#spec-metadata-fields), `multiValued` only handles a single nesting level.
+Notice that, as stated in the [spec metadata fields table](#spec-metadata-fields), `multiValued` only handles a single nesting level.
 
-Assuming that have a Local File secret store with `multiValued` enabled and pointing to a `secretsFile` with the following JSON content:
+Let's say you have a local file secret store with `multiValued` enabled, pointing to a `secretsFile` with the following JSON content:
 
 ```json
 {

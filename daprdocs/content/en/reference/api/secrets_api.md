@@ -57,7 +57,7 @@ If a secret store has support for multiple key-values in a secret, a JSON payloa
 
 In case of a secret store that only has name/value semantics, a JSON payload is returned with the name of the secret as the field and the value of the secret as the value.
 
-[The list of Supported Secret Stores]({{< ref supported-secret-stores.md >}}) provides a classification of secret stores that support multiple keys in a secret and those with name/value semantics.
+[See the classification of secret stores]({{< ref supported-secret-stores.md >}}) that support multiple keys in a secret and name/value semantics.
 
 ##### Response with multiple keys in a secret (eg. Kubernetes):
 
@@ -72,7 +72,7 @@ curl http://localhost:3500/v1.0/secrets/kubernetes/db-secret
 }
 ```
 
-Notice the name of the secret (`db-secret`) is **not** returned as part of the result. Contrast this with the result from a secret store with name/value semantics as shown bellow.
+The above example demonstrates a response from a secret store with multiple keys in a secret. Note that the secret name (`db-secret`) **is not** returned as part of the result. 
 
 ##### Response from a secret store with name/value semantics:
 
@@ -86,7 +86,7 @@ curl http://localhost:3500/v1.0/secrets/vault/db-secret
 }
 ```
 
-The result has a single key-value pair and the name of the secret (`db-secret`) **is** returned as the key in that key-value pair.
+The above example demonstrates a response from a secret store with name/value semantics. Compared to the result from a secret store with multiple keys in a secret, this result returns a single key-value pair, with the secret name (`db-secret`) returned as the key in the key-value pair.
 
 #### Response Codes
 
