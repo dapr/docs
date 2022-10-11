@@ -6,7 +6,7 @@ weight: 4400
 description: "Overview of pluggable component anatomy and supported component types"
 ---
 
-Pluggable components are Dapr components that are not included as part the runtime. You can configure Dapr to use components that leverage the building block APIs, but are registered differently from the [built-in Dapr components](https://github.com/dapr/components-contrib). For example, you can configure a pluggable component for scenarios where you require a private component. 
+Pluggable components are components that are not included as part the runtime, as opposed to built-in ones that are included. You can configure Dapr to use pluggable components that leverage the building block APIs, but these are registered differently from the [built-in Dapr components](https://github.com/dapr/components-contrib). For example, you can configure a pluggable component for scenarios where you require a private component. 
 
 <img src="/images/concepts-building-blocks.png" width=400>
 
@@ -29,6 +29,7 @@ While both registration options leverage Dapr's building block APIs, each has a 
 
 ## When to create a pluggable component
 
+- This is a private component. 
 - You want to keep your component separate from the Dapr release process.
 - You are not as familiar with Go, or implementing your component in Go is not ideal.
 
@@ -89,9 +90,10 @@ The interface for the `StateStore` service exposes 9 methods:
 
 2. **Create service scaffolding.** Use [protocol buffers and gRPC tools](https://grpc.io) to create the necessary scaffolding for the service. You may want to get acquainted with [the gRPC concepts documentation](https://grpc.io/docs/what-is-grpc/core-concepts/).
 
-The tools can generate code targeting [any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#protocol-buffer-versions). This code will serve as the base for your server and it provide functionality to handle client calls along with infrastructure to decode incoming requests, execute service methods, and encode service responses.
+The tools can generate code targeting [any gRPC-supported language](https://grpc.io/docs/what-is-grpc/introduction/#protocol-buffer-versions). This code  serves as the base for your server and it provides functionality to handle client calls along with infrastructure to decode incoming requests, execute service methods, and encode service responses.
 
-The generated code is not complete. It will be missing concrete implementation for the methods your target service defines, i.e., the core of your pluggable component. This is further explored in the next item. Additionally, you will also have to provide code on how to handle Unix Socket Domain integration, which is Dapr specific, and code handling integration with your downstream services.
+The generated code is not complete. It is missing a concrete implementation for the methods your target service defines, i.e., the core of your pluggable component. This is further explored in the next topic. Additionally, you also have to provide code on how to handle Unix Socket Domain integration, which is Dapr specific, and code handling integration with your downstream services.
+
 3. **Define the service.** Provide a concrete implementation of the desired service.
 
 As a first step, [protocol buffers](https://developers.google.com/protocol-buffers/docs/overview) and [gRPC](https://grpc.io/docs/what-is-grpc/introduction/) tools are used to create the server code for this service. After that, the next step is to define concrete implementations for these 9 methods.
@@ -103,6 +105,7 @@ A pluggable state store **must** provide an implementation of the `StateStore` s
 
 - **Pub/sub**
  Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interfaces.
+ 
 - **Bindings**
  Pluggable input and output bindings have a single core service definition on [bindings.proto]. They have no optional service interfaces.
 
@@ -112,7 +115,7 @@ This concrete implementation and auxiliary code are the core of your pluggable c
 
 ### Leveraging multiple building blocks for a component
 
-In addition to implementing multiple gRPC services from the same component (for example `StateStore`, `QueriableStateStore`, `TransactionalStateStore` etc.), a pluggable component can also expose implementations for other component interfaces. This means that a single pluggable component can function as a state store, pub/sub, and input or output binding, all at the same time. In other words you can implement multiple component interfaces into a pluggable component and exposes these as gRPC services.
+In addition to implementing multiple gRPC services from the same component (for example `StateStore`, `QueriableStateStore`, `TransactionalStateStore` etc.), a pluggable component can also expose implementations for other component interfaces. This means that a single pluggable component can function as a state store, pub/sub, and input or output binding, all at the same time. In other words, you can implement multiple component interfaces into a pluggable component and exposes these as gRPC services.
 
 While exposing multiple component interfaces on the same pluggable component lowers the operational burden of deploying multiple components, it makes implementing and debugging your component harder. If in doubt, stick to a "separation of concerns" by merging multiple components interfaces into the same pluggable component only when necessary.
 
