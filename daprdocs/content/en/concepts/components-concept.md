@@ -33,6 +33,21 @@ It is important to understand that the component spec values, particularly the s
 The diagram below shows some examples of the components for each component type
 <img src="/images/concepts-components.png" width=1200>
 
+## Built-in and pluggable components
+
+Dapr has built-in components that are included as part of the runtime. These are public components that are developed and donated by the community and are available to use in every release. 
+
+Dapr also allows for users to create their own private components called pluggable components. These are components that are self-hosted (exe or container), do not need to be written in Go, exist outside the Dapr runtime, and are able to "plug" into Dapr to utilize the building block APIs.
+
+Where possible, donating built-in components to the Dapr project and community is encouraged.
+
+However, pluggable components are ideal for scenarios where you want to create your own private components that are not included into the Dapr project. 
+For example:
+- Your component may be specific to your company or pose IP concerns, so it cannot be included in the Dapr component repo. 
+- You want decouple your component updates from the Dapr release cycle.
+
+For more information read [Pluggable components overview]({{<ref "pluggable-components-overview">}})
+
 ## Available component types
 
 The following are the component types provided by Dapr:
@@ -92,18 +107,6 @@ Dapr allows custom [middleware]({{<ref "middleware.md">}}) to be plugged into th
 
 - [List of supported middleware components]({{< ref supported-middleware >}})
 - [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)
-
-## Pluggable components
-
-Dapr allows for users to create their own self-hosted components called pluggable components. These are components that do not need to be written in Go, exist outside the Dapr runtime, and are able to "plug" into Dapr to utilize existing building block APIs.
-
-Where possible, donating components to the Dapr project and community is encouraged.
-
-However, pluggable components are ideal for scenarios where you want to create your own private component that will not be included into the Dapr project. For example:
-- Your component may be specific to your company or pose IP concerns, so it cannot be included in the Dapr component repo. 
-- You want decouple your component updates from the Dapr release cycle.
-
-For more information read [Pluggable components overview]({{<ref "pluggable-components-overview">}})
 
 {{% alert title="Note" color="primary" %}} 
 Since pluggable components are not required to be written in Go, they follow a different implementation process than built-in Dapr components. For more information on developing built-in components, read [developing new components](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md).
