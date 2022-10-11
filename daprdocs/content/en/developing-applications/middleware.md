@@ -47,7 +47,7 @@ As with other components, middleware components can be found in the [supported M
 
 ## Configuring app middleware pipelines
 
-You can also use any middleware components when making service-to-service invocation calls for example for token validation in a zero-trust environment, a request transformation for a specific app endpoint or to apply OAuth policies.
+You can also use any middleware components when making service-to-service invocation calls. For example, for token validation in a zero-trust environment, a request transformation for a specific app endpoint, or to apply OAuth policies.
 
 Service-to-service invocation middleware components apply to all outgoing calls from Dapr sidecar to the receiving application (service) as shown in the diagram below.
 
