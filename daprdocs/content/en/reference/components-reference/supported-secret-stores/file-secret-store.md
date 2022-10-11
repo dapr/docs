@@ -70,7 +70,7 @@ If `multiValued` is `false`, the store will load the file and create a map with 
 |"connectionStrings:mysql"| `"your mysql connection string"`  |
 
 
-With this setting enabled, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message:
+With the `multiValued` setting set to true, invoking a `GET` request on the key `connectionStrings` will result in a 500 HTTP response and an error message:
 
 ```shell
 $ curl http://localhost:3501/v1.0/secrets/local-secret-store/connectionStrings
