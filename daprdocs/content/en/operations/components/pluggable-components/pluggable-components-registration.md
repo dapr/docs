@@ -33,7 +33,7 @@ Dapr does not launch any pluggable components processes or containers. This is s
 This also changes the approach to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 
 {{% alert title="Note" color="primary" %}}
-As a prerequisite the operating system must supports Unix Domain Sockets, any UNIX or UNIX-like system (Mac, Linux, or for local development [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for Windows users) should be sufficient.
+As a prerequisite the operating system must supports Unix Domain Sockets, any UNIX or UNIX-like system (Mac, Linux, or for local development [WSL](https://learn.microsoft.com/windows/wsl/install) for Windows users) should be sufficient.
 {{% /alert %}}
 
 Select your environment to begin making your component discoverable.
