@@ -2,7 +2,7 @@
 type: docs
 title: "Distributed tracing"
 linkTitle: "Distributed tracing"
-weight: 1000
+weight: 100
 description: "Use tracing to get visibility into your application"
 ---
 
@@ -14,10 +14,12 @@ Dapr uses the Open Telemetry (OTEL) and Zipkin protocols for distributed traces.
 Tracing is used with service invocaton and pub/sub APIs. You can flow trace context between services that uses these APIs. 
 
 There are two scenarios for how tracing is used:
+
  1. Dapr generates the trace context and you propagate the trace context to another service.
  2. You generate the trace context and Dapr propagates the trace context to a service.
 
 ### Propogating sequential service calls
+
 Dapr takes care of creating the trace headers. However, when there are more than two services, you're responsible for propagating the trace headers between them. Let's go through the scenarios with examples:
 
 1. Single service invocation call (`service A -> service B`)
@@ -44,6 +46,7 @@ There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace
      Dapr generates the trace headers in the published message topic. These trace headers are propagated to any services listening on that topic.
 
 ### Propogating multiple different service calls
+
 In the following scenarios, Dapr does some of the work for you and you need to either create or propagate trace headers.
 
 1. Multiple service calls to different services from single service
