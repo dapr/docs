@@ -164,5 +164,12 @@ spec:
 ```
 
 ## Related links
+
+Watch this video for how to use [resiliency](https://www.youtube.com/watch?t=184&v=7D6HOU3Ms6g&feature=youtu.be):
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/sembed/7D6HOU3Ms6g?start=184" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
  - [Policies]({{< ref "policies.md" >}})
  - [Targets]({{< ref "targets.md" >}})
