@@ -92,7 +92,7 @@ spec:
         trip: consecutiveFailures > 8
 ```
 
-## Override Default Retries
+## Overriding default retries
 
 Dapr provides default retries for certain request failures and transient errors.  Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets. 
 
@@ -132,15 +132,17 @@ spec:
         retry: retryForever
 ```
 
-## Setting Default Policies
+## Setting default policies
 
-In resiliency you can set default policies, which can have a broader scope. This is done through reserved keywords that let Dapr know when to apply the given policy. There are 3 default policies types: 
+In resiliency you can set default policies, which have a broad scope. This is done through reserved keywords that let Dapr know when to apply the policy. There are 3 default policies types: 
 
 - DefaultRetryPolicy
 - DefaultTimeoutPolicy
 - DefaultCircuitBreakerPolicy
 
-If these policies are defined, they would be used for every operation to a service, application, or component. They can also be modified to be more specific through the usage of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`, `Default%sTimeoutPolicy`, and `Default%sCircuitBreakerPolicy`. Where the `%s` is replaced by the new target of the policy. Below you can see a table of all possible default policy keywords and how they translate into a policy name.
+If these policies are defined, they are used for every operation to a service, application, or component. They can also be modified to be more specific through the appending of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`, `Default%sTimeoutPolicy`, and `Default%sCircuitBreakerPolicy`. Where the `%s` is replaced by a target of the policy. 
+
+Below is a table of all possible default policy keywords and how they translate into a policy name.
 
 | Keyword                        | Target Operation                                     | Example Policy Name                                       |
 | ------------------------------ | ---------------------------------------------------- | --------------------------------------------------------- |
@@ -158,25 +160,31 @@ If these policies are defined, they would be used for every operation to a servi
 | ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundCircuitBreakerPolicy |
 | LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundRetryPolicy                   | 
 
-### Policy Hierarchy
+### Policy hierarchy resolution
 
-Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it. For each target type (app, actor, and component), the policy with the highest priority is a Named Policy, one that targets that construct specifically. If none exists, the policies are applied from most specific to most broad. 
+Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it. For each target type (app, actor, and component), the policy with the highest priority is a Named Policy, one that targets that construct specifically.
 
-In the specific case of the [built-in retries]({{< ref "policies.md#Override Default Retries" >}}), default policies do not stop the built-in policies from running. In fact, both will be used but only under very specific circumstances. For service and actor invocation, the built-in retries deal specifically with issues connecting to the remote sidecar (if needed). As these are very important to the stability of Dapr, they are not disabled until a named policy is specifically referenced for an operation. So, in some rare instances, there may be additional retries but this stops an overly weak default policy from reducing the sidecar's availability/success rate.
+ If none exists, the policies are applied from most specific to most broad. 
 
-For applications, this yields:
+#### How default policies and built-in retries work together
+
+In the case of the [built-in retries]({{< ref "policies.md#Override Default Retries" >}}), default policies do not stop the built-in retry policies from running. Both are used together but only under specific circumstances.
+ 
+For service and actor invocation, the built-in retries deal specifically with issues connecting to the remote sidecar (when needed). As these are important to the stability of the Dapr runtime, they are not disabled **unless** a named policy is specifically referenced for an operation. In some instances, there may be additional retries from both the built-in retry and the default retry policy, but this prevents an overly weak default policy from reducing the sidecar's availability/success rate. 
+
+Policy resolution hierarchy for applications, from most specific to most broad:
 
 1. Named Policies in App Targets
 2. Default App Policies / Built-In Service Retries
 3. Default Policies / Built-In Service Retries
 
-For actors, this yields:
+Policy resolution hierarchy for actors, from most specific to most broad:
 
 1. Named Policies in Actor Targets
 2. Default Actor Policies / Built-In Actor Retries
 3. Default Policies / Built-In Actor Retries
 
-For components, this yields:
+Policy resolution hierarchy for components, from most specific to most broad:
 
 1. Named Policies in Component Targets
 2. Default Component Type + Component Direction Policies / Built-In Actor Reminder Retries (if applicable)
@@ -184,7 +192,7 @@ For components, this yields:
 4. Default Component Policies / Built-In Actor Reminder Retries (if applicable)
 5. Default Policies / Built-In Actor Reminder Retries (if applicable)
 
-As an example, take the following system definition:
+As an example, take the following solution consisting of three applications, three components and two actor types:
 
 Applications:
 - AppA
@@ -199,6 +207,8 @@ Components:
 Actors:
 - EventActor
 - SummaryActor
+
+Below is policy that uses both default and named policies as applies these to the targets.
 
 ```yaml
 spec:
@@ -234,11 +244,13 @@ spec:
         maxInterval: 60s
         maxRetries: -1
 
+     # Named policy
       fastRetries:
         policy: constant
         duration: 10ms
         maxRetries: 3
 
+     # Named policy
       retryForever:
         policy: exponential
         maxInterval: 10s
@@ -261,7 +273,7 @@ spec:
         retry: fastRetries
 ```
 
-Below is an outline of which policies are used when attempting to call various members of the system.
+The table below is a break down of which policies are applied when attempting to call the various targets in this solution.
 
 | Target             | Policy Used                                     |
 | ------------------ | ----------------------------------------------- |
