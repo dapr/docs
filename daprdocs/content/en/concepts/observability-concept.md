@@ -13,6 +13,8 @@ While some data points about an application can be gathered from the underlying 
 
 Having to maintain this code, which is not part of the core logic of the application, is a burden on the developer, sometimes requiring understanding the observability tools' APIs, using additional SDKs etc. This instrumentation may also add to the portability challenges of an application, which may require different instrumentation depending on where the application is deployed. For example, different cloud providers offer different observability tools and an on-premises deployment might require a self-hosted solution.
 
+## Observability for your application with Dapr
+
 When building an application which leverages Dapr API building blocks to perform service-to-service calls and pub/sub messaging, Dapr offers an advantage with respect to [distributed tracing]({{<ref tracing>}}). Because this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
 
 ### Distributed tracing
