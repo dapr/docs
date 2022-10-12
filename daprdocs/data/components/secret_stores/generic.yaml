@@ -3,6 +3,8 @@
   state: Stable
   version: v1
   since: "1.9"
+  features:
+    multipleKeyValuesPerSecret: true
 - component: Local environment variables
   link: envvar-secret-store
   state: Stable
@@ -13,8 +15,12 @@
   state: Stable
   version: v1
   since: "1.9"
+  features:
+    multipleKeyValuesPerSecret: true
 - component: Kubernetes secrets
   link: kubernetes-secret-store
   state: Stable
   version: v1
   since: "1.0"
+  features:
+    multipleKeyValuesPerSecret: true

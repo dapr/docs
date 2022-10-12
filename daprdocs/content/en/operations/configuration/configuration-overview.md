@@ -103,10 +103,16 @@ See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more informat
 #### Middleware
 
 Middleware configuration set named HTTP pipeline middleware handlers
-The `httpPipeline` section under the `Configuration` spec contains the following properties:
+The `httpPipeline` and the `appHttpPipeline` section under the `Configuration` spec contains the following properties:
 
 ```yml
-httpPipeline:
+httpPipeline: # for incoming http calls
+  handlers:
+    - name: oauth2
+      type: middleware.http.oauth2
+    - name: uppercase
+      type: middleware.http.uppercase
+appHttpPipeline: # for outgoing http calls
   handlers:
     - name: oauth2
       type: middleware.http.oauth2
