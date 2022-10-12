@@ -6,13 +6,11 @@ weight: 4500
 description: "Configure resiliency policies for timeouts, retries and circuit breakers"
 ---
 
-### Policies
-
 You define timeouts, retries and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec. 
 
 > Note: Dapr offers default retries for specific APIs. [See here]({{< ref "#override-default-retries" >}}) to learn how you can overwrite default retry logic with user defined retry policies.
 
-#### Timeouts
+## Timeouts
 
 Timeouts can be used to early-terminate long-running operations. If you've exceeded a timeout duration:
 
@@ -32,7 +30,7 @@ spec:
       largeResponse: 10s
 ```
 
-#### Retries
+## Retries
 
 With `retries`, you can define a retry strategy for failed operations, including requests failed due to triggering a defined timeout or circuit breaker policy. The following retry options are configurable:
 
@@ -69,7 +67,7 @@ spec:
         maxRetries: -1 # Retry indefinitely
 ```
 
-##### Circuit breakers
+## Circuit breakers
 
 Circuit breakers (CBs) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met. By doing this, CBs give the service time to recover from their outage instead of flooding them with events. The CB can also allow partial traffic through to see if the system has healed (half-open state). Once successful requests start to occur, the CB can close and allow traffic to resume.
 
@@ -94,7 +92,7 @@ spec:
         trip: consecutiveFailures > 8
 ```
 
-##### Override Default Retries
+## Overriding default retries
 
 Dapr provides default retries for certain request failures and transient errors.  Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets. 
 
@@ -133,3 +131,158 @@ spec:
       appB: # app-id of the target service
         retry: retryForever
 ```
+
+## Setting default policies
+
+In resiliency you can set default policies, which have a broad scope. This is done through reserved keywords that let Dapr know when to apply the policy. There are 3 default policies types: 
+
+- DefaultRetryPolicy
+- DefaultTimeoutPolicy
+- DefaultCircuitBreakerPolicy
+
+If these policies are defined, they are used for every operation to a service, application, or component. They can also be modified to be more specific through the appending of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`, `Default%sTimeoutPolicy`, and `Default%sCircuitBreakerPolicy`. Where the `%s` is replaced by a target of the policy. 
+
+Below is a table of all possible default policy keywords and how they translate into a policy name.
+
+| Keyword                        | Target Operation                                     | Example Policy Name                                       |
+| ------------------------------ | ---------------------------------------------------- | --------------------------------------------------------- |
+| App                            | Service invocation.                                  | DefaultAppRetryPolicy                                     |
+| Actor                          | Actor invocation.                                    | DefaultActorTimeoutPolicy                                 |
+| Component                      | All component operations.                            | DefaultComponentCircuitBreakerPolicy                      |
+| ComponentInbound               | All inbound component operations.                    | DefaultComponentInboundRetryPolicy                        |
+| ComponentOutbound              | All outbound component operations.                   | DefaultComponentOutboundTimeoutPolicy                     |
+| StatestoreComponentOutbound    | All statestore component operations.                 | DefaultStatestoreComponentOutboundCircuitBreakerPolicy    |
+| PubsubComponentOutbound        | All outbound pubusub (publish) component operations. | DefaultPubsubComponentOutboundRetryPolicy                 |
+| PubsubComponentInbound         | All inbound pubsub (subscribe) component operations. | DefaultPubsubComponentInboundTimeoutPolicy                |
+| BindingComponentOutbound       | All outbound binding (invoke) component operations.  | DefaultBindingComponentOutboundCircuitBreakerPolicy       |
+| BindingComponentInbound        | All inbound binding (read) component operations.     | DefaultBindingComponentInboundRetryPolicy                 |
+| SecretstoreComponentOutbound   | All secretstore component operations.                | DefaultSecretstoreComponentTimeoutPolicy                  |
+| ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundCircuitBreakerPolicy |
+| LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundRetryPolicy                   | 
+
+### Policy hierarchy resolution
+
+Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it. For each target type (app, actor, and component), the policy with the highest priority is a Named Policy, one that targets that construct specifically.
+
+ If none exists, the policies are applied from most specific to most broad. 
+
+#### How default policies and built-in retries work together
+
+In the case of the [built-in retries]({{< ref "policies.md#Override Default Retries" >}}), default policies do not stop the built-in retry policies from running. Both are used together but only under specific circumstances.
+ 
+For service and actor invocation, the built-in retries deal specifically with issues connecting to the remote sidecar (when needed). As these are important to the stability of the Dapr runtime, they are not disabled **unless** a named policy is specifically referenced for an operation. In some instances, there may be additional retries from both the built-in retry and the default retry policy, but this prevents an overly weak default policy from reducing the sidecar's availability/success rate. 
+
+Policy resolution hierarchy for applications, from most specific to most broad:
+
+1. Named Policies in App Targets
+2. Default App Policies / Built-In Service Retries
+3. Default Policies / Built-In Service Retries
+
+Policy resolution hierarchy for actors, from most specific to most broad:
+
+1. Named Policies in Actor Targets
+2. Default Actor Policies / Built-In Actor Retries
+3. Default Policies / Built-In Actor Retries
+
+Policy resolution hierarchy for components, from most specific to most broad:
+
+1. Named Policies in Component Targets
+2. Default Component Type + Component Direction Policies / Built-In Actor Reminder Retries (if applicable)
+3. Default Component Direction Policies / Built-In Actor Reminder Retries (if applicable)
+4. Default Component Policies / Built-In Actor Reminder Retries (if applicable)
+5. Default Policies / Built-In Actor Reminder Retries (if applicable)
+
+As an example, take the following solution consisting of three applications, three components and two actor types:
+
+Applications:
+- AppA
+- AppB
+- AppC
+
+Components:
+- Redis Pubsub: pubsub
+- Redis statestore: statestore
+- CosmosDB Statestore: actorstore
+
+Actors:
+- EventActor
+- SummaryActor
+
+Below is policy that uses both default and named policies as applies these to the targets.
+
+```yaml
+spec:
+  policies:
+    retries:
+      # Global Retry Policy
+      DefaultRetryPolicy:
+        policy: constant
+        duration: 1s
+        maxRetries: 3
+      
+      # Global Retry Policy for Apps
+      DefaultAppRetryPolicy:
+        policy: constant
+        duration: 100ms
+        maxRetries: 5
+
+      # Global Retry Policy for Apps
+      DefaultActorRetryPolicy:
+        policy: exponential
+        maxInterval: 15s
+        maxRetries: 10
+
+      # Global Retry Policy for Inbound Component operations
+      DefaultComponentInboundRetryPolicy:
+        policy: constant
+        duration: 5s
+        maxRetries: 5
+
+      # Global Retry Policy for Statestores
+      DefaultStatestoreComponentOutboundRetryPolicy:
+        policy: exponential
+        maxInterval: 60s
+        maxRetries: -1
+
+     # Named policy
+      fastRetries:
+        policy: constant
+        duration: 10ms
+        maxRetries: 3
+
+     # Named policy
+      retryForever:
+        policy: exponential
+        maxInterval: 10s
+        maxRetries: -1
+
+  targets:
+    apps:
+      appA:
+        retry: fastRetries
+
+      appB:
+        retry: retryForever
+    
+    actors:
+      EventActor:
+        retry: retryForever
+
+    components:
+      actorstore:
+        retry: fastRetries
+```
+
+The table below is a break down of which policies are applied when attempting to call the various targets in this solution.
+
+| Target             | Policy Used                                     |
+| ------------------ | ----------------------------------------------- |
+| AppA               | fastRetries                                     |
+| AppB               | retryForever                                    |
+| AppC               | DefaultAppRetryPolicy / DaprBuiltInActorRetries |
+| pubsub - Publish   | DefaultRetryPolicy                              |
+| pubsub - Subscribe | DefaultComponentInboundRetryPolicy              |
+| statestore         | DefaultStatestoreComponentOutboundRetryPolicy   |
+| actorstore         | fastRetries                                     |
+| EventActor         | retryForever                                    |
+| SummaryActor       | DefaultActorRetryPolicy                         |
