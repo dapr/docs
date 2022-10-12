@@ -6,7 +6,7 @@ weight: 4000
 description: "Enable or disable Dapr metrics "
 ---
 
-By default, each Dapr system process emits Go runtime/process metrics and have their own [Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md)
+By default, each Dapr system process emits Go runtime/process metrics and has their own [Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).
 
 ## Prometheus endpoint
 The Dapr sidecars exposes a [Prometheus](https://prometheus.io/) metrics endpoint that you can scrape to gain a greater understanding of how Dapr is behaving.
