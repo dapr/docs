@@ -32,7 +32,9 @@ Dapr takes care of creating the trace headers. However, when there are more than
 
      In other words, if the app is calling to Dapr and wants to trace with an existing span (trace header), it must always propagate to Dapr (from service B to service C in this case). Dapr always propagates trace spans to an application.
 
-`Note: There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use http/gRPC clients to propagate and retrieve trace headers through http headers and gRPC metadata.`
+{{% alert title="Note" color="primary" %}}
+There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace context. You need to use HTTP/gRPC clients to propagate and retrieve trace headers through HTTP headers and gRPC metadata.
+{{% /alert %}}
 
 3. Request is from external endpoint (`For example from a gateway service to a Dapr enabled service A`)
 
