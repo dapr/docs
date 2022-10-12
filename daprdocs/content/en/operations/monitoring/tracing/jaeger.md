@@ -185,4 +185,3 @@ In your browser, go to `http://localhost:16686` and you will see the Jaeger UI.
 
 ## References
 - [Jaeger Getting Started](https://www.jaegertracing.io/docs/1.21/getting-started/#all-in-one)
-- [W3C distributed tracing]({{< ref w3c-tracing >}})
