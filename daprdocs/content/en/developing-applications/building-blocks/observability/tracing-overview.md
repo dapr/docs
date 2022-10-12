@@ -26,7 +26,7 @@ Dapr takes care of creating the trace headers. However, when there are more than
 
 2. Multiple sequential service invocation calls ( `service A -> service B -> service C`)
 
-    Dapr generates the trace headers at the beginning of the request in service A and these are propagated to service B. However you are now responsible for taking the headers and propagating these to service C, since this is specific to your application. 
+    Dapr generates the trace headers at the beginning of the request in service A, which are then propagated to service B. You are now responsible for taking the headers and propagating them to service C, since this is specific to your application. 
     
      `service A -> service B -> propagate trace headers to -> service C` and so on to further Dapr enabled services.
 
