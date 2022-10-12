@@ -44,45 +44,52 @@ There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace
      Dapr generates the trace headers in the published message topic. These trace headers are propagated to any services listening on that topic.
 
 ### Propogating multiple different service calls
-In these scenarios Dapr does some of the work for you and you need to either create or propagate trace headers.
+In the following scenarios, Dapr does some of the work for you and you need to either create or propagate trace headers.
 
 1. Multiple service calls to different services from single service
 
-   When you are calling multiple services from a single service, for example from service A like this, you need to propagate the trace headers;
+   When you are calling multiple services from a single service (see example below), you need to propagate the trace headers:
 
+        ```
         service A -> service B
         [ .. some code logic ..]
         service A -> service C
         [ .. some code logic ..]
         service A -> service D
         [ .. some code logic ..]
+        ```
 
-    In this case, when service A first calls service B, Dapr generates the trace headers in service A, and these trace headers are then propagated to service B. These trace headers are returned in the response from service B as part of response headers. However you need to propagate the returned trace context to the next services, service C and Service D, as Dapr does not know you want to reuse the same header.
+    In this case, when service A first calls service B, Dapr generates the trace headers in service A, which are then propagated to service B. These trace headers are returned in the response from service B as part of response headers. You then need to propagate the returned trace context to the next services, service C and service D, as Dapr does not know you want to reuse the same header.
 
 ### Generating your own trace context headers from non-Daprized applications
 
 You may have chosen to generate your own trace context headers.
-This is more unusual and typically not required when calling Dapr. However there may be occasions where you specifically chose to add W3C trace headers into a service call, for example if you have an existing application that does not use Dapr. In this case Dapr still propagates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done :
+Generating your own trace context headers is more unusual and typically not required when calling Dapr. However, there are scenarios where you could specifically choose to add W3C trace headers into a service call; for example, you have an existing application that does not use Dapr. In this case, Dapr still propagates the trace context headers for you. If you decide to generate trace headers yourself, there are three ways this can be done:
 
-1. You can use the industry standard [OpenTelemetry SDKs](https://opentelemetry.io/docs/instrumentation/) to generate trace headers and pass these trace headers to a Dapr enabled service. This is the preferred recommendation.
+1. You can use the industry standard [OpenTelemetry SDKs](https://opentelemetry.io/docs/instrumentation/) to generate trace headers and pass these trace headers to a Dapr-enabled service. This is the preferred method.
 
-2. You can use a vendor SDK that provides a way to generate W3C trace headers and pass these trace headers to a Dapr enabled service.
+2. You can use a vendor SDK that provides a way to generate W3C trace headers and pass them to a Dapr-enabled service.
 
-3. You can handcraft a trace context following [W3C trace context specification](https://www.w3.org/TR/trace-context/) and pass these trace headers to Dapr enabled service.
+3. You can handcraft a trace context following [W3C trace context specifications](https://www.w3.org/TR/trace-context/) and pass them to a Dapr-enabled service.
 
 ## W3C trace context
 
-Dapr uses the standard W3C Trace Context headers. For HTTP requests, Dapr uses `traceparent` header. For gRPC requests, Dapr uses `grpc-trace-bin` header. When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
+Dapr uses the standard W3C trace context headers. 
 
-Read [trace context overview]({{< ref w3c-tracing-overview >}}) for more background on W3C Trace Context.
+- For HTTP requests, Dapr uses `traceparent` header. 
+- For gRPC requests, Dapr uses `grpc-trace-bin` header. 
+
+When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it passes the trace ID along the call chain.
+
+Read [trace context overview]({{< ref w3c-tracing-overview >}}) for more background on W3C trace context.
 
 ## W3C trace headers
-Theses are the specific trace context headers that are generated and propagated by Dapr for HTTP and gRPC.
+These are the specific trace context headers that are generated and propagated by Dapr for HTTP and gRPC.
 
 ### Trace context HTTP headers format
-When propagating a trace context header from an HTTP response to an HTTP request, these are the headers that you need to copy.
+When propagating a trace context header from an HTTP response to an HTTP request, you copy these headers.
 
-#### Traceparent Header
+#### Traceparent header
 The traceparent header represents the incoming request in a tracing system in a common format, understood by all vendors.
 Here’s an example of a traceparent header.
 
@@ -90,12 +97,12 @@ Here’s an example of a traceparent header.
 
  Find the traceparent fields detailed [here](https://www.w3.org/TR/trace-context/#traceparent-header).
 
-#### Tracestate Header
+#### Tracestate header
 The tracestate header includes the parent in a potentially vendor-specific format:
 
 `tracestate: congo=t61rcWkgMzE`
 
-The tracestate fields are detailed [here](https://www.w3.org/TR/trace-context/#tracestate-header)
+Find the tracestate fields detailed [here](https://www.w3.org/TR/trace-context/#tracestate-header).
 
 ### Trace context gRPC headers format
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
