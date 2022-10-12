@@ -18,7 +18,7 @@ Pluggable, [gRPC-based](https://grpc.io/) components are typically run as contai
 
 A single component can implement multiple component interfaces at once.
 
-<img src="/images/grpc-components.png" width=50%>
+<img src="/images/components-pluggable-register-grpc.png" width=50%>
 
 While Dapr's built-in components come [included with the runtime](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md), pluggable components require a few setup steps before they can be used with Dapr.
 
