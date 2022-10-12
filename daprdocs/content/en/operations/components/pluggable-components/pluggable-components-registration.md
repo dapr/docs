@@ -49,7 +49,7 @@ Both your component and the Unix Socket must be running before Dapr starts.
 
 By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-The name of the file without any extension is the name of the component. For example, for `memstore.sock`, the component name is `memstore`.
+Filenames in this folder are significant for component registration. They must be formed by appending the component's name with a file extension of your choice, more commonly `.sock`. For example, the filename `memstore.sock` is a valid UDS file name for a component named `memstore`.
 
 Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
@@ -226,4 +226,4 @@ curl http://localhost:$PORT/v1.0/state/prod-mystore/name
 
 ## Next Steps
 
-Get started with your own .NET pluggable component using our [sample code](https://github.com/mcandeia/dapr-samples/tree/sample/pluggable-components/pluggable-components-dotnet-template)
+Get started with developing .NET pluggable component using this [sample code](https://github.com/dapr/samples/tree/master/pluggable-components-dotnet-template)
