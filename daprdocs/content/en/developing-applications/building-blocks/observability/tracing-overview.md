@@ -88,7 +88,7 @@ Here’s an example of a traceparent header.
 
 `traceparent: 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01`
 
- The traceparent fields are detailed [here](https://www.w3.org/TR/trace-context/#traceparent-header)
+ Find the traceparent fields detailed [here](https://www.w3.org/TR/trace-context/#traceparent-header).
 
 #### Tracestate Header
 The tracestate header includes the parent in a potentially vendor-specific format:
