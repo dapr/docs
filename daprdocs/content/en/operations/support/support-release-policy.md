@@ -81,7 +81,7 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 | 1.6.0                    |                   N/A |                    1.7.4 |
 | 1.7.0 to 1.7.4           |                   N/A |                    1.8.0 |
 | 1.8.0                    |                   N/A |                    1.8.4 |
-
+| 1.9.0                    |                   N/A |                    1.9.0 |
 
 ## Breaking changes and deprecations
 
