@@ -20,7 +20,7 @@ There are two scenarios for how tracing is used:
 ### Propogating sequential service calls
 Dapr takes care of creating the trace headers. However, when there are more than two services, you're responsible for propagating the trace headers between them. Let's go through the scenarios with examples:
 
-1. Single service invocation call (`service A -> service B` )
+1. Single service invocation call (`service A -> service B`)
 
     Dapr generates the trace headers in service A and these trace headers are propagated from service A to service B. No further propogation is needed. 
 
