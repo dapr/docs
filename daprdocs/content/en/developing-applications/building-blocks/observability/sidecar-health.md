@@ -34,7 +34,7 @@ The Dapr sidecar will be in ready state once the application is accessible on it
 
 When integrating with Kubernetes, the Dapr sidecar is injected with a Kubernetes probe configuration telling it to use the Dapr healthz endpoint. This is done by the "Sidecar Injector" system service. The integration with the kubelet is shown in the diagram below.
 
-<img src="/images/security-mTLS-dapr-system-services.png" width=600>
+<img src="/images/security-mTLS-dapr-system-services.png" width="800" alt="Diagram of Dapr services interacting" />
 
 ### How to configure a liveness probe in Kubernetes
 

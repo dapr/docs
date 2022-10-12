@@ -22,7 +22,7 @@ These changes are meant to be temporary, and Dapr will resume normal operations 
 
 App health checks are disabled by default.
 
-<img src="/images/observability-app-health.webp" width="600" alt="Diagram showing the app health feature. Running Dapr with app health enabled causes Dapr to periodically probe the app for its health.">
+<img src="/images/observability-app-health.webp" width="800" alt="Diagram showing the app health feature. Running Dapr with app health enabled causes Dapr to periodically probe the app for its health.">
 
 ### App health checks vs platform-level health checks
 
@@ -80,8 +80,7 @@ When the Dapr runtime (sidecar) is initially started, Dapr waits for a successfu
 
 Health probe requests are considered successful if the application sends a successful response (as explained above) within the timeout configured in `app-health-probe-timeout`. The default value is 500, corresponding to 500 milliseconds (i.e. half a second).
 
-Before Dapr considers an app to have entered an unhealthy state, it will wait for `app-health-threshold` consecutive failures, whose default value is 3.  
-This default value means that your application must fail health probes 3 times *in a row* to be considered unhealthy.  
+Before Dapr considers an app to have entered an unhealthy state, it will wait for `app-health-threshold` consecutive failures, whose default value is 3. This default value means that your application must fail health probes 3 times *in a row* to be considered unhealthy.  
 If you set the threshold to 1, any failure will cause Dapr to assume your app is unhealthy and will stop delivering work to it.  
 A threshold greater than 1 can help exclude transient failures due to external circumstances. The right value for your application depends on your requirements.
 
@@ -149,4 +148,4 @@ spec:
 
 Watch this video for an [overview of using app health checks](https://youtu.be/srczBuOsAkI?t=533):
 
-<iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/srczBuOsAkI?start=533" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/srczBuOsAkI?start=533" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

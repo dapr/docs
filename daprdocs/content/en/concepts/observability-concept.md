@@ -45,4 +45,4 @@ Metrics are the series of measured values and counts that are collected and stor
 
 The Dapr sidecar exposes an HTTP endpoint for [health checks]({{<ref sidecar-health.md>}}). With this API, user code or hosting environments can probe the Dapr sidecar to determine its status and identify issues with sidecar readiness.
 
-Conversely, Dapr can be configured to probe for the [health of your application]({{ <ref app-health.md> }}), and react to changes in the app's health, including stopping pub/sub subscriptions and short-circuiting service invocation calls.
+Conversely, Dapr can be configured to probe for the [health of your application]({{<ref app-health.md >}}), and react to changes in the app's health, including stopping pub/sub subscriptions and short-circuiting service invocation calls.
