@@ -49,7 +49,7 @@ Both your component and the Unix Socket must be running before Dapr starts.
 
 By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-Filenames in this folder are significant for component registration. They must be formed by appending the component's name with a file extension of your choice, more commonly `.sock`. For example, the filename `memstore.sock` is a valid UDS file name for a component named `memstore`.
+Filenames in this folder are significant for component registration. They must be formed by appending the component's name with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid UDS file name for a component named `my-component`.
 
 Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
@@ -73,12 +73,12 @@ spec:
   metadata:
 ```
 
-Using the previous `memstore.sock` example:
+Using the previous `my-component.sock` example:
 
 - `your_component_type` would be replaced by `state`, as it is a state store.
-- `your_socket_goes_here` would be replaced by `memstore`.
+- `your_socket_goes_here` would be replaced by `my-component`.
 
-The configuration example for `memstore` is below:
+The configuration example for `my-component` is below:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -86,7 +86,7 @@ kind: Component
 metadata:
   name: prod-mystore
 spec:
-  type: state.memstore
+  type: state.my-component
   version: v1
   metadata:
 ```
