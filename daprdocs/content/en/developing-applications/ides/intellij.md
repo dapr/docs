@@ -47,7 +47,7 @@ For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.
 
 {{% codetab %}}
 ```shell
-~/Library/Application Support/JetBrains/IntelliJIdea2020.1/tools/
+~/Library/Application\ Support/JetBrains/IntelliJIdea2020.1/tools/
 ```
 {{% /codetab %}}
 
@@ -58,7 +58,7 @@ For versions [2020.1](https://www.jetbrains.com/help/idea/2020.1/tuning-the-ide.
 
 Change the version of IntelliJ in the path if needed.
 
-Create or edit the file in `<CONFIG PATH>/tools/External\ Tools.xml` (change IntelliJ version in path if needed). The `<CONFIG PATH>` is OS dependennt as seen above.
+Create or edit the file in `<CONFIG PATH>/tools/External\ Tools.xml` (change IntelliJ version in path if needed). The `<CONFIG PATH>` is OS dependent as seen above.
 
 Add a new `<tool></tool>` entry:
 
