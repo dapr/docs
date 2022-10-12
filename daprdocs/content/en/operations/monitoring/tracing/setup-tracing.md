@@ -32,12 +32,12 @@ The following table lists the properties for tracing:
 |--------------|--------|-------------|
 | `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
 | `stdout` | bool | True write more verbose information to the traces
-| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address.
+| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address. 
 | `otel.isSecure` | bool | Is the connection to the endpoint address encryped.
 | `otel.protocol` | string | Set to `http` or `grpc` protocol.
 | `zipkin.endpointAddress` | string | Set the Zipkin server address. If this is used, you do not need to specify the `otel` section.
 
-To enable tracing, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (every span is sampled), and sends trace using OTEL protocol to the OTEL server at http://zipkin.default.svc.cluster.local
+To enable tracing, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (every span is sampled), and sends trace using OTEL protocol to the OTEL server at localhost:4317
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
