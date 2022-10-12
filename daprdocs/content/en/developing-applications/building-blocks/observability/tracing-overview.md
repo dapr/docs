@@ -13,7 +13,7 @@ Dapr uses the Open Telemetry (OTEL) and Zipkin protocols for distributed traces.
 ## Scenarios
 Tracing is used with service invocaton and pub/sub APIs. You can flow trace context between services that uses these APIs. 
 
-There are two scenarios where you need to understand for how tracing is used:
+There are two scenarios for how tracing is used:
  1. Dapr generates the trace context and you propagate the trace context to another service.
  2. You generate the trace context and Dapr propagates the trace context to a service.
 
