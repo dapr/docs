@@ -6,7 +6,7 @@ weight: 300
 description: Reacting to apps' health status changes
 ---
 
-App health checks is a preview feature that allows probing for the health of your application and reacting to status changes.
+App health checks is a feature that allows probing for the health of your application and reacting to status changes.
 
 Applications can become unresponsive for a variety of reasons: for example, they could be too busy to accept new work, or could be crashed or in a deadlock state. Sometimes the condition can be transitory, for example if the app is just busy (and will eventually be able to resume accepting new work), or if the application is being restarted for whatever reason and is in its initialization phase.
 
