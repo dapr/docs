@@ -43,7 +43,7 @@ dapr init [flags]
 |        N/A            |DAPR_HELM_REPO_URL|          | Specifies a private Dapr Helm chart url|
 |        N/A            | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
 |        N/A            | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set| |
-
+|  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
 ### Examples
 
 #### Self hosted environment
@@ -105,6 +105,11 @@ This command resolves the complete image URI as shown below -
 2. Redis container image(rejson)   - docker.io/username/dapr/3rdparty/rejson
 3. zipkin container image(zipkin)  - docker.io/username/dapr/3rdparty/zipkin
 
+You can specify a different container runtime while setting up Dapr. If you omit the `--container-runtime` flag, the default container runtime is Docker.
+
+```bash
+dapr init --container-runtime podman
+```
 
 #### Kubernetes environment
 

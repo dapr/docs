@@ -65,6 +65,8 @@ The `tracing` section under the `Configuration` spec contains the following prop
 ```yml
 tracing:
   samplingRate: "1"
+  otel: 
+    endpointAddress: "https://..."
   zipkin:
     endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
 ```
@@ -74,7 +76,11 @@ The following table lists the properties for tracing:
 | Property     | Type   | Description |
 |--------------|--------|-------------|
 | `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
-| `zipkin.endpointAddress` | string | Set the Zipkin server address.
+| `stdout` | bool | True write more verbose information to the traces
+| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to
+| `otel.isSecure` | bool | Is the connection to the endpoint address encryped
+| `otel.protocol` | string | Set to `http` or `grpc` protocol
+| `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to
 
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
@@ -103,10 +109,16 @@ See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more informat
 #### Middleware
 
 Middleware configuration set named HTTP pipeline middleware handlers
-The `httpPipeline` section under the `Configuration` spec contains the following properties:
+The `httpPipeline` and the `appHttpPipeline` section under the `Configuration` spec contains the following properties:
 
 ```yml
-httpPipeline:
+httpPipeline: # for incoming http calls
+  handlers:
+    - name: oauth2
+      type: middleware.http.oauth2
+    - name: uppercase
+      type: middleware.http.uppercase
+appHttpPipeline: # for outgoing http calls
   handlers:
     - name: oauth2
       type: middleware.http.oauth2
@@ -174,6 +186,11 @@ metadata:
 spec:
   tracing:
     samplingRate: "1"
+    stdout: true
+    otel:
+      endpointAddress: "localhost:4317"
+      isSecure: false
+      protocol: "grpc"
   httpPipeline:
     handlers:
       - name: oauth2
