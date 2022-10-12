@@ -11,7 +11,7 @@ Dapr provides a way to [determine its health using an [HTTP `/healthz` endpoint]
 - Probed for its health
 - Determined for readiness and liveness
 
-The Dapr `/healthz` endpoint can be used by health probes from the application hosting platform (e.g. Kubernetes). This topic describes how Dapr integrates with probes from different hosting platforms.
+The Dapr `/healthz` endpoint can be used by health probes from the application hosting platform (for example Kubernetes). This topic describes how Dapr integrates with probes from different hosting platforms.
 
 When deploying Dapr to a hosting platform like Kubernetes, the Dapr health endpoint is automatically configured for you.
 

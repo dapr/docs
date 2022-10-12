@@ -8,9 +8,9 @@ description: Reacting to apps' health status changes
 
 App health checks is a feature that allows probing for the health of your application and reacting to status changes.
 
-Applications can become unresponsive for a variety of reasons: for example, they could be too busy to accept new work, or could be crashed or in a deadlock state. Sometimes the condition can be transitory, for example if the app is just busy (and will eventually be able to resume accepting new work), or if the application is being restarted for whatever reason and is in its initialization phase.
+Applications can become unresponsive for a variety of reasons: for example, they could be too busy to accept new work, could have crashed, or be in a deadlock state. Sometimes the condition can be transitory, for example if the app is just busy (and will eventually be able to resume accepting new work), or if the application is being restarted for whatever reason and is in its initialization phase.
 
-When app health checks are enabled, the Dapr *runtime* (also known as the *sidecar*) will periodically poll your application via HTTP or gRPC calls.
+When app health checks are enabled, the Dapr *runtime* (sidecar) periodically polls your application via HTTP or gRPC calls.
 
 When it detects a failure in the app's health, Dapr stops accepting new work on behalf of the application by:
 
@@ -18,7 +18,7 @@ When it detects a failure in the app's health, Dapr stops accepting new work on 
 - Stopping all input bindings
 - Short-circuiting all service-invocation requests, which terminate in the Dapr runtime and are not forwarded to the application
 
-These changes are meant to be temporary, and Dapr will resume normal operations once it detects that the application is responsive again.
+These changes are meant to be temporary, and Dapr resumes normal operations once it detects that the application is responsive again.
 
 App health checks are disabled by default.
 
@@ -32,7 +32,7 @@ Platform-level health checks (or liveness probes) generally ensure that the appl
 Unlike platform-level health checks, Dapr's app health checks focus on pausing work to an application that is currently unable to accept it, but is expected to be able to resume accepting work *eventually*. Goals include:
 
 - Not bringing more load to an application that is already overloaded.
-- Do the "polite" thing by not taking messages from queues or pub/subs when Dapr knows the application won't be able to process them.
+- Do the "polite" thing by not taking messages from queues, bindings, or pub/sub brokers when Dapr knows the application won't be able to process them.
 
 In this regard, Dapr's app health checks are "softer", waiting for an application to be able to process work, rather than terminating the running process in a "hard" way.
 
@@ -65,10 +65,10 @@ Additionally, app health checks are impacted by the protocol used for the app ch
 
 ### Health check paths
 
-When using HTTP for `app-protocol`, Dapr will perform health probes by making an HTTP call to the path specified in `app-health-check-path`, which is `/health` by default.  
-For your app to be considered healthy, the response must have an HTTP status code in the 200-299 range. Any other status code is considered a failure. Dapr is only concerned with the status code of the response, and will ignore any response header or body.
+When using HTTP for `app-protocol`, Dapr performs health probes by making an HTTP call to the path specified in `app-health-check-path`, which is `/health` by default.  
+For your app to be considered healthy, the response must have an HTTP status code in the 200-299 range. Any other status code is considered a failure. Dapr is only concerned with the status code of the response, and ignores any response header or body.
 
-When using gRPC for the app channel, Dapr will invoke the method `/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck` in your application. Most likely, you will use a Dapr SDK to implement the handler for this method.
+When using gRPC for the app channel, Dapr invokes the method `/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck` in your application. Most likely, you will use a Dapr SDK to implement the handler for this method.
 
 While responding to a health probe request, your app *may* decide to perform additional internal health checks to determine if it's ready to process work from the Dapr runtime. However, this is not required; it's a choice that depends on your application's needs.
 
@@ -76,12 +76,12 @@ While responding to a health probe request, your app *may* decide to perform add
 
 When app health checks are enabled, by default Dapr probes your application every 5 seconds. You can configure the interval, in seconds, with `app-health-probe-interval`. These probes happen regularly, regardless of whether your application is healthy or not.
 
-When the Dapr runtime (sidecar) is initially started, Dapr waits for a successful health probe before considering the app healthy. This means that pub/sub subscriptions, input bindings, and service invocation won't be enabled for your app until this first health check is complete and successful.
+When the Dapr runtime (sidecar) is initially started, Dapr waits for a successful health probe before considering the app healthy. This means that pub/sub subscriptions, input bindings, and service invocation requests won't be enabled for your application until this first health check is complete and successful.
 
 Health probe requests are considered successful if the application sends a successful response (as explained above) within the timeout configured in `app-health-probe-timeout`. The default value is 500, corresponding to 500 milliseconds (i.e. half a second).
 
 Before Dapr considers an app to have entered an unhealthy state, it will wait for `app-health-threshold` consecutive failures, whose default value is 3. This default value means that your application must fail health probes 3 times *in a row* to be considered unhealthy.  
-If you set the threshold to 1, any failure will cause Dapr to assume your app is unhealthy and will stop delivering work to it.  
+If you set the threshold to 1, any failure causes Dapr to assume your app is unhealthy and will stop delivering work to it.  
 A threshold greater than 1 can help exclude transient failures due to external circumstances. The right value for your application depends on your requirements.
 
 Thresholds only apply to failures. A single successful response is enough for Dapr to consider your app to be healthy and resume normal operations.
