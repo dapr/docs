@@ -37,7 +37,7 @@ The diagram below shows some examples of the components for each component type
 
 Dapr has built-in components that are included as part of the runtime. These are public components that are developed and donated by the community and are available to use in every release. 
 
-Dapr also allows for users to create their own private components called pluggable components. These are components that are self-hosted (exe or container), do not need to be written in Go, exist outside the Dapr runtime, and are able to "plug" into Dapr to utilize the building block APIs.
+Dapr also allows for users to create their own private components called pluggable components. These are components that are self-hosted (process or container), do not need to be written in Go, exist outside the Dapr runtime, and are able to "plug" into Dapr to utilize the building block APIs.
 
 Where possible, donating built-in components to the Dapr project and community is encouraged.
 
