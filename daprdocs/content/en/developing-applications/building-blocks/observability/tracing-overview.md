@@ -41,7 +41,7 @@ There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace
     An external gateway ingress calls Dapr, which generates the trace headers and calls service A. Service A then calls service B and further Dapr-enabled services. You must propagate the headers from service A to service B: `Ingress -> service A -> propagate trace headers -> service B`. This is similar to case 2 above.
 
 4. Pub/sub messages
-     Dapr generates the trace headers in the published message topic and these trace headers are propagated to any services listening on that topic.
+     Dapr generates the trace headers in the published message topic. These trace headers are propagated to any services listening on that topic.
 
 ### Propogating multiple different service calls
 In these scenarios Dapr does some of the work for you and you need to either create or propagate trace headers.
