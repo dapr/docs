@@ -28,7 +28,7 @@ Dapr takes care of creating the trace headers. However, when there are more than
 
     Dapr generates the trace headers at the beginning of the request in service A, which are then propagated to service B. You are now responsible for taking the headers and propagating them to service C, since this is specific to your application. 
     
-     `service A -> service B -> propagate trace headers to -> service C` and so on to further Dapr enabled services.
+     `service A -> service B -> propagate trace headers to -> service C` and so on to further Dapr-enabled services.
 
      In other words, if the app is calling to Dapr and wants to trace with an existing span (trace header), it must always propagate to Dapr (from service B to service C in this case). Dapr always propagates trace spans to an application.
 
