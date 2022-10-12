@@ -54,7 +54,7 @@ spec:
 ```
 
 ## Configuring metrics using application configuration
-You can also enable metrics via applicatin configuration. To disable the metrics collection in the Dapr side cars running in a specific namespace:
+You can also enable metrics via application configuration. To disable the metrics collection in the Dapr sidecars running in a specific namespace:
 
 - Use the `metrics` spec configuration.
 - Set `enabled: false` to disable the metrics in the Dapr runtime.
