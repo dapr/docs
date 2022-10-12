@@ -145,6 +145,6 @@ spec:
 
 ## Demo
 
-Watch [this video for an overview of using the application health checks](https://youtu.be/srczBuOsAkI?t=533):
+Watch this video for an [overview of using app health checks](https://youtu.be/srczBuOsAkI?t=533):
 
 <iframe width="360" height="315" src="https://www.youtube-nocookie.com/embed/srczBuOsAkI?start=533" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
