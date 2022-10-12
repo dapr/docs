@@ -22,6 +22,8 @@ These changes are meant to be temporary, and Dapr will resume normal operations 
 
 App health checks are disabled by default.
 
+<img src="/images/observability-app-health.webp" width="600" alt="Diagram showing the app health feature. Running Dapr with app health enabled causes Dapr to periodically probe the app for its health.">
+
 ### App health checks vs platform-level health checks
 
 App health checks in Dapr are meant to be complementary to, and not replace, any platform-level health checks, like [liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) when running on Kubernetes.  
