@@ -569,7 +569,7 @@ Order-processor output:
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
 
 ## Next steps
 
