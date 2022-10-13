@@ -276,7 +276,7 @@ In the `checkout` publisher service, we're publishing the orderId message to the
 const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
 
 await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
-   console.log("Published data: " + JSON.stringify(order));
+console.log("Published data: " + JSON.stringify(order));
 ```
 
 ### Step 5: View the Pub/sub outputs
@@ -700,13 +700,13 @@ cd pub_sub/go/sdk/order-processor
 Install the dependencies and build the application:
 
 ```bash
-go build
+go build .
 ```
 
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run
+dapr run --app-port 6002 --app-id order-processor-sdk --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run .
 ```
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
@@ -730,13 +730,13 @@ cd pub_sub/go/sdk/checkout
 Install the dependencies and build the application:
 
 ```bash
-go build app.go
+go build .
 ```
 
 Run the `checkout` publisher service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run .
 ```
 
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
@@ -748,7 +748,7 @@ if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); er
     panic(err)
 }
 
-fmt.Sprintf("Published data: ", order)
+fmt.Println("Published data: ", order)
 ```
 
 ### Step 5: View the Pub/sub outputs
