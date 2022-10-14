@@ -46,6 +46,22 @@ spec:
     value: false
   - name: flowControl 
     value: false
+  - name: ackWait
+    value: 10s
+  - name: maxDeliver
+    value: 5
+  - name: backOff
+    value: "50ms, 1s, 10s"
+  - name: maxAckPending
+    value: 5000
+  - name: replicas
+    value: 1
+  - name: memoryStorage
+    value: false
+  - name: rateLimit
+    value: 1024
+  - name: hearbeat
+    value: 15s
 ```
 
 ## Spec metadata fields
@@ -64,6 +80,14 @@ spec:
 | startTime       |    N     | [Start Time] in Unix format                | `1630349391`                     |
 | deliverAll      |    N     | Set deliver all as [Replay Policy]         | `true`                           |
 | flowControl     |    N     | [Flow Control]                             | `true`                           |
+| ackWait         |    N     | [Ack Wait]                                 | `10s`                            |
+| maxDeliver      |    N     | [Max Deliver]                              | `15`                             |
+| backOff         |    N     | [BackOff]                                  | `"50ms, 1s, 5s, 10s"`            |
+| maxAckPending   |    N     | [Max Ack Pending]                          | `5000`                           |
+| replicas        |    N     | [Replicas]                                 | `3`                              |
+| memoryStorage   |    N     | [Memory Storage]                           | `false`                          |
+| rateLimit       |    N     | [Rate Limit]                               | `1024`                           |
+| hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
 
 ## Create a NATS server
 
@@ -120,4 +144,12 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 [Start Time]: https://docs.nats.io/jetstream/concepts/consumers#deliverbystarttime
 [Replay Policy]: https://docs.nats.io/jetstream/concepts/consumers#replaypolicy
 [Flow Control]: https://docs.nats.io/jetstream/concepts/consumers#flowcontrol
+[Ack Wait]: https://docs.nats.io/jetstream/concepts/consumers#ackwait
+[Max Deliver]: https://docs.nats.io/jetstream/concepts/consumers#maxdeliver
+[BackOff]: https://docs.nats.io/jetstream/concepts/consumers#backoff
+[Max Ack Pending]: https://docs.nats.io/jetstream/concepts/consumers#maxackpending
+[Replicas]: https://docs.nats.io/jetstream/concepts/consumers#replicas
+[Memory Storage]: https://docs.nats.io/jetstream/concepts/consumers#memorystorage
+[Rate Limit]: https://docs.nats.io/jetstream/concepts/consumers#ratelimit
+[Hearbeat]: https://docs.nats.io/jetstream/concepts/consumers#hearbeat
 [Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt
