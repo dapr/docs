@@ -137,12 +137,10 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 
 ```python
 #Subscribe to a topic 
-@app.subscribe(pubsub_name='pubsub', topic='orders')
+@app.subscribe(pubsubname='pubsub', topic='orders', route='route')
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
-
-app.run(6002)
 ```
 
 {{% /codetab %}}
@@ -151,7 +149,7 @@ app.run(6002)
 
 ```javascript
 //Subscribe to a topic
-await server.pubsub.subscribe("pubsub", "orders", async (orderId) => {
+await server.pubsub.subscribe("pubsub", "orders", "checkout", async (orderId) => {
     console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
 });
 await server.startServer();
@@ -163,11 +161,10 @@ await server.startServer();
 
 ```go
 //Subscribe to a topic
-if err := s.AddTopicEventHandler(sub, eventHandler); err != nil {
-	log.Fatalf("error adding topic subscription: %v", err)
-}
-if err := s.Start(); err != nil && err != http.ErrServerClosed {
-	log.Fatalf("error listenning: %v", err)
+var sub = &common.Subscription{
+	PubsubName: "pubsub",
+	Topic:      "orders",
+	Route:      "/checkout",
 }
 
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
