@@ -88,6 +88,55 @@ You can store a record in Redis using the `create` operation. This sets a key to
 
 An HTTP 204 (No Content) and empty body is returned if successful.
 
+- `get`
+
+You can get a record in Redis using the `get` operation. This get a key where you set.
+
+### Request
+
+```json
+{
+  "operation": "get",
+  "metadata": {
+    "key": "key1"
+  },
+  "data": {
+  }
+}
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "Hello": "World",
+    "Lorem": "Ipsum"
+  }
+}
+```
+
+- `delete`
+
+You can delete multiple records in Redis using the `delete` operation. There is at least one key in metadata, {key: xxx}, if there are more than one, append key1, key2...
+
+### Request
+
+```json
+{
+  "operation": "delete",
+  "metadata": {
+    "key": "key_a",
+    "key1" : "key_b"
+  }
+}
+```
+
+### Response
+
+An HTTP 204 (No Content) and empty body is returned if successful.
+
+
 ## Create a Redis instance
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later.
