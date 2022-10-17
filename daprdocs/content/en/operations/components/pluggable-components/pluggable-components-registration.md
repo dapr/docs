@@ -176,9 +176,6 @@ spec:
             - name: dapr-unix-domain-socket
               mountPath: /dapr-unix-domain-sockets
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
-          env:
-            - name: DAPR_COMPONENTS_SOCKETS_FOLDER # Tells the component where the sockets should be created.
-              value: /dapr-unix-domain-sockets
 ```
 
 Before applying the deployment, let's add one more configuration: the component spec.
