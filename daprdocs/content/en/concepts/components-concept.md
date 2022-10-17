@@ -11,7 +11,7 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 You can contribute implementations and extend Dapr's component interfaces capabilities via:
 
 - The [components-contrib repository](https://github.com/dapr/components-contrib)
-- [Pluggable components]({{<ref "components-concept.md#pluggable-components" >}}).
+- [Pluggable components]({{<ref "components-concept.md#built-in-and-pluggable-components" >}}).
 
 A building block can use any combination of components. For example, the [actors]({{<ref "actors-overview.md">}}) and the [state management]({{<ref "state-management-overview.md">}}) building blocks both use [state components](https://github.com/dapr/components-contrib/tree/master/state).
 
