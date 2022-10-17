@@ -174,7 +174,7 @@ spec:
         - name: component
           volumeMounts: # required, the sockets volume mount
             - name: dapr-unix-domain-socket
-              mountPath: /dapr-unix-domain-sockets
+              mountPath: /tmp/dapr-components-sockets
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
 
