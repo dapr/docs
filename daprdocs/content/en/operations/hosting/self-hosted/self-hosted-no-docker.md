@@ -12,7 +12,7 @@ description: "How to deploy and run Dapr in self-hosted mode without Docker inst
 
 ## Initialize Dapr without containers
 
-The Dapr CLI provides an option to initialize Dapr using slim init, without the default creation of a development environment with a dependency on Docker. Once you've installed the Dapr CLI, slim init Dapr with the following command:
+The Dapr CLI provides an option to initialize Dapr using slim init, without the default creation of a development environment with a dependency on Docker. To initialize Dapr with slim init, after installing the Dapr CLI, use the following command:
 
 ```bash
 dapr init --slim
@@ -68,7 +68,7 @@ INFO[0001] leader is established.                        instance=Nicoletaz-L10.
 
 {{% codetab %}}
 
-When running standalone Windows placement, specify port 6050:
+When running standalone placement on Windows, specify port 6050:
 
 ```bash
 %USERPROFILE%/.dapr/bin/placement.exe -port 6050
