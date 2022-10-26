@@ -15,11 +15,17 @@ Workflows are quickly becoming a core element to cloud-native applications. A wo
 
 While you can build workflows from scratch using primitives (such as actors, pub/sub, and state stores), workflows typically come with the following common obstacles:
 
-- Resilient, multi-step business logic requires infrastructure to monitor and automatically restore the operation state.
-- Business logic modifying or orchestrating state across multiple microservices requires  developers to design and build compensation logic to handle unrecoverable failures.
-- Reasoning about business logic scattered across actors, pub/subs, and event handlers can be difficult and result in complicated architectures, creating maintenance problems and slowing down development.
+- Infrastructure to monitor and automatically restore the operation state.
+- Compensation logic to handle unrecoverable failures.
+- Complicated architectures with maintenance problems and slowed down development.
 
-A workflow's utility for microservices also makes it a great fit for Dapr’s mission to support microservice development. The workflow API provides several advantages with an embedded workflow engine in the Dapr sidecar.
+<!-- 
+Include a diagram or image, if possible. 
+-->
+
+## Workflow API
+
+A workflow's utility for microservices makes it a great fit for Dapr’s mission to support microservice development. The workflow API provides several advantages with an embedded workflow engine in the Dapr sidecar.  
 
 | With the workflow API | Without the workflow API |
 | --------------------- | ------------------------ |
@@ -27,16 +33,10 @@ A workflow's utility for microservices also makes it a great fit for Dapr’s mi
 | An efficient, more manageable single sidecar for all microservices | Separate sidecars (or services) for workflows. |
 | Portable workflows keeps Dapr portable. | Lessened portability. |
 
-With a lightweight, embedded workflow engine, you can create orchestration on top of existing Dapr building blocks in a portable and adoptable way. 
-
-## Workflow API
-
-The workflow building block consists of:
+With a [lightweight, embedded workflow engine](#embedded-workflow-engine), you can create orchestration on top of existing Dapr building blocks in a portable and adoptable way. The workflow building block consists of:
 
 - A pluggable component model for integrating various workflow engines
 - A set of APIs for managing workflows (start, schedule, pause, resume, cancel)
-
-Similar to the built-in support for actors, the workflow API implements a [built-in workflow runtime](#embedded-workflow-engine). 
 
 Workflows supported by your platforms can be exposed as APIs with support for both HTTP and the Dapr SDKs, including:
 
