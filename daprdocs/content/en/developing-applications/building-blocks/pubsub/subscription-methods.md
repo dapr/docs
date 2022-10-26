@@ -137,7 +137,7 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 
 ```python
 #Subscribe to a topic 
-@app.subscribe(pubsubname='pubsub', topic='orders', route='route')
+@app.subscribe(pubsubname='pubsub', topic='orders', route='checkout')
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
