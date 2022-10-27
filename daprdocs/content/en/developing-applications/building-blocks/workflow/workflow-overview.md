@@ -55,13 +55,40 @@ The workflow API brings several features to your application.
 
 <!-- todo -->
 
-Unlike actors, the workflow runtime component can be swapped out with an alternate implementation. If developers want to work with other workflow engines, such as externally hosted workflow services like Azure Logic Apps, AWS Step Functions, or Temporal.io, they can do so with alternate community-contributed workflow components.
+Similar to the built-in support for actors, Dapr has implemented a built-in runtime for workflows. Unlike actors, the workflow runtime component can be swapped out with an alternate implementation. If you want to work with other workflow engines (such as externally hosted workflow services like Azure Logic Apps, AWS Step Functions, or Temporal.io), you can use alternate community-contributed workflow components.
 
-We propose adding a lightweight, portable, embedded workflow engine (DTFx-go) in the Dapr sidecar that leverages existing Dapr components, including actors and state storage, in its underlying implementation. By being lightweight and portable developers will be able to execute workflows that run inside DFTx-go locally as well as in production with minimal overhead; this enhances the developer experience by integrating workflows with the existing Dapr development model that users enjoy.
+In an effort to enhance the developer experience, the Dapr sidecar contains a lightweight, portable, embedded workflow engine (DTFx-go) that leverages and integrates with existing Dapr components, including actors and state storage, in its underlying implementation. The engine's portability enables you to execute workflows that run:
+- Inside DFTx-go locally
+- In production with minimal overhead.
 
-The new engine will be written in Go and inspired by the existing Durable Task Framework (DTFx) engine. We’ll call this new version of the framework DTFx-go to distinguish it from the .NET implementation (which is not part of this proposal) and it will exist as an open-source project with a permissive, e.g., Apache 2.0, license so that it remains compatible as a dependency for CNCF projects. Note that it’s important to ensure this engine remains lightweight so as not to noticeably increase the size of the Dapr sidecar.
+#### DTFx-go workflow engine
 
-Importantly, DTFx-go will not be exposed to the application layer. Rather, the Dapr sidecar will expose DTFx-go functionality over a gRPC stream. The Dapr sidecar will not execute any app-specific workflow logic or load any declarative workflow documents. Instead, app containers will be responsible for hosting the actual workflow logic. The Dapr sidecar can send and receive workflow commands over gRPC to and from connected app’s workflow logic, execute commands on behalf of the workflow (service invocation, invoking bindings, etc.). Other concerns such as activation, scale-out, and state persistence will be handled by internally managed actors. More details on all of this will be discussed in subsequent sections.
+The workflow engine is written in Go and inspired by the existing Durable Task Framework (DTFx) engine. DTFx-go exists as an open-source project with a permissive (like Apache 2.0) license, maintaing compatibility as a dependency for CNCF projects. 
+
+DTFx-go is not exposed to the application layer. Rather, the Dapr sidecar:
+
+- Exposes DTFx-go functionality over a gRPC stream 
+- Sends and receives workflow commands over gRPC to and from a connected app’s workflow logic
+- Executes commands on behalf of the workflow (service invocation, invoking bindings, etc.) 
+
+Meanwhile, app containers:
+
+- Execute and/or host any app-specific workflow logic, or 
+- Load any declarative workflow documents. 
+
+Other concerns such as activation, scale-out, and state persistence are handled by internally managed actors. 
+
+#### Executing, scheduling, and resilience
+
+#### Storage of state and durability
+
+### Workflows as code
+
+### Declarative workflows support
+
+#### CNCF serverless workflows
+
+#### Hosting serverless workflows
 
 ## Try out the workflow API
 
