@@ -90,7 +90,7 @@ An HTTP 204 (No Content) and empty body is returned if successful.
 
 - `get`
 
-You can get a record in Redis using the `get` operation. This get a key where you set.
+You can get a record in Redis using the `get` operation. This gets a key that was previously set.
 
 ### Request
 
@@ -118,7 +118,7 @@ You can get a record in Redis using the `get` operation. This get a key where yo
 
 - `delete`
 
-You can delete multiple records in Redis using the `delete` operation. There is at least one key in metadata, {key: xxx}, if there are more than one, append key1, key2...
+You can delete a record in Redis using the `delete` operation. Returns success whether the key exists or not.
 
 ### Request
 
@@ -126,8 +126,7 @@ You can delete multiple records in Redis using the `delete` operation. There is 
 {
   "operation": "delete",
   "metadata": {
-    "key": "key_a",
-    "key1" : "key_b"
+    "key": "key1"
   }
 }
 ```
