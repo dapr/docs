@@ -100,21 +100,35 @@ For workflow execution to complete reliably in the face of transient errors, it 
 
 ### Workflow as code
 
-"Workflow as code" refers to the implementation of a workflow’s logic using general purpose programming languages. "Workflow as code" is used in a growing number of modern workflow frameworks, such as Azure Durable Functions, Temporal.io, and Prefect (Orion). The advantage of this approach is its developer-friendliness. Developers can use a programming language that they already know (no need to learn a new DSL or YAML schema), they have access to the language’s standard libraries, can build their own libraries and abstractions, can use debuggers and examine local variables, and can even write unit tests for their workflows just like they would any other part of their application logic.
+"Workflow as code" refers to the developer-friendly implementation of a workflow’s logic using general purpose programming languages, allowing you to:
 
-The Dapr SDK will internally communicate with the DTFx-go gRPC endpoint in the Dapr sidecar to receive new workflow events and send new workflow commands, but these protocol details will be hidden from the developer. Due to the complexities of the workflow protocol, we are not proposing any HTTP API for the runtime aspect of this feature.
+- Use your preferred programming language (no need to learn a new DSL or YAML schema)
+- Have access to the language’s standard libraries
+- Build your own libraries and abstractions
+- Use debuggers and examine local variables
+- Write unit tests for your workflows, just like any other part of your application logic
+
+The Dapr SDK internally communicates with the DTFx-go gRPC endpoint in the Dapr sidecar to receive new workflow events and send new workflow commands, with these protocol details hidden. 
+
+Due to the complexities of the workflow protocol, no HTTP API for this runtime feature is available at this time.
 
 ### Declarative workflows support
 
-We expect workflows as code to be very popular for developers because working with code is both very natural for developers and is much more expressive and flexible compared to declarative workflow modeling languages. In spite of this, there will still be users who will prefer or require workflows to be declarative. To support this, we propose building an experience for declarative workflows as a layer on top of the "workflow as code" foundation. A variety of declarative workflows could be supported in this way. For example, this model could be used to support the AWS Step Functions workflow syntax, the Azure Logic Apps workflow syntax, or even the Google Cloud Workflow syntax. However, for the purpose of this proposal, we’ll focus on what it would look like to support the CNCF Serverless Workflow specification. Note, however, that the proposed model could be used to support any number of declarative multiple workflow schemas.
+Dapr provides an experience for declarative workflows as a layer on top of the "workflow as code" foundation, supporting a variety of declarative workflows, including:
+- The AWS Step Functions workflow syntax
+- The Azure Logic Apps workflow syntax
+- The Google Cloud workflow syntax
+- The CNCF Serverless workflow specification
 
 #### CNCF serverless workflows
 
-Serverless Workflow (SLWF) consists of an open-source standards-based DSL and dev tools for authoring and validating workflows in either JSON or YAML. SLWF was specifically selected for this proposal because it represents a cloud native and industry standard way to author workflows. There are a set of already existing open-source tools for generating and validating these workflows that can be adopted by the community. It’s also an ideal fit for Dapr since it’s under the CNCF umbrella (currently as a sandbox project). This proposal would support the SLWF project by providing it with a lightweight, portable runtime – i.e., the Dapr sidecar.
+Serverless Workflow (SLWF) consists of open-source, cloud native and industry standard DSL and dev tools for authoring and validating workflows in either JSON or YAML. SLWF is an ideal fit for Dapr's lightweight, portable runtime as it sits under the CNCF umbrella.
 
 #### Hosting serverless workflows
 
-In this proposal, we use the Dapr SDKs to build a new, portable SLWF runtime that leverages the Dapr sidecar. Most likely it is implemented as a reusable container image and supports loading workflow definition files from Dapr state stores (the exact details need to be worked out). Note that the Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
+You can use the Dapr SDKs to build a new, portable SLWF runtime that leverages the Dapr sidecar. Usually, you can implement the runtime as a reusable container image that supports loading workflow definition files from Dapr state stores. 
+
+The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
 
 
 ## Try out the workflow API
