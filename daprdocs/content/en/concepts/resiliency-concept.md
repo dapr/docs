@@ -17,7 +17,7 @@ Dapr provides a capability for defining and applying fault tolerance resiliency 
 - Retries/back-offs
 - Circuit breakers
 
-These policies can be applied to any Dapr API calls and when calling components with a [resiliency spec]({{< ref resiliency-overview >}}).
+These policies can be applied to any Dapr API calls when calling components with a [resiliency spec]({{< ref resiliency-overview >}}).
 
 ## App Health Checks
 <img src="/images/observability-app-health.webp" width="800" alt="Diagram showing the app health feature. Running Dapr with app health enabled causes Dapr to periodically probe the app for its health">
