@@ -27,3 +27,11 @@ Applications can become unresponsive for a variety of reasons. For example, they
 Dapr provides a capability for monitoring app health through probes that check the health of your application and react to status changes. When an unhealthy app is detected, Dapr stops accepting new work on behalf of the application.
 
 Read more on how to apply [app health checks]({{< ref app-health >}}) to your application.
+
+## Sidecar Health Checks
+Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
+
+- Probed for its health
+- Determined for readiness and liveness
+
+Read more on about how to apply [dapr health checks]({{< ref sidecar-health >}}) to your application.
