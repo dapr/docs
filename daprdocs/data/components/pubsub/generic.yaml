@@ -1,6 +1,6 @@
 - component: Hazelcast
   link: setup-hazelcast
-  state: Beta
+  state: Deprecated
   version: v1
   since: "1.7"
 - component: In Memory
