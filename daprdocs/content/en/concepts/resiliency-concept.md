@@ -3,7 +3,7 @@ type: docs
 title: "Resiliency"
 linkTitle: "Resiliency"
 weight: 400
-description: "Configure retries, timeouts, circuit breakers and monitor app health"
+description: "Configure policies and monitor app and sidecar health"
 ---
 
 Distributed applications are commonly comprised of many microservices, with dozens - sometimes hundreds - of instances scaling across underlying infrastructure. As these distributed solutions grow in size and complexity, the potential for system failures inevitably increases. Service instances can fail or become unresponsive due to any number of issues, including hardware failures, unexpected throughput, or application lifecycle events, such as scaling out and application restarts. Designing and implementing a self-healing solution with the ability to detect, mitigate, and respond to failure is critical.
