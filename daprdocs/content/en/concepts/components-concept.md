@@ -11,11 +11,11 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 You can contribute implementations and extend Dapr's component interfaces capabilities via:
 
 - The [components-contrib repository](https://github.com/dapr/components-contrib)
-- [Pluggable components]({{<ref "components-concept.md#pluggable-components" >}}).
+- [Pluggable components]({{< ref "components-concept.md#pluggable-components" >}}).
 
-A building block can use any combination of components. For example, the [actors]({{<ref "actors-overview.md">}}) and the [state management]({{<ref "state-management-overview.md">}}) building blocks both use [state components](https://github.com/dapr/components-contrib/tree/master/state).
+A building block can use any combination of components. For example, the [actors]({{< ref "actors-overview.md" >}}) and the [state management]({{< ref "state-management-overview.md" >}}) building blocks both use [state components](https://github.com/dapr/components-contrib/tree/master/state).
 
-As another example, the [pub/sub]({{<ref "pubsub-overview.md">}}) building block uses [pub/sub components](https://github.com/dapr/components-contrib/tree/master/pubsub).
+As another example, the [pub/sub]({{< ref "pubsub-overview.md" >}}) building block uses [pub/sub components](https://github.com/dapr/components-contrib/tree/master/pubsub).
 
 You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
 
@@ -26,9 +26,9 @@ Each component has a specification (or spec) that it conforms to. Components are
 - A `components/local` folder within your solution, or
 - Globally in the `.dapr` folder created when invoking `dapr init`.
 
-These YAML files adhere to the generic [Dapr component schema]({{<ref "component-schema.md">}}), but each is specific to the component specification.
+These YAML files adhere to the generic [Dapr component schema]({{< ref "component-schema.md" >}}), but each is specific to the component specification.
 
-It is important to understand that the component spec values, particularly the spec `metadata`, can change between components of the same component type, for example between different state stores, and that some design-time spec values can be overridden at runtime when making requests to a component's API. As a result, it is strongly recommended to review a [component's specs]({{<ref "components-reference">}}), paying particular attention to the sample payloads for requests to set the metadata used to interact with the component.
+It is important to understand that the component spec values, particularly the spec `metadata`, can change between components of the same component type, for example between different state stores, and that some design-time spec values can be overridden at runtime when making requests to a component's API. As a result, it is strongly recommended to review a [component's specs]({{< ref "components-reference" >}}), paying particular attention to the sample payloads for requests to set the metadata used to interact with the component.
 
 The diagram below shows some examples of the components for each component type
 <img src="/images/concepts-components.png" width=1200>
@@ -46,7 +46,7 @@ For example:
 - Your component may be specific to your company or pose IP concerns, so it cannot be included in the Dapr component repo. 
 - You want decouple your component updates from the Dapr release cycle.
 
-For more information read [Pluggable components overview]({{<ref "pluggable-components-overview">}})
+For more information read [Pluggable components overview]({{< ref "pluggable-components-overview" >}})
 
 ## Available component types
 
@@ -61,7 +61,7 @@ State store components are data stores (databases, files, memory) that store key
 
 ### Name resolution
 
-Name resolution components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block to integrate with the hosting environment and provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
+Name resolution components are used with the [service invocation]({{< ref "service-invocation-overview.md" >}}) building block to integrate with the hosting environment and provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
 
 - [List of name resolution components]({{< ref supported-name-resolution >}})
 - [Name resolution implementations](https://github.com/dapr/components-contrib/tree/master/nameresolution)
@@ -82,7 +82,7 @@ External resources can connect to Dapr in order to trigger a method on an applic
 
 ### Secret stores
 
-A [secret]({{<ref "secrets-overview.md">}}) is any piece of private information that you want to guard against unwanted access. Secrets stores are used to store secrets that can be retrieved and used in applications.
+A [secret]({{< ref "secrets-overview.md" >}}) is any piece of private information that you want to guard against unwanted access. Secrets stores are used to store secrets that can be retrieved and used in applications.
 
 - [List of supported secret stores]({{< ref supported-secret-stores >}})
 - [Secret store implementations](https://github.com/dapr/components-contrib/tree/master/secretstores)
@@ -101,9 +101,16 @@ Lock components are used as a distributed lock to provide mutually exclusive acc
 - [List of supported locks]({{< ref supported-locks >}})
 - [Lock implementations](https://github.com/dapr/components-contrib/tree/master/lock)
 
+### Workflows
+
+A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines business process or data flow in a reliable way across mulitple microservices. The workflow API is exposed by a [lightweight, embedded workflow engine]({{< ref "operations/components/workflow-engine/workflow-engine.md" >}}) in the Dapr sidecar, allowing you to easily integrate with existing Dapr building blocks. 
+
+- [List of supported workflows]({{< ref supported-workflows >}})
+- Workflow implementations
+
 ### Middleware
 
-Dapr allows custom [middleware]({{<ref "middleware.md">}}) to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request (such as authentication, encryption, and message transformation) before the request is routed to the user code, or the response is returned to the client. The middleware components are used with the [service invocation]({{<ref "service-invocation-overview.md">}}) building block.
+Dapr allows custom [middleware]({{< ref "middleware.md" >}}) to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request (such as authentication, encryption, and message transformation) before the request is routed to the user code, or the response is returned to the client. The middleware components are used with the [service invocation]({{< ref "service-invocation-overview.md" >}}) building block.
 
 - [List of supported middleware components]({{< ref supported-middleware >}})
 - [Middleware implementations](https://github.com/dapr/components-contrib/tree/master/middleware)

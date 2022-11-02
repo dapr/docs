@@ -1,0 +1,5 @@
+- component: Azure Logic Apps
+  link: azure-logic-apps
+  state: Alpha
+  version: v1
+  since: "1.10"

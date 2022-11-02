@@ -102,7 +102,7 @@ If a payload is included in the POST request, it will be saved as the output of 
 
 ## Raise Event
 
-Workflows are especially useful when they can wait for and be driven by external events. For example, a workflow could subscribe to events from a pub/sub topic, as shown in the [phone verification sample]({{< ref "workflow-scenarios.md#example-2-phone-verification" >}}).
+Workflows are especially useful when they can wait for and be driven by external events. For example, a workflow could subscribe to events from a pub/sub topic, as shown in the [phone verification sample]().
 
 ### HTTP / gRPC request
 
