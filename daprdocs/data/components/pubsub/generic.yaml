@@ -43,3 +43,8 @@
   state: Stable
   version: v1
   since: "1.7"
+- component: RocketMQ
+  link: setup-rocketmq
+  state: Alpha
+  version: v1
+  since: "1.8"
