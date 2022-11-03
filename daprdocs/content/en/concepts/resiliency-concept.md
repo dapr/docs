@@ -29,6 +29,8 @@ Dapr provides a capability for monitoring app health through probes that check t
 Read more on how to apply [app health checks]({{< ref app-health >}}) to your application.
 
 ## Sidecar Health Checks
+<img src="/images/sidecar-health.png" width="800" alt="Diagram showing the app health feature. Running Dapr with app health enabled causes Dapr to periodically probe the app for its health">
+
 Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
 
 - Probed for its health
