@@ -86,6 +86,7 @@ You can store a record in Redis using the `create` operation. This sets a key to
     "Lorem": "Ipsum"
   }
 }
+```
 
 #### Response
 
