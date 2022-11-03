@@ -66,10 +66,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 This component supports **output binding** with the following operations:
 
 - `create`
+- `get`
+- `delete`
+
+### create
 
 You can store a record in Redis using the `create` operation. This sets a key to hold a value. If the key already exists, the value is overwritten.
 
-### Request
+#### Request
 
 ```json
 {
@@ -82,17 +86,16 @@ You can store a record in Redis using the `create` operation. This sets a key to
     "Lorem": "Ipsum"
   }
 }
-```
 
-### Response
+#### Response
 
 An HTTP 204 (No Content) and empty body is returned if successful.
 
-- `get`
+### get
 
 You can get a record in Redis using the `get` operation. This gets a key that was previously set.
 
-### Request
+#### Request
 
 ```json
 {
@@ -105,7 +108,7 @@ You can get a record in Redis using the `get` operation. This gets a key that wa
 }
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -116,11 +119,11 @@ You can get a record in Redis using the `get` operation. This gets a key that wa
 }
 ```
 
-- `delete`
+### delete
 
 You can delete a record in Redis using the `delete` operation. Returns success whether the key exists or not.
 
-### Request
+#### Request
 
 ```json
 {
@@ -131,7 +134,7 @@ You can delete a record in Redis using the `delete` operation. Returns success w
 }
 ```
 
-### Response
+#### Response
 
 An HTTP 204 (No Content) and empty body is returned if successful.
 
