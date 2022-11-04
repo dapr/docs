@@ -11,7 +11,7 @@ description: "Get started with Dapr's resiliency capabilities"
  Resiliency is currently a preview feature.
 {{% /alert %}}
 
-In this Quickstart, you will observe Dapr resiliency capabilities by introducing toxic behavior to a microservice that continuously perists and retrieves state via Dapr's state management API. 
+In this Quickstart, you will observe Dapr resiliency capabilities by simulating a system failure. You will execute a microservice application that continuously persists and retrieves state via Dapr's state management API. When operations to the state store begin to fail, Dapr resiliency policies are applied.
 
 The resiliency policies used in this example are defined and applied via the [resiliency spec]() located in the components directory.
 
