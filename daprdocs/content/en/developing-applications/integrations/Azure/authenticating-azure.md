@@ -84,7 +84,7 @@ To start, create a new Azure AD application, which will also be used as Service 
 
 Prerequisites:
 
-- [Azure Subscription](https://azure.microsoft.com/free/)
+- Azure Subscription
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - OpenSSL (included by default on all Linux and macOS systems, as well as on WSL)
@@ -108,11 +108,7 @@ First, create the Azure AD application with:
 APP_NAME="dapr-application"
 
 # Create the app
-APP_ID=$(az ad app create \
-  --display-name "${APP_NAME}" \
-  --available-to-other-tenants false \
-  --oauth2-allow-implicit-flow false \
-  | jq -r .appId)
+APP_ID=$(az ad app create --display-name "${APP_NAME}"  | jq -r .appId)
 ```
 
 {{< tabs "Client secret" "Certificate">}}
@@ -124,16 +120,14 @@ To create a **client secret**, then run this command. This will generate a rando
 ```sh
 az ad app credential reset \
   --id "${APP_ID}" \
-  --years 2 \
-  --password $(openssl rand -base64 30)
+  --years 2
 ```
 
-The ouput of the command above will be similar to this:
+The output of the command above will be similar to this:
 
 ```json
 {
   "appId": "c7dd251f-811f-4ba2-a905-acd4d3f8f08b",
-  "name": "c7dd251f-811f-4ba2-a905-acd4d3f8f08b",
   "password": "Ecy3XG7zVZK3/vl/a2NSB+a1zXLa8RnMum/IgD0E",
   "tenant": "cd4b2887-304c-47e1-b4d5-65447fdd542b"
 }
@@ -164,7 +158,6 @@ The output of the command above should look like:
 {
   "appId": "c7dd251f-811f-4ba2-a905-acd4d3f8f08b",
   "fileWithCertAndPrivateKey": "/Users/alessandro/tmpgtdgibk4.pem",
-  "name": "c7dd251f-811f-4ba2-a905-acd4d3f8f08b",
   "password": null,
   "tenant": "cd4b2887-304c-47e1-b4d5-65447fdd542b"
 }
@@ -190,7 +183,7 @@ Once you have created an Azure AD application, create a Service Principal for th
 ```sh
 SERVICE_PRINCIPAL_ID=$(az ad sp create \
   --id "${APP_ID}" \
-  | jq -r .objectId)
+  | jq -r .id)
 echo "Service Principal ID: ${SERVICE_PRINCIPAL_ID}"
 ```
 

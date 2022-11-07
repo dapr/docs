@@ -9,14 +9,13 @@ description: "Detailed documentation on the Zeebe command binding component"
 
 To setup Zeebe command binding create a component of type `bindings.zeebe.command`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-See [this](https://docs.camunda.io/docs/product-manuals/zeebe/zeebe-overview) for Zeebe documentation.
+See [this](https://docs.camunda.io/docs/components/zeebe/zeebe-overview/) for Zeebe documentation.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.zeebe.command
   version: v1
@@ -59,7 +58,7 @@ This component supports **output binding** with the following operations:
 
 ### Output binding
 
-Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the [gRPC API reference](https://stage.docs.zeebe.io/reference/grpc.html) for more information.
+Zeebe uses gRPC under the hood for the Zeebe client we use in this binding. Please consult the [gRPC API reference](https://docs.camunda.io/docs/apis-clients/grpc/) for more information.
 
 #### topology
 

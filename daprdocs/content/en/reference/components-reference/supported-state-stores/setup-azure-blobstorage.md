@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: state.azure.blobstorage
   version: v1
@@ -37,16 +36,17 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| accountName        | Y        | The storage account name | `"mystorageaccount"`.
-| accountKey         | Y (unless using Azure AD) | Primary or secondary storage key | `"key"`
-| containerName      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
+| `accountName`        | Y        | The storage account name | `"mystorageaccount"`.
+| `accountKey`         | Y (unless using Azure AD) | Primary or secondary storage key | `"key"`
+| `containerName`      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
 | `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"`, `"AZUREGERMANCLOUD"`
-| ContentType        | N        | The blob's content type | `"text/plain"`
-| ContentMD5         | N        | The blob's MD5 hash | `"vZGKbMRDAnMs4BIwlXaRvQ=="`
-| ContentEncoding    | N        | The blob's content encoding | `"UTF-8"`
-| ContentLanguage    | N        | The blob's content language | `"en-us"`
-| ContentDisposition | N        | The blob's content disposition. Conveys additional information about how to process the response payload | `"attachment"`
-| CacheControl       | N        | The blob's cache control | `"no-cache"`
+| `endpoint` | N | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10000"` 
+| `ContentType`        | N        | The blob's content type | `"text/plain"`
+| `ContentMD5`         | N        | The blob's MD5 hash | `"vZGKbMRDAnMs4BIwlXaRvQ=="`
+| `ContentEncoding`    | N        | The blob's content encoding | `"UTF-8"`
+| `ContentLanguage`    | N        | The blob's content language | `"en-us"`
+| `ContentDisposition` | N        | The blob's content disposition. Conveys additional information about how to process the response payload | `"attachment"`
+| `CacheControl`       | N        | The blob's cache control | `"no-cache"`
 
 ## Setup Azure Blob Storage
 
@@ -105,7 +105,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: state.azure.blobstorage
   version: v1

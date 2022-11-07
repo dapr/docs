@@ -6,9 +6,9 @@ weight: 2000
 description: "Use the secret store building block to securely retrieve a secret"
 ---
 
-This guide demonstrates how to use Dapr's secrets API in your code to leverage the [secrets store building block]({{< ref secrets-overview >}}). With the secrets API, you easily retrieve secrets in your application code from a configured secret store.
+Now that you've learned [what the Dapr secrets building block provides]({{< ref secrets-overview >}}), learn how it can work in your service. This guide demonstrates how to call the secrets API and retrieve secrets in your application code from a configured secret store.
 
-<img src="/images/building-block-secrets-management-example.png" width=1000 alt="Diagram showing secrets management of example service">
+<img src="/images/howto-secrets/secrets-mgmt-overview.png" width=1000 alt="Diagram showing secrets management of example service.">
 
 {{% alert title="Note" color="primary" %}}
  If you haven't already, [try out the secrets management quickstart]({{< ref secrets-quickstart.md >}}) for a quick walk-through on how to use the secrets API.
@@ -17,13 +17,13 @@ This guide demonstrates how to use Dapr's secrets API in your code to leverage t
 
 ## Set up a secret store
 
-Before retrieving secrets in your application's code, you must configure a secret store component. This example configures a local secret store which uses a local JSON file to store secrets.
+Before retrieving secrets in your application's code, you must configure a secret store component. This example configures a secret store that uses a local JSON file to store secrets.
 
 {{% alert title="Warning" color="warning" %}}
 In a production-grade application, local secret stores are not recommended. [Find alternatives]({{< ref supported-secret-stores >}}) to securely manage your secrets.
 {{% /alert %}}
 
-Create a file named `secrets.json` with the following contents:
+In your project directory, create a file named `secrets.json` with the following contents:
 
 ```json
 {
@@ -31,14 +31,13 @@ Create a file named `secrets.json` with the following contents:
 }
 ```
 
-Create a directory for your components file named `components` and inside it create a file named `localSecretStore.yaml` with the following contents:
+Create a new directory named `components`. Navigate into that directory and create a component file named `local-secret-store.yaml` with the following contents:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: localsecretstore
-  namespace: default
 spec:
   type: secretstores.local.file
   version: v1
@@ -50,10 +49,13 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The path to the secret store JSON is relative to where you call `dapr run` from.
+The path to the secret store JSON is relative to where you call `dapr run`.
 {{% /alert %}}
 
-For more information, see how to [configure a different kind of secret store]({{< ref setup-secret-store >}}) and review [supported secret stores]({{< ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
+For more information:
+
+- See how to [configure a different kind of secret store]({{< ref setup-secret-store >}}).
+- Review [supported secret stores]({{< ref supported-secret-stores >}}) to see specific details required for different secret store solutions.
 
 ## Get a secret
 
@@ -67,7 +69,7 @@ See a [full API reference]({{< ref secrets_api.md >}}).
 
 ## Calling the secrets API from your code
 
-Once you have a secret store, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
+Now that you've set up the local secret store, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
 
 {{< tabs Dotnet Java Python Go Javascript>}}
 
@@ -210,7 +212,7 @@ func main() {
 
 ```javascript
 //dependencies 
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
 
 //code
 const daprHost = "127.0.0.1"; 
@@ -235,9 +237,7 @@ main();
 
 ## Related links
 
-- [Dapr secrets overview]({{<ref secrets-overview>}})
-- [Secrets API reference]({{<ref secrets_api>}})
-- [Configure a secret store]({{<ref setup-secret-store>}})
-- [Supported secrets]({{<ref supported-secret-stores>}})
-- [Using secrets in components]({{<ref component-secrets>}})
-- [Secret stores tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/secretstore)
+- Review the [Dapr secrets API features]({{< ref secrets-overview >}}).
+- Learn how to [use secrets scopes]({{< ref secrets-scopes >}})
+- Read the [secrets API reference]({{< ref secrets_api >}}) and review the [supported secrets]({{< ref supported-secret-stores >}}).
+- Learn how to [set up different secret store components]({{< ref setup-secret-store >}}) and how to [reference secrets in your component]({{< ref component-secrets >}}).

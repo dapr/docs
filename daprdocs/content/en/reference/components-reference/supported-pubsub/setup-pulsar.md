@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pulsar-pubsub
-  namespace: default
 spec:
   type: pubsub.pulsar
   version: v1
@@ -117,7 +116,7 @@ docker run -it \
 {{% /codetab %}}
 
 {{% codetab %}}
-Refer to the following [Helm chart](https://pulsar.apache.org/docs/en/kubernetes-helm/) Documentation.
+Refer to the following [Helm chart](https://pulsar.apache.org/docs/helm-overview) Documentation.
 {{% /codetab %}}
 
 {{< /tabs >}}

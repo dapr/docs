@@ -1,20 +1,26 @@
 - component: HashiCorp Vault
   link: hashicorp-vault
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.0"
+  since: "1.9"
+  features:
+    multipleKeyValuesPerSecret: true
 - component: Local environment variables
   link: envvar-secret-store
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
 - component: Local file
   link: file-secret-store
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.9"
+  features:
+    multipleKeyValuesPerSecret: true
 - component: Kubernetes secrets
   link: kubernetes-secret-store
   state: Stable
   version: v1
   since: "1.0"
+  features:
+    multipleKeyValuesPerSecret: true

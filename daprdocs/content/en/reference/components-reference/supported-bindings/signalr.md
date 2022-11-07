@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.azure.signalr
   version: v1
@@ -36,9 +35,25 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| connectionString | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"` |
-| hub | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
+| `connectionString` | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"` |
+| `hub` | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
+| `endpoint` | N | Output | Endpoint of Azure SignalR; required if not included in the `connectionString` or if using Azure AD | `https://<your-azure-signalr>.service.signalr.net`
+| `accessKey` | N | Output | Access key | `your-access-key`
 
+### Azure Active Directory (Azure AD) authentication
+
+The Azure SignalR binding component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
+
+You have two options to authenticate this component with Azure AD:
+
+- Pass individual metadata keys:
+  - `endpoint` for the endpoint
+  - If needed: `azureClientId`, `azureTenantId` and `azureClientSecret`
+- Pass a connection string with `AuthType=aad` specified:
+  - System-assigned managed identity: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;Version=1.0;`
+  - User-assigned managed identity: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;ClientId=<clientid>;Version=1.0;`
+  - Azure AD application: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;ClientId=<clientid>;ClientSecret=<clientsecret>;TenantId=<tenantid>;Version=1.0;`  
+  Note that you cannot use a connection string if your application's ClientSecret contains a `;` character.
 
 ## Binding support
 

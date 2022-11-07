@@ -2,7 +2,7 @@
 type: docs
 title: "AWS Secrets Manager"
 linkTitle: "AWS Secrets Manager"
-description: Detailed information on the  decret store component
+description: Detailed information on the  secret store component
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/aws-secret-manager/"
 ---
@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: awssecretmanager
-  namespace: default
 spec:
   type: secretstores.aws.secretmanager
   version: v1

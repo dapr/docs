@@ -9,8 +9,6 @@ description: "Configure Dapr retries, timeouts, and circuit breakers"
  Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref support-preview-features >}}).
 {{% /alert %}}
 
-Distributed applications are commonly comprised of many microservices, with dozens, even hundreds, of instances for any given application. With so many microservices, the likelihood of a system failure increases. For example, an instance can fail or be unresponsive due to hardware, an overwhelming number of requests, application restarts/scale outs, or several other reasons. These events can cause a network call between services to fail. Designing and implementing your application with fault tolerance, the ability to detect, mitigate, and respond to failures, allows your application to recover to a functioning state and become self healing.
-
 Dapr provides a capability for defining and applying fault tolerance resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). Resiliency specs are saved in the same location as components specs and are applied when the Dapr sidecar starts.  The sidecar determines how to apply resiliency policies to your Dapr API calls. In self-hosted mode, the resiliency spec must be named `resiliency.yaml`. In Kubernetes Dapr finds the named resiliency specs used by your application. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
 
 - [Timeouts]({{< ref "policies.md#timeouts" >}})
@@ -164,5 +162,12 @@ spec:
 ```
 
 ## Related links
+
+Watch this video for how to use [resiliency](https://www.youtube.com/watch?t=184&v=7D6HOU3Ms6g&feature=youtu.be):
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/sembed/7D6HOU3Ms6g?start=184" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
  - [Policies]({{< ref "policies.md" >}})
  - [Targets]({{< ref "targets.md" >}})

@@ -18,7 +18,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
-  namespace: default
 spec:
   type: secretstores.azure.keyvault
   version: v1
@@ -54,7 +53,7 @@ Additionally, you must provide the authentication fields as explained in the [Au
 
 ### Prerequisites
 
-- [Azure Subscription](https://azure.microsoft.com/free/)
+- Azure Subscription
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - The scripts below are optimized for a bash or zsh shell
@@ -125,7 +124,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
-  namespace: default
 spec:
   type: secretstores.azure.keyvault
   version: v1
@@ -147,7 +145,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: azurekeyvault
-  namespace: default
 spec:
   type: secretstores.azure.keyvault
   version: v1
@@ -188,7 +185,6 @@ To use a **client secret**:
     kind: Component
     metadata:
       name: azurekeyvault
-      namespace: default
     spec:
       type: secretstores.azure.keyvault
       version: v1
@@ -234,7 +230,6 @@ To use a **certificate**:
     kind: Component
     metadata:
       name: azurekeyvault
-      namespace: default
     spec:
       type: secretstores.azure.keyvault
       version: v1
@@ -271,7 +266,6 @@ To use **Azure managed identity**:
     kind: Component
     metadata:
       name: azurekeyvault
-      namespace: default
     spec:
       type: secretstores.azure.keyvault
       version: v1

@@ -15,7 +15,7 @@ Your application can use Dapr's state management API to save, read, and query ke
 
 ## Features
 
-With state management, your application can leverage features that are typically complicated and error-prone to build, including:
+With the state management API building block, your application can leverage features that are typically complicated and error-prone to build, including:
 
 - Setting the choices on concurrency control and data consistency.
 - Performing bulk update operations [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) including multiple transactional operations.

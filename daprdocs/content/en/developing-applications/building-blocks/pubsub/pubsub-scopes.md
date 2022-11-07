@@ -2,7 +2,7 @@
 type: docs
 title: "Scope Pub/sub topic access"
 linkTitle: "Scope topic access"
-weight: 5000
+weight: 6000
 description: "Use scopes to limit pub/sub topics to specific applications"
 ---
 
@@ -48,7 +48,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
@@ -95,7 +94,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1
@@ -120,7 +118,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: pubsub
-  namespace: default
 spec:
   type: pubsub.redis
   version: v1

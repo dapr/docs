@@ -18,47 +18,52 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: jetstream-pubsub
-  namespace: default
 spec:
   type: pubsub.jetstream
   version: v1
   metadata:
   - name: natsURL
     value: "nats://localhost:4222"
-  - name: jwt
-    value: "eyJhbGciOiJ...6yJV_adQssw5c" # Optional. Used for decentralized JWT authentication
-  - name: seedKey
-    value: "SUACS34K232O...5Z3POU7BNIL4Y" # Optional. Used for decentralized JWT authentication
-  - name: name
-    value: "connection name"
-  - name: durableName
-    value: "consumer durable name"
-  - name: queueGroupName
-    value: "queue group name"
-  - name: startSequence
+  - name: jwt # Optional. Used for decentralized JWT authentication.
+    value: "eyJhbGciOiJ...6yJV_adQssw5c" 
+  - name: seedKey # Optional. Used for decentralized JWT authentication.
+    value: "SUACS34K232O...5Z3POU7BNIL4Y" 
+  - name: tls_client_cert # Optional. Used for TLS Client authentication.
+    value: "/path/to/tls.crt" 
+  - name: tls_client_key # Optional. Used for TLS Client authentication.
+    value: "/path/to/tls.key" 
+  - name: name 
+    value: "my-conn-name"
+  - name: durableName 
+    value: "my-durable"
+  - name: queueGroupName 
+    value: "my-queue"
+  - name: startSequence 
     value: 1
-  - name: startTime # in Unix format
+  - name: startTime # In Unix format
     value: 1630349391
-  - name: deliverAll
+  - name: deliverAll 
     value: false
-  - name: flowControl
+  - name: flowControl 
     value: false
 ```
 
 ## Spec metadata fields
 
-| Field          | Required | Details | Example |
-|----------------|:--------:|---------|---------|
-| natsURL        |        Y | NATS server address URL   | "`nats://localhost:4222`"|
-| jwt            |        N | NATS decentralized authentication JWT | "`eyJhbGciOiJ...6yJV_adQssw5c`"|
-| seedKey        |        N | NATS decentralized authentication seed key | "`SUACS34K232O...5Z3POU7BNIL4Y`"|
-| name           |        N | NATS connection name | `"my-conn-name"`|
-| durableName    |        N | [Durable name] | `"my-durable"` |
-| queueGroupName |        N | Queue group name | `"my-queue"` |
-| startSequence  |        N | [Start Sequence] | `1` |
-| startTime      |        N | [Start Time] in Unix format | `1630349391` |
-| deliverAll     |        N | Set deliver all as [Replay Policy] | `true` |
-| flowControl    |        N | [Flow Control] | `true` |
+| Field           | Required | Details                                    | Example                          |
+| --------------- | :------: | ------------------------------------------ | -------------------------------- |
+| natsURL         |    Y     | NATS server address URL                    | `"nats://localhost:4222"`        |
+| jwt             |    N     | NATS decentralized authentication JWT      | `"eyJhbGciOiJ...6yJV_adQssw5c"`  |
+| seedKey         |    N     | NATS decentralized authentication seed key | `"SUACS34K232O...5Z3POU7BNIL4Y"` |
+| tls_client_cert |    N     | NATS TLS Client Authentication Certificate | `"/path/to/tls.crt"`             |
+| tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
+| name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
+| durableName     |    N     | [Durable name]                             | `"my-durable"`                   |
+| queueGroupName  |    N     | Queue group name                           | `"my-queue"`                     |
+| startSequence   |    N     | [Start Sequence]                           | `1`                              |
+| startTime       |    N     | [Start Time] in Unix format                | `1630349391`                     |
+| deliverAll      |    N     | Set deliver all as [Replay Policy]         | `true`                           |
+| flowControl     |    N     | [Flow Control]                             | `true`                           |
 
 ## Create a NATS server
 
@@ -82,13 +87,13 @@ helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 helm install --set nats.jetstream.enabled=true my-nats nats/nats
 ```
 
-This installs a single NATS server into the `default` namespace. To interact with NATS, find the service with: 
+This installs a single NATS server into the `default` namespace. To interact with NATS, find the service with:
 
 ```bash
 kubectl get svc my-nats
 ```
 
-For more information on helm chart settings, see the [Helm chart documentation](https://helm.sh/docs/helm/helm_install/). 
+For more information on helm chart settings, see the [Helm chart documentation](https://helm.sh/docs/helm/helm_install/).
 
 {{% /codetab %}}
 

@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: state.azure.tablestorage
   version: v1
@@ -27,8 +26,8 @@ spec:
     value: <REPLACE-WITH-ACCOUNT-KEY>
   - name: tableName
     value: <REPLACE-WITH-TABLE-NAME>
-  - name: cosmosDbMode
-    value: false
+# - name: cosmosDbMode
+#   value: false
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -39,12 +38,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| accountName        | Y        | The storage account name | `"mystorageaccount"`.
-| accountKey         | Y        | Primary or secondary storage key | `"key"`
-| tableName          | Y        | The name of the table to be used for Dapr state. The table will be created for you if it doesn't exist  | `"table"`
-| cosmosDbMode       | N        | If enabled, connects to Cosmos DB Table API instead of Azure Tables (Storage Accounts). Defaults to `false`. | `"false"`
-| serviceURL         | N        | The full storage service endpoint URL. Useful for Azure environments other than public cloud. | `"https://mystorageaccount.table.core.windows.net/"`
-| skipCreateTable    | N        | Skips the check for and, if necessary, creation of the specified storage table. This is useful when using active directory authentication with minimal privileges. Defaults to `false`. | `"true"`
+| `accountName`        | Y        | The storage account name | `"mystorageaccount"`.
+| `accountKey`         | Y        | Primary or secondary storage key | `"key"`
+| `tableName`          | Y        | The name of the table to be used for Dapr state. The table will be created for you if it doesn't exist  | `"table"`
+| `cosmosDbMode`       | N        | If enabled, connects to Cosmos DB Table API instead of Azure Tables (Storage Accounts). Defaults to `false`. | `"false"`
+| `serviceURL`         | N        | The full storage service endpoint URL. Useful for Azure environments other than public cloud. | `"https://mystorageaccount.table.core.windows.net/"`
+| `skipCreateTable`    | N        | Skips the check for and, if necessary, creation of the specified storage table. This is useful when using active directory authentication with minimal privileges. Defaults to `false`. | `"true"`
 
 ### Azure Active Directory (Azure AD) authentication
 

@@ -6,9 +6,9 @@ weight: 2000
 description: "Learn how to use distributed locks to provide exclusive access to a resource"
 ---
 
-Now that you've learned what the Dapr distributed lock API building block provides, learn how it can work in your service. The example below describes an application that aquires a lock. This example uses the Redis lock component to demonstrate how to lock resources. For a list of supported lock stores, see [this list](/reference/components-reference/supported-locks/).
+Now that you've learned what the Dapr distributed lock API building block provides, learn how it can work in your service. In this guide, an example application acquires a lock using the Redis lock component to demonstrate how to lock resources. For a list of supported lock stores, see [this reference page](/reference/components-reference/supported-locks/).
 
-The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied.
+In the diagram below, two instances of the same application acquire a lock, where one instance is successful and the other is denied.
 
 <img src="/images/building-block-lock-example.png" width=1000 alt="The diagram below shows two instances of the same application acquiring a lock, where one instance is successful and the other is denied">
 
@@ -188,4 +188,4 @@ func main() {
 
 ## Next steps
 
-* Read [distributed lock API overview]({{< ref distributed-lock-api-overview.md >}})
+Read [the distributed lock API overview]({{< ref distributed-lock-api-overview.md >}}) to learn more.

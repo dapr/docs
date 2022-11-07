@@ -27,7 +27,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -47,7 +46,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: statestore
-  namespace: default
 spec:
   type: state.redis
   version: v1
@@ -56,8 +54,8 @@ spec:
     value: localhost:6379
   - name: redisPassword
     secretKeyRef:
-    	name: redis-secret
-        key:  redis-password
+      name: redis-secret
+      key:  redis-password
 auth:
   secretStore: <SECRET_STORE_NAME>
 ```
@@ -78,13 +76,13 @@ spec:
   version: v1
   metadata:
   -name: connectionString
-  secretKeyRef:
+   secretKeyRef:
       name: asbNsConnString
       key: asbNsConnString
   -name: queueName
    value: servicec-inputq
 auth:
-secretStore: <SECRET_STORE_NAME>
+  secretStore: <SECRET_STORE_NAME>
 
 ```
 The above "Secret is a string" case yaml tells Dapr to extract a connection string named `asbNsConnstring` from the defined `secretStore` and assign the value to the `connectionString` field in the component since there is no key embedded in the "secret" from the `secretStore` because it is a plain string. This requires the secret `name` and secret `key` to be identical.
@@ -106,7 +104,6 @@ The following example shows you how to create a Kubernetes secret to hold the co
     kind: Component
     metadata:
       name: eventhubs
-      namespace: default
     spec:
       type: bindings.azure.eventhubs
       version: v1
@@ -130,7 +127,7 @@ Dapr can restrict access to secrets in a secret store using its configuration. R
 
 ### Default namespace
 
-When running in Kubernetes, Dapr, during installtion, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
+When running in Kubernetes, Dapr, during installation, defines default Role and RoleBinding for secrets access from Kubernetes secret store in the `default` namespace. For Dapr enabled apps that fetch secrets from `default` namespace, a secret can be defined and referenced in components as shown in the example above.
 
 ### Non-default namespaces
 

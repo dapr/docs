@@ -4,42 +4,42 @@
   version: v1
   description: Restricts the maximum number of allowed HTTP requests per second
 - component: OAuth2 Authorization Grant flow
-  link: https://tools.ietf.org/html/rfc6749#section-4.1
+  link: /reference/components-reference/supported-middleware/middleware-oauth2
   state: Alpha
   version: v1
   description: Enables the [OAuth2 Authorization Grant flow](https://tools.ietf.org/html/rfc6749#section-4.1) on a Web API
 - component: OAuth2 Client Credentials Grant flow
-  link: https://tools.ietf.org/html/rfc6749#section-4.4
+  link: /reference/components-reference/supported-middleware/middleware-oauth2clientcredentials
   state: Alpha
   version: v1
   description: Enables the [OAuth2 Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4) on a Web API
 - component: OpenID Connect
-  link: https://openid.net/connect/
+  link: /reference/components-reference/supported-middleware/middleware-bearer
   state: Alpha
   version: v1
   description: Verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API
 - component: Rego/OPA Policies
-  link: https://www.openpolicyagent.org/
+  link: /reference/components-reference/supported-middleware/middleware-opa
   state: Alpha
   version: v1
   description: Applies [Rego/OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests
 - component: Sentinel
-  link: middleware-sentinel
+  link: /reference/components-reference/supported-middleware/middleware-sentinel
   state: Alpha
   version: v1
   description: Use Sentinel middleware to guarantee the reliability and resiliency of your application
 - component: RouterChecker
-  link: middleware-routerchecker
+  link: /reference/components-reference/supported-middleware/middleware-routerchecker
   state: Alpha
   version: v1
   description: Use RouterChecker middleware to block invalid http request routing
 - component: Uppercase
-  link: middleware-uppercase
+  link: /reference/components-reference/supported-middleware/middleware-uppercase
   state: Stable
   version: v1
   description: Converts the body of the request to uppercase letters (demo)
 - component: WASM
-  link: middleware-wasm
+  link: /reference/components-reference/supported-middleware/middleware-wasm
   state: Alpha
   version: v1
   description: Use WASM middleware in your HTTP pipeline

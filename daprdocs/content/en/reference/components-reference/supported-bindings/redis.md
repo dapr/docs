@@ -17,7 +17,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: <NAME>
-  namespace: <NAMESPACE>
 spec:
   type: bindings.redis
   version: v1
@@ -93,6 +92,8 @@ An HTTP 204 (No Content) and empty body is returned if successful.
 
 Dapr can use any Redis instance - containerized, running on your local dev machine, or a managed cloud service, provided the version of Redis is 5.0.0 or later.
 
+*Note: Dapr does not support Redis >= 7. It is recommended to use Redis 6*
+
 {{< tabs "Self-Hosted" "Kubernetes" "AWS" "GCP" "Azure">}}
 
 {{% codetab %}}
@@ -106,7 +107,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
 1. Install Redis into your cluster.
     ```bash
     helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm install redis bitnami/redis
+    helm install redis bitnami/redis --set image.tag=6.2
     ```
 
 2. Run `kubectl get pods` to see the Redis containers now running in your cluster.

@@ -16,7 +16,6 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: kafka-binding
-  namespace: default
 spec:
   type: bindings.kafka
   version: v1
