@@ -7,7 +7,7 @@ weight: 4000
 ---
 
 # Prerequisites
-- [Azure subscription](https://azure.microsoft.com/free/?WT.mc_id=A261C142F)
+- Azure subscription
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli-windows?tabs=azure-cli) and the ***aks-preview*** extension.
 - [Azure Kubernetes Service (AKS) cluster](https://docs.microsoft.com/azure/aks/tutorial-kubernetes-deploy-cluster?tabs=azure-cli)
 
