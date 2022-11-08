@@ -13,20 +13,23 @@ To set up the Temporal.io workflow, create a component of type `todo`. See [this
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <NAME>
+  name: temporal
 spec:
-  type: todo
+  type: workflow.temporal
   version: v1
   metadata:
+  - name: hostport
+    value: <HOST>
+  - name: identity
+    value: "WF Identity"
 ```
 
 ## Spec metadata fields
 
-| Field | Required | Details | Example |
-|-------|:--------:|---------|---------|
-|       |          |         |         | 
-|       |          |         |         | 
-|       |          |         |         | 
+| Field | Required | Details                                           | Example          |
+|-------|:--------:|---------------------------------------------------|------------------|
+| name  | Y        | Connection string for the Temporal.io host        | `localhost:6379` | 
+| name  | Y        | Unique ID of the workflow                         |  `       | 
 
 ## Setup Temporal.io
 

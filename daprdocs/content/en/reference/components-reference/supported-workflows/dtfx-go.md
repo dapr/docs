@@ -13,11 +13,15 @@ To set up the built-in workflow engine, create a component of type `todo`. See [
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: <NAME>
+  name: temporal
 spec:
-  type: todo
+  type: workflow.temporal
   version: v1
   metadata:
+  - name: hostport
+    value: localhost:7233
+  - name: identity
+    value: "WF Identity"
 ```
 
 ## Spec metadata fields

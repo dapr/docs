@@ -169,6 +169,9 @@ This call results in workflow instance metadata, such as its:
 - Completion time (if completed)
 - Custom or runtime-specific status
 
+Temporal.io also includes metadata for:
+- Task queue
+
 ## Purge Workflow Metadata
 
 When using the embedded workflow component, this will delete all state stored by the workflow’s underlying actor(s).

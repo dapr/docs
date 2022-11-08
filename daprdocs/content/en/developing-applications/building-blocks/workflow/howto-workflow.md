@@ -1,45 +1,57 @@
 ---
 type: docs
-title: "How to: Set up a workflow"
+title: "How to: Set up a built-in workflow"
 linkTitle: "How to: Set up workflows"
 weight: 2000
 description: Integrate, manage, and expose workflows with the built-in workflow runtime component
 ---
 
-<!-- Introductory paragraph  
-Required. Light intro that briefly describes what the how-to will cover and any default Dapr characteristics. Link off to the appropriate concept or overview docs to provide context. -->
+Intro
 
-<!-- 
-Include a diagram or image, if possible. 
--->
+## Built-in workflow
 
-<!--
-If applicable, link to the related quickstart in a shortcode note or alert with text like:
- If you haven't already, [try out the <topic> quickstart](link) for a quick walk-through on how to use <topic>.
--->
+### Create the built-in workflow
 
-<!-- 
-Make sure the how-to includes examples for multiple programming languages, OS, or deployment targets, if applicable. 
--->
+Write a block of code
 
-## <Action or task>
+```go
+insert code snippet
+```
 
-<!-- 
-Unlike quickstarts, do not use "Step 1", "Step 2", etc.  
--->
+### Start using the API
 
-## <Action or task>
+Link
 
-<!-- 
-Each H2 step should start with a verb/action word.
--->
+## External workflow engine
 
-<!--
-Include code snippets where possible. 
--->
+### Create an external workflow engine
+
+Write a block of code
+
+```go
+insert code snippet
+```
+
+### Register an external workflow engine
+
+Register code
+
+```bash
+<command>
+```
+
+
+For external workfow engines, there's an additional step to make sure workers for that engine are up and running
+
+
+Currently two supported workflow engines are Temporal.io and Logic Apps, both of which follow the same set up steps outlined below
+
+Two external workflows:
+- Temporal.io
+- Logic Apps
+
 
 ## Next steps
 
-<!--
-Link to related pages and examples. For example, the building block overview, the related tutorial, API reference, etc.
--->
+- [Workflow API]()
+- [Use the workflow via the workflow SDK]()
