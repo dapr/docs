@@ -104,7 +104,6 @@ In your application code, subscribe to the topic specified in the Dapr pub/sub c
 
 ```csharp
  //Subscribe to a topic 
-[Topic("pubsub", "orders")]
 [HttpPost("checkout")]
 public void getCheckout([FromBody] int orderId)
 {
@@ -117,16 +116,15 @@ public void getCheckout([FromBody] int orderId)
 {{% codetab %}}
 
 ```java
+import io.dapr.client.domain.CloudEvent;
+
  //Subscribe to a topic
-@Topic(name = "orders", pubsubName = "pubsub")
 @PostMapping(path = "/checkout")
 public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
     return Mono.fromRunnable(() -> {
         try {
             log.info("Subscriber received: " + cloudEvent.getData());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     });
 }
 ```
@@ -150,11 +148,16 @@ def checkout(event: v1.Event) -> None:
 {{% codetab %}}
 
 ```javascript
-//Subscribe to a topic
-await server.pubsub.subscribe("pubsub", "orders", "checkout", async (orderId) => {
-    console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+app.use(bodyParser.json({ type: 'application/*+json' }));
+
+// listen to the declarative route
+app.post('/checkout', (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
 });
-await server.startServer();
 ```
 
 {{% /codetab %}}
