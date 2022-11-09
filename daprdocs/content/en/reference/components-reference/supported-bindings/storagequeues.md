@@ -32,7 +32,7 @@ spec:
 # - name: decodeBase64
 #   value: "false"
 # - name: endpoint
-#   value: "http://127.0.0.1:10000"
+#   value: "http://127.0.0.1:10001"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `queueName` | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
 | `ttlInSeconds` | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
-| `endpoint` | N | Input/Output | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10000"` or `"https://accountName.queue.example.com"` |
+| `endpoint` | N | Input/Output | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10001"` or `"https://accountName.queue.example.com"` |
 
 ### Azure Active Directory (Azure AD) authentication
 
