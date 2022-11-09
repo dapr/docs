@@ -1,21 +1,23 @@
 ---
 type: docs
-title: "How to: Set up a workflow"
-linkTitle: "How to: Set up workflows"
+title: "How to: Run a workflow"
+linkTitle: "How to: Run workflows"
 weight: 2000
-description: Integrate, manage, and expose workflows with the built-in workflow runtime component and SDKs
+description: Integrate, manage, and expose workflows
 ---
 
-Now that you've learned about the 
+Now that you've read about [the workflow building block]({{< ref workflow-overview >}}) and created your worfklow component, learn more about how to:
 
-Currently two supported workflow engines are Temporal.io and Logic Apps, both of which follow the same set up steps outlined below
+- Use the built-in worfklow component
+- Register an external workflow engine with Dapr.
 
-Two external workflows:
+Currently, Dapr supports two external workflow engines:
 - Temporal.io
 - Logic Apps
 
+[Insert diagram]
 
-## Create your workflow
+## Run your workflow
 
 {{< tabs "Built-in" Temporal.io "Azure Logic Apps" >}}
 
@@ -64,6 +66,5 @@ command?
 
 ## Next steps
 
-- [Workflow API]({{< ref "reference\api\workflow_api.md" >}})
-- Learn more about the [workflow component]({{< ref "reference\components-reference\supported-workflows\_index.md" >}})
-
+- [Workflow API]()
+- Learn more about the [workflow component]()
