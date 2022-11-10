@@ -19,16 +19,22 @@ spec:
   type: pubsub.rocketmq
   version: v1
   metadata:
-    - name: nameServer
-      value: "http://localhost:9876"
-    - name: accessKey
-      value: "admin"
-    - name: secretKey
-      value: "password"
+    - name: instanceName
+      value: dapr-rocketmq-test
     - name: consumerGroup
-      value: "GID_0001"
+      value: dapr-rocketmq-test-g-c
+    - name: producerGroup 
+      value: dapr-rocketmq-test-g-p
+    - name: nameSpace
+      value: dapr-test
+    - name: nameServer
+      value: "127.0.0.1:9876,127.0.0.2:9876"
     - name: retries
-      value: 10
+      value: 3
+    - name: consumerModel
+      value: "clustering"
+    - name: consumeOrderly
+      value: false
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -36,18 +42,33 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 {{% /alert %}}
 
 ## Spec metadata fields
-| Field            | Required | Details                                                                                                   | Example                            |
-| ---------------- | :------: | --------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| accessKey        |    N     | Access Key (Username)                                                                                     | `"admin"`                          |
-| secretKey        |    N     | Secret Key (Password)                                                                                     | `"password"`                       |
-| nameServer       |    N     | Name server address                                                                                       | `"127.0.0.1:9876;127.0.0.2:9877"`  |
-| nameServerDomain |    N     | Name server domain                                                                                        | `"https://my-app.net:8080/nsaddr"` |
-| nameSpace        |    N     | Namespace of the producer/consumer                                                                        | `"namespace"`                      |
-| producerGroup    |    N     | Producer group name for RocketMQ publishers                                                               | `"my_unique_group_name"`           |
-| consumerGroup    |    N     | Consumer group name for RocketMQ subscribers                                                              | `"my_unique_group_name"`           |
-| content-type     |    N     | Message content-type, e.g., `"application/cloudevents+json; charset=utf-8"`, `"application/octet-stream"` | `"text/plain"`                     |
-| retries          |    N     | Number of times to retry to connect rocketmq's broker, optional                                           | `0`                                |
-| sendTimeOutSec   |    N     | Timeout duration for publishing a message in seconds                                                      | `0`                                |
+| Field                                 | Required | Details                                                      | default                                                 | Example                                      |
+| ------------------------------------- | :------: | ------------------------------------------------------------ | ------------------------------------------------------- | -------------------------------------------- |
+| instanceName                          |    N     | Instance name                                                | time.Now().String()                                     | dapr-rocketmq-test                           |
+| consumerGroup                         |    N     | Consumer group name, it is  recommended. if producerGroup is null，groupName is used. |                                                         | dapr-rocketmq-test-g-c                       |
+| producerGroup (consumerID)            |    N     | Producer group Name, it is  recommended. if producerGroup is null，consumerID is used, if consumerID also is null, groupName is used. |                                                         | dapr-rocketmq-test-g-p                       |
+| groupName                             |    N     | Consumer/Producer group name, it is Deprecated               |                                                         | dapr-rocketmq-test-g                         |
+| nameSpace                             |    N     | rocketmq namespace                                           |                                                         | dapr-rocketmq                                |
+| nameServerDomain                      |    N     | rocketmq name server domain                                  |                                                         | https://my-app.net:8080/nsaddr               |
+| nameServer                            |    N     | rocketmq name server, It's separated by "," or ";"           |                                                         | 127.0.0.1:9876;127.0.0.2:9877,127.0.0.3:9877 |
+| accessKey                             |    N     | Access Key (Username)                                        |                                                         | `"admin"`                                    |
+| secretKey                             |    N     | Secret Key (Password)                                        |                                                         | `"password"`                                 |
+| securityToken                         |    N     | Security Token                                               |                                                         |                                              |
+| retries                               |    N     | Retry times to send msg to broker                            | 3                                                       | 3                                            |
+| producerQueueSelector (queueSelector) |    N     | Producer Queue selector. There are five implementations of queue selector，hash, random, manual, roundRobin, dapr(default)，respectively. | dapr                                                    | hash                                         |
+| consumerModel                         |    N     | Message model defines the way how messages are delivered to each consumer clients. RocketMQ supports two message models: clustering and broadcasting. | clustering                                              | broadcasting                                 |
+| fromWhere (consumeFromWhere)          |    N     | Consuming point on consumer booting. There are three consuming points: CONSUME_FROM_LAST_OFFSET, CONSUME_FROM_FIRST_OFFSET, CONSUME_FROM_TIMESTAMP | ConsumeFromLastOffset                                   | CONSUME_FROM_LAST_OFFSET                     |
+| consumeOrderly                        |    N     | Whether it is an ordered message using FIFO order. This field defaults to false. | false                                                   | false                                        |
+| consumeMessageBatchMaxSize            |    N     | Batch consumption size out of range [1, 1024]                | 512                                                     | 10                                           |
+| maxReconsumeTimes                     |    N     | Max re-consume times. -1 means 16 times. If messages are re-consumed more than {@link maxReconsumeTimes} before Success, it's be directed to a deletion queue waiting. | orderly message is MaxInt32, concurrently message is 16 | 16                                           |
+| autoCommit                            |    N     | auto commit                                                  | true                                                    | false                                        |
+| pullInterval                          |    N     | Message pull Interval                                        | 100                                                     | 100                                          |
+| pullBatchSize                         |    N     | The number of messages pulled from the broker at a time. if pullBatchSize is null，ConsumerBatchSize is used. pullBatchSize out of range [1, 1024] | 32                                                      | 10                                           |
+| content-type                          |    N     | Message content-type, e.g., `"application/cloudevents+json; charset=utf-8"`, `"application/octet-stream"`. This field defaults to "text/plain" |                                                         | `"text/plain"`                               |
+| logLevel                              |    N     | Log level                                                    | warn                                                    | Info                                         |
+| sendTimeOut                           |    N     | send msg timeout to connect rocketmq's broker, nanoseconds. It is deprecated. | 3 seconds                                               | 10000000000                                  |
+| sendTimeOutSec                        |    N     | Timeout duration for publishing a message in seconds. if sendTimeOutSec is null，sendTimeOut is used. | 3 seconds                                               | 3                                            |
+| mspProperties                         |    N     | The RocketMQ message properties in this collection are passed to the APP in Data Separate multiple properties with "," |                                                         | key,mkey                                     |
 
 For backwards-compatibility reasons, the following values in the metadata are supported, although their use is discouraged.
 
@@ -55,6 +76,7 @@ For backwards-compatibility reasons, the following values in the metadata are su
 | -------------------------------- | :------: | -------------------------------------------------------- | ------------------------ |
 | groupName                        |    N     | Producer group name for RocketMQ publishers              | `"my_unique_group_name"` |
 | sendTimeOut                      |    N     | Timeout duration for publishing a message in nanoseconds | `0`                      |
+| consumerBatchSize                |    N     | The number of messages pulled from the broker at a time  | 32                       |
 
 ## Setup RocketMQ
 See https://rocketmq.apache.org/docs/quick-start/ to setup a local RocketMQ instance.
@@ -65,12 +87,12 @@ See https://rocketmq.apache.org/docs/quick-start/ to setup a local RocketMQ inst
 
 When invoking the RocketMQ pub/sub, it's possible to provide an optional partition key by using the `metadata` query param in the request url.
 
-You need to specify `rocketmq-tag`,`"rocketmq-key"` in `metadata`
+You need to specify `rocketmq-tag` , `"rocketmq-key"` , `rocketmq-shardingkey` , `rocketmq-queue` in `metadata`
 
 Example:
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-tag=?&metadata.rocketmq-key=? \
+curl -X POST http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-tag=?&metadata.rocketmq-key=?&metadata.rocketmq-shardingkey=key&metadata.rocketmq-queue=1 \
   -H "Content-Type: application/json" \
   -d '{
         "data": {
@@ -79,7 +101,34 @@ curl -X POST http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rock
       }'
 ```
 
+## QueueSelector
+
+The dapr rocketmq component contains five Queue selectors. These are HashQueueSelector, RandomQueueSelector, RoundRobinQueueSelector, ManualQueueSelector, DaprQueueSelector. Four of these are provided by the rocketmq client. DaprQueueSelector is implemented by the dapr rocketmq component. If you want to know more about the Queue selectors hash, roundRobin, Random and Manual, please read https://rocketmq.apache.org/docs.  Let me focus on the design of DaprQueueSelector.
+
+### DaprQueueSelector
+
+DaprQueueSelector integrates three Queue selectors: HashQueueSelector, RoundRobinQueueSelector, ManualQueueSelector.
+
+First, it gets the queue id from the request parameter. You can set the queue id by doing the following.
+
+```
+http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-queue=1
+```
+
+That's how ManualQueueSelector is implemented. The method above also works for ManualQueueSelector.
+
+Second, it will try to get a ShardingKey, and hash the ShardingKey to determine the queue id if it exists.
+
+You can set the ShardingKey by doing the following.
+
+```
+http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-shardingkey=key
+```
+
+If the shardingkey does not exist, the RoundRobin algorithm is used to determine the queue id.
+
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Pub/Sub building block]({{< ref pubsub >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
