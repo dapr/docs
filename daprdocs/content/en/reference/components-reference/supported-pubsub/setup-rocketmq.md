@@ -103,7 +103,18 @@ curl -X POST http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rock
 
 ## QueueSelector
 
-The dapr rocketmq component contains five Queue selectors. These are HashQueueSelector, RandomQueueSelector, RoundRobinQueueSelector, ManualQueueSelector, DaprQueueSelector. Four of these are provided by the rocketmq client. DaprQueueSelector is implemented by the dapr rocketmq component. If you want to know more about the Queue selectors hash, roundRobin, Random and Manual, please read https://rocketmq.apache.org/docs.  Let me focus on the design of DaprQueueSelector.
+The RocketMQ component contains a total of five queue selectors. The RocketMQ client provides the following queue selectors:
+- `HashQueueSelector`
+- `RandomQueueSelector`
+- `RoundRobinQueueSelector`
+- `ManualQueueSelector`
+
+To learn more about these RocketMQ client queue selectors, read the [RocketMQ documentation](https://rocketmq.apache.org/docs).
+
+The Dapr RocketMQ component implements the following queue selector:
+- `DaprQueueSelector`
+
+ This article focuses on the design of `DaprQueueSelector`.
 
 ### DaprQueueSelector
 
