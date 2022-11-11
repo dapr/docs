@@ -115,7 +115,7 @@ DaprQueueSelector integrates three Queue selectors: HashQueueSelector, RoundRobi
 http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-queue=1
 ```
 
-That's how ManualQueueSelector is implemented. The method above also works for ManualQueueSelector.
+The `ManualQueueSelector` is implemented using the method above.
 
 Second, it will try to get a ShardingKey, and hash the ShardingKey to determine the queue id if it exists.
 
