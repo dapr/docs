@@ -76,7 +76,7 @@ For backwards-compatibility reasons, the following values in the metadata are su
 | -------------------------------- | :------: | -------------------------------------------------------- | ------------------------ |
 | groupName                        |    N     | Producer group name for RocketMQ publishers              | `"my_unique_group_name"` |
 | sendTimeOut                      |    N     | Timeout duration for publishing a message in nanoseconds | `0`                      |
-| consumerBatchSize                |    N     | The number of messages pulled from the broker at a time  | 32                       |
+| consumerBatchSize                |    N     | The number of messages pulled from the broker at a time  | `32`                       |
 
 ## Setup RocketMQ
 See https://rocketmq.apache.org/docs/quick-start/ to setup a local RocketMQ instance.
