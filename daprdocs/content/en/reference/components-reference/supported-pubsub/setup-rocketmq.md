@@ -109,7 +109,7 @@ The dapr rocketmq component contains five Queue selectors. These are HashQueueSe
 
 DaprQueueSelector integrates three Queue selectors: HashQueueSelector, RoundRobinQueueSelector, ManualQueueSelector.
 
-First, it gets the queue id from the request parameter. You can set the queue id by doing the following.
+`DaprQueueSelector` gets the queue id from the request parameter. You can set the queue id by running the following:
 
 ```
 http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-queue=1
