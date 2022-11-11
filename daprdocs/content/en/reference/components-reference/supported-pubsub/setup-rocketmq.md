@@ -67,7 +67,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | content-type                          |    N     | Message content type.  | `"text/plain"`                                                        | `"application/cloudevents+json; charset=utf-8"`, `"application/octet-stream"`                              |
 | logLevel                              |    N     | Log level                                                    | `warn`                                                    | `info`                                         |
 | sendTimeOut                           |    N     | Send message timeout to connect RocketMQ's broker, measured in nanoseconds. **Deprecated**. | 3 seconds                                               | `10000000000`                                  |
-| sendTimeOutSec                        |    N     | Timeout duration for publishing a message in seconds. if sendTimeOutSec is null，sendTimeOut is used. | 3 seconds                                               | 3                                            |
+| sendTimeOutSec                        |    N     | Timeout duration for publishing a message in seconds. If `sendTimeOutSec` is `null`, `sendTimeOut` is used. | 3 seconds                                               | `3`                                            |
 | mspProperties                         |    N     | The RocketMQ message properties in this collection are passed to the APP in Data Separate multiple properties with "," |                                                         | key,mkey                                     |
 
 For backwards-compatibility reasons, the following values in the metadata are supported, although their use is discouraged.
