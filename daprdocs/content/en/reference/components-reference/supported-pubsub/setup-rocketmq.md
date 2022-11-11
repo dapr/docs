@@ -127,7 +127,7 @@ You can set the `ShardingKey` by doing the following:
 http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-shardingkey=key
 ```
 
-If the shardingkey does not exist, the RoundRobin algorithm is used to determine the queue id.
+If the `ShardingKey` does not exist, the `RoundRobin` algorithm is used to determine the queue id.
 
 ## Related links
 
