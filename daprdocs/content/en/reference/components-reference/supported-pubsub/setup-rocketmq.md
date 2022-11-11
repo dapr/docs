@@ -118,7 +118,10 @@ The Dapr RocketMQ component implements the following queue selector:
 
 ### DaprQueueSelector
 
-DaprQueueSelector integrates three Queue selectors: HashQueueSelector, RoundRobinQueueSelector, ManualQueueSelector.
+`DaprQueueSelector` integrates three queue selectors: 
+- `HashQueueSelector`
+- `RoundRobinQueueSelector`
+- `ManualQueueSelector`
 
 `DaprQueueSelector` gets the queue id from the request parameter. You can set the queue id by running the following:
 
