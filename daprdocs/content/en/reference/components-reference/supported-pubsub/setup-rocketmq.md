@@ -117,7 +117,9 @@ http://localhost:3500/v1.0/publish/myRocketMQ/myTopic?metadata.rocketmq-queue=1
 
 The `ManualQueueSelector` is implemented using the method above.
 
-Second, it will try to get a ShardingKey, and hash the ShardingKey to determine the queue id if it exists.
+Next, the `DaprQueueSelector` tries to:
+- Get a `ShardingKey`
+- Hash the `ShardingKey` to determine the queue id.
 
 You can set the ShardingKey by doing the following.
 
