@@ -27,4 +27,4 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | [State Management]({{< ref statemanagement-quickstart.md >}}) | Store a service's data as key/value pairs in supported state stores. |
 | [Bindings]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
 | [Secrets Management]({{< ref secrets-quickstart.md >}}) | Securely fetch secrets. |
-| [Resiliency]({{< ref resiliency-quickstart.md >}}) | Define and apply fault-tolernce policies to your Dapr APIs requests. |
+| [Resiliency]({{< ref resiliency >}}) | Define and apply fault-tolerance policies to your Dapr API requests. |
