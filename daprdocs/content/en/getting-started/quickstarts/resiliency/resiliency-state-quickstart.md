@@ -16,7 +16,7 @@ Observe Dapr resiliency capabilities by simulating a system failure. In this Qui
 - Trigger the resiliency spec by simulating a system failure. 
 - Remove the failure to allow the microservice application to resume. 
 
-<img src="/images/resiliency-quickstart.png" width="1000" alt="Diagram showing the resiliency applied to Dapr APIs">
+<img src="/images/resiliency-quickstart-svc-component.png" width="1000" alt="Diagram showing the resiliency applied to Dapr APIs">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
