@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Quickstart: Service-to-service resiliency"
-linkTitle: "Resiliency: Service Invocation"
+title: "Quickstart: service-to-service resiliency"
+linkTitle: "Resiliency: service-to-service"
 weight: 120
 description: "Get started with Dapr's resiliency capabilities via the service invocation API"
 ---
@@ -14,7 +14,7 @@ Observe Dapr resiliency capabilities by simulating a system failure. In this Qui
 
 - Run two microservice applications, `checkout` and `order-processor`. `checkout` will continuously make Dapr service invocation requests to `order-processor`. 
 - Trigger the resiliency spec by simulating a system failure. 
-- Remove the failure to allow the microservice application to resume. 
+- Remove the failure to allow the microservice application to recover. 
 
 <img src="/images/resiliency-quickstart-svc-invoke.png" width="1000" alt="Diagram showing the resiliency applied to Dapr APIs">
 
@@ -44,14 +44,13 @@ git clone https://github.com/dapr/quickstarts.git
 
 ### Step 2: Run `order-processor` service
 
-In a terminal window, from the root of the Quickstart clone directory
-navigate to `order-processor` directory.
+In a terminal window, from the root of the Quickstart directory, navigate to `order-processor` directory.
 
 ```bash
 cd ../service_invocation/python/http/order-processor
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 pip3 install -r requirements.txt
@@ -60,19 +59,18 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor  --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 ### Step 3: Run the `checkout` service application with resiliency enabled
 
-In a new terminal window, from the root of the Quickstart clone directory
-navigate to the `checkout` directory.
+In a new terminal window, from the root of the Quickstart directory, navigate to the `checkout` directory.
 
 ```bash
 cd ../service_invocation/python/http/checkout
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 pip3 install -r requirements.txt
@@ -84,9 +82,7 @@ Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter ap
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
-The resilency spec is:
-- Located in the `components` directory. 
-- Automatically discovered by the Dapr sidecar when run in standalone mode.
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -118,8 +114,7 @@ The resilency spec is:
    ```
 
 ### Step 4: View the Service Invocation outputs
-
-Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+When both services and sidecars are running, notice how orders are passed from the `checkout` service to the `order-processor` service using Dapr service invoke. 
 
 `checkout` service output:
 
@@ -140,10 +135,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ```
 
 ### Step 5: Introduce a fault
+Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, service invoke operations from the `checkout` service begin to fail.
 
-Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, write and read operations from the order-processor service begin to fail.
-
-Since the `resiliency.yaml` spec defines the `order-processor` service as a target, all failed requests will apply retry and circuit breaker policies:
+Since the `resiliency.yaml` spec defines the `order-processor` service as a resiliency target, all failed requests will apply retry and circuit breaker policies:
 
 ```yaml
   targets:
@@ -218,11 +212,11 @@ INFO[0030] Circuit breaker "order-processor:orders" changed state from open to h
 INFO[0030] Circuit breaker "order-processor:orders" changed state from half-open to open     
 ```
 
-This half-open/open behavior will continue for as long as the Redis container is stopped. 
+This half-open/open behavior will continue for as long as the `order-processor` service is stopped. 
 
 ### Step 6: Remove the fault
 
-Once you restart the `order-processor` service, the application will recover seamlessly, picking up where it left off. 
+Once you restart the `order-processor` service, the application will recover seamlessly, picking up where it left off with accepting order requests.
 
 In the `order-processor` service terminal, restart the application:
 
@@ -277,14 +271,14 @@ git clone https://github.com/dapr/quickstarts.git
 
 ### Step 2: Run the `order-processor` service
 
-In a terminal window, from the root of the Quickstart clone directory
+In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
 
 ```bash
 cd ../service_invocation/javascript/http/order-processor
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 npm install
@@ -293,19 +287,19 @@ npm install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ### Step 3: Run the `checkout` service application with resiliency enabled
 
-In a new terminal window, from the root of the Quickstart clone directory
+In a new terminal window, from the root of the Quickstart directory, 
 navigate to the `checkout` directory.
 
 ```bash
 cd service_invocation/javascript/http/checkout
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 npm install
@@ -314,12 +308,10 @@ npm install
 Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr configuration that enables the resiliency feature.
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
-The resilency spec is:
-- Located in the `components` directory. 
-- Automatically discovered by the Dapr sidecar when run in standalone mode.
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -351,8 +343,7 @@ The resilency spec is:
    ```
 
 ### Step 4: View the Service Invocation outputs
-
-Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+When both services and sidecars are running, notice how orders are passed from the `checkout` service to the `order-processor` service using Dapr service invoke. 
 
 `checkout` service output:
 
@@ -373,10 +364,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ```
 
 ### Step 5: Introduce a fault
+Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, service invoke operations from the `checkout` service begin to fail.
 
-Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, write and read operations from the order-processor service begin to fail.
-
-Since the `resiliency.yaml` spec defines the `order-processor` service as a target, all failed requests will apply retry and circuit breaker policies:
+Since the `resiliency.yaml` spec defines the `order-processor` service as a resiliency target, all failed requests will apply retry and circuit breaker policies:
 
 ```yaml
   targets:
@@ -460,7 +450,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 `checkout` service output:
@@ -510,14 +500,15 @@ git clone https://github.com/dapr/quickstarts.git
 
 ### Step 2: Run the `order-processor` service
 
-In a terminal window, from the root of the Quickstart clone directory
+In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
+
 
 ```bash
 cd ../service_invocation/csharp/http/order-processor
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 dotnet restore
@@ -527,19 +518,19 @@ dotnet build
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ### Step 3: Run the `checkout` service application with resiliency enabled
 
-In a new terminal window, from the root of the Quickstart clone directory
+In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
 
 ```bash
 cd ../service_invocation/csharp/http/checkout
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 dotnet restore
@@ -552,9 +543,7 @@ Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter ap
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
-The resilency spec is:
-- Located in the `components` directory. 
-- Automatically discovered by the Dapr sidecar when run in standalone mode.
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -586,8 +575,7 @@ The resilency spec is:
    ```
 
 ### Step 4: View the Service Invocation outputs
-
-Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+When both services and sidecars are running, notice how orders are passed from the `checkout` service to the `order-processor` service using Dapr service invoke. 
 
 `checkout` service output:
 
@@ -608,10 +596,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ```
 
 ### Step 5: Introduce a fault
+Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, service invoke operations from the `checkout` service begin to fail.
 
-Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, write and read operations from the order-processor service begin to fail.
-
-Since the `resiliency.yaml` spec defines the `order-processor` service as a target, all failed requests will apply retry and circuit breaker policies:
+Since the `resiliency.yaml` spec defines the `order-processor` service as a resiliency target, all failed requests will apply retry and circuit breaker policies:
 
 ```yaml
   targets:
@@ -748,14 +735,14 @@ git clone https://github.com/dapr/quickstarts.git
 
 ### Step 2: Run the `order-processor` service
 
-In a terminal window, from the root of the Quickstart clone directory
+In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
 
 ```bash
 cd ../service_invocation/java/http/order-processor
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 mvn clean install
@@ -764,19 +751,19 @@ mvn clean install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ### Step 3: Run the `checkout` service application with resiliency enabled
 
-In a new terminal window, from the root of the Quickstart clone directory
+In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
 
 ```bash
 cd ../service_invocation/java/http/checkout
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 mvn clean install
@@ -788,9 +775,7 @@ Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter ap
 dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
-The resilency spec is:
-- Located in the `components` directory. 
-- Automatically discovered by the Dapr sidecar when run in standalone mode.
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -822,8 +807,7 @@ The resilency spec is:
    ```
 
 ### Step 4: View the Service Invocation outputs
-
-Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+When both services and sidecars are running, notice how orders are passed from the `checkout` service to the `order-processor` service using Dapr service invoke. 
 
 `checkout` service output:
 
@@ -844,10 +828,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ```
 
 ### Step 5: Introduce a fault
+Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, service invoke operations from the `checkout` service begin to fail.
 
-Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, write and read operations from the order-processor service begin to fail.
-
-Since the `resiliency.yaml` spec defines the `order-processor` service as a target, all failed requests will apply retry and circuit breaker policies:
+Since the `resiliency.yaml` spec defines the `order-processor` service as a resiliency target, all failed requests will apply retry and circuit breaker policies:
 
 ```yaml
   targets:
@@ -931,7 +914,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-id order-processor --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 `checkout` service output:
@@ -981,14 +964,14 @@ git clone https://github.com/dapr/quickstarts.git
 
 ### Step 2: Run the `order-processor` service
 
-In a terminal window, from the root of the Quickstart clone directory
+In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
 
 ```bash
 cd ../service_invocation/go/http/order-processor
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 go build .
@@ -997,19 +980,19 @@ go build .
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ### Step 3: Run the `checkout` service application with resiliency enabled
 
-In a new terminal window, from the root of the Quickstart clone directory
+In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
 
 ```bash
 cd ../service_invocation/go/http/checkout
 ```
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 go build .
@@ -1021,9 +1004,7 @@ Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter ap
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/  --app-protocol http --dapr-http-port 3500 -- go run .
 ```
 
-The resilency spec is:
-- Located in the `components` directory. 
-- Automatically discovered by the Dapr sidecar when run in standalone mode.
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -1055,8 +1036,7 @@ The resilency spec is:
    ```
 
 ### Step 4: View the Service Invocation outputs
-
-Dapr invokes an application on any Dapr instance. In the code, the sidecar programming model encourages each application to talk to its own instance of Dapr. The Dapr instances then discover and communicate with one another.
+When both services and sidecars are running, notice how orders are passed from the `checkout` service to the `order-processor` service using Dapr service invoke. 
 
 `checkout` service output:
 
@@ -1077,10 +1057,9 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ```
 
 ### Step 5: Introduce a fault
+Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, service invoke operations from the `checkout` service begin to fail.
 
-Simulate a fault by stopping the `order-processor` service. Once the instance is stopped, write and read operations from the order-processor service begin to fail.
-
-Since the `resiliency.yaml` spec defines the `order-processor` service as a target, all failed requests will apply retry and circuit breaker policies:
+Since the `resiliency.yaml` spec defines the `order-processor` service as a resiliency target, all failed requests will apply retry and circuit breaker policies:
 
 ```yaml
   targets:
@@ -1164,7 +1143,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 `checkout` service output:

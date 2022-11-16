@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Quickstart: Service-to-component resiliency"
-linkTitle: "Resiliency: App-to-service"
+linkTitle: "Resiliency: Service-to-component"
 weight: 110
 description: "Get started with Dapr's resiliency capabilities via the state management API"
 ---
