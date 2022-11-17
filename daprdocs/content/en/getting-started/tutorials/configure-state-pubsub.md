@@ -64,9 +64,7 @@ For Kubernetes:
 {{% /codetab %}}
 
 {{% codetab %}}
-<!-- IGNORE_LINKS -->
-Verify you have an [Azure subscription](https://azure.microsoft.com/free/).
-<!-- END_IGNORE -->
+Verify you have an Azure subscription.
 
 1. Open and log into the [Azure portal](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Redis Cache creation flow. 
 1. Fill out the necessary information.
