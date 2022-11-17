@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Quickstart: service-to-service resiliency"
-linkTitle: "Resiliency: service-to-service"
+title: "Quickstart: Service-to-service resiliency"
+linkTitle: "Resiliency: Service-to-service"
 weight: 120
 description: "Get started with Dapr's resiliency capabilities via the service invocation API"
 ---
@@ -12,7 +12,7 @@ description: "Get started with Dapr's resiliency capabilities via the service in
 
 Observe Dapr resiliency capabilities by simulating a system failure. In this Quickstart, you will:
 
-- Run two microservice applications, `checkout` and `order-processor`. `checkout` will continuously make Dapr service invocation requests to `order-processor`. 
+- Run two microservice applications: `checkout` and `order-processor`. `checkout` will continuously make Dapr service invocation requests to `order-processor`. 
 - Trigger the resiliency spec by simulating a system failure. 
 - Remove the failure to allow the microservice application to recover. 
 
@@ -82,7 +82,7 @@ Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter ap
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -305,13 +305,13 @@ Install dependencies:
 npm install
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr  configuration that enables the resiliency feature.
 
 ```bash
 dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -537,13 +537,13 @@ dotnet restore
 dotnet build
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr  configuration that enables the resiliency feature.
 
 ```bash
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -769,13 +769,13 @@ Install dependencies:
 mvn clean install
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr  configuration that enables the resiliency feature.
 
 ```bash
 dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -1004,7 +1004,7 @@ Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter ap
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/  --app-protocol http --dapr-http-port 3500 -- go run .
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the dapr sidecar:
+By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
