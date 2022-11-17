@@ -574,7 +574,7 @@ mvn clean install
 
 ### Step 2: Run the application with resiliency enabled
 
-Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
+Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below, the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
 
 - Located in the `components` directory. 
 - Automatically discovered by the Dapr sidecar when run in standalone mode.
