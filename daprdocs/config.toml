@@ -27,7 +27,7 @@ disableKinds = ["taxonomy", "term"]
 
 # Google Analytics
 [services.googleAnalytics]
-id = "G-60C6Q1ETC1"
+id = "UA-00000000-0"
 
 # Mounts
 [module]
