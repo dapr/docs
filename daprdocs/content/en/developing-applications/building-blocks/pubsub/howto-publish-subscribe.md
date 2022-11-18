@@ -161,7 +161,8 @@ metadata:
   name: order-pub-sub
 spec:
   topic: orders
-  route: /checkout
+  routes: 
+    default: /checkout
   pubsubname: order-pub-sub
 scopes:
 - orderprocessing
