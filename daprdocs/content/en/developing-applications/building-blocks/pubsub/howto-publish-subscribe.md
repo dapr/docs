@@ -38,7 +38,7 @@ When you run `dapr init`, Dapr creates a default Redis `pubsub.yaml` and runs a 
 With the `pubsub.yaml` component, you can easily swap out underlying components without application code changes. In this example, RabbitMQ is used.
 
 ```yaml
-apiVersion: dapr.io/v2alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: order-pub-sub
@@ -114,7 +114,7 @@ dapr run --app-id myapp --components-path ./myComponents -- npm start
 To deploy this into a Kubernetes cluster, fill in the `metadata` connection details of the [pub/sub component]({{< ref setup-pubsub >}}) in the YAML below, save as `pubsub.yaml`, and run `kubectl apply -f pubsub.yaml`.
 
 ```yaml
-apiVersion: dapr.io/v2alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: order-pub-sub
@@ -158,20 +158,14 @@ Create a file named `subscription.yaml` and paste the following:
 apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
-  name: myevent-subscription
+  name: order-pub-sub
 spec:
-  pubsubname: pubsub
-  topic: inventory
-  routes:
-    rules:
-      - match: event.type == "widget"
-        path: /widgets
-      - match: event.type == "gadget"
-        path: /gadgets
-    default: /products
+  topic: orders
+  route: /checkout
+  pubsubname: order-pub-sub
 scopes:
-  - app1
-  - app2
+- orderprocessing
+- checkout
 ```
 
 The example above shows an event subscription to topic `orders`, for the pubsub component `order-pub-sub`.
