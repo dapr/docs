@@ -35,5 +35,6 @@ jobs:
           python3 -m pip install --upgrade pip
           pip3 install setuptools wheel twine tox mechanical-markdown
       - name: Check Markdown Files
+        continue-on-error: true
         run: |
           for name in `find . -name "*.md"`; do echo -e "------\n$name" ; mm.py -l $name ;done
