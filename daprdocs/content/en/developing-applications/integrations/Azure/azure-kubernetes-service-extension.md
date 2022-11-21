@@ -106,4 +106,4 @@ dapr-sidecar-injector-9555889bc-rpjwl   1/1     Running   0          1h
 dapr-sidecar-injector-9555889bc-rqjgt   1/1     Running   0          1h
 ```
 
-For further information such as configuration options and targeting specific versions of Dapr, see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/azure/aks/dapr).
+For more information about configuration options and targeting specific Dapr versions, see the official [AKS Dapr Extension Docs](https://docs.microsoft.com/azure/aks/dapr).
