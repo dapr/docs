@@ -54,11 +54,11 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
 | vaultAddr      | N | The address of the Vault server. Defaults to `"https://127.0.0.1:8200"` | `"https://127.0.0.1:8200"` |
-| caCert | N | Certificate Authority use only one of the options. The encoded cacerts to use | `"cacerts"` |
-| caPath | N | Certificate Authority use only one of the options. The path to a CA cert file |  `"path/to/cacert/file"` |
-| caPem | N | Certificate Authority use only one of the options. The encoded cacert pem to use | `"encodedpem"` |
+| caPem | N | The inlined contents of the CA certificate to use, in PEM format. If defined, takes precedence over `caPath` and `caCert`.  | See bellow |
+| caPath | N | The path to a folder holding the CA certificate file to use, in PEM format. If the folder contains multiple files, only the first file found will be used. If defined, takes precedence over `caCert`.  |  `"path/to/cacert/holding/folder"` |
+| caCert | N | The path to the CA certificate to use, in PEM format. | `""path/to/cacert.pem"` |
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
-| tlsServerName | N | TLS config server name | `"tls-server"` |
+| tlsServerName | N | The name of the server requested during TLS handshake in order to support virtual hosting. This value is also used to verify the TLS certificate presented by Vault server. | `"tls-server"` |
 | vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
 | vaultToken | Y | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault.  | `"tokenValue"` |
 | vaultKVPrefix | N | The prefix in vault. Defaults to `"dapr"` | `"dapr"`, `"myprefix"` |
@@ -109,8 +109,36 @@ $ curl http://localhost:3501/v1.0/secrets/my-hashicorp-vault/mysecret
 }
 ```
 
-Notice that the name of the secret (`mysecret`) is not repeated in the result. 
+Notice that the name of the secret (`mysecret`) is not repeated in the result.
 
+
+## TLS Server verification 
+
+The fields `skipVerify`, `tlsServerName`, `caCert`, `caPath` and `caPem` control if and how Dapr will verify vault server's certificate while connecting using TLS/HTTPS.
+
+### Inline CA PEM caPem
+
+The value of the field `caPem` should be the contents of the PEM CA certificate you want to use. Given PEM certificates are made of multiple lines, defining that value might seem challenging at first. YAML allows for a few ways of defining a multiline values. The website https://yaml-multiline.info/, while not an authoritative source on the matter, might help you with that.
+
+Bellow, we show one way to define a `caPem` field.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: vault
+spec:
+  type: secretstores.hashicorp.vault
+  version: v1
+  metadata:
+  - name: vaultAddr
+    value: https://127.0.0.1:8200
+  - name: caPem
+    value: |-
+          -----BEGIN CERTIFICATE-----
+          << the rest of your PEM file content's here, indented appropriately. >>
+          -----END CERTIFICATE-----
+```
 
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
