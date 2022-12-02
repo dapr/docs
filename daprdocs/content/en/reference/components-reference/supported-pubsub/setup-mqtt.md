@@ -28,8 +28,6 @@ spec:
     value: "false"
   - name: cleanSession
     value: "false"
-  - name: backOffMaxRetries
-    value: "0"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -70,8 +68,6 @@ spec:
     value: "false"
   - name: cleanSession
     value: "false"
-  - name: backoffMaxRetries
-    value: "0"
   - name: caCert
     value: ${{ myLoadedCACert }}
   - name: clientCert
@@ -109,8 +105,6 @@ spec:
       value: "false"
     - name: cleanSession
       value: "true"
-    - name: backoffMaxRetries
-      value: "0"
 ```
 
 {{% alert title="Warning" color="warning" %}}
