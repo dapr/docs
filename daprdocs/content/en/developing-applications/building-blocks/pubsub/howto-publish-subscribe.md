@@ -357,7 +357,7 @@ async function start(orderId) {
     await server.pubsub.subscribe("order-pub-sub", "orders", async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
     });
-    await server.startServer();
+    await server.start();
 }
 ```
 
