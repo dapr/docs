@@ -89,7 +89,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
 
 
 ```bash
-dapr run --app-id order-processor ../config.yaml --components-path ../../../components/ -- python3
+dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- python3
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
@@ -257,7 +257,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
    ```
 
 ```bash
-dapr run --app-id order-processor ../config.yaml --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- npm start
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
