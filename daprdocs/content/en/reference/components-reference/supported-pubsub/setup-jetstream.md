@@ -64,6 +64,8 @@ spec:
     value: 1024
   - name: hearbeat
     value: 15s
+  - name: ackPolicy
+    value: explicit
 ```
 
 ## Spec metadata fields
@@ -91,6 +93,7 @@ spec:
 | memoryStorage   |    N     | [Memory Storage]                           | `false`                          |
 | rateLimit       |    N     | [Rate Limit]                               | `1024`                           |
 | hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
+| ackPolicy       |    N     | [Ack Policy]                               | `explicit`                       |
 
 ## Create a NATS server
 
@@ -155,5 +158,6 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 [Memory Storage]: https://docs.nats.io/jetstream/concepts/consumers#memorystorage
 [Rate Limit]: https://docs.nats.io/jetstream/concepts/consumers#ratelimit
 [Hearbeat]: https://docs.nats.io/jetstream/concepts/consumers#hearbeat
+[Ack Policy]: https://docs.nats.io/nats-concepts/jetstream/consumers#ackpolicy
 [Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt
 [NATS token based authentication]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/tokens
