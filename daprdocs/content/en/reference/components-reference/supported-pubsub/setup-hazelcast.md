@@ -7,7 +7,9 @@ aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-hazelcast/"
 ---
 
-> **Deprecation notice**: The Hazelcast PubSub component has been deprecated due to inherent lack of support for "at least once" delivery guarantee, and will be removed in a future Dapr release.
+{{% alert title="Deprecation notice" color="warning" %}}
+The Hazelcast PubSub component has been deprecated due to inherent lack of support for "at least once" delivery guarantee, and will be removed in a future Dapr release.
+{{% /alert %}}
 
 ## Component format
 To setup hazelcast pubsub create a component of type `pubsub.hazelcast`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
