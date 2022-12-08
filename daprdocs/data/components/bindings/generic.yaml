@@ -8,12 +8,12 @@
     output: true
 - component: Cron (Scheduler)
   link: cron
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.10"
   features:
     input: true
-    output: true
+    output: false
 - component: GraphQL
   link: graghql
   state: Alpha
@@ -45,7 +45,7 @@
   since: "1.0"
   features:
     input: true
-    output: true
+    output: false
 - component: Local Storage
   link: localstorage
   state: Stable
