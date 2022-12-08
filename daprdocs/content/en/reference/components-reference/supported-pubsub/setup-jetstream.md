@@ -36,7 +36,9 @@ spec:
     value: "my-token"
   - name: name
     value: "my-conn-name"
-  - name: durableName
+  - name: streamName
+    value: "my-stream"
+  - name: durableName 
     value: "my-durable"
   - name: queueGroupName
     value: "my-queue"
@@ -77,6 +79,7 @@ spec:
 | tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
 | token           |    N     | [NATS token based authentication]          | `"my-token"`                     |
 | name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
+| streamName      |    N     | Name of the JetStream Stream to bind to    | `"my-stream"`                    |
 | durableName     |    N     | [Durable name]                             | `"my-durable"`                   |
 | queueGroupName  |    N     | Queue group name                           | `"my-queue"`                     |
 | startSequence   |    N     | [Start Sequence]                           | `1`                              |
