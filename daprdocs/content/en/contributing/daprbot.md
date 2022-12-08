@@ -19,7 +19,7 @@ Dapr bot is a GitHub Script that helps with common tasks in the Dapr organizatio
 
 ## label reference
 
-You can query issues created by the dapr-bot by using the `created-by/dapr-bot` label.
+You can query issues created by the dapr-bot by using the `created-by/dapr-bot` label ([query](https://github.com/search?q=org%3Adapr%20is%3Aissue%20label%3Acreated-by%2Fdapr-bot%20&type=issues)).
 
 | Label | Target | What does it do? | Repository |
 |-------|--------|------------------|------------|
