@@ -12,7 +12,7 @@ Certification lifecycle only applies to built-in components and does not apply t
 
 ## Overview
 
-Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are interchangable so that in ideal scenarios, you can swap out one component with the same interface for another. Each component that is used in production, needs to maintain a certain set of technical requirements that ensure the functional compatibility and robustness of the component.
+Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are interchangeable so that in ideal scenarios, you can swap out one component with the same interface for another. Each component that is used in production, needs to maintain a certain set of technical requirements that ensure the functional compatibility and robustness of the component.
 
 In general a component needs to be:
 
