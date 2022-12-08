@@ -29,7 +29,7 @@ spec:
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|-------|--------|---------|
-| schedule | Y | Input/Output |  The valid cron schedule to use. See [this](#schedule-format) for more details | `"@every 15m"`
+| schedule | Y | Input|  The valid cron schedule to use. See [this](#schedule-format) for more details | `"@every 15m"`
 
 ### Schedule Format
 
@@ -74,11 +74,7 @@ When running this code, note that the `/scheduled` endpoint is called every five
 
 ## Binding support
 
-This component supports both **input and output** binding interfaces.
-
-This component supports **output binding** with the following operations:
-
-- `delete`
+This component supports **input** binding interface.
 
 ## Related links
 
