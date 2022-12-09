@@ -134,6 +134,8 @@ To set Azure Service Bus metadata when sending a message, set the query paramete
 
 > **NOTE:** The `metadata.MessageId` property does not set the `id` property of the cloud event and should be treated in isolation.
 
+> **NOTE:** If the `metadata.SessionId` property is not set but the topic requires sessions then an empty session id will be used.
+
 ### Receiving a message with metadata
 
 When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
