@@ -54,7 +54,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
 | vaultAddr      | N | The address of the Vault server. Defaults to `"https://127.0.0.1:8200"` | `"https://127.0.0.1:8200"` |
-| caPem | N | The inlined contents of the CA certificate to use, in PEM format. If defined, takes precedence over `caPath` and `caCert`.  | See bellow |
+| caPem | N | The inlined contents of the CA certificate to use, in PEM format. If defined, takes precedence over `caPath` and `caCert`.  | See below |
 | caPath | N | The path to a folder holding the CA certificate file to use, in PEM format. If the folder contains multiple files, only the first file found will be used. If defined, takes precedence over `caCert`.  |  `"path/to/cacert/holding/folder"` |
 | caCert | N | The path to the CA certificate to use, in PEM format. | `""path/to/cacert.pem"` |
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
@@ -114,13 +114,13 @@ Notice that the name of the secret (`mysecret`) is not repeated in the result.
 
 ## TLS Server verification 
 
-The fields `skipVerify`, `tlsServerName`, `caCert`, `caPath` and `caPem` control if and how Dapr will verify vault server's certificate while connecting using TLS/HTTPS.
+The fields `skipVerify`, `tlsServerName`, `caCert`, `caPath`, and `caPem` control if and how Dapr verifies the vault server's certificate while connecting using TLS/HTTPS.
 
 ### Inline CA PEM caPem
 
-The value of the field `caPem` should be the contents of the PEM CA certificate you want to use. Given PEM certificates are made of multiple lines, defining that value might seem challenging at first. YAML allows for a few ways of defining a multiline values. The website https://yaml-multiline.info/, while not an authoritative source on the matter, might help you with that.
+The `caPem` field value should be the contents of the PEM CA certificate you want to use. Given PEM certificates are made of multiple lines, defining that value might seem challenging at first. YAML allows for a few ways of [defining a multiline values](https://yaml-multiline.info/).
 
-Bellow, we show one way to define a `caPem` field.
+Below is one way to define a `caPem` field.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
