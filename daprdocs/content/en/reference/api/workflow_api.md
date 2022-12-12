@@ -66,7 +66,7 @@ If an instance already exists, the exact behavior is determined by policy. For e
 
 ## Terminate Workflow
 
-Typically, service operators terminate a workflow if:
+Typically, you'd terminate a workflow if:
 
 - A particular business process needs to be cancelled, or 
 - The workflow encounters a problem and needs to be stopped for mitigation.
