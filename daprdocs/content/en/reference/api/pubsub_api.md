@@ -93,7 +93,7 @@ The request body should contain a JSON array of entries with unique entry IDs. E
 ]
 ```
 
-Just like the publish endpoint, the events are auto-wrapped as CloudEvents if `rawPayload` metadata is not set to true. The `contentType` field is optional and defaults to `text/plain`.
+Just like the publish endpoint, the events are auto-wrapped as CloudEvents if `rawPayload` metadata is not set to true.
 
 ### Headers
 
