@@ -64,6 +64,72 @@ Parameter | Description
 
 > Additional metadata parameters are available based on each pubsub component.
 
+## Publish multiple messages to a given topic
+
+This endpoint lets you publish multiple messages to consumers who are listening on a `topic`.
+
+### HTTP Request
+
+```
+POST http://localhost:<daprPort>/v1.0-alpha1/publish/bulk/<pubsubname>/<topic>[?<metadata>]
+```
+
+The request body should contain a JSON array of entries with unique entry IDs. Example:
+
+```json
+[
+    {
+        "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
+        "event":  "first",
+        "contentType": "text/plain"
+    },
+    {
+        "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
+        "event":  {
+            "message": "second"   
+        },
+        "contentType": "application/json"
+    },
+]
+```
+
+Just like the publish endpoint, the events are auto-wrapped as CloudEvents if `rawPayload` metadata is not set to true. The `contentType` field is optional and defaults to `text/plain`.
+
+### Headers
+
+The `Content-Type` header should be set to `application/json`.
+
+### Metadata
+
+Metadata can be sent via query parameters in the request's URL. If must be prefixed with `metadata.` as shown below.
+
+|**Parameter**|**Description**|
+|--|--|
+|`metadata.rawPayload`|Boolean to determine if Dapr should publish the messages without wrapping them as CloudEvent.|
+|`metadata.maxBulkPubBytes`|Maximum bytes to publish in a bulk publish request.|
+
+
+#### HTTP Response
+
+|**Code**|**Description**|
+|--|--|
+|204|All messages delivered|
+|400|Pubsub does not exist|
+|403|Forbidden by access controls|
+|500|At least one message failed to be delivered|
+
+The response body is a JSON containing a list of failed messages. Example:
+
+```json
+[
+    {
+        "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
+        "error": "error message",
+        "status": "FAIL",
+    }
+]
+```
+
 ## Optional Application (User Code) Routes
 
 ### Provide a route for Dapr to discover topic subscriptions
