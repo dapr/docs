@@ -76,7 +76,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Enabling message delivery retries
 
-The RabbitMQ pub/sub component has no built-in support for retry strategies. This means that the sidecar will send a message to the service only once. When the service returns a result, the message will be marked as consumed regardless of whether it was processed correctly or not.
+The RabbitMQ pub/sub component has no built-in support for retry strategies. This means that the sidecar sends a message to the service only once. When the service returns a result, the message will be marked as consumed regardless of whether it was processed correctly or not.
 Dapr can try redelivering a message a second time, when `autoAck` is set to `false` and `requeueInFailure` is set to `true`.
 
 To make Dapr use more sophisticated retry policies, you can apply a [retry resiliency policy]({{< ref "policies.md#retries" >}}) to the RabbitMQ pub/sub component and [enable the Resiliency preview feature]({{<ref preview-features>}}).
