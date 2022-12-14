@@ -46,8 +46,6 @@ spec:
     value: 1
   - name: startTime # In Unix format
     value: 1630349391
-  - name: deliverAll
-    value: false
   - name: flowControl
     value: false
   - name: ackWait
@@ -68,6 +66,8 @@ spec:
     value: 15s
   - name: ackPolicy
     value: explicit
+  - name: deliverPolicy
+    value: all
 ```
 
 ## Spec metadata fields
@@ -97,6 +97,7 @@ spec:
 | rateLimit       |    N     | [Rate Limit]                               | `1024`                           |
 | hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
 | ackPolicy       |    N     | [Ack Policy]                               | `explicit`                       |
+| deliverPolicy   |    N     | One of: all, last, new, sequence, time     | `all`                            |
 
 ## Create a NATS server
 
