@@ -8,12 +8,18 @@ description: "Learn how to get application configuration and subscribe for chang
 
 This example uses the Redis configuration store component to demonstrate how to retrieve a configuration item.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Preview" color="primary" %}}
 This API is currently in `Alpha` state and only available on gRPC. An HTTP1.1 supported version with this URL syntax `/v1.0/configuration` will be available before the API is certified into `Stable` state.
 
 {{% /alert %}}
 
 <img src="/images/building-block-configuration-example.png" width=1000 alt="Diagram showing get configuration of example service">
+
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the configuration quickstart]({{< ref configuration-quickstart.md >}}) for a quick walk-through on how to use the configuration API.
+
+{{% /alert %}}
+
 
 ## Create a configuration item in store
 
@@ -304,7 +310,7 @@ asyncio.run(executeConfiguration())
 ```
 
 ```bash
-dapr run --app-id orderprocessing --components-path components/ -- python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --resources-path components/ -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}
