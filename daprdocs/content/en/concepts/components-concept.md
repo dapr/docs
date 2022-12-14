@@ -6,7 +6,7 @@ weight: 300
 description: "Modular functionality used by building blocks and applications"
 ---
 
-Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are interchangable so that you can swap out one component with the same interface for another.
+Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are interchangeable so that you can swap out one component with the same interface for another.
 
 You can contribute implementations and extend Dapr's component interfaces capabilities via:
 
