@@ -19,7 +19,7 @@ Dapr initialization includes:
 
 1. Running a **Redis container instance** to be used as a local state store and message broker.
 1. Running a **Zipkin container instance** for observability.
-1. Creating a **default components folder** with component definitions for the above.
+1. Creating a **default resources folder** with resources definitions for the above.
 1. Running a **Dapr placement service container instance** for local actor support.
 
 {{% alert title="Docker" color="primary" %}}
@@ -83,14 +83,14 @@ docker ps
 
 <img src="/images/install-dapr-selfhost/docker-containers.png" width=800>
 
-### Step 5: Verify components directory has been initialized
+### Step 5: Verify resources directory has been initialized
 
-On `dapr init`, the CLI also creates a default components folder that contains several YAML files with definitions for a state store, Pub/sub, and Zipkin. The Dapr sidecar will read these components and use:
+On `dapr init`, the CLI also creates a default resources folder that contains several YAML files with definitions for a state store, Pub/sub, and Zipkin. The Dapr sidecar will read these resources and use:
 
 - The Redis container for state management and messaging.
 - The Zipkin container for collecting traces.
 
-Verify by opening your components directory:
+Verify by opening your resources directory:
 
 - On Windows, under `%UserProfile%\.dapr`
 - On Linux/MacOS, under `~/.dapr`
@@ -105,7 +105,7 @@ ls $HOME/.dapr
 
 **Output:**  
 
-`bin  components  config.yaml`
+`bin  resources  config.yaml`
 
 <br>
 
