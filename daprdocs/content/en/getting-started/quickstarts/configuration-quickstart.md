@@ -6,7 +6,7 @@ weight: 76
 description: Get started with Dapr's Configuration building block
 ---
 
-LEt's take a look at Dapr's [Configuration building block]({{ ref configuration-api-overview }}). A configuration item is often dynamic in nature and tightly coupled to the needs of the application that consumes it. Configuration items are key/value pairs containing configuration data, such as:
+Let's take a look at Dapr's [Configuration building block]({{< ref configuration-api-overview.md >}}). A configuration item is often dynamic in nature and tightly coupled to the needs of the application that consumes it. Configuration items are key/value pairs containing configuration data, such as:
 - App ids
 - Partition keys
 - Database names, etc
@@ -74,10 +74,14 @@ dapr run --app-id order-processor --resources-path ../../../components/ --app-po
 The expected output:
 
 ```
-
+== APP == Configuration for orderId1 : value: "101"
+== APP ==
+== APP == Configuration for orderId2 : value: "102"
+== APP ==
+== APP == App unsubscribed from config changes
 ```
 
-### Step 3: Update configuration item values
+### (Optional) Step 3: Update configuration item values
 
 Once the app has unsubscribed, try updating the configuration item values. Change the `orderId1` and `orderId2` values using the following command:
 
@@ -96,7 +100,10 @@ dapr run --app-id order-processor --resources-path ../../../components/ --app-po
 The app will return the updated configuration values:
 
 ```
-
+== APP == Configuration for orderId1 : value: "103"
+== APP ==
+== APP == Configuration for orderId2 : value: "104"
+== APP ==
 ```
 
 ### The `order-processor` service
@@ -193,7 +200,7 @@ The expected output:
 == APP == App unsubscribed to config changes
 ```
 
-### Step 3: Update configuration item values
+### (Optional) Step 3: Update configuration item values
 
 Once the app has unsubscribed, try updating the configuration item values. Change the `orderId1` and `orderId2` values using the following command:
 
@@ -315,7 +322,7 @@ The expected output:
 == APP == App unsubscribed from config changes
 ```
 
-### Step 3: Update configuration item values
+### (Optional) Step 3: Update configuration item values
 
 Once the app has unsubscribed, try updating the configuration item values. Change the `orderId1` and `orderId2` values using the following command:
 
@@ -434,7 +441,7 @@ The expected output:
 == APP == App unsubscribed to config changes
 ```
 
-### Step 3: Update configuration item values
+### (Optional) Step 3: Update configuration item values
 
 Once the app has unsubscribed, try updating the configuration item values. Change the `orderId1` and `orderId2` values using the following command:
 
@@ -544,7 +551,7 @@ The expected output:
 == APP == App unsubscribed to config changes
 ```
 
-### Step 3: Update configuration item values
+### (Optional) Step 3: Update configuration item values
 
 Once the app has unsubscribed, try updating the configuration item values. Change the `orderId1` and `orderId2` values using the following command:
 

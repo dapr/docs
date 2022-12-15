@@ -34,11 +34,11 @@ Configuration data is read-only from the application API perspective, with updat
 
 ### Quickstart
 
-Want to put the Dapr pub/sub API to the test? Walk through the following quickstart and tutorials to see pub/sub in action:
+Want to put the Dapr configuration API to the test? Walk through the following quickstart and tutorials to see the configuration API in action:
 
 | Quickstart | Description |
 | ---------- | ----------- |
-| [Configuration quickstart]({{< ref configuration-quickstart.md >}}) | Send and receive messages using the publish and subscribe API. |
+| [Configuration quickstart]({{< ref configuration-quickstart.md >}}) | Get configuration items or subscribe to configuration changes using the configuration API. |
 
 ### Start using the configuration API directly in your app
 
