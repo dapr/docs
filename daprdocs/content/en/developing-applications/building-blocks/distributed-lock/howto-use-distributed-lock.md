@@ -149,7 +149,7 @@ namespace LockService
             var client = new DaprClientBuilder().Build();
 
             var response = await client.Unlock(DAPR_LOCK_NAME, "my_file_name", "random_id_abc123"));
-            Console.WriteLine(response.LockStatus);
+            Console.WriteLine(response.status);
         }
     }
 }
