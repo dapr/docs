@@ -46,7 +46,7 @@ helm install redis bitnami/redis --set image.tag=6.2
 ```
 
 For Dapr's Pub/sub functionality, you'll need at least Redis version 5. For state store, you can use a lower version. 
-Notice that by adding `--set architecture=standalone` create a single replica redis setup which can save memory and resources if you are in working in a local environment. 
+Notice that adding `--set architecture=standalone` creates a single replica Redis setup, which can save memory and resources if you are working in a local environment. 
 
 Run `kubectl get pods` to see the Redis containers now running in your cluster:
 
