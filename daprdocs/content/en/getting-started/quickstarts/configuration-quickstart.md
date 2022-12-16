@@ -15,9 +15,7 @@ In this quickstart, you'll run an `order-processor` microservice that utilizes t
 1. Gets configuration items from the configuration store.
 1. Subscribes for configuration updates.
 
-<!-- 
-Include a diagram or image, if possible. 
--->
+<img src="/images/configuration-quickstart/configuration-quickstart-flow.png" width=1000 alt="Diagram that demonstrates the flow of the configuration API quickstart with key/value pairs used.">
 
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
