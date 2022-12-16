@@ -318,9 +318,9 @@ When you run `dapr init`, Dapr creates a default redis `pubsub.yaml` on your loc
 For new component files:
 
 1. Create a new `components` directory in your app folder containing the YAML files.
-1. Provide the path to the `dapr run` command with the flag `--components-path`
+1. Provide the path to the `dapr run` command with the flag `--resources-path`
 
-If you initialized Dapr in [slim mode]({{< ref self-hosted-no-docker.md >}}) (without Docker), you need to manually create the default directory, or always specify a components directory using `--components-path`.
+If you initialized Dapr in [slim mode]({{< ref self-hosted-no-docker.md >}}) (without Docker), you need to manually create the default directory, or always specify a components directory using `--resources-path`.
 
 {{% /codetab %}}
 

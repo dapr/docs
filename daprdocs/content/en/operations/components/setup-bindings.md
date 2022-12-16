@@ -62,7 +62,7 @@ Once you have created the component's YAML file, follow these instructions to ap
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
 {{% codetab %}}
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
 {{% /codetab %}}
 
 {{% codetab %}}
