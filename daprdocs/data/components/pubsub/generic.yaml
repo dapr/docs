@@ -52,4 +52,4 @@
   link: setup-solace-amqp
   state: Alpha
   version: v1
-  since: '1.8'
+  since: '1.9'
