@@ -230,6 +230,7 @@ Consider an example where you store documents like that:
     },
     "city": "Seattle",
     "state": "WA"
+  }
 }
 ```
 

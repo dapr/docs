@@ -44,7 +44,7 @@ spec:
   - name: accessKey
     value: "[AccessKey]"
   - name: topicEndpoint
-    value: "[TopicEndpoint]
+    value: "[TopicEndpoint]"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -102,7 +102,7 @@ _Make sure to also to add quotes around the `[HandshakePort]` in your Event Grid
 
 ```bash
 # Using random port 9000 as an example
-ngrok http -host-header=localhost 9000
+ngrok http --host-header=localhost 9000
 ```
 
 - Configure the ngrok's HTTPS endpoint and custom port to input binding metadata
