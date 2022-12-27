@@ -1,0 +1,8 @@
+- component: Cloudflare Queues
+  link: cfqueues
+  state: Alpha
+  version: v1
+  since: "1.10"
+  features:
+    input: false
+    output: true
