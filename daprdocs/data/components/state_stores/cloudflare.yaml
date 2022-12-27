@@ -1,4 +1,4 @@
-- component: Workers KV
+- component: Cloudflare Workers KV
   link: setup-cloudflare-workerskv
   state: Beta
   version: v1
