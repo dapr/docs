@@ -86,7 +86,6 @@ spec:
 | queueGroupName  |    N     | Queue group name                           | `"my-queue"`                     |
 | startSequence   |    N     | [Start Sequence]                           | `1`                              |
 | startTime       |    N     | [Start Time] in Unix format                | `1630349391`                     |
-| deliverAll      |    N     | Set deliver all as [Replay Policy]         | `true`                           |
 | flowControl     |    N     | [Flow Control]                             | `true`                           |
 | ackWait         |    N     | [Ack Wait]                                 | `10s`                            |
 | maxDeliver      |    N     | [Max Deliver]                              | `15`                             |
