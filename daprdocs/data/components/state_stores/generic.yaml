@@ -139,7 +139,7 @@
     crud: true
     transactions: true
     etag: true
-    ttl: false
+    ttl: true
     query: true
 - component: Redis
   link: setup-redis
