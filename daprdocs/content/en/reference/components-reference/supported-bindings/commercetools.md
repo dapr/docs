@@ -51,7 +51,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | clientSecret | Y | Output | The commercetools client secret for the project | `"client secret"` |
 | scopes | Y | Output | The commercetools scopes for the project | `"manage_project:project-key"` |
 
-For more information see [commercetools - Creating an API Client](https://docs.commercetools.com/tutorials/getting-started#creating-an-api-client) and [commercetools - Regions](https://docs.commercetools.com/api/general-concepts#regions).
+For more information see [commercetools - Creating an API Client](https://docs.commercetools.com/getting-started/create-api-client#create-an-api-client) and [commercetools - Regions](https://docs.commercetools.com/api/general-concepts#regions).
 
 ## Binding support
 
