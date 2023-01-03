@@ -49,7 +49,7 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
    daprd --app-id --app-port 5000
    ```
 
-3. If you are using several custom components and want to specify the location of the component definition files, use the `--resources-path` argument:
+3. If you are using several custom resources and want to specify the location of the resource definition files, use the `--resources-path` argument:
 
    ```bash
    daprd --app-id myapp --resources-path <PATH-TO-RESOURCES-FILES>
