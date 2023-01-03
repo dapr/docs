@@ -25,26 +25,30 @@ spec:
   - name: natsURL
     value: "nats://localhost:4222"
   - name: jwt # Optional. Used for decentralized JWT authentication.
-    value: "eyJhbGciOiJ...6yJV_adQssw5c" 
+    value: "eyJhbGciOiJ...6yJV_adQssw5c"
   - name: seedKey # Optional. Used for decentralized JWT authentication.
-    value: "SUACS34K232O...5Z3POU7BNIL4Y" 
+    value: "SUACS34K232O...5Z3POU7BNIL4Y"
   - name: tls_client_cert # Optional. Used for TLS Client authentication.
-    value: "/path/to/tls.crt" 
+    value: "/path/to/tls.crt"
   - name: tls_client_key # Optional. Used for TLS Client authentication.
-    value: "/path/to/tls.key" 
-  - name: name 
+    value: "/path/to/tls.key"
+  - name: token # Optional. Used for token based authentication.
+    value: "my-token"
+  - name: name
     value: "my-conn-name"
+  - name: streamName
+    value: "my-stream"
   - name: durableName 
     value: "my-durable"
-  - name: queueGroupName 
+  - name: queueGroupName
     value: "my-queue"
-  - name: startSequence 
+  - name: startSequence
     value: 1
   - name: startTime # In Unix format
     value: 1630349391
-  - name: deliverAll 
+  - name: deliverAll
     value: false
-  - name: flowControl 
+  - name: flowControl
     value: false
   - name: ackWait
     value: 10s
@@ -62,6 +66,8 @@ spec:
     value: 1024
   - name: hearbeat
     value: 15s
+  - name: ackPolicy
+    value: explicit
 ```
 
 ## Spec metadata fields
@@ -73,7 +79,9 @@ spec:
 | seedKey         |    N     | NATS decentralized authentication seed key | `"SUACS34K232O...5Z3POU7BNIL4Y"` |
 | tls_client_cert |    N     | NATS TLS Client Authentication Certificate | `"/path/to/tls.crt"`             |
 | tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
+| token           |    N     | [NATS token based authentication]          | `"my-token"`                     |
 | name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
+| streamName      |    N     | Name of the JetStream Stream to bind to    | `"my-stream"`                    |
 | durableName     |    N     | [Durable name]                             | `"my-durable"`                   |
 | queueGroupName  |    N     | Queue group name                           | `"my-queue"`                     |
 | startSequence   |    N     | [Start Sequence]                           | `1`                              |
@@ -88,6 +96,7 @@ spec:
 | memoryStorage   |    N     | [Memory Storage]                           | `false`                          |
 | rateLimit       |    N     | [Rate Limit]                               | `1024`                           |
 | hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
+| ackPolicy       |    N     | [Ack Policy]                               | `explicit`                       |
 
 ## Create a NATS server
 
@@ -152,4 +161,6 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 [Memory Storage]: https://docs.nats.io/jetstream/concepts/consumers#memorystorage
 [Rate Limit]: https://docs.nats.io/jetstream/concepts/consumers#ratelimit
 [Hearbeat]: https://docs.nats.io/jetstream/concepts/consumers#hearbeat
+[Ack Policy]: https://docs.nats.io/nats-concepts/jetstream/consumers#ackpolicy
 [Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt
+[NATS token based authentication]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/tokens
