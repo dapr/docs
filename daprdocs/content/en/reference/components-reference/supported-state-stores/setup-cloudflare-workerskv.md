@@ -235,3 +235,4 @@ Protect the private part of your key and treat it as a secret value!
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})
+- Documentation for [Cloudflare Workers KV](https://developers.cloudflare.com/workers/learning/how-kv-works/)

@@ -4,6 +4,7 @@ title: "Cloudflare Queues bindings spec"
 linkTitle: "Cloudflare Queues"
 description: "Detailed documentation on the Cloudflare Queues component"
 aliases:
+  - "/operations/components/setup-bindings/supported-bindings/cloudflare-queues/"
   - "/operations/components/setup-bindings/supported-bindings/cfqueues/"
 ---
 
@@ -234,3 +235,4 @@ Protect the private part of your key and treat it as a secret value!
 - [Bindings building block]({{< ref bindings >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
+- Documentation for [Cloudflare Queues](https://developers.cloudflare.com/queues/)
