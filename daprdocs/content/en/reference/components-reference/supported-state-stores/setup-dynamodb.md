@@ -34,6 +34,8 @@ spec:
     value: "myTOKEN" # Optional
   - name: ttlAttributeName
     value: "expiresAt" # Optional
+  - name: partitionKey
+    value: "pkey" # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
