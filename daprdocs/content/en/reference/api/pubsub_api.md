@@ -74,30 +74,41 @@ This endpoint lets you publish multiple messages to consumers who are listening 
 POST http://localhost:<daprPort>/v1.0-alpha1/publish/bulk/<pubsubname>/<topic>[?<metadata>]
 ```
 
-The request body should contain a JSON array of entries with unique entry IDs. Example:
+The request body should contain a JSON array of entries with unique entry IDs, the event to publish, and the content type of the event. If the content type for an event is not `application/cloudevents+json`, it is auto-wrapped as a CloudEvent (unless `metadata.rawPayload` is set to `true`, see below).
 
-```json
-[
-    {
-        "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
-        "event":  "first",
-        "contentType": "text/plain"
-    },
-    {
-        "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
-        "event":  {
-            "message": "second"   
+Example:
+
+```bash
+curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/pubsubName/deathStarStatus \
+  -H 'Content-Type: application/json' \
+  -d '[
+        {
+            "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
+            "event":  "first",
+            "contentType": "text/plain"
         },
-        "contentType": "application/json"
-    },
-]
+        {
+            "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
+            "event":  {
+                "message": "second"   
+            },
+            "contentType": "application/json"
+        },
+      ]'
 ```
-
-Just like the publish endpoint, the events are auto-wrapped as CloudEvents if `rawPayload` metadata is not set to true.
 
 ### Headers
 
-The `Content-Type` header should be set to `application/json`.
+The `Content-Type` header should always be set to `application/json`.
+
+### URL Parameters
+
+|**Parameter**|**Description**|
+|--|--|
+|`daprPort`|The Dapr port|
+|`pubsubname`|The name of pubsub component|
+|`topic`|The name of the topic|
+|`metadata`|Query parameters for metadata as described below|
 
 ### Metadata
 
@@ -111,23 +122,25 @@ Metadata can be sent via query parameters in the request's URL. If must be prefi
 
 #### HTTP Response
 
-|**Code**|**Description**|
+|**HTTP Status**|**Description**|
 |--|--|
 |204|All messages delivered|
 |400|Pubsub does not exist|
 |403|Forbidden by access controls|
 |500|At least one message failed to be delivered|
 
-The response body is a JSON containing a list of failed messages. Example:
+The response body is a JSON containing a list of failed entries. Example:
 
 ```json
-[
+{
+  "failedEntries": [
     {
-        "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
-        "error": "error message",
-        "status": "FAIL",
-    }
-]
+      "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
+      "error": "error message"
+    },
+  ],
+  "errorCode": "ERR_PUBSUB_PUBLISH_MESSAGE"
+}
 ```
 
 ## Optional Application (User Code) Routes
