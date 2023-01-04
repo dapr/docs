@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Primary Key
 
-In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`. See the section `Partition Keys` for an option to change this behavior.
+In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}) for an option to change this behavior.
 
 ## Spec metadata fields
 
