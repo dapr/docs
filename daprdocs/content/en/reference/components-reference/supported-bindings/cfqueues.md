@@ -92,7 +92,7 @@ Because Cloudflare Queues can only be accessed by scripts running on Workers, Da
 
 Dapr can manage the Worker for you automatically, or you can pre-provision a Worker yourself. Pre-provisioning the Worker is the only supported option when running on [workerd](https://github.com/cloudflare/workerd).
 
-> **Important:** Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Queues bindings, and do not use the same Worker script for different Cloudflare components in Dapr (e.g. the Workers KV state store and the Queues binding).
+> **Important:** Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Queues bindings, and do not use the same Worker script for different Cloudflare components in Dapr (for example the Workers KV state store and the Queues binding).
 
 {{< tabs "Let Dapr manage the Worker" "Manually provision the Worker script" >}}
 
@@ -105,7 +105,7 @@ If you want to let Dapr manage the Worker for you, you will need to provide thes
 - **`cfAccountID`**: ID of your Cloudflare account. You can find this in your browser's URL bar after logging into the [Cloudflare dashboard](https://dash.cloudflare.com/), with the ID being the hex string right after `dash.cloudflare.com`. For example, if the URL is `https://dash.cloudflare.com/456789abcdef8b5588f3d134f74acdef`, the value for `cfAccountID` is `456789abcdef8b5588f3d134f74acdef`.
 - **`cfAPIToken`**: API token with permission to create and edit Workers. You can create it from the ["API Tokens" page](https://dash.cloudflare.com/profile/api-tokens) in the "My Profile" section in the Cloudflare dashboard. Click on "Create token", select the **"Edit Cloudflare Workers"** template, then follow the on-screen instructions to generate a new API token.
 
-When Dapr is configured to manage the Worker for you, when a Dapr Runtime is started it checks that the Worker exists and it's up-to-date. If the Worker doesn't exist, or if it's using an outdated version, Dapr will create or upgrade it for you automatically.
+When Dapr is configured to manage the Worker for you, when a Dapr Runtime is started it checks that the Worker exists and it's up-to-date. If the Worker doesn't exist, or if it's using an outdated version, Dapr creates or upgrades it for you automatically.
 
 {{% /codetab %}}
 

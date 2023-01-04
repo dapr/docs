@@ -77,7 +77,7 @@ You can create a new Workers KV namespace in one of two ways:
   wrangler kv:namespace create <NAME>
   ```
 
-  The output will contain the ID of the namespace, for example:
+  The output contains the ID of the namespace, for example:
 
   ```text
   { binding = "<NAME>", id = "123456789abcdef8b5588f3d134f74ac" }
