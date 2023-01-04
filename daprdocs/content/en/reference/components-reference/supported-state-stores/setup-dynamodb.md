@@ -90,7 +90,7 @@ curl -X POST http://localhost:3500/v1.0/state/<store_name> \
       ]'
 ```
 
-If you want to control the DynamoDB partition key, you can specify it in metadata.  Reusing the example above, here's how to use a different partition key, in this case, `pkey`.
+If you want to control the DynamoDB partition key, you can specify it in metadata. Below, reuse the previous example with a different partition key - in this case, `pkey`.
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/<store_name> \
