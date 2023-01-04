@@ -77,7 +77,7 @@ See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/develo
 
 The DynamoDB state store uses the `key` property provided in the request to determine the partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
 
-The following operation uses `tony-stark` as the partition key value sent to DynamoDB:
+The following operation uses `tony-stark` as the partition key value:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/state/<store_name> \
