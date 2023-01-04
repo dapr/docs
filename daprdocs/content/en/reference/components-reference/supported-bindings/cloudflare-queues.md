@@ -95,7 +95,9 @@ Because Cloudflare Queues can only be accessed by scripts running on Workers, Da
 
 Dapr can manage the Worker for you automatically, or you can pre-provision a Worker yourself. Pre-provisioning the Worker is the only supported option when running on [workerd](https://github.com/cloudflare/workerd).
 
-> **Important:** Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Queues bindings, and do not use the same Worker script for different Cloudflare components in Dapr (for example the Workers KV state store and the Queues binding).
+{{% alert title="Important" color="warning" %}}
+Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Queues bindings, and do not use the same Worker script for different Cloudflare components in Dapr (for example, the Workers KV state store and the Queues binding).
+{{% /alert %}}
 
 {{< tabs "Let Dapr manage the Worker" "Manually provision the Worker script" >}}
 
@@ -105,7 +107,7 @@ Dapr can manage the Worker for you automatically, or you can pre-provision a Wor
 If you want to let Dapr manage the Worker for you, you will need to provide these 3 metadata options:
 
 <!-- IGNORE_LINKS -->
-- **`workerName`**: Name of the Worker script. This will be the first part of the URL of your Worker: for example, if the "workers.dev" domain configured for your Cloudflare account is `mydomain.workers.dev` and you set `workerName` to `mydaprqueue`, the Worker that Dapr deploys will be available at `https://mydaprqueue.mydomain.workers.dev`.
+- **`workerName`**: Name of the Worker script. This will be the first part of the URL of your Worker. For example, if the "workers.dev" domain configured for your Cloudflare account is `mydomain.workers.dev` and you set `workerName` to `mydaprqueue`, the Worker that Dapr deploys will be available at `https://mydaprqueue.mydomain.workers.dev`.
 - **`cfAccountID`**: ID of your Cloudflare account. You can find this in your browser's URL bar after logging into the [Cloudflare dashboard](https://dash.cloudflare.com/), with the ID being the hex string right after `dash.cloudflare.com`. For example, if the URL is `https://dash.cloudflare.com/456789abcdef8b5588f3d134f74acdef`, the value for `cfAccountID` is `456789abcdef8b5588f3d134f74acdef`.
 - **`cfAPIToken`**: API token with permission to create and edit Workers. You can create it from the ["API Tokens" page](https://dash.cloudflare.com/profile/api-tokens) in the "My Profile" section in the Cloudflare dashboard. Click on "Create token", select the **"Edit Cloudflare Workers"** template, then follow the on-screen instructions to generate a new API token.
 <!-- END_IGNORE -->
