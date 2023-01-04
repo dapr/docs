@@ -75,7 +75,7 @@ See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/develo
 
 ## Partition Keys
 
-The DynamoDB state store will use the `key` property provided in the requests to the Dapr API to determine the partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
+The DynamoDB state store uses the `key` property provided in the request to determine the partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
 
 The following operation uses `tony-stark` as the partition key value sent to DynamoDB:
 
