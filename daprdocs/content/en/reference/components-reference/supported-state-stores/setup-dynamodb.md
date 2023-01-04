@@ -42,7 +42,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Primary Key
 
-In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`.
+In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`. See the section `Partition Keys` for an option to change this behavior.
 
 ## Spec metadata fields
 
@@ -55,6 +55,7 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
+| partitionKey      | N  |The partition key used to replace the default partition key `"key"`.  See the `Partion Keys` section below. | `"pkey"`
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
@@ -69,6 +70,39 @@ See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information a
 In order to use DynamoDB TTL feature, you must enable TTL on your table and define the attribute name.
 The attribute name must be defined in the `ttlAttributeName` field.
 See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html).
+
+## Partition Keys
+
+The DynamoDB state store will use the `key` property provided in the requests to the Dapr API to determine the partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
+
+The following operation uses `tony-stark` as the partition key value sent to DynamoDB:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state/<store_name> \
+  -H "Content-Type: application/json"
+  -d '[
+        {
+          "key": "tony-stark",
+          "value": "iron man"
+        }
+      ]'
+```
+
+If you want to control the DynamoDB partition key, you can specify it in metadata.  Reusing the example above, here's how to use a different partition key, in this case, `pkey`.
+
+```shell
+curl -X POST http://localhost:3500/v1.0/state/<store_name> \
+  -H "Content-Type: application/json"
+  -d '[
+        {
+          "key": "tony-stark",
+          "value": "iron man",
+          "metadata": {
+            "partitionKey": "pkey"
+          }
+        }
+      ]'
+```
 
 ## Related links
 
