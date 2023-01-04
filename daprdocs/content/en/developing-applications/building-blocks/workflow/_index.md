@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Workflow engines"
-linkTitle: "Workflow"
+title: "Workflows"
+linkTitle: "Workflows"
 weight: 100
-description: Expose workflows as APIs with HTTP and Dapr SDK support
+description: Create and run workflows for custom application logic or data flows across microservices. 
 ---
