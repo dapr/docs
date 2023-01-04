@@ -6,10 +6,6 @@ weight: 1000
 description: "Overview of the configuration API building block"
 ---
 
-{{% alert title="Preview" color="primary" %}}
-  This API is currently in `Alpha` state.
-{{% /alert %}}
-
 Consuming application configuration is a common task when writing applications. Frequently, configuration stores are used to manage this configuration data. A configuration item is often dynamic in nature and tightly coupled to the needs of the application that consumes it. 
 
 For example, application configuration can include:
@@ -18,7 +14,7 @@ For example, application configuration can include:
 - Partition or consumer IDs
 - Names of databases to connect to, etc 
 
-Usually, configuration items are stored as key/value items in a state store or database. Developers or operators can change application configuration at runtime. Once changes are made, the developer will be notified to take the required action and load the new configuration. 
+Usually, configuration items are stored as key/value items in a state store or database. Developers or operators can change application configuration at runtime in the configuration store. Once changes are made, a service is notified to load the new configuration. 
 
 Configuration data is read-only from the application API perspective, with updates to the configuration store made through operator tooling. With Dapr's configuration API, you can:
 - Consume configuration items that are returned as read-only key/value pairs
@@ -34,7 +30,7 @@ Configuration data is read-only from the application API perspective, with updat
 
 ### Quickstart
 
-Want to put the Dapr configuration API to the test? Walk through the following quickstart and tutorials to see the configuration API in action:
+Want to put the Dapr configuration API to the test? Walk through the following quickstart to see the configuration API in action:
 
 | Quickstart | Description |
 | ---------- | ----------- |
