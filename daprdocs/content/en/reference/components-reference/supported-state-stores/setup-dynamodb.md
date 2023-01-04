@@ -57,7 +57,7 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
-| partitionKey      | N  |The partition key used to replace the default partition key `"key"`.  See the `Partion Keys` section below. | `"pkey"`
+| partitionKey      | N  |The partition key used to replace the default partition key `"key"` (Payload only). See the `Partion Keys` section below. | `"superHero"`
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
@@ -75,32 +75,35 @@ See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/develo
 
 ## Partition Keys
 
-The DynamoDB state store uses the `key` property provided in the request to determine the partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
+The DynamoDB state store will use the `key` property provided in the requests to the Dapr API to determine the partition key. This can be overridden by specifying a metadata field in the request with a key of `partitionKey` and a value of the desired partition.
 
-The following operation uses `tony-stark` as the partition key value:
+To learn more about DynamoDB partition keys, see the official [AWS DynamoDB Developer Guide.](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey)
+
+The following operation uses the `"key"` field to indicate that **`key`** is the partition key value used in the **`avengers`** DynamoDB Table:
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/state/<store_name> \
+curl -X POST http://localhost:3500/v1.0/state/avengers \
   -H "Content-Type: application/json"
   -d '[
         {
-          "key": "tony-stark",
-          "value": "iron man"
+          "key": "key",
+          "value": "Iron Man"
         }
       ]'
 ```
 
-If you want to control the DynamoDB partition key, you can specify it in metadata. Below, reuse the previous example with a different partition key - in this case, `pkey`.
+If you want to specify a different DynamoDB partition key, you can do so by sending the `"partitionKey"` field as part of the metadata.
+
+Reusing the example above, the following operation indicates that **`superHero`**  is the partition key used in the **`avengers`** DynamoDB Table:
 
 ```shell
-curl -X POST http://localhost:3500/v1.0/state/<store_name> \
+curl -X POST http://localhost:3500/v1.0/state/avengers \
   -H "Content-Type: application/json"
   -d '[
         {
-          "key": "tony-stark",
-          "value": "iron man",
+          "value": "Iron Man",
           "metadata": {
-            "partitionKey": "pkey"
+            "partitionKey": "superHero"
           }
         }
       ]'
