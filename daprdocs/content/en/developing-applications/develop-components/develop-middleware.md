@@ -9,10 +9,7 @@ aliases:
   - /concepts/middleware-concept/
 ---
 
-Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. There are two places that you can use a middleware pipeline;
-
-1) Building block APIs - HTTP middleware components are executed when invoking any Dapr HTTP APIs.
-2) Service-to-Service invocation - HTTP middleware components are applied to service-to-service invocation calls.
+Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. In this guide, you'll learn how to create a middleware component. To learn how to configure an existing middleware component, see [Configure middleware components]({{< ref middleware.md >}})
 
 ## Writing a custom middleware
 
