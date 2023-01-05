@@ -194,11 +194,14 @@ You can generate a new Ed25519 key pair with OpenSSL using:
 ```sh
 openssl genpkey -algorithm ed25519 -out private.pem
 openssl pkey -in private.pem -pubout -out public.pem
-
-# On Mac, using openssl@3 from Homebrew:
-$(brew --prefix)/opt/openssl@3/bin/openssl genpkey -algorithm ed25519 -out private.pem
-$(brew --prefix)/opt/openssl@3/bin/openssl pkey -in private.pem -pubout -out public.pem
 ```
+
+> On macOS, using openssl@3 from Homebrew:
+> 
+> ```sh
+> $(brew --prefix)/opt/openssl@3/bin/openssl genpkey -algorithm ed25519 -out private.pem
+> $(brew --prefix)/opt/openssl@3/bin/openssl pkey -in private.pem -pubout -out public.pem
+> ```
 
 {{% /codetab %}}
 
