@@ -91,7 +91,9 @@ Because Cloudflare Workers KV namespaces can only be accessed by scripts running
 
 Dapr can manage the Worker for you automatically, or you can pre-provision a Worker yourself. Pre-provisioning the Worker is the only supported option when running on [workerd](https://github.com/cloudflare/workerd).
 
-> **Important:** Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Workers KV state store components, and do not use the same Worker script for different Cloudflare components in Dapr (e.g. the Workers KV state store and the Queues binding).
+{{% alert title="Important" color="warning" %}} 
+Use a separate Worker for each Dapr component. Do not use the same Worker script for different Cloudflare Workers KV state store components, and do not use the same Worker script for different Cloudflare components in Dapr (e.g. the Workers KV state store and the Queues binding).
+{{% /alert %}}
 
 {{< tabs "Let Dapr manage the Worker" "Manually provision the Worker script" >}}
 
@@ -101,9 +103,12 @@ Dapr can manage the Worker for you automatically, or you can pre-provision a Wor
 If you want to let Dapr manage the Worker for you, you will need to provide these 3 metadata options:
 
 <!-- IGNORE_LINKS -->
-- **`workerName`**: Name of the Worker script. This will be the first part of the URL of your Worker: for example, if the "workers.dev" domain configured for your Cloudflare account is `mydomain.workers.dev` and you set `workerName` to `mydaprkv`, the Worker that Dapr deploys will be available at `https://mydaprkv.mydomain.workers.dev`.
+- **`workerName`**: Name of the Worker script. This will be the first part of the URL of your Worker. For example, if the "workers.dev" domain configured for your Cloudflare account is `mydomain.workers.dev` and you set `workerName` to `mydaprkv`, the Worker that Dapr deploys will be available at `https://mydaprkv.mydomain.workers.dev`.
 - **`cfAccountID`**: ID of your Cloudflare account. You can find this in your browser's URL bar after logging into the [Cloudflare dashboard](https://dash.cloudflare.com/), with the ID being the hex string right after `dash.cloudflare.com`. For example, if the URL is `https://dash.cloudflare.com/456789abcdef8b5588f3d134f74acdef`, the value for `cfAccountID` is `456789abcdef8b5588f3d134f74acdef`.
-- **`cfAPIToken`**: API token with permission to create and edit Workers and Workers KV namespaces. You can create it from the ["API Tokens" page](https://dash.cloudflare.com/profile/api-tokens) in the "My Profile" section in the Cloudflare dashboard. Click on "Create token", select the **"Edit Cloudflare Workers"** template, then follow the on-screen instructions to generate a new API token.
+- **`cfAPIToken`**: API token with permission to create and edit Workers and Workers KV namespaces. You can create it from the ["API Tokens" page](https://dash.cloudflare.com/profile/api-tokens) in the "My Profile" section in the Cloudflare dashboard: 
+   1. Click on **"Create token"**.
+   1. Select the **"Edit Cloudflare Workers"** template.
+   1. Follow the on-screen instructions to generate a new API token.
 <!-- END_IGNORE -->
 
 When Dapr is configured to manage the Worker for you, when a Dapr Runtime is started it checks that the Worker exists and it's up-to-date. If the Worker doesn't exist, or if it's using an outdated version, Dapr will create or upgrade it for you automatically.
@@ -222,7 +227,7 @@ step crypto keypair \
 
 Regardless of how you generated your key pair, with the instructions above you'll have two files:
 
-- `private.pem` contains the private part of the key: use the contents of this file for the **`key`** property of the component's metadata.
+- `private.pem` contains the private part of the key; use the contents of this file for the **`key`** property of the component's metadata.
 - `public.pem` contains the public part of the key, which you'll need only if you're deploying a Worker manually (as per the instructions in the previoius section).
 
 {{% alert title="Warning" color="warning" %}}

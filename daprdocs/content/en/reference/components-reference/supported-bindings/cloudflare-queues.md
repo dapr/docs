@@ -231,7 +231,7 @@ step crypto keypair \
 
 Regardless of how you generated your key pair, with the instructions above you'll have two files:
 
-- `private.pem` contains the private part of the key: use the contents of this file for the **`key`** property of the component's metadata.
+- `private.pem` contains the private part of the key; use the contents of this file for the **`key`** property of the component's metadata.
 - `public.pem` contains the public part of the key, which you'll need only if you're deploying a Worker manually (as per the instructions in the previoius section).
 
 {{% alert title="Warning" color="warning" %}}
