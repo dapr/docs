@@ -125,11 +125,6 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
 {{% /codetab %}}
 
 {{< /tabs >}}
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
 
 ## Related links
 
