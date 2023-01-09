@@ -26,7 +26,36 @@ Refer [component reference]({{< ref supported-pubsub >}}) to see which component
 
 ### Example
 
-{{< tabs Javascript "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs Java Javascript "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+
+{{% codetab %}}
+
+```java
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprPreviewClient;
+import io.dapr.client.domain.BulkPublishResponse;
+import io.dapr.client.domain.BulkPublishResponseFailedEntry;
+import java.util.ArrayList;
+import java.util.List;
+
+class BulkPublisher {
+  public void publishMessages() {
+    try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+      // Create a list of messages to publish
+      List<String> messages = new ArrayList<>();
+      for (int i = 0; i < 10; i++) {
+        String message = String.format("This is message #%d", i);
+        messages.add(message);
+      }
+
+      // Publish list of messages using the bulk publish API
+      BulkPublishResponse<String> res = client.publishEvents(PUBSUB_NAME, TOPIC_NAME, "text/plain", messages).block();
+    }
+  }
+}
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
