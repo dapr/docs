@@ -6,38 +6,26 @@ weight: 1000
 description: "Overview of the workflow building block"
 ---
 
-Workflows are quickly becoming a core element to cloud-native applications. A workflow is custom application logic that:
+Dapr workflows are custom application logic that define a business process or data flow spanning multiple microservices. With workflows, you can automate and coordinate tasks within your application.
 
-- Defines a business process or data flow that spans multiple microservices
-- Drives the execution of these business processes to completion in a reliable way
-- Consists of a set of tasks and/or state transitions, which can be either statically defined or dynamic
-- May be authored using declarative markup or general purpose programming languages
+These application critical workflows require developers to handle common challenges:
 
-While you can build workflows from scratch using primitives (such as actors, pub/sub, and state stores), workflows typically come with the following common obstacles:
+- Multi-step business logic needs to be resilient to restarts, shutdowns, and crashes, requiring infrastructure to monitor and automatically restore the state of these operations.
+- Workflows modifying or orchestrating state across multiple microservices require consistency guarantees and usually cannot rely on distributed transactions. This means developers need to design and build compensation logic to handle unrecoverable failures.
+- Business logic can sometimes be scattered across different processes, queues, and event handlers which can result in very complicated architectures, creating maintenance problems and slowing down development.  
 
-- Infrastructure to monitor and automatically restore the operation state.
-- Compensation logic to handle unrecoverable failures.
-- Complicated architectures with maintenance problems and slowed down development.
+Dapr addresses these challenges by providing a workflow feature. The workflow feature is comprised of two main parts - the Workflow API and the workflow components. 
 
-<!-- 
-Include a diagram or image, if possible. 
--->
+<img src="/images/concepts-building-blocks.png" width=250>
 
 ## Workflow API
 
-A workflow's utility for microservices makes it a great fit for Dapr’s mission to support microservice development. The workflow API provides several advantages with an embedded workflow engine in the Dapr sidecar.  
+*To Do:*
+- *Add diagram of how workflow API works?*
+- *Add explaination of how the API works*
 
-| With the workflow API | Without the workflow API |
-| --------------------- | ------------------------ |
-| A built-in workflow engine that easily integrates with existing Dapr building blocks | An external workflow engine in conjunction with the Dapr SDKs. |
-| An efficient, more manageable single sidecar for all microservices | Separate sidecars (or services) for workflows. |
-| Portable workflows keeps Dapr portable. | Lessened portability. |
+---
 
-With a [lightweight, embedded workflow engine](#embedded-workflow-engine), you can create orchestration on top of existing Dapr building blocks in a portable and adoptable way. 
-
-<!-- 
-Include a diagram or image, if possible. 
--->
 
 ## Features
 
