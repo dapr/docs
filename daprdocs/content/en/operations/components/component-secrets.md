@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Reference secrets in components"
 linkTitle: "Reference secrets in components"
-weight: 400
+weight: 500
 description: "How to securly reference secrets from a component definition"
 ---
 

@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "How-To: Register a pluggable component"
-linkTitle: "How To: Register a pluggable component"
-weight: 4500
+linkTitle: "Register a pluggable component"
+weight: 1000
 description: "Learn how to register a pluggable component"
 ---
 
@@ -10,7 +10,7 @@ description: "Learn how to register a pluggable component"
 
 ## Component registration process
 
-Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
+[Pluggable, gRPC-based components]({{< ref pluggable-components-overview >}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
 
 1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
