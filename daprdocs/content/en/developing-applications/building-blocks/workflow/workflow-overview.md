@@ -6,15 +6,9 @@ weight: 1000
 description: "Overview of the workflow building block"
 ---
 
-Dapr workflows are custom application logic that define a business process or data flow spanning multiple microservices. With workflows, you can automate and coordinate tasks within your application.
+With Dapr workflows, you can automate and orchestrate tasks within your application. The workflow feature provides a developer-friendly programming model for authoring workflows as code in a way that abstracts away the complexities of messaging, state management, and failure handling.
 
-These application critical workflows require developers to handle common challenges:
-
-- Multi-step business logic needs to be resilient to restarts, shutdowns, and crashes, requiring infrastructure to monitor and automatically restore the state of these operations.
-- Workflows modifying or orchestrating state across multiple microservices require consistency guarantees and usually cannot rely on distributed transactions. This means developers need to design and build compensation logic to handle unrecoverable failures.
-- Business logic can sometimes be scattered across different processes, queues, and event handlers which can result in very complicated architectures, creating maintenance problems and slowing down development.  
-
-Dapr addresses these challenges by providing a workflow feature. The workflow feature is comprised of two main parts - the Workflow API and the workflow components. 
+The workflow feature is comprised of the Workflow API and the workflow components that allow for authoring workflows naitively in Dapr or through external 3rd party workflow applications.
 
 <img src="/images/concepts-building-blocks.png" width=250>
 
@@ -63,10 +57,6 @@ Dapr provides an experience for declarative workflows as a layer on top of the "
 - The Azure Logic Apps workflow syntax
 - The Google Cloud workflow syntax
 - The CNCF Serverless workflow specification
-
-#### CNCF serverless workflows
-
-Serverless Workflow (SLWF) consists of open-source, cloud native and industry standard DSL and dev tools for authoring and validating workflows in either JSON or YAML. SLWF is an ideal fit for Dapr's lightweight, portable runtime as it sits under the CNCF umbrella.
 
 #### Hosting serverless workflows
 
