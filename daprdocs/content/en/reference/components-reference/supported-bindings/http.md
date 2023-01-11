@@ -20,6 +20,13 @@ spec:
   metadata:
   - name: url
     value: http://something.com
+  - name: MTLSRootCA
+    value: /Users/somepath/root.pem #<path to root CA> or <pem encoded string>
+  - name: MTLSClientCert
+    value: /Users/somepath/client.pem #<path to client cert> or <pem encoded string>
+  - name: MTLSClientKey
+    value: /Users/somepath/client.key #<path to client key> or <pem encoded string>
+
 ```
 
 ## Spec metadata fields
@@ -27,6 +34,9 @@ spec:
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
 | url                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
+| MTLSRootCA         | N        | Output |Path to root ca certificate or pem encoded string |
+| MTLSClientCert     | N        | Output |Path to client certificate or pem encoded string  |
+| MTLSClientKey      | N        | Output |Path client private key or pem encoded string |
 
 ## Binding support
 
@@ -291,6 +301,15 @@ curl -d '{ "operation": "get" }' \
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+## Using mTLS or enabling client TLS authentication along with HTTPS
+The HTTP binding can also be configured to use mTLS or client TLS authentication along with HTTPS by providing the `MTLSRootCA`, `MTLSClientCert` and `MTLSClientKey` metadata fields in the binding component.
+
+These fields can be passed as a file path or as a pem encoded strings. If the file path is provided, the file will be read and the contents will be used. If the pem encoded string is provided, the string will be used as is.
+When these fields are configured, dapr sidecar will use the provided certificate to authenticate itself with the server during the TLS handshake process.
+
+### When to use:
+This can be used when the server with which the HTTP binding is configured to communicate with, requires mTLS or client TLS authentication.
 
 
 ## Related links
