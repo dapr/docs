@@ -21,7 +21,7 @@ spec:
   version: v1
   metadata:
   - name: table
-    value: "mytable"
+    value: "contracts"
   - name: accessKey
     value: "AKIAIOSFODNN7EXAMPLE" # Optional
   - name: secretKey
@@ -34,6 +34,8 @@ spec:
     value: "myTOKEN" # Optional
   - name: ttlAttributeName
     value: "expiresAt" # Optional
+  - name: partitionKey
+    value: "contractID" # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -42,19 +44,20 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Primary Key
 
-In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`.
+In order to use DynamoDB as a Dapr state store, the table must have a primary key named `key`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}) for an option to change this behavior.
 
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| table              | Y  | name of the DynamoDB table to use  | `"mytable"`
+| table              | Y  | name of the DynamoDB table to use  | `"contracts"`
 | accessKey          | N  | ID of the AWS account with appropriate permissions to SNS and SQS. Can be `secretKeyRef` to use a secret reference  | `"AKIAIOSFODNN7EXAMPLE"`
 | secretKey          | N  | Secret for the AWS user. Can be `secretKeyRef` to use a secret reference   |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | N  | The AWS region to the instance. See this page for valid regions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html. Ensure that DynamoDB are available in that region.| `"us-east-1"`
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
+| partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}).  | `"contractID"`
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
@@ -69,6 +72,31 @@ See [Authenticating to AWS]({{< ref authenticating-aws.md >}}) for information a
 In order to use DynamoDB TTL feature, you must enable TTL on your table and define the attribute name.
 The attribute name must be defined in the `ttlAttributeName` field.
 See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html).
+
+## Partition Keys
+
+By default, the DynamoDB state store component will use the table attribute name `key` as primary/partition key in the DynamoDB table.
+This can be overridden by specifying a metadata field in the component configuration with a key of `partitionKey` and a value of the desired attribute name.
+
+To learn more about DynamoDB primary/partition keys, see the official [AWS DynamoDB Developer Guide.](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey)
+
+The following `statestore.yaml` file shows how to configure the DynamoDB state store component to use the partition key attribute name of `contractID`:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.aws.dynamodb
+  version: v1
+  metadata:
+  - name: table
+    value: "contracts"
+  - name: partitionKey
+    value: "contractID"
+```
+
 
 ## Related links
 
