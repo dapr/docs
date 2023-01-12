@@ -151,7 +151,12 @@ To find out more details on the purpose of any of these metadata properties, ple
 
 ## Sending and receiving multiple messages
 
-Azure Service Bus natively supports sending and receiving multiple messages in a single operation. The default value for `metadata.maxBulkPubBytes` is 128 KiB, and the default value for `metadata.maxBulkSubCount` is 100. For more details on these metadata, see the [Pub/Sub API reference]({{< ref pubsub_api >}}).
+Azure Service Bus natively supports sending and receiving multiple messages in a single operation. To set the metadata for bulk operations, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
+
+| Metadata | Default |
+|----------|---------|
+| `metadata.maxBulkPubBytes` | `131072` (128 KiB) |
+| `metadata.maxBulkSubCount` | `100` |
 
 ## Create an Azure Service Bus
 
