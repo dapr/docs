@@ -149,6 +149,10 @@ To find out more details on the purpose of any of these metadata properties, ple
 
 > Note that all times are populated by the server and are not adjusted for clock skews.
 
+## Sending and receiving multiple messages
+
+Azure Service Bus natively supports sending and receiving multiple messages in a single operation. The default value for `metadata.maxBulkPubBytes` is 128 KiB, and the default value for `metadata.maxBulkSubCount` is 100. For more details on these metadata, see the [Pub/Sub API reference]({{< ref pubsub_api >}}).
+
 ## Create an Azure Service Bus
 
 Follow the instructions [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
