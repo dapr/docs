@@ -75,7 +75,7 @@ See official [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/develo
 
 ## Partition Keys
 
-By default, the DynamoDB state store component will use the table attribute name `key` as primary/partition key in the DynamoDB table.
+By default, the DynamoDB state store component uses the table attribute name `key` as primary/partition key in the DynamoDB table.
 This can be overridden by specifying a metadata field in the component configuration with a key of `partitionKey` and a value of the desired attribute name.
 
 To learn more about DynamoDB primary/partition keys, see the official [AWS DynamoDB Developer Guide.](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey)
