@@ -3,77 +3,46 @@ type: docs
 title: "Built-in workflow component overview"
 linkTitle: "Built-in workflow component"
 weight: 4400
-description: "Overview of the built-in workflow engine (DTFx-go) component"
+description: "Overview of the built-in workflow engine (durabletask-go) component"
 ---
 
-The workflow building block consists of:
+# Overview
 
-- A pluggable component model for integrating various workflow engines
-- A set of APIs for managing workflows (start, schedule, pause, resume, cancel)
+The Dapr Workflow engine is a built-in workflow component that allows developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code that is deployed as part of application code. This article describes the architecture of the built-in engine, how it interacts with application code, and how it fits into the overall Dapr architecture.
 
-Workflows supported by your platforms can be exposed as APIs with support for both HTTP and the Dapr SDKs, including:
+{{% alert title="Note" color="primary" %}}
+For information on how to author workflows that are executed by the built-in Dapr workflow engine, see the [workflow application developer guide]({{<ref "workflow-overview.md" >}}).
+{{% /alert %}}
 
-- mTLS, distributed tracing, etc. 
-- Various abstractions, such as async HTTP polling
+To facilitate the orchestration of workflow code, the application opens a gRPC connection to a workflow-specific endpoint on the Dapr sidecar. When workflows are scheduled, the sidecar streams back workflow commands to the app with instructions for what code to execute.
 
-Behind the scenes, the `DaprWorkflowClient` SDK object handles all the interactions with the Dapr sidecar, including:
+TODO: Diagram showing sidecar calling into application workflow code
 
-- Responding to invocation requests from the Dapr sidecar.
-- Sending the necessary commands to the Dapr sidecar as the workflow progresses.
-- Checkpointing the progress so that the workflow can be resumed after any infrastructure failures.
+The Dapr Workflow engine is internally implemented using then open source [durabletask-go](https://github.com/microsoft/durabletask-go) library, which is embedded directly into the Dapr sidecar. Dapr implements a custom durable task "backend" using internally managed actors, which manage workflow scale-out, persistence, and leader election. This article will go into more details.
 
-## DTFx-go workflow engine
+## Sidecar interactions
 
-The workflow engine is written in Go and inspired by the existing Durable Task Framework (DTFx) engine. DTFx-go exists as an open-source project with a permissive (like Apache 2.0) license, maintaing compatibility as a dependency for CNCF projects. 
+TODO: Describe the gRPC protocol used in the SDK/sidecar interactions. Make sure to also emphasize the responsibilities of the app vs. the responsibilities of the sidecar.
 
-DTFx-go is not exposed to the application layer. Rather, the Dapr sidecar:
+## Workflow distributed tracing
 
-- Exposes DTFx-go functionality over a gRPC stream 
-- Sends and receives workflow commands over gRPC to and from a connected app’s workflow logic
-- Executes commands on behalf of the workflow (service invocation, invoking bindings, etc.) 
+TODO: Discuss how distributed tracing works. Include screenshots.
 
-Meanwhile, app containers:
+## Internal actors
 
-- Execute and/or host any app-specific workflow logic, or 
-- Load any declarative workflow documents. 
+TODO: Describe what internal actors are, and which ones are in use.
 
-Other concerns such as activation, scale-out, and state persistence are handled by internally managed actors. 
+### Reminder usage and execution guarantees
 
-### Executing, scheduling, and resilience
+TODO: Describe how reminders are used, and what kinds of reminder pressure may be added to a system.
 
-Dapr workflow instances are implemented as actors. Actors drive workflow execution by communicating with the workflow SDK over a gRPC stream. Using actors solves the problem of placement and scalability.
+### State store usage
 
-<img src="/images/workflow-overview/workflow-execution.png" width=1000 alt="Diagram showing scalable execution of workflows using actors">
+TODO: Describe how the workflow engine uses state storage. Include a callout about how there is no "garbage collection" currently.
 
-The execution of individual workflows is triggered using actor reminders, which are both persistent and durable. If a container or node crashes during a workflow execution, the actor reminder ensures reactivates and resumes where it left off, using state storage to provide durability.
+## Performance and scale considerations
 
-To prevent a workflow from unintentional blocking, each workflow is composed of two separate actor components. In the diagram below, the Dapr sidecar has:
-
-1. One actor component acting as the scheduler/coordinator (WF scheduler actor)
-1. Another actor component performing the actual work (WF worker actor)
-
-<img src="/images/workflow-overview/workflow-execution-2.png" width=1000 alt="Diagram showing zoomed in view of actor components working for workwflow">
-
-### Storage of state and durability
-
-For workflow execution to complete reliably in the face of transient errors, it must be durable - meaning the ability to store data at checkpoints as it progresses. To achieve this, workflow executions rely on Dapr's state storage to provide stable storage. This allows the workflow to be safely resumed from a known-state in the event that:
-- The workflow is explicitly paused, or 
-- A step is prematurely terminated (system failure, lack of resources, etc.).
-
-### Automatic failure handling
-
-Every time the workflow logic encounters its first yield statement, control returns to the SDK for committing state changes and scheduling work. If the process hosting the workflow goes down for any reason, it will resume from the last yield once the process comes back up. 
-
-DTFx-go, running in the Dapr sidecar, enables this by:
-
-- Re-executing the workflow function from the beginning
-- Providing the context object with historical data about:
-   - Which tasks have already completed
-   - What their return values were
-
-This allows any previously executed `context.invoker.invoke` calls to return immediately with a return value, instead of invoking the service method a second time. 
-
-This results in durable and stateful workflows – even the state of local variables is effectively preserved because they can be recreated via replays. 
+TODO: Describe the mechanisms involved when workflows run and how that might impact performance. Also talk about how load gets distributed across nodes. These topics might require separate sub-sections.
 
 ## Next steps
 
