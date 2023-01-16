@@ -21,7 +21,7 @@ spec:
   version: v1
   metadata:
   - name: table
-    value: "contracts"
+    value: "Contracts"
   - name: accessKey
     value: "AKIAIOSFODNN7EXAMPLE" # Optional
   - name: secretKey
@@ -35,7 +35,7 @@ spec:
   - name: ttlAttributeName
     value: "expiresAt" # Optional
   - name: partitionKey
-    value: "contractID" # Optional
+    value: "ContractID" # Optional
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -50,14 +50,14 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| table              | Y  | name of the DynamoDB table to use  | `"contracts"`
+| table              | Y  | name of the DynamoDB table to use  | `"Contracts"`
 | accessKey          | N  | ID of the AWS account with appropriate permissions to SNS and SQS. Can be `secretKeyRef` to use a secret reference  | `"AKIAIOSFODNN7EXAMPLE"`
 | secretKey          | N  | Secret for the AWS user. Can be `secretKeyRef` to use a secret reference   |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | N  | The AWS region to the instance. See this page for valid regions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html. Ensure that DynamoDB are available in that region.| `"us-east-1"`
 | endpoint          | N  |AWS endpoint for the component to use. Only used for local development. The `endpoint` is unncessary when running against production AWS   | `"http://localhost:4566"`
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
-| partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}).  | `"contractID"`
+| partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}).  | `"ContractID"`
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
@@ -80,7 +80,7 @@ This can be overridden by specifying a metadata field in the component configura
 
 To learn more about DynamoDB primary/partition keys, read the [AWS DynamoDB Developer Guide.](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html#HowItWorks.CoreComponents.PrimaryKey)
 
-The following `statestore.yaml` file shows how to configure the DynamoDB state store component to use the partition key attribute name of `contractID`:
+The following `statestore.yaml` file shows how to configure the DynamoDB state store component to use the partition key attribute name of `ContractID`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -92,11 +92,68 @@ spec:
   version: v1
   metadata:
   - name: table
-    value: "contracts"
+    value: "Contracts"
   - name: partitionKey
-    value: "contractID"
+    value: "ContractID"
 ```
 
+The above component specification assumes the following DynamoDB Table Layout:
+
+```json
+{
+    "Table": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "ContractID",
+                "AttributeType": "S"
+            }
+        ],
+        "TableName": "Contracts",
+        "KeySchema": [
+            {
+                "AttributeName": "ContractID",
+                "KeyType": "HASH"
+            }
+        ],
+     ...
+}
+```
+
+The following operation passes `"A12345"` as the value for `key`, and based on the component specification provided above, the Dapr runtime will replace the `key` attribute name
+with `ContractID` as the Partition/Primary Key sent to DynamoDB:
+
+```shell
+$ dapr run --app-id contractsprocessing --app-port ...
+
+$ curl -X POST http://localhost:3500/v1.0/state/<store_name> \
+  -H "Content-Type: application/json"
+  -d '[
+        {
+          "key": "A12345",
+          "value": "Dapr Contract"
+        }
+      ]'
+```
+
+The following AWS CLI Command displays the contents of the DynamoDB `Contracts` table:
+```shell
+$ aws dynamodb get-item \
+    --table-name Contracts \
+    --key '{"ContractID":{"S":"contractsprocessing||A12345"}}' 
+{
+    "Item": {
+        "value": {
+            "S": "Dapr Contract"
+        },
+        "etag": {
+            "S": "....."
+        },
+        "ContractID": {
+            "S": "contractsprocessing||A12345"
+        }
+    }
+}
+```
 
 ## Related links
 
