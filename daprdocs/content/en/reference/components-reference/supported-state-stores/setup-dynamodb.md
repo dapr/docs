@@ -99,7 +99,7 @@ spec:
 
 The above component specification assumes the following DynamoDB Table Layout:
 
-```json
+```console
 {
     "Table": {
         "AttributeDefinitions": [
