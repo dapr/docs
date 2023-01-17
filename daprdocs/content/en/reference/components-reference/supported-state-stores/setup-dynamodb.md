@@ -115,7 +115,6 @@ The above component specification assumes the following DynamoDB Table Layout:
                 "KeyType": "HASH"
             }
         ],
-     ...
 }
 ```
 
