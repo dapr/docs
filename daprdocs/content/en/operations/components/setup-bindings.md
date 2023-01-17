@@ -3,7 +3,7 @@ type: docs
 title: "Bindings components"
 linkTitle: "Bindings"
 description: "Guidance on setting up Dapr bindings components"
-weight: 4000
+weight: 900
 ---
 
 Dapr integrates with external resources to allow apps to both be triggered by external events and interact with the resources. Each binding component has a name and this name is used when interacting with the resource.

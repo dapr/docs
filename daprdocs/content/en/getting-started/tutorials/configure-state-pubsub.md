@@ -46,6 +46,7 @@ helm install redis bitnami/redis --set image.tag=6.2
 ```
 
 For Dapr's Pub/sub functionality, you'll need at least Redis version 5. For state store, you can use a lower version. 
+Note that adding `--set architecture=standalone` to the `install` command creates a single replica Redis setup, which can save memory and resources if you are working in a local environment. 
 
 Run `kubectl get pods` to see the Redis containers now running in your cluster:
 
@@ -64,9 +65,7 @@ For Kubernetes:
 {{% /codetab %}}
 
 {{% codetab %}}
-<!-- IGNORE_LINKS -->
-Verify you have an [Azure subscription](https://azure.microsoft.com/free/).
-<!-- END_IGNORE -->
+Verify you have an Azure subscription.
 
 1. Open and log into the [Azure portal](https://ms.portal.azure.com/#create/Microsoft.Cache) to start the Azure Redis Cache creation flow. 
 1. Fill out the necessary information.

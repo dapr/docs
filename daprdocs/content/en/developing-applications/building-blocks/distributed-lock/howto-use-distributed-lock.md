@@ -62,12 +62,14 @@ namespace LockService
 {
     class Program
     {
+        [Obsolete("Distributed Lock API is in Alpha, this can be removed once it is stable.")]
         static async Task Main(string[] args)
         {
             string DAPR_LOCK_NAME = "lockstore";
+            string fileName = "my_file_name";
             var client = new DaprClientBuilder().Build();
-
-            using (var fileLock = await client.Lock(DAPR_LOCK_NAME, "my_file_name", "random_id_abc123", 60))
+    
+            await using (var fileLock = await client.Lock(DAPR_LOCK_NAME, fileName, "random_id_abc123", 60))
             {
                 if (fileLock.Success)
                 {
@@ -147,7 +149,7 @@ namespace LockService
             var client = new DaprClientBuilder().Build();
 
             var response = await client.Unlock(DAPR_LOCK_NAME, "my_file_name", "random_id_abc123"));
-            Console.WriteLine(response.LockStatus);
+            Console.WriteLine(response.status);
         }
     }
 }
