@@ -1,8 +1,8 @@
 - component: AWS DynamoDB
   link: setup-dynamodb
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.10"
   features:
     crud: true
     transactions: false
