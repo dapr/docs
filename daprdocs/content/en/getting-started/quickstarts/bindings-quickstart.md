@@ -46,7 +46,7 @@ Run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker c
 In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following command to set up the container:
@@ -73,7 +73,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/python/sdk/batch
+cd bindings/python/sdk/batch
 ```
 
 Install the dependencies:
@@ -137,7 +137,7 @@ Your output binding's `print` statement output:
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following to start the interactive Postgres CLI:
@@ -253,7 +253,7 @@ Run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker c
 In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following command to set up the container:
@@ -280,7 +280,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/javascript/sdk/batch
+cd bindings/javascript/sdk/batch
 ```
 
 Install the dependencies:
@@ -339,7 +339,7 @@ Your output binding's `print` statement output:
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following to start the interactive Postgres CLI:
@@ -455,7 +455,7 @@ Run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker c
 In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following command to set up the container:
@@ -482,7 +482,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/csharp/sdk/batch
+cd bindings/csharp/sdk/batch
 ```
 
 Install the dependencies:
@@ -543,7 +543,7 @@ Your output binding's `print` statement output:
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following to start the interactive Postgres CLI:
@@ -662,7 +662,7 @@ Run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker c
 In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following command to set up the container:
@@ -689,7 +689,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/java/sdk/batch
+cd bindings/java/sdk/batch
 ```
 
 Install the dependencies:
@@ -753,7 +753,7 @@ Your output binding's `print` statement output:
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following to start the interactive Postgres CLI:
@@ -869,7 +869,7 @@ Run the [PostgreSQL instance](https://www.postgresql.org/) locally in a Docker c
 In a terminal window, from the root of the Quickstarts clone directory, navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following command to set up the container:
@@ -896,7 +896,7 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS       
 In a new terminal window, navigate to the SDK directory.
 
 ```bash
-cd quickstarts/bindings/go/sdk/batch
+cd bindings/go/sdk/batch
 ```
 
 Install the dependencies:
@@ -965,7 +965,7 @@ Your output binding's `print` statement output:
 In a new terminal, verify the same data has been inserted into the database. Navigate to the `bindings/db` directory.
 
 ```bash
-cd quickstarts/bindings/db
+cd bindings/db
 ```
 
 Run the following to start the interactive Postgres CLI:

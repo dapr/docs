@@ -52,7 +52,7 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 From the root of the Quickstarts clone directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ./configuration/python/sdk/order-processor
+cd configuration/python/sdk/order-processor
 ```
 
 Install the dependencies:
@@ -175,7 +175,7 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 From the root of the Quickstarts clone directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ./configuration/javascript/sdk/order-processor
+cd configuration/javascript/sdk/order-processor
 ```
 
 Install the dependencies:
@@ -296,7 +296,7 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 From the root of the Quickstarts clone directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ./configuration/csharp/sdk/order-processor
+cd configuration/csharp/sdk/order-processor
 ```
 
 Recall NuGet packages:
@@ -416,7 +416,7 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 From the root of the Quickstarts clone directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ./configuration/java/sdk/order-processor
+cd configuration/java/sdk/order-processor
 ```
 
 Install the dependencies:
@@ -531,7 +531,7 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 From the root of the Quickstarts clone directory, navigate to the `order-processor` directory.
 
 ```bash
-cd ./configuration/go/sdk/order-processor
+cd configuration/go/sdk/order-processor
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
