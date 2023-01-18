@@ -51,7 +51,7 @@ Metadata values can contain template tags that are resolved on Dapr sidecar star
 | {uuid}      | Randomly generated UUIDv4                                        | Need for a unique identifier in self-hosted mode, for example, multiple application instances consuming a [shared MQTT subscription]({{< ref "setup-mqtt.md" >}}) |
 | {podName}   | Name of the Pod containing the Dapr sidecar                      | This can be used to have a persisted behavior where the ConsumerID does not change on restart when using StatefulSets in Kubernetes                               |
 | {namespace} | Namespace where the Dapr sidecar resides combined with its appId | Using a shared `clientId` when multiple application instances consume a Kafka topic in Kubernetes                                                                   |
-| {appID}     | The configured appID of the resource containing the Dapr sidecar | Having a shared clientId when multiple application instances consumer a Kafka topic in self-hosted mode                                                           |
+| {appID}     | The configured `appID` of the resource containing the Dapr sidecar | Having a shared `clientId` when multiple application instances consumer a Kafka topic in self-hosted mode                                                           |
 
 Below is an example of using the `{uuid}` tag in an MQTT pubsub component. Note that multiple template tags can be used in a single metadata value.
 
