@@ -42,7 +42,7 @@ spec:
 | spec.ignoreErrors  | N        | Tells the Dapr sidecar to continue initialization if the component fails to load. Default is false  | `false`
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
 
-### Special metadata values
+### Templated metadata values
 
 Metadata values can contain template tags that are resolved on Dapr sidecar startup. The table below shows the current templating tags that can be used in components.
 
