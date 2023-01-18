@@ -104,4 +104,3 @@ TODO: Describe the mechanisms involved when workflows run and how that might imp
 
 Learn more about the other workflow components:
 - [Temporal.io]
-- [Azure Logic Apps]
