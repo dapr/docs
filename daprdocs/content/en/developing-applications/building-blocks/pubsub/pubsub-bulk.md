@@ -24,6 +24,8 @@ Refer to the [component reference]({{< ref supported-pubsub >}}) to see which co
 
 ## Publishing messages in bulk
 
+The bulk publish API allows you to publish multiple messages to a topic in a single request. If any of the messages fail to publish, the bulk publish operation returns a list of failed messages. Note, the bulk publish operation does not guarantee the order of messages.
+
 ### Example
 
 {{< tabs Java Javascript "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
