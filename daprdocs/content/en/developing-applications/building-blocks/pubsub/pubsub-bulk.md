@@ -20,7 +20,7 @@ Otherwise, Dapr falls back to sending messages one by one to the underlying pub/
 
 ## Supported components
 
-Refer [component reference]({{< ref supported-pubsub >}}) to see which components support the bulk publish API natively.
+Refer to the [component reference]({{< ref supported-pubsub >}}) to see which components support the bulk publish API natively.
 
 ## Publishing messages in bulk
 

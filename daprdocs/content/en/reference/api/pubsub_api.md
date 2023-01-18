@@ -74,7 +74,12 @@ This endpoint lets you publish multiple messages to consumers who are listening 
 POST http://localhost:<daprPort>/v1.0-alpha1/publish/bulk/<pubsubname>/<topic>[?<metadata>]
 ```
 
-The request body should contain a JSON array of entries with unique entry IDs, the event to publish, and the content type of the event. If the content type for an event is not `application/cloudevents+json`, it is auto-wrapped as a CloudEvent (unless `metadata.rawPayload` is set to `true`, see below).
+The request body should contain a JSON array of entries with:
+- Unique entry IDs
+- The event to publish
+- The content type of the event
+
+If the content type for an event is not `application/cloudevents+json`, it is auto-wrapped as a CloudEvent (unless `metadata.rawPayload` is set to `true`).
 
 Example:
 
@@ -106,13 +111,13 @@ The `Content-Type` header should always be set to `application/json`.
 |**Parameter**|**Description**|
 |--|--|
 |`daprPort`|The Dapr port|
-|`pubsubname`|The name of pubsub component|
+|`pubsubname`|The name of pub/sub component|
 |`topic`|The name of the topic|
-|`metadata`|Query parameters for metadata as described below|
+|`metadata`|Query parameters for [metadata]({{< ref "pubsub_api.md#metadata" >}})|
 
 ### Metadata
 
-Metadata can be sent via query parameters in the request's URL. If must be prefixed with `metadata.` as shown below.
+Metadata can be sent via query parameters in the request's URL. It must be prefixed with `metadata.`, as shown in the table below.
 
 |**Parameter**|**Description**|
 |--|--|
@@ -125,7 +130,7 @@ Metadata can be sent via query parameters in the request's URL. If must be prefi
 |**HTTP Status**|**Description**|
 |--|--|
 |204|All messages delivered|
-|400|Pubsub does not exist|
+|400|Pub/sub does not exist|
 |403|Forbidden by access controls|
 |500|At least one message failed to be delivered|
 
