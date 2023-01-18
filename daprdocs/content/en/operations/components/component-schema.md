@@ -44,7 +44,7 @@ spec:
 
 ### Special metadata values
 
-Metadata values can contain template tags that are resolved on Dapr sidecar startup. The table below shows the current possibilities for templating Components.
+Metadata values can contain template tags that are resolved on Dapr sidecar startup. The table below shows the current templating tags that can be used in components.
 
 | Tag         | Details                                                          | Example use case                                                                                                                                                  |
 |-------------|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
