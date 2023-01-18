@@ -7,37 +7,37 @@
   link: setup-inmemory
   state: Beta
   version: v1
-  since: "1.7"
+  since: '1.7'
 - component: Apache Kafka
   link: setup-apache-kafka
   state: Stable
   version: v1
-  since: "1.5"
+  since: '1.5'
 - component: Redis Streams
   link: setup-redis-pubsub
   state: Stable
   version: v1
-  since: "1.0"
+  since: '1.0'
 - component: JetStream
   link: setup-jetstream
   state: Alpha
   version: v1
-  since: "1.4"
+  since: '1.4'
 - component: Pulsar
   link: setup-pulsar
   state: Beta
   version: v1
-  since: "1.7"
+  since: '1.7'
 - component: MQTT
   link: setup-mqtt
   state: Stable
   version: v1
-  since: "1.7"
+  since: '1.7'
 - component: NATS Streaming
   link: setup-nats-streaming
   state: Beta
   version: v1
-  since: "1.0"
+  since: '1.0'
 - component: RabbitMQ
   link: setup-rabbitmq
   state: Stable
@@ -48,3 +48,14 @@
   state: Alpha
   version: v1
   since: "1.8"
+  since: '1.7'
+- component: RocketMQ
+  link: setup-rocketmq
+  state: Alpha
+  version: v1
+  since: '1.8'
+- component: Solace-AMQP
+  link: setup-solace-amqp
+  state: Alpha
+  version: v1
+  since: '1.10'
