@@ -11,6 +11,9 @@ aliases:
 
 To setup Apache Kafka pubsub create a component of type `pubsub.kafka`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration. For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{< ref component-secrets.md >}}).
 
+All component metadata field values can carry [special metadata values]({{< ref "component-schema.md#templated-metadata-values" >}}) carry special metadata values, which are resolved on dapr sidecar startup. 
+For example, you can choose to use `{namespace}` as the `consumerGroup`, providing a unique consumer group linked to both the Kubernetes `namespace` the sidecar is in and the configured `appId`.
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -23,7 +26,7 @@ spec:
   - name: brokers # Required. Kafka broker connection setting
     value: "dapr-kafka.myapp.svc.cluster.local:9092"
   - name: consumerGroup # Optional. Used for input bindings.
-    value: "group1"
+    value: "{namespace}"
   - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
     value: "my-dapr-app-id"
   - name: authType # Required.
