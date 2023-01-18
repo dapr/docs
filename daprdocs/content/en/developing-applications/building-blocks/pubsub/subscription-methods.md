@@ -47,7 +47,7 @@ When running Dapr, set the YAML component file path to point Dapr to the compone
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- dotnet run
+dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
 ```
 
 {{% /codetab %}}
@@ -55,7 +55,7 @@ dapr run --app-id myapp --components-path ./myComponents -- dotnet run
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
+dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
 ```
 
 {{% /codetab %}}
@@ -63,7 +63,7 @@ dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
 ```
 
 {{% /codetab %}}
@@ -71,7 +71,7 @@ dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- npm start
+dapr run --app-id myapp --resources-path ./myComponents -- npm start
 ```
 
 {{% /codetab %}}
@@ -79,7 +79,7 @@ dapr run --app-id myapp --components-path ./myComponents -- npm start
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- go run app.go
+dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
 ```
 
 {{% /codetab %}}
