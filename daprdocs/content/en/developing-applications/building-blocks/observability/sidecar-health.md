@@ -6,7 +6,7 @@ weight: 200
 description: Dapr sidecar health checks
 ---
 
-Dapr provides a way to [determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
+Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
 
 - Probed for its health
 - Determined for readiness and liveness

@@ -35,7 +35,7 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 
 {{% codetab %}}
 
-Use the `--components-path` flag with `dapr run` to point to your custom components directory.
+Use the `--resources-path` flag with `dapr run` to point to your custom resources directory.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

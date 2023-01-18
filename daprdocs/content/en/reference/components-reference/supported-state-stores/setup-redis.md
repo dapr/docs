@@ -97,7 +97,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
-| maxRetryBackoff    | N         | Minimum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
+| maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
 | failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
 | sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"127.0.0.1:6379"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redelivery. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`
@@ -230,6 +230,7 @@ Consider an example where you store documents like that:
     },
     "city": "Seattle",
     "state": "WA"
+  }
 }
 ```
 
@@ -359,7 +360,7 @@ Memory Store does not support modules and cannot be used with query.
 
 Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Make sure to modify the `redisHost` to reflect the local forwarding port which `redislabs/rejson` uses.
 ```bash
-dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/redis
+dapr run --app-id demo --dapr-http-port 3500 --resources-path query-api-examples/components/redis
 ```
 
 Now populate the state store with the employee dataset, so you can then query it later.

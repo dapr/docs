@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "How-To: Register a pluggable component"
-linkTitle: "How To: Register a pluggable component"
-weight: 4500
+linkTitle: "Register a pluggable component"
+weight: 1000
 description: "Learn how to register a pluggable component"
 ---
 
@@ -10,7 +10,7 @@ description: "Learn how to register a pluggable component"
 
 ## Component registration process
 
-Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
+[Pluggable, gRPC-based components]({{< ref pluggable-components-overview >}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
 
 1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
@@ -174,11 +174,8 @@ spec:
         - name: component
           volumeMounts: # required, the sockets volume mount
             - name: dapr-unix-domain-socket
-              mountPath: /dapr-unix-domain-sockets
+              mountPath: /tmp/dapr-components-sockets
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
-          env:
-            - name: DAPR_COMPONENTS_SOCKETS_FOLDER # Tells the component where the sockets should be created.
-              value: /dapr-unix-domain-sockets
 ```
 
 Before applying the deployment, let's add one more configuration: the component spec.

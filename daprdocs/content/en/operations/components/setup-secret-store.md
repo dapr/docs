@@ -3,7 +3,7 @@ type: docs
 title: "Secret store components"
 linkTitle: "Secret stores"
 description: "Guidance on setting up different secret store components"
-weight: 3000
+weight: 800
 aliases:
   - "/operations/components/setup-state-store/secret-stores-overview/"
 ---
@@ -65,7 +65,7 @@ Once you have created the component's YAML file, follow these instructions to ap
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
 {{% codetab %}}
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
 {{% /codetab %}}
 
 {{% codetab %}}

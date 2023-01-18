@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Pluggable Components"
-linkTitle: "Pluggable Components"
+title: "Pluggable components"
+linkTitle: "Pluggable components"
 description: "Guidance on how to work with pluggable components"
-weight: 4000
+weight: 100
 aliases:
   - "/operations/components/pluggable-components/pluggable-components-overview/"
 ---

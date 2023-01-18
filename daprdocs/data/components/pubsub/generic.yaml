@@ -2,7 +2,7 @@
   link: setup-hazelcast
   state: Deprecated
   version: v1
-  since: '1.9'
+  since: "1.9"
 - component: In Memory
   link: setup-inmemory
   state: Beta
@@ -42,6 +42,12 @@
   link: setup-rabbitmq
   state: Stable
   version: v1
+  since: "1.7"
+- component: RocketMQ
+  link: setup-rocketmq
+  state: Alpha
+  version: v1
+  since: "1.8"
   since: '1.7'
 - component: RocketMQ
   link: setup-rocketmq
