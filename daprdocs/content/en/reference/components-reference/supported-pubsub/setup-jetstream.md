@@ -36,7 +36,9 @@ spec:
     value: "my-token"
   - name: name
     value: "my-conn-name"
-  - name: durableName
+  - name: streamName
+    value: "my-stream"
+  - name: durableName 
     value: "my-durable"
   - name: queueGroupName
     value: "my-queue"
@@ -44,8 +46,6 @@ spec:
     value: 1
   - name: startTime # In Unix format
     value: 1630349391
-  - name: deliverAll
-    value: false
   - name: flowControl
     value: false
   - name: ackWait
@@ -64,6 +64,10 @@ spec:
     value: 1024
   - name: hearbeat
     value: 15s
+  - name: ackPolicy
+    value: explicit
+  - name: deliverPolicy
+    value: all
 ```
 
 ## Spec metadata fields
@@ -77,11 +81,11 @@ spec:
 | tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
 | token           |    N     | [NATS token based authentication]          | `"my-token"`                     |
 | name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
+| streamName      |    N     | Name of the JetStream Stream to bind to    | `"my-stream"`                    |
 | durableName     |    N     | [Durable name]                             | `"my-durable"`                   |
 | queueGroupName  |    N     | Queue group name                           | `"my-queue"`                     |
 | startSequence   |    N     | [Start Sequence]                           | `1`                              |
 | startTime       |    N     | [Start Time] in Unix format                | `1630349391`                     |
-| deliverAll      |    N     | Set deliver all as [Replay Policy]         | `true`                           |
 | flowControl     |    N     | [Flow Control]                             | `true`                           |
 | ackWait         |    N     | [Ack Wait]                                 | `10s`                            |
 | maxDeliver      |    N     | [Max Deliver]                              | `15`                             |
@@ -91,6 +95,8 @@ spec:
 | memoryStorage   |    N     | [Memory Storage]                           | `false`                          |
 | rateLimit       |    N     | [Rate Limit]                               | `1024`                           |
 | hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
+| ackPolicy       |    N     | [Ack Policy]                               | `explicit`                       |
+| deliverPolicy   |    N     | One of: all, last, new, sequence, time     | `all`                            |
 
 ## Create a NATS server
 
@@ -155,5 +161,6 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 [Memory Storage]: https://docs.nats.io/jetstream/concepts/consumers#memorystorage
 [Rate Limit]: https://docs.nats.io/jetstream/concepts/consumers#ratelimit
 [Hearbeat]: https://docs.nats.io/jetstream/concepts/consumers#hearbeat
+[Ack Policy]: https://docs.nats.io/nats-concepts/jetstream/consumers#ackpolicy
 [Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt
 [NATS token based authentication]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/tokens

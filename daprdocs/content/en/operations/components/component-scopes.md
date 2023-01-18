@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Scope components to one or more applications"
 linkTitle: "Scope access to components"
-weight: 300
+weight: 400
 description: "Limit component access to particular Dapr instances"
 ---
 

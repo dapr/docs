@@ -2,7 +2,7 @@
 type: docs
 title: "HowTo: Configure Pub/Sub components with multiple namespaces"
 linkTitle: "Multiple namespaces"
-weight: 20000
+weight: 10000
 description: "Use Dapr Pub/Sub with multiple namespaces"
 ---
 

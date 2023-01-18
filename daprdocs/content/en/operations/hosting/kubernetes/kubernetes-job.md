@@ -14,9 +14,12 @@ To address this issue the Dapr sidecar has an endpoint to `Shutdown` the sidecar
 
 When running a basic [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) you will need to call the `/shutdown` endpoint for the sidecar to gracefully stop and the job will be considered `Completed`.
 
-When a job is finish without calling `Shutdown` your job will be in a `NotReady` state with only the `daprd` container running endlessly.
+When a job is finished without calling `Shutdown`, your job will be in a `NotReady` state with only the `daprd` container running endlessly.
 
-Be sure and use the *POST* HTTP verb when calling the shutdown API.
+Stopping the dapr sidecar will cause its readiness and liveness probes to fail in your container because the dapr sidecar was shutdown.
+To prevent Kubernetes from trying to restart your job, set your job's `restartPolicy` to `Never`.
+
+Be sure to use the *POST* HTTP verb when calling the shutdown HTTP API.
 
 ```yaml
 apiVersion: batch/v1
@@ -37,7 +40,7 @@ spec:
       restartPolicy: Never
 ```
 
-You can also call the `Shutdown` from any of the Dapr SDK
+You can also call the `Shutdown` from any of the Dapr SDKs
 
 ```go
 package main

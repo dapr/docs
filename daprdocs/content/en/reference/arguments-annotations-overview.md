@@ -16,8 +16,8 @@ This table is meant to help users understand the equivalent options for running 
 | `--app-id` | `--app-id` | `-i` | `dapr.io/app-id`  | The unique ID of the application. Used for service discovery, state encapsulation and the pub/sub consumer ID |
 | `--app-port` | `--app-port` | `-p` | `dapr.io/app-port` | This parameter tells Dapr which port your application is listening on |
 | `--app-ssl` | `--app-ssl` | | `dapr.io/app-ssl` | Sets the URI scheme of the app to https and attempts an SSL connection |
-| `--components-path`  | `--components-path` | `-d` | not supported | Path for components directory. If empty, components will not be loaded. |
-| `--resources-path`  | `--resources-path` |   | not supported | Alternative to `--components-path` flag. It is recommended to use this flag instead of `--components-path`. If empty, components will not be loaded. |
+| `--components-path`  | `--components-path` | `-d` | not supported | **Deprecated** in favor of `--resources-path` |
+| `--resources-path`  | `--resources-path` | `-d` | not supported | Path for components directory. If empty, components will not be loaded. |
 | `--config`  | `--config` | `-c` | `dapr.io/config` | Tells Dapr which Configuration CRD to use |
 | `--control-plane-address` | not supported | | not supported | Address for a Dapr control plane |
 | `--dapr-grpc-port` | `--dapr-grpc-port` | | not supported | gRPC port for the Dapr API to listen on (default "50001") |
@@ -29,7 +29,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--enable-metrics` | not supported | | configuration spec | Enable prometheus metric (default true) |
 | `--enable-mtls` | not supported | | configuration spec | Enables automatic mTLS for daprd to daprd communication channels |
 | `--enable-profiling` | `--enable-profiling` | | `dapr.io/enable-profiling` | Enable profiling |
-| `--unix-domain-socket` | `--unix-domain-socket` | `-u` | `dapr.io/unix-domain-socket-path`  | On Linux, when communicating with the Dapr sidecar, use unix domain sockets for lower latency and greater throughput compared to TCP ports. Not available on Windows OS |
+| `--unix-domain-socket` | `--unix-domain-socket` | `-u` | `dapr.io/unix-domain-socket-path`  | The parent directory of socket file. On Linux, when communicating with the Dapr sidecar, use unix domain sockets for lower latency and greater throughput compared to TCP ports. Not available on Windows OS. |
 | `--log-as-json` | not supported | | `dapr.io/log-as-json` | Setting this parameter to `true` outputs logs in JSON format. Default is `false` |
 | `--log-level` | `--log-level` | | `dapr.io/log-level` | Sets the log level for the Dapr sidecar. Allowed values are `debug`, `info`, `warn`, `error`. Default is `info` |
 | `--enable-api-logging` | `--enable-api-logging` | | `dapr.io/enable-api-logging` | Enables API logging for the Dapr sidecar |
