@@ -2,6 +2,6 @@
 type: docs
 title: "Integrations"
 linkTitle: "Integrations"
-weight: 10
+weight: 60
 description: "Dapr integrations with other technologies"
 ---

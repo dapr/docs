@@ -1,11 +1,12 @@
-- component: AWS DynamoDB
-  link: setup-dynamodb
-  state: Stable
+- component: Cloudflare Workers KV
+  link: setup-cloudflare-workerskv
+  state: Beta
   version: v1
   since: "1.10"
   features:
     crud: true
     transactions: false
-    etag: true
+    etag: false
     ttl: true
     query: false
+

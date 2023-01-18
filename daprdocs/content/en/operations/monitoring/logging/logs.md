@@ -58,7 +58,7 @@ When using the Dapr CLI to run an application, pass the `--log-as-json` option t
 ```sh
 dapr run \
   --app-id orderprocessing \
-  --components-path ./components/ \
+  --resources-path ./components/ \
   --log-as-json \
     -- python3 OrderProcessingService.py
 ```
