@@ -105,6 +105,16 @@ After generating the above state store example's service scaffolding code using 
 
 This concrete implementation and auxiliary code are the **core** of your pluggable component. They define how your component behaves when handling gRPC requests from Dapr.
 
+## Return semantic state store errors
+
+When implementing a pluggable component, you may need to return one of the following three statestore errors:
+
+| Error                    | gRPC error code            | Root cause | Example |
+| ------------------------ | -------------------------- | ---------- | ------- |
+| ETag Mismatch            | `codes.FailedPrecondition` |            |         |
+| ETag Invalid             | `codes.InvalidArgument`    |            |         |
+| Bulk Delete Row Mismatch | `codes.Internal`           |            |         |
+
 ## Next steps
 
 - Get started with developing .NET pluggable component using this [sample code](https://github.com/dapr/samples/tree/master/pluggable-components-dotnet-template) 
