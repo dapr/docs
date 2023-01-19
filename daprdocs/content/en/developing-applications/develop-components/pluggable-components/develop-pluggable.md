@@ -123,19 +123,19 @@ The following examples demonstrate how to return an error in your own pluggable 
  <!-- .NET -->
 {{% codetab %}}
 
-**`GRPCCodeETagMismatch`**
+**Etag Mismatch**
 
 ```csharp
 
 ```
 
-**`GRPCCodeETagInvalid`**
+**Etag Invalid**
 
 ```csharp
 
 ```
 
-**`GRPCCodeBulkDeleteRowMismatch`**
+**Bulk Delete Row Mismatch**
 
 ```csharp
 
@@ -146,19 +146,19 @@ The following examples demonstrate how to return an error in your own pluggable 
  <!-- Java -->
 {{% codetab %}}
 
-**`GRPCCodeETagMismatch`**
+**ETag Mismatch**
 
 ```java
 
 ```
 
-**`GRPCCodeETagInvalid`**
+**`ETag Invalid**
 
 ```java
 
 ```
 
-**`GRPCCodeBulkDeleteRowMismatch`**
+**Bulk Delete Row Mismatch**
 
 ```java
 
@@ -169,7 +169,7 @@ The following examples demonstrate how to return an error in your own pluggable 
  <!-- Go -->
 {{% codetab %}}
 
-**`GRPCCodeETagMismatch`**
+**ETag Mismatch**
 
 ```go
 st := status.New(GRPCCodeETagMismatch, "fake-err-msg")
@@ -183,7 +183,7 @@ br.FieldViolations = append(br.FieldViolations, v)
 st, err := st.WithDetails(br)
 ```
 
-**`GRPCCodeETagInvalid`**
+**ETag Invalid**
 
 ```go
 st := status.New(GRPCCodeETagInvalid, "fake-err-msg")
@@ -197,7 +197,7 @@ br.FieldViolations = append(br.FieldViolations, v)
 st, err := st.WithDetails(br)
 ```
 
-**`GRPCCodeBulkDeleteRowMismatch`**
+**Bulk Delete Row Mismatch**
 
 ```go
 st := status.New(GRPCCodeBulkDeleteRowMismatch, "fake-err-msg")
