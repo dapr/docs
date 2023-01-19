@@ -107,13 +107,111 @@ This concrete implementation and auxiliary code are the **core** of your pluggab
 
 ## Return semantic state store errors
 
-When implementing a pluggable component, you may need to return one of the following three statestore errors:
+In order to meet concurrency requirements, your state store pluggable components need error mapping from gRPC returned errors to semantic errors. Each of the three Dapr state store errors below maps to a gRPC status code. 
 
-| Error                    | gRPC error code            | Root cause | Example |
-| ------------------------ | -------------------------- | ---------- | ------- |
-| ETag Mismatch            | `codes.FailedPrecondition` |            |         |
-| ETag Invalid             | `codes.InvalidArgument`    |            |         |
-| Bulk Delete Row Mismatch | `codes.Internal`           |            |         |
+| Error                    | gRPC error code                 | 
+| ------------------------ | ------------------------------- | 
+| ETag Mismatch            | `GRPCCodeETagMismatch`          | 
+| ETag Invalid             | `GRPCCodeETagInvalid`           | 
+| Bulk Delete Row Mismatch | `GRPCCodeBulkDeleteRowMismatch` | 
+
+Learn more about concurrency requirements in the [State Management overview]({{< ref "state-management-overview.md#concurrency" >}}).
+
+The following examples demonstrate how to return an error in your own pluggable component, changing the messages to suit your needs.
+
+{{< tabs ".NET" "Java" "Go" >}}
+ <!-- .NET -->
+{{% codetab %}}
+
+**`GRPCCodeETagMismatch`**
+
+```csharp
+
+```
+
+**`GRPCCodeETagInvalid`**
+
+```csharp
+
+```
+
+**`GRPCCodeBulkDeleteRowMismatch`**
+
+```csharp
+
+```
+
+{{% /codetab %}}
+
+ <!-- Java -->
+{{% codetab %}}
+
+**`GRPCCodeETagMismatch`**
+
+```java
+
+```
+
+**`GRPCCodeETagInvalid`**
+
+```java
+
+```
+
+**`GRPCCodeBulkDeleteRowMismatch`**
+
+```java
+
+```
+
+{{% /codetab %}}
+
+ <!-- Go -->
+{{% codetab %}}
+
+**`GRPCCodeETagMismatch`**
+
+```go
+st := status.New(GRPCCodeETagMismatch, "fake-err-msg")
+desc := "The ETag field must only contain alphanumeric characters"
+v := &errdetails.BadRequest_FieldViolation{
+	Field:       etagField,
+	Description: desc,
+}
+br := &errdetails.BadRequest{}
+br.FieldViolations = append(br.FieldViolations, v)
+st, err := st.WithDetails(br)
+```
+
+**`GRPCCodeETagInvalid`**
+
+```go
+st := status.New(GRPCCodeETagInvalid, "fake-err-msg")
+desc := "The ETag field must only contain alphanumeric characters"
+v := &errdetails.BadRequest_FieldViolation{
+	Field:       etagField,
+	Description: desc,
+}
+br := &errdetails.BadRequest{}
+br.FieldViolations = append(br.FieldViolations, v)
+st, err := st.WithDetails(br)
+```
+
+**`GRPCCodeBulkDeleteRowMismatch`**
+
+```go
+st := status.New(GRPCCodeBulkDeleteRowMismatch, "fake-err-msg")
+br := &errdetails.ErrorInfo{}
+br.Metadata = map[string]string{
+	affectedRowsMetadataKey: "100",
+	expectedRowsMetadataKey: "99",
+}
+st, err := st.WithDetails(br)
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Next steps
 
