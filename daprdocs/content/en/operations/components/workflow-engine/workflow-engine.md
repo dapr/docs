@@ -150,4 +150,3 @@ See the [Reminder usage and execution guarantees]({{<ref "workflow-engine.md#rem
 
 Learn more about the other workflow components:
 - [Temporal.io]
-- [Azure Logic Apps]

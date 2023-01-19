@@ -6,60 +6,54 @@ weight: 2000
 description: Integrate, manage, and expose workflows
 ---
 
-Now that you've read about [the workflow building block]({{< ref workflow-overview >}}) and created your worfklow component, learn more about how to:
+Now that you've read about [the workflow building block]({{< ref workflow-overview >}}), learn more about how to:
 
-- Use the built-in worfklow component
-- Register an external workflow component with Dapr.
+- Use the a worfklow component
+- Configure or register a workflow component.
 
 ## Built-in workflow vs external workflows
 
 When you run `dapr init`, Dapr creates a default built-in workflow component. This component is written in Go and implements workflow instances as actors to promote placement and scalability. 
 
-[Insert diagram]
+[Insert HL diagram]
 
-Currently, Dapr supports two external workflow components in addition to the Dapr's built-in workflow component:
-- Temporal.io
-- Azure Logic Apps
+{{% alert title="Note" color="primary" %}}
+Currently, Dapr only supports Temporal as an external workflow component that can be used with the Workflow API (in addition to the Dapr's built-in workflow component).
+{{% /alert %}}
 
-You can write your Temporal.io or Logic Apps worfklow instances and register them with the Dapr sidecar with all the features of the Dapr workflow API.
 
-## Register your workflow
+## Using workflow components
 
-{{< tabs "Built-in" Temporal.io "Azure Logic Apps" >}}
+{{< tabs "Built-in" Temporal >}}
+
+<!-- Built-in workflow component -->
+
+{{% codetab %}}
+
+### Authoring workflow
+
+<!-- Need to add link or steps for how to author a workflow for the built in engine with the Workflow Authoring SDKs-->
+
+### Configuring Built-in Workflow component
+
+`dapr init` configures the built-in workflow component. 
+
+
+{{% /codetab %}}
 
 <!-- temporal.io -->
 
 {{% codetab %}}
 
-Follow the [instructions provided by Temporal.io](https://docs.temporal.io/application-development/foundations#develop-workflows) to develop your workflow code. 
+### Authoring Workflow for external component
+For authoring your workflow, find the instructions through your component's own instructions page. For the Temporal workflow, [follow instructions provided by Temporal.io](https://docs.temporal.io/application-development/foundations#develop-workflows). 
 
-For external workfow components, there's an additional step to make sure workers for that component are up and running. Once you've written your workflow, register the workflow with Dapr:
-
-```bash
-command?
-```
-
-{{% /codetab %}}
-
-<!-- logic apps -->
-
-{{% codetab %}}
-
-Follow the [instructions provided by Azure Logic Apps](https://docs.temporal.io/application-development/foundations#develop-workflows) to develop your workflow code. 
-
-For external workfow components, there's an additional step to make sure workers for that component are up and running. Once you've written your workflow, register the workflow with Dapr:
+### Registering external component
+Once you've written your workflow, register the workflow with Dapr:
 
 ```bash
-command?
+command to register Temporal workflow for all steps involved
 ```
-
-{{% /codetab %}}
-
-<!-- built in -->
-
-{{% codetab %}}
-
-`dapr init` configures the built-in workflow component. No need to manually register the built-in workflow component. 
 
 {{% /codetab %}}
 
@@ -68,7 +62,7 @@ command?
 
 ## Run your workflow
 
-Next, run your workflow using the following API methods. For more information, read the [workflow API reference]().
+Next, run your workflow using the following API methods. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
 ### Start
 
@@ -96,5 +90,6 @@ GET http://localhost:3500/v1.0/workflows/{workflowType}/{instanceId}
 
 ## Next steps
 
-- [Workflow API]()
-- Learn more about the [workflow component]()
+- Learn more about [authoring workflows for the built-in engine component]()
+- Learn more about [supported workflow components]()
+
