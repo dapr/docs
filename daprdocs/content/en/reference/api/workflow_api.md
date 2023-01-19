@@ -29,16 +29,15 @@ spec:
 
 ## Supported workflow methods
 
-### HTTP / gRPC request
-
+### POST start workflow request
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/{workflowComponent}/{workflowType}/{instanceId}/start
 ```
-
+### POST terminate workflow request
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/{workflowComponent}/{instanceId}/terminate
 ```
-
+### GET workflow request
 ```bash
 GET http://localhost:3500/v1.0-alpha1/workflows/{workflowComponent}/{workflowType}/{instanceId}
 ```
