@@ -108,7 +108,7 @@ spec:
     value: 200ms
   - name: version # Optional.
     value: 0.10.2.0
-  - name: disableTls 
+  - name: disableTls
     value: "true"
 ```
 
@@ -198,13 +198,13 @@ spec:
 
 #### OAuth2 or OpenID Connect
 
-Setting `authType` to `oidc` enables SASL authentication via the **OAUTHBEARER** mechanism. This supports specifying a bearer token from an external OAuth2 or [OIDC](https://en.wikipedia.org/wiki/OpenID) identity provider. Currently, only the **client_credentials** grant is supported. 
+Setting `authType` to `oidc` enables SASL authentication via the **OAUTHBEARER** mechanism. This supports specifying a bearer token from an external OAuth2 or [OIDC](https://en.wikipedia.org/wiki/OpenID) identity provider. Currently, only the **client_credentials** grant is supported.
 
-Configure `oidcTokenEndpoint` to the full URL for the identity provider access token endpoint. 
+Configure `oidcTokenEndpoint` to the full URL for the identity provider access token endpoint.
 
-Set `oidcClientID` and `oidcClientSecret` to the client credentials provisioned in the identity provider. 
+Set `oidcClientID` and `oidcClientSecret` to the client credentials provisioned in the identity provider.
 
-If `caCert` is specified in the component configuration, the certificate is appended to the system CA trust for verifying the identity provider certificate. Similarly, if `skipVerify` is specified in the component configuration, verification will also be skipped when accessing the identity provider. 
+If `caCert` is specified in the component configuration, the certificate is appended to the system CA trust for verifying the identity provider certificate. Similarly, if `skipVerify` is specified in the component configuration, verification will also be skipped when accessing the identity provider.
 
 By default, the only scope requested for the token is `openid`; it is **highly** recommended that additional scopes be specified via `oidcScopes` in a comma-separated list and validated by the Kafka broker. If additional scopes are not used to narrow the validity of the access token,
 a compromised Kafka broker could replay the token to access other services as the Dapr clientID.
@@ -292,6 +292,19 @@ spec:
 auth:
   secretStore: <SECRET_STORE_NAME>
 ```
+
+## Sending and receiving multiple messages
+
+Apache Kafka component natively supports sending and receiving multiple messages in a single operation (Bulk Pubsub feature).
+
+### Configuring bulk subscribe
+
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscription methods]({{< ref subscription-methods >}}) for more details. (TODO: Add link to bulk subscribe docs)
+
+| Configuration | Default |
+|----------|---------|
+| `maxBulkAwaitDurationMs` | `10000` (10s) |
+| `maxBulkSubCount` | `80` |
 
 ## Per-call metadata fields
 
