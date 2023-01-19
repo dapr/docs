@@ -8,8 +8,8 @@ description: Integrate, manage, and expose workflows
 
 Now that you've read about [the workflow building block]({{< ref workflow-overview >}}), learn more about how to:
 
-- Use the Built-in Worfklow component
-- Register and use your Temporal component.
+- Use the a worfklow component
+- Configure or register a workflow component.
 
 ## Built-in workflow vs external workflows
 
@@ -17,12 +17,14 @@ When you run `dapr init`, Dapr creates a default built-in workflow component. Th
 
 [Insert HL diagram]
 
-Currently, Dapr only supports temporal as an external workflow component that can be used with the Workflow API (in addition to the Dapr's built-in workflow component).
+{{% alert title="Note" color="primary" %}}
+Currently, Dapr only supports Temporal as an external workflow component that can be used with the Workflow API (in addition to the Dapr's built-in workflow component).
+{{% /alert %}}
 
 
 ## Using workflow components
 
-{{< tabs "Built-in" Temporal.io >}}
+{{< tabs "Built-in" Temporal >}}
 
 <!-- Built-in workflow component -->
 
@@ -60,7 +62,7 @@ command to register Temporal workflow for all steps involved
 
 ## Run your workflow
 
-Next, run your workflow using the following API methods. For more information, read the [workflow API reference]().
+Next, run your workflow using the following API methods. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
 ### Start
 
@@ -88,5 +90,6 @@ GET http://localhost:3500/v1.0/workflows/{workflowType}/{instanceId}
 
 ## Next steps
 
-- [Workflow API]()
-- Learn more about the [workflow component]()
+- Learn more about [authoring workflows for the built-in engine component]()
+- Learn more about [supported workflow components]()
+
