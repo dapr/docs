@@ -23,7 +23,7 @@ spec:
 | Setting | Description |
 | ------- | ----------- |
 | `metadata.name` | The name of the workflow component. |
-| `spec/metadata` |  |
+| `spec/metadata` | Additional metadata parameters specified by workflow component |
 
 
 
