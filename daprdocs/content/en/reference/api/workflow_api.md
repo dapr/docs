@@ -72,24 +72,9 @@ Code | Description
 #### POST start workflow response body
 
 ```bash
-HTTP/1.1 202 Accepted
-Server: fasthttp
-Date: Thu, 12 Jan 2023 21:31:16 GMT
-Content-Type: application/json
-Content-Length: 139
-Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
-Connection: close 
-
-{
   "WFInfo": {
     "instance_id": "SampleWorkflow"
-  },
-  "start_time": "",
-  "metadata": {
-    "status": "",
-    "task_queue": ""
   }
- }
 ```
 
 
