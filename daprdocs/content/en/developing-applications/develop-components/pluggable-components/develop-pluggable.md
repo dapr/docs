@@ -152,7 +152,7 @@ The following examples demonstrate how to return an error in your own pluggable 
 
 ```
 
-**`ETag Invalid**
+**ETag Invalid**
 
 ```java
 
