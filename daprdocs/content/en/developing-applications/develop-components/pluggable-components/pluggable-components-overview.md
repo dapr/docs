@@ -35,6 +35,16 @@ Pluggable components prove useful in scenarios where:
 - You want to keep your component separate from the Dapr release process.
 - You are not as familiar with Go, or implementing your component in Go is not ideal.
 
+## Current supported component APIs
+
+Currently, the following component APIs are supported:
+
+- State stores
+- Pub/sub
+- Bindings
+- Secrets
+- Configuration
+
 ## Features
 
 ### Implement a pluggable component

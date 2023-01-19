@@ -14,19 +14,16 @@ In order to implement a pluggable component, you need to implement a gRPC servic
 
 ### Find the proto definition file
 
-Proto definitions are provided for each supported service interface (state store, pub/sub, bindings).
-
-Currently, the following component APIs are supported:
-
-- State stores
-- Pub/sub
-- Bindings
+Proto definitions are provided for each [supported service interface]({{< ref "pluggable-components-overview.md#current-supported-component-apis" >}}). 
 
 |  Component  |    Type    | gRPC definition  |                       Built-in Reference Implementation                        | Docs                                                                                                                                                                  |
 | :---------: | :--------: | :--------------: | :----------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | State Store |  `state`   |  [state.proto]   |  [Redis](https://github.com/dapr/components-contrib/tree/master/state/redis)   | [concept]({{< ref "state-management-overview" >}}), [howto]({{< ref "howto-get-save-state" >}}), [api spec]({{< ref "state_api" >}})                                        |
 |   Pub/sub   |  `pubsub`  |  [pubsub.proto]  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{< ref "pubsub-overview" >}}), [howto]({{< ref "howto-publish-subscribe" >}}), [api spec]({{< ref "pubsub_api" >}})                                              |
 |  Bindings   | `bindings` | [bindings.proto] | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{< ref "bindings-overview" >}}), [input howto]({{< ref "howto-triggers" >}}), [output howto]({{< ref "howto-bindings" >}}), [api spec]({{< ref "bindings_api" >}}) |
+|   Secrets   |  `secrets`  |  [secrets.proto]  |    |                                               |
+|  Configuration   | `config` | [config.proto] |  |  |
+
 
 Below is a snippet of the gRPC service definition for pluggable component state stores ([state.proto]):
 
