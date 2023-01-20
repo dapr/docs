@@ -13,6 +13,9 @@
   state: Stable
   version: v1
   since: "1.5"
+  features:
+    bulkPublish: true
+    bulkSubscribe: true
 - component: Redis Streams
   link: setup-redis-pubsub
   state: Stable
