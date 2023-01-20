@@ -245,6 +245,42 @@ HTTP Status | Description
 404 | error is logged and message is dropped
 other | warning is logged and message to be retried
 
+## Subscribe multiple messages from a given topic
+
+This allows you, as a consumer, to subscribe multiple messages from a broker to listen to a `topic`.
+
+In order to receive messages in a bulk manner for a topic subscription, application needs to opt for `bulkSubscribe` while sending list of topics to be subscribed to, and optionally they can also configure `maxMessagesCount` and/or `maxAwaitDurationMs`.
+Please refer [Send and receive messages in bulk]({{< ref pubsub-bulk.md >}}) for more details on how to opt-in.
+
+#### Expected HTTP Response for Bulk Subscribe
+
+An HTTP 2xx response denotes that entries (individual messages) inside this bulk messgae have been processed by Application and Dapr will now check status pertaining to each entryId.
+A JSON-encoded payload body with the processing status against each entry needs to be sent:
+- Note: If status for an entryId is not found by Dapr in response received from Application, status for that entry will be considered as RETRY.
+
+```json
+{
+  "statuses": {
+    "entryId": "<entryId>",
+    "status": "<status>"
+  }
+}
+```
+
+Status | Description
+--------- | -----------
+`SUCCESS` | Message is processed successfully
+`RETRY` | Message to be retried by Dapr
+`DROP` | Warning is logged and message is dropped
+
+The HTTP response might be different from HTTP 2xx. The following are Dapr's behavior in different HTTP statuses:
+
+HTTP Status | Description
+--------- | -----------
+2xx | message is processed as per status in payload.
+404 | error is logged and all messages are dropped
+other | warning is logged and all messages to be retried
+
 ## Message envelope
 
 Dapr pub/sub adheres to version 1.0 of CloudEvents.
