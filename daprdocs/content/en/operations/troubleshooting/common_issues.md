@@ -99,15 +99,15 @@ There are some known cases where this might not properly work:
   Check with your cluster administrators to setup allow ingress
   rules to the above ports, __4000__ and __19443__, in the cluster from the kube api servers. 
 
-  ## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar
+## My pod is in CrashLoopBackoff or another failed state due to the daprd sidecar
 
-  If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes.
+If the Dapr sidecar (`daprd`) is taking too long to initialize, this might be surfaced as a failing health check by Kubernetes.
 
-  If your pod is in a failed state you should check this:
+If your pod is in a failed state you should check this:
 
-  ```bash
-  kubectl describe pod <name-of-pod>
-  ```
+```bash
+kubectl describe pod <name-of-pod>
+```
 
 You might see a table like the following at the end of the command output:
 
