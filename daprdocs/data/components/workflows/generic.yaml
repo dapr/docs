@@ -3,8 +3,3 @@
   state: Alpha
   version: v1
   since: "1.10"
-- component: Built-in (DTFx-go) engine
-  link: dtfx-go
-  state: Alpha
-  version: v1
-  since: "1.10"
