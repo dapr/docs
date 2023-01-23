@@ -124,3 +124,7 @@ TODO: CODE EXAMPLE
 
 
 ## Next steps
+
+- [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
+- [Workflow component spec]({{< ref temporal-io.md >}})
+- [Workflow API reference]({{< ref workflow_api.md >}})
