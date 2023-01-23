@@ -27,6 +27,16 @@ Creating a new actor follows a local call like `http://localhost:3500/v1.0/actor
 
 The Dapr runtime SDKs have language-specific actor frameworks. For example, the .NET SDK has C# actors. The goal is for all the Dapr language SDKs to have an actor framework. Currently .NET, Java, Go and Python SDK have actor frameworks.
 
+## Workflows
+
+### Differences between Dapr Workflows, authoring APIs, and the management API
+
+TODO
+
+### What is the relationship between Dapr Workflows and the Durable task framework?
+
+TODO
+
 ## Developer language SDKs and frameworks
 
 ### Does Dapr have any SDKs I can use if I want to work with a particular programming language or framework?
