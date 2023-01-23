@@ -15,8 +15,9 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 
 | Feature | Description | Setting | Documentation | Version introduced |
 | ---------- |-------------|---------|---------------|-----------------|
-| **`--image-registry`** flag in Dapr CLI| In self hosted mode you can set this flag to specify any private registry to pull the container images required to install Dapr| N/A | [CLI init command reference]({{<ref "dapr-init.md#self-hosted-environment" >}}) | v1.7 |
-| **Resiliency** | Allows configuring of fine-grained policies for retries, timeouts and circuitbreaking. | `Resiliency` | [Configure Resiliency Policies]({{<ref "resiliency-overview">}}) | v1.7|
-| **App Middleware** | Allow middleware components to be executed when making service-to-service calls | N/A | [App Middleware]({{<ref "middleware.md#app-middleware" >}}) | v1.9 |
-| **App health checks** | Allows configuring app health checks | `AppHealthCheck` | [App health checks]({{<ref "app-health.md" >}}) | v1.9 |
-| **Pluggable components** | Allows creating self-hosted gRPC-based components written in any language that supports gRPC. The following component APIs are supported: State stores, Pub/sub, Bindings | N/A | [Pluggable components concept]({{<ref "components-concept#pluggable-components" >}})| v1.9  |
+| **`--image-registry`** flag in Dapr CLI| In self-hosted mode, you can set this flag to specify any private registry to pull the container images required to install Dapr| N/A | [CLI `init` command reference]({{< ref "dapr-init.md#self-hosted-environment" >}}) | v1.7 |
+| **Resiliency** | Allows configuring of fine-grained policies for retries, timeouts, and circuitbreaking. | `Resiliency` | [Configure Resiliency policies]({{< ref "resiliency-overview">}}) | v1.7|
+| **App Middleware** | Allow middleware components to be executed when making service-to-service calls | N/A | [App Middleware]({{< ref "middleware.md#app-middleware" >}}) | v1.9 |
+| **App health checks** | Allows configuring app health checks | `AppHealthCheck` | [App health checks]({{< ref "app-health.md" >}}) | v1.9 |
+| **Pluggable components** | Allows creating self-hosted gRPC-based components written in any language that supports gRPC. The following component APIs are supported: State stores, Pub/sub, Bindings | N/A | [Pluggable components concept]({{< ref "components-concept#pluggable-components" >}})| v1.9  |
+| **Workflows** | Author workflows as code to automate and orchestrate tasks within your application, like messaging, state management, and failure handling | N/A | [Workflows concept]({{< ref "components-concept#workflows" >}})| v1.10  |
