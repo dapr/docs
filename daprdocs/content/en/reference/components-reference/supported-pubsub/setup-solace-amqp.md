@@ -84,7 +84,7 @@ Note that while the `caCert` and `clientCert` values may not be secrets, they ca
 
 ### Publishing/subscribing to topics and queues
 
-By default, messages are published and subscribed over topics. If you would like your destination to be a queue - prefix the topic with `queue:` and the Solace AMQP component will connect to a queue.
+By default, messages are published and subscribed over topics. If you would like your destination to be a queue, prefix the topic with `queue:` and the Solace AMQP component will connect to a queue.
 
 ## Create a Solace broker
 
