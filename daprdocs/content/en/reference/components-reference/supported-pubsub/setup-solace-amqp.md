@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Solace-AMQP pubsub create a component of type `pubsub.solace.amqp`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
+To setup Solace-AMQP pub/sub, create a component of type `pubsub.solace.amqp`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
