@@ -101,7 +101,7 @@ You can then interact with the server using the client port: `mqtt://localhost:5
 {{% /codetab %}}
 
 {{% codetab %}}
-You can also sign up for a free SaaS broker on [Solace Cloud](https://console.solace.cloud/login/new-account?product=event-streaming)
+You can also sign up for a free SaaS broker on [Solace Cloud](https://console.solace.cloud/login/new-account?product=event-streaming).
 {{% /codetab %}}
 
 {{< /tabs >}}
