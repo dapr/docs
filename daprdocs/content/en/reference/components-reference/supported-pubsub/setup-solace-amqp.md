@@ -46,7 +46,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Communication using TLS
 
-To configure communication using TLS, ensure that the Solace broker  is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
+To configure communication using TLS:
+
+1. Ensure that the Solace broker is configured to support certificates.
+1. Provide the `caCert`, `clientCert`, and `clientKey` metadata in the component configuration. 
+
+For example:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
