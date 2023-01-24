@@ -65,7 +65,7 @@ In the above file definition:
 Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 
 ```bash
-dapr run --app-id myapp --dapr-http-port 3500 --components-path ./my-components
+dapr run --app-id myapp --dapr-http-port 3500 --resources-path ./my-components
 ```
 
 {{% alert title="Tip" color="primary" %}}

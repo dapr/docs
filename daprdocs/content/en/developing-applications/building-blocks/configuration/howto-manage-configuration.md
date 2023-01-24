@@ -304,7 +304,7 @@ asyncio.run(executeConfiguration())
 ```
 
 ```bash
-dapr run --app-id orderprocessing --components-path components/ -- python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --resources-path components/ -- python3 OrderProcessingService.py
 ```
 
 {{% /codetab %}}

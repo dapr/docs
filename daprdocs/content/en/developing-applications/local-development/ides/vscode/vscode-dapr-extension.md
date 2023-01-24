@@ -33,7 +33,7 @@ To create a dedicated components folder with the default `statestore`, `pubsub`,
 1. Open your application directory in Visual Studio Code
 2. Open the Command Palette with `Ctrl+Shift+P`
 3. Select `Dapr: Scaffold Dapr Components`
-4. Run your application with `dapr run --components-path ./components -- ...`
+4. Run your application with `dapr run --resources-path ./components -- ...`
 
 ### View running Dapr applications
 

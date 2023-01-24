@@ -96,7 +96,7 @@ docker run -d --rm -p 27017:27017 --name mongodb mongo:5
 Next, start a Dapr application. Refer to the [component configuration file](../query-api-examples/components/mongodb/mongodb.yml), which instructs Dapr to use MongoDB as its state store.
 
 ```bash
-dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/mongodb
+dapr run --app-id demo --dapr-http-port 3500 --resources-path query-api-examples/components/mongodb
 ```
 
 Populate the state store with the employee dataset, so you can query it later.

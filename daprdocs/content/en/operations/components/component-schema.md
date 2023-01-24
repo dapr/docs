@@ -61,7 +61,7 @@ kind: Component
 metadata:
   name: messagebus
 spec:
-  type: pubsub.mqtt
+  type: pubsub.mqtt3
   version: v1
   metadata:
     - name: consumerID

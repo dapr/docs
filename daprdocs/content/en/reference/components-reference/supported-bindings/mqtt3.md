@@ -1,15 +1,16 @@
 ---
 type: docs
-title: "MQTT binding spec"
-linkTitle: "MQTT"
-description: "Detailed documentation on the MQTT binding component"
+title: "MQTT3 binding spec"
+linkTitle: "MQTT3"
+description: "Detailed documentation on the MQTT3 binding component"
 aliases:
+  - "/operations/components/setup-bindings/supported-bindings/mqtt3/"
   - "/operations/components/setup-bindings/supported-bindings/mqtt/"
 ---
 
 ## Component format
 
-To setup MQTT binding create a component of type `bindings.mqtt`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup a MQTT3 binding create a component of type `bindings.mqtt3`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -17,7 +18,7 @@ kind: Component
 metadata:
   name: <NAME>
 spec:
-  type: bindings.mqtt
+  type: bindings.mqtt3
   version: v1
   metadata:
   - name: url
@@ -63,7 +64,7 @@ kind: Component
 metadata:
   name: mqtt-binding
 spec:
-  type: bindings.mqtt
+  type: bindings.mqtt3
   version: v1
   metadata:
   - name: url
@@ -103,7 +104,7 @@ metadata:
   name: mqtt-binding
   namespace: default
 spec:
-  type: bindings.mqtt
+  type: bindings.mqtt3
   version: v1
   metadata:
   - name: consumerID
