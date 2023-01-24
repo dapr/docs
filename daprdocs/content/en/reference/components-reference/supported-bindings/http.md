@@ -306,7 +306,7 @@ curl -d '{ "operation": "get" }' \
 You can configure the HTTP binding to use mTLS or client TLS authentication along with HTTPS by providing the `MTLSRootCA`, `MTLSClientCert`, and `MTLSClientKey` metadata fields in the binding component.
 
 These fields can be passed as a file path or as a pem encoded string. 
-- If the file path is provided, the file will be read and the contents will be used. 
+- If the file path is provided, the file is read and the contents are used. 
 - If the pem encoded string is provided, the string will be used as is.
 When these fields are configured, the Dapr sidecar will use the provided certificate to authenticate itself with the server during the TLS handshake process.
 
