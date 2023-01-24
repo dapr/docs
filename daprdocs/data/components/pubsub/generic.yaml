@@ -48,3 +48,8 @@
   state: Alpha
   version: v1
   since: "1.8"
+- component: Solace-AMQP
+  link: setup-solace-amqp
+  state: Alpha
+  version: v1
+  since: "1.10"
