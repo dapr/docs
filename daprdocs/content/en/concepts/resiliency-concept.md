@@ -37,3 +37,8 @@ Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint](
 - Determined for readiness and liveness
 
 Read more on about how to apply [dapr health checks]({{< ref sidecar-health >}}) to your application.
+
+## Next steps
+
+- [Learn more about resiliency]({{< ref resiliency-overview.md >}})
+- [Try out one of the Resiliency quickstarts]({{< ref quickstarts/resiliency >}})

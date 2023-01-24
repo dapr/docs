@@ -6,10 +6,6 @@ weight: 120
 description: "Get started with Dapr's resiliency capabilities via the service invocation API"
 ---
 
-{{% alert title="Note" color="primary" %}}
- Resiliency is currently a preview feature.
-{{% /alert %}}
-
 Observe Dapr resiliency capabilities by simulating a system failure. In this Quickstart, you will:
 
 - Run two microservice applications: `checkout` and `order-processor`. `checkout` will continuously make Dapr service invocation requests to `order-processor`. 

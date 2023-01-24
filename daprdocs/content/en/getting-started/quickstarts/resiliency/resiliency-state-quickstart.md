@@ -6,10 +6,6 @@ weight: 110
 description: "Get started with Dapr's resiliency capabilities via the state management API"
 ---
 
-{{% alert title="Note" color="primary" %}}
- Resiliency is currently a preview feature.
-{{% /alert %}}
-
 Observe Dapr resiliency capabilities by simulating a system failure. In this Quickstart, you will:
 
 - Execute a microservice application with resiliency enabled that continuously persists and retrieves state via Dapr's state management API. 

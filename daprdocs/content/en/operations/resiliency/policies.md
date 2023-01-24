@@ -3,10 +3,10 @@ type: docs
 title: "Policies"
 linkTitle: "Policies"
 weight: 4500
-description: "Configure resiliency policies for timeouts, retries and circuit breakers"
+description: "Configure resiliency policies for timeouts, retries, and circuit breakers"
 ---
 
-You define timeouts, retries and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec. 
+Define timeouts, retries, and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec. 
 
 > Note: Dapr offers default retries for specific APIs. [See here]({{< ref "#override-default-retries" >}}) to learn how you can overwrite default retry logic with user defined retry policies.
 
@@ -286,3 +286,7 @@ The table below is a break down of which policies are applied when attempting to
 | actorstore         | fastRetries                                     |
 | EventActor         | retryForever                                    |
 | SummaryActor       | DefaultActorRetryPolicy                         |
+
+## Next steps
+
+- [Try out one of the Resiliency quickstarts]({{< ref resiliency >}})
