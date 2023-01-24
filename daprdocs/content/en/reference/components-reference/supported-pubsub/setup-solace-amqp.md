@@ -80,7 +80,7 @@ auth:
   secretStore: <SECRET_STORE_NAME>
 ```
 
-Note that while the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
+> While the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
 
 ### Publishing/subscribing to topics and queues
 
