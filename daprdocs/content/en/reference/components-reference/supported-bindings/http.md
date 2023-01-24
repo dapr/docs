@@ -307,7 +307,7 @@ You can configure the HTTP binding to use mTLS or client TLS authentication alon
 
 These fields can be passed as a file path or as a pem encoded string. 
 - If the file path is provided, the file is read and the contents are used. 
-- If the pem encoded string is provided, the string will be used as is.
+- If the pem encoded string is provided, the string is used as is.
 When these fields are configured, the Dapr sidecar will use the provided certificate to authenticate itself with the server during the TLS handshake process.
 
 ### When to use:
