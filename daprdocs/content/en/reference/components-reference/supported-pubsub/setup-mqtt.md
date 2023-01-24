@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Enabling message delivery retries
 
-The MQTT pub/sub component has no built-in support for retry strategies. This means that sidecar sends a message to the service only once. If the service marks the message as not processed, the message won't be acknowledged to the broker. Only if broker resends the message, it would be retried.
+The MQTT pub/sub component has no built-in support for retry strategies. This means that the sidecar sends a message to the service only once. If the service marks the message as not processed, the message won't be acknowledged back to the broker. Only if broker resends the message, would it would be retried.
 
 To make Dapr use more spohisticated retry policies, you can apply a [retry resiliency policy]({{< ref "policies.md#retries" >}}) to the MQTT pub/sub component.
 
@@ -58,7 +58,7 @@ There is a crucial difference between the two ways of retries:
 
 1. Re-delivery of unacknowledged messages is completely dependent on the broker. Dapr does not guarantee it. Some brokers like [emqx](https://www.emqx.io/), [vernemq](https://vernemq.com/) etc. support it but it not a part of [MQTT3 spec](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html#_Toc398718103).
 
-2. Using Resiliency makes the same Dapr sidecar retry redelivering the messages. So it will be the same Dapr sidecar and the same app receiving the same message.
+2. Using a [retry resiliency policy]({{< ref "policies.md#retries" >}}) makes the same Dapr sidecar retry redelivering the messages. So it is the same Dapr sidecar and the same app receiving the same message.
 
 ### Communication using TLS
 
