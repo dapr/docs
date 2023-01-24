@@ -110,4 +110,4 @@ You can also sign up for a free SaaS broker on [Solace Cloud](https://console.so
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-publish-subscribe.md#step-2-publish-a-topic" >}}) for instructions on configuring pub/sub components
-- [Pub/Sub building block]({{< ref pubsub >}})
+- [Pub/sub building block]({{< ref pubsub >}})
