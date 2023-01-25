@@ -133,7 +133,7 @@ kubectl apply -f azureblob.yaml
 
 ### Running locally
 
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
 
 This state store creates a blob file in the container and puts raw state inside it.
 

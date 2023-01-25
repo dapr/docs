@@ -55,7 +55,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
 ```
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
@@ -164,7 +164,7 @@ npm install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../components/ -- npm start
 ```
 
 #### Behind the scenes
@@ -278,7 +278,7 @@ dotnet build
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../components/ -- dotnet run
 ```
 
 #### Behind the scenes
@@ -389,7 +389,7 @@ mvn clean install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 #### Behind the scenes
@@ -494,7 +494,7 @@ go build .
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run .
+dapr run --app-id order-processor --resources-path ../../../components/ -- go run .
 ```
 
 #### Behind the scenes

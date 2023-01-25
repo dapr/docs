@@ -68,6 +68,10 @@ spec:
     value: explicit
   - name: deliverPolicy
     value: all
+  - name: domain
+    value: hub
+  - name: apiPrefix
+    value: PREFIX
 ```
 
 ## Spec metadata fields
@@ -97,6 +101,8 @@ spec:
 | hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
 | ackPolicy       |    N     | [Ack Policy]                               | `explicit`                       |
 | deliverPolicy   |    N     | One of: all, last, new, sequence, time     | `all`                            |
+| domain          |    N     | [JetStream Leafondes]                      | `HUB`                            |
+| apiPrefix       |    N     | [JetStream Leafnodes]                      | `PREFIX`                         |
 
 ## Create a NATS server
 
@@ -162,5 +168,6 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 [Rate Limit]: https://docs.nats.io/jetstream/concepts/consumers#ratelimit
 [Hearbeat]: https://docs.nats.io/jetstream/concepts/consumers#hearbeat
 [Ack Policy]: https://docs.nats.io/nats-concepts/jetstream/consumers#ackpolicy
+[JetStream Leafonodes]: https://docs.nats.io/running-a-nats-service/configuration/leafnodes/jetstream_leafnodes
 [Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt
 [NATS token based authentication]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/tokens
