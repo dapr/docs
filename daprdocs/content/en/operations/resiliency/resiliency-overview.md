@@ -171,4 +171,6 @@ Watch this video for how to use [resiliency](https://www.youtube.com/watch?t=184
 
 ## Next steps
 
-- [Try out one of the Resiliency quickstarts]({{< ref resiliency >}})
+Try out one of the Resiliency quickstarts:
+- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
+- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})

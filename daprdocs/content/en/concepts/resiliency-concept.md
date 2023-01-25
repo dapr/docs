@@ -41,4 +41,6 @@ Read more on about how to apply [dapr health checks]({{< ref sidecar-health >}})
 ## Next steps
 
 - [Learn more about resiliency]({{< ref resiliency-overview.md >}})
-- [Try out one of the Resiliency quickstarts]({{< ref "quickstarts/resiliency" >}})
+- Try out one of the Resiliency quickstarts:
+  - [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
+  - [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
