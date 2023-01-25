@@ -68,6 +68,10 @@ id = "G-60C6Q1ETC1"
     target = "content/developing-applications/sdks/dotnet"
     lang = "en"
   [[module.mounts]]
+    source = "../sdkdocs/pluggable-components/dotnet/daprdocs/content/en/dotnet-sdk-docs"
+    target = "content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-dotnet"
+    lang = "en"
+  [[module.mounts]]
     source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
     target = "content/contributing/sdk-contrib/"
     lang = "en"
