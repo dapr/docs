@@ -18,7 +18,7 @@ There are two scenarios for how tracing is used:
  1. Dapr generates the trace context and you propagate the trace context to another service.
  2. You generate the trace context and Dapr propagates the trace context to a service.
 
-### Propogating sequential service calls
+### Propagating sequential service calls
 
 Dapr takes care of creating the trace headers. However, when there are more than two services, you're responsible for propagating the trace headers between them. Let's go through the scenarios with examples:
 
@@ -45,7 +45,7 @@ There are no helper methods exposed in Dapr SDKs to propagate and retrieve trace
 4. Pub/sub messages
      Dapr generates the trace headers in the published message topic. These trace headers are propagated to any services listening on that topic.
 
-### Propogating multiple different service calls
+### Propagating multiple different service calls
 
 In the following scenarios, Dapr does some of the work for you and you need to either create or propagate trace headers.
 

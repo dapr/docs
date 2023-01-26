@@ -188,6 +188,7 @@ Available Commands:
   stop           Stop Dapr instances and their associated apps. . Supported platforms: Self-hosted
   uninstall      Uninstall Dapr runtime. Supported platforms: Kubernetes and self-hosted
   upgrade        Upgrades a Dapr control plane installation in a cluster. Supported platforms: Kubernetes
+  version        Print the Dapr runtime and CLI version
 
 Flags:
   -h, --help      help for dapr
