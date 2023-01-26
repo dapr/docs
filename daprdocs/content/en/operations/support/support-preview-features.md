@@ -20,3 +20,4 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | **App Middleware** | Allow middleware components to be executed when making service-to-service calls | N/A | [App Middleware]({{<ref "middleware.md#app-middleware" >}}) | v1.9 |
 | **App health checks** | Allows configuring app health checks | `AppHealthCheck` | [App health checks]({{<ref "app-health.md" >}}) | v1.9 |
 | **Pluggable components** | Allows creating self-hosted gRPC-based components written in any language that supports gRPC. The following component APIs are supported: State stores, Pub/sub, Bindings | N/A | [Pluggable components concept]({{<ref "components-concept#pluggable-components" >}})| v1.9  |
+| **Multi-app Run** | Configure multiple Dapr applications from a single configuration file and run from a single command | `dapr run -f` | [Multi-app Dapr Run]({{< ref multi-app-dapr-run.md >}}) | v1.10 |
