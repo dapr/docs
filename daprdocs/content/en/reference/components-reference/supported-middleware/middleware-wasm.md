@@ -14,10 +14,10 @@ extension.
 The Wasm [HTTP middleware]({{< ref middleware.md >}}) allows you to rewrite a
 request URI with custom logic compiled to a Wasm binary. In other words, you
 can extend Dapr using external files that are not pre-compiled into the `daprd`
-binary. Dapr embeds [wazero][https://wazero.io] to accomplish this without CGO.
+binary. Dapr embeds [wazero](https://wazero.io) to accomplish this without CGO.
 
 Wasm modules are loaded from a filesystem path. On Kubernetes, see [mounting
-volumes to the Dapr sidecar]({{> kubernetes-volume-mounts.md >}}) to configure
+volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}}) to configure
 a filesystem mount that can contain Wasm modules.
 
 ## Component format
