@@ -103,10 +103,10 @@ Lock components are used as a distributed lock to provide mutually exclusive acc
 
 ### Workflows
 
-A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines business process or data flow in a reliable way across mulitple microservices. The workflow API is exposed by a [lightweight, embedded workflow engine]({{< ref "operations/components/workflow-engine/workflow-engine.md" >}}) in the Dapr sidecar, allowing you to easily integrate with existing Dapr building blocks. 
-
+Dapr Workflows are custom pieces of application logic that define business processes or data flows in a reliable way across mulitple microservices. Workflows can be authored with the [Workflow Authoring API]({{< ref "developing-applications/develop-components/develop-workflows.md" >}}) and managed with the [Workflow Management API]({{< ref "daprdocs/content/en/developing-applications/building-blocks/workflow/workflow-overview.md" >}})
 - [List of supported workflow components]({{< ref supported-workflows >}})
-- Workflow implementations
+
+
 
 ### Middleware
 
