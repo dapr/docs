@@ -54,8 +54,8 @@
   features:
     input: false
     output: true
-- component: MQTT
-  link: mqtt
+- component: MQTT3
+  link: mqtt3
   state: Beta
   version: v1
   since: "1.7"
