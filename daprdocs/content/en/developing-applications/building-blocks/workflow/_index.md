@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Workflows"
-linkTitle: "Workflows"
+title: "Workflow management"
+linkTitle: "Workflow management"
 weight: 100
-description: Create and run workflows for custom application logic or data flows across microservices. 
+description: "Managage your dapr workflows" 
 ---
