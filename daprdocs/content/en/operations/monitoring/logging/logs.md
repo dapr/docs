@@ -58,7 +58,7 @@ When using the Dapr CLI to run an application, pass the `--log-as-json` option t
 ```sh
 dapr run \
   --app-id orderprocessing \
-  --components-path ./components/ \
+  --resources-path ./components/ \
   --log-as-json \
     -- python3 OrderProcessingService.py
 ```
@@ -109,7 +109,9 @@ spec:
 
 ## API Logging
 
-API logging enables you to see the API calls your application makes to the Dapr sidecar, to debug issues or monitor the behavior of your application. You can combine both Dapr API logging with Dapr log events. See [configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}}) and [configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}}) for more information.
+API logging enables you to see the API calls your application makes to the Dapr sidecar, to debug issues or monitor the behavior of your application. You can combine both Dapr API logging with Dapr log events.
+
+See [configure and view Dapr Logs]({{< ref "logs-troubleshooting.md" >}}) and [configure and view Dapr API Logs]({{< ref "api-logs-troubleshooting.md" >}}) for more information.
 
 ## Log collectors
 

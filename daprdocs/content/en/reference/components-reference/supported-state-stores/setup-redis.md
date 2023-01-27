@@ -360,7 +360,7 @@ Memory Store does not support modules and cannot be used with query.
 
 Next is to start a Dapr application. Refer to this [component configuration file](../../../../developing-applications/building-blocks/state-management/query-api-examples/components/redis/redis.yml), which contains query indexing schemas. Make sure to modify the `redisHost` to reflect the local forwarding port which `redislabs/rejson` uses.
 ```bash
-dapr run --app-id demo --dapr-http-port 3500 --components-path query-api-examples/components/redis
+dapr run --app-id demo --dapr-http-port 3500 --resources-path query-api-examples/components/redis
 ```
 
 Now populate the state store with the employee dataset, so you can then query it later.
