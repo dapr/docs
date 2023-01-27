@@ -1,7 +1,7 @@
 ---
 type: docs
 title: Run multiple applications with one command
-linkTitle: Multi-app Dapr Run
+linkTitle: Multi-app Run
 weight: 1000
 description: Learn the scenarios around running multiple applications with one Dapr command
 ---
@@ -20,7 +20,7 @@ Instead, you simply want to run them as local executables in self-hosted mode.  
 
 With Multi-app Run, you can easily start multiple applications in self-hosted mode using a single `dapr run -f` command.
 
-## Multi-app template file
+## Multi-app Run template file
 
 When you execute `dapr run -f`, Dapr parses the multi-app template file initialized with `dapr init`. By default, this template file is called `dapr.yaml`. 
 
@@ -44,20 +44,45 @@ apps:
 ```
 
 
-## How does it work?
+## Multi-app Run defaults
 
-When running [`dapr init`]({{< ref install-dapr-selfhost.md >}}), this initializes a directory where the default configurations and resources are stored.
 
-For running multiple applications, `dapr init` will initialize the following `~/.dapr/` directory structure:
+
+
+This is the directory structure that you can use, where these are optional
 
 <img src="/images/multi-run-structure.png" width=800 style="padding-bottom:15px;">
 
 When developing multiple applications, each **app directory** can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. If the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
 
+1 Go to root .dapr/resources and throw eerything in there and assume all apps will use that directory - all using the same resources path
+- point to one place with convention
+2 each application can have a different default resources path that you put in application directory
+- point to separate places (per app) with convention
+3 if you want to call it something other than .dapr, and be explicit about it, you can
+- point to different places with whatever names you choose
+
 > This change does not impact the `bin` folder, where the Dapr CLI looks for the `daprd` and `dashboard` binaries. That remains at `~/.dapr/bin/`.
 
+Under .dapr/log folder locally:
+app.log - application logs
+daprd.log
+
+Even if you've decided to have a different resources folder, it will still have the logs there
 
 ### Precedence rules
 
+
+## Try it out
+
+
+## Watch the demo
+
+Watch [this video for an overview on pub/sub multi-tenancy](https://youtu.be/eK463jugo0c?t=1188):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/eK463jugo0c?start=1188" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Next steps

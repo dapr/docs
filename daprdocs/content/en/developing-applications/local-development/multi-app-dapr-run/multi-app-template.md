@@ -33,7 +33,7 @@ common: # optional section for variables shared across apps
 apps:
   - appID: webapp # required
     appDirPath: ./webapp/ # required
-    resourcesPath: ./webapp/components # (optional) can be default by convention
+    resourcesPath: ./webapp/resources # (optional) can be default by convention
     configFilePath: ./webapp/config.yaml # (optional) can be default by convention too, ignore if file is not found.
     appProtocol: HTTP
     appPort: 8080
