@@ -25,23 +25,6 @@ The workflow feature is comprised of the Workflow API and the workflow component
 
 *To Do*
 
-## Try out the workflow API
-
-<!-- 
-If applicable, include a section with links to the related quickstart, how-to guides, or tutorials. --> 
-
-### Quickstarts and tutorials
-
-Want to put the Dapr Workflow API to the test? Walk through the following quickstart and tutorials to see <topic> in action:
-
-| Quickstart/tutorial | Description |
-| ------------------- | ----------- |
-| [Workflow quickstart](link) | Description of the quickstart. |
-| [Workflow tutorial](link) | Description of the tutorial. |
-
-### Start using workflows directly in your app
-
-Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed](link), you can begin using the workflow API, starting with [the workflow how-to guide](link).
 
 ## Next steps
 

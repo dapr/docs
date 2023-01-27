@@ -44,6 +44,8 @@ Each of these building block APIs is independent, meaning that you can use one, 
 | [**Secrets**]({{<ref "secrets-overview.md">}}) | The secrets management API integrates with public cloud and local secret stores to retrieve the secrets for use in application code.
 | [**Configuration**]({{<ref "configuration-api-overview.md">}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
 | [**Distributed lock**]({{<ref "distributed-lock-api-overview.md">}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
+| [**Workflows**]({{< ref "workflow-overview.md" >}}) | `/v1.0-alpha1/workflow` | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
+
 
 ## Sidecar architecture
 
