@@ -62,7 +62,7 @@ spec:
     value: false
   - name: rateLimit
     value: 1024
-  - name: hearbeat
+  - name: heartbeat
     value: 15s
   - name: ackPolicy
     value: explicit
@@ -98,7 +98,7 @@ spec:
 | replicas        |    N     | [Replicas]                                 | `3`                              |
 | memoryStorage   |    N     | [Memory Storage]                           | `false`                          |
 | rateLimit       |    N     | [Rate Limit]                               | `1024`                           |
-| hearbeat        |    N     | [Hearbeat]                                 | `10s`                            |
+| heartbeat        |    N     | [Heartbeat]                                 | `10s`                            |
 | ackPolicy       |    N     | [Ack Policy]                               | `explicit`                       |
 | deliverPolicy   |    N     | One of: all, last, new, sequence, time     | `all`                            |
 | domain          |    N     | [JetStream Leafondes]                      | `HUB`                            |
@@ -166,7 +166,7 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 [Replicas]: https://docs.nats.io/jetstream/concepts/consumers#replicas
 [Memory Storage]: https://docs.nats.io/jetstream/concepts/consumers#memorystorage
 [Rate Limit]: https://docs.nats.io/jetstream/concepts/consumers#ratelimit
-[Hearbeat]: https://docs.nats.io/jetstream/concepts/consumers#hearbeat
+[Heartbeat]: https://docs.nats.io/jetstream/concepts/consumers#heartbeat
 [Ack Policy]: https://docs.nats.io/nats-concepts/jetstream/consumers#ackpolicy
 [JetStream Leafonodes]: https://docs.nats.io/running-a-nats-service/configuration/leafnodes/jetstream_leafnodes
 [Decentralized JWT Authentication/Authorization]: https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt
