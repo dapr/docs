@@ -1,7 +1,7 @@
 ---
 type: docs
 title: Run multiple applications with one command
-linkTitle: Multi-app Run
+linkTitle: Multi-app Run overview
 weight: 1000
 description: Learn the scenarios around running multiple applications with one Dapr command
 ---
@@ -20,7 +20,7 @@ Instead, you simply want to run them as local executables in self-hosted mode.  
 
 With Multi-app Run, you can easily start multiple applications in self-hosted mode using a single `dapr run -f` command.
 
-## Multi-app run template file
+## Multi-app Run template file
 
 When you execute `dapr run -f`, Dapr parses the multi-app template file initialized with `dapr init`. By default, this template file is called `dapr.yaml`. 
 
@@ -43,9 +43,9 @@ apps:
     command: ["go","run", "app.go"]
 ```
 
-## Approaches for using multi-app run
+## Approaches for using Multi-app Run
 
-You have several options when using multi-app run. 
+You have several options when using Multi-app Run. 
 
 ### Point to one location (with convention)
 
@@ -78,7 +78,7 @@ Even if you've decided to rename your resources folder to something other than `
 
 ## Watch the demo
 
-Watch [this video for an overview on multi-app run](https://youtu.be/s1p9MNl4VGo?t=2456):
+Watch [this video for an overview on Multi-app Run](https://youtu.be/s1p9MNl4VGo?t=2456):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
