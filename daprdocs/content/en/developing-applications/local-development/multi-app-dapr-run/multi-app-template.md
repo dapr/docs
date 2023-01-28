@@ -1,7 +1,7 @@
 ---
 type: docs
 title: Multi-app template file
-linkTitle: Multi-app template
+linkTitle: Multi-app Run template
 weight: 2000
 description: Unpack the multi-app template file and its variables
 ---
