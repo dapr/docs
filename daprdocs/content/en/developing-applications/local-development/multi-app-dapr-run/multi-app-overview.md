@@ -20,7 +20,7 @@ Instead, you simply want to run them as local executables in self-hosted mode.  
 
 With Multi-app Run, you can easily start multiple applications in self-hosted mode using a single `dapr run -f` command.
 
-## Multi-app Run template file
+## Multi-app run template file
 
 When you execute `dapr run -f`, Dapr parses the multi-app template file initialized with `dapr init`. By default, this template file is called `dapr.yaml`. 
 
@@ -43,32 +43,32 @@ apps:
     command: ["go","run", "app.go"]
 ```
 
+## Approaches for using multi-app run
 
-## Multi-app Run defaults
+You have several options when using multi-app run. 
 
+### Point to one location (with convention)
 
+When developing multiple applications, each app directory can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. Otherwise, if the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
 
+You can set all of your applications and resources at the `~/.dapr` root. This is helpful when all applications share the same resources path. 
 
-This is the directory structure that you can use, where these are optional
+### Point to separate locations (with convention)
 
-<img src="/images/multi-run-structure.png" width=800 style="padding-bottom:15px;">
+If you decide to add a `.dapr` directory in each app directory, with a `/resources` directory and `config.yaml` file, you can specify different resources paths for each application. This approach remains within convention by using the default `.dapr`
 
-When developing multiple applications, each **app directory** can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. If the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
+### Point to separate locations (custom)
 
-1 Go to root .dapr/resources and throw eerything in there and assume all apps will use that directory - all using the same resources path
-- point to one place with convention
-2 each application can have a different default resources path that you put in application directory
-- point to separate places (per app) with convention
-3 if you want to call it something other than .dapr, and be explicit about it, you can
-- point to different places with whatever names you choose
+You can also name each app directory's `.dapr` directory something other than `.dapr`, like `mymagicapp`, `webapp`, or `backend`. This helps if you'd like to be explicit about resource or application directory paths.
 
-> This change does not impact the `bin` folder, where the Dapr CLI looks for the `daprd` and `dashboard` binaries. That remains at `~/.dapr/bin/`.
+## Logs
 
-Under .dapr/log folder locally:
-app.log - application logs
-daprd.log
+Logs are included by default within each app directory and are tracked in the following locations under `.dapr/logs`:
 
-Even if you've decided to have a different resources folder, it will still have the logs there
+- `app.log`
+- `daprd.log`
+
+Even if you've decided to rename your resources folder to something other than `.dapr`, the logs will remain there.
 
 ### Precedence rules
 
@@ -78,10 +78,7 @@ Even if you've decided to have a different resources folder, it will still have 
 
 ## Watch the demo
 
-Watch [this video for an overview on pub/sub multi-tenancy](https://youtu.be/eK463jugo0c?t=1188):
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/eK463jugo0c?start=1188" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+Watch [this video for an overview on multi-app run](https://youtu.be/s1p9MNl4VGo?t=2456):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

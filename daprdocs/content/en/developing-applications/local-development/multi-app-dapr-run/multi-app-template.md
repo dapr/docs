@@ -32,15 +32,15 @@ common: # optional section for variables shared across apps
     - DEBUG: true
 apps:
   - appID: webapp # required
-    appDirPath: ./webapp/ # required
-    resourcesPath: ./webapp/resources # (optional) can be default by convention
-    configFilePath: ./webapp/config.yaml # (optional) can be default by convention too, ignore if file is not found.
+    appDirPath: .dapr/webapp/ # required
+    resourcesPath: .dapr/resources # (optional) can be default by convention
+    configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
     appProtocol: HTTP
     appPort: 8080
     appHealthCheckPath: "/healthz" # All _ converted to - for all properties defined under daprd section
     command: ["python3" "app.py"]
   - appID: backend
-    appDirPath: ./backend/
+    appDirPath: .dapr/backend/
     appProtocol: GRPC
     appPort: 3000
     unixDomainSocket: "/tmp/test-socket"
