@@ -68,6 +68,27 @@ You must follow the following rules to ensure that your workflow code is determi
 
 While it's critically important to follow these determinism code constraints, you'll quickly become familiar with them and learn how to work with them effectively when writing workflow code.
 
+#### Infinite loops and eternal workflows
+
+As discussed in the [workflow replay]({{<ref "#workflow-replay">}}) section, workflows maintain a write-only event-sourced history log of all its operations. To avoid runaway resource usage, workflows should limit the number of operations they schedule. For example, a workflow should never use infinite loops in its implementation, nor should it schedule millions of tasks.
+
+There are two techniques that can be used to write workflows that need to potentially schedule extreme numbers of tasks:
+
+1. **Use the _continue-as-new_ API**: Each workflow authoring SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows" or workflows that have no logical end state, like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+
+1. **Use child workflows**: Each workflow authoring SDK also exposes an API for creating child workflows. A child workflow is just like any other workflow except that it's scheduled by a parent workflow. Child workflows have their own history and also have the benefit of allowing you to distribute workflow function execution across multiple machines. If a workflow needs to schedule thousands of tasks or more, it's recommended that those tasks be distributed across child workflows so that no single workflow's history size grows too large.
+
+#### Updating workflow code
+
+Because workflows are long-running and durable, updating workflow code must be done with extreme care. As discussed in the [Workflow determinism]({{<ref "#workflow-determinism-and-code-constraints">}}) section, workflow code must be deterministic so that the workflow engine can rebuild its state to exactly match its previous checkpoint. Updates to workflow code must preserve this determinism if there are any non-completed workflow instances in the system. Otherwise, updates to workflow code can result in runtime failures the next time those workflows execute.
+
+We'll mention a couple examples of code updates that can break workflow determinism:
+
+* **Changing workflow function signatures**: Changing the name, input, or output of a workflow or activity function is considered a breaking change and must be avoided.
+* **Changing the number or order of workflow tasks**: Changing the number or order of workflow tasks will cause a workflow instance's history to no longer match the code and may result in runtime errors or other unexpected behavior.
+
+To work around these constraints, instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates. Upstream code that creates workflows should also be updated to only create instances of the new workflows. Leaving the old code around ensures that existing workflow instances can continue to run without interruption. If and when it's known that all instances of the old workflow logic have completed, then the old workflow code can be safely deleted.
+
 ### Combine Dapr APIs
 
 With Dapr workflows, you can combine Dapr APIs in scheduled tasks. Workflows are compatible with pub/sub, state store, and bindings APIs and can send and respond to external signals, including pub/sub events and input/output bindings. 
