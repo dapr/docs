@@ -8,9 +8,32 @@ description: "Learn how to develop and author workflows"
 
 This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine. In particular, this article lists the SDKs available, supported authoring patterns, and introduces the various concepts you'll need to understand when building Dapr workflows.
 
+## Author workflows as code
+
+Dapr workflow logic is implemented using general purpose programming languages, allowing you to:
+
+- Use your preferred programming language (no need to learn a new DSL or YAML schema)
+- Have access to the language’s standard libraries
+- Build your own libraries and abstractions
+- Use debuggers and examine local variables
+- Write unit tests for your workflows, just like any other part of your application logic
+
+The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
+
+## Declarative workflows support
+
+Dapr workflow doesn't currently provides any experience for declarative workflows. However, you can use the Dapr SDKs to build a new, portable workflow runtime that leverages the Dapr sidecar to load and execute declarative workflows as a layer on top of the "workflow-as-code" foundation. Such an approach could be used to support a variety of declarative workflows, including:
+
+- The [AWS Step Functions workflow syntax](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)
+- The [Azure Logic Apps workflow syntax](https://learn.microsoft.com/azure/logic-apps/logic-apps-workflow-definition-language)
+- The [Google Cloud Workflows syntax](https://cloud.google.com/workflows/docs/reference/syntax)
+- The [Serverless workflow specification](https://serverlessworkflow.io/) (a CNCF sandbox project)
+
+This topic is currently outside the scope of this article. However, it may be explored more in future iterations of Dapr Workflow.
+
 ## What is the authoring SDK?
 
-The Dapr Workflow _authoring SDK_ is a language-specific SDK that you use to implement workflow logic using general purpose programming languages. The workflow logic lives in your application and is orchestrated by the Dapr workflow engine running in the Dapr sidecar via a gRPC stream.
+The Dapr Workflow _authoring SDK_ is a language-specific SDK that you use to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr workflow engine running in the Dapr sidecar via a gRPC stream.
 
 TODO: Diagram
 
@@ -186,42 +209,6 @@ The ability to raise external events to workflows is not included in the alpha v
 {{% /alert %}}
 
 Workflows can also wait for multiple external event signals of the same name, in which case they are dispatched to the corresponding workflow tasks in a first-in, first-out (FIFO) manner. If a workflow receives an external event signal but has not yet created a "wait for external event" task, the event will be saved into the workflow's history and consumed immediately after the workflow requests the event.
-
-### Scheduled delays and restarts
-
-Dapr workflows allow you to schedule reminder-like durable delays for any time range, including minutes, days, or even years. You can also restart workflows by truncating their history logs and potentially resetting the input, which can be used to create eternal workflows that never end.
-
-### Author workflows as code
-
-Dapr workflow logic is implemented using general purpose programming languages, allowing you to:
-
-- Use your preferred programming language (no need to learn a new DSL or YAML schema)
-- Have access to the language’s standard libraries
-- Build your own libraries and abstractions
-- Use debuggers and examine local variables
-- Write unit tests for your workflows, just like any other part of your application logic
-
-### Declarative workflows support
-
-Dapr provides an experience for declarative workflows as a layer on top of the "workflow-as-code" foundation, supporting a variety of declarative workflows, including:
-
-- The AWS Step Functions workflow syntax
-- The Azure Logic Apps workflow syntax
-- The Google Cloud workflow syntax
-- The CNCF Serverless workflow specification
-
-#### Hosting serverless workflows
-
-You can use the Dapr SDKs to build a new, portable serverless workflow runtime that leverages the Dapr sidecar. Usually, you can implement the runtime as a reusable container image that supports loading workflow definition files from Dapr state stores. 
-
-The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
-
-
-*NEED MORE CLARIFICATION ON THESE FEATURES*
-- Saving custom state values to Dapr state stores
-- “Activity” callbacks that execute non-orchestration logic locally inside the workflow pod.
-
-
 
 ## Next steps
 
