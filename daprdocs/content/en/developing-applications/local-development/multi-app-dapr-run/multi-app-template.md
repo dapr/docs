@@ -66,7 +66,7 @@ The properties for the MapR template align with the `dapr run` CLI flags, [liste
 | `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
 | `daprHTTPPort`           | N        | Dapr HTTP port |  |
 | `daprGRPCPort`           | N        | Dapr GRPC port |  |
-| `daprInternalGRPCPort`   | N        |  |  |
+| `daprInternalGRPCPort`   | N        | gRPC port for the Dapr Internal API to listen on; used when parsing the value from a local DNS component |  |
 | `metricsPort`            | N        | The port that Dapr sends its metrics information to |  |
 | `unixDomainSocket`       | N        | Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. | `/tmp/test-socket` |
 | `profilePort`            | N        | The port for the profile server to listen on |  |
