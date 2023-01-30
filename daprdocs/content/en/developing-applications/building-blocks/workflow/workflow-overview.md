@@ -6,13 +6,15 @@ weight: 1000
 description: "Overview of the workflow building block"
 ---
 
-With Dapr workflows, you can automate and orchestrate tasks within your application. The workflow feature provides a developer-friendly programming model for authoring workflows as code in a way that abstracts away the complexities of messaging, state management, and failure handling.
+With workflows, you can orchestrate tasks or business logic within your application, making them reliable and restartable. Workflows provide a programming model for authoring code that abstracts away the complexities of messaging, state management, and failure handling.
 
-The workflow feature is comprised of the Workflow API and the workflow components that allow for authoring workflows naitively in Dapr or through external 3rd party workflow applications.
+## Workflow building block
 
-<img src="/images/concepts-building-blocks.png" width=250>
+The workflow building block:
 
-## Workflow API
+- Provides a workflow API for running workflows
+- An built-in workflow runtime to write Dapr workflows (of type workflow.dapr)
+- Integrates with various workflow runtimes as components, for example Temporal workflows.
 
 *To Do:*
 - *Add diagram of how workflow API works?*
@@ -23,7 +25,7 @@ The workflow feature is comprised of the Workflow API and the workflow component
 
 ## Features
 
-*To Do*
+Start, Terminate and X any workflow
 
 
 ## Next steps
