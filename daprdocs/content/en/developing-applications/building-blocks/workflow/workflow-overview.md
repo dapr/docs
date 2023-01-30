@@ -50,7 +50,7 @@ You can also get information on the workflow (even if it has been terminated or 
 - The current running status, whether that be “Running”, “Terminated”, or “Completed”
 
 ## Runing a workflow
-When you run dapr init, Dapr creates a default workflow runtime. This component is written in Go and implements workflow instances as actors to promote placement and scalability.
+When you run `dapr init`, Dapr creates a default workflow runtime. This component is written in Go and implements workflow instances as actors to promote placement and scalability.
 
 ### Start
 
