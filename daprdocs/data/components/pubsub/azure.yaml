@@ -3,8 +3,13 @@
   state: Stable
   version: v1
   since: "1.8"
-- component: Azure Service Bus
-  link: setup-azure-servicebus
+- component: Azure Service Bus Topics
+  link: setup-azure-servicebus-topics
   state: Stable
   version: v1
   since: "1.0"
+- component: Azure Service Bus Queues
+  link: setup-azure-servicebus-queues
+  state: Beta
+  version: v1
+  since: "1.10"
