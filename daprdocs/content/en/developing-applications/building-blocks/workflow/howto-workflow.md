@@ -11,9 +11,7 @@ Now that you've read about [the workflow building block]({{< ref workflow-overvi
 - Use the a worfklow component
 - Configure or register a workflow component.
 
-## Built-in workflow vs external workflows
-
-When you run `dapr init`, Dapr creates a default built-in workflow component. This component is written in Go and implements workflow instances as actors to promote placement and scalability. 
+When you run `dapr init`, Dapr creates a default workflow runtime. This component is written in Go and implements workflow instances as actors to promote placement and scalability. 
 
 [Insert HL diagram]
 
