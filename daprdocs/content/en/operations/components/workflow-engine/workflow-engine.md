@@ -22,7 +22,7 @@ TODO: Describe the gRPC protocol used in the SDK/sidecar interactions. Make sure
 
 When a workflow application starts up, it uses a workflow authoring SDK to send a gRPC request to the Dapr sidecar and get back a stream of workflow work-items, following the [Server streaming RPC pattern](https://grpc.io/docs/what-is-grpc/core-concepts/#server-streaming-rpc). These work-items can be anything from "start a new X workflow" (where X is the type of a workflow) to "schedule activity Y with input Z to run on behalf of workflow X". The workflow app executes the appropriate workflow code and then sends a gRPC request back to the sidecar with the execution results.
 
-<img src="/images/workflow-overview/workflow-engine-protocol.png" alt="Dapr Workflow Engine Protocol" width=400/>
+<img src="/images/workflow-overview/workflow-engine-protocol.png" alt="Dapr Workflow Engine Protocol" />
 
 All of these interactions happen over a single gRPC channel. All interactions are initiated by the application, which means the application doesn't need to open any inbound ports. The details of these interactions are internally handled by the language-specific Dapr Workflow authoring SDK.
 
@@ -68,7 +68,7 @@ In the alpha release of the Dapr workflow engine, workflow actor state will rema
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
 
-<img src="/images/workflow-overview/workflow-actor-flowchart.png" alt="Dapr Workflow Actor Flowchart" width=400/>
+<img src="/images/workflow-overview/workflow-actor-flowchart.png" alt="Dapr Workflow Actor Flowchart"/>
 
 To summarize, a workflow actor is activated when it receives a new message. New messages will then trigger the associated workflow code (in your application) to run and return an execution result back to the workflow actor. Once the result is received, the actor will schedule any tasks as necessary, update its state in the state store, and then go idle until it receives another message. During this idle time, the sidecar may decide to unload the workflow actor from memory.
 
@@ -86,7 +86,7 @@ In the alpha release of the Dapr workflow engine, activity actor state will rema
 
 Activity actors are short-lived. They are activated when a workflow actor schedules an activity task and will immediately call into the workflow application to invoke the associated activity code. One the activity code has finished running and has returned its result, the activity actor will send a message to the parent workflow actor with the execution results, triggering the workflow to move forward to its next step.
 
-<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" alt="Workflow Activity Actor Flowchart" width=400/>
+<img src="/images/workflow-overview/workflow-activity-actor-flowchart.png" alt="Workflow Activity Actor Flowchart"/>
 
 ### Reminder usage and execution guarantees
 
