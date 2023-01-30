@@ -3,11 +3,17 @@
   state: Beta
   version: v1
   since: "1.7"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: In Memory
   link: setup-inmemory
   state: Beta
   version: v1
   since: "1.7"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: Apache Kafka
   link: setup-apache-kafka
   state: Stable
@@ -21,28 +27,46 @@
   state: Stable
   version: v1
   since: "1.0"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: JetStream
   link: setup-jetstream
   state: Alpha
   version: v1
   since: "1.4"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: Pulsar
   link: setup-pulsar
   state: Beta
   version: v1
   since: "1.7"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: MQTT
   link: setup-mqtt
   state: Stable
   version: v1
   since: "1.7"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: NATS Streaming
   link: setup-nats-streaming
   state: Beta
   version: v1
   since: "1.0"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
 - component: RabbitMQ
   link: setup-rabbitmq
   state: Stable
   version: v1
   since: "1.7"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false

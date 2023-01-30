@@ -3,3 +3,6 @@
   state: Beta
   version: v1
   since: "1.6"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
