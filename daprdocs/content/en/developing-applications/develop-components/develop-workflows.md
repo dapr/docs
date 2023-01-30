@@ -10,7 +10,7 @@ This article provides a high-level overview of how to author workflows that are 
 
 ## What is the authoring SDK?
 
-The Dapr Workflow _authoring SDK_ is a language-specific SDK that you use to implement workflow logic using procedural code. The workflow logic lives in your application and is orchestrated by the Dapr workflow engine running in the Dapr sidecar via a gRPC stream.
+The Dapr Workflow _authoring SDK_ is a language-specific SDK that you use to implement workflow logic using general purpose programming languages. The workflow logic lives in your application and is orchestrated by the Dapr workflow engine running in the Dapr sidecar via a gRPC stream.
 
 TODO: Diagram
 
@@ -25,6 +25,60 @@ Currently, you can use the following SDK languages to author a workflow.
 | Language stack | Package |
 | - | - |
 | .NET | [Dapr.Workflow](https://www.nuget.org/packages/Dapr.Workflow) |
+
+## Workflow patterns
+
+Dapr workflows simplify complex, stateful coordination requirements in event-driven applications. The following sections describe several application patterns that can benefit from Dapr workflows:
+
+### Function chaining
+
+In the function chaining pattern, multiple functions are called in succession on a single input, and the output of one function is passed as the input to the next function. With this pattern, you can create a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing.
+
+TODO: DIAGRAM?
+
+You can use Dapr workflows to implement the function chaining pattern concisely as shown in the following example.
+
+TODO: CODE EXAMPLE
+
+### Fan out/fan in
+
+In the fan out/fan in design pattern, you execute multiple tasks simultaneously across mulitple workers and wait for them to recombine.
+
+The fan out part of the pattern involves distributing the input data to multiple workers, each of which processes a portion of the data in parallel. 
+
+The fan in part of the pattern involves recombining the results from the workers into a single output. 
+
+TODO: DIAGRAM?
+
+This pattern can be implemented in a variety of ways, such as using message queues, channels, or async/await. The Dapr workflows extension handles this pattern with relatively simple code:
+
+TODO: CODE EXAMPLE
+
+### Async HTTP APIs
+
+In an asynchronous HTTP API pattern, you coordinate non-blocking requests and responses with external clients. This increases performance and scalability. One way to implement an asynchronous API is to use an event-driven architecture, where the server listens for incoming requests and triggers an event to handle each request as it comes in. Another way is to use asynchronous programming libraries or frameworks, which allow you to write non-blocking code using callbacks, promises, or async/await.
+
+TODO: DIAGRAM?
+
+Dapr workflows simplifies or even removing the code you need to write to interact with long-running function executions. 
+
+TODO: CODE EXAMPLE
+
+### Monitor
+
+The monitor pattern is a flexible, recurring process in a workflow that coordinates the actions of multiple threads by controlling access to shared resources. Typically:
+
+1. The thread must first acquire the monitor. 
+1. Once the thread has acquired the monitor, it can access the shared resource.
+1. The thread then releases the monitor. 
+
+This ensures that only one thread can access the shared resource at a time, preventing synchronization issues.
+
+TODO: DIAGRAM?
+
+In a few lines of code, you can create multiple monitors that observe arbitrary endpoints. The following code implements a basic monitor:
+
+TODO: CODE EXAMPLE
 
 ## Features and concepts
 
@@ -89,18 +143,53 @@ We'll mention a couple examples of code updates that can break workflow determin
 
 To work around these constraints, instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates. Upstream code that creates workflows should also be updated to only create instances of the new workflows. Leaving the old code around ensures that existing workflow instances can continue to run without interruption. If and when it's known that all instances of the old workflow logic have completed, then the old workflow code can be safely deleted.
 
-### Combine Dapr APIs
+### Workflow activities
 
-With Dapr workflows, you can combine Dapr APIs in scheduled tasks. Workflows are compatible with pub/sub, state store, and bindings APIs and can send and respond to external signals, including pub/sub events and input/output bindings. 
+Workflow activities are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process. For example, you might create a workflow to process an order. The tasks may involve checking the inventory, charging the customer, and creating a shipment. Each task would be a separate activity. These activities may be executed serially, in parallel, or some combination of both.
+
+Unlike workflows, activities aren't restricted in the type of work you can do in them. Activities are frequently used to make network calls or run CPU intensive operations. An activity can also return data back to the workflow.
+
+The Dapr workflow engine guarantees that each called activity will be executed **at least once** as part of a workflow's execution. Because activities only guarantee at-least-once execution, it's recommended that activity logic be implemented as idempotent whenever possible.
+
+### Child workflows
+
+In addition to activities, workflows can schedule other workflows as _child workflows_. A child workflow has its own instance ID, history, and status that is independent of the parent workflow that started it.
+
+Child workflows have many benefits:
+
+* You can split large workflows into a series of smaller child workflows, making your code more maintainable.
+* You can distribute workflow logic across multiple compute nodes concurrently, which is useful if your workflow logic otherwise needs to coordinate a lot of tasks.
+* You can reduce memory usage and CPU overhead by keeping the history of parent workflow smaller.
+
+The return value of a child workflow is its output. If a child workflow fails with an exception, then that exception will be surfaced to the parent workflow, just like it is when an activity task fails with an exception. Child workflows also support automatic retry policies.
+
+{{% alert title="Note" color="primary" %}}
+Because child workflows are independent of their parents, terminating a parent workflow does not affect any child workflows. You must terminate each child workflow independently using its instance ID.
+{{% /alert %}}
+
+### Durable timers
+
+Dapr workflows allow you to schedule reminder-like durable delays for any time range, including minutes, days, or even years. These _durable timers_ can be scheduled by workflows to implement simple delays or to set up ad-hoc timeouts on other async tasks. More specifically, a durable timer can be set to trigger on a particular date or after a specified duration. There are no limits to the maximum duration of durable timers, which are internally backed by internal actor reminders. For example, a workflow that tracks a 30-day free subscription to a service could be implemented using a durable timer that fires 30-days after the workflow is created. Workflows can be safely unloaded from memory while waiting for a durable timer to fire.
+
+{{% alert title="Note" color="primary" %}}
+Some APIs in the workflow authoring SDK may internally schedule durable timers to implement internal timeout behavior.
+{{% /alert %}}
+
+### External events
+
+Sometimes workflows will need to wait for events that are raised by external systems. For example, an approval workflow may require a human to explicitly approve an order request within an order processing workflow if the total cost exceeds some threshold. Another example is a trivia game orchestration workflow that pauses while waiting for all participants to submit their answers to trivia questions. These mid-execution inputs are referred to as _external events_.
+
+External events have a _name_ and a _payload_ and are delivered to a single workflow instance. Workflows can create "_wait for external event_" tasks that subscribe to external events and _await_ those tasks to block execution until the event is received. The workflow can then read the payload of these events and make decisions about which next steps to take. External events can be processed serially or in parallel. External events can be raised by other workflows or by workflow management code.
+
+{{% alert title="Note" color="primary" %}}
+The ability to raise external events to workflows is not included in the alpha version of Dapr's workflow management API.
+{{% /alert %}}
+
+Workflows can also wait for multiple external event signals of the same name, in which case they are dispatched to the corresponding workflow tasks in a first-in, first-out (FIFO) manner. If a workflow receives an external event signal but has not yet created a "wait for external event" task, the event will be saved into the workflow's history and consumed immediately after the workflow requests the event.
 
 ### Scheduled delays and restarts
 
 Dapr workflows allow you to schedule reminder-like durable delays for any time range, including minutes, days, or even years. You can also restart workflows by truncating their history logs and potentially resetting the input, which can be used to create eternal workflows that never end.
-
-### Sub-workflows 
-
-- Define subworkflow
-- Executing multiple sub workflows in sequence or in parallel.
 
 ### Author workflows as code
 
@@ -132,60 +221,6 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 - Saving custom state values to Dapr state stores
 - “Activity” callbacks that execute non-orchestration logic locally inside the workflow pod.
 
-## Workflow patterns
-
-Dapr workflows simplify complex, stateful coordination requirements in serverless applications. The following sections describe four application patterns that can benefit from Dapr workflows:
-
-### Function chaining
-
-In the function chaining pattern, multiple functions are called in succession on a single input, and the output of one function is passed as the input to the next function. With this pattern, you can create a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing.
-
-TODO: DIAGRAM?
-
-You can use Dapr workflows to implement the function chaining pattern concisely as shown in the following example.
-
-TODO: CODE EXAMPLE
-
-### Fan out/fan in
-
-In the fan out/fan in design pattern, you execute multiple tasks simultaneously across mulitple workers and wait for them to recombine.
-
-The fan out part of the pattern involves distributing the input data to multiple workers, each of which processes a portion of the data in parallel. 
-
-The fan in part of the pattern involves recombining the results from the workers into a single output. 
-
-TODO: DIAGRAM?
-
-This pattern can be implemented in a variety of ways, such as using message queues, channels, or async/await. The Dapr workflows extension handles this pattern with relatively simple code:
-
-TODO: CODE EXAMPLE
-
-### Async HTTP APIs
-
-In an asynchronous HTTP API pattern, you coordinate non-blocking requests and responses with external clients. This increases performance and scalability. One way to implement an asynchronous API is to use an event-driven architecture, where the server listens for incoming requests and triggers an event to handle each request as it comes in. Another way is to use asynchronous programming libraries or frameworks, which allow you to write non-blocking code using callbacks, promises, or async/await.
-
-TODO: DIAGRAM?
-
-Dapr workflows simplifies or even removing the code you need to write to interact with long-running function executions. 
-
-TODO: CODE EXAMPLE
-
-
-### Monitor
-
-The monitor pattern is a flexible, recurring process in a workflow that coordinates the actions of multiple threads by controlling access to shared resources. Typically:
-
-1. The thread must first acquire the monitor. 
-1. Once the thread has acquired the monitor, it can access the shared resource.
-1. The thread then releases the monitor. 
-
-This ensures that only one thread can access the shared resource at a time, preventing synchronization issues.
-
-TODO: DIAGRAM?
-
-In a few lines of code, you can create multiple monitors that observe arbitrary endpoints. The following code implements a basic monitor:
-
-TODO: CODE EXAMPLE
 
 
 ## Next steps
