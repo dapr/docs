@@ -12,17 +12,6 @@ Dapr is not a service mesh. While service meshes focus on fine-grained network c
 ## Performance Benchmarks
 The Dapr project is focused on performance due to the inherent discussion of Dapr being a sidecar to your application. See [here]({{< ref perf-service-invocation.md >}}) for updated performance numbers.
 
-## Workflows 
-
-### Workflow *Authoring* API vs Workflow *Management* API
-- What each API does
-- When to use each 
-
-### Dapr workflows relationship with Durable task framework
-- explain how they relate to one another. 
-- note that they're seperate/independant projects 
-
-
 ## Actors
 
 ### What is the relationship between Dapr, Orleans and Service Fabric Reliable Actors?
