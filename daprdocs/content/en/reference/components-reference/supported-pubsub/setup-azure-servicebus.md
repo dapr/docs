@@ -151,7 +151,7 @@ To find out more details on the purpose of any of these metadata properties, ple
 
 ## Sending and receiving multiple messages
 
-Azure Service Bus natively supports sending and receiving multiple messages in a single operation. 
+Azure Service Bus supports sending and receiving multiple messages in a single operation using the bulk pub/sub API.
 
 ### Configuring bulk publish
 
