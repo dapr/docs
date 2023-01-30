@@ -119,7 +119,7 @@ By default, all topic messages associated with an instance of a pub/sub componen
 
 Dapr can set a timeout message on a per-message basis, meaning that if the message is not read from the pub/sub component, then the message is discarded. This timeout message prevents a build up of unread messages. If a message has been in the queue longer than the configured TTL, it is marked as dead. For more information, read [pub/sub message TTL]({{< ref pubsub-message-ttl.md >}}).
 
-### Send and receive messages in bulk
+### Publish and subscribe to bulk messages
 
 Dapr supports sending and receiving multiple messages in a single request. This is useful for applications that require a high throughput. For more information, read [pub/sub bulk messages]({{< ref pubsub-bulk.md >}}).
 
