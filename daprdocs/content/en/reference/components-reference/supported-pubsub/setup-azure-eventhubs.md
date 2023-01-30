@@ -105,6 +105,14 @@ spec:
     value: "myeventhubstoragecontainer"
 ```
 
+## Sending multiple messages
+
+Azure Event Hubs natively supports sending multiple messages in a single operation. To set the metadata for bulk operations, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
+
+| Metadata | Default |
+|----------|---------|
+| `metadata.maxBulkPubBytes` | `1000000` |
+
 ## Create an Azure Event Hub
 
 Follow the instructions [here](https://docs.microsoft.com/azure/event-hubs/event-hubs-create) on setting up Azure Event Hubs.

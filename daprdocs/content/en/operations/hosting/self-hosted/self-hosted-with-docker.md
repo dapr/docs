@@ -123,10 +123,10 @@ services:
      "--app-id", "nodeapp",
      "--app-port", "3000",
      "--placement-host-address", "placement:50006", # Dapr's placement service can be reach via the docker DNS entry
-     "--components-path", "./components"
+     "--resources-path", "./components"
      ]
     volumes:
-        - "./components/:/components" # Mount our components folder for the runtime to use. The mounted location must match the --components-path argument.
+        - "./components/:/components" # Mount our components folder for the runtime to use. The mounted location must match the --resources-path argument.
     depends_on:
       - nodeapp
     network_mode: "service:nodeapp" # Attach the nodeapp-dapr service to the nodeapp network namespace
