@@ -53,7 +53,7 @@ apps:
 
 ## Template properties
 
-The properties for the MapR template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref run.md >}}).  
+The properties for the MapR template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).  
 
 
 | Properties               | Required | Details | Example |
