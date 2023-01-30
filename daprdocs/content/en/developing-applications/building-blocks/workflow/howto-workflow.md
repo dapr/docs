@@ -1,62 +1,16 @@
 ---
 type: docs
-title: "How to: Register and run a workflow"
-linkTitle: "How to: Run workflows"
+title: "How to: Manage your workflow"
+linkTitle: "How to: Manage workflows"
 weight: 2000
-description: Integrate, manage, and expose workflows
+description: manage your workflows
 ---
 
-Now that you've read about [the workflow building block]({{< ref workflow-overview >}}), learn more about how to:
-
-- Use the a worfklow component
-- Configure or register a workflow component.
+Now that you've read about [the workflow building block]({{< ref workflow-overview >}}), learn more about how to manage a workflow.
 
 When you run `dapr init`, Dapr creates a default workflow runtime. This component is written in Go and implements workflow instances as actors to promote placement and scalability. 
 
-[Insert HL diagram]
 
-{{% alert title="Note" color="primary" %}}
-Currently, Dapr only supports Temporal as an external workflow component that can be used with the Workflow API (in addition to the Dapr's built-in workflow component).
-{{% /alert %}}
-
-
-## Using workflow components
-
-{{< tabs "Built-in" Temporal >}}
-
-<!-- Built-in workflow component -->
-
-{{% codetab %}}
-
-### Authoring workflow
-
-<!-- Need to add link or steps for how to author a workflow for the built in engine with the Workflow Authoring SDKs-->
-
-### Configuring Built-in Workflow component
-
-`dapr init` configures the built-in workflow component. 
-
-
-{{% /codetab %}}
-
-<!-- temporal.io -->
-
-{{% codetab %}}
-
-### Authoring Workflow for external component
-For authoring your workflow, find the instructions through your component's own instructions page. For the Temporal workflow, [follow instructions provided by Temporal.io](https://docs.temporal.io/application-development/foundations#develop-workflows). 
-
-### Registering external component
-Once you've written your workflow, register the workflow with Dapr:
-
-```bash
-command to register Temporal workflow for all steps involved
-```
-
-{{% /codetab %}}
-
-
-{{< /tabs >}}
 
 ## Run your workflow
 
