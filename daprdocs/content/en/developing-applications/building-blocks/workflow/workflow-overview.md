@@ -1,22 +1,22 @@
 ---
 type: docs
-title: Workflow overview
+title: Workflow management building block overview
 linkTitle: Overview
 weight: 1000
-description: "Overview of the workflow building block"
+description: "Overview of the workflow management API"
 ---
 
 {{% alert title="Note" color="primary" %}}
 The Workflow building block is currently in alpha state supporting .NET. 
 {{% /alert %}}
 
-The Dapr Workflow building block strives to make orchestrating logic for messaging, state management, and failure handling across various microservices easier for developers. Prior to adding workflows to Dapr, you'd often need to build ad-hoc workflows behind-the-scenes in order to bridge that gap. 
+The Dapr Workflow Management API strives to make orchestrating logic for messaging, state management, and failure handling across various microservices easier for developers. Prior to adding workflows to Dapr, you'd often need to build ad-hoc workflows behind-the-scenes in order to bridge that gap. 
 
-The durable, resilient Dapr Workflow building block:
+The durable, resilient Dapr Workflow Management API:
 
-- Provides a workflow API for running workflows
+- Provides a workflow management API for running workflows
 - Offers a built-in workflow runtime to write Dapr workflows (of type `workflow.dapr`)
-- Integrates with various workflow runtimes as components (for example, Temporal workflows)
+- Will integrate with future supported external workflow runtime components
 
 The Workflow building block can assist with scenarios like:
 - Order processing involving inventory management, payment systems, shipping, etc.
@@ -36,7 +36,7 @@ The workflow engine is internally powered by Dapr's actor runtime. In the follow
 
 Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the SDK and connect to the sidecar using gRPC stream.
 
-Notice that the engine itself is embedded directly into the sidecar and implemented by the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflow uses actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
+Notice that the engine itself is embedded directly into the sidecar and implemented by the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
 
 ## Features
 
@@ -49,6 +49,31 @@ You can also get information on the workflow (even if it has been terminated or 
 - The time that the run started
 - The current running status, whether that be “Running”, “Terminated”, or “Completed”
 
+## Runing a workflow
+### Start
+
+To start your workflow, run:
+
+```bash
+POST http://localhost:3500/v1.0/workflows/{workflowType}/{instanceId}/start
+```
+
+### Terminate
+
+To terminate your workflow, run:
+
+```bash
+POST http://localhost:3500/v1.0/workflows/{workflowType}/{instanceId}/terminate
+```
+
+### Get metadata
+
+To fetch workflow outputs and inputs, run:
+
+```bash
+GET http://localhost:3500/v1.0/workflows/{workflowType}/{instanceId}
+```
+
 ## Watch the demo
 
 Watch [this video for an overview on Dapr Workflows](https://youtu.be/s1p9MNl4VGo?t=131):
@@ -59,3 +84,5 @@ Watch [this video for an overview on Dapr Workflows](https://youtu.be/s1p9MNl4VG
 
 - [Learn how to set up a workflow]({{< ref howto-workflow.md >}})
 - [Supported workflows]({{< ref supported-workflows.md >}})
+- Learn more about [authoring workflows for the built-in engine component]()
+- Learn more about [supported workflow components]()
