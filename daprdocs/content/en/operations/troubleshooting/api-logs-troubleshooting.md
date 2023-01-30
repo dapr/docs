@@ -77,3 +77,37 @@ time="2022-03-16T18:32:02.917629403Z" level=info msg="HTTP API Called" method="P
 time="2022-03-16T18:32:03.137830112Z" level=info msg="HTTP API Called" method="POST /v1.0/invoke/{id}/method/{method:*}" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
 time="2022-03-16T18:32:03.359097916Z" level=info msg="HTTP API Called" method="POST /v1.0/invoke/{id}/method/{method:*}" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
 ```
+
+## API logging configuration
+
+Using the [Dapr Configuration spec]({{< ref "configuration-overview.md" >}}#sidecar-configuration), you can configure the default behavior of API logging in Dapr runtimes.
+
+### Enable API logging by default
+
+Using the Dapr Configuration spec, you can set the default value for the `--enable-api-logging` flag (and the correspondent annotation when running on Kubernetes), with the `logging.apiLogging.enabled` option. This value applies to all Dapr runtimes that reference the Configuration document or resource in which it's defined.
+
+- If `logging.apiLogging.enabled` is set to `false`, the default value, API logging is disabled for Dapr runtimes unless `--enable-api-logging` is set to `true` (or the `dapr.io/enable-api-logging: true` annotation is added).
+- When `logging.apiLogging.enabled` is `true`, Dapr runtimes have API logging enabled by default, and it can be disabled by setting
+`--enable-api-logging=false` or with the `dapr.io/enable-api-logging: false` annotation.
+
+For example:
+
+```yaml
+logging:
+  apiLogging:
+    enabled: true
+```
+
+### Omit health checks from API logging
+
+When API logging is enabled, all calls to the Dapr API server are logged, including those to health check endpoints (e.g. `/v1.0/healthz`). Depending on your environment, this may generate multiple log lines per minute and could create unwanted noise.
+
+You can configure Dapr to not log calls to health check endpoints when API logging is enabled using the Dapr Configuration spec, by setting `logging.apiLogging.omitHealthChecks: true`. The default value is `false`, which means that health checks calls are logged in the API logs.
+
+For example:
+
+```yaml
+logging:
+  apiLogging:
+    omitHealthChecks: true
+```

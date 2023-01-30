@@ -44,7 +44,7 @@ spec:
 
 ### Special metadata values
 
-Metadata values can contain a `{uuid}` tag that is replaced with a randomly generate UUID when the Dapr sidecar starts up. A new UUID is generated on every start up. It can be used, for example, to have a pod on Kubernetes with multiple application instances consuming a [shared MQTT subscription]({{< ref "setup-mqtt.md" >}}). Below is an example of using the `{uuid}` tag.
+Metadata values can contain a `{uuid}` tag that is replaced with a randomly generate UUID when the Dapr sidecar starts up. A new UUID is generated on every start up. It can be used, for example, to have a pod on Kubernetes with multiple application instances consuming a [shared MQTT subscription]({{< ref "setup-mqtt3.md" >}}). Below is an example of using the `{uuid}` tag.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -52,7 +52,7 @@ kind: Component
 metadata:
   name: messagebus
 spec:
-  type: pubsub.mqtt
+  type: pubsub.mqtt3
   version: v1
   metadata:
     - name: consumerID

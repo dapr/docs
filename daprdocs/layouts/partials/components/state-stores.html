@@ -24,16 +24,51 @@
     </tr>
     {{ range sort $components "component" }}
     <tr>
-        <td><a href="/reference/components-reference/supported-state-stores/{{ .link }}/" }}>{{ .component
-                }}</a>
+        <td>
+            <a href="/reference/components-reference/supported-state-stores/{{ .link }}/">{{ .component }}</a>
         </td>
-        <td align="center">{{ if .features.crud }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
-        <td align="center">{{ if .features.transactions }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
-        <td align="center">{{ if .features.etag }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
-        <td align="center">{{ if .features.ttl }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
-        <td align="center">{{ if (and .features.transactions .features.etag) }}✅{{else}}<img
-                src="/images/emptybox.png">{{ end }}</td>
-        <td align="center">{{ if .features.query }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">
+            {{ if .features.crud }}
+                <span role="img" aria-label="CRUD: Supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="CRUD: Not supported" aria-label="CRUD: Not supported" />
+            {{ end }}
+        </td>
+        <td align="center">
+            {{ if .features.transactions }}
+                <span role="img" aria-label="Transactions: Supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="Transactions: Not supported" aria-label="Transactions: Not supported" />
+            {{ end }}
+        </td>
+        <td align="center">
+            {{ if .features.etag }}
+                <span role="img" aria-label="ETag: Supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="ETag: Not supported" aria-label="ETag: Not supported" />
+            {{ end }}
+        </td>
+        <td align="center">
+            {{ if .features.ttl }}
+                <span role="img" aria-label="TTL: Supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="TTL: Not supported" aria-label="TTL: Not supported" />
+            {{ end }}
+        </td>
+        <td align="center">
+            {{ if (and .features.transactions .features.etag) }}
+                <span role="img" aria-label="Actors: Supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="Actors: Not supported" aria-label="Actors: Not supported" />
+            {{ end }}
+        </td>
+        <td align="center">
+            {{ if .features.query }}
+                <span role="img" aria-label="Query: Supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="Query: Not supported" aria-label="Query: Not supported" />
+            {{ end }}
+        </td>
         <td>{{ .state }}</td>
         <td>{{ .version }}</td>
         <td>{{ .since }}</td>
