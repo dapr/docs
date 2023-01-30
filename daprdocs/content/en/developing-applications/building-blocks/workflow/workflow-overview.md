@@ -34,7 +34,7 @@ The workflow engine is internally powered by Dapr's actor runtime. In the follow
 
 <img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
 
-Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the SDK and connect to the sidecar using gRPC stream.
+Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the SDK and connect to the sidecar using gRPC stream. This will register the workflow and any workflow activities, or tasks that workflows can schedule.
 
 Notice that the engine itself is embedded directly into the sidecar and implemented by the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflow uses actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
 

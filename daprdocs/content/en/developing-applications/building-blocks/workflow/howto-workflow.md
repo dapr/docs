@@ -1,66 +1,147 @@
 ---
 type: docs
-title: "How to: Register and run a workflow"
-linkTitle: "How to: Run workflows"
+title: "How to: Use a workflow"
+linkTitle: "How to: Use workflows"
 weight: 2000
 description: Integrate, manage, and expose workflows
 ---
 
-Now that you've read about [the workflow building block]({{< ref workflow-overview >}}), learn more about how to:
+Now that you've read about [the Workflow building block]({{< ref workflow-overview >}}), let's dive into how you can:
 
-- Use the a worfklow component
-- Configure or register a workflow component.
-
-When you run `dapr init`, Dapr creates a default workflow runtime. This component is written in Go and implements workflow instances as actors to promote placement and scalability. 
-
-[Insert HL diagram]
+- Write the workflow into your application code
+- Run the workflow using HTTP API calls
 
 {{% alert title="Note" color="primary" %}}
-Currently, Dapr only supports Temporal as an external workflow component that can be used with the Workflow API (in addition to the Dapr's built-in workflow component).
+ If you haven't already, [try out the .NET SDK Workflow example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) for a quick walk-through on how to use the service invocation API.
+
 {{% /alert %}}
 
+When you run `dapr init`, Dapr creates a default workflow runtime written in Go that implements workflow instances as actors to promote placement and scalability. 
 
-## Using workflow components
+## Register the workflow
 
-{{< tabs "Built-in" Temporal >}}
+To start using the workflow building block, you simply write the workflow details directly into your application code. [In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowWebApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 
-<!-- Built-in workflow component -->
+- A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
+- A builder with an extension method called `AddDaprWorkflow`
+  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
+- HTTP API calls
+  - One for submitting a new order
+  - One for checking the status of an existing order
 
-{{% codetab %}}
+```csharp
+using Dapr.Workflow;
+//...
 
-### Authoring workflow
+// Dapr workflows are registered as part of the service configuration
+builder.Services.AddDaprWorkflow(options =>
+{
+    // Note that it's also possible to register a lambda function as the workflow
+    // or activity implementation instead of a class.
+    options.RegisterWorkflow<OrderProcessingWorkflow>();
 
-<!-- Need to add link or steps for how to author a workflow for the built in engine with the Workflow Authoring SDKs-->
+    // These are the activities that get invoked by the workflow(s).
+    options.RegisterActivity<NotifyActivity>();
+    options.RegisterActivity<ReserveInventoryActivity>();
+    options.RegisterActivity<ProcessPaymentActivity>();
+});
 
-### Configuring Built-in Workflow component
+WebApplication app = builder.Build();
 
-`dapr init` configures the built-in workflow component. 
+// POST starts new order workflow instance
+app.MapPost("/orders", async (WorkflowEngineClient client, [FromBody] OrderPayload orderInfo) =>
+{
+    if (orderInfo?.Name == null)
+    {
+        return Results.BadRequest(new
+        {
+            message = "Order data was missing from the request",
+            example = new OrderPayload("Paperclips", 99.95),
+        });
+    }
 
+//...
+});
 
-{{% /codetab %}}
+// GET fetches state for order workflow to report status
+app.MapGet("/orders/{orderId}", async (string orderId, WorkflowEngineClient client) =>
+{
+    WorkflowState state = await client.GetWorkflowStateAsync(orderId, true);
+    if (!state.Exists)
+    {
+        return Results.NotFound($"No order with ID = '{orderId}' was found.");
+    }
 
-<!-- temporal.io -->
+    var httpResponsePayload = new
+    {
+        details = state.ReadInputAs<OrderPayload>(),
+        status = state.RuntimeStatus.ToString(),
+        result = state.ReadOutputAs<OrderResult>(),
+    };
 
-{{% codetab %}}
+//...
+}).WithName("GetOrderInfoEndpoint");
 
-### Authoring Workflow for external component
-For authoring your workflow, find the instructions through your component's own instructions page. For the Temporal workflow, [follow instructions provided by Temporal.io](https://docs.temporal.io/application-development/foundations#develop-workflows). 
-
-### Registering external component
-Once you've written your workflow, register the workflow with Dapr:
-
-```bash
-command to register Temporal workflow for all steps involved
+app.Run();
 ```
 
-{{% /codetab %}}
+## Register the workflow activities
+
+Next, you'll define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like a class constructor to access the logger for ASP.NET or binding to a Dapr client.
+
+Continuing the ASP.NET order processing example, the `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. 
+
+It also includes a `RunAsync` method that will do the heavy lifting of the workflow and call the workflow activities. The activities called in the example are:
+- `NotifyActivity`: Receive notification of a new order
+- `ReserveInventoryActivity`: Check for sufficient inventory to meet the new order
+- `ProcessPaymentActivity`: Process payment for the order. Includes `NotifyActivity` to send notification of successful order
+
+```csharp
+ class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
+    {
+        public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
+        {
+            //...
+
+            await context.CallActivityAsync(
+                nameof(NotifyActivity),
+                new Notification($"Received order {orderId} for {order.Name} at {order.TotalCost:c}"));
+
+            //...
+
+            InventoryResult result = await context.CallActivityAsync<InventoryResult>(
+                nameof(ReserveInventoryActivity),
+                new InventoryRequest(RequestId: orderId, order.Name, order.Quantity));
+            //...
+            await context.CallActivityAsync(
+                nameof(ProcessPaymentActivity),
+                new PaymentRequest(RequestId: orderId, order.TotalCost, "USD"));
+
+            await context.CallActivityAsync(
+                nameof(NotifyActivity),
+                new Notification($"Order {orderId} processed successfully!"));
+
+            // End the workflow with a success result
+            return new OrderResult(Processed: true);
+        }
+    }
+```
 
 
-{{< /tabs >}}
+{{% alert title="Important" color="primary" %}}
+Because of how replay-based workflows execute, you'll write most logic that does things like IO and interacting with systems **inside activities**. Meanwhile, **workflow method** is just for orchestrating those activities.
 
-## Run your workflow
+{{% /alert %}}
 
-Next, run your workflow using the following API methods. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
+## Run the workflow
+
+Now that you've set up the workflow and its activities in your application, it's time to run alongside the Dapr sidecar. For a .NET application:
+
+```bash
+dapr run --app-id <your application app ID> dotnet run
+```
+
+Next, run your workflow using the following HTTP API methods. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
 ### Start
 
