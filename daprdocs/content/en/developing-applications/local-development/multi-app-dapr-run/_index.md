@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Multi-app support"
-linkTitle: "Multi-app support"
+title: "Multi-app run"
+linkTitle: "Multi-app run"
 weight: 300
 description: "Support for running multiple Dapr applications with one command"
 ---

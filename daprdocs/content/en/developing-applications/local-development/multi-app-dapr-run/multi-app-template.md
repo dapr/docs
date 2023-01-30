@@ -1,28 +1,30 @@
 ---
 type: docs
-title: Multi-app template file
-linkTitle: Multi-app Run template
+title: MapR template file
+linkTitle: MapR template
 weight: 2000
-description: Unpack the multi-app template file and its variables
+description: Unpack the MapR template file and its properties
 ---
 
 {{% alert title="Note" color="primary" %}}
- Multi-app `dapr run -f` is currently a preview feature only supported in Linux/MacOS. 
+ MapR (Multi-app Run using `dapr run -f`) is currently a preview feature only supported in Linux/MacOS. 
 {{% /alert %}}
 
-The multi-app template file is a single YAML configuration file that you can use to configure multiple applications alongside a Dapr sidecar. Execute the following command for Dapr to parse the multi-app template file, named `dapr.yaml` by default:
+The MapR template file is a YAML file that you can use to run multiple applications at once. Execute the following CLI command to read the MapR template file, named `dapr.yaml` by default:
 
 ```cmd
+// the template file needs to be called `dapr.yaml` by default
+
 dapr run -f
 ```
 
-To name the multi-app template file something other than `dapr.yaml`, run:
+If the MapR template file is named something other than `dapr.yaml`, run:
 
 ```cmd
 dapr run -f ./<your-preferred-file-name>.yaml
 ```
 
-The multi-app template file can include any of the following parameters. 
+The MapR template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties. 
 
 ```yaml
 version: 1
@@ -49,42 +51,43 @@ apps:
     command: ["./backend"]
 ```
 
-## Parameters
+## Template properties
+
+The properties for the MapR template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref run.md >}}).  
 
 
-| Parameter                | Required | Details | Example |
+| Properties               | Required | Details | Example |
 |--------------------------|:--------:|--------|---------|
-| `appID`                  | Y        | Your application's app ID | `webapp`, `backend` |
-| `appDirPath`             | Y        | Path to the your application | `./webapp/`, `./backend/` |
+| `appID`                  | Y        | Application's app ID | `webapp`, `backend` |
+| `appDirPath`             | Y        | Path to the your application code | `./webapp/`, `./backend/` |
 | `resourcesPath`          | N        | Path to your Dapr resources. Can be default by convention; ignore if directory isn't found | `./app/components`, `./webapp/components` |
 | `configFilePath`         | N        | Path to your application's configuration file | `./webapp/config.yaml` |
-| `appProtocol`            | N        | Application protocol | `HTTP`, `GRPC` |
-| `appPort`                | N        | Designated port for your application | `8080`, `3000` |
+| `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `HTTP`, `GRPC` |
+| `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
 | `daprHTTPPort`           | N        | Dapr HTTP port |  |
 | `daprGRPCPort`           | N        | Dapr GRPC port |  |
 | `daprInternalGRPCPort`   | N        |  |  |
-| `metricsPort`            | N        |  |  |
-| `unixDomainSocket`       | N        | Path to the Unix Domain Socket | `/tmp/test-socket` |
-| `profilePort`            | N        |  |  |
-| `enableProfiling`        | N        |  |  |
+| `metricsPort`            | N        | The port that Dapr sends its metrics information to |  |
+| `unixDomainSocket`       | N        | Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. | `/tmp/test-socket` |
+| `profilePort`            | N        | The port for the profile server to listen on |  |
+| `enableProfiling`        | N        | Enable profiling via an HTTP endpoint |  |
 | `apiListenAddresses`     | N        | Dapr API listen addresses |  |
-| `logLevel`               | N        |  |  |
-| `appMaxConcurrency`      | N        |  |  |
+| `logLevel`               | N        | The log verbosity. |  |
+| `appMaxConcurrency`      | N        | The concurrency level of the application; default is unlimited |  |
 | `placementHostAddress`   | N        |  |  |
-| `appSSL`                 | N        |  |  |
-| `daprHTTPMaxRequestSize` | N        |  |  |
-| `daprHTTPReadBufferSize` | N        |  |  |
+| `appSSL`                 | N        | Enable https when Dapr invokes the application |  |
+| `daprHTTPMaxRequestSize` | N        | Max size of the request body in MB. |  |
+| `daprHTTPReadBufferSize` | N        | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. The default 4 KB |  |
 | `enableAppHealthCheck`   | N        | Enable the app health check on the application | `true`, `false` |
 | `appHealthCheckPath`     | N        | Path to the health check file | `/healthz` |
-| `appHealthProbeInterval` | N        | App health check interval time range |  |
-| `appHealthProbeTimeout`  | N        | When the app health check will timeout |  |
-| `appHealthThreshold`     | N        |  |  |
-| `enableApiLogging`       | N        |  |  |
+| `appHealthProbeInterval` | N        | Interval to probe for the health of the app in seconds
+ |  |
+| `appHealthProbeTimeout`  | N        | Timeout for app health probes in milliseconds |  |
+| `appHealthThreshold`     | N        | Number of consecutive failures for the app to be considered unhealthy |  |
+| `enableApiLogging`       | N        | Enable the logging of all API calls from application to Dapr |  |
 | `daprPath`               | N        | Dapr install path |  |
 | `env`                    | N        | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications | `DEBUG`, `DAPR_HOST_ADD` |
 
-## Scenario
-
-todo
-
 ## Next steps
+
+[Try out the MapR template using the Distributed Calculator tutorial]
