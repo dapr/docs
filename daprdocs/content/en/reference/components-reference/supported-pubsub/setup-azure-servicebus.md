@@ -163,7 +163,7 @@ To set the metadata for bulk publish operation, set the query parameters on the 
 
 ### Configuring bulk subscribe
 
-When subscribing to a topic, you can configure `bulkSubscribe` options. Please refer to [Subscription methods]({{< ref subscription-methods >}}) for more details. (TODO: Add link to bulk subscribe docs)
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscription methods]({{< ref subscription-methods >}}) for more details. (TODO: Add link to bulk subscribe docs)
 
 | Configuration | Default |
 |---------------|---------|
