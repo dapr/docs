@@ -121,7 +121,7 @@ Dapr can set a timeout message on a per-message basis, meaning that if the messa
 
 ### Publish and subscribe to bulk messages
 
-Dapr supports sending and receiving multiple messages in a single request. This is useful for applications that require a high throughput. For more information, read [pub/sub bulk messages]({{< ref pubsub-bulk.md >}}).
+Dapr supports sending and receiving multiple messages in a single request. When writing applications that need to send or receive a large number of messages, using bulk operations allows achieving high throughput by reducing the overall number of requests. For more information, read [pub/sub bulk messages]({{< ref pubsub-bulk.md >}}).
 
 ## Try out pub/sub
 

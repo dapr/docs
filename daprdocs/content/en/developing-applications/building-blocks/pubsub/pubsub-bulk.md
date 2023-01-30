@@ -10,22 +10,15 @@ description: "Learn how to use the bulk publish and subscribe APIs in Dapr."
 The bulk publish and subscribe APIs are in **alpha** stage.
 {{% /alert %}}
 
-With the bulk publish and subscribe APIs, you can publish and subscribe to multiple messages in a single request.
-
-
-## Native bulk publish and subscribe support
-
-When a pub/sub component supports the bulk publish API natively, Dapr also publishes messages to the underlying pub/sub component in bulk.
-
-Otherwise, Dapr falls back to sending messages one by one to the underlying pub/sub component. This is still more efficient than using the regular publish API, because applications can still send multiple messages in a single request to Dapr.
-
-## Supported components
-
-Refer to the [component reference]({{< ref supported-pubsub >}}) to see which components support the bulk publish API natively.
+With the bulk publish and subscribe APIs, you can publish and subscribe to multiple messages in a single request. When writing applications that need to send or receive a large number of messages, using bulk operations allows achieving high throughput by reducing the overall number of requests between the Dapr sidecar, the application, and the underlying pub/sub broker.
 
 ## Publishing messages in bulk
 
-The bulk publish API allows you to publish multiple messages to a topic in a single request. If any of the messages fail to publish, the bulk publish operation returns a list of failed messages. Note, the bulk publish operation does not guarantee the order of messages.
+### Restrictions when publishing messages in bulk
+
+The bulk publish API allows you to publish multiple messages to a topic in a single request. It is *non-transactional*, i.e., from a single bulk request, some messages can succeed and some can fail. If any of the messages fail to publish, the bulk publish operation returns a list of failed messages.
+
+The bulk publish operation also does not guarantee any ordering of messages.
 
 ### Example
 
@@ -275,6 +268,16 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+## How components handle publishing and subscribing to bulk messages
+
+Some pub/sub brokers support sending and receiving multiple messages in a single request. When a component supports bulk publish or subscribe operations, Dapr runtime uses them to further optimize the communication between the Dapr sidecar and the underlying pub/sub broker. 
+
+For components that do not have bulk publish or subscribe support, Dapr runtime uses the regular publish and subscribe APIs to send and receive messages one by one. This is still more efficient than directly using the regular publish or subscribe APIs, because applications can still send/receive multiple messages in a single request to/from Dapr.
+
+## Supported components
+
+Refer to the [component reference]({{< ref supported-pubsub >}}) to see which components support bulk publish and subscribe operations.
 
 ## Related links
 
