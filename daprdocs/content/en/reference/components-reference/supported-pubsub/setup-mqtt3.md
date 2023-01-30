@@ -1,15 +1,16 @@
 ---
 type: docs
-title: "MQTT"
-linkTitle: "MQTT"
-description: "Detailed documentation on the MQTT pubsub component"
+title: "MQTT3"
+linkTitle: "MQTT3"
+description: "Detailed documentation on the MQTT3 pubsub component"
 aliases:
+  - "/operations/components/setup-pubsub/supported-pubsub/setup-mqtt3/"
   - "/operations/components/setup-pubsub/supported-pubsub/setup-mqtt/"
 ---
 
 ## Component format
 
-To setup MQTT pubsub create a component of type `pubsub.mqtt`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
+To setup a MQTT3 pubsub create a component of type `pubsub.mqtt3`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -17,7 +18,7 @@ kind: Component
 metadata:
   name: mqtt-pubsub
 spec:
-  type: pubsub.mqtt
+  type: pubsub.mqtt3
   version: v1
   metadata:
   - name: url
@@ -49,8 +50,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | Required for using TLS | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
-| backOffMaxRetries | N | The maximum number of retries to process the message before returning an error. Defaults to `"0"`, which means that no retries will be attempted. `"-1"` can be specified to indicate that messages should be retried indefinitely until they are successfully processed or the application is shutdown. The component will wait 5 seconds between retries. | `"3"`
-
 ### Communication using TLS
 
 To configure communication using TLS, ensure that the MQTT broker (e.g. mosquitto) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
@@ -61,7 +60,7 @@ kind: Component
 metadata:
   name: mqtt-pubsub
 spec:
-  type: pubsub.mqtt
+  type: pubsub.mqtt3
   version: v1
   metadata:
   - name: url
@@ -98,7 +97,7 @@ kind: Component
 metadata:
   name: mqtt-pubsub
 spec:
-  type: pubsub.mqtt
+  type: pubsub.mqtt3
   version: v1
   metadata:
     - name: consumerID
@@ -121,7 +120,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Note that in the case, the value of the consumer ID is random every time Dapr restarts, so we are setting `cleanSession` to true as well.
 
-## Create a MQTT broker
+## Create a MQTT3 broker
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
@@ -136,7 +135,7 @@ You can then interact with the server using the client port: `mqtt://localhost:1
 {{% /codetab %}}
 
 {{% codetab %}}
-You can run a MQTT broker in kubernetes using following yaml:
+You can run a MQTT3 broker in kubernetes using following yaml:
 
 ```yaml
 apiVersion: apps/v1

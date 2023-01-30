@@ -3,7 +3,7 @@ type: docs
 title: "Bindings components"
 linkTitle: "Bindings"
 description: "Guidance on setting up Dapr bindings components"
-weight: 4000
+weight: 900
 ---
 
 Dapr integrates with external resources to allow apps to both be triggered by external events and interact with the resources. Each binding component has a name and this name is used when interacting with the resource.
@@ -62,7 +62,7 @@ Once you have created the component's YAML file, follow these instructions to ap
 {{< tabs "Self-Hosted" "Kubernetes" >}}
 
 {{% codetab %}}
-To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--components-path`.
+To run locally, create a `components` dir containing the YAML file and provide the path to the `dapr run` command with the flag `--resources-path`.
 {{% /codetab %}}
 
 {{% codetab %}}

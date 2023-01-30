@@ -47,7 +47,7 @@ When running Dapr, set the YAML component file path to point Dapr to the compone
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- dotnet run
+dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
 ```
 
 {{% /codetab %}}
@@ -55,7 +55,7 @@ dapr run --app-id myapp --components-path ./myComponents -- dotnet run
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
+dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
 ```
 
 {{% /codetab %}}
@@ -63,7 +63,7 @@ dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
 ```
 
 {{% /codetab %}}
@@ -71,7 +71,7 @@ dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- npm start
+dapr run --app-id myapp --resources-path ./myComponents -- npm start
 ```
 
 {{% /codetab %}}
@@ -79,7 +79,7 @@ dapr run --app-id myapp --components-path ./myComponents -- npm start
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- go run app.go
+dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
 ```
 
 {{% /codetab %}}
@@ -104,7 +104,6 @@ In your application code, subscribe to the topic specified in the Dapr pub/sub c
 
 ```csharp
  //Subscribe to a topic 
-[Topic("pubsub", "orders")]
 [HttpPost("checkout")]
 public void getCheckout([FromBody] int orderId)
 {
@@ -117,16 +116,15 @@ public void getCheckout([FromBody] int orderId)
 {{% codetab %}}
 
 ```java
+import io.dapr.client.domain.CloudEvent;
+
  //Subscribe to a topic
-@Topic(name = "orders", pubsubName = "pubsub")
 @PostMapping(path = "/checkout")
 public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
     return Mono.fromRunnable(() -> {
         try {
             log.info("Subscriber received: " + cloudEvent.getData());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        } 
     });
 }
 ```
@@ -136,13 +134,13 @@ public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> 
 {{% codetab %}}
 
 ```python
+from cloudevents.sdk.event import v1
+
 #Subscribe to a topic 
-@app.subscribe(pubsub_name='pubsub', topic='orders')
-def mytopic(event: v1.Event) -> None:
+@app.route('/checkout', methods=['POST'])
+def checkout(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
-
-app.run(6002)
 ```
 
 {{% /codetab %}}
@@ -150,11 +148,16 @@ app.run(6002)
 {{% codetab %}}
 
 ```javascript
-//Subscribe to a topic
-await server.pubsub.subscribe("pubsub", "orders", async (orderId) => {
-    console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+app.use(bodyParser.json({ type: 'application/*+json' }));
+
+// listen to the declarative route
+app.post('/checkout', (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
 });
-await server.startServer();
 ```
 
 {{% /codetab %}}
@@ -163,11 +166,10 @@ await server.startServer();
 
 ```go
 //Subscribe to a topic
-if err := s.AddTopicEventHandler(sub, eventHandler); err != nil {
-	log.Fatalf("error adding topic subscription: %v", err)
-}
-if err := s.Start(); err != nil && err != http.ErrServerClosed {
-	log.Fatalf("error listenning: %v", err)
+var sub = &common.Subscription{
+	PubsubName: "pubsub",
+	Topic:      "orders",
+	Route:      "/checkout",
 }
 
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {

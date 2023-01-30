@@ -2,7 +2,7 @@
 type: docs
 title: "Updating components"
 linkTitle: "Updating components"
-weight: 250
+weight: 300
 description: "Updating deployed components used by applications"
 ---
 

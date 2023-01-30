@@ -42,6 +42,7 @@ The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor inv
 
    ```bash
    helm repo add grafana https://grafana.github.io/helm-charts
+   helm repo update
    ```
 
 1. Install the chart:
