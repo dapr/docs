@@ -3,49 +3,97 @@ type: docs
 title: "Contributing with GitHub Codespaces"
 linkTitle: "GitHub Codespaces"
 weight: 60
-description: "How to work with Dapr repos in GitHub Codespaces"
+description: "How to contribute to the Dapr project with GitHub Codespaces"
 aliases:
+  - "/contributing/codespaces/"
   - "/developing-applications/ides/codespaces/"
 ---
 
-[GitHub Codespaces](https://github.com/features/codespaces) are the easiest way to get up and running for contributing to a Dapr repo. In as little as a single click, you can have an environment with all of the prerequisites ready to go in your browser.
+[GitHub Codespaces](https://github.com/features/codespaces) is the easiest way to get up and running for contributing to a Dapr repo. In as little as a single click, you can have an environment with all of the prerequisites ready to go in your browser.
 
 ## Features
 
 - **Click and Run**: Get a dedicated and sandboxed environment with all of the required frameworks and packages ready to go.
-- **Usage-based Billing**: Only pay for the time you spend developing in the Codespace. Environments are spun down automatically when not in use.
-- **Portable**: Run in your browser or in Visual Studio Code
+- **Usage-based Billing**: Only pay for the time you spend developing in the Codespaces. Environments are spun down automatically when not in use.
+- **Portable**: Run in your browser or in Visual Studio Code, or connect to it using SSH.
 
 ## Open a Dapr repo in a Codespace
 
-To open a Dapr repository in a Codespace simply select "Code" from the repo homepage and "Open with Codespaces":
+To open a Dapr repository in a Codespace, select "Code" from the repo homepage and "Open with Codespaces":
 
 <img src="/images/codespaces-create.png" alt="Screenshot of creating a Dapr Codespace" width="300">
 
 If you haven't already forked the repo, creating the Codespace will also create a fork for you and use it inside the Codespace.
 
-### Supported repos
+## Supported repos
 
-- [Dapr](https://github.com/dapr/dapr)
-- [Components-contrib](https://github.com/dapr/components-contrib)
-- [Python SDK](https://github.com/dapr/python-sdk)
+- [dapr/dapr](https://github.com/dapr/dapr)
+- [dapr/components-contrib](https://github.com/dapr/components-contrib)
+- [dapr/cli](https://github.com/dapr/cli)
+- [dapr/python-sdk](https://github.com/dapr/python-sdk)
 
-### Developing Dapr Components in a Codespace
+## Developing Dapr Components in a Codespace
 
-Developing a new Dapr component requires working with both the [components-contrib](https://github.com/dapr/components-contrib) and [dapr](https://github.com/dapr/dapr) repos together under the `$GOPATH` tree for testing purposes. To facilitate this, the `/go/src/github.com/dapr` folder in the components-contrib Codespace will already be set up with your fork of components-contrib, and a clone of the dapr repo as described in the [component development documentation](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md). A few things to note in this configuration:
+Developing a new Dapr component requires working with both the [dapr/components-contrib](https://github.com/dapr/components-contrib) and [dapr/dapr](https://github.com/dapr/dapr) repos. We recommend placing both folders inside the `/workspaces` directory, side-by-side.
 
-- The components-contrib and dapr repos only define Codespaces for the Linux amd64 environment at the moment.
-- The `/go/src/github.com/dapr/components-contrib` folder is a soft link to Codespace's default `/workspace/components-contrib` folder, so changes in one will be automatically reflected in the other.
-- Since the `/go/src/github.com/dapr/dapr` folder uses a clone of the official dapr repo rather than a fork, you will not be able to make a pull request from changes made in that folder directly. You can use the dapr Codespace separately for that PR, or if you would like to use the same Codespace for the dapr changes as well, you should remap the dapr repo origin to your fork in the components-contrib Codespace. For example, to use a dapr fork under `my-git-alias`:
+### If you created a Codespace from `dapr/dapr`
 
-```bash
-cd /go/src/github.com/dapr/dapr
-git remote set-url origin https://github.com/my-git-alias/dapr
-git fetch
-git reset --hard
+If your Codespaces was started from the `dapr/dapr` repo or a fork of that, you will need to clone the `dapr/components-contrib` repository (or your fork of that) inside `/workspaces/components-contrib`.
+
+First, make sure you've authenticated with the GitHub CLI:
+
+```sh
+# Run this command and follow the prompts
+# Most users should accept the default choices
+gh auth login
 ```
+
+Clone the repo:
+
+```sh
+# If you want to use your fork of dapr/components-contrib, replace this with your fork (e.g. "yourusername/components-contrib")
+# Make sure you've forked the repo before doing this
+REPO=dapr/components-contrib
+cd /workspaces
+gh repo clone "$REPO" /workspaces/components-contrib
+```
+
+Then, add the folder to current workspace:
+
+```sh
+code -a /workspaces/components-contrib
+```
+
+### If you created a Codespace from `dapr/components-contrib`
+
+If your Codespaces was started from the `dapr/components-contrib` repo or a fork of that, you will need to clone the `dapr/dapr` repository (or your fork of that) inside `/workspaces/dapr`.
+
+First, make sure you've authenticated with the GitHub CLI:
+
+```sh
+# Run this command and follow the prompts
+# Most users should accept the default choices
+gh auth login
+```
+
+Clone the repo:
+
+```sh
+# If you want to use your fork of dapr/dapr, replace this with your fork (e.g. "yourusername/dapr")
+# Make sure you've forked the repo before doing this
+REPO=dapr/dapr
+cd /workspaces
+gh repo clone "$REPO" /workspaces/dapr
+```
+
+Then, add the folder to current workspace:
+
+```sh
+code -a /workspaces/dapr
+```
+
 
 ## Related links
 <!-- IGNORE_LINKS -->
-- [GitHub documentation](https://docs.github.com/github/developing-online-with-codespaces/about-codespaces)
+- [GitHub documentation](https://docs.github.com/en/codespaces/overview)
 <!-- END_IGNORE -->
