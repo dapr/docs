@@ -337,7 +337,7 @@ To run without Docker, see the getting started guide [here](https://kafka.apache
 {{% /codetab %}}
 
 {{% codetab %}}
-To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](https://strimzi.io/docs/operators/latest/quickstart.html#ref-install-prerequisites-str).
+To run Kafka on Kubernetes, you can use any Kafka operator, such as [Strimzi](https://strimzi.io/quickstarts/).
 {{% /codetab %}}
 
 {{< /tabs >}}
