@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Workflow management"
-linkTitle: "Workflow management"
+title: "Workflow"
+linkTitle: "Workflow"
 weight: 100
-description: "Manage your Dapr workflows" 
+description: "Orchestrate logic across various microservices" 
 ---

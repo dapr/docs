@@ -31,24 +31,24 @@ spec:
 
 ### POST start workflow request
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/{workflowComponent}/{workflowType}/{instanceId}/start
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/start
 ```
 ### POST terminate workflow request
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/{workflowComponent}/{instanceId}/terminate
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 ### GET workflow request
 ```bash
-GET http://localhost:3500/v1.0-alpha1/workflows/{workflowComponent}/{workflowType}/{instanceId}
+GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>
 ```
 
 ### URL parameters
 
 Parameter | Description
 --------- | -----------
-`workflowType` | Identify the workflow type
+`workflowComponentName` | One of the [supported workflow components][]
+`workflowName` | Identify the workflow type
 `instanceId` | Unique value created for each run of a specific workflow
-`workflowComponent` | One of the [supported workflow components][]
 
 
 ### Headers
