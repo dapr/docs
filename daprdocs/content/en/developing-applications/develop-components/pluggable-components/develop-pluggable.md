@@ -123,22 +123,75 @@ The following examples demonstrate how to return an error in your own pluggable 
  <!-- .NET -->
 {{% codetab %}}
 
+> Note: 
+
 **Etag Mismatch**
 
 ```csharp
+var badRequest = new BadRequest();
+var des = "The ETag field must only contain alphanumeric characters";
+badRequest.FieldViolations.Add(    
+   new Google.Rpc.BadRequest.Types.FieldViolation
+       {        
+         Field = "etag",
+         Description = des
+       });
 
+var baseStatusCode = Grpc.Core.StatusCode.FailedPrecondition;
+var status = new Google.Rpc.Status{    
+   Code = (int)baseStatusCode
+};
+
+status.Details.Add(Google.Protobuf.WellKnownTypes.Any.Pack(badRequest));
+
+var metadata = new Metadata();
+metadata.Add("grpc-status-details-bin", status.ToByteArray());
+throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
 ```
 
 **Etag Invalid**
 
 ```csharp
+var badRequest = new BadRequest();
+var des = "The ETag field must only contain alphanumeric characters";
+badRequest.FieldViolations.Add(
+   new Google.Rpc.BadRequest.Types.FieldViolation
+   {
+      Field = "etag",
+      Description = des
+   });
 
+var baseStatusCode = Grpc.Core.StatusCode.InvalidArgument;
+var status = new Google.Rpc.Status
+{
+   Code = (int)baseStatusCode
+};
+
+status.Details.Add(Google.Protobuf.WellKnownTypes.Any.Pack(badRequest));
+
+var metadata = new Metadata();
+metadata.Add("grpc-status-details-bin", status.ToByteArray());
+throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
 ```
 
 **Bulk Delete Row Mismatch**
 
 ```csharp
+var errorInfo = new Google.Rpc.ErrorInfo();
 
+errorInfo.Metadata.Add("expected", "100");
+errorInfo.Metadata.Add("affected", "99");
+
+var baseStatusCode = Grpc.Core.StatusCode.Internal;
+var status = new Google.Rpc.Status{
+    Code = (int)baseStatusCode
+};
+
+status.Details.Add(Google.Protobuf.WellKnownTypes.Any.Pack(errorInfo));
+
+var metadata = new Metadata();
+metadata.Add("grpc-status-details-bin", status.ToByteArray());
+throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
 ```
 
 {{% /codetab %}}
@@ -172,7 +225,7 @@ The following examples demonstrate how to return an error in your own pluggable 
 **ETag Mismatch**
 
 ```go
-st := status.New(GRPCCodeETagMismatch, "fake-err-msg")
+st := status.New(codes.FailedPrecondition, "fake-err-msg")
 desc := "The ETag field must only contain alphanumeric characters"
 v := &errdetails.BadRequest_FieldViolation{
 	Field:       etagField,
@@ -186,7 +239,7 @@ st, err := st.WithDetails(br)
 **ETag Invalid**
 
 ```go
-st := status.New(GRPCCodeETagInvalid, "fake-err-msg")
+st := status.New(codes.InvalidArgument, "fake-err-msg")
 desc := "The ETag field must only contain alphanumeric characters"
 v := &errdetails.BadRequest_FieldViolation{
 	Field:       etagField,
@@ -200,11 +253,11 @@ st, err := st.WithDetails(br)
 **Bulk Delete Row Mismatch**
 
 ```go
-st := status.New(GRPCCodeBulkDeleteRowMismatch, "fake-err-msg")
+st := status.New(codes.Internal, "fake-err-msg")
 br := &errdetails.ErrorInfo{}
 br.Metadata = map[string]string{
-	affectedRowsMetadataKey: "100",
-	expectedRowsMetadataKey: "99",
+	affected: "100",
+	expected: "99",
 }
 st, err := st.WithDetails(br)
 ```

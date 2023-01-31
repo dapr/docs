@@ -178,6 +178,38 @@ spec:
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
 
+Alternatively, you can annotate your pods, telling Dapr which containers are pluggable components, like in the example below:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+      annotations:
+        dapr.io/pluggable-components: "component" ## the name of the containers that are pluggable components separated by `,`, e.g "componentA,componentB".
+        dapr.io/app-id: "my-app"
+        dapr.io/enabled: "true"
+    spec:
+      containers:
+        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+        ##
+        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+        ### This is the pluggable component container.
+        - name: component
+          image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
+```
+
 Before applying the deployment, let's add one more configuration: the component spec.
 
 ## Define a component
