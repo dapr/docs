@@ -447,7 +447,7 @@ Currently, comparisons to time (e.g. before or after "now") are not supported.
 Watch [this video](https://www.youtube.com/watch?v=QqJgRmbH82I&t=1063s) on how to use message routing with pub/sub:
 
 <p class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube.com/embed/QqJgRmbH82I?start=1063" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/QqJgRmbH82I?start=1063" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>
 
 ## Next steps

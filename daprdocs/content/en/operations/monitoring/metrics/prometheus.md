@@ -113,7 +113,7 @@ dapr-prom-prometheus-server-694fd8d7c-q5d59         2/2     Running   0         
 ## Example
 
 <div class="embed-responsive embed-responsive-16by9">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 ## References
