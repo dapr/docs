@@ -18,6 +18,9 @@ The durable, resilient Dapr Workflow API:
 - Offers a built-in workflow runtime to write Dapr workflows (of type `workflow.dapr`)
 - Will integrate with future supported external workflow runtime components
 
+<img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr workflows">
+
+
 The Workflow building block can assist with scenarios like:
 - Order processing involving inventory management, payment systems, shipping, etc.
 - HR onboarding workflows coordinating tasks across multiple departments and participatns
@@ -32,7 +35,6 @@ The Dapr Workflow engine runs in the Dapr sidecar and consists of:
 
 The workflow engine is internally powered by Dapr's actor runtime. In the following diagram demonstrates the Dapr Workflow architecture in Kubernetes mode:
 
-<img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
 
 Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the SDK and connect to the sidecar using gRPC stream. This will register the workflow and any workflow activities, or tasks that workflows can schedule.
 

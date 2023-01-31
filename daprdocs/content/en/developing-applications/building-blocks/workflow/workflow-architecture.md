@@ -16,6 +16,8 @@ For information on how to author workflows that are executed by the Dapr workflo
 
 The Dapr Workflow engine is internally implemented using then open source [durabletask-go](https://github.com/microsoft/durabletask-go) library, which is embedded directly into the Dapr sidecar. Dapr implements a custom durable task "backend" using internally managed actors, which manage workflow scale-out, persistence, and leader election. This article will go into more details in subsequent sections.
 
+<img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
+
 ## Sidecar interactions
 
 TODO: Describe the gRPC protocol used in the SDK/sidecar interactions. Make sure to also emphasize the responsibilities of the app vs. the responsibilities of the sidecar.
