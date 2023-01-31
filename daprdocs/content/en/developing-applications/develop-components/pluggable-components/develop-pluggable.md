@@ -111,9 +111,9 @@ In order to meet concurrency requirements, your state store pluggable components
 
 | Error                    | gRPC error code                 | 
 | ------------------------ | ------------------------------- | 
-| ETag Mismatch            | `GRPCCodeETagMismatch`          | 
-| ETag Invalid             | `GRPCCodeETagInvalid`           | 
-| Bulk Delete Row Mismatch | `GRPCCodeBulkDeleteRowMismatch` | 
+| ETag Mismatch            | `codes.FailedPrecondition`          | 
+| ETag Invalid             | `codes.InvalidArgument`           | 
+| Bulk Delete Row Mismatch | `codes.Internal` | 
 
 Learn more about concurrency requirements in the [State Management overview]({{< ref "state-management-overview.md#concurrency" >}}).
 
