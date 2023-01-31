@@ -22,7 +22,7 @@ For details on how to set up a [secret store]({{< ref setup-secret-store.md >}})
 Watch [this video](https://youtu.be/j99RN_nxExA?start=2272) for a demo on how to use secret scoping with your application.
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube.com/embed/j99RN_nxExA?start=2272" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/j99RN_nxExA?start=2272" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 ## Scenario 1 : Deny access to all secrets for a secret store

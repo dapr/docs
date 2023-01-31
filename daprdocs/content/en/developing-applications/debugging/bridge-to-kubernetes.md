@@ -15,7 +15,7 @@ Bridge to Kubernetes allows you to run and debug code on your development comput
 Bridge to Kubernetes supports debugging Dapr apps on your machine, while still having them interact with the services and applications running on your Kubernetes cluster. This example showcases Bridge to Kubernetes enabling a developer to debug the [distributed calculator quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator):
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rxwg-__otso" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/rxwg-__otso" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 {{% alert title="Isolation mode" color="warning" %}}
