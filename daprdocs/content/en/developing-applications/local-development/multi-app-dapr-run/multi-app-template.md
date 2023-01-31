@@ -39,7 +39,7 @@ apps:
     configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
     appProtocol: HTTP
     appPort: 8080
-    appHealthCheckPath: "/healthz" # All _ converted to - for all properties defined under daprd section
+    appHealthCheckPath: "/healthz" 
     command: ["python3" "app.py"]
   - appID: backend
     appDirPath: .dapr/backend/
