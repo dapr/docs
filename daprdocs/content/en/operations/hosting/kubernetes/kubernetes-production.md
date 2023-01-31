@@ -6,11 +6,13 @@ weight: 40000
 description: "Recommendations and practices for deploying Dapr to a Kubernetes cluster in a production-ready configuration"
 ---
 
-## Cluster capacity requirements
+## Cluster and capacity requirements
+
+Dapr is supported on Kubernetes 1.23 or higher.
 
 For a production-ready Kubernetes cluster deployment, we recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
 
-Use the following resource settings as a starting point. Requirements will vary depending on cluster size and other factors, so you should perform individual testing to find the right values for your environment:
+Use the following resource settings as a starting point. Requirements will vary depending on cluster size, number of pods, and other factors, so you should perform individual testing to find the right values for your environment:
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
