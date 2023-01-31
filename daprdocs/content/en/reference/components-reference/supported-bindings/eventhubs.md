@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Event Hubs binding create a component of type `bindings.azure.eventhubs`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup an Azure Event Hubs binding, create a component of type `bindings.azure.eventhubs`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 See [this](https://docs.microsoft.com/azure/event-hubs/event-hubs-dotnet-framework-getstarted-send) for instructions on how to set up an Event Hub.
 
@@ -22,18 +22,39 @@ spec:
   type: bindings.azure.eventhubs
   version: v1
   metadata:
-  - name: connectionString      # Azure EventHubs connection string
-    value: "Endpoint=sb://****"
-  - name: consumerGroup         # EventHubs consumer group
-    value: "group1"
-  - name: storageAccountName    # Azure Storage Account Name
-    value: "accountName"
-  - name: storageAccountKey     # Azure Storage Account Key
-    value: "accountKey"
-  - name: storageContainerName  # Azure Storage Container Name
-    value: "containerName"
-  - name: partitionID           # (Optional) PartitionID to send and receive events
-    value: 0
+    # Hub name ("topic")
+    - name: eventHub
+      value: "mytopic"
+    - name: consumerGroup
+      value: "myapp"
+    # Either connectionString or eventHubNamespace is required
+    # Use connectionString when *not* using Azure AD
+    - name: connectionString
+      value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
+    # Use eventHubNamespace when using Azure AD
+    - name: eventHubNamespace
+      value: "namespace"
+    - name: enableEntityManagement
+      value: "false"
+    # The following four properties are needed only if enableEntityManagement is set to true
+    - name: resourceGroupName
+      value: "test-rg"
+    - name: subscriptionID
+      value: "value of Azure subscription ID"
+    - name: partitionCount
+      value: "1"
+    - name: messageRetentionInDays
+      value: "3"
+    # Checkpoint store attributes
+    - name: storageAccountName
+      value: "myeventhubstorage"
+    - name: storageAccountKey
+      value: "112233445566778899"
+    - name: storageContainerName
+      value: "myeventhubstoragecontainer"
+    # Alternative to passing storageAccountKey
+    - name: storageConnectionString
+      value: "DefaultEndpointsProtocol=https;AccountName=<account>;AccountKey=<account-key>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -42,25 +63,31 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding support |  Details | Example |
+| Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| connectionString | Y | Output | The [EventHubs connection string](https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature). Note that this is the EventHub itself and not the EventHubs namespace. Make sure to use the child EventHub shared access policy connection string | `"Endpoint=sb://****"` |
-| consumerGroup | Y | Output | The name of an [EventHubs Consumer Group](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#consumer-groups) to listen on | `"group1"` |
-| storageAccountName | Y | Output | The name of the account of the Azure Storage account to persist checkpoints data on | `"accountName"` |
-| storageAccountKey | Y* | Output | The account key for the Azure Storage account to persist checkpoints data on. ***Not required if using AAD authentication.** | `"accountKey"` |
-| storageContainerName | Y | Output | The name of the container in the Azure Storage account to persist checkpoints data on | `"containerName"` |
-| partitionID | N | Output | ID of the partition to send and receive events | `0` |
-| eventHub | N | Output | The name of the EventHubs hub. **Required if using AAD authentication.** | `eventHubsNamespace-hubName` |
-| eventHubNamespace | N | Output | The name of the EventHubs namespace. **Required if using AAD authentication.** | `eventHubsNamespace` |
+| `eventHub` | Y* | Input/Output | The name of the Event Hubs hub ("topic"). Required if using Azure AD authentication or if the connection string doesn't contain an `EntityPath` value | `mytopic` |
+| `connectionString`    | Y*  | Input/Output | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
+| `eventHubNamespace` | Y* | Input/Output | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"`
+| `enableEntityManagement` | N | Input/Output | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
+| `resourceGroupName` | N | Input/Output | Name of the resource group the Event Hub namespace is part of. Required when entity management is enabled | `"test-rg"`
+| `subscriptionID` | N | Input/Output | Azure subscription ID value. Required when entity management is enabled | `"azure subscription id"`
+| `partitionCount` | N | Input/Output | Number of partitions for the new Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"2"`
+| `messageRetentionInDays` | N | Input/Output | Number of days to retain messages for in the newly created Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"90"`
+| `consumerGroup` | Y | Input | The name of the [Event Hubs Consumer Group](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#consumer-groups) to listen on | `"group1"` |
+| `storageAccountName`  | Y  | Input | Storage account name to use for the checkpoint store. |`"myeventhubstorage"`
+| `storageAccountKey`   | Y*  | Input | Storage account key for the checkpoint store account.<br>* When using Azure AD, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
+| `storageConnectionString`   | Y*  | Input | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
+| `storageContainerName` | Y | Input | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
 
 ### Azure Active Directory (AAD) authentication
+
 The Azure Event Hubs pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 
 This component supports **output binding** with the following operations:
 
-- `create`
+- `create`: publishes a new message to Azure Event Hubs
 
 ## Input Binding to Azure IoT Hub Events
 
@@ -79,7 +106,7 @@ The device-to-cloud events created by Azure IoT Hub devices will contain additio
 
 For example, the headers of a HTTP `Read()` response would contain:
 
-```nodejs
+```js
 {
   'user-agent': 'fasthttp',
   'host': '127.0.0.1:3000',
