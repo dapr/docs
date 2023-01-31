@@ -105,13 +105,20 @@ Using SQS FIFO (`fifo` metadata field set to `"true"`) per AWS specifications pr
 
 Specifying `fifoMessageGroupID` limits the number of concurrent consumers of the FIFO queue used to only one but guarantees global ordering of messages published by the app's Dapr sidecars. See [this AWS blog post](https://aws.amazon.com/blogs/compute/solving-complex-ordering-challenges-with-amazon-sqs-fifo-queues/) to better understand the topic of Message Group IDs and FIFO queues.
 
+To avoid losing the order of messages delivered to consumers, the FIFO configuration for the SQS Component requires the `concurrencyMode` metadata field set to `"single"`.
+
 #### Default parallel `concurrencyMode`
 
 Since v1.8.0, the component supports the `"parallel"` `concurrencyMode` as its default mode. In prior versions, the component default behavior was calling the subscriber a single message at a time and waiting for its response.
 
+#### SQS dead-letter Queues
+
+When configuring the PubSub component with SQS dead-letter queues, the metadata fields `messageReceiveLimit` and `sqsDeadLettersQueueName` must both be set to a value. For `messageReceiveLimit`, the value must be greater than `0` and the `sqsDeadLettersQueueName` must not be empty string.
+
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (`daprd`) with your application on EKS (AWS Kubernetes) node/pod already attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec.  
 {{% /alert %}}
+
 
 ## Create an SNS/SQS instance
 
