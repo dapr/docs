@@ -119,7 +119,7 @@ Currently, you can use the following SDK languages to author a workflow.
 
 | Language stack | Package |
 | - | - |
-| .NET | [Dapr.Workflow](https://www.nuget.org/packages/Dapr.Workflow) |
+| .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
 
 ### Declarative workflows support
 
