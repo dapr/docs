@@ -14,13 +14,13 @@ Dapr Workflow strives to make orchestrating logic for messaging, state managemen
 
 The durable, resilient Dapr Workflow capability:
 
-- Offers a built-in workflow runtime for driving Dapr workflow execution
+- Offers a built-in workflow runtime for driving Dapr Workflow execution
 - Provides HTTP and gRPC APIs for managing workflows
 - Will integrate with future supported external workflow runtime components
 
-<img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr workflows">
+<img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflows">
 
-Dapr workflows can assist with scenarios like:
+Dapr Workflows can assist with scenarios like:
 
 - Order processing involving inventory management, payment systems, shipping, etc.
 - HR onboarding workflows coordinating tasks across multiple departments and participants
@@ -34,7 +34,7 @@ Dapr Workflow consists of:
 - SDKs for authoring workflows in code, using any language
 - HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate)
 
-The Dapr workflow engine is internally powered by Dapr's actor runtime. The following diagram illustrates the Dapr Workflow architecture in Kubernetes mode:
+The Dapr Workflow engine is internally powered by Dapr's actor runtime. The following diagram illustrates the Dapr Workflow architecture in Kubernetes mode:
 
 <img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
 
@@ -42,7 +42,7 @@ Essentially, to use the Dapr Workflow building block, you write workflow code in
 
 Notice that the engine itself is embedded directly into the sidecar and implemented using the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
 
-For more information about the architecture of Dapr Workflow, see the [workflow architecture]({{<ref workflow-architecture>}}) article.
+For more information about the architecture of Dapr Workflow, see the [workflow architecture]({{< ref workflow-architecture >}}) article.
 
 ## Features
 
@@ -59,17 +59,23 @@ You can also get information on the workflow (even if it has been terminated or 
 
 ## Workflow patterns
 
-Dapr workflows simplify complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr workflows:
+Dapr Workflows simplify complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflows:
 
 ### Task chaining
 
-In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing. In some cases, the steps of the workflow may need to be orchestrated across multiple microservices. For increased reliability and scalability, you're also likely to use queues to trigger the various steps.
+In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing. 
 
-*TODO: DIAGRAM (`[step 1] --> [step 2] --> [step 3] --> [step 4]`)*
+In some cases, the steps of the workflow may need to be orchestrated across multiple microservices. For increased reliability and scalability, you're also likely to use queues to trigger the various steps.
 
-While the pattern is simple, there are many complexities hidden in the implementation. For example, what happens if one of the microservices are unavailable for an extended period of time? Can failed steps be automatically retried? If not, how do you facilitate the rollback of previously completed steps, if applicable? Implementation details aside, is there a way to visualize the workflow so that other engineers can understand what it does and how it works?
+<img src="/images/workflow-overview/workflows-chaining.png" width=800 alt="Diagram showing how the task chaining workflow pattern works">
 
-Dapr workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
+While the pattern is simple, there are many complexities hidden in the implementation. For example:
+- What happens if one of the microservices are unavailable for an extended period of time? 
+- Can failed steps be automatically retried? 
+- If not, how do you facilitate the rollback of previously completed steps, if applicable? 
+- Implementation details aside, is there a way to visualize the workflow so that other engineers can understand what it does and how it works?
+
+Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
 {{< tabs ".NET" >}}
 
@@ -105,12 +111,18 @@ catch (TaskFailedException)
 {{< /tabs >}}
 
 {{% alert title="Note" color="primary" %}}
-"Step1", "Step2", "MyCompensation", etc. represent workflow activities, which are essentially other functions in your code that actually implement the steps of the workflow. For brevity, these implementations are left out of this example.
+In the example above, `"Step1"`, `"Step2"`, `"MyCompensation"`, etc. represent workflow activities, which are essentially other functions in your code that actually implement the steps of the workflow. For brevity, these implementations are left out of this example.
 {{% /alert %}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
 
-Behind the scenes, the Dapr Workflow runtime takes care of executing the workflow and ensuring that it runs to completion. Progress is saved automatically and the workflow app will be effectively resumed from the last completed step if the workflow process itself fails for any reason. Error handling is expressed naturally in your target programming language, allowing you to implement compensation logic easily. There are even built-in retry configuration primitives to simplify the process of configuring complex retry policies for individual steps in the workflow.
+Behind the scenes, the Dapr Workflow runtime:
+
+- Takes care of executing the workflow and ensuring that it runs to completion. 
+- Saves progress automatically.
+- Nudges the worfklow app to effectively resume from the last completed step if the workflow process itself fails for any reason. 
+- Enables error handling to be expressed naturally in your target programming language, allowing you to implement compensation logic easily. 
+- Provides built-in retry configuration primitives to simplify the process of configuring complex retry policies for individual steps in the workflow.
 
 ### Fan out/fan in
 
@@ -120,9 +132,9 @@ The fan out part of the pattern involves distributing the input data to multiple
 
 The fan in part of the pattern involves recombining the results from the workers into a single output. 
 
-TODO: DIAGRAM?
+<img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan out/fan in workflow pattern works">
 
-This pattern can be implemented in a variety of ways, such as using message queues, channels, or async/await. The Dapr workflows extension handles this pattern with relatively simple code:
+This pattern can be implemented in a variety of ways, such as using message queues, channels, or async/await. The Dapr Workflows extension handles this pattern with relatively simple code:
 
 TODO: CODE EXAMPLE
 
@@ -132,7 +144,7 @@ In an asynchronous HTTP API pattern, you coordinate non-blocking requests and re
 
 TODO: DIAGRAM?
 
-Dapr workflows simplifies or even removing the code you need to write to interact with long-running function executions. 
+Dapr Workflows simplifies or even removing the code you need to write to interact with long-running function executions. 
 
 TODO: CODE EXAMPLE
 
@@ -154,11 +166,11 @@ TODO: CODE EXAMPLE
 
 ## What is the authoring SDK?
 
-The Dapr Workflow _authoring SDK_ is a language-specific SDK that you use to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr workflow engine running in the Dapr sidecar via a gRPC stream.
+The Dapr Workflow _authoring SDK_ is a language-specific SDK that you use to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr Workflow engine running in the Dapr sidecar via a gRPC stream.
 
 TODO: Diagram
 
-The Dapr Workflow authoring SDK contains many types and functions that allow you to take full advantage of the features and capabilities offered by the Dapr workflow engine.
+The Dapr Workflow authoring SDK contains many types and functions that allow you to take full advantage of the features and capabilities offered by the Dapr Workflow engine.
 
 NOTE: The Dapr Workflow authoring SDK is only valid for use with the Dapr Workflow engine. It cannot be used with other external workflow services.
 
@@ -172,7 +184,7 @@ Currently, you can use the following SDK languages to author a workflow.
 
 ### Declarative workflows support
 
-Dapr workflow doesn't currently provides any experience for declarative workflows. However, you can use the Dapr SDKs to build a new, portable workflow runtime that leverages the Dapr sidecar to load and execute declarative workflows as a layer on top of the "workflow-as-code" foundation. Such an approach could be used to support a variety of declarative workflows, including:
+Dapr Workflow doesn't currently provides any experience for declarative workflows. However, you can use the Dapr SDKs to build a new, portable workflow runtime that leverages the Dapr sidecar to load and execute declarative workflows as a layer on top of the "workflow-as-code" foundation. Such an approach could be used to support a variety of declarative workflows, including:
 
 - The [AWS Step Functions workflow syntax](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)
 - The [Azure Logic Apps workflow syntax](https://learn.microsoft.com/azure/logic-apps/logic-apps-workflow-definition-language)
