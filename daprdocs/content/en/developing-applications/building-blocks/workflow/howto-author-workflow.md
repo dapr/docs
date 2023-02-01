@@ -9,7 +9,7 @@ description: "Learn how to develop and author workflows"
 This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine.
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the .NET SDK Workflow example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) for a quick walk-through on how to use the Dapr Workflows.
+ If you haven't already, [try out the workflow quickstart](todo) for a quick walk-through on how to use workflows.
 
 {{% /alert %}}
 
@@ -26,8 +26,7 @@ Dapr Workflow logic is implemented using general purpose programming languages, 
 
 The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
 
-
-### Register the workflow
+## Register the workflow
 
 To start using the workflow building block, simply write the workflow details directly into your application code. 
 
@@ -105,7 +104,7 @@ app.Run();
 {{< /tabs >}}
 
 
-### Register the workflow activities
+## Register the workflow activities
 
 Next, you'll define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client.
 

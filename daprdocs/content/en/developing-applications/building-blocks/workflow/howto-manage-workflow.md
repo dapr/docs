@@ -29,7 +29,7 @@ To terminate your workflow, run:
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponent>/<instanceId>/terminate
 ```
 
-### Get metadata for a workflow
+## Get metadata for a workflow
 
 To fetch workflow outputs and inputs, run:
 
@@ -40,4 +40,4 @@ GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponent>/<workflowNam
 ## Next steps
 
 - Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-
+- [Workflow API reference]({{< ref workflow_api.md >}})

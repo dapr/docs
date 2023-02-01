@@ -129,9 +129,9 @@ Behind the scenes, the Dapr Workflow runtime:
 
 In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously across potentially multiple workers, wait for them to finish, and perform some aggregation on the result.
 
-<img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan out/fan in workflow pattern works">
+<img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan-out/fan-in workflow pattern works">
 
-In addition to the challenges mentioned in the previous pattern, there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
+In addition to the challenges mentioned in [the previous pattern]({{< ref "workflow-overview.md#task-chaining" >}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
 
 - How do you control the degree of parallelism?
 - How do you know when to trigger subsequent aggregation steps?
@@ -173,7 +173,7 @@ The key takeaways from this example are:
 - The number of parallel tasks can be static or dynamic
 - The workflow itself is capable of aggregating the results of parallel executions
 
-While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and 40 complete but then the process crashes, the workflow will restart itself automatically and schedule only the remaining 60 tasks.
+While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only40 complete before the process crashes, the workflow will restart itself automatically and schedule only the remaining 60 tasks.
 
 ### Async HTTP APIs
 
