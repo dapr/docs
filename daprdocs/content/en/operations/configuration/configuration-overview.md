@@ -117,6 +117,7 @@ The `logging` section under the `Configuration` spec contains the following prop
 logging:
   apiLogging:
     enabled: false
+    obfuscateURLs: false
     omitHealthChecks: false
 ```
 
@@ -125,6 +126,7 @@ The following table lists the properties for logging:
 | Property     | Type   | Description |
 |--------------|--------|-------------|
 | `apiLogging.enabled` | boolean | The default value for the `--enable-api-logging` flag for `daprd` (and the corresponding `dapr.io/enable-api-logging` annotation): the value set in the Configuration spec is used as default unless a `true` or `false` value is passed to each Dapr Runtime. Default: `false`.
+| `apiLogging.obfuscateURLs` | boolean | When enabled, obfuscates the values of URLs in HTTP API logs (if enabled), logging the abstract route name rather than the full path being invoked, which could contain Personal Identifiable Information (PII). Default: `false`.
 | `apiLogging.omitHealthChecks` | boolean | If `true`, calls to health check endpoints (e.g. `/v1.0/healthz`) are not logged when API logging is enabled. This is useful if those calls are adding a lot of noise in your logs. Default: `false`
 
 See [logging documentation]({{< ref "logs.md" >}}) for more information.
