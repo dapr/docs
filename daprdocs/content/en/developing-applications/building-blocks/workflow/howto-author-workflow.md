@@ -6,11 +6,17 @@ weight: 4000
 description: "Learn how to develop and author workflows"
 ---
 
-This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine. In particular, this article lists the SDKs available, supported authoring patterns, and introduces the various concepts you'll need to understand when building Dapr workflows.
+This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine.
+
+{{% alert title="Note" color="primary" %}}
+ If you haven't already, [try out the .NET SDK Workflow example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) for a quick walk-through on how to use the Dapr Workflows.
+
+{{% /alert %}}
+
 
 ## Author workflows as code
 
-Dapr workflow logic is implemented using general purpose programming languages, allowing you to:
+Dapr Workflow logic is implemented using general purpose programming languages, allowing you to:
 
 - Use your preferred programming language (no need to learn a new DSL or YAML schema)
 - Have access to the language’s standard libraries
@@ -23,7 +29,13 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 ### Register the workflow
 
-To start using the workflow building block, you simply write the workflow details directly into your application code. [In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowWebApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
+To start using the workflow building block, simply write the workflow details directly into your application code. 
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+[In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowWebApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 
 - A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
 - A builder with an extension method called `AddDaprWorkflow`
@@ -36,7 +48,7 @@ To start using the workflow building block, you simply write the workflow detail
 using Dapr.Workflow;
 //...
 
-// Dapr workflows are registered as part of the service configuration
+// Dapr Workflows are registered as part of the service configuration
 builder.Services.AddDaprWorkflow(options =>
 {
     // Note that it's also possible to register a lambda function as the workflow
@@ -88,9 +100,18 @@ app.MapGet("/orders/{orderId}", async (string orderId, WorkflowEngineClient clie
 app.Run();
 ```
 
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
 ### Register the workflow activities
 
 Next, you'll define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like a class constructor to access the logger for ASP.NET or binding to a Dapr client.
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
 
 Continuing the ASP.NET order processing example, the `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. 
 
@@ -130,6 +151,9 @@ It also includes a `RunAsync` method that will do the heavy lifting of the workf
     }
 ```
 
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 {{% alert title="Important" color="primary" %}}
 Because of how replay-based workflows execute, you'll write most logic that does things like IO and interacting with systems **inside activities**. Meanwhile, **workflow method** is just for orchestrating those activities.
@@ -139,5 +163,9 @@ Because of how replay-based workflows execute, you'll write most logic that does
 
 ## Next steps
 
+{{< button text="Manage workflows >>" page="howto-manage-workflow.md" >}}
+
+## Related links
 - [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
+- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

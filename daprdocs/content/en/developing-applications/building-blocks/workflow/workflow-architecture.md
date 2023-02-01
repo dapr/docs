@@ -1,18 +1,18 @@
 ---
 type: docs
-title: "Dapr workflow architecture"
-linkTitle: "Dapr workflow architecture"
+title: "Dapr Workflow architecture"
+linkTitle: "Dapr Workflow architecture"
 weight: 3000
-description: "Overview of the Dapr workflow engine architecture"
+description: "Overview of the Dapr Workflow engine architecture"
 ---
 
-# Overview
+[Dapr Workflows]({{< ref "workflow-overview.md" >}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. This article describes:
 
-The Dapr workflow engine is a component that allows developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code that is deployed as part of your application. This article describes the architecture of the Dapr workflow engine, how it interacts with application code, and how it fits into the overall Dapr architecture.
+- The architecture of the Dapr Workflow engine
+- How the workflow engine interacts with application code
+- How the workflow engine fits into the overall Dapr architecture
 
-{{% alert title="Note" color="primary" %}}
-For information on how to author workflows that are executed by the Dapr workflow engine, see the [workflow application developer guide]({{<ref "workflow-overview.md" >}}).
-{{% /alert %}}
+For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{< ref "workflow-overview.md" >}}).
 
 The Dapr Workflow engine is internally implemented using then open source [durabletask-go](https://github.com/microsoft/durabletask-go) library, which is embedded directly into the Dapr sidecar. Dapr implements a custom durable task "backend" using internally managed actors, which manage workflow scale-out, persistence, and leader election. This article will go into more details in subsequent sections.
 
@@ -65,7 +65,7 @@ Each workflow actor saves its state using the following keys in the configured s
 * `metadata`: Contains meta information about the workflow as a JSON blob and includes details such as the length of the inbox, the length of the history, and a 64-bit integer representing the workflow generation (for cases where the instance ID gets reused). The length information is used to determine which keys need to be read or written to when loading or saving workflow state updates.
 
 {{% alert title="Warning" color="primary" %}}
-In the alpha release of the Dapr workflow engine, workflow actor state will remain in the state store even after a workflow has completed. Creating a large number of workflows could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of old workflow state.
+In the alpha release of the Dapr Workflow engine, workflow actor state will remain in the state store even after a workflow has completed. Creating a large number of workflows could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of old workflow state.
 {{% /alert %}}
 
 The following diagram illustrates the typical lifecycle of a workflow actor.
@@ -83,7 +83,7 @@ Each activity actor stores a single key into the state store:
 * `activityreq-N`: The key contains the activity invocation payload, which includes the serialized activity input data. The `N` value is a 64-bit unsigned integer that represents the _generation_ of the workflow, a concept which is outside the scope of this documentation.
 
 {{% alert title="Warning" color="primary" %}}
-In the alpha release of the Dapr workflow engine, activity actor state will remain in the state store even after the activity task has completed. Scheduling a large number of workflow activities could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of completed activity state.
+In the alpha release of the Dapr Workflow engine, activity actor state will remain in the state store even after the activity task has completed. Scheduling a large number of workflow activities could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of completed activity state.
 {{% /alert %}}
 
 Activity actors are short-lived. They are activated when a workflow actor schedules an activity task and will immediately call into the workflow application to invoke the associated activity code. One the activity code has finished running and has returned its result, the activity actor will send a message to the parent workflow actor with the execution results, triggering the workflow to move forward to its next step.
@@ -94,17 +94,17 @@ Activity actors are short-lived. They are activated when a workflow actor schedu
 
 TODO: Describe how reminders are used, and what kinds of reminder pressure may be added to a system.
 
-The Dapr workflow engine ensures workflow fault-tolerance by using actor reminders to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
+The Dapr Workflow engine ensures workflow fault-tolerance by using actor reminders to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
 
 TODO: Diagrams showing the process of invoking workflow and activity actors
 
 {{% alert title="Important" color="warning" %}}
-Too many active reminders in a cluster may result in performance issues. If your application is already using actors and reminders heavily, be mindful of the additional load that Dapr workflows may add to your system.
+Too many active reminders in a cluster may result in performance issues. If your application is already using actors and reminders heavily, be mindful of the additional load that Dapr Workflows may add to your system.
 {{% /alert %}}
 
 ### State store usage
 
-Dapr workflows use actors internally to drive the execution of workflows. Like any actors, these internal workflow actors store their state in the configured state store. Any state store that supports actors implicitly supports Dapr workflow.
+Dapr Workflows use actors internally to drive the execution of workflows. Like any actors, these internal workflow actors store their state in the configured state store. Any state store that supports actors implicitly supports Dapr Workflow.
 
 As discussed in the [workflow actors]({{< ref workflow-architecture.md >}}) section, workflows save their state incrementally by appending to a history log. The history log for a workflow is distributed across multiple state store keys so that each "checkpoint" only needs to append the newest entries.
 
@@ -116,7 +116,7 @@ Different state store implementations may implicitly put restrictions on the typ
 
 ## Workflow scalability
 
-Because Dapr workflows are internally implemented using actors, Dapr workflows have the same scalability characteristics as actors. The placement service doesn't distinguish workflow actors and actors you define in your application and will load balance workflows using the same algorithms that it uses for actors.
+Because Dapr Workflows are internally implemented using actors, Dapr Workflows have the same scalability characteristics as actors. The placement service doesn't distinguish workflow actors and actors you define in your application and will load balance workflows using the same algorithms that it uses for actors.
 
 The expected scalability of a workflow is determined by the following factors:
 
@@ -130,16 +130,16 @@ The implementation details of the workflow code in the target application also p
 TODO: Diagram showing an example distribution of workflows, child-workflows, and activity tasks.
 
 {{% alert title="Important" color="warning" %}}
-At the time of writing, there are no global limits imposed on workflow and activity concurrency. A runaway workflow could therefore potentially consume all resources in a cluster if it attempts to schedule too many tasks in parallel. Developers should use care when authoring Dapr workflows that schedule large batches of work in parallel.
+At the time of writing, there are no global limits imposed on workflow and activity concurrency. A runaway workflow could therefore potentially consume all resources in a cluster if it attempts to schedule too many tasks in parallel. Developers should use care when authoring Dapr Workflows that schedule large batches of work in parallel.
 
-It's also worth noting that the Dapr workflow engine requires that all instances of each workflow app register the exact same set of workflows and activities. In other words, it's not possible to scale certain workflows or activities independently. All workflows and activities within an app must be scaled together.
+It's also worth noting that the Dapr Workflow engine requires that all instances of each workflow app register the exact same set of workflows and activities. In other words, it's not possible to scale certain workflows or activities independently. All workflows and activities within an app must be scaled together.
 {{% /alert %}}
 
 Workflows don't control the specifics of how load is distributed across the cluster. For example, if a workflow schedules 10 activity tasks to run in parallel, all 10 tasks may run on as many as 10 different compute nodes or as few as a single compute node. The actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
 
 ## Workflow latency
 
-In order to provide guarantees around durability and resiliency, Dapr workflows frequently write to the state store and rely on reminders to drive execution. Dapr workflows therefore may not be appropriate for latency-sensitive workloads. Expected sources of high latency include:
+In order to provide guarantees around durability and resiliency, Dapr Workflows frequently write to the state store and rely on reminders to drive execution. Dapr Workflows therefore may not be appropriate for latency-sensitive workloads. Expected sources of high latency include:
 
 * Latency from the state store when persisting workflow state.
 * Latency from the state store when rehydrating workflows with large histories.
@@ -150,3 +150,9 @@ See the [Reminder usage and execution guarantees]({{< ref workflow-architecture.
 
 ## Next steps
 
+{{< button text="Author workflows >>" page="howto-author-workflow.md" >}}
+
+## Related links
+- [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
+- [Workflow API reference]({{< ref workflow_api.md >}})
+- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

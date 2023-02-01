@@ -10,7 +10,7 @@ Now that you've learned about the [workflow building block]({{< ref workflow-ove
 
 ## Workflows
 
-Dapr workflows are functions you write that define a series of steps or tasks to be executed in a particular order. The Dapr workflow engine takes care of coordinating and managing the execution of the steps, including managing failures and retries. If the app hosting your workflows is scaled out across multiple machines, the workflow engine may also load balance the execution of workflows and their tasks across multiple machines.
+Dapr Workflows are functions you write that define a series of steps or tasks to be executed in a particular order. The Dapr Workflow engine takes care of coordinating and managing the execution of the steps, including managing failures and retries. If the app hosting your workflows is scaled out across multiple machines, the workflow engine may also load balance the execution of workflows and their tasks across multiple machines.
 
 There are several different kinds of tasks that a workflow can schedule, including [activities]({{< ref "workflow-capabilities.md#workflow-activities" >}}) for executing custom logic, [durable timers]({{< ref "workflow-capabilities.md#durable-timers" >}}) for putting the workflow to sleep for arbitrary lengths of time, [child workflows]({{< ref "workflow-capabilities.md#child-workflows" >}}) for breaking larger workflows into smaller pieces, and [external event waiters]({{< ref "workflow-capabilities.md#external-events" >}}) for blocking workflows until they receive external event signals. These tasks are described in more details in their corresponding sections.
 
@@ -22,7 +22,7 @@ Only one workflow instance with a given ID can exist at any given time. However,
 
 ### Workflow replay
 
-Dapr workflows maintain their execution state by using a technique known as [event sourcing](https://learn.microsoft.com/azure/architecture/patterns/event-sourcing). Instead of directly storing the current state of a workflow as a snapshot, the workflow engine manages an append-only log of history events that describe the various steps that a workflow has taken. When using the workflow authoring SDK, the storing of these history events happens automatically whenever the workflow "awaits" for the result of a scheduled task.
+Dapr Workflows maintain their execution state by using a technique known as [event sourcing](https://learn.microsoft.com/azure/architecture/patterns/event-sourcing). Instead of directly storing the current state of a workflow as a snapshot, the workflow engine manages an append-only log of history events that describe the various steps that a workflow has taken. When using the workflow authoring SDK, the storing of these history events happens automatically whenever the workflow "awaits" for the result of a scheduled task.
 
 {{% alert title="Note" color="primary" %}}
 For more information on how workflow state is managed, see the [workflow architecture guide]({{< ref workflow-architecture.md >}}).
@@ -30,7 +30,7 @@ For more information on how workflow state is managed, see the [workflow archite
 
 When a workflow "awaits" a scheduled task, it may unload itself from memory until the task completes. Once the task completes, the workflow engine will schedule the workflow function to run again. This second execution of the workflow function is known as a _replay_. When a workflow function is replayed, it runs again from the beginning. However, when it encounters a task that it already scheduled, instead of scheduling that task again, the workflow engine will return the result of the scheduled task to the workflow and continue execution until the next "await" point. This "replay" behavior continues until the workflow function completes or fails with an error.
 
-Using this replay technique, a workflow is able to resume execution from any "await" point as if it had never been unloaded from memory. Even the values of local variables from previous runs can be restored without the workflow engine knowing anything about what data they stored. This ability to restore state is also what makes Dapr workflows _durable_ and fault tolerant.
+Using this replay technique, a workflow is able to resume execution from any "await" point as if it had never been unloaded from memory. Even the values of local variables from previous runs can be restored without the workflow engine knowing anything about what data they stored. This ability to restore state is also what makes Dapr Workflows _durable_ and fault tolerant.
 
 ### Workflow determinism and code constraints
 
@@ -78,7 +78,7 @@ Workflow activities are the basic unit of work in a workflow and are the tasks t
 
 Unlike workflows, activities aren't restricted in the type of work you can do in them. Activities are frequently used to make network calls or run CPU intensive operations. An activity can also return data back to the workflow.
 
-The Dapr workflow engine guarantees that each called activity will be executed **at least once** as part of a workflow's execution. Because activities only guarantee at-least-once execution, it's recommended that activity logic be implemented as idempotent whenever possible.
+The Dapr Workflow engine guarantees that each called activity will be executed **at least once** as part of a workflow's execution. Because activities only guarantee at-least-once execution, it's recommended that activity logic be implemented as idempotent whenever possible.
 
 ## Child workflows
 
@@ -98,7 +98,7 @@ Because child workflows are independent of their parents, terminating a parent w
 
 ## Durable timers
 
-Dapr workflows allow you to schedule reminder-like durable delays for any time range, including minutes, days, or even years. These _durable timers_ can be scheduled by workflows to implement simple delays or to set up ad-hoc timeouts on other async tasks. More specifically, a durable timer can be set to trigger on a particular date or after a specified duration. There are no limits to the maximum duration of durable timers, which are internally backed by internal actor reminders. For example, a workflow that tracks a 30-day free subscription to a service could be implemented using a durable timer that fires 30-days after the workflow is created. Workflows can be safely unloaded from memory while waiting for a durable timer to fire.
+Dapr Workflows allow you to schedule reminder-like durable delays for any time range, including minutes, days, or even years. These _durable timers_ can be scheduled by workflows to implement simple delays or to set up ad-hoc timeouts on other async tasks. More specifically, a durable timer can be set to trigger on a particular date or after a specified duration. There are no limits to the maximum duration of durable timers, which are internally backed by internal actor reminders. For example, a workflow that tracks a 30-day free subscription to a service could be implemented using a durable timer that fires 30-days after the workflow is created. Workflows can be safely unloaded from memory while waiting for a durable timer to fire.
 
 {{% alert title="Note" color="primary" %}}
 Some APIs in the workflow authoring SDK may internally schedule durable timers to implement internal timeout behavior.
@@ -118,6 +118,11 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 ## Next steps
 
+{{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}
+
+## Related links
+
 - [Try out Dapr Workflows using the quickstart](todo)
-- [Learn how to author a workflow]({{< ref howto-author-workflow.md >}})
-- [Learn how to manage workflows]({{< ref howto-manage-workflow.md >}})
+- [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
+- [Workflow API reference]({{< ref workflow_api.md >}})
+- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

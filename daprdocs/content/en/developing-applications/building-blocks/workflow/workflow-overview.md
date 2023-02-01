@@ -216,5 +216,10 @@ Watch [this video for an overview on Dapr Workflows](https://youtu.be/s1p9MNl4VG
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=131" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Next steps
-- Learn more about [authoring workflows for the built-in engine component]()
-- Learn more about [supported workflow components]()
+
+{{< button text="Workflow features and concepts >>" page="workflow-capabilities.md" >}}
+
+## Related links
+
+- [Workflow API reference]({{< ref workflow_api.md >}})
+- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
