@@ -25,9 +25,9 @@
   since: "1.4"
 - component: Pulsar
   link: setup-pulsar
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.7"
+  since: "1.10"
 - component: MQTT3
   link: setup-mqtt3
   state: Stable
