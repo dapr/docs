@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How to: Implement pluggable components"
-linkTitle: "Pluggable components"
+linkTitle: "Implement pluggable components"
 weight: 1100
 description: "Learn how to author and implement pluggable components"
 ---
@@ -107,7 +107,7 @@ This concrete implementation and auxiliary code are the **core** of your pluggab
 
 ## Return semantic state store errors
 
-In order to meet concurrency requirements, your state store pluggable components need error mapping from gRPC returned errors to semantic errors. Each of the three Dapr state store errors below maps to a gRPC status code. 
+In order to meet concurrency requirements, your state store pluggable components need error mapping, from gRPC returned errors to semantic errors. Each of the three Dapr state store errors below maps to a gRPC status code. 
 
 | Error                    | gRPC error code                 | 
 | ------------------------ | ------------------------------- | 
@@ -123,7 +123,7 @@ The following examples demonstrate how to return an error in your own pluggable 
  <!-- .NET -->
 {{% codetab %}}
 
-> Note: 
+> **Important:** In order to use .NET for error mapping, first install the [`Google.Api.CommonProtos` NuGet package](https://www.nuget.org/packages/Google.Api.CommonProtos/).
 
 **Etag Mismatch**
 
