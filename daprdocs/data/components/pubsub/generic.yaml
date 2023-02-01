@@ -3,7 +3,7 @@
   state: Deprecated
   version: v1
   since: "1.9"
-- component: In Memory
+- component: In-memory
   link: setup-inmemory
   state: Beta
   version: v1
@@ -20,14 +20,14 @@
   since: "1.0"
 - component: JetStream
   link: setup-jetstream
-  state: Alpha
-  version: v1
-  since: "1.4"
-- component: Pulsar
-  link: setup-pulsar
   state: Beta
   version: v1
-  since: "1.7"
+  since: "1.10"
+- component: Pulsar
+  link: setup-pulsar
+  state: Stable
+  version: v1
+  since: "1.10"
 - component: MQTT3
   link: setup-mqtt3
   state: Stable
@@ -50,6 +50,6 @@
   since: "1.8"
 - component: Solace-AMQP
   link: setup-solace-amqp
-  state: Alpha
+  state: Beta
   version: v1
   since: "1.10"
