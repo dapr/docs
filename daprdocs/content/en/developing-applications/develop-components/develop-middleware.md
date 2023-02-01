@@ -11,27 +11,36 @@ aliases:
 
 Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. In this guide, you'll learn how to create a middleware component. To learn how to configure an existing middleware component, see [Configure middleware components]({{< ref middleware.md >}})
 
-## Writing a custom middleware
+## Writing a custom HTTP middleware
 
-Dapr uses [FastHTTP](https://github.com/valyala/fasthttp) to implement its HTTP server. Hence, your HTTP middleware needs to be written as a FastHTTP handler. Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns **fasthttp.RequestHandler** and **error**:
+HTTP middlewares in Dapr wrap standard Go [net/http](https://pkg.go.dev/net/http) handler functions.
+
+Your middleware needs to implement a middleware interface, which defines a **GetHandler** method that returns a [**http.Handler**](https://pkg.go.dev/net/http#Handler) callback and an **error**:
 
 ```go
 type Middleware interface {
-  GetHandler(metadata Metadata) (func(h fasthttp.RequestHandler) fasthttp.RequestHandler, error)
+  GetHandler(metadata middleware.Metadata) (func(next http.Handler) http.Handler, error)
 }
 ```
 
-Your handler implementation can include any inbound logic, outbound logic, or both:
+The handler receives a `next` callback that should be invoked to continue processing the request.
+
+Your handler implementation can include an inbound logic, outbound logic, or both:
 
 ```go
 
-func (m *customMiddleware) GetHandler(metadata Metadata) (func(fasthttp.RequestHandler) fasthttp.RequestHandler, error) {
+func (m *customMiddleware) GetHandler(metadata middleware.Metadata) (func(next http.Handler) http.Handler, error) {
   var err error
-  return func(h fasthttp.RequestHandler) fasthttp.RequestHandler {
-    return func(ctx *fasthttp.RequestCtx) {
-      // inbound logic
-      h(ctx)  // call the downstream handler
-      // outbound logic
+  return func(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+      // Inbound logic
+      // ...
+
+      // Call the next handler
+      next.ServeHTTP(w, r)
+
+      // Outbound logic
+      // ...
     }
   }, err
 }
