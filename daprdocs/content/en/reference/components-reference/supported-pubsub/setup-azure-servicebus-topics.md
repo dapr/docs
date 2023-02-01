@@ -12,7 +12,8 @@ aliases:
 
 To setup Azure Service Bus Topics pubsub create a component of type `pubsub.azure.servicebus.topics`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
-> This component uses [topics](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions) on Azure Service Bus. For queues, see the [Azure Service Bus Queues pubsub component]({{< ref "setup-azure-servicebus-queues" >}}).
+> This component uses topics on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).  
+> For using queues, see the [Azure Service Bus Queues pubsub component]({{< ref "setup-azure-servicebus-queues" >}}).
 
 ### Connection String Authentication
 
@@ -25,7 +26,8 @@ spec:
   type: pubsub.azure.servicebus.topics
   version: v1
   metadata:
-  - name: connectionString # Required when not using Azure Authentication.
+  # Required when not using Azure AD Authentication
+  - name: connectionString
     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
   # - name: consumerID # Optional: defaults to the app's own ID
   #   value: "{identifier}" 
@@ -71,7 +73,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString`   | Y  | Shared access policy connection-string for the Service Bus. Required unless using Azure AD authentication. | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
+| `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Azure AD authentication. | See example above
 | `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
 | `consumerID`         | N        | Consumer ID (a.k.a consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`

@@ -23,7 +23,7 @@ spec:
   version: v1
   metadata:
   - name: connectionString # Required when not using Azure Authentication.
-    value: "Endpoint=sb://************"
+    value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
   - name: queueName
     value: queue1
   # - name: timeoutInSec # Optional

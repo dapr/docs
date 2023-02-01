@@ -11,7 +11,8 @@ aliases:
 
 To setup Azure Service Bus Queues pubsub create a component of type `pubsub.azure.servicebus.queues`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
 
-> This component uses [queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions) on Azure Service Bus. For topics, see the [Azure Service Bus Topics pubsub component]({{< ref "setup-azure-servicebus-topics" >}}).
+> This component uses queues on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).  
+> For using topics, see the [Azure Service Bus Topics pubsub component]({{< ref "setup-azure-servicebus-topics" >}}).
 
 ### Connection String Authentication
 
@@ -24,7 +25,8 @@ spec:
   type: pubsub.azure.servicebus.queues
   version: v1
   metadata:
-  - name: connectionString # Required when not using Azure Authentication.
+  # Required when not using Azure AD Authentication
+  - name: connectionString
     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
   # - name: timeoutInSec # Optional
   #   value: 60
@@ -66,7 +68,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString`   | Y  | Shared access policy connection-string for the Service Bus. Required unless using Azure AD authentication. | "`Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}`"
+| `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Azure AD authentication. | See example above
 | `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
