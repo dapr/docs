@@ -107,7 +107,7 @@ app.Run();
 
 ### Register the workflow activities
 
-Next, you'll define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like a class constructor to access the logger for ASP.NET or binding to a Dapr client.
+Next, you'll define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client.
 
 {{< tabs ".NET" >}}
 
@@ -162,6 +162,8 @@ Because of how replay-based workflows execute, you'll write most logic that does
 
 
 ## Next steps
+
+Now that you've authored a workflow, learn how to manage it.
 
 {{< button text="Manage workflows >>" page="howto-manage-workflow.md" >}}
 
