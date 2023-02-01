@@ -1,5 +1,5 @@
 - component: AWS SNS/SQS
   link: setup-aws-snssqs
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.6"
+  since: "1.10"
