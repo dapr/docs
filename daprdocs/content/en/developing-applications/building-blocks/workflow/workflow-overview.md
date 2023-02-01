@@ -40,7 +40,7 @@ The Dapr Workflow engine is internally powered by Dapr's actor runtime. The foll
 
 Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This will register the workflow and any workflow activities, or tasks that workflows can schedule.
 
-Notice that the engine itself is embedded directly into the sidecar and implemented using the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
+The engine itself is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/microsoft/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
 
 For more information about the architecture of Dapr Workflow, see the [workflow architecture]({{< ref workflow-architecture >}}) article.
 
@@ -63,16 +63,17 @@ Dapr Workflows simplify complex, stateful coordination requirements in microserv
 
 ### Task chaining
 
-In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing. 
+In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing.
 
 In some cases, the steps of the workflow may need to be orchestrated across multiple microservices. For increased reliability and scalability, you're also likely to use queues to trigger the various steps.
 
 <img src="/images/workflow-overview/workflows-chaining.png" width=800 alt="Diagram showing how the task chaining workflow pattern works">
 
 While the pattern is simple, there are many complexities hidden in the implementation. For example:
-- What happens if one of the microservices are unavailable for an extended period of time? 
-- Can failed steps be automatically retried? 
-- If not, how do you facilitate the rollback of previously completed steps, if applicable? 
+
+- What happens if one of the microservices are unavailable for an extended period of time?
+- Can failed steps be automatically retried?
+- If not, how do you facilitate the rollback of previously completed steps, if applicable?
 - Implementation details aside, is there a way to visualize the workflow so that other engineers can understand what it does and how it works?
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
@@ -111,32 +112,68 @@ catch (TaskFailedException)
 {{< /tabs >}}
 
 {{% alert title="Note" color="primary" %}}
-In the example above, `"Step1"`, `"Step2"`, `"MyCompensation"`, etc. represent workflow activities, which are essentially other functions in your code that actually implement the steps of the workflow. For brevity, these implementations are left out of this example.
+In the example above, `"Step1"`, `"Step2"`, `"MyCompensation"`, etc. represent workflow activities, which are functions in your code that actually implement the steps of the workflow. For brevity, these activity implementations are left out of this example.
 {{% /alert %}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
 
 Behind the scenes, the Dapr Workflow runtime:
 
-- Takes care of executing the workflow and ensuring that it runs to completion. 
+- Takes care of executing the workflow and ensuring that it runs to completion.
 - Saves progress automatically.
-- Nudges the worfklow app to effectively resume from the last completed step if the workflow process itself fails for any reason. 
-- Enables error handling to be expressed naturally in your target programming language, allowing you to implement compensation logic easily. 
+- Automatically resumes the workflow from the last completed step if the workflow process itself fails for any reason.
+- Enables error handling to be expressed naturally in your target programming language, allowing you to implement compensation logic easily.
 - Provides built-in retry configuration primitives to simplify the process of configuring complex retry policies for individual steps in the workflow.
 
-### Fan out/fan in
+### Fan-out/fan-in
 
-In the fan out/fan in design pattern, you execute multiple tasks simultaneously across multiple workers and wait for them to recombine.
-
-The fan out part of the pattern involves distributing the input data to multiple workers, each of which processes a portion of the data in parallel. 
-
-The fan in part of the pattern involves recombining the results from the workers into a single output. 
+In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously across potentially multiple workers, wait for them to finish, and perform some aggregation on the result.
 
 <img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan out/fan in workflow pattern works">
 
-This pattern can be implemented in a variety of ways, such as using message queues, channels, or async/await. The Dapr Workflows extension handles this pattern with relatively simple code:
+In addition to the challenges mentioned in the previous pattern, there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
 
-TODO: CODE EXAMPLE
+- How do you control the degree of parallelism?
+- How do you know when to trigger subsequent aggregation steps?
+- What if the number of parallel steps is dynamic?
+
+Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+// Get a list of N work items to process in parallel.
+object[] workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
+
+// Schedule the parallel tasks, but don't wait for them to complete yet.
+var parallelTasks = new List<Task<int>>(workBatch.Length);
+for (int i = 0; i < workBatch.Length; i++)
+{
+    Task<int> task = context.CallActivityAsync<int>("ProcessWorkItem", workBatch[i]);
+    parallelTasks.Add(task);
+}
+
+// Everything is scheduled. Wait here until all parallel tasks have completed.
+await Task.WhenAll(parallelTasks);
+
+// Aggregate all N outputs and publish the result.
+int sum = parallelTasks.Sum(t => t.Result);
+await context.CallActivityAsync("PostResults", sum);
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+The key takeaways from this example are:
+
+- The fan-out/fan-in pattern can be expressed as a simple function using ordinary programming constructs
+- The number of parallel tasks can be static or dynamic
+- The workflow itself is capable of aggregating the results of parallel executions
+
+While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and 40 complete but then the process crashes, the workflow will restart itself automatically and schedule only the remaining 60 tasks.
 
 ### Async HTTP APIs
 
