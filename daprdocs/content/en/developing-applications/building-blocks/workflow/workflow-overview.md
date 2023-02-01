@@ -3,71 +3,118 @@ type: docs
 title: Workflow building block overview
 linkTitle: Overview
 weight: 1000
-description: "Overview of the workflow API"
+description: "Overview of Dapr Workflow"
 ---
 
 {{% alert title="Note" color="primary" %}}
-The Workflow building block is currently in alpha state supporting .NET. 
+Dapr Workflow is currently in alpha state supporting .NET.
 {{% /alert %}}
 
-The Dapr Workflow API strives to make orchestrating logic for messaging, state management, and failure handling across various microservices easier for developers. Prior to adding workflows to Dapr, you'd often need to build ad-hoc workflows behind-the-scenes in order to bridge that gap. 
+Dapr Workflow strives to make orchestrating logic for messaging, state management, and failure handling across various microservices easier for developers. Prior to adding workflows to Dapr, you'd often need to build ad-hoc workflows behind-the-scenes in order to bridge that gap.
 
-The durable, resilient Dapr Workflow API:
+The durable, resilient Dapr Workflow capability:
 
-- Provides a workflow API for running workflows
-- Offers a built-in workflow runtime to write Dapr workflows (of type `workflow.dapr`)
+- Offers a built-in workflow runtime for driving Dapr workflow execution
+- Provides HTTP and gRPC APIs for managing workflows
 - Will integrate with future supported external workflow runtime components
 
 <img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr workflows">
 
+Dapr workflows can assist with scenarios like:
 
-The Workflow building block can assist with scenarios like:
 - Order processing involving inventory management, payment systems, shipping, etc.
-- HR onboarding workflows coordinating tasks across multiple departments and participatns
+- HR onboarding workflows coordinating tasks across multiple departments and participants
 - Orchestrating the roll-out of digital menu updates in a national restaurant chain
 - Image processing workflows involving API-based classification and storage
 
 ## How it works
 
-The Dapr Workflow engine runs in the Dapr sidecar and consists of:
+Dapr Workflow consists of:
+
 - SDKs for authoring workflows in code, using any language
-- APIs for managing workflows (start, query, suspend/resume, terminate)
+- HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate)
 
-The workflow engine is internally powered by Dapr's actor runtime. In the following diagram demonstrates the Dapr Workflow architecture in Kubernetes mode:
+The Dapr workflow engine is internally powered by Dapr's actor runtime. The following diagram illustrates the Dapr Workflow architecture in Kubernetes mode:
 
+<img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
 
-Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the SDK and connect to the sidecar using gRPC stream. This will register the workflow and any workflow activities, or tasks that workflows can schedule.
+Essentially, to use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This will register the workflow and any workflow activities, or tasks that workflows can schedule.
 
-Notice that the engine itself is embedded directly into the sidecar and implemented by the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
+Notice that the engine itself is embedded directly into the sidecar and implemented using the `durabletask-go` framework library. This framework allows you to swap out different storage providers, including a storage provider created specifically for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in variety of Dapr-supported state stores, like Redis, CosmosDB, etc.
+
+For more information about the architecture of Dapr Workflow, see the [workflow architecture]({{<ref workflow-architecture>}}) article.
 
 ## Features
 
 ### HTTP/gRPC API calls to start or terminate any workflow
 
-Once you create an application with workflow code and run it with Dapr, you can make HTTP/gRPC calls to Dapr to run specific tasks/workflows that reside in the application. Each individual workflow can be started or terminated through a POST request. 
+Once you create an application with workflow code and run it with Dapr, you can make HTTP/gRPC calls to Dapr to run specific workflows that reside in the application. Each individual workflow can be started or terminated through a POST request.
 
 You can also get information on the workflow (even if it has been terminated or it finished naturally) through a GET request. This GET request will send back information, such as:
-- The instance ID of the workflow
-- The time that the run started
-- The current running status, whether that be “Running”, “Terminated”, or “Completed”
+
+- The unique instance ID of the workflow
+- The inputs and outputs of the workflow instance
+- The time that the workflow instance started
+- The current running status, whether that be "Running", "Terminated", or "Completed"
 
 ## Workflow patterns
 
-Dapr workflows simplify complex, stateful coordination requirements in event-driven applications. The following sections describe several application patterns that can benefit from Dapr workflows:
+Dapr workflows simplify complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr workflows:
 
-### Function chaining
+### Task chaining
 
-In the function chaining pattern, multiple functions are called in succession on a single input, and the output of one function is passed as the input to the next function. With this pattern, you can create a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing.
+In the task chaining pattern, multiple steps in a workflow are run in succession, and the output of one step may be passed as the input to the next step. Task chaining workflows typically involve creating a sequence of operations that need to be performed on some data, such as filtering, transforming, and reducing. In some cases, the steps of the workflow may need to be orchestrated across multiple microservices. For increased reliability and scalability, you're also likely to use queues to trigger the various steps.
 
-TODO: DIAGRAM?
+*TODO: DIAGRAM (`[step 1] --> [step 2] --> [step 3] --> [step 4]`)*
 
-You can use Dapr workflows to implement the function chaining pattern concisely as shown in the following example.
+While the pattern is simple, there are many complexities hidden in the implementation. For example, what happens if one of the microservices are unavailable for an extended period of time? Can failed steps be automatically retried? If not, how do you facilitate the rollback of previously completed steps, if applicable? Implementation details aside, is there a way to visualize the workflow so that other engineers can understand what it does and how it works?
 
-TODO: CODE EXAMPLE
+Dapr workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+// Expotential backoff retry policy that survives long outages
+var retryPolicy = TaskOptions.FromRetryPolicy(new RetryPolicy(
+    maxNumberOfAttempts: 10,
+    firstRetryInterval: TimeSpan.FromMinutes(1),
+    backoffCoefficient: 2.0,
+    maxRetryInterval: TimeSpan.FromHours(1)));
+
+// Task failures are surfaced as ordinary .NET exceptions
+try
+{
+    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryPolicy);
+    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryPolicy);
+    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryPolicy);
+    var result4 = await context.CallActivityAsync<Guid[]>("Step4", result3, retryPolicy);
+    return string.Join(", ", result4);
+}
+catch (TaskFailedException)
+{
+    // Retries expired - apply custom compensation logic
+    await context.CallActivityAsync<long[]>("MyCompensation", options: retryPolicy);
+    throw;
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+{{% alert title="Note" color="primary" %}}
+"Step1", "Step2", "MyCompensation", etc. represent workflow activities, which are essentially other functions in your code that actually implement the steps of the workflow. For brevity, these implementations are left out of this example.
+{{% /alert %}}
+
+As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
+
+Behind the scenes, the Dapr Workflow runtime takes care of executing the workflow and ensuring that it runs to completion. Progress is saved automatically and the workflow app will be effectively resumed from the last completed step if the workflow process itself fails for any reason. Error handling is expressed naturally in your target programming language, allowing you to implement compensation logic easily. There are even built-in retry configuration primitives to simplify the process of configuring complex retry policies for individual steps in the workflow.
 
 ### Fan out/fan in
 
-In the fan out/fan in design pattern, you execute multiple tasks simultaneously across mulitple workers and wait for them to recombine.
+In the fan out/fan in design pattern, you execute multiple tasks simultaneously across multiple workers and wait for them to recombine.
 
 The fan out part of the pattern involves distributing the input data to multiple workers, each of which processes a portion of the data in parallel. 
 
