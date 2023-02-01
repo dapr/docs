@@ -202,13 +202,13 @@ By default, Kubernetes mounts a volume containing a [Service Account token](http
 
 When creating a new Pod (or a Deployment, StatefulSet, Job, etc), you can disable auto-mounting the Service Account token by setting `automountServiceAccountToken: false` in your pod's spec.
 
-We recommend that you consider deploying your apps with `automountServiceAccountToken: false` to improve the security posture of your pods, unless your apps depend on having a Service Account token. For example, you may need a Service Account token if:
+It is recommended that you consider deploying your apps with `automountServiceAccountToken: false` to improve the security posture of your pods, unless your apps depend on having a Service Account token. For example, you may need a Service Account token if:
 
 - You are using Dapr components that interact with the Kubernetes APIs, for example the [Kubernetes secret store]({{< ref "kubernetes-secret-store.md" >}}) or the [Kubernetes Events binding]{{< ref "kubernetes-binding.md" >}}).  
   Note that initializing Dapr components using [component secrets]({{< ref "component-secrets.md" >}}) stored as Kubernetes secrets does **not** require a Service Account token, so you can still set `automountServiceAccountToken: false` in this case. Only calling the Kubernetes secret store at runtime, using the [Secrets management]({{< ref "secrets-overview.md" >}}) building block, is impacted.
 - Your own application needs to interact with the Kubernetes APIs.
 
-Because of the reasons above, Dapr does not set `automountServiceAccountToken: false` automatically for you. However, in all situations where the Service Account is not required by your solution, we do recommend that you set this option in the spec of your pods.
+Because of the reasons above, Dapr does not set `automountServiceAccountToken: false` automatically for you. However, in all situations where the Service Account is not required by your solution, it is recommended that you set this option in the pods spec.
 
 ## Tracing and metrics configuration
 
