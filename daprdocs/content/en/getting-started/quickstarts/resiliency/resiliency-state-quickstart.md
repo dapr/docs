@@ -6,13 +6,9 @@ weight: 110
 description: "Get started with Dapr's resiliency capabilities via the state management API"
 ---
 
-{{% alert title="Note" color="primary" %}}
- Resiliency is currently a preview feature.
-{{% /alert %}}
-
 Observe Dapr resiliency capabilities by simulating a system failure. In this Quickstart, you will:
 
-- Execute a microservice application with resiliency enabled that continuously persists and retrieves state via Dapr's state management API. 
+- Execute a microservice application that continuously persists and retrieves state via Dapr's state management API. 
 - Trigger resiliency policies by simulating a system failure. 
 - Resolve the failure and the microservice application will resume. 
 
@@ -54,9 +50,10 @@ Install dependencies
 pip3 install -r requirements.txt 
 ```
 
-### Step 2: Run the application with resiliency enabled
+### Step 2: Run the application
 
-Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below, the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
+Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar then loads the resiliency spec located in the resources directory:
+
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -89,7 +86,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
 
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- python3
+dapr run --app-id order-processor --resources-path ../../../resources/ -- python3
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
@@ -132,7 +129,7 @@ Once Redis is stopped, the requests begin to fail and the retry policy titled `r
 INFO[0006] Error processing operation component[statestore] output. Retrying...
 ```
 
-As per the `retryFroever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
+As per the `retryForever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
 
 ```yaml
 retryForever:
@@ -223,9 +220,10 @@ Install dependencies
 npm install
 ```
 
-### Step 2: Run the application with resiliency enabled
+### Step 2: Run the application 
 
-Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below, the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
+Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar then loads the resiliency spec located in the resources directory:
+
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -257,7 +255,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
    ```
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
@@ -300,7 +298,7 @@ Once Redis is stopped, the requests begin to fail and the retry policy titled `r
 INFO[0006] Error processing operation component[statestore] output. Retrying...
 ```
 
-As per the `retryFroever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
+As per the `retryForever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
 
 ```yaml
 retryForever:
@@ -392,9 +390,9 @@ dotnet restore
 dotnet build
 ```
 
-### Step 2: Run the application with resiliency enabled
+### Step 2: Run the application
 
-Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below, the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
+Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar then loads the resiliency spec located in the resources directory:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -426,7 +424,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
    ```
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
@@ -469,7 +467,7 @@ Once Redis is stopped, the requests begin to fail and the retry policy titled `r
 INFO[0006] Error processing operation component[statestore] output. Retrying...
 ```
 
-As per the `retryFroever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
+As per the `retryForever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
 
 ```yaml
 retryForever:
@@ -563,9 +561,9 @@ Install dependencies
 mvn clean install
 ```
 
-### Step 2: Run the application with resiliency enabled
+### Step 2: Run the application
 
-Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below, the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
+Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar then loads the resiliency spec located in the resources directory:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -597,7 +595,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
    ```
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../resources/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
@@ -640,7 +638,7 @@ Once Redis is stopped, the requests begin to fail and the retry policy titled `r
 INFO[0006] Error processing operation component[statestore] output. Retrying...
 ```
 
-As per the `retryFroever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
+As per the `retryForever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
 
 ```yaml
 retryForever:
@@ -731,9 +729,9 @@ Install dependencies
 go build .
 ```
 
-### Step 2: Run the application with resiliency enabled
+### Step 2: Run the application
 
-Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` command below, the `--config` parameter applies a Dapr configuration that enables the resiliency feature. By enabling resiliency, the resiliency spec located in the components directory is loaded by the `order-processor` sidecar. The resilency spec is:
+Run the `order-processor` service alongside a Dapr sidecar. The Dapr sidecar then loads the resiliency spec located in the resources directory:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -765,7 +763,7 @@ Run the `order-processor` service alongside a Dapr sidecar. In the `dapr run` co
    ```
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components -- go run .
+dapr run --app-id order-processor --resources-path ../../../resources -- go run .
 ```
 
 Once the application has started, the `order-processor`service writes and reads `orderId` key/value pairs to the `statestore` Redis instance [defined in the `statestore.yaml` component]({{< ref "statemanagement-quickstart.md#statestoreyaml-component-file" >}}).
@@ -808,7 +806,7 @@ Once Redis is stopped, the requests begin to fail and the retry policy titled `r
 INFO[0006] Error processing operation component[statestore] output. Retrying...
 ```
 
-As per the `retryFroever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
+As per the `retryForever` policy, retries will continue for each failed request indefinitely, in 5 second intervals. 
 
 ```yaml
 retryForever:

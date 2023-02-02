@@ -3,8 +3,14 @@
   state: Stable
   version: v1
   since: "1.8"
+  features:
+    bulkPublish: true
+    bulkSubscribe: false
 - component: Azure Service Bus
   link: setup-azure-servicebus
   state: Stable
   version: v1
   since: "1.0"
+  features:
+    bulkPublish: true
+    bulkSubscribe: true
