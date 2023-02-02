@@ -95,5 +95,5 @@ code -a /workspaces/dapr
 
 ## Related links
 <!-- IGNORE_LINKS -->
-- [GitHub documentation](https://docs.github.com/en/codespaces/overview)
+- [GitHub documentation](https://docs.github.com/codespaces/overview)
 <!-- END_IGNORE -->
