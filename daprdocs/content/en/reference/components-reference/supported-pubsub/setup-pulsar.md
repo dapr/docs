@@ -39,9 +39,27 @@ spec:
   - name: disableBatching
     value: "false"
   - name: <topic-name>.jsonschema # sets a json schema validation for the configured topic
-    value: "{\"type\":\"record\",\"name\":\"Example\",\"namespace\":\"test\",\"fields\":[{\"name\":\"ID\",\"type\":\"int\"},{\"name\":\"Name\",\"type\":\"string\"}]}"
+    value: |
+      {
+        "type": "record",
+        "name": "Example",
+        "namespace": "test",
+        "fields": [
+          {"name": "ID","type": "int"},
+          {"name": "Name","type": "string"}
+        ]
+      }
   - name: <topic-name>.avroschema # sets an avro schema validation for the configured topic
-    value: "{\"type\":\"record\",\"name\":\"Example\",\"namespace\":\"test\",\"fields\":[{\"name\":\"ID\",\"type\":\"int\"},{\"name\":\"Name\",\"type\":\"string\"}]}"
+    value: |
+      {
+        "type": "record",
+        "name": "Example",
+        "namespace": "test",
+        "fields": [
+          {"name": "ID","type": "int"},
+          {"name": "Name","type": "string"}
+        ]
+      }
 ```
 
 ## Spec metadata fields
