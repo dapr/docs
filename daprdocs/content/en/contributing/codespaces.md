@@ -34,7 +34,7 @@ If you haven't already forked the repo, creating the Codespace will also create 
 
 ## Developing Dapr Components in a Codespace
 
-Developing a new Dapr component requires working with both the [dapr/components-contrib](https://github.com/dapr/components-contrib) and [dapr/dapr](https://github.com/dapr/dapr) repos. We recommend placing both folders inside the `/workspaces` directory, side-by-side.
+Developing a new Dapr component requires working with both the [dapr/components-contrib](https://github.com/dapr/components-contrib) and [dapr/dapr](https://github.com/dapr/dapr) repos. It is recommended to place both folders inside the `/workspaces` directory, side-by-side.
 
 ### If you created a Codespace from `dapr/dapr`
 
