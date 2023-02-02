@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Workflow capabilities"
-linkTitle: "Workflow capabilities"
+title: "Features and concepts"
+linkTitle: "Features and concepts"
 weight: 2000
 description: "Learn more about the Dapr Workflow features and concepts"
 ---
@@ -12,7 +12,7 @@ Now that you've learned about the [workflow building block]({{< ref workflow-ove
 
 Dapr Workflows are functions you write that define a series of steps or tasks to be executed in a particular order. The Dapr Workflow engine takes care of coordinating and managing the execution of the steps, including managing failures and retries. If the app hosting your workflows is scaled out across multiple machines, the workflow engine may also load balance the execution of workflows and their tasks across multiple machines.
 
-There are several different kinds of tasks that a workflow can schedule, including [activities]({{< ref "workflow-capabilities.md#workflow-activities" >}}) for executing custom logic, [durable timers]({{< ref "workflow-capabilities.md#durable-timers" >}}) for putting the workflow to sleep for arbitrary lengths of time, [child workflows]({{< ref "workflow-capabilities.md#child-workflows" >}}) for breaking larger workflows into smaller pieces, and [external event waiters]({{< ref "workflow-capabilities.md#external-events" >}}) for blocking workflows until they receive external event signals. These tasks are described in more details in their corresponding sections.
+There are several different kinds of tasks that a workflow can schedule, including [activities]({{< ref "workflow-features-concepts.md#workflow-activities" >}}) for executing custom logic, [durable timers]({{< ref "workflow-features-concepts.md#durable-timers" >}}) for putting the workflow to sleep for arbitrary lengths of time, [child workflows]({{< ref "workflow-features-concepts.md#child-workflows" >}}) for breaking larger workflows into smaller pieces, and [external event waiters]({{< ref "workflow-features-concepts.md#external-events" >}}) for blocking workflows until they receive external event signals. These tasks are described in more details in their corresponding sections.
 
 ### Workflow identity
 
@@ -118,11 +118,11 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 ## Next steps
 
-{{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}
+{{< button text="Workflow patterns >>" page="workflow-patterns.md" >}}
 
 ## Related links
 
 - [Try out Dapr Workflows using the quickstart](todo)
-- [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
+- [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

@@ -2,7 +2,7 @@
 type: docs
 title: "How to: Author a workflow"
 linkTitle: "How to: Author workflows"
-weight: 4000
+weight: 5000
 description: "Learn how to develop and author workflows"
 ---
 
@@ -26,9 +26,59 @@ Dapr Workflow logic is implemented using general purpose programming languages, 
 
 The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
 
-## Register the workflow
+## Write the workflow activities
 
-To start using the workflow building block, simply write the workflow details directly into your application code. 
+Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client.
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+Continuing the ASP.NET order processing example, the `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. 
+
+It also includes a `RunAsync` method that will do the heavy lifting of the workflow and call the workflow activities. The activities called in the example are:
+- `NotifyActivity`: Receive notification of a new order
+- `ReserveInventoryActivity`: Check for sufficient inventory to meet the new order
+- `ProcessPaymentActivity`: Process payment for the order. Includes `NotifyActivity` to send notification of successful order
+
+```csharp
+ class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
+    {
+        public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
+        {
+            //...
+
+            await context.CallActivityAsync(
+                nameof(NotifyActivity),
+                new Notification($"Received order {orderId} for {order.Name} at {order.TotalCost:c}"));
+
+            //...
+
+            InventoryResult result = await context.CallActivityAsync<InventoryResult>(
+                nameof(ReserveInventoryActivity),
+                new InventoryRequest(RequestId: orderId, order.Name, order.Quantity));
+            //...
+            await context.CallActivityAsync(
+                nameof(ProcessPaymentActivity),
+                new PaymentRequest(RequestId: orderId, order.TotalCost, "USD"));
+
+            await context.CallActivityAsync(
+                nameof(NotifyActivity),
+                new Notification($"Order {orderId} processed successfully!"));
+
+            // End the workflow with a success result
+            return new OrderResult(Processed: true);
+        }
+    }
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Write the workflow
+
+Compose the workflow activities into a workflow. 
 
 {{< tabs ".NET" >}}
 
@@ -104,57 +154,8 @@ app.Run();
 {{< /tabs >}}
 
 
-## Register the workflow activities
 
-Next, you'll define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client.
-
-{{< tabs ".NET" >}}
-
-{{% codetab %}}
-
-Continuing the ASP.NET order processing example, the `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. 
-
-It also includes a `RunAsync` method that will do the heavy lifting of the workflow and call the workflow activities. The activities called in the example are:
-- `NotifyActivity`: Receive notification of a new order
-- `ReserveInventoryActivity`: Check for sufficient inventory to meet the new order
-- `ProcessPaymentActivity`: Process payment for the order. Includes `NotifyActivity` to send notification of successful order
-
-```csharp
- class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
-    {
-        public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
-        {
-            //...
-
-            await context.CallActivityAsync(
-                nameof(NotifyActivity),
-                new Notification($"Received order {orderId} for {order.Name} at {order.TotalCost:c}"));
-
-            //...
-
-            InventoryResult result = await context.CallActivityAsync<InventoryResult>(
-                nameof(ReserveInventoryActivity),
-                new InventoryRequest(RequestId: orderId, order.Name, order.Quantity));
-            //...
-            await context.CallActivityAsync(
-                nameof(ProcessPaymentActivity),
-                new PaymentRequest(RequestId: orderId, order.TotalCost, "USD"));
-
-            await context.CallActivityAsync(
-                nameof(NotifyActivity),
-                new Notification($"Order {orderId} processed successfully!"));
-
-            // End the workflow with a success result
-            return new OrderResult(Processed: true);
-        }
-    }
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-{{% alert title="Important" color="primary" %}}
+{{% alert title="Important" color="warning" %}}
 Because of how replay-based workflows execute, you'll write most logic that does things like IO and interacting with systems **inside activities**. Meanwhile, **workflow method** is just for orchestrating those activities.
 
 {{% /alert %}}

@@ -2,8 +2,8 @@
 type: docs
 title: "Workflow architecture"
 linkTitle: "Workflow architecture"
-weight: 3000
-description: "Overview of the Dapr Workflow engine architecture"
+weight: 4000
+description: "The Dapr Workflow engine architecture"
 ---
 
 [Dapr Workflows]({{< ref "workflow-overview.md" >}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. This article describes:
@@ -14,7 +14,13 @@ description: "Overview of the Dapr Workflow engine architecture"
 
 For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{< ref "workflow-overview.md" >}}).
 
-The Dapr Workflow engine is internally implemented using the open source [`durabletask-go`](https://github.com/microsoft/durabletask-go) library, which is embedded directly into the Dapr sidecar. Dapr implements a custom durable task "backend" using internally managed actors, which manage workflow scale-out, persistence, and leader election. This article will go into more details in subsequent sections.
+The Dapr Workflow engine is internally powered by Dapr's actor runtime. The following diagram illustrates the Dapr Workflow architecture in Kubernetes mode:
+
+<img src="/images/workflow-overview/workflows-architecture-k8s.png" width=800 alt="Diagram showing how the workflow architecture works in Kubernetes mode">
+
+To use the Dapr Workflow building block, you write workflow code in your application using the Dapr Workflow SDK, which internally connects to the sidecar using a gRPC stream. This registers the workflow and any workflow activities, or tasks that workflows can schedule.
+
+The engine is embedded directly into the sidecar and implemented using the [`durabletask-go`](https://github.com/microsoft/durabletask-go) framework library. This framework allows you to swap out different storage providers, including a storage provider created for Dapr that leverages internal actors behind the scenes. Since Dapr Workflows use actors, you can store workflow state in state stores.
 
 ## Sidecar interactions
 
@@ -42,15 +48,17 @@ The `durabletask-go` core used by the workflow engine writes distributed traces 
 
 Each workflow instance managed by the engine is represented as one or more spans. There is a single parent span representing the full workflow execution and child spans for the various tasks, including spans for activity task execution and durable timers. Workflow activity code also has access to the trace context, allowing distributed trace context to flow to external services that are invoked by the workflow.
 
-## Internal actors
+## Internal workflow actors
 
 There are two types of actors that are internally registered within the Dapr sidecar in support of the workflow engine:
 - `dapr.internal.wfengine.workflow` 
 - `dapr.internal.wfengine.activity`
 
+The following diagram demonstrates how internal workflow actors operate in a Kubernetes scenario:
+
 <img src="/images/workflow-overview/workflow-execution.png" alt="Diagram demonstrating internally registered actors across a cluster" />
 
-Just like normal actors, internal actors are distributed across the cluster by the actor placement service. They also maintain their own state and make use of reminders. However, unlike actors that live in application code, these _internal_ actors are embedded into the Dapr sidecar. Application code is completely unaware that these actors exist.
+Just like user-defined actors, internal workflow actors are distributed across the cluster by the actor placement service. They also maintain their own state and make use of reminders. However, unlike actors that live in application code, these _internal_ actors are embedded into the Dapr sidecar. Application code is completely unaware that these actors exist.
 
 There are two types of actors registered by the Dapr sidecar for workflow: the _workflow_ actor and the _activity_ actor. The next sections will go into more details on each.
 
@@ -125,7 +133,7 @@ Dapr Workflows use actors internally to drive the execution of workflows. Like a
 
 As discussed in the [workflow actors]({{< ref "workflow-architecture.md#workflow-actors" >}}) section, workflows save their state incrementally by appending to a history log. The history log for a workflow is distributed across multiple state store keys so that each "checkpoint" only needs to append the newest entries.
 
-The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{< ref "workflow-overview.md#task-chaining" >}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{< ref "workflow-overview.md#fan-outfan-in" >}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({<< ref "workflow-capabilities.md#workflow-activities" >>}) or [child workflows]({{< ref "workflow-capabilities.md#child-workflows" >}}).
+The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{< ref "workflow-overview.md#task-chaining" >}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{< ref "workflow-overview.md#fan-outfan-in" >}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({<< ref "workflow-features-concepts.md#workflow-activities" >>}) or [child workflows]({{< ref "workflow-features-concepts.md#child-workflows" >}}).
 
 TODO: Image illustrating a workflow appending a batch of keys to a state store.
 
@@ -177,6 +185,6 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
 {{< button text="Author workflows >>" page="howto-author-workflow.md" >}}
 
 ## Related links
-- [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
+- [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

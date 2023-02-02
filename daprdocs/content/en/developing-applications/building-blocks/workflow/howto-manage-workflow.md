@@ -2,40 +2,57 @@
 type: docs
 title: "How to: Manage workflows"
 linkTitle: "How to: Manage workflows"
-weight: 5000
+weight: 6000
 description: Manage and expose workflows
 ---
 
-Now that you've [set up the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get metadata status for the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
+Now that you've [set up the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the workflow quickstart](todo) for a quick walk-through on how to use workflows.
+{{< tabs ".NET" HTTP >}}
 
-{{% /alert %}}
+<!--NET-->
+{{% codetab %}}
 
-## Start workflow
+Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref howto-author-workflow.md >}}) guide, the workflow is registered in the code and then exposed using...
+
+{{% /codetab %}}
+
+<!--HTTP-->
+{{% codetab %}}
+
+Manage your workflow using HTTP calls. The example below plugs in the properties from the [Author a workflow example]({{< ref "howto-author-workflow.md#write-the-workflow" >}}) with a random instance ID number.
+
+### Start workflow
 
 To start your workflow, run:
 
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponent>/<workflowName>/<instanceId>/start
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/start
 ```
 
-## Terminate workflow
+### Terminate workflow
 
 To terminate your workflow, run:
 
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponent>/<instanceId>/terminate
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/terminate
 ```
 
-## Get metadata for a workflow
+### Get information about a workflow
 
 To fetch workflow outputs and inputs, run:
 
 ```bash
-GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponent>/<workflowName>/<instanceId>
+GET http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678
 ```
+
+Learn more about these HTTP calls in the [workflow API reference guide]({{< ref workflow_api.md >}}).
+
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 ## Next steps
 
