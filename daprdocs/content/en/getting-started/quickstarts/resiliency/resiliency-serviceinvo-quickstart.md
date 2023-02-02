@@ -149,30 +149,9 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{< tabs "MacOs" "Windows" >}}
-
- <!-- MacOS -->
-
-{{% codetab %}}
-
-```script
-CMD + C
-```
-
-{{% /codetab %}}
-
- <!-- Windows -->
-
-{{% codetab %}}
-
 ```script
 CTRL + C
 ```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
 

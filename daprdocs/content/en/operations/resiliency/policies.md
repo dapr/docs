@@ -17,9 +17,10 @@ Timeouts can be used to early-terminate long-running operations. If you've excee
 - The operation in progress is terminated (if possible).
 - An error is returned.
 
-Valid values are of the form `15s`, `2m`, `1h30m`, etc. 
+Valid values are of the form accepted by Go's [time.ParseDuration](https://pkg.go.dev/time#ParseDuration), for example: `15s`, `2m`, `1h30m`.
 
 Example:
+
 ```yaml
 spec:
   policies:
@@ -36,10 +37,10 @@ With `retries`, you can define a retry strategy for failed operations, including
 
 | Retry option | Description |
 | ------------ | ----------- |
-| `policy` | Determines the back-off and retry interval strategy. Valid values are `constant` and `exponential`. Defaults to `constant`. |
-| `duration` | Determines the time interval between retries. Default: `5s`. Only applies to the `constant` policy. Valid values are of the form `200ms`, `15s`, `2m`, etc. |
-| `maxInterval` | Determines the maximum interval between retries to which the `exponential` back-off policy can grow. Additional retries always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc |
-| `maxRetries` | The maximum number of retries to attempt. `-1` denotes an indefinite number of retries. Defaults to `-1`. |
+| `policy` | Determines the back-off and retry interval strategy. Valid values are `constant` and `exponential`.<br/>Defaults to `constant`. |
+| `duration` | Determines the time interval between retries. Only applies to the `constant` policy.<br/>Valid values are of the form `200ms`, `15s`, `2m`, etc.<br/> Defaults to `5s`.|
+| `maxInterval` | Determines the maximum interval between retries to which the `exponential` back-off policy can grow.<br/>Additional retries always occur after a duration of `maxInterval`. Defaults to `60s`. Valid values are of the form `5s`, `1m`, `1m30s`, etc |
+| `maxRetries` | The maximum number of retries to attempt. <br/>`-1` denotes an unlimited number of retries, while `0` means the request will not be retried (essentially behaving as if the retry policy were not set).<br/>Defaults to `-1`. |
 
 The exponential back-off window uses the following formula:
 
@@ -51,6 +52,7 @@ if BackOffDuration > maxInterval {
 ```
 
 Example:
+
 ```yaml
 spec:
   policies:
@@ -76,11 +78,12 @@ Circuit breakers (CBs) policies are used when other applications/services/compon
 | `maxRequests` | The maximum number of requests allowed to pass through when the CB is half-open (recovering from failure). Defaults to `1`. |
 | `interval` | The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this never clears. Defaults to `0s`. |
 | `timeout` | The period of the open state (directly after failure) until the CB switches to half-open. Defaults to `60s`. |
-| `trip` | A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Default is `consecutiveFailures > 5`. |
+| `trip` | A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Defaults to `consecutiveFailures > 5`. |
 | `circuitBreakerScope` | Specify whether circuit breaking state should be scoped to an individual actor ID, all actors across the actor type, or both. Possible values include `id`, `type`, or `both`|
 | `circuitBreakerCacheSize` | Specify a cache size for the number of CBs to keep in memory. The value should be larger than the expected number of active actor instances.  Provide an integer value, for example `5000`. |
 
 Example:
+
 ```yaml
 spec:
   policies:
@@ -94,23 +97,23 @@ spec:
 
 ## Overriding default retries
 
-Dapr provides default retries for certain request failures and transient errors.  Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets. 
+Dapr provides default retries for certain request failures and transient errors.  Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets.
 
-> Note: Although you can override default values with more robust retries, you cannot override with lesser values than the provided default value, or completely remove default retries. This prevents unexpected downtime. 
+> Note: Although you can override default values with more robust retries, you cannot override with lesser values than the provided default value, or completely remove default retries. This prevents unexpected downtime.
 
 Below is a table that describes Dapr's default retries and the policy keywords to override them: 
 
-| Capability             | Override Keyword                 | Default Retry Behavior                                                                                                                                                               | Description                                                                                                                           |
-| ------------------     | -------------------------        | ------------------------------                                                                                                                                                       | -----------------------------------------------------------------------------------------------------------                           |
-| Service Invocation     | DaprBuiltInServiceRetries        | Per call retries are performed with a backoff interval of 1 second, up to a threshold of 3 times.                                                                                     | Sidecar-to-sidecar requests (a service invocation method call) that fail and result in a gRPC code `Unavailable` or `Unauthenticated`   | 
-| Actors                 | DaprBuiltInActorRetries          | Per call retries are performed with a backoff interval of 1 second, up to a threshold of 3 times.                                                                                     | Sidecar-to-sidecar requests (an actor method call) that fail and result in a gRPC code `Unavailable` or `Unauthenticated`              |
-| Actor Reminders        | DaprBuiltInActorReminderRetries  | Per call retries are performed with an exponential backoff with an initial interval of 500ms, up to a maximum of 60s for a duration of 15mins                                 | Requests that fail to persist an actor reminder to a state store                                                                      | 
-| Initialization Retries | DaprBuiltInInitializationRetries | Per call retries are performed 3 times with an exponential backoff, an initial interval of 500ms and for a duration of 10s                                                       | Failures when making a request to an application to retrieve a given spec. For example, failure to retrieve a subscription, component or resiliency specification       | 
+| Capability | Override Keyword | Default Retry Behavior | Description |
+| ------------------ | ------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Service Invocation | DaprBuiltInServiceRetries | Per call retries are performed with a backoff interval of 1 second, up to a threshold of 3 times. | Sidecar-to-sidecar requests (a service invocation method call) that fail and result in a gRPC code `Unavailable` or `Unauthenticated` |
+| Actors | DaprBuiltInActorRetries | Per call retries are performed with a backoff interval of 1 second, up to a threshold of 3 times. | Sidecar-to-sidecar requests (an actor method call) that fail and result in a gRPC code `Unavailable` or `Unauthenticated` |
+| Actor Reminders | DaprBuiltInActorReminderRetries | Per call retries are performed with an exponential backoff with an initial interval of 500ms, up to a maximum of 60s for a duration of 15mins | Requests that fail to persist an actor reminder to a state store |
+| Initialization Retries | DaprBuiltInInitializationRetries | Per call retries are performed 3 times with an exponential backoff, an initial interval of 500ms and for a duration of 10s | Failures when making a request to an application to retrieve a given spec. For example, failure to retrieve a subscription, component or resiliency specification |
 
 
 The resiliency spec example below shows overriding the default retries for _all_ service invocation requests by using the reserved, named keyword 'DaprBuiltInServiceRetries'. 
 
-Also defined is a retry policy called 'retryForever' that is only applied to the appB target.  appB uses the 'retryForever' retry policy, while all other application service invocation retry failures use the overridden 'DaprBuiltInServiceRetries' default policy.
+Also defined is a retry policy called 'retryForever' that is only applied to the appB target. appB uses the 'retryForever' retry policy, while all other application service invocation retry failures use the overridden 'DaprBuiltInServiceRetries' default policy.
 
 ```yaml
 spec:
@@ -134,11 +137,11 @@ spec:
 
 ## Setting default policies
 
-In resiliency you can set default policies, which have a broad scope. This is done through reserved keywords that let Dapr know when to apply the policy. There are 3 default policies types: 
+In resiliency you can set default policies, which have a broad scope. This is done through reserved keywords that let Dapr know when to apply the policy. There are 3 default policy types:
 
-- DefaultRetryPolicy
-- DefaultTimeoutPolicy
-- DefaultCircuitBreakerPolicy
+- `DefaultRetryPolicy`
+- `DefaultTimeoutPolicy`
+- `DefaultCircuitBreakerPolicy`
 
 If these policies are defined, they are used for every operation to a service, application, or component. They can also be modified to be more specific through the appending of additional keywords. The specific policies follow the following pattern, `Default%sRetryPolicy`, `Default%sTimeoutPolicy`, and `Default%sCircuitBreakerPolicy`. Where the `%s` is replaced by a target of the policy. 
 
@@ -164,7 +167,7 @@ Below is a table of all possible default policy keywords and how they translate 
 
 Default policies are applied if the operation being executed matches the policy type and if there is no more specific policy targeting it. For each target type (app, actor, and component), the policy with the highest priority is a Named Policy, one that targets that construct specifically.
 
- If none exists, the policies are applied from most specific to most broad. 
+If none exists, the policies are applied from most specific to most broad.
 
 #### How default policies and built-in retries work together
 
@@ -195,16 +198,19 @@ Policy resolution hierarchy for components, from most specific to most broad:
 As an example, take the following solution consisting of three applications, three components and two actor types:
 
 Applications:
+
 - AppA
 - AppB
 - AppC
 
 Components:
+
 - Redis Pubsub: pubsub
 - Redis statestore: statestore
 - CosmosDB Statestore: actorstore
 
 Actors:
+
 - EventActor
 - SummaryActor
 
