@@ -8,7 +8,7 @@ description: "Configure the Dapr sidecar to mount Pod Volumes"
 
 ## Introduction
 
-The Dapr sidecar can be configured to mount any Kubernetes Volume attached to the application Pod. These volumes can be accessed by the `daprd` (sidecar) container in _read-only_ or _read-write_ modes. If a Volume is configured to be mounted but it does not exist in the Pod, Dapr logs a warning and ignores it.
+The Dapr sidecar can be configured to mount any Kubernetes Volume attached to the application Pod. These Volumes can be accessed by the `daprd` (sidecar) container in _read-only_ or _read-write_ modes. If a Volume is configured to be mounted but it does not exist in the Pod, Dapr logs a warning and ignores it.
 
 For more information on different types of Volumes, check the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/).
 
@@ -21,12 +21,12 @@ You can set the following annotations in your deployment YAML:
 
 These annotations are comma separated pairs of `volume-name:path/in/container`. Make sure that the corresponding Volumes exist in the Pod spec.
 
-Within the official container images, Dapr runs as a process with user ID (UID) `65532`. Make sure that folders and files inside the mounted volume as writable or readable by user `65532` as appropriate.
+Within the official container images, Dapr runs as a process with user ID (UID) `65532`. Make sure that folders and files inside the mounted Volume are writable or readable by user `65532` as appropriate.
 
-Although you can mount a Volume in any folder within the Dapr sidecar container, to prevent conflicts and to ensure smooth operations today and in the future we strongly recommend that you place all mountpoints within one of these two locations, or in a subfolder within them:
+Although you can mount a Volume in any folder within the Dapr sidecar container, prevent conflicts and ensure smooth operations going forward by placing all mountpoints within one of these two locations, or in a subfolder within them:
 
-- `/mnt` is recommended for volumes containing persistent data, that you want the Dapr sidecar process to be able to read and/or write.
-- `/tmp` is recommended for volumes containing temporary data, such as scratch disks.
+- `/mnt` is recommended for Volumes containing persistent data that the Dapr sidecar process can read and/or write.
+- `/tmp` is recommended for Volumes containing temporary data, such as scratch disks.
 
 ### Example
 
