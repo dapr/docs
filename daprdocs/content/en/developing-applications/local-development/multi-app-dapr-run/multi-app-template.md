@@ -33,7 +33,7 @@ common: # optional section for variables shared across apps
   env:  # any environment variable shared across apps
     - DEBUG: true
 apps:
-  - appID: webapp # required
+  - appID: webapp
     appDirPath: .dapr/webapp/ # required
     resourcesPath: .dapr/resources # (optional) can be default by convention
     configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
@@ -58,8 +58,8 @@ The properties for the MapR template align with the `dapr run` CLI flags, [liste
 
 | Properties               | Required | Details | Example |
 |--------------------------|:--------:|--------|---------|
-| `appID`                  | Y        | Application's app ID | `webapp`, `backend` |
 | `appDirPath`             | Y        | Path to the your application code | `./webapp/`, `./backend/` |
+| `appID`                  | N        | Application's app ID. If not provided, will be derived from `appDirPath` | `webapp`, `backend` |
 | `resourcesPath`          | N        | Path to your Dapr resources. Can be default by convention; ignore if directory isn't found | `./app/components`, `./webapp/components` |
 | `configFilePath`         | N        | Path to your application's configuration file | `./webapp/config.yaml` |
 | `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `HTTP`, `GRPC` |
@@ -90,4 +90,6 @@ The properties for the MapR template align with the `dapr run` CLI flags, [liste
 
 ## Next steps
 
-[Try out the MapR template using the Distributed Calculator tutorial]
+Watch [this video for an overview on MapR](https://youtu.be/s1p9MNl4VGo?t=2456):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

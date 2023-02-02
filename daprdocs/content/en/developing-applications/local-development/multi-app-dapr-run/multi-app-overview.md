@@ -67,15 +67,12 @@ You can also name each app directory's `.dapr` directory something other than `.
 
 ## Logs
 
-Logs are included by default within each app directory and are tracked in the following locations under `.dapr/logs`:
+Logs for application and `daprd` are captured in separate files. These log files are created automatically under `.dapr/logs` directory under each app director. These log file names follow the below pattern:
 
-- `app.log`
-- `daprd.log`
+- `<appID>_app_<timestamp>.log` (file name format for app's log)
+- `<appID>_daprd_<timestamp>.log` (file name format for `daprd` log)
 
 Even if you've decided to rename your resources folder to something other than `.dapr`, the logs file are written to `.dapr` folder.
-
-## Try it out
-
 
 ## Watch the demo
 
