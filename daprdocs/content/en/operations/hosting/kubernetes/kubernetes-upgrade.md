@@ -15,7 +15,7 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 {{% alert title="Note" color="primary" %}}
-Dapr only has a seamless guarantee when upgrading patch versions in a single minor version, or upgrading from one minor version to the next. For example, upgrading from `v1.6.0` to `v1.6.4` or `v1.6.4` to `v1.7.0` is guaranteed to be seamless. Upgrading more than one minor version at a time is best effort.
+Please refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-paths" >}}) for guidance on which versions of Dapr can be upgraded to which versions.
 {{% /alert %}}
 
 ### Dapr CLI

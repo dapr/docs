@@ -71,6 +71,10 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example, an upgrade from v1.0 to v1.2 may need to pass through v1.1.
 
+{{% alert title="Note" color="primary" %}}
+Dapr only has a seamless guarantee when upgrading patch versions in a single minor version, or upgrading from one minor version to the next. For example, upgrading from `v1.6.0` to `v1.6.4` or `v1.6.4` to `v1.7.0` is guaranteed tested. Upgrading more than one minor version at a time is untested and treated as best effort.
+{{% /alert %}}
+
 The table below shows the tested upgrade paths for the Dapr runtime. Any other combinations of upgrades have not been tested.
 
 General guidance on upgrading can be found for [self hosted mode]({{< ref self-hosted-upgrade >}}) and [Kubernetes]({{< ref kubernetes-upgrade >}}) deployments. It is best to review the target version release notes for specific guidance.
