@@ -13,7 +13,7 @@ Dapr allows custom processing pipelines to be defined by chaining a series of mi
 
 ## Configure API middleware pipelines
 
-When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default, the pipeline consists of the [tracing]({{< ref tracing-overview.md >}}) and CORS middlewares. Additional middlewares, configured by a Dapr [Configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pubsub, service invocation, bindings, secrets, configuration, distributed lock, etc.
+When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default, the pipeline consists of the [tracing]({{< ref tracing-overview.md >}}) and CORS middlewares. Additional middlewares, configured by a Dapr [Configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, secrets, configuration, distributed lock, etc.
 
 A request goes through all the defined middleware components before it's routed to user code, and then goes through the defined middleware, in reverse order, before it's returned to the client, as shown in the following diagram.
 
