@@ -41,8 +41,9 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
 
 ### Examples
 
-1. Start a sidecar along with an application by specifying its unique ID.  
-  Note `--app-id` is a required field, and cannot contain dots:
+1. Start a sidecar alongside an application by specifying its unique ID.  
+
+   **Note:** `--app-id` is a required field, and cannot contain dots.
 
    ```bash
    daprd --app-id myapp
