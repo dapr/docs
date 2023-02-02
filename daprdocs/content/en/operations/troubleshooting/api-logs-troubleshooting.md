@@ -100,11 +100,11 @@ logging:
 
 ### Obfuscate URLs in HTTP API logging
 
-By default, logs for API calls in the HTTP endpoints include the full URL being invoked, for example `POST /v1.0/invoke/directory/method/user-123`, which could contain Personal Identifiable Information (PII).
+By default, logs for API calls in the HTTP endpoints include the full URL being invoked (for example, `POST /v1.0/invoke/directory/method/user-123`), which could contain Personal Identifiable Information (PII).
 
-To reduce the risk of PII being accidentally included in API logs (when enabled), Dapr can instead log the abstract route being invoked, for example `POST /v1.0/invoke/{id}/method/{method:*}`. This can help ensuring compliance with privacy regulations such as GDPR.
+To reduce the risk of PII being accidentally included in API logs (when enabled), Dapr can instead log the abstract route being invoked (for example, `POST /v1.0/invoke/{id}/method/{method:*}`). This can help ensuring compliance with privacy regulations such as GDPR.
 
-To enable obfuscation of URLs in Dapr's HTTP API logs, set `logging.apiLogging.obfuscateURLs` to `true`, for example:
+To enable obfuscation of URLs in Dapr's HTTP API logs, set `logging.apiLogging.obfuscateURLs` to `true`. For example:
 
 ```yaml
 logging:
@@ -112,7 +112,7 @@ logging:
     obfuscateURLs: true
 ```
 
-Note that logs emitted by the Dapr gRPC APIs are not impacted by this configuration option as they only include the name of the method invoked and no arguments.
+Logs emitted by the Dapr gRPC APIs are not impacted by this configuration option, as they only include the name of the method invoked and no arguments.
 
 ### Omit health checks from API logging
 
