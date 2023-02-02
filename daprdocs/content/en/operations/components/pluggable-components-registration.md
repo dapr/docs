@@ -167,11 +167,13 @@ spec:
         - name: dapr-unix-domain-socket
           emptyDir: {}
       containers:
-        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
-        ##
-        ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
-        ### 
+      containers:
+      ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+        - name: app
+           image: YOUR_APP_IMAGE:YOUR_APP_IMAGE_VERSION
+      ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
         - name: component
+          image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
           volumeMounts: # required, the sockets volume mount
             - name: dapr-unix-domain-socket
               mountPath: /tmp/dapr-components-sockets
