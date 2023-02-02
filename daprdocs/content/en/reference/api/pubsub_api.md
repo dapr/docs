@@ -89,13 +89,13 @@ curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/pubsubName/deathStar
   -d '[
         {
             "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
-            "event":  "first",
+            "event":  "first text message",
             "contentType": "text/plain"
         },
         {
             "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
             "event":  {
-                "message": "second"   
+                "message": "second JSON message"   
             },
             "contentType": "application/json"
         },
@@ -104,7 +104,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/pubsubName/deathStar
 
 ### Headers
 
-The `Content-Type` header should always be set to `application/json`.
+The `Content-Type` header should always be set to `application/json` since the request body is a JSON array.
 
 ### URL Parameters
 
@@ -134,14 +134,14 @@ Metadata can be sent via query parameters in the request's URL. It must be prefi
 |403|Forbidden by access controls|
 |500|At least one message failed to be delivered|
 
-The response body is a JSON containing a list of failed entries. Example:
+In case of a 500 status code, the response body will contain a JSON object containing a list of entries that failed to be delivered. For example from our request above, if the entry with event `"first text message"` failed to be delivered, the response would contain its entry ID and an error message from the underlying pub/sub component.
 
 ```json
 {
   "failedEntries": [
     {
       "entryId": "ae6bf7c6-4af2-11ed-b878-0242ac120002",
-      "error": "error message"
+      "error": "some error message"
     },
   ],
   "errorCode": "ERR_PUBSUB_PUBLISH_MESSAGE"

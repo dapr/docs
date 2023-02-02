@@ -13,8 +13,7 @@
     </tr>
     {{ range sort $components "component" }}
     <tr>
-        <td><a href="{{ .link }}/" }}>{{ .component
-                }}</a>
+        <td><a href="{{ .link }}/">{{ .component }}</a>
         </td>
         <td>{{ .description | markdownify}}</td>
         <td>{{ .state }}</td>

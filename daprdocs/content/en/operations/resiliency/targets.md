@@ -7,6 +7,7 @@ description: "Apply resiliency policies to apps, components and actors"
 ---
 
 ### Targets
+
 Named policies are applied to targets. Dapr supports three target types that apply all Dapr building block APIs:
 - `apps`
 - `components`
@@ -130,3 +131,9 @@ spec:
         circuitBreakerScope: both
         circuitBreakerCacheSize: 5000
 ```
+
+## Next steps
+
+Try out one of the Resiliency quickstarts:
+- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
+- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})
