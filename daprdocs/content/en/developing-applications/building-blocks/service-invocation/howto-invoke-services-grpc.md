@@ -308,11 +308,11 @@ context.AddMetadata("dapr-stream", "true");
 
 ### Streaming gRPCs and Resiliency
 
-When proxying streaming gRPCs, due to their long-lived nature, [Resiliency]({{< ref "resiliency-overview.md" >}}) policies are applied on the "initial handshake" only. As a consequence:
+When proxying streaming gRPCs, due to their long-lived nature, [resiliency]({{< ref "resiliency-overview.md" >}}) policies are applied on the "initial handshake" only. As a consequence:
 
 - If the stream is interrupted after the initial handshake, it will not be automatically re-established by Dapr. Your application will be notified that the stream has ended, and will need to recreate it.
-- Retry policies only impact the initial connection "handshake". If your Resiliency policy includes retries, Dapr will detect failures in establishing the initial connection to the target app and will retry that until it succedes (or until the number of retries defined in the policy is exhausted).
-- Likewise, timeouts defined in Resiliency policies only apply to the initial "handshake". After the connection has been established, timeouts do not impact the stream anymore.
+- Retry policies only impact the initial connection "handshake". If your resiliency policy includes retries, Dapr will detect failures in establishing the initial connection to the target app and will retry until it succeeds (or until the number of retries defined in the policy is exhausted).
+- Likewise, timeouts defined in resiliency policies only apply to the initial "handshake". After the connection has been established, timeouts do not impact the stream anymore.
 
 ## Related Links
 
