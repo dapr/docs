@@ -124,13 +124,43 @@ While not shown in the example, it's possible to go further and limit the degree
 
 ## Async HTTP APIs
 
-In an asynchronous HTTP API pattern, you coordinate non-blocking requests and responses with external clients. This increases performance and scalability. One way to implement an asynchronous API is to use an event-driven architecture, where the server listens for incoming requests and triggers an event to handle each request as it comes in. Another way is to use asynchronous programming libraries or frameworks, which allow you to write non-blocking code using callbacks, promises, or async/await.
+Asynchronous HTTP APIs are typically implemented using the [Asynchronous Request-Reply pattern](https://learn.microsoft.com/azure/architecture/patterns/async-request-reply). Implementing this pattern traditionally involves the following:
 
-TODO: DIAGRAM?
+1. A client sends a request to an HTTP API endpoint (the _start API_)
+1. The _start API_ writes a message to a backend queue, which triggers the start of a long-running operation
+1. Immediately after scheduling the backend operation, the _start API_ returns an HTTP 202 response to the client with a `Location` header for the operation's _status API_
+1. The _status API_ queries a database that contains the status of the long-running operation
+1. The client repeatedly polls the _status API_ either until some timeout expires or it receives a "completion" response
 
-Dapr Workflows simplifies or even removing the code you need to write to interact with long-running function executions. 
+The end-to-end flow is illustrated in the following diagram.
 
-TODO: CODE EXAMPLE
+<img src="/images/workflow-overview/workflow-async-request-response.png" width=800 alt="Diagram showing how the async request response pattern works"/>
+
+The challenge with implementing the asynchronous request-reply pattern is that it involves the use of multiple APIs and state stores. It also involves implementing the protocol correctly so that the client knows how to automatically poll for status and know when the operation is complete.
+
+The Dapr workflow management HTTP API supports the asynchronous request-reply pattern out-of-the box, without requiring you to write any code or do any state management. The following `curl` commands illustrate how the workflow APIs support this pattern.
+
+```bash
+curl -i -X TODO
+```
+```http
+HTTP/1.1 202 Accepted
+Content-Type: application/json
+
+{TODO}
+```
+
+The HTTP client can then poll the endpoint in the `Location` response header repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
+
+```bash
+curl -i -X TODO
+```
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{TODO}
+```
 
 ## Monitor
 
