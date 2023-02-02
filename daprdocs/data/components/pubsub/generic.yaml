@@ -6,7 +6,7 @@
   features:
     bulkPublish: false
     bulkSubscribe: false
-- component: In Memory
+- component: In-memory
   link: setup-inmemory
   state: Beta
   version: v1
@@ -32,17 +32,17 @@
     bulkSubscribe: false
 - component: JetStream
   link: setup-jetstream
-  state: Alpha
+  state: Beta
   version: v1
-  since: "1.4"
+  since: "1.10"
   features:
     bulkPublish: false
     bulkSubscribe: false
 - component: Pulsar
   link: setup-pulsar
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.7"
+  since: "1.10"
   features:
     bulkPublish: false
     bulkSubscribe: false
@@ -80,7 +80,7 @@
     bulkSubscribe: false
 - component: Solace-AMQP
   link: setup-solace-amqp
-  state: Alpha
+  state: Beta
   version: v1
   since: "1.10"
   features:
