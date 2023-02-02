@@ -132,7 +132,7 @@ Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref k
 
 ## Add the pluggable component container in your deployments
 
-When running in Kubernetes mode, pluggable components are deployed as containers in the same pod as your application.
+Pluggable components are deployed as containers **in the same pod** as your application.
 
 Since pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec to:
 
@@ -140,7 +140,7 @@ Since pluggable components are backed by [Unix Domain Sockets][uds], make the so
 2. Hint to Dapr the mounted Unix socket volume location
 3. Attach volume to your pluggable component container
 
-Below is an example of a deployment that configures a pluggable component:
+In the following example, your configured pluggable component is deployed as a container within the same pod as your application container. 
 
 ```yaml
 apiVersion: apps/v1
@@ -169,8 +169,8 @@ spec:
       containers:
         ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
         ##
-        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
-        ### This is the pluggable component container.
+        ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
+        ### 
         - name: component
           volumeMounts: # required, the sockets volume mount
             - name: dapr-unix-domain-socket
@@ -178,7 +178,7 @@ spec:
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
 
-Alternatively, you can annotate your pods, telling Dapr which containers are pluggable components, like in the example below:
+Alternatively, you can annotate your pods, telling Dapr which containers within that pod are pluggable components, like in the example below:
 
 ```yaml
 apiVersion: apps/v1
@@ -197,15 +197,15 @@ spec:
       labels:
         app: app
       annotations:
-        dapr.io/pluggable-components: "component" ## the name of the containers that are pluggable components separated by `,`, e.g "componentA,componentB".
+        dapr.io/pluggable-components: "component" ## the name of the pluggable component container separated by `,`, e.g "componentA,componentB".
         dapr.io/app-id: "my-app"
         dapr.io/enabled: "true"
     spec:
       containers:
         ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
         ##
-        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
-        ### This is the pluggable component container.
+        ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
+        ### 
         - name: component
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
