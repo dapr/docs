@@ -2,4 +2,7 @@
   link: setup-aws-snssqs
   state: Stable
   version: v1
-  since: "1.10"
+  since: "1.6"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
