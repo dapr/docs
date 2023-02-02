@@ -10,6 +10,8 @@
 <table width="100%">
     <tr>
         <th>Component</th>
+        <th>Bulk Publish</th>
+        <th>Bulk Subscribe</th>
         <th>Status</th>
         <th>Component version</th>
         <th>Since runtime version</th>
@@ -18,6 +20,8 @@
     <tr>
         <td><a href="/reference/components-reference/supported-pubsub/{{ .link }}/">{{ .component }}</a>
         </td>
+        <td align="center">{{ if .features.bulkPublish }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
+        <td align="center">{{ if .features.bulkSubscribe }}✅{{else}}<img src="/images/emptybox.png">{{ end }}</td>
         <td>{{ .state }}</td>
         <td>{{ .version }}</td>
         <td>{{ .since }}</td>
