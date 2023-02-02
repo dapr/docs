@@ -57,7 +57,7 @@ Since you are running Dapr in the same host as the component, verify this folder
 
 Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name, without the file extension.
 
-Save the component YAML file in the components-path, replacing:
+Save the component YAML file in the resources-path, replacing:
 
 - `your_socket_goes_here` with your component socket name (no extension)
 - `your_component_type` with your component type
