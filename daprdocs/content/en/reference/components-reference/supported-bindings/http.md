@@ -21,12 +21,17 @@ spec:
   - name: url
     value: http://something.com
   - name: MTLSRootCA
-    value: /Users/somepath/root.pem #<path to root CA> or <pem encoded string>
+    value: /Users/somepath/root.pem # OPTIONAL <path to root CA> or <pem encoded string>
   - name: MTLSClientCert
-    value: /Users/somepath/client.pem #<path to client cert> or <pem encoded string>
+    value: /Users/somepath/client.pem # OPTIONAL <path to client cert> or <pem encoded string>
   - name: MTLSClientKey
-    value: /Users/somepath/client.key #<path to client key> or <pem encoded string>
-
+    value: /Users/somepath/client.key # OPTIONAL <path to client key> or <pem encoded string>
+  - name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
+    secretKeyRef:
+      name: mysecret
+      key: mytoken
+  - name: securityTokenHeader
+    value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
 ```
 
 ## Spec metadata fields
@@ -37,6 +42,8 @@ spec:
 | MTLSRootCA         | N        | Output |Path to root ca certificate or pem encoded string |
 | MTLSClientCert     | N        | Output |Path to client certificate or pem encoded string  |
 | MTLSClientKey      | N        | Output |Path client private key or pem encoded string |
+| securityToken      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
+| securityTokenHeader| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
 
 ## Binding support
 
