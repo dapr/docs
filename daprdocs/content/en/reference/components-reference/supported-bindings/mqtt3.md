@@ -131,7 +131,7 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-Note that in the case, the value of the consumer ID is random every time Dapr restarts, so you should set `cleanSession` to `true` as well.
+> In this case, the value of the consumer ID is random every time Dapr restarts, so you should set `cleanSession` to `true` as well.
 
 ## Binding support
 
