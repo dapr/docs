@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup an Azure Event Hubs pubsub, create a component of type `pubsub.azure.eventhubs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To setup an Azure Event Hubs pub/sub, create a component of type `pubsub.azure.eventhubs`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 Apart from the configuration metadata fields shown below, Azure Event Hubs also supports [Azure Authentication]({{< ref "authenticating-azure.md" >}}) mechanisms. 
 
 ```yaml
@@ -73,7 +73,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Azure Active Directory (AAD) authentication
 
-The Azure Event Hubs pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Event Hubs pub/sub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 
@@ -137,13 +137,13 @@ Note: Dapr passes the name of the consumer group to the Event Hub, so this is no
 
 ## Entity Management
 
-When entity management is enabled in the metadata, as long as the application has the right role and permissions to manipulate the Event Hub namespace, Dapr can create the Event Hub and consumer group for you, automatically.
+When entity management is enabled in the metadata, as long as the application has the right role and permissions to manipulate the Event Hub namespace, Dapr can automatically create the Event Hub and consumer group for you.
 
 The Evet Hub name is the `topic` field in the incoming request to publish or subscribe to, while the consumer group name is the name of the Dapr app which subscribes to a given Event Hub. For example, a Dapr app running on Kubernetes with name `dapr.io/app-id: "myapp"` requires an Event Hubs consumer group named `myapp`.
 
 Entity management is only possible when using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) and not using a connection string.
 
-Note: Dapr passes the name of the consumer group to the Event Hub, so this is not supplied in the metadata.
+> Dapr passes the name of the consumer group to the Event Hub, so this is not supplied in the metadata.
 
 ## Subscribing to Azure IoT Hub Events
 

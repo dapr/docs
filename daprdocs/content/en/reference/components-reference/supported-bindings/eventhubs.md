@@ -81,7 +81,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Azure Active Directory (AAD) authentication
 
-The Azure Event Hubs pubsub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Event Hubs pub/sub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 
