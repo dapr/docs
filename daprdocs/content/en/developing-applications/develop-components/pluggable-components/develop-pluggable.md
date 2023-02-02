@@ -109,8 +109,6 @@ This concrete implementation and auxiliary code are the **core** of your pluggab
 
 Returning semantic errors are also part of the pluggable component protocol. The component must return specific gRPC codes that have semantic meaning for the user application, those errors are used to a variety of situations from concurrency requirements to informational only.
 
-In order to meet concurrency requirements, your state store pluggable components need error mapping, from gRPC returned errors to semantic errors. Each of the three Dapr state store errors below maps to a gRPC status code. 
-
 | Error                    | gRPC error code                 | Source component | Description |
 | ------------------------ | ------------------------------- | ---------------- | ----------- |
 | ETag Mismatch            | `codes.FailedPrecondition`      | State store      | Error mapping to meet concurrency requirements |
