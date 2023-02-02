@@ -202,10 +202,10 @@ spec:
         dapr.io/enabled: "true"
     spec:
       containers:
-        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
-        ##
-        ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
-        ### 
+      ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+        - name: app
+           image: YOUR_APP_IMAGE:YOUR_APP_IMAGE_VERSION
+      ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
         - name: component
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
