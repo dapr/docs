@@ -138,7 +138,7 @@ The end-to-end flow is illustrated in the following diagram.
 
 The challenge with implementing the asynchronous request-reply pattern is that it involves the use of multiple APIs and state stores. It also involves implementing the protocol correctly so that the client knows how to automatically poll for status and know when the operation is complete.
 
-The Dapr workflow management HTTP API supports the asynchronous request-reply pattern out-of-the box, without requiring you to write any code or do any state management. The following `curl` commands illustrate how the workflow APIs support this pattern.
+The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-of-the box, without requiring you to write any code or do any state management. The following `curl` commands illustrate how the workflow APIs support this pattern.
 
 ```bash
 curl -i -X TODO

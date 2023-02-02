@@ -8,12 +8,16 @@ description: Manage and expose workflows
 
 Now that you've [set up the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs ".NET" HTTP >}}
+{{< tabs ".NET SDK" HTTP >}}
 
 <!--NET-->
 {{% codetab %}}
 
-Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref howto-author-workflow.md >}}) guide, the workflow is registered in the code and then exposed using...
+Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-workflow" >}}) guide, the workflow is registered in the code. You can then start, terminate, and get information about the workflow:
+
+```csharp
+
+```
 
 {{% /codetab %}}
 
