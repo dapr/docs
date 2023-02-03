@@ -15,7 +15,7 @@ description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smoo
 There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 {{% alert title="Note" color="primary" %}}
-Please refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-paths" >}}) for guidance on which versions of Dapr can be upgraded to which versions.
+Refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-paths" >}}) for guidance on which versions of Dapr can be upgraded to which versions.
 {{% /alert %}}
 
 ### Dapr CLI
