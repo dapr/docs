@@ -1,16 +1,16 @@
 ---
 type: docs
-title: "How to: Use the MapR template file"
-linkTitle: "How to: Use the MapR template"
+title: "How to: Use the Multi-App Run template file"
+linkTitle: "How to: Use the Multi-App Run template"
 weight: 2000
-description: Unpack the MapR template file and its properties
+description: Unpack the Multi-App Run template file and its properties
 ---
 
 {{% alert title="Note" color="primary" %}}
- MapR (Multi-app Run using `dapr run -f`) is currently a preview feature only supported in Linux/MacOS. 
+ Multi-App Run is currently a preview feature only supported in Linux/MacOS. 
 {{% /alert %}}
 
-The MapR template file is a YAML file that you can use to run multiple applications at once. In this guide, you'll learn how to:
+The Multi-App Run template file is a YAML file that you can use to run multiple applications at once. In this guide, you'll learn how to:
 - Use the multi-app template 
 - View started applications
 - Stop the multi-app template 
@@ -22,9 +22,9 @@ You can use the multi-app template file in one of the following two ways:
 
 ### Execute by providing a directory path
 
-When you provide a directory path, the CLI will try to locate the MapR template file, named `dapr.yaml` by default in the directory. If the file is not found, the CLI will return an error.
+When you provide a directory path, the CLI will try to locate the Multi-App Run template file, named `dapr.yaml` by default in the directory. If the file is not found, the CLI will return an error.
 
-Execute the following CLI command to read the MapR template file, named `dapr.yaml` by default:
+Execute the following CLI command to read the Multi-App Run template file, named `dapr.yaml` by default:
 
 ```cmd
 // the template file needs to be called `dapr.yaml` by default
@@ -34,7 +34,7 @@ dapr run -f <dir_path>
 
 ### Execute by providing a file path
 
-If the MapR template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
+If the Multi-App Run template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
 
 ```cmd
 dapr run -f ./<your-preferred-file-name>.yaml
@@ -63,7 +63,7 @@ dapr stop -f dapr.yaml
 
 ## Template file structure
 
-The MapR template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties. 
+The Multi-App Run template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties. 
 
 ```yaml
 version: 1
@@ -101,7 +101,7 @@ The following rules apply for all the paths present in the template file:
 
 ## Template properties
 
-The properties for the MapR template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).  
+The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).  
 
 
 | Properties               | Required | Details | Example |
@@ -138,6 +138,6 @@ The properties for the MapR template align with the `dapr run` CLI flags, [liste
 
 ## Next steps
 
-Watch [this video for an overview on MapR](https://youtu.be/s1p9MNl4VGo?t=2456):
+Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

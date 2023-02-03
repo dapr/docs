@@ -1,13 +1,13 @@
 ---
 type: docs
-title: Multi-app Run (MapR) overview
-linkTitle: MapR overview
+title: Multi-app Run overview
+linkTitle: Multi-App Run overview
 weight: 1000
 description: Learn the scenarios around running multiple applications with one CLI command
 ---
 
 {{% alert title="Note" color="primary" %}}
- MapR (Multi-app Run using `dapr run -f`) is currently a preview feature only supported in Linux/MacOS. 
+ Multi-App Run is currently a preview feature only supported in Linux/MacOS. 
 {{% /alert %}}
 
 Let's say you want to run several applications locally to test them together, similar to a production scenario. With a local Kubernetes cluster, you'd be able to do this with helm/deployment YAML files. You'd also have to build them as containers and set up Kubernetes, which can add some complexity. 
@@ -21,7 +21,7 @@ Instead, you simply want to run them as local executables in self-hosted mode.  
 
 With Multi-app Run, you can start multiple applications in self-hosted mode using a single `dapr run -f` command using a template file. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
 
-## MapR template file
+## Multi-App Run template file
 
 When you execute `dapr run -f .`, it uses the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
 
@@ -49,7 +49,7 @@ For a more in-depth example and explanation of the template properties, see [Mul
 
 ## Locations for resources and configuration files
 
-You have options on where to place your applications' resources and configuration files when using MapR.  
+You have options on where to place your applications' resources and configuration files when using Multi-App Run.  
 
 ### Point to one file location (with convention)
 
@@ -57,7 +57,7 @@ You can set all of your applications resources and configurations at the `~/.dap
 
 ### Separate file locations for each application (with convention)
 
-When using MapR, each application directory can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. Otherwise, if the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
+When using Multi-App Run, each application directory can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. Otherwise, if the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
 
 If you decide to add a `.dapr` directory in each application directory, with a `/resources` directory and `config.yaml` file, you can specify different resources paths for each application. This approach remains within convention by using the default `~/.dapr`.
 
@@ -76,10 +76,10 @@ Even if you've decided to rename your resources folder to something other than `
 
 ## Watch the demo
 
-Watch [this video for an overview on MapR](https://youtu.be/s1p9MNl4VGo?t=2456):
+Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Next steps
 
-[Unpack the MapR template file and its properties]({{< ref multi-app-template.md >}})
+[Unpack the Multi-App Run template file and its properties]({{< ref multi-app-template.md >}})
