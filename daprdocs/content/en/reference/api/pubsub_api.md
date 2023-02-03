@@ -247,16 +247,18 @@ other | warning is logged and message to be retried
 
 ## Subscribe multiple messages from a given topic
 
-This allows you, as a consumer, to subscribe multiple messages from a broker to listen to a `topic`.
+This allows you to subscribe multiple messages from a broker to listen to a `topic`.
 
-In order to receive messages in a bulk manner for a topic subscription, application needs to opt for `bulkSubscribe` while sending list of topics to be subscribed to, and optionally they can also configure `maxMessagesCount` and/or `maxAwaitDurationMs`.
-Please refer [Send and receive messages in bulk]({{< ref pubsub-bulk.md >}}) for more details on how to opt-in.
+In order to receive messages in a bulk manner for a topic subscription, the application:
+
+- Needs to opt for `bulkSubscribe` while sending list of topics to be subscribed to
+- Optionally, can configure `maxMessagesCount` and/or `maxAwaitDurationMs`
+Refer to the [Send and receive messages in bulk]({{< ref pubsub-bulk.md >}}) guide for more details on how to opt-in.
 
 #### Expected HTTP Response for Bulk Subscribe
 
-An HTTP 2xx response denotes that entries (individual messages) inside this bulk messgae have been processed by Application and Dapr will now check status pertaining to each entryId.
+An HTTP 2xx response denotes that entries (individual messages) inside this bulk message have been processed by the application and Dapr will now check each EntryId status.
 A JSON-encoded payload body with the processing status against each entry needs to be sent:
-- Note: If status for an entryId is not found by Dapr in response received from Application, status for that entry will be considered as RETRY.
 
 ```json
 {
@@ -266,6 +268,8 @@ A JSON-encoded payload body with the processing status against each entry needs 
   }
 }
 ```
+
+> Note: If an EntryId status is not found by Dapr in a response received from the application, that entry's status is considered `RETRY`.
 
 Status | Description
 --------- | -----------

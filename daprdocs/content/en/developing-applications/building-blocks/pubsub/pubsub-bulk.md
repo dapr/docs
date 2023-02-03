@@ -298,14 +298,14 @@ scopes:
 - checkout
 ```
 
-In the example above, `bulkSubscribe` altogether is Optional. But, if you decide to use `bulkSubscribe`, then:
-- `enabled` is mandatory to be given.
-- You can optionally configure max number of messages (`maxMessagesCount`) that should be delivered to it via Dapr in a bulk message
-- You can also optionally provide max duration to await (`maxAwaitDurationMs`) before a bulk message is sent via Dapr to App
+In the example above, `bulkSubscribe` altogether is _optional_. If you decide to use `bulkSubscribe`, then:
+- `enabled` is mandatory
+- You can optionally configure the max number of messages (`maxMessagesCount`) delivered via Dapr in a bulk message
+- You can optionally provide the max duration to wait (`maxAwaitDurationMs`) before a bulk message is sent via Dapr to the app
 
-In case, Application decides not to configure maxMessagesCount and/or maxAwaitDurationMs, defaults as per respective component in Dapr will be used.
+If the application decides not to configure `maxMessagesCount` and/or `maxAwaitDurationMs`, the defaults will be used as per the respective component in Dapr.
 
-Application receives an EntryId associated with each entry (individual message) in this bulk message and this EntryId has to be used by App to communicate back the status of that particular entry. In case, App misses to notify status of an EntryId, it will be considered as RETRY.
+The application receives an EntryId associated with each entry (individual message) in the bulk message. This EntryId must be used by the app to communicate the status of that particular entry. If the app fails to notify on an EntryId status, it's considered a `RETRY`.
 
 Status | Description
 --------- | -----------
