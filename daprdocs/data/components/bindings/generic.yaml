@@ -96,9 +96,9 @@
     output: true
 - component: Redis
   link: redis
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.7"
+  since: "1.9"
   features:
     input: false
     output: true

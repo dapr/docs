@@ -3,7 +3,7 @@ type: docs
 title: "Configuration API reference"
 linkTitle: "Configuration API"
 description: "Detailed documentation on the configuration API"
-weight: 650
+weight: 700
 ---
 
 ## Get Configuration
