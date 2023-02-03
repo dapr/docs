@@ -47,7 +47,7 @@ spec:
 
 | Field | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString` | Y | The connection string for the SQLite database. See below for more details. | `"path/to/data.db"`, `":memory:"`
+| `connectionString` | Y | The connection string for the SQLite database. See below for more details. | `"path/to/data.db"`, `"file::memory:?cache=shared"`
 | `timeoutInSeconds` | N | Timeout, in seconds, for all database operations. Defaults to `20` | `30`
 | `tableName` | N | Name of the table where the data is stored. Defaults to `state`. | `"state"`
 | `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
@@ -57,7 +57,7 @@ The **`connectionString`** parameter configures how to open the SQLite database.
 
 - Normally, this is the path to a file on disk, relative to the current working directory, or absolute. For example: `"data.db"` (relative to the working directory) or `"/mnt/data/mydata.db"`.
 - The path is interpreted by the SQLite library, so it's possible to pass additional options to the SQLite driver using "URI options" if the path begins with `file:`. For example: `"file:path/to/data.db?mode=ro"` opens the database at path `path/to/data.db` in read-only mode. [Refer to the SQLite documentation for all supported URI options](https://www.sqlite.org/uri.html).
-- The special case `":memory:"` launches the component backed by an in-memory SQLite database. This database is not persisted on disk, not shared across multiple Dapr instances, and all data is lost when the Dapr sidecar is stopped.
+- The special case `":memory:"` launches the component backed by an in-memory SQLite database. This database is not persisted on disk, not shared across multiple Dapr instances, and all data is lost when the Dapr sidecar is stopped. When using an in-memory database, you should always set the `?cache=shared` URI option: `"file::memory:?cache=shared"`
 
 ## Advanced
 
