@@ -1,7 +1,7 @@
 ---
 type: docs
-title: MapR template file
-linkTitle: MapR template
+title: "How to: Use the MapR template file"
+linkTitle: "How to: Use the MapR template"
 weight: 2000
 description: Unpack the MapR template file and its properties
 ---
@@ -10,19 +10,58 @@ description: Unpack the MapR template file and its properties
  MapR (Multi-app Run using `dapr run -f`) is currently a preview feature only supported in Linux/MacOS. 
 {{% /alert %}}
 
-The MapR template file is a YAML file that you can use to run multiple applications at once. Execute the following CLI command to read the MapR template file, named `dapr.yaml` by default:
+The MapR template file is a YAML file that you can use to run multiple applications at once. In this guide, you'll learn how to:
+- Use the multi-app template 
+- View started applications
+- Stop the multi-app template 
+- Stucture the multi-app template file
+
+## Use the multi-app template
+
+You can use the multi-app template file in one of the following two ways:
+
+### Execute by providing a directory path
+
+When you provide a directory path, the CLI will try to locate the MapR template file, named `dapr.yaml` by default in the directory. If the file is not found, the CLI will return an error.
+
+Execute the following CLI command to read the MapR template file, named `dapr.yaml` by default:
 
 ```cmd
 // the template file needs to be called `dapr.yaml` by default
 
-dapr run -f
+dapr run -f <dir_path>
 ```
 
-If the MapR template file is named something other than `dapr.yaml`, run:
+### Execute by providing a file path
+
+If the MapR template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
 
 ```cmd
 dapr run -f ./<your-preferred-file-name>.yaml
 ```
+
+## View the started applications
+
+Once the multi-app template is running, you can view the started applications with the following command:
+
+```cmd
+dapr list
+```
+
+## Stop the multi-app template
+
+Stop the multi-app run template anytime with either of the following commands:
+
+```cmd
+dapr stop -f
+```
+or:
+
+```cmd
+dapr stop -f dapr.yaml
+```
+
+## Template file structure
 
 The MapR template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties. 
 
@@ -50,6 +89,15 @@ apps:
       - DEBUG: false
     command: ["./backend"]
 ```
+
+{{% alert title="Important" color="warning" %}}
+The following rules apply for all the paths present in the template file:
+ - If the path is absolute, it is used as is.
+ - All relative paths under comman section should be provided relative to the template file path.
+ - `appDirPath` under apps section should be provided relative to the template file path.
+ - All relative paths under app section should be provided relative to the appDirPath.
+
+{{% /alert %}}
 
 ## Template properties
 

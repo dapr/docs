@@ -23,7 +23,7 @@ With Multi-app Run, you can start multiple applications in self-hosted mode usin
 
 ## MapR template file
 
-When you execute `dapr run -f`, uses the multi-app template file to run all the applications. 
+When you execute `dapr run -f .`, it uses the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
 
 You can name template file with preferred name other than the default. For example `dapr run -f ./<your-preferred-file-name>.yaml`.
 
@@ -33,12 +33,12 @@ The following `dapr.yaml` example includes some of the template properties you c
 version: 1
 apps:
   - appID: processor
-    appDirPath: ../../../apps/processor/
+    appDirPath: ../apps/processor/
     appPort: 9081
     daprHTTPPort: 3510
     command: ["go","run", "app.go"]
   - appID: emit-metrics
-    appDirPath: ../../../apps/emit-metrics/
+    appDirPath: ../apps/emit-metrics/
     daprHTTPPort: 3511
     env: 
       DAPR_HOST_ADD: localhost
@@ -57,9 +57,9 @@ You can set all of your applications resources and configurations at the `~/.dap
 
 ### Separate file locations for each application (with convention)
 
-When developing multiple applications, each app directory can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. Otherwise, if the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
+When using MapR, each application directory can have a `.dapr` folder, which contains a `config.yaml` file and a `resources` directory. Otherwise, if the `.dapr` directory is not present within the app directory, the default `~/.dapr/resources/` and `~/.dapr/config.yaml` locations are used.
 
-If you decide to add a `.dapr` directory in each app directory, with a `/resources` directory and `config.yaml` file, you can specify different resources paths for each application. This approach remains within convention by using the default `.dapr`
+If you decide to add a `.dapr` directory in each application directory, with a `/resources` directory and `config.yaml` file, you can specify different resources paths for each application. This approach remains within convention by using the default `~/.dapr`.
 
 ### Point to separate locations (custom)
 
@@ -67,12 +67,12 @@ You can also name each app directory's `.dapr` directory something other than `.
 
 ## Logs
 
-Logs for application and `daprd` are captured in separate files. These log files are created automatically under `.dapr/logs` directory under each app director. These log file names follow the below pattern:
+Logs for application and `daprd` are captured in separate files. These log files are created automatically under `.dapr/logs` directory under each application directory (`appDirPath` in the template). These log file names follow the pattern seen below:
 
-- `<appID>_app_<timestamp>.log` (file name format for app's log)
+- `<appID>_app_<timestamp>.log` (file name format for `app` log)
 - `<appID>_daprd_<timestamp>.log` (file name format for `daprd` log)
 
-Even if you've decided to rename your resources folder to something other than `.dapr`, the logs file are written to `.dapr` folder.
+Even if you've decided to rename your resources folder to something other than `.dapr`, the log files are written only to the `.dapr/logs` folder (created in the application directory).
 
 ## Watch the demo
 
