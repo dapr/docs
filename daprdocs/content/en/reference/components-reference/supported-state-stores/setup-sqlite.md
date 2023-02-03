@@ -56,7 +56,7 @@ spec:
 The **`connectionString`** parameter configures how to open the SQLite database.
 
 - Normally, this is the path to a file on disk, relative to the current working directory, or absolute. For example: `"data.db"` (relative to the working directory) or `"/mnt/data/mydata.db"`.
-- The path is interpreted by the SQLite library, so it's possible to pass additional options to the SQLite driver using "URI options". For example: `"path/to/data.db?mode=ro"` opens the database at path `path/to/data.db` in read-only mode. [Refer to the SQLite documentation for all supported URI options](https://www.sqlite.org/uri.html).
+- The path is interpreted by the SQLite library, so it's possible to pass additional options to the SQLite driver using "URI options" if the path begins with `file:`. For example: `"file:path/to/data.db?mode=ro"` opens the database at path `path/to/data.db` in read-only mode. [Refer to the SQLite documentation for all supported URI options](https://www.sqlite.org/uri.html).
 - The special case `":memory:"` launches the component backed by an in-memory SQLite database. This database is not persisted on disk, not shared across multiple Dapr instances, and all data is lost when the Dapr sidecar is stopped.
 
 ## Advanced
