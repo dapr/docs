@@ -74,7 +74,7 @@ spec:
 
 ## High cardinality metrics
 
-Depending on your use case, some metrics emitted by Dapr might contain values that have a high cardinality. This might cause large memory usage for the Dapr process/container and incur expensive egress costs in certain cloud environments. To mitigate this issue, you can set regular expressions for every metric exposed by the Dapr sidecar. For a list of all metrics, see [this link](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).
+Depending on your use case, some metrics emitted by Dapr might contain values that have a high cardinality. This might cause increased memory usage for the Dapr process/container and incur expensive egress costs in certain cloud environments. To mitigate this issue, you can set regular expressions for every metric exposed by the Dapr sidecar. [See a list of all Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).
 
 The following example shows how to apply a regular expression for the label `method` in the metric `dapr_runtime_service_invocation_req_sent_total`:
 
