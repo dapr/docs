@@ -268,8 +268,11 @@ has(event.data.important) && event.data.important == true
 Match deposits greater than $10,000:
 
 ```javascript
-event.type == "deposit" && event.data.amount > 10000
+event.type == "deposit" && int(event.data.amount) > 10000
 ```
+{{% alert title="Note" color="primary" %}}
+By default the numeric values ​​are written as double-precision floating-point. There are no automatic arithmetic conversions for numeric values. In this case, if `event.data.amount` is not cast as integer, the match is not performed. For more information, see the [CEL documentation](https://github.com/google/cel-spec/blob/master/doc/langdef.md).
+{{% /alert %}}
 
 Match multiple versions of a message:
 
