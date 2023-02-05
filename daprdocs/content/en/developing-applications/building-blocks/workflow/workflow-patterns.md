@@ -204,9 +204,13 @@ As you can see from the previous example, the runtime status of the workflow is 
 The monitor pattern is recurring process that typically:
 
 1. Checks the status of a system
-1. Takes some action based on that status
+1. Takes some action based on that status - e.g. send a notification
 1. Sleeps for some period of time
 1. Repeat
+
+The following diagram provides a rough illustration of this pattern.
+
+<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=600 alt="Diagram showing how the monitor pattern works"/>
 
 Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
