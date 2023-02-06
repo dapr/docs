@@ -1,9 +1,9 @@
 ---
 type: docs
-title: Multi-app Run overview
+title: Multi-App Run overview
 linkTitle: Multi-App Run overview
 weight: 1000
-description: Learn the scenarios around running multiple applications with one CLI command
+description: Run multiple applications with one CLI command
 ---
 
 {{% alert title="Note" color="primary" %}}
@@ -19,7 +19,7 @@ Instead, you simply want to run them as local executables in self-hosted mode.  
 - Remember the resources folders and configuration files that each application refers to.
 - Recall all of the additional flags you used to tweak the `dapr run` command behavior (`--app-health-check-path`, `--dapr-grpc-port`, `--unix-domain-socket`, etc.)
 
-With Multi-app Run, you can start multiple applications in self-hosted mode using a single `dapr run -f` command using a template file. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
+With Multi-App Run, you can start multiple applications in self-hosted mode using a single `dapr run -f` command using a template file. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
 
 ## Multi-App Run template file
 
@@ -27,7 +27,7 @@ When you execute `dapr run -f .`, it uses the multi-app template file (named `da
 
 You can name template file with preferred name other than the default. For example `dapr run -f ./<your-preferred-file-name>.yaml`.
 
-The following `dapr.yaml` example includes some of the template properties you can customize for your applications. In the example, you can simultaneously launch 2 applications with app IDs of `processor` and `emit-metrics`.
+The following example includes some of the template properties you can customize for your applications. In the example, you can simultaneously launch 2 applications with app IDs of `processor` and `emit-metrics`.
 
 ```yaml
 version: 1
@@ -82,4 +82,4 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 ## Next steps
 
-[Unpack the Multi-App Run template file and its properties]({{< ref multi-app-template.md >}})
+[Learn the Multi-App Run template file structure and its properties]({{< ref multi-app-template.md >}})

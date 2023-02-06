@@ -27,7 +27,7 @@ When you provide a directory path, the CLI will try to locate the Multi-App Run 
 Execute the following CLI command to read the Multi-App Run template file, named `dapr.yaml` by default:
 
 ```cmd
-// the template file needs to be called `dapr.yaml` by default
+# the template file needs to be called `dapr.yaml` by default if a directory path is given
 
 dapr run -f <dir_path>
 ```
@@ -37,7 +37,7 @@ dapr run -f <dir_path>
 If the Multi-App Run template file is named something other than `dapr.yaml`, then you can provide the relative or absolute file path to the command:
 
 ```cmd
-dapr run -f ./<your-preferred-file-name>.yaml
+dapr run -f ./path/to/<your-preferred-file-name>.yaml
 ```
 
 ## View the started applications
@@ -53,12 +53,14 @@ dapr list
 Stop the multi-app run template anytime with either of the following commands:
 
 ```cmd
+# the template file needs to be called `dapr.yaml` by default if a directory path is given
+
 dapr stop -f
 ```
 or:
 
 ```cmd
-dapr stop -f dapr.yaml
+dapr stop -f ./path/to/<your-preferred-file-name>.yaml
 ```
 
 ## Template file structure
@@ -72,16 +74,16 @@ common: # optional section for variables shared across apps
   env:  # any environment variable shared across apps
     - DEBUG: true
 apps:
-  - appID: webapp
-    appDirPath: .dapr/webapp/ # required
+  - appID: webapp # optional
+    appDirPath: .dapr/webapp/ # REQUIRED
     resourcesPath: .dapr/resources # (optional) can be default by convention
     configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
     appProtocol: HTTP
     appPort: 8080
     appHealthCheckPath: "/healthz" 
     command: ["python3" "app.py"]
-  - appID: backend
-    appDirPath: .dapr/backend/
+  - appID: backend # optional 
+    appDirPath: .dapr/backend/ # REQUIRED
     appProtocol: GRPC
     appPort: 3000
     unixDomainSocket: "/tmp/test-socket"
