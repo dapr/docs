@@ -254,7 +254,7 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 }
 ```
 
-Note that this example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
+> This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
 
 {{% /codetab %}}
 
