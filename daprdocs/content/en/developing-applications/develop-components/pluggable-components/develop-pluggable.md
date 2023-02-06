@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How to: Implement pluggable components"
-linkTitle: "Pluggable components"
+linkTitle: "Implement pluggable components"
 weight: 1100
 description: "Learn how to author and implement pluggable components"
 ---
@@ -104,6 +104,201 @@ Provide a concrete implementation of the desired service. Each component has a g
 After generating the above state store example's service scaffolding code using gRPC and protocol buffers tools, you can define concrete implementations for the 9 methods defined under `service StateStore`, along with code to initialize and communicate with your dependencies.
 
 This concrete implementation and auxiliary code are the **core** of your pluggable component. They define how your component behaves when handling gRPC requests from Dapr.
+
+## Returning semantic errors
+
+Returning semantic errors are also part of the pluggable component protocol. The component must return specific gRPC codes that have semantic meaning for the user application, those errors are used to a variety of situations from concurrency requirements to informational only.
+
+| Error                    | gRPC error code                 | Source component | Description |
+| ------------------------ | ------------------------------- | ---------------- | ----------- |
+| ETag Mismatch            | `codes.FailedPrecondition`      | State store      | Error mapping to meet concurrency requirements |
+| ETag Invalid             | `codes.InvalidArgument`         | State store      |  |
+| Bulk Delete Row Mismatch | `codes.Internal`                | State store      |  |
+
+Learn more about concurrency requirements in the [State Management overview]({{< ref "state-management-overview.md#concurrency" >}}).
+
+The following examples demonstrate how to return an error in your own pluggable component, changing the messages to suit your needs.
+
+{{< tabs ".NET" "Java" "Go" >}}
+ <!-- .NET -->
+{{% codetab %}}
+
+> **Important:** In order to use .NET for error mapping, first install the [`Google.Api.CommonProtos` NuGet package](https://www.nuget.org/packages/Google.Api.CommonProtos/).
+
+**Etag Mismatch**
+
+```csharp
+var badRequest = new BadRequest();
+var des = "The ETag field provided does not match the one in the store";
+badRequest.FieldViolations.Add(    
+   new Google.Rpc.BadRequest.Types.FieldViolation
+       {        
+         Field = "etag",
+         Description = des
+       });
+
+var baseStatusCode = Grpc.Core.StatusCode.FailedPrecondition;
+var status = new Google.Rpc.Status{    
+   Code = (int)baseStatusCode
+};
+
+status.Details.Add(Google.Protobuf.WellKnownTypes.Any.Pack(badRequest));
+
+var metadata = new Metadata();
+metadata.Add("grpc-status-details-bin", status.ToByteArray());
+throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
+```
+
+**Etag Invalid**
+
+```csharp
+var badRequest = new BadRequest();
+var des = "The ETag field must only contain alphanumeric characters";
+badRequest.FieldViolations.Add(
+   new Google.Rpc.BadRequest.Types.FieldViolation
+   {
+      Field = "etag",
+      Description = des
+   });
+
+var baseStatusCode = Grpc.Core.StatusCode.InvalidArgument;
+var status = new Google.Rpc.Status
+{
+   Code = (int)baseStatusCode
+};
+
+status.Details.Add(Google.Protobuf.WellKnownTypes.Any.Pack(badRequest));
+
+var metadata = new Metadata();
+metadata.Add("grpc-status-details-bin", status.ToByteArray());
+throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
+```
+
+**Bulk Delete Row Mismatch**
+
+```csharp
+var errorInfo = new Google.Rpc.ErrorInfo();
+
+errorInfo.Metadata.Add("expected", "100");
+errorInfo.Metadata.Add("affected", "99");
+
+var baseStatusCode = Grpc.Core.StatusCode.Internal;
+var status = new Google.Rpc.Status{
+    Code = (int)baseStatusCode
+};
+
+status.Details.Add(Google.Protobuf.WellKnownTypes.Any.Pack(errorInfo));
+
+var metadata = new Metadata();
+metadata.Add("grpc-status-details-bin", status.ToByteArray());
+throw new RpcException(new Grpc.Core.Status(baseStatusCode, "fake-err-msg"), metadata);
+```
+
+{{% /codetab %}}
+
+ <!-- Java -->
+{{% codetab %}}
+
+Just like the [Dapr Java SDK](https://github.com/tmacam/dapr-java-sdk/), the Java Pluggable Components SDK uses [Project Reactor](https://projectreactor.io/), which provides an asynchronous API for Java.
+
+Errors can be returned directly by:
+1. Calling the `.error()` method in the `Mono` or `Flux` that your method returns
+1. Providing the appropriate exception as parameter. 
+
+You can also raise an exception, as long as it is captured and fed back to your resulting `Mono` or `Flux`.
+
+**ETag Mismatch**
+
+```java
+final Status status = Status.newBuilder()
+    .setCode(io.grpc.Status.Code.FAILED_PRECONDITION.value())
+    .setMessage("fake-err-msg-for-etag-mismatch")
+    .addDetails(Any.pack(BadRequest.FieldViolation.newBuilder()
+        .setField("etag")
+        .setDescription("The ETag field provided does not match the one in the store")
+        .build()))
+    .build();
+return Mono.error(StatusProto.toStatusException(status));
+```
+
+**ETag Invalid**
+
+```java
+final Status status = Status.newBuilder()
+    .setCode(io.grpc.Status.Code.INVALID_ARGUMENT.value())
+    .setMessage("fake-err-msg-for-invalid-etag")
+    .addDetails(Any.pack(BadRequest.FieldViolation.newBuilder()
+        .setField("etag")
+        .setDescription("The ETag field must only contain alphanumeric characters")
+        .build()))
+    .build();
+return Mono.error(StatusProto.toStatusException(status));
+```
+
+**Bulk Delete Row Mismatch**
+
+```java
+final Status status = Status.newBuilder()
+    .setCode(io.grpc.Status.Code.INTERNAL.value())
+    .setMessage("fake-err-msg-for-bulk-delete-row-mismatch")
+    .addDetails(Any.pack(ErrorInfo.newBuilder()
+        .putAllMetadata(Map.ofEntries(
+            Map.entry("affected", "99"),
+            Map.entry("expected", "100")
+        ))
+        .build()))
+    .build();
+return Mono.error(StatusProto.toStatusException(status));
+```
+
+{{% /codetab %}}
+
+ <!-- Go -->
+{{% codetab %}}
+
+**ETag Mismatch**
+
+```go
+st := status.New(codes.FailedPrecondition, "fake-err-msg")
+desc := "The ETag field provided does not match the one in the store"
+v := &errdetails.BadRequest_FieldViolation{
+	Field:       etagField,
+	Description: desc,
+}
+br := &errdetails.BadRequest{}
+br.FieldViolations = append(br.FieldViolations, v)
+st, err := st.WithDetails(br)
+```
+
+**ETag Invalid**
+
+```go
+st := status.New(codes.InvalidArgument, "fake-err-msg")
+desc := "The ETag field must only contain alphanumeric characters"
+v := &errdetails.BadRequest_FieldViolation{
+	Field:       etagField,
+	Description: desc,
+}
+br := &errdetails.BadRequest{}
+br.FieldViolations = append(br.FieldViolations, v)
+st, err := st.WithDetails(br)
+```
+
+**Bulk Delete Row Mismatch**
+
+```go
+st := status.New(codes.Internal, "fake-err-msg")
+br := &errdetails.ErrorInfo{}
+br.Metadata = map[string]string{
+	affected: "99",
+	expected: "100",
+}
+st, err := st.WithDetails(br)
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Next steps
 
