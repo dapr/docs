@@ -135,7 +135,7 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `appHealthProbeTimeout`  | N        | Timeout for app health probes in milliseconds |  |
 | `appHealthThreshold`     | N        | Number of consecutive failures for the app to be considered unhealthy |  |
 | `enableApiLogging`       | N        | Enable the logging of all API calls from application to Dapr |  |
-| `daprPath`               | N        | Dapr install path |  |
+| `runtimePath`            | N        | Dapr runtime install path |  |
 | `env`                    | N        | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications | `DEBUG`, `DAPR_HOST_ADD` |
 
 ## Next steps

@@ -21,10 +21,11 @@ dapr stop [flags]
 
 ### Flags
 
-| Name             | Environment Variable | Default | Description                      |
-| ---------------- | -------------------- | ------- | -------------------------------- |
-| `--app-id`, `-a` | `APP_ID`             |         | The application id to be stopped |
-| `--help`, `-h`   |                      |         | Print this help message          |
+| Name                 | Environment Variable | Default | Description                      |
+| -------------------- | -------------------- | ------- | -------------------------------- |
+| `--app-id`, `-a`     | `APP_ID`             |         | The application id to be stopped |
+| `--help`, `-h`       |                      |         | Print this help message          |
+| `--run-file`, `-f`   |                      |         | Stop running multiple applications at once using a Multi-App Run template file  |
 
 ### Examples
 
