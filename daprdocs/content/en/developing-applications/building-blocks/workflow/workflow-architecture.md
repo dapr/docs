@@ -187,4 +187,5 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
 ## Related links
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
+- [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)

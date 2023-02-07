@@ -168,6 +168,6 @@ Now that you've authored a workflow, learn how to manage it.
 {{< button text="Manage workflows >>" page="howto-manage-workflow.md" >}}
 
 ## Related links
-- [Learn more about the Workflow API]({{< ref workflow-overview.md >}})
+- [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
