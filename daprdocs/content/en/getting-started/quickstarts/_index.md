@@ -29,4 +29,3 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | [Secrets Management]({{< ref secrets-quickstart.md >}}) | Securely fetch secrets. |
 | [Configuration]({{< ref configuration-quickstart.md >}}) | Get configuration items and subscribe for configuration updates. |
 | [Resiliency]({{< ref resiliency >}}) | Define and apply fault-tolerance policies to your Dapr API requests. |
-
