@@ -295,11 +295,11 @@ auth:
 
 ## Sending and receiving multiple messages
 
-Apache Kafka component natively supports sending and receiving multiple messages in a single operation (Bulk Pubsub feature).
+Apache Kafka component supports sending and receiving multiple messages in a single operation using the bulk Pub/sub API.
 
 ### Configuring bulk subscribe
 
-When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscription methods]({{< ref subscription-methods >}}) for more details. (TODO: Add link to bulk subscribe docs)
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscription methods]({{< ref subscription-methods >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
 
 | Configuration | Default |
 |----------|---------|
