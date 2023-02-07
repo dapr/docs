@@ -93,8 +93,8 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Workflow quickstart](link) | Description of the quickstart. |
-| [Workflow tutorial](link) | Description of the tutorial. |
+| [Workflow quickstart]({{< ref workflow-quickstart.md >}}) | Run a .NET workflow application with four workflow activities to see Dapr Workflow in action  |
+| [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
 
 ### Start using workflows directly in your app
 

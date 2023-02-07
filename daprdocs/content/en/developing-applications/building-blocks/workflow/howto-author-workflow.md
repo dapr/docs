@@ -9,7 +9,7 @@ description: "Learn how to develop and author workflows"
 This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine.
 
 {{% alert title="Note" color="primary" %}}
- If you haven't already, [try out the workflow quickstart](todo) for a quick walk-through on how to use workflows.
+ If you haven't already, [try out the workflow quickstart]({{< ref workflow-quickstart.md >}}) for a quick walk-through on how to use workflows.
 
 {{% /alert %}}
 
