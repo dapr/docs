@@ -7,16 +7,16 @@ description: Get started with the Dapr Workflow building block
 ---
 
 {{% alert title="Note" color="primary" %}}
-Dapr Workflow is currently in alpha. 
+The workflow building block is currently in **alpha**. 
 {{% /alert %}}
 
 Let's take a look at the Dapr [Workflow building block]({{< ref workflow >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs. 
 
 The `order-processor` console app starts and manages the lifecycle of the `OrderProcessingWorkflow` workflow that stores and retrieves data in a Dapr state store. The workflow consists of four workflow activities, or tasks:
-- `NotifyActivity`
-- `ReserveInventoryActivity`
-- `ProcessPaymentActivity`
-- `UpdateInventoryActivity`
+- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow
+- `ReserveInventoryActivity`: Checks the state store to ensure that there is enough inventory for the purchase
+- `ProcessPaymentActivity`: Processes and authorizes the payment
+- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value
 
 In this guide, you'll:
 
@@ -116,8 +116,6 @@ When you ran `dapr run dotnet run`:
 1. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
 1. The `NotifyActivity` workflow activity sends a notification saying that order `6d2abcc9` has completed.
 1. The workflow terminates as completed.
-
-The workflow and its activities are defined in the following sample files:
 
 #### `order-processor/Program.cs` 
 
