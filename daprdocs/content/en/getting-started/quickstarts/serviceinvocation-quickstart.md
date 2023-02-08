@@ -304,6 +304,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
+Add this code block to the Program.cs file in the current directory
 ```csharp
 app.MapPost("/orders", async context => {
     var data = await context.Request.ReadFromJsonAsync<Order>();
@@ -334,7 +335,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
+In the Program.cs file inside `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```csharp
 var client = new HttpClient();
