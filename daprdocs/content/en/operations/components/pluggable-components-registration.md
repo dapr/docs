@@ -49,49 +49,43 @@ Both your component and the Unix Socket must be running before Dapr starts.
 
 By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-Filenames in this folder are significant for component registration. They must be formed by appending the component's name with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid UDS file name for a component named `my-component`.
+Filenames in this folder are significant for component registration. They must be formed by appending the component's **name** with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid UDS file name for a component named `my-component`.
 
 Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
+### Building-blocks discovery from  behind the same component
+
+A pluggable component accessible through a [Unix Domain Socket][uds] can host multiple distinct bulding blocks. During the components initial discovery process, Dapr will use reflection to enumerate all building blocks behind a UDS. The `my-component` pluggable component from the example above could contain both a state store (`state`) and a Pub/Sub (`pubsub`) building-blocks.
+
+The most common use-case is for a 1:1 mapping between pluggable components and building blocks they expose. That said, having the possibility of consolidating multiple building blocks under the same pluggable components might be healpful, specially to ease DevOps burden at the expense of fault tolerance and security. Please weight the pros and cons and, if in doubt, stick to a 1:1 approach.
+
+
 ## Define the component
 
-Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name, without the file extension.
+Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `spec.type` value is made by concatenating the following 2 parts with a `.`:
+1. the component's **building block type** (`state`, `pubsub` etc)
+2. its **name**, which is derived from the socket name, without the file extension. 
 
-Save the component YAML file in the resources-path, replacing:
+You will need to define one [component spec]({{< ref component-schema.md >}}) for each building block exposed by your pluggable component's  [Unix Domain Socket][uds]. From the example above, the UDS `my-component.sock` from the previous example, exposes a pluggable component named `my-component` with both a `state` and a `pubsub` building blocks. Two components specs, each in their own YAML file placed in the resouces-path, will be required, one for `state.my-component` and another for `pubsub.my-component`.
 
-- `your_socket_goes_here` with your component socket name (no extension)
-- `your_component_type` with your component type
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: prod-mystore
-spec:
-  type: your_component_type.your_socket_goes_here
-  version: v1
-  metadata:
-```
-
-Using the previous `my-component.sock` example:
-
-- `your_component_type` would be replaced by `state`, as it is a state store.
-- `your_socket_goes_here` would be replaced by `my-component`.
-
-The configuration example for `my-component` is below:
+For instance, the component spec for `state.my-component` could be as follow
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: prod-mystore
+  name: my-production-state-store
 spec:
   type: state.my-component
   version: v1
   metadata:
 ```
 
-Save this file as `component.yaml` in Dapr's component configuration folder.
+In this sample above, notice the following:
+* The contents of the field `spec.type` is `state.my-component`: this refers to a State Store being exposed as a pluggable component named `my-component`.
+* The field `metadata.name`, which is the name of the state store beging defined here, is not related with the pluggable component name.
+
+Save this file as `component.yaml` in Dapr's component configuration folder. Just like the contents of `metadata.name` field, the filename for this YAML file has no impact and does not depend on the pluggable component name.
 
 ## Run Dapr
 
