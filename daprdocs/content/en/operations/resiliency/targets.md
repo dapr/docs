@@ -107,7 +107,7 @@ spec:
 
 With the `actors` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to actor operations. 
 
-When using a `circuitBreaker` policy, you can specify whether circuit breaking state should be scoped to by using `circuitBreakerScope`:
+When using a `circuitBreaker` policy for the `actors` target, you can specify how circuit breaking state should be scoped by using `circuitBreakerScope`:
 
 - `id`: an individual actor ID
 - `type`: all actors of a given actor type

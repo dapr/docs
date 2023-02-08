@@ -71,7 +71,7 @@ spec:
 
 ## Circuit Breakers
 
-Circuit Breaker (CB) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met ("open" state). By doing this, CBs give the service time to recover from their outage instead of flooding it with events. The CB can also allow partial traffic through to see if the system has healed ("half-open" state). Once requests resume being successful, the CB can get into "closed" state and allow traffic to resume.
+Circuit Breaker (CB) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met ("open" state). By doing this, CBs give the service time to recover from their outage instead of flooding it with events. The CB can also allow partial traffic through to see if the system has healed ("half-open" state). Once requests resume being successful, the CB gets into "closed" state and allows traffic to completely resume.
 
 | Retry option | Description |
 | ------------ | ----------- |
