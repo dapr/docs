@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-opa/
 ---
 
-The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware.md >}}) applys [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
+The Open Policy Agent (OPA) [HTTP middleware]({{< ref middleware.md >}}) applies [OPA Policies](https://www.openpolicyagent.org/) to incoming Dapr HTTP requests. This can be used to apply reusable authorization policies to app endpoints.
 
 ## Component format
 
@@ -29,6 +29,11 @@ spec:
     # `defaultStatus` is the status code to return for denied responses
     - name: defaultStatus
       value: 403
+
+    # `readBody` controls whether the middleware reads the entire request body in-memory and make it
+    # availble for policy decisions.
+    - name: readBody
+      value: "false"
 
     # `rego` is the open policy agent policy to evaluate. required
     # The policy package must be http and the policy must set data.http.allow
@@ -66,15 +71,16 @@ spec:
         }
 ```
 
-You can prototype and experiment with policies using the [official opa playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
+You can prototype and experiment with policies using the [official OPA playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
 
 ## Spec metadata fields
 
 | Field  | Details | Example |
 |--------|---------|---------|
-| rego | The Rego policy language | See above |
-| defaultStatus   | The status code to return for denied responses | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
-| includedHeaders | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`
+| `rego` | The Rego policy language | See above |
+| `defaultStatus`   | The status code to return for denied responses | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
+| `readBody`   | If set to `true` (the default value), the body of each request is read fully in-memory and can be used to make policy decisions. If your policy doesn't depend on inspecting the request body, consider disabling this (setting to `false`) for significant performance improvements. | `"false"`
+| `includedHeaders` | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`
 
 ## Dapr configuration
 
@@ -193,6 +199,7 @@ allow = { "allow": true, "additional_headers": { "X-JWT-Payload": payload } } {
 ```
 
 ### Result structure
+
 ```go
 type Result bool
 // or
