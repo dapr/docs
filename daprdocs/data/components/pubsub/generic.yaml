@@ -86,3 +86,11 @@
   features:
     bulkPublish: false
     bulkSubscribe: false
+- component: Solace-AMQP
+  link: setup-kubemq
+  state: Beta
+  version: v1
+  since: "1.10"
+  features:
+    bulkPublish: false
+    bulkSubscribe: false
