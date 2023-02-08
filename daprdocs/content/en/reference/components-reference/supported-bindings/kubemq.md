@@ -29,15 +29,14 @@ spec:
 
 ## Spec metadata fields
 
-| Field              | Required | Details                                                      | Example                                |
-|--------------------|:--------:|--------------------------------------------------------------|----------------------------------------|
-| address            |    Y     | Address of the KubeMQ server                                 | `"localhost:50000"`                    |
-| channel            |    Y     | The Queue channel name                                       | `queue1`)                              |
-| authToken          |    N     | Auth JWT token for connection                                | `ew...`                                |
-| autoAcknowledged   |    N     | Sets if received queue message is automatically acknowledged | `true` or `false` (default is `false`) |
-| pollMaxItems       |    N     | Sets the number of messages to poll on every connection      | `1`                                    |
-| pollMaxItems       |    N     | Sets the number of messages to poll on every connection      | `1`                                    |
-| pollTimeoutSeconds |    N     | Sets the time in seconds for each poll interval              | `3600`                                 |
+| Field              | Required | Details                                                                                                                      | Example                                |
+|--------------------|:--------:|------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| address            |    Y     | Address of the KubeMQ server                                                                                                 | `"localhost:50000"`                    |
+| channel            |    Y     | The Queue channel name                                                                                                       | `queue1`                               |
+| authToken          |    N     | Auth JWT token for connection. Check out [KubeMQ Authentication](https://docs.kubemq.io/learn/access-control/authentication) | `ew...`                                |
+| autoAcknowledged   |    N     | Sets if received queue message is automatically acknowledged                                                                 | `true` or `false` (default is `false`) |
+| pollMaxItems       |    N     | Sets the number of messages to poll on every connection                                                                      | `1`                                    |
+| pollTimeoutSeconds |    N     | Sets the time in seconds for each poll interval                                                                              | `3600`                                 |
 
 ## Binding support
 
@@ -107,7 +106,7 @@ kubectl port-forward svc/kubemq-cluster-api -n kubemq 8080:8080
 ```
 
 ## KubeMQ Documentation
-Please visit [KubeMQ Documentation](https://docs.kubemq.io/) for more information.
+Visit [KubeMQ Documentation](https://docs.kubemq.io/) for more information.
 
 ## Related links
 

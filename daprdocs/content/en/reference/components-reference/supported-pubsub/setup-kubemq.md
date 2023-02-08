@@ -28,14 +28,14 @@ spec:
 
 ## Spec metadata fields
 
-| Field             | Required | Details                                                                                | Example                                |
-|-------------------|:--------:|----------------------------------------------------------------------------------------|----------------------------------------|
-| address           |    Y     | Address of the KubeMQ server                                                           | `"localhost:50000"`                    |
-| store             |    N     | type of pubsub, true: pubsub persisted (EventsStore), false: pubsub in-memory (Events) | `true` or `false` (default is `false`) |
-| clientID          |    N     | Name for client id connection                                                          | `sub-client-12345`                     |
-| authToken         |    N     | Auth JWT token for connection                                                          | `ew...`                                |
-| group             |    N     | Subscriber group for load balancing                                                    | `g1`                                   |
-| disableReDelivery |    N     | Sets if message will be re-deliver in case of error coming from DAPR component         | `true` or `false` (default is `false`) |
+| Field             | Required | Details                                                                                                                     | Example                                |
+|-------------------|:--------:|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| address           |    Y     | Address of the KubeMQ server                                                                                                | `"localhost:50000"`                    |
+| store             |    N     | type of pubsub, true: pubsub persisted (EventsStore), false: pubsub in-memory (Events)                                      | `true` or `false` (default is `false`) |
+| clientID          |    N     | Name for client id connection                                                                                               | `sub-client-12345`                     |
+| authToken         |    N     | Auth JWT token for connection Check out [KubeMQ Authentication](https://docs.kubemq.io/learn/access-control/authentication) | `ew...`                                |
+| group             |    N     | Subscriber group for load balancing                                                                                         | `g1`                                   |
+| disableReDelivery |    N     | Set if message should be re-delivered in case of error coming from application                                              | `true` or `false` (default is `false`) |
 
 ## Create a KubeMQ broker
 
@@ -100,7 +100,7 @@ kubectl port-forward svc/kubemq-cluster-api -n kubemq 8080:8080
 ```
 
 ## KubeMQ Documentation
-Please visit [KubeMQ Documentation](https://docs.kubemq.io/) for more information.
+Visit [KubeMQ Documentation](https://docs.kubemq.io/) for more information.
 
 
 ## Related links
