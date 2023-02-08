@@ -68,7 +68,7 @@ Define your component using a [component spec]({{< ref component-schema.md >}}).
 
 You will need to define one [component spec]({{< ref component-schema.md >}}) for each building block exposed by your pluggable component's  [Unix Domain Socket][uds]. From the example above, the UDS `my-component.sock` from the previous example, exposes a pluggable component named `my-component` with both a `state` and a `pubsub` building blocks. Two components specs, each in their own YAML file placed in the resouces-path, will be required, one for `state.my-component` and another for `pubsub.my-component`.
 
-For instance, the component spec for `state.my-component` could be as follow
+For instance, the component spec for `state.my-component` could be:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
