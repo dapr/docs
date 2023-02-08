@@ -10,7 +10,7 @@ is_preview: true
 
 The Dapr SDKs are the easiest way for you to create pluggable components. Choose your favorite language and start creating components in minutes.
 
-## Pluggable Components SDKs
+## Pluggable components SDKs
 
 | Language | Status |
 |----------|:------:|
