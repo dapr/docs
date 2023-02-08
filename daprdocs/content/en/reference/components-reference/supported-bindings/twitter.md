@@ -7,6 +7,10 @@ aliases:
   - "/operations/components/setup-bindings/supported-bindings/twitter/"
 ---
 
+{{% alert title="Deprecation notice" color="warning" %}}
+The Twitter binding component has been deprecated and will be removed in a future release. See [this GitHub issue](https://github.com/dapr/components-contrib/issues/2503) for details.
+{{% /alert %}}
+
 ## Component format
 
 To setup Twitter binding create a component of type `bindings.twitter`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.

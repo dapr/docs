@@ -5,11 +5,8 @@ linkTitle: "Overview"
 weight: 4500
 description: "Configure Dapr retries, timeouts, and circuit breakers"
 ---
-{{% alert title="Note" color="primary" %}}
- Resiliency is currently a preview feature. Before you can utilize a resiliency spec, you must first [enable the resiliency preview feature]({{< ref support-preview-features >}}).
-{{% /alert %}}
 
-Dapr provides a capability for defining and applying fault tolerance resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). Resiliency specs are saved in the same location as components specs and are applied when the Dapr sidecar starts.  The sidecar determines how to apply resiliency policies to your Dapr API calls. In self-hosted mode, the resiliency spec must be named `resiliency.yaml`. In Kubernetes Dapr finds the named resiliency specs used by your application. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
+Dapr provides a capability for defining and applying fault tolerance resiliency policies via a [resiliency spec]({{< ref "resiliency-overview.md#complete-example-policy" >}}). Resiliency specs are saved in the same location as components specs and are applied when the Dapr sidecar starts. The sidecar determines how to apply resiliency policies to your Dapr API calls. In self-hosted mode, the resiliency spec must be named `resiliency.yaml`. In Kubernetes Dapr finds the named resiliency specs used by your application. Within the resiliency spec, you can define policies for popular resiliency patterns, such as:
 
 - [Timeouts]({{< ref "policies.md#timeouts" >}})
 - [Retries/back-offs]({{< ref "policies.md#retries" >}})
@@ -171,3 +168,9 @@ Watch this video for how to use [resiliency](https://www.youtube.com/watch?t=184
 
  - [Policies]({{< ref "policies.md" >}})
  - [Targets]({{< ref "targets.md" >}})
+
+## Next steps
+
+Try out one of the Resiliency quickstarts:
+- [Resiliency: Service-to-service]({{< ref resiliency-serviceinvo-quickstart.md >}})
+- [Resiliency: State Management]({{< ref resiliency-state-quickstart.md >}})

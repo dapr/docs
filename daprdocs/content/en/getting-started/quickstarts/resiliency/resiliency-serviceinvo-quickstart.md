@@ -6,10 +6,6 @@ weight: 120
 description: "Get started with Dapr's resiliency capabilities via the service invocation API"
 ---
 
-{{% alert title="Note" color="primary" %}}
- Resiliency is currently a preview feature.
-{{% /alert %}}
-
 Observe Dapr resiliency capabilities by simulating a system failure. In this Quickstart, you will:
 
 - Run two microservice applications: `checkout` and `order-processor`. `checkout` will continuously make Dapr service invocation requests to `order-processor`. 
@@ -59,10 +55,10 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor  --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
-### Step 3: Run the `checkout` service application with resiliency enabled
+### Step 3: Run the `checkout` service application 
 
 In a new terminal window, from the root of the Quickstart directory, navigate to the `checkout` directory.
 
@@ -76,13 +72,13 @@ Install dependencies:
 pip3 install -r requirements.txt
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
+The Dapr sidecar then loads the resiliency spec located in the resources directory:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -287,10 +283,10 @@ npm install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
-### Step 3: Run the `checkout` service application with resiliency enabled
+### Step 3: Run the `checkout` service application 
 
 In a new terminal window, from the root of the Quickstart directory, 
 navigate to the `checkout` directory.
@@ -305,13 +301,14 @@ Install dependencies:
 npm install
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr  configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- npm start
+dapr run --app-id checkout  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
+The Dapr sidecar then loads the resiliency spec located in the resources directory:
+
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -450,7 +447,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 `checkout` service output:
@@ -518,10 +515,10 @@ dotnet build
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
-### Step 3: Run the `checkout` service application with resiliency enabled
+### Step 3: Run the `checkout` service application 
 
 In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
@@ -537,13 +534,13 @@ dotnet restore
 dotnet build
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr  configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- dotnet run
+dapr run  --app-id checkout  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
+The Dapr sidecar then loads the resiliency spec located in the resources directory:
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -718,7 +715,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - Java JDK 11 (or greater):
-  - [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11), or
+  - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
 <!-- IGNORE_LINKS -->
@@ -751,10 +748,10 @@ mvn clean install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor  --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-### Step 3: Run the `checkout` service application with resiliency enabled
+### Step 3: Run the `checkout` service application 
 
 In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
@@ -769,13 +766,14 @@ Install dependencies:
 mvn clean install
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr  configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+dapr run --app-id checkout  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
+The Dapr sidecar then loads the resiliency spec located in the resources directory:
+
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -914,7 +912,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor  --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 `checkout` service output:
@@ -980,10 +978,10 @@ go build .
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
-### Step 3: Run the `checkout` service application with resiliency enabled
+### Step 3: Run the `checkout` service application 
 
 In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
@@ -998,13 +996,14 @@ Install dependencies:
 go build .
 ```
 
-Run the `checkout` service alongside a Dapr sidecar. The `--config` parameter applies a Dapr configuration that enables the resiliency feature.
+Run the `checkout` service alongside a Dapr sidecar. 
 
 ```bash
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/  --app-protocol http --dapr-http-port 3500 -- go run .
+dapr run  --app-id checkout  --resources-path ../../../resources/  --app-protocol http --dapr-http-port 3500 -- go run .
 ```
 
-By enabling resiliency, the resiliency spec located in the components directory is detected and loaded by the Dapr sidecar:
+The Dapr sidecar then loads the resiliency spec located in the resources directory:
+
 
    ```yaml
    apiVersion: dapr.io/v1alpha1
@@ -1143,7 +1142,7 @@ Once you restart the `order-processor` service, the application will recover sea
 In the `order-processor` service terminal, restart the application:
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor  --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 `checkout` service output:
