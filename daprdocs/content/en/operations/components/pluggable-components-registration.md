@@ -53,7 +53,7 @@ Filenames in this folder are significant for component registration. They must b
 
 Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
-### Building-blocks discovery from  behind the same component
+### Component discovery and multiplexing
 
 A pluggable component accessible through a [Unix Domain Socket][uds] can host multiple distinct bulding blocks. During the components initial discovery process, Dapr will use reflection to enumerate all building blocks behind a UDS. The `my-component` pluggable component from the example above could contain both a state store (`state`) and a Pub/Sub (`pubsub`) building-blocks.
 
