@@ -86,7 +86,7 @@
   features:
     bulkPublish: false
     bulkSubscribe: false
-- component: Solace-AMQP
+- component: KubeMQ
   link: setup-kubemq
   state: Beta
   version: v1
