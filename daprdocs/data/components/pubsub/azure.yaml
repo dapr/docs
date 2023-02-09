@@ -3,8 +3,22 @@
   state: Stable
   version: v1
   since: "1.8"
-- component: Azure Service Bus
-  link: setup-azure-servicebus
+  features:
+    bulkPublish: true
+    bulkSubscribe: false
+- component: Azure Service Bus Topics
+  link: setup-azure-servicebus-topics
   state: Stable
   version: v1
   since: "1.0"
+  features:
+    bulkPublish: true
+    bulkSubscribe: true
+- component: Azure Service Bus Queues
+  link: setup-azure-servicebus-queues
+  state: Beta
+  version: v1
+  since: "1.10"
+  features:
+    bulkPublish: true
+    bulkSubscribe: true

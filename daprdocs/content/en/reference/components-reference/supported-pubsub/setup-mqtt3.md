@@ -21,16 +21,15 @@ spec:
   type: pubsub.mqtt3
   version: v1
   metadata:
-  - name: url
-    value: "tcp://[username][:password]@host.domain[:port]"
-  - name: qos
-    value: 1
-  - name: retain
-    value: "false"
-  - name: cleanSession
-    value: "false"
-  - name: backOffMaxRetries
-    value: "0"
+    - name: url
+      value: "tcp://[username][:password]@host.domain[:port]"
+    # Optional
+    - name: retain
+      value: "false"
+    - name: cleanSession
+      value: "false"
+    - name: qos
+      value: "1"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -41,18 +40,18 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| url    | Y  | Address of the MQTT broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`tcp://`** URI scheme for non-TLS communication. <br> Use the **`ssl://`** URI scheme for TLS communication. | `"tcp://[username][:password]@host.domain[:port]"`
-| consumerID | N | The client ID used to connect to the MQTT broker for the consumer connection. Defaults to the Dapr app ID.<br>Note: if `producerID` is not set, `-consumer` is appended to this value for the consumer connection | `"myMqttClientApp"`
-| producerID | N | The client ID used to connect to the MQTT broker for the producer connection. Defaults to `{consumerID}-producer`. | `"myMqttProducerApp"`
-| qos    | N  | Indicates the Quality of Service Level (QoS) of the message ([more info](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/)). Defaults to `1`. |`0`, `1`, `2`
-| retain | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Defaults to `"false"`.  | `"true"`, `"false"`
-| cleanSession | N | Sets the `clean_session` flag in the connection message to the MQTT broker if `"true"` ([more info](http://www.steves-internet-guide.com/mqtt-clean-sessions-example/)). Defaults to `"false"`.  | `"true"`, `"false"`
-| caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
-| clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
-| clientKey | Required for using TLS | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| `url`    | Y  | Address of the MQTT broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`tcp://`** URI scheme for non-TLS communication. <br> Use the **`ssl://`** URI scheme for TLS communication. | `"tcp://[username][:password]@host.domain[:port]"`
+| `consumerID` | N | The client ID used to connect to the MQTT broker. Defaults to the Dapr app ID. | `"myMqttClientApp"`
+| `retain` | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Defaults to `"false"`. | `"true"`, `"false"`
+| `cleanSession` | N | Sets the `clean_session` flag in the connection message to the MQTT broker if `"true"` ([more info](http://www.steves-internet-guide.com/mqtt-clean-sessions-example/)). Defaults to `"false"`. | `"true"`, `"false"`
+| `caCert` | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | See example below
+| `clientCert`  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | See example below
+| `clientKey` | Required for using TLS | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | See example below
+| `qos`    | N  | Indicates the Quality of Service Level (QoS) of the message ([more info](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/)). Defaults to `1`. |`0`, `1`, `2`
+
 ### Communication using TLS
 
-To configure communication using TLS, ensure that the MQTT broker (e.g. mosquitto) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
+To configure communication using TLS, ensure that the MQTT broker (e.g. emqx) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -63,26 +62,30 @@ spec:
   type: pubsub.mqtt3
   version: v1
   metadata:
-  - name: url
-    value: "ssl://host.domain[:port]"
-  - name: qos
-    value: 1
-  - name: retain
-    value: "false"
-  - name: cleanSession
-    value: "false"
-  - name: backoffMaxRetries
-    value: "0"
-  - name: caCert
-    value: ${{ myLoadedCACert }}
-  - name: clientCert
-    value: ${{ myLoadedClientCert }}
-  - name: clientKey
-    secretKeyRef:
-      name: myMqttClientKey
-      key: myMqttClientKey
-auth:
-  secretStore: <SECRET_STORE_NAME>
+    - name: url
+      value: "ssl://host.domain[:port]"
+  # TLS configuration
+    - name: caCert
+      value: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+    - name: clientCert
+      value: |
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+    - name: clientKey
+      secretKeyRef:
+        name: myMqttClientKey
+        key: myMqttClientKey
+    # Optional
+    - name: retain
+      value: "false"
+    - name: cleanSession
+      value: "false"
+    - name: qos
+      value: 1
 ```
 
 Note that while the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
@@ -102,36 +105,34 @@ spec:
   metadata:
     - name: consumerID
       value: "{uuid}"
+    - name: cleanSession
+      value: "true"
     - name: url
       value: "tcp://admin:public@localhost:1883"
     - name: qos
       value: 1
     - name: retain
       value: "false"
-    - name: cleanSession
-      value: "true"
-    - name: backoffMaxRetries
-      value: "0"
 ```
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-Note that in the case, the value of the consumer ID is random every time Dapr restarts, so we are setting `cleanSession` to true as well.
+Note that in the case, the value of the consumer ID is random every time Dapr restarts, so you should set `cleanSession` to `true` as well.
 
 ## Create a MQTT3 broker
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
-You can run a MQTT broker [locally using Docker](https://hub.docker.com/_/eclipse-mosquitto):
+You can run a MQTT broker like emqx [locally using Docker](https://hub.docker.com/_/emqx):
 
 ```bash
-docker run -d -p 1883:1883 -p 9001:9001 --name mqtt eclipse-mosquitto:1.6
+docker run -d -p 1883:1883 --name mqtt emqx:latest
 ```
 
-You can then interact with the server using the client port: `mqtt://localhost:1883`
+You can then interact with the server using the client port: `tcp://localhost:1883`
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -156,14 +157,11 @@ spec:
     spec:
       containers:
         - name: mqtt
-          image: eclipse-mosquitto:1.6
+          image: emqx:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: default
               containerPort: 1883
-              protocol: TCP
-            - name: websocket
-              containerPort: 9001
               protocol: TCP
 ---
 apiVersion: v1
@@ -180,10 +178,6 @@ spec:
     - port: 1883
       targetPort: default
       name: default
-      protocol: TCP
-    - port: 9001
-      targetPort: websocket
-      name: websocket
       protocol: TCP
 ```
 

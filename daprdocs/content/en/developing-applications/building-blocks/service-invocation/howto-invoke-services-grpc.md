@@ -7,7 +7,8 @@ weight: 3000
 ---
 
 This article describe how to use Dapr to connect services using gRPC.
-By using Dapr's gRPC proxying capability, you can use your existing proto based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
+
+By using Dapr's gRPC proxying capability, you can use your existing proto-based gRPC services and have the traffic go through the Dapr sidecar. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
 
 1. Mutual authentication
 2. Tracing
@@ -16,11 +17,11 @@ By using Dapr's gRPC proxying capability, you can use your existing proto based 
 5. Network level resiliency
 6. API token based authentication
 
+Dapr allows proxying all kinds of gRPC invocations, including unary and [stream-based](#proxying-of-streaming-rpcs) ones.
+
 ## Step 1: Run a gRPC server
 
-The following example is taken from the [hello world grpc-go example](https://github.com/grpc/grpc-go/tree/master/examples/helloworld).
-
-Note this example is in Go, but applies to all programming languages supported by gRPC.
+The following example is taken from the ["hello world" grpc-go example](https://github.com/grpc/grpc-go/tree/master/examples/helloworld). Although this example is in Go, the same concepts apply to all programming languages supported by gRPC.
 
 ```go
 package main
@@ -175,7 +176,7 @@ response = service.sayHello({ 'name': 'Darth Bane' }, metadata)
 {{% codetab %}}
 ```c++
 grpc::ClientContext context;
-context.AddMetadata("dapr-app-id", "Darth Sidious");
+context.AddMetadata("dapr-app-id", "server");
 ```
 {{% /codetab %}}
 
@@ -191,7 +192,7 @@ dapr run --app-id client --dapr-grpc-port 50007 -- go run main.go
 
 If you're running Dapr locally with Zipkin installed, open the browser at `http://localhost:9411` and view the traces between the client and server.
 
-## Deploying to Kubernetes
+### Deploying to Kubernetes
 
 Set the following Dapr annotations on your deployment:
 
@@ -241,15 +242,88 @@ The example above showed you how to directly invoke a different service running 
 
 For more information on tracing and logs see the [observability]({{< ref observability-concept.md >}}) article.
 
- ## Related Links
+## Proxying of streaming RPCs
+
+When using Dapr to proxy streaming RPC calls using gRPC, you must set an additional metadata option `dapr-stream` with value `true`.
+
+For example:
+
+{{< tabs Go Java Dotnet Python JavaScript Ruby "C++">}}
+
+{{% codetab %}}
+```go
+ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
+ctx = metadata.AppendToOutgoingContext(ctx, "dapr-stream", "true")
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```java
+Metadata headers = new Metadata();
+Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-app-id", "server");
+Metadata.Key<String> jwtKey = Metadata.Key.of("dapr-stream", "true");
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```csharp
+var metadata = new Metadata
+{
+	{ "dapr-app-id", "server" },
+	{ "dapr-stream", "true" }
+};
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+metadata = (('dapr-app-id', 'server'), ('dapr-stream', 'true'),)
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```javascript
+const metadata = new grpc.Metadata();
+metadata.add('dapr-app-id', 'server');
+metadata.add('dapr-stream', 'true');
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```ruby
+metadata = { 'dapr-app-id' : 'server' }
+metadata = { 'dapr-stream' : 'true' }
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```c++
+grpc::ClientContext context;
+context.AddMetadata("dapr-app-id", "server");
+context.AddMetadata("dapr-stream", "true");
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+### Streaming gRPCs and Resiliency
+
+When proxying streaming gRPCs, due to their long-lived nature, [resiliency]({{< ref "resiliency-overview.md" >}}) policies are applied on the "initial handshake" only. As a consequence:
+
+- If the stream is interrupted after the initial handshake, it will not be automatically re-established by Dapr. Your application will be notified that the stream has ended, and will need to recreate it.
+- Retry policies only impact the initial connection "handshake". If your resiliency policy includes retries, Dapr will detect failures in establishing the initial connection to the target app and will retry until it succeeds (or until the number of retries defined in the policy is exhausted).
+- Likewise, timeouts defined in resiliency policies only apply to the initial "handshake". After the connection has been established, timeouts do not impact the stream anymore.
+
+## Related Links
 
 * [Service invocation overview]({{< ref service-invocation-overview.md >}})
 * [Service invocation API specification]({{< ref service_invocation_api.md >}})
 * [gRPC proxying community call video](https://youtu.be/B_vkXqptpXY?t=70)
 
 ## Community call demo
+
 Watch this [video](https://youtu.be/B_vkXqptpXY?t=69) on how to use Dapr's gRPC proxying capability:
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/B_vkXqptpXY?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/B_vkXqptpXY?start=69" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>

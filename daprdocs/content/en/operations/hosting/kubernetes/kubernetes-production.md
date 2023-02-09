@@ -6,11 +6,13 @@ weight: 40000
 description: "Recommendations and practices for deploying Dapr to a Kubernetes cluster in a production-ready configuration"
 ---
 
-## Cluster capacity requirements
+## Cluster and capacity requirements
+
+Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/). 
 
 For a production-ready Kubernetes cluster deployment, we recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
 
-Use the following resource settings as a starting point. Requirements will vary depending on cluster size and other factors, so you should perform individual testing to find the right values for your environment:
+Use the following resource settings as a starting point. Requirements will vary depending on cluster size, number of pods, and other factors, so you should perform individual testing to find the right values for your environment:
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
@@ -195,6 +197,20 @@ It is recommended that a production-ready deployment includes the following sett
 5. The Dapr **control plane is installed on a dedicated namespace** such as `dapr-system`.
 
 6. Dapr also supports **scoping components for certain applications**. This is not a required practice, and can be enabled according to your security needs. See [here]({{< ref "component-scopes.md" >}}) for more info.
+
+## Service account tokens
+
+By default, Kubernetes mounts a volume containing a [Service Account token](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) in each container. Applications can use this token, whose permissions vary depending on the configuration of the cluster and namespace, among other things, to perform API calls against the Kubernetes control plane.
+
+When creating a new Pod (or a Deployment, StatefulSet, Job, etc), you can disable auto-mounting the Service Account token by setting `automountServiceAccountToken: false` in your pod's spec.
+
+It is recommended that you consider deploying your apps with `automountServiceAccountToken: false` to improve the security posture of your pods, unless your apps depend on having a Service Account token. For example, you may need a Service Account token if:
+
+- You are using Dapr components that interact with the Kubernetes APIs, for example the [Kubernetes secret store]({{< ref "kubernetes-secret-store.md" >}}) or the [Kubernetes Events binding]{{< ref "kubernetes-binding.md" >}}).  
+  Note that initializing Dapr components using [component secrets]({{< ref "component-secrets.md" >}}) stored as Kubernetes secrets does **not** require a Service Account token, so you can still set `automountServiceAccountToken: false` in this case. Only calling the Kubernetes secret store at runtime, using the [Secrets management]({{< ref "secrets-overview.md" >}}) building block, is impacted.
+- Your own application needs to interact with the Kubernetes APIs.
+
+Because of the reasons above, Dapr does not set `automountServiceAccountToken: false` automatically for you. However, in all situations where the Service Account is not required by your solution, it is recommended that you set this option in the pods spec.
 
 ## Tracing and metrics configuration
 

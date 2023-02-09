@@ -96,9 +96,9 @@
     output: true
 - component: Redis
   link: redis
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.7"
+  since: "1.9"
   features:
     input: false
     output: true
@@ -141,4 +141,12 @@
   since: "1.0"
   features:
     input: false
+    output: true
+- component: KubeMQ
+  link: kubemq
+  state: Beta
+  version: v1
+  since: "1.10"
+  features:
+    input: true
     output: true
