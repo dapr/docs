@@ -142,3 +142,11 @@
   features:
     input: false
     output: true
+- component: KubeMQ
+  link: kubemq
+  state: Beta
+  version: v1
+  since: "1.10"
+  features:
+    input: true
+    output: true

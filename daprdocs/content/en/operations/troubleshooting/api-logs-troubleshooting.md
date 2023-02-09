@@ -40,11 +40,11 @@ $ dapr run --enable-api-logging -- node myapp.js
 ℹ️  Starting Dapr with id order-processor on port 56730
 ✅  You are up and running! Both Dapr and your app logs will appear here.
 .....
-INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="POST /v1.0/state/{name}" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
+INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="POST /v1.0/state/mystate" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
 == APP == INFO:root:Saving Order: {'orderId': '483'}
-INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="GET /v1.0/state/{name}/{key}" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
+INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="GET /v1.0/state/mystate/key123" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
 == APP == INFO:root:Getting Order: {'orderId': '483'}
-INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="DELETE /v1.0/state/{name}" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
+INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="DELETE /v1.0/state/mystate" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
 == APP == INFO:root:Deleted Order: {'orderId': '483'}
 INFO[0000] HTTP API Called app_id=order-processor instance=mypc method="PUT /v1.0/metadata/cliPID" scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
 ```
@@ -68,7 +68,7 @@ See the kubernetes API logs by executing the below command.
 kubectl logs <pod_name> daprd -n <name_space>
 ```
 
-The example below show `info` level API logging in Kubernetes.
+The example below show `info` level API logging in Kubernetes (with [URL obfuscation](#obfuscate-urls-in-http-api-logging) enabled).
 
 ```bash
 time="2022-03-16T18:32:02.487041454Z" level=info msg="HTTP API Called" method="POST /v1.0/invoke/{id}/method/{method:*}" app_id=invoke-caller instance=invokecaller-f4f949886-cbnmt scope=dapr.runtime.http-info type=log useragent=Go-http-client/1.1 ver=edge
@@ -97,6 +97,22 @@ logging:
   apiLogging:
     enabled: true
 ```
+
+### Obfuscate URLs in HTTP API logging
+
+By default, logs for API calls in the HTTP endpoints include the full URL being invoked (for example, `POST /v1.0/invoke/directory/method/user-123`), which could contain Personal Identifiable Information (PII).
+
+To reduce the risk of PII being accidentally included in API logs (when enabled), Dapr can instead log the abstract route being invoked (for example, `POST /v1.0/invoke/{id}/method/{method:*}`). This can help ensuring compliance with privacy regulations such as GDPR.
+
+To enable obfuscation of URLs in Dapr's HTTP API logs, set `logging.apiLogging.obfuscateURLs` to `true`. For example:
+
+```yaml
+logging:
+  apiLogging:
+    obfuscateURLs: true
+```
+
+Logs emitted by the Dapr gRPC APIs are not impacted by this configuration option, as they only include the name of the method invoked and no arguments.
 
 ### Omit health checks from API logging
 

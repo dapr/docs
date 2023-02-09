@@ -43,6 +43,8 @@ spec:
     value: <REPLACE-WITH-CLIENT-x509-CERT-URL> # Required.
   - name: entity_kind
     value: <REPLACE-WITH-ENTITY-KIND> # Optional. default: "DaprState"
+  - name: noindex
+    value: <REPLACE-WITH-BOOLEAN> # Optional. default: "false"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -63,6 +65,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | auth_provider_x509_cert_url | Y | The auth provider certificate URL | `"https://www.googleapis.com/oauth2/v1/certs"`
 | client_x509_cert_url | Y      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
 | entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
+| noindex              | N      | Whether to disable indexing of state entities. Use this setting if you encounter Firestore index size limitations. Defaults to `"false"` | `"true"`
 
 ## Setup GCP Firestore
 
