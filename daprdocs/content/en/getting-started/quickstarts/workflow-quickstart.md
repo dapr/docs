@@ -12,7 +12,7 @@ The workflow building block is currently in **alpha**.
 
 Let's take a look at the Dapr [Workflow building block]({{< ref workflow >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs. 
 
-The `order-processor` console app starts and manages the lifecycle of the `OrderProcessingWorkflow` workflow that stores and retrieves data in a Dapr state store. The workflow consists of four workflow activities, or tasks:
+The `order-processor` console app starts and manages the lifecycle of the `OrderProcessingWorkflow` workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
 - `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow
 - `ReserveInventoryActivity`: Checks the state store to ensure that there is enough inventory for the purchase
 - `ProcessPaymentActivity`: Processes and authorizes the payment
@@ -20,9 +20,9 @@ The `order-processor` console app starts and manages the lifecycle of the `Order
 
 In this guide, you'll:
 
-- Run the order processor application.
+- Run the `order-processor` application.
 - Start the workflow and watch the workflow activites/tasks execute.
-- Unpack the workflow logic and the workflow activities and how they're represented in the code.
+- Review the workflow logic and the workflow activities and how they're represented in the code.
 
 <img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
 
@@ -72,7 +72,7 @@ In the terminal, start the order processor app alongside a Dapr sidecar:
 dapr run --app-id order-processor dotnet run
 ```
 
-This starts the `order-processor` ID and triggers the workflow activities. 
+This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
 
 Expected output:
 
@@ -106,7 +106,7 @@ Expected output:
 
 ### What happened?
 
-When you ran `dapr run dotnet run`:
+When you ran `dapr run --app-id order-processor dotnet run`:
 
 1. A unique order ID for the workflow is generated (in the above example, `6d2abcc9`) and the workflow is scheduled.
 1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
@@ -120,7 +120,7 @@ When you ran `dapr run dotnet run`:
 #### `order-processor/Program.cs` 
 
 In the application's program file:
-- The unique order ID is generated
+- The unique workflow order ID is generated
 - The workflow is scheduled
 - The workflow status is retrieved
 - The workflow and the workflow activities it invokes are registered
@@ -257,6 +257,13 @@ The `Activities` directory holds the four workflow activities used by the workfl
 
 
 {{< /tabs >}}
+
+## Watch the demo
+
+Watch [this video to walk through the workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=2564" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?

@@ -24,7 +24,7 @@ Dapr Workflow logic is implemented using general purpose programming languages, 
 - Use debuggers and examine local variables
 - Write unit tests for your workflows, just like any other part of your application logic
 
-The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all other details to the application layer.
+The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all the workflow activities to be part of the application.
 
 ## Write the workflow activities
 
@@ -170,4 +170,4 @@ Now that you've authored a workflow, learn how to manage it.
 ## Related links
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
