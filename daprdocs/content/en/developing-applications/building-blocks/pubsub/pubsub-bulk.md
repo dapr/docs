@@ -274,8 +274,8 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
 The bulk subscribe API allows you to subscribe multiple messages from a topic in a single request. 
 As we know from [How to: Publish & Subscribe to topics]({{< ref howto-publish-subscribe.md >}}), there are two ways to subscribe to topic(s):
 
-- **Declaratively**, where subscriptions are defined in an external file.
-- **Programmatically**, where subscriptions are defined in user code.
+- **Declaratively** - subscriptions are defined in an external file.
+- **Programmatically** - subscriptions are defined in code.
 
 To Bulk Subscribe to topic(s), we just need to use `bulkSubscribe` spec attribute, something like following:
 
@@ -298,14 +298,29 @@ scopes:
 - checkout
 ```
 
-In the example above, `bulkSubscribe` altogether is _optional_. If you decide to use `bulkSubscribe`, then:
-- `enabled` is mandatory
-- You can optionally configure the max number of messages (`maxMessagesCount`) delivered via Dapr in a bulk message
-- You can optionally provide the max duration to wait (`maxAwaitDurationMs`) before a bulk message is sent via Dapr to the app
+In the example above, `bulkSubscribe` is _optional_. If you use `bulkSubscribe`, then:
+- `enabled` is mandatory and enables or disables bulk subscriptions on this topic
+- You can optionally configure the max number of messages (`maxMessagesCount`) delivered in a bulk message. 
+Default value of `maxMessagesCount` for components not supporting bulk subscribe is 100 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}). 
+If a component supports bulk subscribe, then default value for this parameter can be found in that component doc. Please refer [Supported components]({{< ref pubsub-bulk >}}).
+- You can optionally provide the max duration to wait (`maxAwaitDurationMs`) before a bulk message is sent to the app.
+Default value of `maxAwaitDurationMs` for components not supporting bulk subscribe is 1000 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}). 
+If a component supports bulk subscribe, then default value for this parameter can be found in that component doc. Please refer [Supported components]({{< ref pubsub-bulk >}}).
 
-If the application decides not to configure `maxMessagesCount` and/or `maxAwaitDurationMs`, the defaults will be used as per the respective component in Dapr.
+The application receives an `EntryId` associated with each entry (individual message) in the bulk message. This `EntryId` must be used by the app to communicate the status of that particular entry. If the app fails to notify on an `EntryId` status, it's considered a `RETRY`.
 
-The application receives an EntryId associated with each entry (individual message) in the bulk message. This EntryId must be used by the app to communicate the status of that particular entry. If the app fails to notify on an EntryId status, it's considered a `RETRY`.
+A JSON-encoded payload body with the processing status against each entry needs to be sent:
+
+```json
+{
+  "statuses": {
+    "entryId": "<entryId>",
+    "status": "<status>"
+  }
+}
+```
+
+Possible status values:
 
 Status | Description
 --------- | -----------
@@ -313,7 +328,11 @@ Status | Description
 `RETRY` | Message to be retried by Dapr
 `DROP` | Warning is logged and message is dropped
 
+Please refer [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >}}) for further insights on response.
+
 ### Example
+
+Please refer following code samples for how to use Bulk Subscribe:
 
 {{< tabs Java Javascript "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
 

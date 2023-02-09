@@ -247,7 +247,7 @@ other | warning is logged and message to be retried
 
 ## Subscribe multiple messages from a given topic
 
-This allows you to subscribe multiple messages from a broker to listen to a `topic`.
+This allows you to subscribe to multiple messages from a broker when listening to a `topic`.
 
 In order to receive messages in a bulk manner for a topic subscription, the application:
 
