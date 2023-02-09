@@ -6,7 +6,7 @@ weight: 3000
 description: "Write different types of workflow patterns"
 ---
 
-Dapr Workflows simplify complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflows:
+Dapr Workflows simplify complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflows.
 
 ## Task chaining
 
@@ -128,7 +128,7 @@ Asynchronous HTTP APIs are typically implemented using the [Asynchronous Request
 
 1. A client sends a request to an HTTP API endpoint (the _start API_)
 1. The _start API_ writes a message to a backend queue, which triggers the start of a long-running operation
-1. Immediately after scheduling the backend operation, the _start API_ returns an HTTP 202 response to the client with a `Location` header for the operation's _status API_
+1. Immediately after scheduling the backend operation, the _start API_ returns an HTTP 202 response to the client with an identifier that can be used to poll for status
 1. The _status API_ queries a database that contains the status of the long-running operation
 1. The client repeatedly polls the _status API_ either until some timeout expires or it receives a "completion" response
 
@@ -138,45 +138,133 @@ The end-to-end flow is illustrated in the following diagram.
 
 The challenge with implementing the asynchronous request-reply pattern is that it involves the use of multiple APIs and state stores. It also involves implementing the protocol correctly so that the client knows how to automatically poll for status and know when the operation is complete.
 
-The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-of-the box, without requiring you to write any code or do any state management. The following `curl` commands illustrate how the workflow APIs support this pattern.
+The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-of-the box, without requiring you to write any code or do any state management.
+
+The following `curl` commands illustrate how the workflow APIs support this pattern.
 
 ```bash
-curl -i -X TODO
-```
-```http
-HTTP/1.1 202 Accepted
-Content-Type: application/json
-
-{TODO}
+curl -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/start -d '{"input":{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}}'
 ```
 
-The HTTP client can then poll the endpoint in the `Location` response header repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
+The previous command will result in the following response JSON:
+
+```json
+{"instance_id":"12345678"}
+```
+
+The HTTP client can then construct the status query URL using the workflow instance ID and poll it repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
 
 ```bash
-curl -i -X TODO
+curl http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678
 ```
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
 
-{TODO}
+The following is an example of what an in-progress workflow status might look like.
+
+```json
+{
+  "WFInfo": {
+    "instance_id": "12345678"
+  },
+  "start_time": "2023-02-05T00:32:05Z",
+  "metadata": {
+    "dapr.workflow.custom_status": "",
+    "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":1,\"TotalCost\":9.95}",
+    "dapr.workflow.last_updated": "2023-02-05T00:32:18Z",
+    "dapr.workflow.name": "OrderProcessingWorkflow",
+    "dapr.workflow.runtime_status": "RUNNING"
+  }
+}
 ```
+
+As you can see from the previous example, the workflow's runtime status is `RUNNING`, which lets the client know that it should continue polling.
+
+If the workflow has completed, the status might look as follows.
+
+```json
+{
+  "WFInfo": {
+    "instance_id": "12345678"
+  },
+  "start_time": "2023-02-05T00:32:05Z",
+  "metadata": {
+    "dapr.workflow.custom_status": "",
+    "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":1,\"TotalCost\":9.95}",
+    "dapr.workflow.last_updated": "2023-02-05T00:32:23Z",
+    "dapr.workflow.name": "OrderProcessingWorkflow",
+    "dapr.workflow.output": "{\"Processed\":true}",
+    "dapr.workflow.runtime_status": "COMPLETED"
+  }
+}
+```
+
+As you can see from the previous example, the runtime status of the workflow is now `COMPLETED`, which means the client can stop polling for updates.
 
 ## Monitor
 
-The monitor pattern is a flexible, recurring process in a workflow that coordinates the actions of multiple threads by controlling access to shared resources. Typically:
+The monitor pattern is recurring process that typically:
 
-1. The thread must first acquire the monitor. 
-1. Once the thread has acquired the monitor, it can access the shared resource.
-1. The thread then releases the monitor. 
+1. Checks the status of a system
+1. Takes some action based on that status - e.g. send a notification
+1. Sleeps for some period of time
+1. Repeat
 
-This ensures that only one thread can access the shared resource at a time, preventing synchronization issues.
+The following diagram provides a rough illustration of this pattern.
 
-TODO: DIAGRAM?
+<img src="/images/workflow-overview/workflow-monitor-pattern.png" width=600 alt="Diagram showing how the monitor pattern works"/>
 
-In a few lines of code, you can create multiple monitors that observe arbitrary endpoints. The following code implements a basic monitor:
+Depending on the business needs, there may be a single monitor or there may be multiple monitors, one for each business entity (for example, a stock). Furthermore, the amount of time to sleep may need to change, depending on the circumstances. These requirements make using cron-based scheduling systems impractical.
 
-TODO: CODE EXAMPLE
+Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+public override async Task<object> RunAsync(WorkflowContext context, MyEntityState myEntityState)
+{
+    TimeSpan nextSleepInterval;
+
+    var status = await context.CallActivityAsync<string>("GetStatus");
+    if (status == "healthy")
+    {
+        myEntityState.IsHealthy = true;
+
+        // Check less frequently when in a healthy state
+        nextSleepInterval = TimeSpan.FromMinutes(60);
+    }
+    else
+    {
+        if (myEntityState.IsHealthy)
+        {
+            myEntityState.IsHealthy = false;
+            await context.CallActivityAsync("SendAlert", myEntityState);
+        }
+
+        // Check more frequently when in an unhealthy state
+        nextSleepInterval = TimeSpan.FromMinutes(5);
+    }
+
+    // Put the workflow to sleep until the determined time
+    await context.CreateTimer(nextSleepInterval);
+
+    // Restart from the beginning with the updated state
+    context.ContinueAsNew(myEntityState);
+    return null;
+}
+```
+
+> This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
+
+{{% alert title="Note" color="primary" %}}
+This pattern can also be expressed using actors and reminders. The difference is that this workflow is expressed as a single function with inputs and state stored in local variables. Workflows can also execute a sequence of actions with stronger reliability guarantees, if necessary.
+{{% /alert %}}
 
 ## Next steps
 
