@@ -8,7 +8,7 @@ description: "Recommendations and practices for deploying Dapr to a Kubernetes c
 
 ## Cluster and capacity requirements
 
-Dapr is supported on Kubernetes 1.23 or higher.
+Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/). 
 
 For a production-ready Kubernetes cluster deployment, we recommended you run a cluster of at least 3 worker nodes to support a highly-available control plane installation.
 
