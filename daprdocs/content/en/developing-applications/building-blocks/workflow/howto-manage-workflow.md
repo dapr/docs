@@ -60,5 +60,5 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 
 ## Next steps
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
-- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - [Workflow API reference]({{< ref workflow_api.md >}})

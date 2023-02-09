@@ -113,4 +113,4 @@ Watch [this video for an overview on Dapr Workflows](https://youtu.be/s1p9MNl4VG
 ## Related links
 
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
