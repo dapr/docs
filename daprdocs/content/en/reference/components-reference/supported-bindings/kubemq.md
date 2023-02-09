@@ -85,8 +85,9 @@ Go to [KubeMQ CLI](https://github.com/kubemq-io/kubemqctl/releases) and download
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
-Open a browser and navigate to [http://localhost:8080](http://localhost:9090)
-
+<!-- IGNORE_LINKS -->
+Open a browser and navigate to [http://localhost:8080](http://localhost:8080)
+<!-- END_IGNORE -->
 {{% /codetab %}}
 
 {{% codetab %}}
