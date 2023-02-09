@@ -26,7 +26,7 @@ In this guide, you'll:
 
 <img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
 
-Currently, you can experience Dapr Workflows using the .NET SDK.
+Currently, you can experience the Dapr Workflow using the .NET SDK.
 
 {{< tabs ".NET" >}}
 
@@ -260,7 +260,7 @@ The `Activities` directory holds the four workflow activities used by the workfl
 
 ## Watch the demo
 
-Watch [this video to walk through the workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
+Watch [this video to walk through the Dapr Workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=2564" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -272,7 +272,7 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-- Set up Workflow with any programming language using [HTTP instead of an SDK]({{< ref howto-manage-workflow.md >}})
+- Set up Dapr Workflow with any programming language using [HTTP instead of an SDK]({{< ref howto-manage-workflow.md >}})
 - Walk through a more in-depth [.NET SDK example workflow](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
 - Learn more about [Workflow as a Dapr building block]({{< ref workflow-overview >}})
 

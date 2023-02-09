@@ -10,7 +10,7 @@ description: "Overview of Dapr Workflow"
 Dapr Workflow is currently in alpha.
 {{% /alert %}}
 
-Dapr Workflow makes orchestrating the logic required for messaging, state management, and failure handling across various microservices easier for developers. Dapr Workflows enable you to create long running, fault-tolerant, stateful applications. Prior to Dapr workflows you'd often need to build ad-hoc workflows in custom, hard to write code in order to achieve long running, fault-tolerant, stateful applications. 
+Dapr Workflow makes orchestrating the logic required for messaging, state management, and failure handling across various microservices easier for developers. Dapr Workflow enables you to create long running, fault-tolerant, stateful applications. Prior to Dapr Workflow, you'd often need to build ad-hoc workflows in custom, complex code in order to achieve long running, fault-tolerant, stateful applications. 
 
 The durable, resilient Dapr Workflow capability:
 
@@ -19,9 +19,9 @@ The durable, resilient Dapr Workflow capability:
 - Provides HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate)
 - Integrates with any other workflow runtime via workflow components
 
-<img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflows">
+<img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflow">
 
-Some example scenarios that Dapr Workflows can perform are:
+Some example scenarios that Dapr Workflow can perform are:
 
 - Order processing involving inventory management, payment systems, shipping, etc.
 - HR onboarding workflows coordinating tasks across multiple departments and participants.
@@ -66,7 +66,7 @@ You can call other workflow runtimes (for example, Temporal and Netflix Conducto
 
 ## Workflow patterns
 
-Dapr Workflows simplify complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflows. 
+Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflow. 
 
 Learn more about [different types of workflow patterns](todo)
 
@@ -99,7 +99,7 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 ## Watch the demo
 
-Watch [this video for an overview on Dapr Workflows](https://youtu.be/s1p9MNl4VGo?t=131):
+Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo?t=131):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=131" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

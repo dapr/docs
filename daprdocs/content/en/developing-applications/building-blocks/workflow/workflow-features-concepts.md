@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn more about the Dapr Workflow features and concepts"
 ---
 
-Now that you've learned about the [workflow building block]({{< ref workflow-overview.md >}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflows expose several core features and concepts which are common across all supported languages. 
+Now that you've learned about the [workflow building block]({{< ref workflow-overview.md >}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages. 
 
 ## Workflows
 
@@ -126,7 +126,7 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 ## Related links
 
-- [Try out Dapr Workflows using the quickstart]({{< ref workflow-quickstart.md >}})
+- [Try out Dapr Workflow using the quickstart]({{< ref workflow-quickstart.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
