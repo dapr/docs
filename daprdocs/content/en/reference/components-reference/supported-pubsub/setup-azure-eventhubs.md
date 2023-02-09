@@ -115,7 +115,7 @@ spec:
 
 ## Sending multiple messages
 
-Azure Event Hubs natively supports sending multiple messages in a single operation. To set the metadata for bulk operations, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
+Azure Event Hubs supports sending multiple messages in a single operation. To set the metadata for bulk operations, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
 
 | Metadata | Default |
 |----------|---------|

@@ -149,6 +149,26 @@ To find out more details on the purpose of any of these metadata properties, ple
 
 > Note: that all times are populated by the server and are not adjusted for clock skews.
 
+## Sending and receiving multiple messages
+
+Azure Service Bus supports sending and receiving multiple messages in a single operation using the bulk pub/sub API.
+
+### Configuring bulk publish
+
+To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
+
+| Metadata | Default |
+|----------|---------|
+| `metadata.maxBulkPubBytes` | `131072` (128 KiB) |
+
+### Configuring bulk subscribe
+
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+
+| Configuration | Default |
+|---------------|---------|
+| `maxMessagesCount` | `100` |
+
 ## Create an Azure Service Bus broker for queues
 
 Follow the instructions [here](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal) on setting up Azure Service Bus Queues.

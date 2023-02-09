@@ -302,7 +302,7 @@ Apache Kafka component supports sending and receiving multiple messages in a sin
 
 ### Configuring bulk subscribe
 
-When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscription methods]({{< ref subscription-methods >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
 
 | Configuration | Default |
 |----------|---------|
