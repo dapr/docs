@@ -163,6 +163,17 @@
     etag: false
     ttl: false
     query: false
+- component: SQLite
+  link: setup-sqlite
+  state: Beta
+  version: v1
+  since: "1.10"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
 - component: Zookeeper
   link: setup-zookeeper
   state: Alpha

@@ -16,7 +16,21 @@ Now that you've [set up the workflow and its activities in your application]({{<
 Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-workflow" >}}) guide, the workflow is registered in the code. You can then start, terminate, and get information about the workflow:
 
 ```csharp
+string orderId = "exampleOrderId";
+string workflowComponent = "dapr";
+string workflowName = "OrderProcessingWorkflow";
+OrderPayload input = new OrderPayload("Paperclips", 99.95);
+Dictionary<string, string> workflowOptions; // This is an optional parameter
+CancellationToken cts = CancellationToken.None;
 
+// Start the workflow. This returns back a "WorkflowReference" which contains the instanceID for the particular workflow instance.
+WorkflowReference startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions, cts);
+
+// Get information on the workflow. This response will contain information such as the status of the workflow, when it started, and more!
+GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
+
+// Terminate the workflow
+await daprClient.TerminateWorkflowAsync(instanceId, workflowComponent);
 ```
 
 {{% /codetab %}}
