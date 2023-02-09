@@ -57,13 +57,6 @@ In a new terminal window, navigate to the `order-processor` directory:
 cd workflows/csharp/sdk/order-processor
 ```
 
-Install the dependencies:
-
-```bash
-dotnet restore
-dotnet build
-```
-
 ### Step 3: Run the order processor app
 
 In the terminal, start the order processor app alongside a Dapr sidecar:
