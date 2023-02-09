@@ -73,6 +73,65 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
+| caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+
+
+## Communication using TLS
+
+To configure communication using TLS, ensure that the RabbitMQ nodes have TLS enabled and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: rabbitmq-pubsub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqps://localhost:5671"
+  - name: consumerID
+    value: myapp
+  - name: durable
+    value: false
+  - name: deletedWhenUnused
+    value: false
+  - name: autoAck
+    value: false
+  - name: deliveryMode
+    value: 0
+  - name: requeueInFailure
+    value: false
+  - name: prefetchCount
+    value: 0
+  - name: reconnectWait
+    value: 0
+  - name: concurrencyMode
+    value: parallel
+  - name: publisherConfirm
+    value: false
+  - name: enableDeadLetter # Optional enable dead Letter or not
+    value: true
+  - name: maxLen # Optional max message count in a queue
+    value: 3000
+  - name: maxLenBytes # Optional maximum length in bytes of a queue.
+    value: 10485760
+  - name: exchangeKind
+    value: fanout
+  - name: caCert
+    value: ${{ myLoadedCACert }}
+  - name: clientCert
+    value: ${{ myLoadedClientCert }}
+  - name: clientKey
+    secretKeyRef:
+      name: myRabbitMQClientKey
+      key: myRabbitMQClientKey
+```
+
+Note that while the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
 
 ### Enabling message delivery retries
 

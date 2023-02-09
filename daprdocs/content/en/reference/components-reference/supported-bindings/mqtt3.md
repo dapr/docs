@@ -155,6 +155,20 @@ You can override the topic in component metadata on a per-request basis:
 }
 ```
 
+## Set retain property per-request
+
+You can override the retain property in component metadata on a per-request basis:
+
+```json
+{
+  "operation": "create",
+  "metadata": {
+    "retain": "true"
+  },
+  "data": "<h1>Testing Dapr Bindings</h1>This is a test.<br>Bye!"
+}
+```
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
