@@ -447,7 +447,7 @@ Tell the Sentry service where to load the certificates from using the `--issuer-
 
 The next examples creates root and issuer certs and loads them with the Sentry service.
 
-*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/step-cli/installation). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
 
 Create the root certificate:
 
