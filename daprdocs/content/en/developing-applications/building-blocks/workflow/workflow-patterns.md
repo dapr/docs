@@ -120,7 +120,7 @@ The key takeaways from this example are:
 - The number of parallel tasks can be static or dynamic
 - The workflow itself is capable of aggregating the results of parallel executions
 
-While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only40 complete before the process crashes, the workflow will restart itself automatically and schedule only the remaining 60 tasks.
+While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only 40 complete before the process crashes, the workflow restarts itself automatically and only schedules the remaining 60 tasks.
 
 ## Async HTTP APIs
 
@@ -272,7 +272,7 @@ This pattern can also be expressed using actors and reminders. The difference is
 
 ## Related links
 
-- [Try out Dapr Workflows using the quickstart](todo)
+- [Try out Dapr Workflows using the quickstart]({{< ref workflow-quickstart.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- Learn more about [how to manage workflows with the .NET SDK](todo) and try out [the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
