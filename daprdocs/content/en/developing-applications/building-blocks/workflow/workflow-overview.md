@@ -10,23 +10,23 @@ description: "Overview of Dapr Workflow"
 Dapr Workflow is currently in alpha.
 {{% /alert %}}
 
-Dapr Workflow makes orchestrating logic for messaging, state management, and failure handling across various microservices easier for developers. Prior to adding workflows to Dapr, you'd often need to build ad-hoc workflows behind-the-scenes in order to bridge that gap.
+Dapr Workflow makes orchestrating the logic required for messaging, state management, and failure handling across various microservices easier for developers. Dapr Workflows enable you to create long running, fault-tolerant, stateful applications. Prior to Dapr workflows you'd often need to build ad-hoc workflows in custom, hard to write code in order to achieve long running, fault-tolerant, stateful applications. 
 
 The durable, resilient Dapr Workflow capability:
 
 - Offers a built-in workflow runtime for driving Dapr Workflow execution
 - Provides SDKs for authoring workflows in code, using any language
 - Provides HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate)
-- Will integrate with future supported external workflow runtime components
+- Integrates with any other workflow runtime via workflow components
 
 <img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflows">
 
-Dapr Workflows can assist with scenarios like:
+Some example scenarios that Dapr Workflows can perform are:
 
 - Order processing involving inventory management, payment systems, shipping, etc.
-- HR onboarding workflows coordinating tasks across multiple departments and participants
-- Orchestrating the roll-out of digital menu updates in a national restaurant chain
-- Image processing workflows involving API-based classification and storage
+- HR onboarding workflows coordinating tasks across multiple departments and participants.
+- Orchestrating the roll-out of digital menu updates in a national restaurant chain.
+- Image processing workflows involving API-based classification and storage.
 
 
 ## Features
@@ -47,7 +47,7 @@ In addition to activities, you can write workflows to schedule other workflows a
 
 ### Timers and reminders
 
-Like in user-defined actors, you can schedule reminder-like durable delays for any time range. 
+Same as Dapr actors, you can schedule reminder-like durable delays for any time range. 
 
 [Learn more about workflow timers]({{< ref "workflow-features-concepts.md#durable-timers" >}}) and [reminders]({{< ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" >}})
 
@@ -63,7 +63,6 @@ When you create an application with workflow code and run it with Dapr, you can 
 ### Manage other workflow runtimes with workflow components
 
 You can call other workflow runtimes (for example, Temporal and Netflix Conductor) by writing your own workflow component. 
-
 
 ## Workflow patterns
 

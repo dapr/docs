@@ -18,13 +18,14 @@ This article provides a high-level overview of how to author workflows that are 
 
 Dapr Workflow logic is implemented using general purpose programming languages, allowing you to:
 
-- Use your preferred programming language (no need to learn a new DSL or YAML schema)
-- Have access to the language’s standard libraries
-- Build your own libraries and abstractions
-- Use debuggers and examine local variables
-- Write unit tests for your workflows, just like any other part of your application logic
+- Use your preferred programming language (no need to learn a new DSL or YAML schema).
+- Have access to the language’s standard libraries.
+- Build your own libraries and abstractions.
+- Use debuggers and examine local variables.
+- Write unit tests for your workflows, just like any other part of your application logic.
 
 The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all the workflow activities to be part of the application.
+The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all the workflow activitie to be part of the application.
 
 ## Write the workflow activities
 
@@ -36,10 +37,10 @@ Define the workflow activities you'd like your workflow to perform. Activities a
 
 Continuing the ASP.NET order processing example, the `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. 
 
-It also includes a `RunAsync` method that will do the heavy lifting of the workflow and call the workflow activities. The activities called in the example are:
-- `NotifyActivity`: Receive notification of a new order
-- `ReserveInventoryActivity`: Check for sufficient inventory to meet the new order
-- `ProcessPaymentActivity`: Process payment for the order. Includes `NotifyActivity` to send notification of successful order
+It also includes a `RunAsync` method that does the heavy lifting of the workflow and calls the workflow activities. The activities called in the example are:
+- `NotifyActivity`: Receive notification of a new order.
+- `ReserveInventoryActivity`: Check for sufficient inventory to meet the new order.
+- `ProcessPaymentActivity`: Process payment for the order. Includes `NotifyActivity` to send notification of successful order.
 
 ```csharp
  class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
@@ -58,6 +59,7 @@ It also includes a `RunAsync` method that will do the heavy lifting of the workf
                 nameof(ReserveInventoryActivity),
                 new InventoryRequest(RequestId: orderId, order.Name, order.Quantity));
             //...
+            
             await context.CallActivityAsync(
                 nameof(ProcessPaymentActivity),
                 new PaymentRequest(RequestId: orderId, order.TotalCost, "USD"));
@@ -156,10 +158,9 @@ app.Run();
 
 
 {{% alert title="Important" color="warning" %}}
-Because of how replay-based workflows execute, you'll write most logic that does things like IO and interacting with systems **inside activities**. Meanwhile, **workflow method** is just for orchestrating those activities.
+Because of how replay-based workflows execute, you'll write logic that does things like I/O and interacting with systems **inside activities**. Meanwhile, the **workflow method** is just for orchestrating those activities.
 
 {{% /alert %}}
-
 
 ## Next steps
 
