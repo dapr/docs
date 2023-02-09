@@ -406,8 +406,6 @@ async function start() {
 
 {{% /codetab %}}
 
-{{% codetab %}}
-
 {{< /tabs >}}
 ## How components handle publishing and subscribing to bulk messages
 
