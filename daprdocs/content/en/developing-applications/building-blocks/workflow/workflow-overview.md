@@ -81,8 +81,6 @@ You can use the following SDKs to author a workflow.
 | Language stack | Package |
 | - | - |
 | .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
-| Go | todo |
-| Java | todo |
 
 ## Try out workflows
 
