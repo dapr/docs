@@ -69,18 +69,16 @@ spec:
         maxRetries: -1 # Retry indefinitely
 ```
 
-## Circuit breakers
+## Circuit Breakers
 
-Circuit breakers (CBs) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met. By doing this, CBs give the service time to recover from their outage instead of flooding them with events. The CB can also allow partial traffic through to see if the system has healed (half-open state). Once successful requests start to occur, the CB can close and allow traffic to resume.
+Circuit Breaker (CB) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met ("open" state). By doing this, CBs give the service time to recover from their outage instead of flooding it with events. The CB can also allow partial traffic through to see if the system has healed ("half-open" state). Once requests resume being successful, the CB gets into "closed" state and allows traffic to completely resume.
 
 | Retry option | Description |
 | ------------ | ----------- |
 | `maxRequests` | The maximum number of requests allowed to pass through when the CB is half-open (recovering from failure). Defaults to `1`. |
 | `interval` | The cyclical period of time used by the CB to clear its internal counts. If set to 0 seconds, this never clears. Defaults to `0s`. |
 | `timeout` | The period of the open state (directly after failure) until the CB switches to half-open. Defaults to `60s`. |
-| `trip` | A Common Expression Language (CEL) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Defaults to `consecutiveFailures > 5`. |
-| `circuitBreakerScope` | Specify whether circuit breaking state should be scoped to an individual actor ID, all actors across the actor type, or both. Possible values include `id`, `type`, or `both`|
-| `circuitBreakerCacheSize` | Specify a cache size for the number of CBs to keep in memory. The value should be larger than the expected number of active actor instances.  Provide an integer value, for example `5000`. |
+| `trip` | A [Common Expression Language (CEL)](https://github.com/google/cel-spec) statement that is evaluated by the CB. When the statement evaluates to true, the CB trips and becomes open. Defaults to `consecutiveFailures > 5`. |
 
 Example:
 
@@ -147,21 +145,21 @@ If these policies are defined, they are used for every operation to a service, a
 
 Below is a table of all possible default policy keywords and how they translate into a policy name.
 
-| Keyword                        | Target Operation                                     | Example Policy Name                                       |
-| ------------------------------ | ---------------------------------------------------- | --------------------------------------------------------- |
-| App                            | Service invocation.                                  | DefaultAppRetryPolicy                                     |
-| Actor                          | Actor invocation.                                    | DefaultActorTimeoutPolicy                                 |
-| Component                      | All component operations.                            | DefaultComponentCircuitBreakerPolicy                      |
-| ComponentInbound               | All inbound component operations.                    | DefaultComponentInboundRetryPolicy                        |
-| ComponentOutbound              | All outbound component operations.                   | DefaultComponentOutboundTimeoutPolicy                     |
-| StatestoreComponentOutbound    | All statestore component operations.                 | DefaultStatestoreComponentOutboundCircuitBreakerPolicy    |
-| PubsubComponentOutbound        | All outbound pubusub (publish) component operations. | DefaultPubsubComponentOutboundRetryPolicy                 |
-| PubsubComponentInbound         | All inbound pubsub (subscribe) component operations. | DefaultPubsubComponentInboundTimeoutPolicy                |
-| BindingComponentOutbound       | All outbound binding (invoke) component operations.  | DefaultBindingComponentOutboundCircuitBreakerPolicy       |
-| BindingComponentInbound        | All inbound binding (read) component operations.     | DefaultBindingComponentInboundRetryPolicy                 |
-| SecretstoreComponentOutbound   | All secretstore component operations.                | DefaultSecretstoreComponentTimeoutPolicy                  |
-| ConfigurationComponentOutbound | All configuration component operations.              | DefaultConfigurationComponentOutboundCircuitBreakerPolicy |
-| LockComponentOutbound          | All lock component operations.                       | DefaultLockComponentOutboundRetryPolicy                   | 
+| Keyword                          | Target Operation                                     | Example Policy Name                                         |
+| -------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------- |
+| `App`                            | Service invocation.                                  | `DefaultAppRetryPolicy`                                     |
+| `Actor`                          | Actor invocation.                                    | `DefaultActorTimeoutPolicy`                                 |
+| `Component`                      | All component operations.                            | `DefaultComponentCircuitBreakerPolicy`                      |
+| `ComponentInbound`               | All inbound component operations.                    | `DefaultComponentInboundRetryPolicy`                        |
+| `ComponentOutbound`              | All outbound component operations.                   | `DefaultComponentOutboundTimeoutPolicy`                     |
+| `StatestoreComponentOutbound`    | All statestore component operations.                 | `DefaultStatestoreComponentOutboundCircuitBreakerPolicy`    |
+| `PubsubComponentOutbound`        | All outbound pubusub (publish) component operations. | `DefaultPubsubComponentOutboundRetryPolicy`                 |
+| `PubsubComponentInbound`         | All inbound pubsub (subscribe) component operations. | `DefaultPubsubComponentInboundTimeoutPolicy`                |
+| `BindingComponentOutbound`       | All outbound binding (invoke) component operations.  | `DefaultBindingComponentOutboundCircuitBreakerPolicy`       |
+| `BindingComponentInbound`        | All inbound binding (read) component operations.     | `DefaultBindingComponentInboundRetryPolicy`                 |
+| `SecretstoreComponentOutbound`   | All secretstore component operations.                | `DefaultSecretstoreComponentTimeoutPolicy`                  |
+| `ConfigurationComponentOutbound` | All configuration component operations.              | `DefaultConfigurationComponentOutboundCircuitBreakerPolicy` |
+| `LockComponentOutbound`          | All lock component operations.                       | `DefaultLockComponentOutboundRetryPolicy`                   |
 
 ### Policy hierarchy resolution
 
@@ -281,14 +279,14 @@ spec:
 
 The table below is a break down of which policies are applied when attempting to call the various targets in this solution.
 
-| Target             | Policy Used                                     |
-| ------------------ | ----------------------------------------------- |
-| AppA               | fastRetries                                     |
-| AppB               | retryForever                                    |
-| AppC               | DefaultAppRetryPolicy / DaprBuiltInActorRetries |
-| pubsub - Publish   | DefaultRetryPolicy                              |
-| pubsub - Subscribe | DefaultComponentInboundRetryPolicy              |
-| statestore         | DefaultStatestoreComponentOutboundRetryPolicy   |
-| actorstore         | fastRetries                                     |
-| EventActor         | retryForever                                    |
-| SummaryActor       | DefaultActorRetryPolicy                         |
+| Target             | Policy Used                                         |
+| ------------------ | --------------------------------------------------- |
+| AppA               | `fastRetries`                                       |
+| AppB               | `retryForever`                                      |
+| AppC               | `DefaultAppRetryPolicy` / `DaprBuiltInActorRetries` |
+| pubsub - Publish   | `DefaultRetryPolicy`                                |
+| pubsub - Subscribe | `DefaultComponentInboundRetryPolicy`                |
+| statestore         | `DefaultStatestoreComponentOutboundRetryPolicy`     |
+| actorstore         | `fastRetries`                                       |
+| EventActor         | `retryForever`                                      |
+| SummaryActor       | `DefaultActorRetryPolicy`                           |
