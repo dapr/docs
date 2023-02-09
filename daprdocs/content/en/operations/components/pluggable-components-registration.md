@@ -55,7 +55,7 @@ Since you are running Dapr in the same host as the component, verify this folder
 
 ### Component discovery and multiplexing
 
-A pluggable component accessible through a [Unix Domain Socket][uds] can host multiple distinct bulding blocks. During the components initial discovery process, Dapr will use reflection to enumerate all building blocks behind a UDS. The `my-component` pluggable component from the example above could contain both a state store (`state`) and a Pub/Sub (`pubsub`) building-blocks.
+A pluggable component accessible through a [Unix Domain Socket][UDS] can host multiple distinct component APIs . During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
 
 The most common use-case is for a 1:1 mapping between pluggable components and building blocks they expose. That said, having the possibility of consolidating multiple building blocks under the same pluggable components might be healpful, specially to ease DevOps burden at the expense of fault tolerance and security. Please weight the pros and cons and, if in doubt, stick to a 1:1 approach.
 
