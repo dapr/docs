@@ -62,8 +62,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `azureSubscriptionId` | Y | Input | The Azure subscription ID of the Event Grid resource  | `"subscriptionId"` |
 | `azureClientId` | Y | Input | The client ID that should be used by the binding to create or update the Event Grid Event Subscription and to authenticate incoming messages | `"clientId"` |
 | `azureClientSecret` | Y | Input | The client id that should be used by the binding to create or update the Event Grid Event Subscription and to authenticate incoming messages | `"clientSecret"` |
-| `subscriberEndpoint` | Y | Input | The HTTPS endpoint of the webhook Event Grid will send events (formatted as Cloud Events) to. If you aren't re-writing URLs on ingress, it should be in the form of: `"https://[YOUR HOSTNAME]/<path>"`<br/>If testing on your local machine, you can use something like [ngrok](https://ngrok.com) to create a public endpoint. | `"https://[YOUR HOSTNAME]/<path>"` |
-| `handshakePort` | Y | Input | The container port that the input binding will listen on receiving events on the webhook | `"9000"` |
+| `subscriberEndpoint` | Y | Input | The HTTPS endpoint of the webhook Event Grid sends events (formatted as Cloud Events) to. If you're not re-writing URLs on ingress, it should be in the form of: `"https://[YOUR HOSTNAME]/<path>"`<br/>If testing on your local machine, you can use something like [ngrok](https://ngrok.com) to create a public endpoint. | `"https://[YOUR HOSTNAME]/<path>"` |
+| `handshakePort` | Y | Input | The container port that the input binding listens on when receiving events on the webhook | `"9000"` |
 | `scope` | Y | Input | The identifier of the resource to which the event subscription needs to be created or updated. See the [scope section](#scope) for more details | `"/subscriptions/{subscriptionId}/"` |
 | `eventSubscriptionName` | N | Input | The name of the event subscription. Event subscription names must be between 3 and 64 characters long and should use alphanumeric letters only | `"name"` |
 
