@@ -14,6 +14,7 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 ## Current preview features
 
 | Feature | Description | Setting | Documentation | Version introduced |
+| --- | --- | --- | --- | --- |
 | **App Middleware** | Allow middleware components to be executed when making service-to-service calls | N/A | [App Middleware]({{<ref "middleware.md#app-middleware" >}}) | v1.9 |
 | **Streaming for HTTP service invocation** | Enables (partial) support for using streams in HTTP service invocation; see below for more details. | `ServiceInvocationStreaming` | [Details]({{< ref "support-preview-features.md#streaming-for-http-service-invocation" >}}) | v1.10 |
 | **App health checks** | Allows configuring app health checks | `AppHealthCheck` | [App health checks]({{<ref "app-health.md" >}}) | v1.9 |
