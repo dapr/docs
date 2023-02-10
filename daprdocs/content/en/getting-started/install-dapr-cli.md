@@ -31,7 +31,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 ##### Installing a specific CLI version
 
-This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.9.1
@@ -48,7 +48,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 ##### Installing a specific CLI version without `sudo`
 
-This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash -s 1.9.1
@@ -68,6 +68,14 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 **Note:** Updates to PATH might not be visible until you restart your terminal application.
 
+##### Installing a specific CLI version
+
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
+
+```powershell
+powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList 1.9.1"
+```
+
 #### Install without administrative rights
 
 If you do not have admin rights, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. The script below creates the directory if it does not exist.
@@ -75,6 +83,15 @@ If you do not have admin rights, you can install Dapr to an alternate directory 
 ```powershell
 $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
 $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "", "$Env:DAPR_INSTALL_DIR"
+```
+
+#### Installing a specific CLI version without administrative rights
+
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
+
+```powershell
+$Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
+$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList "1.9.1", "$Env:DAPR_INSTALL_DIR"
 ```
 
 #### Install using winget
