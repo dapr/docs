@@ -86,7 +86,7 @@ Compose the workflow activities into a workflow.
 
 {{% codetab %}}
 
-[In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowWebApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
+[In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 
 - A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
 - A builder with an extension method called `AddDaprWorkflow`
