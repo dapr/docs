@@ -29,12 +29,29 @@ Install the latest Linux Dapr CLI to `/usr/local/bin`:
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
 ```
 
+##### Installing a specific CLI version
+
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simplify specify the version, e.g. `1.10.0-rc.3`
+
+```bash
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.9.1
+```
+
+
 #### Install without `sudo`
 
 If you do not have access to the `sudo` command or your username is not in the `sudoers` file, you can install Dapr to an alternate directory via the `DAPR_INSTALL_DIR` environment variable. This directory must already exist and be accessible by the current user.
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
+```
+
+##### Installing a specific CLI version without `sudo`
+
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simplify specify the version, e.g. `1.10.0-rc.3`
+
+```bash
+wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash -s 1.9.1
 ```
 
 {{% /codetab %}}
