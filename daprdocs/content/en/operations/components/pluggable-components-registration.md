@@ -49,7 +49,7 @@ Both your component and the Unix Socket must be running before Dapr starts.
 
 By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-Filenames in this folder are significant for component registration. They must be formed by appending the component's **name** with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid UDS file name for a component named `my-component`.
+Filenames in this folder are significant for component registration. They must be formed by appending the component's **name** with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid Unix Domain Socket file name for a component named `my-component`.
 
 Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
@@ -57,16 +57,16 @@ Since you are running Dapr in the same host as the component, verify this folder
 
 A pluggable component accessible through a [Unix Domain Socket][UDS] can host multiple distinct component APIs . During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
 
-The most common use-case is for a 1:1 mapping between pluggable components and building blocks they expose. That said, having the possibility of consolidating multiple building blocks under the same pluggable components might be healpful, specially to ease DevOps burden at the expense of fault tolerance and security. Please weight the pros and cons and, if in doubt, stick to a 1:1 approach.
+Typically, a pluggable component implements a single component API for packaging and deployment. However, at the expense of having dependencies and security, a pluggable component can have multiple component APIs implemented to ease the deployment burden. Best practice for isolation, fault tolerance, and security is a single component API implementation for each pluggable component.
 
 
 ## Define the component
 
 Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `spec.type` value is made by concatenating the following 2 parts with a `.`:
-1. the component's **building block type** (`state`, `pubsub` etc)
-2. its **name**, which is derived from the socket name, without the file extension. 
+1. The component's API (`state`, `pubsub`, `bindings`, etc)
+2. The component's **name**, which is derived from the socket name, without the file extension. 
 
-You will need to define one [component spec]({{< ref component-schema.md >}}) for each building block exposed by your pluggable component's  [Unix Domain Socket][uds]. From the example above, the UDS `my-component.sock` from the previous example, exposes a pluggable component named `my-component` with both a `state` and a `pubsub` building blocks. Two components specs, each in their own YAML file placed in the resouces-path, will be required, one for `state.my-component` and another for `pubsub.my-component`.
+You will need to define one [component spec]({{< ref component-schema.md >}}) for each API exposed by your pluggable component's [Unix Domain Socket][uds]. The Unix Domain Socket `my-component.sock` from the previous example exposes a pluggable component named `my-component` with both a `state` and a `pubsub` API. Two components specs, each in their own YAML file, placed in the `resources-path`, will be required: one for `state.my-component` and another for `pubsub.my-component`.
 
 For instance, the component spec for `state.my-component` could be:
 
@@ -81,9 +81,9 @@ spec:
   metadata:
 ```
 
-In this sample above, notice the following:
-* The contents of the field `spec.type` is `state.my-component`: this refers to a State Store being exposed as a pluggable component named `my-component`.
-* The field `metadata.name`, which is the name of the state store beging defined here, is not related with the pluggable component name.
+In the sample above, notice the following:
+* The contents of the field `spec.type` is `state.my-component`, referring to a state store being exposed as a pluggable component named `my-component`.
+* The field `metadata.name`, which is the name of the state store being defined here, is not related to the pluggable component name.
 
 Save this file as `component.yaml` in Dapr's component configuration folder. Just like the contents of `metadata.name` field, the filename for this YAML file has no impact and does not depend on the pluggable component name.
 
