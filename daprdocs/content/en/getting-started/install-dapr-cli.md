@@ -131,6 +131,14 @@ Install the latest Darwin Dapr CLI to `/usr/local/bin`:
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash
 ```
 
+##### Installing a specific CLI version
+
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | /bin/bash -s 1.9.1
+```
+
 **For ARM64 Macs:**
 
 When installing from the terminal, native ARM64 binaries are available. 
@@ -162,6 +170,14 @@ If you do not have access to the `sudo` command or your username is not in the `
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash
+```
+
+##### Installing a specific CLI version without `sudo`
+
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" -s 1.9.1
 ```
 
 {{% /codetab %}}
