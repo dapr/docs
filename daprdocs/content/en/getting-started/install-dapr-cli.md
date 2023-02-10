@@ -31,7 +31,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 
 ##### Installing a specific CLI version
 
-This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simplify specify the version, e.g. `1.10.0-rc.3`
+This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`
 
 ```bash
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s 1.9.1
