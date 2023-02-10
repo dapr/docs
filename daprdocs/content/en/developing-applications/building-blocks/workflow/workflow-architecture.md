@@ -24,7 +24,7 @@ The engine is embedded directly into the sidecar and implemented using the [`dur
 
 ## Sidecar interactions
 
-When a workflow application starts up, it uses a workflow authoring SDK to send a gRPC request to the Dapr sidecar and get back a stream of workflow work-items, following the [server streaming RPC pattern](https://grpc.io/docs/what-is-grpc/core-concepts/#server-streaming-rpc). These work items can be anything from "start a new X workflow" (where X is the type of a workflow) to "schedule activity Y with input Z to run on behalf of workflow X". 
+When a workflow application starts up, it uses a workflow authoring SDK to send a gRPC request to the Dapr sidecar and get back a stream of workflow work items, following the [server streaming RPC pattern](https://grpc.io/docs/what-is-grpc/core-concepts/#server-streaming-rpc). These work items can be anything from "start a new X workflow" (where X is the type of a workflow) to "schedule activity Y with input Z to run on behalf of workflow X".
 
 The workflow app executes the appropriate workflow code and then sends a gRPC request back to the sidecar with the execution results.
 
@@ -38,7 +38,7 @@ If you're familiar with Dapr actors, you may notice a few differences in terms o
 
 | Actors | Workflows |
 | ------ | --------- |
-| Actors can interact with the sidecar using either HTTP or gRPC. | Workflows only use gRPC. Due to the workflow gRPC protocol's complexity, an SDK is _required_ when implementing workflows. | 
+| Actors can interact with the sidecar using either HTTP or gRPC. | Workflows only use gRPC. Due to the workflow gRPC protocol's complexity, an SDK is _required_ when implementing workflows. |
 | Actor operations are pushed to application code from the sidecar. This requires the application to listen on a particular _app port_. | For workflows, operations are _pulled_ from the sidecar by the application using a streaming protocol. The application doesn't need to listen on any ports to run workflows. |
 | Actors explicitly register themselves with the sidecar. | Workflows do not register themselves with the sidecar. The embedded engine doesn't keep track of workflow types. This responsibility is instead delegated to the workflow application and its SDK. |
 
@@ -51,7 +51,8 @@ Each workflow instance managed by the engine is represented as one or more spans
 ## Internal workflow actors
 
 There are two types of actors that are internally registered within the Dapr sidecar in support of the workflow engine:
-- `dapr.internal.wfengine.workflow` 
+
+- `dapr.internal.wfengine.workflow`
 - `dapr.internal.wfengine.activity`
 
 The following diagram demonstrates how internal workflow actors operate in a Kubernetes scenario:
@@ -75,7 +76,6 @@ Each workflow actor saves its state using the following keys in the configured s
 | `customStatus` | Contains a user-defined workflow status value. There is exactly one `customStatus` key for each workflow actor instance. |
 | `metadata` | Contains meta information about the workflow as a JSON blob and includes details such as the length of the inbox, the length of the history, and a 64-bit integer representing the workflow generation (for cases where the instance ID gets reused). The length information is used to determine which keys need to be read or written to when loading or saving workflow state updates. |
 
-
 {{% alert title="Warning" color="warning" %}}
 In the [Alpha release of the Dapr Workflow engine]({{< ref support-preview-features.md >}}), workflow actor state will remain in the state store even after a workflow has completed. Creating a large number of workflows could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of old workflow state.
 {{% /alert %}}
@@ -86,9 +86,9 @@ The following diagram illustrates the typical lifecycle of a workflow actor.
 
 To summarize:
 
-1. A workflow actor is activated when it receives a new message. 
-1. New messages then trigger the associated workflow code (in your application) to run and return an execution result back to the workflow actor. 
-1. Once the result is received, the actor schedules any tasks as necessary. 
+1. A workflow actor is activated when it receives a new message.
+1. New messages then trigger the associated workflow code (in your application) to run and return an execution result back to the workflow actor.
+1. Once the result is received, the actor schedules any tasks as necessary.
 1. After scheduling, the actor updates its state in the state store.
 1. Finally, the actor goes idle until it receives another message. During this idle time, the sidecar may decide to unload the workflow actor from memory.
 
@@ -114,14 +114,14 @@ Activity actors are short-lived:
 
 1. Activity actors are activated when a workflow actor schedules an activity task.
 1. Activity actors then immediately call into the workflow application to invoke the associated activity code. 
-1. Once the activity code has finished running and has returned its result, the activity actor sends a message to the parent workflow actor with the execution results. 
+1. Once the activity code has finished running and has returned its result, the activity actor sends a message to the parent workflow actor with the execution results.
 1. Once the results are sent, the workflow is triggered to move forward to its next step.
 
 ### Reminder usage and execution guarantees
 
 The Dapr Workflow ensures workflow fault-tolerance by using [actor reminders]({{< ref "howto-actors.md#actor-timers-and-reminders" >}}) to recover from transient system failures. Prior to invoking application workflow code, the workflow or activity actor will create a new reminder. If the application code executes without interruption, the reminder is deleted. However, if the node or the sidecar hosting the associated workflow or activity crashes, the reminder will reactivate the corresponding actor and the execution will be retried.
 
-TODO: Diagrams showing the process of invoking workflow and activity actors
+<img src="/images/workflow-overview/workflow-actor-reminder-flow.png" width=600 alt="Diagram showing the process of invoking workflow actors"/>
 
 {{% alert title="Important" color="warning" %}}
 Too many active reminders in a cluster may result in performance issues. If your application is already using actors and reminders heavily, be mindful of the additional load that Dapr Workflows may add to your system.
@@ -135,9 +135,9 @@ As discussed in the [workflow actors]({{< ref "workflow-architecture.md#workflow
 
 The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{< ref "workflow-overview.md#task-chaining" >}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{< ref "workflow-overview.md#fan-outfan-in" >}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({<< ref "workflow-features-concepts.md#workflow-activities" >>}) or [child workflows]({{< ref "workflow-features-concepts.md#child-workflows" >}}).
 
-TODO: Image illustrating a workflow appending a batch of keys to a state store.
+<img src="/images/workflow-overview/workflow-state-store-interactions.png" width=600 alt="Diagram of workflow actor state store interactions"/>
 
-Different state store implementations may implicitly put restrictions on the types of workflows you can author. For example, the Azure Cosmos DB state store limits item sizes to 2 MB of UTF-8 encoded JSON ([source](https://learn.microsoft.com/azure/cosmos-db/concepts-limits#per-item-limits)). The input or output payload of an activity or child workflow is stored as a single record in the state store, so a item limit of 2 MB means that workflow and activity inputs and outputs can't exceed 2 MB of JSON-serialized data. 
+Different state store implementations may implicitly put restrictions on the types of workflows you can author. For example, the Azure Cosmos DB state store limits item sizes to 2 MB of UTF-8 encoded JSON ([source](https://learn.microsoft.com/azure/cosmos-db/concepts-limits#per-item-limits)). The input or output payload of an activity or child workflow is stored as a single record in the state store, so a item limit of 2 MB means that workflow and activity inputs and outputs can't exceed 2 MB of JSON-serialized data.
 
 Similarly, if a state store imposes restrictions on the size of a batch transaction, that may limit the number of parallel actions that can be scheduled by a workflow.
 
@@ -150,16 +150,16 @@ Because Dapr Workflows are internally implemented using actors, Dapr Workflows h
 
 The expected scalability of a workflow is determined by the following factors:
 
-* The number of machines used to host your workflow application
-* The CPU and memory resources available on the machines running workflows
-* The scalability of the state store configured for actors
-* The scalability of the actor placement service and the reminder subsystem
+- The number of machines used to host your workflow application
+- The CPU and memory resources available on the machines running workflows
+- The scalability of the state store configured for actors
+- The scalability of the actor placement service and the reminder subsystem
 
-The implementation details of the workflow code in the target application also plays a role in the scalability of individual workflow instances. Each workflow instance executes on a single node at a time, but a workflow can schedule activities and child workflows which run on other nodes. 
+The implementation details of the workflow code in the target application also plays a role in the scalability of individual workflow instances. Each workflow instance executes on a single node at a time, but a workflow can schedule activities and child workflows which run on other nodes.
 
 Workflows can also schedule these activities and child workflows to run in parallel, allowing a single workflow to potentially distribute compute tasks across all available nodes in the cluster.
 
-TODO: Diagram showing an example distribution of workflows, child-workflows, and activity tasks.
+<img src="/images/workflow-overview/workflow-actor-scale-out.png" width=800 alt="Diagram of workflow and activity actors scaled out across multiple Dapr instances"/>
 
 {{% alert title="Important" color="warning" %}}
 Currently, there are no global limits imposed on workflow and activity concurrency. A runaway workflow could therefore potentially consume all resources in a cluster if it attempts to schedule too many tasks in parallel. Use care when authoring Dapr Workflows that schedule large batches of work in parallel.
@@ -173,10 +173,10 @@ Workflows don't control the specifics of how load is distributed across the clus
 
 In order to provide guarantees around durability and resiliency, Dapr Workflows frequently write to the state store and rely on reminders to drive execution. Dapr Workflows therefore may not be appropriate for latency-sensitive workloads. Expected sources of high latency include:
 
-* Latency from the state store when persisting workflow state.
-* Latency from the state store when rehydrating workflows with large histories.
-* Latency caused by too many active reminders in the cluster.
-* Latency caused by high CPU usage in the cluster.
+- Latency from the state store when persisting workflow state.
+- Latency from the state store when rehydrating workflows with large histories.
+- Latency caused by too many active reminders in the cluster.
+- Latency caused by high CPU usage in the cluster.
 
 See the [Reminder usage and execution guarantees section]({{< ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" >}}) for more details on how the design of workflow actors may impact execution latency.
 
@@ -185,6 +185,7 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
 {{< button text="Author workflows >>" page="howto-author-workflow.md" >}}
 
 ## Related links
+
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
