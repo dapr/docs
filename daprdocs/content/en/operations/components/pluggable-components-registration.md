@@ -10,7 +10,7 @@ description: "Learn how to register a pluggable component"
 
 ## Component registration process
 
-[Pluggable, gRPC-based components]({{< ref pluggable-components-overview >}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
+[Pluggable, gRPC-based components]({{< ref pluggable-components-overview >}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds] (or UDS for short). They are automatically discovered and registered in the runtime with the following steps:
 
 1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
@@ -55,7 +55,7 @@ Since you are running Dapr in the same host as the component, verify this folder
 
 ### Component discovery and multiplexing
 
-A pluggable component accessible through a [Unix Domain Socket][UDS] can host multiple distinct component APIs . During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
+A pluggable component accessible through a [Unix Domain Socket][UDS] (UDS) can host multiple distinct component APIs . During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
 
 Typically, a pluggable component implements a single component API for packaging and deployment. However, at the expense of increasing its dependencies and broadening its security attack surface, a pluggable component can have multiple component APIs implemented. This could be done to ease the deployment and monitoring burden. Best practice for isolation, fault tolerance, and security is a single component API implementation for each pluggable component.
 
@@ -63,8 +63,8 @@ Typically, a pluggable component implements a single component API for packaging
 ## Define the component
 
 Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `spec.type` value is made by concatenating the following 2 parts with a `.`:
-1. The component's API (`state`, `pubsub`, `bindings`, etc)
-2. The component's **name**, which is derived from the socket name, without the file extension. 
+1. The component's API (`state`, `pubsub`, `bindings` etc)
+2. The component's **name**, which is derived from the [Unix Domain Socket][uds] filename, without the file extension. 
 
 You will need to define one [component spec]({{< ref component-schema.md >}}) for each API exposed by your pluggable component's [Unix Domain Socket][uds]. The Unix Domain Socket `my-component.sock` from the previous example exposes a pluggable component named `my-component` with both a `state` and a `pubsub` API. Two components specs, each in their own YAML file, placed in the `resources-path`, will be required: one for `state.my-component` and another for `pubsub.my-component`.
 
