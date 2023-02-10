@@ -123,6 +123,10 @@ Dapr can set a timeout message on a per-message basis, meaning that if the messa
 
 Dapr supports sending and receiving multiple messages in a single request. When writing applications that need to send or receive a large number of messages, using bulk operations allows achieving high throughput by reducing the overall number of requests. For more information, read [pub/sub bulk messages]({{< ref pubsub-bulk.md >}}).
 
+### Scaling subscribers with StatefulSets
+
+When running on Kubernetes, subscribers can have a sticky `consumerID` per instance when using StatefulSets in combination with the `{podName}` marker. See [how to horizontally scale subscribers with StatefulSets]({{< ref "howto-subscribe-statefulset.md" >}}).
+
 ## Try out pub/sub
 
 ### Quickstarts and tutorials
