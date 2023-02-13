@@ -13,3 +13,12 @@
     {{ end }}
   </div>
 {{ end }}
+
+<!-- Check the variable that indicates whether this is a preview doc set.
+  If yes, display a banner. -->
+  {{ if .Params.is_preview }}
+  {{ $color := "primary" }}
+  <div class="pageinfo pageinfo-{{ $color }}">
+    <p>This is documentation on a preview feature.</p>
+  </div>
+{{ end }}
