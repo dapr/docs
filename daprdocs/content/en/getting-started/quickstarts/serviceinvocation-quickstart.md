@@ -635,5 +635,11 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 - Learn more about how to invoke Dapr's Service Invocation with:
     - [HTTP]({{< ref howto-invoke-discover-services.md >}}), or
     - [gRPC]({{< ref howto-invoke-services-grpc.md >}})
+- Try out this quickstart with the [Multi-App Run template]({{< ref multi-app-overview.md >}}):
+  - [Python](https://github.com/dapr/quickstarts/tree/master/service_invocation/python/http#start-all-apps-with-multi-app-run-template-file)
+  - [JavaScript](https://github.com/dapr/quickstarts/blob/master/service_invocation/javascript/http/README.md#start-all-apps-with-multi-app-run-template-file)
+  - [.NET](https://github.com/dapr/quickstarts/blob/master/service_invocation/csharp/http/README.md#start-all-apps-with-multi-app-run-template-file)
+  - [Java](https://github.com/dapr/quickstarts/tree/master/service_invocation/java/http)
+  - [Go](https://github.com/dapr/quickstarts/blob/master/service_invocation/go/http/README.md#start-all-apps-with-multi-app-run-template-file)
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
