@@ -14,6 +14,6 @@ The Dapr SDKs are the easiest way for you to create pluggable components. Choose
 
 | Language | Status |
 |----------|:------:|
-| [.NET]({{< ref dotnet-sdk-docs >}}) | In development |
+| [.NET]({{< ref pluggable-components-dotnet >}}) | In development |
 | [Java]({{< ref java >}}) | In development |
 | [Go]({{< ref go >}}) | In development |
