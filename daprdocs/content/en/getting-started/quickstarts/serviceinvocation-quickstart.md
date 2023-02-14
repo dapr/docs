@@ -304,7 +304,7 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
-Add this code block to the Program.cs file in the current directory
+Below is the working code block from the order processor's `Program.cs` file.
 ```csharp
 app.MapPost("/orders", async context => {
     var data = await context.Request.ReadFromJsonAsync<Order>();
