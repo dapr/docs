@@ -305,11 +305,12 @@ dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-htt
 ```
 
 Below is the working code block from the order processor's `Program.cs` file.
+
 ```csharp
-app.MapPost("/orders", async context => {
-    var data = await context.Request.ReadFromJsonAsync<Order>();
-    Console.WriteLine("Order received : " + data);
-    await context.Response.WriteAsync(data.ToString());
+app.MapPost("/orders", (Order order) =>
+{
+    Console.WriteLine("Order received : " + order);
+    return order.ToString();
 });
 ```
 
