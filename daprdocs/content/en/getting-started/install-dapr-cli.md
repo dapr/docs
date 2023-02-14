@@ -87,7 +87,7 @@ $script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/inst
 
 #### Installing a specific CLI version without administrative rights
 
-The following example shows how to install CLI version `1.9.1`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
+The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
 ```powershell
 $Env:DAPR_INSTALL_DIR = "<your_alt_install_dir_path>"
