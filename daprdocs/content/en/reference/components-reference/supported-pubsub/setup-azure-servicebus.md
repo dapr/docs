@@ -151,6 +151,14 @@ To find out more details on the purpose of any of these metadata properties, ple
 
 > Note that all times are populated by the server and are not adjusted for clock skews.
 
+## Subscribing to a session enabled topic
+
+To subscribe to a topic that has [sessions enabled](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-sessions) you can provide the following properties in the subscription metadata.
+
+- `requireSessions (default: false)`
+- `sessionIdleTimeoutInSec (default: 60)`
+- `maxConcurrentSessions (default: 8)`
+
 ## Create an Azure Service Bus
 
 Follow the instructions [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-topics-subscriptions-portal) on setting up Azure Service Bus Topics.
