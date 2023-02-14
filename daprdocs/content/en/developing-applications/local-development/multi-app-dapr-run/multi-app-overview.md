@@ -83,9 +83,4 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 ## Next steps
 
 - [Learn the Multi-App Run template file structure and its properties]({{< ref multi-app-template.md >}})
-- Try out the Multi-App Run template using service invocation:
-  - [Python](https://github.com/dapr/quickstarts/tree/master/service_invocation/python/http#start-all-apps-with-multi-app-run-template-file)
-  - [JavaScript](https://github.com/dapr/quickstarts/blob/master/service_invocation/javascript/http/README.md#start-all-apps-with-multi-app-run-template-file)
-  - [.NET](https://github.com/dapr/quickstarts/blob/master/service_invocation/csharp/http/README.md#start-all-apps-with-multi-app-run-template-file)
-  - [Java](https://github.com/dapr/quickstarts/tree/master/service_invocation/java/http)
-  - [Go](https://github.com/dapr/quickstarts/blob/master/service_invocation/go/http/README.md#start-all-apps-with-multi-app-run-template-file)
+- [Try out the Multi-App Run template with the Service Invocation quickstart]({{< ref serviceinvocation-quickstart.md >}})
