@@ -82,4 +82,5 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 ## Next steps
 
-[Learn the Multi-App Run template file structure and its properties]({{< ref multi-app-template.md >}})
+- [Learn the Multi-App Run template file structure and its properties]({{< ref multi-app-template.md >}})
+- [Try out the Multi-App Run template with the Service Invocation quickstart]({{< ref serviceinvocation-quickstart.md >}})
