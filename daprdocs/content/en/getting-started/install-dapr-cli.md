@@ -174,7 +174,7 @@ curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh 
 
 ##### Installing a specific CLI version without `sudo`
 
-The following example shows how to install CLI version `1.9.1`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
+The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dapr/cli/master/install/install.sh | DAPR_INSTALL_DIR="$HOME/dapr" -s 1.9.1
