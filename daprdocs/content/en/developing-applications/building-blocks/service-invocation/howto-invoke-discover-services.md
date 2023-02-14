@@ -191,25 +191,24 @@ using System.Threading;
 //code
 namespace EventService
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-           while(true) {
-                System.Threading.Thread.Sleep(5000);
-                Random random = new Random();
-                int orderId = random.Next(1,1000);
-                CancellationTokenSource source = new CancellationTokenSource();
-                CancellationToken cancellationToken = source.Token;
-                using var client = new DaprClientBuilder().Build();
-                //Using Dapr SDK to invoke a method
-                var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId, cancellationToken);
-                await client.InvokeMethodAsync(result);
-                Console.WriteLine("Order requested: " + orderId);
-                Console.WriteLine("Result: " + result);
-		    }
-        }
-    }
+  class Program
+   {
+       static async Task Main(string[] args)
+       {
+          while(true) {
+               System.Threading.Thread.Sleep(5000);
+               Random random = new Random();
+               int orderId = random.Next(1,1000);
+               using var client = new DaprClientBuilder().Build();
+
+               //Using Dapr SDK to invoke a method
+               var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkout", "checkout/" + orderId);
+               await client.InvokeMethodAsync(result);
+               Console.WriteLine("Order requested: " + orderId);
+               Console.WriteLine("Result: " + result);
+   	    }
+       }
+   }
 }
 ```
 
@@ -405,9 +404,9 @@ dapr invoke --app-id checkout --method checkout/100
 
 ### Namespaces
 
-When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID: `checkout.production`
+When running on [namespace supported platforms]({{< ref "service_invocation_api.md#namespace-supported-platforms" >}}), you include the namespace of the target app in the app ID. For example, following the `<app>.<namespace>` format, use `checkout.production`.
 
-For example, invoking the example service with a namespace would look like:
+Using this example, invoking the service with a namespace would look like:
 
 ```bash
 curl http://localhost:3602/v1.0/invoke/checkout.production/method/checkout/100 -X POST

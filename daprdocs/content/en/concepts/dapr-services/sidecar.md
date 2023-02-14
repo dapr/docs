@@ -23,7 +23,11 @@ The sidecar APIs are called from your application over local http or gRPC endpoi
 
 ## Self-hosted with `dapr run`
 
-When Dapr is installed in [self-hosted mode]({{<ref self-hosted>}}), the `daprd` binary is downloaded and placed under the user home directory (`$HOME/.dapr/bin` for Linux/MacOS or `%USERPROFILE%\.dapr\bin\` for Windows). In self-hosted mode, running the Dapr CLI [`run` command]({{< ref dapr-run.md >}}) launches the `daprd` executable together with the provided application executable. This is the recommended way of running the Dapr sidecar when working locally in scenarios such as development and testing. The various arguments the CLI exposes to configure the sidecar can be found in the [Dapr run command reference]({{<ref dapr-run>}}).
+When Dapr is installed in [self-hosted mode]({{<ref self-hosted>}}), the `daprd` binary is downloaded and placed under the user home directory (`$HOME/.dapr/bin` for Linux/macOS or `%USERPROFILE%\.dapr\bin\` for Windows).
+
+In self-hosted mode, running the Dapr CLI [`run` command]({{< ref dapr-run.md >}}) launches the `daprd` executable with the provided application executable. This is the recommended way of running the Dapr sidecar when working locally in scenarios such as development and testing.
+
+You can find the various arguments that the CLI exposes to configure the sidecar in the [Dapr run command reference]({{<ref dapr-run>}}).
 
 ## Kubernetes with `dapr-sidecar-injector`
 
@@ -37,7 +41,9 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
 
 ### Examples
 
-1. Start a sidecar along with an application by specifying its unique ID. Note `--app-id` is a required field:
+1. Start a sidecar alongside an application by specifying its unique ID.  
+
+   **Note:** `--app-id` is a required field, and cannot contain dots.
 
    ```bash
    daprd --app-id myapp
@@ -49,10 +55,10 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
    daprd --app-id --app-port 5000
    ```
 
-3. If you are using several custom components and want to specify the location of the component definition files, use the `--components-path` argument:
+3. If you are using several custom resources and want to specify the location of the resource definition files, use the `--resources-path` argument:
 
    ```bash
-   daprd --app-id myapp --components-path <PATH-TO-COMPONENTS-FILES>
+   daprd --app-id myapp --resources-path <PATH-TO-RESOURCES-FILES>
    ```
 
 4. Enable collection of Prometheus metrics while running your app

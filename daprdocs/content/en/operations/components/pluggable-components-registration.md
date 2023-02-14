@@ -1,8 +1,8 @@
 ---
 type: docs
 title: "How-To: Register a pluggable component"
-linkTitle: "How To: Register a pluggable component"
-weight: 4500
+linkTitle: "Register a pluggable component"
+weight: 1000
 description: "Learn how to register a pluggable component"
 ---
 
@@ -10,7 +10,7 @@ description: "Learn how to register a pluggable component"
 
 ## Component registration process
 
-Pluggable, [gRPC-based](https://grpc.io/) components are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds]. They are automatically discovered and registered in the runtime with the following steps:
+[Pluggable, gRPC-based components]({{< ref pluggable-components-overview >}}) are typically run as containers or processes that need to communicate with the Dapr runtime via [Unix Domain Sockets][uds] (or UDS for short). They are automatically discovered and registered in the runtime with the following steps:
 
 1. The component listens to an [Unix Domain Socket][uds] placed on the shared volume.
 2. The Dapr runtime lists all [Unix Domain Socket][uds] in the shared volume.
@@ -49,49 +49,43 @@ Both your component and the Unix Socket must be running before Dapr starts.
 
 By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
 
-Filenames in this folder are significant for component registration. They must be formed by appending the component's name with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid UDS file name for a component named `my-component`.
+Filenames in this folder are significant for component registration. They must be formed by appending the component's **name** with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid Unix Domain Socket file name for a component named `my-component`.
 
 Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
 
+### Component discovery and multiplexing
+
+A pluggable component accessible through a [Unix Domain Socket][UDS] (UDS) can host multiple distinct component APIs . During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
+
+Typically, a pluggable component implements a single component API for packaging and deployment. However, at the expense of increasing its dependencies and broadening its security attack surface, a pluggable component can have multiple component APIs implemented. This could be done to ease the deployment and monitoring burden. Best practice for isolation, fault tolerance, and security is a single component API implementation for each pluggable component.
+
+
 ## Define the component
 
-Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `type` is derived from the socket name, without the file extension.
+Define your component using a [component spec]({{< ref component-schema.md >}}). Your component's `spec.type` value is made by concatenating the following 2 parts with a `.`:
+1. The component's API (`state`, `pubsub`, `bindings` etc)
+2. The component's **name**, which is derived from the [Unix Domain Socket][uds] filename, without the file extension. 
 
-Save the component YAML file in the components-path, replacing:
+You will need to define one [component spec]({{< ref component-schema.md >}}) for each API exposed by your pluggable component's [Unix Domain Socket][uds]. The Unix Domain Socket `my-component.sock` from the previous example exposes a pluggable component named `my-component` with both a `state` and a `pubsub` API. Two components specs, each in their own YAML file, placed in the `resources-path`, will be required: one for `state.my-component` and another for `pubsub.my-component`.
 
-- `your_socket_goes_here` with your component socket name (no extension)
-- `your_component_type` with your component type
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: prod-mystore
-spec:
-  type: your_component_type.your_socket_goes_here
-  version: v1
-  metadata:
-```
-
-Using the previous `my-component.sock` example:
-
-- `your_component_type` would be replaced by `state`, as it is a state store.
-- `your_socket_goes_here` would be replaced by `my-component`.
-
-The configuration example for `my-component` is below:
+For instance, the component spec for `state.my-component` could be:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: prod-mystore
+  name: my-production-state-store
 spec:
   type: state.my-component
   version: v1
   metadata:
 ```
 
-Save this file as `component.yaml` in Dapr's component configuration folder.
+In the sample above, notice the following:
+* The contents of the field `spec.type` is `state.my-component`, referring to a state store being exposed as a pluggable component named `my-component`.
+* The field `metadata.name`, which is the name of the state store being defined here, is not related to the pluggable component name.
+
+Save this file as `component.yaml` in Dapr's component configuration folder. Just like the contents of `metadata.name` field, the filename for this YAML file has no impact and does not depend on the pluggable component name.
 
 ## Run Dapr
 
@@ -132,7 +126,7 @@ Follow the steps provided in the [Deploy Dapr on a Kubernetes cluster]({{< ref k
 
 ## Add the pluggable component container in your deployments
 
-When running in Kubernetes mode, pluggable components are deployed as containers in the same pod as your application.
+Pluggable components are deployed as containers **in the same pod** as your application.
 
 Since pluggable components are backed by [Unix Domain Sockets][uds], make the socket created by your pluggable component accessible by Dapr runtime. Configure the deployment spec to:
 
@@ -140,7 +134,7 @@ Since pluggable components are backed by [Unix Domain Sockets][uds], make the so
 2. Hint to Dapr the mounted Unix socket volume location
 3. Attach volume to your pluggable component container
 
-Below is an example of a deployment that configures a pluggable component:
+In the following example, your configured pluggable component is deployed as a container within the same pod as your application container. 
 
 ```yaml
 apiVersion: apps/v1
@@ -167,14 +161,48 @@ spec:
         - name: dapr-unix-domain-socket
           emptyDir: {}
       containers:
-        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
-        ##
-        ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
-        ### This is the pluggable component container.
+      containers:
+      ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+        - name: app
+           image: YOUR_APP_IMAGE:YOUR_APP_IMAGE_VERSION
+      ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
         - name: component
+          image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
           volumeMounts: # required, the sockets volume mount
             - name: dapr-unix-domain-socket
               mountPath: /tmp/dapr-components-sockets
+          image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
+```
+
+Alternatively, you can annotate your pods, telling Dapr which containers within that pod are pluggable components, like in the example below:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+      annotations:
+        dapr.io/pluggable-components: "component" ## the name of the pluggable component container separated by `,`, e.g "componentA,componentB".
+        dapr.io/app-id: "my-app"
+        dapr.io/enabled: "true"
+    spec:
+      containers:
+      ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+        - name: app
+           image: YOUR_APP_IMAGE:YOUR_APP_IMAGE_VERSION
+      ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
+        - name: component
           image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
 

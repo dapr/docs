@@ -42,9 +42,18 @@ spec:
 | spec.ignoreErrors  | N        | Tells the Dapr sidecar to continue initialization if the component fails to load. Default is false  | `false`
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
 
-### Special metadata values
+### Templated metadata values
 
-Metadata values can contain a `{uuid}` tag that is replaced with a randomly generate UUID when the Dapr sidecar starts up. A new UUID is generated on every start up. It can be used, for example, to have a pod on Kubernetes with multiple application instances consuming a [shared MQTT subscription]({{< ref "setup-mqtt.md" >}}). Below is an example of using the `{uuid}` tag.
+Metadata values can contain template tags that are resolved on Dapr sidecar startup. The table below shows the current templating tags that can be used in components.
+
+| Tag         | Details                                                            | Example use case                                                                                                                                                       |
+|-------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| {uuid}      | Randomly generated UUIDv4                                          | When you need a unique identifier in self-hosted mode; for example, multiple application instances consuming a [shared MQTT subscription]({{< ref "setup-mqtt3.md" >}}) |
+| {podName}   | Name of the pod containing the Dapr sidecar                        | Use to have a persisted behavior, where the ConsumerID does not change on restart when using StatefulSets in Kubernetes                                                |
+| {namespace} | Namespace where the Dapr sidecar resides combined with its appId   | Using a shared `clientId` when multiple application instances consume a Kafka topic in Kubernetes                                                                      |
+| {appID}     | The configured `appID` of the resource containing the Dapr sidecar | Having a shared `clientId` when multiple application instances consumer a Kafka topic in self-hosted mode                                                              |
+
+Below is an example of using the `{uuid}` tag in an MQTT pubsub component. Note that multiple template tags can be used in a single metadata value.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -52,7 +61,7 @@ kind: Component
 metadata:
   name: messagebus
 spec:
-  type: pubsub.mqtt
+  type: pubsub.mqtt3
   version: v1
   metadata:
     - name: consumerID
@@ -66,9 +75,6 @@ spec:
     - name: cleanSession
       value: "false"
 ```
-
-The consumerID metadata values can also contain a `{podName}` tag that is replaced with the Kubernetes POD's name when the Dapr sidecar starts up. This can be used to have a persisted behavior where the ConsumerID does not change on restart when using StatefulSets in Kubernetes.
-
 
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})

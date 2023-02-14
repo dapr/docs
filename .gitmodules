@@ -23,3 +23,6 @@
 [submodule "sdkdocs/js"]
 	path = sdkdocs/js
 	url = https://github.com/dapr/js-sdk.git 
+[submodule "sdkdocs/pluggable-components/dotnet"]
+	path = sdkdocs/pluggable-components/dotnet
+	url = https://github.com/dapr-sandbox/components-dotnet-sdk

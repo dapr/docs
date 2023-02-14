@@ -55,7 +55,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
 ```
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
@@ -106,7 +106,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/python/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -164,7 +164,7 @@ npm install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../components/ -- npm start
 ```
 
 #### Behind the scenes
@@ -278,7 +278,7 @@ dotnet build
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../components/ -- dotnet run
 ```
 
 #### Behind the scenes
@@ -328,7 +328,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/csharp/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -357,7 +357,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - Java JDK 11 (or greater):
-  - [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11), or
+  - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
   - OpenJDK
 - [Apache Maven](https://maven.apache.org/install.html), version 3.x.
 <!-- IGNORE_LINKS -->
@@ -389,7 +389,7 @@ mvn clean install
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 #### Behind the scenes
@@ -436,7 +436,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/java/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/java/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -494,7 +494,7 @@ go build .
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run .
+dapr run --app-id order-processor --resources-path ../../../components/ -- go run .
 ```
 
 #### Behind the scenes
@@ -543,7 +543,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/go/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/go/sdk/order-processor/secrets.json):
 
 ```json
 {

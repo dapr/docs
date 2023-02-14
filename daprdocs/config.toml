@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://docs.dapr.io/"
+baseURL = "https://v1-10.docs.dapr.io"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -66,6 +66,10 @@ id = "G-60C6Q1ETC1"
   [[module.mounts]]
     source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-docs"
     target = "content/developing-applications/sdks/dotnet"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/pluggable-components/dotnet/daprdocs/content/en/dotnet-sdk-docs"
+    target = "content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-dotnet"
     lang = "en"
   [[module.mounts]]
     source = "../sdkdocs/dotnet/daprdocs/content/en/dotnet-sdk-contributing"
@@ -160,20 +164,20 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "v1.9"
+github_branch = "v1.10"
 
 # Versioning
-version_menu = "v1.9 (latest)"
-version = "v1.9"
+version_menu = "v1.10 (preview)"
+version = "v1.10"
 archived_version = false
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
   version = "v1.10 (preview)"
-  url = "https://v1-10.docs.dapr.io"
+  url = "#"
 [[params.versions]]
   version = "v1.9 (latest)"
-  url = "#"
+  url = "https://docs.dapr.io"
 [[params.versions]]
   version = "v1.8"
   url = "https://v1-8.docs.dapr.io"

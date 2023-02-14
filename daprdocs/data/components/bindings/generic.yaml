@@ -8,12 +8,12 @@
     output: true
 - component: Cron (Scheduler)
   link: cron
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.0"
+  since: "1.10"
   features:
     input: true
-    output: true
+    output: false
 - component: GraphQL
   link: graghql
   state: Alpha
@@ -45,7 +45,7 @@
   since: "1.0"
   features:
     input: true
-    output: true
+    output: false
 - component: Local Storage
   link: localstorage
   state: Stable
@@ -54,8 +54,8 @@
   features:
     input: false
     output: true
-- component: MQTT
-  link: mqtt
+- component: MQTT3
+  link: mqtt3
   state: Beta
   version: v1
   since: "1.7"
@@ -96,9 +96,9 @@
     output: true
 - component: Redis
   link: redis
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.7"
+  since: "1.9"
   features:
     input: false
     output: true
@@ -141,4 +141,12 @@
   since: "1.0"
   features:
     input: false
+    output: true
+- component: KubeMQ
+  link: kubemq
+  state: Beta
+  version: v1
+  since: "1.10"
+  features:
+    input: true
     output: true

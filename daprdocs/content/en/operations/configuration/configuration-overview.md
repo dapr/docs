@@ -48,6 +48,7 @@ The following configuration settings can be applied to Dapr application sidecars
 
 - [Tracing](#tracing)
 - [Metrics](#metrics)
+- [Logging](#logging)
 - [Middleware](#middleware)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
@@ -85,7 +86,7 @@ The following table lists the properties for tracing:
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
-See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information
+See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information.
 
 #### Metrics
 
@@ -104,7 +105,31 @@ The following table lists the properties for metrics:
 |--------------|--------|-------------|
 | `enabled` | boolean | Whether metrics should to be enabled.
 
-See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more information
+See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more information.
+
+#### Logging
+
+The logging section can be used to configure how logging works in the Dapr Runtime.
+
+The `logging` section under the `Configuration` spec contains the following properties:
+
+```yml
+logging:
+  apiLogging:
+    enabled: false
+    obfuscateURLs: false
+    omitHealthChecks: false
+```
+
+The following table lists the properties for logging:
+
+| Property     | Type   | Description |
+|--------------|--------|-------------|
+| `apiLogging.enabled` | boolean | The default value for the `--enable-api-logging` flag for `daprd` (and the corresponding `dapr.io/enable-api-logging` annotation): the value set in the Configuration spec is used as default unless a `true` or `false` value is passed to each Dapr Runtime. Default: `false`.
+| `apiLogging.obfuscateURLs` | boolean | When enabled, obfuscates the values of URLs in HTTP API logs (if enabled), logging the abstract route name rather than the full path being invoked, which could contain Personal Identifiable Information (PII). Default: `false`.
+| `apiLogging.omitHealthChecks` | boolean | If `true`, calls to health check endpoints (e.g. `/v1.0/healthz`) are not logged when API logging is enabled. This is useful if those calls are adding a lot of noise in your logs. Default: `false`
+
+See [logging documentation]({{< ref "logs.md" >}}) for more information.
 
 #### Middleware
 
@@ -130,8 +155,8 @@ The following table lists the properties for HTTP handlers:
 
 | Property | Type   | Description |
 |----------|--------|-------------|
-| name     | string | Name of the middleware component
-| type     | string | Type of middleware component
+| `name`     | string | Name of the middleware component
+| `type`     | string | Type of middleware component
 
 See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
 

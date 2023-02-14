@@ -10,14 +10,29 @@
 <table width="100%">
     <tr>
         <th>Component</th>
+        <th>Bulk Publish</th>
+        <th>Bulk Subscribe</th>
         <th>Status</th>
         <th>Component version</th>
         <th>Since runtime version</th>
     </tr>
     {{ range sort $components "component" }}
     <tr>
-        <td><a href="/reference/components-reference/supported-pubsub/{{ .link }}/" }}>{{ .component
-                }}</a>
+        <td><a href="/reference/components-reference/supported-pubsub/{{ .link }}/">{{ .component }}</a>
+        </td>
+        <td align="center">
+            {{ if .features.bulkPublish }}
+                <span role="img" aria-label="Bulk publish supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="Bulk publish not supported" aria-label="Bulk publish not supported">
+            {{ end }}
+        </td>
+        <td align="center">
+            {{ if .features.bulkSubscribe }}
+                <span role="img" aria-label="Bulk subscribe supported">✅</span>
+            {{else}}
+                <img src="/images/emptybox.png" alt="Bulk subscribe not supported" aria-label="Bulk subscribe not supported">
+            {{ end }}
         </td>
         <td>{{ .state }}</td>
         <td>{{ .version }}</td>

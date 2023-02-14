@@ -63,14 +63,14 @@ scopes:
   - checkout
 ```
 
-You can override this file with another [pubsub component]({{< ref setup-pubsub >}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--components-path` with the `dapr run` CLI command.
+You can override this file with another [pubsub component]({{< ref setup-pubsub >}}) by creating a components directory (in this example, `myComponents`) containing the file and using the flag `--resources-path` with the `dapr run` CLI command.
 
 {{< tabs Dotnet Java Python Go Javascript >}}
 
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- dotnet run
+dapr run --app-id myapp --resources-path ./myComponents -- dotnet run
 ```
 
 {{% /codetab %}}
@@ -78,7 +78,7 @@ dapr run --app-id myapp --components-path ./myComponents -- dotnet run
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
+dapr run --app-id myapp --resources-path ./myComponents -- mvn spring-boot:run
 ```
 
 {{% /codetab %}}
@@ -86,7 +86,7 @@ dapr run --app-id myapp --components-path ./myComponents -- mvn spring-boot:run
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
+dapr run --app-id myapp --resources-path ./myComponents -- python3 app.py
 ```
 
 {{% /codetab %}}
@@ -94,7 +94,7 @@ dapr run --app-id myapp --components-path ./myComponents -- python3 app.py
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- go run app.go
+dapr run --app-id myapp --resources-path ./myComponents -- go run app.go
 ```
 
 {{% /codetab %}}
@@ -102,7 +102,7 @@ dapr run --app-id myapp --components-path ./myComponents -- go run app.go
 {{% codetab %}}
 
 ```bash
-dapr run --app-id myapp --components-path ./myComponents -- npm start
+dapr run --app-id myapp --resources-path ./myComponents -- npm start
 ```
 {{% /codetab %}}
 
@@ -358,7 +358,7 @@ async function start(orderId) {
     await server.pubsub.subscribe("order-pub-sub", "orders", async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
     });
-    await server.startServer();
+    await server.start();
 }
 ```
 

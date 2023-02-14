@@ -2,7 +2,7 @@
 type: docs
 title: "Name resolution provider component specs"
 linkTitle: "Name resolution"
-weight: 5000
+weight: 8000
 description: The supported name resolution providers that interface with Dapr service invocation
 no_list: true
 ---

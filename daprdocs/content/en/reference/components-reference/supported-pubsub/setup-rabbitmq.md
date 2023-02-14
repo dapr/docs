@@ -40,12 +40,6 @@ spec:
     value: parallel
   - name: publisherConfirm
     value: false
-  - name: backOffPolicy
-    value: exponential
-  - name: backOffInitialInterval
-    value: 100
-  - name: backOffMaxRetries
-    value: 16
   - name: enableDeadLetter # Optional enable dead Letter or not
     value: true
   - name: maxLen # Optional max message count in a queue
@@ -75,24 +69,81 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | publisherConfirm  | N        | If enabled, client waits for [publisher confirms](https://www.rabbitmq.com/confirms.html#publisher-confirms) after publishing a message. Defaults to `"false"` | `"true"`, `"false"`
 | reconnectWait  | N        | How long to wait (in seconds) before reconnecting if a connection failure occurs | `"0"`
 | concurrencyMode | N        | `parallel` is the default, and allows processing multiple messages in parallel (limited by the `app-max-concurrency` annotation, if configured). Set to `single` to disable parallel processing. In most situations there's no reason to change this. | `parallel`, `single`
-| backOffPolicy              | N        | Retry policy, `"constant"` is a backoff policy that always returns the same backoff delay. `"exponential"` is a backoff policy that increases the backoff period for each retry attempt using a randomization function that grows exponentially. Defaults to `"constant"`. | `constant`、`exponential` |
-| backOffDuration            | N        | The fixed interval only takes effect when the policy is constant. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"5s"`. | `"5s"`、`"5000"`                  |
-| backOffInitialInterval     | N        | The backoff initial interval on retry. Only takes effect when the policy is exponential. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"500"`                         | `"50"`                       |
-| backOffMaxInterval         | N        | The backoff initial interval on retry. Only takes effect when the policy is exponential. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"60s"`     | `"60000"`                     |
-| backOffMaxRetries          | N        | The maximum number of retries to process the message before returning an error. Defaults to `"0"` which means the component will not retry processing the message. `"-1"` will retry indefinitely until the message is processed or the application is shutdown. Any positive number is treated as the maximum retry count. | `"3"` |
-| backOffRandomizationFactor | N        | Randomization factor, between 1 and 0, including 0 but not 1. Randomized interval = RetryInterval * (1 ± backOffRandomizationFactor). Defaults to `"0.5"`.                 | `"0.5"`                       |
-| backOffMultiplier          | N        | Backoff multiplier for the policy. Increments the interval by multiplying it with the multiplier. Defaults to `"1.5"`         | `"1.5"`      |
-| backOffMaxElapsedTime      | N        | After MaxElapsedTime the ExponentialBackOff returns Stop. There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that will be processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Defaults to `"15m"` | `"15m"` |
 | enableDeadLetter      | N        | Enable forwarding Messages that cannot be handled to a dead-letter topic. Defaults to `"false"` | `"true"`, `"false"` |
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
+| caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 
-### Backoff policy introduction
 
-Backoff retry strategy can instruct the dapr sidecar how to resend the message. By default, the retry strategy is turned off, which means that the sidecar will send a message to the service once. When the service returns a result, the message will be marked as consumption regardless of whether it is correct or not. The above is based on the condition of `autoAck` and `requeueInFailure` is setting to false(if `requeueInFailure` is set to true, the message will get a second chance).
+## Communication using TLS
 
-But in some cases, you may want dapr to retry pushing message with an (exponential or constant) backoff strategy until the message is processed normally or the number of retries is exhausted. This maybe useful when your service breaks down abnormally but the sidecar is not stopped together. Adding backoff policy will retry the message pushing during the service downtime, instead of marking these message as consumed.
+To configure communication using TLS, ensure that the RabbitMQ nodes have TLS enabled and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: rabbitmq-pubsub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqps://localhost:5671"
+  - name: consumerID
+    value: myapp
+  - name: durable
+    value: false
+  - name: deletedWhenUnused
+    value: false
+  - name: autoAck
+    value: false
+  - name: deliveryMode
+    value: 0
+  - name: requeueInFailure
+    value: false
+  - name: prefetchCount
+    value: 0
+  - name: reconnectWait
+    value: 0
+  - name: concurrencyMode
+    value: parallel
+  - name: publisherConfirm
+    value: false
+  - name: enableDeadLetter # Optional enable dead Letter or not
+    value: true
+  - name: maxLen # Optional max message count in a queue
+    value: 3000
+  - name: maxLenBytes # Optional maximum length in bytes of a queue.
+    value: 10485760
+  - name: exchangeKind
+    value: fanout
+  - name: caCert
+    value: ${{ myLoadedCACert }}
+  - name: clientCert
+    value: ${{ myLoadedClientCert }}
+  - name: clientKey
+    secretKeyRef:
+      name: myRabbitMQClientKey
+      key: myRabbitMQClientKey
+```
+
+Note that while the `caCert` and `clientCert` values may not be secrets, they can be referenced from a Dapr secret store as well for convenience.
+
+### Enabling message delivery retries
+
+The RabbitMQ pub/sub component has no built-in support for retry strategies. This means that the sidecar sends a message to the service only once. When the service returns a result, the message will be marked as consumed regardless of whether it was processed correctly or not. Note that this is common among all Dapr PubSub components and not just RabbitMQ.
+Dapr can try redelivering a message a second time, when `autoAck` is set to `false` and `requeueInFailure` is set to `true`.
+
+To make Dapr use more sophisticated retry policies, you can apply a [retry resiliency policy]({{< ref "policies.md#retries" >}}) to the RabbitMQ pub/sub component.
+
+There is a crucial difference between the two ways to retry messages:
+
+1. When using `autoAck = false` and `requeueInFailure = true`, RabbitMQ is the one responsible for re-delivering messages and _any_ subscriber can get the redelivered message. If you have more than one instance of your consumer, then it’s possible that another consumer will get it. This is usually the better approach because if there’s a transient failure, it’s more likely that a different worker will be in a better position to successfully process the message.
+2. Using Resiliency makes the same Dapr sidecar retry redelivering the messages. So it will be the same Dapr sidecar and the same app receiving the same message.
 
 ## Create a RabbitMQ server
 
