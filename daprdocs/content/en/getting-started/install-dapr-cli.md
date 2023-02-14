@@ -70,7 +70,7 @@ powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master
 
 ##### Installing a specific CLI version
 
-This example shows how to install CLI version `1.9.1`. Release candidates can be installed similarly, simply specify the version, e.g. `1.10.0-rc.3`.
+The following example shows how to install CLI version `1.9.1`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
 ```powershell
 powershell -Command "$script=iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1; $block=[ScriptBlock]::Create($script); invoke-command -ScriptBlock $block -ArgumentList 1.9.1"
