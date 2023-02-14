@@ -335,7 +335,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
-In the Program.cs file inside `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
+In the Program.cs file for the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```csharp
 var client = new HttpClient();
