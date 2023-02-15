@@ -2,7 +2,7 @@
 type: docs
 title: "How to: Horizontally scale subscribers with StatefulSets"
 linkTitle: "How to: Horizontally scale subscribers with StatefulSets"
-weight: 2000
+weight: 6000
 description: "Learn how to subscribe with StatefulSet and scale horizontally with consistent consumer IDs"
 ---
 
