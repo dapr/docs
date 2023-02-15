@@ -8,7 +8,7 @@ description: "Learn how to subscribe with StatefulSet and scale horizontally wit
 
 Unlike Deployments, where Pods are ephemeral, [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) allows deployment of stateful applications on Kubernetes by keeping a sticky identity for each Pod.
 
-See an example of a StatefulSet with Dapr:
+Below is an example of a StatefulSet with Dapr:
 ```yaml
 apiVersion: apps/v1
 kind: StatefulSet
