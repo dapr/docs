@@ -140,6 +140,8 @@ To set Azure Service Bus metadata when sending a message, set the query paramete
 
 > **Note:** The `metadata.MessageId` property does not set the `id` property of the cloud event returned by Dapr and should be treated in isolation.
 
+> **NOTE:** If the `metadata.SessionId` property is not set but the topic requires sessions then an empty session id will be used.
+
 ### Receiving a message with metadata
 
 When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
@@ -154,6 +156,14 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
 
 > Note: that all times are populated by the server and are not adjusted for clock skews.
+
+## Subscribe to a session enabled topic
+
+To subscribe to a topic that has [sessions enabled](https://learn.microsoft.com/azure/service-bus-messaging/message-sessions) you can provide the following properties in the subscription metadata.
+
+- `requireSessions (default: false)`
+- `sessionIdleTimeoutInSec (default: 60)`
+- `maxConcurrentSessions (default: 8)`
 
 ## Create an Azure Service Bus broker for topics
 
