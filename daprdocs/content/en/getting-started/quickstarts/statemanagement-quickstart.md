@@ -172,7 +172,7 @@ Verify you have the following files included in the service directory:
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../resources/ -- npm run start
+dapr run --app-id order-processor --resources-path ../../../resources/ -- npm run start
 ```
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
