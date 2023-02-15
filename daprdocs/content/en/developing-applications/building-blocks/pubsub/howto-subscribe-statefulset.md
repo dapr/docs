@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "How to: Subscribe to messages using StatefulSet"
-linkTitle: "How to: Subscribe with StatefulSet"
+title: "How to: Horizontally scale subscribers with StatefulSets"
+linkTitle: "How to: Horizontally scale subscribers with StatefulSets"
 weight: 2000
 description: "Learn how to subscribe with StatefulSet and scale horizontally with consistent consumer IDs"
 ---
