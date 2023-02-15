@@ -92,7 +92,7 @@ Note that while the `caCert` and `clientCert` values may not be secrets, they ca
 
 ### Consuming a shared topic
 
-When consuming a shared topic, each consumer must have a unique identifier. By default, the application ID is used to uniquely identify each consumer and publisher. In self-hosted mode, invoking each `dapr run` with a different application ID is sufficient to have them consume from the same shared topic. However, on Kubernetes, multiple instances of an application pod will share the same application ID, prohibiting all instances from consuming the same topic. To overcome this, configure the component's `consumerID` metadata with a `{uuid}` tag, which will give each instance a randomly generated `consumerID` value on start up. For example:
+When consuming a shared topic, each consumer must have a unique identifier. By default, the application ID is used to uniquely identify each consumer and publisher. In self-hosted mode, invoking each `dapr run` with a different application ID is sufficient to have them consume from the same shared topic. However, on Kubernetes, multiple instances of an application pod will share the same application ID, prohibiting all instances from consuming the same topic. To overcome this, configure the component's `consumerID` metadata with a `{uuid}` tag (which will give each instance a randomly generated value on start up) or `{podName}` (which will use the Pod's name on Kubernetes). For example:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -120,6 +120,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 {{% /alert %}}
 
 Note that in the case, the value of the consumer ID is random every time Dapr restarts, so you should set `cleanSession` to `true` as well.
+
+It is recommended to use [StatefulSets]({{< ref "howto-subscribe-statefulset.md" >}}) with shared subscriptions.
 
 ## Create a MQTT3 broker
 
