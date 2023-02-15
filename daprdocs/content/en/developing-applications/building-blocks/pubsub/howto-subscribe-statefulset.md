@@ -44,7 +44,7 @@ On scaling the number of subscribers of a given topic, each Dapr component has u
  - Broadcast: each message published to the topic will be consumed by all subscribers.
  - Shared: a message is consumed by any subscriber (but not all).
 
-Kafka isolates each subscriber by `consumerID` with its own position in the topic. When an instance restarts, it reuses the same `consumerID` and continues from its last known position, without skipping messages. The component below is an example on how a Kafka component can be used by multiple Pods:
+Kafka isolates each subscriber by `consumerID` with its own position in the topic. When an instance restarts, it reuses the same `consumerID` and continues from its last known position, without skipping messages. The component below demonstrates how a Kafka component can be used by multiple Pods:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
