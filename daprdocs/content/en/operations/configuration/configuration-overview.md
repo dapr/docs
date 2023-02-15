@@ -103,7 +103,21 @@ The following table lists the properties for metrics:
 
 | Property     | Type   | Description |
 |--------------|--------|-------------|
-| `enabled` | boolean | Whether metrics should to be enabled.
+| `enabled` | boolean | Whether metrics should to be enabled. |
+| `rules`   | boolean | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a`regex`expression to apply to the metrics path. |
+
+To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}), you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
+
+```yml
+metric:
+    enabled: true
+    rules:
+    - name: dapr_runtime_service_invocation_req_sent_total
+      labels:
+      - name: method
+        regex:
+          "orders/": "orders/.+"
+```
 
 See [metrics documentation]({{< ref "metrics-overview.md" >}}) for more information.
 

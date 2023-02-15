@@ -96,6 +96,13 @@ spec:
 
 When this configuration is applied, a recorded metric with the `method` label of `orders/a746dhsk293972nz` will be replaced with `orders/`.
 
+### Watch the demo
+
+Watch [this video to walk through handling high cardinality metrics](https://youtu.be/pOT8teL6j_k?t=1524):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/pOT8teL6j_k?start=1524" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
 ## References
 
 * [Howto: Run Prometheus locally]({{< ref prometheus.md >}})
