@@ -51,7 +51,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../resources/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../resources/ -- python3 app.py
 ```
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
