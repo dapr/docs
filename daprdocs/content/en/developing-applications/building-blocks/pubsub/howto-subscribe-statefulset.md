@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn how to subscribe with StatefulSet and scale horizontally with consistent consumer IDs"
 ---
 
-[StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) allows deployment of stateful applications on Kubernetes by keeping a sticky identity for each Pod, in contrast to Deployments - where Pods are ephemeral.
+Unlike Deployments, where Pods are ephemeral, [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) allows deployment of stateful applications on Kubernetes by keeping a sticky identity for each Pod.
 
 See an example of a StatefulSet with Dapr:
 ```yaml
