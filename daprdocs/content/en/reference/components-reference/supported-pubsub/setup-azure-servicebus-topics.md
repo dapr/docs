@@ -159,7 +159,7 @@ To find out more details on the purpose of any of these metadata properties, ple
 
 ## Subscribe to a session enabled topic
 
-To subscribe to a topic that has [sessions enabled](https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-sessions) you can provide the following properties in the subscription metadata.
+To subscribe to a topic that has [sessions enabled](https://learn.microsoft.com/azure/service-bus-messaging/message-sessions) you can provide the following properties in the subscription metadata.
 
 - `requireSessions (default: false)`
 - `sessionIdleTimeoutInSec (default: 60)`
