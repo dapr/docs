@@ -105,7 +105,7 @@ The following table lists the properties for metrics:
 |--------------|--------|-------------|
 | `enabled` | boolean | Whether metrics should to be enabled.
 
-To mitigate errors associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}), you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
+To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}), you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
 
 ```yml
 metric:
