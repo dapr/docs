@@ -37,7 +37,7 @@ spec:
         imagePullPolicy: Always
 ```
 
-When subscribing to a pub/sub topic via Dapr, the application can define the `consumerID`, which is used to determine the subscriber's position in the queue or topic. With StatefulSets, developers can take advantage of this sticky identity of Pods and have the `consumerID` to be unique per Pod - allowing each horizontal scale of the subscriber application. Dapr keeps track of the name of each Pod and it can be used when declaring components by using the `{podName}` marker.
+When subscribing to a pub/sub topic via Dapr, the application can define the `consumerID`, which determines the subscriber's position in the queue or topic. With the StatefulSets sticky identity of Pods, you can have a unique `consumerID` per Pod, allowing each horizontal scale of the subscriber application. Dapr keeps track of the name of each Pod, which can be used when declaring components using the `{podName}` marker.
 
 On scaling the number of subscribers of a given topic, each component in Dapr has its unique settings to determine the behavior. Usually, there are two options for multiple consumers: broadcast or shared. In the broadcast configuration, each message published to the topic will be consumed by all subscribers. While in the shared option, a message is consumed by any subscriber (but not all).
 
