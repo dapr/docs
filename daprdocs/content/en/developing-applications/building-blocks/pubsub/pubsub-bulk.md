@@ -419,10 +419,6 @@ Watch [this video for an demo on bulk pub/sub](https://youtu.be/BxiKpEmchgQ?t=11
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=1170" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-## Supported components
-
-Refer to the [component reference]({{< ref supported-pubsub >}}) to see which components support bulk publish and subscribe operations.
-
 ## Related links
 
 - List of [supported pub/sub components]({{< ref supported-pubsub >}})
