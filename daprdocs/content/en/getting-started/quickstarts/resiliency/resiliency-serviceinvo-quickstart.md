@@ -43,7 +43,7 @@ git clone https://github.com/dapr/quickstarts.git
 In a terminal window, from the root of the Quickstart directory, navigate to `order-processor` directory.
 
 ```bash
-cd ../service_invocation/python/http/order-processor
+cd service_invocation/python/http/order-processor
 ```
 
 Install dependencies:
@@ -63,7 +63,7 @@ dapr run --app-port 8001 --app-id order-processor  --resources-path ../../../res
 In a new terminal window, from the root of the Quickstart directory, navigate to the `checkout` directory.
 
 ```bash
-cd ../service_invocation/python/http/checkout
+cd service_invocation/python/http/checkout
 ```
 
 Install dependencies:
@@ -145,30 +145,9 @@ Since the `resiliency.yaml` spec defines the `order-processor` service as a resi
 
 In the `order-processor` window, stop the service:
 
-{{< tabs "MacOs" "Windows" >}}
-
- <!-- MacOS -->
-
-{{% codetab %}}
-
-```script
-CMD + C
-```
-
-{{% /codetab %}}
-
- <!-- Windows -->
-
-{{% codetab %}}
-
 ```script
 CTRL + C
 ```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
 
 Once the first request fails, the retry policy titled `retryForever` is applied:
 
@@ -271,7 +250,7 @@ In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
 
 ```bash
-cd ../service_invocation/javascript/http/order-processor
+cd service_invocation/javascript/http/order-processor
 ```
 
 Install dependencies:
@@ -502,7 +481,7 @@ navigate to `order-processor` directory.
 
 
 ```bash
-cd ../service_invocation/csharp/http/order-processor
+cd service_invocation/csharp/http/order-processor
 ```
 
 Install dependencies:
@@ -524,7 +503,7 @@ In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
 
 ```bash
-cd ../service_invocation/csharp/http/checkout
+cd service_invocation/csharp/http/checkout
 ```
 
 Install dependencies:
@@ -736,7 +715,7 @@ In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
 
 ```bash
-cd ../service_invocation/java/http/order-processor
+cd service_invocation/java/http/order-processor
 ```
 
 Install dependencies:
@@ -757,7 +736,7 @@ In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
 
 ```bash
-cd ../service_invocation/java/http/checkout
+cd service_invocation/java/http/checkout
 ```
 
 Install dependencies:
@@ -966,7 +945,7 @@ In a terminal window, from the root of the Quickstart directory,
 navigate to `order-processor` directory.
 
 ```bash
-cd ../service_invocation/go/http/order-processor
+cd service_invocation/go/http/order-processor
 ```
 
 Install dependencies:
@@ -987,7 +966,7 @@ In a new terminal window, from the root of the Quickstart directory,
 navigate to the `checkout` directory.
 
 ```bash
-cd ../service_invocation/go/http/checkout
+cd service_invocation/go/http/checkout
 ```
 
 Install dependencies:

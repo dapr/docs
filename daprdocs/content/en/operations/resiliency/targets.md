@@ -45,7 +45,7 @@ Policies can be applied for `outbound` operations (calls to the Dapr sidecar) an
 `outbound` operations are calls from the sidecar to a component, such as:
 
 - Persisting or retrieving state.
-- Publishing a message.
+- Publishing a message on a PubSub component.
 - Invoking an output binding.
 
 > Some components may have built-in retry capabilities and are configured on a per-component basis.
@@ -66,7 +66,7 @@ spec:
 
 `inbound` operations are calls from the sidecar to your application, such as:
 
-- Subscriptions when delivering a message.
+- PubSub subscriptions when delivering a message.
 - Input bindings.
 
 > Some components may have built-in retry capabilities and are configured on a per-component basis.
@@ -108,15 +108,13 @@ spec:
 
 With the `actors` target, you can apply `retry`, `timeout`, and `circuitBreaker` policies to actor operations. 
 
-When using a `circuitBreaker` policy, you can specify whether circuit breaking state should be scoped to:
+When using a `circuitBreaker` policy for the `actors` target, you can specify how circuit breaking state should be scoped by using `circuitBreakerScope`:
 
-- An individual actor ID.
-- All actors across the actor type.
-- Both.
+- `id`: an individual actor ID
+- `type`: all actors of a given actor type
+- `both`: both of the above
 
-Specify `circuitBreakerScope` with values `id`, `type`, or `both`.
-
-You can specify a cache size for the number of circuit breakers to keep in memory. Do this by specifying `circuitBreakerCacheSize` and providing an integer value, e.g. `5000`.
+You can also specify a cache size for the number of circuit breakers to keep in memory with the `circuitBreakerCacheSize` property, providing an integer value, e.g. `5000`.
 
 Example
 
