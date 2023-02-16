@@ -98,7 +98,7 @@ kubectl port-forward svc/kubemq-cluster-api -n kubemq 8080:8080
 {{% /codetab %}}
 
 {{< /tabs >}}
-```
+
 
 ## KubeMQ Documentation
 Visit [KubeMQ Documentation](https://docs.kubemq.io/) for more information.
