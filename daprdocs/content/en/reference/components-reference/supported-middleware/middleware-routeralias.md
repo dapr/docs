@@ -32,7 +32,7 @@ spec:
 
 Example:
 
-An incoming HTTP request for `/v1.0/mall/activity/info?id=123` will be transformed into `/v1.0/invoke/srv.default/method/mall/activity/info?id=123`.
+An incoming HTTP request for `/v1.0/mall/activity/info?id=123` is transformed into `/v1.0/invoke/srv.default/method/mall/activity/info?id=123`.
 
 ## Dapr configuration
 
