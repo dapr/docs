@@ -7,7 +7,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-routeralias/
 ---
 
-The router alias HTTP [middleware]({{< ref middleware.md >}}) component allows users to convert arbitrary HTTP routes arriving to Dapr to valid Dapr API endpoints.
+The router alias HTTP [middleware]({{< ref middleware.md >}}) component allows you to convert arbitrary HTTP routes arriving to Dapr to valid Dapr API endpoints.
 
 ## Component format
 
