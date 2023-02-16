@@ -48,6 +48,8 @@ spec:
     value: 10485760
   - name: exchangeKind
     value: fanout
+  - name: saslExternal
+    value: false
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -73,6 +75,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
+| saslExternal      | N        | With TLS, should the username be taken from an additional field (e.g. CN.) See [RabbitMQ Authentication Mechanisms](https://www.rabbitmq.com/access-control.html#mechanisms).  Defaults to `"false"`. | `"true"`, `"false"` |
 | caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
@@ -121,6 +124,8 @@ spec:
     value: 10485760
   - name: exchangeKind
     value: fanout
+  - name: saslExternal
+    value: false
   - name: caCert
     value: ${{ myLoadedCACert }}
   - name: clientCert
