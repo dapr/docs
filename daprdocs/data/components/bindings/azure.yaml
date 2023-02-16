@@ -1,4 +1,4 @@
-- component: Azure CosmosDBGremlinAPI
+- component: Azure Cosmos DB (Gremlin API)
   link: cosmosdbgremlinapi
   state: Alpha
   version: v1
