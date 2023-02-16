@@ -33,6 +33,11 @@
   state: Alpha
   version: v1
   description: Use RouterChecker middleware to block invalid http request routing
+- component: Router Alias
+  link: /reference/components-reference/supported-middleware/middleware-routeralias
+  state: Alpha
+  version: v1
+  description: Use Router Alias to map arbitrary HTTP routes to valid Dapr API endpoints
 - component: Uppercase
   link: /reference/components-reference/supported-middleware/middleware-uppercase
   state: Stable

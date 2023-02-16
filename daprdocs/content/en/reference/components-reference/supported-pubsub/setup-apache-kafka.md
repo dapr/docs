@@ -304,6 +304,8 @@ Apache Kafka component supports sending and receiving multiple messages in a sin
 
 When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
 
+Apache Kafka supports the following bulk metadata options:
+
 | Configuration | Default |
 |----------|---------|
 | `maxBulkAwaitDurationMs` | `10000` (10s) |

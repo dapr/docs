@@ -1,13 +1,13 @@
 ---
 type: docs
-title: "Azure CosmosDBGremlinAPI binding spec"
-linkTitle: "Azure CosmosDBGremlinAPI"
-description: "Detailed documentation on the Azure CosmosDBGremlinAPI binding component"
+title: "Azure Cosmos DB (Gremlin API) binding spec"
+linkTitle: "Azure Cosmos DB (Gremlin API)"
+description: "Detailed documentation on the Azure Cosmos DB (Gremlin API) binding component"
 ---
 
 ## Component format
 
-To setup Azure CosmosDBGremlinAPI binding create a component of type `bindings.azure.cosmosdb.gremlinapi`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup an Azure Cosmos DB (Gremlin API) binding create a component of type `bindings.azure.cosmosdb.gremlinapi`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -35,11 +35,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| url | Y | Output | The CosmosDBGremlinAPI url | `"wss://******.gremlin.cosmos.azure.com:443/"` |
-| masterKey | Y | Output | The CosmosDBGremlinAPI account master key | `"masterKey"` |
-| username | Y | Output | The username of the CosmosDBGremlinAPI database | `"/dbs/<database_name>/colls/<graph_name>"` |
+| `url` | Y | Output | The Cosmos DB url for Gremlin APIs | `"wss://******.gremlin.cosmos.azure.com:443/"` |
+| `masterKey` | Y | Output | The Cosmos DB account master key | `"masterKey"` |
+| `username` | Y | Output | The username of the Cosmos DB database | `"/dbs/<database_name>/colls/<graph_name>"` |
 
-For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin ](https://docs.microsoft.com/azure/cosmos-db/graph/create-graph-console).
+For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin](https://docs.microsoft.com/azure/cosmos-db/graph/create-graph-console).
 
 ## Binding support
 
