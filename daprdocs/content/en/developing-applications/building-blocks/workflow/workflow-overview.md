@@ -68,7 +68,7 @@ You can call other workflow runtimes (for example, Temporal and Netflix Conducto
 
 Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflow. 
 
-Learn more about [different types of workflow patterns](todo)
+Learn more about [different types of workflow patterns]({{< ref workflow-patterns.md >}})
 
 ## Workflow SDKs
 
