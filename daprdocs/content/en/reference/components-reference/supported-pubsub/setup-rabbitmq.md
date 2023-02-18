@@ -48,6 +48,8 @@ spec:
     value: 10485760
   - name: exchangeKind
     value: fanout
+  - name: queueType
+    value: classic
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -73,10 +75,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
+| queueType    | N        | Queue type of rabbitmq.  Defaults to `"classic"`. | `"classic"`,`"qourum"`,`"stream"` |
 | caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
-
 
 ## Communication using TLS
 
@@ -207,7 +209,7 @@ client.PublishEvent(context.Background(), "pubsub", "B", []byte("this is another
 
 ### Bind multiple `routingKey`
 
-Multiple routing keys can be separated by commas.  
+Multiple routing keys can be separated by commas.
 The example below binds three `routingKey`: `keyA`, `keyB`, and `""`. Note the binding method of empty keys.
 
 ```
@@ -222,7 +224,6 @@ spec:
   metadata:
     routingKey: keyA,keyB,
 ```
-
 
 For more information see [rabbitmq exchanges](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges).
 
