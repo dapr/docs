@@ -14,8 +14,8 @@ The following branches are currently maintained:
 
 | Branch                                                       | Website                    | Description                                                                                      |
 | ------------------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
-| [v1.9](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
-| [v1.10](https://github.com/dapr/docs/tree/v1.10) (pre-release) | https://v1-10.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.10+ go here.                |
+| [v1.10](https://github.com/dapr/docs) (primary)               | https://docs.dapr.io       | Latest Dapr release documentation. Typo fixes, clarifications, and most documentation goes here. |
+| [v1.11](https://github.com/dapr/docs/tree/v1.11) (pre-release) | https://v1-11.docs.dapr.io/ | Pre-release documentation. Doc updates that are only applicable to v1.11+ go here.                |
 
 For more information visit the [Dapr branch structure](https://docs.dapr.io/contributing/docs-contrib/contributing-docs/#branch-guidance) document.
 
