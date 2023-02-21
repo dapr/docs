@@ -18,8 +18,16 @@ spec:
   type: pubsub.rabbitmq
   version: v1
   metadata:
-  - name: host
+  - name: connectionString
     value: "amqp://localhost:5672"
+  - name: protocol
+    value: amqp  
+  - name: hostname
+    value: localhost 
+  - name: username
+    value: username
+  - name: password
+    value: password  
   - name: consumerID
     value: myapp
   - name: durable
@@ -58,7 +66,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| host               | Y        | Connection-string for the rabbitmq host  | `amqp://user:pass@localhost:5672`
+| connectionString | Y* | The RabbitMQ connection string. *Mutally exclusive with protocol, hostname, username, password field | `amqp://user:pass@localhost:5672` |
+| protocol | N* | The RabbitMQ protocol. *Mutally exclusive with connectionString field | `amqp` |
+| hostname | N* | The RabbitMQ hostname. *Mutally exclusive with connectionString field | `localhost` |
+| username | N* | The RabbitMQ username. *Mutally exclusive with connectionString field | `username` |
+| password | N* | The RabbitMQ password. *Mutally exclusive with connectionString field | `password` |
 | consumerID         | N        | Consumer ID a.k.a consumer tag organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. |
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`

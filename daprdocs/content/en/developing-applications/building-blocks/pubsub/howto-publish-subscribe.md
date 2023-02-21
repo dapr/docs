@@ -122,8 +122,16 @@ spec:
   type: pubsub.rabbitmq
   version: v1
   metadata:
-  - name: host
+  - name: connectionString
     value: "amqp://localhost:5672"
+  - name: protocol
+    value: amqp  
+  - name: hostname
+    value: localhost 
+  - name: username
+    value: username
+  - name: password
+    value: password 
   - name: durable
     value: "false"
   - name: deletedWhenUnused
