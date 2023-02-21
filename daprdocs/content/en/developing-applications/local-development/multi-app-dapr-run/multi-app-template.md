@@ -72,7 +72,7 @@ version: 1
 common: # optional section for variables shared across apps
   resourcesPath: ./app/components # any dapr resources to be shared across apps
   env:  # any environment variable shared across apps
-    - DEBUG: true
+    DEBUG: true
 apps:
   - appID: webapp # optional
     appDirPath: .dapr/webapp/ # REQUIRED
