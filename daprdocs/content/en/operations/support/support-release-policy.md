@@ -148,6 +148,7 @@ After announcing a future breaking change, the change will happen in 2 releases 
 | GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
 | Java domain builder classes deprecated (Users should use [setters](https://github.com/dapr/java-sdk/issues/587) instead) | Java SDK 1.3.0 | Java SDK 1.5.0 |
 | Service invocation will no longer provide a default content type header of `application/json` when no content-type is specified. You must explicitly [set a content-type header]({{< ref "service_invocation_api.md#request-contents" >}}) for service invocation if your invoked apps rely on this header. |                 1.7.0 |                    1.9.0 |
+| gRPC service invocation is deprecated. Use proxy mode service invocation instead. | 1.9.0 | 1.10.0 |
 
 ## Upgrade on Hosting platforms
 
