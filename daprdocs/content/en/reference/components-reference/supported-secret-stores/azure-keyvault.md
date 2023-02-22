@@ -289,7 +289,7 @@ To use **Azure managed identity**:
    - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
 
 
-   > **Important**: While both Azure AD pod identity and workload identity are in preview, only Azure AD Workload Identity is currently planned for general availability (stable).
+   > **Important**: While both Azure AD pod identity and workload identity are in preview, currently Azure AD Workload Identity is planned for general availability (stable state).
 
 1. After creating a workload identity, give it `read` permissions on:
    - [Your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
