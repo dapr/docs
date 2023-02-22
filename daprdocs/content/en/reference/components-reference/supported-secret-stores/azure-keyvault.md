@@ -285,7 +285,7 @@ To use **Azure managed identity**:
     kubectl apply -f azurekeyvault.yaml
     ```
 1. Create and assign a managed identity at the pod-level via either:
-   - [Azure AD workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) (preferred method)
+   - [Azure AD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) (preferred method)
    - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
 
 
