@@ -108,6 +108,12 @@ Dapr Workflows allow you to schedule reminder-like durable delays for any time r
 Some APIs in the workflow authoring SDK may internally schedule durable timers to implement internal timeout behavior.
 {{% /alert %}}
 
+## External events
+
+Sometimes workflows will need to wait for events that are raised by external systems. For example, an approval workflow may require a human to explicitly approve an order request within an order processing workflow if the total cost exceeds some threshold. Another example is a trivia game orchestration workflow that pauses while waiting for all participants to submit their answers to trivia questions. These mid-execution inputs are referred to as _external events_.
+
+External events have a _name_ and a _payload_ and are delivered to a single workflow instance. Workflows can create "_wait for external event_" tasks that subscribe to external events and _await_ those tasks to block execution until the event is received. The workflow can then read the payload of these events and make decisions about which next steps to take. External events can be processed serially or in parallel. External events can be raised by other workflows or by workflow code.
+
 {{% alert title="Note" color="primary" %}}
 The ability to raise external events to workflows is not included in the alpha version of Dapr's workflow API.
 {{% /alert %}}
