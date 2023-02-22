@@ -286,7 +286,8 @@ To use **Azure managed identity**:
     ```
 1. Create and assign a managed identity at the pod-level via either:
    - [Azure AD workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) (preferred method)
-   - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)
+   - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
+
 
    > **Important**: While both Azure AD pod identity and workload identity are in preview, only Azure AD Workload Identity is currently planned for general availability (stable).
 
