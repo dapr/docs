@@ -28,19 +28,19 @@ Refer to the [`action.yml` metadata file](https://github.com/dapr/setup-dapr/blo
     version: '{{% dapr-latest-version long="true" %}}'
 
 - name: Initialize Dapr
-  shell: pwsh
+  shell: bash
   run: |
     # Get the credentials to K8s to use with dapr init
     az aks get-credentials --resource-group ${{ env.RG_NAME }} --name "${{ steps.azure-deployment.outputs.aksName }}"
-    
+
     # Initialize Dapr    
     # Group the Dapr init logs so these lines can be collapsed.
-    Write-Output "::group::Initialize Dapr"
+    echo "::group::Initialize Dapr"
     dapr init --kubernetes --wait --runtime-version ${{ env.DAPR_VERSION }}
-    Write-Output "::endgroup::"
+    echo "::endgroup::"
 
     dapr status --kubernetes
-  working-directory: ./twitter-sentiment-processor/demos/demo3
+  working-directory: ./demos/demo3
 ```
 
 ## Next steps
