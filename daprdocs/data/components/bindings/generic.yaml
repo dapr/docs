@@ -118,14 +118,6 @@
   features:
     input: false
     output: true
-- component: Twitter
-  link: twitter
-  state: Alpha
-  version: v1
-  since: "1.0"
-  features:
-    input: true
-    output: true
 - component: SendGrid
   link: sendgrid
   state: Alpha
