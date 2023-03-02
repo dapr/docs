@@ -23,14 +23,25 @@ spec:
   metadata:
   - name: connectionString
     value: "<CONNECTION STRING>"
+  # Name of the table where to store the state (optional)
+  #- name: tableName
+  #  value: "state"
+  # Cleanup interval in seconds, to remove expired rows (optional)
+  #- name: cleanupIntervalInSeconds
+  #  value: 3600
+  # Uncomment this if you wish to use CockroachDB as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string for CockroachDB | `"host=localhost user=root port=26257 connect_timeout=10 database=dapr_test"`
-| actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+| `connectionString` | Y | The connection string for CockroachDB | `"host=localhost user=root port=26257 connect_timeout=10 database=dapr_test"`
+| `actorStateStore` | N | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+| `tableName` | N | Name of the table where the data is stored. Defaults to `state`. Can optionally have the schema name as prefix, such as `public.state` | `"state"`, `"public.state"`
+| `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
 
 
 ## Setup CockroachDB
@@ -61,6 +72,19 @@ The easiest way to install CockroachDB on Kubernetes is by using the [CockroachD
 {{% /codetab %}}
 
 {{% /tabs %}}
+
+## Advanced
+
+### TTLs and cleanups
+
+This state store supports [Time-To-Live (TTL)](https://docs.dapr.io/developing-applications/building-blocks/state-management/state-store-ttl/) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
+
+Because CockroachDB doesn't have built-in support for TTLs, this is implemented in Dapr by adding a column in the state table indicating when the data is to be considered "expired". Records that are "expired" are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
+
+The interval at which the deletion of expired records happens is set with the `cleanupIntervalInSeconds` metadata property, which defaults to 3600 seconds (that is, 1 hour).
+
+- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupIntervalInSeconds` to a smaller value, for example `300` (300 seconds, or 5 minutes).
+- If you do not plan to use TTLs with Dapr and the CockroachDB state store, you should consider setting `cleanupIntervalInSeconds` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
