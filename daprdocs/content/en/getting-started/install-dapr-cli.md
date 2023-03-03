@@ -202,7 +202,7 @@ Each release of Dapr CLI includes various OSes and architectures. You can manual
 Verify the CLI is installed by restarting your terminal/command prompt and running the following:
 
 ```bash
-dapr
+dapr --help
 ```
 
 **Output:**
