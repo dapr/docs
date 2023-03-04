@@ -11,6 +11,7 @@ aliases:
 
 Create a file called `cockroachdb.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string for CockroachDB follow the same standard for PostgreSQL connection string. For example, `"host=localhost user=root port=26257 connect_timeout=10 database=dapr_test"`. See the CockroachDB [documentation on database connections](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html) for information on how to define a connection string.
 
+If you want to also configure CockroachDB to store actors, add the `actorStateStore` option as in the example below.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -21,27 +22,44 @@ spec:
   type: state.cockroachdb
   version: v1
   metadata:
+  # Connection string
   - name: connectionString
     value: "<CONNECTION STRING>"
+  # Timeout for database operations, in seconds (optional)
+  #- name: timeoutInSeconds
+  #  value: 20
   # Name of the table where to store the state (optional)
   #- name: tableName
   #  value: "state"
+  # Name of the table where to store metadata used by Dapr (optional)
+  #- name: metadataTableName
+  #  value: "dapr_metadata"
   # Cleanup interval in seconds, to remove expired rows (optional)
   #- name: cleanupIntervalInSeconds
   #  value: 3600
+  # Max idle time for connections before they're closed (optional)
+  #- name: connectionMaxIdleTime
+  #  value: 0
   # Uncomment this if you wish to use CockroachDB as a state store for actors (optional)
   #- name: actorStateStore
   #  value: "true"
 ```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
 
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `connectionString` | Y | The connection string for CockroachDB | `"host=localhost user=root port=26257 connect_timeout=10 database=dapr_test"`
-| `actorStateStore` | N | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+| `timeoutInSeconds` | N | Timeout, in seconds, for all database operations. Defaults to `20` | `30`
 | `tableName` | N | Name of the table where the data is stored. Defaults to `state`. Can optionally have the schema name as prefix, such as `public.state` | `"state"`, `"public.state"`
+| `metadataTableName` | N | Name of the table Dapr uses to store a few metadata properties. Defaults to `dapr_metadata`. Can optionally have the schema name as prefix, such as `public.dapr_metadata` | `"dapr_metadata"`, `"public.dapr_metadata"`
 | `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `connectionMaxIdleTime` | N | Max idle time before unused connections are automatically closed in the connection pool. By default, there's no value and this is left to the database driver to choose. | `"5m"`
+| `actorStateStore` | N | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 
 ## Setup CockroachDB
