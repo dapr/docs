@@ -34,9 +34,9 @@ Dapr Workflows maintain their execution state by using a technique known as [eve
 
 When a workflow "awaits" a scheduled task, it unloads itself from memory until the task completes. Once the task completes, the workflow engine schedules the workflow function to run again. This second workflow function execution is known as a _replay_. 
 
-When a workflow function is replayed, it runs again from the beginning. However, when it encounters a task that it already scheduled, instead of scheduling that task again, the workflow engine:
+When a workflow function is replayed, it runs again from the beginning. However, when it encounters a task that already completed, instead of scheduling that task again, the workflow engine:
 
-1. Returns the result of the scheduled task to the workflow
+1. Returns the result of the completed task to the workflow.
 1. Continues execution until the next "await" point. 
 
 This "replay" behavior continues until the workflow function completes or fails with an error.
@@ -53,7 +53,7 @@ The workflow replay behavior described here requires that workflow function code
 As discussed in the [workflow replay]({{< ref "#workflow-replay" >}}) section, workflows maintain a write-only event-sourced history log of all its operations. To avoid runaway resource usage, workflows must limit the number of operations they schedule. For example, ensure your workflow doesn't:
 
 - Use infinite loops in its implementation
-- Schedule millions of tasks.
+- Schedule thousands of tasks.
 
 You can use the following two techniques to write workflows that may need to schedule extreme numbers of tasks:
 
@@ -61,7 +61,7 @@ You can use the following two techniques to write workflows that may need to sch
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
 
 1. **Use child workflows**:  
-    Each workflow SDK exposes an API for creating child workflows. A child workflow mimics any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
+    Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
     - Their own history 
     - The benefit of distributing workflow function execution across multiple machines. 
     
@@ -126,12 +126,46 @@ To take advantage of the workflow replay technique, your workflow code needs to 
 1. **Workflow functions must call deterministic APIs.**  
     APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
     - Use these APIs in activity functions, or 
-    - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.
+    - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
+
+    For example, instead of this:
+
+    ```csharp
+    // DON'T DO THIS!
+    DateTime currentTime = DateTime.UtcNow;
+    Guid newIdentifier = Guid.NewGuid();
+    string randomString = GetRandomString();
+    ```
+
+    Do this:
+
+    ```csharp
+    // Do this!!
+    DateTime currentTime = context.CurrentUtcDateTime;
+    Guid newIdentifier = context.NewGuid();
+    string randomString = await context.CallActivityAsync<string>("GetRandomString");
+    ```
 
 1. **Workflow functions must only interact _indirectly_ with external state.**  
     External data includes any data that isn't stored in the workflow state. Workflows must not interact with global variables, environment variables, the file system, or make network calls. 
     
     Instead, workflows should interact with external state _indirectly_ using workflow inputs, activity tasks, and through external event handling.
+
+    For example, instead of this:
+
+    ```csharp
+    // DON'T DO THIS!
+    string configuration = Environment.GetEnvironmentVariable("MY_CONFIGURATION")!;
+    string data = await new HttpClient().GetStringAsync("https://example.com/api/data");
+    ```
+
+    Do this:
+
+    ```csharp
+    // Do this!!
+    string configuation = workflowInput.Configuration; // imaginary workflow input argument
+    string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
+    ```
 
 1. **Workflow functions must execute only on the workflow dispatch thread.**   
     The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never:
@@ -140,6 +174,21 @@ To take advantage of the workflow replay technique, your workflow code needs to 
     
     Failure to follow this rule could result in undefined behavior. Any background processing should instead be delegated to activity tasks, which can be scheduled to run serially or concurrently.
 
+    For example, instead of this:
+
+    ```csharp
+    // DON'T DO THIS!
+    Task t = Task.Run(() => context.CallActivityAsync("DoSomething"));
+    await context.CreateTimer(5000).ConfigureAwait(false);
+    ```
+
+    Do this:
+
+    ```csharp
+    // Do this!!
+    Task t = context.CallActivityAsync("DoSomething");
+    await context.CreateTimer(5000).ConfigureAwait(true);
+    ```
 
 ### Updating workflow code
 
