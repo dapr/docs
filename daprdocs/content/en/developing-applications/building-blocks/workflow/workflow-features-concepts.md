@@ -121,74 +121,91 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 ### Workflow determinism and code restraints 
 
-To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations:
+To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
 
-1. **Workflow functions must call deterministic APIs.**  
-    APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
-    - Use these APIs in activity functions, or 
-    - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
+#### Workflow functions must call deterministic APIs. 
+APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
+ - Use these APIs in activity functions, or 
+ - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
 
-    For example, instead of this:
+For example, instead of this:
 
-    ```csharp
-    // DON'T DO THIS!
-    DateTime currentTime = DateTime.UtcNow;
-    Guid newIdentifier = Guid.NewGuid();
-    string randomString = GetRandomString();
-    ```
+{{< tabs ".NET" >}}
 
-    Do this:
+{{% codetab %}}
 
-    ```csharp
-    // Do this!!
-    DateTime currentTime = context.CurrentUtcDateTime;
-    Guid newIdentifier = context.NewGuid();
-    string randomString = await context.CallActivityAsync<string>("GetRandomString");
-    ```
+```csharp
+// DON'T DO THIS!
+DateTime currentTime = DateTime.UtcNow;
+Guid newIdentifier = Guid.NewGuid();
+string randomString = GetRandomString();
+```
 
-1. **Workflow functions must only interact _indirectly_ with external state.**  
-    External data includes any data that isn't stored in the workflow state. Workflows must not interact with global variables, environment variables, the file system, or make network calls. 
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Do this:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+// Do this!!
+DateTime currentTime = context.CurrentUtcDateTime;
+Guid newIdentifier = context.NewGuid();
+string randomString = await context.CallActivityAsync<string>("GetRandomString");
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
+#### Workflow functions must only interact _indirectly_ with external state. 
+External data includes any data that isn't stored in the workflow state. Workflows must not interact with global variables, environment variables, the file system, or make network calls. 
     
-    Instead, workflows should interact with external state _indirectly_ using workflow inputs, activity tasks, and through external event handling.
+Instead, workflows should interact with external state _indirectly_ using workflow inputs, activity tasks, and through external event handling.
 
-    For example, instead of this:
+For example, instead of this:
 
-    ```csharp
-    // DON'T DO THIS!
-    string configuration = Environment.GetEnvironmentVariable("MY_CONFIGURATION")!;
-    string data = await new HttpClient().GetStringAsync("https://example.com/api/data");
-    ```
+```csharp
+// DON'T DO THIS!
+string configuration = Environment.GetEnvironmentVariable("MY_CONFIGURATION")!;
+string data = await new HttpClient().GetStringAsync("https://example.com/api/data");
+```
 
-    Do this:
+Do this:
 
-    ```csharp
-    // Do this!!
-    string configuation = workflowInput.Configuration; // imaginary workflow input argument
-    string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
-    ```
+```csharp
+// Do this!!
+string configuation = workflowInput.Configuration; // imaginary workflow input argument
+string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
+```
 
-1. **Workflow functions must execute only on the workflow dispatch thread.**   
-    The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never:
-    - Schedule background threads, or
-    - Use APIs that schedule a callback function to run on another thread. 
+#### Workflow functions must execute only on the workflow dispatch thread.  
+The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never:
+- Schedule background threads, or
+- Use APIs that schedule a callback function to run on another thread. 
     
-    Failure to follow this rule could result in undefined behavior. Any background processing should instead be delegated to activity tasks, which can be scheduled to run serially or concurrently.
+Failure to follow this rule could result in undefined behavior. Any background processing should instead be delegated to activity tasks, which can be scheduled to run serially or concurrently.
 
-    For example, instead of this:
+For example, instead of this:
 
-    ```csharp
-    // DON'T DO THIS!
-    Task t = Task.Run(() => context.CallActivityAsync("DoSomething"));
-    await context.CreateTimer(5000).ConfigureAwait(false);
-    ```
+```csharp
+// DON'T DO THIS!
+Task t = Task.Run(() => context.CallActivityAsync("DoSomething"));
+await context.CreateTimer(5000).ConfigureAwait(false);
+```
 
-    Do this:
+Do this:
 
-    ```csharp
-    // Do this!!
-    Task t = context.CallActivityAsync("DoSomething");
-    await context.CreateTimer(5000).ConfigureAwait(true);
-    ```
+```csharp
+// Do this!!
+Task t = context.CallActivityAsync("DoSomething");
+await context.CreateTimer(5000).ConfigureAwait(true);
+```
 
 ### Updating workflow code
 
