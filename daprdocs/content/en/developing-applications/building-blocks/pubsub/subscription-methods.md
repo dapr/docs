@@ -212,6 +212,15 @@ app.MapPost("/checkout", [Topic("pubsub", "orders")] (Order order) => {
 });
 ```
 
+Both of the handlers defined above also need to be mapped to configure the `dapr/subscribe` endpoint. This is done in the application startup code while defining endpoints.
+
+```csharp
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapSubscribeHandler();
+}
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}
