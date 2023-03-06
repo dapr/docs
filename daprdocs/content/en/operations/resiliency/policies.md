@@ -12,12 +12,12 @@ Define timeouts, retries, and circuit breaker policies under `policies`. Each po
 
 ## Timeouts
 
-Timeouts can be used to early-terminate long-running operations. If you've exceeded a timeout duration:
+Timeouts are optional policies that can be used to early-terminate long-running operations. If you've exceeded a timeout duration:
 
 - The operation in progress is terminated (if possible).
 - An error is returned.
 
-Valid values are of the form accepted by Go's [time.ParseDuration](https://pkg.go.dev/time#ParseDuration), for example: `15s`, `2m`, `1h30m`.
+Valid values are of the form accepted by Go's [time.ParseDuration](https://pkg.go.dev/time#ParseDuration), for example: `15s`, `2m`, `1h30m`. Timeouts have no set maximum value. 
 
 Example:
 
@@ -30,6 +30,8 @@ spec:
       important: 60s
       largeResponse: 10s
 ```
+
+If you don't specify a timeout value, the policy will not enforce a time and will default to whatever you set up per the request client. 
 
 ## Retries
 
