@@ -101,7 +101,7 @@ Because CockroachDB doesn't have built-in support for TTLs, you implement this i
 
 You can set the interval for the deletion of expired records with the `cleanupIntervalInSeconds` metadata property, which defaults to 3600 seconds (that is, 1 hour).
 
-- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupIntervalInSeconds` to a smaller value, for example `300` (300 seconds, or 5 minutes).
+- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupIntervalInSeconds` to a smaller value - for example, `300` (300 seconds, or 5 minutes).
 - If you do not plan to use TTLs with Dapr and the CockroachDB state store, you should consider setting `cleanupIntervalInSeconds` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
 
 ## Related links
