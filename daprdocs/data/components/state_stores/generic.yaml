@@ -106,7 +106,7 @@
     crud: true
     transactions: true
     etag: true
-    ttl: false
+    ttl: true
     query: true
 - component: MySQL
   link: setup-mysql
