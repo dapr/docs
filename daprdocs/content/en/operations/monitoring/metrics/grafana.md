@@ -145,7 +145,7 @@ First you need to connect Prometheus as a data source to Grafana.
    - Skip TLS Verify: On 
      - Necessary in order to save and test the configuration
 
-   <img src="/images/skip-tls-verify.png" alt="Screenshot of the Prometheus Data Source configuration" width=600>
+   <img src="/images/grafana-prometheus-dapr-server-url.png" alt="Screenshot of the Prometheus Data Source configuration" width=600>
 
 1. Click `Save & Test` button to verify that the connection succeeded.
 
