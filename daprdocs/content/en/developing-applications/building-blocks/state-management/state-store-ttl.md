@@ -86,32 +86,6 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% codetab %}}
 
-<!--java-->
-
-```java
-//dependencies
-
-import io.dapr.client.DaprClient;
-import io.dapr.client.DaprClientBuilder;
-
-//code
-
-client.saveState(STATE_STORE_NAME, "order_1", Integer.toString(orderId)).block();
-client.saveState(STATE_STORE_NAME, "order_2", Integer.toString(orderId)).block();
-Mono<State<String>> result = client.getState(STATE_STORE_NAME, "order_1", String.class);
-log.info("Result after get" + result, singletonMap(Metadata.TTL_IN_SECONDS));
-```
-
-To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
-
-```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
 <!--go-->
 
 ```go
