@@ -236,6 +236,12 @@ The injector watchdog is disabled by default when running Dapr in Kubernetes mod
 
 Refer to the documentation for the [Dapr operator]({{< ref operator >}}) service for more details on the injector watchdog and how to enable it.
 
+## Configuring seccompProfile for sidecar containers
+
+By default, Dapr sidecar injector injects a sidecar without any `seccompProfile`. However, to have Dapr sidecar contianer run successfully in a namespace with [Restricted](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted) profile, sidecar container needs to have `securityContext.seccompProfile.Type` to not be `nil`. 
+
+Refer to [this]({{< ref "arguments-annotations-overview.md" >}}) documentation to set appropriate `seccompProfile` on sidecar container accordingly to which profile it would be running with.
+
 ## Best Practices 
 
 Watch this video for a deep dive into the best practices for running Dapr in production with Kubernetes
