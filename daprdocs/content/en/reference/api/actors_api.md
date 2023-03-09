@@ -18,7 +18,7 @@ Invoke an actor method through Dapr.
 #### HTTP Request
 
 ```
-POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/method/<method>
+POST http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/method/<method>
 ```
 
 #### HTTP Response Codes
