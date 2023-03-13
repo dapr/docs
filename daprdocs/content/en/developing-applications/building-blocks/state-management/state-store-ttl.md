@@ -97,6 +97,10 @@ import (
 
 // code
 
+err = client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId)), nil)
+metadata := map[string]string{
+ "ttlInSeconds": "120"
+}
 ```
 
 To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
