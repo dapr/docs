@@ -97,14 +97,12 @@ import (
 
 // code
 
-err = client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId)), nil)
-Metadata: map[string]string{"ttlInSeconds": "120"},
 ```
 
 To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run .
 ```
 
 {{% /codetab %}}
