@@ -16,9 +16,14 @@ Using the OpenTelemetry Collector Datadog exporter, you can configure Dapr to cr
 
 1. Add your Datadog API key to the `./deploy/opentelemetry-collector-generic-datadog.yaml` file in the `datadog` exporter configuration section:
     ```yaml
-      datadog:
-        api:
-          key: <YOUR_API_KEY>
+    data:
+      otel-collector-config:
+        ...
+        exporters:
+          ...
+          datadog:
+            api:
+              key: <YOUR_API_KEY>
     ```
 
 1. Apply the `opentelemetry-collector` configuration by running the following command.  
