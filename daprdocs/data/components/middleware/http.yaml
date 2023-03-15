@@ -1,6 +1,6 @@
 - component: Rate limit
   link: middleware-rate-limit
-  state: Alpha
+  state: Stable
   version: v1
   description: Restricts the maximum number of allowed HTTP requests per second
 - component: OAuth2 Authorization Grant flow
