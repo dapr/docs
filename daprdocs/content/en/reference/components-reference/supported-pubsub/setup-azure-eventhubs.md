@@ -180,6 +180,47 @@ For example, the headers of a delivered HTTP subscription message would contain:
   'traceparent': '00-4655608164bc48b985b42d39865f3834-ed6cf3697c86e7bd-01'
 }
 ```
+## Subscribing to Application Properties (enriched messages) from an Event hub
+
+It possible to get application properties (enriched messages) from an Event Hub by declaratively adding the `requireAllProperties` metadata entry to subscription specification.
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: order-pub-sub
+spec:
+  topic: orders
+  routes: 
+    default: /checkout
+  pubsubname: order-pub-sub
+  metadata:
+     requireAllProperties: "true"
+scopes:
+- orderprocessing
+- checkout
+```
+This ensures enriched messages containing additional properties are forwarded as headers. For example, the device-to-cloud events created by Azure IoT Hub devices can contain user defined additional [IoT Hub Application Properties](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-construct#application-properties-of-d2c-iot-hub-messages), and the Azure Event Hubs pubsub component for Dapr will return the following as part of the response metadata ( in this example `iothub-creation-time-utc` is application property ):
+
+```js
+{
+  'user-agent': 'fasthttp',
+  'host': '127.0.0.1:3000',
+  'content-type': 'application/json',
+  'content-length': '120',
+  'iothub-connection-device-id': 'my-test-device',
+  'iothub-connection-auth-generation-id': '637618061680407492',
+  'iothub-connection-auth-method': '{"scope":"module","type":"sas","issuer":"iothub","acceptingIpFilterRule":null}',
+  'iothub-connection-module-id': 'my-test-module-a',
+  'iothub-enqueuedtime': '2021-07-13T22:08:09Z',
+  'message-id': 'my-custom-message-id',
+  'iothub-creation-time-utc': '2021-01-29T16:45:39.021Z',
+  'x-opt-sequence-number': '35',
+  'x-opt-enqueued-time': '2021-07-13T22:08:09Z',
+  'x-opt-offset': '21560',
+  'traceparent': '00-4655608164bc48b985b42d39865f3834-ed6cf3697c86e7bd-01'
+}
+```
 
 ## Related links
 
