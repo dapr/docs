@@ -97,9 +97,9 @@ import (
 
 // code
 
-err = client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId)), nil)
-metadata := map[string]string{
- "ttlInSeconds": "120"
+md := map[string]string{"ttlInSeconds": "120"}
+if err := client.SaveState(ctx, store, "key1", []byte("hello world"), md); err != nil {
+   panic(err)
 }
 ```
 
