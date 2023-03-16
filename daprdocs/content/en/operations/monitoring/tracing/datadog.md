@@ -45,6 +45,9 @@ Using the OpenTelemetry Collector Datadog exporter, you can configure Dapr to cr
 
 1. Create and configure the application. Once running, telemetry data is sent to Datadog and visible in Datadog APM.
 
+![Datadog](/images/datadog-traces.png)
+
+
 ## Related Links/References
 
 * [Complete example of setting up Dapr on a Kubernetes cluster](https://github.com/ericmustin/quickstarts/tree/master/hello-kubernetes)
