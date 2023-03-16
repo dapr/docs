@@ -45,7 +45,7 @@ Using the OpenTelemetry Collector Datadog exporter, you can configure Dapr to cr
 
 1. Create and configure the application. Once running, telemetry data is sent to Datadog and visible in Datadog APM.
 
-![Datadog](/images/datadog-traces.png)
+<img src="/images/datadog-traces.png" width=1200 alt="Datadog APM showing telemetry data.">
 
 
 ## Related Links/References
