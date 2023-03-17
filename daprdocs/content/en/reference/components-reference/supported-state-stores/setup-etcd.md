@@ -72,9 +72,9 @@ You can then interact with the server using `localhost:12379`.
 
 {{% codetab %}}
 
-We can use [Helm](https://helm.sh/) to quickly create an Etcd instance in our Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
+Use [Helm](https://helm.sh/) to quickly create an Etcd instance in your Kubernetes cluster. This approach requires [Installing Helm](https://github.com/helm/helm#install).
 
-Follow the instructions [here](https://github.com/bitnami/charts/tree/main/bitnami/etcd) to get started with setting up Etcd in Kubernetes.
+Follow the [Bitnami instructions](https://github.com/bitnami/charts/tree/main/bitnami/etcd) to get started with setting up Etcd in Kubernetes.
 
 {{% /codetab %}}
 
