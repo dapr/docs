@@ -28,7 +28,7 @@ Refer to the TTL column in the [state store components guide]({{< ref supported-
 
 You can set state TTL in the metadata as part of the state store set request:
 
-{{< tabs Python ".NET" Java Go "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs ".NET" Python Go "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
