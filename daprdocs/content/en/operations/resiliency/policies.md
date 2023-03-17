@@ -31,7 +31,7 @@ spec:
       largeResponse: 10s
 ```
 
-If you don't specify a timeout value, the policy will not enforce a time and will default to whatever you set up per the request client. 
+If you don't specify a timeout value, the policy does not enforce a time and defaults to whatever you set up per the request client. 
 
 ## Retries
 
