@@ -33,6 +33,10 @@ spec:
     value: <SCHEMA> # Optional. defaults to "dbo"
   - name: indexedProperties
     value: <INDEXED-PROPERTIES> # Optional. List of IndexedProperties.
+  - name: metadataTableName # Optional. Name of the table where to store metadata used by Dapr
+    value: "dapr_metadata"
+  - name: cleanupIntervalInSeconds # Optional. Cleanup interval in seconds, to remove expired rows
+    value: 300
 
 ```
 
@@ -58,6 +62,8 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 | schema             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
 | indexedProperties  | N        | List of IndexedProperties. |  `'[{"column": "transactionid", "property": "id", "type": "int"}, {"column": "customerid", "property": "customer", "type": "nvarchar(100)"}]'`
 | actorStateStore | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{< ref "state_api.md#configuring-state-store-for-actors" >}})). | `"true"`
+| metadataTableName | N | Name of the table Dapr uses to store a few metadata properties. Defaults to `dapr_metadata`. | `"dapr_metadata"`
+| cleanupIntervalInSeconds | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
 
 
 ## Create Azure SQL instance
@@ -79,6 +85,17 @@ When connecting with a dedicated user (not `sa`), these authorizations are requi
 
 - `CREATE TABLE`
 - `CREATE TYPE`
+
+### TTLs and cleanups
+
+This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate after how many seconds the data should be considered "expired".
+
+Because SQL Server doesn't have built-in support for TTLs, you implement this in Dapr by adding a column in the state table indicating when the data should be considered "expired". "Expired" records are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
+
+You can set the interval for the deletion of expired records with the `cleanupIntervalInSeconds` metadata property, which defaults to 3600 seconds (that is, 1 hour).
+
+- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupIntervalInSeconds` to a smaller value - for example, `300` (300 seconds, or 5 minutes).
+- If you do not plan to use TTLs with Dapr and the SQL Server state store, you should consider setting `cleanupIntervalInSeconds` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
