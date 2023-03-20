@@ -34,7 +34,7 @@ In the request you can pass along headers:
 }
 ```
 
-### HTTP Response codes
+### HTTP response codes
 
 Code | Description
 ---- | -----------
