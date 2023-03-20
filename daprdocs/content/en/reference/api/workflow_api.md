@@ -78,7 +78,7 @@ Code | Description
 `400`  | Request was malformed
 `500`  | Request formatted correctly, error in dapr code or underlying component
 
-### Response Contents
+### Response content
 
 The API call will provide a response similar to this:
 
