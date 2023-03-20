@@ -97,6 +97,12 @@ You can set the interval for the deletion of expired records with the `cleanupIn
 - Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupIntervalInSeconds` to a smaller value - for example, `300` (300 seconds, or 5 minutes).
 - If you do not plan to use TTLs with Dapr and the SQL Server state store, you should consider setting `cleanupIntervalInSeconds` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
 
+The state store does not have an index on the `ExpireDate` column, which means that each clean up operation must perform a full table scan. If you intend to write to the table with a large number of records that use TTLs, you should consider creating an index on the `ExpireDate` column. An index makes queries faster, but uses more storage space and slightly slows down writes.
+
+```sql
+CREATE CLUSTERED INDEX expiredate_idx ON state(ExpireDate ASC)
+```
+
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
