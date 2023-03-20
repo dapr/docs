@@ -106,7 +106,7 @@ Parameter | Description
 `workflowName` | Identify the workflow type
 `instanceId` | Unique value created for each run of a specific workflow
 
-### HTTP Response codes
+### HTTP response codes
 
 Code | Description
 ---- | -----------
