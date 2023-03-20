@@ -14,98 +14,85 @@ While your code processes a message, it can send one or more messages to other a
 
 A large number of actors can execute simultaneously, and actors execute independently from each other.
 
-Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the Actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
-
-### When to use actors
-
-As with any other technology decision, you should decide whether to use actors based on the problem you're trying to solve.
-
-The actor design pattern can be a good fit to a number of distributed systems problems and scenarios, but the first thing you should consider are the constraints of the pattern. Generally speaking, consider the actor pattern to model your problem or scenario if:
-
-* Your problem space involves a large number (thousands or more) of small, independent, and isolated units of state and logic.
-* You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
-* Your actor instances won't block callers with unpredictable delays by issuing I/O operations.
-
 ## Actors in Dapr
+
+Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the Actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
 <img src="/images/actor_background_game_example.png" width=400>
 
-### How it works
-
+## Features
 
 ### Actor lifetime
 
-Dapr actors are virtual, meaning that their lifetime is not tied to their in-memory representation. As a result, they do not need to be explicitly created or destroyed. The Dapr actor runtime automatically activates an actor the first time it receives a request for that actor ID. If an actor is not used for a period of time, the Dapr actor runtime garbage-collects the in-memory object. It will also maintain knowledge of the actor's existence should it need to be reactivated later.
+Since Dapr actors are virtual, they do not need to be explicitly created or destroyed. The Dapr actor runtime:
+1. Automatically activates an actor once it receives an initial request for that actor ID. 
+1. Garbage-collects the in-memory object of unused actors. 
+1. Maintains knowledge of the actor's existence in case it's reactivated later.
 
-Invocation of actor methods and reminders reset the idle time, e.g. reminder firing will keep the actor active. Actor reminders fire whether an actor is active or inactive, if fired for inactive actor, it will activate the actor first. Actor timers do not reset the idle time, so timer firing will not keep the actor active. Timers only fire while the actor is active.
+An actor's state outlives the object's lifetime, as state is stored in the configured state provider for Dapr runtime.
 
-The idle timeout and scan interval Dapr runtime uses to see if an actor can be garbage-collected is configurable. This information can be passed when Dapr runtime calls into the actor service to get supported actor types.
-
-This virtual actor lifetime abstraction carries some caveats as a result of the virtual actor model, and in fact the Dapr Actors implementation deviates at times from this model.
-
-An actor is automatically activated (causing an actor object to be constructed) the first time a message is sent to its actor ID. After some period of time, the actor object is garbage collected. In the future, using the actor ID again, causes a new actor object to be constructed. An actor's state outlives the object's lifetime as state is stored in configured state provider for Dapr runtime.
+[Learn more about actor lifetimes.]({{< "actor-features-concepts.md#actor-lifetime" >}})
 
 ### Distribution and failover
 
-To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr  automatically migrates them from failed nodes to healthy ones as required.
-
-Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
+To provide scalability and reliability, actors instances are  throughout the cluster and Dapr distributes actor instances throughout the cluster and automatically migrates them to healthy nodes.
 
 #### Actor placement service
-The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor `Placement` service. When a new instance of a service is created, the corresponding Dapr runtime registers the actor types it can create and the `Placement` service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
+
+The Dapr actor runtime manages distribution scheme and key range settings for you via the actor `Placement` service. 
 
 <img src="/images/actors_background_placement_service_registration.png" width=600>
 
-When a client calls an actor with a particular id (for example, actor id 123), the Dapr instance for the client hashes the actor type and id, and uses the information to call onto the corresponding Dapr instance that can serve the requests for that particular actor id. As a result, the same partition (or service instance) is always called for any given actor id. This is shown in the diagram below.
+When a new instance of a service is created:
 
-<img src="/images/actors_background_id_hashing_calling.png" width=600>
+1. The sidecar makes a call to the actor service to retrieve registered actor types and configuration settings.
+1. The corresponding Dapr runtime registers the actor types it can create.
+1. The `Placement` service calculates the partitioning across all the instances for a given actor type.
 
- This simplifies some choices but also carries some consideration:
+[Learn more about Dapr actor placement.]({{< ref "actors-features-concepts.md#actor-placement-service" >}})
 
-* By default, actors are randomly placed into pods resulting in uniform distribution.
-* Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
+#### Actor communication
 
-Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{< ref hosting >}}), including self-hosted and Kubernetes.
+You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint, like the example in the diagram below.
 
-### Actor communication
+<img src="/images/actors_background_placement_service_registration.png" width=600>
 
-You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint.
+1. The service calls the actor API on the sidecar.
+1. With the cached partitioning information from the placement service, the sidecar determines which actor service instance will host actor ID **3**. The call is forwarded to the appropriate sidecar.
+1. The sidecar instance in pod 2 calls the service instance to invoke the actor and execute the actor method.
 
-```bash
-POST/GET/PUT/DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/<method/state/timers/reminders>
-```
-
-You can provide any data for the actor method in the request body, and the response for the request would be in the response body which is the data from actor call.
-
-Another, and perhaps more convenient, way of interacting with actors is via SDKs. Dapr currently supports actors SDKs in [.NET]({{< ref "dotnet-actors" >}}), [Java]({{< ref "java#actors" >}}), and [Python]({{< ref "python-actor" >}}).
-
-Refer to [Dapr Actor Features]({{< ref howto-actors.md >}}) for more details.
+[Learn more about calling actor methods.]({{< ref "actors-features-concepts.md#actor-communication" >}})
 
 #### Concurrency
 
-The Dapr actor runtime provides a simple turn-based access model for accessing actor methods. This means that no more than one thread can be active inside an actor object's code at any time. Turn-based access greatly simplifies concurrent systems as there is no need for synchronization mechanisms for data access. It also means systems must be designed with special considerations for the single-threaded access nature of each actor instance.
+The Dapr actor runtime provides a simple turn-based access model for accessing actor methods. Turn-based access greatly simplifies concurrent systems as there is no need for synchronization mechanisms for data access. 
 
-A single actor instance cannot process more than one request at a time. An actor instance can cause a throughput bottleneck if it is expected to handle concurrent requests.
+- [Learn more about actor reentrancy]({{< ref "actor-reentrancy.md" >}})
+- [Learn more about the turn-based access model]({{< ref "actors-features-concepts.md#turn-based-access" >}})
 
-Actors can deadlock on each other if there is a circular request between two actors while an external request is made to one of the actors simultaneously. The Dapr actor runtime automatically times out on actor calls and throw an exception to the caller to interrupt possible deadlock situations.
+### Actor timers and reminders
 
-<img src="/images/actors_background_communication.png" width=600>
+Actors can schedule periodic work on themselves by registering either timers or reminders.
 
-##### Reentrancy
+The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
 
-To allow actors to "re-enter" and invoke methods on themselves, see [Actor Reentrancy]({{<ref actor-reentrancy.md>}}).
+This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
 
-#### Turn-based access
+- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#timers >}})
+- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#reminders >}})
+- [Learn more about timer and reminder error handling and failover.]({{< ref "actors-features-concepts.md#timers-and-reminders-error-handling" >}})
 
-A turn consists of the complete execution of an actor method in response to a request from other actors or clients, or the complete execution of a timer/reminder callback. Even though these methods and callbacks are asynchronous, the Dapr actor runtime does not interleave them. A turn must be fully finished before a new turn is allowed. In other words, an actor method or timer/reminder callback that is currently executing must be fully finished before a new call to a method or callback is allowed. A method or callback is considered to have finished if the execution has returned from the method or callback and the task returned by the method or callback has finished. It is worth emphasizing that turn-based concurrency is respected even across different methods, timers, and callbacks.
+## When to use actors
 
-The Dapr actor runtime enforces turn-based concurrency by acquiring a per-actor lock at the beginning of a turn and releasing the lock at the end of the turn. Thus, turn-based concurrency is enforced on a per-actor basis and not across actors. Actor methods and timer/reminder callbacks can execute simultaneously on behalf of different actors.
+As with any other technology decision, you should decide whether to use actors based on the problem you're trying to solve.
 
-The following example illustrates the above concepts. Consider an actor type that implements two asynchronous methods (say, Method1 and Method2), a timer, and a reminder. The diagram below shows an example of a timeline for the execution of these methods and callbacks on behalf of two actors (ActorId1 and ActorId2) that belong to this actor type.
+The actor design pattern can be a good fit to a number of distributed systems problems and scenarios, but the first thing you should consider are the constraints of the pattern. Generally speaking, consider the actor pattern to model your problem or scenario if:
 
-<img src="/images/actors_background_concurrency.png" width=600>
+- Your problem space involves a large number (thousands or more) of small, independent, and isolated units of state and logic.
+- You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
+- Your actor instances won't block callers with unpredictable delays by issuing I/O operations.
 
 ## Try out actors
 
