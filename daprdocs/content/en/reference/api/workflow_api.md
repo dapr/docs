@@ -24,7 +24,7 @@ Parameter | Description
 `workflowName` | Identify the workflow type
 `instanceId` | Unique value created for each run of a specific workflow
 
-### Request Contents
+### Request content
 
 In the request you can pass along headers:
 
