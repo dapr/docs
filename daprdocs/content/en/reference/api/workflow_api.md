@@ -56,7 +56,7 @@ The API call will provide a response similar to this:
 
 ## Terminate workflow request
 
-Terminate a running workflow instance with the given name and instance id.
+Terminate a running workflow instance with the given name and instance ID.
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/terminate
