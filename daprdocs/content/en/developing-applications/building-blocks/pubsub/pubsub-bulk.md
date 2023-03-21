@@ -334,7 +334,7 @@ Please refer [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >
 
 Please refer following code samples for how to use Bulk Subscribe:
 
-{{< tabs Java Javascript "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs Java Javascript DotNet "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
 
 {{% codetab %}}
 
@@ -402,6 +402,56 @@ async function start() {
     await client.pubsub.bulkSubscribeWithConfig(pubSubName, topic, (data) => console.log("Subscriber received: " + JSON.stringify(data)), 100, 40);
 }
 
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using Dapr.AspNetCore;
+using Dapr;
+
+namespace DemoApp.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class BulkMessageController : ControllerBase
+{
+    private readonly ILogger<BulkMessageController> logger;
+
+    public BulkMessageController(ILogger<BulkMessageController> logger)
+    {
+        this.logger = logger;
+    }
+
+    [BulkSubscribe("messages", 10, 10)]
+    [Topic("pubsub", "messages")]
+    public ActionResult<BulkSubscribeAppResponse> HandleBulkMessages([FromBody] BulkSubscribeMessage<BulkMessageModel<BulkMessageModel>> bulkMessages)
+    {
+        List<BulkSubscribeAppResponseEntry> responseEntries = new List<BulkSubscribeAppResponseEntry>();
+        logger.LogInformation($"Received {bulkMessages.Entries.Count()} messages");
+        foreach (var message in bulkMessages.Entries)
+        {
+            try
+            {
+                logger.LogInformation($"Received a message with data '{message.Event.Data.MessageData}'");
+                responseEntries.Add(new BulkSubscribeAppResponseEntry(message.EntryId, BulkSubscribeAppResponseStatus.SUCCESS));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.Message);
+                responseEntries.Add(new BulkSubscribeAppResponseEntry(message.EntryId, BulkSubscribeAppResponseStatus.RETRY));
+            }
+        }
+        return new BulkSubscribeAppResponse(responseEntries);
+    }
+    public class BulkMessageModel
+    {
+        public string MessageData { get; set; }
+    }
+}
 ```
 
 {{% /codetab %}}
