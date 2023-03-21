@@ -26,7 +26,7 @@ Parameter | Description
 
 ### Request content
 
-In the request you can pass along headers:
+In the request you can pass along relevant input information that will be passed to the workflow:
 
 ```json
 {
