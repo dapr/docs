@@ -183,14 +183,15 @@ Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly
 Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
 The routing key is defined by the `routingKey` metadata. For example, if an app is configured with a routing key `keyA`:
 
-```
-apiVersion: dapr.io/v1alpha1
+```yaml
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: orderspubsub
 spec:
   topic: B
-  route: /B
+  routes: 
+    default: /B
   pubsubname: pubsub
   metadata:
     routingKey: keyA
