@@ -22,7 +22,7 @@ We also publish a Dev Container feature that installs the Dapr CLI inside any De
 
 ### Add the Dapr CLI using a Dev Container feature
 
-You can install the Dapr CLI inside any Dev Container using [Dev Container features](https://containers.dev/features/).
+You can install the Dapr CLI inside any Dev Container using [Dev Container features](https://containers.dev/features).
 
 To do that, edit your `devcontainer.json` and add two objects in the `"features"` section:
 
