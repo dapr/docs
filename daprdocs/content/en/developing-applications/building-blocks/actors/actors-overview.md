@@ -33,7 +33,7 @@ Since Dapr actors are virtual, they do not need to be explicitly created or dest
 
 An actor's state outlives the object's lifetime, as state is stored in the configured state provider for Dapr runtime.
 
-[Learn more about actor lifetimes.]({{< "actor-features-concepts.md#actor-lifetime" >}})
+[Learn more about actor lifetimes.]({{< ref "actors-features-concepts.md#actor-lifetime" >}})
 
 ### Distribution and failover
 
@@ -80,8 +80,8 @@ The functionality of timers and reminders is very similar. The main difference i
 
 This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
 
-- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#timers >}})
-- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#reminders >}})
+- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#timers" >}})
+- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#reminders" >}})
 - [Learn more about timer and reminder error handling and failover.]({{< ref "actors-features-concepts.md#timers-and-reminders-error-handling" >}})
 
 ## When to use actors

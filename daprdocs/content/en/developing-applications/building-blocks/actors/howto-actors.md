@@ -31,7 +31,7 @@ To use actors, your state store must support multi-item transactions.  This mean
 
 ## Actor timers and reminders
 
-Actors can schedule periodic work on themselves by registering either timers or reminders. Set timers or reminders for your actors using the [Actors Timers and Reminders]({{< actors-timers-reminders.md >}}) guide.
+Actors can schedule periodic work on themselves by registering either timers or reminders. Set timers or reminders for your actors using the [Actors Timers and Reminders]({{< ref actors-timers-reminders.md >}}) guide.
 
 ## Actor runtime configuration
 
