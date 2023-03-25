@@ -28,11 +28,11 @@ spec:
   - name: tlsEnable
     value: <ENABLE TLS> # Optional. Example: "false"
   - name: ca
-    value: <CA> # Optional.
+    value: <CA> # Optional. Required if tlsEnable is `true`.
   - name: cert
-    value: <CERT> # Optional.
+    value: <CERT> # Optional. Required if tlsEnable is `true`.
   - name: key
-    value: <KEY> # Optional.
+    value: <KEY> # Optional. Required if tlsEnable is `true`.
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -46,9 +46,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | endpoints          | Y        | Connection string to Etcd server | `"192.168.0.1:2379,192.168.0.2:2379,192.168.0.3:2379"`
 | keyPrefixPath      | N        | Key prefix path in Etcd. Default is `""` | `"dapr"`
 | tlsEnable          | N        | Whether to enable tls  | `"false"`
-| ca                 | N        | Contents of Etcd server CA file | `"ca value"`
-| cert               | N        | Contents of Etcd server certificate file | `"cert value"`
-| key                | N        | Contents of Etcd server key file | `"key value"`
+| ca                 | N        | Contents of Etcd server CA file. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIC9TCCA..."`
+| cert               | N        | Contents of Etcd server certificate file. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIDUTCC..."`
+| key                | N        | Contents of Etcd server key file. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIB..."`
 
 ## Setup Etcd
 
