@@ -51,6 +51,7 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 The following example shows how to install CLI version `{{% dapr-latest-version cli="true" %}}`. You can also install release candidates by specifying the version (for example, `1.10.0-rc.3`).
 
 ```bash
+mkdir $HOME/dapr
 wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | DAPR_INSTALL_DIR="$HOME/dapr" /bin/bash -s 1.9.1
 ```
 
@@ -202,7 +203,7 @@ Each release of Dapr CLI includes various OSes and architectures. You can manual
 Verify the CLI is installed by restarting your terminal/command prompt and running the following:
 
 ```bash
-dapr
+dapr help
 ```
 
 **Output:**
