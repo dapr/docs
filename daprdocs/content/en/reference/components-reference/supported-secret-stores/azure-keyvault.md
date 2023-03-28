@@ -122,6 +122,8 @@ Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Ad
 
 {{% codetab %}}
 
+#### Using a client secret
+
 To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory. Use the following template, filling in [the Azure AD application you created]({{< ref authenticating-azure.md >}}):
 
 ```yaml
@@ -142,6 +144,8 @@ spec:
   - name: azureClientSecret
     value : "[your_client_secret]"
 ```
+
+#### Using a certificate 
 
 If you want to use a **certificate** saved on the local disk instead, use the following template. Fill in the details of [the Azure AD application you created]({{< ref authenticating-azure.md >}}):
 
@@ -168,7 +172,7 @@ spec:
 {{% codetab %}}
 In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Azure AD application you created]({{< ref authenticating-azure.md >}}).
 
-To use a **client secret**:
+#### Using a client secret
 
 1. Create a Kubernetes secret using the following command:
 
@@ -214,7 +218,7 @@ To use a **client secret**:
     kubectl apply -f azurekeyvault.yaml
     ```
 
-To use a **certificate**:
+#### Using a certificate
 
 1. Create a Kubernetes secret using the following command:
 
@@ -259,7 +263,7 @@ To use a **certificate**:
     kubectl apply -f azurekeyvault.yaml
     ```
 
-To use **Azure managed identity**:
+#### Using Azure managed identity
 
 1. Ensure your AKS cluster has managed identity enabled and follow the [guide for using managed identities](https://docs.microsoft.com/azure/aks/use-managed-identity).
 1. Create an `azurekeyvault.yaml` component file.
@@ -289,11 +293,13 @@ To use **Azure managed identity**:
    - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
 
 
-   > **Important**: While both Azure AD pod identity and workload identity are in preview, currently Azure AD Workload Identity is planned for general availability (stable state).
+   **Important**: While both Azure AD pod identity and workload identity are in preview, currently Azure AD Workload Identity is planned for general availability (stable state).
 
-1. After creating a workload identity, give it `read` permissions on:
-   - [Your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
-   - In your application deployment inject the pod identity via a label annotation. 
+1. After creating a workload identity, give it `read` permissions:
+   - [On your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
+   - In your application deployment. Inject the pod identity both:
+     - Via a label annotation
+     - By specifying the Kubernetes service account associated with the desired workload identity 
 
    ```yaml
    apiVersion: v1
@@ -303,6 +309,12 @@ To use **Azure managed identity**:
      labels:
        aadpodidbinding: $POD_IDENTITY_NAME
    ```
+
+#### Using Azure managed identity directly vs. via Azure AD workload identity
+
+When using **managed identity directly**, you can have multiple identities associated with an app, requiring `azureClientId` to specify which identity should be used. 
+
+However, when using **managed identity via Azure AD workload identity**, `azureClientId` is not necessary and has no effect. The Azure identity to be used is inferred from the service account tied to an Azure identity via the Azure federated identity.
 
 {{% /codetab %}}
 
