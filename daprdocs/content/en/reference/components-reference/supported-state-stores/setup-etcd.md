@@ -56,7 +56,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 {{% codetab %}}
 
-You can run Etcd locally using Docker Compose:
+You can run Etcd database locally using Docker Compose. Create a new file called `docker-compose.yml` and add the following contents as an example:
 
 ```
 version: '2'
