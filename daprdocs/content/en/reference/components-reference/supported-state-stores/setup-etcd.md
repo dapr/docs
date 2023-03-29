@@ -66,7 +66,12 @@ services:
       - "12379:2379"
     command: etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379```
 ```
-You can then interact with the server using `localhost:12379`.
+Save the docker-compose.yml file and run the following command to start the Etcd server:
+
+`docker-compose up -d`
+
+This starts the Etcd server in the background using the expose the default Etcd port of `2379`. You can then interact with the server using the `etcdctl` command-line client on `localhost:12379`. For example
+
 
 {{% /codetab %}}
 
