@@ -2,7 +2,7 @@
 type: docs
 title: "Actors timers and reminders"
 linkTitle: "Timers and reminders"
-weight: 20
+weight: 30
 description: "Setting timers and reminders and performing error handling for your actors"
 aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
@@ -136,3 +136,25 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
 Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
+
+## Error handling
+
+When an actor's method completes successfully, the runtime will contineu to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message, without retrying. 
+todo: where is logged? 
+
+To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB. 
+todo: how is the actor state updated? or is it not?
+todo: does the timer get removed if not configured by a state store? example of configuring?
+
+## Next steps
+
+{{< button text="Use virtual actors >>" page="howto-actors.md" >}}
+
+## Related links
+
+- [Actors API reference]({{< ref actors_api.md >}})
+- [Actors overview]({{< ref actors-overview.md >}})
+- Actors using the:
+  - [.NET SDK]({{< ref dotnet-actors.md >}})
+  - [Python SDK]({{< ref python-actor.md >}})
+  - [Java SDK]({{< ref js-actors.md >}})

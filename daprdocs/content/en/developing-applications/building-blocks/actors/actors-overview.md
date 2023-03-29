@@ -16,11 +16,35 @@ A large number of actors can execute simultaneously, and actors execute independ
 
 ## Actors in Dapr
 
-Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the Actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
+Dapr includes a runtime that specifically implements the [Virtual Actor pattern](https://www.microsoft.com/research/project/orleans-virtual-actors/). With Dapr's implementation, you write your Dapr actors according to the actor model, and Dapr leverages the scalability and reliability guarantees that the underlying platform provides.
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
 <img src="/images/actor_background_game_example.png" width=400>
+
+## Dapr actors vs. Dapr Workflow
+
+Dapr actors and [Dapr Workflow]({{< ref workflow-overview.md >}}) are two different Dapr components that provide different features for building distributed applications.
+
+Dapr actors are designed to provide a way to encapsulate state and behavior within a distributed system. An actor can be activated on demand by a client application. When an actor is activated, it is assigned a unique identity, which allows it to maintain its state across multiple invocations. This makes actors useful for building stateful, scalable, and fault-tolerant distributed applications.
+
+On the other hand, Dapr Workflow provides a way to define and orchestrate complex workflows that involve multiple services and components within a distributed system. Workflows allow you to define a sequence of steps or tasks that need to be executed in a specific order, and can be used to implement business processes, event-driven workflows, and other similar scenarios.
+
+### When to use Dapr actors
+
+As with any other technology decision, you should decide whether to use actors based on the problem you're trying to solve. For example, if you were building a chat application, you might use Dapr actors to implement the chat rooms and the individual chat sessions between users, as each chat session needs to maintain its own state and be scalable and fault-tolerant.
+
+Generally speaking, consider the actor pattern to model your problem or scenario if:
+
+- Your problem space involves a large number (thousands or more) of small, independent, and isolated units of state and logic.
+- You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
+- Your actor instances won't block callers with unpredictable delays by issuing I/O operations.
+
+### When to use Dapr Workflow
+
+You would use Dapr Workflow when you need to define and orchestrate complex workflows that involve multiple services and components. For example, using the [chat application example earlier]({{< ref "#when-to-use-dapr-actors" >}}), you might use Dapr Workflows to define the overall workflow of the application, such as how new users are registered, how messages are sent and received, and how the application handles errors and exceptions.
+
+[Learn more about Dapr Workflow and how to use workflows in your application.]({{< ref workflow-overview.md >}})
 
 ## Features
 
@@ -84,15 +108,6 @@ This distinction allows users to trade off between light-weight but stateless ti
 - [Learn more about actor timers.]({{< ref "actors-features-concepts.md#reminders" >}})
 - [Learn more about timer and reminder error handling and failover.]({{< ref "actors-features-concepts.md#timers-and-reminders-error-handling" >}})
 
-## When to use actors
-
-As with any other technology decision, you should decide whether to use actors based on the problem you're trying to solve.
-
-The actor design pattern can be a good fit to a number of distributed systems problems and scenarios, but the first thing you should consider are the constraints of the pattern. Generally speaking, consider the actor pattern to model your problem or scenario if:
-
-- Your problem space involves a large number (thousands or more) of small, independent, and isolated units of state and logic.
-- You want to work with single-threaded objects that do not require significant interaction from external components, including querying state across a set of actors.
-- Your actor instances won't block callers with unpredictable delays by issuing I/O operations.
 
 ## Try out actors
 
@@ -102,13 +117,20 @@ Want to put the Dapr actors API to the test? Walk through the following quicksta
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Bindings quickstart]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
-| [Bindings tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/bindings) | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka. |
+| [Actors tutorial](todo) | todo |
 
 ### Start using actors directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the actors building block directly in your application. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the actors API starting with [the how-to guide]({{< ref howto-actors.md >}}).
 
-
-
 ## Next steps
+
+{{< button text="Actors features and concepts >>" page="actors-features-concepts.md" >}}
+
+## Related links
+
+- [Actors API reference]({{< ref actors_api.md >}})
+- Actors using the:
+  - [.NET SDK]({{< ref dotnet-actors.md >}})
+  - [Python SDK]({{< ref python-actor.md >}})
+  - [Java SDK]({{< ref js-actors.md >}})

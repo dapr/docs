@@ -2,11 +2,9 @@
 type: docs
 title: "How-to: Use virtual actors in Dapr"
 linkTitle: "How-To: Virtual actors"
-weight: 20
+weight: 40
 description: Learn more about the actor pattern
 ---
-
-The Dapr actor runtime provides support for [virtual actors]({{< ref actors-overview.md >}}) through following capabilities:
 
 ## Actor method invocation
 

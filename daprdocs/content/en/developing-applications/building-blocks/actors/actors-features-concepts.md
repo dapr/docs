@@ -82,23 +82,6 @@ The following example illustrates the above concepts. Consider an actor type tha
 
 <img src="/images/actors_background_concurrency.png" width=600>
 
-## Timers and reminders
-
-### Timers
-
-
-### Reminders
-
-
-### Timers and reminders error handling
-
-Add a section on error handling behavior of the Actors runtime for when Timer / Reminder methods fail and throw exceptions, specifically:
-
-How is the exception handled by the runtime (e.g. is it logged anywhere ?)
-How is actor state updated (or not)
-How is timer persistence impacted (e.g. does the timer get removed if an invocation of the method fails ? Can we configure this behavior ?)
-
-
 ## Actor types and ids
 
 Learn more about actor types and ids specific to each SDK:
@@ -111,3 +94,14 @@ Learn more about actor types and ids specific to each SDK:
 
 ## Next steps
 
+{{< button text="Timers and reminders >>" page="actors-timers-reminders.md" >}}
+
+## Related links
+
+- [Actors API reference]({{< ref actors_api.md >}})
+- [Actors overview]({{< ref actors-overview.md >}})
+- [How to: Use virtual actors in Dapr]({{< ref howto-actors.md >}})
+- Actors using the:
+  - [.NET SDK]({{< ref dotnet-actors.md >}})
+  - [Python SDK]({{< ref python-actor.md >}})
+  - [Java SDK]({{< ref js-actors.md >}})
