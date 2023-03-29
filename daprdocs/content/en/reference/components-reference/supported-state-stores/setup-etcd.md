@@ -64,7 +64,7 @@ services:
   etcd:
     image: gcr.io/etcd-development/etcd:v3.4.20
     ports:
-      - "12379:2379"
+      - "2379:2379"
     command: etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379```
 ```
 Save the `docker-compose.yml` file and run the following command to start the Etcd server:
