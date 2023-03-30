@@ -82,16 +82,6 @@ The following example illustrates the above concepts. Consider an actor type tha
 
 <img src="/images/actors_background_concurrency.png" width=600>
 
-## Actor types and ids
-
-Learn more about actor types and ids specific to each SDK:
-
-- [.NET SDK]
-- [Go SDK]
-- [Java SDK]
-- [JavaScript SDK]
-- [Python SDK]
-
 ## Next steps
 
 {{< button text="Timers and reminders >>" page="actors-timers-reminders.md" >}}
