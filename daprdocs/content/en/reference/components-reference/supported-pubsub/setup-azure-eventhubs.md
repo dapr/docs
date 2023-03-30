@@ -182,7 +182,7 @@ For example, the headers of a delivered HTTP subscription message would contain:
 ```
 ## Subscribing to Application Properties (enriched messages) from an Event hub
 
-It possible to get application properties (enriched messages) from an Event Hub by declaratively adding the `requireAllProperties` metadata entry to subscription specification.
+It is possible to get application properties (enriched messages) from an Event Hub by declaratively adding the `requireAllProperties` metadata entry to the subscription specification.
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
