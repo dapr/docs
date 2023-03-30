@@ -101,7 +101,3 @@ Learn more about actor types and ids specific to each SDK:
 - [Actors API reference]({{< ref actors_api.md >}})
 - [Actors overview]({{< ref actors-overview.md >}})
 - [How to: Use virtual actors in Dapr]({{< ref howto-actors.md >}})
-- Actors using the:
-  - [.NET SDK]({{< ref dotnet-actors.md >}})
-  - [Python SDK]({{< ref python-actor.md >}})
-  - [Java SDK]({{< ref js-actors.md >}})

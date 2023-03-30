@@ -105,23 +105,8 @@ The functionality of timers and reminders is very similar. The main difference i
 This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
 
 - [Learn more about actor timers.]({{< ref "actors-features-concepts.md#timers" >}})
-- [Learn more about actor timers.]({{< ref "actors-features-concepts.md#reminders" >}})
+- [Learn more about actor reminders.]({{< ref "actors-features-concepts.md#reminders" >}})
 - [Learn more about timer and reminder error handling and failover.]({{< ref "actors-features-concepts.md#timers-and-reminders-error-handling" >}})
-
-
-## Try out actors
-
-### Tutorials
-
-Want to put the Dapr actors API to the test? Walk through the following quickstart and tutorials to see actors in action:
-
-| Quickstart/tutorial | Description |
-| ------------------- | ----------- |
-| [Actors tutorial](todo) | todo |
-
-### Start using actors directly in your app
-
-Want to skip the quickstarts? Not a problem. You can try out the actors building block directly in your application. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the actors API starting with [the how-to guide]({{< ref howto-actors.md >}}).
 
 ## Next steps
 
@@ -130,7 +115,4 @@ Want to skip the quickstarts? Not a problem. You can try out the actors building
 ## Related links
 
 - [Actors API reference]({{< ref actors_api.md >}})
-- Actors using the:
-  - [.NET SDK]({{< ref dotnet-actors.md >}})
-  - [Python SDK]({{< ref python-actor.md >}})
-  - [Java SDK]({{< ref js-actors.md >}})
+- Refer to the [Dapr SDK documentation and examples]({{< ref "developing-applications/sdks/#sdk-languages" >}}).

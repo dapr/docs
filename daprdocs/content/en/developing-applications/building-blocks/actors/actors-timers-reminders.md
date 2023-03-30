@@ -8,8 +8,6 @@ aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-## Actor timers and reminders
-
 Actors can schedule periodic work on themselves by registering either timers or reminders.
 
 The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
@@ -47,7 +45,7 @@ The actor runtime validates correctness of the scheduling configuration and retu
 
 When you specify both the number of repetitions in `period` as well as `ttl`, the timer/reminder will be stopped when either condition is met.
 
-### Actor timers
+## Actor timers
 
 You can register a callback on actor to be executed based on a timer.
 
@@ -63,7 +61,7 @@ You can create a timer for an actor by calling the HTTP/gRPC request to Dapr as 
 POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-**Examples**
+### Examples
 
 The timer parameters are specified in the request body.
 
@@ -107,7 +105,7 @@ DELETE http://localhost:3500/v1.0/actors/<actorType>/<actorId>/timers/<name>
 
 Refer [api spec]({{< ref "actors_api.md#invoke-timer" >}}) for more details.
 
-### Actor reminders
+## Actor reminders
 
 Reminders are a mechanism to trigger *persistent* callbacks on an actor at specified times. Their functionality is similar to timers. But unlike timers, reminders are triggered under all circumstances until the actor explicitly unregisters them or the actor is explicitly deleted or the number in invocations is exhausted. Specifically, reminders are triggered across actor deactivations and failovers because the Dapr actor runtime persists the information about the actors' reminders using Dapr actor state provider.
 
@@ -119,7 +117,7 @@ POST/PUT http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name
 
 The request structure for reminders is identical to those of actors. Please refer to the [actor timers examples]({{< ref "#actor-timers" >}}).
 
-#### Retrieve actor reminder
+### Retrieve actor reminder
 
 You can retrieve the actor reminder by calling
 
@@ -127,7 +125,7 @@ You can retrieve the actor reminder by calling
 GET http://localhost:3500/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-#### Remove the actor reminder
+### Remove the actor reminder
 
 You can remove the actor reminder by calling
 
@@ -139,22 +137,20 @@ Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
 
 ## Error handling
 
-When an actor's method completes successfully, the runtime will contineu to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message, without retrying. 
-todo: where is logged? 
+When an actor's method completes successfully, the runtime will contineu to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message in the Dapr sidecar logs, without retrying. 
 
 To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB. 
-todo: how is the actor state updated? or is it not?
-todo: does the timer get removed if not configured by a state store? example of configuring?
+
+If an invocation of the method fails, the timer is not removed. Timers are only removed when:
+- The sidecar crashes
+- The executions run out
+- You delete it explicitly
 
 ## Next steps
 
-{{< button text="Use virtual actors >>" page="howto-actors.md" >}}
+{{< button text="Configure actor runtime behavior >>" page="actors-runtime-config.md" >}}
 
 ## Related links
 
 - [Actors API reference]({{< ref actors_api.md >}})
 - [Actors overview]({{< ref actors-overview.md >}})
-- Actors using the:
-  - [.NET SDK]({{< ref dotnet-actors.md >}})
-  - [Python SDK]({{< ref python-actor.md >}})
-  - [Java SDK]({{< ref js-actors.md >}})
