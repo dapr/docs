@@ -200,7 +200,7 @@ scopes:
 - orderprocessing
 - checkout
 ```
-This ensures enriched messages containing additional properties are forwarded as headers. For example, the device-to-cloud events created by Azure IoT Hub devices can contain user defined additional [IoT Hub Application Properties](https://learn.microsoft.com/azure/iot-hub/iot-hub-devguide-messages-construct#application-properties-of-d2c-iot-hub-messages). The Azure Event Hubs pub/sub component for Dapr returns the following as part of the response metadata (in this example, `iothub-creation-time-utc` is application property):
+Adding this metadata entry ensures enriched messages containing additional properties are forwarded as headers. For example, the device-to-cloud events created by Azure IoT Hub devices can contain extra user-defined [IoT Hub Application Properties](https://learn.microsoft.com/azure/iot-hub/iot-hub-devguide-messages-construct#application-properties-of-d2c-iot-hub-messages). The Azure Event Hubs pub/sub component for Dapr returns the following as part of the response metadata (in this example, `iothub-creation-time-utc` is the application property):
 
 ```js
 {
