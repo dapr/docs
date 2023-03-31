@@ -71,6 +71,8 @@ spec:
         maxRetries: -1 # Retry indefinitely
 ```
 
+
+
 ## Circuit Breakers
 
 Circuit Breaker (CB) policies are used when other applications/services/components are experiencing elevated failure rates. CBs monitor the requests and shut off all traffic to the impacted service when a certain criteria is met ("open" state). By doing this, CBs give the service time to recover from their outage instead of flooding it with events. The CB can also allow partial traffic through to see if the system has healed ("half-open" state). Once requests resume being successful, the CB gets into "closed" state and allows traffic to completely resume.
@@ -97,7 +99,7 @@ spec:
 
 ## Overriding default retries
 
-Dapr provides default retries for certain request failures and transient errors.  Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets.
+Dapr provides default retries for any unsuccessful request, such as failures and transient errors. Within a resiliency spec, you have the option to override Dapr's default retry logic by defining policies with reserved, named keywords. For example, defining a policy with the name `DaprBuiltInServiceRetries`, overrides the default retries for failures between sidecars via service-to-service requests. Policy overrides are not applied to specific targets.
 
 > Note: Although you can override default values with more robust retries, you cannot override with lesser values than the provided default value, or completely remove default retries. This prevents unexpected downtime.
 
