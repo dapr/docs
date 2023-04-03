@@ -66,7 +66,7 @@ Metadata: map[string]string{ "query": `query { users { name } }`},
 }
 ```
 
-To use a `query` that requires [query variables](https://graphql.org/learn/queries/#variables): add a key-value pair to the `metadata` map wherein every key corresponding to a query variable is the variable name prefixed with `variable:`
+To use a `query` that requires [query variables](https://graphql.org/learn/queries/#variables), add a key-value pair to the `metadata` map, wherein every key corresponding to a query variable is the variable name prefixed with `variable:`
 
 ```golang
 in := &dapr.InvokeBindingRequest{
