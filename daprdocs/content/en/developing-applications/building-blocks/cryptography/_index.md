@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Workflow"
-linkTitle: "Workflow"
+title: "Cryptography"
+linkTitle: "Cryptography"
 weight: 110
-description: "Orchestrate logic across various microservices" 
+description: "Perform cryptographic operations without having to access raw key material" 
 ---
