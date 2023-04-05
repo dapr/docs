@@ -334,7 +334,7 @@ Please refer [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >
 
 Please refer following code samples for how to use Bulk Subscribe:
 
-{{< tabs Java Javascript Dotnet "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs "Java" "JavaScript" ".NET" "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
 
 {{% codetab %}}
 
