@@ -56,6 +56,29 @@ To terminate your workflow with an ID `12345678`, run:
 POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/terminate
 ```
 
+### Pause or resume a workflow
+
+To plan for down-time, wait for inputs, and more, you can pause and then resume a workflow. To stop a workflow with an ID `12345678` until triggered to resume, run:
+
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/pause
+```
+
+To resume a workflow with an ID `12345678`, run:
+
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/resume
+```
+
+
+### Purge a workflow 
+
+To remove actor state from your state store and avoid overloading your state stores, run:
+
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/purge
+```
+
 ### Get information about a workflow
 
 To fetch workflow information (outputs and inputs) with an ID `12345678`, run:

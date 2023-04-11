@@ -27,7 +27,6 @@ spec:
 | `spec/metadata` | Additional metadata parameters specified by workflow component |
 
 
-
 ## Supported workflow methods
 
 ### POST start workflow request
@@ -49,7 +48,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workfl
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/resume
 ```
 
-### POST workflow request
+### POST purge workflow request
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/purge
 ```
