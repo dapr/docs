@@ -5,6 +5,7 @@ linkTitle: "Workflow API"
 description: "Detailed documentation on the workflow API"
 weight: 900
 ---
+
 ## Component format
 
 A Dapr `workflow.yaml` component file has the following structure:
@@ -37,6 +38,22 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workfl
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
+
+### POST pause workflow request
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/pause
+```
+
+### POST resume workflow request
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/resume
+```
+
+### POST workflow request
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/purge
+```
+
 ### GET workflow request
 ```bash
 GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>
@@ -89,8 +106,25 @@ Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
 Connection: close 
 ```
 
+#### POST pause workflow response body
 
-### GET workflow response body
+```bash
+
+```
+
+#### POST resume workflow response body
+
+```bash
+
+```
+
+#### POST purge workflow response body
+
+```bash
+
+```
+
+#### GET workflow response body
 
 ```bash
 HTTP/1.1 202 Accepted
