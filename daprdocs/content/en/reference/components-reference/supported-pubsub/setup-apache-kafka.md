@@ -82,7 +82,7 @@ The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref ku
 
 Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. With the added authentication methods, the `authRequired` field has
 been deprecated from the v1.6 release and instead the `authType` field should be used. If `authRequired` is set to `true`, Dapr will attempt to configure `authType` correctly
-based on the value of `saslPassword`. There are four valid values for `authType`: `none`, `password`, `mtls`, and `oidc`. Note this is authentication only; authorization is still configured within Kafka.
+based on the value of `saslPassword`. There are four valid values for `authType`: `none`, `password`, `certificate`, `mtls`, and `oidc`. Note this is authentication only; authorization is still configured within Kafka.
 
 #### None
 
@@ -275,17 +275,11 @@ spec:
   - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
     value: "my-dapr-app-id"
   - name: authType # Required.
-    value: "password"
-  - name: saslUsername # Required if authType is `password`.
-    value: "adminuser"
+    value: "certificate"
   - name: consumeRetryInterval # Optional.
     value: 200ms
   - name: version # Optional.
     value: 0.10.2.0
-  - name: saslPassword # Required if authRequired is `true`.
-    secretKeyRef:
-      name: kafka-secrets
-      key: saslPasswordSecret
   - name: maxMessageBytes # Optional.
     value: 1024
   - name: caCert # Certificate authority certificate.

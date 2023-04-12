@@ -72,19 +72,19 @@ version: 1
 common: # optional section for variables shared across apps
   resourcesPath: ./app/components # any dapr resources to be shared across apps
   env:  # any environment variable shared across apps
-    - DEBUG: true
+    DEBUG: true
 apps:
   - appID: webapp # optional
     appDirPath: .dapr/webapp/ # REQUIRED
     resourcesPath: .dapr/resources # (optional) can be default by convention
     configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
-    appProtocol: HTTP
+    appProtocol: http
     appPort: 8080
     appHealthCheckPath: "/healthz" 
     command: ["python3" "app.py"]
   - appID: backend # optional 
     appDirPath: .dapr/backend/ # REQUIRED
-    appProtocol: GRPC
+    appProtocol: grpc
     appPort: 3000
     unixDomainSocket: "/tmp/test-socket"
     env:
@@ -112,7 +112,7 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `appID`                  | N        | Application's app ID. If not provided, will be derived from `appDirPath` | `webapp`, `backend` |
 | `resourcesPath`          | N        | Path to your Dapr resources. Can be default by convention; ignore if directory isn't found | `./app/components`, `./webapp/components` |
 | `configFilePath`         | N        | Path to your application's configuration file | `./webapp/config.yaml` |
-| `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `HTTP`, `GRPC` |
+| `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `http`, `grpc` |
 | `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
 | `daprHTTPPort`           | N        | Dapr HTTP port |  |
 | `daprGRPCPort`           | N        | Dapr GRPC port |  |

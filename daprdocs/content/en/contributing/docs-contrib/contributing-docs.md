@@ -39,11 +39,11 @@ Style and tone conventions should be followed throughout all Dapr documentation 
 
 ## Diagrams and images
 
-Diagrams and images are invaluable visual aids for documentation pages. Diagrams are kept in a [Dapr Diagrams Deck](https://github.com/dapr/docs/tree/v1.8/daprdocs/static/presentations), which includes guidance on style and icons. 
+Diagrams and images are invaluable visual aids for documentation pages. Diagrams are kept in a [Dapr Diagrams Deck](https://github.com/dapr/docs/tree/v1.10/daprdocs/static/presentations), which includes guidance on style and icons. 
 
 As you create diagrams for your documentation:
 
-- Save them as high-res PNG files into the [images folder](https://github.com/dapr/docs/tree/v1.8/daprdocs/static/images).
+- Save them as high-res PNG files into the [images folder](https://github.com/dapr/docs/tree/v1.10/daprdocs/static/images).
 - Name your PNG files using the convention of a concept or building block so that they are grouped.
   - For example: `service-invocation-overview.png`. 
   - For more information on calling out images using shortcode, see the [Images guidance](#images) section below.

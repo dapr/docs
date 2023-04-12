@@ -926,7 +926,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore'
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore/transaction'
 ```
 
 Now see the results of your state transactions:
