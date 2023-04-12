@@ -28,9 +28,11 @@ Refer to the TTL column in the [state store components guide]({{< ref supported-
 
 You can set state TTL in the metadata as part of the state store set request:
 
-{{< tabs Python "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs ".NET" Python Go "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
+
+<!--python-->
 
 ```python
 #dependencies
@@ -52,6 +54,59 @@ To launch a Dapr sidecar and run the above example application, you'd then run a
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--dotnet-->
+
+```csharp
+// dependencies
+
+using Dapr.Client;
+
+// code
+
+await client.SaveStateAsync(storeName, stateKeyName, state, metadata: new Dictionary<string, string>() { 
+    { 
+        "metadata.ttlInSeconds", "120" 
+    } 
+});
+```
+
+To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--go-->
+
+```go
+// dependencies
+
+import (
+	dapr "github.com/dapr/go-sdk/client"
+)
+
+// code
+
+md := map[string]string{"ttlInSeconds": "120"}
+if err := client.SaveState(ctx, store, "key1", []byte("hello world"), md); err != nil {
+   panic(err)
+}
+```
+
+To launch a Dapr sidecar and run the above example application, you'd then run a command similar to the following:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run .
 ```
 
 {{% /codetab %}}
