@@ -90,7 +90,7 @@ If you are Minikube user or want to disable persistent volume for development pu
 
 ```bash
 helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring
- --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
+ --set alertmanager.persistence.enabled=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
 ```
 
 3. Validation
