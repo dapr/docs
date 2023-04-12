@@ -24,11 +24,13 @@ Every actor is defined as an instance of an actor type, identical to the way an 
 
 ## Dapr actors vs. Dapr Workflow
 
-Dapr actors and [Dapr Workflow]({{< ref workflow-overview.md >}}) are two different Dapr components that provide different features for building distributed applications.
+Dapr actors builds on the state management and service invocation APIs to create stateful, long running objects with identity. [Dapr Workflow]({{< ref workflow-overview.md >}}) and Dapr Actors are related, with workflows building on actors to provide a higher level of abstraction to orchestrate a set of actors, implementing common workflow patterns and managing the lifecycle of actors on your behalf.
 
 Dapr actors are designed to provide a way to encapsulate state and behavior within a distributed system. An actor can be activated on demand by a client application. When an actor is activated, it is assigned a unique identity, which allows it to maintain its state across multiple invocations. This makes actors useful for building stateful, scalable, and fault-tolerant distributed applications.
 
 On the other hand, Dapr Workflow provides a way to define and orchestrate complex workflows that involve multiple services and components within a distributed system. Workflows allow you to define a sequence of steps or tasks that need to be executed in a specific order, and can be used to implement business processes, event-driven workflows, and other similar scenarios.
+
+As mentioned above, Dapr Workflow builds on Dapr Actors managing their activation and lifecycle.
 
 ### When to use Dapr actors
 
@@ -63,23 +65,11 @@ An actor's state outlives the object's lifetime, as state is stored in the confi
 
 To provide scalability and reliability, actors instances are  throughout the cluster and Dapr distributes actor instances throughout the cluster and automatically migrates them to healthy nodes.
 
-#### Actor placement service
-
-The Dapr actor runtime manages distribution scheme and key range settings for you via the actor `Placement` service. 
-
-<img src="/images/actors_background_placement_service_registration.png" width=600>
-
-When a new instance of a service is created:
-
-1. The sidecar makes a call to the actor service to retrieve registered actor types and configuration settings.
-1. The corresponding Dapr runtime registers the actor types it can create.
-1. The `Placement` service calculates the partitioning across all the instances for a given actor type.
-
 [Learn more about Dapr actor placement.]({{< ref "actors-features-concepts.md#actor-placement-service" >}})
 
-#### Actor communication
+### Actor communication
 
-You can interact with Dapr to invoke the actor method by calling HTTP/gRPC endpoint, like the example in the diagram below.
+You can invoke actor methods by calling them over HTTP, as shown in the general example below.
 
 <img src="/images/actors_background_placement_service_registration.png" width=600>
 

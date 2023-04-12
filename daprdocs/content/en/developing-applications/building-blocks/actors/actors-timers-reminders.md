@@ -2,7 +2,7 @@
 type: docs
 title: "Actors timers and reminders"
 linkTitle: "Timers and reminders"
-weight: 30
+weight: 40
 description: "Setting timers and reminders and performing error handling for your actors"
 aliases:
   - "/developing-applications/building-blocks/actors/actors-background"

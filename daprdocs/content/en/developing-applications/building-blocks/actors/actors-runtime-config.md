@@ -2,7 +2,7 @@
 type: docs
 title: "Actor runtime configuration parameters"
 linkTitle: "Runtime configuration"
-weight: 40
+weight: 30
 description: Modify the default Dapr actor runtime configuration behavior
 ---
 

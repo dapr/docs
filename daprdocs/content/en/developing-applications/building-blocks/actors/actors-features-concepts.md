@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Actors features and concepts"
-linkTitle: "Features and concepts"
+title: "Actor runtime features"
+linkTitle: "Runtime features"
 weight: 20
 description: "Learn more about the features and concepts of Actors in Dapr"
 aliases:
@@ -24,12 +24,19 @@ An actor is automatically activated (causing an actor object to be constructed) 
 
 ## Distribution and failover
 
-To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr  automatically migrates them from failed nodes to healthy ones as required.
+To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr automatically migrates them from failed nodes to healthy ones as required.
 
 Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
 
 ### Actor placement service
-The Dapr actor runtime manages distribution scheme and key range settings for you. This is done by the actor `Placement` service. When a new instance of a service is created, the corresponding Dapr runtime registers the actor types it can create and the `Placement` service calculates the partitioning across all the instances for a given actor type. This table of partition information for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instance of actor services are created and destroyed. This is shown in the diagram below.
+
+The Dapr actor runtime manages distribution scheme and key range settings for you via the actor `Placement` service. When a new instance of a service is created:
+
+1. The sidecar makes a call to the actor service to retrieve registered actor types and configuration settings.
+1. The corresponding Dapr runtime registers the actor types it can create.
+1. The `Placement` service calculates the partitioning across all the instances for a given actor type.
+
+This partition data table for each actor type is updated and stored in each Dapr instance running in the environment and can change dynamically as new instances of actor services are created and destroyed.
 
 <img src="/images/actors_background_placement_service_registration.png" width=600>
 
@@ -37,12 +44,14 @@ When a client calls an actor with a particular id (for example, actor id 123), t
 
 <img src="/images/actors_background_id_hashing_calling.png" width=600>
 
- This simplifies some choices but also carries some consideration:
+This simplifies some choices, but also carries some consideration:
 
-* By default, actors are randomly placed into pods resulting in uniform distribution.
-* Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
+- By default, actors are randomly placed into pods resulting in uniform distribution.
+- Because actors are randomly placed, it should be expected that actor operations always require network communication, including serialization and deserialization of method call data, incurring latency and overhead.
 
-Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{< ref hosting >}}), including self-hosted and Kubernetes.
+{{% alert title="Note" color="primary" %}}
+ Note: The Dapr actor Placement service is only used for actor placement and therefore is not needed if your services are not using Dapr actors. The Placement service can run in all [hosting environments]({{< ref hosting >}}), including self-hosted and Kubernetes.
+{{% /alert %}}
 
 ## Actor communication
 
