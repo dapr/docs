@@ -110,7 +110,7 @@ A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that 
 
 ### Cryptography
 
-[Cryptography]({{< ref cryptography-overview.md >}}) components perform API operations on supported backends, such as encrypting and decrypting messages, and calculating and verifying digital signatures. 
+[Cryptography]({{< ref cryptography-overview.md >}}) components perform API operations on supported backends, such as encrypting and decrypting messages. 
 
 - [List of supported cryptography components](todo)
 - [Cryptography implementations](todo) 

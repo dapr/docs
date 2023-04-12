@@ -6,7 +6,7 @@ weight: 1000
 description: "Overview of Dapr Cryptography"
 ---
 
-With the Cryptography API, you can leverage cryptography in a safe and consistent way. Dapr exposes an API that allows you to ask Dapr to perform operations such as encrypting and decrypting messages, and calculating and verifying digital signatures.
+With the Cryptography API, you can leverage cryptography in a safe and consistent way. Dapr exposes an API that allows you to ask Dapr to perform operations, such as encrypting and decrypting messages.
 
 ## Why Cryptography?
 
