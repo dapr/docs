@@ -347,7 +347,12 @@ var main = function() {
 }
 
 async function start(orderId) {
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost: daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP
+    });
+    
     //Using Dapr SDK to invoke a method
     const result = await client.invoker.invoke('checkoutservice' , "checkout/" + orderId , HttpMethod.GET);
     console.log("Order requested: " + orderId);

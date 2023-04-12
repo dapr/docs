@@ -218,7 +218,11 @@ import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr';
 const daprHost = "127.0.0.1"; 
 
 async function main() {
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+    });
     const SECRET_STORE_NAME = "localsecretstore";
     //Using Dapr SDK to get a secret
     var secret = await client.secret.get(SECRET_STORE_NAME, "secret");
