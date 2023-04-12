@@ -61,13 +61,13 @@ POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/terminate
 To plan for down-time, wait for inputs, and more, you can pause and then resume a workflow. To stop a workflow with an ID `12345678` until triggered to resume, run:
 
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/pause
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/pause
 ```
 
 To resume a workflow with an ID `12345678`, run:
 
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/resume
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/resume
 ```
 
 

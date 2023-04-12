@@ -103,7 +103,6 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 Parameter | Description
 --------- | -----------
 `workflowComponentName` | Current default is `dapr` for Dapr Workflows
-`workflowName` | Identify the workflow type
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
@@ -139,7 +138,6 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 Parameter | Description
 --------- | -----------
 `workflowComponentName` | Current default is `dapr` for Dapr Workflows
-`workflowName` | Identify the workflow type
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
