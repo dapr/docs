@@ -177,7 +177,7 @@ dapr run --app-id order-processor --resources-path ../../../resources/ -- npm ru
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
 ```js
-const client = new DaprClient({ daprHost, daprPort, communicationProtocol })
+const client = new DaprClient()
 
 // Save state into a state store
 await client.state.save(DAPR_STATE_STORE_NAME, state)
