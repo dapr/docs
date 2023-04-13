@@ -262,10 +262,17 @@ A JSON-encoded payload body with the processing status against each entry needs 
 
 ```json
 {
-  "statuses": {
-    "entryId": "<entryId>",
+  "statuses": 
+  [ 
+    {
+    "entryId": "<entryId1>",
     "status": "<status>"
-  }
+    }, 
+    {
+    "entryId": "<entryId2>",
+    "status": "<status>"
+    } 
+  ]
 }
 ```
 
