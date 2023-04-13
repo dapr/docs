@@ -313,10 +313,17 @@ A JSON-encoded payload body with the processing status against each entry needs 
 
 ```json
 {
-  "statuses": {
-    "entryId": "<entryId>",
+  "statuses": 
+  [ 
+    {
+    "entryId": "<entryId1>",
     "status": "<status>"
-  }
+    }, 
+    {
+    "entryId": "<entryId2>",
+    "status": "<status>"
+    } 
+  ]
 }
 ```
 
@@ -334,7 +341,7 @@ Please refer [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >
 
 Please refer following code samples for how to use Bulk Subscribe:
 
-{{< tabs "Java" "JavaScript" ".NET" "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs "Java" "JavaScript" ".NET" >}}
 
 {{% codetab %}}
 
