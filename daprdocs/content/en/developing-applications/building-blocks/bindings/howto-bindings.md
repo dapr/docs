@@ -270,7 +270,11 @@ const daprHost = "127.0.0.1";
 async function sendOrder(orderId) {
     const BINDING_NAME = "checkout";
     const BINDING_OPERATION = "create";
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+    });
     //Using Dapr SDK to invoke output binding
     const result = await client.binding.send(BINDING_NAME, BINDING_OPERATION, orderId);
     console.log("Sending message: " + orderId);
