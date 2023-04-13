@@ -71,7 +71,7 @@ To provide scalability and reliability, actors instances are  throughout the clu
 
 You can invoke actor methods by calling them over HTTP, as shown in the general example below.
 
-<img src="/images/actors_background_placement_service_registration.png" width=600>
+<img src="/images/actors-calling-method.png" width=900>
 
 1. The service calls the actor API on the sidecar.
 1. With the cached partitioning information from the placement service, the sidecar determines which actor service instance will host actor ID **3**. The call is forwarded to the appropriate sidecar.
