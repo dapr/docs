@@ -185,7 +185,7 @@ console.log("Saving Order: ", order)
 
 // Get state from a state store
 const savedOrder = await client.state.get(DAPR_STATE_STORE_NAME, order.orderId)
-console.log("Getting Order: ", savedOrd
+console.log("Getting Order: ", savedOrd)
 
 // Delete state from the state store
 await client.state.delete(DAPR_STATE_STORE_NAME, order.orderId)
