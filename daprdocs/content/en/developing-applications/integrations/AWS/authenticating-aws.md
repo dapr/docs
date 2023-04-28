@@ -44,7 +44,7 @@ When running Dapr (or the Dapr runtime directly) in stand-alone mode, you have t
 FOO=bar daprd --app-id myapp
 ```
 
-If you have [configured named AWS profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) locally , you can tell Dapr (or the Dapr runtime) which profile to use by specifying the "AWS_PROFILE" environment variable:
+If you have [configured named AWS profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) locally , you can tell Dapr (or the Dapr runtime) which profile to use by specifying the "AWS_PROFILE" environment variable:
 
 ```bash
 AWS_PROFILE=myprofile dapr run...
