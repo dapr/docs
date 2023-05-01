@@ -36,7 +36,6 @@ Dapr can be integrated with any developer framework. For example, in the Dapr .N
 
 Dapr is integrated with the following frameworks;
 
-- Logic Apps with Dapr [Workflows](https://github.com/dapr/workflows)
 - Functions with Dapr [Azure Functions Extension](https://github.com/dapr/azure-functions-extension)
 - Spring Boot Web apps in Java SDK
 - ASP.NET Core in .NET SDK

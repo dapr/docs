@@ -39,6 +39,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|------------|-----|---------|
 | endpoint | Y | Output | GraphQL endpoint string See [here](#url-format) for more details | `"http://localhost:4000/graphql/graphql"` |
 | header:[HEADERKEY] | N | Output | GraphQL header. Specify the header key in the `name`, and the header value in the `value`. | `"no-cache"` (see above) |
+| variable:[VARIABLEKEY] | N | Output | GraphQL query variable. Specify the variable name in the `name`, and the variable value in the `value`. | `"123"` (see below) |
 
 ### Endpoint and Header format
 
@@ -62,6 +63,18 @@ in := &dapr.InvokeBindingRequest{
 Name:      "example.bindings.graphql",
 Operation: "query",
 Metadata: map[string]string{ "query": `query { users { name } }`},
+}
+```
+
+To use a `query` that requires [query variables](https://graphql.org/learn/queries/#variables), add a key-value pair to the `metadata` map, wherein every key corresponding to a query variable is the variable name prefixed with `variable:`
+
+```golang
+in := &dapr.InvokeBindingRequest{
+Name: "example.bindings.graphql",
+Operation: "query",
+Metadata: map[string]string{ 
+  "query": `query HeroNameAndFriends($episode: string!) { hero(episode: $episode) { name } }`,
+  "variable:episode": "JEDI",
 }
 ```
 

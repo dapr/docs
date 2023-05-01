@@ -8,6 +8,10 @@ description: "Learn more about the Dapr Workflow features and concepts"
 
 Now that you've learned about the [workflow building block]({{< ref workflow-overview.md >}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages. 
 
+{{% alert title="Note" color="primary" %}}
+For more information on how workflow state is managed, see the [workflow architecture guide]({{< ref workflow-architecture.md >}}).
+{{% /alert %}}
+
 ## Workflows
 
 Dapr Workflows are functions you write that define a series of steps or tasks to be executed in a particular order. The Dapr Workflow engine takes care of coordinating and managing the execution of the steps, including managing failures and retries. If the app hosting your workflows is scaled out across multiple machines, the workflow engine may also load balance the execution of workflows and their tasks across multiple machines.
@@ -26,55 +30,48 @@ Only one workflow instance with a given ID can exist at any given time. However,
 
 ### Workflow replay
 
-Dapr Workflows maintain their execution state by using a technique known as [event sourcing](https://learn.microsoft.com/azure/architecture/patterns/event-sourcing). Instead of directly storing the current state of a workflow as a snapshot, the workflow engine manages an append-only log of history events that describe the various steps that a workflow has taken. When using the workflow authoring SDK, the storing of these history events happens automatically whenever the workflow "awaits" for the result of a scheduled task.
+Dapr Workflows maintain their execution state by using a technique known as [event sourcing](https://learn.microsoft.com/azure/architecture/patterns/event-sourcing). Instead of storing the current state of a workflow as a snapshot, the workflow engine manages an append-only log of history events that describe the various steps that a workflow has taken. When using the workflow SDK, these history events are stored automatically whenever the workflow "awaits" for the result of a scheduled task.
+
+When a workflow "awaits" a scheduled task, it unloads itself from memory until the task completes. Once the task completes, the workflow engine schedules the workflow function to run again. This second workflow function execution is known as a _replay_. 
+
+When a workflow function is replayed, it runs again from the beginning. However, when it encounters a task that already completed, instead of scheduling that task again, the workflow engine:
+
+1. Returns the result of the completed task to the workflow.
+1. Continues execution until the next "await" point. 
+
+This "replay" behavior continues until the workflow function completes or fails with an error.
+
+Using this replay technique, a workflow is able to resume execution from any "await" point as if it had never been unloaded from memory. Even the values of local variables from previous runs can be restored without the workflow engine knowing anything about what data they stored. This ability to restore state makes Dapr Workflows _durable_ and _fault tolerant_.
 
 {{% alert title="Note" color="primary" %}}
-For more information on how workflow state is managed, see the [workflow architecture guide]({{< ref workflow-architecture.md >}}).
+The workflow replay behavior described here requires that workflow function code be _deterministic_. Deterministic workflow functions take the exact same actions when provided the exact same inputs. [Learn more about the limitations around deterministic workflow code.]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-constraints" >}})
 {{% /alert %}}
 
-When a workflow "awaits" a scheduled task, it may unload itself from memory until the task completes. Once the task completes, the workflow engine schedules the workflow function to run again. This second execution of the workflow function is known as a _replay_. When a workflow function is replayed, it runs again from the beginning. However, when it encounters a task that it already scheduled, instead of scheduling that task again, the workflow engine returns the result of the scheduled task to the workflow and continues execution until the next "await" point. This "replay" behavior continues until the workflow function completes or fails with an error.
-
-Using this replay technique, a workflow is able to resume execution from any "await" point as if it had never been unloaded from memory. Even the values of local variables from previous runs can be restored without the workflow engine knowing anything about what data they stored. This ability to restore state is what makes Dapr Workflows _durable_ and fault tolerant.
-
-### Workflow determinism and code constraints
-
-The workflow replay behavior described previously requires that workflow function code be _deterministic_. A deterministic workflow function is one that takes the exact same actions when provided the exact same inputs.
-
-You must follow the following rules to ensure that your workflow code is deterministic.
-
-1. **Workflow functions must not call non-deterministic APIs.**  
-    For example, APIs that generate random numbers, random UUIDs, or the current date are non-deterministic. To work around this limitation, use these APIs in activity functions or (preferred) use built-in equivalent APIs offered by the authoring SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.
-
-1. **Workflow functions must not interact _directly_ with external state.**   
-    External data includes any data that isn't stored in the workflow state. For example, workflows must not interact with global variables, environment variables, the file system, or make network calls. Instead, workflows should interact with external state _indirectly_ using workflow inputs, activity tasks, and through external event handling.
-
-1. **Workflow functions must execute only on the workflow dispatch thread.**   
-    The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never schedule background threads or use APIs that schedule a callback function to run on another thread. Failure to follow this rule could result in undefined behavior. Any background processing should instead be delegated to activity tasks, which can be scheduled to run serially or concurrently.
-
-While it's critically important to follow these determinism code constraints, you'll quickly become familiar with them and learn how to work with them effectively when writing workflow code.
 
 ### Infinite loops and eternal workflows
 
-As discussed in the [workflow replay]({{< ref "#workflow-replay" >}}) section, workflows maintain a write-only event-sourced history log of all its operations. To avoid runaway resource usage, workflows should limit the number of operations they schedule. For example, a workflow should never use infinite loops in its implementation, nor should it schedule millions of tasks.
+As discussed in the [workflow replay]({{< ref "#workflow-replay" >}}) section, workflows maintain a write-only event-sourced history log of all its operations. To avoid runaway resource usage, workflows must limit the number of operations they schedule. For example, ensure your workflow doesn't:
 
-There are two techniques that can be used to write workflows that need to potentially schedule extreme numbers of tasks:
+- Use infinite loops in its implementation
+- Schedule thousands of tasks.
+
+You can use the following two techniques to write workflows that may need to schedule extreme numbers of tasks:
 
 1. **Use the _continue-as-new_ API**:  
-    Each workflow authoring SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows" or workflows that have no logical end state, like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+    Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
 
 1. **Use child workflows**:  
-    Each workflow authoring SDK also exposes an API for creating child workflows. A child workflow is just like any other workflow except that it's scheduled by a parent workflow. Child workflows have their own history and also have the benefit of allowing you to distribute workflow function execution across multiple machines. If a workflow needs to schedule thousands of tasks or more, it's recommended that those tasks be distributed across child workflows so that no single workflow's history size grows too large.
+    Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
+    - Their own history 
+    - The benefit of distributing workflow function execution across multiple machines. 
+    
+    If a workflow needs to schedule thousands of tasks or more, it's recommended that those tasks be distributed across child workflows so that no single workflow's history size grows too large.
 
 ### Updating workflow code
 
-Because workflows are long-running and durable, updating workflow code must be done with extreme care. As discussed in the [Workflow determinism]({{< ref "#workflow-determinism-and-code-constraints" >}}) section, workflow code must be deterministic so that the workflow engine can rebuild its state to exactly match its previous checkpoint. Updates to workflow code must preserve this determinism if there are any non-completed workflow instances in the system. Otherwise, updates to workflow code can result in runtime failures the next time those workflows execute.
+Because workflows are long-running and durable, updating workflow code must be done with extreme care. As discussed in the [workflow determinism]({{< ref "#workflow-determinism-and-code-constraints" >}}) limitation section, workflow code must be deterministic. Updates to workflow code must preserve this determinism if there are any non-completed workflow instances in the system. Otherwise, updates to workflow code can result in runtime failures the next time those workflows execute.
 
-We'll mention a couple examples of code updates that can break workflow determinism:
-
-* **Changing workflow function signatures**: Changing the name, input, or output of a workflow or activity function is considered a breaking change and must be avoided.
-* **Changing the number or order of workflow tasks**: Changing the number or order of workflow tasks causes a workflow instance's history to no longer match the code and may result in runtime errors or other unexpected behavior.
-
-To work around these constraints, instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates. Upstream code that creates workflows should also be updated to only create instances of the new workflows. Leaving the old code around ensures that existing workflow instances can continue to run without interruption. If and when it's known that all instances of the old workflow logic have completed, then the old workflow code can be safely deleted.
+[See known limitations]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-constraints" >}})
 
 ## Workflow activities
 
@@ -119,6 +116,113 @@ The ability to raise external events to workflows is not included in the alpha v
 {{% /alert %}}
 
 Workflows can also wait for multiple external event signals of the same name, in which case they are dispatched to the corresponding workflow tasks in a first-in, first-out (FIFO) manner. If a workflow receives an external event signal but has not yet created a "wait for external event" task, the event will be saved into the workflow's history and consumed immediately after the workflow requests the event.
+
+## Limitations
+
+### Workflow determinism and code restraints 
+
+To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
+
+#### Workflow functions must call deterministic APIs. 
+APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
+ - Use these APIs in activity functions, or 
+ - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
+
+For example, instead of this:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+// DON'T DO THIS!
+DateTime currentTime = DateTime.UtcNow;
+Guid newIdentifier = Guid.NewGuid();
+string randomString = GetRandomString();
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Do this:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+// Do this!!
+DateTime currentTime = context.CurrentUtcDateTime;
+Guid newIdentifier = context.NewGuid();
+string randomString = await context.CallActivityAsync<string>("GetRandomString");
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
+#### Workflow functions must only interact _indirectly_ with external state. 
+External data includes any data that isn't stored in the workflow state. Workflows must not interact with global variables, environment variables, the file system, or make network calls. 
+    
+Instead, workflows should interact with external state _indirectly_ using workflow inputs, activity tasks, and through external event handling.
+
+For example, instead of this:
+
+```csharp
+// DON'T DO THIS!
+string configuration = Environment.GetEnvironmentVariable("MY_CONFIGURATION")!;
+string data = await new HttpClient().GetStringAsync("https://example.com/api/data");
+```
+
+Do this:
+
+```csharp
+// Do this!!
+string configuation = workflowInput.Configuration; // imaginary workflow input argument
+string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
+```
+
+#### Workflow functions must execute only on the workflow dispatch thread.  
+The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never:
+- Schedule background threads, or
+- Use APIs that schedule a callback function to run on another thread. 
+    
+Failure to follow this rule could result in undefined behavior. Any background processing should instead be delegated to activity tasks, which can be scheduled to run serially or concurrently.
+
+For example, instead of this:
+
+```csharp
+// DON'T DO THIS!
+Task t = Task.Run(() => context.CallActivityAsync("DoSomething"));
+await context.CreateTimer(5000).ConfigureAwait(false);
+```
+
+Do this:
+
+```csharp
+// Do this!!
+Task t = context.CallActivityAsync("DoSomething");
+await context.CreateTimer(5000).ConfigureAwait(true);
+```
+
+### Updating workflow code
+
+Make sure updates you make to the workflow code maintain its determinism. A couple examples of code updates that can break workflow determinism:
+
+- **Changing workflow function signatures**:  
+   Changing the name, input, or output of a workflow or activity function is considered a breaking change and must be avoided.  
+
+- **Changing the number or order of workflow tasks**:   
+   Changing the number or order of workflow tasks causes a workflow instance's history to no longer match the code and may result in runtime errors or other unexpected behavior.
+
+To work around these constraints:
+
+- Instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates. 
+- Upstream code that creates workflows should only be updated to create instances of the new workflows. 
+- Leave the old code around to ensure that existing workflow instances can continue to run without interruption. If and when it's known that all instances of the old workflow logic have completed, then the old workflow code can be safely deleted.
+
 
 ## Next steps
 

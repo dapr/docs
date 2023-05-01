@@ -97,6 +97,12 @@ Expected output:
 == APP == Workflow Status: Completed
 ```
 
+### (Optional) Step 4: View in Zipkin
+
+If you have Zipkin configured for Dapr locally on your machine, you can view the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`).
+
+<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
+
 ### What happened?
 
 When you ran `dapr run --app-id order-processor dotnet run`:

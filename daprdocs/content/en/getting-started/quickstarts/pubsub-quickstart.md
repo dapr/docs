@@ -56,7 +56,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components/ --app-port 5001 -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6002 -- python3 app.py
 ```
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
@@ -273,7 +273,7 @@ dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --resources
 In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```js
-const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
+const client = new DaprClient();
 
 await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
 console.log("Published data: " + JSON.stringify(order));
@@ -389,7 +389,7 @@ dotnet build
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components --app-port 7002 -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../components --app-port 7005 -- dotnet run
 ```
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
