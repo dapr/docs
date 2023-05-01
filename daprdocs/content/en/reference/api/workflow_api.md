@@ -90,6 +90,36 @@ Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
 Connection: close 
 ```
 
+## Raise Event workflow request
+
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`instanceId` | Unique value created for each run of a specific workflow
+`eventName` | TODO
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Request formatted correctly, error in dapr code or underlying component
+
+### Response content
+
+The API call will provide a response similar to this:
+
+```bash
+TODO
+```
+
 ## Pause workflow request
 
 Pause a running workflow instance with the given name and instance ID.
@@ -118,11 +148,7 @@ Code | Description
 The API call will provide a response similar to this:
 
 ```bash
-HTTP/1.1 202 Accepted
-Server: fasthttp
-Date: Thu, 12 Jan 2023 21:31:16 GMT
-Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
-Connection: close 
+TODO
 ```
 
 ## Resume workflow request
@@ -153,11 +179,7 @@ Code | Description
 The API call will provide a response similar to this:
 
 ```bash
-HTTP/1.1 202 Accepted
-Server: fasthttp
-Date: Thu, 12 Jan 2023 21:31:16 GMT
-Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
-Connection: close 
+TODO
 ```
 
 ## Purge workflow request
@@ -189,11 +211,7 @@ Code | Description
 The API call will provide a response similar to this:
 
 ```bash
-HTTP/1.1 202 Accepted
-Server: fasthttp
-Date: Thu, 12 Jan 2023 21:31:16 GMT
-Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
-Connection: close 
+TODO
 ```
 
 ### Get workflow request
