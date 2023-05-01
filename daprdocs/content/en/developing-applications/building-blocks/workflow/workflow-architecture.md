@@ -52,8 +52,8 @@ Each workflow instance managed by the engine is represented as one or more spans
 
 There are two types of actors that are internally registered within the Dapr sidecar in support of the workflow engine:
 
-- `dapr.internal.wfengine.workflow`
-- `dapr.internal.wfengine.activity`
+- `dapr.internal.default.wf-app.workflow`
+- `dapr.internal.default.wf-app.activity`
 
 The following diagram demonstrates how internal workflow actors operate in a Kubernetes scenario:
 
@@ -65,7 +65,7 @@ There are two types of actors registered by the Dapr sidecar for workflow: the _
 
 ### Workflow actors
 
-A new instance of the `dapr.internal.wfengine.workflow` actor is activated for every workflow instance that gets created. The ID of the _workflow_ actor is the ID of the workflow. This internal actor stores the state of the workflow as it progresses and determines the node on which the workflow code executes via the actor placement service.
+A new instance of the `dapr.internal.default.wf-app.workflow` actor is activated for every workflow instance that gets created. The ID of the _workflow_ actor is the ID of the workflow. This internal actor stores the state of the workflow as it progresses and determines the node on which the workflow code executes via the actor placement service.
 
 Each workflow actor saves its state using the following keys in the configured state store:
 
@@ -94,7 +94,7 @@ To summarize:
 
 ### Activity actors
 
-A new instance of the `dapr.internal.wfengine.activity` actor is activated for every activity task that gets scheduled by a workflow. The ID of the _activity_ actor is the ID of the workflow combined with a sequence number (sequence numbers start with 0). For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, it's ID will be `876bf371#2` where `2` is the sequence number.
+A new instance of the `dapr.internal.default.wf-app.activity` actor is activated for every activity task that gets scheduled by a workflow. The ID of the _activity_ actor is the ID of the workflow combined with a sequence number (sequence numbers start with 0). For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, it's ID will be `876bf371#2` where `2` is the sequence number.
 
 Each activity actor stores a single key into the state store:
 
