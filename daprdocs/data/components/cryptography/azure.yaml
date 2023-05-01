@@ -1,0 +1,5 @@
+- component: Azure Key Vault
+  link: azure-key-vault
+  state: Alpha
+  version: v1
+  since: "1.11"

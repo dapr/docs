@@ -52,3 +52,4 @@ Todo: cryptography building block features organized under header 3 sections.
 ## Related links
 - [Cryptography overview]({{< ref cryptography-overview.md >}})
 - [Cryptography API reference]({{< ref cryptography_api.md >}})
+- [Cryptography component specs]({{< ref supported-cryptography >}})

@@ -1,0 +1,39 @@
+---
+type: docs
+title: "Local storage"
+linkTitle: "Local storage"
+description: Detailed information on the local storage cryptography component
+---
+
+## Component format
+
+Todo: update component format to correct format for cryptography
+
+A Dapr `crypto.yaml` component file has the following structure:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: mycrypto
+  namespace: default
+spec:
+  type: crypto.localstorage
+  metadata:
+    - name: path
+      value: fixtures/crypto/localstorage/
+```
+
+{{% alert title="Warning" color="warning" %}}
+The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
+{{% /alert %}}
+
+## Spec metadata fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| path               | Y        | Connection-string for the lcoal storage  | `fixtures/crypto/localstorage/`
+
+## Related links
+- [Cryptography building block]({{< ref cryptography >}})
+- [Cryptography API reference]({{< ref cryptography_api.md >}})

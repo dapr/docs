@@ -5,11 +5,11 @@ linkTitle: "Cryptography API"
 description: "Detailed documentation on the cryptography API"
 weight: 900
 ---
+
 ## Component format
 
-Todo: update component format to correct format for cryptography
-
 A Dapr `crypto.yaml` component file has the following structure:
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -22,22 +22,49 @@ spec:
   - name: <NAME>
     value: <VALUE>
  ```
+
 | Setting | Description |
 | ------- | ----------- |
-| `metadata.name` | The name of the workflow component. |
-| `spec/metadata` | Additional metadata parameters specified by workflow component |
+| `metadata.name` | The unique name of the workflow component. |
+| `spec.type` | The component type used. Example: `crypto.jwks`, `crypto.azure.keyvault` |
+| `spec.metadata` | Additional metadata parameters specified by workflow component |
 
+[Learn more about the available cryptography components.]({{< ref supported-cryptography >}})
 
+## Supported cryptography APIs
 
-## Supported workflow methods
+The cryptography building block supports two high-level APIs:
+- `Encrypt` 
+- `Decrypt` 
 
-Todo: organize the following into the correct format for an API doc.
+These APIs allow you to encrypt and decrypt files of arbitrary lenght (up to 256TB) while working on a straem of data.
 
-The new building block would feature 7 APIs:
+### Encrypt
 
-/encrypt: encrypts arbitrary data using a key stored in the vault. It supports symmetric and asymmetric ciphers, depending on the type of key in use (and the types of keys supported by the vault).
-/decrypt: decrypts arbitrary data, performing the opposite of what /encrypt does.
-/wrapkey: wraps keys using other keys stored in the vault. This is exactly like encrypting data, but it expects inputs to be formatted as keys (for example formatted as JSON Web Key) and it exposes additional algorithms not available when encrypting general data (like AES-KW)
-/unwrapkey: un-wraps (decrypts) keys, performing the opposite of what /wrap does
-/sign: signs an arbitrary message using an asymmetric key stored in the vault (we could also consider offering HMAC here, using symmetric keys, although not widely supported by the vault services)
-/getkey: this can be used only with asymmetric keys stored in the vault, and returns the public part of the key
+To encrypt data, implement the `Encrypt` API:
+
+```go
+// Encrypt the data using Dapr
+out, err := sdkClient.Encrypt(context.Background(), rf, dapr.EncryptOptions{
+	// These are the 3 required parameters
+	ComponentName: "mycryptocomponent",
+	KeyName:        "mykey",
+	Algorithm:     "RSA",
+})
+```
+
+### Decrypt
+
+To decrypt data, implement the `Decrypt` API:
+
+```go
+// Decrypt the data using Dapr
+out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
+	// Only required option is the component name
+	ComponentName: "mycryptocomponent",
+})
+```
+
+## Next steps
+- [Cryptography building block documentation]({{< ref cryptography >}})
+- [Cryptography components]({{< ref supported-cryptography >}})
