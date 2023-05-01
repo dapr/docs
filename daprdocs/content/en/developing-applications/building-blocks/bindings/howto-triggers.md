@@ -237,7 +237,15 @@ start().catch((e) => {
 });
 
 async function start() {
-    const server = new DaprServer(serverHost, serverPort, daprHost, daprPort, CommunicationProtocolEnum.HTTP);
+    const server = new DaprServer({
+        serverHost,
+        serverPort,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+        clientOptions: {
+            daprHost,
+            daprPort, 
+        }
+    });
     await server.binding.receive('checkout', async (orderId) => console.log(`Received Message: ${JSON.stringify(orderId)}`));
     await server.startServer();
 }
