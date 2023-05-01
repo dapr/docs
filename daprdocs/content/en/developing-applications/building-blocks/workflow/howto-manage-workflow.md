@@ -56,6 +56,14 @@ To terminate your workflow with an ID `12345678`, run:
 POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/terminate
 ```
 
+### Raise an event
+
+To raise an event in your workflow, run:
+
+```bash
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
+```
+
 ### Pause or resume a workflow
 
 To plan for down-time, wait for inputs, and more, you can pause and then resume a workflow. To stop a workflow with an ID `12345678` until triggered to resume, run:
