@@ -355,13 +355,15 @@ start().catch((e) => {
 });
 
 async function start(orderId) {
-    const server = new DaprServer(
-        serverHost, 
-        serverPort, 
-        daprHost, 
-        process.env.DAPR_HTTP_PORT, 
-        CommunicationProtocolEnum.HTTP
-    );
+    const server = new DaprServer({
+        serverHost,
+        serverPort,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+        clientOptions: {
+          daprHost,
+          daprPort: process.env.DAPR_HTTP_PORT,
+        },
+    });
     //Subscribe to a topic
     await server.pubsub.subscribe("order-pub-sub", "orders", async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
@@ -625,7 +627,11 @@ var main = function() {
 async function start(orderId) {
     const PUBSUB_NAME = "order-pub-sub"
     const TOPIC_NAME  = "orders"
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT, 
+        communicationProtocol: CommunicationProtocolEnum.HTTP
+    });
     console.log("Published data:" + orderId)
     //Using Dapr SDK to publish a topic
     await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId);

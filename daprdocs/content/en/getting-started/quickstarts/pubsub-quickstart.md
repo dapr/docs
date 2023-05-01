@@ -273,7 +273,7 @@ dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --resources
 In the `checkout` publisher service, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
 
 ```js
-const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
+const client = new DaprClient();
 
 await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
 console.log("Published data: " + JSON.stringify(order));
