@@ -43,8 +43,8 @@
   state: Stable
   version: v1
   description: Converts the body of the request to uppercase letters (demo)
-- component: WASM
+- component: Wasm
   link: /reference/components-reference/supported-middleware/middleware-wasm
   state: Alpha
   version: v1
-  description: Use WASM middleware in your HTTP pipeline
+  description: Use Wasm middleware in your HTTP pipeline
