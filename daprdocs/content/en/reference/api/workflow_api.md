@@ -102,7 +102,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Current default is `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
-`eventName` | TODO
+`eventName` | The name of any workflow function
 
 ### HTTP response codes
 
@@ -114,11 +114,7 @@ Code | Description
 
 ### Response content
 
-The API call will provide a response similar to this:
-
-```bash
-TODO
-```
+None.
 
 ## Pause workflow request
 
@@ -145,11 +141,7 @@ Code | Description
 
 ### Response content
 
-The API call will provide a response similar to this:
-
-```bash
-TODO
-```
+None.
 
 ## Resume workflow request
 
@@ -176,11 +168,7 @@ Code | Description
 
 ### Response content
 
-The API call will provide a response similar to this:
-
-```bash
-TODO
-```
+None.
 
 ## Purge workflow request
 
@@ -208,11 +196,7 @@ Code | Description
 
 ### Response content
 
-The API call will provide a response similar to this:
-
-```bash
-TODO
-```
+None.
 
 ### Get workflow request
 
