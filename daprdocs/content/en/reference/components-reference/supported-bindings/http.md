@@ -320,7 +320,11 @@ These fields can be passed as a file path or as a pem encoded string.
 - If the pem encoded string is provided, the string is used as is.
 When these fields are configured, the Dapr sidecar uses the provided certificate to authenticate itself with the server during the TLS handshake process.
 
-If remote server is enforcing TLS renegotiation you need to set also metadata field `MTLSRenegotiation`, it accepts one of following options: `RenegotiateNever`,`RenegotiateOnceAsClient` or `RenegotiateFreelyAsClient`. For more details check please: https://pkg.go.dev/crypto/tls#RenegotiationSupport
+If the remote server is enforcing TLS renegotiation, you also need to set the metadata field `MTLSRenegotiation`. This field accepts one of following options: 
+- `RenegotiateNever`
+- `RenegotiateOnceAsClient`
+- `RenegotiateFreelyAsClient`. 
+For more details see [the Go `RenegotiationSupport` documentation](https://pkg.go.dev/crypto/tls#RenegotiationSupport).
 
 ### When to use:
 You can use this when the server with which the HTTP binding is configured to communicate requires mTLS or client TLS authentication.
