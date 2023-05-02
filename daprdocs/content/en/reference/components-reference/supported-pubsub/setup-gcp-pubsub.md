@@ -70,9 +70,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| type           | N | GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
 | projectId     | Y | GCP project id| `myproject-123`
-| endpoint       | N  | GCP endpoint for the component to use. Only used for local development with, for example, [GCP Pub/Sub Emaulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unncessary when running against the GCP production API. | `"http://localhost:8085"`
+| endpoint       | N  | GCP endpoint for the component to use. Only used for local development with, for example, [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unncessary when running against the GCP production API. | `"http://localhost:8085"`
 | `consumerID`         | N        | the Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. The `consumerID` along with the `topic` provided as part of the request are used to build the Pub/Sub subcription ID |
 | identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
 | privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-private-key"`
@@ -90,11 +89,17 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Default: `2` | `2`
 | deadLetterTopic | N  | Name of the GCP Pub/Sub Topic. This topic **must** exist before using this component.  | `"myapp-dlq"`
 | maxDeliveryAttempts | N  | Maximun number of attempts to deliver the message. If `deadLetterTopic` is specified, `maxDeliveryAttempts` is the maximun number of attempts for failed processing of messages, once that number is reached, the message will be moved to the dead-letter Topic. Default: `5` | `5`
+| type           | N | **DEPRECATED** GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
+
 
 
 {{% alert title="Warning" color="warning" %}}
 If `enableMessageOrdering` is set to "true", the roles/viewer or roles/pubsub.viewer role will be required on the service account in order to guarantee ordering in cases where order tokens are not embedded in the messages. If this role is not given, or the call to Subscription.Config() fails for any other reason, ordering by embedded order tokens will still function correctly.
 {{% /alert %}}
+
+## GCP Credentials
+
+The GCP Pub/Sub component uses the GCP Go Client Libraries and by default it authenticates using **Application Default Credentials** as explained in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) 
 
 ## Create a GCP Pub/Sub
 
