@@ -324,6 +324,7 @@ If the remote server is enforcing TLS renegotiation, you also need to set the me
 - `RenegotiateNever`
 - `RenegotiateOnceAsClient`
 - `RenegotiateFreelyAsClient`. 
+
 For more details see [the Go `RenegotiationSupport` documentation](https://pkg.go.dev/crypto/tls#RenegotiationSupport).
 
 ### When to use:
