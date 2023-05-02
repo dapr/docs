@@ -1,6 +1,6 @@
 - component: GCP Pub/Sub
   link: setup-gcp-pubsub
-  state: Alpha
+  state: Stable
   version: v1
   since: "1.0"
   features:
