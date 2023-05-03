@@ -45,8 +45,10 @@ Manage your workflow using HTTP calls. The example below plugs in the properties
 To start your workflow with an ID `12345678`, run:
 
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/start
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678
 ```
+
+Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 ### Terminate workflow
 
@@ -92,7 +94,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/pu
 To fetch workflow information (outputs and inputs) with an ID `12345678`, run:
 
 ```bash
-GET http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678
+GET http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678
 ```
 
 Learn more about these HTTP calls in the [workflow API reference guide]({{< ref workflow_api.md >}}).
