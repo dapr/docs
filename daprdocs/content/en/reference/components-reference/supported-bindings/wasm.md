@@ -9,7 +9,7 @@ aliases:
 
 ## Overview
 
-WebAssembly is a way to safely run code compiled in other languages. Runtimes
+With WebAssembly, you can safely run code compiled in other languages. Runtimes
 execute WebAssembly Modules (Wasm), which are most often binaries with a `.wasm`
 extension.
 
