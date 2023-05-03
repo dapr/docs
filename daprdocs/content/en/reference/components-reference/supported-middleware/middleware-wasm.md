@@ -18,7 +18,7 @@ pre-compiled into the `daprd` binary. Dapr embeds [wazero](https://wazero.io)
 to accomplish this without CGO.
 
 Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
-loads "rewrite.wasm" from the current directory of the process. On Kubernetes,
+loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
 see [mounting volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm modules.
 
