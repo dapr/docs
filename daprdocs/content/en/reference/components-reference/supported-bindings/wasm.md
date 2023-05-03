@@ -44,7 +44,7 @@ otherwise needed to accomplish something like this.
 
 ## Component format
 
-To configure a WebAssembly (Wasm) binding, create a component of type
+To configure a Wasm binding, create a component of type
 `bindings.wasm`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}})
 on how to create and apply a binding configuration.
 
