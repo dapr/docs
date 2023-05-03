@@ -146,7 +146,7 @@ func rewrite(requestURI []byte) ([]byte, error) {
 ```
 
 If using TinyGo, compile as shown below and set the spec metadata field named
-"url" to the location of the output (ex "file://example.wasm"):
+"url" to the location of the output (for example, `file://example.wasm`):
 
 ```bash
 tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go
