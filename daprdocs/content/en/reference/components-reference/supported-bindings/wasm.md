@@ -82,7 +82,7 @@ pass metadata properties with each request:
 - `args` any CLI arguments, comma-separated. This excludes the program name.
 
 For example, if your Wasm binary is `ruby.wasm`, the following request would
-have the response data "Hello, salaboy"
+have the response data "Hello, salaboy":
 
 ```json
 {
