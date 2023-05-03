@@ -33,7 +33,7 @@ distributes interpreters (including PHP, Python, and Ruby) already compiled to
 WASI.
 
 Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
-loads "rewrite.wasm" from the current directory of the process. On Kubernetes,
+loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
 see [mounting volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm binaries.
 
