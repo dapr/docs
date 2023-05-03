@@ -15,7 +15,7 @@ extension.
 
 The Wasm Binding allows you to invoke a program compiled to Wasm by passing
 commandline args or environment variables to it, similar to how you would with
-a normal subprocess. For example, you can satisfy an invocation using Python
+a normal subprocess. For example, you can satisfy an invocation using Python,
 even though Dapr is written in go and running on a platform that doesn't have
 Python installed!
 
