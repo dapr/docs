@@ -65,7 +65,7 @@ spec:
 
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
-| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include "file://". The path of a "file://" URL is relative to the Dapr process unless it begins with '/'. | true     | "file://hello.wasm" |
+| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
 
 
 ## Binding support
