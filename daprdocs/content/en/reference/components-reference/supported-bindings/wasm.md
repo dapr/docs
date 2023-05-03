@@ -38,9 +38,9 @@ loads "rewrite.wasm" from the current directory of the process. On Kubernetes,
 see [mounting volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm binaries.
 
-Dapr embeds [wazero](https://wazero.io) which loads programs compiled with the
-WASI, obviating platform dependencies or forking
-otherwise needed to accomplish something like this.
+Dapr uses [wazero](https://wazero.io) to run these binaries, because it has no
+dependencies. This allows use of WebAssembly with no installation process
+except Dapr itself.
 
 ## Component format
 
