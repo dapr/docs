@@ -110,7 +110,7 @@ func handleRequest(req api.Request, resp api.Response) (next bool, reqCtx uint32
 ```
 
 If using TinyGo, compile as shown below and set the spec metadata field named
-"url" to the location of the output (ex "file://router.wasm"):
+"url" to the location of the output (for example, `file://router.wasm`):
 
 ```bash
 tinygo build -o router.wasm -scheduler=none --no-debug -target=wasi router.go`
