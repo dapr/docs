@@ -39,7 +39,7 @@ see [mounting volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >
 to configure a filesystem mount that can contain Wasm binaries.
 
 Dapr embeds [wazero](https://wazero.io) which loads programs compiled with the
-WebAssembly System Interface (WASI), obviating platform dependencies or forking
+WASI, obviating platform dependencies or forking
 otherwise needed to accomplish something like this.
 
 ## Component format
