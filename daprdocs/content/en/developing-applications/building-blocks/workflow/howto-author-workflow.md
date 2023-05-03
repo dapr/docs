@@ -163,15 +163,8 @@ app.Run();
 - A Python package called `DaprClient` to receive the Python SDK capabilities
 - A builder with an extension method called `todo`
   - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
-- HTTP API calls
-  - **start_workflow**: Start an instance of a workflow
-  - **get_workflow**: Get information on a single workflow
-  - **terminate_workflow**: Terminate or stop a particular instance of a workflow
-  - **raise_event**: Raise an event on a workflow
-  - **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
-  - **resume_workflow**: Resumes a paused workflow instance
-  - **purge_workflow**: Removes all metadata related to a specific workflow instance
-
+- HTTP API calls to start, pause, resume, terminate, and purge the workflow.
+ 
 ```python
 from dapr.clients import DaprClient
 
@@ -198,28 +191,9 @@ with DaprClient() as d:
                      workflow_name=workflowName, input=encoded_data2, workflow_options=workflowOptions)
     print(f"Attempting to start {workflowName}")
     print(f"start_resp {start_resp.instance_id}")
+    # Get workflow status
     getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
     print(f"Get response from {workflowName} after start call: {getResponse.runtime_status}")
-
-    # Pause Test
-    d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
-
-    # Resume Test
-    d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
-
-    # Terminate Test
-    d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
-
-    # Purge Test
-    d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after purge call: {getResponse}")
 ```
 
 
