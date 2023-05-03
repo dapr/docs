@@ -81,9 +81,11 @@ It also includes a `RunAsync` method that does the heavy lifting of the workflow
 
 Compose the workflow activities into a workflow. 
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+
+<!--csharp-->
 
 [In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 
@@ -152,8 +154,79 @@ app.Run();
 
 {{% /codetab %}}
 
-{{< /tabs >}}
+{{% codetab %}}
 
+<!--python-->
+
+[In the following example](todo), for a basic Python order processing application using the Python SDK, your project code would include:
+
+- A Python package called `DaprClient` to receive the Python SDK capabilities
+- A builder with an extension method called `todo`
+  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
+- HTTP API calls
+  - **start_workflow**: Start an instance of a workflow
+  - **get_workflow**: Get information on a single workflow
+  - **terminate_workflow**: Terminate or stop a particular instance of a workflow
+  - **raise_event**: Raise an event on a workflow
+  - **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
+  - **resume_workflow**: Resumes a paused workflow instance
+  - **purge_workflow**: Removes all metadata related to a specific workflow instance
+
+```python
+from dapr.clients import DaprClient
+
+from dapr.clients.grpc._helpers import to_bytes
+# ...
+
+# Dapr Workflows are registered as part of the service configuration
+with DaprClient() as d:
+    instanceId = "RRLINSTANCEID35"
+    workflowComponent = "dapr"
+    workflowName = "PlaceOrder"
+    workflowOptions = dict()
+    workflowOptions["task_queue"] =  "testQueue"
+    inventoryItem = ("Computers", 5, 10)
+    item2 = "paperclips"
+
+    encoded_data = b''.join(bytes(str(element), 'UTF-8') for element in item2)
+    encoded_data2 = json.dumps(item2).encode("UTF-8")
+
+    # ...
+
+    # Start the workflow
+    start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
+                     workflow_name=workflowName, input=encoded_data2, workflow_options=workflowOptions)
+    print(f"Attempting to start {workflowName}")
+    print(f"start_resp {start_resp.instance_id}")
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after start call: {getResponse.runtime_status}")
+
+    # Pause Test
+    d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
+
+    # Resume Test
+    d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
+
+    # Terminate Test
+    d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
+
+    # Purge Test
+    d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after purge call: {getResponse}")
+```
+
+
+{{% /codetab %}}
+
+
+{{< /tabs >}}
 
 
 {{% alert title="Important" color="warning" %}}
@@ -170,4 +243,6 @@ Now that you've authored a workflow, learn how to manage it.
 ## Related links
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the full SDK examples:
+  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+  - [Python example](todo)
