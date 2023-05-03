@@ -27,7 +27,6 @@ Minimally, you must specify a Wasm binary compiled with the canonical WASI
 version `wasi_snapshot_preview1` (a.k.a. `wasip1`), often abbreviated to `wasi`.
 
 > **Note:** If compiling in Go 1.21+, this is `GOOS=wasip1 GOARCH=wasm`. In TinyGo, Rust, and Zig, this is the target `wasm32-wasi`.
-in TinyGo, Rust and Zig, this is the target `wasm32-wasi`.
 
 You can also re-use an existing binary. For example, [Wasm Language Runtimes](https://github.com/vmware-labs/webassembly-language-runtimes)
 distributes interpreters including PHP, Python and Ruby, already compiled to
