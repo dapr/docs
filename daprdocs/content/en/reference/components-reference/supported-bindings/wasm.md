@@ -24,7 +24,7 @@ Interface (WASI). The binary can be a program you've written such as in Go, or
 an interpreter you use to run inlined scripts, such as Python.
 
 Minimally, you must specify a Wasm binary compiled with the canonical WASI
-version `wasi_snapshot_preview1` a.k.a. `wasip1`, often abbreviated to `wasi`.
+version `wasi_snapshot_preview1` (a.k.a. `wasip1`), often abbreviated to `wasi`.
 
 If compiling yourself in Go 1.21+, this is `GOOS=wasip1 GOARCH=wasm`, whereas
 in TinyGo, Rust and Zig, this is the target `wasm32-wasi`.
