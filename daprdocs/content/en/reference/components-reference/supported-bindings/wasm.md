@@ -34,7 +34,7 @@ WASI.
 
 Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
 loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
-see [mounting volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
+see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm binaries.
 
 Dapr uses [wazero](https://wazero.io) to run these binaries, because it has no
