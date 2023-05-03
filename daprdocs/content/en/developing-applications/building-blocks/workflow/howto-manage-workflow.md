@@ -80,7 +80,6 @@ To resume a workflow with an ID `12345678`, run:
 POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/resume
 ```
 
-
 ### Purge a workflow 
 
 To remove actor state from your state store and avoid overloading your state stores, run:
