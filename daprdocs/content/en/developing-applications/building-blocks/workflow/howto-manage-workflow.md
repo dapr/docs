@@ -60,7 +60,12 @@ POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/terminate
 
 ### Raise an event
 
-To raise an event in your workflow, run:
+For your workflow to create "wait for external event" tasks that:
+
+1. Subscribe to external events.
+1. Await those tasks to block execution until the event is received.
+
+An event can be To raise/wait for an event in your workflow, run:
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
