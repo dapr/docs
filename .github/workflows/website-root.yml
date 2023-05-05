@@ -21,6 +21,8 @@ jobs:
           fetch-depth: 0
       - name: Setup Docsy
         run: cd daprdocs && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
+      - name: Set Git's safe.directory
+        run: git config --global --add safe.directory '*'
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
