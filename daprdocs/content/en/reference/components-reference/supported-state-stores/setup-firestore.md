@@ -72,7 +72,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 
 ## GCP Credentials
-The GCP Firestore component uses the GCP Go Client Libraries and by default it authenticates using **Application Default Credentials** as explained in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) 
+Since the GCP Firestore component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
 
 ## Setup GCP Firestore
 
