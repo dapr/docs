@@ -99,7 +99,7 @@ If `enableMessageOrdering` is set to "true", the roles/viewer or roles/pubsub.vi
 
 ## GCP Credentials
 
-The GCP Pub/Sub component uses the GCP Go Client Libraries and by default it authenticates using **Application Default Credentials** as explained in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) 
+Since the GCP Pub/Sub component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained further in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
 
 ## Create a GCP Pub/Sub
 
