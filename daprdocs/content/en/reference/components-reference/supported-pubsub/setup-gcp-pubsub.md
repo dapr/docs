@@ -71,7 +71,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | projectId     | Y | GCP project id| `myproject-123`
-| endpoint       | N  | GCP endpoint for the component to use. Only used for local development with, for example, [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unncessary when running against the GCP production API. | `"http://localhost:8085"`
+| endpoint       | N  | GCP endpoint for the component to use. Only used for local development (for example) with [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"http://localhost:8085"`
 | `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the Dapr runtime will set it to the Dapr application ID. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID |
 | identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
 | privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-private-key"`
