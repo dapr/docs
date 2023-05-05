@@ -88,7 +88,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxReconnectionAttempts | N  |Defines the maximum number of reconnect attempts. Default: `30` | `30`
 | connectionRecoveryInSec | N  |Time in seconds to wait between connection recovery attempts. Default: `2` | `2`
 | deadLetterTopic | N  | Name of the GCP Pub/Sub Topic. This topic **must** exist before using this component.  | `"myapp-dlq"`
-| maxDeliveryAttempts | N  | Maximun number of attempts to deliver the message. If `deadLetterTopic` is specified, `maxDeliveryAttempts` is the maximun number of attempts for failed processing of messages, once that number is reached, the message will be moved to the dead-letter Topic. Default: `5` | `5`
+| maxDeliveryAttempts | N  | Maximum number of attempts to deliver the message. If `deadLetterTopic` is specified, `maxDeliveryAttempts` is the maximum number of attempts for failed processing of messages. Once that number is reached, the message will be moved to the dead-letter topic. Default: `5` | `5`
 | type           | N | **DEPRECATED** GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
 
 
