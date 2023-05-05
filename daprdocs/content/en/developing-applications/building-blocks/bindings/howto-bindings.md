@@ -6,7 +6,8 @@ description: "Invoke external systems with output bindings"
 weight: 300
 ---
 
-With output bindings, you can invoke external resources. An optional payload and metadata can be sent with the invocation request.
+
+Although using the service invocation API is the preferred method to invoke external resources, you can also use output bindings. An optional payload and metadata can be sent with the invocation request.
 
 <img src="/images/howto-bindings/kafka-output-binding.png" width=1000 alt="Diagram showing bindings of example service">
 

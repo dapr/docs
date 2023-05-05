@@ -8,7 +8,7 @@ description: "Overview of the service invocation API building block"
 
 Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
-In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle problems like:
+In many microservice-based applications multiple services need the ability to communicate with one another, as well as with non-Daprized endpoints. This inter-service, and external communication requires that application developers handle problems like:
 
 - **Service discovery.** How do I discover my different services?
 - **Standardizing API calls between services.** How do I invoke methods between services?
@@ -25,7 +25,7 @@ Dapr uses a sidecar architecture. To invoke an application using Dapr:
 - Each application communicates with its own instance of Dapr. 
 - The Dapr instances discover and communicate with each other.
 
-The diagram below is an overview of how Dapr's service invocation works.
+The diagram below is an overview of how Dapr's service invocation works between two Daprized applications.
 
 <img src="/images/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation">
 
@@ -38,12 +38,28 @@ The diagram below is an overview of how Dapr's service invocation works.
 6. Dapr forwards the response to Service A's Dapr sidecar.
 7. Service A receives the response.
 
+The diagram below is an overview of how Dapr's service invocation works when invoking non-Daprized endpoints.
+
+<img src="/images/service-invocation-overview-non-daprized-endpoint.png" width=800 alt="Diagram showing the steps of service invocation to non-Daprized endpoints">
+
+1. Service A makes an HTTP call targeting Service B, a non-Daprized endpoint. The call goes to the local Dapr sidecar.
+2. Dapr discovers Service B's location using the [name resolution component]({{< ref supported-name-resolution >}}) which is running on the given [hosting platform]({{< ref "hosting" >}}).
+3. Dapr forwards the message to Service B.
+    - **Note**: Calls to non-Daprized endpoints use the HTTP protocol.
+4. Service B runs its business logic code.
+5. Service B sends a response to Service A's Dapr sidecar.
+6. Service A receives the response.
+
 ## Features
-Service invocation provides several features to make it easy for you to call methods between applications.
+Service invocation provides several features to make it easy for you to call methods between applications, as well as to non-Daprized endpoints.
 
 ### HTTP and gRPC service invocation
 - **HTTP**: If you're already using HTTP protocols in your application, using the Dapr HTTP header might be the easiest way to get started. You don't need to change your existing endpoint URLs; just add the `dapr-app-id` header and you're ready to go. For more information, see [Invoke Services using HTTP]({{< ref howto-invoke-discover-services.md >}}). 
 - **gRPC**: Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
+
+### HTTP service invocation to non-Daprized endpoints
+If you are in a brownfield scenario or simply have existing non-Daprized endpoints that you want to invoke, then you can do so using the service invocation API.
+By defining a Dapr HTTPEndpoint, you declaratively define a way to interact with a non-Daprized endpoint. You then use the existing service invocation URL, while replacing the internal `appid` with the HTTPEndpoint name, and can use the existing service invocation API as is. This allows for you to also use the HTTPEndpoint name as the value if you use the `dapr-app-id` header. Alternatively, you can place a non-Daprized endpoint URL directly into the service invocation URL where you would place the `appid` or HTTPEndpoint name.
 
 ### Service-to-service security
 
