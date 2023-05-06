@@ -33,7 +33,7 @@ The following table lists the properties for tracing:
 | `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
 | `stdout` | bool | True write more verbose information to the traces
 | `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address. 
-| `otel.isSecure` | bool | Is the connection to the endpoint address encryped.
+| `otel.isSecure` | bool | Is the connection to the endpoint address encrypted.
 | `otel.protocol` | string | Set to `http` or `grpc` protocol.
 | `zipkin.endpointAddress` | string | Set the Zipkin server address. If this is used, you do not need to specify the `otel` section.
 
@@ -58,3 +58,14 @@ spec:
 Dapr uses probabilistic sampling. The sample rate defines the probability a tracing span will be sampled and can have a value between 0 and 1 (inclusive). The default sample rate is 0.0001 (i.e. 1 in 10,000 spans is sampled).
 
 Changing `samplingRate` to 0 disables tracing altogether.
+
+## Environment variables
+
+The OpenTelemetry (otel) endpoint can also be configured via an environment variables. The presence of the OTEL_EXPORTER_OTLP_ENDPOINT environment variable
+will turn on tracing for the sidecar.
+
+| Environment Variable | Description |
+|----------------------|-------------|
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | Set the Open Telemetry (OTEL) server address, turns on tracing |
+| `OTEL_EXPORTER_OTLP_INSECURE` | Set the connection to the endpoint as unencrypted (true/false) |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
