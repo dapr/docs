@@ -23,8 +23,8 @@ OrderPayload input = new OrderPayload("Paperclips", 99.95);
 Dictionary<string, string> workflowOptions; // This is an optional parameter
 CancellationToken cts = CancellationToken.None;
 
-// Start the workflow. This returns back a "WorkflowReference" which contains the instanceID for the particular workflow instance.
-WorkflowReference startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions, cts);
+// Start the workflow. This returns back a "StartWorkflowResponse" which contains the instanceID for the particular workflow instance.
+StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions, cts);
 
 // Get information on the workflow. This response will contain information such as the status of the workflow, when it started, and more!
 GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
