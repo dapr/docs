@@ -30,7 +30,19 @@ WorkflowReference startResponse = await daprClient.StartWorkflowAsync(orderId, w
 GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
 
 // Terminate the workflow
-await daprClient.TerminateWorkflowAsync(instanceId, workflowComponent);
+GetWorkflowResponse getResponse = await daprClient.TerminateWorkflowAsync(orderId, workflowComponent, cts);
+
+// Raise an event (an incoming purchase order) that your workflow will wait for. This returns the item waiting to be purchased.
+GetWorkflowResponse getResponse = await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input, cts);
+
+// Pause
+GetWorkflowResponse getResponse = await daprClient.PauseWorkflowAsync(orderId, workflowComponent, cts);
+
+// Resume
+GetWorkflowResponse getResponse = await daprClient.ResumeWorkflowAsync(orderId, workflowComponent, cts);
+
+// Purge
+GetWorkflowResponse getResponse = await daprClient.PurgeWorkflowAsync(orderId, workflowComponent, cts);
 ```
 
 {{% /codetab %}}
@@ -65,7 +77,7 @@ For your workflow to create "wait for external event" tasks that:
 1. Subscribe to external events.
 1. Await those tasks to block execution until the event is received.
 
-An event can be To raise/wait for an event in your workflow, run:
+An `eventName` can be any function. To raise/wait for an event in your workflow, run:
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
