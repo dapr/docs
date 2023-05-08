@@ -87,7 +87,55 @@ It also includes a `RunAsync` method that does the heavy lifting of the workflow
 - HTTP API calls to start, pause, resume, terminate, and purge the workflow.
  
 ```python
-todo
+from dapr.clients import DaprClient
+
+from dapr.clients.grpc._helpers import to_bytes
+# ...
+
+# Dapr Workflows are registered as part of the service configuration
+with DaprClient() as d:
+    instanceId = "RRLINSTANCEID35"
+    workflowComponent = "dapr"
+    workflowName = "PlaceOrder"
+    workflowOptions = dict()
+    workflowOptions["task_queue"] =  "testQueue"
+    inventoryItem = ("Computers", 5, 10)
+    item2 = "paperclips"
+
+    encoded_data = b''.join(bytes(str(element), 'UTF-8') for element in item2)
+    encoded_data2 = json.dumps(item2).encode("UTF-8")
+
+    # ...
+
+    # Start the workflow
+    start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
+                     workflow_name=workflowName, input=encoded_data2, workflow_options=workflowOptions)
+    print(f"Attempting to start {workflowName}")
+    print(f"start_resp {start_resp.instance_id}")
+    # Get workflow status
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after start call: {getResponse.runtime_status}")
+
+    # Pause Test
+    d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
+
+    # Resume Test
+    d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
+
+    # Terminate Test
+    d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
+
+    # Purge Test
+    d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+    print(f"Get response from {workflowName} after purge call: {getResponse}")
+
 ```
 
 

@@ -8,7 +8,7 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs ".NET SDK" "Python SDK" HTTP >}}
+{{< tabs ".NET" Python HTTP >}}
 
 <!--NET-->
 {{% codetab %}}
@@ -48,54 +48,54 @@ Manage your workflow within your code. In the `OrderProcessingWorkflow` example 
 - **purge_workflow**: Removes all metadata related to a specific workflow instance
 
 ```python
-from dapr.clients import DaprClient
+dapr = DaprGrpcClient(f'localhost:{self.server_port}')
 
-from dapr.clients.grpc._helpers import to_bytes
-# ...
+# Sane parameters
+workflow_name = 'testWorkflow'
+instance_id = str(uuid.uuid4())
+workflow_component = "dapr"
+input = "paperclips"
 
-# Dapr Workflows are registered as part of the service configuration
-with DaprClient() as d:
-    instanceId = "RRLINSTANCEID35"
-    workflowComponent = "dapr"
-    workflowName = "PlaceOrder"
-    workflowOptions = dict()
-    workflowOptions["task_queue"] =  "testQueue"
-    inventoryItem = ("Computers", 5, 10)
-    item2 = "paperclips"
+# Start the workflow
+start_response = dapr.start_workflow(instance_id, workflow_name, workflow_component,
+                                     input.encode('utf-8'), None)
+self.assertEqual(instance_id, start_response.instance_id)
 
-    encoded_data = b''.join(bytes(str(element), 'UTF-8') for element in item2)
-    encoded_data2 = json.dumps(item2).encode("UTF-8")
 
-    # ...
 
-    # Start the workflow
-    start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
-                     workflow_name=workflowName, input=encoded_data2, workflow_options=workflowOptions)
-    print(f"Attempting to start {workflowName}")
-    print(f"start_resp {start_resp.instance_id}")
-    # Get workflow status
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after start call: {getResponse.runtime_status}")
+# Get info on the workflow to check that it is running
+get_response = dapr.get_workflow(instance_id, workflow_component)
+self.assertEqual("RUNNING", get_response.runtime_status)
 
-    # Pause Test
-    d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
+# Pause the workflow
+dapr.pause_workflow(instance_id, workflow_component)
 
-    # Resume Test
-    d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
+# Get info on the workflow to check that it is paused
+get_response = dapr.get_workflow(instance_id, workflow_component)
+self.assertEqual("SUSPENDED", get_response.runtime_status)
 
-    # Terminate Test
-    d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
+# Resume the workflow
+dapr.resume_workflow(instance_id, workflow_component)
 
-    # Purge Test
-    d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-    print(f"Get response from {workflowName} after purge call: {getResponse}")
+# Get info on the workflow to check that it is resumed
+get_response = dapr.get_workflow(instance_id, workflow_component)
+self.assertEqual("RUNNING", get_response.runtime_status)
+
+# Raise an event on the workflow. 
+TODO: Figure out how to check/verify this
+
+# Terminate the workflow
+dapr.terminate_workflow(instance_id, workflow_component)
+
+# Get info on the workflow to check that it is terminated
+get_response = dapr.get_workflow(instance_id, workflow_component)
+self.assertEqual("TERMINATED", get_response.runtime_status)
+
+# Purge the workflow
+dapr.purge_workflow(instance_id, workflow_component)
+
+# Get information on the workflow to ensure that it has been purged
+TODO
 ```
 
 {{% /codetab %}}
