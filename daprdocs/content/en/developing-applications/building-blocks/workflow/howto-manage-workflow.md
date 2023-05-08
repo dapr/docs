@@ -30,19 +30,19 @@ WorkflowReference startResponse = await daprClient.StartWorkflowAsync(orderId, w
 GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
 
 // Terminate the workflow
-GetWorkflowResponse getResponse = await daprClient.TerminateWorkflowAsync(orderId, workflowComponent, cts);
+await daprClient.TerminateWorkflowAsync(orderId, workflowComponent, cts);
 
 // Raise an event (an incoming purchase order) that your workflow will wait for. This returns the item waiting to be purchased.
-GetWorkflowResponse getResponse = await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input, cts);
+await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input, cts);
 
 // Pause
-GetWorkflowResponse getResponse = await daprClient.PauseWorkflowAsync(orderId, workflowComponent, cts);
+await daprClient.PauseWorkflowAsync(orderId, workflowComponent, cts);
 
 // Resume
-GetWorkflowResponse getResponse = await daprClient.ResumeWorkflowAsync(orderId, workflowComponent, cts);
+await daprClient.ResumeWorkflowAsync(orderId, workflowComponent, cts);
 
 // Purge
-GetWorkflowResponse getResponse = await daprClient.PurgeWorkflowAsync(orderId, workflowComponent, cts);
+await daprClient.PurgeWorkflowAsync(orderId, workflowComponent, cts);
 ```
 
 {{% /codetab %}}

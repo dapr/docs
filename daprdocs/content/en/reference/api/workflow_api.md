@@ -75,7 +75,7 @@ Code | Description
 
 This API does not return any content.
 
-## Raise Event workflow request
+## Raise Event request
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
@@ -87,7 +87,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Current default is `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
-`eventName` | The name of any workflow function
+`eventName` | The name of the event to raise
 
 ### HTTP response codes
 
