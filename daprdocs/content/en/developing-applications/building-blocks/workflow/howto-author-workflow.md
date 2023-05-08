@@ -30,7 +30,7 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client.
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
 
@@ -72,6 +72,24 @@ It also includes a `RunAsync` method that does the heavy lifting of the workflow
         }
     }
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--python-->
+
+[In the following example](todo), for a basic Python order processing application using the Python SDK, your project code would include:
+
+- A Python package called `DaprClient` to receive the Python SDK capabilities
+- A builder with an extension method called `todo`
+  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
+- HTTP API calls to start, pause, resume, terminate, and purge the workflow.
+ 
+```python
+todo
+```
+
 
 {{% /codetab %}}
 
