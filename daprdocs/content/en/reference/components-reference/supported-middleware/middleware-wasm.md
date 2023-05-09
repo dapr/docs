@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "WASM"
-linkTitle: "WASM"
-description: "Use WASM middleware in your HTTP pipeline"
+title: "Wasm"
+linkTitle: "Wasm"
+description: "Use Wasm middleware in your HTTP pipeline"
 aliases:
 - /developing-applications/middleware/supported-middleware/middleware-wasm/
 ---
