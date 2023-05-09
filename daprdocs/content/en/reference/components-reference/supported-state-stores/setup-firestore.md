@@ -60,6 +60,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | project_id         | Y        | The ID of the GCP project to use | `"project-id"`
 | endpoint       | N  | GCP endpoint for the component to use. Only used for local development with (for example) [GCP Datastore Emulator](https://cloud.google.com/datastore/docs/tools/datastore-emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"localhost:8432"`
 | private_key_id     | N        | The ID of the prvate key to use  | `"private-key-id"`
+| privateKey         | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`
 | client_email       | N        | The email address for the client | `"eample@example.com"`
 | client_id          | N        | The client id value to use for authentication | `"client-id"`
 | auth_uri           | N        | The authentication URI to use | `"https://accounts.google.com/o/oauth2/auth"`
