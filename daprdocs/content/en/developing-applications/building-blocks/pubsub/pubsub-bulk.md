@@ -313,10 +313,17 @@ A JSON-encoded payload body with the processing status against each entry needs 
 
 ```json
 {
-  "statuses": {
-    "entryId": "<entryId>",
+  "statuses": 
+  [ 
+    {
+    "entryId": "<entryId1>",
     "status": "<status>"
-  }
+    }, 
+    {
+    "entryId": "<entryId2>",
+    "status": "<status>"
+    } 
+  ]
 }
 ```
 
@@ -334,7 +341,7 @@ Please refer [Expected HTTP Response for Bulk Subscribe]({{< ref pubsub_api.md >
 
 Please refer following code samples for how to use Bulk Subscribe:
 
-{{< tabs "Java" "JavaScript" ".NET" "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs "Java" "JavaScript" ".NET" >}}
 
 {{% codetab %}}
 
@@ -387,13 +394,20 @@ import { DaprServer } from "@dapr/dapr";
 const pubSubName = "orderPubSub";
 const topic = "topicbulk";
 
-const DAPR_HOST = process.env.DAPR_HOST || "127.0.0.1";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3502";
-const SERVER_HOST = process.env.SERVER_HOST || "127.0.0.1";
-const SERVER_PORT = process.env.APP_PORT || 5001;
+const daprHost = process.env.DAPR_HOST || "127.0.0.1";
+const daprPort = process.env.DAPR_HTTP_PORT || "3502";
+const serverHost = process.env.SERVER_HOST || "127.0.0.1";
+const serverPort = process.env.APP_PORT || 5001;
 
 async function start() {
-    const server = new DaprServer(SERVER_HOST, SERVER_PORT, DAPR_HOST, DAPR_HTTP_PORT);
+    const server = new DaprServer({
+        serverHost,
+        serverPort,
+        clientOptions: {
+            daprHost,
+            daprPort,
+        },
+    });
 
     // Publish multiple messages to a topic with default config.
     await client.pubsub.bulkSubscribeWithDefaultConfig(pubSubName, topic, (data) => console.log("Subscriber received: " + JSON.stringify(data)));
