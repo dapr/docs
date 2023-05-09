@@ -24,3 +24,6 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | DAPR_HELM_REPO_URL | Your private Dapr Helm chart url  | Specifies a private Dapr Helm chart url, which defaults to the official Helm chart URL: `https://dapr.github.io/helm-charts`|
 | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
 | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr helm chart. If it can be accessed publicly, this env variable does not need to be set| 
+| OTEL_EXPORTER_OTLP_ENDPOINT | OpenTelemetry Tracing | Sets the Open Telemetry (OTEL) server address, turns on tracing. (Example: `http://localhost:4318`) |
+| OTEL_EXPORTER_OTLP_INSECURE | OpenTelemetry Tracing | Sets the connection to the endpoint as unencrypted. (`true`, `false`) |
+| OTEL_EXPORTER_OTLP_PROTOCOL | OpenTelemetry Tracing | The OTLP protocol to use Transport protocol. (`grpc`, `http/protobuf`, `http/json`) |
