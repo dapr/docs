@@ -1,4 +1,4 @@
-name: Azure Static Web App v1.9
+name: Azure Static Web App Versioned
 
 on:
   push:
