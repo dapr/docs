@@ -91,7 +91,7 @@ will turn on tracing for the sidecar.
 
 | Environment Variable | Description |
 |----------------------|-------------|
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | Set the Open Telemetry (OTEL) server address, turns on tracing |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
 | `OTEL_EXPORTER_OTLP_INSECURE` | Set the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
 
