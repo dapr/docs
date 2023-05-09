@@ -17,9 +17,10 @@ binary. In other words, you can extend Dapr using external files that are not
 pre-compiled into the `daprd` binary. Dapr embeds [wazero](https://wazero.io)
 to accomplish this without CGO.
 
-Wasm modules are loaded from a filesystem path. On Kubernetes, see [mounting
-volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}}) to configure
-a filesystem mount that can contain Wasm modules.
+Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
+loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
+see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
+to configure a filesystem mount that can contain Wasm modules.
 
 ## Component format
 
@@ -32,8 +33,8 @@ spec:
   type: middleware.http.wasm
   version: v1
   metadata:
-  - name: path
-    value: "./router.wasm"
+  - name: url
+    value: "file://router.wasm"
 ```
 
 ## Spec metadata fields
@@ -41,9 +42,9 @@ spec:
 Minimally, a user must specify a Wasm binary implements the [http-handler](https://http-wasm.io/http-handler/).
 How to compile this is described later.
 
-| Field    | Details                                                        | Required | Example        |
-|----------|----------------------------------------------------------------|----------|----------------|
-| path     | A relative or absolute path to the Wasm binary to instantiate. | true     | "./hello.wasm" |
+| Field | Details                                                        | Required | Example        |
+|-------|----------------------------------------------------------------|----------|----------------|
+| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
 
 ## Dapr configuration
 
@@ -109,7 +110,7 @@ func handleRequest(req api.Request, resp api.Response) (next bool, reqCtx uint32
 ```
 
 If using TinyGo, compile as shown below and set the spec metadata field named
-"path" to the location of the output (ex "router.wasm"):
+"url" to the location of the output (for example, `file://router.wasm`):
 
 ```bash
 tinygo build -o router.wasm -scheduler=none --no-debug -target=wasi router.go`
@@ -145,7 +146,7 @@ func rewrite(requestURI []byte) ([]byte, error) {
 ```
 
 If using TinyGo, compile as shown below and set the spec metadata field named
-"path" to the location of the output (ex "example.wasm"):
+"url" to the location of the output (for example, `file://example.wasm`):
 
 ```bash
 tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go
