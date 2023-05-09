@@ -62,7 +62,7 @@ Changing `samplingRate` to 0 disables tracing altogether.
 ## Environment variables
 
 The OpenTelemetry (otel) endpoint can also be configured via an environment variables. The presence of the OTEL_EXPORTER_OTLP_ENDPOINT environment variable
-will turn on tracing for the sidecar.
+turns on tracing for the sidecar.
 
 | Environment Variable | Description |
 |----------------------|-------------|
