@@ -80,8 +80,9 @@ pass metadata properties with each request:
 
 - `args` any CLI arguments, comma-separated. This excludes the program name.
 
-For example, if your Wasm binary is `ruby.wasm`, the following request would
-have the response data "Hello, salaboy":
+For example, if the binding `url` was a Ruby interpreter, such as from
+[webassembly-language-runtimes](https://github.com/vmware-labs/webassembly-language-runtimes/releases/tag/ruby%2F3.2.0%2B20230215-1349da9),
+the following request would respond back with "Hello, salaboy":
 
 ```json
 {
