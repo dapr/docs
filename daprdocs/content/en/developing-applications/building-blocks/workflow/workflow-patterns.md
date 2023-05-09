@@ -78,7 +78,7 @@ In the fan-out/fan-in design pattern, you execute multiple tasks simultaneously 
 
 <img src="/images/workflow-overview/workflows-fanin-fanout.png" width=800 alt="Diagram showing how the fan-out/fan-in workflow pattern works">
 
-In addition to the challenges mentioned in [the previous pattern]({{< ref "workflow-overview.md#task-chaining" >}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
+In addition to the challenges mentioned in [the previous pattern]({{< ref "workflow-patterns.md#task-chaining" >}}), there are several important questions to consider when implementing the fan-out/fan-in pattern manually:
 
 - How do you control the degree of parallelism?
 - How do you know when to trigger subsequent aggregation steps?
