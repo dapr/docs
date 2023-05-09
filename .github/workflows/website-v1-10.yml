@@ -32,7 +32,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           app_location: "/daprdocs"
-          app_build_command: "hugo"
+          app_build_command: "git config --global --add safe.directory /github/workspace && hugo"
           output_location: "public"
           skip_api_build: true
 
