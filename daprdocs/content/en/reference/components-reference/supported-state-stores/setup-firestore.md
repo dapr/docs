@@ -21,30 +21,32 @@ spec:
   type: state.gcp.firestore
   version: v1
   metadata:
-  - name: type
-    value: <REPLACE-WITH-CREDENTIALS-TYPE> # Required. Example: "serviceaccount"
   - name: project_id
     value: <REPLACE-WITH-PROJECT-ID> # Required.
+  - name: endpoint # Optional. 
+    value: "http://localhost:8432"
   - name: private_key_id
-    value: <REPLACE-WITH-PRIVATE-KEY-ID> # Required.
+    value: <REPLACE-WITH-PRIVATE-KEY-ID> # Optional.
   - name: private_key
-    value: <REPLACE-WITH-PRIVATE-KEY> # Required.
+    value: <REPLACE-WITH-PRIVATE-KEY> # Optional, but Required if `private_key_id` is specified.
   - name: client_email
-    value: <REPLACE-WITH-CLIENT-EMAIL> # Required.
+    value: <REPLACE-WITH-CLIENT-EMAIL> # Optional, but Required if `private_key_id` is specified.
   - name: client_id
-    value: <REPLACE-WITH-CLIENT-ID> # Required.
+    value: <REPLACE-WITH-CLIENT-ID> # Optional, but Required if `private_key_id` is specified.
   - name: auth_uri
-    value: <REPLACE-WITH-AUTH-URI> # Required.
+    value: <REPLACE-WITH-AUTH-URI> # Optional.
   - name: token_uri
-    value: <REPLACE-WITH-TOKEN-URI> # Required.
+    value: <REPLACE-WITH-TOKEN-URI> # Optional.
   - name: auth_provider_x509_cert_url
-    value: <REPLACE-WITH-AUTH-X509-CERT-URL> # Required.
+    value: <REPLACE-WITH-AUTH-X509-CERT-URL> # Optional.
   - name: client_x509_cert_url
-    value: <REPLACE-WITH-CLIENT-x509-CERT-URL> # Required.
+    value: <REPLACE-WITH-CLIENT-x509-CERT-URL> # Optional.
   - name: entity_kind
     value: <REPLACE-WITH-ENTITY-KIND> # Optional. default: "DaprState"
   - name: noindex
     value: <REPLACE-WITH-BOOLEAN> # Optional. default: "false"
+  - name: type 
+    value: <REPLACE-WITH-CREDENTIALS-TYPE> # Deprecated.
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -55,17 +57,23 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| type               | Y        | The credentials type | `"serviceaccount"`
 | project_id         | Y        | The ID of the GCP project to use | `"project-id"`
-| private_key_id     | Y        | The ID of the prvate key to use  | `"private-key-id"`
-| client_email       | Y        | The email address for the client | `"eample@example.com"`
-| client_id          | Y        | The client id value to use for authentication | `"client-id"`
-| auth_uri           | Y        | The authentication URI to use | `"https://accounts.google.com/o/oauth2/auth"`
-| token_uri          | Y        | The token URI to query for Auth token | `"https://oauth2.googleapis.com/token"`
-| auth_provider_x509_cert_url | Y | The auth provider certificate URL | `"https://www.googleapis.com/oauth2/v1/certs"`
-| client_x509_cert_url | Y      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
+| endpoint       | N  | GCP endpoint for the component to use. Only used for local development with (for example) [GCP Datastore Emulator](https://cloud.google.com/datastore/docs/tools/datastore-emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"localhost:8432"`
+| private_key_id     | N        | The ID of the prvate key to use  | `"private-key-id"`
+| privateKey         | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`
+| client_email       | N        | The email address for the client | `"eample@example.com"`
+| client_id          | N        | The client id value to use for authentication | `"client-id"`
+| auth_uri           | N        | The authentication URI to use | `"https://accounts.google.com/o/oauth2/auth"`
+| token_uri          | N        | The token URI to query for Auth token | `"https://oauth2.googleapis.com/token"`
+| auth_provider_x509_cert_url | N | The auth provider certificate URL | `"https://www.googleapis.com/oauth2/v1/certs"`
+| client_x509_cert_url | N      | The client certificate URL | `"https://www.googleapis.com/robot/v1/metadata/x509/x"`
 | entity_kind          | N      | The entity name in Filestore. Defaults to `"DaprState"` | `"DaprState"`
 | noindex              | N      | Whether to disable indexing of state entities. Use this setting if you encounter Firestore index size limitations. Defaults to `"false"` | `"true"`
+| type                 | N       | **DEPRECATED** The credentials type | `"serviceaccount"`
+
+
+## GCP Credentials
+Since the GCP Firestore component uses the GCP Go Client Libraries, by default it authenticates using **Application Default Credentials**. This is explained in the [Authenticate to GCP Cloud services using client libraries](https://cloud.google.com/docs/authentication/client-libraries) guide.
 
 ## Setup GCP Firestore
 
@@ -74,7 +82,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 {{% codetab %}}
 You can use the GCP Datastore emulator to run locally using the instructions [here](https://cloud.google.com/datastore/docs/tools/datastore-emulator).
 
-You can then interact with the server using `localhost:8081`.
+You can then interact with the server using `http://localhost:8432`.
 {{% /codetab %}}
 
 {{% codetab %}}
