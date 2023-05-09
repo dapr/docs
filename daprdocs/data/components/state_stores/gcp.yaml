@@ -1,6 +1,6 @@
 - component: GCP Firestore
   link: setup-firestore
-  state: Alpha
+  state: Stable
   version: v1
   since: "1.0"
   features:
