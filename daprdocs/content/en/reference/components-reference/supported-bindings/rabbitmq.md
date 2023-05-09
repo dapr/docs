@@ -39,6 +39,8 @@ spec:
     value: 5
   - name: contentType
     value: "text/plain"
+  - name: reconnectWaitInSeconds
+    value: 5
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -58,6 +60,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | exclusive | N | Input/Output | Determines whether the topic will be an exclusive topic or not. Defaults to `"false"` | `"true"`, `"false"` |
 | maxPriority| N | Input/Output | Parameter to set the [priority queue](https://www.rabbitmq.com/priority.html). If this parameter is omitted, queue will be created as a general queue instead of a priority queue. Value between 1 and 255. See [also](#specifying-a-priority-per-message) | `"1"`, `"10"` |
 | contentType | N | Input/Output | The content type of the message. Defaults to "text/plain". | `"text/plain"`, `"application/cloudevent+json"` and so on |
+| reconnectWaitInSeconds | N | Input/Output | Represents the duration in seconds that the client should wait before attempting to reconnect to the server after a disconnection occurs. Defaults to `"5"`. | `"5"`, `"10"` |
 ## Binding support
 
 This component supports both **input and output** binding interfaces.
