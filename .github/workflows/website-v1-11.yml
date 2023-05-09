@@ -15,11 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
           fetch-depth: 0
-      - run: sudo git config --global --add safe.directory /github/workspace
       - name: Setup Docsy
         run: cd daprdocs && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
       - name: Build And Deploy
@@ -33,6 +32,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           skip_deploy_on_missing_secrets: true
           action: "upload"
+          app_build_command: 'git config --global --add safe.directory /github/workspace'
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/daprdocs" # App source code path
