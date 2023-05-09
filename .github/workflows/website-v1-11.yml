@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - run: sudo git config --system --add safe.directory /github/workspace
+      - run: sudo git config --global --add safe.directory /github/workspace
       - name: Setup Docsy
         run: cd daprdocs && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
       - name: Build And Deploy
