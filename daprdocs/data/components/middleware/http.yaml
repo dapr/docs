@@ -15,7 +15,8 @@
   description: Enables the [OAuth2 Client Credentials Grant flow](https://tools.ietf.org/html/rfc6749#section-4.4) on a Web API
 - component: OpenID Connect
   link: /reference/components-reference/supported-middleware/middleware-bearer
-  state: Alpha
+  state: Stable
+  since: "1.11"
   version: v1
   description: Verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API
 - component: Rego/OPA Policies
@@ -43,8 +44,8 @@
   state: Stable
   version: v1
   description: Converts the body of the request to uppercase letters (demo)
-- component: WASM
+- component: Wasm
   link: /reference/components-reference/supported-middleware/middleware-wasm
   state: Alpha
   version: v1
-  description: Use WASM middleware in your HTTP pipeline
+  description: Use Wasm middleware in your HTTP pipeline
