@@ -266,7 +266,11 @@ var main = function() {
 }
 
 async function start(orderId) {
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+    });
     const STATE_STORE_NAME = "statestore";
     //Using Dapr SDK to save and get state
     await client.state.save(STATE_STORE_NAME, [
@@ -483,7 +487,12 @@ const daprHost = "127.0.0.1";
 var main = function() {
     const STATE_STORE_NAME = "statestore";
     //Using Dapr SDK to save and get state
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+    });
+    
     await client.state.delete(STATE_STORE_NAME, "order_1"); 
 }
 
@@ -630,7 +639,12 @@ var main = function() {
     const STATE_STORE_NAME = "statestore";
     var orderId = 100;
     //Using Dapr SDK to save and retrieve multiple states
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+    });
+
     await client.state.save(STATE_STORE_NAME, [
         {
             key: "order_1",
@@ -870,7 +884,12 @@ var main = function() {
 }
 
 async function start(orderId) {
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+    const client = new DaprClient({
+        daprHost,
+        daprPort: process.env.DAPR_HTTP_PORT,
+        communicationProtocol: CommunicationProtocolEnum.HTTP,
+    });
+
     const STATE_STORE_NAME = "statestore";
     //Using Dapr SDK to save and retrieve multiple states
     await client.state.transaction(STATE_STORE_NAME, [
@@ -926,7 +945,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"keys":["order_1", "order_
 With the same Dapr instance running from above, save two key/value pairs into your statestore:
 
 ```powershell
-Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore'
+Invoke-RestMethod -Method Post -ContentType 'application/json' -Body '{"operations": [{"operation":"upsert", "request": {"key": "order_1", "value": "250"}}, {"operation":"delete", "request": {"key": "order_2"}}]}' -Uri 'http://localhost:3601/v1.0/state/statestore/transaction'
 ```
 
 Now see the results of your state transactions:

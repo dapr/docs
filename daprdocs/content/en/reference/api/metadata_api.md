@@ -93,7 +93,8 @@ curl http://localhost:3500/v1.0/metadata
     ],
     "extended": {
         "cliPID":"1031040",
-        "appCommand":"uvicorn --port 3000 demo_actor_service:app"
+        "appCommand":"uvicorn --port 3000 demo_actor_service:app",
+        "daprRuntimeVersion": "1.10.0"
     },
     "components":[
         {

@@ -34,7 +34,7 @@ spec:
     value: # Optional
   - name: maxRetryBackoff
     value: # Optional
-    - name: failover
+  - name: failover
     value: # Optional
   - name: sentinelMasterName
     value: # Optional
