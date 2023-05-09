@@ -87,7 +87,7 @@ The following table lists the properties for tracing:
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
 
 The OpenTelemetry (otel) endpoint can also be configured via an environment variables. The presence of the OTEL_EXPORTER_OTLP_ENDPOINT environment variable
-will turn on tracing for the sidecar.
+turns on tracing for the sidecar.
 
 | Environment Variable | Description |
 |----------------------|-------------|
