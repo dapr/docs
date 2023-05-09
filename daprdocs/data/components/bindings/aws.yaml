@@ -10,7 +10,7 @@
   link: s3
   state: Stable
   version: v1
-  since: "1.0"
+  since: "1.11"
   features:
     input: false
     output: true

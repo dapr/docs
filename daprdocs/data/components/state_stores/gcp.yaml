@@ -2,7 +2,7 @@
   link: setup-firestore
   state: Stable
   version: v1
-  since: "1.0"
+  since: "1.11"
   features:
     crud: true
     transactions: false
