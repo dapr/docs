@@ -73,15 +73,15 @@ The response (the method return) from the remote endpoint is returned in the req
 
 Persists the change to the state for an actor as a multi-item transaction.
 
+***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
+
 When putting state, _always_ set the `ttlInSeconds` field in the
 metadata for each value, unless there is a state clean up process out of band of
 Dapr. Omitting this field will result in the underlying Actor state store to
 grow indefinitely.
 
-See the [Dapr Community Call 80](https://youtu.be/kVpQYkGemRc?t=28)
-recording for more details on actor state TTL.
-
-***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
+See the Dapr Community Call 80 recording for more details on actor state TTL.
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kVpQYkGemRc?start=28" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 #### HTTP Request
 
