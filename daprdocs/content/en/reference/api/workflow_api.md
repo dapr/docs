@@ -103,7 +103,7 @@ None.
 
 ## Pause workflow request
 
-Pause a running workflow instance with the given name and instance ID.
+Pause a running workflow instance.
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/pause
@@ -130,7 +130,7 @@ None.
 
 ## Resume workflow request
 
-Resume a paused workflow instance with the given name and instance ID.
+Resume a paused workflow instance.
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/resume
@@ -157,7 +157,7 @@ None.
 
 ## Purge workflow request
 
-Purge a running workflow instance with the given name and instance ID.
+Purge the actor state from your state store with the workflow's instance ID.
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/purge
@@ -168,7 +168,6 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 Parameter | Description
 --------- | -----------
 `workflowComponentName` | Current default is `dapr` for Dapr Workflows
-`workflowName` | Identify the workflow type
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes

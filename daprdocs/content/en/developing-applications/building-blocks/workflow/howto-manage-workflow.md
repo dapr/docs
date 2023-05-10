@@ -102,7 +102,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/resume
 To remove actor state from your state store and avoid overloading your state stores, run:
 
 ```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/purge
+POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/purge
 ```
 
 ### Get information about a workflow
