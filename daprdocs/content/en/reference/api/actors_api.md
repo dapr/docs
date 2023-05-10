@@ -78,7 +78,7 @@ metadata for each value, unless there is a state clean up process out of band of
 Dapr. Omitting this field will result in the underlying Actor state store to
 grow indefinitely.
 
-Please see the [Dapr Community Call 80](https://youtu.be/kVpQYkGemRc?t=28)
+See the [Dapr Community Call 80](https://youtu.be/kVpQYkGemRc?t=28)
 recording for more details on actor state TTL.
 
 ***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
