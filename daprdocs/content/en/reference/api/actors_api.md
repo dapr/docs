@@ -73,7 +73,7 @@ The response (the method return) from the remote endpoint is returned in the req
 
 Persists the change to the state for an actor as a multi-item transaction.
 
-When putting state, clients should _always_ set the `ttlInSeconds` field in the
+When putting state, _always_ set the `ttlInSeconds` field in the
 metadata for each value, unless there is a state clean up process out of band of
 Dapr. Omitting this field will result in the underlying Actor state store to
 grow indefinitely.
