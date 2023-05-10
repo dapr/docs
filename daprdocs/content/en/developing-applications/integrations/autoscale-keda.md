@@ -13,7 +13,7 @@ For Kubernetes, Dapr integrates with [KEDA](https://github.com/kedacore/keda), a
 In this guide, you configure a scalable Dapr application, along with the back pressure on Kafka topic. However, you can apply this approach to _any_ [pub/sub components]({{< ref pubsub >}}) offered by Dapr.
 
 {{% alert title="Note" color="primary" %}}
- If you're working with Azure Container Apps, refer to the official Azure documentation for [scaling Dapr applications using KEDA scalers](https://learn.microsoft.com/en-us/azure/container-apps/dapr-keda-scaling).
+ If you're working with Azure Container Apps, refer to the official Azure documentation for [scaling Dapr applications using KEDA scalers](https://learn.microsoft.com/azure/container-apps/dapr-keda-scaling).
 
 {{% /alert %}}
 
