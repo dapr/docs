@@ -162,4 +162,4 @@ As defined in the KEDA scaler manifest, you can now start publishing messages to
 
 ## Next steps
 
-[Learn about scaling your Dapr pub/sub or binding application with KEDA in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/dapr-keda-scaling)
+[Learn about scaling your Dapr pub/sub or binding application with KEDA in Azure Container Apps](https://learn.microsoft.com/azure/container-apps/dapr-keda-scaling)
