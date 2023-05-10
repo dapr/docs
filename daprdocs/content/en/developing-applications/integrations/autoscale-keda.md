@@ -140,7 +140,7 @@ Let's review a few metadata values in the file above:
 | `triggers`/`metadata`/`bootstrapServers` | Should be set to the same broker connection string used in the `kafka-pubsub.yaml` file. |
 | `triggers`/`metadata`/`consumerGroup` | Should be set to the same value as the `consumerID` in the `kafka-pubsub.yaml` file. |
 
-{{% alert title="Important" color="primary" %}}
+{{% alert title="Important" color="warning" %}}
  Setting the connection string, topic, and consumer group to the *same* values for both the Dapr service subscription and the KEDA scaler configuration is critical to ensure the autoscaling works correctly.
 
 {{% /alert %}}
