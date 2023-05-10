@@ -38,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | connectionString   | Y        | The connection string for PostgreSQL. Default pool_max_conns = 5 | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test pool_max_conns=10"`
-| table    | Y         | table name for configuration information. | `configTable`
+| table    | Y         | Table name for configuration information, must be lowercased. | `configtable`
 
 ## Set up Postgres as Configuration Store
 
@@ -95,7 +95,7 @@ notification = json_build_object(
 6. Since this is a generic created trigger, map this trigger to `configuration table`
 ```console
 CREATE TRIGGER config
-AFTER INSERT OR UPDATE OR DELETE ON configTable
+AFTER INSERT OR UPDATE OR DELETE ON configtable
     FOR EACH ROW EXECUTE PROCEDURE notify_event();
 ```
 7. In the subscribe request add an additional metadata field with key as `pgNotifyChannel` and value should be set to same `channel name` mentioned in `pg_notify`. From the above example, it should be set to `config`
