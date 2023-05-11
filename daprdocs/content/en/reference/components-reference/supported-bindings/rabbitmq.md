@@ -41,6 +41,14 @@ spec:
     value: "text/plain"
   - name: reconnectWaitInSeconds
     value: 5
+  - name: externalSasl
+    value: false
+  - name: caCert
+    value: null
+  - name: clientCert
+    value: null
+  - name: clientKey
+    value: null
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -61,6 +69,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxPriority| N | Input/Output | Parameter to set the [priority queue](https://www.rabbitmq.com/priority.html). If this parameter is omitted, queue will be created as a general queue instead of a priority queue. Value between 1 and 255. See [also](#specifying-a-priority-per-message) | `"1"`, `"10"` |
 | contentType | N | Input/Output | The content type of the message. Defaults to "text/plain". | `"text/plain"`, `"application/cloudevent+json"` and so on |
 | reconnectWaitInSeconds | N | Input/Output | Represents the duration in seconds that the client should wait before attempting to reconnect to the server after a disconnection occurs. Defaults to `"5"`. | `"5"`, `"10"` |
+| externalSasl | N | With TLS, should the username be taken from an additional field (e.g. CN.) See [RabbitMQ Authentication Mechanisms](https://www.rabbitmq.com/access-control.html#mechanisms).  Defaults to `"false"`. | `"true"`, `"false"` |
+| caCert | N | Input/Output | The CA certificate to use for TLS connection. Defaults to `null`. | `"-----BEGIN CERTIFICATE-----\nMI..."` |
+| clientCert | N | Input/Output | The client certificate to use for TLS connection. Defaults to `null`. | `"-----BEGIN CERTIFICATE-----\nMI..."` |
+| clientKey | N | Input/Output | The client key to use for TLS connection. Defaults to `null`. | `"-----BEGIN PRIVATE KEY-----\nMI..."` |
 ## Binding support
 
 This component supports both **input and output** binding interfaces.
