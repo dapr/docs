@@ -21,11 +21,11 @@ spec:
   - name: url
     value: http://something.com
   - name: MTLSRootCA
-    value: /Users/somepath/root.pem # OPTIONAL Secret store ref or <path to root CA> or <pem encoded string>
+    value: /Users/somepath/root.pem # OPTIONAL Secret store ref, <path to root CA>, or <pem encoded string>
   - name: MTLSClientCert
-    value: /Users/somepath/client.pem # OPTIONAL Secret store ref or <path to client cert> or <pem encoded string>
+    value: /Users/somepath/client.pem # OPTIONAL Secret store ref, <path to client cert>, or <pem encoded string>
   - name: MTLSClientKey
-    value: /Users/somepath/client.key # OPTIONAL Secret store ref or <path to client key> or <pem encoded string>
+    value: /Users/somepath/client.key # OPTIONAL Secret store ref, <path to client key>, or <pem encoded string>
   - name: MTLSRenegotiation
     value: RenegotiateOnceAsClient # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
   - name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
@@ -41,9 +41,9 @@ spec:
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
 | url                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
-| MTLSRootCA         | N        | Output |Secret store reference or Path to root ca certificate or pem encoded string |
-| MTLSClientCert     | N        | Output |Secret store reference or Path to client certificate or pem encoded string  |
-| MTLSClientKey      | N        | Output |Secret store reference or Path client private key or pem encoded string |
+| MTLSRootCA         | N        | Output |Secret store reference, path to root ca certificate, or pem encoded string |
+| MTLSClientCert     | N        | Output |Secret store reference, path to client certificate, or pem encoded string  |
+| MTLSClientKey      | N        | Output |Secret store reference, path client private key, or pem encoded string |
 | MTLSRenegotiation  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
 | securityToken      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
 | securityTokenHeader| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
