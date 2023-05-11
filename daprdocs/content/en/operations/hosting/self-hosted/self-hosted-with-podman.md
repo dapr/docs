@@ -11,7 +11,7 @@ This article provides guidance on running Dapr with Podman on a Windows/Linux/ma
 ## Prerequisites
 
 - [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- [Podman](https://podman.io/docs/tutorials/installation)
+- [Podman](https://podman-desktop.io/downloads)
 
 ## Initialize Dapr environment
 
