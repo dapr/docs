@@ -313,7 +313,7 @@ curl -d '{ "operation": "get" }' \
 {{< /tabs >}}
 
 {{% alert title="Note" color="primary" %}}
-HTTPS binding support can also be configured using the **MTLSRootCA** metadata option. This will add the specified certificate to the list of trusted certificates for the binding. There is no specific preference for either method. While the **MTLSRootCA** option is easy to use and does not require any changes to the sidecar, it accepts only one certificate. If you need to trust multiple certificates, you need to install them in the sidecar by following the steps above.
+HTTPS binding support can also be configured using the **MTLSRootCA** metadata option. This will add the specified certificate to the list of trusted certificates for the binding. There's no specific preference for either method. While the **MTLSRootCA** option is easy to use and doesn't require any changes to the sidecar, it accepts only one certificate. If you need to trust multiple certificates, you need to [install them in the sidecar by following the steps above]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}).
 {{% /alert %}}
 
 ## Using mTLS or enabling client TLS authentication along with HTTPS
