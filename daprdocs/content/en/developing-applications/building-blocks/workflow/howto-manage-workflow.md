@@ -26,7 +26,7 @@ CancellationToken cts = CancellationToken.None;
 // Start the workflow. This returns back a "StartWorkflowResponse" which contains the instanceID for the particular workflow instance.
 StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions, cts);
 
-// Get information on the workflow. This response will contain information such as the status of the workflow, when it started, and more!
+// Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
 GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
 
 // Terminate the workflow
@@ -99,11 +99,13 @@ POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/resume
 
 ### Purge a workflow 
 
-To remove actor state from your state store and avoid overloading your state stores, run:
+To remove all the workflow and activity state from your state store to reduce storage use, run:
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/purge
 ```
+
+
 
 ### Get information about a workflow
 

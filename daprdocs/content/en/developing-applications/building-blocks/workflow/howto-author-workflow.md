@@ -28,11 +28,13 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 ## Write the workflow activities
 
-Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client. 
+[Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
 {{< tabs ".NET" >}}
 
 {{% codetab %}}
+
+Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client. 
 
 The activities called in the example below are:
 - `NotifyActivity`: Receive notification of a new order.

@@ -22,7 +22,7 @@ Note that workflow instance IDs can only contain alphanumeric characters, unders
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `workflowName` | Identify the workflow type
 `instanceId` | (Optional) Unique value created for each run of a specific workflow
 
@@ -60,7 +60,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<instanceId>/terminate
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
@@ -85,7 +85,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 `eventName` | The name of the event to raise
 
@@ -113,7 +113,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
@@ -140,7 +140,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
@@ -167,7 +167,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
@@ -194,7 +194,7 @@ GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanc
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
