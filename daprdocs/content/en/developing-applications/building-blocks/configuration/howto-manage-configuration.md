@@ -67,9 +67,11 @@ spec:
 ```
 
 ## Retrieve Configuration Items
-### Get configuration items using Dapr SDKs
+### Get configuration items
 
-{{< tabs ".NET" Java Python>}}
+The following example shows how to Get a saved configuration item using the Dapr Configuration API.
+
+{{< tabs ".NET" Java Python Go "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
 {{% codetab %}}
 
@@ -87,7 +89,6 @@ namespace ConfigurationApi
     {
         private static readonly string CONFIG_STORE_NAME = "configstore";
 
-        [Obsolete]
         public static async Task Main(string[] args)
         {
             using var client = new DaprClientBuilder().Build();
@@ -150,58 +151,79 @@ with DaprClient() as d:
 
 {{% /codetab %}}
 
-{{< /tabs >}}
-
-### Get configuration items using gRPC API
-
-Using your [favorite language](https://grpc.io/docs/languages/), create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto). The following examples show Java, C#, Python and Javascript clients.
-
-{{< tabs Java Dotnet Python Javascript >}}
-
 {{% codetab %}}
 
-```java
+```go
+package main
 
-Dapr.ServiceBlockingStub stub = Dapr.newBlockingStub(channel);
-stub.GetConfigurationAlpha1(new GetConfigurationRequest{ StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
+import (
+	"context"
+  "fmt"
+
+	dapr "github.com/dapr/go-sdk/client"
+)
+
+func main() {
+	ctx := context.Background()
+	client, err := dapr.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	items, err := client.GetConfigurationItems(ctx, "configstore", ["orderId1","orderId2"])
+	if err != nil {
+		panic(err)
+	}
+  for key, item := range items {
+    fmt.Printf("get config: key = %s value = %s version = %s",key,(*item).Value, (*item).Version)
+  }
+}
 ```
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Launch a dapr sidecar:
+
+```bash
+dapr run --app-id orderprocessing --dapr-http-port 3601
+```
+
+In a separate terminal, get the configuration item saved earlier:
+
+```bash
+curl http://localhost:3601/v1.0/configuration/configstore?key=orderId1
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Launch a Dapr sidecar:
+
+```bash
+dapr run --app-id orderprocessing --dapr-http-port 3601
+```
+
+In a separate terminal, get the configuration item saved earlier:
+
+```powershell
+Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key=orderId1'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
+### Subscribe configuration items
+
+Below are the Code examples that leverage Dapr SDKs to subscribe to keys `[orderId1,orderId2]` using `configstore` store. 
+
+{{< tabs "Dotnet Extension" "Dotnet Client" Python Go>}}
 {{% codetab %}}
 
 ```csharp
-
-var call = client.GetConfigurationAlpha1(new GetConfigurationRequest { StoreName = "redisconfigstore", Keys = new String[]{"myconfig"} });
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```python
-response = stub.GetConfigurationAlpha1(request={ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
-```
-
-{{% /codetab %}}
-
-{{% codetab %}}
-
-```javascript
-client.GetConfigurationAlpha1({ StoreName: 'redisconfigstore', Keys = ['myconfig'] })
-```
-
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-### Watch configuration items using Dapr SDKs
-
-{{< tabs "Dotnet Extension" "Dotnet Client">}}
-{{% codetab %}}
-
-```csharp
-[Obsolete("Configuration API is an Alpha API. Obsolete will be removed when the API is no longer Alpha")]
 public static void Main(string[] args)
 {
     CreateHostBuilder(args).Build().Run();
@@ -256,79 +278,138 @@ public async Task WatchConfiguration(DaprClient daprClient, string store, IReadO
 ```
 
 {{% /codetab %}}
-{{< /tabs >}}
-
-### Watch configuration items using gRPC API
-
-Create a Dapr gRPC client from the [Dapr proto](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) using your [preferred language](https://grpc.io/docs/languages/). Use the `SubscribeConfigurationAlpha1` proto method on your client stub to start subscribing to events. The method accepts the following request object:
-
-```proto
-message SubscribeConfigurationRequest {
-  // The name of configuration store.
-  string store_name = 1;
-
-  // Optional. The key of the configuration item to fetch.
-  // If set, only query for the specified configuration items.
-  // Empty list means fetch all.
-  repeated string keys = 2;
-
-  // The metadata which will be sent to configuration store components.
-  map<string,string> metadata = 3;
-}
-```
-
-Using this method, you can subscribe to changes in specific keys for a given configuration store. gRPC streaming varies widely based on language - see the [gRPC examples here](https://grpc.io/docs/languages/) for usage.
-
-Below are the examples in sdks:
-
-{{< tabs Python>}}
 
 {{% codetab %}}
 ```python
 #dependencies
-import asyncio
 from dapr.clients import DaprClient
 #code
-async def executeConfiguration():
+
+def handler(id: str, resp: ConfigurationResponse):
+    for key in resp.items:
+        print(f"Subscribed item received key={key} value={resp.items[key].value} "
+              f"version={resp.items[key].version} "
+              f"metadata={resp.items[key].metadata}", flush=True)
+
+def executeConfiguration():
     with DaprClient() as d:
-        CONFIG_STORE_NAME = 'configstore'
-        key = 'orderId'
-        # Subscribe to configuration by key.
-        configuration = await d.subscribe_configuration(store_name=CONFIG_STORE_NAME, keys=[key], config_metadata={})
-        if configuration != None:
-            items = configuration.get_items()
-            for item in items:
-                print(f"Subscribe key={item.key} value={item.value} version={item.version}", flush=True)
-        else:
-            print("Nothing yet")
-asyncio.run(executeConfiguration())
+        storeName = 'configurationstore'
+        keys = ['orderId1', 'orderId2']
+        id = d.subscribe_configuration(store_name=storeName, keys=keys,
+                          handler=handler, config_metadata={})
+        print("Subscription ID is", id, flush=True)
+        sleep(20)
+
+executeConfiguration()
 ```
 
+Run the subscriber app along with Dapr Sidecar
+
 ```bash
-dapr run --app-id orderprocessing --resources-path components/ -- python3 OrderProcessingService.py
+dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
+```
+
+In another terminal, update a key using redis-cli:
+
+```bash
+redis-cli -p 6379 MSET orderId1 "201||1" orderId2 "202||1"
+```
+
+Verify that the subscriber receives the updates:
+```
+Subscribed item received key=orderId1 value=201 version=1 metadata={}
+Subscribed item received key=orderId2 value=202 version=1 metadata={}
 ```
 
 {{% /codetab %}}
 
-{{< /tabs >}}
+{{% codetab %}}
+```go 
+package main
 
-#### Stop watching configuration items
+import (
+	"context"
+  "fmt"
+  "time"
 
-After you've subscribed to watch configuration items, the gRPC-server stream starts. Since this stream thread does not close itself, you have to explicitly call the `UnSubscribeConfigurationRequest` API to unsubscribe. This method accepts the following request object:
+	dapr "github.com/dapr/go-sdk/client"
+)
 
-```proto
-// UnSubscribeConfigurationRequest is the message to stop watching the key-value configuration.
-message UnSubscribeConfigurationRequest {
-  // The name of configuration store.
-  string store_name = 1;
-  // Optional. The keys of the configuration item to stop watching.
-  // Store_name and keys should match previous SubscribeConfigurationRequest's keys and store_name.
-  // Once invoked, the subscription that is watching update for the key-value event is stopped
-  repeated string keys = 2;
+func main() {
+	ctx := context.Background()
+	client, err := dapr.NewClient()
+	if err != nil {
+		panic(err)
+	}
+  subscribeID, err := client.SubscribeConfigurationItems(ctx, "configstore", []string{"orderId1", "orderId2"}, func(id string, items map[string]*dapr.ConfigurationItem) {
+  for k, v := range items {
+    fmt.Printf("get updated config key = %s, value = %s version = %s \n", k, v.Value, v.Version)
+  }
+  })
+	if err != nil {
+		panic(err)
+	}
+	time.Sleep(20*time.Second)
 }
 ```
 
-Using this unsubscribe method, you can stop watching configuration update events. Dapr locates the subscription stream based on the `store_name` and any optional keys supplied and closes it.
+Run the subscriber app along with Dapr Sidecar
+
+```bash
+dapr run --app-id orderprocessing -- go run main.go
+```
+
+In another terminal, update a key using redis-cli:
+
+```bash
+redis-cli -p 6379 MSET orderId1 "201||1" orderId2 "202||1"
+```
+
+Verify that the subscriber receives the updates:
+```
+get updated config key=orderId1 value=201 version=1
+get updated config key=orderId2 value=202 version=1
+```
+
+{{% /codetab %}}
+{{< /tabs >}}
+
+
+### Unsubscribe configuration items
+
+After you've subscribed to watch configuration items, you will receive updates for all of the subscribed keys. To stop receiving updates, you need to explicitly call the unsubscribe API.
+
+Following are the code examples unsubscribing using the subscription ID:
+
+{{< tabs Python Go "HTTP API (BASH)" "HTTP API (Powershell)">}}
+
+{{% codetab %}}
+```python
+with DaprClient() as d:
+  isSuccess = d.unsubscribe_configuration(store_name='configstore', id=subscriptionID)
+  print(f"Unsubscribed successfully? {isSuccess}", flush=True)
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```go
+if err := client.UnsubscribeConfigurationItems(ctx, "configstore" , subscriptionID); err != nil {
+  panic(err)
+}
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```bash
+curl 'http://localhost:3601/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```powershell
+Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
+```
+{{% /codetab %}}
 
 ## Next steps
 
