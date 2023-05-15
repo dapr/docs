@@ -165,9 +165,9 @@
     query: false
 - component: SQLite
   link: setup-sqlite
-  state: Beta
+  state: Stable
   version: v1
-  since: "1.10"
+  since: "1.11"
   features:
     crud: true
     transactions: true
