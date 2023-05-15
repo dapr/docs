@@ -24,6 +24,10 @@ For example, with bindings, your microservice can respond to incoming Twilio/SMS
 Bindings are developed independently of Dapr runtime. You can [view and contribute to the bindings](https://github.com/dapr/components-contrib/tree/master/bindings).
 {{% /alert %}}
 
+{{% alert title="Note" color="primary" %}}
+If you are using the HTTP Binding, then it is preferable to use [service invocation]({{< ref service_invocation_api.md >}})  instead.
+{{% /alert %}}
+
 ## Input bindings
 
 With input bindings, you can trigger your application when an event from an external resource occurs. An optional payload and metadata may be sent with the request.

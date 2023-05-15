@@ -17,11 +17,24 @@ Using Dapr's service invocation API, you can communicate with endpoints that eit
 5. Service discovery
 6. Authentication through the use of headers
 
-
 ## HTTP service invocation to external services or non-Dapr endpoints
 There are times when you need to call an HTTP endpoint which is not using Dapr. For example you may choose to only use Dapr in part of you overall application, including brownfield development, you may not have access to the code to migrate an existing application to use Dapr, or you simply need to call an external HTTP service.
 
 By defining a HTTPEndpoint resource, you declaratively define a way to interact with a non-Dapr endpoint. You then use the service invocation URL to invoke non-Dapr endpoints. Alternatively, you can place a non-Dapr endpoint URL directly into the service invocation URL demonstrated in the following section.
+
+## Service invocation API
+
+The diagram below is an overview of how Dapr's service invocation works when invoking non-Dapr endpoints.
+
+<img src="/images/service-invocation-overview-non-dapr-endpoint.png" width=800 alt="Diagram showing the steps of service invocation to non-Dapr endpoints">
+
+1. Service A makes an HTTP call targeting Service B, a non-Dapr endpoint. The call goes to the local Dapr sidecar.
+2. Dapr discovers Service B's location using the HTTPEndpoint or fully qualified domain name URL.
+3. Dapr forwards the message to Service B.
+    - **Note**: Calls to non-Dapr endpoints use the HTTP protocol.
+4. Service B runs its business logic code.
+5. Service B sends a response to Service A's Dapr sidecar.
+6. Service A receives the response.
 
 ## Service invocation consistency
 

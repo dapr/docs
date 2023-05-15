@@ -8,7 +8,7 @@ description: "Overview of the service invocation API building block"
 
 Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
-In many microservice-based applications multiple services need the ability to communicate with one another, as well as with non-Dapr endpoints. This inter-service, and external communication requires that application developers handle problems like:
+In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle problems like:
 
 - **Service discovery.** How do I discover my different services?
 - **Standardizing API calls between services.** How do I invoke methods between services?
@@ -38,17 +38,7 @@ The diagram below is an overview of how Dapr's service invocation works between 
 6. Dapr forwards the response to Service A's Dapr sidecar.
 7. Service A receives the response.
 
-The diagram below is an overview of how Dapr's service invocation works when invoking non-Dapr endpoints.
-
-<img src="/images/service-invocation-overview-non-dapr-endpoint.png" width=800 alt="Diagram showing the steps of service invocation to non-Dapr endpoints">
-
-1. Service A makes an HTTP call targeting Service B, a non-Dapr endpoint. The call goes to the local Dapr sidecar.
-2. Dapr discovers Service B's location using the [name resolution component]({{< ref supported-name-resolution >}}) which is running on the given [hosting platform]({{< ref "hosting" >}}).
-3. Dapr forwards the message to Service B.
-    - **Note**: Calls to non-Dapr endpoints use the HTTP protocol.
-4. Service B runs its business logic code.
-5. Service B sends a response to Service A's Dapr sidecar.
-6. Service A receives the response.
+You can also call non-Dapr HTTP endpoints using the service invocation API. For example, you may only use Dapr in part of an overall application, may not have access to the code to migrate an existing application to use Dapr, or simply need to call an external HTTP service. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
 
 ## Features
 Service invocation provides several features to make it easy for you to call methods between applications or to call external HTTP endpoints.

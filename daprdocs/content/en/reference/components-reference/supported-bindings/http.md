@@ -9,7 +9,7 @@ aliases:
 
 ## Alternative
 
-The [Service invocation API]({{< ref service_invocation_api.md >}}) allows for the invocation of non-Dapr endpoints. Please keep this in mind as an easy-to-use alternative providing many of the service invocation benefits when looking to interact with services outside of your Dapr environment.
+The [service invocation API]({{< ref service_invocation_api.md >}}) allows for the invocation of non-Dapr HTTP endpoints and is the recommended approach. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
 
 ## Setup Dapr component
 
