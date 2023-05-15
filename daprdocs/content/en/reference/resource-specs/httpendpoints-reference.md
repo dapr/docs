@@ -2,13 +2,13 @@
 type: docs
 title: "HTTPEndpoint spec"
 linkTitle: "HTTPEndpoint spec"
-description: "The HTTPEndpoint Dapr resource spec"
+description: "The HTTPEndpoint resource spec"
 weight: 300
 aliases:
   - "/operations/httpEndpoints/"
 ---
 
-The HTTPEndpoint is a Dapr resource that can be used to allow the invocation of non-Dapr endpoints from a Dapr application.
+The HTTPEndpoint is a Dapr resource that is used to enable the invocation of non-Dapr endpoints from a Dapr application.
 
 ## HTTPEndpoint format
 
@@ -36,5 +36,5 @@ auth: # Optional
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| baseUrl            | Y        | Base URL of the non-Dapr endpoint  | `"https://docs.dapr.io"`, `"http://api.github.com"`
+| baseUrl            | Y        | Base URL of the non-Dapr endpoint | `"https://api.github.com"`, `"http://api.github.com"`
 | headers            | N        | HTTP request headers for service invocation | `name: "Accept-Language" value: "en-US"` <br/> `name: "Authorization" secretKeyRef.name: "my-secret" secretKeyRef.key: "myGithubToken" `

@@ -6,18 +6,24 @@ description: "Call Non-Dapr endpoints from Dapr applications using service invoc
 weight: 2000
 ---
 
-This article demonstrates how to call a non-Dapr endpoint using a Daprized application over HTTP.
+This article demonstrates how to call a non-Dapr endpoint using Dapr over HTTP.
 
-By using Dapr's service invocation API, you can communicate with endpoints outside of your Dapr environment. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
+Using Dapr's service invocation API, you can communicate with endpoints that either use or do not use Dapr. Using Dapr to call endpoints that do not use Dapr not only provides a consistent API, but also  the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
 
-1. Resiliency policies
-2. Observability with tracing & metrics
-3. Access control through scoping
-4. Middleware pipeline components
+1. Ability to apply resiliency policies
+2. Call observability with tracing & metrics
+3. Security access control through scoping
+4. Ability to utilize middleware pipeline components
 5. Service discovery
 6. Authentication through the use of headers
 
-## Service invocation api consistency
+
+## HTTP service invocation to external services or non-Dapr endpoints
+There are times when you need to call an HTTP endpoint which is not using Dapr. For example you may choose to only use Dapr in part of you overall application, including brownfield development, you may not have access to the code to migrate an existing application to use Dapr, or you simply need to call an external HTTP service.
+
+By defining a HTTPEndpoint resource, you declaratively define a way to interact with a non-Dapr endpoint. You then use the service invocation URL to invoke non-Dapr endpoints. Alternatively, you can place a non-Dapr endpoint URL directly into the service invocation URL demonstrated in the following section.
+
+## Service invocation consistency
 
 There is a consistent look and feel for service invocation when communicating between Dapr applications and to non-Dapr applications.
 

@@ -6,10 +6,10 @@ description: "Detailed documentation on the service invocation API"
 weight: 100
 ---
 
-Dapr provides users with the ability to call other applications that have unique ids, or non-Dapr endpoints.
-This functionality allows apps to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
+Dapr provides users with the ability to call other applications that are using Dapr with a unique named identifier (appId), or HTTP endpoints that are not using Dapr.
+This allows applications to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
 
-## Invoke a method on a remote dapr app
+## Invoke a method on a remote Dapr app
 
 This endpoint lets you invoke a method in another Dapr enabled app.
 

@@ -51,15 +51,11 @@ The diagram below is an overview of how Dapr's service invocation works when inv
 6. Service A receives the response.
 
 ## Features
-Service invocation provides several features to make it easy for you to call methods between applications, as well as to non-Dapr endpoints.
+Service invocation provides several features to make it easy for you to call methods between applications or to call external HTTP endpoints.
 
 ### HTTP and gRPC service invocation
 - **HTTP**: If you're already using HTTP protocols in your application, using the Dapr HTTP header might be the easiest way to get started. You don't need to change your existing endpoint URLs; just add the `dapr-app-id` header and you're ready to go. For more information, see [Invoke Services using HTTP]({{< ref howto-invoke-discover-services.md >}}). 
 - **gRPC**: Dapr allows users to keep their own proto services and work natively with gRPC. This means that you can use service invocation to call your existing gRPC apps without having to include any Dapr SDKs or include custom gRPC services. For more information, see the [how-to tutorial for Dapr and gRPC]({{< ref howto-invoke-services-grpc.md >}}).
-
-### HTTP service invocation to non-Dapr endpoints
-If you are in a brownfield scenario or simply have existing non-Dapr endpoints that you want to invoke, then you can do so using the service invocation API.
-By defining a Dapr HTTPEndpoint, you declaratively define a way to interact with a non-Dapr endpoint. You then use the existing service invocation URL, while replacing the internal `appid` with the HTTPEndpoint name, and can use the existing service invocation API as is. This allows for you to also use the HTTPEndpoint name as the value if you use the `dapr-app-id` header. Alternatively, you can place a non-Dapr endpoint URL directly into the service invocation URL where you would place the `appid` or HTTPEndpoint name.
 
 ### Service-to-service security
 

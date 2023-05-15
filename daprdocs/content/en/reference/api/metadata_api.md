@@ -6,7 +6,7 @@ description: "Detailed documentation on the Metadata API"
 weight: 1100
 ---
 
-Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns a list of the components and HTTPEndpoints loaded, the activated actors (if present) and attributes with information attached.
+Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns a list of the resources (components and HttpEndpoints loaded), the activated actors (if present) and attributes with information attached.
 
 ## Components
 Each loaded component provides its name, type and version and also information about supported features in the form of component capabilities. 
@@ -18,7 +18,7 @@ State Store    | ETAG, TRANSACTION, ACTOR, QUERY_API
 Binding        | INPUT_BINDING, OUTPUT_BINDING
 
 ## HTTPEndpoints
-Each loaded HTTPEndpoint provides its name to easily identify the Dapr resource associated with the runtime. Additional information can then be found by using the name in [Kubernetes]({{< ref kubernetes-overview.md >}}) commands.
+Each loaded HttpEndpoint provides a name to easily identify the Dapr resource associated with the runtime.
 
 ## Attributes
 
