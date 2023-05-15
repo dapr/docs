@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "How-To: Invoke Non-Daprized Endpoints using HTTP"
-linkTitle: "How-To: Invoke Non-Daprized Endpoints"
-description: "Call Non-Daprized endpoints from Dapr applications using service invocation"
+title: "How-To: Invoke Non-Dapr Endpoints using HTTP"
+linkTitle: "How-To: Invoke Non-Dapr Endpoints"
+description: "Call Non-Dapr endpoints from Dapr applications using service invocation"
 weight: 2000
 ---
 
-This article demonstrates how to call a non-Daprized endpoint using a Daprized application over HTTP.
+This article demonstrates how to call a non-Dapr endpoint using a Daprized application over HTTP.
 
 By using Dapr's service invocation API, you can communicate with endpoints outside of your Dapr environment. Doing so yields the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
 
@@ -19,7 +19,7 @@ By using Dapr's service invocation API, you can communicate with endpoints outsi
 
 ## Service invocation api consistency
 
-There is a consistent look and feel for service invocation when communicating between Dapr applications and to non-Daprized applications.
+There is a consistent look and feel for service invocation when communicating between Dapr applications and to non-Dapr applications.
 
 A Dapr application may invoke another Dapr application using the following URL with the `appID` and `my-method` specified:
 
@@ -27,9 +27,9 @@ A Dapr application may invoke another Dapr application using the following URL w
 localhost:3500/v1.0/invoke/<appID>/method/<my-method>
 ```
 
-There are two ways to invoke non-Daprized endpoint. A Dapr application may invoke a non-Daprized endpoint by replacing the use of `appID` with:
+There are two ways to invoke non-Dapr endpoint. A Dapr application may invoke a non-Dapr endpoint by replacing the use of `appID` with:
 
-1. A URL to the non-Daprized endpoint.
+1. A URL to the non-Dapr endpoint.
 
 ```sh
 localhost:3500/v1.0/invoke/<URL>/method/<my-method>

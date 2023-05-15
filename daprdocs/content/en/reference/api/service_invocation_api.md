@@ -6,7 +6,7 @@ description: "Detailed documentation on the service invocation API"
 weight: 100
 ---
 
-Dapr provides users with the ability to call other applications that have unique ids, or non-Daprized endpoints.
+Dapr provides users with the ability to call other applications that have unique ids, or non-Dapr endpoints.
 This functionality allows apps to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
 
 ## Invoke a method on a remote dapr app
@@ -19,9 +19,9 @@ This endpoint lets you invoke a method in another Dapr enabled app.
 PATCH/POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appID>/method/<method-name>
 ```
 
-## Invoke a method on a non-Daprized endpoint
+## Invoke a method on a non-Dapr endpoint
 
-This endpoint lets you invoke a method on a non-Daprized endpoint.
+This endpoint lets you invoke a method on a non-Dapr endpoint.
 
 ### HTTP Request
 
@@ -75,9 +75,9 @@ Within the body of the request place the data you want to send to the service:
 
 ### Request received by invoked service
 
-Once your service code invokes a method in another Dapr enabled app or non-Daprized endpoint, Dapr will send the request, along with the headers and body, on the `<method-name>` endpoint.
+Once your service code invokes a method in another Dapr enabled app or non-Dapr endpoint, Dapr will send the request, along with the headers and body, on the `<method-name>` endpoint.
 
-The Dapr app or non-Daprized endpoint being invoked will need to be listening for and responding to requests on that endpoint.
+The Dapr app or non-Dapr endpoint being invoked will need to be listening for and responding to requests on that endpoint.
 
 ### Cross namespace invocation
 

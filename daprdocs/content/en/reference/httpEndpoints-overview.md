@@ -8,7 +8,7 @@ aliases:
   - "/operations/httpEndpoints/"
 ---
 
-The HTTPEndpoint is a Dapr resource that can be used to allow the invocation of non-Daprized endpoints from a Dapr application.
+The HTTPEndpoint is a Dapr resource that can be used to allow the invocation of non-Dapr endpoints from a Dapr application.
 
 ## HTTPEndpoint format
 
@@ -36,5 +36,5 @@ auth: # Optional
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| baseUrl            | Y        | Base URL of the non-Daprized endpoint  | `"https://docs.dapr.io"`, `"http://api.github.com"`
+| baseUrl            | Y        | Base URL of the non-Dapr endpoint  | `"https://docs.dapr.io"`, `"http://api.github.com"`
 | headers            | N        | HTTP request headers for service invocation | `name: "Accept-Language" value: "en-US"` <br/> `name: "Authorization" secretKeyRef.name: "my-secret" secretKeyRef.key: "myGithubToken" `

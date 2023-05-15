@@ -21,7 +21,7 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | **Pluggable components** | Allows creating self-hosted gRPC-based components written in any language that supports gRPC. The following component APIs are supported: State stores, Pub/sub, Bindings | N/A | [Pluggable components concept]({{<ref "components-concept#pluggable-components" >}})| v1.9  |
 | **Multi-App Run** | Configure multiple Dapr applications from a single configuration file and run from a single command | `dapr run -f` | [Multi-App Run]({{< ref multi-app-dapr-run.md >}}) | v1.10 |
 | **Workflows** | Author workflows as code to automate and orchestrate tasks within your application, like messaging, state management, and failure handling | N/A | [Workflows concept]({{< ref "components-concept#workflows" >}})| v1.10  |
-| **Service invocation for non-Daprized endpoints** | Allow the invocation of non-Daprized endpoints by Dapr applications using the existing [Service invocation API]({{< ref service_invocation_api.md >}}). | N/A | [Service invocation API]({{< ref service_invocation_api.md >}}) | v1.11  |
+| **Service invocation for non-Dapr endpoints** | Allow the invocation of non-Dapr endpoints by Dapr applications using the existing [Service invocation API]({{< ref service_invocation_api.md >}}). | N/A | [Service invocation API]({{< ref service_invocation_api.md >}}) | v1.11  |
 
 ### Streaming for HTTP service invocation
 
