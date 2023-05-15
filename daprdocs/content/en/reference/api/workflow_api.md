@@ -157,7 +157,7 @@ None.
 
 ## Purge workflow request
 
-Purge the actor state from your state store with the workflow's instance ID.
+Purge the workflow state from your state store with the workflow's instance ID.
 
 ```bash
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/purge
