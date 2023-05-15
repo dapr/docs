@@ -30,6 +30,8 @@ spec:
     value: /Users/somepath/client.pem # OPTIONAL <path to client cert> or <pem encoded string>
   - name: MTLSClientKey
     value: /Users/somepath/client.key # OPTIONAL <path to client key> or <pem encoded string>
+  - name: MTLSRenegotiation
+    value: RenegotiateOnceAsClient # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
   - name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
     secretKeyRef:
       name: mysecret
@@ -46,6 +48,7 @@ spec:
 | MTLSRootCA         | N        | Output |Path to root ca certificate or pem encoded string |
 | MTLSClientCert     | N        | Output |Path to client certificate or pem encoded string  |
 | MTLSClientKey      | N        | Output |Path client private key or pem encoded string |
+| MTLSRenegotiation  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
 | securityToken      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
 | securityTokenHeader| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
 
@@ -320,6 +323,13 @@ These fields can be passed as a file path or as a pem encoded string.
 - If the file path is provided, the file is read and the contents are used. 
 - If the pem encoded string is provided, the string is used as is.
 When these fields are configured, the Dapr sidecar uses the provided certificate to authenticate itself with the server during the TLS handshake process.
+
+If the remote server is enforcing TLS renegotiation, you also need to set the metadata field `MTLSRenegotiation`. This field accepts one of following options: 
+- `RenegotiateNever`
+- `RenegotiateOnceAsClient`
+- `RenegotiateFreelyAsClient`. 
+
+For more details see [the Go `RenegotiationSupport` documentation](https://pkg.go.dev/crypto/tls#RenegotiationSupport).
 
 ### When to use:
 You can use this when the server with which the HTTP binding is configured to communicate requires mTLS or client TLS authentication.
