@@ -97,6 +97,12 @@ Expected output:
 == APP == Workflow Status: Completed
 ```
 
+### (Optional) Step 4: View in Zipkin
+
+If you have Zipkin configured for Dapr locally on your machine, you can view the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`).
+
+<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
+
 ### What happened?
 
 When you ran `dapr run --app-id order-processor dotnet run`:
@@ -145,25 +151,29 @@ string orderId = Guid.NewGuid().ToString()[..8];
 string itemToPurchase = "Cars";
 int ammountToPurchase = 10;
 
-//...
+// Construct the order
+OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurchase);
 
 // Start the workflow
 Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
 
-await workflowClient.ScheduleNewWorkflowAsync(
-    name: nameof(OrderProcessingWorkflow),
+await daprClient.StartWorkflowAsync(
+    workflowComponent: DaprWorkflowComponent,
+    workflowName: nameof(OrderProcessingWorkflow),
+    input: orderInfo,
+    instanceId: orderId);
+
+// Wait for the workflow to start and confirm the input
+GetWorkflowResponse state = await daprClient.WaitForWorkflowStartAsync(
     instanceId: orderId,
-    input: orderInfo);
+    workflowComponent: DaprWorkflowComponent);
 
-//...
+Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state.RuntimeStatus);
 
-WorkflowState state = await workflowClient.GetWorkflowStateAsync(
+// Wait for the workflow to complete
+state = await daprClient.WaitForWorkflowCompletionAsync(
     instanceId: orderId,
-    getInputsAndOutputs: true);
-
-Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state);
-
-//...
+    workflowComponent: DaprWorkflowComponent);
 
 Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
 ```

@@ -52,8 +52,10 @@ Each workflow instance managed by the engine is represented as one or more spans
 
 There are two types of actors that are internally registered within the Dapr sidecar in support of the workflow engine:
 
-- `dapr.internal.wfengine.workflow`
-- `dapr.internal.wfengine.activity`
+- `dapr.internal.{namespace}.{appID}.workflow`
+- `dapr.internal.{namespace}.{appID}.activity`
+
+The `{namespace}` value is the Dapr namespace and defaults to `default` if no namespace is configured. The `{appID}` value is the app's ID. For example, if you have a workflow app named "wfapp", then the type of the workflow actor would be `dapr.internal.default.wfapp.workflow` and the type of the activity actor would be `dapr.internal.default.wfapp.activity`.
 
 The following diagram demonstrates how internal workflow actors operate in a Kubernetes scenario:
 
@@ -61,11 +63,13 @@ The following diagram demonstrates how internal workflow actors operate in a Kub
 
 Just like user-defined actors, internal workflow actors are distributed across the cluster by the actor placement service. They also maintain their own state and make use of reminders. However, unlike actors that live in application code, these _internal_ actors are embedded into the Dapr sidecar. Application code is completely unaware that these actors exist.
 
-There are two types of actors registered by the Dapr sidecar for workflow: the _workflow_ actor and the _activity_ actor. The next sections will go into more details on each.
+{{% alert title="Note" color="primary" %}}
+The internal workflow actor types are only registered after an app has registered a workflow using a Dapr Workflow SDK. If an app never registers a workflow, then the internal workflow actors are never registered.
+{{% /alert %}}
 
 ### Workflow actors
 
-A new instance of the `dapr.internal.wfengine.workflow` actor is activated for every workflow instance that gets created. The ID of the _workflow_ actor is the ID of the workflow. This internal actor stores the state of the workflow as it progresses and determines the node on which the workflow code executes via the actor placement service.
+Workflow actors are responsible for managing the state and placement of all workflows running in the app. A new instance of the workflow actor is activated for every workflow instance that gets created. The ID of the workflow actor is the ID of the workflow. This internal actor stores the state of the workflow as it progresses and determines the node on which the workflow code executes via the actor placement service.
 
 Each workflow actor saves its state using the following keys in the configured state store:
 
@@ -94,17 +98,13 @@ To summarize:
 
 ### Activity actors
 
-A new instance of the `dapr.internal.wfengine.activity` actor is activated for every activity task that gets scheduled by a workflow. The ID of the _activity_ actor is the ID of the workflow combined with a sequence number (sequence numbers start with 0). For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, it's ID will be `876bf371#2` where `2` is the sequence number.
+Activity actors are responsible for managing the state and placement of all workflow activity invocations. A new instance of the activity actor is activated for every activity task that gets scheduled by a workflow. The ID of the activity actor is the ID of the workflow combined with a sequence number (sequence numbers start with 0). For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, it's ID will be `876bf371::2` where `2` is the sequence number.
 
 Each activity actor stores a single key into the state store:
 
 | Key | Description |
 | --- | ----------- |
-| `activityreq-N` | The key contains the activity invocation payload, which includes the serialized activity input data. The `N` value is a 64-bit unsigned integer that represents the _generation_ of the workflow, a concept which is outside the scope of this documentation. |
-
-{{% alert title="Warning" color="warning" %}}
-In the [Alpha release of the Dapr Workflow engine]({{< ref support-preview-features.md >}}), activity actor state will remain in the state store even after the activity task has completed. Scheduling a large number of workflow activities could result in unbounded storage usage. In a future release, data retention policies will be introduced that can automatically purge the state store of completed activity state.
-{{% /alert %}}
+| `activityState` | The key contains the activity invocation payload, which includes the serialized activity input data. This key is deleted automatically after the activity invocation has completed. |
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
@@ -133,7 +133,7 @@ Dapr Workflows use actors internally to drive the execution of workflows. Like a
 
 As discussed in the [workflow actors]({{< ref "workflow-architecture.md#workflow-actors" >}}) section, workflows save their state incrementally by appending to a history log. The history log for a workflow is distributed across multiple state store keys so that each "checkpoint" only needs to append the newest entries.
 
-The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{< ref "workflow-overview.md#task-chaining" >}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{< ref "workflow-overview.md#fan-outfan-in" >}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({<< ref "workflow-features-concepts.md#workflow-activities" >>}) or [child workflows]({{< ref "workflow-features-concepts.md#child-workflows" >}}).
+The size of each checkpoint is determined by the number of concurrent actions scheduled by the workflow before it goes into an idle state. [Sequential workflows]({{< ref "workflow-overview.md#task-chaining" >}}) will therefore make smaller batch updates to the state store, while [fan-out/fan-in workflows]({{< ref "workflow-overview.md#fan-outfan-in" >}}) will require larger batches. The size of the batch is also impacted by the size of inputs and outputs when workflows [invoke activities]({{< ref "workflow-features-concepts.md#workflow-activities" >}}) or [child workflows]({{< ref "workflow-features-concepts.md#child-workflows" >}}).
 
 <img src="/images/workflow-overview/workflow-state-store-interactions.png" width=600 alt="Diagram of workflow actor state store interactions"/>
 

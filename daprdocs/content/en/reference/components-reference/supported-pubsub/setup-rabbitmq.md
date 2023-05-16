@@ -18,8 +18,16 @@ spec:
   type: pubsub.rabbitmq
   version: v1
   metadata:
-  - name: host
+  - name: connectionString
     value: "amqp://localhost:5672"
+  - name: protocol
+    value: amqp  
+  - name: hostname
+    value: localhost 
+  - name: username
+    value: username
+  - name: password
+    value: password  
   - name: consumerID
     value: myapp
   - name: durable
@@ -48,6 +56,8 @@ spec:
     value: 10485760
   - name: exchangeKind
     value: fanout
+  - name: saslExternal
+    value: false
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -58,7 +68,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| host               | Y        | Connection-string for the rabbitmq host  | `amqp://user:pass@localhost:5672`
+| connectionString | Y* | The RabbitMQ connection string. *Mutally exclusive with protocol, hostname, username, password field | `amqp://user:pass@localhost:5672` |
+| protocol | N* | The RabbitMQ protocol. *Mutally exclusive with connectionString field | `amqp` |
+| hostname | N* | The RabbitMQ hostname. *Mutally exclusive with connectionString field | `localhost` |
+| username | N* | The RabbitMQ username. *Mutally exclusive with connectionString field | `username` |
+| password | N* | The RabbitMQ password. *Mutally exclusive with connectionString field | `password` |
 | consumerID         | N        | Consumer ID a.k.a consumer tag organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. |
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
@@ -73,6 +87,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLen      | N        | The maximum number of messages of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1000"` |
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
+| saslExternal      | N        | With TLS, should the username be taken from an additional field (e.g. CN.) See [RabbitMQ Authentication Mechanisms](https://www.rabbitmq.com/access-control.html#mechanisms).  Defaults to `"false"`. | `"true"`, `"false"` |
 | caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
@@ -121,6 +136,8 @@ spec:
     value: 10485760
   - name: exchangeKind
     value: fanout
+  - name: saslExternal
+    value: false
   - name: caCert
     value: ${{ myLoadedCACert }}
   - name: clientCert

@@ -25,7 +25,6 @@ Dapr Workflow logic is implemented using general purpose programming languages, 
 - Write unit tests for your workflows, just like any other part of your application logic.
 
 The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all the workflow activities to be part of the application.
-The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar simply drives the execution of the workflows, leaving all the workflow activitie to be part of the application.
 
 ## Write the workflow activities
 

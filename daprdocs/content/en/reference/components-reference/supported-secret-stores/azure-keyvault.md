@@ -9,9 +9,10 @@ aliases:
 
 ## Component format
 
-To setup Azure Key Vault secret store create a component of type `secretstores.azure.keyvault`. See [this guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secretstore configuration. See this guide on [referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
-
-See also [configure the component](#configure-the-component) guide in this page.
+To setup Azure Key Vault secret store, create a component of type `secretstores.azure.keyvault`. 
+- See [the secret store components guide]({{< ref "setup-secret-store.md#apply-the-configuration" >}}) on how to create and apply a secret store configuration. 
+- See [the guide on referencing secrets]({{< ref component-secrets.md >}}) to retrieve and use the secret with Dapr components.
+- See [the Configure the component section](#configure-the-component) below.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -37,7 +38,10 @@ spec:
 
 ## Authenticating with Azure AD
 
-The Azure Key Vault secret store component supports authentication with Azure AD only. Before you enable this component, make sure you've read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document and created an Azure AD application (also called Service Principal). Alternatively, make sure you have created a managed identity for your application platform.
+The Azure Key Vault secret store component supports authentication with Azure AD only. Before you enable this component:
+1. Read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+1. Create an Azure AD application (also called Service Principal). 
+1. Alternatively, create a managed identity for your application platform.
 
 ## Spec metadata fields
 
@@ -49,20 +53,21 @@ The Azure Key Vault secret store component supports authentication with Azure AD
 
 Additionally, you must provide the authentication fields as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
 
-## Example: Create an Azure Key Vault and authorize a Service Principal
+## Example
 
 ### Prerequisites
 
 - Azure Subscription
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
-- The scripts below are optimized for a bash or zsh shell
+- You are using bash or zsh shell
+- You've created an Azure AD application (Service Principal) per the instructions in [Authenticating to Azure]({{< ref authenticating-azure.md >}}). You will need the following values:
 
-Make sure you have followed the steps in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document to create  an Azure AD application (also called Service Principal). You will need the following values:
+   | Value | Description |
+   | ----- | ----------- |
+   | `SERVICE_PRINCIPAL_ID` | The ID of the Service Principal that you created for a given application |
 
-- `SERVICE_PRINCIPAL_ID`: the ID of the Service Principal that you created for a given application
-
-### Steps
+### Create an Azure Key Vault and authorize a Service Principal
 
 1. Set a variable with the Service Principal that you created:
 
@@ -70,7 +75,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
   SERVICE_PRINCIPAL_ID="[your_service_principal_object_id]"
   ```
 
-2. Set a variable with the location where to create all resources:
+1. Set a variable with the location in which to create all resources:
 
   ```sh
   LOCATION="[your_location]"
@@ -78,7 +83,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
 
   (You can get the full list of options with: `az account list-locations --output tsv`)
 
-3. Create a Resource Group, giving it any name you'd like:
+1. Create a Resource Group, giving it any name you'd like:
 
   ```sh
   RG_NAME="[resource_group_name]"
@@ -88,7 +93,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
     | jq -r .id)
   ```
 
-4. Create an Azure Key Vault (that uses Azure RBAC for authorization):
+1. Create an Azure Key Vault that uses Azure RBAC for authorization:
 
   ```sh
   KEYVAULT_NAME="[key_vault_name]"
@@ -99,7 +104,7 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
     --location "${LOCATION}"
   ```
 
-5. Using RBAC, assign a role to the Azure AD application so it can access the Key Vault.  
+1. Using RBAC, assign a role to the Azure AD application so it can access the Key Vault.  
   In this case, assign the "Key Vault Secrets User" role, which has the "Get secrets" permission over Azure Key Vault.
 
   ```sh
@@ -109,15 +114,17 @@ Make sure you have followed the steps in the [Authenticating to Azure]({{< ref a
     --scope "${RG_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
   ```
 
-Other less restrictive roles like "Key Vault Secrets Officer" and "Key Vault Administrator" can be used as well, depending on your application. For more information about Azure built-in roles for Key Vault see the [Microsoft docs](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
+Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Administrator", can be used, depending on your application. [See Microsoft Docs for more information about Azure built-in roles for Key Vault](https://docs.microsoft.com/azure/key-vault/general/rbac-guide?tabs=azure-cli#azure-built-in-roles-for-key-vault-data-plane-operations).
 
-## Configure the component
+### Configure the component
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
 
-To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory, filling in with the Azure AD application that you created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document:
+#### Using a client secret
+
+To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory. Use the following template, filling in [the Azure AD application you created]({{< ref authenticating-azure.md >}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -138,7 +145,9 @@ spec:
     value : "[your_client_secret]"
 ```
 
-If you want to use a **certificate** saved on the local disk, instead, use this template, filling in with details of the Azure AD application that you created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document:
+#### Using a certificate 
+
+If you want to use a **certificate** saved on the local disk instead, use the following template. Fill in the details of [the Azure AD application you created]({{< ref authenticating-azure.md >}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -161,9 +170,9 @@ spec:
 {{% /codetab %}}
 
 {{% codetab %}}
-In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. You will need the details of the Azure AD application that was created following the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Azure AD application you created]({{< ref authenticating-azure.md >}}).
 
-To use a **client secret**:
+#### Using a client secret
 
 1. Create a Kubernetes secret using the following command:
 
@@ -176,7 +185,7 @@ To use a **client secret**:
     - `[your_k8s_secret_key]` is secret key in the Kubernetes secret store
 
 
-2. Create an `azurekeyvault.yaml` component file.
+1. Create an `azurekeyvault.yaml` component file.
 
     The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the client secret stored in the Kubernetes secret store.
 
@@ -203,13 +212,13 @@ To use a **client secret**:
       secretStore: kubernetes
     ```
 
-3. Apply the `azurekeyvault.yaml` component:
+1. Apply the `azurekeyvault.yaml` component:
 
     ```bash
     kubectl apply -f azurekeyvault.yaml
     ```
 
-To use a **certificate**:
+#### Using a certificate
 
 1. Create a Kubernetes secret using the following command:
 
@@ -221,7 +230,7 @@ To use a **certificate**:
     - `[your_k8s_secret_name]` is secret name in the Kubernetes secret store
     - `[your_k8s_secret_key]` is secret key in the Kubernetes secret store
 
-2. Create an `azurekeyvault.yaml` component file.
+1. Create an `azurekeyvault.yaml` component file.
 
     The component yaml refers to the Kubernetes secretstore using `auth` property and  `secretKeyRef` refers to the certificate stored in the Kubernetes secret store.
 
@@ -248,16 +257,16 @@ To use a **certificate**:
       secretStore: kubernetes
     ```
 
-3. Apply the `azurekeyvault.yaml` component:
+1. Apply the `azurekeyvault.yaml` component:
 
     ```bash
     kubectl apply -f azurekeyvault.yaml
     ```
 
-To use **Azure managed identity**:
+#### Using Azure managed identity
 
 1. Ensure your AKS cluster has managed identity enabled and follow the [guide for using managed identities](https://docs.microsoft.com/azure/aks/use-managed-identity).
-2. Create an `azurekeyvault.yaml` component file.
+1. Create an `azurekeyvault.yaml` component file.
 
     The component yaml refers to a particular KeyVault name. The managed identity you will use in a later step must be given read access to this particular KeyVault instance.
 
@@ -274,12 +283,23 @@ To use **Azure managed identity**:
         value: "[your_keyvault_name]"
     ```
 
-3. Apply the `azurekeyvault.yaml` component:
+1. Apply the `azurekeyvault.yaml` component:
 
     ```bash
     kubectl apply -f azurekeyvault.yaml
     ```
-4. Create and use a managed identity / pod identity by following [this guide](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity). After creating an AKS pod identity, [give this identity read permissions on your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy), and finally in your application deployment inject the pod identity via a label annotation:
+1. Create and assign a managed identity at the pod-level via either:
+   - [Azure AD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) (preferred method)
+   - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
+
+
+   **Important**: While both Azure AD pod identity and workload identity are in preview, currently Azure AD Workload Identity is planned for general availability (stable state).
+
+1. After creating a workload identity, give it `read` permissions:
+   - [On your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
+   - In your application deployment. Inject the pod identity both:
+     - Via a label annotation
+     - By specifying the Kubernetes service account associated with the desired workload identity 
 
    ```yaml
    apiVersion: v1
@@ -289,6 +309,12 @@ To use **Azure managed identity**:
      labels:
        aadpodidbinding: $POD_IDENTITY_NAME
    ```
+
+#### Using Azure managed identity directly vs. via Azure AD workload identity
+
+When using **managed identity directly**, you can have multiple identities associated with an app, requiring `azureClientId` to specify which identity should be used. 
+
+However, when using **managed identity via Azure AD workload identity**, `azureClientId` is not necessary and has no effect. The Azure identity to be used is inferred from the service account tied to an Azure identity via the Azure federated identity.
 
 {{% /codetab %}}
 

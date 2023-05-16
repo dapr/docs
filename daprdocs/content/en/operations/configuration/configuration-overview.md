@@ -79,12 +79,21 @@ The following table lists the properties for tracing:
 | `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
 | `stdout` | bool | True write more verbose information to the traces
 | `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to
-| `otel.isSecure` | bool | Is the connection to the endpoint address encryped
+| `otel.isSecure` | bool | Is the connection to the endpoint address encrypted
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
 | `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to
 
 `samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
 set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` samples all traces. By default, the sampling rate is (0.0001) or 1 in 10,000 traces.
+
+The OpenTelemetry (otel) endpoint can also be configured via an environment variables. The presence of the OTEL_EXPORTER_OTLP_ENDPOINT environment variable
+turns on tracing for the sidecar.
+
+| Environment Variable | Description |
+|----------------------|-------------|
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
+| `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
 
 See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information.
 
@@ -214,7 +223,7 @@ See the [preview features]({{< ref "preview-features.md" >}}) guide for informat
 
 ### Example sidecar configuration
 
-The following yaml shows an example configuration file that can be applied to an applications' Dapr sidecar.
+The following YAML shows an example configuration file that can be applied to an applications' Dapr sidecar.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -266,15 +275,21 @@ There is a single configuration file called `daprsystem` installed with the Dapr
 
 ### Control-plane configuration settings
 
-A Dapr control plane configuration can configure the following settings:
+A Dapr control plane configuration contains the following sections:
+
+- [`mtls`](#mtls-mutual-tls) for mTLS (Mutual TLS)
+
+### mTLS (Mutual TLS)
+
+The `mtls` section contains properties for mTLS.
 
 | Property         | Type   | Description |
 |------------------|--------|-------------|
-| enabled          | bool   | Set mtls to be enabled or disabled
-| allowedClockSkew | string | The extra time to give for certificate expiry based on possible clock skew on a machine. Default is 15 minutes.
-| workloadCertTTL  | string | Time a certificate is valid for. Default is 24 hours
+| `enabled`          | bool   | If true, enables mTLS for communication between services and apps in the cluster.
+| `allowedClockSkew` | string | Allowed tolerance when checking the expiration of TLS certificates, to allow for clock skew. Follows the format used by [Go's time.ParseDuration](https://pkg.go.dev/time#ParseDuration). Default is `15m` (15 minutes).
+| `workloadCertTTL`  | string | How long a certificate TLS issued by Dapr is valid for. Follows the format used by [Go's time.ParseDuration](https://pkg.go.dev/time#ParseDuration). Default is `24h` (24 hours).
 
-See the [Mutual TLS]({{< ref "mtls.md" >}}) HowTo and [security concepts]({{< ref "security-concept.md" >}}) for more information.
+See the [mTLS how-to]({{< ref "mtls.md" >}}) and [security concepts]({{< ref "security-concept.md" >}}) for more information.
 
 ### Example control plane configuration
 
@@ -282,7 +297,7 @@ See the [Mutual TLS]({{< ref "mtls.md" >}}) HowTo and [security concepts]({{< re
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: default
+  name: daprsystem
   namespace: default
 spec:
   mtls:
