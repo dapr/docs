@@ -23,6 +23,10 @@ A publish operation to Dapr will result in a cloud event envelope containing the
 - `specversion`
 - `type`
 - `traceparent`
+- `traceid`
+- `tracestate`
+- `topic`
+- `pubsubname`
 - `time`
 - `datacontenttype` (optional)
 
@@ -65,7 +69,17 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 ## Publish your own CloudEvent
 
 If you want to use your own CloudEvent, make sure to specify the [`datacontenttype`]({{< ref "pubsub-overview.md#setting-message-content-types" >}}) as `application/cloudevents+json`.
-If the CloudEvent that was authored by the app does not contain the minimum required CloudEvent specification, the message will be rejected. If the CloudEvent is valid, Dapr will send it as is and will not add additional fields to it.
+If the CloudEvent that was authored by the app does not contain the [minimum required fields](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#required-attributes) in the CloudEvent specification, the message will be rejected. Dapr will add the following fields to the CloudEvent if they are missing:
+
+- `time`
+- `traceid`
+- `traceparent`
+- `tracestate`
+- `topic`
+- `pubsubname`
+- `source`
+- `type`
+- `specversion`
 
 ### Example
 
