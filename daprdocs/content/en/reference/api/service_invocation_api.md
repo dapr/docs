@@ -50,9 +50,9 @@ XXX  | Upstream status returned
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-appId | the App ID associated with the remote app
+appID | the App ID associated with the remote app
 HTTPEndpoint name | the HTTPEndpoint resource associated with the external endpoint
-FQDN URL | Fully Qualified Domain Name url to invoke on the external endpoint
+FQDN URL | Fully Qualified Domain Name URL to invoke on the external endpoint
 method-name | the name of the method or url to invoke on the remote app
 
 > Note, all URL parameters are case-sensitive.
@@ -136,7 +136,7 @@ In this URL, `testing` is the namespace that `mathService` is running in.
 
 #### Non-Dapr Endpoint Example
 
-If the `mathService` service was a non-Dapr application, then it could be invoked using service invocation via an HTTPEndpoint as well as a fully qualified domain name URL.
+If the `mathService` service was a non-Dapr application, then it could be invoked using service invocation via an `HTTPEndpoint` as well as a fully qualified domain name (FQDN) URL.
 
 ```shell
 curl http://localhost:3500/v1.0/invoke/mathHTTPEndpoint/method/add \

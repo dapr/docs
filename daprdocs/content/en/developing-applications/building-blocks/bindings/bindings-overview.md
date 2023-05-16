@@ -25,7 +25,7 @@ Bindings are developed independently of Dapr runtime. You can [view and contribu
 {{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}
-If you are using the HTTP Binding, then it is preferable to use [service invocation]({{< ref service_invocation_api.md >}})  instead.
+If you are using the HTTP Binding, then it is preferable to use [service invocation]({{< ref service_invocation_api.md >}}) instead. Read [How-To: Invoke Non-Dapr Endpoints using HTTP]({{< ref "howto-invoke-non-dapr-endpoints.md" >}}) for more information.
 {{% /alert %}}
 
 ## Input bindings

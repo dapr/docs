@@ -8,7 +8,7 @@ aliases:
   - "/operations/httpEndpoints/"
 ---
 
-The HTTPEndpoint is a Dapr resource that is used to enable the invocation of non-Dapr endpoints from a Dapr application.
+The `HTTPEndpoint` is a Dapr resource that is used to enable the invocation of non-Dapr endpoints from a Dapr application.
 
 ## HTTPEndpoint format
 
@@ -18,6 +18,7 @@ kind: HTTPEndpoint
 metadata:
   name: <NAME>  
 spec:
+  version: v1alpha1
   baseUrl: <REPLACE-WITH-BASEURL> # Required. Use "http://" or "https://" prefix.
   headers: # Optional
   - name: <REPLACE-WITH-A-HEADER-NAME>

@@ -8,7 +8,7 @@ weight: 2000
 
 This article demonstrates how to call a non-Dapr endpoint using Dapr over HTTP.
 
-Using Dapr's service invocation API, you can communicate with endpoints that either use or do not use Dapr. Using Dapr to call endpoints that do not use Dapr not only provides a consistent API, but also  the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits to developers:
+Using Dapr's service invocation API, you can communicate with endpoints that either use or do not use Dapr. Using Dapr to call endpoints that do not use Dapr not only provides a consistent API, but also the following [Dapr service invocation]({{< ref service-invocation-overview.md >}}) benefits:
 
 1. Ability to apply resiliency policies
 2. Call observability with tracing & metrics
@@ -82,3 +82,9 @@ curl http://localhost:3602/v1.0/invoke/orderprocessor/method/checkout
 - [HTTPEndpoint reference]({{< ref httpendpoints-reference.md >}})
 - [Service invocation overview]({{< ref service-invocation-overview.md >}})
 - [Service invocation API specification]({{< ref service_invocation_api.md >}})
+
+## Community call demo
+Watch this [video](https://youtu.be/BEXJgLsO4hA?t=364) on how to use service invocation to call non-Dapr endpoints.
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BEXJgLsO4hA?t=364" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

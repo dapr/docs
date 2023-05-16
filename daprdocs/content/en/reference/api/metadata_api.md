@@ -18,7 +18,7 @@ State Store    | ETAG, TRANSACTION, ACTOR, QUERY_API
 Binding        | INPUT_BINDING, OUTPUT_BINDING
 
 ## HTTPEndpoints
-Each loaded HttpEndpoint provides a name to easily identify the Dapr resource associated with the runtime.
+Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource associated with the runtime.
 
 ## Attributes
 
