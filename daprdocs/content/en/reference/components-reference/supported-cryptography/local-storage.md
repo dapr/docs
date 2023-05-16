@@ -16,10 +16,10 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: mycrypto
-  namespace: default
 spec:
   type: crypto.localstorage
   metadata:
+    version: v1
     - name: path
       value: fixtures/crypto/localstorage/
 ```
@@ -32,8 +32,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| path               | Y        | Connection-string for the lcoal storage  | `fixtures/crypto/localstorage/`
+| path               | Y        | Connection-string for the local storage  | `fixtures/crypto/localstorage/`
 
 ## Related links
-- [Cryptography building block]({{< ref cryptography >}})
-- [Cryptography API reference]({{< ref cryptography_api.md >}})
+[Cryptography building block]({{< ref cryptography >}})

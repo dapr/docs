@@ -21,7 +21,7 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | **Pluggable components** | Allows creating self-hosted gRPC-based components written in any language that supports gRPC. The following component APIs are supported: State stores, Pub/sub, Bindings | N/A | [Pluggable components concept]({{<ref "components-concept#pluggable-components" >}})| v1.9  |
 | **Multi-App Run** | Configure multiple Dapr applications from a single configuration file and run from a single command | `dapr run -f` | [Multi-App Run]({{< ref multi-app-dapr-run.md >}}) | v1.10 |
 | **Workflows** | Author workflows as code to automate and orchestrate tasks within your application, like messaging, state management, and failure handling | N/A | [Workflows concept]({{< ref "components-concept#workflows" >}})| v1.10  |
-| **Crytpography** | leverage cryptography in a safe and consistent way. | N/A | [Cryptography concept]({{< ref "components-concept#cryptography" >}})| v1.11  |
+| **Cryptography** | Encrypt or decrypt data without having to manage secrets keys  | N/A | [Cryptography concept]({{< ref "components-concept#cryptography" >}})| v1.11  |
 
 
 ### Streaming for HTTP service invocation

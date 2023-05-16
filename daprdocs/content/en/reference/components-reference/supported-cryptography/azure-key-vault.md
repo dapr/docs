@@ -43,5 +43,4 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | azureClientSecret  | Y        | Azure Key Vault service principal client secret  | TODO |
 
 ## Related links
-- [Cryptography building block]({{< ref cryptography >}})
-- [Cryptography API reference]({{< ref cryptography_api.md >}})
+[Cryptography building block]({{< ref cryptography >}})

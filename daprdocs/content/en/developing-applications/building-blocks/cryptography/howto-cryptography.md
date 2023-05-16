@@ -6,10 +6,11 @@ weight: 2000
 description: "Learn how to encrypt and decrypt files"
 ---
 
-Now that you've read about [Cryptography as a Dapr building block]({{< ref cryptography-overview.md >}}), let's walk through using the [high-level cryptography APIs]({{< ref cryptography_api.md >}}) with the Dapr SDKs. 
+Now that you've read about [Cryptography as a Dapr building block]({{< ref cryptography-overview.md >}}), let's walk through using the cryptography APIs with the SDKs.  
 
 {{% alert title="Note" color="primary" %}}
-Dapr Cryptography is currently in alpha.
+  Dapr cryptography is currently in alpha.
+
 {{% /alert %}}
 
 ## Encrypt
@@ -103,5 +104,4 @@ out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
 {{< /tabs >}}
 
 ## Next steps
-- [Cryptography API reference]({{< ref cryptography_api.md >}})
-- [Cryptography component specs]({{< ref supported-cryptography >}})
+[Cryptography component specs]({{< ref supported-cryptography >}})

@@ -2,7 +2,7 @@
 type: docs
 title: "Kubernetes Secrets"
 linkTitle: "Kubernetes Secrets"
-description: Detailed information on the Kubernetes Secret cryptography component
+description: Detailed information on the Kubernetes secret cryptography component
 ---
 
 ## Component format
@@ -32,8 +32,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
+|           |        |   | 
 
 ## Related links
-- [Cryptography building block]({{< ref cryptography >}})
-- [Cryptography API reference]({{< ref cryptography_api.md >}})
+[Cryptography building block]({{< ref cryptography >}})

@@ -35,5 +35,4 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | jwks               | Y        | Connection-string for the JWKS host  | `fixtures/crypto/jwks/jwks.json`
 
 ## Related links
-- [Cryptography building block]({{< ref cryptography >}})
-- [Cryptography API reference]({{< ref cryptography_api.md >}})
+[Cryptography building block]({{< ref cryptography >}})
