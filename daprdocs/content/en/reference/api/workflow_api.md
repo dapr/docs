@@ -12,7 +12,7 @@ Dapr provides users with the ability to interact with workflows and comes with a
 
 Start a workflow instance with the given name and optionally, an instance ID.
 
-```bash
+```http
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/start[?instanceId=<instanceId>]
 ```
 
@@ -52,7 +52,7 @@ The API call will provide a response similar to this:
 
 Terminate a running workflow instance with the given name and instance ID.
 
-```bash
+```http
 POST http://localhost:3500/v1.0-alpha1/workflows/<instanceId>/terminate
 ```
 
@@ -77,9 +77,16 @@ This API does not return any content.
 
 ## Raise Event request
 
-```bash
+For workflow components that support subscribing to external events, such as the Dapr Workflow engine, you can use the following "raise event" API to deliver a named event to a specific workflow instance.
+
+```http
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
 ```
+
+{{% alert title="Note" color="primary" %}}
+ The exact mechanism for subscribing to an event depends on the workflow component that you're using. Dapr Workflow has one way of subscribing to external events but other workflow components might have different ways.
+
+{{% /alert %}}
 
 ### URL parameters
 
@@ -105,7 +112,7 @@ None.
 
 Pause a running workflow instance.
 
-```bash
+```http
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/pause
 ```
 
@@ -122,7 +129,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Error in Dapr code or underlying component
 
 ### Response content
 
@@ -132,7 +139,7 @@ None.
 
 Resume a paused workflow instance.
 
-```bash
+```http
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/resume
 ```
 
@@ -149,7 +156,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Error in Dapr code or underlying component
 
 ### Response content
 
@@ -157,9 +164,9 @@ None.
 
 ## Purge workflow request
 
-Purge the actor state from your state store with the workflow's instance ID.
+Purge the workflow state from your state store with the workflow's instance ID.
 
-```bash
+```http
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/purge
 ```
 
@@ -176,7 +183,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Error in Dapr code or underlying component
 
 ### Response content
 
@@ -186,7 +193,7 @@ None.
 
 Get information about a given workflow instance.
 
-```bash
+```http
 GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>
 ```
 
