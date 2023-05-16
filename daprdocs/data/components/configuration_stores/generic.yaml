@@ -1,13 +1,13 @@
 - component: Redis
   link: redis-configuration-store
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.5"
+  since: "1.11"
 - component: Postgres
   link: postgres-configuration-store
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.9"
+  since: "1.11"
 - component: Azure App Configuration
   link: azure-appconfig-configuration-store
   state: Alpha
