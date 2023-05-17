@@ -119,7 +119,7 @@ Retries are internally implemented using durable timers. This means that workflo
 The actions performed by a retry policy are saved into a workflow's history. Care must be taken not to change the behavior of a retry policy after a workflow has already been executed. Otherwise, the workflow may behave unexpectedly when replayed. See the notes on [updating workflow code]({{< ref "#updating-workflow-code" >}}) for more information.
 {{% /alert %}}
 
-It's possible to use both workflow retry policies and Dapr Resiliency policies together. For example, if a workflow activity uses a Dapr Client to invoke a service, the Dapr Client will use the configured resiliency policy, if any. However, if the activity itself fails for any reason, including exhausting the retries on the resiliency policy, then the workflow's resiliency policy kicks in.
+It's possible to use both workflow retry policies and Dapr Resiliency policies together. For example, if a workflow activity uses a Dapr client to invoke a service, the Dapr client uses the configured resiliency policy. See [Quickstart: Service-to-service resiliency]({{< ref "#resiliency-serviceinvo-quickstart" >}}) for more information with an example.  However, if the activity itself fails for any reason, including exhausting the retries on the resiliency policy, then the workflow's resiliency policy kicks in.
 
 {{% alert title="Note" color="primary" %}}
 Using workflow retry policies and resiliency policies together can result in unexpected behavior. For example, if a workflow activity exhausts its configured retry policy, the workflow engine will still retry the activity according to the workflow retry policy. This can result in the activity being retried more times than expected.
