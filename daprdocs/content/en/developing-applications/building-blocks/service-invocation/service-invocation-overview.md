@@ -25,7 +25,7 @@ Dapr uses a sidecar architecture. To invoke an application using Dapr:
 - Each application communicates with its own instance of Dapr. 
 - The Dapr instances discover and communicate with each other.
 
-The diagram below is an overview of how Dapr's service invocation works between two Daprized applications.
+The diagram below is an overview of how Dapr's service invocation works between two Dapr-ized applications.
 
 <img src="/images/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation">
 

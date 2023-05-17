@@ -21,7 +21,7 @@ PATCH/POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appID>/method
 
 ## Invoke a method on a non-Dapr endpoint
 
-This endpoint lets you invoke a method on a non-Dapr endpoint using a HTTPEndpoint resource name, or a Fully Qualified Domain Name (FQDN) URL.
+This endpoint lets you invoke a method on a non-Dapr endpoint using an `HTTPEndpoint` resource name, or a Fully Qualified Domain Name (FQDN) URL.
 
 ### HTTP Request
 
@@ -136,7 +136,7 @@ In this URL, `testing` is the namespace that `mathService` is running in.
 
 #### Non-Dapr Endpoint Example
 
-If the `mathService` service was a non-Dapr application, then it could be invoked using service invocation via an `HTTPEndpoint` as well as a fully qualified domain name (FQDN) URL.
+If the `mathService` service was a non-Dapr application, then it could be invoked using service invocation via an `HTTPEndpoint`, as well as a Fully Qualified Domain Name (FQDN) URL.
 
 ```shell
 curl http://localhost:3500/v1.0/invoke/mathHTTPEndpoint/method/add \

@@ -6,7 +6,7 @@ description: "Detailed documentation on the Metadata API"
 weight: 1100
 ---
 
-Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns a list of the resources (components and HttpEndpoints loaded), the activated actors (if present) and attributes with information attached.
+Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns a list of the resources (components and HttpEndpoints loaded), the activated actors (if present), and attributes with information attached.
 
 ## Components
 Each loaded component provides its name, type and version and also information about supported features in the form of component capabilities. 
