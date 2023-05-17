@@ -40,7 +40,7 @@ The `InvokeRequest.Metadata` for `bindings.kitex` requires the client to fill in
 |-------------|:--------:|--------|---------------------------------------------------------------------------------------------------------|--------------------|
 | hostPorts   |    Y     | Output | IP address and port information of the Kitex server (Thrift)                                        | `"127.0.0.1:8888"` |
 | destService |    Y     | Output | Service name of the Kitex server (Thrift)            | `"echo"`           |
-| methodName  |    Y     | Output | Method name under a specific service name of the kitex server (thrift) | `"echo"`           |
+| methodName  |    Y     | Output | Method name under a specific service name of the Kitex server (Thrift) | `"echo"`           |
 | version     |    Y     | Output | kitex version                                                                                           | `"0.5.0"`          |
 
 
