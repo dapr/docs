@@ -1,15 +1,16 @@
 ---
 type: docs
-title: "Postgres"
-linkTitle: "Postgres"
-description: Detailed information on the Postgres configuration store component
+title: "PostgreSQL"
+linkTitle: "PostgreSQL"
+description: Detailed information on the PostgreSQL configuration store component
 aliases:
+  - "/operations/components/setup-configuration-store/supported-configuration-stores/setup-postgresql/"
   - "/operations/components/setup-configuration-store/supported-configuration-stores/setup-postgres/"
 ---
 
 ## Component format
 
-To set up an Postgres configuration store, create a component of type `configuration.postgres`
+To set up an PostgreSQL configuration store, create a component of type `configuration.postgresql`
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -17,7 +18,7 @@ kind: Component
 metadata:
   name: <NAME>
 spec:
-  type: configuration.postgres
+  type: configuration.postgresql
   version: v1
   metadata:
   - name: connectionString
@@ -40,10 +41,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | connectionString   | Y        | The connection string for PostgreSQL. Default pool_max_conns = 5 | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test pool_max_conns=10"`
 | table    | Y         | table name for configuration information. | `configTable`
 
-## Set up Postgres as Configuration Store
+## Set up PostgreSQL as Configuration Store
 
-1. Start Postgres Database 
-1. Connect to the Postgres database and setup a configuration table with following schema -
+1. Start PostgreSQL Database 
+1. Connect to the PostgreSQL database and setup a configuration table with following schema -
 
 | Field              | Datatype | Nullable |Details |
 |--------------------|:--------:|---------|---------|
@@ -101,13 +102,13 @@ AFTER INSERT OR UPDATE OR DELETE ON configTable
 7. In the subscribe request add an additional metadata field with key as `pgNotifyChannel` and value should be set to same `channel name` mentioned in `pg_notify`. From the above example, it should be set to `config`
 
 {{% alert title="Note" color="primary" %}}
-When calling `subscribe` API, `metadata.pgNotifyChannel` should be used to specify the name of the channel to listen for notifications from Postgres configuration store. 
+When calling `subscribe` API, `metadata.pgNotifyChannel` should be used to specify the name of the channel to listen for notifications from PostgreSQL configuration store. 
 
 Any number of keys can be added to a subscription request. Each subscription uses an exclusive database connection. It is strongly recommended to subscribe to multiple keys within a single subscription. This helps optimize the number of connections to the database.
 
 Example of subscribe HTTP API - 
 ```ps
-curl --location --request GET 'http://<host>:<dapr-http-port>/configuration/postgres/subscribe?key=<keyname1>&key=<keyname2>&metadata.pgNotifyChannel=<channel name>'
+curl --location --request GET 'http://<host>:<dapr-http-port>/configuration/mypostgresql/subscribe?key=<keyname1>&key=<keyname2>&metadata.pgNotifyChannel=<channel name>'
 ```
 {{% /alert %}}
 

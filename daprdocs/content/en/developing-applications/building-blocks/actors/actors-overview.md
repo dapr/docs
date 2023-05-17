@@ -86,6 +86,13 @@ The Dapr actor runtime provides a simple turn-based access model for accessing a
 - [Learn more about actor reentrancy]({{< ref "actor-reentrancy.md" >}})
 - [Learn more about the turn-based access model]({{< ref "actors-features-concepts.md#turn-based-access" >}})
 
+### State
+
+Transactional state stores can be used to store actor state. To specify which state store to use for actors, specify value of property `actorStateStore` as `true` in the state store component's metadata section. Actors state is stored with a specific scheme in transactional state stores, allowing for consistent querying. Only a single state store component can be used as the state store for all actors. Read the [state API reference]({{< ref state_api.md >}}) and the [actors API reference]({{< ref actors_api.md >}}) to learn more about state stores for actors.
+
+#### Time to Live (TTL) on state
+You should always set the TTL metadata field (`ttlInSeconds`), or the equivalent API call in your chosen SDK when saving actor state to ensure that state eventually removed. Read [actors overview]({{< ref actors-overview.md >}}) for more information.
+
 ### Actor timers and reminders
 
 Actors can schedule periodic work on themselves by registering either timers or reminders.
