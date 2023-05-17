@@ -15,7 +15,7 @@ Currently, Kitex only supports Thrift generic calls. The implementation integrat
 
 ## Component format
 
-To setup an Kitex binding create a component of type `bindings.kitex`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup an Kitex binding, create a component of type `bindings.kitex`. See the [How-to: Use output bindings to interface with external resources]({{< ref "howto-bindings.md#1-create-a-binding" >}}) guide on creating and applying a binding configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
