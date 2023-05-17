@@ -30,7 +30,11 @@ spec:
 
 ## Spec metadata fields
 
-The `InvokeRequest.Metadata` for `bindings.kitex` requires the client to fill in four required items: hostPorts, destService, methodName and version when making a call.
+The `InvokeRequest.Metadata` for `bindings.kitex` requires the client to fill in four required items when making a call: 
+- `hostPorts`
+- `destService`
+- `methodName`
+- `version` 
 
 | Field       | Required | Binding support | Details                                                                                                 | Example            |
 |-------------|:--------:|--------|---------------------------------------------------------------------------------------------------------|--------------------|
