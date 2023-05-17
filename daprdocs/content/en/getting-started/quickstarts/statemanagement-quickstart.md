@@ -180,12 +180,12 @@ The `order-processor` service writes, reads, and deletes an `orderId` key/value 
 const client = new DaprClient()
 
 // Save state into a state store
-await client.state.save(DAPR_STATE_STORE_NAME, state)
+await client.state.save(DAPR_STATE_STORE_NAME, order)
 console.log("Saving Order: ", order)
 
 // Get state from a state store
 const savedOrder = await client.state.get(DAPR_STATE_STORE_NAME, order.orderId)
-console.log("Getting Order: ", savedOrd)
+console.log("Getting Order: ", savedOrder)
 
 // Delete state from the state store
 await client.state.delete(DAPR_STATE_STORE_NAME, order.orderId)
