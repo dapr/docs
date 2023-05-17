@@ -52,7 +52,11 @@ This component supports **output binding** with the following operations:
 
 ## Example 
 
-When using kitex binding, the client needs to pass in the correct Thrift-encoded binary, and the server needs to be a Thrift Server. The [kitex_output_test](https://github.com/dapr/components-contrib/blob/master/bindings/kitex/kitex_output_test.go) can be used as a reference.
+When using Kitex binding:
+- The client needs to pass in the correct Thrift-encoded binary
+- The server needs to be a Thrift Server. 
+
+The [kitex_output_test](https://github.com/dapr/components-contrib/blob/master/bindings/kitex/kitex_output_test.go) can be used as a reference.
 For example, the variable `reqData` needs to be encoded by the Thrift protocol before sending, and the returned data needs to be decoded by the Thrift protocol.
 
 **Request**
