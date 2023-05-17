@@ -81,6 +81,8 @@ If the CloudEvent that was authored by the app does not contain the [minimum req
 - `type`
 - `specversion`
 
+You can add additional fields to a custom CloudEvent that are not part of the official CloudEvent specification. Dapr will pass these fields as-is.
+
 ### Example
 
 {{< tabs "Dapr CLI" "HTTP API (Bash)" "HTTP API (PowerShell)">}}
