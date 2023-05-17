@@ -96,6 +96,7 @@ If a dynamic template is used, a `dynamicTemplateId` needs to be provided and th
     "dynamicTemplateData": "{\"customer\":{\"name\":\"John Smith\"}}"
   }
 }
+```
 
 ## Related links
 
