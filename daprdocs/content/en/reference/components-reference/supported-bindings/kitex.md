@@ -57,7 +57,7 @@ When using Kitex binding:
 - The server needs to be a Thrift Server. 
 
 The [kitex_output_test](https://github.com/dapr/components-contrib/blob/master/bindings/kitex/kitex_output_test.go) can be used as a reference.
-For example, the variable `reqData` needs to be encoded by the Thrift protocol before sending, and the returned data needs to be decoded by the Thrift protocol.
+For example, the variable `reqData` needs to be _encoded_ by the Thrift protocol before sending, and the returned data needs to be decoded by the Thrift protocol.
 
 **Request**
 
