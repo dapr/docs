@@ -81,7 +81,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instan
 
 ### Pause or resume a workflow
 
-To plan for down-time, wait for inputs, and more, you can pause and then resume a workflow. To stop a workflow with an ID `12345678` until triggered to resume, run:
+To plan for down-time, wait for inputs, and more, you can pause and then resume a workflow. To pause a workflow with an ID `12345678` until triggered to resume, run:
 
 ```http
 POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/pause
@@ -97,7 +97,7 @@ POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/resume
 
 The purge API can be used to permanently delete workflow metadata from the underlying state store, including any stored inputs, outputs, and workflow history records. This is often useful for implementing data retention policies and for freeing resources.
 
-Only workflow instances in the COMPLETED, FAILED, or TERMINATED state can be purged. If the workflow is in any other state, calling purge will return an error.
+Only workflow instances in the COMPLETED, FAILED, or TERMINATED state can be purged. If the workflow is in any other state, calling purge returns an error.
 
 ```http
 POST http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678/purge

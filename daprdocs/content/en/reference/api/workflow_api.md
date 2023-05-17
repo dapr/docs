@@ -189,7 +189,7 @@ Code | Description
 
 None.
 
-### Get workflow request
+## Get workflow request
 
 Get information about a given workflow instance.
 
@@ -228,6 +228,10 @@ The API call will provide a JSON response similar to this:
   "runtimeStatus": "RUNNING",
  }
 ```
+
+Parameter | Description
+--------- | -----------
+`runtimeStatus` | The status of the workflow instance. Values include: `RUNNING`, `TERMINATED`, `PAUSED`  
 
 ## Component format
 
