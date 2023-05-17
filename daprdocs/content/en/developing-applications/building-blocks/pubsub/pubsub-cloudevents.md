@@ -16,7 +16,7 @@ Dapr uses CloudEvents to provide additional context to the event payload, enabli
 
 ## CloudEvents example
 
-A publish operation to Dapr will result in a cloud event envelope containing the following fields:
+A publish operation to Dapr results in a cloud event envelope containing the following fields:
 
 - `id`
 - `source`
