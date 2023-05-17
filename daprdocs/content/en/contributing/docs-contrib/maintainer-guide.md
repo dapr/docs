@@ -260,7 +260,7 @@ You need Microsoft employee access to create a new Azure Static Web App.
    - One saying your request was received.
    - One saying the request was completed.
 1. Back in the Azure Portal, click **Add**. You may need to click a couple times to account for DNS delay.
-1. An SSL is now generated for you and the DNS record is saved. This may take 2-3 minutes.
+1. A TLS certificate is now generated for you and the DNS record is saved. This may take 2-3 minutes.
 1. Navigate to `https://v1-2.docs.dapr.io` and verify a blank website loads correctly.
 
 ### Configure future website branch
