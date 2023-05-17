@@ -9,7 +9,7 @@ aliases:
 
 ## Overview
 
-The binding for kitex mainly utilizes the generic-call feature in kitex. More information can be found in [kitex generic-call](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/).
+The binding for Kitex mainly utilizes the generic-call feature in Kitex. Learn more from the official documentation around [Kitex generic-call](https://www.cloudwego.io/docs/kitex/tutorials/advanced-feature/generic-call/).
 Currently, kitex only supports Thrift generic calls, and the implementation integrated into [components-contrib](https://github.com/dapr/components-contrib/tree/master/bindings/kitex) adopts binary generic calls.
 
 
