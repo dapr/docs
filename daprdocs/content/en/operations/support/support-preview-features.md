@@ -17,7 +17,6 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | --- | --- | --- | --- | --- |
 | **App Middleware** | Allow middleware components to be executed when making service-to-service calls | N/A | [App Middleware]({{<ref "middleware.md#app-middleware" >}}) | v1.9 |
 | **Streaming for HTTP service invocation** | Enables (partial) support for using streams in HTTP service invocation; see below for more details. | `ServiceInvocationStreaming` | [Details]({{< ref "support-preview-features.md#streaming-for-http-service-invocation" >}}) | v1.10 |
-| **App health checks** | Allows configuring app health checks | `AppHealthCheck` | [App health checks]({{<ref "app-health.md" >}}) | v1.9 |
 | **Pluggable components** | Allows creating self-hosted gRPC-based components written in any language that supports gRPC. The following component APIs are supported: State stores, Pub/sub, Bindings | N/A | [Pluggable components concept]({{<ref "components-concept#pluggable-components" >}})| v1.9  |
 | **Multi-App Run** | Configure multiple Dapr applications from a single configuration file and run from a single command | `dapr run -f` | [Multi-App Run]({{< ref multi-app-dapr-run.md >}}) | v1.10 |
 | **Workflows** | Author workflows as code to automate and orchestrate tasks within your application, like messaging, state management, and failure handling | N/A | [Workflows concept]({{< ref "components-concept#workflows" >}})| v1.10  |
@@ -30,14 +29,14 @@ The table below summarizes the current state of support for streaming in HTTP se
 
 <img src="/images/service-invocation-simple.webp" width=600 alt="Diagram showing the steps of service invocation described in the table below" />
 
-| Step | Handles data as a stream | Dapr 1.10 | Dapr 1.10 with<br/>`ServiceInvocationStreaming` |
+| Step | Handles data as a stream | Dapr 1.11 | Dapr 1.11 with<br/>`ServiceInvocationStreaming` |
 |:---:|---|:---:|:---:|
 | 1 |  Request: "App A" to "Dapr sidecar A | <span role="img" aria-label="No">❌</span> | <span role="img" aria-label="No">❌</span> |
 | 2 |  Request: "Dapr sidecar A" to "Dapr sidecar B | <span role="img" aria-label="No">❌</span> | <span role="img" aria-label="Yes">✅</span> |
 | 3 |  Request: "Dapr sidecar B" to "App B" | <span role="img" aria-label="Yes">✅</span> | <span role="img" aria-label="Yes">✅</span> |
 | 4 |  Response: "App B" to "Dapr sidecar B" | <span role="img" aria-label="Yes">✅</span> | <span role="img" aria-label="Yes">✅</span> |
 | 5 |  Response: "Dapr sidecar B" to "Dapr sidecar A | <span role="img" aria-label="No">❌</span> | <span role="img" aria-label="Yes">✅</span> |
-| 6 |  Response: "Dapr sidecar A" to "App A | <span role="img" aria-label="No">❌</span> | <span role="img" aria-label="Yes">✅</span> |
+| 6 |  Response: "Dapr sidecar A" to "App A | <span role="img" aria-label="No">❌</span> | <span role="img" aria-label="No">❌</span> |
 
 Important notes:
 
