@@ -105,6 +105,36 @@ Dapr Workflows allow you to schedule reminder-like durable delays for any time r
 Some APIs in the workflow authoring SDK may internally schedule durable timers to implement internal timeout behavior.
 {{% /alert %}}
 
+## Retry policies
+
+Workflows support durable retry policies for activities and child workflows. Workflow retry policies are separate and distinct from [Dapr resiliency policies]({{< ref "resiliency-overview.md" >}}) in the following ways.
+
+- Workflow retry policies are configured by the workflow author in code, whereas Dapr Resiliency policies are configured by the application operator in YAML.
+- Workflow retry policies are durable and maintain their state across application restarts, whereas Dapr Resiliency policies are not durable and must be re-applied after application restarts.
+- Workflow retry policies are triggered by unhandled errors/exceptions in activities and child workflows, whereas Dapr Resiliency policies are triggered by operation timeouts and connectivity faults.
+
+Retries are internally implemented using durable timers. This means that workflows can be safely unloaded from memory while waiting for a retry to fire, conserving system resources. This also means that delays between retries can be arbitrarily long, including minutes, hours, or even days.
+
+{{% alert title="Note" color="primary" %}}
+The actions performed by a retry policy are saved into a workflow's history. Care must be taken not to change the behavior of a retry policy after a workflow has already been executed. Otherwise, the workflow may behave unexpectedly when replayed. See the notes on [updating workflow code]({{< ref "#updating-workflow-code" >}}) for more information.
+{{% /alert %}}
+
+It's possible to use both workflow retry policies and Dapr Resiliency policies together. For example, if a workflow activity uses a Dapr client to invoke a service, the Dapr client uses the configured resiliency policy. See [Quickstart: Service-to-service resiliency]({{< ref "#resiliency-serviceinvo-quickstart" >}}) for more information with an example.  However, if the activity itself fails for any reason, including exhausting the retries on the resiliency policy, then the workflow's resiliency policy kicks in.
+
+{{% alert title="Note" color="primary" %}}
+Using workflow retry policies and resiliency policies together can result in unexpected behavior. For example, if a workflow activity exhausts its configured retry policy, the workflow engine will still retry the activity according to the workflow retry policy. This can result in the activity being retried more times than expected.
+{{% /alert %}}
+
+Because workflow retry policies are configured in code, the exact developer experience may vary depending on the version of the workflow SDK. In general, workflow retry policies can be configured with the following parameters.
+
+| Parameter | Description |
+| --- | --- |
+| **Maximum number of attempts** | The maximum number of times to execute the activity or child workflow. |
+| **First retry interval** | The amount of time to wait before the first retry. |
+| **Backoff coefficient** | The amount of time to wait before each subsequent retry. |
+| **Maximum retry interval** | The maximum amount of time to wait before each subsequent retry. |
+| **Retry timeout** | The overall timeout for retries, regardless of any configured max number of attempts. |
+
 ## External events
 
 Sometimes workflows will need to wait for events that are raised by external systems. For example, an approval workflow may require a human to explicitly approve an order request within an order processing workflow if the total cost exceeds some threshold. Another example is a trivia game orchestration workflow that pauses while waiting for all participants to submit their answers to trivia questions. These mid-execution inputs are referred to as _external events_.
