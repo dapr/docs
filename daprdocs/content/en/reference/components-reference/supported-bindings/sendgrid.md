@@ -83,7 +83,8 @@ You can specify any of the optional metadata properties on the output binding re
 }
 ```
 
-If a dynamic template is used, the template id needs to be used and if provided, the template data is used:
+## Dynamic templates
+If a dynamic template is used, a `dynamicTemplateId` needs to be provided and then the `dynamicTemplateData` is used:
 
 ```json
 {
