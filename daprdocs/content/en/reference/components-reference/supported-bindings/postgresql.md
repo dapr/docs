@@ -4,12 +4,13 @@ title: "PostgreSQL binding spec"
 linkTitle: "PostgreSQL"
 description: "Detailed documentation on the PostgreSQL binding component"
 aliases:
+  - "/operations/components/setup-bindings/supported-bindings/postgresql/"
   - "/operations/components/setup-bindings/supported-bindings/postgres/"
 ---
 
 ## Component format
 
-To setup PostgreSQL binding create a component of type `bindings.postgres`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup PostgreSQL binding create a component of type `bindings.postgresql`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 
 ```yaml
@@ -18,7 +19,7 @@ kind: Component
 metadata:
   name: <NAME>
 spec:
-  type: bindings.postgres
+  type: bindings.postgresql
   version: v1
   metadata:
   - name: url # Required
@@ -33,7 +34,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| url | Y | Output | Postgres connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
+| url | Y | Output | PostgreSQL connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
 
 ### URL format
 
@@ -144,8 +145,7 @@ Finally, the `close` operation can be used to explicitly close the DB connection
 }
 ```
 
-
-> Note, the PostgreSql binding itself doesn't prevent SQL injection, like with any database application, validate the input before executing query.
+> Note, the PostgreSQL binding itself doesn't prevent SQL injection, like with any database application, validate the input before executing query.
 
 ## Related links
 
