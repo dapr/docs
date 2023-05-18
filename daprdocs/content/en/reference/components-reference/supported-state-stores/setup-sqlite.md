@@ -36,8 +36,11 @@ spec:
   #- name: tableName
   #  value: "state"
   # Cleanup interval in seconds, to remove expired rows (optional)
-  #- name: cleanupIntervalInSeconds
-  #  value: 3600
+  #- name: cleanupInterval
+  #  value: "1h"
+  # Set busy timeout for database operations
+  #- name: busyTimeout
+  #  value: "2s"
   # Uncomment this if you wish to use SQLite as a state store for actors (optional)
   #- name: actorStateStore
   #  value: "true"
@@ -83,6 +86,16 @@ CREATE INDEX idx_expiration_time
 ```
 
 > Dapr does not automatically [vacuum](https://www.sqlite.org/lang_vacuum.html) SQLite databases.
+
+### Sharing a SQLite database and using networked filesystems
+
+Although you can have multiple Dapr instances accessing the same SQLite database (for example, because your application is scaled horizontally or because you have multiple apps accessing the same state store), there are some caveats you should keep in mind.
+
+SQLite works best when all clients access a database file on the same, locally-mounted disk. Using virtual disks that are mounted from a SAN (Storage Area Network), as is common practice in virtualized or cloud environments, is fine.
+
+However, storing your SQLite database in a networked filesystem (for example via NFS or SMB, but these examples are not an exhaustive list) should be done with care. The official SQLite documentation has a page dedicated to [recommendations and caveats for running SQLite over a network](https://www.sqlite.org/useovernet.html).
+
+Given the risk of data corruption that running SQLite over a networked filesystem (such as via NFS or SMB) comes with, we do not recommend doing that with Dapr in production environment. However, if you do want to do that, you should configure your SQLite Dapr component with `disableWAL` set to `true`.
 
 ## Related links
 
