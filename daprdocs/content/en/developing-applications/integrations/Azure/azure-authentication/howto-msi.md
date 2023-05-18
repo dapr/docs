@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How to: Authenticate using Managed Service Identities"
-linkTitle: "How to: Authenticate using MSI"
+title: "How to: Use Managed Service Identities"
+linkTitle: "How to: Use MSI"
 weight: 40000
-description: "Learn about authenticating Azure components using Managed Service Identities"
+description: "Learn how to use Managed Service Identities"
 ---
 
 Using MSI, authentication happens automatically by virtue of your application running on top of an Azure service that has an assigned identity. 

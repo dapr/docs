@@ -1,12 +1,10 @@
 ---
 type: docs
-title: "How to: Authenticate using Azure Active Directory"
-linkTitle: "How to: Authenticate using Azure AD"
+title: "How to: Generate a new Azure AD application and Service Principal"
+linkTitle: "How to: Generate Azure AD and Service Principal"
 weight: 30000
-description: "Learn about authenticating Azure components using Azure Active Directory"
+description: "Learn how to generate an Azure Active Directory and use it as a Service Principal"
 ---
-
-Let's walk through authenticating to Azure using Azure Active Directory (Azure AD).
 
 ## Prerequisites
 
@@ -146,4 +144,4 @@ This step is different from the [official Azure documentation](https://docs.micr
 
 ## Next steps
 
-{{< button text="Authenticate using MSI >>" page="howto-authenticate-msi.md" >}}
+{{< button text="Use MSI >>" page="howto-msi.md" >}}
