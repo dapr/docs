@@ -19,9 +19,9 @@ Using Dapr's service invocation API, you can communicate with endpoints that eit
 
 ## HTTP service invocation to external services or non-Dapr endpoints
 Sometimes you need to call a non-Dapr HTTP endpoint. For example:
-- You may choose to only use Dapr in part of you overall application, including brownfield development
+- You may choose to only use Dapr in part of your overall application, including brownfield development
 - You may not have access to the code to migrate an existing application to use Dapr
-- You simply need to call an external HTTP service.
+- You need to call an external HTTP service.
 
 By defining an `HTTPEndpoint` resource, you declaratively define a way to interact with a non-Dapr endpoint. You then use the service invocation URL to invoke non-Dapr endpoints. Alternatively, you can place a non-Dapr Fully Qualified Domain Name (FQDN) endpoint URL directly into the service invocation URL.
 
