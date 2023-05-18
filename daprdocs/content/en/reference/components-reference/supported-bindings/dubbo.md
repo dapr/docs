@@ -23,20 +23,18 @@ spec:
   type: bindings.alicloud.dubbo
   version: v1
   metadata:
-  - name: localhostIP
-    value: "127.0.0.1"
-  - name: dubboPort
-    value: "20000"
-  - name: providerInterfaceName
-    value: "org.apache.dubbo.samples.UserProvider"
-  - name: paramInterfaceName
-    value: "org.apache.dubbo.samples.User"
-  - name: providerTypeName
-    value: "UserProvider"
+  - name: group
+    value: ""
+  - name: version
+    value: ""
+  - name: interfaceName
+    value: ""
   - name: methodName
-    value: "SayHello"
-  - name: helloPrefix
-    value: "hello" 
+    value: ""
+  - name: providerHostname
+    value: ""
+  - name: providerPort
+    value: ""
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -47,13 +45,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| `localhostIP` | N | Output |  | `"127.0.0.1"` |
-| `dubboPort` | N | Output |  | `"20000"` |
-| `providerInterfaceName` | N | Input |  | `"org.apache.dubbo.samples.UserProvider"` |
-| `paramInterfaceName` | N | Input |  | `"org.apache.dubbo.samples.User"` |
-| `providerTypeName` | N | Input |  | `"UserProvider"` |
-| `methodName` | N | Output |  | `"SayHello"` |
-| `helloPrefix` | N | Output |  | `"hello"` |
+| `group` | N | Output |  | `""` |
+| `version` | N | Output |  | `""` |
+| `interfaceName` | N | Input |  | `""` |
+| `methodName` | N | Input |  | `""` |
+| `providerHostname` | N | Input |  | `""` |
+| `providerPort` | N | Output |  | `""` |
 
 ## Related links
 
