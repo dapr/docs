@@ -33,6 +33,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | jwks               | Y        | Connection-string for the JWKS host  | `fixtures/crypto/jwks/jwks.json`
+| requestTimeout     | N        | Amount of time before request timeout; Default: 30 seconds  | `30`
+| minRefreshInterval | N        | Minimum interval for request refresh; Default: 10 minutes  | `10`
 
 ## Related links
 [Cryptography building block]({{< ref cryptography >}})

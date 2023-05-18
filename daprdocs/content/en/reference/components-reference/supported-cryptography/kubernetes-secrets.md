@@ -20,7 +20,7 @@ spec:
   type: crypto.<TYPE>
   version: v1.0-alpha1
   metadata:
-  - name: <NAME>
+  - name: defaultNamespace
     value: <VALUE>
 ```
 
@@ -32,7 +32,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-|           |        |   | 
+| defaultNamespace   | N        |  |  |
+| requestTimeout     | N        |  |  | 
 
 ## Related links
 [Cryptography building block]({{< ref cryptography >}})
