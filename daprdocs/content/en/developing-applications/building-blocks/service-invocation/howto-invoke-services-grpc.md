@@ -220,9 +220,10 @@ spec:
         dapr.io/app-port: "50051"
 ...
 ```
-*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}}))*
 
 The `dapr.io/app-protocol: "grpc"` annotation tells Dapr to invoke the app using gRPC.
+
+If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS with the `app-protocol: "grpcs"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}})). Note that Dapr does not validate TLS certificates presented by the app.
 
 ### Namespaces
 

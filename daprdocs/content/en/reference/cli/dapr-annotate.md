@@ -28,8 +28,7 @@ dapr annotate [flags] CONFIG-FILE
 | `--app-id, -a` | | | The app id to annotate |
 | `--app-max-concurrency` | | `-1` | The maximum number of concurrent requests to allow |
 | `--app-port, -p` | | `-1` | The port to expose the app on |
-| `--app-protocol` | | | The protocol to use for the app |
-| `--app-ssl` | | `false` | Enable SSL for the app |
+| `--app-protocol` | | | The protocol to use for the app: `http` (default), `grpc`, `https`, `grpcs`, `h2c` |
 | `--app-token-secret` | | | The secret to use for the app token |
 | `--config, -c` | | | The config file to annotate |
 | `--cpu-limit` | | |  The CPU limit to set for the sidecar. See valid values [here](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/). |
