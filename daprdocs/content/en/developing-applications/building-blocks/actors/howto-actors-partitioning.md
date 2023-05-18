@@ -8,7 +8,7 @@ aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-[Actor reminders]({{< ref "howto-actors-partitioning.md#actor-reminders" >}}) are persisted and continue to be triggered after sidecar restarts. Applications with multiple reminders registered can experience the following issues:
+[Actor reminders]({{< ref "actors-timers-reminders.md#actor-reminders" >}}) are persisted and continue to be triggered after sidecar restarts. Applications with multiple reminders registered can experience the following issues:
 
 - Low throughput on reminders registration and de-registration
 - Limited number of reminders registered based on the single record size limit on the state store
