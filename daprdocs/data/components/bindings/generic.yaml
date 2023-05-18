@@ -14,6 +14,14 @@
   features:
     input: true
     output: false
+- component: Dubbo
+  link: alicloud-dubbo
+  state: Stable
+  version: v1
+  since: "1.8"
+  features:
+    input: false
+    output: true
 - component: GraphQL
   link: graghql
   state: Alpha

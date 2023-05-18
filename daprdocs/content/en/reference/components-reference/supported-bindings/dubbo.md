@@ -1,26 +1,26 @@
 ---
 type: docs
-title: "Alibaba Cloud Dubbo output binding spec"
-linkTitle: "Alibaba Cloud Dubbo"
-description: "Detailed documentation on the Alibaba Cloud Dubbo output binding component"
+title: "Dubbo output binding spec"
+linkTitle: "Dubbo"
+description: "Detailed documentation on the Dubbo output binding component"
 aliases:
   - "/operations/components/setup-bindings/supported-bindings/dubbo/"
 ---
 
 ## Component format
 
-To setup an Alibaba Cloud Dubbo binding create a component of type `bindings.alicloud.dubbo`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+To setup a Dubbo binding create a component of type `bindings.dubbo`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-See [this](https://dubbo.apache.org/docs/) for the documentation for Alibaba Cloud Dubbo.
+See [this](https://dubbo.apache.org/docs/) for the documentation for Dubbo.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: alicloud-dubbo-binding
+  name: dubbo-binding
   namespace: default
 spec:
-  type: bindings.alicloud.dubbo
+  type: bindings.dubbo
   version: v1
   metadata:
   - name: group
