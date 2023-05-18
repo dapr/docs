@@ -8,9 +8,9 @@
     output: true
 - component: Alibaba Cloud Dubbo
   link: alicloud-dubbo
-  state: Alpha
+  state: Stable
   version: v1
-  since: "1.9"
+  since: "1.8"
   features:
     input: false
     output: true
