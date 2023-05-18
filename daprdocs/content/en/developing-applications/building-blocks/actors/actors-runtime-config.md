@@ -19,6 +19,10 @@ You can modify the default Dapr actor runtime behavior using the following confi
 | `remindersStoragePartitions` | Configure the number of partitions for actor's reminders. If not provided, all reminders are saved as a single record in actor's state store. | 0 |
 | `entitiesConfig` | Configure each actor type individually with an array of configurations. Any entity specified in the individual entity configurations must also be specified in the top level `entities` field. | N/A |
 
+{{% alert title="Note" color="primary" %}}
+Timeouts and intervals use [Go's ParseDuration](https://pkg.go.dev/time#ParseDuration) format.
+{{% /alert %}}
+
 ## Examples
 
 {{< tabs ".NET" JavaScript Python Java Go >}}
