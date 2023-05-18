@@ -22,6 +22,17 @@ Every actor is defined as an instance of an actor type, identical to the way an 
 
 <img src="/images/actor_background_game_example.png" width=400>
 
+## Actor types and IDs
+
+To communicate with an actor, you need to know its actor _type_ and actor _id_. 
+
+- **Actor type** uniquely identifies the actor implementation across the whole application. 
+- **Actor ID** uniquely identifies an instance of that type.
+
+If you don't have an actor `id` and want to communicate with a new instance, you can create a random ID. Since the random ID is a cryptographically strong identifier, the runtime will create a new actor instance when you interact with it.
+
+[Learn more about how each Dapr SDK handles actor types, actor ids, and actor interfaces.]({{< ref sdks >}})
+
 ## Dapr actors vs. Dapr Workflow
 
 Dapr actors builds on the state management and service invocation APIs to create stateful, long running objects with identity. [Dapr Workflow]({{< ref workflow-overview.md >}}) and Dapr Actors are related, with workflows building on actors to provide a higher level of abstraction to orchestrate a set of actors, implementing common workflow patterns and managing the lifecycle of actors on your behalf.
