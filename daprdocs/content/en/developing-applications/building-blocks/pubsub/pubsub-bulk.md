@@ -477,9 +477,15 @@ Some pub/sub brokers support sending and receiving multiple messages in a single
 
 For components that do not have bulk publish or subscribe support, Dapr runtime uses the regular publish and subscribe APIs to send and receive messages one by one. This is still more efficient than directly using the regular publish or subscribe APIs, because applications can still send/receive multiple messages in a single request to/from Dapr.
 
-## Watch the demo
+## Demos
 
-Watch [this video for an demo on bulk pub/sub](https://youtu.be/BxiKpEmchgQ?t=1170):
+Watch the following demos and presentations about bulk pub/sub.
+
+### [KubeCon Europe 2023 presentation](https://youtu.be/WMBAo-UNg6o)
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/WMBAo-UNg6o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+### [Dapr Community Call #77 presentation](https://youtu.be/BxiKpEmchgQ?t=1170):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=1170" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
