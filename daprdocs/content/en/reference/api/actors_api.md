@@ -486,11 +486,13 @@ Parameter | Description
 
 
 {{% alert title="Note" color="primary" %}}
-Actor timeouts and intervals use [Go's ParseDuration](https://pkg.go.dev/time#ParseDuration) format. You can use various string formats to represent durations. For example:
+Actor settings in configuration for timeouts and intervals use [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) format. You can use string formats to represent durations. For example:
 - `1h30m` or `1.5h`: A duration of 1 hour and 30 minutes
 - `1d12h`: A duration of 1 day and 12 hours
 - `500ms`: A duration of 500 milliseconds
 - `-30m`: A negative duration of 30 minutes
+
+This format also applies when [creating actor reminders]({{< ref "#request-body" >}}).
 
 {{% /alert %}}
 
