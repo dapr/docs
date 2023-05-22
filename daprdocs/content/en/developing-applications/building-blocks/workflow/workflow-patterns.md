@@ -262,6 +262,92 @@ A workflow implementing the monitor pattern can loop forever or it can terminate
 This pattern can also be expressed using actors and reminders. The difference is that this workflow is expressed as a single function with inputs and state stored in local variables. Workflows can also execute a sequence of actions with stronger reliability guarantees, if necessary.
 {{% /alert %}}
 
+## Human interaction
+
+In some cases, a workflow may need to pause and wait for a human to perform some action. For example, a workflow may need to pause and wait for a human to approve a purchase order. Dapr Workflow supports this pattern natively via the [external events]({{< ref workflow-features-concepts.md#external-events >}}) feature. Here's an example flow:
+
+1. A workflow is triggered (e.g. a purchase order is received)
+1. A rule in the workflow determines that a human needs to perform some action (e.g. the purchase order cost exceeds a certain threshold)
+1. The workflow sends a notification requesting human action (e.g. sends an email to the approver with an approval link)
+1. The workflow pauses and waits for the human to perform the action (e.g. approval or rejection of the order)
+1. If the approval isn't received within the specified time, the workflow resumes and performs some compensation logic (e.g. cancels the order)
+
+The following diagram illustrates this flow.
+
+<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=600 alt="Diagram showing how the human interaction pattern works"/>
+
+The following example code shows how this pattern can be implemented using Dapr Workflow.
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
+{
+    // ...(other steps)...
+
+    // Require orders over a certain threshold to be approved
+    if (order.TotalCost > 10000)
+    {
+        try
+        {
+            // Request manager approval for this order
+            await context.CallActivityAsync(nameof(RequestApprovalActivity), order);
+
+            // Pause and wait for a manager to approve the order
+            ApprovalResult approvalResult = await context.WaitForExternalEventAsync<ApprovalResult>(
+                eventName: "ManagerApproval",
+                timeout: TimeSpan.FromDays(3));
+            if (approvalResult == ApprovalResult.Rejected)
+            {
+                // The order was rejected, end the workflow here
+                return new OrderResult(Processed: false);
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            // An approval timeout results in automatic order cancellation
+            return new OrderResult(Processed: false);
+        }
+    }
+
+    // ...(other steps)...
+
+    // End the workflow with a success result
+    return new OrderResult(Processed: true);
+}
+```
+
+{{% alert title="Note" color="primary" %}}
+In the example above, `RequestApprovalActivity` is the name of a workflow activity to invoke and `ApprovalResult` is an enumeration defined by the workflow app. For brevity, these definitions were left out of the example code.
+{{% /alert %}}
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+The code that delivers the event is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref howto-manage-workflow.md#raise-an-event >}}) workflow management API, as shown in the following example:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+```csharp
+// Raise the workflow event to the workflow
+await daprClient.RaiseWorkflowEventAsync(
+    instanceId: orderId,
+    workflowComponent: "dapr",
+    eventName: "ManagerApproval",
+    eventData: ApprovalResult.Approved);
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
+
 ## Next steps
 
 {{< button text="Workflow architecture >>" page="workflow-architecture.md" >}}
