@@ -484,6 +484,16 @@ Parameter | Description
 `maxStackDepth` | A value in the reentrancy configuration that controls how many reentrant calls be made to the same actor.
 `entitiesConfig` | Array of entity configurations that allow per actor type settings. Any configuration defined here must have an entity that maps back into the root level entities.
 
+
+{{% alert title="Note" color="primary" %}}
+Actor timeouts and intervals use [Go's ParseDuration](https://pkg.go.dev/time#ParseDuration) format. You can use various string formats to represent durations. For example:
+- `1h30m` or `1.5h`: A duration of 1 hour and 30 minutes
+- `1d12h`: A duration of 1 day and 12 hours
+- `500ms`: A duration of 500 milliseconds
+- `-30m`: A negative duration of 30 minutes
+
+{{% /alert %}}
+
 ```json
 {
   "entities":["actorType1", "actorType2"],
