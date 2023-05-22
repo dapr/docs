@@ -264,7 +264,7 @@ This pattern can also be expressed using actors and reminders. The difference is
 
 ## Human interaction
 
-In some cases, a workflow may need to pause and wait for a human to perform some action. For example, a workflow may need to pause and wait for a human to approve a purchase order. Dapr Workflow supports this pattern natively via the [external events]({{< ref workflow-features-concepts.md#external-events >}}) feature. Here's an example flow:
+In some cases, a workflow may need to pause and wait for a human to perform some action. For example, a workflow may need to pause and wait for a human to approve a purchase order. Dapr Workflow supports this pattern natively via the [external events]({{< ref "workflow-features-concepts.md#external-events" >}}) feature. Here's an example flow:
 
 1. A workflow is triggered (e.g. a purchase order is received)
 1. A rule in the workflow determines that a human needs to perform some action (e.g. the purchase order cost exceeds a certain threshold)
@@ -327,7 +327,7 @@ In the example above, `RequestApprovalActivity` is the name of a workflow activi
 
 {{< /tabs >}}
 
-The code that delivers the event is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref howto-manage-workflow.md#raise-an-event >}}) workflow management API, as shown in the following example:
+The code that delivers the event is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
 {{< tabs ".NET" >}}
 
