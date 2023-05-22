@@ -187,7 +187,7 @@ Creates a persistent reminder for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-#### Request Body
+#### Reminder request body
 
 A JSON object with the following fields:
 
@@ -351,7 +351,8 @@ Creates a timer for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Body:
+#### Timer request body:
+The format for the timer request body is the same as for [actor reminders]({{< ref "#reminder-request-body" >}}). For example:
 
 The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
 
@@ -491,8 +492,6 @@ Actor settings in configuration for timeouts and intervals use [time.ParseDurati
 - `1d12h`: A duration of 1 day and 12 hours
 - `500ms`: A duration of 500 milliseconds
 - `-30m`: A negative duration of 30 minutes
-
-This format also applies when [creating actor reminders]({{< ref "#request-body" >}}).
 
 {{% /alert %}}
 
