@@ -31,25 +31,27 @@ Dapr Workflow solves these complexities by allowing you to implement the task ch
 
 ```csharp
 // Expotential backoff retry policy that survives long outages
-var retryPolicy = TaskOptions.FromRetryPolicy(new RetryPolicy(
-    maxNumberOfAttempts: 10,
-    firstRetryInterval: TimeSpan.FromMinutes(1),
-    backoffCoefficient: 2.0,
-    maxRetryInterval: TimeSpan.FromHours(1)));
+var retryOptions = new WorkflowTaskOptions
+{
+    RetryPolicy = new WorkflowRetryPolicy(
+        firstRetryInterval: TimeSpan.FromMinutes(1),
+        backoffCoefficient: 2.0,
+        maxRetryInterval: TimeSpan.FromHours(1),
+        maxNumberOfAttempts: 10),
+};
 
-// Task failures are surfaced as ordinary .NET exceptions
 try
 {
-    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryPolicy);
-    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryPolicy);
-    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryPolicy);
-    var result4 = await context.CallActivityAsync<Guid[]>("Step4", result3, retryPolicy);
+    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryOptions);
+    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryOptions);
+    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryOptions);
+    var result4 = await context.CallActivityAsync<Guid[]>("Step4", result3, retryOptions);
     return string.Join(", ", result4);
 }
-catch (TaskFailedException)
+catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 {
     // Retries expired - apply custom compensation logic
-    await context.CallActivityAsync<long[]>("MyCompensation", options: retryPolicy);
+    await context.CallActivityAsync<long[]>("MyCompensation", options: retryOptions);
     throw;
 }
 ```
@@ -143,35 +145,33 @@ The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-o
 The following `curl` commands illustrate how the workflow APIs support this pattern.
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678/start -d '{"input":{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}}'
+curl -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
 ```
 
 The previous command will result in the following response JSON:
 
 ```json
-{"instance_id":"12345678"}
+{"instanceID":"12345678"}
 ```
 
 The HTTP client can then construct the status query URL using the workflow instance ID and poll it repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
 
 ```bash
-curl http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/12345678
+curl http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678
 ```
 
 The following is an example of what an in-progress workflow status might look like.
 
 ```json
 {
-  "WFInfo": {
-    "instance_id": "12345678"
-  },
-  "start_time": "2023-02-05T00:32:05Z",
-  "metadata": {
+  "instanceID": "12345678",
+  "workflowName": "OrderProcessingWorkflow",
+  "createdAt": "2023-05-03T23:22:11.143069826Z",
+  "lastUpdatedAt": "2023-05-03T23:22:22.460025267Z",
+  "runtimeStatus": "RUNNING",
+  "properties": {
     "dapr.workflow.custom_status": "",
-    "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":1,\"TotalCost\":9.95}",
-    "dapr.workflow.last_updated": "2023-02-05T00:32:18Z",
-    "dapr.workflow.name": "OrderProcessingWorkflow",
-    "dapr.workflow.runtime_status": "RUNNING"
+    "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":1,\"TotalCost\":9.95}"
   }
 }
 ```
@@ -182,17 +182,15 @@ If the workflow has completed, the status might look as follows.
 
 ```json
 {
-  "WFInfo": {
-    "instance_id": "12345678"
-  },
-  "start_time": "2023-02-05T00:32:05Z",
-  "metadata": {
+  "instanceID": "12345678",
+  "workflowName": "OrderProcessingWorkflow",
+  "createdAt": "2023-05-03T23:30:11.381146313Z",
+  "lastUpdatedAt": "2023-05-03T23:30:52.923870615Z",
+  "runtimeStatus": "COMPLETED",
+  "properties": {
     "dapr.workflow.custom_status": "",
     "dapr.workflow.input": "{\"Name\":\"Paperclips\",\"Quantity\":1,\"TotalCost\":9.95}",
-    "dapr.workflow.last_updated": "2023-02-05T00:32:23Z",
-    "dapr.workflow.name": "OrderProcessingWorkflow",
-    "dapr.workflow.output": "{\"Processed\":true}",
-    "dapr.workflow.runtime_status": "COMPLETED"
+    "dapr.workflow.output": "{\"Processed\":true}"
   }
 }
 ```

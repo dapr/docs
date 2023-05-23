@@ -70,8 +70,8 @@
   features:
     input: false
     output: true
-- component: PostgreSql
-  link: postgres
+- component: PostgreSQL
+  link: postgresql
   state: Stable
   version: v1
   since: "1.9"
@@ -141,4 +141,12 @@
   since: "1.10"
   features:
     input: true
+    output: true
+- component: Wasm
+  link: wasm
+  state: Alpha
+  version: v1
+  since: "1.11"
+  features:
+    input: false
     output: true

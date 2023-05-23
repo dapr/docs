@@ -2,6 +2,7 @@
   link: middleware-rate-limit
   state: Stable
   version: v1
+  since: "1.11"
   description: Restricts the maximum number of allowed HTTP requests per second
 - component: OAuth2 Authorization Grant flow
   link: /reference/components-reference/supported-middleware/middleware-oauth2
@@ -44,8 +45,8 @@
   state: Stable
   version: v1
   description: Converts the body of the request to uppercase letters (demo)
-- component: WASM
+- component: Wasm
   link: /reference/components-reference/supported-middleware/middleware-wasm
   state: Alpha
   version: v1
-  description: Use WASM middleware in your HTTP pipeline
+  description: Use Wasm middleware in your HTTP pipeline
