@@ -39,18 +39,18 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | redisHost | Y | Output |  The Redis host address | `"localhost:6379"` |
 | redisPassword | Y | Output | The Redis password | `"password"` |
-| redisUsername | N | Output | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
+| redisUsername | N | Output | Username for Redis host. Defaults to empty. Make sure your Redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
 | enableTLS | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
-| failover           | N | Output         | Property to enabled failover configuration. Needs sentinalMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
-| sentinelMasterName | N | Output         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"127.0.0.1:6379"`
-| redisType        | N | Output        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
-| redisDB        | N | Output        | Database selected after connecting to redis. If `"redisType"` is `"cluster"` this option is ignored. Defaults to `"0"`. | `"0"`
+| failover           | N | Output         | Property to enabled failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
+| sentinelMasterName | N | Output         | The Sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"127.0.0.1:6379"`
+| redisType        | N | Output        | The type of Redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for Redis cluster mode. Defaults to `"node"`. | `"cluster"`
+| redisDB        | N | Output        | Database selected after connecting to Redis. If `"redisType"` is `"cluster"`, this option is ignored. Defaults to `"0"`. | `"0"`
 | redisMaxRetries        | N | Output        | Maximum number of times to retry commands before giving up. Default is to not retry failed commands.  | `"5"`
-| redisMinRetryInterval        | N | Output        | Minimum backoff for redis commands between each retry. Default is `"8ms"`;  `"-1"` disables backoff. | `"8ms"`
-| redisMaxRetryInterval        | N | Output        | Maximum backoff for redis commands between each retry. Default is `"512ms"`;`"-1"` disables backoff. | `"5s"`
+| redisMinRetryInterval        | N | Output        | Minimum backoff for Redis commands between each retry. Default is `"8ms"`;  `"-1"` disables backoff. | `"8ms"`
+| redisMaxRetryInterval        | N | Output        | Maximum backoff for Redis commands between each retry. Default is `"512ms"`;`"-1"` disables backoff. | `"5s"`
 | dialTimeout        | N | Output        | Dial timeout for establishing new connections. Defaults to `"5s"`.  | `"5s"`
-| readTimeout        | N | Output        | Timeout for socket reads. If reached, redis commands will fail with a timeout instead of blocking. Defaults to `"3s"`, `"-1"` for no timeout. | `"3s"`
-| writeTimeout        | N | Output        | Timeout for socket writes. If reached, redis commands will fail with a timeout instead of blocking. Defaults is readTimeout. | `"3s"`
+| readTimeout        | N | Output        | Timeout for socket reads. If reached, Redis commands fail with a timeout instead of blocking. Defaults to `"3s"`, `"-1"` for no timeout. | `"3s"`
+| writeTimeout        | N | Output        | Timeout for socket writes. If reached, Redis commands fail with a timeout instead of blocking. Defaults is readTimeout. | `"3s"`
 | poolSize        | N | Output        | Maximum number of socket connections. Default is 10 connections per every CPU as reported by runtime.NumCPU. | `"20"`
 | poolTimeout        | N | Output        | Amount of time client waits for a connection if all connections are busy before returning an error. Default is readTimeout + 1 second. | `"5s"`
 | maxConnAge        | N | Output        | Connection age at which the client retires (closes) the connection. Default is to not close aged connections. | `"30m"`

@@ -71,7 +71,7 @@ spec:
 
 The following example shows how to Get a saved configuration item using the Dapr Configuration API.
 
-{{< tabs ".NET" Java Python Go "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabs ".NET" Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
 {{% codetab %}}
 
@@ -216,11 +216,11 @@ Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key
 {{< /tabs >}}
 
 
-### Subscribe configuration items
+### Subscribe to configuration item updates
 
-Below are the Code examples that leverage Dapr SDKs to subscribe to keys `[orderId1,orderId2]` using `configstore` store. 
+Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component. 
 
-{{< tabs "Dotnet Extension" "Dotnet Client" Python Go>}}
+{{< tabs ".NET", "ASP.NET Core", Java, Python, Go, Javascript>}}
 {{% codetab %}}
 
 ```csharp
@@ -353,7 +353,7 @@ func main() {
 }
 ```
 
-Run the subscriber app along with Dapr Sidecar
+Run the subscriber app along with Dapr sidecar
 
 ```bash
 dapr run --app-id orderprocessing -- go run main.go
@@ -375,13 +375,13 @@ get updated config key=orderId2 value=202 version=1
 {{< /tabs >}}
 
 
-### Unsubscribe configuration items
+### Unsubscribe from configuration item updates
 
 After you've subscribed to watch configuration items, you will receive updates for all of the subscribed keys. To stop receiving updates, you need to explicitly call the unsubscribe API.
 
 Following are the code examples unsubscribing using the subscription ID:
 
-{{< tabs Python Go "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabs Dotnet Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
 {{% codetab %}}
 ```python
