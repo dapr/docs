@@ -31,25 +31,27 @@ Dapr Workflow solves these complexities by allowing you to implement the task ch
 
 ```csharp
 // Expotential backoff retry policy that survives long outages
-var retryPolicy = TaskOptions.FromRetryPolicy(new RetryPolicy(
-    maxNumberOfAttempts: 10,
-    firstRetryInterval: TimeSpan.FromMinutes(1),
-    backoffCoefficient: 2.0,
-    maxRetryInterval: TimeSpan.FromHours(1)));
+var retryOptions = new WorkflowTaskOptions
+{
+    RetryPolicy = new WorkflowRetryPolicy(
+        firstRetryInterval: TimeSpan.FromMinutes(1),
+        backoffCoefficient: 2.0,
+        maxRetryInterval: TimeSpan.FromHours(1),
+        maxNumberOfAttempts: 10),
+};
 
-// Task failures are surfaced as ordinary .NET exceptions
 try
 {
-    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryPolicy);
-    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryPolicy);
-    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryPolicy);
-    var result4 = await context.CallActivityAsync<Guid[]>("Step4", result3, retryPolicy);
+    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryOptions);
+    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryOptions);
+    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryOptions);
+    var result4 = await context.CallActivityAsync<Guid[]>("Step4", result3, retryOptions);
     return string.Join(", ", result4);
 }
-catch (TaskFailedException)
+catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 {
     // Retries expired - apply custom compensation logic
-    await context.CallActivityAsync<long[]>("MyCompensation", options: retryPolicy);
+    await context.CallActivityAsync<long[]>("MyCompensation", options: retryOptions);
     throw;
 }
 ```
