@@ -7,7 +7,17 @@ description: Detailed information on the JWKS cryptography component
 
 ## Component format
 
-Todo: update component format to correct format for cryptography
+The purpose of this component is to load keys from a JSON Web Key Set (RFC-7517). These are JSON documents that contain 1 or more keys as JWK (JSON Web Key); they can be public, private, or shared keys.
+
+This component supports loading a JWKS:
+- From a local file (if the file is changed on disk, it's reloaded automatically),
+- From a HTTP(S) URL (periodically refreshed if needed), or 
+- By passing an actual JWKS in the Component YAML (as a string, which can be base64-encoded).
+
+{{% alert title="Note" color="primary" %}}
+This component uses the **built-in cryptographic engine in Dapr** to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
+
+{{% /alert %}}
 
 A Dapr `crypto.yaml` component file has the following structure:
 

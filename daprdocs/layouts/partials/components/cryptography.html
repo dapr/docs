@@ -1,5 +1,5 @@
 {{- $groups := dict
-    " Generic" $.Site.Data.components.cryptography.generic
+    " Built-in" $.Site.Data.components.cryptography.builtin
     "Microsoft Azure" $.Site.Data.components.cryptography.azure
 
     }}
@@ -15,7 +15,7 @@
         </tr>
         {{ range sort $components "component" }}
         <tr>
-            <td><a href="/reference/components-reference/supported-locks/{{ .link }}/">{{ .component }}</a>
+            <td><a href="/reference/components-reference/supported-cryptography/{{ .link }}/">{{ .component }}</a>
             </td>
             <td>{{ .state }}</td>
             <td>{{ .version }}</td>

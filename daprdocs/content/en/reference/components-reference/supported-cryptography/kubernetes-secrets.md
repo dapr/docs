@@ -7,7 +7,12 @@ description: Detailed information on the Kubernetes secret cryptography componen
 
 ## Component format
 
-Todo: update component format to correct format for cryptography
+The purpose of this component is to load keys that are stored as Kubernetes secrets.
+
+{{% alert title="Note" color="primary" %}}
+This component uses the **built-in cryptographic engine in Dapr** to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
+
+{{% /alert %}}
 
 A Dapr `crypto.yaml` component file has the following structure:
 
@@ -18,7 +23,7 @@ metadata:
   name: <NAME>
 spec:
   type: crypto.<TYPE>
-  version: v1.0-alpha1
+  version: v1
   metadata:
   - name: defaultNamespace
     value: <VALUE>

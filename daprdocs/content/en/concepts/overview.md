@@ -45,7 +45,7 @@ Each of these building block APIs is independent, meaning that you can use one, 
 | [**Configuration**]({{< ref "configuration-api-overview.md" >}})  | The configuration API enables you to retrieve and subscribe to application configuration items from configuration stores. 
 | [**Distributed lock**]({{< ref "distributed-lock-api-overview.md" >}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 | [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
-| [**Cryptography**]({{< ref "cryptography-overview.md" >}}) | Similar to the secrets API, the cryptography API provides an abstraction layer on top of security infrastructure such as secret/encryption vaults. This API allows you to perform operations to encrypt and decrypt messages.   
+| [**Cryptography**]({{< ref "cryptography-overview.md" >}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.   
 
 ## Sidecar architecture
 

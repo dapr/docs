@@ -7,8 +7,6 @@ description: Detailed information on the Azure Key Vault cryptography component
 
 ## Component format
 
-Todo: update component format to correct format for cryptography
-
 A Dapr `crypto.yaml` component file has the following structure:
 
 ```yaml

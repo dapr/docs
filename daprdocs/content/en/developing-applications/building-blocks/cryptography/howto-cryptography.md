@@ -15,7 +15,7 @@ Now that you've read about [Cryptography as a Dapr building block]({{< ref crypt
 
 ## Encrypt
 
-To read and encrypt a file, add the `Encrypt` gRPC API to your project.
+Using the Dapr gRPC APIs in your project, you can encrypt a stream of data, such as a file.
 
 {{< tabs "Go" >}}
 
@@ -25,9 +25,12 @@ To read and encrypt a file, add the `Encrypt` gRPC API to your project.
 
 ```go
 out, err := sdkClient.Encrypt(context.Background(), rf, dapr.EncryptOptions{
-	// These are the 3 required parameters
+	// Name of the Dapr component (required)
 	ComponentName: "mycryptocomponent",
+	// Name of the key stored in the component (required)
 	KeyName:        "mykey",
+	// Algorithm used for wrapping the key, which must be supported by the key named above.
+	// Options include: "RSA", "AES"
 	Algorithm:     "RSA",
 })
 ```
@@ -82,6 +85,40 @@ fmt.Println("Written", n, "bytes")
 
 {{< /tabs >}}
 
+The following example uses the `Ecrypt` API to encrypt a string.
+
+{{< tabs "Go" >}}
+
+{{% codetab %}}
+
+<!--go-->
+
+```go
+// Input string
+rf := strings.NewReader("Amor, ch’a nullo amato amar perdona, mi prese del costui piacer sì forte, che, come vedi, ancor non m’abbandona")
+
+// Encrypt the data using Dapr
+enc, err := sdkClient.Encrypt(context.Background(), rf, dapr.EncryptOptions{
+	ComponentName: "mycryptocomponent",
+	KeyName:        "mykey",
+	Algorithm:     "RSA",
+})
+if err != nil {
+	panic(err)
+}
+
+// Read the encrypted data into a byte slice
+enc, err := io.ReadAll(enc)
+if err != nil {
+	panic(err)
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
 ## Decrypt
 
 To decrypt a file, add the `Decrypt` gRPC API to your project.
@@ -91,6 +128,8 @@ To decrypt a file, add the `Decrypt` gRPC API to your project.
 {{% codetab %}}
 
 <!--go-->
+
+In the following example, `out` is a stream that can be written to file or read in memory,  as in the examples above.
 
 ```go
 out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{

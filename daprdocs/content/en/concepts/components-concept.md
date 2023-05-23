@@ -110,7 +110,7 @@ A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that 
 
 ### Cryptography
 
-[Cryptography]({{< ref cryptography-overview.md >}}) components are used to encrypt and decrypt messages with cryptography services. 
+[Cryptography]({{< ref cryptography-overview.md >}}) components are used to perform crypographic operations, including encrypting and decrypting messages, without exposing keys to your application.
 
 - [List of supported cryptography components]({{< ref supported-cryptography >}})
 - [Cryptography implementations](https://github.com/dapr/components-contrib/tree/master/crypto) 
