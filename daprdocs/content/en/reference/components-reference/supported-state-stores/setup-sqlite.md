@@ -9,7 +9,7 @@ aliases:
 
 This component allows using SQLite 3 as state store for Dapr.
 
-> The component is currently compiled with SQLite version 3.40.1.
+> The component is currently compiled with SQLite version 3.41.2.
 
 ## Create a Dapr component
 
@@ -36,8 +36,11 @@ spec:
   #- name: tableName
   #  value: "state"
   # Cleanup interval in seconds, to remove expired rows (optional)
-  #- name: cleanupIntervalInSeconds
-  #  value: 3600
+  #- name: cleanupInterval
+  #  value: "1h"
+  # Set busy timeout for database operations
+  #- name: busyTimeout
+  #  value: "2s"
   # Uncomment this if you wish to use SQLite as a state store for actors (optional)
   #- name: actorStateStore
   #  value: "true"
@@ -50,14 +53,17 @@ spec:
 | `connectionString` | Y | The connection string for the SQLite database. See below for more details. | `"path/to/data.db"`, `"file::memory:?cache=shared"`
 | `timeoutInSeconds` | N | Timeout, in seconds, for all database operations. Defaults to `20` | `30`
 | `tableName` | N | Name of the table where the data is stored. Defaults to `state`. | `"state"`
-| `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `metadataTableName` | N | Name of the table used by Dapr to store metadata for the component. Defaults to `metadata`. | `"metadata"`
+| `cleanupInterval` | N | Interval, as a [Go duration](https://pkg.go.dev/time#ParseDuration), to clean up rows with an expired TTL. Setting this to values <=0 disables the periodic cleanup. Default: `0` (i.e. disabled) | `"2h"`, `"30m"`, `-1`
+| `busyTimeout` | N | Interval, as a [Go duration](https://pkg.go.dev/time#ParseDuration), to wait in case the SQLite database is currently busy serving another request, before returning a "database busy" error. Default: `2s` | `"100ms"`, `"5s"`
+| `disableWAL` | N | If set to true, disables Write-Ahead Logging for journaling of the SQLite database. You should set this to `false` if the database is stored on a network file system (e.g. a folder mounted as a SMB or NFS share). This option is ignored for read-only or in-memory databases. | `"100ms"`, `"5s"`
 | `actorStateStore` | N | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 The **`connectionString`** parameter configures how to open the SQLite database.
 
 - Normally, this is the path to a file on disk, relative to the current working directory, or absolute. For example: `"data.db"` (relative to the working directory) or `"/mnt/data/mydata.db"`.
 - The path is interpreted by the SQLite library, so it's possible to pass additional options to the SQLite driver using "URI options" if the path begins with `file:`. For example: `"file:path/to/data.db?mode=ro"` opens the database at path `path/to/data.db` in read-only mode. [Refer to the SQLite documentation for all supported URI options](https://www.sqlite.org/uri.html).
-- The special case `":memory:"` launches the component backed by an in-memory SQLite database. This database is not persisted on disk, not shared across multiple Dapr instances, and all data is lost when the Dapr sidecar is stopped. When using an in-memory database, you should always set the `?cache=shared` URI option: `"file::memory:?cache=shared"`
+- The special case `":memory:"` launches the component backed by an in-memory SQLite database. This database is not persisted on disk, not shared across multiple Dapr instances, and all data is lost when the Dapr sidecar is stopped. When using an in-memory database, Dapr automatically sets the `cache=shared` URI option.
 
 ## Advanced
 
@@ -67,10 +73,10 @@ This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) f
 
 Because SQLite doesn't have built-in support for TTLs, this is implemented in Dapr by adding a column in the state table indicating when the data is to be considered "expired". Records that are "expired" are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
 
-The `cleanupIntervalInSeconds` metadata property sets the expired records deletion interval, which defaults to 3600 seconds (that is, 1 hour).
+The `cleanupInterval` metadata property sets the expired records deletion interval, which is disabled by default.
 
-- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupIntervalInSeconds` to a smaller value, for example `300` (300 seconds, or 5 minutes).
-- If you do not plan to use TTLs with Dapr and the SQLite state store, you should consider setting `cleanupIntervalInSeconds` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
+- Longer intervals require less frequent scans for expired rows, but can cause the database to store expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupInterval` to a smaller value, for example `5m`.
+- If you do not plan to use TTLs with Dapr and the SQLite state store, you should consider setting `cleanupInterval` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database. This is the default behavior.
 
 The `expiration_time` column in the state table, where the expiration date for records is stored, **does not have an index by default**, so each periodic cleanup must perform a full-table scan. If you have a table with a very large number of records, and only some of them use a TTL, you may find it useful to create an index on that column. Assuming that your state table name is `state` (the default), you can use this query:
 
@@ -78,6 +84,18 @@ The `expiration_time` column in the state table, where the expiration date for r
 CREATE INDEX idx_expiration_time
   ON state (expiration_time);
 ```
+
+> Dapr does not automatically [vacuum](https://www.sqlite.org/lang_vacuum.html) SQLite databases.
+
+### Sharing a SQLite database and using networked filesystems
+
+Although you can have multiple Dapr instances accessing the same SQLite database (for example, because your application is scaled horizontally or because you have multiple apps accessing the same state store), there are some caveats you should keep in mind.
+
+SQLite works best when all clients access a database file on the same, locally-mounted disk. Using virtual disks that are mounted from a SAN (Storage Area Network), as is common practice in virtualized or cloud environments, is fine.
+
+However, storing your SQLite database in a networked filesystem (for example via NFS or SMB, but these examples are not an exhaustive list) should be done with care. The official SQLite documentation has a page dedicated to [recommendations and caveats for running SQLite over a network](https://www.sqlite.org/useovernet.html).
+
+Given the risk of data corruption that running SQLite over a networked filesystem (such as via NFS or SMB) comes with, we do not recommend doing that with Dapr in production environment. However, if you do want to do that, you should configure your SQLite Dapr component with `disableWAL` set to `true`.
 
 ## Related links
 

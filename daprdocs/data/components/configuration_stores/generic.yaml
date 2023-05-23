@@ -3,8 +3,8 @@
   state: Stable
   version: v1
   since: "1.11"
-- component: Postgres
-  link: postgres-configuration-store
+- component: PostgreSQL
+  link: postgresql-configuration-store
   state: Stable
   version: v1
   since: "1.11"
