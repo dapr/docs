@@ -15,7 +15,7 @@ This component supports loading a JWKS:
 - By passing an actual JWKS in the Component YAML (as a string, which can be base64-encoded).
 
 {{% alert title="Note" color="primary" %}}
-This component uses the **built-in cryptographic engine in Dapr** to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
+This component uses the cryptographic engine in Dapr to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
 
 {{% /alert %}}
 

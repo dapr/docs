@@ -31,7 +31,7 @@ Todo: diagram
 By using the cryptography building block, you can:
 
 - More easily perform cryptographic operations in a safe way. Dapr provides safeguards against using unsafe algorithms, or using algorithms with unsafe options.
-- Keep keys outside of applications. Applications never see the "raw key material", but can request the vault to perform operations with the keys. When using the built-in cryptographic engine of Dapr, operations are performed safely within the Dapr sidecar.
+- Keep keys outside of applications. Applications never see the "raw key material", but can request the vault to perform operations with the keys. When using the cryptographic engine of Dapr, operations are performed safely within the Dapr sidecar.
 - Experience greater separation of concerns. By using external vaults or cryptographic components, only authorized teams can access private/shared key materials.
 - Manage and rotate keys more easily. Keys are managed in the vault and outside of the application, and they can be rotated without needing the developers to be involved (or even without restarting the apps).
 - Enables better audit logging to monitor when operations are performed with keys in a vault.
@@ -46,13 +46,13 @@ While both HTTP and gRPC are supported in the alpha release, using the SDKs with
 
 Similar to how Dapr offers an abstraction on top of secret stores, Dapr offers an abstraction layer on top of key management services or vaults (for the rest of this document referred to as "vaults").
 
-Dapr includes a set of components ("built-in cryptography" components) that:
+Dapr includes a set of cryptographic components that:
 - Perform cryptographic operations within the Dapr sidecar
 - Can be used when key vaults are not available  
   
 With these components, cryptographic operations are performed within Dapr's own cryptographic engine, again without exposing keys to your application.
 
-Both kinds of components, either those leveraging key vaults or using the built-in cryptopgrahic engine in Dapr, offer the same abstraction layer. This allows your solution to switch between various vaults and/or built-in cryptography components as needed. For example, you can use a locally-stored key during development, and a cloud vault in production.
+Both kinds of components, either those leveraging key vaults or using the cryptopgrahic engine in Dapr, offer the same abstraction layer. This allows your solution to switch between various vaults and/or cryptography components as needed. For example, you can use a locally-stored key during development, and a cloud vault in production.
 
 ### Cryptographic APIs
 

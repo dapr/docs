@@ -10,7 +10,7 @@ description: Detailed information on the local storage cryptography component
 The purpose of this component is to load keys from a local directory. The component accepts as input the name of a folder, and loads keys from there. Each key is in its own file, and when users request a key with a given name, Dapr will load the file with that name.
 
 {{% alert title="Note" color="primary" %}}
-This component uses the **built-in cryptographic engine in Dapr** to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
+This component uses the cryptographic engine in Dapr to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
 
 {{% /alert %}}
 
