@@ -622,7 +622,7 @@ case <-ctx.Done():
 
 ## Demo
 
-Watch this video [demostrating the Configuration API quickstart](https://youtu.be/EcE6IGuX9L8?t=94):
+Watch this video [demoing the Configuration API quickstart](https://youtu.be/EcE6IGuX9L8?t=94):
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/EcE6IGuX9L8?start=94" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
