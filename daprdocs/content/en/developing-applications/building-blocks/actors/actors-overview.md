@@ -93,7 +93,7 @@ Transactional state stores can be used to store actor state. To specify which st
 #### Time to Live (TTL) on state
 You should always set the TTL metadata field (`ttlInSeconds`), or the equivalent API call in your chosen SDK when saving actor state to ensure that state eventually removed. Read [actors overview]({{< ref actors-overview.md >}}) for more information.
 
-#### Demo
+##### Demo
 
 Watch this video for a demo on [Actor State TTL](https://youtu.be/kVpQYkGemRc?t=20) from the Dapr Community Call #80:
 
