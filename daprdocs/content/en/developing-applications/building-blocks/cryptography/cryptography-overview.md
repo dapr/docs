@@ -37,12 +37,12 @@ By using the cryptography building block, you can:
 - Enables better audit logging to monitor when operations are performed with keys in a vault.
 
 {{% alert title="Note" color="primary" %}}
-While both HTTP and gRPC are supported in the alpha release, using the SDKs with gRPC is the recommended approach for high-level cryptography.
+While both HTTP and gRPC are supported in the alpha release, using the SDKs with gRPC is the recommended approach for cryptography.
 {{% /alert %}}
 
 ## Features
 
-### Abstraction layer
+### Cryptographic components
 
 Similar to how Dapr offers an abstraction on top of secret stores, Dapr offers an abstraction layer on top of key management services or vaults (for the rest of this document referred to as "vaults").
 
@@ -54,14 +54,9 @@ With these components, cryptographic operations are performed within Dapr's own 
 
 Both kinds of components, either those leveraging key vaults or using the built-in cryptopgrahic engine in Dapr, offer the same abstraction layer. This allows your solution to switch between various vaults and/or built-in cryptography components as needed. For example, you can use a locally-stored key during development, and a cloud vault in production.
 
-### High-level cryptography APIs
+### Cryptographic APIs
 
-High-level APIs allow encrypting and decrypting data using the [Dapr Crypto Scheme v1](https://dapr.io/enc/v1). This is an opinionated encryption scheme designed to use modern, safe cryptographic standards, and processes data (even large files) efficiently as a stream.
-
-{{% alert title="Note" color="primary" %}}
-In a future release, Dapr will support subtle APIs. Subtle APIs are low-level APIs that allow performing a variety of cryptographic operations within the vaults. They provide less "guardrails" than high-level cryptography APIs.
-
-{{% /alert %}}
+Cryptographic APIs allow encrypting and decrypting data using the [Dapr Crypto Scheme v1](https://dapr.io/enc/v1). This is an opinionated encryption scheme designed to use modern, safe cryptographic standards, and processes data (even large files) efficiently as a stream.
 
 ## Next steps
 
