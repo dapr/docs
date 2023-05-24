@@ -117,6 +117,8 @@ Parameter | Description
 
 #### Examples
 
+> Note, the following example uses the `ttlInSeconds` field, which requires the [`ActorStateTTL` feature enabled]]({{< ref "support-preview-features.md" >}}).
+
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
   -H "Content-Type: application/json" \
