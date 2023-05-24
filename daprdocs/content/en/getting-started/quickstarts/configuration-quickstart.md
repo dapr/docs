@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Configuration"
 linkTitle: Configuration
-weight: 76
+weight: 77
 description: Get started with Dapr's Configuration building block
 ---
 

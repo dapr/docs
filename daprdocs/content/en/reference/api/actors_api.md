@@ -187,7 +187,7 @@ Creates a persistent reminder for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-#### Request Body
+#### Reminder request body
 
 A JSON object with the following fields:
 
@@ -351,7 +351,8 @@ Creates a timer for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Body:
+#### Timer request body:
+The format for the timer request body is the same as for [actor reminders]({{< ref "#reminder-request-body" >}}). For example:
 
 The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
 
@@ -483,6 +484,16 @@ Parameter | Description
 `enabled` | A flag in the reentrancy configuration that is needed to enable reentrancy.
 `maxStackDepth` | A value in the reentrancy configuration that controls how many reentrant calls be made to the same actor.
 `entitiesConfig` | Array of entity configurations that allow per actor type settings. Any configuration defined here must have an entity that maps back into the root level entities.
+
+
+{{% alert title="Note" color="primary" %}}
+Actor settings in configuration for timeouts and intervals use [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) format. You can use string formats to represent durations. For example:
+- `1h30m` or `1.5h`: A duration of 1 hour and 30 minutes
+- `1d12h`: A duration of 1 day and 12 hours
+- `500ms`: A duration of 500 milliseconds
+- `-30m`: A negative duration of 30 minutes
+
+{{% /alert %}}
 
 ```json
 {
