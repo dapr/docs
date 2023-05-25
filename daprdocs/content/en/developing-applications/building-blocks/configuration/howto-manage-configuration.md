@@ -71,7 +71,7 @@ spec:
 
 The following example shows how to Get a saved configuration item using the Dapr Configuration API.
 
-{{< tabs ".NET" Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabs .NET Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
 {{% codetab %}}
 
@@ -106,7 +106,7 @@ namespace ConfigurationApi
 ```java
 //dependencies
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.client.DaprPreviewClient;
+import io.dapr.client.DaprClient;
 import io.dapr.client.domain.ConfigurationItem;
 import io.dapr.client.domain.GetConfigurationRequest;
 import io.dapr.client.domain.SubscribeConfigurationRequest;
@@ -117,7 +117,7 @@ import reactor.core.publisher.Mono;
 private static final String CONFIG_STORE_NAME = "configstore";
 
 public static void main(String[] args) throws Exception {
-    try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+    try (DaprClient client = (new DaprClientBuilder()).build()) {
       List<String> keys = new ArrayList<>();
       keys.add("orderId1");
       keys.add("orderId2");
@@ -183,6 +183,31 @@ func main() {
 
 {{% codetab %}}
 
+```js
+import { DaprClient } from "@dapr/dapr";
+
+const daprHost = "127.0.0.1";
+const daprPortDefault = "3500";
+
+async function start() {
+  const client = new DaprClient({ daprHost, daprPort: process.env.DAPR_HTTP_PORT ?? daprPortDefault });
+
+  const config = await client.configuration.get("config-store", ["key1", "key2"]);
+  console.log(config);
+
+  console.log(JSON.stringify(config));
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 Launch a dapr sidecar:
 
 ```bash
@@ -220,32 +245,42 @@ Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key
 
 Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component. 
 
-{{< tabs ".NET", "ASP.NET Core", Java, Python, Go, Javascript>}}
+{{< tabs .NET "ASP.NET Core" Java Python Go Javascript>}}
+
 {{% codetab %}}
 
 ```csharp
-public static void Main(string[] args)
-{
-    CreateHostBuilder(args).Build().Run();
-}
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dapr.Client;
 
-public static IHostBuilder CreateHostBuilder(string[] args)
-{
-    var client = new DaprClientBuilder().Build();
-    return Host.CreateDefaultBuilder(args)
-        .ConfigureAppConfiguration(config =>
-        {
-            // Get the initial value from the configuration component.
-            config.AddDaprConfigurationStore("redisconfig", new List<string>() { "withdrawVersion" }, client, TimeSpan.FromSeconds(20));
+const string DAPR_CONFIGURATION_STORE = "configstore";
+var CONFIGURATION_KEYS = new List<string> { "orderId1", "orderId2" };
+var client = new DaprClientBuilder().Build();
 
-            // Watch the keys in the configuration component and update it in local configurations.
-            config.AddStreamingDaprConfigurationStore("redisconfig", new List<string>() { "withdrawVersion", "source" }, client, TimeSpan.FromSeconds(20));
-        })
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder.UseStartup<Startup>();
-        });
+// Subscribe for configuration changes
+SubscribeConfigurationResponse subscribe = await client.SubscribeConfiguration(DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS);
+
+// Print configuration changes
+await foreach (var items in subscribe.Source)
+{
+  // First invocation when app subscribes to config changes only returns subscription id
+  if (items.Keys.Count == 0)
+  {
+    Console.WriteLine("App subscribed to config changes with subscription id: " + subscribe.Id);
+    subscriptionId = subscribe.Id;
+    continue;
+  }
+  var cfg = System.Text.Json.JsonSerializer.Serialize(items);
+  Console.WriteLine("Configuration update " + cfg);
 }
+```
+
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
+
+```bash
+dapr run --app-id orderprocessing -- dotnet run
 ```
 
 {{% /codetab %}}
@@ -253,33 +288,60 @@ public static IHostBuilder CreateHostBuilder(string[] args)
 {{% codetab %}}
 
 ```csharp
-public IDictionary<string, string> Data { get; set; } = new Dictionary<string, string>();
-public string Id { get; set; } = string.Empty;
+using System;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Dapr.Client;
+using Dapr.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading;
 
-public async Task WatchConfiguration(DaprClient daprClient, string store, IReadOnlyList<string> keys, Dictionary<string, string> metadata, CancellationToken token = default)
+namespace ConfigurationApi
 {
-    // Initialize the gRPC Stream that will provide configuration updates.
-    var subscribeConfigurationResponse = await daprClient.SubscribeConfiguration(store, keys, metadata, token);
-
-    // The response contains a data source which is an IAsyncEnumerable, so it can be iterated through via an awaited foreach.
-    await foreach (var items in subscribeConfigurationResponse.Source.WithCancellation(token))
+    public class Program
     {
-        // Each iteration from the stream can contain all the keys that were queried for, so it must be individually iterated through.
-        var data = new Dictionary<string, string>(Data);
-        foreach (var item in items)
+        public static void Main(string[] args)
         {
-            // The Id in the response is used to unsubscribe.
-            Id = subscribeConfigurationResponse.Id;
-            data[item.Key] = item.Value;
+            Console.WriteLine("Starting application.");
+            CreateHostBuilder(args).Build().Run();
+            Console.WriteLine("Closing application.");
         }
-        Data = data;
+
+        /// <summary>
+        /// Creates WebHost Builder.
+        /// </summary>
+        /// <param name="args">Arguments.</param>
+        /// <returns>Returns IHostbuilder.</returns>
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var client = new DaprClientBuilder().Build();
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(config =>
+                {
+                    // Get the initial value and continue to watch it for changes.
+                    config.AddDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
+                    config.AddStreamingDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
+                    
+                })
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+        }
     }
 }
 ```
 
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
+
+```bash
+dapr run --app-id orderprocessing -- dotnet run
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```python
 #dependencies
 from dapr.clients import DaprClient
@@ -303,22 +365,10 @@ def executeConfiguration():
 executeConfiguration()
 ```
 
-Run the subscriber app along with Dapr Sidecar
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
-```
-
-In another terminal, update a key using redis-cli:
-
-```bash
-redis-cli -p 6379 MSET orderId1 "201||1" orderId2 "202||1"
-```
-
-Verify that the subscriber receives the updates:
-```
-Subscribed item received key=orderId1 value=201 version=1 metadata={}
-Subscribed item received key=orderId2 value=202 version=1 metadata={}
 ```
 
 {{% /codetab %}}
@@ -353,22 +403,10 @@ func main() {
 }
 ```
 
-Run the subscriber app along with Dapr sidecar
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id orderprocessing -- go run main.go
-```
-
-In another terminal, update a key using redis-cli:
-
-```bash
-redis-cli -p 6379 MSET orderId1 "201||1" orderId2 "202||1"
-```
-
-Verify that the subscriber receives the updates:
-```
-get updated config key=orderId1 value=201 version=1
-get updated config key=orderId2 value=202 version=1
 ```
 
 {{% /codetab %}}
