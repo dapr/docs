@@ -620,6 +620,12 @@ case <-ctx.Done():
 
 {{< /tabs >}}
 
+## Demo
+
+Watch this video [demoing the Configuration API quickstart](https://youtu.be/EcE6IGuX9L8?t=94):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/EcE6IGuX9L8?start=94" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Tell us what you think!
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
