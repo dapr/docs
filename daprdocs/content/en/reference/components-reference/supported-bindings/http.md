@@ -7,6 +7,10 @@ aliases:
   - "/operations/components/setup-bindings/supported-bindings/http/"
 ---
 
+## Alternative
+
+The [service invocation API]({{< ref service_invocation_api.md >}}) allows for the invocation of non-Dapr HTTP endpoints and is the recommended approach. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
+
 ## Setup Dapr component
 
 ```yaml
