@@ -184,24 +184,31 @@ func main() {
 {{% codetab %}}
 
 ```js
-import { DaprClient } from "@dapr/dapr";
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
-const daprHost = "127.0.0.1";
-const daprPortDefault = "3500";
+// JS SDK does not support Configuration API over HTTP protocol yet
+const protocol = CommunicationProtocolEnum.GRPC;
+const host = process.env.DAPR_HOST ?? "localhost";
+const port = process.env.DAPR_GRPC_PORT ?? 3500;
 
-async function start() {
-  const client = new DaprClient({ daprHost, daprPort: process.env.DAPR_HTTP_PORT ?? daprPortDefault });
+const DAPR_CONFIGURATION_STORE = "configstore";
+const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
 
-  const config = await client.configuration.get("config-store", ["key1", "key2"]);
-  console.log(config);
-
-  console.log(JSON.stringify(config));
+async function main() {
+  const client = new DaprClient(host, port, protocol);
+  // Get config items from the config store
+  try {
+    const config = await client.configuration.get(DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS);
+    Object.keys(config.items).forEach((key) => {
+      console.log("Configuration for " + key + ":", JSON.stringify(config.items[key]));
+    });
+  } catch (error) {
+    console.log("Could not get config item, err:" + error);
+    process.exit(1);
+  }
 }
 
-start().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main().catch((e) => console.error(e));
 ```
 
 {{% /codetab %}}
@@ -421,6 +428,7 @@ dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
 {{% /codetab %}}
 
 {{% codetab %}}
+
 ```go 
 package main
 
@@ -457,6 +465,53 @@ dapr run --app-id orderprocessing -- go run main.go
 ```
 
 {{% /codetab %}}
+
+{{% codetab %}}
+
+```js
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
+
+// JS SDK does not support Configuration API over HTTP protocol yet
+const protocol = CommunicationProtocolEnum.GRPC;
+const host = process.env.DAPR_HOST ?? "localhost";
+const port = process.env.DAPR_GRPC_PORT ?? 3500;
+
+const DAPR_CONFIGURATION_STORE = "configstore";
+const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
+
+async function main() {
+  const client = new DaprClient(host, port, protocol);
+  // Subscribe to config updates
+  try {
+    const stream = await client.configuration.subscribeWithKeys(
+      DAPR_CONFIGURATION_STORE,
+      CONFIGURATION_ITEMS,
+      (config) => {
+        console.log("Configuration update", JSON.stringify(config.items));
+      }
+    );
+    // Unsubscribe to config updates and exit app after 20 seconds
+    setTimeout(() => {
+      stream.stop();
+      console.log("App unsubscribed to config changes");
+      process.exit(0);
+    }, 20000);
+  } catch (error) {
+    console.log("Error subscribing to config updates, err:" + error);
+    process.exit(1);
+  }
+}
+main().catch((e) => console.error(e));
+```
+
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
+
+```bash
+dapr run --app-id orderprocessing --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
