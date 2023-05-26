@@ -48,6 +48,36 @@ spec:
 | securityToken      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
 | securityTokenHeader| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
 
+### How to configure MTLS related fields in Metadata
+The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be provided in three ways:
+1. Secret store reference
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+spec:
+  type: bindings.http
+  version: v1
+  metadata:
+  - name: url
+    value: http://something.com
+  - name: MTLSRootCA
+    secretKeyRef:
+      name: mysecret
+      key: myrootca
+auth:
+  secretStore: <NAME_OF_SECRET_STORE_COMPONENT>
+```
+2. Path to the file: The absolute path to the file can be provided as a value for the field.
+3. PEM encoded string: The PEM encoded string can also be provided as a value for the field.
+
+{{% alert title="Note" color="primary" %}}
+Metadata fields **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** are used to configure TLS(m) authentication.
+To use mTLS authentication, you must provide all three fields. See [mTLS]({{< ref "#using-mtls-or-enabling-client-tls-authentication-along-with-https" >}}) for more details. You can also provide only **MTLSRootCA**, to enable **HTTPS** connection. See [HTTPS]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}) section for more details.
+{{% /alert %}}
+
+
 ## Binding support
 
 This component supports **output binding** with the following [HTTP methods/verbs](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html):
