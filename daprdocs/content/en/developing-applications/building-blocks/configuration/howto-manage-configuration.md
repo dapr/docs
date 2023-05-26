@@ -342,6 +342,53 @@ dapr run --app-id orderprocessing -- dotnet run
 
 {{% codetab %}}
 
+```java
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprClient;
+import io.dapr.client.domain.ConfigurationItem;
+import io.dapr.client.domain.GetConfigurationRequest;
+import io.dapr.client.domain.SubscribeConfigurationRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+//code
+private static final String CONFIG_STORE_NAME = "configstore";
+private static String subscriptionId = null;
+
+public static void main(String[] args) throws Exception {
+    try (DaprClient client = (new DaprClientBuilder()).build()) {
+      // Subscribe for config changes
+      List<String> keys = new ArrayList<>();
+      keys.add("orderId1");
+      keys.add("orderId2");
+      Flux<SubscribeConfigurationResponse> subscription = client.subscribeConfiguration(DAPR_CONFIGURATON_STORE,keys);
+
+      // Read config changes for 20 seconds
+      subscription.subscribe((response) -> {
+          // First ever response contains the subscription id
+          if (response.getItems() == null || response.getItems().isEmpty()) {
+              subscriptionId = response.getSubscriptionId();
+              System.out.println("App subscribed to config changes with subscription id: " + subscriptionId);
+          } else {
+              response.getItems().forEach((k, v) -> {
+                  System.out.println("Configuration update for " + k + ": {'value':'" + v.getValue() + "'}");
+              });
+          }
+      });
+      Thread.sleep(20000);
+    }
+}
+```
+
+Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
+
+```bash
+dapr run --app-id orderprocessing -- -- mvn spring-boot:run
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```python
 #dependencies
 from dapr.clients import DaprClient
@@ -365,7 +412,7 @@ def executeConfiguration():
 executeConfiguration()
 ```
 
-Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
+Navigate to the directory containing the above code,  then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
 dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
