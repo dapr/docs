@@ -519,12 +519,77 @@ dapr run --app-id orderprocessing --app-protocol grpc --dapr-grpc-port 3500 -- n
 
 After you've subscribed to watch configuration items, you will receive updates for all of the subscribed keys. To stop receiving updates, you need to explicitly call the unsubscribe API.
 
-Following are the code examples unsubscribing using the subscription ID:
+Following are the code examples showing how you can unsubscribe to configuration updates using unsubscribe API.
 
-{{< tabs Dotnet Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+{{< tabs .Net Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
+
+{{% codetab %}}
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dapr.Client;
+
+const string DAPR_CONFIGURATION_STORE = "configstore";
+var client = new DaprClientBuilder().Build();
+
+// Unsubscribe to config updates and exit the app
+async Task unsubscribe(string subscriptionId)
+{
+  try
+  {
+    await client.UnsubscribeConfiguration(DAPR_CONFIGURATION_STORE, subscriptionId);
+    Console.WriteLine("App unsubscribed from config changes");
+    Environment.Exit(0);
+  }
+  catch (Exception ex)
+  {
+    Console.WriteLine("Error unsubscribing from config updates: " + ex.Message);
+  }
+}
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```java
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.DaprClient;
+import io.dapr.client.domain.ConfigurationItem;
+import io.dapr.client.domain.GetConfigurationRequest;
+import io.dapr.client.domain.SubscribeConfigurationRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+//code
+private static final String CONFIG_STORE_NAME = "configstore";
+private static String subscriptionId = null;
+
+public static void main(String[] args) throws Exception {
+    try (DaprClient client = (new DaprClientBuilder()).build()) {
+      // Unsubscribe from config changes
+      UnsubscribeConfigurationResponse unsubscribe = client
+              .unsubscribeConfiguration(subscriptionId, DAPR_CONFIGURATON_STORE).block();
+      if (unsubscribe.getIsUnsubscribed()) {
+          System.out.println("App unsubscribed to config changes");
+      } else {
+          System.out.println("Error unsubscribing to config updates, err:" + unsubscribe.getMessage());
+      }
+    } catch (Exception e) {
+        System.out.println("Error unsubscribing to config updates," + e.getMessage());
+        System.exit(1);
+    }
+}
+```
+{{% /codetab %}}
 
 {{% codetab %}}
 ```python
+import asyncio
+import time
+import logging
+from dapr.clients import DaprClient
+subscriptionID = ""
+
 with DaprClient() as d:
   isSuccess = d.unsubscribe_configuration(store_name='configstore', id=subscriptionID)
   print(f"Unsubscribed successfully? {isSuccess}", flush=True)
@@ -533,21 +598,84 @@ with DaprClient() as d:
 
 {{% codetab %}}
 ```go
-if err := client.UnsubscribeConfigurationItems(ctx, "configstore" , subscriptionID); err != nil {
-  panic(err)
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	dapr "github.com/dapr/go-sdk/client"
+)
+
+var DAPR_CONFIGURATION_STORE = "configstore"
+var subscriptionID = ""
+
+func main() {
+	client, err := dapr.NewClient()
+	if err != nil {
+		log.Panic(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+  if err := client.UnsubscribeConfigurationItems(ctx, DAPR_CONFIGURATION_STORE , subscriptionID); err != nil {
+    panic(err)
+  }
 }
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
+```js
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
+
+// JS SDK does not support Configuration API over HTTP protocol yet
+const protocol = CommunicationProtocolEnum.GRPC;
+const host = process.env.DAPR_HOST ?? "localhost";
+const port = process.env.DAPR_GRPC_PORT ?? 3500;
+
+const DAPR_CONFIGURATION_STORE = "configstore";
+const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
+
+async function main() {
+  const client = new DaprClient(host, port, protocol);
+
+  try {
+    const stream = await client.configuration.subscribeWithKeys(
+      DAPR_CONFIGURATION_STORE,
+      CONFIGURATION_ITEMS,
+      (config) => {
+        console.log("Configuration update", JSON.stringify(config.items));
+      }
+    );
+    setTimeout(() => {
+      // Unsubscribe to config updates
+      stream.stop(); 
+      console.log("App unsubscribed to config changes");
+      process.exit(0);
+    }, 20000);
+  } catch (error) {
+    console.log("Error subscribing to config updates, err:" + error);
+    process.exit(1);
+  }
+}
+
+main().catch((e) => console.error(e));
+```
+{{% /codetab %}}
+
+{{% codetab %}}
 ```bash
-curl 'http://localhost:3601/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
+curl 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
 ```powershell
-Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
+Invoke-RestMethod -Uri 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
 {{% /codetab %}}
 
