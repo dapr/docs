@@ -1,13 +1,15 @@
 ---
 type: docs
-title: "MySQL"
-linkTitle: "MySQL"
+title: "MySQL & MariaDB"
+linkTitle: "MySQL & MariaDB"
 description: Detailed information on the MySQL state store component
 aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-mysql/"
 ---
 
 ## Component format
+
+The MySQL state store components allows connecting to both MySQL and MariaDB databases. In this document, we refer to "MySQL" to indicate both databases.
 
 To setup MySQL state store create a component of type `state.mysql`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
