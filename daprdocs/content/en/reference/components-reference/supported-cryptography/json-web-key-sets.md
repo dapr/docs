@@ -28,7 +28,7 @@ kind: Component
 metadata:
   name: jwks
 spec:
-  type: crypto.jwks
+  type: crypto.dapr.jwks
   version: v1
   metadata:
     # Example 1: load JWKS from file
