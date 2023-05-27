@@ -7,7 +7,15 @@ description: Detailed information on the local storage cryptography component
 
 ## Component format
 
-The purpose of this component is to load keys from a local directory. The component accepts as input the name of a folder, and loads keys from there. Each key is in its own file, and when users request a key with a given name, Dapr will load the file with that name.
+The purpose of this component is to load keys from a local directory.
+
+The component accepts as input the name of a folder, and loads keys from there. Each key is in its own file, and when users request a key with a given name, Dapr loads the file with that name.
+
+Supported file formats:
+
+- PEM with public and private keys (supports: PKCS#1, PKCS#8, PKIX)
+- JSON Web Key (JWK) containing public, private, or symmetric keys
+- Raw key data for symmetric keys
 
 {{% alert title="Note" color="primary" %}}
 This component uses the cryptographic engine in Dapr to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.
