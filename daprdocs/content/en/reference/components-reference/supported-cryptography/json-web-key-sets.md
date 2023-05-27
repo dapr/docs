@@ -7,7 +7,7 @@ description: Detailed information on the JWKS cryptography component
 
 ## Component format
 
-The purpose of this component is to load keys from a JSON Web Key Set (RFC-7517). These are JSON documents that contain 1 or more keys as JWK (JSON Web Key); they can be public, private, or shared keys.
+The purpose of this component is to load keys from a JSON Web Key Set ([RFC 7517](https://www.rfc-editor.org/rfc/rfc7517)). These are JSON documents that contain 1 or more keys as JWK (JSON Web Key); they can be public, private, or shared keys.
 
 This component supports loading a JWKS:
 - From a local file (if the file is changed on disk, it's reloaded automatically),
