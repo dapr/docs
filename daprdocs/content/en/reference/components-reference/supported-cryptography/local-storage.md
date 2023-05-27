@@ -31,7 +31,7 @@ kind: Component
 metadata:
   name: mycrypto
 spec:
-  type: crypto.localstorage
+  type: crypto.dapr.localstorage
   metadata:
     version: v1
     - name: path
