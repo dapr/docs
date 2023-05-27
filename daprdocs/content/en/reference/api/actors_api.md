@@ -75,10 +75,15 @@ Persists the change to the state for an actor as a multi-item transaction.
 
 ***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
 
-When putting state, _always_ set the `ttlInSeconds` field in the
-metadata for each value, unless there is a state clean up process out of band of
-Dapr. Omitting this field will result in the underlying Actor state store to
-grow indefinitely.
+#### TTL
+
+With the [`ActorStateTTL` feature enabled]]({{< ref
+"support-preview-features.md" >}}), actor clients can set the `ttlInSeconds`
+field in the transaction metadata to have the state expire after that many
+seconds. If the `ttlInSeconds` field is not set, the state will not expire.
+
+Keep in mind when building actor applications with this feature enabled;
+Currently, all actor SDKs will preserve the actor state in their local cache even after the state has expired. This means that the actor state will not be removed from the local cache if the TTL has expired until the actor is restarted or deactivated. This behaviour will be changed in a future release.
 
 See the Dapr Community Call 80 recording for more details on actor state TTL.
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kVpQYkGemRc?start=28" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -108,6 +113,8 @@ Parameter | Description
 > Note, all URL parameters are case-sensitive.
 
 #### Examples
+
+> Note, the following example uses the `ttlInSeconds` field, which requires the [`ActorStateTTL` feature enabled]]({{< ref "support-preview-features.md" >}}).
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
