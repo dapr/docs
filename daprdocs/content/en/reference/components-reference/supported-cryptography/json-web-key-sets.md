@@ -71,9 +71,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| jwks               | Y        | Connection-string for the JWKS host  | `fixtures/crypto/jwks/jwks.json`
-| requestTimeout     | N        | Amount of time before request timeout; Default: 30 seconds  | `30`
-| minRefreshInterval | N        | Minimum interval for request refresh; Default: 10 minutes  | `10`
+| `jwks`               | Y        | Path to the JWKS document | Local file: `"fixtures/crypto/jwks/jwks.json"`<br>HTTP(S) URL: `"https://example.com/.well-known/jwks.json"`<br>Embedded JWKS: `{"keys": […]}` (can be base64-encoded)
+| `requestTimeout`     | N        | Timeout for network requests when fetching the JWKS document from a HTTP(S) URL, as a Go duration. Default: "30s" | `"5s"`
+| `minRefreshInterval` | N        | Minimum interval to wait before subsequent refreshes of the JWKS document from a HTTP(S) source, as a Go duration. Default: "10m" | `"1h"`
 
 ## Related links
 [Cryptography building block]({{< ref cryptography >}})
