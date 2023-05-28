@@ -34,7 +34,6 @@ Dapr does work with service meshes. In the case where both are deployed together
 Watch these recordings from the Dapr community calls showing presentations on running Dapr together with different service meshes:
 - General overview and a demo of [Dapr and Linkerd](https://youtu.be/xxU68ewRmz8?t=142)
 - Demo of running [Dapr and Istio](https://youtu.be/ngIDOQApx8g?t=335)
-- Learn more about [running Dapr with Open Service Mesh (OSM)]({{<ref open-service-mesh>}}).
 
 ## When to use Dapr or a service mesh or both
 Should you be using Dapr, a service mesh, or both? The answer depends on your requirements. If, for example, you are looking to use Dapr for one or more building blocks such as state management or pub/sub, and you are considering using a service mesh just for network security or observability, you may find that Dapr is a good fit and that a service mesh is not required.

@@ -75,6 +75,19 @@ Persists the change to the state for an actor as a multi-item transaction.
 
 ***Note that this operation is dependant on a using state store component that supports multi-item transactions.***
 
+#### TTL
+
+With the [`ActorStateTTL` feature enabled]]({{< ref
+"support-preview-features.md" >}}), actor clients can set the `ttlInSeconds`
+field in the transaction metadata to have the state expire after that many
+seconds. If the `ttlInSeconds` field is not set, the state will not expire.
+
+Keep in mind when building actor applications with this feature enabled;
+Currently, all actor SDKs will preserve the actor state in their local cache even after the state has expired. This means that the actor state will not be removed from the local cache if the TTL has expired until the actor is restarted or deactivated. This behaviour will be changed in a future release.
+
+See the Dapr Community Call 80 recording for more details on actor state TTL.
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kVpQYkGemRc?start=28" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 #### HTTP Request
 
 ```
@@ -101,6 +114,8 @@ Parameter | Description
 
 #### Examples
 
+> Note, the following example uses the `ttlInSeconds` field, which requires the [`ActorStateTTL` feature enabled]]({{< ref "support-preview-features.md" >}}).
+
 ```shell
 curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
   -H "Content-Type: application/json" \
@@ -109,7 +124,10 @@ curl -X POST http://localhost:3500/v1.0/actors/stormtrooper/50/state \
          "operation": "upsert",
          "request": {
            "key": "key1",
-           "value": "myData"
+           "value": "myData",
+           "metadata": {
+             "ttlInSeconds": "3600"
+           }
          }
        },
        {
@@ -176,7 +194,7 @@ Creates a persistent reminder for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/reminders/<name>
 ```
 
-#### Request Body
+#### Reminder request body
 
 A JSON object with the following fields:
 
@@ -340,7 +358,8 @@ Creates a timer for an actor.
 POST/PUT http://localhost:<daprPort>/v1.0/actors/<actorType>/<actorId>/timers/<name>
 ```
 
-Body:
+#### Timer request body:
+The format for the timer request body is the same as for [actor reminders]({{< ref "#reminder-request-body" >}}). For example:
 
 The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
 
@@ -472,6 +491,16 @@ Parameter | Description
 `enabled` | A flag in the reentrancy configuration that is needed to enable reentrancy.
 `maxStackDepth` | A value in the reentrancy configuration that controls how many reentrant calls be made to the same actor.
 `entitiesConfig` | Array of entity configurations that allow per actor type settings. Any configuration defined here must have an entity that maps back into the root level entities.
+
+
+{{% alert title="Note" color="primary" %}}
+Actor settings in configuration for timeouts and intervals use [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) format. You can use string formats to represent durations. For example:
+- `1h30m` or `1.5h`: A duration of 1 hour and 30 minutes
+- `1d12h`: A duration of 1 day and 12 hours
+- `500ms`: A duration of 500 milliseconds
+- `-30m`: A negative duration of 30 minutes
+
+{{% /alert %}}
 
 ```json
 {

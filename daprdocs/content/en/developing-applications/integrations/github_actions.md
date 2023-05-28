@@ -1,14 +1,16 @@
 ---
 type: docs
 weight: 5000
-title: "Use the Dapr CLI in a GitHub Actions workflow"
-linkTitle: "GitHub Actions"
+title: "How to: Use the Dapr CLI in a GitHub Actions workflow"
+linkTitle: "How to: GitHub Actions"
 description: "Add the Dapr CLI to your GitHub Actions to deploy and manage Dapr in your environments."
 ---
 
 Dapr can be integrated with GitHub Actions via the [Dapr tool installer](https://github.com/marketplace/actions/dapr-tool-installer) available in the GitHub Marketplace. This installer adds the Dapr CLI to your workflow, allowing you to deploy, manage, and upgrade Dapr across your environments. 
 
-Copy and paste the following installer snippet into your applicatin's YAML file to get started:
+## Install the Dapr CLI via the Dapr tool installer
+
+Copy and paste the following installer snippet into your application's YAML file:
 
 ```yaml
 - name: Dapr tool installer
@@ -20,6 +22,8 @@ The [`dapr/setup-dapr` action](https://github.com/dapr/setup-dapr) will install 
 Refer to the [`action.yml` metadata file](https://github.com/dapr/setup-dapr/blob/main/action.yml) for details about all the inputs.
 
 ## Example
+
+For example, for an application using the [Dapr extention for Azure Kubernetes Service (AKS)]({{< ref azure-kubernetes-service-extension.md >}}), your application YAML will look like the following:
 
 ```yaml
 - name: Install Dapr
@@ -45,4 +49,5 @@ Refer to the [`action.yml` metadata file](https://github.com/dapr/setup-dapr/blo
 
 ## Next steps
 
-Learn more about [GitHub Actions](https://docs.github.com/en/actions).
+- Learn more about [GitHub Actions](https://docs.github.com/en/actions).
+- Follow the tutorial to learn how [GitHub Actions works with your Dapr container app (Azure Container Apps)](https://learn.microsoft.com/azure/container-apps/dapr-github-actions?tabs=azure-cli)
