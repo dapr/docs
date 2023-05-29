@@ -21,6 +21,7 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | **Multi-App Run** | Configure multiple Dapr applications from a single configuration file and run from a single command | `dapr run -f` | [Multi-App Run]({{< ref multi-app-dapr-run.md >}}) | v1.10 |
 | **Workflows** | Author workflows as code to automate and orchestrate tasks within your application, like messaging, state management, and failure handling | N/A | [Workflows concept]({{< ref "components-concept#workflows" >}})| v1.10  |
 | **Service invocation for non-Dapr endpoints** | Allow the invocation of non-Dapr endpoints by Dapr using the [Service invocation API]({{< ref service_invocation_api.md >}}). Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information. | N/A | [Service invocation API]({{< ref service_invocation_api.md >}}) | v1.11  |
+| **Actor State TTL** | Allow actors to save records to state stores with Time To Live (TTL) set to automatically clean up old data. In its current implementation, actor state with TTL may not be reflected correctly by clients, read [Actor State Transactions]({{< ref actors_api.md >}}) for more information. | `ActorStateTTL` | [Actor State Transactions]({{< ref actors_api.md >}}) | v1.11  |
 
 ### Streaming for HTTP service invocation
 
