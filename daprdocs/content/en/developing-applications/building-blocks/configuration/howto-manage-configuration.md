@@ -69,7 +69,7 @@ spec:
 ## Retrieve Configuration Items
 ### Get configuration items
 
-The following example shows how to Get a saved configuration item using the Dapr Configuration API.
+The following example shows how to get a saved configuration item using the Dapr Configuration API.
 
 {{< tabs ".NET" Java Python Go Javascript "HTTP API (BASH)" "HTTP API (Powershell)">}}
 
