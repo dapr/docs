@@ -20,19 +20,11 @@ spec:
   version: v1
   metadata:
   - name: redisHost
-    value: <HOST>
+    value: <address>:6379
   - name: redisPassword
-    value: <PASSWORD>
+    value: **************
   - name: enableTLS
-    value: <bool> # Optional. Allowed: true, false.
-  - name: failover
-    value: <bool> # Optional. Allowed: true, false.
-  - name: sentinelMasterName
-    value: <string> # Optional
-  - name: maxRetries
-    value: # Optional
-  - name: maxRetryBackoff
-    value: # Optional
+    value: <bool>
 
 ```
 
@@ -45,14 +37,26 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| redisHost          | Y        | Connection-string for the redis host  | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
-| redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
-| enableTLS          | N         | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
-| maxRetries         | N         | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
-| maxRetryBackoff    | N         | Maximum backoff between each retry. Defaults to `2` seconds; `"-1"` disables backoff. | `3000000000`
-| failover           | N         | Property to enabled failover configuration. Needs sentinalMasterName to be set. The redisHost should be the sentinel host address. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/). Defaults to `"false"` | `"true"`, `"false"`
-| sentinelMasterName | N         | The sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/manual/sentinel/) | `""`,  `"127.0.0.1:6379"`
-
+| redisHost | Y | Output |  The Redis host address | `"localhost:6379"` |
+| redisPassword | Y | Output | The Redis password | `"password"` |
+| redisUsername | N | Output | Username for Redis host. Defaults to empty. Make sure your Redis server version is 6 or above, and have created acl rule correctly. | `"username"` |
+| enableTLS | N | Output |  If the Redis instance supports TLS with public certificates it can be configured to enable or disable TLS. Defaults to `"false"` | `"true"`, `"false"` |
+| failover           | N | Output         | Property to enabled failover configuration. Needs sentinelMasterName to be set. Defaults to `"false"` | `"true"`, `"false"`
+| sentinelMasterName | N | Output         | The Sentinel master name. See [Redis Sentinel Documentation](https://redis.io/docs/reference/sentinel-clients/) | `""`,  `"127.0.0.1:6379"`
+| redisType        | N | Output        | The type of Redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for Redis cluster mode. Defaults to `"node"`. | `"cluster"`
+| redisDB        | N | Output        | Database selected after connecting to Redis. If `"redisType"` is `"cluster"`, this option is ignored. Defaults to `"0"`. | `"0"`
+| redisMaxRetries        | N | Output        | Maximum number of times to retry commands before giving up. Default is to not retry failed commands.  | `"5"`
+| redisMinRetryInterval        | N | Output        | Minimum backoff for Redis commands between each retry. Default is `"8ms"`;  `"-1"` disables backoff. | `"8ms"`
+| redisMaxRetryInterval        | N | Output        | Maximum backoff for Redis commands between each retry. Default is `"512ms"`;`"-1"` disables backoff. | `"5s"`
+| dialTimeout        | N | Output        | Dial timeout for establishing new connections. Defaults to `"5s"`.  | `"5s"`
+| readTimeout        | N | Output        | Timeout for socket reads. If reached, Redis commands fail with a timeout instead of blocking. Defaults to `"3s"`, `"-1"` for no timeout. | `"3s"`
+| writeTimeout        | N | Output        | Timeout for socket writes. If reached, Redis commands fail with a timeout instead of blocking. Defaults is readTimeout. | `"3s"`
+| poolSize        | N | Output        | Maximum number of socket connections. Default is 10 connections per every CPU as reported by runtime.NumCPU. | `"20"`
+| poolTimeout        | N | Output        | Amount of time client waits for a connection if all connections are busy before returning an error. Default is readTimeout + 1 second. | `"5s"`
+| maxConnAge        | N | Output        | Connection age at which the client retires (closes) the connection. Default is to not close aged connections. | `"30m"`
+| minIdleConns        | N | Output        | Minimum number of idle connections to keep open in order to avoid the performance degradation associated with creating new connections. Defaults to `"0"`. | `"2"`
+| idleCheckFrequency        | N | Output        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
+| idleTimeout        | N | Output        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
 
 ## Setup Redis
 
