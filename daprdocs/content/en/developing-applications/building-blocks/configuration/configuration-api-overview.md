@@ -40,6 +40,11 @@ Want to put the Dapr configuration API to the test? Walk through the following q
 
 Want to skip the quickstarts? Not a problem. You can try out the configuration building block directly in your application to read and manage configuration data. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the configuration API starting with [the configuration how-to guide]({{< ref howto-manage-configuration.md >}}).
 
+## Watch the demo
+
+Watch [this demo of using the Dapr Configuration building block](https://youtu.be/tNq-n1XQuLA?t=496)
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/tNq-n1XQuLA?start=496" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Next steps
 Follow these guides on:
