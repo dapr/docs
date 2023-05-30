@@ -100,7 +100,7 @@ The Azure App Configuration store component supports the following optional `lab
 The label can be populated using query parameters in the request URL:
 
 ```bash
-GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<store-name>?key=<key name>&metadata.label=<label value>
+GET curl http://localhost:<daprPort>/v1.0/configuration/<store-name>?key=<key name>&metadata.label=<label value>
 ```
 
 ## Related links
