@@ -262,19 +262,23 @@ A workflow implementing the monitor pattern can loop forever or it can terminate
 This pattern can also be expressed using actors and reminders. The difference is that this workflow is expressed as a single function with inputs and state stored in local variables. Workflows can also execute a sequence of actions with stronger reliability guarantees, if necessary.
 {{% /alert %}}
 
-## Human interaction
+## External system interaction
 
-In some cases, a workflow may need to pause and wait for a human to perform some action. For example, a workflow may need to pause and wait for a human to approve a purchase order. Dapr Workflow supports this pattern natively via the [external events]({{< ref "workflow-features-concepts.md#external-events" >}}) feature. Here's an example flow:
+In some cases, a workflow may need to pause and wait for an external system to perform some action. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the [raise event workflow API]({{< ref "howto-manage-workflow.md#raise-an-event" >}}).
 
-1. A workflow is triggered (e.g. a purchase order is received)
-1. A rule in the workflow determines that a human needs to perform some action (e.g. the purchase order cost exceeds a certain threshold)
-1. The workflow sends a notification requesting human action (e.g. sends an email to the approver with an approval link)
-1. The workflow pauses and waits for the human to perform the action (e.g. approval or rejection of the order)
-1. If the approval isn't received within the specified time, the workflow resumes and performs some compensation logic (e.g. cancels the order)
+Another very common scenario is when a workflow needs to pause and wait for a human, for example when approving a purchase order. Dapr Workflow supports this event pattern via the [external events]({{< ref "workflow-features-concepts.md#external-events" >}}) feature.
+
+Here's an example workflow for a purchase order involving a human:
+
+1. A workflow is triggered when a purchase order is received.
+1. A rule in the workflow determines that a human needs to perform some action. For example, the purchase order cost exceeds a certain auto-approval threshold.
+1. The workflow sends a notification requesting a human action. For example, it sends an email with an approval link to a designated approver.
+1. The workflow pauses and waits for the human to either approve or reject the order by clicking on a link.
+1. If the approval isn't received within the specified time, the workflow resumes and performs some compensation logic, such as canceling the order.
 
 The following diagram illustrates this flow.
 
-<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=600 alt="Diagram showing how the human interaction pattern works"/>
+<img src="/images/workflow-overview/workflow-human-interaction-pattern.png" width=600 alt="Diagram showing how the external system interaction pattern works with a human involved"/>
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
@@ -288,14 +292,14 @@ public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderP
     // ...(other steps)...
 
     // Require orders over a certain threshold to be approved
-    if (order.TotalCost > 10000)
+    if (order.TotalCost > OrderApprovalThreshold)
     {
         try
         {
-            // Request manager approval for this order
+            // Request human approval for this order
             await context.CallActivityAsync(nameof(RequestApprovalActivity), order);
 
-            // Pause and wait for a manager to approve the order
+            // Pause and wait for a human to approve the order
             ApprovalResult approvalResult = await context.WaitForExternalEventAsync<ApprovalResult>(
                 eventName: "ManagerApproval",
                 timeout: TimeSpan.FromDays(3));
@@ -327,14 +331,14 @@ In the example above, `RequestApprovalActivity` is the name of a workflow activi
 
 {{< /tabs >}}
 
-The code that delivers the event is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
+The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
 {{< tabs ".NET" >}}
 
 {{% codetab %}}
 
 ```csharp
-// Raise the workflow event to the workflow
+// Raise the workflow event to the waiting workflow
 await daprClient.RaiseWorkflowEventAsync(
     instanceId: orderId,
     workflowComponent: "dapr",
