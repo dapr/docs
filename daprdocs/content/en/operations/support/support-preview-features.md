@@ -22,6 +22,7 @@ For CLI there is no explicit opt-in, just the version that this was first made a
 | **Workflows** | Author workflows as code to automate and orchestrate tasks within your application, like messaging, state management, and failure handling | N/A | [Workflows concept]({{< ref "components-concept#workflows" >}})| v1.10  |
 | **Cryptography** | Encrypt or decrypt data without having to manage secrets keys  | N/A | [Cryptography concept]({{< ref "components-concept#cryptography" >}})| v1.11  |
 | **Service invocation for non-Dapr endpoints** | Allow the invocation of non-Dapr endpoints by Dapr using the [Service invocation API]({{< ref service_invocation_api.md >}}). Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information. | N/A | [Service invocation API]({{< ref service_invocation_api.md >}}) | v1.11  |
+| **Actor State TTL** | Allow actors to save records to state stores with Time To Live (TTL) set to automatically clean up old data. In its current implementation, actor state with TTL may not be reflected correctly by clients, read [Actor State Transactions]({{< ref actors_api.md >}}) for more information. | `ActorStateTTL` | [Actor State Transactions]({{< ref actors_api.md >}}) | v1.11  |
 
 ### Streaming for HTTP service invocation
 
@@ -44,7 +45,7 @@ Important notes:
 
 - `ServiceInvocationStreaming` needs to be applied on caller sidecars only.  
   In the example above, streams are used for HTTP service invocation if `ServiceInvocationStreaming` is applied to the configuration of "app A" and its Dapr sidecar, regardless of whether the feature flag is enabled for "app B" and its sidecar.
-- When `ServiceInvocationStreaming` is enabled, you should make sure that all services your app invokes using Dapr ("app B") are updated to Dapr 1.10, even if `ServiceInvocationStreaming` is not enabled for those sidecars.  
-  Invoking an app using Dapr 1.9 or older is still possible, but those calls may fail if you have applied a Dapr Resiliency policy with retries enabled.
+- When `ServiceInvocationStreaming` is enabled, you should make sure that all services your app invokes using Dapr ("app B") are updated to Dapr 1.10 or higher, even if `ServiceInvocationStreaming` is not enabled for those sidecars.  
+  Invoking an app using Dapr 1.9 or older is still possible, but those calls may fail unless you have applied a Dapr Resiliency policy with retries enabled.
 
 > Full support for streaming for HTTP service invocation will be completed in a future Dapr version.
