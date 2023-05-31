@@ -8,7 +8,7 @@ aliases:
 - /developing-applications/middleware/supported-middleware/middleware-bearer/
 ---
 
-The bearer [HTTP middleware]({{< ref middleware.md >}}) verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+The bearer [HTTP middleware]({{< ref middleware.md >}}) verifies a [Bearer Token](https://tools.ietf.org/html/rfc6750) using [OpenID Connect](https://openid.net/connect/) on a Web API, without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
 ## Component format
 
@@ -21,17 +21,22 @@ spec:
   type: middleware.http.bearer
   version: v1
   metadata:
-  - name: clientId
-    value: "<your client ID>"
-  - name: issuerURL
-    value: "https://accounts.google.com"
+    - name: audience
+      value: "<your token audience; e.g. the application's client ID>"
+    - name: issuer
+      value: "<your token issuer, e.g. 'https://accounts.google.com'>"
+
+    # Optional values
+    - name: jwksURL
+      value: "https://accounts.google.com/.well-known/openid-configuration"
 ```
 ## Spec metadata fields
 
-| Field | Details | Example |
-|-------|---------|---------|
-| clientId | The client ID of your application that is created as part of a credential hosted by a OpenID Connect platform
-| issuerURL | URL identifier for the service. | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
+| Field | Required | Details | Example |
+|-------|:--------:|---------|---------|
+| `audience` | Y | The audience expected in the tokens. Usually, this corresponds to the client ID of your application that is created as part of a credential hosted by a OpenID Connect platform. | 
+| `issuer` | Y | The issuer authority, which is the value expected in the issuer claim in the tokens. | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
+| `jwksURL` | N | Address of the JWKS (JWK Set containing the public keys for verifying tokens). If empty, will try to fetch the URL set in the OpenID Configuration document `<issuer>/.well-known/openid-configuration`.  | `"https://accounts.google.com/.well-known/openid-configuration"`
 
 ## Dapr configuration
 

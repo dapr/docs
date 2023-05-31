@@ -28,18 +28,87 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 ## Write the workflow activities
 
-Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client.
+[Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
 {{< tabs ".NET" >}}
 
 {{% codetab %}}
 
-Continuing the ASP.NET order processing example, the `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. 
+Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client. 
 
-It also includes a `RunAsync` method that does the heavy lifting of the workflow and calls the workflow activities. The activities called in the example are:
+The activities called in the example below are:
 - `NotifyActivity`: Receive notification of a new order.
 - `ReserveInventoryActivity`: Check for sufficient inventory to meet the new order.
 - `ProcessPaymentActivity`: Process payment for the order. Includes `NotifyActivity` to send notification of successful order.
+
+### NotifyActivity
+
+```csharp
+public class NotifyActivity : WorkflowActivity<Notification, object>
+{
+    //...
+
+    public NotifyActivity(ILoggerFactory loggerFactory)
+    {
+        this.logger = loggerFactory.CreateLogger<NotifyActivity>();
+    }
+
+    //...
+}
+```
+
+[See the full `NotifyActivity.cs` workflow activity example.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Activities/NotifyActivity.cs)
+
+### ReserveInventoryActivity
+
+```csharp
+public class ReserveInventoryActivity : WorkflowActivity<InventoryRequest, InventoryResult>
+{
+    //...
+
+    public ReserveInventoryActivity(ILoggerFactory loggerFactory, DaprClient client)
+    {
+        this.logger = loggerFactory.CreateLogger<ReserveInventoryActivity>();
+        this.client = client;
+    }
+
+    //...
+
+}
+```
+[See the full `ReserveInventoryActivity.cs` workflow activity example.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Activities/ReserveInventoryActivity.cs)
+
+### ProcessPaymentActivity
+
+```csharp
+public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
+{
+    //...
+    public ProcessPaymentActivity(ILoggerFactory loggerFactory)
+    {
+        this.logger = loggerFactory.CreateLogger<ProcessPaymentActivity>();
+    }
+
+    //...
+
+}
+```
+
+[See the full `ProcessPaymentActivity.cs` workflow activity example.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Activities/ProcessPaymentActivity.cs)
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+## Write the workflow
+
+Next, register and call the activites in a workflow. 
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+
+The `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. It also includes a `RunAsync` method that does the heavy lifting of the workflow and calls the workflow activities. 
 
 ```csharp
  class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
@@ -73,19 +142,21 @@ It also includes a `RunAsync` method that does the heavy lifting of the workflow
     }
 ```
 
+[See the full workflow example in `OrderProcessingWorkflow.cs`.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Workflows/OrderProcessingWorkflow.cs)
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Write the workflow
+## Write the application
 
-Compose the workflow activities into a workflow. 
+Finally, compose the application using the workflow.
 
 {{< tabs ".NET" >}}
 
 {{% codetab %}}
 
-[In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
+[In the following `Program.cs` example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 
 - A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
 - A builder with an extension method called `AddDaprWorkflow`

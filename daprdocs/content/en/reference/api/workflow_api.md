@@ -10,29 +10,25 @@ Dapr provides users with the ability to interact with workflows and comes with a
 
 ## Start workflow request
 
-Start a workflow instance with the given name and instance ID.
+Start a workflow instance with the given name and optionally, an instance ID.
 
-```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>/start
+```http
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/start[?instanceId=<instanceId>]
 ```
+
+Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
 
 ### URL parameters
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `workflowName` | Identify the workflow type
-`instanceId` | Unique value created for each run of a specific workflow
+`instanceId` | (Optional) Unique value created for each run of a specific workflow
 
 ### Request content
 
-In the request you can pass along relevant input information that will be passed to the workflow:
-
-```json
-{
-  "input": // argument(s) to pass to the workflow which can be any valid JSON data type (such as objects, strings, numbers, arrays, etc.)
-}
-```
+Any request content will be passed to the workflow as input. The Dapr API passes the content as-is without attempting to interpret it.
 
 ### HTTP response codes
 
@@ -48,9 +44,7 @@ The API call will provide a response similar to this:
 
 ```json
 {
-  "WFInfo": {
-    "instance_id": "SampleWorkflow"
-  }
+    "instanceID": "12345678"
 }
 ```
 
@@ -58,16 +52,15 @@ The API call will provide a response similar to this:
 
 Terminate a running workflow instance with the given name and instance ID.
 
-```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/terminate
+```http
+POST http://localhost:3500/v1.0-alpha1/workflows/<instanceId>/terminate
 ```
 
 ### URL parameters
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
-`workflowName` | Identify the workflow type
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
@@ -80,64 +73,165 @@ Code | Description
 
 ### Response content
 
-The API call will provide a response similar to this:
+This API does not return any content.
 
-```bash
-HTTP/1.1 202 Accepted
-Server: fasthttp
-Date: Thu, 12 Jan 2023 21:31:16 GMT
-Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
-Connection: close 
+## Raise Event request
+
+For workflow components that support subscribing to external events, such as the Dapr Workflow engine, you can use the following "raise event" API to deliver a named event to a specific workflow instance.
+
+```http
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
 ```
 
-### Get workflow request
+{{% alert title="Note" color="primary" %}}
+ The exact mechanism for subscribing to an event depends on the workflow component that you're using. Dapr Workflow has one way of subscribing to external events but other workflow components might have different ways.
+
+{{% /alert %}}
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`workflowComponentName` | Use `dapr` for Dapr Workflows
+`instanceId` | Unique value created for each run of a specific workflow
+`eventName` | The name of the event to raise
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Request formatted correctly, error in dapr code or underlying component
+
+### Response content
+
+None.
+
+## Pause workflow request
+
+Pause a running workflow instance.
+
+```http
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/pause
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`workflowComponentName` | Use `dapr` for Dapr Workflows
+`instanceId` | Unique value created for each run of a specific workflow
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Error in Dapr code or underlying component
+
+### Response content
+
+None.
+
+## Resume workflow request
+
+Resume a paused workflow instance.
+
+```http
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/resume
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`workflowComponentName` | Use `dapr` for Dapr Workflows
+`instanceId` | Unique value created for each run of a specific workflow
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Error in Dapr code or underlying component
+
+### Response content
+
+None.
+
+## Purge workflow request
+
+Purge the workflow state from your state store with the workflow's instance ID.
+
+```http
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/purge
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`workflowComponentName` | Use `dapr` for Dapr Workflows
+`instanceId` | Unique value created for each run of a specific workflow
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Error in Dapr code or underlying component
+
+### Response content
+
+None.
+
+## Get workflow request
 
 Get information about a given workflow instance.
 
-```bash
-GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/<instanceId>
+```http
+GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>
 ```
 
 ### URL parameters
 
 Parameter | Description
 --------- | -----------
-`workflowComponentName` | Current default is `dapr` for Dapr Workflows
-`workflowName` | Identify the workflow type
+`workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
 
 ### HTTP response codes
 
 Code | Description
 ---- | -----------
-`202`  | Accepted
+`200`  | OK
 `400`  | Request was malformed
 `500`  | Request formatted correctly, error in dapr code or underlying component
 
 ### Response content
 
-The API call will provide a response similar to this:
+The API call will provide a JSON response similar to this:
 
-```bash
-HTTP/1.1 202 Accepted
-Server: fasthttp
-Date: Thu, 12 Jan 2023 21:31:16 GMT
-Content-Type: application/json
-Content-Length: 139
-Traceparent: 00-e3dedffedbeb9efbde9fbed3f8e2d8-5f38960d43d24e98-01
-Connection: close 
-
+```json
 {
-  "WFInfo": {
-    "instance_id": "SampleWorkflow"
-  },
-  "start_time": "2023-01-12T21:31:13Z",
-  "metadata": {
-    "status": "Running",
-    "task_queue": "WorkflowSampleQueue"
-  }
+  "createdAt": "2023-01-12T21:31:13Z",
+  "instanceID": "12345678",
+  "lastUpdatedAt": "2023-01-12T21:31:13Z",
+  "properties": {
+    "property1": "value1",
+    "property2": "value2",
+  },
+  "runtimeStatus": "RUNNING",
  }
 ```
+
+Parameter | Description
+--------- | -----------
+`runtimeStatus` | The status of the workflow instance. Values include: `RUNNING`, `TERMINATED`, `PAUSED`  
 
 ## Component format
 

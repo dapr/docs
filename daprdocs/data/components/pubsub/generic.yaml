@@ -1,11 +1,3 @@
-- component: Hazelcast
-  link: setup-hazelcast
-  state: Deprecated
-  version: v1
-  since: "1.9"
-  features:
-    bulkPublish: false
-    bulkSubscribe: false
 - component: In-memory
   link: setup-inmemory
   state: Beta
