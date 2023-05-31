@@ -69,7 +69,7 @@ You can also name each app directory's `.dapr` directory something other than `.
 
 The run template provides two log destination fields for each application and its associated daprd process:
 
-1. `appLogDestination` : This field is used to configure the log destination for the application. The possible values are `console`, `file` and `fileAndConsole`. The default value is `fileAndConsole`, i.e the application logs are written to both console and file by default.
+1. `appLogDestination` : This field configures the log destination for the application. The possible values are `console`, `file` and `fileAndConsole`. The default value is `fileAndConsole` where application logs are written to both console and to a file by default.
 
 2. `daprdLogDestination` : This field is used to configure the log destination for the `daprd` process. The possible values are `console`, `file` and `fileAndConsole`. The default value is `file`, i.e the `daprd` logs are written to file by default.
 
