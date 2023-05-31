@@ -44,7 +44,7 @@ Important notes:
 
 - `ServiceInvocationStreaming` needs to be applied on caller sidecars only.  
   In the example above, streams are used for HTTP service invocation if `ServiceInvocationStreaming` is applied to the configuration of "app A" and its Dapr sidecar, regardless of whether the feature flag is enabled for "app B" and its sidecar.
-- When `ServiceInvocationStreaming` is enabled, you should make sure that all services your app invokes using Dapr ("app B") are updated to Dapr 1.10, even if `ServiceInvocationStreaming` is not enabled for those sidecars.  
-  Invoking an app using Dapr 1.9 or older is still possible, but those calls may fail if you have applied a Dapr Resiliency policy with retries enabled.
+- When `ServiceInvocationStreaming` is enabled, you should make sure that all services your app invokes using Dapr ("app B") are updated to Dapr 1.10 or higher, even if `ServiceInvocationStreaming` is not enabled for those sidecars.  
+  Invoking an app using Dapr 1.9 or older is still possible, but those calls may fail unless you have applied a Dapr Resiliency policy with retries enabled.
 
 > Full support for streaming for HTTP service invocation will be completed in a future Dapr version.
