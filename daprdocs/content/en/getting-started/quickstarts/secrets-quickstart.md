@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Secrets Management"
 linkTitle: "Secrets Management"
-weight: 75
+weight: 76
 description: "Get started with Dapr's Secrets Management building block"
 ---
 

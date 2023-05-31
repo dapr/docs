@@ -76,12 +76,15 @@ common: # optional section for variables shared across apps
 apps:
   - appID: webapp # optional
     appDirPath: .dapr/webapp/ # REQUIRED
-    resourcesPath: .dapr/resources # (optional) can be default by convention
+    resourcesPath: .dapr/resources # deprecated
+    resourcesPaths: .dapr/resources # comman separated resources paths. (optional) can be default by convention
     configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
     appProtocol: http
     appPort: 8080
     appHealthCheckPath: "/healthz" 
     command: ["python3" "app.py"]
+    appLogDestination: file # (optional), can be file, console or fileAndConsole. default is fileAndConsole.
+    daprdLogDestination: file # (optional), can be file, console or fileAndConsole. default is file.
   - appID: backend # optional 
     appDirPath: .dapr/backend/ # REQUIRED
     appProtocol: grpc
@@ -110,7 +113,8 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 |--------------------------|:--------:|--------|---------|
 | `appDirPath`             | Y        | Path to the your application code | `./webapp/`, `./backend/` |
 | `appID`                  | N        | Application's app ID. If not provided, will be derived from `appDirPath` | `webapp`, `backend` |
-| `resourcesPath`          | N        | Path to your Dapr resources. Can be default by convention; ignore if directory isn't found | `./app/components`, `./webapp/components` |
+| `resourcesPath`          | N        | **Deprecated**. Path to your Dapr resources. Can be default by convention| `./app/components`, `./webapp/components` |
+| `resourcesPaths`          | N        | Comma separated paths to your Dapr resources. Can be default by convention | `./app/components`, `./webapp/components` |
 | `configFilePath`         | N        | Path to your application's configuration file | `./webapp/config.yaml` |
 | `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `http`, `grpc` |
 | `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
@@ -137,6 +141,8 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `enableApiLogging`       | N        | Enable the logging of all API calls from application to Dapr |  |
 | `runtimePath`            | N        | Dapr runtime install path |  |
 | `env`                    | N        | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications | `DEBUG`, `DAPR_HOST_ADD` |
+| `appLogDestination`                    | N        | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole | `file`, `console`, `fileAndConsole` |
+| `daprdLogDestination`                    | N        | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file | `file`, `console`, `fileAndConsole` |
 
 ## Next steps
 

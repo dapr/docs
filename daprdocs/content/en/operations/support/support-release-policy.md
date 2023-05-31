@@ -34,7 +34,9 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status |
 |--------------------|:--------:|:--------|---------|---------|---------|
-| April 13 2023 | 1.10.5</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
+| May 15th 2023 | 1.10.7</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
+| May 12th 2023 | 1.10.6</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
+| April 13 2023 |1.10.5</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
 | March 16 2023 | 1.10.4</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported |
 | March 14 2023 | 1.10.3</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported |
 | February 24 2023 | 1.10.2</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported |
@@ -92,17 +94,17 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 |                          |                 1.6.2 |                    1.7.5 |
 |                          |                 1.7.5 |                    1.8.6 |
 |                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.5 |
+|                          |                 1.9.6 |                   1.10.7 |
 | 1.6.0 to 1.6.2           |                   N/A |                    1.7.5 |
 |                          |                 1.7.5 |                    1.8.6 |
 |                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.5 |
+|                          |                 1.9.6 |                   1.10.7 |
 | 1.7.0 to 1.7.5           |                   N/A |                    1.8.6 |
 |                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.5 |
+|                          |                 1.9.6 |                   1.10.7 |
 | 1.8.0 to 1.8.6           |                   N/A |                    1.9.6 |
 | 1.9.0                    |                   N/A |                    1.9.6 |
-| 1.10.0                   |                   N/A |                   1.10.5 |
+| 1.10.0                   |                   N/A |                   1.10.7 |
 
 ## Breaking changes and deprecations
 
