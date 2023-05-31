@@ -116,7 +116,7 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `appID`                  | N        | Application's app ID. If not provided, will be derived from `appDirPath` | `webapp`, `backend` |
 | `resourcesPath`          | N        | **Deprecated**. Path to your Dapr resources. Can be default value  by convention| `./app/components`, `./webapp/components` |
 | `resourcesPaths`         | N        | Comma separated paths to your Dapr resources. Can be default value by convention | `./app/components`, `./webapp/components` |
-| `appChannelAddress`      | N        | Network address where the app listens on. Can be left to default value by convention. | `127.0.0.1` | `localhost` |
+| `appChannelAddress`      | N        | The network address the application listens on. Can be left to the default value by convention. | `127.0.0.1` | `localhost` |
 | `configFilePath`         | N        | Path to your application's configuration file | `./webapp/config.yaml` |
 | `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `http`, `grpc` |
 | `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
