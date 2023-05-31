@@ -72,7 +72,7 @@ In order to setup Cosmos DB as a state store, you need the following properties
 
 ### TTLs and cleanups
 
-This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to override the default TTL on the CosmodDB container, indicating when the data should be considered "expired". Note that this value with _only_ take effect if the container's `DefaultTimeToLive` field has a non-NULL value. See the [CosmosDB documentation](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/time-to-live) for more information.
+This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to override the default TTL on the CosmodDB container, indicating when the data should be considered "expired". Note that this value with _only_ take effect if the container's `DefaultTimeToLive` field has a non-NULL value. See the [CosmosDB documentation](https://docs.microsoft.com/azure/cosmos-db/nosql/time-to-live) for more information.
 
 ## Best Practices for Production Use
 
