@@ -18,13 +18,14 @@
       </div>
       <div class="col-12 col-sm-6 text-center py-2 order-sm-2">
         {{ with .Site.Params }}<small class="text-white">&copy; {{ now.Year}} {{ .trademark | markdownify }}</small>{{ end }}
-  {{ if not .Site.Params.ui.footer_about_disable }}
-		{{ with .Site.GetPage "about" }}<p class="mt-2"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
-	{{ end }}
+        {{ if not .Site.Params.ui.footer_about_disable }}
+        {{ with .Site.GetPage "about" }}<p class="mt-2"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
+        {{ end }}
       </div>
     </div>
   </div>
   <img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=4848fb3b-3edb-4329-90a9-a9d79afff054" />
+  <script> (function (ss, ex) { window.ldfdr = window.ldfdr || function () { (ldfdr._q = ldfdr._q || []).push([].slice.call(arguments)); }; (function (d, s) { fs = d.getElementsByTagName(s)[0]; function ce(src) { var cs = d.createElement(s); cs.src = src; cs.async = 1; fs.parentNode.insertBefore(cs, fs); }; ce('https://sc.lfeeder.com/lftracker_v1_' + ss + (ex ? '_' + ex : '') + '.js'); })(document, 'script'); })('JMvZ8gblPjda2pOd'); </script>
 </footer>
 {{ define "footer-links-block" }}
 <ul class="list-inline mb-0">
