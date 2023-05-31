@@ -17,7 +17,7 @@
         {{ end }}
       </div>
       <div class="col-12 col-sm-6 text-center py-2 order-sm-2">
-        {{ with .Site.Params }}<small class="text-white">&copy; {{ now.Year}} {{ .trademark | markdownify }}</small>{{end }}
+        {{ with .Site.Params }}<small class="text-white">&copy; {{ now.Year}} {{ .trademark | markdownify }}</small>{{ end }}
         {{ if not .Site.Params.ui.footer_about_disable }}
         {{ with .Site.GetPage "about" }}<p class="mt-2"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
         {{ end }}
