@@ -5,20 +5,19 @@
       <div class="col-6 col-sm-2 text-xs-center order-sm-2" style="margin-top: 1rem;">
         {{ with $links }}
         {{ with index . "user"}}
-        {{ template "footer-links-block" . }}
+        {{ template "footer-links-block"  . }}
         {{ end }}
         {{ end }}
       </div>
       <div class="col-6 col-sm-2 text-right text-xs-center order-sm-3" style="margin-top: 1rem;">
         {{ with $links }}
         {{ with index . "developer"}}
-        {{ template "footer-links-block" . }}
+        {{ template "footer-links-block"  . }}
         {{ end }}
         {{ end }}
       </div>
       <div class="col-12 col-sm-6 text-center py-2 order-sm-2">
-        {{ with .Site.Params }}<small class="text-white">&copy; {{ now.Year}} {{ .trademark | markdownify }}</small>{{
-        end }}
+        {{ with .Site.Params }}<small class="text-white">&copy; {{ now.Year}} {{ .trademark | markdownify }}</small>{{end }}
         {{ if not .Site.Params.ui.footer_about_disable }}
         {{ with .Site.GetPage "about" }}<p class="mt-2"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>{{ end }}
         {{ end }}
