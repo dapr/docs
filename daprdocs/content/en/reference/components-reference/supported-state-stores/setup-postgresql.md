@@ -11,7 +11,7 @@ This component allows using PostgreSQL (Postgres) as state store for Dapr.
 
 ## Create a Dapr component
 
-Create a file called `postgres.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard PostgreSQL connection string. For example, `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string.
+Create a file called `postgresql.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard PostgreSQL connection string. For example, `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string.
 
 If you want to also configure PostgreSQL to store actors, add the `actorStateStore` option as in the example below.
 

@@ -26,3 +26,6 @@
 [submodule "sdkdocs/pluggable-components/dotnet"]
 	path = sdkdocs/pluggable-components/dotnet
 	url = https://github.com/dapr-sandbox/components-dotnet-sdk
+[submodule "sdkdocs/pluggable-components/go"]
+	path = sdkdocs/pluggable-components/go
+	url = https://github.com/dapr-sandbox/components-go-sdk

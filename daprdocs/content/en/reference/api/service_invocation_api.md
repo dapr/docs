@@ -6,17 +6,29 @@ description: "Detailed documentation on the service invocation API"
 weight: 100
 ---
 
-Dapr provides users with the ability to call other applications that have unique ids.
-This functionality allows apps to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
+Dapr provides users with the ability to call other applications that are using Dapr with a unique named identifier (appId), or HTTP endpoints that are not using Dapr.
+This allows applications to interact with one another via named identifiers and puts the burden of service discovery on the Dapr runtime.
 
-## Invoke a method on a remote dapr app
+## Invoke a method on a remote Dapr app
 
 This endpoint lets you invoke a method in another Dapr enabled app.
 
 ### HTTP Request
 
 ```
-PATCH/POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appId>/method/<method-name>
+PATCH/POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<appID>/method/<method-name>
+```
+
+## Invoke a method on a non-Dapr endpoint
+
+This endpoint lets you invoke a method on a non-Dapr endpoint using an `HTTPEndpoint` resource name, or a Fully Qualified Domain Name (FQDN) URL.
+
+### HTTP Request
+
+```
+PATCH/POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<HTTPEndpoint name>/method/<method-name>
+
+PATCH/POST/GET/PUT/DELETE http://localhost:<daprPort>/v1.0/invoke/<FQDN URL>/method/<method-name>
 ```
 
 ### HTTP Response codes
@@ -38,7 +50,9 @@ XXX  | Upstream status returned
 Parameter | Description
 --------- | -----------
 daprPort | the Dapr port
-appId | the App ID associated with the remote app
+appID | the App ID associated with the remote app
+HTTPEndpoint name | the HTTPEndpoint resource associated with the external endpoint
+FQDN URL | Fully Qualified Domain Name URL to invoke on the external endpoint
 method-name | the name of the method or url to invoke on the remote app
 
 > Note, all URL parameters are case-sensitive.
@@ -65,9 +79,9 @@ Within the body of the request place the data you want to send to the service:
 
 ### Request received by invoked service
 
-Once your service code invokes a method in another Dapr enabled app, Dapr will send the request, along with the headers and body, to the app on the `<method-name>` endpoint.
+Once your service code invokes a method in another Dapr enabled app or non-Dapr endpoint, Dapr sends the request, along with the headers and body, on the `<method-name>` endpoint.
 
-The Dapr app being invoked will need to be listening for and responding to requests on that endpoint.
+The Dapr app or non-Dapr endpoint being invoked will need to be listening for and responding to requests on that endpoint.
 
 ### Cross namespace invocation
 
@@ -119,6 +133,20 @@ In case you are invoking `mathService` on a different namespace, you can use the
 `http://localhost:3500/v1.0/invoke/mathService.testing/method/api/v1/add`
 
 In this URL, `testing` is the namespace that `mathService` is running in.
+
+#### Non-Dapr Endpoint Example
+
+If the `mathService` service was a non-Dapr application, then it could be invoked using service invocation via an `HTTPEndpoint`, as well as a Fully Qualified Domain Name (FQDN) URL.
+
+```shell
+curl http://localhost:3500/v1.0/invoke/mathHTTPEndpoint/method/add \
+  -H "Content-Type: application/json"
+  -d '{ "arg1": 10, "arg2": 23}'
+
+curl http://localhost:3500/v1.0/invoke/http://mathServiceURL.com/method/add \
+  -H "Content-Type: application/json"
+  -d '{ "arg1": 10, "arg2": 23}'
+```
 
 ## Next Steps
 - [How-To: Invoke and discover services]({{< ref howto-invoke-discover-services.md >}})
