@@ -62,7 +62,7 @@
   features:
     input: true
     output: true
-- component: MySQL
+- component: MySQL & MariaDB
   link: mysql
   state: Alpha
   version: v1

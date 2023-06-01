@@ -13,7 +13,7 @@ This endpoint lets you get configuration from a store.
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>
+GET http://localhost:<daprPort>/v1.0/configuration/<storename>
 ```
 
 #### URL Parameters
@@ -29,13 +29,13 @@ If no query parameters are provided, all configuration items are returned.
 To specify the keys of the configuration items to get, use one or more `key` query parameters. For example:
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore?key=config1&key=config2
+GET http://localhost:<daprPort>/v1.0/configuration/mystore?key=config1&key=config2
 ```
 
 To retrieve all configuration items:
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore
+GET http://localhost:<daprPort>/v1.0/configuration/mystore
 ```
 
 #### Request Body
@@ -59,7 +59,7 @@ JSON-encoded value of key/value pairs for each configuration item.
 ### Example
 
 ```shell
-curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore?key=myConfigKey' 
+curl -X GET 'http://localhost:3500/v1.0/configuration/mystore?key=myConfigKey' 
 ```
 
 > The above command returns the following JSON:
@@ -75,7 +75,7 @@ This endpoint lets you subscribe to configuration changes. Notifications happen 
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/subscribe
+GET http://localhost:<daprPort>/v1.0/configuration/<storename>/subscribe
 ```
 
 #### URL Parameters
@@ -91,13 +91,13 @@ If no query parameters are provided, all configuration items are subscribed to.
 To specify the keys of the configuration items to subscribe to, use one or more `key` query parameters. For example:
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore/subscribe?key=config1&key=config2
+GET http://localhost:<daprPort>/v1.0/configuration/mystore/subscribe?key=config1&key=config2
 ```
 
 To subscribe to all changes:
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/mystore/subscribe
+GET http://localhost:<daprPort>/v1.0/configuration/mystore/subscribe
 ```
 
 #### Request Body
@@ -121,7 +121,7 @@ JSON-encoded value
 ### Example
 
 ```shell
-curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/subscribe?key=myConfigKey' 
+curl -X GET 'http://localhost:3500/v1.0/configuration/mystore/subscribe?key=myConfigKey' 
 ```
 
 > The above command returns the following JSON:
@@ -141,7 +141,7 @@ This endpoint lets you unsubscribe to configuration changes.
 ### HTTP Request
 
 ```
-GET http://localhost:<daprPort>/v1.0-alpha1/configuration/<storename>/<subscription-id>/unsubscribe
+GET http://localhost:<daprPort>/v1.0/configuration/<storename>/<subscription-id>/unsubscribe
 ```
 
 #### URL Parameters
@@ -181,7 +181,7 @@ Code | Description
 ### Example
 
 ```shell
-curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
+curl -X GET 'http://localhost:3500/v1.0/configuration/mystore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
 ```
 
 ## Optional application (user code) routes

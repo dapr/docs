@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Workflow"
 linkTitle: Workflow
-weight: 77
+weight: 78
 description: Get started with the Dapr Workflow building block
 ---
 
