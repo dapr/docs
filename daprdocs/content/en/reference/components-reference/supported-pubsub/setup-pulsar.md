@@ -29,7 +29,7 @@ spec:
   - name: token
     value: "eyJrZXlJZCI6InB1bHNhci1wajU0cXd3ZHB6NGIiLCJhbGciOiJIUzI1NiJ9.eyJzd"
   - name: consumerID
-    value: "certification"
+    value: "topic1"
   - name: namespace
     value: "default"
   - name: persistent
