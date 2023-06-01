@@ -58,7 +58,7 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 | `timeoutInSeconds`   | N        | Timeout for all database operations. Defaults to `20` | `30` |
 | `pemPath`            | N        | Full path to the PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemContents is not provided. Cannot be used in K8s environment | `"/path/to/file.pem"`, `"C:\path\to\file.pem"` |
 | `pemContents`        | N        | Contents of PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemPath is not provided. Can be used in K8s environment | `"pem value"` |
-| `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (that is 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
 
 ## Setup MySQL
 
