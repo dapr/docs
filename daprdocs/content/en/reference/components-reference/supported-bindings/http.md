@@ -25,11 +25,11 @@ spec:
   - name: url
     value: http://something.com
   - name: MTLSRootCA
-    value: /Users/somepath/root.pem # OPTIONAL <path to root CA> or <pem encoded string>
+    value: /Users/somepath/root.pem # OPTIONAL Secret store ref, <path to root CA>, or <pem encoded string>
   - name: MTLSClientCert
-    value: /Users/somepath/client.pem # OPTIONAL <path to client cert> or <pem encoded string>
+    value: /Users/somepath/client.pem # OPTIONAL Secret store ref, <path to client cert>, or <pem encoded string>
   - name: MTLSClientKey
-    value: /Users/somepath/client.key # OPTIONAL <path to client key> or <pem encoded string>
+    value: /Users/somepath/client.key # OPTIONAL Secret store ref, <path to client key>, or <pem encoded string>
   - name: MTLSRenegotiation
     value: RenegotiateOnceAsClient # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
   - name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
@@ -45,12 +45,42 @@ spec:
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
 | url                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
-| MTLSRootCA         | N        | Output |Path to root ca certificate or pem encoded string |
-| MTLSClientCert     | N        | Output |Path to client certificate or pem encoded string  |
-| MTLSClientKey      | N        | Output |Path client private key or pem encoded string |
+| MTLSRootCA         | N        | Output |Secret store reference, path to root ca certificate, or pem encoded string |
+| MTLSClientCert     | N        | Output |Secret store reference, path to client certificate, or pem encoded string  |
+| MTLSClientKey      | N        | Output |Secret store reference, path client private key, or pem encoded string |
 | MTLSRenegotiation  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
 | securityToken      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
 | securityTokenHeader| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
+
+### How to configure MTLS related fields in Metadata
+The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be provided in three ways:
+1. Secret store reference
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: <NAME>
+spec:
+  type: bindings.http
+  version: v1
+  metadata:
+  - name: url
+    value: http://something.com
+  - name: MTLSRootCA
+    secretKeyRef:
+      name: mysecret
+      key: myrootca
+auth:
+  secretStore: <NAME_OF_SECRET_STORE_COMPONENT>
+```
+2. Path to the file: The absolute path to the file can be provided as a value for the field.
+3. PEM encoded string: The PEM encoded string can also be provided as a value for the field.
+
+{{% alert title="Note" color="primary" %}}
+Metadata fields **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** are used to configure TLS(m) authentication.
+To use mTLS authentication, you must provide all three fields. See [mTLS]({{< ref "#using-mtls-or-enabling-client-tls-authentication-along-with-https" >}}) for more details. You can also provide only **MTLSRootCA**, to enable **HTTPS** connection. See [HTTPS]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}) section for more details.
+{{% /alert %}}
+
 
 ## Binding support
 
@@ -315,6 +345,10 @@ curl -d '{ "operation": "get" }' \
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+{{% alert title="Note" color="primary" %}}
+HTTPS binding support can also be configured using the **MTLSRootCA** metadata option. This will add the specified certificate to the list of trusted certificates for the binding. There's no specific preference for either method. While the **MTLSRootCA** option is easy to use and doesn't require any changes to the sidecar, it accepts only one certificate. If you need to trust multiple certificates, you need to [install them in the sidecar by following the steps above]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}).
+{{% /alert %}}
 
 ## Using mTLS or enabling client TLS authentication along with HTTPS
 You can configure the HTTP binding to use mTLS or client TLS authentication along with HTTPS by providing the `MTLSRootCA`, `MTLSClientCert`, and `MTLSClientKey` metadata fields in the binding component.
