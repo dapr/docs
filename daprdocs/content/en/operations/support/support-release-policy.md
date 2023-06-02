@@ -140,7 +140,7 @@ There is a process for applying breaking changes:
 1. The breaking changes are applied two (2) releases after the release in which the deprecation was announced. 
    - For example, feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
 
-### Depreciations
+### Deprecations
 
 Deprecations appear in release notes under a section named “Deprecations”, which indicates:
 
