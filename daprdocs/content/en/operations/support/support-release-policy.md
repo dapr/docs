@@ -32,8 +32,8 @@ Patch support is for supported versions (current and previous).
 
 The Dapr's sidecar image is published to both [GitHub Container Registry](https://github.com/dapr/dapr/pkgs/container/daprd) and [Docker Registry](https://hub.docker.com/r/daprio/daprd/tags). The default image contains all components. From version 1.11, Dapr also offers a variation of the sidecar image, containing only stable components.
 
-* Default sidecar images: `daprio/daprd:<version>` or `ghcr.io/dapr/daprd:<version>`
-* Sidecar images for stable components: `daprio/daprd:<version>-stable` or `ghcr.io/dapr/daprd:<version>-stable`
+* Default sidecar images: `daprio/daprd:<version>` or `ghcr.io/dapr/daprd:<version>` (Example: `ghcr.io/dapr/daprd:1.11.0`)
+* Sidecar images for stable components: `daprio/daprd:<version>-stable` or `ghcr.io/dapr/daprd:<version>-stable` (Example: `ghcr.io/dapr/daprd:1.11.0-stable`)
 
 On Kubernetes, the sidecar image can be overwritten at the Deployment resource of the application via the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{<ref "arguments-annotations-overview.md" >}})
 
