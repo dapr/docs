@@ -26,12 +26,12 @@ Create a configuration item in a supported configuration store. This can be a si
 docker run --name my-redis -p 6379:6379 -d redis:6
 ```
 
-### Save an item 
+### Save an item
 
 Using the [Redis CLI](https://redis.com/blog/get-redis-cli-without-installing-redis-server/), connect to the Redis instance:
 
 ```
-redis-cli -p 6379 
+redis-cli -p 6379
 ```
 
 Save a configuration item:
@@ -45,10 +45,10 @@ MSET orderId1 "101||1" orderId2 "102||1"
 Save the following component file to the [default components folder]({{< ref "install-dapr-selfhost.md#step-5-verify-components-directory-has-been-initialized" >}}) on your machine. You can use this as the Dapr component YAML:
 
 - For Kubernetes using `kubectl`.
-- When running with the Dapr CLI. 
+- When running with the Dapr CLI.
 
 {{% alert title="Note" color="primary" %}}
- Since the Redis configuration component has identical metadata to the Redis `statestore.yaml` component, you can simply copy/change the Redis state store component type if you already have a Redis `statestore.yaml`. 
+ Since the Redis configuration component has identical metadata to the Redis `statestore.yaml` component, you can simply copy/change the Redis state store component type if you already have a Redis `statestore.yaml`.
 
 {{% /alert %}}
 
@@ -250,7 +250,7 @@ Invoke-RestMethod -Uri 'http://localhost:3601/v1.0/configuration/configstore?key
 
 ### Subscribe to configuration item updates
 
-Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component. 
+Below are code examples that leverage SDKs to subscribe to keys `[orderId1, orderId2]` using `configstore` store component.
 
 {{< tabs ".NET" "ASP.NET Core" Java Python Go Javascript>}}
 
@@ -328,7 +328,7 @@ namespace ConfigurationApi
                     // Get the initial value and continue to watch it for changes.
                     config.AddDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
                     config.AddStreamingDaprConfigurationStore("configstore", new List<string>() { "orderId1","orderId2" }, client, TimeSpan.FromSeconds(20));
-                    
+
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -429,7 +429,7 @@ dapr run --app-id orderprocessing -- python3 OrderProcessingService.py
 
 {{% codetab %}}
 
-```go 
+```go
 package main
 
 import (
@@ -653,7 +653,7 @@ async function main() {
     );
     setTimeout(() => {
       // Unsubscribe to config updates
-      stream.stop(); 
+      stream.stop();
       console.log("App unsubscribed to config changes");
       process.exit(0);
     }, 20000);
@@ -678,6 +678,8 @@ curl 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscrip
 Invoke-RestMethod -Uri 'http://localhost:<DAPR_HTTP_PORT>/v1.0/configuration/configstore/<subscription-id>/unsubscribe'
 ```
 {{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Next steps
 
