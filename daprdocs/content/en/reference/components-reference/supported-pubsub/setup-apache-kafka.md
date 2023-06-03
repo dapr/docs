@@ -65,7 +65,7 @@ spec:
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
 | consumeRetryEnabled | N | Disable consume retry by setting `"false"` | `"true"`, `"false"` |
-| version               | N | Kafka cluster version. Defaults to 2.0.0.0. Please note that this needs to be mandatorily set to `1.0.0` for EventHubs with Kafka. | `0.10.2.0` |
+| version               | N | Kafka cluster version. Defaults to 2.0.0. Note that this must be set to `1.0.0` if you are using Azure EventHubs with Kafka. | `0.10.2.0` |
 | caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert | N | Client certificate, required for `authType` `mtls`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | N | Client key, required for `authType` `mtls` Can be `secretKeyRef` to use a secret reference | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
@@ -79,7 +79,7 @@ spec:
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
 #### Note
-Metadata `version` needs to be mandatorily set to `1.0.0` for anyone using EventHubs with Kafka.
+The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
 
 ### Authentication
 

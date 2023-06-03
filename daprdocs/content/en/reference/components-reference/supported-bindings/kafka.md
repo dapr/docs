@@ -70,7 +70,7 @@ spec:
 | version | N | Input/Output | Kafka cluster version. Defaults to 2.0.0. Please note that this needs to be mandatorily set to `1.0.0` for EventHubs with Kafka. | `1.0.0` |
 
 #### Note
-Metadata `version` needs to be mandatorily set to `1.0.0` for anyone using EventHubs with Kafka.
+The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
 
 ## Binding support
 
