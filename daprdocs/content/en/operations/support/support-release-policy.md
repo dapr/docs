@@ -35,7 +35,7 @@ The Dapr's sidecar image is published to both [GitHub Container Registry](https:
 * Default sidecar images: `daprio/daprd:<version>` or `ghcr.io/dapr/daprd:<version>` (for example `ghcr.io/dapr/daprd:1.11.0`)
 * Sidecar images for stable components: `daprio/daprd:<version>-stable` or `ghcr.io/dapr/daprd:<version>-stable` (Example: `ghcr.io/dapr/daprd:1.11.0-stable`)
 
-On Kubernetes, the sidecar image can be overwritten at the Deployment resource of the application via the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{<ref "arguments-annotations-overview.md" >}})
+On Kubernetes, the sidecar image can be overwritten for the application Deployment resource with the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{<ref "arguments-annotations-overview.md" >}}). The default 'daprio/daprd:latest' image is used if not specified.
 
 Learn more about [Dapr components' certification lifecycle]({{<ref "certification-lifecycle.md" >}}).
 
