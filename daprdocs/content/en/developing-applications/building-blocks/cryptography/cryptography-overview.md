@@ -59,6 +59,26 @@ Both kinds of components, either those leveraging key vaults or using the crypto
 
 Cryptographic APIs allow encrypting and decrypting data using the [Dapr Crypto Scheme v1](https://dapr.io/enc/v1). This is an opinionated encryption scheme designed to use modern, safe cryptographic standards, and processes data (even large files) efficiently as a stream.
 
+## Try out cryptography
+
+### Quickstarts and tutorials
+
+Want to put the Dapr cryptography API to the test? Walk through the following quickstart and tutorials to see cryptography in action:
+
+| Quickstart/tutorial | Description |
+| ------------------- | ----------- |
+| Cryptography quickstart | Coming soon |
+
+### Start using cryptography directly in your app
+
+Want to skip the quickstarts? Not a problem. You can try out the cryptography building block directly in your application to encrypt and decrypt your application. After [Dapr is installed]({{< ref "getting-started/_index.md" >}}), you can begin using the cryptography API starting with [the cryptography how-to guide]({{< ref howto-cryptography.md >}}).
+
+## Demo
+
+Watch this [demo video of the Cryptography API from the Dapr Community Call #83](https://youtu.be/PRWYX4lb2Sg?t=1148):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/PRWYX4lb2Sg?start=1148" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Next steps
 
 {{< button text="Use the cryptography API >>" page="howto-cryptography.md" >}}
