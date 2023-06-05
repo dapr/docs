@@ -371,7 +371,7 @@ To set a priority on a message, add the publish metadata key `maxPriority` to th
 {{% codetab %}}
 
 ```bash
-curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders?metadata.maxPriority=3 -H "Content-Type: application/json" -d '{"orderId": "100"}'
+curl -X POST http://localhost:3601/v1.0/publish/order-pub-sub/orders?metadata.priority=3 -H "Content-Type: application/json" -d '{"orderId": "100"}'
 ```
 
 {{% /codetab %}}
@@ -385,7 +385,7 @@ with DaprClient() as client:
             topic_name=TOPIC_NAME,
             data=json.dumps(orderId),
             data_content_type='application/json',
-            metadata= { 'maxPriority': '3' })
+            metadata= { 'priority': '3' })
 ```
 
 {{% /codetab %}}
@@ -393,7 +393,7 @@ with DaprClient() as client:
 {{% codetab %}}
 
 ```javascript
-await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId, { 'maxPriority': '3' });
+await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId, { 'priority': '3' });
 ```
 
 {{% /codetab %}}
@@ -401,7 +401,7 @@ await client.pubsub.publish(PUBSUB_NAME, TOPIC_NAME, orderId, { 'maxPriority': '
 {{% codetab %}}
 
 ```go
-client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)), map[string]string{"maxPriority": "3"})
+client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)), map[string]string{"priority": "3"})
 ```
 {{% /codetab %}}
 
