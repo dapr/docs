@@ -14,7 +14,7 @@ The component accepts as input the name of a folder, and loads keys from there. 
 Supported file formats:
 
 - PEM with public and private keys (supports: PKCS#1, PKCS#8, PKIX)
-- JSON Web Key (JWK) containing public, private, or symmetric keys
+- JSON Web Key (JWK) containing a public, private, or symmetric key
 - Raw key data for symmetric keys
 
 {{% alert title="Note" color="primary" %}}
@@ -35,7 +35,7 @@ spec:
   metadata:
     version: v1
     - name: path
-      value: fixtures/crypto/localstorage/
+      value: /path/to/folder/
 ```
 
 {{% alert title="Warning" color="warning" %}}

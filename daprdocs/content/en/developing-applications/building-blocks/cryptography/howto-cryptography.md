@@ -85,7 +85,7 @@ fmt.Println("Written", n, "bytes")
 
 {{< /tabs >}}
 
-The following example uses the `Ecrypt` API to encrypt a string.
+The following example uses the `Encrypt` API to encrypt a string.
 
 {{< tabs "Go" >}}
 
