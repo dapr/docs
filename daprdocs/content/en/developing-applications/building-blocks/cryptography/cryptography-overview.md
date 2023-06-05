@@ -57,7 +57,7 @@ Both kinds of components, either those leveraging key vaults or using the crypto
 
 ### Cryptographic APIs
 
-Cryptographic APIs allow encrypting and decrypting data using the [Dapr Crypto Scheme v1](https://dapr.io/enc/v1). This is an opinionated encryption scheme designed to use modern, safe cryptographic standards, and processes data (even large files) efficiently as a stream.
+Cryptographic APIs allow encrypting and decrypting data using the [Dapr Crypto Scheme v1](https://github.com/dapr/kit/blob/main/schemes/enc/v1/README.md). This is an opinionated encryption scheme designed to use modern, safe cryptographic standards, and processes data (even large files) efficiently as a stream.
 
 ## Try out cryptography
 
