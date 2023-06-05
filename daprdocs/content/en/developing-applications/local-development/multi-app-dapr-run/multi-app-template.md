@@ -7,13 +7,13 @@ description: Unpack the Multi-App Run template file and its properties
 ---
 
 {{% alert title="Note" color="primary" %}}
- Multi-App Run is currently a preview feature only supported in Linux/MacOS. 
+ Multi-App Run is currently a preview feature only supported in Linux/MacOS.
 {{% /alert %}}
 
 The Multi-App Run template file is a YAML file that you can use to run multiple applications at once. In this guide, you'll learn how to:
-- Use the multi-app template 
+- Use the multi-app template
 - View started applications
-- Stop the multi-app template 
+- Stop the multi-app template
 - Stucture the multi-app template file
 
 ## Use the multi-app template
@@ -65,7 +65,7 @@ dapr stop -f ./path/to/<your-preferred-file-name>.yaml
 
 ## Template file structure
 
-The Multi-App Run template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties. 
+The Multi-App Run template file can include the following properties. Below is an example template showing two applications that are configured with some of the properties.
 
 ```yaml
 version: 1
@@ -77,15 +77,16 @@ apps:
   - appID: webapp # optional
     appDirPath: .dapr/webapp/ # REQUIRED
     resourcesPath: .dapr/resources # deprecated
-    resourcesPaths: .dapr/resources # comman separated resources paths. (optional) can be default by convention
+    resourcesPaths: .dapr/resources # comma separated resources paths. (optional) can be left to default value by convention.
+    appChannelAddress: 127.0.0.1 # network address where the app listens on. (optional) can be left to default value by convention.
     configFilePath: .dapr/config.yaml # (optional) can be default by convention too, ignore if file is not found.
     appProtocol: http
     appPort: 8080
-    appHealthCheckPath: "/healthz" 
+    appHealthCheckPath: "/healthz"
     command: ["python3" "app.py"]
     appLogDestination: file # (optional), can be file, console or fileAndConsole. default is fileAndConsole.
     daprdLogDestination: file # (optional), can be file, console or fileAndConsole. default is file.
-  - appID: backend # optional 
+  - appID: backend # optional
     appDirPath: .dapr/backend/ # REQUIRED
     appProtocol: grpc
     appPort: 3000
@@ -106,15 +107,16 @@ The following rules apply for all the paths present in the template file:
 
 ## Template properties
 
-The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).  
+The properties for the Multi-App Run template align with the `dapr run` CLI flags, [listed in the CLI reference documentation]({{< ref "dapr-run.md#flags" >}}).
 
 
 | Properties               | Required | Details | Example |
 |--------------------------|:--------:|--------|---------|
 | `appDirPath`             | Y        | Path to the your application code | `./webapp/`, `./backend/` |
 | `appID`                  | N        | Application's app ID. If not provided, will be derived from `appDirPath` | `webapp`, `backend` |
-| `resourcesPath`          | N        | **Deprecated**. Path to your Dapr resources. Can be default by convention| `./app/components`, `./webapp/components` |
-| `resourcesPaths`          | N        | Comma separated paths to your Dapr resources. Can be default by convention | `./app/components`, `./webapp/components` |
+| `resourcesPath`          | N        | **Deprecated**. Path to your Dapr resources. Can be default value  by convention| `./app/components`, `./webapp/components` |
+| `resourcesPaths`         | N        | Comma separated paths to your Dapr resources. Can be default value by convention | `./app/components`, `./webapp/components` |
+| `appChannelAddress`      | N        | The network address the application listens on. Can be left to the default value by convention. | `127.0.0.1` | `localhost` |
 | `configFilePath`         | N        | Path to your application's configuration file | `./webapp/config.yaml` |
 | `appProtocol`            | N        | The protocol Dapr uses to talk to the application. | `http`, `grpc` |
 | `appPort`                | N        | The port your application is listening on | `8080`, `3000` |
