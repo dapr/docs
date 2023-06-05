@@ -46,7 +46,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `path`             | Y        | Folder containing the keys to be loaded. When loading a key, the name of the key will be used as name of the file in this folder.  | `/path/to/folder`
+| `path`             | Y        | Folder containing the keys to be loaded. When loading a key, the name of the key used is the name of the file in this folder.  | `/path/to/folder`
 
 ## Related links
 [Cryptography building block]({{< ref cryptography >}})
