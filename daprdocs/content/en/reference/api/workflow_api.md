@@ -53,7 +53,7 @@ The API call will provide a response similar to this:
 Terminate a running workflow instance with the given name and instance ID.
 
 ```http
-POST http://localhost:3500/v1.0-alpha1/workflows/<instanceId>/terminate
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 
 ### URL parameters
