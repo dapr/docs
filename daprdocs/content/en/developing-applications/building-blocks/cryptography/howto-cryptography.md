@@ -28,7 +28,7 @@ out, err := sdkClient.Encrypt(context.Background(), rf, dapr.EncryptOptions{
 	// Name of the Dapr component (required)
 	ComponentName: "mycryptocomponent",
 	// Name of the key stored in the component (required)
-	KeyName:        "mykey",
+	KeyName:       "mykey",
 	// Algorithm used for wrapping the key, which must be supported by the key named above.
 	// Options include: "RSA", "AES"
 	Algorithm:     "RSA",
@@ -66,7 +66,7 @@ defer wf.Close()
 out, err := sdkClient.Encrypt(context.Background(), rf, dapr.EncryptOptions{
 	// These are the 3 required parameters
 	ComponentName: "mycryptocomponent",
-	KeyName:        "mykey",
+	KeyName:       "mykey",
 	Algorithm:     "RSA",
 })
 if err != nil {
@@ -100,7 +100,7 @@ rf := strings.NewReader("Amor, ch’a nullo amato amar perdona, mi prese del cos
 // Encrypt the data using Dapr
 enc, err := sdkClient.Encrypt(context.Background(), rf, dapr.EncryptOptions{
 	ComponentName: "mycryptocomponent",
-	KeyName:        "mykey",
+	KeyName:       "mykey",
 	Algorithm:     "RSA",
 })
 if err != nil {

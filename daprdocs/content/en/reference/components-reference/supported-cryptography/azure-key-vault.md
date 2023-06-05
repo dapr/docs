@@ -18,7 +18,8 @@ spec:
   type: crypto.azure.keyvault
   metadata:
   - name: vaultName
-    value: ${{AzureKeyVaultName}}
+    value: mykeyvault
+  # See authentication section below for all options
   - name: azureTenantId
     value: ${{AzureKeyVaultTenantId}}
   - name: azureClientId
@@ -31,14 +32,21 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+## Authenticating with Azure AD
+
+The Azure Key Vault cryptography component supports authentication with Azure AD only. Before you enable this component:
+
+1. Read the [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) document.
+1. Create an [Azure AD application]({{< ref "howto-aad.md" >}}) (also called a Service Principal).
+1. Alternatively, create a [managed identity]({{< ref "howto-msi.md" >}}) for your application platform.
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| vaultName          | Y        | Azure Key Vault name  | TODO |
-| azureTenantId      | Y        | Azure Key Vault tenant ID  | TODO |
-| azureClientId      | Y        | Azure Key Vault service principal client ID  | TODO |
-| azureClientSecret  | Y        | Azure Key Vault service principal client secret  | TODO |
+| vaultName          | Y        | Azure Key Vault name  | `"mykeyvault"` |
+| Auth metadata      | Y        | See [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) for more information  |  |
 
 ## Related links
-[Cryptography building block]({{< ref cryptography >}})
+- [Cryptography building block]({{< ref cryptography >}})
+- [Authenticating to Azure]({{< ref azure-authentication >}})
