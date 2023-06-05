@@ -24,9 +24,7 @@ metadata:
 spec:
   type: crypto.dapr.kubernetes.secrets
   version: v1
-  metadata:
-  - name: defaultNamespace
-    value: <VALUE>
+  metadata:[]
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -35,10 +33,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Details | Example |
-|--------------------|:--------:|---------|---------|
-| defaultNamespace   | N        |  |  |
-| requestTimeout     | N        |  |  | 
+For the Kubernetes secret store component, there are no metadata attributes.
 
 ## Related links
 [Cryptography building block]({{< ref cryptography >}})
