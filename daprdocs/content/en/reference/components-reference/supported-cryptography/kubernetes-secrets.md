@@ -7,7 +7,7 @@ description: Detailed information on the Kubernetes secret cryptography componen
 
 ## Component format
 
-The purpose of this component is to load keys that are stored as Kubernetes secrets.
+The purpose of this component is to load the Kubernetes secret named after the key name.
 
 {{% alert title="Note" color="primary" %}}
 This component uses the cryptographic engine in Dapr to perform operations. Although keys are never exposed to your application, Dapr has access to the raw key material.

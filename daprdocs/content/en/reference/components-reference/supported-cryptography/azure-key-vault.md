@@ -44,8 +44,8 @@ The Azure Key Vault cryptography component supports authentication with Azure AD
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| vaultName          | Y        | Azure Key Vault name  | `"mykeyvault"` |
-| Auth metadata      | Y        | See [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) for more information  |  |
+| `vaultName`   | Y | Azure Key Vault name  | `"mykeyvault"` |
+| Auth metadata | Y | See [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) for more information  |  |
 
 ## Related links
 - [Cryptography building block]({{< ref cryptography >}})
