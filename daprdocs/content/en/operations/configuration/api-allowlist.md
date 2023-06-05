@@ -16,7 +16,7 @@ If no API allowlist or denylist is specified, the default behavior is to allow a
 
 - If only a denylist is defined, all Dapr APIs are allowed except those defined in the denylist
 - If only an allowlist is defined, only the Dapr APIs listed in the allowlist are allowed
-- If both an allowlist and a denylist are defined, the allowed APIs are those defined in the allowlist, unless they are also included in the denylist. In other terms, the denylist overrides the allowlist for APIs that are defined in both places.
+- If both an allowlist and a denylist are defined, the allowed APIs are those defined in the allowlist, unless they are also included in the denylist. In other words, the denylist overrides the allowlist for APIs that are defined in both.
 - If neither is defined, all APIs are allowed.
 
 For example, the following configuration enables all APIs for both HTTP and gRPC:
@@ -36,7 +36,7 @@ spec:
 
 #### Enabling specific HTTP APIs
 
-The following example enables the state `v1.0` HTTP API and block all other HTTP APIs:
+The following example enables the state `v1.0` HTTP API and blocks all other HTTP APIs:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -54,7 +54,7 @@ spec:
 
 #### Enabling specific gRPC APIs
 
-The following example enables the state `v1` gRPC API and block all other gRPC APIs:
+The following example enables the state `v1` gRPC API and blocks all other gRPC APIs:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
