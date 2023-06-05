@@ -22,7 +22,7 @@ kind: Component
 metadata:
   name: <NAME>
 spec:
-  type: crypto.<TYPE>
+  type: crypto.dapr.kubernetes.secrets
   version: v1
   metadata:
   - name: defaultNamespace

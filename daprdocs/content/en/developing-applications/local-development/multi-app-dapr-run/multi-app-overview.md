@@ -67,12 +67,21 @@ You can also name each app directory's `.dapr` directory something other than `.
 
 ## Logs
 
+The run template provides two log destination fields for each application and its associated daprd process:
+
+1. `appLogDestination` : This field configures the log destination for the application. The possible values are `console`, `file` and `fileAndConsole`. The default value is `fileAndConsole` where application logs are written to both console and to a file by default.
+
+2. `daprdLogDestination` : This field configures the log destination for the `daprd` process. The possible values are `console`, `file` and `fileAndConsole`. The default value is `file` where the `daprd` logs are written to a file by default.
+
+#### Log file format
+
 Logs for application and `daprd` are captured in separate files. These log files are created automatically under `.dapr/logs` directory under each application directory (`appDirPath` in the template). These log file names follow the pattern seen below:
 
 - `<appID>_app_<timestamp>.log` (file name format for `app` log)
 - `<appID>_daprd_<timestamp>.log` (file name format for `daprd` log)
 
 Even if you've decided to rename your resources folder to something other than `.dapr`, the log files are written only to the `.dapr/logs` folder (created in the application directory).
+
 
 ## Watch the demo
 
