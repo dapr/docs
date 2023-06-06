@@ -12,8 +12,8 @@ Dapr provides users with the ability to interact with workflows and comes with a
 
 Start a workflow instance with the given name and optionally, an instance ID.
 
-```http
-POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/start[?instanceId=<instanceId>]
+```
+POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<workflowName>/start[?instanceID=<instanceID>]
 ```
 
 Note that workflow instance IDs can only contain alphanumeric characters, underscores, and dashes.
@@ -24,7 +24,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `workflowName` | Identify the workflow type
-`instanceId` | (Optional) Unique value created for each run of a specific workflow
+`instanceID` | (Optional) Unique value created for each run of a specific workflow
 
 ### Request content
 
@@ -52,7 +52,7 @@ The API call will provide a response similar to this:
 
 Terminate a running workflow instance with the given name and instance ID.
 
-```http
+```
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 
@@ -79,7 +79,7 @@ This API does not return any content.
 
 For workflow components that support subscribing to external events, such as the Dapr Workflow engine, you can use the following "raise event" API to deliver a named event to a specific workflow instance.
 
-```http
+````
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
 ```
 
@@ -112,7 +112,7 @@ None.
 
 Pause a running workflow instance.
 
-```http
+```
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/pause
 ```
 
@@ -139,7 +139,7 @@ None.
 
 Resume a paused workflow instance.
 
-```http
+```
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/resume
 ```
 
@@ -166,7 +166,7 @@ None.
 
 Purge the workflow state from your state store with the workflow's instance ID.
 
-```http
+````
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/purge
 ```
 
@@ -193,7 +193,7 @@ None.
 
 Get information about a given workflow instance.
 
-```http
+````
 GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>
 ```
 
