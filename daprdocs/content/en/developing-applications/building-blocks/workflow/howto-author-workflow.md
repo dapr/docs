@@ -280,7 +280,7 @@ app.Run();
   - `WorkflowRuntime`: Allows you to register workflows and workflow activities
   - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
   - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
-- HTTP API calls. In the example below, these calls start, pause, resume, purge, and terminate the workflow.
+- API calls. In the example below, these calls start, pause, resume, purge, and terminate the workflow.
  
 ```python
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
@@ -378,4 +378,4 @@ Now that you've authored a workflow, learn how to manage it.
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-  - [Python example](todo)
+  - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)

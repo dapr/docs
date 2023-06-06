@@ -116,4 +116,4 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-  - [Python example](todo)
+  - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
