@@ -10,7 +10,7 @@ description: Get started with the Dapr Cryptography building block
 The cryptography building block is currently in **alpha**. 
 {{% /alert %}}
 
-Let's take a look at the Dapr [cryptography building block](todo). In this Quickstart, you'll create an application that encrypts and decrypts data using the Dapr cryptography APIs. You'll:
+Let's take a look at the Dapr [cryptography building block]({{< ref cryptography >}}). In this Quickstart, you'll create an application that encrypts and decrypts data using the Dapr cryptography APIs. You'll:
 
 - Encrypt and then decrypt a short string (using an RSA key), reading the result in-memory, in a Go byte slice.
 - Encrypt and then decrypt a large file (using an AES key), storing the encrypted and decrypted data to files using streams.
@@ -282,7 +282,7 @@ Join the discussion in our [discord channel](https://discord.com/channels/778680
 
 ## Next steps
 
-- Walk through [more examples of encrypting and decrypting using the cryptography API](todo)
-- Learn more about [cryptography as a Dapr building block](todo)
+- Walk through [more examples of encrypting and decrypting using the cryptography API]({{< ref howto-cryptography.md >}})
+- Learn more about [cryptography as a Dapr building block]({{< ref cryptography-overview.md >}})
 
 {{< button text="Explore Dapr tutorials  >>" page="getting-started/tutorials/_index.md" >}}
