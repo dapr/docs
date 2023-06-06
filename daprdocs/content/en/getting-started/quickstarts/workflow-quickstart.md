@@ -289,7 +289,7 @@ In the terminal, start the order processor app alongside a Dapr sidecar:
 
 ```bash
 pip3 install -r requirements.txt
-dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
