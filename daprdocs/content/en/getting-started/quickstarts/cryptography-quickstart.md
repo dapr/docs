@@ -6,19 +6,19 @@ weight: 79
 description: Get started with the Dapr Cryptography building block
 ---
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Alpha" color="warning" %}}
 The cryptography building block is currently in **alpha**. 
 {{% /alert %}}
 
-Let's take a look at the Dapr [cryptography building block](todo). In this Quickstart, you'll create an application that encrypts and decrypts data using the Dapr cryptography APIs (high-level). You'll:
+Let's take a look at the Dapr [cryptography building block](todo). In this Quickstart, you'll create an application that encrypts and decrypts data using the Dapr cryptography APIs. You'll:
 
-- Encrypt and then decrypt a short string, reading the result in-memory, in a Go byte slice.
-- Encrypt and then decrypt a large file, storing the encrypted and decrypted data to files using streams.
+- Encrypt and then decrypt a short string (using an RSA key), reading the result in-memory, in a Go byte slice.
+- Encrypt and then decrypt a large file (using an AES key), storing the encrypted and decrypted data to files using streams.
 
-<img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
+<img src="/images/crypto-quickstart.png" width=800 style="padding-bottom:15px;">
 
 {{% alert title="Note" color="primary" %}}
-This example uses the Dapr SDK. Using the Dapr SDK, which leverages gRPC internally, is **strongly** recommended when using cryptographic APIs (to encrypt and decrypt messages).
+This example uses the Dapr SDK, which leverages gRPC and is **strongly** recommended when using cryptographic APIs to encrypt and decrypt messages.
 {{% /alert %}}
 
 Currently, you can experience the cryptography API using the Go SDK.
@@ -28,7 +28,7 @@ Currently, you can experience the cryptography API using the Go SDK.
  <!-- Go -->
 {{% codetab %}}
 
-> This quickstart includes one Go application called `crypto-quickstart`.
+> This quickstart includes a Go application called `crypto-quickstart`.
 
 ### Pre-requisites
 
@@ -63,14 +63,18 @@ Navigate into the folder with the source code:
 cd ./crypto-quickstart
 ```
 
-This sample requires a private RSA key and a 256-bit symmetric (AES) key. Generate the keys using OpenSSL:
+The application code defines two required keys:
+- Private RSA key 
+- A 256-bit symmetric (AES) key 
+
+Generate the keys using OpenSSL:
 
 ```bash
 mkdir -p keys
 # Generate a private RSA key, 4096-bit keys
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-private-key.pem
 # Generate a 256-bit key for AES
-openssl rand 32 -out keys/symmetric-key-256
+openssl rand -out keys/symmetric-key-256 32
 ```
 
 Run the Go service app with Dapr:
@@ -82,11 +86,182 @@ dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- go 
 **Expected output**
 
 ```
-
+== APP == dapr client initializing for: 127.0.0.1:52407
+== APP == Encrypted the message, got 856 bytes
+== APP == Decrypted the message, got 24 bytes
+== APP == The secret is "passw0rd"
+== APP == Wrote decrypted data to encrypted.out
+== APP == Wrote decrypted data to decrypted.out.jpg
 ```
 
 ### What happened?
 
+#### `local-storage.yaml`
+
+Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/ItalyPaleAle/dapr-quickstarts/blob/crypto-go/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localstorage
+spec:
+  type: crypto.dapr.localstorage
+  version: v1
+  metadata:
+    - name: path
+      # Path is relative to the folder where the example is located
+      value: ./keys
+```
+
+#### `app.go`
+
+[The application file](https://github.com/ItalyPaleAle/dapr-quickstarts/blob/crypto-go/cryptography/go/sdk/crypto-quickstart/app.go) encrypts and decrypts messages and files using the RSA and AES keys that you generated in the terminal. The application creates a new Dapr SDK client:
+
+```go
+func main() {
+	// Create a new Dapr SDK client
+	client, err := dapr.NewClient()
+    
+    //...
+
+	// Step 1: encrypt a string using the RSA key, then decrypt it and show the output in the terminal
+	encryptDecryptString(client)
+
+	// Step 2: encrypt a large file and then decrypt it, using the AES key
+	encryptDecryptFile(client)
+}
+```
+
+##### Encrypting and decrypting a string using the RSA key
+
+Once the client is created, the application encrypts a message:
+
+```go
+func encryptDecryptString(client dapr.Client) {
+    // ...
+
+	// Encrypt the message
+	encStream, err := client.Encrypt(context.Background(),
+		strings.NewReader(message),
+		dapr.EncryptOptions{
+			ComponentName: CryptoComponentName,
+			// Name of the key to use
+			// Since this is a RSA key, we specify that as key wrapping algorithm
+			KeyName:          RSAKeyName,
+			KeyWrapAlgorithm: "RSA",
+		},
+	)
+
+    // ...
+
+	// The method returns a readable stream, which we read in full in memory
+	encBytes, err := io.ReadAll(encStream)
+    // ...
+
+	fmt.Printf("Encrypted the message, got %d bytes\n", len(encBytes))
+```
+
+The application then decrypts the message:
+
+```go
+	// Now, decrypt the encrypted data
+	decStream, err := client.Decrypt(context.Background(),
+		bytes.NewReader(encBytes),
+		dapr.DecryptOptions{
+			// We just need to pass the name of the component
+			ComponentName: CryptoComponentName,
+			// Passing the name of the key is optional
+			KeyName: RSAKeyName,
+		},
+	)
+
+    // ...
+
+	// The method returns a readable stream, which we read in full in memory
+	decBytes, err := io.ReadAll(decStream)
+
+    // ...
+
+	// Print the message on the console
+	fmt.Printf("Decrypted the message, got %d bytes\n", len(decBytes))
+	fmt.Println(string(decBytes))
+}
+``` 
+
+##### Encrypt and decrpyt a large file using the AES key
+
+Next, the application encrypts a large image file:
+
+```go
+func encryptDecryptFile(client dapr.Client) {
+	const fileName = "liuguangxi-66ouBTTs_x0-unsplash.jpg"
+
+	// Get a readable stream to the input file
+	plaintextF, err := os.Open(fileName)
+
+    // ...
+
+	defer plaintextF.Close()
+
+	// Encrypt the file
+	encStream, err := client.Encrypt(context.Background(),
+		plaintextF,
+		dapr.EncryptOptions{
+			ComponentName: CryptoComponentName,
+			// Name of the key to use
+			// Since this is a symmetric key, we specify AES as key wrapping algorithm
+			KeyName:          SymmetricKeyName,
+			KeyWrapAlgorithm: "AES",
+		},
+	)
+
+    // ...
+
+	// Write the encrypted data to a file "encrypted.out"
+	encryptedF, err := os.Create("encrypted.out")
+
+    // ...
+
+	encryptedF.Close()
+
+	fmt.Println("Wrote decrypted data to encrypted.out")
+```
+
+The application then decrypts the large image file:
+
+```go
+	// Now, decrypt the encrypted data
+	// First, open the file "encrypted.out" again, this time for reading
+	encryptedF, err = os.Open("encrypted.out")
+
+    // ...
+
+	defer encryptedF.Close()
+
+	// Now, decrypt the encrypted data
+	decStream, err := client.Decrypt(context.Background(),
+		encryptedF,
+		dapr.DecryptOptions{
+			// We just need to pass the name of the component
+			ComponentName: CryptoComponentName,
+			// Passing the name of the key is optional
+			KeyName: SymmetricKeyName,
+		},
+	)
+
+    // ...
+
+	// Write the decrypted data to a file "decrypted.out.jpg"
+	decryptedF, err := os.Create("decrypted.out.jpg")
+
+    // ...
+
+	decryptedF.Close()
+
+	fmt.Println("Wrote decrypted data to decrypted.out.jpg")
+}
+```
 
 {{% /codetab %}}
 
