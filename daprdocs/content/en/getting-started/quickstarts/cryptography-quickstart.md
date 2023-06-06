@@ -98,7 +98,7 @@ dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- go 
 
 #### `local-storage.yaml`
 
-Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/ItalyPaleAle/dapr-quickstarts/blob/crypto-go/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
+Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/dapr/quickstarts/tree/master/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -116,7 +116,7 @@ spec:
 
 #### `app.go`
 
-[The application file](https://github.com/ItalyPaleAle/dapr-quickstarts/blob/crypto-go/cryptography/go/sdk/crypto-quickstart/app.go) encrypts and decrypts messages and files using the RSA and AES keys that you generated in the terminal. The application creates a new Dapr SDK client:
+[The application file](https://github.com/dapr/quickstarts/tree/master/cryptography/go/sdk/crypto-quickstart/app.go) encrypts and decrypts messages and files using the RSA and AES keys that you generated. The application creates a new Dapr SDK client:
 
 ```go
 func main() {
