@@ -162,7 +162,7 @@ spec:
 
 #### Enabling publisher encryption from value
 
-*Note: It is recommended to reference the public key from a secret as [shown here]({{< ref component-secrets.md >}})*
+> Note: It is recommended to [reference the public key from a secret]({{< ref component-secrets.md >}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
