@@ -282,10 +282,13 @@ In a new terminal window, navigate to the `order-processor` directory:
 ```bash
 cd workflows/python/sdk/order-processor
 ```
+
 Install the Dapr Python SDK package:
 
 ```bash
 pip3 install -r requirements.txt
+```
+
 ### Step 3: Run the order processor app
 
 In the terminal, start the order processor app alongside a Dapr sidecar:
@@ -296,39 +299,23 @@ dapr run --app-id order-processor --resources-path ../../../components/ -- pytho
 
 > **Note:** Since Python3.exe is not defined in Windows, you may need to use `python workflow.py` instead of `python3 workflow.py`.
 
-
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
 
 Expected output:
 
-```
-== APP == *** Welcome to the Dapr Workflow console app sample!
-== APP == *** Using this app, you can place orders that start workflows.
-== APP == 2023-06-06 09:35:52.892 durabletask-worker INFO: Starting gRPC worker that connects to 127.0.0.1:65406
-== APP == item: InventoryItem(item_name=Paperclip, per_item_cost=5, quantity=100)
-== APP == item: InventoryItem(item_name=Cars, per_item_cost=15000, quantity=100)
-== APP == item: InventoryItem(item_name=Computers, per_item_cost=500, quantity=100)
-== APP == ==========Begin the purchase of item:==========
+```bash
 == APP == Starting order workflow, purchasing 11 of cars
 == APP == 2023-06-06 09:35:52.945 durabletask-worker INFO: Successfully connected to 127.0.0.1:65406. Waiting for work items...
-== APP == 2023-06-06 09:35:55.960 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 1 task(s) and 0 event(s).
 == APP == INFO:NotifyActivity:Received order f4e1926e-3721-478d-be8a-f5bebd1995da for 11 cars at $165000 !
-== APP == 2023-06-06 09:35:56.001 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 1 task(s) and 0 event(s).
 == APP == INFO:VerifyInventoryActivity:Verifying inventory for order f4e1926e-3721-478d-be8a-f5bebd1995da of 11 cars
 == APP == INFO:VerifyInventoryActivity:There are 100 Cars available for purchase
-== APP == 2023-06-06 09:35:56.035 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 1 task(s) and 0 event(s).
 == APP == INFO:RequestApprovalActivity:Requesting approval for payment of 165000 USD for 11 cars
-== APP == 2023-06-06 09:35:56.071 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 1 task(s) and 1 event(s).
 == APP == 2023-06-06 09:36:05.969 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da Event raised: manager_approval
-== APP == 2023-06-06 09:36:05.969 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 2 task(s) and 0 event(s).
 == APP == INFO:NotifyActivity:Payment for order f4e1926e-3721-478d-be8a-f5bebd1995da has been approved!
-== APP == 2023-06-06 09:36:06.000 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 2 task(s) and 0 event(s).
 == APP == INFO:ProcessPaymentActivity:Processing payment: f4e1926e-3721-478d-be8a-f5bebd1995da for 11 cars at 165000 USD
 == APP == INFO:ProcessPaymentActivity:Payment for request ID f4e1926e-3721-478d-be8a-f5bebd1995da processed successfully
-== APP == 2023-06-06 09:36:06.035 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 2 task(s) and 0 event(s).
 == APP == INFO:UpdateInventoryActivity:Checking inventory for order f4e1926e-3721-478d-be8a-f5bebd1995da for 11 cars
 == APP == INFO:UpdateInventoryActivity:There are now 89 cars left in stock
-== APP == 2023-06-06 09:36:06.071 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Waiting for 2 task(s) and 0 event(s).
 == APP == INFO:NotifyActivity:Order f4e1926e-3721-478d-be8a-f5bebd1995da has completed!
 == APP == 2023-06-06 09:36:06.106 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Orchestration completed with status: COMPLETED
 == APP == Workflow completed! Result: Completed
@@ -343,7 +330,7 @@ If you have Zipkin configured for Dapr locally on your machine, you can view the
 
 ### What happened?
 
-When you ran `dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py`:
+When you ran `dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py`:
 
 1. A unique order ID for the workflow is generated (in the above example, `f4e1926e-3721-478d-be8a-f5bebd1995da`) and the workflow is scheduled.
 1. The `NotifyActivity` workflow activity sends a notification saying an order for 11 cars has been received.
@@ -365,11 +352,6 @@ In the application's program file:
 ```python
 class WorkflowConsoleApp:    
     def main(self):
-        print("*** Welcome to the Dapr Workflow console app sample!", flush=True)
-        print("*** Using this app, you can place orders that start workflows.", flush=True)
-        # Wait for the sidecar to become available
-        sleep(5)
-        
         # Register workflow and activities
         workflowRuntime = WorkflowRuntime(settings.DAPR_RUNTIME_HOST, settings.DAPR_GRPC_PORT)
         workflowRuntime.register_workflow(order_processing_workflow)
@@ -379,15 +361,6 @@ class WorkflowConsoleApp:
         workflowRuntime.register_activity(process_payment_activity)
         workflowRuntime.register_activity(update_inventory_activity)
         workflowRuntime.start()
-
-        # Instantiate Dapr client
-        daprClient = DaprClient(address=f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}')
-        baseInventory = {}
-        baseInventory["paperclip"] = InventoryItem("Paperclip", 5, 100)
-        baseInventory["cars"] = InventoryItem("Cars", 15000, 100)
-        baseInventory["computers"] = InventoryItem("Computers", 500, 100)
-
-        self.restock_inventory(daprClient, baseInventory)
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
