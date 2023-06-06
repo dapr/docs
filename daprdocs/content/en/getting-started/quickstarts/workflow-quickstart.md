@@ -282,7 +282,10 @@ In a new terminal window, navigate to the `order-processor` directory:
 ```bash
 cd workflows/python/sdk/order-processor
 ```
+Install the Dapr Python SDK package:
 
+```bash
+pip3 install -r requirements.txt
 ### Step 3: Run the order processor app
 
 In the terminal, start the order processor app alongside a Dapr sidecar:
