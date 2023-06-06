@@ -122,4 +122,8 @@ See this list of values corresponding to the different Dapr APIs:
 | bindings  | [Output Bindings]({{< ref bindings_api.md >}})  |
 | publish | [Pub/Sub]({{< ref pubsub.md >}}) |
 | actors | [Actors]({{< ref actors_api.md >}}) |
+| configuration | [Configuration]({{< ref configuration_api.md >}}) |
+| lock | [Distributed Lock]({{< ref distributed_lock_api.md >}}) |
+| workflow_api | [Workflow]({{< ref workflow_api.md >}}) |
 | metadata | [Metadata]({{< ref metadata_api.md >}}) |
+| health | [Health]({{< ref health_api.md >}}) |
