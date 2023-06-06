@@ -67,7 +67,7 @@ Want to put the Dapr cryptography API to the test? Walk through the following qu
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| Cryptography quickstart | Coming soon |
+| [Cryptography quickstart]({{< ref cryptography-quickstart.md >}}) | Encrypt and decrypt messages and large files using RSA and AES keys with the cryptography API. |
 
 ### Start using cryptography directly in your app
 
