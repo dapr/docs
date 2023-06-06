@@ -67,7 +67,7 @@ The application code defines two required keys:
 - Private RSA key 
 - A 256-bit symmetric (AES) key 
 
-Generate the keys using OpenSSL:
+Generate two keys, an RSA key and and AES key using OpenSSL and write these to two files:
 
 ```bash
 mkdir -p keys
