@@ -304,18 +304,18 @@ This starts the `order-processor` app with unique workflow ID and runs the workf
 Expected output:
 
 ```bash
-== APP == Starting order workflow, purchasing 11 of cars
+== APP == Starting order workflow, purchasing 10 of cars
 == APP == 2023-06-06 09:35:52.945 durabletask-worker INFO: Successfully connected to 127.0.0.1:65406. Waiting for work items...
-== APP == INFO:NotifyActivity:Received order f4e1926e-3721-478d-be8a-f5bebd1995da for 11 cars at $165000 !
-== APP == INFO:VerifyInventoryActivity:Verifying inventory for order f4e1926e-3721-478d-be8a-f5bebd1995da of 11 cars
+== APP == INFO:NotifyActivity:Received order f4e1926e-3721-478d-be8a-f5bebd1995da for 10 cars at $165000 !
+== APP == INFO:VerifyInventoryActivity:Verifying inventory for order f4e1926e-3721-478d-be8a-f5bebd1995da of 10 cars
 == APP == INFO:VerifyInventoryActivity:There are 100 Cars available for purchase
-== APP == INFO:RequestApprovalActivity:Requesting approval for payment of 165000 USD for 11 cars
+== APP == INFO:RequestApprovalActivity:Requesting approval for payment of 165000 USD for 10 cars
 == APP == 2023-06-06 09:36:05.969 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da Event raised: manager_approval
 == APP == INFO:NotifyActivity:Payment for order f4e1926e-3721-478d-be8a-f5bebd1995da has been approved!
-== APP == INFO:ProcessPaymentActivity:Processing payment: f4e1926e-3721-478d-be8a-f5bebd1995da for 11 cars at 165000 USD
+== APP == INFO:ProcessPaymentActivity:Processing payment: f4e1926e-3721-478d-be8a-f5bebd1995da for 10 cars at 165000 USD
 == APP == INFO:ProcessPaymentActivity:Payment for request ID f4e1926e-3721-478d-be8a-f5bebd1995da processed successfully
-== APP == INFO:UpdateInventoryActivity:Checking inventory for order f4e1926e-3721-478d-be8a-f5bebd1995da for 11 cars
-== APP == INFO:UpdateInventoryActivity:There are now 89 cars left in stock
+== APP == INFO:UpdateInventoryActivity:Checking inventory for order f4e1926e-3721-478d-be8a-f5bebd1995da for 10 cars
+== APP == INFO:UpdateInventoryActivity:There are now 90 cars left in stock
 == APP == INFO:NotifyActivity:Order f4e1926e-3721-478d-be8a-f5bebd1995da has completed!
 == APP == 2023-06-06 09:36:06.106 durabletask-worker INFO: f4e1926e-3721-478d-be8a-f5bebd1995da: Orchestration completed with status: COMPLETED
 == APP == Workflow completed! Result: Completed
@@ -333,7 +333,7 @@ If you have Zipkin configured for Dapr locally on your machine, you can view the
 When you ran `dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py`:
 
 1. A unique order ID for the workflow is generated (in the above example, `f4e1926e-3721-478d-be8a-f5bebd1995da`) and the workflow is scheduled.
-1. The `NotifyActivity` workflow activity sends a notification saying an order for 11 cars has been received.
+1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
 1. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 1. Your workflow starts and notifies you of its status.
 1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `f4e1926e-3721-478d-be8a-f5bebd1995da` and confirms if successful.
@@ -364,7 +364,7 @@ class WorkflowConsoleApp:
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
-        order_quantity = 11
+        order_quantity = 10
 
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
         order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
