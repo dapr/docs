@@ -183,7 +183,7 @@ spec:
 
 #### Enabling consumer encryption from value
 
-*Note: It is recommended to reference the public and private keys from a secret as [shown here]({{< ref component-secrets.md >}})*
+> Note: It is recommended to [reference the public and private keys from a secret]({{< ref component-secrets.md >}}).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
