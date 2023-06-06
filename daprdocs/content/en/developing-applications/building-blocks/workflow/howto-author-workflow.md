@@ -34,6 +34,8 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 {{% codetab %}}
 
+<!--csharp-->
+
 Define the workflow activities you'd like your workflow to perform. Activities are a class definition and can take inputs and outputs. Activities also participate in dependency injection, like binding to a Dapr client. 
 
 The activities called in the example below are:
@@ -98,15 +100,35 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--python-->
+
+Define the workflow activities you'd like your workflow to perform. Activities are a function definition and can take inputs and outputs. The following example creates a counter (activity) called `hello_act` that notifies users of the current counter value. `hello_act` is a function derived from a class called `WorkflowActivityContext`.
+
+```python
+def hello_act(ctx: WorkflowActivityContext, input):
+    global counter
+    counter += input
+    print(f'New counter value is: {counter}!', flush=True)
+```
+
+[See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Write the workflow
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+
+<!--csharp-->
 
 The `OrderProcessingWorkflow` class is derived from a base class called `Workflow` with input and output parameter types. It also includes a `RunAsync` method that does the heavy lifting of the workflow and calls the workflow activities. 
 
@@ -142,25 +164,29 @@ The `OrderProcessingWorkflow` class is derived from a base class called `Workflo
     }
 ```
 
+[See the full workflow example in `OrderProcessingWorkflow.cs`.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Workflows/OrderProcessingWorkflow.cs)
+
+
 {{% /codetab %}}
 
 {{% codetab %}}
 
 <!--python-->
 
-[In the following example](todo), for a basic Python order processing application using the Python SDK, your project code would include:
-
-- A Python package called `DaprClient` to receive the Python SDK capabilities
-- A builder with an extension method called `todo`
-  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
-- HTTP API calls to start, pause, resume, terminate, and purge the workflow.
+The `hello_world_wf` function is derived from a class called `DaprWorkflowContext` with input and output parameter types. It also includes a `yield` statement that does the heavy lifting of the workflow and calls the workflow activities. 
  
 ```python
-todo
+def hello_world_wf(ctx: DaprWorkflowContext, input):
+    print(f'{input}')
+    yield ctx.call_activity(hello_act, input=1)
+    yield ctx.call_activity(hello_act, input=10)
+    yield ctx.wait_for_external_event("event1")
+    yield ctx.call_activity(hello_act, input=100)
+    yield ctx.call_activity(hello_act, input=1000)
 ```
 
+[See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
 
-[See the full workflow example in `OrderProcessingWorkflow.cs`.](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Workflows/OrderProcessingWorkflow.cs)
 
 {{% /codetab %}}
 
@@ -176,7 +202,6 @@ Finally, compose the application using the workflow.
 
 <!--csharp-->
 
-[In the following example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 [In the following `Program.cs` example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
 
 - A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
@@ -248,15 +273,86 @@ app.Run();
 
 <!--python-->
 
-[In the following example](todo), for a basic Python order processing application using the Python SDK, your project code would include:
+[In the following example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py), for a basic Python order processing application using the Python SDK, your project code would include:
 
-- A Python package called `DaprClient` to receive the Python SDK capabilities
-- A builder with an extension method called `todo`
-  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
-- HTTP API calls to start, pause, resume, terminate, and purge the workflow.
+- A Python package called `DaprClient` to receive the Python SDK capabilities.
+- A builder with extensions called:
+  - `WorkflowRuntime`: Allows you to register workflows and workflow activities
+  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
+  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
+- HTTP API calls. In the example below, these calls start, pause, resume, purge, and terminate the workflow.
  
 ```python
-todo
+from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
+from dapr.clients import DaprClient
+
+# ...
+
+def main():
+    with DaprClient() as d:
+        host = settings.DAPR_RUNTIME_HOST
+        port = settings.DAPR_GRPC_PORT
+        workflowRuntime = WorkflowRuntime(host, port)
+        workflowRuntime = WorkflowRuntime()
+        workflowRuntime.register_workflow(hello_world_wf)
+        workflowRuntime.register_activity(hello_act)
+        workflowRuntime.start()
+
+        # Start workflow
+        print("==========Start Counter Increase as per Input:==========")
+        start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
+                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
+        print(f"start_resp {start_resp.instance_id}")
+
+        # ...
+
+        # Pause Test
+        d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
+
+        # Resume Test
+        d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
+        
+        sleep(1)
+        # Raise event
+        d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
+                    event_name=eventName, event_data=eventData)
+
+        sleep(5)
+        # Purge Test
+        d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        try:
+            getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        except DaprInternalError as err:
+            if nonExistentIDError in err._message:
+                print("Instance Successfully Purged")
+
+        # Kick off another workflow for termination purposes 
+        start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
+                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
+        print(f"start_resp {start_resp.instance_id}")
+
+        # Terminate Test
+        d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        sleep(1)
+        getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
+
+        # Purge Test
+        d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        try:
+            getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+        except DaprInternalError as err:
+            if nonExistentIDError in err._message:
+                print("Instance Successfully Purged")
+
+        workflowRuntime.shutdown()
+
+if __name__ == '__main__':
+    main()
 ```
 
 

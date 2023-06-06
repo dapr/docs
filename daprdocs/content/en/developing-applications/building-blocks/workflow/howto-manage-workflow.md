@@ -13,7 +13,7 @@ Now that you've [authored the workflow and its activities in your application]({
 <!--NET-->
 {{% codetab %}}
 
-Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-workflow" >}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
+Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
 
 ```csharp
 string orderId = "exampleOrderId";
@@ -49,64 +49,48 @@ await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 <!--Python-->
 {{% codetab %}}
 
-Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-workflow" >}}) guide, the workflow is registered in the code using the following APIs:
+Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
 - **start_workflow**: Start an instance of a workflow
-- **get_workflow**: Get information on a single workflow
-- **terminate_workflow**: Terminate or stop a particular instance of a workflow
-- **raise_event**: Raise an event on a workflow
+- **get_workflow**: Get information on the status of the workflow
 - **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
 - **resume_workflow**: Resumes a paused workflow instance
+- **raise_workflow_event**: Raise an event on a workflow
 - **purge_workflow**: Removes all metadata related to a specific workflow instance
+- **terminate_workflow**: Terminate or stop a particular instance of a workflow
 
 ```python
-dapr = DaprGrpcClient(f'localhost:{self.server_port}')
+from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
+from dapr.clients import DaprClient
 
 # Sane parameters
-workflow_name = 'testWorkflow'
-instance_id = str(uuid.uuid4())
-workflow_component = "dapr"
-input = "paperclips"
+instanceId = "exampleInstanceID"
+workflowComponent = "dapr"
+workflowName = "hello_world_wf"
+eventName = "event1"
+eventData = "eventData"
 
 # Start the workflow
-start_response = dapr.start_workflow(instance_id, workflow_name, workflow_component,
-                                     input.encode('utf-8'), None)
-self.assertEqual(instance_id, start_response.instance_id)
+start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
+                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
 
-
-
-# Get info on the workflow to check that it is running
-get_response = dapr.get_workflow(instance_id, workflow_component)
-self.assertEqual("RUNNING", get_response.runtime_status)
+# Get info on the workflow
+getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
 # Pause the workflow
-dapr.pause_workflow(instance_id, workflow_component)
-
-# Get info on the workflow to check that it is paused
-get_response = dapr.get_workflow(instance_id, workflow_component)
-self.assertEqual("SUSPENDED", get_response.runtime_status)
+d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
 # Resume the workflow
-dapr.resume_workflow(instance_id, workflow_component)
-
-# Get info on the workflow to check that it is resumed
-get_response = dapr.get_workflow(instance_id, workflow_component)
-self.assertEqual("RUNNING", get_response.runtime_status)
+d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
 # Raise an event on the workflow. 
-TODO: Figure out how to check/verify this
-
-# Terminate the workflow
-dapr.terminate_workflow(instance_id, workflow_component)
-
-# Get info on the workflow to check that it is terminated
-get_response = dapr.get_workflow(instance_id, workflow_component)
-self.assertEqual("TERMINATED", get_response.runtime_status)
+ d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
+                    event_name=eventName, event_data=eventData)
 
 # Purge the workflow
-dapr.purge_workflow(instance_id, workflow_component)
+d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
-# Get information on the workflow to ensure that it has been purged
-TODO
+# Terminate the workflow
+d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 ```
 
 {{% /codetab %}}
@@ -189,5 +173,5 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Try out the full SDK examples:
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-  - [Python example](todo)
+  - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
 - [Workflow API reference]({{< ref workflow_api.md >}})
