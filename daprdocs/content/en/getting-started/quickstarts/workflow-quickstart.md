@@ -294,6 +294,9 @@ In the terminal, start the order processor app alongside a Dapr sidecar:
 dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
 ```
 
+> **Note:** Since Python3.exe is not defined in Windows, you may need to use `python workflow.py` instead of `python3 workflow.py`.
+
+
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
 
 Expected output:
