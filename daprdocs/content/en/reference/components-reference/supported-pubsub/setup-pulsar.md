@@ -120,7 +120,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
 
 ### E2E Encryption
 
-Dapr supports setting public and private key pairs to enable Pulsar's [end-to-end encryption feature](https://pulsar.apache.org/docs/3.0.x/security-encryption/)
+Dapr supports setting public and private key pairs to enable Pulsar's [end-to-end encryption feature](https://pulsar.apache.org/docs/3.0.x/security-encryption/).
 
 #### Enabling publisher encryption from file certs
 
