@@ -9,8 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Etcd state store create a component of type `state.etcd`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
-
+To setup an Etcd state store create a component of type `state.etcd`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -43,12 +42,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| endpoints          | Y        | Connection string to Etcd server | `"192.168.0.1:2379,192.168.0.2:2379,192.168.0.3:2379"`
-| keyPrefixPath      | N        | Key prefix path in Etcd. Default is `""` | `"dapr"`
-| tlsEnable          | N        | Whether to enable tls  | `"false"`
-| ca                 | N        | Contents of Etcd server CA file. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIC9TCCA..."`
-| cert               | N        | Contents of Etcd server certificate file. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIDUTCC..."`
-| key                | N        | Contents of Etcd server key file. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIB..."`
+| `endpoints`        | Y        | Connection string to the Etcd cluster | `"192.168.0.1:2379,192.168.0.2:2379,192.168.0.3:2379"`
+| `keyPrefixPath`    | N        | Key prefix path in Etcd. Default is no prefix. | `"dapr"`
+| `tlsEnable`        | N        | Whether to enable TLS for connecting to Etcd. | `"false"`
+| `ca`               | N        | CA certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIC9TCCA..."`
+| `cert`             | N        | TLS certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIDUTCC..."`
+| `key`              | N        | TLS key for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN PRIVATE KEY-----\nMIIEpAIB..."`
 
 ## Setup Etcd
 
@@ -58,7 +57,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 You can run Etcd database locally using Docker Compose. Create a new file called `docker-compose.yml` and add the following contents as an example:
 
-```
+```yaml
 version: '2'
 services:
   etcd:
@@ -67,15 +66,16 @@ services:
       - "2379:2379"
     command: etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379```
 ```
+
 Save the `docker-compose.yml` file and run the following command to start the Etcd server:
 
-```
+```sh
 docker-compose up -d
 ```
 
 This starts the Etcd server in the background and expose the default Etcd port of `2379`. You can then interact with the server using the `etcdctl` command-line client on `localhost:12379`. For example:
 
-```
+```sh
 etcdctl --endpoints=localhost:2379 put mykey myvalue
 ```
 
@@ -92,6 +92,7 @@ Follow the [Bitnami instructions](https://github.com/bitnami/charts/tree/main/bi
 {{< /tabs >}}
 
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})

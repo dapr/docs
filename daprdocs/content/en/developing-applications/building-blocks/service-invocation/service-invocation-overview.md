@@ -25,7 +25,7 @@ Dapr uses a sidecar architecture. To invoke an application using Dapr:
 - Each application communicates with its own instance of Dapr. 
 - The Dapr instances discover and communicate with each other.
 
-The diagram below is an overview of how Dapr's service invocation works.
+The diagram below is an overview of how Dapr's service invocation works between two Dapr-ized applications.
 
 <img src="/images/service-invocation-overview.png" width=800 alt="Diagram showing the steps of service invocation">
 
@@ -38,8 +38,10 @@ The diagram below is an overview of how Dapr's service invocation works.
 6. Dapr forwards the response to Service A's Dapr sidecar.
 7. Service A receives the response.
 
+You can also call non-Dapr HTTP endpoints using the service invocation API. For example, you may only use Dapr in part of an overall application, may not have access to the code to migrate an existing application to use Dapr, or simply need to call an external HTTP service. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
+
 ## Features
-Service invocation provides several features to make it easy for you to call methods between applications.
+Service invocation provides several features to make it easy for you to call methods between applications or to call external HTTP endpoints.
 
 ### HTTP and gRPC service invocation
 - **HTTP**: If you're already using HTTP protocols in your application, using the Dapr HTTP header might be the easiest way to get started. You don't need to change your existing endpoint URLs; just add the `dapr-app-id` header and you're ready to go. For more information, see [Invoke Services using HTTP]({{< ref howto-invoke-discover-services.md >}}). 

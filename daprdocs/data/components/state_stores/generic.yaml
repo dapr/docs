@@ -42,6 +42,17 @@
     etag: true
     ttl: false
     query: false
+- component: etcd
+  link: setup-etcd
+  state: Beta
+  version: v1
+  since: "1.11"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
 - component: Hashicorp Consul
   link: setup-consul
   state: Alpha
@@ -108,7 +119,7 @@
     etag: true
     ttl: true
     query: true
-- component: MySQL
+- component: MySQL & MariaDB
   link: setup-mysql
   state: Stable
   version: v1
@@ -117,11 +128,11 @@
     crud: true
     transactions: true
     etag: true
-    ttl: false
+    ttl: true
     query: false
 - component: Oracle Database
   link: setup-oracledatabase
-  state: Alpha
+  state: Beta
   version: v1
   since: "1.7"
   features:

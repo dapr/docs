@@ -2,6 +2,7 @@
   link: middleware-rate-limit
   state: Stable
   version: v1
+  since: "1.11"
   description: Restricts the maximum number of allowed HTTP requests per second
 - component: OAuth2 Authorization Grant flow
   link: /reference/components-reference/supported-middleware/middleware-oauth2

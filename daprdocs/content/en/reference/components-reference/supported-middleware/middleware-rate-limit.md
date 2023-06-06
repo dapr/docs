@@ -38,7 +38,7 @@ Once the limit is reached, the requests will fail with HTTP Status code *429: To
 The rate limit is enforced independently in each Dapr sidecar, and not cluster-wide.
 {{% /alert %}}
 
-Alternatively, the [max concurrency setting]({{< ref control-concurrency.md >}}) can be used to rate limit applications and applies to all traffic, regardless of remote IP, protocol, or path.
+Alternatively, the [max concurrency setting]({{< ref control-concurrency.md >}}) can be used to rate-limit applications and applies to all traffic, regardless of remote IP, protocol, or path.
 
 ## Dapr configuration
 

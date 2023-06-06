@@ -116,41 +116,6 @@ If using TinyGo, compile as shown below and set the spec metadata field named
 tinygo build -o router.wasm -scheduler=none --no-debug -target=wasi router.go`
 ```
 
-### Generating Wasm
-
-This component allows you to rewrite a request URI with custom logic compiled
-to a Wasm using the waPC protocol. The `rewrite` function receives the request
-URI and returns an update as necessary.
-
-To compile your Wasm, you must compile source using a waPC guest SDK such as
-[TinyGo](https://github.com/wapc/wapc-guest-tinygo).
-
-Here's an example in TinyGo:
-
-```go
-package main
-
-import "github.com/wapc/wapc-guest-tinygo"
-
-func main() {
-	wapc.RegisterFunctions(wapc.Functions{"rewrite": rewrite})
-}
-
-// rewrite returns a new URI if necessary.
-func rewrite(requestURI []byte) ([]byte, error) {
-	if string(requestURI) == "/v1.0/hi" {
-		return []byte("/v1.0/hello"), nil
-	}
-	return requestURI, nil
-}
-```
-
-If using TinyGo, compile as shown below and set the spec metadata field named
-"url" to the location of the output (for example, `file://example.wasm`):
-
-```bash
-tinygo build -o example.wasm -scheduler=none --no-debug -target=wasi example.go
-```
 
 ## Related links
 

@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "MySQL binding spec"
-linkTitle: "MySQL"
+title: "MySQL & MariaDB binding spec"
+linkTitle: "MySQL & MariaDB"
 description: "Detailed documentation on the MySQL binding component"
 aliases:
   - "/operations/components/setup-bindings/supported-bindings/mysql/"
@@ -9,7 +9,9 @@ aliases:
 
 ## Component format
 
-To setup MySQL binding create a component of type `bindings.mysql`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+The MySQL binding allows connecting to both MySQL and MariaDB databases. In this document, we refer to "MySQL" to indicate both databases.
+
+To setup a MySQL binding create a component of type `bindings.mysql`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
 The MySQL binding uses [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) internally.
 

@@ -19,7 +19,7 @@ This article demonstrates how to deploy services each with an unique application
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
-{{< tabs Dotnet Java Python Go Javascript Kubernetes>}}
+{{< tabs Dotnet Java Python Go JavaScript Kubernetes>}}
 
 {{% codetab %}}
 
@@ -31,13 +31,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```
 
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
 
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https dotnet run
 
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https dotnet run
 
 ```
 
@@ -53,13 +53,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```
 
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
 
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl mvn spring-boot:run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https mvn spring-boot:run
 
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl mvn spring-boot:run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https mvn spring-boot:run
 
 ```
 
@@ -75,13 +75,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```
 
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
 
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl -- python3 CheckoutService.py
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https -- python3 CheckoutService.py
 
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl -- python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https -- python3 OrderProcessingService.py
 
 ```
 
@@ -97,13 +97,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```
 
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
 
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl go run CheckoutService.go
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https go run CheckoutService.go
 
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl go run OrderProcessingService.go
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https go run OrderProcessingService.go
 
 ```
 
@@ -119,13 +119,13 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```
 
-If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection:
+If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
 
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl npm start
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https npm start
 
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl npm start
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https npm start
 
 ```
 
@@ -161,7 +161,7 @@ spec:
 ...
 ```
 
-*If your app uses an SSL connection, you can tell Dapr to invoke your app over an insecure SSL connection with the `app-ssl: "true"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}}))*
+If your app uses a TLS connection, you can tell Dapr to invoke your app over TLS with the `app-protocol: "https"` annotation (full list [here]({{< ref arguments-annotations-overview.md >}})). Note that Dapr does not validate TLS certificates presented by the app.
 
 {{% /codetab %}}
 

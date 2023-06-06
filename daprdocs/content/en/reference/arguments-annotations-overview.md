@@ -8,14 +8,13 @@ aliases:
   - "/operations/hosting/kubernetes/kubernetes-annotations/"
 ---
 
-This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts–via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
+This table is meant to help users understand the equivalent options for running Dapr sidecars in different contexts: via the [CLI]({{< ref cli-overview.md >}}) directly, via daprd, or on [Kubernetes]({{< ref kubernetes-overview.md >}}) via annotations.
 
 | daprd | Dapr CLI | CLI shorthand | Kubernetes annotations | Description|
 |----- | ------- | -----------| ----------| ------------ |
 | `--allowed-origins`  | not supported |  | not supported | Allowed HTTP origins (default "*") |
 | `--app-id` | `--app-id` | `-i` | `dapr.io/app-id`  | The unique ID of the application. Used for service discovery, state encapsulation and the pub/sub consumer ID |
 | `--app-port` | `--app-port` | `-p` | `dapr.io/app-port` | This parameter tells Dapr which port your application is listening on |
-| `--app-ssl` | `--app-ssl` | | `dapr.io/app-ssl` | Sets the URI scheme of the app to https and attempts an SSL connection |
 | `--components-path`  | `--components-path` | `-d` | not supported | **Deprecated** in favor of `--resources-path` |
 | `--resources-path`  | `--resources-path` | `-d` | not supported | Path for components directory. If empty, components will not be loaded. |
 | `--config`  | `--config` | `-c` | `dapr.io/config` | Tells Dapr which Configuration CRD to use |
@@ -24,7 +23,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API |
 | `--dapr-http-max-request-size` | --dapr-http-max-request-size | | `dapr.io/http-max-request-size` | Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files. Default is `4` MB |
 | `--dapr-http-read-buffer-size` | --dapr-http-read-buffer-size | | `dapr.io/http-read-buffer-size` | Increasing max size of http header read buffer in KB to handle when sending multi-KB headers. The default 4 KB.  When sending bigger than default 4KB http headers, you should set this to a larger value, for example 16 (for 16KB) |
-| not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is `daprio/daprd:latest`. Use this when building your own custom image of Dapr and the Dapr sidecar will use this image instead of the default image of Dapr |
+| not supported | `--image` | | `dapr.io/sidecar-image` | Dapr sidecar image. Default is daprio/daprd:latest. The Dapr sidecar uses this image instead of the latest default image. Use this when building your own custom image of Dapr and or [using an alternative stable Dapr image]({{<ref "support-release-policy.md#build-variations" >}}) |
 | `--internal-grpc-port` | not supported | | not supported | gRPC port for the Dapr Internal API to listen on |
 | `--enable-metrics` | not supported | | configuration spec | Enable prometheus metric (default true) |
 | `--enable-mtls` | not supported | | configuration spec | Enables automatic mTLS for daprd to daprd communication channels |
@@ -37,8 +36,8 @@ This table is meant to help users understand the equivalent options for running 
 | `--metrics-port` | `--metrics-port` | | `dapr.io/metrics-port` | Sets the port for the sidecar metrics server. Default is `9090` |
 | `--mode` | not supported | | not supported | Runtime mode for Dapr (default "standalone") |
 | `--placement-host-address` | `--placement-host-address` | | `dapr.io/placement-host-address` | Comma separated list of addresses for Dapr Actor Placement servers. When no annotation is set, the default value is set by the Sidecar Injector. When the annotation is set and the value is empty, the sidecar does not connect to Placement server. This can be used when there are no actors running in the sidecar. When the annotation is set and the value is not empty, the sidecar connects to the configured address. For example: `127.0.0.1:50057,127.0.0.1:50058` |
-| `--profiling-port` | `--profiling-port` | | not supported | The port for the profile server (default "7777") |
-| `--app-protocol` | `--app-protocol` | `-P` | `dapr.io/app-protocol` | Tells Dapr which protocol your application is using. Valid options are `http` and `grpc`. Default is `http` |
+| `--profiling-port` | `--profiling-port` | | not supported | The port for the profile server (default `7777`) |
+| `--app-protocol` | `--app-protocol` | `-P` | `dapr.io/app-protocol` | Configures the protocol Dapr uses to communicate with your app. Valid options are `http`, `grpc`, `https` (HTTP with TLS), `grpcs` (gRPC with TLS), `h2c` (HTTP/2 Cleartext). Note that Dapr does not validate TLS certificates presented by the app. Default is `http` |
 | `--enable-app-health-check` | `--enable-app-health-check` | | `dapr.io/enable-app-health-check` | Boolean that enables the health checks. Default is `false`.  |
 | `--app-health-check-path` | `--app-health-check-path` | | `dapr.io/app-health-check-path` | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC). Requires app health checks to be enabled. Default is `/health` |
 | `--app-health-probe-interval` | `--app-health-probe-interval` | | `dapr.io/app-health-probe-interval` | Number of *seconds* between each health probe. Requires app health checks to be enabled. Default is `5` |

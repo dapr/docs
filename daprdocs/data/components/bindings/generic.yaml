@@ -62,7 +62,7 @@
   features:
     input: true
     output: true
-- component: MySQL
+- component: MySQL & MariaDB
   link: mysql
   state: Alpha
   version: v1
@@ -70,8 +70,8 @@
   features:
     input: false
     output: true
-- component: PostgreSql
-  link: postgres
+- component: PostgreSQL
+  link: postgresql
   state: Stable
   version: v1
   since: "1.9"

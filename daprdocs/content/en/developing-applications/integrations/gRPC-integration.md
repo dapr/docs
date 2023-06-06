@@ -1,35 +1,40 @@
 ---
 type: docs
-title: "Dapr's gRPC Interface"
-linkTitle: "gRPC interface"
+title: "How to: Use the gRPC interface in your Dapr application"
+linkTitle: "How to: gRPC interface"
 weight: 6000
 description: "Use the Dapr gRPC API in your application"
 type: docs
 ---
 
-# Dapr and gRPC
+Dapr implements both an HTTP and a gRPC API for local calls. [gRPC](https://grpc.io/) is useful for low-latency, high performance scenarios and has language integration using the proto clients.
 
-Dapr implements both an HTTP and a gRPC API for local calls. gRPC is useful for low-latency, high performance scenarios and has language integration using the proto clients.
-
-You can find a list of auto-generated clients [here](https://github.com/dapr/docs#sdks).
+[Find a list of auto-generated clients in the Dapr SDK documentation]({{< ref sdks >}}).
 
 The Dapr runtime implements a [proto service](https://github.com/dapr/dapr/blob/master/dapr/proto/runtime/v1/dapr.proto) that apps can communicate with via gRPC.
 
-In addition to calling Dapr via gRPC, Dapr supports service to service calls with gRPC by acting as a proxy. See more information [here]({{< ref howto-invoke-services-grpc.md >}}).
+In addition to calling Dapr via gRPC, Dapr supports service-to-service calls with gRPC by acting as a proxy. [Learn more in the gRPC service invocation how-to guide]({{< ref howto-invoke-services-grpc.md >}}).
 
-## Configuring Dapr to communicate with an app via gRPC
+This guide demonstrates configuring and invoking Dapr with gRPC using a Go SDK application.
 
-### Self hosted
+## Configure Dapr to communicate with an app via gRPC
 
-When running in self hosted mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app:
+{{< tabs "Self-hosted" "Kubernetes">}}
+<!--selfhosted-->
+{{% codetab %}}
+
+When running in self-hosted mode, use the `--app-protocol` flag to tell Dapr to use gRPC to talk to the app.
 
 ```bash
 dapr run --app-protocol grpc --app-port 5005 node app.js
 ```
+
 This tells Dapr to communicate with your app via gRPC over port `5005`.
 
+{{% /codetab %}}
 
-### Kubernetes
+<!--k8s-->
+{{% codetab %}}
 
 On Kubernetes, set the following annotations in your deployment YAML:
 
@@ -58,178 +63,195 @@ spec:
 ...
 ```
 
-## Invoking Dapr with gRPC - Go example
+{{% /codetab %}}
 
-The following steps show you how to create a Dapr client and call the `SaveStateData` operation on it:
+{{< /tabs >}}
 
-1. Import the package
+## Invoke Dapr with gRPC
 
-```go
-package main
+The following steps show how to create a Dapr client and call the `SaveStateData` operation on it.
 
-import (
-	"context"
-	"log"
-	"os"
+1. Import the package:
 
-	dapr "github.com/dapr/go-sdk/client"
-)
-```
+    ```go
+    package main
+    
+    import (
+    	"context"
+    	"log"
+    	"os"
+    
+    	dapr "github.com/dapr/go-sdk/client"
+    )
+    ```
 
-2. Create the client
+1. Create the client:
 
-```go
-// just for this demo
-ctx := context.Background()
-data := []byte("ping")
-
-// create the client
-client, err := dapr.NewClient()
-if err != nil {
-  log.Panic(err)
-}
-defer client.Close()
-```
-
-3. Invoke the Save State method
-
-```go
-// save state with the key key1
-err = client.SaveState(ctx, "statestore", "key1", data)
-if err != nil {
-  log.Panic(err)
-}
-log.Println("data saved")
-```
-
-Hooray!
+    ```go
+    // just for this demo
+    ctx := context.Background()
+    data := []byte("ping")
+    
+    // create the client
+    client, err := dapr.NewClient()
+    if err != nil {
+      log.Panic(err)
+    }
+    defer client.Close()
+    ```
+    
+    3. Invoke the `SaveState` method:
+    
+    ```go
+    // save state with the key key1
+    err = client.SaveState(ctx, "statestore", "key1", data)
+    if err != nil {
+      log.Panic(err)
+    }
+    log.Println("data saved")
+    ```
 
 Now you can explore all the different methods on the Dapr client.
 
-## Creating a gRPC app with Dapr
+## Create a gRPC app with Dapr
 
-The following steps will show you how to create an app that exposes a server for Dapr to communicate with.
+The following steps will show how to create an app that exposes a server for with which Dapr can communicate.
 
-1. Import the package
+1. Import the package:
 
-```go
-package main
+    ```go
+    package main
+    
+    import (
+    	"context"
+    	"fmt"
+    	"log"
+    	"net"
+    
+    	"github.com/golang/protobuf/ptypes/any"
+    	"github.com/golang/protobuf/ptypes/empty"
+    
+    	commonv1pb "github.com/dapr/dapr/pkg/proto/common/v1"
+    	pb "github.com/dapr/go-sdk/dapr/proto/runtime/v1"
+    	"google.golang.org/grpc"
+    )
+    ```
 
-import (
-	"context"
-	"fmt"
-	"log"
-	"net"
+1. Implement the interface:
 
-	"github.com/golang/protobuf/ptypes/any"
-	"github.com/golang/protobuf/ptypes/empty"
+    ```go
+    // server is our user app
+    type server struct {
+         pb.UnimplementedAppCallbackServer
+    }
+    
+    // EchoMethod is a simple demo method to invoke
+    func (s *server) EchoMethod() string {
+    	return "pong"
+    }
+    
+    // This method gets invoked when a remote service has called the app through Dapr
+    // The payload carries a Method to identify the method, a set of metadata properties and an optional payload
+    func (s *server) OnInvoke(ctx context.Context, in *commonv1pb.InvokeRequest) (*commonv1pb.InvokeResponse, error) {
+    	var response string
+    
+    	switch in.Method {
+    	case "EchoMethod":
+    		response = s.EchoMethod()
+    	}
+    
+    	return &commonv1pb.InvokeResponse{
+    		ContentType: "text/plain; charset=UTF-8",
+    		Data:        &any.Any{Value: []byte(response)},
+    	}, nil
+    }
+    
+    // Dapr will call this method to get the list of topics the app wants to subscribe to. In this example, we are telling Dapr
+    // To subscribe to a topic named TopicA
+    func (s *server) ListTopicSubscriptions(ctx context.Context, in *empty.Empty) (*pb.ListTopicSubscriptionsResponse, error) {
+    	return &pb.ListTopicSubscriptionsResponse{
+    		Subscriptions: []*pb.TopicSubscription{
+    			{Topic: "TopicA"},
+    		},
+    	}, nil
+    }
+    
+    // Dapr will call this method to get the list of bindings the app will get invoked by. In this example, we are telling Dapr
+    // To invoke our app with a binding named storage
+    func (s *server) ListInputBindings(ctx context.Context, in *empty.Empty) (*pb.ListInputBindingsResponse, error) {
+    	return &pb.ListInputBindingsResponse{
+    		Bindings: []string{"storage"},
+    	}, nil
+    }
+    
+    // This method gets invoked every time a new event is fired from a registered binding. The message carries the binding name, a payload and optional metadata
+    func (s *server) OnBindingEvent(ctx context.Context, in *pb.BindingEventRequest) (*pb.BindingEventResponse, error) {
+    	fmt.Println("Invoked from binding")
+    	return &pb.BindingEventResponse{}, nil
+    }
+    
+    // This method is fired whenever a message has been published to a topic that has been subscribed. Dapr sends published messages in a CloudEvents 0.3 envelope.
+    func (s *server) OnTopicEvent(ctx context.Context, in *pb.TopicEventRequest) (*pb.TopicEventResponse, error) {
+    	fmt.Println("Topic message arrived")
+            return &pb.TopicEventResponse{}, nil
+    }
+    
+    ```
 
-	commonv1pb "github.com/dapr/dapr/pkg/proto/common/v1"
-	pb "github.com/dapr/go-sdk/dapr/proto/runtime/v1"
-	"google.golang.org/grpc"
-)
-```
+1. Create the server:
 
-2. Implement the interface
+    ```go
+    func main() {
+    	// create listener
+    	lis, err := net.Listen("tcp", ":50001")
+    	if err != nil {
+    		log.Fatalf("failed to listen: %v", err)
+    	}
+    
+    	// create grpc server
+    	s := grpc.NewServer()
+    	pb.RegisterAppCallbackServer(s, &server{})
+    
+    	fmt.Println("Client starting...")
+    
+    	// and start...
+    	if err := s.Serve(lis); err != nil {
+    		log.Fatalf("failed to serve: %v", err)
+    	}
+    }
+    ```
 
-```go
-// server is our user app
-type server struct {
-     pb.UnimplementedAppCallbackServer
-}
+   This creates a gRPC server for your app on port 50001.
 
-// EchoMethod is a simple demo method to invoke
-func (s *server) EchoMethod() string {
-	return "pong"
-}
+## Run the application
 
-// This method gets invoked when a remote service has called the app through Dapr
-// The payload carries a Method to identify the method, a set of metadata properties and an optional payload
-func (s *server) OnInvoke(ctx context.Context, in *commonv1pb.InvokeRequest) (*commonv1pb.InvokeResponse, error) {
-	var response string
-
-	switch in.Method {
-	case "EchoMethod":
-		response = s.EchoMethod()
-	}
-
-	return &commonv1pb.InvokeResponse{
-		ContentType: "text/plain; charset=UTF-8",
-		Data:        &any.Any{Value: []byte(response)},
-	}, nil
-}
-
-// Dapr will call this method to get the list of topics the app wants to subscribe to. In this example, we are telling Dapr
-// To subscribe to a topic named TopicA
-func (s *server) ListTopicSubscriptions(ctx context.Context, in *empty.Empty) (*pb.ListTopicSubscriptionsResponse, error) {
-	return &pb.ListTopicSubscriptionsResponse{
-		Subscriptions: []*pb.TopicSubscription{
-			{Topic: "TopicA"},
-		},
-	}, nil
-}
-
-// Dapr will call this method to get the list of bindings the app will get invoked by. In this example, we are telling Dapr
-// To invoke our app with a binding named storage
-func (s *server) ListInputBindings(ctx context.Context, in *empty.Empty) (*pb.ListInputBindingsResponse, error) {
-	return &pb.ListInputBindingsResponse{
-		Bindings: []string{"storage"},
-	}, nil
-}
-
-// This method gets invoked every time a new event is fired from a registered binding. The message carries the binding name, a payload and optional metadata
-func (s *server) OnBindingEvent(ctx context.Context, in *pb.BindingEventRequest) (*pb.BindingEventResponse, error) {
-	fmt.Println("Invoked from binding")
-	return &pb.BindingEventResponse{}, nil
-}
-
-// This method is fired whenever a message has been published to a topic that has been subscribed. Dapr sends published messages in a CloudEvents 0.3 envelope.
-func (s *server) OnTopicEvent(ctx context.Context, in *pb.TopicEventRequest) (*pb.TopicEventResponse, error) {
-	fmt.Println("Topic message arrived")
-        return &pb.TopicEventResponse{}, nil
-}
-
-```
-
-3. Create the server
-
-```go
-func main() {
-	// create listener
-	lis, err := net.Listen("tcp", ":50001")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
-	// create grpc server
-	s := grpc.NewServer()
-	pb.RegisterAppCallbackServer(s, &server{})
-
-	fmt.Println("Client starting...")
-
-	// and start...
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-}
-```
-
-This creates a gRPC server for your app on port 50001.
-
-4. Run your app
+{{< tabs "Self-hosted" "Kubernetes">}}
+<!--selfhosted-->
+{{% codetab %}}
 
 To run locally, use the Dapr CLI:
 
-```
+```bash
 dapr run --app-id goapp --app-port 50001 --app-protocol grpc go run main.go
 ```
 
-On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "50001` annotations in your pod spec template as mentioned above.
+{{% /codetab %}}
+
+<!--k8s-->
+{{% codetab %}}
+
+On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "50001` annotations in your pod spec template, as mentioned above.
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+    
 
 ## Other languages
 
 You can use Dapr with any language supported by Protobuf, and not just with the currently available generated SDKs.
-Using the [protoc](https://developers.google.com/protocol-buffers/docs/downloads) tool you can generate the Dapr clients for other languages like Ruby, C++, Rust and others.
+
+Using the [protoc](https://developers.google.com/protocol-buffers/docs/downloads) tool, you can generate the Dapr clients for other languages like Ruby, C++, Rust, and others.
 
  ## Related Topics
 - [Service invocation building block]({{< ref service-invocation >}})

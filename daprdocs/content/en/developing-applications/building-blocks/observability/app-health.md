@@ -26,9 +26,9 @@ App health checks are disabled by default.
 
 ### App health checks vs platform-level health checks
 
-App health checks in Dapr are meant to be complementary to, and not replace, any platform-level health checks, like [liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) when running on Kubernetes.  
+App health checks in Dapr are meant to be complementary to, and not replace, any platform-level health checks, like [liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) when running on Kubernetes.
 
-Platform-level health checks (or liveness probes) generally ensure that the application is running, and cause the platform to restart the application in case of failures. For Kubernetes, a failing App Health check won't remove a pod from service discovery. This remains the responsibility of the Kubernetes liveness probe, _not_ Dapr.   
+Platform-level health checks (or liveness probes) generally ensure that the application is running, and cause the platform to restart the application in case of failures.  
 Unlike platform-level health checks, Dapr's app health checks focus on pausing work to an application that is currently unable to accept it, but is expected to be able to resume accepting work *eventually*. Goals include:
 
 - Not bringing more load to an application that is already overloaded.
@@ -36,11 +36,9 @@ Unlike platform-level health checks, Dapr's app health checks focus on pausing w
 
 In this regard, Dapr's app health checks are "softer", waiting for an application to be able to process work, rather than terminating the running process in a "hard" way.
 
-## Configuring app health checks
+> Note that for Kubernetes, a failing App Health check won't remove a pod from service discovery: this remains the responsibility of the Kubernetes liveness probe, _not_ Dapr.
 
-{{% alert title="Note" color="primary" %}}
-App health checks are currently a **preview feature** and require the `AppHealthCheck` feature flag to be enabled. Refer to the documentation for [enabling preview features]({{<ref support-preview-features>}}).
-{{% /alert %}}
+## Configuring app health checks
 
 App health checks are disabled by default, but can be enabled with either:
 
@@ -54,21 +52,21 @@ The full list of options are listed in this table:
 | CLI flags                     | Kubernetes deployment annotation    | Description | Default value |
 | ----------------------------- | ----------------------------------- | ----------- | ------------- |
 | `--enable-app-health-check`   | `dapr.io/enable-app-health-check`   | Boolean that enables the health checks | Disabled  |
-| `--app-health-check-path`     | `dapr.io/app-health-check-path`     | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC) | `/health` |
+| `--app-health-check-path`     | `dapr.io/app-health-check-path`     | Path that Dapr invokes for health probes when the app channel is HTTP (this value is ignored if the app channel is using gRPC) | `/healthz` |
 | `--app-health-probe-interval` | `dapr.io/app-health-probe-interval` | Number of *seconds* between each health probe | `5` |
 | `--app-health-probe-timeout`  | `dapr.io/app-health-probe-timeout`  | Timeout in *milliseconds* for health probe requests | `500` |
 | `--app-health-threshold`      | `dapr.io/app-health-threshold`     | Max number of consecutive failures before the app is considered unhealthy | `3` |
 
 > See the [full Dapr arguments and annotations reference]({{<ref arguments-annotations-overview>}}) for all options and how to enable them.
 
-Additionally, app health checks are impacted by the protocol used for the app channel, which is configured with the `--app-protocol` flag (self-hosted) or the `dapr.io/app-protocol` annotation (Kubernetes); supported values are `http` (default) or `grpc`.
+Additionally, app health checks are impacted by the protocol used for the app channel, which is configured with the `--app-protocol` flag (self-hosted) or the `dapr.io/app-protocol` annotation (Kubernetes); supported values are `http` (default), `grpc`, `https`, `grpcs`, and `h2c` (HTTP/2 Cleartext).
 
 ### Health check paths
 
-When using HTTP for `app-protocol`, Dapr performs health probes by making an HTTP call to the path specified in `app-health-check-path`, which is `/health` by default.  
+When using HTTP (including `http`, `https`, and `h2c`) for `app-protocol`, Dapr performs health probes by making an HTTP call to the path specified in `app-health-check-path`, which is `/health` by default.  
 For your app to be considered healthy, the response must have an HTTP status code in the 200-299 range. Any other status code is considered a failure. Dapr is only concerned with the status code of the response, and ignores any response header or body.
 
-When using gRPC for the app channel, Dapr invokes the method `/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck` in your application. Most likely, you will use a Dapr SDK to implement the handler for this method.
+When using gRPC for the app channel (`app-protocol` set to `grpc` or `grpcs`), Dapr invokes the method `/dapr.proto.runtime.v1.AppCallbackHealthCheck/HealthCheck` in your application. Most likely, you will use a Dapr SDK to implement the handler for this method.
 
 While responding to a health probe request, your app *may* decide to perform additional internal health checks to determine if it's ready to process work from the Dapr runtime. However, this is not required; it's a choice that depends on your application's needs.
 
@@ -87,8 +85,6 @@ A threshold greater than 1 can help exclude transient failures due to external c
 Thresholds only apply to failures. A single successful response is enough for Dapr to consider your app to be healthy and resume normal operations.
 
 ## Example
-
-Because app health checks are currently a preview feature, make sure to enable the `AppHealthCheck` feature flag. Refer to the documentation for [enabling preview features]({{<ref support-preview-features>}}) before following the examples below.
 
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
