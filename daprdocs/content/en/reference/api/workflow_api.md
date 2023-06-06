@@ -79,7 +79,7 @@ This API does not return any content.
 
 For workflow components that support subscribing to external events, such as the Dapr Workflow engine, you can use the following "raise event" API to deliver a named event to a specific workflow instance.
 
-````
+```
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceID>/raiseEvent/<eventName>
 ```
 
@@ -166,7 +166,7 @@ None.
 
 Purge the workflow state from your state store with the workflow's instance ID.
 
-````
+```
 POST http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>/purge
 ```
 
@@ -193,7 +193,7 @@ None.
 
 Get information about a given workflow instance.
 
-````
+```
 GET http://localhost:3500/v1.0-alpha1/workflows/<workflowComponentName>/<instanceId>
 ```
 
