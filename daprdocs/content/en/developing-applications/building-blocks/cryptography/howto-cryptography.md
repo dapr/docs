@@ -36,7 +36,7 @@ const ciphertext = await client.crypto.encrypt(plaintext, {
 });
 ```
 
-The APIs can also be used with streams, to encrypt data more efficiently when it comes from a stream. In the example below, we are encrypting a file, writing to another file, using streams:
+The APIs can also be used with streams, to encrypt data more efficiently when it comes from a stream. The example below encrypts a file, writing to another file, using streams:
 
 ```js
 // `encrypt` can be used as a Duplex stream
