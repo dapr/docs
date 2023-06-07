@@ -190,7 +190,7 @@ If you want to install the Dapr dashboard, use this Helm chart with the addition
 
 `helm install dapr dapr/dapr-dashboard --namespace dapr-system`
 
-For example, in context:
+For example:
 
 ```bash
 helm repo add dapr https://dapr.github.io/helm-charts/
