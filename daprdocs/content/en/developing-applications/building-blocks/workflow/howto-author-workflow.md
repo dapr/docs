@@ -273,7 +273,7 @@ app.Run();
 
 <!--python-->
 
-[In the following example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py), for a basic Python order processing application using the Python SDK, your project code would include:
+[In the following example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py), for a basic Python hello world application using the Python SDK, your project code would include:
 
 - A Python package called `DaprClient` to receive the Python SDK capabilities.
 - A builder with extensions called:
@@ -306,23 +306,23 @@ def main():
 
         # ...
 
-        # Pause Test
+        # Pause workflow
         d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
 
-        # Resume Test
+        # Resume workflow
         d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
         
         sleep(1)
-        # Raise event
+        # Raise workflow
         d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
                     event_name=eventName, event_data=eventData)
 
         sleep(5)
-        # Purge Test
+        # Purge workflow
         d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         try:
             getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
@@ -335,13 +335,13 @@ def main():
                         workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
         print(f"start_resp {start_resp.instance_id}")
 
-        # Terminate Test
+        # Terminate workflow
         d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         sleep(1)
         getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
 
-        # Purge Test
+        # Purge workflow
         d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
         try:
             getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
