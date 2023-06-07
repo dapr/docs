@@ -108,6 +108,13 @@ A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that 
 <!--- [List of supported workflows]()
 - [Workflow implementations](https://github.com/dapr/components-contrib/tree/master/workflows)-->
 
+### Cryptography
+
+[Cryptography]({{< ref cryptography-overview.md >}}) components are used to perform crypographic operations, including encrypting and decrypting messages, without exposing keys to your application.
+
+- [List of supported cryptography components]({{< ref supported-cryptography >}})
+- [Cryptography implementations](https://github.com/dapr/components-contrib/tree/master/crypto) 
+
 ### Middleware
 
 Dapr allows custom [middleware]({{< ref "middleware.md" >}}) to be plugged into the HTTP request processing pipeline. Middleware can perform additional actions on an HTTP request (such as authentication, encryption, and message transformation) before the request is routed to the user code, or the response is returned to the client. The middleware components are used with the [service invocation]({{< ref "service-invocation-overview.md" >}}) building block.

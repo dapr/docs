@@ -28,6 +28,7 @@ dapr run [flags] [command]
 | `--app-port`, `-p`             | `APP_PORT`           |                                                                                    | The port your application is listening on                                                            |
 | `--app-protocol`, `-P` | | `http` | The protocol Dapr uses to talk to the application. Valid values are: `http`, `grpc`, `https` (HTTP with TLS), `grpcs` (gRPC with TLS), `h2c` (HTTP/2 Cleartext) |
 | `--resources-path`, `-d`      |                      | Linux/Mac: `$HOME/.dapr/components` <br/>Windows: `%USERPROFILE%\.dapr\components`   | The path for components directory                                                                   |
+| `--app-channel-address` | | `127.0.0.1` | The network address the application listens on |
 | `--runtime-path`                  |        |  | Dapr runtime install path |
 | `--config`, `-c`               |                      | Linux/Mac: `$HOME/.dapr/config.yaml` <br/>Windows: `%USERPROFILE%\.dapr\config.yaml` | Dapr configuration file                                                                            |
 | `--dapr-grpc-port`, `-G`       | `DAPR_GRPC_PORT`     | `50001`                                                                            | The gRPC port for Dapr to listen on                                                                  |
