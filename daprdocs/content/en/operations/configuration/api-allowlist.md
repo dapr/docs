@@ -114,16 +114,18 @@ The `name` field takes the name of the Dapr API you would like to enable.
 
 See this list of values corresponding to the different Dapr APIs:
 
-| Name  | Dapr API |
-| ------------- | ------------- |
-| state  | [State]({{< ref state_api.md>}})|
-| invoke  | [Service Invocation]({{< ref service_invocation_api.md >}})  |
-| secrets  | [Secrets]({{< ref secrets_api.md >}})|
-| bindings  | [Output Bindings]({{< ref bindings_api.md >}})  |
-| publish | [Pub/Sub]({{< ref pubsub.md >}}) |
-| actors | [Actors]({{< ref actors_api.md >}}) |
-| configuration | [Configuration]({{< ref configuration_api.md >}}) |
-| lock | [Distributed Lock]({{< ref distributed_lock_api.md >}}) |
-| workflow_api | [Workflow]({{< ref workflow_api.md >}}) |
-| metadata | [Metadata]({{< ref metadata_api.md >}}) |
-| health | [Health]({{< ref health_api.md >}}) |
+| API group | HTTP API | [gRPC API](https://github.com/dapr/dapr/blob/master/pkg/grpc/endpoints.go) |
+| ----- | ----- | ----- |
+| [Service Invocation]({{< ref service_invocation_api.md >}}) | `invoke` (`v1.0`) | `invoke` (`v1`) |
+| [State]({{< ref state_api.md>}})| `state` (`v1.0` and `v1.0-alpha1`) | `state` (`v1` and `v1alpha1`) |
+| [Pub/Sub]({{< ref pubsub.md >}}) | `publish` (`v1.0` and `v1.0-alpha1`) | `publish` (`v1` and `v1alpha1`) |
+| [(Output) Bindings]({{< ref bindings_api.md >}})  | `bindings` (`v1.0`) |`bindings` (`v1`) |
+| [Secrets]({{< ref secrets_api.md >}})| `secrets` (`v1.0`) | `secrets` (`v1`) |
+| [Actors]({{< ref actors_api.md >}}) | `actors`  (`v1.0`) |`actors` (`v1`) |
+| [Metadata]({{< ref metadata_api.md >}}) | `metadata` (`v1.0`) |`metadata` (`v1`) |
+| [Configuration]({{< ref configuration_api.md >}}) | `configuration` (`v1.0` and `v1.0-alpha1`) | `configuration` (`v1` and `v1alpha1`) |
+| [Distributed Lock]({{< ref distributed_lock_api.md >}}) | `lock` (`v1.0-alpha1`)<br/>`unlock` (`v1.0-alpha1`) | `lock` (`v1alpha1`)<br/>`unlock` (`v1alpha1`) |
+| Cryptography | `crypto` (`v1.0-alpha1`) | `crypto` (`v1alpha1`) |
+| [Workflow]({{< ref workflow_api.md >}}) | `workflows` (`v1.0-alpha1`) |`workflows` (`v1alpha1`) |
+| [Health]({{< ref health_api.md >}}) | `healthz`  (`v1.0`) | n/a |
+| Shutdown | `shutdown` (`v1.0`) | `shutdown` (`v1`) |
