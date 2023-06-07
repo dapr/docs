@@ -171,12 +171,6 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
     --wait
     ```
 
-1. Install the Dapr Dashboard:
-
-   ```bash
-   helm install dapr-dashboard dapr/dapr-dashboard
-   ```
-
 See [Guidelines for production ready deployments on Kubernetes]({{< ref kubernetes-production.md >}}) for more information on installing and upgrading Dapr using Helm.
 
 ### Uninstall Dapr on Kubernetes
@@ -189,6 +183,22 @@ helm uninstall dapr --namespace dapr-system
 
 - Read [this guide]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
 - See [this page](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md) for details on Dapr Helm charts.
+
+## Installing the Dapr dashboard as part of the control plane
+
+If you want to install the Dapr dashboard, use this Helm chart with the additional settings of your choice:
+
+`helm install dapr dapr/dapr-dashboard --namespace dapr-system`
+
+For example, in context:
+
+```bash
+helm repo add dapr https://dapr.github.io/helm-charts/
+helm repo update
+kubectl create namespace dapr-system
+# Install the Dapr dashboard
+helm install dapr dapr/dapr-dashboard --namespace dapr-system
+```
 
 ## Verify installation
 

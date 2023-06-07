@@ -17,7 +17,7 @@ Start [Dapr dashboard](https://github.com/dapr/dashboard).
 ### Usage
 
 ```bash
-dapr dashboard init [flags]
+dapr dashboard [flags]
 ```
 
 ### Flags
@@ -35,7 +35,7 @@ dapr dashboard init [flags]
 
 ```bash
 # Start dashboard locally
-dapr dashboard init
+dapr dashboard
 
 # Start dashboard service locally on a specified port
 dapr dashboard -p 9999
