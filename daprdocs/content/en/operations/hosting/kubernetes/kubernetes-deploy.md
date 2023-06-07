@@ -58,6 +58,18 @@ dapr init -k
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run "dapr status -k" in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
+To run the dashboard, run:
+
+```bash
+dapr dashboard -k
+```
+
+If you installed Dapr in a non-default namespace, run:
+
+```bash
+dapr dashboard -k -n <your-namespace>
+```
+
 ### Install Dapr (a private Dapr Helm chart)
 There are some scenarios where it's necessary to install Dapr from a private Helm chart, such as:
 - needing more granular control of the Dapr Helm chart
@@ -125,7 +137,7 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
 ### Add and install Dapr Helm chart
 
 1. Make sure [Helm 3](https://github.com/helm/helm/releases) is installed on your machine
-2. Add Helm repo and update
+1. Add Helm repo and update
 
     ```bash
     // Add the official Dapr Helm chart.
@@ -134,10 +146,11 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
     helm repo add dapr http://helm.custom-domain.com/dapr/dapr/ \
        --username=xxx --password=xxx
     helm repo update
-    # See which chart versions are available
+    // See which chart versions are available
     helm search repo dapr --devel --versions
     ```
-3. Install the Dapr chart on your cluster in the `dapr-system` namespace.
+
+1. Install the Dapr chart on your cluster in the `dapr-system` namespace.
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
@@ -158,8 +171,13 @@ The latest Dapr helm chart no longer supports Helm v2. Please migrate from Helm 
     --wait
     ```
 
+1. Install the Dapr Dashboard:
 
-   See [Guidelines for production ready deployments on Kubernetes]({{<ref kubernetes-production.md>}}) for more information on    installing and upgrading Dapr using Helm.
+   ```bash
+   helm install dapr-dashboard dapr/dapr-dashboard
+   ```
+
+See [Guidelines for production ready deployments on Kubernetes]({{< ref kubernetes-production.md >}}) for more information on installing and upgrading Dapr using Helm.
 
 ### Uninstall Dapr on Kubernetes
 
