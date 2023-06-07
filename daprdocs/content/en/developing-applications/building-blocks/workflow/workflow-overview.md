@@ -21,49 +21,6 @@ The durable, resilient Dapr Workflow capability:
 
 <img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflow">
 
-Start a workflow using the Dapr HTTP API with the workflow name, HelloWorldWorkflow, and an instance ID of 12345:
-
-```bash
-POST http://localhost:3500/v1.0-alpha1/workflows/dapr/HelloWorldWorkflow/12345/start
-```
-
-This results in a response that contains the workflow instance ID:
-
-```bash
-HTTP/1.1 202 Accepted
-
-{
-  "instance_id": "12345"
-}
-```
-
-Retrieve the workflow status and results with the HTTP API:
-
-```bash
-GET http://localhost:3500/v1.0-alpha1/workflows/dapr/HelloWorldWorkflow/12345
-```
-
-This results in a response that contains the workflow metadata:
-
-```bash
-HTTP/1.1 202 Accepted
-
-{
-  "WFInfo": {
-    "instance_id": "12345"
-  },
-  "start_time": "2023-05-26T13:21:09Z",
-  "metadata": {
-    "dapr.workflow.custom_status": "",
-    "dapr.workflow.input": "\"World\"",
-    "dapr.workflow.last_updated": "2023-05-26T13:21:10Z",
-    "dapr.workflow.name": "HelloWorldWorkflow",
-    "dapr.workflow.output": "\"Hello World\"",
-    "dapr.workflow.runtime_status": "COMPLETED"
-  }
-}
-```
-
 Some example scenarios that Dapr Workflow can perform are:
 
 - Order processing involving orchestration between inventory management, payment systems, and shipping services.
