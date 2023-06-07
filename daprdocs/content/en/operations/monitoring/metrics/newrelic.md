@@ -40,4 +40,4 @@ This document explains how to install it in your cluster, either using a Helm ch
 * [Telemetry Data Platform](https://newrelic.com/platform/telemetry-data-platform)
 * [New Relic Prometheus OpenMetrics Integration](https://github.com/newrelic/helm-charts/tree/master/charts/nri-prometheus)
 * [Types of New Relic API keys](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/)
-* [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence/new-relic-alerts/learn-alerts/alerts-ai-transition-guide-2022/)
+* [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence/overview/)
