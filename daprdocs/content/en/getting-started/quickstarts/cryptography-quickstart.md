@@ -64,8 +64,9 @@ cd ./crypto-quickstart
 ```
 
 The application code defines two required keys:
+
 - Private RSA key 
-- A 256-bit symmetric (AES) key 
+- A 256-bit symmetric (AES) key
 
 Generate two keys, an RSA key and and AES key using OpenSSL and write these to two files:
 
