@@ -16,17 +16,7 @@ In this tutorial, you will create a component definition file to interact with t
 
 ## Step 1: Create a JSON secret store
 
-Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), but for this tutorial, create a local JSON file named `mysecrets.json` with the following secret:
-
-```json
-{
-   "my-secret" : "I'm Batman"
-}
-```
-
-## Step 2: Create a secret store Dapr component
-
-1. Create a new directory named `my-components` to hold the new component file:
+1. Create a new directory named `my-components` to hold the new secret and component file:
 
    ```bash
    mkdir my-components
@@ -37,6 +27,16 @@ Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}})
    ```bash
    cd my-components
    ```
+
+1. Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}}), but for this tutorial, create a local JSON file named `mysecrets.json` with the following secret:
+
+```json
+{
+   "my-secret" : "I'm Batman"
+}
+```
+
+## Step 2: Create a secret store Dapr component
 
 1. Create a new file `localSecretStore.yaml` with the following contents:
 
@@ -51,13 +51,13 @@ Dapr supports [many types of secret stores]({{< ref supported-secret-stores >}})
      version: v1
      metadata:
      - name: secretsFile
-       value: <PATH TO SECRETS FILE>/mysecrets.json
+       value: ./mysecrets.json
      - name: nestedSeparator
        value: ":"
    ```
 
 In the above file definition:
-- `type: secretstores.local.file` tells Dapr to use the local file component as a secret store. 
+- `type: secretstores.local.file` tells Dapr to use the local file component as a secret store.
 - The metadata fields provide component-specific information needed to work with this component. In this case, the secret store JSON path is relative to where you call `dapr run`.
 
 ## Step 3: Run the Dapr sidecar
@@ -65,7 +65,7 @@ In the above file definition:
 Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 
 ```bash
-dapr run --app-id myapp --dapr-http-port 3500 --resources-path ./my-components
+dapr run --app-id myapp --dapr-http-port 3500 --resources-path .
 ```
 
 {{% alert title="Tip" color="primary" %}}

@@ -26,7 +26,9 @@ Hit the ground running with our Dapr quickstarts, complete with code samples aim
 | [Service Invocation]({{< ref serviceinvocation-quickstart.md >}}) | Synchronous communication between two services using HTTP or gRPC. |
 | [State Management]({{< ref statemanagement-quickstart.md >}}) | Store a service's data as key/value pairs in supported state stores. |
 | [Bindings]({{< ref bindings-quickstart.md >}}) | Work with external systems using input bindings to respond to events and output bindings to call operations. |
+| [Actors]({{< ref actors-quickstart.md >}}) | Run a microservice and a simple console client to demonstrate stateful object patterns in Dapr Actors. |
 | [Secrets Management]({{< ref secrets-quickstart.md >}}) | Securely fetch secrets. |
 | [Configuration]({{< ref configuration-quickstart.md >}}) | Get configuration items and subscribe for configuration updates. |
 | [Resiliency]({{< ref resiliency >}}) | Define and apply fault-tolerance policies to your Dapr API requests. |
 | [Workflow]({{< ref workflow-quickstart.md >}}) | Orchestrate business workflow activities in long running, fault-tolerant, stateful applications. |
+| [Cryptography]({{< ref cryptography-quickstart.md >}}) | Encrypt and decrypt data using Dapr's cryptographic APIs. |
