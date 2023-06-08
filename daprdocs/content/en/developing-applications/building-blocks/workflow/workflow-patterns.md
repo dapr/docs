@@ -349,7 +349,45 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 <!--python-->
 
 ```python
-# TODO
+from dataclasses import dataclass
+from datetime import timedelta
+import random
+import dapr.ext.workflow as wf
+
+
+@dataclass
+class JobStatus:
+    job_id: str
+    is_healthy: bool
+
+
+def status_monitor_workflow(ctx: wf.DaprWorkflowContext, job: JobStatus):
+    # poll a status endpoint associated with this job
+    status = yield ctx.call_activity(check_status, input=job)
+    if not ctx.is_replaying:
+        print(f"Job '{job.job_id}' is {status}.")
+
+    if status == "healthy":
+        job.is_healthy = True
+        next_sleep_interval = 60  # check less frequently when healthy
+    else:
+        if job.is_healthy:
+            job.is_healthy = False
+            ctx.call_activity(send_alert, input=f"Job '{job.job_id}' is unhealthy!")
+        next_sleep_interval = 5  # check more frequently when unhealthy
+
+    yield ctx.create_timer(fire_at=ctx.current_utc_datetime + timedelta(seconds=next_sleep_interval))
+
+    # restart from the beginning with a new JobStatus input
+    ctx.continue_as_new(job)
+
+
+def check_status(ctx, _) -> str:
+    return random.choice(["healthy", "unhealthy"])
+
+
+def send_alert(ctx, message: str):
+    print(f'*** Alert: {message}')
 ```
 
 {{% /codetab %}}
