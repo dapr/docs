@@ -222,7 +222,7 @@ spec:
 scopes:
   - backend
 ```
-* The `dapr.io/component-container` annotation is mandatory when running on Kubernetes and you want Dapr's sidecar injector to handle the container and volume injection for the pluggable component. The `name` and `image` attributes are the minimum for the Dapr's sidecar injector to successfully add the container to the Application's pod. Volume for Unix Domain Socket is automatically created and mounted by Dapr's sidecar injector.
+The `dapr.io/component-container` annotation is mandatory on Kubernetes when you want Dapr's sidecar injector to handle the container and volume injection for the pluggable component. At minimum, you'll need the `name` and `image` attributes for the Dapr's sidecar injector to successfully add the container to the Application's pod. Volume for Unix Domain Socket is automatically created and mounted by Dapr's sidecar injector.
 
 [Scope]({{< ref component-scopes >}}) your component to make sure that only the target application can connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime fails when initializing the component.
 
