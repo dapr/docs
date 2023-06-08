@@ -60,10 +60,10 @@ Note: Components have a production usage lifecycle status: Alpha, Beta and Stabl
 * List of [pub/sub components]({{< ref supported-pubsub.md >}})
 * List of [binding components]({{< ref supported-bindings.md >}})
 * List of [secret store components]({{< ref supported-secret-stores.md >}})
-* List of [configuration store components]({{< ref supported-configuraton-stores.md >}})
+* List of [configuration store components]({{< ref supported-configuration-stores.md >}})
 * List of [lock components]({{< ref supported-locks.md >}})
 * List of [crytpography components]({{< ref supported-cryptography.md >}})
-* List of [middleware components]({{< ref supported-middle.md >}})
+* List of [middleware components]({{< ref supported-middleware.md >}})
 
 For more information on component versioning  read [Version 2 and beyond of a component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md#version-2-and-beyond-of-a-component)
 
@@ -109,4 +109,4 @@ Samples in the [Samples repo](https://github.com/dapr/samples) are each versione
 
 ## Related links
 * Read the [Supported releases]({{< ref support-release-policy.md >}})
-- Read the [Breaking Changes and Deprecation Policy]({{< ref breaking-changes-and-deprecations.md >}})
+* Read the [Breaking Changes and Deprecation Policy]({{< ref breaking-changes-and-deprecations.md >}})
