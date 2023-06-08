@@ -89,7 +89,7 @@ Save this file as `component.yaml` in Dapr's component configuration folder. Jus
 [Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component file is placed in the right folder.
 
 {{% alert title="Note" color="primary" %}}
-Dapr 1.9.0 is the minimum version that supports pluggable components. While version 1.11 supports automatically injection of the containers for pluggable components.
+Dapr 1.9.0 is the minimum version that supports pluggable components. As of version 1.11.0, automatic injection of the containers is supported for pluggable components.
 {{% /alert %}}
 
 <!-- We should list the actual command line the user will be typing here -->
