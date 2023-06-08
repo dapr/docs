@@ -472,7 +472,57 @@ In the example above, `RequestApprovalActivity` is the name of a workflow activi
 <!--python-->
 
 ```python
-# TODO
+from dataclasses import dataclass
+from datetime import timedelta
+import dapr.ext.workflow as wf
+
+
+@dataclass
+class Order:
+    cost: float
+    product: str
+    quantity: int
+
+    def __str__(self):
+        return f'{self.product} ({self.quantity})'
+
+
+@dataclass
+class Approval:
+    approver: str
+
+    @staticmethod
+    def from_dict(dict):
+        return Approval(**dict)
+
+
+def purchase_order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
+    # Orders under $1000 are auto-approved
+    if order.cost < 1000:
+        return "Auto-approved"
+
+    # Orders of $1000 or more require manager approval
+    yield ctx.call_activity(send_approval_request, input=order)
+
+    # Approvals must be received within 24 hours or they will be canceled.
+    approval_event = ctx.wait_for_external_event("approval_received")
+    timeout_event = ctx.create_timer(timedelta(hours=24))
+    winner = yield wf.when_any([approval_event, timeout_event])
+    if winner == timeout_event:
+        return "Cancelled"
+
+    # The order was approved
+    yield ctx.call_activity(place_order, input=order)
+    approval_details = Approval.from_dict(approval_event.get_result())
+    return f"Approved by '{approval_details.approver}'"
+
+
+def send_approval_request(_, order: Order) -> None:
+    print(f'*** Sending approval request for order: {order}')
+
+
+def place_order(_, order: Order) -> None:
+    print(f'*** Placing order: {order}')
 ```
 
 {{% /codetab %}}
@@ -501,7 +551,15 @@ await daprClient.RaiseWorkflowEventAsync(
 <!--python-->
 
 ```python
-# TODO
+from dapr.clients import DaprClient
+from dataclasses import asdict
+
+with DaprClient() as d:
+    d.raise_workflow_event(
+        instance_id=instance_id,
+        workflow_component="dapr",
+        event_name="approval_received",
+        event_data=asdict(Approval("Jane Doe")))
 ```
 
 {{% /codetab %}}
