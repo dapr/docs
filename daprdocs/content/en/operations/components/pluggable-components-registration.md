@@ -48,7 +48,7 @@ By default, Dapr sidecar looks for components as [Unix Domain Socket][uds] files
 
 Filenames in this folder are significant for component registration. They must be formed by appending the component's **name** with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid Unix Domain Socket file name for a component named `my-component`.
 
-Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr. If you are using Dapr's sidecar injector capability, this volume is created and mounted automatically.
+Since you are running Dapr in the same host as the component, verify that this folder and the files within it are accessible and writable by both your component and Dapr. If you are using Dapr's sidecar injector capability, this volume is created and mounted automatically.
 
 ### Component discovery and multiplexing
 
