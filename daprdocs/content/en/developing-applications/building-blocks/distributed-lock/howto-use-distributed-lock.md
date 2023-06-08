@@ -31,6 +31,7 @@ metadata:
   name: lockstore
 spec:
   type: lock.redis
+  version: v1
   metadata:
   - name: redisHost
     value: localhost:6379
