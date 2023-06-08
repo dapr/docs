@@ -39,6 +39,12 @@ There is a process for applying breaking changes:
    - For example, feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
 
 ## Deprecations
+Deprecations can apply to
+1. APIs, including alpha APIs
+1. Preview features
+1. Components
+1. CLI
+1. Features that could result in security vulnerabilities
 
 Deprecations appear in release notes under a section named “Deprecations”, which indicates:
 
@@ -56,6 +62,7 @@ After announcing a future breaking change, the change will happen in 2 releases 
 | Java domain builder classes deprecated (Users should use [setters](https://github.com/dapr/java-sdk/issues/587) instead) | Java SDK 1.3.0 | Java SDK 1.5.0 |
 | Service invocation will no longer provide a default content type header of `application/json` when no content-type is specified. You must explicitly [set a content-type header]({{< ref "service_invocation_api.md#request-contents" >}}) for service invocation if your invoked apps rely on this header. |                 1.7.0 |                    1.9.0 |
 | gRPC service invocation using `invoke` method is deprecated. Use proxy mode service invocation instead. See [How-To: Invoke services using gRPC ]({{< ref howto-invoke-services-grpc.md >}}) to use the proxy mode.| 1.9.0 | 1.10.0 |
+| The CLI flag `--app-ssl` (in both the Dapr CLI and daprd) has been deprecated in favor of using `--app-protocol` with values `https` or `grpcs`. [daprd:6158](https://github.com/dapr/dapr/issues/6158) [cli:1267](https://github.com/dapr/cli/issues/1267)| 1.11.0 | 1.13.0 |
 
 ## Related links
 
