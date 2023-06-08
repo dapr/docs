@@ -34,7 +34,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install setuptools wheel twine tox mechanical-markdown
-          pip3 uinstall -y mistune
+          pip3 uninstall -y mistune
           pip3 install mistune~=2.0.5 --no-cache-dir
       - name: Check Markdown Files
         run: |
