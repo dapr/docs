@@ -28,13 +28,26 @@ There will be at least 6 weeks between major.minor version releases giving users
 
 Patch support is for supported versions (current and previous).
 
+## Build variations
+
+The Dapr's sidecar image is published to both [GitHub Container Registry](https://github.com/dapr/dapr/pkgs/container/daprd) and [Docker Registry](https://hub.docker.com/r/daprio/daprd/tags). The default image contains all components. From version 1.11, Dapr also offers a variation of the sidecar image, containing only stable components.
+
+* Default sidecar images: `daprio/daprd:<version>` or `ghcr.io/dapr/daprd:<version>` (for example `ghcr.io/dapr/daprd:1.11.0`)
+* Sidecar images for stable components: `daprio/daprd:<version>-stable` or `ghcr.io/dapr/daprd:<version>-stable` (for example `ghcr.io/dapr/daprd:1.11.0-stable`)
+
+On Kubernetes, the sidecar image can be overwritten for the application Deployment resource with the `dapr.io/sidecar-image` annotation. See more about [Dapr's arguments and annotations]({{<ref "arguments-annotations-overview.md" >}}). The default 'daprio/daprd:latest' image is used if not specified.
+
+Learn more about [Dapr components' certification lifecycle]({{<ref "certification-lifecycle.md" >}}).
+
 ## Supported versions
 
 The table below shows the versions of Dapr releases that have been tested together and form a "packaged" release. Any other combinations of releases are not supported.
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status |
 |--------------------|:--------:|:--------|---------|---------|---------|
-| April 13 2023 | 1.10.5</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
+| May 15th 2023 | 1.10.7</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
+| May 12th 2023 | 1.10.6</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
+| April 13 2023 |1.10.5</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported (current) |
 | March 16 2023 | 1.10.4</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported |
 | March 14 2023 | 1.10.3</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported |
 | February 24 2023 | 1.10.2</br>  | 1.10.0 | Java 1.8.0 </br>Go 1.6.0 </br>PHP 1.1.0 </br>Python 1.9.0 </br>.NET 1.10.0 </br>JS 2.5.0 | 0.11.0 | Supported |
@@ -92,70 +105,17 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 |                          |                 1.6.2 |                    1.7.5 |
 |                          |                 1.7.5 |                    1.8.6 |
 |                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.5 |
+|                          |                 1.9.6 |                   1.10.7 |
 | 1.6.0 to 1.6.2           |                   N/A |                    1.7.5 |
 |                          |                 1.7.5 |                    1.8.6 |
 |                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.5 |
+|                          |                 1.9.6 |                   1.10.7 |
 | 1.7.0 to 1.7.5           |                   N/A |                    1.8.6 |
 |                          |                 1.8.6 |                    1.9.6 |
-|                          |                 1.9.6 |                   1.10.5 |
+|                          |                 1.9.6 |                   1.10.7 |
 | 1.8.0 to 1.8.6           |                   N/A |                    1.9.6 |
 | 1.9.0                    |                   N/A |                    1.9.6 |
-| 1.10.0                   |                   N/A |                   1.10.5 |
-
-## Breaking changes and deprecations
-
-### Breaking changes 
-
-Breaking changes are defined as a change to any of the following that cause compilation errors or undesirable runtime behavior to an existing 3rd party consumer application or script after upgrading to the next stable minor version of a Dapr artifact (SDK, CLI, runtime, etc):
-
-- Code behavior
-- Schema
-- Default configuration value
-- Command line argument
-- Published metric
-- Kubernetes CRD template
-- Publicly accessible API
-- Publicly visible SDK interface, method, class, or attribute
-
-Breaking changes can be applied right away to the following cases:
-
-- Projects versioned at 0.x.y
-- Preview feature
-- Alpha API
-- Preview or Alpha interface, class, method or attribute in SDK
-- Dapr Component in Alpha or Beta
-- Components-Contrib interface
-- URLs in Docs and Blog
-- An **exceptional** case where it is **required** to fix a critical bug or security vulnerability.
-
-#### Process for applying breaking changes
-
-There is a process for applying breaking changes:
-
-1. A deprecation notice must be posted as part of a release. 
-1. The breaking changes are applied two (2) releases after the release in which the deprecation was announced. 
-   - For example, feature X is announced to be deprecated in the 1.0.0 release notes and will then be removed in 1.2.0.
-
-### Depreciations
-
-Deprecations appear in release notes under a section named “Deprecations”, which indicates:
-
-- The point in the future the now-deprecated feature will no longer be supported. For example release x.y.z.  This is at least two (2) releases prior.
-- Document any steps the user must take to modify their code, operations, etc if applicable in the release notes.
-
-After announcing a future breaking change, the change will happen in 2 releases or 6 months, whichever is greater. Deprecated features should respond with warning but do nothing otherwise.
-
-
-### Announced deprecations
-
-| Feature               |   Deprecation announcement   | Removal       |
-|-----------------------|-----------------------|------------------------- |
-| GET /v1.0/shutdown API (Users should use [POST API]({{< ref kubernetes-job.md >}}) instead)             |                 1.2.0 |                    1.4.0 |
-| Java domain builder classes deprecated (Users should use [setters](https://github.com/dapr/java-sdk/issues/587) instead) | Java SDK 1.3.0 | Java SDK 1.5.0 |
-| Service invocation will no longer provide a default content type header of `application/json` when no content-type is specified. You must explicitly [set a content-type header]({{< ref "service_invocation_api.md#request-contents" >}}) for service invocation if your invoked apps rely on this header. |                 1.7.0 |                    1.9.0 |
-| gRPC service invocation using `invoke` method is deprecated. Use proxy mode service invocation instead. See [How-To: Invoke services using gRPC ]({{< ref howto-invoke-services-grpc.md >}}) to use the proxy mode.| 1.9.0 | 1.10.0 |
+| 1.10.0                   |                   N/A |                   1.10.7 |
 
 ## Upgrade on Hosting platforms
 
@@ -173,4 +133,5 @@ Below is a list of software that the latest version of Dapr (v{{% dapr-latest-ve
 
 ## Related links
 
-- Read the [Versioning policy]({{< ref support-versioning.md >}})
+- Read the [Versioning Policy]({{< ref support-versioning.md >}})
+- Read the [Breaking Changes and Deprecation Policy]({{< ref breaking-changes-and-deprecations.md >}})
