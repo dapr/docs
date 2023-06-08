@@ -25,9 +25,10 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+<!--dotnet-->
 
 ```csharp
 // Expotential backoff retry policy that survives long outages
@@ -45,7 +46,6 @@ try
     var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryOptions);
     var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryOptions);
     var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryOptions);
-    var result4 = await context.CallActivityAsync<Guid[]>("Step4", result3, retryOptions);
     return string.Join(", ", result4);
 }
 catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
@@ -56,13 +56,60 @@ catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 }
 ```
 
+{{% alert title="Note" color="primary" %}}
+In the example above, `"Step1"`, `"Step2"`, `"Step3"`, and `"MyCompensation"` represent workflow activities, which are functions in your code that actually implement the steps of the workflow. For brevity, these activity implementations are left out of this example.
+{{% /alert %}}
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--python-->
+
+```python
+import dapr.ext.workflow as wf
+
+
+def task_chain_workflow(ctx: wf.DaprWorkflowContext, wf_input: int):
+    try:
+        result1 = yield ctx.call_activity(step1, input=wf_input)
+        result2 = yield ctx.call_activity(step2, input=result1)
+        result3 = yield ctx.call_activity(step3, input=result2)
+    except Exception as e:
+        yield ctx.call_activity(error_handler, input=str(e))
+        raise
+    return [result1, result2, result3]
+
+
+def step1(ctx, activity_input):
+    print(f'Step 1: Received input: {activity_input}.')
+    # Do some work
+    return activity_input + 1
+
+
+def step2(ctx, activity_input):
+    print(f'Step 2: Received input: {activity_input}.')
+    # Do some work
+    return activity_input * 2
+
+
+def step3(ctx, activity_input):
+    print(f'Step 3: Received input: {activity_input}.')
+    # Do some work
+    return activity_input ^ 2
+
+
+def error_handler(ctx, error):
+    print(f'Executing error handler: {error}.')
+    # Do some compensating work
+```
+
+{{% alert title="Note" color="primary" %}}
+Workflow retry policies will be available in a future version of the Python SDK.
+{{% /alert %}}
+
 {{% /codetab %}}
 
 {{< /tabs >}}
-
-{{% alert title="Note" color="primary" %}}
-In the example above, `"Step1"`, `"Step2"`, `"MyCompensation"`, etc. represent workflow activities, which are functions in your code that actually implement the steps of the workflow. For brevity, these activity implementations are left out of this example.
-{{% /alert %}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
 
@@ -88,9 +135,10 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+<!--dotnet-->
 
 ```csharp
 // Get a list of N work items to process in parallel.
@@ -110,6 +158,15 @@ await Task.WhenAll(parallelTasks);
 // Aggregate all N outputs and publish the result.
 int sum = parallelTasks.Sum(t => t.Result);
 await context.CallActivityAsync("PostResults", sum);
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--python-->
+
+```python
+# TODO
 ```
 
 {{% /codetab %}}
@@ -214,9 +271,10 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+<!--dotnet-->
 
 ```csharp
 public override async Task<object> RunAsync(WorkflowContext context, MyEntityState myEntityState)
@@ -256,6 +314,15 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--python-->
+
+```python
+# TODO
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
@@ -284,9 +351,10 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+<!--dotnet-->
 
 ```csharp
 public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
@@ -331,13 +399,23 @@ In the example above, `RequestApprovalActivity` is the name of a workflow activi
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--python-->
+
+```python
+# TODO
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Python >}}
 
 {{% codetab %}}
+<!--dotnet-->
 
 ```csharp
 // Raise the workflow event to the waiting workflow
@@ -346,6 +424,15 @@ await daprClient.RaiseWorkflowEventAsync(
     workflowComponent: "dapr",
     eventName: "ManagerApproval",
     eventData: ApprovalResult.Approved);
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--python-->
+
+```python
+# TODO
 ```
 
 {{% /codetab %}}
