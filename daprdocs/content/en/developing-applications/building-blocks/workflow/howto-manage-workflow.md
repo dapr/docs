@@ -8,12 +8,12 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs ".NET SDK" HTTP >}}
+{{< tabs ".NET" Python HTTP >}}
 
 <!--NET-->
 {{% codetab %}}
 
-Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-workflow" >}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
+Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
 
 ```csharp
 string orderId = "exampleOrderId";
@@ -45,6 +45,56 @@ await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 ```
 
 {{% /codetab %}}
+
+<!--Python-->
+{{% codetab %}}
+
+Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
+- **start_workflow**: Start an instance of a workflow
+- **get_workflow**: Get information on the status of the workflow
+- **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
+- **resume_workflow**: Resumes a paused workflow instance
+- **raise_workflow_event**: Raise an event on a workflow
+- **purge_workflow**: Removes all metadata related to a specific workflow instance
+- **terminate_workflow**: Terminate or stop a particular instance of a workflow
+
+```python
+from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
+from dapr.clients import DaprClient
+
+# Sane parameters
+instanceId = "exampleInstanceID"
+workflowComponent = "dapr"
+workflowName = "hello_world_wf"
+eventName = "event1"
+eventData = "eventData"
+
+# Start the workflow
+start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
+                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
+
+# Get info on the workflow
+getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+
+# Pause the workflow
+d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+
+# Resume the workflow
+d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+
+# Raise an event on the workflow. 
+ d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
+                    event_name=eventName, event_data=eventData)
+
+# Purge the workflow
+d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+
+# Terminate the workflow
+d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+```
+
+{{% /codetab %}}
+
 
 <!--HTTP-->
 {{% codetab %}}
@@ -121,5 +171,7 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 
 ## Next steps
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the full SDK examples:
+  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+  - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
 - [Workflow API reference]({{< ref workflow_api.md >}})
