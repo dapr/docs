@@ -25,10 +25,7 @@ While Dapr's built-in components come [included with the runtime](https://github
 1. Pluggable components need to be started and ready to take requests _before_ Dapr itself is started.
 2. The [Unix Domain Socket][uds] file used for the pluggable component communication need to be made accessible to both Dapr and pluggable component.
 
-Dapr does not launch any pluggable components processes or containers. This is something that you need to do, and it is different depending on how Dapr and your components are run:
-
-- In self-hosted mode as processes or containers.
-- In Kubernetes, as containers.
+In standalone mode, pluggable components run as processes or containers. On Kubernetes, pluggable components run as containers and are automatically injected to the application's pod by Dapr's sidecar injector, allowing customization via the standard [Kubernets Container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#container-v1-core).
 
 This also changes the approach to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 
@@ -47,11 +44,11 @@ Select your environment to begin making your component discoverable.
 
 Both your component and the Unix Socket must be running before Dapr starts.
 
-By default, Dapr looks for [Unix Domain Socket][uds] files in the folder in `/tmp/dapr-components-sockets`.
+By default, Dapr sidecar looks for components as [Unix Domain Socket][uds] files in `/tmp/dapr-components-sockets`.
 
 Filenames in this folder are significant for component registration. They must be formed by appending the component's **name** with a file extension of your choice, more commonly `.sock`. For example, the filename `my-component.sock` is a valid Unix Domain Socket file name for a component named `my-component`.
 
-Since you are running Dapr in the same host as the component, verify this folder and the files within it are accessible and writable by both your component and Dapr.
+Since you are running Dapr in the same host as the component, verify that this folder and the files within it are accessible and writable by both your component and Dapr. If you are using Dapr's sidecar injector capability, this volume is created and mounted automatically.
 
 ### Component discovery and multiplexing
 
@@ -92,8 +89,7 @@ Save this file as `component.yaml` in Dapr's component configuration folder. Jus
 [Initialize Dapr]({{< ref get-started-api.md >}}), and make sure that your component file is placed in the right folder.
 
 {{% alert title="Note" color="primary" %}}
-Dapr v1.9.0 is the minimum version that supports pluggable components.
-Run the following command specify the runtime version: `dapr init --runtime-version 1.9.0`
+Dapr 1.9.0 is the minimum version that supports pluggable components. As of version 1.11.0, automatic injection of the containers is supported for pluggable components.
 {{% /alert %}}
 
 <!-- We should list the actual command line the user will be typing here -->
@@ -153,28 +149,20 @@ spec:
       labels:
         app: app
       annotations:
-        dapr.io/unix-domain-socket-path: "/tmp/dapr-components-sockets" ## required, the default path where Dapr uses for registering components.
+        # Recommended to automatically inject pluggable components.
+        dapr.io/inject-pluggable-components: "true" 
         dapr.io/app-id: "my-app"
         dapr.io/enabled: "true"
     spec:
-      volumes: ## required, the sockets volume
-        - name: dapr-unix-domain-socket
-          emptyDir: {}
       containers:
-      containers:
-      ### --------------------- YOUR APPLICATION CONTAINER GOES HERE -----------
+      # Your application's container spec, as usual.
         - name: app
            image: YOUR_APP_IMAGE:YOUR_APP_IMAGE_VERSION
-      ### --------------------- YOUR PLUGGABLE COMPONENT CONTAINER GOES HERE -----------
-        - name: component
-          image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
-          volumeMounts: # required, the sockets volume mount
-            - name: dapr-unix-domain-socket
-              mountPath: /tmp/dapr-components-sockets
-          image: YOUR_IMAGE_GOES_HERE:YOUR_IMAGE_VERSION
 ```
 
-Alternatively, you can annotate your pods, telling Dapr which containers within that pod are pluggable components, like in the example below:
+The `dapr.io/inject-pluggable-components` annotation is recommended to be set to "true", indicating Dapr's sidecar injector that this application's pod will have additional containers for pluggable components.
+
+Alternatively, you can skip Dapr's sidecar injection capability and manually add the pluggable component's container and annotate your pod, telling Dapr which containers within that pod are pluggable components, like in the example below:
 
 ```yaml
 apiVersion: apps/v1
@@ -220,6 +208,13 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: prod-mystore
+  # When running on Kubernetes and automatic container injection, add annotation below:
+  annotations:
+    dapr.io/component-container: >
+      {
+        "name": "my-component",
+        "image": "<registry>/<image_name>:<image_tag>"
+      }
 spec:
   type: your_component_type.your_socket_goes_here
   version: v1
@@ -227,6 +222,7 @@ spec:
 scopes:
   - backend
 ```
+The `dapr.io/component-container` annotation is mandatory on Kubernetes when you want Dapr's sidecar injector to handle the container and volume injection for the pluggable component. At minimum, you'll need the `name` and `image` attributes for the Dapr's sidecar injector to successfully add the container to the Application's pod. Volume for Unix Domain Socket is automatically created and mounted by Dapr's sidecar injector.
 
 [Scope]({{< ref component-scopes >}}) your component to make sure that only the target application can connect with the pluggable component, since it will only be running in its deployment. Otherwise the runtime fails when initializing the component.
 

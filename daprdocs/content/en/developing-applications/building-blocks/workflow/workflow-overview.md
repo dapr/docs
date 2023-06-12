@@ -10,32 +10,32 @@ description: "Overview of Dapr Workflow"
 Dapr Workflow is currently in alpha.
 {{% /alert %}}
 
-Dapr Workflow makes orchestrating the logic required for messaging, state management, and failure handling across various microservices easier for developers. Dapr Workflow enables you to create long running, fault-tolerant, stateful applications. Prior to Dapr Workflow, you'd often need to build ad-hoc workflows in custom, complex code in order to achieve long running, fault-tolerant, stateful applications. 
+Dapr workflow makes it easy for developers to write business logic and integrations in a reliable way. Since Dapr workflows are stateful, they support long-running and fault-tolerant applications, ideal for orchestrating microservices. Dapr workflow works seamlessly with other Dapr building blocks, such as service invocation, pub/sub, state management, and bindings.
 
 The durable, resilient Dapr Workflow capability:
 
-- Offers a built-in workflow runtime for driving Dapr Workflow execution
-- Provides SDKs for authoring workflows in code, using any language
-- Provides HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate)
-- Integrates with any other workflow runtime via workflow components
+- Offers a built-in workflow runtime for driving Dapr Workflow execution.
+- Provides SDKs for authoring workflows in code, using any language.
+- Provides HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate).
+- Integrates with any other workflow runtime via workflow components.
 
 <img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflow">
 
 Some example scenarios that Dapr Workflow can perform are:
 
-- Order processing involving inventory management, payment systems, shipping, etc.
+- Order processing involving orchestration between inventory management, payment systems, and shipping services.
 - HR onboarding workflows coordinating tasks across multiple departments and participants.
 - Orchestrating the roll-out of digital menu updates in a national restaurant chain.
 - Image processing workflows involving API-based classification and storage.
-
 
 ## Features
 
 ### Workflows and activities
 
-With Dapr Workflow, you can write activites and then compose those activities together into a workflow. Workflow activities are:
+With Dapr Workflow, you can write activities and then orchestrate those activities in a workflow. Workflow activities are:
+
 - The basic unit of work in a workflow
-- The tasks that get orchestrated in the business process
+- Used for calling other (Dapr) services, interacting with state stores, and pub/sub brokers.
 
 [Learn more about workflow activities.]({{< ref "workflow-features-concepts.md##workflow-activities" >}})
 
@@ -47,7 +47,7 @@ In addition to activities, you can write workflows to schedule other workflows a
 
 ### Timers and reminders
 
-Same as Dapr actors, you can schedule reminder-like durable delays for any time range. 
+Same as Dapr actors, you can schedule reminder-like durable delays for any time range.
 
 [Learn more about workflow timers]({{< ref "workflow-features-concepts.md#durable-timers" >}}) and [reminders]({{< ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" >}})
 
@@ -81,6 +81,8 @@ You can use the following SDKs to author a workflow.
 | Language stack | Package |
 | - | - |
 | .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
+| Python | [dapr-ext-workflow](https://github.com/dapr/python-sdk/tree/master/ext/dapr-ext-workflow) |
+
 
 ## Try out workflows
 
@@ -92,6 +94,8 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 | ------------------- | ----------- |
 | [Workflow quickstart]({{< ref workflow-quickstart.md >}}) | Run a .NET workflow application with four workflow activities to see Dapr Workflow in action  |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
+| [Workflow Python SDK example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow) | Learn how to create a Dapr Workflow and invoke it using the Python `DaprClient` package. |
+
 
 ### Start using workflows directly in your app
 
@@ -110,4 +114,6 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
 ## Related links
 
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the full SDK examples:
+  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+  - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)

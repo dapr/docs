@@ -58,8 +58,12 @@ The [components-contrib](https://github.com/dapr/components-contrib/) repo relea
 Note: Components have a production usage lifecycle status: Alpha, Beta and Stable. These statuses are not related to their versioning. The tables of supported components shows both their versions and their status.
 * List of [state store components]({{< ref supported-state-stores.md >}})
 * List of [pub/sub components]({{< ref supported-pubsub.md >}})
-* List of [secret store components]({{< ref supported-secret-stores.md >}})
 * List of [binding components]({{< ref supported-bindings.md >}})
+* List of [secret store components]({{< ref supported-secret-stores.md >}})
+* List of [configuration store components]({{< ref supported-configuration-stores.md >}})
+* List of [lock components]({{< ref supported-locks.md >}})
+* List of [crytpography components]({{< ref supported-cryptography.md >}})
+* List of [middleware components]({{< ref supported-middleware.md >}})
 
 For more information on component versioning  read [Version 2 and beyond of a component](https://github.com/dapr/components-contrib/blob/master/docs/developing-component.md#version-2-and-beyond-of-a-component)
 
@@ -96,6 +100,8 @@ The version for a component implementation is determined by the `.spec.version` 
 ### Component deprecations
 Deprecations of components will be announced two (2) releases ahead. Deprecation of a component, results in major version update of the component version. After 2 releases, the component is unregistered from the Dapr runtime, and trying to load it will throw a fatal exception.
 
+Component deprecations and removal are announced in the release notes.
+
 ## Quickstarts and Samples
 Quickstarts in the [Quickstarts repo](https://github.com/dapr/quickstarts) are versioned with the runtime, where a table of corresponding versions is on the front page of the samples repo.  Users should only use Quickstarts corresponding to the version of the runtime being run.
 
@@ -103,3 +109,4 @@ Samples in the [Samples repo](https://github.com/dapr/samples) are each versione
 
 ## Related links
 * Read the [Supported releases]({{< ref support-release-policy.md >}})
+* Read the [Breaking Changes and Deprecation Policy]({{< ref breaking-changes-and-deprecations.md >}})
