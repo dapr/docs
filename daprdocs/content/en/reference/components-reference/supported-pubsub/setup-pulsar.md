@@ -67,11 +67,14 @@ spec:
 | token              | N  | Enable Authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
 | tenant             | N  | The topic tenant within the instance. Tenants are essential to multi-tenancy in Pulsar, and spread across clusters.  Default: `"public"` | `"public"` |
 | namespace          | N  | The administrative unit of the topic, which acts as a grouping mechanism for related topics.  Default: `"default"` | `"default"`
-| persistent         | N  | Pulsar supports two kinds of topics: [persistent](https://pulsar.apache.org/docs/en/concepts-architecture-overview#persistent-storage) and [non-persistent](https://pulsar.apache.org/docs/en/concepts-messaging/#non-persistent-topics). With persistent topics, all messages are durably persisted on disks (if the broker is not standalone, messages are durably persisted on multiple disks), whereas data for non-persistent topics is not persisted to storage disks. 
+| persistent         | N  | Pulsar supports two kinds of topics: [persistent](https://pulsar.apache.org/docs/en/concepts-architecture-overview#persistent-storage) and [non-persistent](https://pulsar.apache.org/docs/en/concepts-messaging/#non-persistent-topics). With persistent topics, all messages are durably persisted on disks (if the broker is not standalone, messages are durably persisted on multiple disks), whereas data for non-persistent topics is not persisted to storage disks.
 | disableBatching | N | disable batching.When batching enabled default batch delay is set to 10 ms and default batch size is 1000 messages,Setting `disableBatching: true` will make the producer to send messages individually. Default: `"false"` | `"true"`, `"false"`|
 | batchingMaxPublishDelay | N | batchingMaxPublishDelay set the time period within which the messages sent will be batched,if batch messages are enabled. If set to a non zero value, messages will be queued until this time interval or  batchingMaxMessages (see below) or  batchingMaxSize (see below). There are two valid formats, one is the fraction with a unit suffix format, and the other is the pure digital format that is processed as milliseconds. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h". Default: `"10ms"` | `"10ms"`, `"10"`|
 | batchingMaxMessages | N | batchingMaxMessages set the maximum number of messages permitted in a batch.If set to a value greater than 1, messages will be queued until this threshold is reached or  batchingMaxSize (see below) has been reached or the batch interval has elapsed. Default: `"1000"` | `"1000"`|
 | batchingMaxSize | N | batchingMaxSize sets the maximum number of bytes permitted in a batch. If set to a value greater than 1, messages will be queued until this threshold is reached or batchingMaxMessages (see above) has been reached or the batch interval has elapsed. Default: `"128KB"` | `"131072"`|
+| processMode | N | Eable proccess multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
+| subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
+| partitionKey | N | partitionKey sets the key of the message for routing policy. Default: `""` | |
 | <topic-name>.jsonschema          | N  | Enforces JSON schema validation for the configured topic. |
 | <topic-name>.avroschema          | N  | Enforces Avro schema validation for the configured topic. |
 
@@ -111,6 +114,48 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
         }
       }'
 ```
+
+## Per-call metadata fields
+
+### Partition Key
+
+When invoking the plusar pub/sub, its possible to provide an optional partition key by using the `metadata` query param in the request url.
+
+The param name is `partitionKey`.
+
+Example:
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myPlusar/myTopic?metadata.partitionKey=key1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
+### Message headers
+
+All other metadata key/value pairs (that are not `partitionKey`) are set as headers in the Pulsar message. Here is an example setting a `correlationId` for the message.
+
+```shell
+curl -X POST http://localhost:3500/v1.0/publish/myPlusar/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        }
+      }'
+```
+
+## Order guarantee
+
+To ensure that messages arrive in order for each consumer subscribed to a specific key, 3 conditions must be met.
+
+1. subscribeType should be set to `key_shared`.
+2. partitionKey must be set.
+3. processMode should be set to `sync`.
 
 ## Create a Pulsar instance
 
