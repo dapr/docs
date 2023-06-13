@@ -171,7 +171,7 @@ github_subdir = "daprdocs"
 github_branch = "v1.11"
 
 # Versioning
-version_menu = "v1.11 (preview)"
+version_menu = "v1.11 (latest)"
 version = "v1.11"
 archived_version = false
 url_latest_version = "https://docs.dapr.io"
