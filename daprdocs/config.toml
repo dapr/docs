@@ -185,9 +185,6 @@ url_latest_version = "https://docs.dapr.io"
   version = "v1.9"
   url = "https://v1-9.docs.dapr.io"
 [[params.versions]]
-  version = "v1.9"
-  url = "https://v1-9.docs.dapr.io"
-[[params.versions]]
   version = "v1.8"
   url = "https://v1-8.docs.dapr.io"
 [[params.versions]]
@@ -205,27 +202,7 @@ url_latest_version = "https://docs.dapr.io"
 [[params.versions]]
   version = "v1.3"
   url = "https://v1-3.docs.dapr.io"
-[[params.versions]]
-  version = "v1.2"
-  url = "https://v1-2.docs.dapr.io"
-[[params.versions]]
-  version = "v1.1"
-  url = "https://v1-1.docs.dapr.io"
-[[params.versions]]
-  version = "v1.0"
-  url = "https://v1-0.docs.dapr.io"
-[[params.versions]]
-  version = "v0.11"
-  url = "https://v0-11.docs.dapr.io"
-[[params.versions]]
-  version = "v0.10"
-  url = "https://github.com/dapr/docs/tree/v0.10.0"
-[[params.versions]]
-  version = "v0.9"
-  url = "https://github.com/dapr/docs/tree/v0.9.0"
-[[params.versions]]
-  version = "v0.8"
-  url = "https://github.com/dapr/docs/tree/v0.8.0"
+
 
 # UI Customization
 [params.ui]
