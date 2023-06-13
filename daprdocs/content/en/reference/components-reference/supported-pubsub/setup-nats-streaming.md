@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To set up NATS Streaming pub/sub, create a component of type `pubsub.natsstreaming`. See [the how-to guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To set up NATS Streaming pub/sub, create a component of type `pubsub.natsstreaming`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -25,6 +25,8 @@ spec:
     value: "clusterId"
   - name: concurrencyMode
     value: parallel
+  - name: consumerID # Optional. If not supplied, runtime will create one.
+    value: "topic1" 
     # below are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
@@ -66,6 +68,7 @@ NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-s
 | natsURL            | Y  | NATS server address URL   | "`nats://localhost:4222`"|
 | natsStreamingClusterID  | Y  | NATS cluster ID   |`"clusterId"`|
 | subscriptionType   | Y | Subscription type. Allowed values `"topic"`, `"queue"` | `"topic"` |
+| consumerID        |    N     | Consumer ID (a.k.a consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. | `"topic1"`
 | ackWaitTime        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"300ms"`|
 | maxInFlight        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"25"` |
 | durableSubscriptionName | N | [Durable subscriptions](https://docs.nats.io/developing-with-nats-streaming/durables) identification name. | `"my-durable"`|

@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "GCP Pub/Sub"
-linkTitle: "GCP Pub/Sub"
+title: "GCP"
+linkTitle: "GCP"
 description: "Detailed documentation on the GCP Pub/Sub component"
 aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-gcp/"
@@ -10,7 +10,7 @@ aliases:
 
 ## Create a Dapr component
 
-To setup GCP pubsub create a component of type `pubsub.gcp.pubsub`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
+To set up GCP pub/sub, create a component of type `pubsub.gcp.pubsub`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

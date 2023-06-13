@@ -9,7 +9,9 @@ aliases:
 
 ## Component format
 
-To setup Apache Pulsar pubsub create a component of type `pubsub.pulsar`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration. For more information on Apache Pulsar [read the docs](https://pulsar.apache.org/docs/en/concepts-overview/)
+To set up Apache Pulsar pub/sub, create a component of type `pubsub.pulsar`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration. 
+
+For more information on Apache Pulsar, [read the official docs](https://pulsar.apache.org/docs/en/concepts-overview/).
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

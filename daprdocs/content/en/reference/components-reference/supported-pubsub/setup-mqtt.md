@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup MQTT pubsub create a component of type `pubsub.mqtt`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
+To set up MQTT pub/sub, create a component of type `pubsub.mqtt`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -28,6 +28,8 @@ spec:
     value: "false"
   - name: cleanSession
     value: "false"
+  - name: consumerID
+    value: "topic1"
 ```
 
 {{% alert title="Warning" color="warning" %}}

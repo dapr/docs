@@ -8,10 +8,7 @@ aliases:
 ---
 
 ## Component format
-To setup JetStream pubsub create a component of type `pubsub.jetstream`. See
-[this guide]({{< ref
-"howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to
-create and apply a pubsub configuration.
+To set up JetStream pub/sub, create a component of type `pubsub.jetstream`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -34,6 +31,8 @@ spec:
     value: "/path/to/tls.key"
   - name: token # Optional. Used for token based authentication.
     value: "my-token"
+  - name: consumerID
+    value: "topic1"
   - name: name
     value: "my-conn-name"
   - name: streamName
@@ -84,6 +83,7 @@ spec:
 | tls_client_cert |    N     | NATS TLS Client Authentication Certificate | `"/path/to/tls.crt"`             |
 | tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
 | token           |    N     | [NATS token based authentication]          | `"my-token"`                     |
+| consumerID      |    N     | Consumer ID (a.k.a consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. | `"topic1"`
 | name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
 | streamName      |    N     | Name of the JetStream Stream to bind to    | `"my-stream"`                    |
 | durableName     |    N     | [Durable name]                             | `"my-durable"`                   |

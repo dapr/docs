@@ -10,7 +10,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Service Bus Topics pubsub create a component of type `pubsub.azure.servicebus.topics`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To set up Azure Service Bus Topics pub/sub, create a component of type `pubsub.azure.servicebus.topics`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 > This component uses topics on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).  
 > For using queues, see the [Azure Service Bus Queues pubsub component]({{< ref "setup-azure-servicebus-queues" >}}).
