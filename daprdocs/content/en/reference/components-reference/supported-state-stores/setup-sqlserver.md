@@ -1,15 +1,15 @@
 ---
 type: docs
-title: "SQL Server"
-linkTitle: "SQL Server"
-description: Detailed information on the SQL Server state store component
+title: "Microsoft SQL Server"
+linkTitle: "Microsoft SQL Server"
+description: Detailed information on the Microsoft SQL Server state store component
 aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-sqlserver/"
 ---
 
 ## Component format
 
-To setup SQL Server state store create a component of type `state.sqlserver`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+To setup Microsoft SQL Server state store create a component of type `state.sqlserver`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -66,7 +66,7 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 | cleanupIntervalInSeconds | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
 
 
-## Create Azure SQL instance
+## Create an Azure SQL instance
 
 [Follow the instructions](https://docs.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
 
