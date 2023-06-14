@@ -2,7 +2,7 @@
 type: docs
 title: "Component schema"
 linkTitle: "Component schema"
-weight: 100
+weight: 1000
 description: "The basic schema for a Dapr component"
 ---
 

@@ -3,7 +3,7 @@ type: docs
 title: "HTTPEndpoint spec"
 linkTitle: "HTTPEndpoint spec"
 description: "The HTTPEndpoint resource spec"
-weight: 300
+weight: 3000
 aliases:
   - "/operations/httpEndpoints/"
 ---
