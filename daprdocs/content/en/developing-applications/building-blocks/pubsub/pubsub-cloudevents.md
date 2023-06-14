@@ -66,6 +66,45 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 }
 ```
 
+### Override CloudEvent values
+
+You can override CloudEvent values by replacing some metadata with the following:
+- `cloudevent-id`: overrides `id`
+- `cloudevent-source`: overrides `source`
+- `cloudevent-type`: overrides `type`
+- `cloudevent-traceid`: overrides `traceid`
+- `cloudevent-tracestate`: overrides `tracestate`
+- `cloudevent-traceparent`: overrides `traceparent`
+
+{{% alert title="Note" color="primary" %}}
+The following metadata can't be overridden:
+- `data`
+- `topic`
+- `pubsub`
+- `datacontenttype`
+{{% /alert %}}
+
+For example, to override the values from [the CloudEvent example]({{< ref "#cloudevents-example" >}}) above:
+
+```json
+{
+  "topic": "orders",
+  "pubsubname": "order_pub_sub",
+  "traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
+  "tracestate": "",
+  "data": {
+    "orderId": 1
+  },
+  "id": "5929aaac-a5e2-4ca1-859c-edfe73f11565",
+  "specversion": "1.0",
+  "datacontenttype": "application/json; charset=utf-8",
+  "source": "checkout",
+  "type": "com.dapr.event.sent",
+  "time": "2020-09-23T06:23:21Z",
+  "traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
+}
+```
+
 ## Publish your own CloudEvent
 
 If you want to use your own CloudEvent, make sure to specify the [`datacontenttype`]({{< ref "pubsub-overview.md#setting-message-content-types" >}}) as `application/cloudevents+json`.
