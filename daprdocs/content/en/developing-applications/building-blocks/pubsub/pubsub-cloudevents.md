@@ -84,24 +84,24 @@ The following metadata can't be overridden:
 - `datacontenttype`
 {{% /alert %}}
 
-For example, to override the values from [the CloudEvent example]({{< ref "#cloudevents-example" >}}) above:
+For example, to override the applicable values from [the first CloudEvent example above]({{< ref "#cloudevents-example" >}}):
 
 ```json
 {
   "topic": "orders",
   "pubsubname": "order_pub_sub",
-  "traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
-  "tracestate": "",
+  "cloudevent-traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
+  "cloudevent-tracestate": "",
   "data": {
     "orderId": 1
   },
-  "id": "5929aaac-a5e2-4ca1-859c-edfe73f11565",
+  "cloudevent-id": "5929aaac-a5e2-4ca1-859c-edfe73f11565",
   "specversion": "1.0",
   "datacontenttype": "application/json; charset=utf-8",
-  "source": "checkout",
-  "type": "com.dapr.event.sent",
+  "cloudevent-source": "checkout",
+  "cloudevent-type": "com.dapr.event.sent",
   "time": "2020-09-23T06:23:21Z",
-  "traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
+  "cloudevent-traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
 }
 ```
 
