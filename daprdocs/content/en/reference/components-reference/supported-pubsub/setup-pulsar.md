@@ -207,7 +207,7 @@ spec:
 
 ### Partition Key
 
-When invoking the Plusar pub/sub, its possible to provide an optional partition key by using the `metadata` query parameter in the request url.
+When invoking the Pulsar pub/sub, it's possible to provide an optional partition key by using the `metadata` query parameter in the request url.
 
 The parameter name is `partitionKey`.
 
