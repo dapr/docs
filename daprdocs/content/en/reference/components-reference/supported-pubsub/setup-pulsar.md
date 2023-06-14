@@ -31,7 +31,7 @@ spec:
   - name: token
     value: "eyJrZXlJZCI6InB1bHNhci1wajU0cXd3ZHB6NGIiLCJhbGciOiJIUzI1NiJ9.eyJzd"
   - name: consumerID
-    value: "topic1"
+    value: "channel1"
   - name: namespace
     value: "default"
   - name: persistent
@@ -70,7 +70,7 @@ spec:
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"` |
 | token              | N  | Enable Authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
 | tenant             | N  | The topic tenant within the instance. Tenants are essential to multi-tenancy in Pulsar, and spread across clusters.  Default: `"public"` | `"public"` |
-| consumerID         | N  | Used to set the subscription name or consumer ID.  | `"topic1"`
+| consumerID         | N  | Used to set the subscription name or consumer ID.  | `"channel1"`
 | namespace          | N  | The administrative unit of the topic, which acts as a grouping mechanism for related topics.  Default: `"default"` | `"default"`
 | persistent         | N  | Pulsar supports two kinds of topics: [persistent](https://pulsar.apache.org/docs/en/concepts-architecture-overview#persistent-storage) and [non-persistent](https://pulsar.apache.org/docs/en/concepts-messaging/#non-persistent-topics). With persistent topics, all messages are durably persisted on disks (if the broker is not standalone, messages are durably persisted on multiple disks), whereas data for non-persistent topics is not persisted to storage disks. 
 | disableBatching | N | disable batching.When batching enabled default batch delay is set to 10 ms and default batch size is 1000 messages,Setting `disableBatching: true` will make the producer to send messages individually. Default: `"false"` | `"true"`, `"false"`|
@@ -93,8 +93,8 @@ When invoking the Pulsar pub/sub, it's possible to provide an optional delay que
 
 These optional parameter names are `metadata.deliverAt` or `metadata.deliverAfter`:
 
-- `deliverAt`: Delay message to deliver at a specified time (RFC3339 format), e.g. `"2021-09-01T10:00:00Z"`
-- `deliverAfter`: Delay message to deliver after a specified amount of time, e.g.`"4h5m3s"`
+- `deliverAt`: Delay message to deliver at a specified time (RFC3339 format); for example, `"2021-09-01T10:00:00Z"`
+- `deliverAfter`: Delay message to deliver after a specified amount of time; for example,`"4h5m3s"`
 
 Examples:
 

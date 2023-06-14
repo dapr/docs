@@ -25,7 +25,7 @@ spec:
     - name: store
       value: false
     - name: consumerID
-      value: topic1
+      value: channel1
 ```
 
 ## Spec metadata fields
@@ -34,7 +34,7 @@ spec:
 |-------------------|:--------:|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
 | address           |    Y     | Address of the KubeMQ server                                                                                                | `"localhost:50000"`                    |
 | store             |    N     | type of pubsub, true: pubsub persisted (EventsStore), false: pubsub in-memory (Events)                                      | `true` or `false` (default is `false`) |
-| consumerID        |    N     | Consumer ID (a.k.a consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. | `"topic1"`
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | clientID          |    N     | Name for client id connection                                                                                               | `sub-client-12345`                     |
 | authToken         |    N     | Auth JWT token for connection Check out [KubeMQ Authentication](https://docs.kubemq.io/learn/access-control/authentication) | `ew...`                                |
 | group             |    N     | Subscriber group for load balancing                                                                                         | `g1`                                   |

@@ -29,7 +29,7 @@ spec:
   - name: cleanSession
     value: "false"
   - name: consumerID
-    value: "topic1"
+    value: "channel1"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -64,7 +64,7 @@ There is a crucial difference between the two ways of retries:
 
 ### Communication using TLS
 
-To configure communication using TLS, ensure that the MQTT broker (e.g. mosquitto) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
+To configure communication using TLS, ensure that the MQTT broker (for example, mosquitto) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

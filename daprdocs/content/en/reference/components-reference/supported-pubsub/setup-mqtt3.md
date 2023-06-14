@@ -31,7 +31,7 @@ spec:
     - name: qos
       value: "1"
     - name: consumerID
-      value: "topic1"
+      value: "channel1"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -53,7 +53,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Communication using TLS
 
-To configure communication using TLS, ensure that the MQTT broker (e.g. emqx) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
+To configure communication using TLS, ensure that the MQTT broker (for example, emqx) is configured to support certificates and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

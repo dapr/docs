@@ -26,7 +26,7 @@ spec:
   - name: concurrencyMode
     value: parallel
   - name: consumerID # Optional. If not supplied, runtime will create one.
-    value: "topic1" 
+    value: "channel1" 
     # below are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
@@ -68,7 +68,7 @@ NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-s
 | natsURL            | Y  | NATS server address URL   | "`nats://localhost:4222`"|
 | natsStreamingClusterID  | Y  | NATS cluster ID   |`"clusterId"`|
 | subscriptionType   | Y | Subscription type. Allowed values `"topic"`, `"queue"` | `"topic"` |
-| consumerID        |    N     | Consumer ID (a.k.a consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer, i.e. a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the dapr runtime will set it to the dapr application ID. | `"topic1"`
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | ackWaitTime        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"300ms"`|
 | maxInFlight        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"25"` |
 | durableSubscriptionName | N | [Durable subscriptions](https://docs.nats.io/developing-with-nats-streaming/durables) identification name. | `"my-durable"`|
