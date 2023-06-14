@@ -80,9 +80,9 @@ spec:
 | publicKey          | N  | A public key to be used for publisher and consumer encryption. Value can be one of two options: file path for a local PEM cert, or the cert data string value  |
 | privateKey          | N  | A private key to be used for consumer encryption. Value can be one of two options: file path for a local PEM cert, or the cert data string value  |
 | keys          | N  | A comma delimited string containing names of [Pulsar session keys](https://pulsar.apache.org/docs/3.0.x/security-encryption/#how-it-works-in-pulsar). Used in conjunction with `publicKey` for publisher encryption |
-| processMode | N | Eable proccess multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
+| processMode | N | Eable processing multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
 | subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
-| partitionKey | N | partitionKey sets the key of the message for routing policy. Default: `""` | |
+| partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
 
 ### Enabling message delivery retries
 
@@ -207,9 +207,9 @@ spec:
 
 ### Partition Key
 
-When invoking the plusar pub/sub, its possible to provide an optional partition key by using the `metadata` query param in the request url.
+When invoking the Plusar pub/sub, its possible to provide an optional partition key by using the `metadata` query parameter in the request url.
 
-The param name is `partitionKey`.
+The parameter name is `partitionKey`.
 
 Example:
 
@@ -225,7 +225,7 @@ curl -X POST http://localhost:3500/v1.0/publish/myPlusar/myTopic?metadata.partit
 
 ### Message headers
 
-All other metadata key/value pairs (that are not `partitionKey`) are set as headers in the Pulsar message. Here is an example setting a `correlationId` for the message.
+All other metadata key/value pairs (that are not `partitionKey`) are set as headers in the Pulsar message. For example, set a `correlationId` for the message:
 
 ```shell
 curl -X POST http://localhost:3500/v1.0/publish/myPlusar/myTopic?metadata.correlationId=myCorrelationID&metadata.partitionKey=key1 \
@@ -239,11 +239,11 @@ curl -X POST http://localhost:3500/v1.0/publish/myPlusar/myTopic?metadata.correl
 
 ## Order guarantee
 
-To ensure that messages arrive in order for each consumer subscribed to a specific key, 3 conditions must be met.
+To ensure that messages arrive in order for each consumer subscribed to a specific key, three conditions must be met.
 
-1. subscribeType should be set to `key_shared`.
-2. partitionKey must be set.
-3. processMode should be set to `sync`.
+1. `subscribeType` should be set to `key_shared`.
+2. `partitionKey` must be set.
+3. `processMode` should be set to `sync`.
 
 ## Create a Pulsar instance
 
