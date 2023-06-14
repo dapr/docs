@@ -423,7 +423,7 @@ dotnet build
 Run the `checkout` publisher service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --resources-path ../../../components --app-port 7005 -- dotnet run
+dapr run --app-id checkout --app-port 7006 --resources-path ../../../components -- dotnet run
 ```
 
 In the `checkout` publisher, we're publishing the orderId message to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. As soon as the service starts, it publishes in a loop:
