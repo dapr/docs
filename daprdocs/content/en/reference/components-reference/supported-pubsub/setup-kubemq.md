@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup KubeMQ pub/sub, create a component of type `pubsub.kubemq`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up KubeMQ pub/sub, create a component of type `pubsub.kubemq`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -24,6 +24,8 @@ spec:
       value: localhost:50000
     - name: store
       value: false
+    - name: consumerID
+      value: channel1
 ```
 
 ## Spec metadata fields
@@ -32,6 +34,7 @@ spec:
 |-------------------|:--------:|-----------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
 | address           |    Y     | Address of the KubeMQ server                                                                                                | `"localhost:50000"`                    |
 | store             |    N     | type of pubsub, true: pubsub persisted (EventsStore), false: pubsub in-memory (Events)                                      | `true` or `false` (default is `false`) |
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | clientID          |    N     | Name for client id connection                                                                                               | `sub-client-12345`                     |
 | authToken         |    N     | Auth JWT token for connection Check out [KubeMQ Authentication](https://docs.kubemq.io/learn/access-control/authentication) | `ew...`                                |
 | group             |    N     | Subscriber group for load balancing                                                                                         | `g1`                                   |
