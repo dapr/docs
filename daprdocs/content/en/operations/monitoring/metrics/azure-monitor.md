@@ -15,118 +15,120 @@ description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernet
 
 ## Enable Prometheus metric scrape using config map
 
-1. Make sure that omsagents are running
+1. Make sure that Azure Monitor Agents (AMA) are running.
 
-```bash
-$ kubectl get pods -n kube-system
-NAME                                                              READY   STATUS    RESTARTS   AGE
-...
-omsagent-75qjs                                                    1/1     Running   1          44h
-omsagent-c7c4t                                                    1/1     Running   0          44h
-omsagent-rs-74f488997c-dshpx                                      1/1     Running   1          44h
-omsagent-smtk7                                                    1/1     Running   1          44h
-...
-```
+   ```bash
+   $ kubectl get pods -n kube-system
+   NAME                                                  READY   STATUS    RESTARTS   AGE
+   ...
+   ama-logs-48kpv                                        2/2     Running   0          2d13h
+   ama-logs-mx24c                                        2/2     Running   0          2d13h
+   ama-logs-rs-f9bbb9898-vbt6k                           1/1     Running   0          30h
+   ama-logs-sm2mz                                        2/2     Running   0          2d13h
+   ama-logs-z7p4c                                        2/2     Running   0          2d13h
+   ...
+   ```
 
-2. Apply config map to enable Prometheus metrics endpoint scrape.
+1. Apply config map to enable Prometheus metrics endpoint scrape.
 
-You can use [azm-config-map.yaml](/docs/azm-config-map.yaml) to enable prometheus metrics endpoint scrape.
+  You can use [azm-config-map.yaml](/docs/azm-config-map.yaml) to enable Prometheus metrics endpoint scrape.
 
-If you installed Dapr to the different namespace, you need to change the `monitor_kubernetes_pod_namespaces` array values. For example:
+  If you installed Dapr to a different namespace, you need to change the `monitor_kubernetes_pod_namespaces` array values. For example:
 
-```yaml
-...
-  prometheus-data-collection-settings: |-
-    [prometheus_data_collection_settings.cluster]
-        interval = "1m"
-        monitor_kubernetes_pods = true
-        monitor_kubernetes_pods_namespaces = ["dapr-system", "default"]
-    [prometheus_data_collection_settings.node]
-        interval = "1m"
-...
-```
+   ```yaml
+   ...
+     prometheus-data-collection-settings: |-
+       [prometheus_data_collection_settings.cluster]
+           interval = "1m"
+           monitor_kubernetes_pods = true
+           monitor_kubernetes_pods_namespaces = ["dapr-system", "default"]
+       [prometheus_data_collection_settings.node]
+           interval = "1m"
+   ...
+   ```
 
-Apply config map:
+  Apply config map:
 
-```bash
-kubectl apply -f ./azm-config.map.yaml
-```
+   ```bash
+   kubectl apply -f ./azm-config.map.yaml
+   ```
 
 ## Install Dapr with JSON formatted logs
 
-1. Install Dapr with enabling JSON-formatted logs
+1. Install Dapr with enabling JSON-formatted logs.
 
-```bash
-helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
-```
+   ```bash
+   helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
+   ```
 
-2. Enable JSON formatted log in Dapr sidecar and add Prometheus annotations.
+1. Enable JSON formatted log in Dapr sidecar and add Prometheus annotations.
 
-> Note: OMS Agent scrapes the metrics only if replicaset has Prometheus annotations.
+  > Note: OMS Agent scrapes the metrics only if replicaset has Prometheus annotations.
 
-Add `dapr.io/log-as-json: "true"` annotation to your deployment yaml.
+  Add `dapr.io/log-as-json: "true"` annotation to your deployment yaml.
 
-Example:
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: pythonapp
-  namespace: default
-  labels:
-    app: python
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: python
-  template:
-    metadata:
-      labels:
-        app: python
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/app-id: "pythonapp"
-        dapr.io/log-as-json: "true"
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-        prometheus.io/path: "/"
+  Example:
 
-...
-```
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: pythonapp
+     namespace: default
+     labels:
+       app: python
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: python
+     template:
+       metadata:
+         labels:
+           app: python
+         annotations:
+           dapr.io/enabled: "true"
+           dapr.io/app-id: "pythonapp"
+           dapr.io/log-as-json: "true"
+           prometheus.io/scrape: "true"
+           prometheus.io/port: "9090"
+           prometheus.io/path: "/"
+   
+   ...
+   ```
 
 ## Search metrics and logs with Azure Monitor
 
-1. Go to Azure Monitor
+1. Go to Azure Monitor in the Azure portal. 
 
-2. Search Dapr logs
+1. Search Dapr **Logs**. 
 
-Here is an example query, to parse JSON formatted logs and query logs from dapr system processes.
+  Here is an example query, to parse JSON formatted logs and query logs from Dapr system processes.
 
-```
-ContainerLog
-| extend parsed=parse_json(LogEntry)
-| project Time=todatetime(parsed['time']), app_id=parsed['app_id'], scope=parsed['scope'],level=parsed['level'], msg=parsed['msg'], type=parsed['type'], ver=parsed['ver'], instance=parsed['instance']
-| where level != ""
-| sort by Time
-```
+   ```
+   ContainerLog
+   | extend parsed=parse_json(LogEntry)
+   | project Time=todatetime(parsed['time']), app_id=parsed['app_id'], scope=parsed['scope'],level=parsed['level'], msg=parsed['msg'], type=parsed['type'], ver=parsed['ver'], instance=parsed['instance']
+   | where level != ""
+   | sort by Time
+   ```
 
-3. Search metrics
+1. Search **Metrics**.
 
-This query, queries process_resident_memory_bytes Prometheus metrics for Dapr system processes and renders timecharts
+  This query, queries `process_resident_memory_bytes` Prometheus metrics for Dapr system processes and renders timecharts.
 
-```
-InsightsMetrics
-| where Namespace == "prometheus" and Name == "process_resident_memory_bytes"
-| extend tags=parse_json(Tags)
-| project TimeGenerated, Name, Val, app=tostring(tags['app'])
-| summarize memInBytes=percentile(Val, 99) by bin(TimeGenerated, 1m), app
-| where app startswith "dapr-"
-| render timechart
-```
+   ```
+   InsightsMetrics
+   | where Namespace == "prometheus" and Name == "process_resident_memory_bytes"
+   | extend tags=parse_json(Tags)
+   | project TimeGenerated, Name, Val, app=tostring(tags['app'])
+   | summarize memInBytes=percentile(Val, 99) by bin(TimeGenerated, 1m), app
+   | where app startswith "dapr-"
+   | render timechart
+   ```
 
-# References
+## References
 
-* [Configure scraping of Prometheus metrics with Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-prometheus-integration)
-* [Configure agent data collection for Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-agent-config)
-* [Azure Monitor Query](https://docs.microsoft.com/azure/azure-monitor/log-query/query-language)
+- [Configure scraping of Prometheus metrics with Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-prometheus-integration)
+- [Configure agent data collection for Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-agent-config)
+- [Azure Monitor Query](https://docs.microsoft.com/azure/azure-monitor/log-query/query-language)
