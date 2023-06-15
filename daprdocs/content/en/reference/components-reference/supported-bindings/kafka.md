@@ -39,6 +39,8 @@ spec:
     secretKeyRef:
       name: kafka-secrets
       key: saslPasswordSecret
+  - name: saslMechanism
+    value: "SHA-512"
   - name: initialOffset # Optional. Used for input bindings.
     value: "newest"
   - name: maxMessageBytes # Optional.
@@ -61,6 +63,7 @@ spec:
 | authType            | Y | Input/Output | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"` |
 | saslUsername | N | Input/Output | The SASL username used for authentication. Only required if `authRequired` is set to `"true"`. | `"adminuser"` |
 | saslPassword | N | Input/Output | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authRequired` is set to `"true"`. | `""`, `"KeFg23!"` |
+| saslMechanism | N | Input/Output | The SASL authentication mechanism you'd like to use. Only required if `authtype` is set to `"password"`. If not provided, will default to `PLAINTEXT`, which could cause a break for some services, like Amazon Managed Service for Kafka. | `""`, `"SHA-512"` |
 | initialOffset   | N | Input | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"` |
 | maxMessageBytes | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048` |
 | oidcTokenEndpoint | N | Input/Output | Full URL to an OAuth2 identity provider access token endpoint. Required when `authType` is set to `oidc` | "https://identity.example.com/v1/token" |
