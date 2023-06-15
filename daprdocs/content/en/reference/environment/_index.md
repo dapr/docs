@@ -25,3 +25,4 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | OTEL_EXPORTER_OTLP_ENDPOINT | OpenTelemetry Tracing | Sets the Open Telemetry (OTEL) server address, turns on tracing. (Example: `http://localhost:4318`) |
 | OTEL_EXPORTER_OTLP_INSECURE | OpenTelemetry Tracing | Sets the connection to the endpoint as unencrypted. (`true`, `false`) |
 | OTEL_EXPORTER_OTLP_PROTOCOL | OpenTelemetry Tracing | The OTLP protocol to use Transport protocol. (`grpc`, `http/protobuf`, `http/json`) |
+| DAPR_COMPONENTS_SOCKET_FOLDER | Pluggable component | The location for the `.sock` file for the shared directory location socket |
