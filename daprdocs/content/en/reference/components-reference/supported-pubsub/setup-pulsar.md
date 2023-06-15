@@ -62,6 +62,11 @@ spec:
       }
 ```
 
+{{% alert title="Warning" color="warning" %}}
+This component supports storing the `token` parameter and any other sensitive parameter and data as Kubernetes Secrets.
+{{% /alert %}}
+
+
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
