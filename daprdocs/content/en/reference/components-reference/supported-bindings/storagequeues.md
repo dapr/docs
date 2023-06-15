@@ -27,6 +27,8 @@ spec:
     value: "***********"
   - name: queueName
     value: "myqueue"
+# - name: pollingInterval
+#   value: "30s"
 # - name: ttlInSeconds
 #   value: "60"
 # - name: decodeBase64
@@ -50,6 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `accountName` | Y | Input/Output | The name of the Azure Storage account | `"account1"` |
 | `accountKey` | Y* | Input/Output | The access key of the Azure Storage account. Only required when not using Azure AD authentication. | `"access-key"` |
 | `queueName` | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
+| `pollingInterval` | N | Output | Set the interval to poll Azure Storage Queues for new messages. Default: `"10s"` | `"30s"` |
 | `ttlInSeconds` | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to Storage Queues. (In case of saving a file with binary content). Defaults to `false` | `true`, `false` |
 | `encodeBase64` | N | Output | If enabled base64 encodes the data payload before uploading to Azure storage queues. Default `false`. | `true`, `false` |
