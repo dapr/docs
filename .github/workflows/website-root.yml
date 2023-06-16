@@ -94,8 +94,7 @@ jobs:
 
   algolia_index:
     name: Index site for Algolia
-    ## Temporarily disable indexing on only push events for testing
-    #if: github.event_name == 'push'
+    if: github.event_name == 'push'
     needs: ['build', 'deploy']
     runs-on: ubuntu-latest
     env:
