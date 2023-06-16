@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: hugo_build
-          path: ./docs/public/
+          path: ./daprdocs/public/
           if-no-files-found: error
 
   deploy:
