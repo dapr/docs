@@ -91,3 +91,30 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
           action: "close"
+
+  algolia_index:
+    name: Index site for Algolia
+    ## Temporarily disable indexing on only push events for testing
+    #if: github.event_name == 'push'
+    needs: ['build', 'deploy']
+    runs-on: ubuntu-latest
+    env:
+      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_API_APPID }}
+      ALGOLIA_API_WRITE_KEY: ${{ secrets.ALGOLIA_API_WRITE_KEY }}
+      ALGOLIA_INDEX_NAME: daprdocs
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v2
+        with:
+          submodules: false
+      - name: Download Hugo artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: hugo_build
+          path: site/
+      - name: Install Python packages
+        run: |
+          pip install --upgrade bs4
+          pip install --upgrade 'algoliasearch>=2.0,<3.0'
+      - name: Index site
+        run: python ./.github/scripts/algolia.py ./site
