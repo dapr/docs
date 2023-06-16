@@ -10,6 +10,11 @@ on:
     branches:
       - v1.11
 
+concurrency:
+  # Cancel the previously triggered build for only PR build.
+  group: website-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build Hugo Website
