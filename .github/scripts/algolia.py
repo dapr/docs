@@ -22,6 +22,10 @@ excluded_files = [
     "404.html",
 ]
 
+exluded_directories = [
+    "zh-hans",
+]
+
 rankings = {
     "Getting started": 0,
     "Concepts": 100,
@@ -33,11 +37,14 @@ rankings = {
 }
 
 def scan_directory(directory: str, pages: list):
+    if os.path.basename(directory) in exluded_directories:
+        print(f'Skipping directory: {directory}')
+        return
     for file in os.listdir(directory):
         path = os.path.join(directory, file)
         if os.path.isfile(path):
             if file.endswith(".html") and file not in excluded_files:
-                if '<!-- DISABLE_ALGOLIA -->' not in open(path).read():
+                if '<!-- DISABLE_ALGOLIA -->' not in open(path, encoding="utf8").read():
                     print(f'Indexing: {path}')
                     pages.append(path)
                 else:
