@@ -1,19 +1,13 @@
+<script src="/js/copy-code-button.js"></script>
+
 {{ with .Site.Params.algolia_docsearch }}
-<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2.6.3/dist/cdn/docsearch.min.js"></script>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script type="text/javascript">
   docsearch({
-    // Your apiKey and indexName will be given to you once
-    // we create your config
-    apiKey: '54ae43aa28ce8f00c54c8d5f544d29b9',
-    indexName: 'crawler_dapr',
+    container: '#docsearch',
     appId: 'O0QLQGNF38',
-    // Replace inputSelector with a CSS selector
-    // matching your search input
-    inputSelector: '.td-search-input',
-    // Set debug to true to inspect the dropdown
-    debug: false,
+    apiKey: '54ae43aa28ce8f00c54c8d5f544d29b9',
+    indexName: 'daprdocs',
   });
 </script>
 {{ end }}
-
-<script src="/js/copy-code-button.js"></script>
