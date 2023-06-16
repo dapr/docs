@@ -18,9 +18,7 @@ When a TTL is not specified, the default behavior of the state store is retained
 
 ## Persisting state (ignoring an existing TTL)
 
-Let's say you have a TTL set at the database/container level. Many databases allow you to overwrite the TTL for a specific entity. You can tell it to explicitly _persist_ the given key. 
-
-To explicitly persist a state (ignoring any TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
+Let's say you have a TTL set at the database/container level. Many databases allow you to overwrite the TTL for a specific entity. To persist a state (ignore any global TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
 
 > Not specifying TTL at the entity level applies the global TTL. 
 
