@@ -63,7 +63,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-This component supports storing the `token` parameter and any other sensitive parameter and data as Kubernetes Secrets.
+The above example uses secrets as plain strings. It is recommended to use a [secret store for the secrets]({{< ref component-secrets.md >}}). This component supports storing the `token` parameter and any other sensitive parameter and data as Kubernetes Secrets.
 {{% /alert %}}
 
 
