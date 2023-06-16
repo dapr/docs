@@ -99,7 +99,7 @@ jobs:
     needs: ['build', 'deploy']
     runs-on: ubuntu-latest
     env:
-      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_API_APPID }}
+      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_WRITE_KEY: ${{ secrets.ALGOLIA_API_WRITE_KEY }}
       ALGOLIA_INDEX_NAME: daprdocs
     steps:
