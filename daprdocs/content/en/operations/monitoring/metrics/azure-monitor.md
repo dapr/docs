@@ -63,7 +63,7 @@ description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernet
 
 1. Enable JSON formatted log in Dapr sidecar and add Prometheus annotations.
 
-  > Note: OMS Agent scrapes the metrics only if replicaset has Prometheus annotations.
+  > Note: The Azure Monitor Agents (AMA) only sends the metrics if the Prometheus annotations are set.
 
   Add `dapr.io/log-as-json: "true"` annotation to your deployment yaml.
 
