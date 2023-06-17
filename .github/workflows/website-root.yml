@@ -1,6 +1,7 @@
 name: Azure Static Web App Root
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - v1.11
@@ -9,35 +10,65 @@ on:
     branches:
       - v1.11
 
+concurrency:
+  # Cancel the previously triggered build for only PR build.
+  group: website-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    name: Build Hugo Website
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    env:
+      SWA_BASE: 'proud-bay-0e9e0e81e'
+      HUGO_ENV: production
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout docs repo
+        uses: actions/checkout@v3
         with:
-          submodules: recursive
-          fetch-depth: 0
+          submodules: true
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2.5.0
+        with:
+          hugo-version: 0.102.3
+          extended: true
       - name: Setup Docsy
-        run: cd daprdocs && git submodule update --init --recursive && sudo npm install -D --save autoprefixer && sudo npm install -D --save postcss-cli
-      - name: Build And Deploy
-        id: builddeploy
+        run: |
+          cd daprdocs
+          git submodule update --init --recursive
+          sudo npm install -D --save autoprefixer
+          sudo npm install -D --save postcss-cli
+      - name: Build Hugo Website
+        run: |
+          cd daprdocs
+          git config --global --add safe.directory /github/workspace
+          if [ $GITHUB_EVENT_NAME == 'pull_request' ]; then
+            STAGING_URL="https://${SWA_BASE}-${{github.event.number}}.westus2.azurestaticapps.net/"
+          fi
+          hugo ${STAGING_URL+-b "$STAGING_URL"}
+      - name: Deploy docs site
         uses: Azure/static-web-apps-deploy@v1
-        env:
-          HUGO_ENV: production
-          HUGO_VERSION: "0.100.2"
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
-          skip_deploy_on_missing_secrets: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/daprdocs"
-          app_build_command: "git config --global --add safe.directory /github/workspace && hugo"
-          output_location: "public"
-          skip_api_build: true
+          app_location: "daprdocs/public/"
+          api_location: "daprdocs/public/" 
+          output_location: ""
+          skip_app_build: true
+      - name: Upload Hugo artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: hugo_build
+          path: ./daprdocs/public/
+          if-no-files-found: error
 
-  close_pull_request_job:
+  close_staging_site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
