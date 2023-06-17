@@ -6,9 +6,11 @@ description: "Detailed documentation on the Metadata API"
 weight: 1100
 ---
 
-Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns a list of the resources (components and HttpEndpoints loaded), the activated actors (if present), and attributes with information attached.
+Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns the runtime version, a list of the resources (components and HttpEndpoints loaded), the activated actors (if present), subscriptions, app connection details, and attributes with information attached.
 
-## Components
+## Metadata API
+
+### Components
 Each loaded component provides its name, type and version and also information about supported features in the form of component capabilities. 
 These features are available for the [state store]({{< ref supported-state-stores.md >}}) and [binding]({{< ref supported-bindings.md >}}) component types. The table below shows the component type and the list of capabilities for a given version. This list might grow in future and only represents the capabilities of the loaded components.
 
@@ -17,12 +19,18 @@ Component type | Capabilities
 State Store    | ETAG, TRANSACTION, ACTOR, QUERY_API
 Binding        | INPUT_BINDING, OUTPUT_BINDING
 
-## HTTPEndpoints
+### HTTPEndpoints
 Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource associated with the runtime.
 
-## Attributes
+### Subscriptions
+The metadata API returns a list of pubsub subscriptions that the app has registered with the Dapr runtime. This includes the pubsub name, topic, routes, deadletter topic, and the metadata associated with the subscription.
 
-The metadata API allows you to store additional attribute information in the format of key-value pairs. These are ephemeral in-memory and are not persisted if a sidecar is reloaded. This information should be added at the time of a sidecar creation, for example, after the application has started. 
+### App connection details
+The metadata API returns information related to Dapr's connection to the app. This includes the app port, protocol, host, max concurrency, along with health check details.
+
+### Attributes
+
+The metadata API allows you to store additional attribute information in the format of key-value pairs. These are ephemeral in-memory and are not persisted if a sidecar is reloaded. This information should be added at the time of a sidecar creation, for example, after the application has started.
 
 ## Get the Dapr sidecar information
 
@@ -57,9 +65,13 @@ Code | Description
 Name                   | Type                                                                  | Description
 ----                   | ----                                                                  | -----------
 id                     | string                                                                | Application ID
+runtimeVersion         | string                                                                | Version of the Dapr runtime
 actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of registered actors metadata.
 extended.attributeName | string                                                                | List of custom attributes as key-value pairs, where key is the attribute name.
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
+httpEndpoints          | [Metadata API Response HttpEndpoint](#metadataapiresponsehttpendpoint)[] | A json encoded array of loaded HttpEndpoints metadata.
+subscriptions          | [Metadata API Response Subscription](#metadataapiresponsesubscription)[] | A json encoded array of pubsub subscriptions metadata.
+appConnectionProperties| [Metadata API Response AppConnectionProperties](#metadataapiresponseappconnectionproperties) | A json encoded object of app connection properties.
 
 <a id="metadataapiresponseactor"></a>**Metadata API Response Registered Actor**
 
@@ -75,7 +87,50 @@ Name    | Type   | Description
 name    | string | Name of the component.
 type    | string | Component type.
 version | string | Component version.
-capabilities | array | Supported capabilities for this component type and version. 
+capabilities | array | Supported capabilities for this component type and version.
+
+<a id="metadataapiresponsehttpendpoint"></a>**Metadata API Response HttpEndpoint**
+
+Name    | Type   | Description
+----    | ----   | -----------
+name    | string | Name of the HttpEndpoint.
+
+<a id="metadataapiresponsesubscription"></a>**Metadata API Response Subscription**
+
+Name            | Type   | Description
+----            | ----   | -----------
+pubsubname      | string | Name of the pubsub.
+topic           | string | Topic name.
+metadata        | object | Metadata associated with the subscription.
+rules           | array of [Metadata API Response Subscription Rules](metadataapiresponsesubscriptionrules) | List of rules associated with the subscription.
+deadLetterTopic | string | Dead letter topic name.
+
+<a id="metadataapiresponsesubscriptionrules"></a>**Metadata API Response Subscription Rules**
+
+Name    | Type   | Description
+----    | ----   | -----------
+match   | string | CEL expression to match the message.
+path    | string | Path to route the message if the match expression is true.
+
+<a id="metadataapiresponseappconnectionproperties"></a>**Metadata API Response AppConnectionProperties**
+
+Name          | Type   | Description
+----          | ----   | -----------
+port          | integer| Port on which the app is listening.
+protocol      | string | Protocol used by the app.
+channelAddress| string | Host address on which the app is listening.
+maxConcurrency| integer| Maximum number of concurrent requests the app can handle.
+health        | [Metadata API Response AppConnectionProperties Health](#metadataapiresponseappconnectionpropertieshealth) | Health check details of the app.
+
+<a id="metadataapiresponseappconnectionpropertieshealth"></a>**Metadata API Response AppConnectionProperties Health**
+
+Name            | Type   | Description
+----            | ----   | -----------
+healthCheckPath | string | Health check path, applicable for HTTP protocol.
+healthProbeInterval | string | Time between each health probe, in go duration format.
+healthProbeTimeout | string | Timeout for each health probe, in go duration format.
+healthThreshold | integer | Max number of failed health probes before the app is considered unhealthy.
+
 
 ### Examples
 
@@ -87,32 +142,41 @@ curl http://localhost:3500/v1.0/metadata
 
 ```json
 {
-    "id":"demo-actor",
-    "actors":[
-        {
-            "type":"DemoActor",
-            "count":1
-        }
-    ],
-    "extended": {
-        "cliPID":"1031040",
-        "appCommand":"uvicorn --port 3000 demo_actor_service:app",
-        "daprRuntimeVersion": "1.10.0"
+  "id": "demo-actor",
+  "runtimeVersion": "1.12.0",
+  "actors": [
+    {
+      "type": "DemoActor"
+    }
+  ],
+  "components": [
+    {
+      "name": "pubsub",
+      "type": "pubsub.redis",
+      "version": "v1"
     },
-    "components":[
-        {
-            "name":"pubsub",
-            "type":"pubsub.redis",
-            "version":"v1",
-            "capabilities": [""]
-        },
-        {
-            "name":"statestore",
-            "type":"state.redis",
-            "version":"v1",
-            "capabilities": ["ETAG", "TRANSACTION", "ACTOR", "QUERY_API"]
-        }
-    ]
+    {
+      "name": "statestore",
+      "type": "state.redis",
+      "version": "v1",
+      "capabilities": [
+        "ETAG",
+        "TRANSACTIONAL",
+        "ACTOR"
+      ]
+    }
+  ],
+  "extended": {
+    "appCommand": "uvicorn --port 3000 demo_actor_service:app",
+    "appPID": "98121",
+    "cliPID": "98114",
+    "daprRuntimeVersion": "1.12.0"
+  },
+  "appConnectionProperties": {
+    "port": 3000,
+    "protocol": "http",
+    "channelAddress": "127.0.0.1"
+  }
 }
 ```
 
@@ -172,32 +236,42 @@ Get the metadata information to confirm your custom attribute was added:
 
 ```json
 {
-    "id":"demo-actor",
-    "actors":[
-        {
-            "type":"DemoActor",
-            "count":1
-        }
-    ],
-    "extended": {
-        "myDemoAttribute": "myDemoAttributeValue",
-        "cliPID":"1031040",
-        "appCommand":"uvicorn --port 3000 demo_actor_service:app"
+  "id": "demo-actor",
+  "runtimeVersion": "1.12.0",
+  "actors": [
+    {
+      "type": "DemoActor"
+    }
+  ],
+  "components": [
+    {
+      "name": "pubsub",
+      "type": "pubsub.redis",
+      "version": "v1"
     },
-    "components":[
-        {
-            "name":"pubsub",
-            "type":"pubsub.redis",
-            "version":"v1",
-            "capabilities": [""]
-        },
-        {
-            "name":"statestore",
-            "type":"state.redis",
-            "version":"v1",
-            "capabilities": ["ETAG", "TRANSACTION", "ACTOR", "QUERY_API"]
-        }
-    ]
+    {
+      "name": "statestore",
+      "type": "state.redis",
+      "version": "v1",
+      "capabilities": [
+        "ETAG",
+        "TRANSACTIONAL",
+        "ACTOR"
+      ]
+    }
+  ],
+  "extended": {
+    "myDemoAttribute": "myDemoAttributeValue",
+    "appCommand": "uvicorn --port 3000 demo_actor_service:app",
+    "appPID": "98121",
+    "cliPID": "98114",
+    "daprRuntimeVersion": "1.12.0"
+  },
+  "appConnectionProperties": {
+    "port": 3000,
+    "protocol": "http",
+    "channelAddress": "127.0.0.1"
+  }
 }
 ```
 
