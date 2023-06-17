@@ -131,7 +131,7 @@ The following steps will show how to create an app that exposes a server for wit
     	"github.com/golang/protobuf/ptypes/any"
     	"github.com/golang/protobuf/ptypes/empty"
     
-    	commonv1pb "github.com/dapr/dapr/pkg/proto/common/v1"
+    	commonv1pb "github.com/dapr/go-sdk/dapr/proto/common/v1"
     	pb "github.com/dapr/go-sdk/dapr/proto/runtime/v1"
     	"google.golang.org/grpc"
     )
