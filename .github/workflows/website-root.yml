@@ -1,4 +1,4 @@
-name: Dapr Root Website
+name: Azure Static Web App Root
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build_and_deploy_job:
     name: Build Hugo Website
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
@@ -51,34 +51,22 @@ jobs:
             STAGING_URL="https://${SWA_BASE}-${{github.event.number}}.westus2.azurestaticapps.net/"
           fi
           hugo ${STAGING_URL+-b "$STAGING_URL"}
+      - name: Deploy docs site
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "daprdocs/public/"
+          api_location: "daprdocs/public/" 
+          output_location: ""
+          skip_app_build: true
       - name: Upload Hugo artifacts
         uses: actions/upload-artifact@v3
         with:
           name: hugo_build
           path: ./daprdocs/public/
           if-no-files-found: error
-
-  deploy:
-    name: Deploy website
-    needs: ['build']
-    if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Hugo artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: hugo_build
-          path: site/
-      - name: Deploy staging site
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "site/"
-          api_location: "site/" 
-          output_location: ""
-          skip_app_build: true
 
   close_staging_site:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -95,7 +83,7 @@ jobs:
   algolia_index:
     name: Index site for Algolia
     if: github.event_name == 'push'
-    needs: ['build', 'deploy']
+    needs: ['build_and_deploy_job']
     runs-on: ubuntu-latest
     env:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
