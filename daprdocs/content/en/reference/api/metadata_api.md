@@ -102,7 +102,7 @@ Name            | Type   | Description
 pubsubname      | string | Name of the pubsub.
 topic           | string | Topic name.
 metadata        | object | Metadata associated with the subscription.
-rules           | array of [Metadata API Response Subscription Rules](metadataapiresponsesubscriptionrules) | List of rules associated with the subscription.
+rules           | [Metadata API Response Subscription Rules](metadataapiresponsesubscriptionrules)[] | List of rules associated with the subscription.
 deadLetterTopic | string | Dead letter topic name.
 
 <a id="metadataapiresponsesubscriptionrules"></a>**Metadata API Response Subscription Rules**
