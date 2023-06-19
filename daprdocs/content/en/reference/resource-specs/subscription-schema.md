@@ -6,7 +6,7 @@ weight: 2000
 description: "The basic spec for a Dapr subscription"
 ---
 
-
+The `Subscription` is a Dapr resource that is used to .
 
 ```yml
 apiVersion: apiextensions.k8s.io/v1
