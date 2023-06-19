@@ -25,4 +25,5 @@ The following table lists the environment variables used by the Dapr runtime, CL
 | OTEL_EXPORTER_OTLP_ENDPOINT | OpenTelemetry Tracing | Sets the Open Telemetry (OTEL) server address, turns on tracing. (Example: `http://localhost:4318`) |
 | OTEL_EXPORTER_OTLP_INSECURE | OpenTelemetry Tracing | Sets the connection to the endpoint as unencrypted. (`true`, `false`) |
 | OTEL_EXPORTER_OTLP_PROTOCOL | OpenTelemetry Tracing | The OTLP protocol to use Transport protocol. (`grpc`, `http/protobuf`, `http/json`) |
-| DAPR_COMPONENTS_SOCKET_FOLDER | Pluggable component | The location for the `.sock` file for the shared directory location socket |
+| DAPR_COMPONENTS_SOCKETS_FOLDER | Dapr runtime and the .NET, Go, and Java pluggable component SDKs | The location or path where Dapr will look for Pluggable Components Unix Domain Socket files. If unset this location defaults to `/tmp/dapr-components-sockets` |
+| DAPR_COMPONENTS_SOCKETS_EXTENSION | .NET and Java pluggable component SDKs | A per-SDK configuration that indicates the default file extension applied to socket files created by the SDKs. Not a Dapr-enforced behavior. |
