@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Solace-AMQP pub/sub, create a component of type `pubsub.solace.amqp`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up Solace-AMQP pub/sub, create a component of type `pubsub.solace.amqp`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -26,6 +26,8 @@ spec:
       value: 'default'
     - name: password
       value: 'default'
+    - name: consumerID
+      value: 'channel1'
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -39,6 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | url    | Y  | Address of the AMQP broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`amqp://`** URI scheme for non-TLS communication. <br> Use the **`amqps://`** URI scheme for TLS communication. | `"amqp://host.domain[:port]"`
 | username | Y | The username to connect to the broker. Only required if anonymous is not specified or set to `false` .| `default`
 | password | Y | The password to connect to the broker. Only required if anonymous is not specified or set to `false`. | `default`
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | anonymous | N | To connect to the broker without credential validation. Only works if enabled on the broker. A username and password would not be required if this is set to `true`. | `true`
 | caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
