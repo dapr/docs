@@ -6,7 +6,7 @@ description: "Detailed documentation on the Metadata API"
 weight: 1100
 ---
 
-Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns the runtime version, a list of the resources (components and HttpEndpoints loaded), the activated actors (if present), subscriptions, app connection details, and attributes with information attached.
+Dapr has a metadata API that returns information about the sidecar allowing runtime discoverability. The metadata endpoint returns the runtime version, a list of the resources (components and HttpEndpoints loaded), the activated actors (if present), subscriptions, enabled features, app connection details, and attributes with information attached.
 
 ## Metadata API
 
@@ -24,6 +24,9 @@ Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource 
 
 ### Subscriptions
 The metadata API returns a list of pubsub subscriptions that the app has registered with the Dapr runtime. This includes the pubsub name, topic, routes, deadletter topic, and the metadata associated with the subscription.
+
+### Enabled features
+A list of features enabled during build time, this does not include the features from Configuration spec.
 
 ### App connection details
 The metadata API returns information related to Dapr's connection to the app. This includes the app port, protocol, host, max concurrency, along with health check details.
@@ -166,6 +169,9 @@ curl http://localhost:3500/v1.0/metadata
       ]
     }
   ],
+  "enabledFeatures": [
+    "ServiceInvocationStreaming"
+  ],
   "extended": {
     "appCommand": "uvicorn --port 3000 demo_actor_service:app",
     "appPID": "98121",
@@ -259,6 +265,9 @@ Get the metadata information to confirm your custom attribute was added:
         "ACTOR"
       ]
     }
+  ],
+  "enabledFeatures": [
+    "ServiceInvocationStreaming"
   ],
   "extended": {
     "myDemoAttribute": "myDemoAttributeValue",
