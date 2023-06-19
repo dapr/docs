@@ -57,4 +57,4 @@ targets: # Required
 | targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. |  |
 
 ## Related links
-[Learn more about resiliency policies and targets]({{< ref resiliency >}})
+[Learn more about resiliency policies and targets]({{< ref resiliency-overview.md >}})
