@@ -73,7 +73,7 @@ actors                 | [Metadata API Response Registered Actor](#metadataapire
 extended.attributeName | string                                                                | List of custom attributes as key-value pairs, where key is the attribute name.
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
 httpEndpoints          | [Metadata API Response HttpEndpoint](#metadataapiresponsehttpendpoint)[] | A json encoded array of loaded HttpEndpoints metadata.
-subscriptions          | [Metadata API Response Subscription](#metadataapiresponsesubscription)[] | A json encoded array of pubsub subscriptions metadata.
+subscriptions          | [Metadata API Response Subscription](#metadataapiresponsesubscription)[] | A json encoded array of pub/sub subscriptions metadata.
 appConnectionProperties| [Metadata API Response AppConnectionProperties](#metadataapiresponseappconnectionproperties) | A json encoded object of app connection properties.
 
 <a id="metadataapiresponseactor"></a>**Metadata API Response Registered Actor**
