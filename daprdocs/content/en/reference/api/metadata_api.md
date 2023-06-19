@@ -26,7 +26,7 @@ Each loaded `HttpEndpoint` provides a name to easily identify the Dapr resource 
 The metadata API returns a list of pubsub subscriptions that the app has registered with the Dapr runtime. This includes the pubsub name, topic, routes, deadletter topic, and the metadata associated with the subscription.
 
 ### Enabled features
-A list of features enabled during build time, this does not include the features from Configuration spec.
+A list of features enabled via Configuration spec (including build-time overrides).
 
 ### App connection details
 The metadata API returns information related to Dapr's connection to the app. This includes the app port, protocol, host, max concurrency, along with health check details.
@@ -147,6 +147,9 @@ curl http://localhost:3500/v1.0/metadata
 {
   "id": "demo-actor",
   "runtimeVersion": "1.12.0",
+  "enabledFeatures": [
+    "ServiceInvocationStreaming"
+  ],
   "actors": [
     {
       "type": "DemoActor"
@@ -168,9 +171,6 @@ curl http://localhost:3500/v1.0/metadata
         "ACTOR"
       ]
     }
-  ],
-  "enabledFeatures": [
-    "ServiceInvocationStreaming"
   ],
   "extended": {
     "appCommand": "uvicorn --port 3000 demo_actor_service:app",
@@ -244,6 +244,9 @@ Get the metadata information to confirm your custom attribute was added:
 {
   "id": "demo-actor",
   "runtimeVersion": "1.12.0",
+  "enabledFeatures": [
+    "ServiceInvocationStreaming"
+  ],
   "actors": [
     {
       "type": "DemoActor"
@@ -265,9 +268,6 @@ Get the metadata information to confirm your custom attribute was added:
         "ACTOR"
       ]
     }
-  ],
-  "enabledFeatures": [
-    "ServiceInvocationStreaming"
   ],
   "extended": {
     "myDemoAttribute": "myDemoAttributeValue",
