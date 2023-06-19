@@ -6,179 +6,80 @@ weight: 2000
 description: "The basic spec for a Dapr subscription"
 ---
 
-The `Subscription` is a Dapr resource that is used to .
+The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file.
+
+## `v1alpha1`
+
+The following is the basic version `v1alpha1` spec for a `Subscription` resource. 
 
 ```yml
-apiVersion: apiextensions.k8s.io/v1
-kind: CustomResourceDefinition
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
 metadata:
-  name: subscriptions.dapr.io
-  labels:
-    app.kubernetes.io/part-of: "dapr"
+  name: <REPLACE-WITH-RESOURCE-NAME>
 spec:
-  group: dapr.io
-  conversion:
-    strategy: Webhook
-    webhook:
-      clientConfig:
-        service:
-          namespace: replaceme # Patched by post-install webhook
-          name: dapr-webhook
-          path: /convert
-        #caBundle: Patched by post-install webhook
-      conversionReviewVersions:
-      - v1
-      - v2alpha1
-  versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: Subscription describes an pub/sub event subscription.
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          scopes:
-            items:
-              type: string
-            type: array
-          spec:
-            description: SubscriptionSpec is the spec for an event subscription.
-            properties:
-              pubsubname:
-                type: string
-              route:
-                type: string
-              topic:
-                type: string
-              deadLetterTopic:
-                type: string
-              bulkSubscribe:
-                description: Represents bulk subscribe properies
-                properties:
-                  enabled: 
-                    type: boolean
-                  maxMessagesCount:
-                    type: integer
-                  maxAwaitDurationMs:
-                    type: integer
-                required:
-                  - enabled
-                type: object
-              metadata:
-                additionalProperties:
-                  type: string
-                type: object
-            required:
-            - pubsubname
-            - route
-            - topic
-            type: object
-        type: object
-    served: true
-    storage: false
-  - name: v2alpha1
-    schema:
-      openAPIV3Schema:
-        description: Subscription describes an pub/sub event subscription.
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          scopes:
-            items:
-              type: string
-            type: array
-          spec:
-            description: SubscriptionSpec is the spec for an event subscription.
-            properties:
-              metadata:
-                additionalProperties:
-                  type: string
-                description: The optional metadata to provide the subscription.
-                type: object
-              pubsubname:
-                description: The PubSub component name.
-                type: string
-              routes:
-                description: The Routes configuration for this topic.
-                properties:
-                  default:
-                    type: string
-                  rules:
-                    description: The list of rules for this topic.
-                    items:
-                      description: Rule is used to specify the condition for sending
-                        a message to a specific path.
-                      properties:
-                        match:
-                          description: The optional CEL expression used to match the
-                            event. If the match is not specified, then the route is
-                            considered the default. The rules are tested in the order
-                            specified, so they should be define from most-to-least
-                            specific. The default route should appear last in the
-                            list.
-                          type: string
-                        path:
-                          description: The path for events that match this rule.
-                          type: string
-                      required:
-                      - match
-                      - path
-                      type: object
-                    type: array
-                type: object
-              topic:
-                description: The topic name to subscribe to.
-                type: string
-              deadLetterTopic:
-                description: The optional dead letter queue for this topic to send events to.
-                type: string
-              bulkSubscribe:
-                description: Represents bulk subscribe properies
-                properties:
-                  enabled: 
-                    type: boolean
-                  maxMessagesCount:
-                    type: integer
-                  maxAwaitDurationMs:
-                    type: integer
-                required:
-                  - enabled
-                type: object
-            required:
-            - pubsubname
-            - routes
-            - topic
-            type: object
-        type: object
-    served: true
-    storage: true
-  names:
-    kind: Subscription
-    listKind: SubscriptionList
-    plural: subscriptions
-    singular: subscription
-    categories:
-    - all
-    - dapr
-  scope: Namespaced
+  version: v1alpha1
+  topic: <REPLACE-WITH-TOPIC-NAME> # Required
+  route: <REPLACE-WITH-ROUTE-NAME> # Required
+  pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
+  deadLetterTopic: <REPLACE-WITH-DEAD-LETTER-TOPIC-NAME> # Optional
+  bulkSubscribe: # Optional
+  - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
+  - maxmessages: <REPLACE-WITH-VALUE>
+  - maxawaitduration: <REPLACE-WITH-VALUE>
+scopes:
+- <REPLACE-WITH-SCOPED-APPIDS>
 ```
+
+### Spec fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| topic | Y | The name of the topic to which your component subscribes. | `orders` |
+| route | Y | The endpoint to which all topic messages are sent. | `/checkout` |
+| pubsubname | N | The name of your pub/sub component. | `pubsub` |
+| deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
+| bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
+
+## `v2alpha1`
+
+The following the basic `v2alpha1` spec for a `Subscription` resource.
+
+```yml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: <REPLACE-WITH-NAME>
+spec:
+  version: v2alpha1
+  topic: <REPLACE-WITH-TOPIC-NAME> # Required
+  routes: # Required
+  - rules:
+    - match: <REPLACE-WITH-EVENT-TYPE>
+      path: <REPLACE-WITH-PATH>
+  pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
+  deadlettertopic: <REPLACE-WITH-TOPIC-NAME> # Optional
+  bulksubscribe: # Optional
+  - enabled: <REPLACE-WITH-TOPIC-NAME> 
+  - maxmessages: <REPLACE-WITH-TOPIC-NAME>
+  - maxawaitduration: <REPLACE-WITH-TOPIC-NAME>
+scopes:
+- <REPLACE-WITH-SCOPED-APPIDS>
+```
+
+### Spec fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| topic | Y | The name of the topic to which your component subscribes. | `orders` |
+| routes | Y | The routes configuration for this topic, including specifying the condition for sending a message to a specific path. Includes the following fields: <br><ul><li>match: _Optional._ The CEL expression used to match the event. If not specified, the route is considered the default. </li><li>path: The path for events that match this rule. </li></ul>The endpoint to which all topic messages are sent. | `match: event.type == "widget"` <br>`path: /widgets` |
+| pubsubname | N | The name of your pub/sub component. | `pubsub` |
+| deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
+| bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
+
+
+## Related links
+- [Learn more about the declarative subscription method]({{< ref "subscription-methods.md#declarative-subscriptions" >}})
+- [Learn more about dead letter topics]({{< ref pubsub-deadletter.md >}})
+- [Learn more about routing messages]({{< ref "howto-route-messages.md#declarative-subscription" >}})
+- [Learn more about bulk subscribing]({{< ref pubsub-bulk.md >}})

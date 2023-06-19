@@ -6,138 +6,55 @@ weight: 3000
 description: "The basic spec for a Dapr resiliency resource"
 ---
 
+The `Resiliency` Dapr resource allows you to define and apply fault tolerance resiliency polcies. Resiliency specs are applied with the Dapr sidecar starts. 
 
 ```yml
-apiVersion: apiextensions.k8s.io/v1
-kind: CustomResourceDefinition
+apiVersion: dapr.io/v1alpha1
+kind: Resiliency
 metadata:
-  annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
-  creationTimestamp: null
-  name: resiliencies.dapr.io
-  labels:
-    app.kubernetes.io/part-of: "dapr"
+  name: <REPLACE-WITH-RESOURCE-NAME>
+scopes:
+  - <REPLACE-WITH-SCOPED-APPIDS>
 spec:
-  group: dapr.io
-  names:
-    kind: Resiliency
-    listKind: ResiliencyList
-    plural: resiliencies
-    singular: resiliency
-    categories:
-    - dapr
-  scope: Namespaced
-  versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          scopes:
-            items:
-              type: string
-            type: array
-          spec:
-            properties:
-              policies:
-                properties:
-                  circuitBreakers:
-                    additionalProperties:
-                      properties:
-                        interval:
-                          type: string
-                        maxRequests:
-                          type: integer
-                        timeout:
-                          type: string
-                        trip:
-                          type: string
-                      type: object
-                    type: object
-                  retries:
-                    additionalProperties:
-                      properties:
-                        duration:
-                          type: string
-                        maxInterval:
-                          type: string
-                        maxRetries:
-                          type: integer
-                        policy:
-                          type: string
-                      type: object
-                    type: object
-                  timeouts:
-                    additionalProperties:
-                      type: string
-                    type: object
-                type: object
-              targets:
-                properties:
-                  actors:
-                    additionalProperties:
-                      properties:
-                        circuitBreaker:
-                          type: string
-                        circuitBreakerCacheSize:
-                          type: integer
-                        circuitBreakerScope:
-                          type: string
-                        retry:
-                          type: string
-                        timeout:
-                          type: string
-                      type: object
-                    type: object
-                  apps:
-                    additionalProperties:
-                      properties:
-                        circuitBreaker:
-                          type: string
-                        circuitBreakerCacheSize:
-                          type: integer
-                        retry:
-                          type: string
-                        timeout:
-                          type: string
-                      type: object
-                    type: object
-                  components:
-                    additionalProperties:
-                      properties:
-                        inbound:
-                          properties:
-                            circuitBreaker:
-                              type: string
-                            retry:
-                              type: string
-                            timeout:
-                              type: string
-                          type: object
-                        outbound:
-                          properties:
-                            circuitBreaker:
-                              type: string
-                            retry:
-                              type: string
-                            timeout:
-                              type: string
-                          type: object
-                      type: object
-                    type: object
-                type: object
-            required:
-            - policies
-            - targets
-            type: object
-        type: object
-    served: true
-    storage: true
+  policies: # Required
+    timeouts: # Replce with any unique name
+      timeoutName: <REPLACE-WITH-TIME-VALUE>
+    retries:
+      retryName: # Replace with any unique name
+        policy: exponential
+        maxInterval: <REPLACE-WITH-VALUE>
+        maxRetries: <REPLACE-WITH-VALUE>
+    circuitBreakers:
+      circuitBreakerName: # Replace with any unique name
+        maxRequests: <REPLACE-WITH-VALUE>
+        timeout: <REPLACE-WITH-VALUE> 
+        trip: <REPLACE-WITH-CONSECUTIVE-FAILURE-VALUE>
+targets: # Required
+    apps:
+      appID: # Replace with scoped app ID
+        timeout: <REPLACE-WITH-TIMEOUT-NAME>
+        retry: <REPLACE-WITH-RETRY-NAME>
+        circuitBreaker: <REPLACE-WITH-CIRCUIT-BREAKER-NAME>
+    actors:
+      myActorType: 
+        timeout: <REPLACE-WITH-TIMEOUT-NAME>
+        retry: <REPLACE-WITH-RETRY-NAME>
+        circuitBreaker: <REPLACE-WITH-CIRCUIT-BREAKER-NAME>
+        circuitBreakerCacheSize: <REPLACE-WITH-VALUE>
+    components:
+      componentName: # Replace with your component name
+        outbound:
+          timeout: <REPLACE-WITH-TIMEOUT-NAME>
+          retry: <REPLACE-WITH-RETRY-NAME>
+          circuitBreaker: <REPLACE-WITH-CIRCUIT-BREAKER-NAME>
 ```
+
+## Spec fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
+| targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. |  |
+
+## Related links
+[Learn more about resiliency policies and targets]({{< ref resiliency >}})
