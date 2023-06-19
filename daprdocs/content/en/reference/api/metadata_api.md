@@ -102,7 +102,7 @@ name    | string | Name of the HttpEndpoint.
 
 Name            | Type   | Description
 ----            | ----   | -----------
-pubsubname      | string | Name of the pubsub.
+pubsubname      | string | Name of the pub/sub.
 topic           | string | Topic name.
 metadata        | object | Metadata associated with the subscription.
 rules           | [Metadata API Response Subscription Rules](metadataapiresponsesubscriptionrules)[] | List of rules associated with the subscription.
