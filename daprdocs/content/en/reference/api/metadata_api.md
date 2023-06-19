@@ -33,7 +33,7 @@ The metadata API returns information related to Dapr's connection to the app. Th
 
 ### Attributes
 
-The metadata API allows you to store additional attribute information in the format of key-value pairs. These are ephemeral in-memory and are not persisted if a sidecar is reloaded. This information should be added at the time of a sidecar creation, for example, after the application has started.
+The metadata API allows you to store additional attribute information in the format of key-value pairs. These are ephemeral in-memory and are not persisted if a sidecar is reloaded. This information should be added at the time of a sidecar creation (for example, after the application has started).
 
 ## Get the Dapr sidecar information
 
