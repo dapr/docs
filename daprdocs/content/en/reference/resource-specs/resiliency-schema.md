@@ -6,22 +6,24 @@ weight: 3000
 description: "The basic spec for a Dapr resiliency resource"
 ---
 
-The `Resiliency` Dapr resource allows you to define and apply fault tolerance resiliency polcies. Resiliency specs are applied with the Dapr sidecar starts. 
+The `Resiliency` Dapr resource allows you to define and apply fault tolerance resiliency policies. Resiliency specs are applied when the Dapr sidecar starts. 
 
 ```yml
 apiVersion: dapr.io/v1alpha1
 kind: Resiliency
 metadata:
   name: <REPLACE-WITH-RESOURCE-NAME>
+version: v1alpha1
 scopes:
   - <REPLACE-WITH-SCOPED-APPIDS>
 spec:
   policies: # Required
-    timeouts: # Replce with any unique name
+    timeouts: # Replace with any unique name
       timeoutName: <REPLACE-WITH-TIME-VALUE>
     retries:
       retryName: # Replace with any unique name
-        policy: exponential
+        policy: <REPLACE-WITH-VALUE>
+        duration: <REPLACE-WITH-VALUE>
         maxInterval: <REPLACE-WITH-VALUE>
         maxRetries: <REPLACE-WITH-VALUE>
     circuitBreakers:
@@ -53,8 +55,9 @@ targets: # Required
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
-| targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. |  |
+| policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> <br> [See more examples with all of the built-in policies]({{< ref policies.md >}}) | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
+| targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. <br>[See more examples in the resiliency targets guide]({{< ref targets.md >}})  | `apps` <br>`components`<br>`actors` |
+
 
 ## Related links
 [Learn more about resiliency policies and targets]({{< ref resiliency-overview.md >}})

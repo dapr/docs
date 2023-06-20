@@ -6,44 +6,14 @@ weight: 2000
 description: "The basic spec for a Dapr subscription"
 ---
 
-The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file.
+The `Subscription` Dapr resource allows you to subscribe declaratively to a topic using an external component YAML file. This guide demonstrates two subscription API versions:
 
-## `v1alpha1`
-
-The following is the basic version `v1alpha1` spec for a `Subscription` resource. 
-
-```yml
-apiVersion: dapr.io/v1alpha1
-kind: Subscription
-metadata:
-  name: <REPLACE-WITH-RESOURCE-NAME>
-spec:
-  version: v1alpha1
-  topic: <REPLACE-WITH-TOPIC-NAME> # Required
-  route: <REPLACE-WITH-ROUTE-NAME> # Required
-  pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
-  deadLetterTopic: <REPLACE-WITH-DEAD-LETTER-TOPIC-NAME> # Optional
-  bulkSubscribe: # Optional
-  - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
-  - maxmessages: <REPLACE-WITH-VALUE>
-  - maxawaitduration: <REPLACE-WITH-VALUE>
-scopes:
-- <REPLACE-WITH-SCOPED-APPIDS>
-```
-
-### Spec fields
-
-| Field              | Required | Details | Example |
-|--------------------|:--------:|---------|---------|
-| topic | Y | The name of the topic to which your component subscribes. | `orders` |
-| route | Y | The endpoint to which all topic messages are sent. | `/checkout` |
-| pubsubname | N | The name of your pub/sub component. | `pubsub` |
-| deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
-| bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
+- `v2alpha` (default spec)
+- `v1alpha1` (deprecated)
 
 ## `v2alpha1`
 
-The following the basic `v2alpha1` spec for a `Subscription` resource.
+The following is the basic `v2alpha1` spec for a `Subscription` resource. `v2alpha1` is the default spec for the subscription API.
 
 ```yml
 apiVersion: dapr.io/v2alpha1
@@ -77,6 +47,39 @@ scopes:
 | deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
 | bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
 
+
+## `v1alpha1`
+
+The following is the basic version `v1alpha1` spec for a `Subscription` resource. `v1alpha1` is now deprecated.
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: <REPLACE-WITH-RESOURCE-NAME>
+spec:
+  version: v1alpha1
+  topic: <REPLACE-WITH-TOPIC-NAME> # Required
+  route: <REPLACE-WITH-ROUTE-NAME> # Required
+  pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
+  deadLetterTopic: <REPLACE-WITH-DEAD-LETTER-TOPIC-NAME> # Optional
+  bulkSubscribe: # Optional
+  - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
+  - maxmessages: <REPLACE-WITH-VALUE>
+  - maxawaitduration: <REPLACE-WITH-VALUE>
+scopes:
+- <REPLACE-WITH-SCOPED-APPIDS>
+```
+
+### Spec fields
+
+| Field              | Required | Details | Example |
+|--------------------|:--------:|---------|---------|
+| topic | Y | The name of the topic to which your component subscribes. | `orders` |
+| route | Y | The endpoint to which all topic messages are sent. | `/checkout` |
+| pubsubname | N | The name of your pub/sub component. | `pubsub` |
+| deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
+| bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
 
 ## Related links
 - [Learn more about the declarative subscription method]({{< ref "subscription-methods.md#declarative-subscriptions" >}})
