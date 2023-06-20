@@ -16,11 +16,15 @@ When state TTL has native support in the state store component, Dapr forwards th
 
 When a TTL is not specified, the default behavior of the state store is retained.
 
-## Persisting state (ignoring an existing TTL)
+## Explicit persistence bypassing globally defined TTL
 
-Let's say you have a TTL set at the database/container level. Many databases allow you to overwrite the TTL for a specific entity. To persist a state (ignore any global TTLs set for the key), specify a `ttlInSeconds` value of `-1`.
+Persisting state applies to all state stores that let you specify a default TTL used for all data, either:
+- At the Dapr component level, or 
+- When creating the resource outside of Dapr. 
 
-> Not specifying TTL at the entity level applies the global TTL. 
+When no TTL is specified, the data expires after that default period of time. This is not facilitated by Dapr at all.
+
+In addition, all of these state stores also support the option to _explicitly_ persist data. This means they ignore the default database policy (which may or may not have been set up using Dapr) to indefinitely retain a given database record. You can do this by setting `ttlInSeconds` to the value `-1`.
 
 ## Supported components
 
