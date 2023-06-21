@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "GCP Pub/Sub"
-linkTitle: "GCP Pub/Sub"
+title: "GCP"
+linkTitle: "GCP"
 description: "Detailed documentation on the GCP Pub/Sub component"
 aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-gcp/"
@@ -10,7 +10,7 @@ aliases:
 
 ## Create a Dapr component
 
-To setup GCP pubsub create a component of type `pubsub.gcp.pubsub`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration
+To set up GCP pub/sub, create a component of type `pubsub.gcp.pubsub`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -72,7 +72,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | projectId     | Y | GCP project id| `myproject-123`
 | endpoint       | N  | GCP endpoint for the component to use. Only used for local development (for example) with [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"http://localhost:8085"`
-| `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the consumer ID is not set, the Dapr runtime will set it to the Dapr application ID. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID |
+| `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID |
 | identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
 | privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-private-key"`
 | privateKey    | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`

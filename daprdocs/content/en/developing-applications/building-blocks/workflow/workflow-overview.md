@@ -16,7 +16,7 @@ The durable, resilient Dapr Workflow capability:
 
 - Offers a built-in workflow runtime for driving Dapr Workflow execution.
 - Provides SDKs for authoring workflows in code, using any language.
-- Provides HTTP and gRPC APIs for managing workflows (start, query, suspend/resume, terminate).
+- Provides HTTP and gRPC APIs for managing workflows (start, query, pause/resume, raise event, terminate, purge).
 - Integrates with any other workflow runtime via workflow components.
 
 <img src="/images/workflow-overview/workflow-overview.png" width=800 alt="Diagram showing basics of Dapr Workflow">
@@ -56,7 +56,10 @@ Same as Dapr actors, you can schedule reminder-like durable delays for any time 
 When you create an application with workflow code and run it with Dapr, you can call specific workflows that reside in the application. Each individual workflow can be:
 
 - Started or terminated through a POST request
-- Queried through a GET request
+- Triggered to deliver a named event through a POST request
+- Paused and then resumed through a POST request
+- Purged from your state store through a POST request
+- Queried for workflow status through a GET request
 
 [Learn more about how manage a workflow using HTTP calls.]({{< ref workflow_api.md >}})
 

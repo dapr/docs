@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://v1-11.docs.dapr.io"
+baseURL = "https://docs.dapr.io"
 title = "Dapr Docs"
 theme = "docsy"
 disableFastRender = true
@@ -171,17 +171,20 @@ github_subdir = "daprdocs"
 github_branch = "v1.11"
 
 # Versioning
-version_menu = "v1.11 (preview)"
+version_menu = "v1.11 (latest)"
 version = "v1.11"
 archived_version = false
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.11 (preview)"
+  version = "v1.12 (preview)"
   url = "#"
 [[params.versions]]
-  version = "v1.10 (latest)"
+  version = "v1.11 (latest)"
   url = "https://docs.dapr.io"
+[[params.versions]]
+  version = "v1.10"
+  url = "https://v1-10.docs.dapr.io"
 [[params.versions]]
   version = "v1.9"
   url = "https://v1-9.docs.dapr.io"
@@ -203,27 +206,6 @@ url_latest_version = "https://docs.dapr.io"
 [[params.versions]]
   version = "v1.3"
   url = "https://v1-3.docs.dapr.io"
-[[params.versions]]
-  version = "v1.2"
-  url = "https://v1-2.docs.dapr.io"
-[[params.versions]]
-  version = "v1.1"
-  url = "https://v1-1.docs.dapr.io"
-[[params.versions]]
-  version = "v1.0"
-  url = "https://v1-0.docs.dapr.io"
-[[params.versions]]
-  version = "v0.11"
-  url = "https://v0-11.docs.dapr.io"
-[[params.versions]]
-  version = "v0.10"
-  url = "https://github.com/dapr/docs/tree/v0.10.0"
-[[params.versions]]
-  version = "v0.9"
-  url = "https://github.com/dapr/docs/tree/v0.9.0"
-[[params.versions]]
-  version = "v0.8"
-  url = "https://github.com/dapr/docs/tree/v0.8.0"
 
 # UI Customization
 [params.ui]
