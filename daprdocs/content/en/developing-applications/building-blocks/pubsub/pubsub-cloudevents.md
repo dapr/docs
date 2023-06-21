@@ -96,21 +96,7 @@ For example, to override the applicable values from [the first CloudEvent exampl
 }
 ```
 
-`cloudevent-id` should be specified in the publish metadata request, not the payload. For example:
-
-{{< tabs Python >}}
-
-{{% codetab %}}
-
-
-```python
-resp = d.publish_event(
-    pubsub_name='pubsub',
-    topic_name='TOPIC_A',
-    data=json.dumps(req_data),
-    publish_metadata={'cloudevent-id': '5929aaac-a5e2-4ca1-859c-edfe73f11565'}
-)
-``` 
+`cloudevent-id` should be specified in the publish metadata request, not the payload. 
 
 {{% /codetab %}}
 
