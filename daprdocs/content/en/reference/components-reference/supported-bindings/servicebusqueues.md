@@ -153,7 +153,7 @@ curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
 
 {{< /tabs >}}
 
-## Scheduled messages
+## Schedule a message
 
 A message can be scheduled for delayed processing.
 
