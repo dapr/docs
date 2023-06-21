@@ -22,13 +22,14 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 You can subscribe declaratively to a topic using an external component file. This example uses a YAML component file named `subscription.yaml`:
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: order
 spec:
   topic: orders
-  route: /checkout
+  routes:
+    default: /checkout
   pubsubname: pubsub
 scopes:
 - orderprocessing
