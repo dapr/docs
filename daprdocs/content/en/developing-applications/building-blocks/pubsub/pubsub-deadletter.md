@@ -25,13 +25,14 @@ The diagram below is an example of how dead letter topics work. First a message 
 The following YAML shows how to configure a subscription with a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic. This subscription is scoped to an app with a `checkout` ID.
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: order
 spec:
   topic: orders
-  route: /checkout
+  routes: 
+    default: /checkout
   pubsubname: pubsub
   deadLetterTopic: poisonMessages
 scopes:
@@ -86,13 +87,16 @@ spec:
 Remember to now configure a subscription to handling the dead letter topics. For example you can create another declarative subscription to receive these on the same or a different application. The example below shows the checkout application subscribing to the `poisonMessages` topic with another subscription and sending these to be handled by the `/failedmessages` endpoint.
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: deadlettertopics
 spec:
   topic: poisonMessages
-  route: /failedMessages
+  routes: 
+    rules:
+      - match:
+        path: /failedMessages
   pubsubname: pubsub
 scopes:
 - checkout
