@@ -68,7 +68,8 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 
 ### Override CloudEvent values
 
-You can override CloudEvent values by replacing some metadata with the following:
+When not provided, Dapr automatically generates several CloudEvent properties. You can override these generated CloudEvent properties by providing the following optional metadata keys:
+
 - `cloudevent-id`: overrides `id`
 - `cloudevent-source`: overrides `source`
 - `cloudevent-type`: overrides `type`
@@ -76,12 +77,8 @@ You can override CloudEvent values by replacing some metadata with the following
 - `cloudevent-tracestate`: overrides `tracestate`
 - `cloudevent-traceparent`: overrides `traceparent`
 
-{{% alert title="Note" color="primary" %}}
-The following metadata can't be overridden:
-- `data`
-- `topic`
-- `pubsub`
-- `datacontenttype`
+{{% alert title="Important" color="warning" %}}
+While you can override `traceid` and `tracestate`, this is not the recommended way to specify trace ID or trace state. 
 {{% /alert %}}
 
 For example, to override the applicable values from [the first CloudEvent example above]({{< ref "#cloudevents-example" >}}):
@@ -90,12 +87,6 @@ For example, to override the applicable values from [the first CloudEvent exampl
 {
   "topic": "orders",
   "pubsubname": "order_pub_sub",
-  "cloudevent-traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
-  "cloudevent-tracestate": "",
-  "data": {
-    "orderId": 1
-  },
-  "cloudevent-id": "5929aaac-a5e2-4ca1-859c-edfe73f11565",
   "specversion": "1.0",
   "datacontenttype": "application/json; charset=utf-8",
   "cloudevent-source": "checkout",
@@ -104,6 +95,28 @@ For example, to override the applicable values from [the first CloudEvent exampl
   "cloudevent-traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
 }
 ```
+
+`cloudevent-id` should be specified in the publish metadata request, not the payload. For example:
+
+{{< tabs Python >}}
+
+{{% codetab %}}
+
+
+```python
+resp = d.publish_event(
+    pubsub_name='pubsub',
+    topic_name='TOPIC_A',
+    data=json.dumps(req_data),
+    publish_metadata={'cloudevent-id': '5929aaac-a5e2-4ca1-859c-edfe73f11565'}
+)
+``` 
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
 
 ## Publish your own CloudEvent
 
