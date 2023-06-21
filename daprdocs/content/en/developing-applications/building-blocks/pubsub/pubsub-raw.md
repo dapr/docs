@@ -141,13 +141,14 @@ $app->start();
 Similarly, you can subscribe to raw events declaratively by adding the `rawPayload` metadata entry to your subscription specification.
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: myevent-subscription
 spec:
   topic: deathStarStatus
-  route: /dsstatus
+  routes: 
+    default: /dsstatus
   pubsubname: pubsub
   metadata:
     rawPayload: "true"
