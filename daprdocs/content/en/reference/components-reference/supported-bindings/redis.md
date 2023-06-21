@@ -96,6 +96,8 @@ An HTTP 204 (No Content) and empty body is returned if successful.
 
 You can get a record in Redis using the `get` operation. This gets a key that was previously set.
 
+This takes an optional parameter `delete`, which is by default `false`. When it is set to `true`, this operation uses the `GETDEL` operation of Redis. For example, it returns the `value` which was previously set and then deletes it.
+
 #### Request
 
 ```json
@@ -116,6 +118,20 @@ You can get a record in Redis using the `get` operation. This gets a key that wa
   "data": {
     "Hello": "World",
     "Lorem": "Ipsum"
+  }
+}
+```
+
+#### Request with delete flag
+
+```json
+{
+  "operation": "get",
+  "metadata": {
+    "key": "key1",
+    "delete": "true"
+  },
+  "data": {
   }
 }
 ```
