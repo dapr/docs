@@ -98,11 +98,6 @@ For example, to override the applicable values from [the first CloudEvent exampl
 
 `cloudevent-id` should be specified in the publish metadata request, not the payload. 
 
-{{% /codetab %}}
-
-{{< /tabs >}}
-
-
 
 ## Publish your own CloudEvent
 
