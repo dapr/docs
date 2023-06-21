@@ -1,9 +1,9 @@
 ---
 type: docs
 title: "HTTPEndpoint spec"
-linkTitle: "HTTPEndpoint spec"
-description: "The HTTPEndpoint resource spec"
-weight: 300
+linkTitle: "HTTPEndpoint"
+description: "The basic spec for a Dapr HTTPEndpoint resource"
+weight: 4000
 aliases:
   - "/operations/httpEndpoints/"
 ---
