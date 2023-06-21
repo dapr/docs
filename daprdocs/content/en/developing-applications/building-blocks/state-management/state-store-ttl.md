@@ -24,7 +24,7 @@ Persisting state applies to all state stores that let you specify a default TTL 
 
 When no specific TTL is specified, the data expires after that global TTL period of time. This is not facilitated by Dapr.
 
-In addition, all of these state stores also support the option to _explicitly_ persist data. This means they ignore the default database policy (which may or may not have been set up using Dapr) to indefinitely retain a given database record. You can do this by setting `ttlInSeconds` to the value `-1`.
+In addition, all state stores also support the option to _explicitly_ persist data. This means you can ignore the default database policy (which may have been set outside of Dapr or via a Dapr Component) to indefinitely retain a given database record. You can do this by setting `ttlInSeconds` to the value of `-1`. This value indicates to ignore any TTL value set.
 
 ## Supported components
 
