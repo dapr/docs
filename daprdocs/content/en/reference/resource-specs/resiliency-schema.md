@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Resiliency spec"
-linkTitle: "Resiliency spec"
+linkTitle: "Resiliency"
 weight: 3000
 description: "The basic spec for a Dapr resiliency resource"
 ---

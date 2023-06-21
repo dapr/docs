@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Subscription spec"
-linkTitle: "Subscription spec"
+linkTitle: "Subscription"
 weight: 2000
 description: "The basic spec for a Dapr subscription"
 ---
