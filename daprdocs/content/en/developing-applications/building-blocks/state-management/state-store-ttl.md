@@ -19,7 +19,7 @@ When a TTL is not specified, the default behavior of the state store is retained
 ## Explicit persistence bypassing globally defined TTL
 
 Persisting state applies to all state stores that let you specify a default TTL used for all data, either:
-- At the Dapr component level, or 
+- Setting a global TTL value via a Dapr component, or 
 - When creating the state store outside of Dapr and setting a global TTL value. 
 
 When no TTL is specified, the data expires after that default period of time. This is not facilitated by Dapr at all.
