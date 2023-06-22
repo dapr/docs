@@ -77,9 +77,7 @@ When not provided, Dapr automatically generates several CloudEvent properties. Y
 - `cloudevent-tracestate`: overrides `tracestate`
 - `cloudevent-traceparent`: overrides `traceparent`
 
-{{% alert title="Important" color="warning" %}}
-While you can override `traceid` and `tracestate`, this is not the recommended way to specify trace ID or trace state. 
-{{% /alert %}}
+The CloudEvent override metadata properties apply globally for all pub/sub components.
 
 For example, to override the applicable values from [the first CloudEvent example above]({{< ref "#cloudevents-example" >}}):
 
@@ -96,7 +94,13 @@ For example, to override the applicable values from [the first CloudEvent exampl
 }
 ```
 
-`cloudevent-id` should be specified in the publish metadata request, not the payload. 
+{{% alert title="Important" color="warning" %}}
+While you can override `traceid` and `tracestate`, this is not the recommended way to specify trace ID or trace state. The following fields should be specified in the publish metadata request, not the JSON payload:
+- `cloudevent-id`
+- `cloudevent-traceid`
+- `cloudevent-tracestate`
+
+{{% /alert %}}
 
 
 ## Publish your own CloudEvent
