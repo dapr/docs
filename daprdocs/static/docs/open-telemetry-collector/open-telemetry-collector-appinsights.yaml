@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        image: otel/opentelemetry-collector-contrib:0.50.0
+        image: otel/opentelemetry-collector-contrib:0.77.0
         command:
           - "/otelcol-contrib"
           - "--config=/conf/otel-collector-config.yaml"

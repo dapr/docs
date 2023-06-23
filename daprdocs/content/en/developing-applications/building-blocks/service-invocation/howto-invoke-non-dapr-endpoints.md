@@ -47,7 +47,7 @@ The diagram below is an overview of how Dapr's service invocation works when inv
 ## Using an HTTPEndpoint resource or FQDN URL for non-Dapr endpoints
 There are two ways to invoke a non-Dapr endpoint when communicating either to Dapr applications or non-Dapr applications. A Dapr application can invoke a non-Dapr endpoint by providing one of the following:
 
-- A named `HTTPEndpoint` resource, including defining an `HTTPEndpoint` resource type. See the [HTTPEndpoint reference]({{< ref httpendpoints-reference.md >}}) guide for an example.
+- A named `HTTPEndpoint` resource, including defining an `HTTPEndpoint` resource type. See the [HTTPEndpoint reference]({{< ref httpendpoints-schema.md >}}) guide for an example.
 
     ```sh
     localhost:3500/v1.0/invoke/<HTTPEndpoint-name>/method/<my-method>
@@ -81,7 +81,7 @@ curl http://localhost:3602/v1.0/invoke/orderprocessor/method/checkout
 
 ## Related Links
 
-- [HTTPEndpoint reference]({{< ref httpendpoints-reference.md >}})
+- [HTTPEndpoint reference]({{< ref httpendpoints-schema.md >}})
 - [Service invocation overview]({{< ref service-invocation-overview.md >}})
 - [Service invocation API specification]({{< ref service_invocation_api.md >}})
 

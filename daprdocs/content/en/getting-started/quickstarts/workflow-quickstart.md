@@ -12,12 +12,6 @@ The workflow building block is currently in **alpha**.
 
 Let's take a look at the Dapr [Workflow building block]({{< ref workflow >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs. 
 
-The `order-processor` console app starts and manages the lifecycle of the `OrderProcessingWorkflow` workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
-- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow
-- `ReserveInventoryActivity`: Checks the state store to ensure that there is enough inventory for the purchase
-- `ProcessPaymentActivity`: Processes and authorizes the payment
-- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value
-
 In this guide, you'll:
 
 - Run the `order-processor` application.
@@ -26,12 +20,18 @@ In this guide, you'll:
 
 <img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
 
-Currently, you can experience the Dapr Workflow using the .NET SDK.
 
 {{< tabs ".NET" "Python" >}}
 
  <!-- .NET -->
 {{% codetab %}}
+
+The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
+- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow
+- `ReserveInventoryActivity`: Checks the state store to ensure that there is enough inventory for the purchase
+- `ProcessPaymentActivity`: Processes and authorizes the payment
+- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value
+
 
 ### Step 1: Pre-requisites
 
@@ -258,6 +258,16 @@ The `Activities` directory holds the four workflow activities used by the workfl
 
  <!-- Python -->
 {{% codetab %}}
+
+The `order-processor` console app starts and manages the `order_processing_workflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
+
+- `notify_activity`: Utilizes a logger to print out messages throughout the workflow. These messages notify you when:
+   - You have insufficient inventory
+   - Your payment couldn't be processed, etc.
+- `process_payment_activity`: Processes and authorizes the payment.
+- `verify_inventory_activity`: Checks the state store to ensure there is enough inventory present for purchase.
+- `update_inventory_activity`: Removes the requested items from the state store and updates the store with the new remaining inventory value.
+- `request_approval_activity`: Seeks approval from the manager if payment is greater than 50,000 USD.
 
 ### Step 1: Pre-requisites
 
