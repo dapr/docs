@@ -57,6 +57,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
+> When a new RabbitMQ message gets published, all values from the associated metadata will be added to the message's header values.
+
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | queueName | Y | Input/Output |  The RabbitMQ queue name | `"myqueue"` |
@@ -73,6 +75,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | caCert | N | Input/Output | The CA certificate to use for TLS connection. Defaults to `null`. | `"-----BEGIN CERTIFICATE-----\nMI..."` |
 | clientCert | N | Input/Output | The client certificate to use for TLS connection. Defaults to `null`. | `"-----BEGIN CERTIFICATE-----\nMI..."` |
 | clientKey | N | Input/Output | The client key to use for TLS connection. Defaults to `null`. | `"-----BEGIN PRIVATE KEY-----\nMI..."` |
+
 ## Binding support
 
 This component supports both **input and output** binding interfaces.
