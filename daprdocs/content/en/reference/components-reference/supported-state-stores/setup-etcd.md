@@ -18,7 +18,9 @@ metadata:
   name: <NAME>
 spec:
   type: state.etcd
-  version: v1
+  # Supports v1 and v2. Users should always use v2 by default. There is no
+  # migration path from v1 to v2, see `versioning` below.
+  version: v2
   metadata:
   - name: endpoints
     value: <CONNECTION STRING> # Required. Example: 192.168.0.1:2379,192.168.0.2:2379,192.168.0.3:2379
@@ -37,6 +39,16 @@ spec:
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
+
+
+### Versioning
+
+Dapr has 2 versions of the Etcd state store component: `v1` and `v2`.
+
+`v1` and `v2` have the same metadata fields, however `v1` will cause data inconsistencies in apps when using [Actor TTLs]({{< ref "actors_api.md#ttl" >}}) from Dapr `v1.12`.
+Users should always use `v2` over `v1` as `v1` is deprecated.
+`v1` and `v2` are incompatible and there is no data migration path for `v1` to `v2` on an existing active Etcd cluster and `keyPrefixPath`.
+If you are using `v1`, you should continue to use `v1` until you create a new Etcd cluster or use a different `keyPrefixPath`, then use `v2`.
 
 ## Spec metadata fields
 
