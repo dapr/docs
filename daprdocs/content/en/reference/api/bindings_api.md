@@ -37,6 +37,42 @@ If running on kubernetes apply the component to your cluster.
 
 > **Note:** In production never place passwords or secrets within Dapr component files. For information on securely storing and retrieving secrets using secret stores refer to [Setup Secret Store]({{< ref setup-secret-store >}})
 
+### Binding direction (optional)
+
+There are scenarios where it would be useful to provide additional information to Dapr to indicate the direction supported by the Binding Component. 
+This should help Dapr avoid situations where the Dapr sidecar stays in the `"wait for the app to become ready"` state waiting indefinetely for the application to become available.
+
+The `direction` field can be specified as part of the component's metadata. The valid values for this field are: `"input"`, `"output"`, or `"input, output"`
+
+Here a few scenarios when the `"direction"` metadata field could help:
+
+- When an application (detached from the sidecar) runs as a serverless workload and its scaled to 0, the check done by the dapr sidecar to wait for the app to become ready becomes pointless.
+
+- If the detached dapr sidecar is what is scaled to 0 and the first thing the application does (before even start an http server) is reaching the sidecar the "wait for the app to become ready" gets the app and the sidecar into a dead lock of both ends waiting for each other.
+
+### Example
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafkaevent
+spec:
+  type: bindings.kafka
+  version: v1
+  metadata:
+  - name: brokers
+    value: "http://localhost:5050"
+  - name: topics
+    value: "someTopic"
+  - name: publishTopic
+    value: "someTopic2"
+  - name: consumerGroup
+    value: "group1"
+  - name: "direction"
+    value: "input, output"
+```
+
 ## Invoking Service Code Through Input Bindings
 
 A developer who wants to trigger their app using an input binding can listen on a `POST` http endpoint with the route name being the same as `metadata.name`.
