@@ -66,6 +66,12 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 }
 ```
 
+{{% alert title="Important" color="warning" %}}
+While you can specify `traceid`/`traceparent` and `tracestate` in the metadata request, it's recommended to use Open Telementry and Zipkin protocols for distributed traces. [Learn more about distributed tracing.]({{< ref "tracing-overview.md" >}})  
+
+{{% /alert %}}
+
+
 ### Override CloudEvent values
 
 When not provided, Dapr automatically generates several CloudEvent properties. You can override these generated CloudEvent properties by providing the following optional metadata keys:
@@ -90,15 +96,11 @@ For example, to override the applicable values from [the first CloudEvent exampl
   "cloudevent-source": "checkout",
   "cloudevent-type": "com.dapr.event.sent",
   "time": "2020-09-23T06:23:21Z",
-  "cloudevent-traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
 }
 ```
 
 {{% alert title="Important" color="warning" %}}
-While you can override `traceid` and `tracestate`, this is not the recommended way to specify trace ID or trace state. The following fields should be specified in the publish metadata request, not the JSON payload:
-- `cloudevent-id`
-- `cloudevent-traceid`
-- `cloudevent-tracestate`
+While you can specify and then override `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing tools. It's recommended to use Open Telementry and Zipkin protocols for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}}) 
 
 {{% /alert %}}
 
