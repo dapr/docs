@@ -46,7 +46,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 Dapr has 2 versions of the Etcd state store component: `v1` and `v2`.
 
 While `v1` and `v2` have the same metadata fields, `v1` causes data inconsistencies in apps when using [Actor TTLs]({{< ref "actors_api.md#ttl" >}}) from Dapr v1.12.
-Users should always use `v2` over `v1` as `v1` is deprecated.
 `v1` and `v2` are incompatible and there is no data migration path for `v1` to `v2` on an existing active Etcd cluster and `keyPrefixPath`.
 If you are using `v1`, you should continue to use `v1` until you create a new Etcd cluster or use a different `keyPrefixPath`, then use `v2`.
 
