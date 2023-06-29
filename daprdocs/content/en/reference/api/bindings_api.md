@@ -40,7 +40,7 @@ If running on kubernetes apply the component to your cluster.
 ### Binding direction (optional)
 
 In some scenarios, it would be useful to provide additional information to Dapr to indicate the direction supported by the binding component. 
-This should help Dapr avoid situations where the Dapr sidecar stays in the `"wait for the app to become ready"` state waiting indefinetely for the application to become available.
+Providing the supported binding direction helps the Dapr sidecar avoid the `"wait for the app to become ready"` state, where it waits indefinitely for the application to become available.
 
 The `direction` field can be specified as part of the component's metadata. The valid values for this field are: `"input"`, `"output"`, or `"input, output"`
 
