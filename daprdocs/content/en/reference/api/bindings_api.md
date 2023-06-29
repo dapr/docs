@@ -51,7 +51,7 @@ Here a few scenarios when the `"direction"` metadata field could help:
 
 - When an application (detached from the sidecar) runs as a serverless workload and is scaled to zero, the `"wait for the app to become ready"` check done by the Dapr sidecar becomes pointless.
 
-- If the detached dapr sidecar is what is scaled to 0 and the first thing the application does (before even start an http server) is reaching the sidecar the "wait for the app to become ready" gets the app and the sidecar into a dead lock of both ends waiting for each other.
+- If the detached Dapr sidecar is scaled to zero and the application reaches the sidecar (before even starting an HTTP server), the `"wait for the app to become ready"` deadlocks the app and the sidecar into waiting for each other.
 
 ### Example
 
