@@ -14,7 +14,7 @@ Dapr uses CloudEvents to provide additional context to the event payload, enabli
 - Content-type for proper deserialization of event data
 - Verification of sender application
 
-You can choose any of the three methods for publish a CloudEvent via pub/sub:
+You can choose any of three methods for publish a CloudEvent via pub/sub:
 
 1. Write a pub/sub event, which is then automatically wrapped by Dapr in a CloudEvent envelope.
 1. Retain the CloudEvents attributes automatically provided by Dapr while overriding any of the standard CloudEvent properties.
