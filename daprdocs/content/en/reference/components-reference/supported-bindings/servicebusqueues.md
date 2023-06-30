@@ -153,6 +153,36 @@ curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
 
 {{< /tabs >}}
 
+## Schedule a message
+
+A message can be scheduled for delayed processing.
+
+To schedule a message, use the `metadata` section in the request body during the binding invocation: the field name is `ScheduledEnqueueTimeUtc`.
+
+The supported timestamp formats are [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339).
+
+{{< tabs "Linux">}}
+
+{{% codetab %}}
+
+```shell
+curl -X POST http://localhost:3500/v1.0/bindings/myServiceBusQueue \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": {
+          "message": "Hi"
+        },
+        "metadata": {
+          "ScheduledEnqueueTimeUtc": "Tue, 02 Jan 2024 15:04:05 GMT"
+        },
+        "operation": "create"
+      }'
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

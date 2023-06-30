@@ -142,6 +142,8 @@ To set Azure Service Bus metadata when sending a message, set the query paramete
 
 > **NOTE:** If the `metadata.SessionId` property is not set but the topic requires sessions then an empty session id will be used.
 
+> **NOTE:** The `metadata.ScheduledEnqueueTimeUtc` property supports the [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) timestamp formats.
+
 ### Receiving a message with metadata
 
 When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
