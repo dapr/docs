@@ -8,6 +8,8 @@ description: "The basic spec for a Dapr resiliency resource"
 
 The `Resiliency` Dapr resource allows you to define and apply fault tolerance resiliency policies. Resiliency specs are applied when the Dapr sidecar starts. 
 
+## Format
+
 ```yml
 apiVersion: dapr.io/v1alpha1
 kind: Resiliency

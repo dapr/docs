@@ -10,7 +10,7 @@ aliases:
 
 The `HTTPEndpoint` is a Dapr resource that is used to enable the invocation of non-Dapr endpoints from a Dapr application.
 
-## HTTPEndpoint format
+## Format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
