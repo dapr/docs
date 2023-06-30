@@ -26,7 +26,7 @@ spec:
     value: [METADATA-VALUE]
 ```
 
-## Fields
+## Spec fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|

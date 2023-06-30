@@ -11,7 +11,7 @@ The `Subscription` Dapr resource allows you to subscribe declaratively to a topi
 - `v2alpha` (default spec)
 - `v1alpha1` (deprecated)
 
-## `v2alpha1`
+## `v2alpha1` format
 
 The following is the basic `v2alpha1` spec for a `Subscription` resource. `v2alpha1` is the default spec for the subscription API.
 
@@ -48,7 +48,7 @@ scopes:
 | bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
 
 
-## `v1alpha1`
+## `v1alpha1` format
 
 The following is the basic version `v1alpha1` spec for a `Subscription` resource. `v1alpha1` is now deprecated.
 
