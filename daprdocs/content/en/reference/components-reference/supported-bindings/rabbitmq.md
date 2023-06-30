@@ -57,7 +57,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-> When a new RabbitMQ message gets published, all values from the associated metadata will be added to the message's header values.
+> When a new RabbitMQ message gets published, all values from the associated metadata are added to the message's header values.
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
