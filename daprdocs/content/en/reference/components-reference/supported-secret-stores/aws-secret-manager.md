@@ -50,12 +50,12 @@ When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernet
 
 ## Optional per-request metadata properties
 
-The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided to AWS Secret Manager component:
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
 
 Query Parameter | Description
 --------- | -----------
-metadata.version_id | version for the given secret key
-metadata.version_stage | version stage for the given secret key
+`metadata.version_id` | version for the given secret key
+`metadata.version_stage` | version stage for the given secret key
 
 ## Create an AWS Secrets Manager instance
 
