@@ -101,14 +101,13 @@ For example, to replace the `source` and `id` values from [the CloudEvent exampl
 
 ```python
 with DaprClient() as client:
-    for i in range(1):
-        order = {'orderId': i}
-        # Publish an event/message using Dapr PubSub
-        result = client.publish_event(
-            pubsub_name='order_pub_sub',
-            topic_name='orders',
-            publish_metadata={'cloudevent-id: 'd99b228f-6c73-4e78-8c4d-3f80a043d317', cloudevent-source: 'payment'}
-        )
+    order = {'orderId': i}
+    # Publish an event/message using Dapr PubSub
+    result = client.publish_event(
+        pubsub_name='order_pub_sub',
+        topic_name='orders',
+        publish_metadata={'cloudevent-id: 'd99b228f-6c73-4e78-8c4d-3f80a043d317', cloudevent-source: 'payment'}
+    )
 ```
 
 {{% /codetab %}}
@@ -117,22 +116,20 @@ with DaprClient() as client:
 {{% codetab %}}
 
 ```csharp
-for (int i = 1) {
-    var order = new Order(i);
-    using var client = new DaprClientBuilder().Build();
+var order = new Order(i);
+using var client = new DaprClientBuilder().Build();
 
-   // Override cloudevent metadata
-    var metadata = new Dictionary<string,string>() {
-        { "cloudevent.source", "payment" },
-        { "cloudevent.id", "d99b228f-6c73-4e78-8c4d-3f80a043d317" }
-    }
-
-    // Publish an event/message using Dapr PubSub
-    await client.PublishEventAsync("order_pub_sub", "orders", order, metadata);
-    Console.WriteLine("Published data: " + order);
-
-    await Task.Delay(TimeSpan.FromSeconds(1));
+// Override cloudevent metadata
+var metadata = new Dictionary<string,string>() {
+    { "cloudevent.source", "payment" },
+    { "cloudevent.id", "d99b228f-6c73-4e78-8c4d-3f80a043d317" }
 }
+
+// Publish an event/message using Dapr PubSub
+await client.PublishEventAsync("order_pub_sub", "orders", order, metadata);
+Console.WriteLine("Published data: " + order);
+
+await Task.Delay(TimeSpan.FromSeconds(1));
 ```
 
 {{% /codetab %}}
