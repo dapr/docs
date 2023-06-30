@@ -16,13 +16,13 @@ Dapr uses CloudEvents to provide additional context to the event payload, enabli
 
 You can choose any of three methods for publish a CloudEvent via pub/sub:
 
-1. Write a pub/sub event, which is then automatically wrapped by Dapr in a CloudEvent envelope.
-1. Retain the CloudEvents attributes automatically provided by Dapr while overriding any of the standard CloudEvent properties.
-1. Supply your own full CloudEvent envelope.
+1. Send a pub/sub event, which is then wrapped by Dapr in a CloudEvent envelope.
+1. Replace specific CloudEvents attributes provided by Dapr by overriding the standard CloudEvent properties.
+1. Write your own CloudEvent envelope as part of the pub/sub event.
 
 ## Dapr-generated CloudEvents example
 
-Writing a publish operation to Dapr automatically wraps it in a CloudEvent envelope containing the following fields:
+Sending a publish operation to Dapr automatically wraps it in a CloudEvent envelope containing the following fields:
 
 - `id`
 - `source`
@@ -63,20 +63,24 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 
 ```json
 {
-    "specversion" : "1.0",
-    "type" : "xml.message",
-    "source" : "https://example.com/message",
-    "subject" : "Test XML Message",
-    "id" : "id-1234-5678-9101",
-    "time" : "2020-09-23T06:23:21Z",
-    "datacontenttype" : "text/xml",
-    "data" : "<note><to>User1</to><from>user2</from><message>hi</message></note>"
+  "topic": "orders",
+  "pubsubname": "order_pub_sub",
+  "traceid": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01",
+  "tracestate": "",
+  "data" : "<note><to></to><from>user2</from><message>Order</message></note>",
+  "id" : "id-1234-5678-9101",
+  "specversion" : "1.0",
+  "datacontenttype" : "text/xml",
+  "subject" : "Test XML Message",
+  "source" : "https://example.com/message",
+  "type" : "xml.message",
+   "time" : "2020-09-23T06:23:21Z"
 }
 ```
 
-## Override Dapr-generated CloudEvents values
+## Replace Dapr generated CloudEvents values
 
-Dapr automatically generates several CloudEvent properties. You can override these generated CloudEvent properties by providing the following optional metadata keys:
+Dapr automatically generates several CloudEvent properties. You can replace these generated CloudEvent properties by providing the following optional metadata key/value:
 
 - `cloudevent-id`: overrides `id`
 - `cloudevent-source`: overrides `source`
@@ -85,11 +89,11 @@ Dapr automatically generates several CloudEvent properties. You can override the
 - `cloudevent-tracestate`: overrides `tracestate`
 - `cloudevent-traceparent`: overrides `traceparent`
 
-The CloudEvent override metadata properties apply globally for all pub/sub components.
+The ability to replace CloudEvents properties using these metadata properties applies to all pub/sub components.
 
 ### Example
 
-To override the `source` and `id` values from [the CloudEvent example above]({{< ref "#cloudevents-example" >}}) in code:
+For example, to replace the `source` and `id` values from [the CloudEvent example above]({{< ref "#cloudevents-example" >}}) in code:
 
 {{< tabs "Python" ".NET" >}}
  <!-- Python -->
@@ -97,7 +101,7 @@ To override the `source` and `id` values from [the CloudEvent example above]({{<
 
 ```python
 with DaprClient() as client:
-    for i in range(1, 10):
+    for i in range(1):
         order = {'orderId': i}
         # Publish an event/message using Dapr PubSub
         result = client.publish_event(
@@ -113,7 +117,7 @@ with DaprClient() as client:
 {{% codetab %}}
 
 ```csharp
-for (int i = 1; i <= 10; i++) {
+for (int i = 1) {
     var order = new Order(i);
     using var client = new DaprClientBuilder().Build();
 
@@ -159,7 +163,7 @@ The JSON payload then reflects the new `source` and `id` values:
 ```
 
 {{% alert title="Important" color="warning" %}}
-While you can override `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing tools. It's recommended to use Open Telementry and Zipkin protocols for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}}) 
+While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Telementry for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}})  
 
 {{% /alert %}}
 
