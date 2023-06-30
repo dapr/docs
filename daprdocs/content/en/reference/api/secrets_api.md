@@ -28,26 +28,18 @@ name | the name of the secret to get
 
 #### Query Parameters
 
-Some secret stores have **optional** metadata properties. metadata is populated using query parameters:
+Some secret stores have support for **optional** per-request metadata properties. Use query parameters to provide those properties:
 
 ```
 GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata.version_id=15
 ```
 
-##### GCP Secret Manager
-The following optional meta can be provided to the GCP Secret Manager component
+Observe that not all secret stores support the same set of parameters. For instance, both Hashicorp Vault, GCP Secret Manager and AWS Secret Manager support the `version_id` parameter, but only AWS Secret Manager supports the `version_stage` parameter and only Kubernetes Secrets supports the `namespace` parameter.
+Check each secret store's documentation for the list of supported parameters.
 
-Query Parameter | Description
---------- | -----------
-metadata.version_id | version for the given secret key
 
-##### AWS Secret Manager
-The following optional meta can be provided to the AWS Secret Manager component
+TBD it makes no sense to have this data here in a non-authoritative way. It should be in the component reference.
 
-Query Parameter | Description
---------- | -----------
-metadata.version_id | version for the given secret key
-metadata.version_stage | version stage for the given secret key
 
 ### HTTP Response
 
@@ -101,17 +93,11 @@ Code | Description
 ### Examples
 
 ```shell
-curl http://localhost:3500/v1.0/secrets/vault/db-secret
+curl http://localhost:3500/v1.0/secrets/mySecretStore/db-secret
 ```
 
 ```shell
-curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&metadata.version_stage=AAA
-```
-
-> Note, in case of deploying into namespace other than  default, the above query will also have to include the namespace metadata (e.g. `production` below)
-
-```shell
-curl http://localhost:3500/v1.0/secrets/vault/db-secret?metadata.version_id=15&?metadata.namespace=production
+curl http://localhost:3500/v1.0/secrets/myAwsSecretStore/db-secret?metadata.version_id=15&metadata.version_stage=production
 ```
 
 ## Get Bulk Secret

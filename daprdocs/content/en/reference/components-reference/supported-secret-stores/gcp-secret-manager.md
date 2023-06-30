@@ -61,6 +61,16 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | client_x509_cert_url | N | The certificate URL for the client | `"https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com"`|
 | private_key | Y | The private key for authentication | `"privateKey"` |
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided to the GCP Secret Manager component:
+
+Query Parameter | Description
+--------- | -----------
+metadata.version_id | version for the given secret key
+
+
+
 ## Setup GCP Secret Manager instance
 
 Setup GCP Secret Manager using the GCP documentation: https://cloud.google.com/secret-manager/docs/quickstart.
