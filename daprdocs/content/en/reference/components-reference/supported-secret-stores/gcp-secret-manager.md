@@ -69,8 +69,6 @@ Query Parameter | Description
 --------- | -----------
 metadata.version_id | version for the given secret key
 
-
-
 ## Setup GCP Secret Manager instance
 
 Setup GCP Secret Manager using the GCP documentation: https://cloud.google.com/secret-manager/docs/quickstart.
