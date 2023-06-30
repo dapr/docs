@@ -22,21 +22,29 @@ spec:
   version: v1
   metadata:
     - name: audience
-      value: "<your token audience; e.g. the application's client ID>"
+      value: "<your token audience; i.e. the application's client ID>"
     - name: issuer
       value: "<your token issuer, e.g. 'https://accounts.google.com'>"
 
     # Optional values
     - name: jwksURL
-      value: "https://accounts.google.com/.well-known/openid-configuration"
+      value: "<JWKS URL, e.g. 'https://accounts.google.com/.well-known/openid-configuration'>"
 ```
+
 ## Spec metadata fields
 
 | Field | Required | Details | Example |
 |-------|:--------:|---------|---------|
 | `audience` | Y | The audience expected in the tokens. Usually, this corresponds to the client ID of your application that is created as part of a credential hosted by a OpenID Connect platform. | 
-| `issuer` | Y | The issuer authority, which is the value expected in the issuer claim in the tokens. | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
+| `issuer` | Y | The issuer authority, which is the value expected in the issuer claim in the tokens. | `"https://accounts.google.com"`
 | `jwksURL` | N | Address of the JWKS (JWK Set containing the public keys for verifying tokens). If empty, will try to fetch the URL set in the OpenID Configuration document `<issuer>/.well-known/openid-configuration`.  | `"https://accounts.google.com/.well-known/openid-configuration"`
+
+Common values for `issuer` include:
+
+- Auth0: `https://{domain}`, where `{domain}` is the domain of your Auth0 application
+- Azure AD: `https://login.microsoftonline.com/{tenant}/v2.0`, where `{tenant}` should be replaced with the tenant ID of your application, as a UUID
+- Google: `https://accounts.google.com`
+- Salesforce (Force.com): `https://login.salesforce.com`
 
 ## Dapr configuration
 
