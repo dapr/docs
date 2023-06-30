@@ -38,7 +38,6 @@ Observe that not all secret stores support the same set of parameters. For insta
 Check each secret store's documentation for the list of supported parameters.
 
 
-TBD it makes no sense to have this data here in a non-authoritative way. It should be in the component reference.
 
 
 ### HTTP Response
