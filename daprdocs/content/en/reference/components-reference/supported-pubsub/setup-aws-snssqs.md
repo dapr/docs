@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.snssqs`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 
 ```yaml
@@ -18,7 +18,7 @@ kind: Component
 metadata:
   name: snssqs-pubsub
 spec:
-  type: pubsub.snssqs
+  type: pubsub.aws.snssqs
   version: v1
   metadata:
     - name: accessKey
@@ -147,7 +147,7 @@ kind: Component
 metadata:
   name: snssqs-pubsub
 spec:
-  type: pubsub.snssqs
+  type: pubsub.aws.snssqs
   version: v1
   metadata:
     - name: accessKey
