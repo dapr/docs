@@ -40,7 +40,7 @@ The following [optional query parameters]({{< ref "secrets_api#query-parameters"
 
 Query Parameter | Description
 --------- | -----------
-`metadata.namespace`| The namespace of the secret. If not specified, the namespace of the pod will be used.
+`metadata.namespace`| The namespace of the secret. If not specified, the namespace of the pod is used.
 
 ## Related links
 - [Secrets building block]({{< ref secrets >}})

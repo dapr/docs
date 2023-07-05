@@ -35,7 +35,7 @@ GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata
 ```
 
 Observe that not all secret stores support the same set of parameters. For example:
-- Hashicorp Vault, GCP Secret Manager, and AWS Secret Manager support the `version_id` parameter
+- Hashicorp Vault, GCP Secret Manager and AWS Secret Manager support the `version_id` parameter
 - Only AWS Secret Manager supports the `version_stage` parameter 
 - Only Kubernetes Secrets supports the `namespace` parameter
 Check each [secret store's documentation]({{< ref supported-secret-stores.md >}}) for the list of supported parameters.
