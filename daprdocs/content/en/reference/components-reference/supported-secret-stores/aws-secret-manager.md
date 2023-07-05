@@ -54,8 +54,8 @@ The following [optional query parameters]({{< ref "secrets_api#query-parameters"
 
 Query Parameter | Description
 --------- | -----------
-`metadata.version_id` | version for the given secret key
-`metadata.version_stage` | version stage for the given secret key
+`metadata.version_id` | Version for the given secret key.
+`metadata.version_stage` | Version stage for the given secret key.
 
 ## Create an AWS Secrets Manager instance
 

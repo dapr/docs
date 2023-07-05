@@ -45,12 +45,12 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 ## Optional per-request metadata properties
 
-The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+The following [optional query parameters]({{< ref "secrets_api.md#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
 
 Query Parameter | Description
 --------- | -----------
-`metadata.version_id` | version for the given secret key
-`metadata.path` | (For bulk requests only) the path from the metadata. If not set means root path (all secrets).
+`metadata.version_id` | Version for the given secret key
+`metadata.path` | (For bulk requests only) The path from the metadata. If not set, defaults to root path (all secrets).
 
 ## Create an AlibabaCloud OOS Parameter Store instance
 

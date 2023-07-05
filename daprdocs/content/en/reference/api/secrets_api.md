@@ -34,8 +34,11 @@ Some secret stores have support for **optional** per-request metadata properties
 GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata.version_id=15
 ```
 
-Observe that not all secret stores support the same set of parameters. For instance, both Hashicorp Vault, GCP Secret Manager and AWS Secret Manager support the `version_id` parameter, but only AWS Secret Manager supports the `version_stage` parameter and only Kubernetes Secrets supports the `namespace` parameter.
-Check each secret store's documentation for the list of supported parameters.
+Observe that not all secret stores support the same set of parameters. For example:
+- Hashicorp Vault, GCP Secret Manager, and AWS Secret Manager support the `version_id` parameter
+- Only AWS Secret Manager supports the `version_stage` parameter 
+- Only Kubernetes Secrets supports the `namespace` parameter
+Check each [secret store's documentation]({{< ref supported-secret-stores.md >}}) for the list of supported parameters.
 
 
 

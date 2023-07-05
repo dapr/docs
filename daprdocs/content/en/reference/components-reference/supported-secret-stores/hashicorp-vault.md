@@ -72,7 +72,7 @@ The following [optional query parameters]({{< ref "secrets_api#query-parameters"
 
 Query Parameter | Description
 --------- | -----------
-`metadata.version_id` | version for the given secret key
+`metadata.version_id` | Version for the given secret key.
 
 ## Setup Hashicorp Vault instance
 
