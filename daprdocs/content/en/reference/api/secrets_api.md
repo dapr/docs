@@ -28,7 +28,7 @@ name | the name of the secret to get
 
 #### Query Parameters
 
-Some secret stores have support for **optional** per-request metadata properties. Use query parameters to provide those properties:
+Some secret stores support **optional**, per-request metadata properties. Use query parameters to provide those properties. For example:
 
 ```
 GET http://localhost:<daprPort>/v1.0/secrets/<secret-store-name>/<name>?metadata.version_id=15
