@@ -36,9 +36,9 @@ spec:
   - name: streamName
     value: "my-stream"
   - name: durableName 
-    value: "my-durable"
+    value: "my-durable-subscription"
   - name: queueGroupName
-    value: "my-queue"
+    value: "my-queue-group"
   - name: startSequence
     value: 1
   - name: startTime # In Unix format
@@ -145,9 +145,9 @@ nats -s localhost:4222 stream add myStream --subjects mySubject
 
 ## Example: Competing consumers pattern
 
-Let's say you'd like each message to be processed by only one application or pod with the same app-id. Typically, the `consumerID` metadata spec helps you define competing consumers. However, `consumerID` is not supported in NATS JetStream.
+Let's say you'd like each message to be processed by only one application or pod with the same app-id. Typically, the `consumerID` metadata spec helps you define competing consumers. 
 
-The following example demonstrates using a competing consumer pattern with dynamic values. 
+Since `consumerID` is not supported in NATS JetStream, you need to specify `durableName` and `queueGroupName` to achieve the competing consumers pattern. For example:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -163,9 +163,9 @@ spec:
   - name: streamName
     value: "my-stream"
   - name: durableName 
-    value: "my-durable"
+    value: "my-durable-subscription"
   - name: queueGroupName
-    value: "my-queue"
+    value: "my-queue-group"
 ```
 
 ## Related links
