@@ -189,7 +189,7 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 The dynamic programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. 
 
-> **Note:** Dynamic subscriptions are only read once during application start-up. 
+> **Note:** Programmatic subscriptions are only read once during application start-up. You cannot _dynamically_ add new programmatic subscriptions, only at new ones at compile time.
 
 In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
