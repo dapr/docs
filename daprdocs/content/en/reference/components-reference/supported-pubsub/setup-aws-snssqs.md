@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
+To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. The AWS SNS/SQS component automatically generates the SNS topics and provisions SQS.
 
 
 ```yaml
@@ -72,7 +72,7 @@ The above example uses secrets as plain strings. It is recommended to use [a sec
 | accessKey          | Y  | ID of the AWS account/role with appropriate permissions to SNS and SQS (see below) | `"AKIAIOSFODNN7EXAMPLE"`
 | secretKey          | Y  | Secret for the AWS user/role. If using an `AssumeRole` access, you will also need to provide a `sessionToken` |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | Y  | The AWS region where the SNS/SQS assets are located or be created in. See [this page](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/?p=ugi&l=na) for valid regions. Ensure that SNS and SQS are available in that region | `"us-east-1"`
-| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
+| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. | `"channel1"`
 | endpoint          | N  | AWS endpoint for the component to use. Only used for local development with, for example, [localstack](https://github.com/localstack/localstack). The `endpoint` is unncessary when running against production AWS | `"http://localhost:4566"`
 | sessionToken      | N  | AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
 | messageReceiveLimit | N  | Number of times a message is received, after processing of that message fails, that once reached, results in removing of that message from the queue. If `sqsDeadLettersQueueName` is specified, `messageReceiveLimit` is the number of times a message is received, after processing of that message fails, that once reached, results in moving of the message to the SQS dead-letters queue. Default: `10` | `10`

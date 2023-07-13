@@ -41,7 +41,7 @@ With the `pubsub.yaml` component, you can easily swap out underlying components 
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order-pub-sub
+  name: rabbitmq-pubsub
 spec:
   type: pubsub.rabbitmq
   version: v1
@@ -117,7 +117,7 @@ To deploy this into a Kubernetes cluster, fill in the `metadata` connection deta
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order-pub-sub
+  name: rabbitmq-pubsub
 spec:
   type: pubsub.rabbitmq
   version: v1
