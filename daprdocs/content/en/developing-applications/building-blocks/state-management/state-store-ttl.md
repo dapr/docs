@@ -77,7 +77,7 @@ using Dapr.Client;
 
 await client.SaveStateAsync(storeName, stateKeyName, state, metadata: new Dictionary<string, string>() { 
     { 
-        "metadata.ttlInSeconds", "120" 
+        "ttlInSeconds", "120" 
     } 
 });
 ```
