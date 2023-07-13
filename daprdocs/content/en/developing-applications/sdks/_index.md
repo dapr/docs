@@ -11,12 +11,12 @@ The Dapr SDKs are the easiest way for you to get Dapr into your application. Cho
 
 ## SDK packages
 
-Select your [preferred language below]({{< "#sdk-languages" >}}) to learn more about client, server, actor, and workflow packages. 
+Select your [preferred language below]({{< ref "#sdk-languages" >}}) to learn more about client, server, actor, and workflow packages. 
 
 - **Client SDK**: The Dapr client allows you to invoke Dapr building block APIs and perform each building block's actions
 - **Server extensions**: The Dapr service extensions allow you to create services that can be invoked by other services and subscribe to topics
 - **Actor SDK**: The Dapr Actor SDK allows you to build virtual actors with methods, state, timers, and persistent remiders
-- **Workflows**: Dapr Workflow makes it easy for you to write business logic and integrations in a reliable way
+- **Workflow**: Dapr Workflow makes it easy for you to write business logic and integrations in a reliable way
 
 ## SDK languages
 
