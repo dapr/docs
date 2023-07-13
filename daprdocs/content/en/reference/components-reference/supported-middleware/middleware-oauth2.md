@@ -25,7 +25,7 @@ spec:
   - name: clientSecret
     value: "<your client secret>"
   - name: scopes
-    value: "https://www.googleapis.com/auth/userinfo.email"
+    value: "openid,profile,email,phone"
   - name: authURL
     value: "https://accounts.google.com/o/oauth2/v2/auth"
   - name: tokenURL
