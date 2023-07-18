@@ -100,16 +100,24 @@ Dapr solves multi-tenancy at-scale with [namespaces for consumer groups]({{< ref
 
 ### At-least-once guarantee
 
-Dapr guarantees at-least-once semantics for message delivery. When an application publishes a message to a topic using the pub/sub API, Dapr ensures the message is delivered *at least once* to every subscriber.
+Dapr guarantees at-least-once semantics for message delivery. When an application publishes a message to a topic using the pub/sub API, Dapr ensures the message is delivered *at least once* to every subscriber. 
+
+> **Note:** All Dapr pub/sub components support the at-least-once guarantee.
+
+Even if the message fails to deliver, or your application crashes, Dapr attempts to redeliver the message until successful delivery.
 
 ### Consumer groups and competing consumers pattern
 
-Dapr automatically handles the burden of dealing with concepts like consumer groups and competing consumers pattern. The competing consumers pattern refers to multiple application instances using a single consumer group. When multiple instances of the same application (running same Dapr app ID) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
+Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing conusmer pattern when replicas use the same `app-id` without explict consumer group overrides. 
+
+> **Note:** Not all Dapr pub/sub components support the competing consumer model. 
+
+When multiple instances of the same application (with same `app-id`) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
 
 <img src="/images/pubsub-overview-pattern-competing-consumers.png" width=1000>
 <br></br>
 
-Similarly, if two different applications (with different app-IDs) subscribe to the same topic, Dapr delivers each message to *only one instance of **each** application*.
+Similarly, if two different applications (with different `app-id`) subscribe to the same topic, Dapr delivers each message to *only one instance of **each** application*.
 
 ### Scoping topics for added security
 
