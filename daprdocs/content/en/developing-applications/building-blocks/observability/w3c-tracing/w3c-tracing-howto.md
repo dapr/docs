@@ -139,7 +139,7 @@ You can create a trace context using the recommended OpenCensus SDKs. OpenCensus
 | C# | [Link](https://github.com/census-instrumentation/opencensus-csharp/)
 | C++ | [Link](https://github.com/census-instrumentation/opencensus-cpp)
 | Node.js | [Link](https://github.com/census-instrumentation/opencensus-node)
-| Python | [Link](https://census-instrumentation.github.io/opencensus-python/trace/api/index.html)
+| Python | [Link](https://github.com/census-instrumentation/opencensus-python/tree/master/opencensus/trace)
 
 ### Create trace context in Go
 
