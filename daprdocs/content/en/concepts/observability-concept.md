@@ -7,7 +7,7 @@ description: >
   Observe applications through tracing, metrics, logs and health
 ---
 
-When building an application, understanding the system behavior is an important, yet challenging part of operating it, like:
+When building an application, understanding the system behavior is an important, yet challenging part of operating it, such as:
 - Observing the internal calls of an application
 - Gauging its performance
 - Becoming aware of problems as soon as they occur 
