@@ -37,7 +37,7 @@ jobs:
           app_location: "/daprdocs" # App source code path
           api_location: "api" # Api source code path - optional
           output_location: "public" # Built app content directory - optional
-          app_build_command: "hugo"
+          app_build_command: "git config --global --add safe.directory /github/workspace && hugo"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

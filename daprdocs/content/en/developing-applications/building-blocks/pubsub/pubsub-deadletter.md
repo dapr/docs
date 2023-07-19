@@ -20,24 +20,6 @@ The diagram below is an example of how dead letter topics work. First a message 
 
 <img src="/images/pubsub_deadletter.png" width=1200>
 
-## Configuring a dead letter topic with a declarative subscription
-
-The following YAML shows how to configure a subscription with a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic. This subscription is scoped to an app with a `checkout` ID.
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Subscription
-metadata:
-  name: order
-spec:
-  topic: orders
-  route: /checkout
-  pubsubname: pubsub
-  deadLetterTopic: poisonMessages
-scopes:
-- checkout
-```
-
 ## Configuring a dead letter topic with programmatic subscription
 
 The JSON returned from the `/subscribe` endpoint shows how to configure a dead letter topic named `poisonMessages` for messages consumed from the `orders` topic.
