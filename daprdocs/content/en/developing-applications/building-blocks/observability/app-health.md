@@ -40,7 +40,9 @@ Unlike platform-level health checks, Dapr's app health checks focus on pausing w
 
 In this regard, Dapr's app health checks are "softer", waiting for an application to be able to process work, rather than terminating the running process in a "hard" way.
 
-> **Note:** For Kubernetes, a failing App Health check won't remove a pod from service discovery: this remains the responsibility of the Kubernetes liveness probe, _not_ Dapr.
+{{% alert title="Note" color="primary" %}}
+For Kubernetes, a failing app health check won't remove a pod from service discovery: this remains the responsibility of the Kubernetes liveness probe, _not_ Dapr.
+{{% /alert %}}
 
 ## Configuring app health checks
 
@@ -89,7 +91,7 @@ By default, when app health checks are enabled, Dapr probes your application eve
 #### Timeouts
 When the Dapr runtime (sidecar) is initially started, Dapr waits for a successful health probe before considering the app healthy. This means that pub/sub subscriptions, input bindings, and service invocation requests won't be enabled for your application until this first health check is complete and successful.
 
-Health probe requests are considered successful if the application sends a successful response (as explained above) within the timeout configured in `app-health-probe-timeout`. The default value is 500, corresponding to 500 milliseconds (i.e. half a second).
+Health probe requests are considered successful if the application sends a successful response (as explained above) within the timeout configured in `app-health-probe-timeout`. The default value is 500, corresponding to 500 milliseconds (half a second).
 
 #### Thresholds
 Before Dapr considers an app to have entered an unhealthy state, it will wait for `app-health-threshold` consecutive failures, whose default value is 3. This default value means that your application must fail health probes 3 times *in a row* to be considered unhealthy.  
