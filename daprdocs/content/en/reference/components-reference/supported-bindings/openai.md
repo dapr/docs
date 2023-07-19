@@ -9,8 +9,8 @@ aliases:
 
 ## Component format
 
-To setup OpenAI binding create a component of type `bindings.azure.openai`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
-See [this](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview/) for the documentation for Azure OpenAI Service.
+To setup an Azure OpenAI binding create a component of type `bindings.azure.openai`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
+See [this](https://learn.microsoft.com/azure/cognitive-services/openai/overview/) for the documentation for Azure OpenAI Service.
 
 
 ```yaml
@@ -22,7 +22,7 @@ spec:
   type: bindings.azure.openai
   version: v1
   metadata:
-  - name: apiKey
+  - name: apiKey # Required
     value: "1234567890abcdef"
   - name: endpoint # Required
     value: "https://myopenai.openai.azure.com"
@@ -30,16 +30,19 @@ spec:
     value: "my-model"
 ```
 {{% alert title="Warning" color="warning" %}}
-The above example uses apiKey as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
+The above example uses `apiKey` as  a plain string. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| `endpoint` | Y | Input/Output | Azure OpenAI service endpoint URL. | `"https://myopenai.openai.azure.com"` |
-| `apiKey` | Y* | Input/Output | The access key of the Azure OpenAI service. Only required when not using Azure AD authentication. | `"1234567890abcdef"` |
+| `endpoint` | Y | Output | Azure OpenAI service endpoint URL. | `"https://myopenai.openai.azure.com"` |
+| `apiKey` | Y* | Output | The access key of the Azure OpenAI service. Only required when not using Azure AD authentication. | `"1234567890abcdef"` |
 | `deploymentId` | Y | Output | The name of the model deployment. | `"my-model"` |
+| `azureTenantId` | Y* | Input | The tenant ID of the Azure OpenAI resource. Only required when `apiKey` is not provided.  | `"tenentID"` |
+| `azureClientId` | Y* | Input | The client ID that should be used by the binding to create or update the Azure OpenAI Subscription and to authenticate incoming messages. Only required when `apiKey` is not provided.| `"clientId"` |
+| `azureClientSecret` | Y* | Input | The client secret that should be used by the binding to create or update the Azure OpenAI Subscription and to authenticate incoming messages. Only required when `apiKey` is not provided. | `"clientSecret"` |
 
 ### Azure Active Directory (AAD) authentication
 
@@ -92,7 +95,7 @@ The data parameters are:
 
 - `prompt` - string that specifies the prompt to generate completions for.
 - `maxTokens` - (optional) defines the max number of tokens to generate. Defaults to 16 for completion API.
-- `temperature` - (optional) defines the sampling temperature between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. Defaults to 1.0 for completion API.
+- `temperature` - (optional) defines the sampling temperature between 0 and 2. Higher values like 0.8 make the output more random, while lower values like 0.2 make it more focused and deterministic. Defaults to 1.0 for completion API.
 - `topP` - (optional) defines the sampling temperature. Defaults to 1.0 for completion API.
 - `n` - (optional) defines the number of completions to generate. Defaults to 1 for completion API.
 - `presencePenalty` - (optional) Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. Defaults to 0.0 for completion API.
@@ -113,7 +116,7 @@ Read more about the importance and usage of these parameters in the [Azure OpenA
 
 #### Response
 
-The response body will contain the following JSON:
+The response body contains the following JSON:
 
 ```json
 [
@@ -163,7 +166,7 @@ Each message is of the form:
   - `role` - string that specifies the role of the message. Can be either `user`, `system` or `assistant`.
   - `message` - string that specifies the conversation message for the role.
 - `maxTokens` - (optional) defines the max number of tokens to generate. Defaults to 16 for the chat completion API.
-- `temperature` - (optional) defines the sampling temperature between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. Defaults to 1.0 for the chat completion API.
+- `temperature` - (optional) defines the sampling temperature between 0 and 2. Higher values like 0.8 make the output more random, while lower values like 0.2 make it more focused and deterministic. Defaults to 1.0 for the chat completion API.
 - `topP` - (optional) defines the sampling temperature. Defaults to 1.0 for the chat completion API.
 - `n` - (optional) defines the number of completions to generate. Defaults to 1 for the chat completion API.
 - `presencePenalty` - (optional) Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. Defaults to 0.0 for the chat completion API.
@@ -201,7 +204,7 @@ http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 
 #### Response
 
-The response body will contain the following JSON:
+The response body contains the following JSON:
 
 ```json
 [
@@ -233,4 +236,4 @@ The response body will contain the following JSON:
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
-- [Azure OpenAI Rest examples](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference)
+- [Azure OpenAI Rest examples](https://learn.microsoft.com/azure/cognitive-services/openai/reference)
