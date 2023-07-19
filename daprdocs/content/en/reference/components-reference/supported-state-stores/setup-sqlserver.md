@@ -1,15 +1,17 @@
 ---
 type: docs
-title: "SQL Server"
-linkTitle: "SQL Server"
-description: Detailed information on the SQL Server state store component
+title: "Microsoft SQL Server & Azure SQL"
+linkTitle: "Microsoft SQL Server & Azure SQL"
+description: Detailed information on the Microsoft SQL Server state store component
 aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-sqlserver/"
 ---
 
 ## Component format
 
-To setup SQL Server state store create a component of type `state.sqlserver`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
+This state store component can be used with both [Microsoft SQL Server](https://learn.microsoft.com/sql/) and [Azure SQL](https://learn.microsoft.com/azure/azure-sql/).
+
+To set up this state store, create a component of type `state.sqlserver`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
 
 ```yaml
@@ -21,30 +23,42 @@ spec:
   type: state.sqlserver
   version: v1
   metadata:
-  - name: connectionString
-    value: <REPLACE-WITH-CONNECTION-STRING> # Required.
-  - name: tableName
-    value: <REPLACE-WITH-TABLE-NAME>  # Optional. defaults to "state"
-  - name: keyType
-    value: <REPLACE-WITH-KEY-TYPE>  # Optional. defaults to "string"
-  - name: keyLength
-    value: <KEY-LENGTH> # Optional. defaults to 200. You be used with "string" keyType
-  - name: schema
-    value: <SCHEMA> # Optional. defaults to "dbo"
-  - name: indexedProperties
-    value: <INDEXED-PROPERTIES> # Optional. List of IndexedProperties.
-  - name: metadataTableName # Optional. Name of the table where to store metadata used by Dapr
-    value: "dapr_metadata"
-  - name: cleanupIntervalInSeconds # Optional. Cleanup interval in seconds, to remove expired rows
-    value: 300
+    # Authenticate using SQL Server credentials
+    - name: connectionString
+      value: |
+        Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;
 
+    # Authenticate with Azure AD (Azure SQL only)
+    # "useAzureAD" be set to "true"
+    - name: useAzureAD
+      value: true
+    # Connection string or URL of the Azure SQL database, optionally containing the database
+    - name: connectionString
+      value: |
+        sqlserver://myServerName.database.windows.net:1433?database=myDataBase
+
+    # Other optional fields (listing default values)
+    - name: tableName
+      value: "state"
+    - name: metadataTableName
+      value: "dapr_metadata"
+    - name: schema
+      value: "dbo"
+    - name: keyType
+      value: "string"
+    - name: keyLength
+      value: "200"
+    - name: indexedProperties
+      value: ""
+    - name: cleanupIntervalInSeconds
+      value: "3600"
 ```
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#configuring-state-store-for-actors" >}}), append the following to the yaml.
+If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#configuring-state-store-for-actors" >}}), append the following to the metadata:
 
 ```yaml
   - name: actorStateStore
@@ -53,24 +67,43 @@ If you wish to use SQL server as an [actor state store]({{< ref "state_api.md#co
 
 ## Spec metadata fields
 
+### Authenticate using SQL Server credentials
+
+The following metadata options are **required** to authenticate using SQL Server credentials. This is supported on both SQL Server and Azure SQL.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `connectionString` | Y | The connection string used to connect.<br>If the connection string contains the database, it must already exist. Otherwise, if the database is omitted, a default database named "Dapr" is created.  | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"` |
+
+### Authenticate using Azure AD
+
+Authenticating with Azure AD is supported with Azure SQL only. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Azure AD. | `"true"` |
+| `connectionString` | Y | The connection string or URL of the Azure SQL database, **without credentials**.<br>If the connection string contains the database, it must already exist. Otherwise, if the database is omitted, a default database named "Dapr" is created.  | `"sqlserver://myServerName.database.windows.net:1433?database=myDataBase"` |
+| `azureTenantId` | N | ID of the Azure AD tenant | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"` |
+| `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
+| `azureClientSecret` | N | Client secret (application password) | `"Ecy3XG7zVZK3/vl/a2NSB+a1zXLa8RnMum/IgD0E"` |
+
+### Other metadata options
+
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| connectionString   | Y        | The connection string used to connect. If the connection string contains the database it must already exist. If the database is omitted a default database named `"Dapr"` is created.  | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"`
-| tableName          | N        | The name of the table to use. Alpha-numeric with underscores. Defaults to `"state"` | `"table_name"`
-| keyType            | N        | The type of key used. Defaults to `"string"` | `"string"`
-| keyLength          | N        | The max length of key. Used along with `"string"` keytype. Defaults to `"200"` | `"200"`
-| schema             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
-| indexedProperties  | N        | List of IndexedProperties. |  `'[{"column": "transactionid", "property": "id", "type": "int"}, {"column": "customerid", "property": "customer", "type": "nvarchar(100)"}]'`
-| actorStateStore | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{< ref "state_api.md#configuring-state-store-for-actors" >}})). | `"true"`
-| metadataTableName | N | Name of the table Dapr uses to store a few metadata properties. Defaults to `dapr_metadata`. | `"dapr_metadata"`
-| cleanupIntervalInSeconds | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `tableName`          | N        | The name of the table to use. Alpha-numeric with underscores. Defaults to `"state"` | `"table_name"`
+| `metadataTableName` | N | Name of the table Dapr uses to store a few metadata properties. Defaults to `dapr_metadata`. | `"dapr_metadata"`
+| `keyType`            | N        | The type of key used. Supported values: `"string"` (default), `"uuid"`, `"integer"`.| `"string"`
+| `keyLength`          | N        | The max length of key. Ignored if "keyType" is not `string`. Defaults to `"200"` | `"200"`
+| `schema`             | N        | The schema to use. Defaults to `"dbo"` | `"dapr"`,`"dbo"`
+| `indexedProperties`  | N        | List of indexed properties, as a string containing a JSON document. |  `'[{"column": "transactionid", "property": "id", "type": "int"}, {"column": "customerid", "property": "customer", "type": "nvarchar(100)"}]'`
+| `actorStateStore` | N | Indicates that Dapr should configure this component for the actor state store ([more information]({{< ref "state_api.md#configuring-state-store-for-actors" >}})). | `"true"`
+| `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `"3600"` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `"1800"`, `"-1"`
 
 
-## Create Azure SQL instance
+## Create a Microsoft SQL Server/Azure SQL instance
 
-[Follow the instructions](https://docs.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) from the Azure documentation on how to create a SQL database.  The database must be created before Dapr consumes it.
-
-**Note: SQL Server state store also supports SQL Server running on VMs and in Docker.**
+[Follow the instructions](https://docs.microsoft.com/azure/azure-sql/database/single-database-create-quickstart?view=azuresql&tabs=azure-portal) from the Azure documentation on how to create a SQL database. The database must be created before Dapr consumes it.
 
 In order to setup SQL Server as a state store, you need the following properties:
 
@@ -104,6 +137,7 @@ CREATE CLUSTERED INDEX expiredate_idx ON state(ExpireDate ASC)
 ```
 
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})

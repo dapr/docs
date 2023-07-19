@@ -53,6 +53,15 @@ The Azure Key Vault secret store component supports authentication with Azure AD
 
 Additionally, you must provide the authentication fields as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.version_id` | Version for the given secret key.
+`metadata.maxresults` | (For bulk requests only) Number of secrets to return, after which the request will be truncated.
+
 ## Example
 
 ### Prerequisites
