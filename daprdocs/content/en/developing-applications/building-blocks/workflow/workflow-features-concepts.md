@@ -141,11 +141,9 @@ Sometimes workflows will need to wait for events that are raised by external sys
 
 External events have a _name_ and a _payload_ and are delivered to a single workflow instance. Workflows can create "_wait for external event_" tasks that subscribe to external events and _await_ those tasks to block execution until the event is received. The workflow can then read the payload of these events and make decisions about which next steps to take. External events can be processed serially or in parallel. External events can be raised by other workflows or by workflow code.
 
-{{% alert title="Note" color="primary" %}}
-The ability to raise external events to workflows is not included in the alpha version of Dapr's workflow API.
-{{% /alert %}}
-
 Workflows can also wait for multiple external event signals of the same name, in which case they are dispatched to the corresponding workflow tasks in a first-in, first-out (FIFO) manner. If a workflow receives an external event signal but has not yet created a "wait for external event" task, the event will be saved into the workflow's history and consumed immediately after the workflow requests the event.
+
+Learn more about [external system interaction.]({{< ref "workflow-patterns.md#external-system-interaction" >}})
 
 ## Limitations
 

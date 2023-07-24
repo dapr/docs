@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Component schema"
-linkTitle: "Component schema"
-weight: 100
-description: "The basic schema for a Dapr component"
+title: "Component spec"
+linkTitle: "Component"
+weight: 1000
+description: "The basic spec for a Dapr component"
 ---
 
 Dapr defines and registers components using a [CustomResourceDefinition](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/). All components are defined as a CRD and can be applied to any hosting environment where Dapr is running, not just Kubernetes.
@@ -26,7 +26,7 @@ spec:
     value: [METADATA-VALUE]
 ```
 
-## Fields
+## Spec fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|

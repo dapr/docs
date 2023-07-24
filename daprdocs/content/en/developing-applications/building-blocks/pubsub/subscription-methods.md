@@ -22,13 +22,14 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 You can subscribe declaratively to a topic using an external component file. This example uses a YAML component file named `subscription.yaml`:
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: order
 spec:
   topic: orders
-  route: /checkout
+  routes:
+    default: /checkout
   pubsubname: pubsub
 scopes:
 - orderprocessing
@@ -186,7 +187,11 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 ### Programmatic subscriptions
 
-The programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
+The dynamic programmatic approach returns the `routes` JSON structure within the code, unlike the declarative approach's `route` YAML structure. 
+
+> **Note:** Programmatic subscriptions are only read once during application start-up. You cannot _dynamically_ add new programmatic subscriptions, only at new ones at compile time.
+
+In the example below, you define the values found in the [declarative YAML subscription](#declarative-subscriptions) above within the application code.
 
 {{< tabs ".NET" Java Python JavaScript Go>}}
 

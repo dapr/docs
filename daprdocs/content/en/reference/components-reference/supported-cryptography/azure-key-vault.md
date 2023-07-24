@@ -38,7 +38,7 @@ The Azure Key Vault cryptography component supports authentication with Azure AD
 
 1. Read the [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) document.
 1. Create an [Azure AD application]({{< ref "howto-aad.md" >}}) (also called a Service Principal).
-1. Alternatively, create a [managed identity]({{< ref "howto-msi.md" >}}) for your application platform.
+1. Alternatively, create a [managed identity]({{< ref "howto-mi.md" >}}) for your application platform.
 
 ## Spec metadata fields
 
@@ -48,5 +48,6 @@ The Azure Key Vault cryptography component supports authentication with Azure AD
 | Auth metadata | Y | See [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) for more information  |  |
 
 ## Related links
+
 - [Cryptography building block]({{< ref cryptography >}})
 - [Authenticating to Azure]({{< ref azure-authentication >}})

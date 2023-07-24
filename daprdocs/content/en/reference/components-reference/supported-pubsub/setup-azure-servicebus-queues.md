@@ -9,7 +9,7 @@ aliases:
 
 ## Component format
 
-To setup Azure Service Bus Queues pubsub create a component of type `pubsub.azure.servicebus.queues`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To set up Azure Service Bus Queues pub/sub, create a component of type `pubsub.azure.servicebus.queues`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 > This component uses queues on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).  
 > For using topics, see the [Azure Service Bus Topics pubsub component]({{< ref "setup-azure-servicebus-topics" >}}).
@@ -28,6 +28,8 @@ spec:
   # Required when not using Azure AD Authentication
   - name: connectionString
     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
+  # - name: consumerID # Optional
+  #   value: channel1
   # - name: timeoutInSec # Optional
   #   value: 60
   # - name: handlerTimeoutInSec # Optional
@@ -69,6 +71,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Azure AD authentication. | See example above
+| `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
@@ -133,6 +136,8 @@ To set Azure Service Bus metadata when sending a message, set the query paramete
 - `metadata.ReplyToSessionId`
 
 > **Note:** The `metadata.MessageId` property does not set the `id` property of the cloud event returned by Dapr and should be treated in isolation.
+
+> **Note:** The `metadata.ScheduledEnqueueTimeUtc` property supports the [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) timestamp formats.
 
 ### Receiving a message with metadata
 
