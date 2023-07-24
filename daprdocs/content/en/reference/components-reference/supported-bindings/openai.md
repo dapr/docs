@@ -236,4 +236,4 @@ The response body contains the following JSON:
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
-- [Azure OpenAI Rest examples](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference)
+- [Azure OpenAI Rest examples](https://learn.microsoft.com/azure/ai-services/openai/reference)
