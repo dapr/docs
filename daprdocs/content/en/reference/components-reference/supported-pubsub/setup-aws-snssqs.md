@@ -9,8 +9,18 @@ aliases:
 
 ## Component format
 
-To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. The AWS SNS/SQS component automatically generates the SNS topics and provisions SQS.
+To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. 
 
+By default, the AWS SNS/SQS component:
+- Generates the SNS topics
+- Provisions the SQS queues
+- Configures a subscription of the queues to the topics
+
+{{% alert title="Note" color="primary" %}}
+If you only have a publisher and no subscriber, only the SNS topics are created. 
+
+However, if you have a subscriber, SNS, SQS, and the dynamic or static subscription thereof are generated.
+{{% /alert %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
