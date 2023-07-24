@@ -101,7 +101,7 @@ The data parameters are:
 - `presencePenalty` - (optional) Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. Defaults to 0.0 for completion API.
 - `frequencyPenalty` - (optional) Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim. Defaults to 0.0 for completion API.
 
-Read more about the importance and usage of these parameters in the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference).
+Read more about the importance and usage of these parameters in the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference).
 #### Examples
 
 {{< tabs Linux >}}
@@ -236,4 +236,4 @@ The response body contains the following JSON:
 - [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
-- [Azure OpenAI Rest examples](https://learn.microsoft.com/azure/cognitive-services/openai/reference)
+- [Azure OpenAI Rest examples](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference)
