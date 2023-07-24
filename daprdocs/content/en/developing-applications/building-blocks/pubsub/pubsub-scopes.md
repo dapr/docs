@@ -157,7 +157,7 @@ The table below shows which application is allowed to subscribe to the topics:
 
 ## Example 4: Mark topics as protected
 
-If your topic involves sensitive data, each new application must be explicitly listed in the `publishingScopes` and `subscriptionScopes` to ensure it cannot read from or write to that topic. Alternatively, you can designate the topic as 'protected' and grant access only to specific applications that genuinely require it.
+If your topic involves sensitive data, each new application must be explicitly listed in the `publishingScopes` and `subscriptionScopes` to ensure it cannot read from or write to that topic. Alternatively, you can designate the topic as 'protected' (using `protectedTopics`) and grant access only to specific applications that genuinely require it.
 
 Here is an example of three applications and three topics, two of which are protected:
 ```yaml
