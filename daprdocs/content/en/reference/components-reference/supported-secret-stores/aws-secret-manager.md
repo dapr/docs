@@ -48,6 +48,15 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  
 {{% /alert %}}
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.version_id` | Version for the given secret key.
+`metadata.version_stage` | Version stage for the given secret key.
+
 ## Create an AWS Secrets Manager instance
 
 Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
