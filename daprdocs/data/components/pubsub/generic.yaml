@@ -1,6 +1,6 @@
 - component: In-memory
   link: setup-inmemory
-  state: Beta
+  state: Stable
   version: v1
   since: "1.7"
   features:
