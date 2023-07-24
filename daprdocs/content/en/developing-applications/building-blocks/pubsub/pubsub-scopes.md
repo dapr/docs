@@ -181,7 +181,7 @@ spec:
     value: "app1=A,B;app2=B"
 ```
 
-> Note that topics A and B are marked as protected. As a result, even though app3 is not listed under `publishingScopes` or `subscriptionScopes` it cannot interact with these topics.
+In the example above, topics A and B are marked as protected. As a result, even though `app3` is not listed under `publishingScopes` or `subscriptionScopes`, it cannot interact with these topics.
 
 The table below shows which application is allowed to publish into the topics:
 
