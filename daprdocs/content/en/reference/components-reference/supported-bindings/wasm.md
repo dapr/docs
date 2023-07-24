@@ -36,9 +36,10 @@ Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
 loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
 see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm binaries.
-It is also possible to fetch the wasm binary from a remote URL. In this case,
-the URL must point exactly to one wasm binary, e.g.:
-`http://example.com/rewrite.wasm` or `https://example.com/rewrite.wasm`. 
+It is also possible to fetch the Wasm binary from a remote URL. In this case,
+the URL must point exactly to one Wasm binary. For example:
+- `http://example.com/rewrite.wasm`, or 
+- `https://example.com/rewrite.wasm`. 
 
 Dapr uses [wazero](https://wazero.io) to run these binaries, because it has no
 dependencies. This allows use of WebAssembly with no installation process
@@ -99,16 +100,23 @@ spec:
     value: "https://github.com/vmware-labs/webassembly-language-runtimes/releases/download/ruby%2F3.2.0%2B20230215-1349da9/ruby-3.2.0-slim.wasm"
 ```
 
-Then, the following request would respond back with "Hello, salaboy":
+Assuming that you started your Wasm Binding at port 3500, you'd run:
 
-```json
+```
+$ dapr run --app-id wasm --dapr-http-port 3500 --resources-path components
+```
+
+The following request responds `Hello "salaboy"`:
+
+```sh
+$ curl -X POST http://localhost:3500/v1.0/bindings/wasm -d'
 {
   "operation": "execute",
   "metadata": {
-    "args": "-ne,'print \"Hello, \"; print'"
+    "args": "-ne,print \"Hello \"; print"
   },
   "data": "salaboy"
-}
+}'
 ```
 
 ## Related links

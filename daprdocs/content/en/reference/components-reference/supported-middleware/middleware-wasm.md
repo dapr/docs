@@ -21,9 +21,10 @@ Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
 loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
 see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm modules.
-It is also possible to fetch the wasm binary from a remote URL. In this case,
-the URL must point exactly to one wasm binary, e.g.:
-`http://example.com/rewrite.wasm` or `https://example.com/rewrite.wasm`. 
+It is also possible to fetch the Wasm binary from a remote URL. In this case,
+the URL must point exactly to one Wasm binary. For example:
+- `http://example.com/rewrite.wasm`, or 
+- `https://example.com/rewrite.wasm`. 
 
 ## Component format
 
