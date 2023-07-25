@@ -35,6 +35,8 @@ spec:
   metadata:
   - name: url
     value: "file://router.wasm"
+  - guestConfig
+    value: {"environment":"production"}
 ```
 
 ## Spec metadata fields
@@ -45,6 +47,7 @@ How to compile this is described later.
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
 | url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
+| guestConfig   | The configuration for the wasm function, its format depends on how the wasm function parses it. | false     | `enviroment=production`,`{"environment":"production"}` |
 
 ## Dapr configuration
 
