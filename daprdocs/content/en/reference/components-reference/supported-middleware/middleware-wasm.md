@@ -47,7 +47,7 @@ How to compile this is described later.
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
 | url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
-| guestConfig   | The configuration for the wasm function, its format depends on how the wasm function parses it. | false     | `enviroment=production`,`{"environment":"production"}` |
+| guestConfig   | An optional configuration passed to WASM guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `enviroment=production`,`{"environment":"production"}` |
 
 ## Dapr configuration
 
@@ -117,6 +117,49 @@ If using TinyGo, compile as shown below and set the spec metadata field named
 
 ```bash
 tinygo build -o router.wasm -scheduler=none --no-debug -target=wasi router.go`
+```
+
+### wasm config example
+
+Here is an example of how to use `guestConfig` to pass configurations to wasm. In wasm code, you can use the function `handler.Host.GetConfig` defined in guest sdk to get the configuration. In the following example, the wasm middleware parses the executed `environment` from json config defined in the component.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: wasm
+spec:
+  type: middleware.http.wasm
+  version: v1
+  metadata:
+  - name: url
+    value: "file://router.wasm"
+  - guestConfig
+    value: {"environment":"production"}
+```
+Here's an example in TinyGo:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"github.com/http-wasm/http-wasm-guest-tinygo/handler"
+	"github.com/http-wasm/http-wasm-guest-tinygo/handler/api"
+)
+
+type Config struct {
+	Environment string `json:"environment"`
+}
+
+func main() {
+	// get config bytes, which is the value of guestConfig defined in the component.
+	configBytes := handler.Host.GetConfig()
+	
+	config := Config{}
+	json.Unmarshal(configBytes, &config)
+	handler.Host.Log(api.LogLevelInfo, "Config environment: "+config.Environment)
+}
 ```
 
 
