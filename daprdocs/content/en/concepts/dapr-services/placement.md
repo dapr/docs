@@ -17,7 +17,7 @@ The placement service is deployed as part of `dapr init -k`, or via the Dapr Hel
 
 ## Placement tables
 
-There is an HTTP API `/placement/state` for placement service that exposes the placement table. The API is exposed on the healthz server. Since this is an unauthenticated endpoint, so it is disabled by default, you need to set `DAPR_PLACEMENT_METADATA_ENABLED` environment or `tls-enabled` command line args to true to enable it.
+There is an HTTP API `/placement/state` for placement service that exposes the placement table. The API is exposed on the healthz server. Since this is an unauthenticated endpoint, so it is disabled by default, you need to set `DAPR_PLACEMENT_METADATA_ENABLED` environment or `metadata-enabled` command line args to true to enable it.
 
 ### Usecase:
 The placement table API can be used for retrieving the current placement table, which contains all the actors registered. This can be helpful for debugging and also allow other tools (Dashboard) to extract and present for information about Actors.
