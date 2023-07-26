@@ -117,7 +117,7 @@ When multiple instances of the same application (with same `app-id`) subscribe t
 
 Similarly, if two different applications (with different `app-id`) subscribe to the same topic, Dapr delivers each message to *only one instance of **each** application*.
 
-Not all Dapr pub/sub components support the competing consumer model. Currently, the following pub/sub components support this pattern:
+Not all Dapr pub/sub components support the competing consumer pattern. Currently, the following (non-exhaustive) pub/sub components support this:
 
 - [Apache Kafka]({{< ref setup-apache-kafka >}})
 - [Azure Service Bus Queues]({{< ref setup-azure-servicebus-queues >}})
