@@ -63,9 +63,9 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
 
 1. You can specify multiple resource paths:
 
-  ```bash
-  daprd --app-id myapp --resources-path <PATH-1-TO-RESOURCES-FILES> --resources-path <PATH-2-TO-RESOURCES-FILES>
-  ```
+   ```bash
+   daprd --app-id myapp --resources-path <PATH-1-TO-RESOURCES-FILES> --resources-path <PATH-2-TO-RESOURCES-FILES>
+   ```
 
 1. Enable collection of Prometheus metrics while running your app
 
