@@ -83,7 +83,7 @@ apps:
     appProtocol: http
     appPort: 8080
     appHealthCheckPath: "/healthz"
-    command: ["python3" "app.py"]
+    command: ["python3", "app.py"]
     appLogDestination: file # (optional), can be file, console or fileAndConsole. default is fileAndConsole.
     daprdLogDestination: file # (optional), can be file, console or fileAndConsole. default is file.
   - appID: backend # optional

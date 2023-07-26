@@ -34,6 +34,14 @@ spec:
 ## Spec metadata fields
 For the Kubernetes secret store component, there are no metadata attributes.
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided to Kubernetes secret store component:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.namespace`| The namespace of the secret. If not specified, the namespace of the pod is used.
+
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})

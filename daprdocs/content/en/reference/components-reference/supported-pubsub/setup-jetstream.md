@@ -8,10 +8,7 @@ aliases:
 ---
 
 ## Component format
-To setup JetStream pubsub create a component of type `pubsub.jetstream`. See
-[this guide]({{< ref
-"howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to
-create and apply a pubsub configuration.
+To set up JetStream pub/sub, create a component of type `pubsub.jetstream`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -39,9 +36,9 @@ spec:
   - name: streamName
     value: "my-stream"
   - name: durableName 
-    value: "my-durable"
+    value: "my-durable-subscription"
   - name: queueGroupName
-    value: "my-queue"
+    value: "my-queue-group"
   - name: startSequence
     value: 1
   - name: startTime # In Unix format
@@ -144,6 +141,31 @@ It is essential to create a NATS JetStream for a specific subject. For example, 
 
 ```bash
 nats -s localhost:4222 stream add myStream --subjects mySubject
+```
+
+## Example: Competing consumers pattern
+
+Let's say you'd like each message to be processed by only one application or pod with the same app-id. Typically, the `consumerID` metadata spec helps you define competing consumers. 
+
+Since `consumerID` is not supported in NATS JetStream, you need to specify `durableName` and `queueGroupName` to achieve the competing consumers pattern. For example:
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.jetstream
+  version: v1
+  metadata:
+  - name: name
+    value: "my-conn-name"
+  - name: streamName
+    value: "my-stream"
+  - name: durableName 
+    value: "my-durable-subscription"
+  - name: queueGroupName
+    value: "my-queue-group"
 ```
 
 ## Related links
