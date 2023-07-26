@@ -102,15 +102,13 @@ Dapr solves multi-tenancy at-scale with [namespaces for consumer groups]({{< ref
 
 Dapr guarantees at-least-once semantics for message delivery. When an application publishes a message to a topic using the pub/sub API, Dapr ensures the message is delivered *at least once* to every subscriber. 
 
-> **Note:** All Dapr pub/sub components support the at-least-once guarantee.
-
 Even if the message fails to deliver, or your application crashes, Dapr attempts to redeliver the message until successful delivery.
+
+All Dapr pub/sub components support the at-least-once guarantee.
 
 ### Consumer groups and competing consumers pattern
 
 Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing conusmer pattern when replicas use the same `app-id` without explict consumer group overrides. 
-
-> **Note:** Not all Dapr pub/sub components support the competing consumer model. 
 
 When multiple instances of the same application (with same `app-id`) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
 
@@ -118,6 +116,13 @@ When multiple instances of the same application (with same `app-id`) subscribe t
 <br></br>
 
 Similarly, if two different applications (with different `app-id`) subscribe to the same topic, Dapr delivers each message to *only one instance of **each** application*.
+
+Not all Dapr pub/sub components support the competing consumer model. Currently, the following pub/sub components support this pattern:
+
+- [Apache Kafka]({{< ref setup-apache-kafka >}})
+- [Azure Service Bus Queues]({{< ref setup-azure-servicebus-queues >}})
+- [RabbitMQ]({{< ref setup-rabbitmq >}})
+- [Redis Streams]({{< ref setup-redis-pubsub >}})
 
 ### Scoping topics for added security
 
