@@ -198,7 +198,7 @@ namespace EventService
           while(true) {
                await Task.Delay(5000)
                var random = new Random();
-               int orderId = random.Next(1,1000);
+               var orderId = random.Next(1,1000);
 
                //Using Dapr SDK to invoke a method
                var order = new Order("1");
