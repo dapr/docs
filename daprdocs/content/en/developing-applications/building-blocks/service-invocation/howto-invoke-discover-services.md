@@ -196,8 +196,8 @@ namespace EventService
        static async Task Main(string[] args)
        {
           while(true) {
-               System.Threading.Thread.Sleep(5000);
-               Random random = new Random();
+               await Task.Delay(5000)
+               var random = new Random();
                int orderId = random.Next(1,1000);
 
                //Using Dapr SDK to invoke a method
