@@ -199,7 +199,6 @@ namespace EventService
                System.Threading.Thread.Sleep(5000);
                Random random = new Random();
                int orderId = random.Next(1,1000);
-               using var client = new DaprClientBuilder().Build();
 
                //Using Dapr SDK to invoke a method
                var order = new Order("1");
