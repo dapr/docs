@@ -31,16 +31,14 @@ spec:
     value: "/path/to/tls.key"
   - name: token # Optional. Used for token based authentication.
     value: "my-token"
-  - name: consumerID
-    value: "channel1"
   - name: name
     value: "my-conn-name"
   - name: streamName
     value: "my-stream"
   - name: durableName 
-    value: "my-durable"
+    value: "my-durable-subscription"
   - name: queueGroupName
-    value: "my-queue"
+    value: "my-queue-group"
   - name: startSequence
     value: 1
   - name: startTime # In Unix format
@@ -83,7 +81,6 @@ spec:
 | tls_client_cert |    N     | NATS TLS Client Authentication Certificate | `"/path/to/tls.crt"`             |
 | tls_client_key  |    N     | NATS TLS Client Authentication Key         | `"/path/to/tls.key"`             |
 | token           |    N     | [NATS token based authentication]          | `"my-token"`                     |
-| consumerID      |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | name            |    N     | NATS connection name                       | `"my-conn-name"`                 |
 | streamName      |    N     | Name of the JetStream Stream to bind to    | `"my-stream"`                    |
 | durableName     |    N     | [Durable name]                             | `"my-durable"`                   |
@@ -144,6 +141,31 @@ It is essential to create a NATS JetStream for a specific subject. For example, 
 
 ```bash
 nats -s localhost:4222 stream add myStream --subjects mySubject
+```
+
+## Example: Competing consumers pattern
+
+Let's say you'd like each message to be processed by only one application or pod with the same app-id. Typically, the `consumerID` metadata spec helps you define competing consumers. 
+
+Since `consumerID` is not supported in NATS JetStream, you need to specify `durableName` and `queueGroupName` to achieve the competing consumers pattern. For example:
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.jetstream
+  version: v1
+  metadata:
+  - name: name
+    value: "my-conn-name"
+  - name: streamName
+    value: "my-stream"
+  - name: durableName 
+    value: "my-durable-subscription"
+  - name: queueGroupName
+    value: "my-queue-group"
 ```
 
 ## Related links

@@ -20,8 +20,8 @@ scopes:
   - <REPLACE-WITH-SCOPED-APPIDS>
 spec:
   policies: # Required
-    timeouts: # Replace with any unique name
-      timeoutName: <REPLACE-WITH-TIME-VALUE>
+    timeouts:
+      timeoutName: <REPLACE-WITH-TIME-VALUE> # Replace with any unique name
     retries:
       retryName: # Replace with any unique name
         policy: <REPLACE-WITH-VALUE>
