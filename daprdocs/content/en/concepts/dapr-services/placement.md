@@ -17,10 +17,10 @@ The placement service is deployed as part of `dapr init -k`, or via the Dapr Hel
 
 ## Placement tables
 
-There is an HTTP API `/placement/state` for placement service that exposes the placement table. The API is exposed on the healthz server. Since this is an unauthenticated endpoint, so it is disabled by default, you need to set `DAPR_PLACEMENT_METADATA_ENABLED` environment or `metadata-enabled` command line args to true to enable it.
+There is an HTTP API `/placement/state` for placement service that exposes placement table information. The API is exposed on the sidecar on the same port as the healthz. This is an unauthenticated endpoint, and is disabled by default. You need to set `DAPR_PLACEMENT_METADATA_ENABLED` environment or `metadata-enabled` command line args to true to enable it. If you are using helm you just need to set `dapr_placement.metadataEnabled` to true.
 
 ### Usecase:
-The placement table API can be used for retrieving the current placement table, which contains all the actors registered. This can be helpful for debugging and also allow other tools (Dashboard) to extract and present for information about Actors.
+The placement table API can be used for retrieving the current placement table, which contains all the actors registered. This can be helpful for debugging and allows tools to extract and present information about actors.
 
 ### HTTP Request
 
@@ -50,7 +50,7 @@ Name  | Type    | Description
 ----  | ----    | -----------
 name  | string  | The host:port address of the actor.
 appId | string  | app id.
-entities | json string array | List of actor types it hosts.
+actorTypes | json string array | List of actor types it hosts.
 updatedAt | timestamp | Timestamp of the actor registered/updated.
 
 ### Examples
@@ -64,7 +64,7 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 	"hostList": [{
 		"name": "198.18.0.1:49347",
 		"appId": "actor",
-		"entities": ["testActorType"],
+		"actorTypes": ["testActorType"],
 		"updatedAt": 1690274322325260000
 	}],
 	"tableVersion": 1
