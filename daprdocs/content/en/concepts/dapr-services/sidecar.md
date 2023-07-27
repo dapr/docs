@@ -61,7 +61,7 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
    daprd --app-id myapp --resources-path <PATH-TO-RESOURCES-FILES>
    ```
 
-1. If you've organized your components and other resources (like resiliency policies) into separate folders, you can specify multiple resource paths:
+1. If you've organized your components and other resources (for example, resiliency policies, subscriptions, or configuration) into separate folders or a shared folder, you can specify multiple resource paths:
 
    ```bash
    daprd --app-id myapp --resources-path <PATH-1-TO-RESOURCES-FILES> --resources-path <PATH-2-TO-RESOURCES-FILES>
