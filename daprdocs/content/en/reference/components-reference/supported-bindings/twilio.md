@@ -30,6 +30,8 @@ spec:
     value: *****************
   - name: authToken # required.
     value: *****************
+  - name: direction 
+    value: output
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -39,10 +41,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| toNumber | Y | Output | The target number to send the sms to | `"111-111-1111"` |
-| fromNumber | Y | Output | The sender phone number | `"122-222-2222"` |
-| accountSid | Y | Output | The Twilio account SID | `"account sid"` |
-| authToken | Y | Output | The Twilio auth token | `"auth token"` |
+| `toNumber` | Y | Output | The target number to send the sms to | `"111-111-1111"` |
+| `fromNumber` | Y | Output | The sender phone number | `"122-222-2222"` |
+| `accountSid` | Y | Output | The Twilio account SID | `"account sid"` |
+| `authToken` | Y | Output | The Twilio auth token | `"auth token"` |
+| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ## Binding support
 

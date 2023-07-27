@@ -27,6 +27,8 @@ spec:
       value: adminkey
     - name: header:Cache-Control
       value: no-cache
+    - name: direction
+      value: output
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -37,9 +39,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| endpoint | Y | Output | GraphQL endpoint string See [here](#url-format) for more details | `"http://localhost:4000/graphql/graphql"` |
-| header:[HEADERKEY] | N | Output | GraphQL header. Specify the header key in the `name`, and the header value in the `value`. | `"no-cache"` (see above) |
-| variable:[VARIABLEKEY] | N | Output | GraphQL query variable. Specify the variable name in the `name`, and the variable value in the `value`. | `"123"` (see below) |
+| `endpoint` | Y | Output | GraphQL endpoint string See [here](#url-format) for more details | `"http://localhost:4000/graphql/graphql"` |
+| `header:[HEADERKEY]` | N | Output | GraphQL header. Specify the header key in the `name`, and the header value in the `value`. | `"no-cache"` (see above) |
+| `variable:[VARIABLEKEY]` | N | Output | GraphQL query variable. Specify the variable name in the `name`, and the variable value in the `value`. | `"123"` (see below) |
+| `direction` | N | Output | The direction of the binding | `output` |
 
 ### Endpoint and Header format
 

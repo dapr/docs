@@ -56,6 +56,8 @@ spec:
   #   value: 5
   # - name: publishInitialRetryIntervalInMs # Optional
   #   value: 500
+  # - name: direction 
+  #   value: input, output
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -86,6 +88,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `maxRetriableErrorsPerSec` | N | Input | Maximum number of retriable errors that are processed per second. If a message fails to be processed with a retriable error, the component adds a delay before it starts processing another message, to avoid immediately re-processing messages that have failed. Default: `10` | `10`
 | `publishMaxRetries` | N  | Output | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
 | `publishInitialRetryIntervalInMs` | N  | Output | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
+| `direction` | N  | Input/Output | The direction of the binding | `input`, `output`, `input, output`
 
 ### Azure Active Directory (AAD) authentication
 

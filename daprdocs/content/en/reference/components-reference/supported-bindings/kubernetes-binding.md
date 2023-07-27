@@ -25,14 +25,17 @@ spec:
     value: <NAMESPACE>
   - name: resyncPeriodInSec
     value: "<seconds>"
+  - name: direction
+    value: "input"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| namespace | Y | Input  | The Kubernetes namespace to read events from | `"default"` |
-| resyncPeriodInSec | N | Input | The period of time to refresh event list from Kubernetes API server. Defaults to `"10"` | `"15"`
+| `namespace` | Y | Input  | The Kubernetes namespace to read events from | `"default"` |
+| `resyncPeriodInSec` | N | Input | The period of time to refresh event list from Kubernetes API server. Defaults to `"10"` | `"15"`
+| `direction` | N | Input | The direction of the binding | `"input"`
 
 ## Binding support
 

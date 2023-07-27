@@ -34,7 +34,8 @@ spec:
     value: *****************
   - name: scopes # required.
     value: scopes
-
+  - name: direction
+    value: output
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -44,12 +45,13 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| region | Y | Output | The region of the commercetools project | `"europe-west1"` |
-| provider | Y | Output | The cloud provider, either gcp or aws | `"gcp"` |
-| projectKey | Y | Output | The commercetools project key | `"project-key"` |
-| clientID | Y | Output | The commercetools client ID for the project | `"client ID"` |
-| clientSecret | Y | Output | The commercetools client secret for the project | `"client secret"` |
-| scopes | Y | Output | The commercetools scopes for the project | `"manage_project:project-key"` |
+| `region` | Y | Output | The region of the commercetools project | `"europe-west1"` |
+| `provider` | Y | Output | The cloud provider, either gcp or aws | `"gcp"` |
+| `projectKey` | Y | Output | The commercetools project key | `"project-key"` |
+| `clientID` | Y | Output | The commercetools client ID for the project | `"client ID"` |
+| `clientSecret` | Y | Output | The commercetools client secret for the project | `"client secret"` |
+| `scopes` | Y | Output | The commercetools scopes for the project | `"manage_project:project-key"` |
+| `direction` | N | Output | The direction of the binding | `output` |
 
 For more information see [commercetools - Creating an API Client](https://docs.commercetools.com/getting-started/create-api-client#create-an-api-client) and [commercetools - Regions](https://docs.commercetools.com/api/general-concepts#regions).
 

@@ -38,19 +38,22 @@ spec:
       key: mytoken
   - name: securityTokenHeader
     value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
+  - name: direction
+    value: output
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
-| url                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
-| MTLSRootCA         | N        | Output |Secret store reference, path to root ca certificate, or pem encoded string |
-| MTLSClientCert     | N        | Output |Secret store reference, path to client certificate, or pem encoded string  |
-| MTLSClientKey      | N        | Output |Secret store reference, path client private key, or pem encoded string |
-| MTLSRenegotiation  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
-| securityToken      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
-| securityTokenHeader| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
+| `url`                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
+| `MTLSRootCA`         | N        | Output |Secret store reference, path to root ca certificate, or pem encoded string |
+| `MTLSClientCert`     | N        | Output |Secret store reference, path to client certificate, or pem encoded string  |
+| `MTLSClientKey`      | N        | Output |Secret store reference, path client private key, or pem encoded string |
+| `MTLSRenegotiation`  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
+| `securityToken`      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
+| `securityTokenHeader`| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
+| `direction`| N        | Output |The direction of the binding | `output` 
 
 ### How to configure MTLS related fields in Metadata
 The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be provided in three ways:

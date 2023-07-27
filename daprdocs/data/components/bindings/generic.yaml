@@ -14,8 +14,24 @@
   features:
     input: true
     output: false
+- component: commercetools GraphQL
+  link: commercetools
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
 - component: GraphQL
   link: graghql
+  state: Alpha
+  version: v1
+  since: "1.0"
+  features:
+    input: false
+    output: true
+- component: Huawei OBS
+  link: huawei-obs
   state: Alpha
   version: v1
   since: "1.0"
@@ -37,6 +53,14 @@
   since: "1.8"
   features:
     input: true
+    output: true
+- component: Kitex
+  link: kitex
+  state: Alpha
+  version: v1
+  since: "1.11"
+  features:
+    input: false
     output: true
 - component: Kubernetes Events
   link: kubernetes-binding
@@ -102,6 +126,14 @@
   features:
     input: false
     output: true
+- component: RethinkDB
+  link: rethinkdb
+  state: Beta
+  version: v1
+  since: "1.9"
+  features:
+    input: true
+    output: false
 - component: SMTP
   link: smtp
   state: Alpha

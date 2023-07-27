@@ -25,6 +25,8 @@ spec:
     value: Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;
   - name: hub  # Optional
     value: <hub name>
+  - name: direction 
+    value: <direction of binding>
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -39,6 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `hub` | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
 | `endpoint` | N | Output | Endpoint of Azure SignalR; required if not included in the `connectionString` or if using Azure AD | `https://<your-azure-signalr>.service.signalr.net`
 | `accessKey` | N | Output | Access key | `your-access-key`
+| `direction` | N | Output | The direction of the binding | `output`
 
 ### Azure Active Directory (Azure AD) authentication
 
