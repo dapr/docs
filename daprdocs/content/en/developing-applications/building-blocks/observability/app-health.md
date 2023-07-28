@@ -72,7 +72,7 @@ Additionally, app health checks are impacted by the protocol used for the app ch
 | [`--app-protocol`]({{< ref "app-health.md#health-check-paths" >}})   | `dapr.io/app-protocol`   | Protocol used for the app channel. supported values are `http`, `grpc`, `https`, `grpcs`, and `h2c` (HTTP/2 Cleartext). | `http`  |
 
 {{% alert title="Note" color="primary" %}}
-A low app health probe timeout can classify an application as unhealthy if it experiences a sudden high load, causing the response time to degrade.
+A low app health probe timeout value can classify an application as unhealthy if it experiences a sudden high load, causing the response time to degrade. If this happens, increase the `dapr.io/app-health-probe-timeout` value.
 {{% /alert %}}
 
 ### Health check paths
