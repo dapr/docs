@@ -19,7 +19,7 @@ This article demonstrates how to deploy services each with an unique application
 
 Dapr allows you to assign a global, unique ID for your app. This ID encapsulates the state for your application, regardless of the number of instances it may have.
 
-{{< tabs Dotnet Java Python Go JavaScript Kubernetes>}}
+{{< tabs ".NET" Java Python Go JavaScript Kubernetes >}}
 
 {{% codetab %}}
 
@@ -173,7 +173,7 @@ To invoke an application using Dapr, you can use the `invoke` API on any Dapr in
 
 Below are code examples that leverage Dapr SDKs for service invocation.
 
-{{< tabs Dotnet Java Python Go Javascript>}}
+{{< tabs ".NET" Java Python Go JavaScript >}}
 
 {{% codetab %}}
 
