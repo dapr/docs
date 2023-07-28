@@ -50,7 +50,7 @@ dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-htt
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --app-protocol https --dapr-http-port 3500 --app-protocol https -- npm start
+dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm start
 
 dapr run --app-port 5001 --app-id order-processor --dapr-http-port 3501 --app-protocol https -- npm start
 ```
@@ -68,9 +68,9 @@ dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-htt
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 --app-protocol https -- dotnet run
+dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet run
 
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --app-protocol https -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --dapr-http-port 3501 --app-protocol https -- dotnet run
 ```
 
 {{% /codetab %}}
@@ -158,31 +158,26 @@ Below are code examples that leverage Dapr SDKs for service invocation.
 {{% codetab %}}
 
 ```python
-import json
-import time
+#dependencies
+import random
+from time import sleep
 import logging
 import requests
-import os
 
-logging.basicConfig(level=logging.INFO)
-
-base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
-                    'DAPR_HTTP_PORT', '3500')
-# Adding app id as part of the header
-headers = {'dapr-app-id': 'order-processor', 'content-type': 'application/json'}
-
-for i in range(1, 20):
-    order = {'orderId': i}
-
-    # Invoking a service
-    result = requests.post(
-        url='%s/orders' % (base_url),
-        data=json.dumps(order),
-        headers=headers
-    )
-    print('Order passed: ' + json.dumps(order), flush=True)
-
-    time.sleep(1)
+#code
+logging.basicConfig(level = logging.INFO) 
+while True:
+    sleep(random.randrange(50, 5000) / 1000)
+    orderId = random.randint(1, 1000)
+        #Invoke a service
+        result = requests.post(
+           url='%s/orders' % (base_url),
+           data=json.dumps(order),
+           headers=headers
+        )    
+    logging.basicConfig(level = logging.INFO)
+    logging.info('Order requested: ' + str(orderId))
+    logging.info('Result: ' + str(result))
 ```
 
 {{% /codetab %}}
@@ -193,33 +188,31 @@ for i in range(1, 20):
 //dependencies
 import axios from "axios";
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
+//code
+const daprHost = "127.0.0.1"; 
 
-async function main() {
-  // Adding app id as part of the header
-  let axiosConfig = {
-    headers: {
-        "dapr-app-id": "order-processor"
+var main = function() {
+    for(var i=0;i<10;i++) {
+        sleep(5000);
+        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+        start(orderId).catch((e) => {
+            console.error(e);
+            process.exit(1);
+        });
     }
-  };
-  
-  for(var i = 1; i <= 20; i++) {
-    const order = {orderId: i};
-
-    // Invoking a service
-    const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , axiosConfig);
-    console.log("Order passed: " + res.config.data);
-
-    await sleep(1000);
-  }
 }
 
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    //Invoke a service
+    const result = await axios.post('checkoutservice' , "checkout/" + orderId , axiosConfig);
+    console.log("Order requested: " + orderId);
+    console.log("Result: " + result.config.data);
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-main().catch(e => console.error(e))
+main();
 ```
 
 {{% /codetab %}}
@@ -227,32 +220,40 @@ main().catch(e => console.error(e))
 {{% codetab %}}
 
 ```csharp
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+//dependencies
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
-var baseURL = (Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localhost") + ":" + (Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500");
+//code
+namespace EventService
+{
+  class Program
+   {
+       static async Task Main(string[] args)
+       {
+          while(true) {
+               await Task.Delay(5000)
+               var random = new Random();
+               var orderId = random.Next(1,1000);
 
-var client = new HttpClient();
-client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-// Adding app id as part of the header
-client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
+               //Using Dapr SDK to invoke a method
+               var order = new Order("1");
+               var orderJson = JsonSerializer.Serialize<Order>(order);
+               var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
-for (int i = 1; i <= 20; i++) {
-    var order = new Order(i);
-    var orderJson = JsonSerializer.Serialize<Order>(order);
-    var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
-
-    // Invoking a service
-    var httpClient = DaprClient.CreateInvokeHttpClient();
-    await httpClient.PostAsJsonAsync($"http://orderprocessor/orders", content); 
-    var response = await client.PostAsync($"{baseURL}/orders", content);
-    Console.WriteLine("Order passed: " + order);
-
-    await Task.Delay(TimeSpan.FromSeconds(1));
+               var httpClient = DaprClient.CreateInvokeHttpClient();
+               await httpClient.PostAsJsonAsync($"http://order-processor/orders", content);               
+               Console.WriteLine("Order requested: " + orderId);
+               Console.WriteLine("Result: " + result);
+   	    }
+       }
+   }
 }
-
-public record Order([property: JsonPropertyName("orderId")] int OrderId);
 ```
 
 {{% /codetab %}}
