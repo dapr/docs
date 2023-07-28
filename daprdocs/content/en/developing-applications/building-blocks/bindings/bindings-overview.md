@@ -57,6 +57,20 @@ To invoke an output binding:
 
 Read the [Use output bindings to interface with external resources guide]({{< ref howto-bindings.md >}}) to get started with output bindings.
 
+## Binding directions (optional)
+
+You can provide information via the `direction` metadata field to indicate the direction supported by the binding component. With one of the following metadata values, the Dapr sidecar avoids the `"wait for the app to become ready"` state:
+
+- `"input"`
+- `"output"`
+- `"input, output"`
+
+{{% alert title="Note" color="primary" %}}
+All bindings should include the `direction` property.
+{{% /alert %}}
+
+[See a full example of the bindings `direction` metadata.]({{< ref "bindings_api.md#binding-direction-optional" >}})
+
 ## Try out bindings
 
 ### Quickstarts and tutorials

@@ -37,6 +37,8 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 - The topic to which you'll publish the message
 - The broker
 
+When creating the binding component, [specify the supported `direction` of the binding]({{< ref "bindings_api.md#binding-direction-optional" >}}). 
+
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
@@ -65,6 +67,8 @@ spec:
     value: sample
   - name: authRequired
     value: "false"
+  - name: direction
+    value: input
 ```
 
 {{% /codetab %}}
@@ -95,6 +99,8 @@ spec:
     value: sample
   - name: authRequired
     value: "false"
+  - name: direction
+    value: input
 ```
 
 {{% /codetab %}}
@@ -256,15 +262,15 @@ async function start() {
 
 {{< /tabs >}}
 
-### ACK-ing an event
+### ACK an event
 
 Tell Dapr you've successfully processed an event in your application by returning a `200 OK` response from your HTTP handler.
 
-### Rejecting an event
+### Reject an event
 
 Tell Dapr the event was not processed correctly in your application and schedule it for redelivery by returning any response other than `200 OK`. For example, a `500 Error`.
 
-### Specifying a custom route
+### Specify a custom route
 
 By default, incoming events will be sent to an HTTP endpoint that corresponds to the name of the input binding. You can override this by setting the following metadata property in `binding.yaml`:
 
