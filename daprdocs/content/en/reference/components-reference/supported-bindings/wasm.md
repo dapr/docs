@@ -41,6 +41,15 @@ Dapr uses [wazero](https://wazero.io) to run these binaries, because it has no
 dependencies. This allows use of WebAssembly with no installation process
 except Dapr itself.
 
+The WASM output binding supports making HTTP client calls using the [wasi-http](https://github.com/WebAssembly/wasi-http) specification.
+You can find example code for making HTTP calls in a variety of languages here:
+* [Golang](https://github.com/dev-wasm/dev-wasm-go/tree/main/http)
+* [C](https://github.com/dev-wasm/dev-wasm-c/tree/main/http)
+* [dotnet](https://github.com/dev-wasm/dev-wasm-dotnet/tree/main/http)
+* [TypeScript](https://github.com/dev-wasm/dev-wasm-ts/tree/main/http)
+
+Note that if you just want to make an HTTP call, it is far simpler to use the [HTTP Binding](https://docs.dapr.io/reference/components-reference/supported-bindings/http/) but if you need to add your own logic, for example filtering or calling to different api endpoints, then it makes sense to use WebAssembly.
+
 ## Component format
 
 To configure a Wasm binding, create a component of type
