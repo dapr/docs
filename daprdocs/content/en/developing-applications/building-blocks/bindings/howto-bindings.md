@@ -61,7 +61,7 @@ spec:
   - name: publishTopic
     value: sample
   - name: authRequired
-    value: "false"
+    value: false
   - name: direction
     value: output
 ```
@@ -93,7 +93,7 @@ spec:
   - name: publishTopic
     value: sample
   - name: authRequired
-    value: "false"
+    value: false
   - name: direction
     value: output
 ```
