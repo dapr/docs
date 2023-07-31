@@ -6,20 +6,26 @@ weight: 200
 description: "The component certification lifecycle from submission to production ready"
 ---
 
+{{% alert title="Note" color="primary" %}}
+Certification lifecycle only applies to built-in components and does not apply to [pluggable components]({{<ref "components-concept.md#Built-in-and-pluggable-components" >}}).
+{{% /alert %}}
+
 ## Overview
 
-Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition.  All of the components are pluggable so that in ideal scenarios, you can swap out one component with the same interface for another. Each component that is used in production, needs to maintain a certain set of technical requirements that ensure the functional compatibility and robustness of the component.
+Dapr uses a modular design where functionality is delivered as a component. Each component has an interface definition. All of the components are interchangable so that in ideal scenarios, you can swap out one component with the same interface for another. Each component that is used in production, needs to maintain a certain set of technical requirements that ensure the functional compatibility and robustness of the component.
 
 In general a component needs to be:
-- compliant with the defined Dapr interfaces
-- functionally correct and robust
-- well documented and maintained
+
+- Compliant with the defined Dapr interfaces
+- Functionally correct and robust
+- Well documented and maintained
 
 To make sure a component conforms to the standards set by Dapr, there are a set of tests run against a component in a Dapr maintainers managed environment. Once the tests pass consistently, the maturity level can be determined for a component.
 
 ## Certification levels
 
 The levels are as follows:
+
 - [Alpha](#alpha)
 - [Beta](#beta)
 - [Stable](#stable)
@@ -90,7 +96,6 @@ The test plan must be approved by a Dapr maintainer and be published in a `READM
 - The tests should validate the functional behavior and robustness of the component based on the component specification, reflecting the scenarios from the test plan
 - The tests must run successfully as part of the continuous integration of the [components-contrib](https://github.com/dapr/components-contrib) repository
 
-
 ## Component certification process
 
 In order for a component to be certified, tests are run in an environment maintained by the Dapr project.
@@ -98,19 +103,21 @@ In order for a component to be certified, tests are run in an environment mainta
 ### New component certification: Alpha->Beta
 
 For a new component requiring a certification change from Alpha to Beta, a request for component certification follows these steps:
+
 - Requestor creates an issue in the [components-contrib](https://github.com/dapr/components-contrib) repository for certification of the component with the current and the new certification levels
 - Requestor submits a PR to integrate the component with the defined conformance test suite, if not already included
-    - The user details the environment setup in the issue created, so a Dapr maintainer can setup the service in a managed environment
-    - After the environment setup is complete, Dapr maintainers review the PR and if approved merges that PR
+  - The user details the environment setup in the issue created, so a Dapr maintainer can setup the service in a managed environment
+  - After the environment setup is complete, Dapr maintainers review the PR and if approved merges that PR
 - Requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level
 
 ### New component certification: Beta->Stable
 
 For a new component requiring a certification change from Beta to Stable, a request for component certification follows these steps:
+
 - Requestor creates an issue in the [components-contrib](https://github.com/dapr/components-contrib) repository for certification of the component with the current and the new certification levels
 - Requestor submits a PR for the test plan as a `README.md` file in the component's source code directory
-    - The requestor details the test environment requirements in the created PR, including any manual steps or credentials needed
-    - A Dapr maintainer reviews the test plan, provides feedback or approves it, and eventually merges the PR
+  - The requestor details the test environment requirements in the created PR, including any manual steps or credentials needed
+  - A Dapr maintainer reviews the test plan, provides feedback or approves it, and eventually merges the PR
 - Requestor submits a PR for the automated certification tests, including scripts to provision resources when applicable
 - After the test environment setup is completed and credentials provisioned, Dapr maintainers review the PR and, if approved, merges the PR
 - Requestor submits a PR in the [docs](https://github.com/dapr/docs) repository, updating the component's certification level

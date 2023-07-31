@@ -6,9 +6,7 @@ weight: 1000
 description: "Overview of the pub/sub API building block"
 ---
 
-## Publish and subscribe pattern
-
-The publish and subscribe pattern (pub/sub) enables microservices to communicate with each other using messages for event-driven architectures.
+Publish and subscribe (pub/sub) enables microservices to communicate with each other using messages for event-driven architectures.
 
 - The producer, or **publisher**, writes messages to an input channel and sends them to a topic, unaware which application will receive them.
 - The consumer, or **subscriber**, subscribes to the topic and receives messages from an output channel, unaware which service produced these messages.
@@ -19,7 +17,7 @@ An intermediary message broker copies each message from a publisher's input chan
 
 <br></br>
 
-## Pub/sub API in Dapr
+## Pub/sub API
 
 The pub/sub API in Dapr:
 - Provides a platform-agnostic API to send and receive messages.
@@ -34,7 +32,7 @@ When using pub/sub in Dapr:
 1. The pub/sub building block makes calls into a Dapr pub/sub component that encapsulates a specific message broker.
 1. To receive messages on a topic, Dapr subscribes to the pub/sub component on behalf of your service with a topic and delivers the messages to an endpoint on your service when they arrive.
 
-In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message bus component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP pub/sub.
+In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message broker component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP pub/sub.
 
 <img src="/images/pubsub-overview-components.png" width=1000>
 <br></br>
@@ -46,9 +44,9 @@ In the diagram below, the Dapr API posts an "order" topic from the publishing "c
 
 [View the complete list of pub/sub components that Dapr supports]({{< ref supported-pubsub >}}).
 
-## Dapr pub/sub API features
+## Features
 
-The pub/sub building block brings several features to your application.
+The pub/sub API building block brings several features to your application.
 
 ### Sending messages using Cloud Events
 
@@ -95,6 +93,10 @@ For more information on message routing, read [Dapr pub/sub API reference]({{< r
 ### Handling failed messages with dead letter topics
 
 Sometimes, messages can't be processed because of a variety of possible issues, such as erroneous conditions within the producer or consumer application or an unexpected state change that causes an issue with your application code. Dapr allows developers to set dead letter topics to deal with messages that cannot be delivered to an application. This feature is available on all pub/sub components and prevents consumer applications from endlessly retrying a failed message. For more information, read about [dead letter topics]({{< ref "pubsub-deadletter.md">}})
+
+### Namespace consumer groups
+
+Dapr solves multi-tenancy at-scale with [namespaces for consumer groups]({{< ref howto-namespace >}}). Simply include the `"{namespace}"` value in your component metadata for consumer groups to allow multiple namespaces with applications of the same `app-id` to publish and subscribe to the same message broker.
 
 ### At-least-once guarantee
 

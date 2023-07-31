@@ -146,7 +146,7 @@ HashiCorp offer in depth guides on how to setup Consul for different hosting mod
 {{% /codetab %}}
 
 {{% codetab %}}
-HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/gs-consul-service-mesh)
+HashiCorp offer in depth guides on how to setup Consul for different hosting models. Check out the [Kubernetes guide here](https://learn.hashicorp.com/collections/consul/kubernetes)
 {{% /codetab %}}
 
 {{< /tabs >}}

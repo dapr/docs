@@ -12,7 +12,7 @@ When the middleware is enabled any method invocation through Dapr needs to be au
 
 The main difference between the two flows is that the `Authorization Code Grant flow` needs user interaction and authorizes a user where the `Client Credentials Grant flow` doesn't need a user interaction and authorizes a service/application.
 
-## Register your application with a authorization server
+## Register your application with an authorization server
 
 Different authorization servers provide different application registration experiences. Here are some samples:
 <!-- IGNORE_LINKS -->

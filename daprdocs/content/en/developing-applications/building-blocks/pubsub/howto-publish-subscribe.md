@@ -155,13 +155,14 @@ Learn more in the [declarative and programmatic subscriptions doc]({{< ref subsc
 Create a file named `subscription.yaml` and paste the following:
 
 ```yaml
-apiVersion: dapr.io/v1alpha1
+apiVersion: dapr.io/v2alpha1
 kind: Subscription
 metadata:
   name: order-pub-sub
 spec:
   topic: orders
-  route: /checkout
+  routes: 
+    default: /checkout
   pubsubname: order-pub-sub
 scopes:
 - orderprocessing

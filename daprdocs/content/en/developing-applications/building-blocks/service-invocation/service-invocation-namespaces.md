@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Service invocation across namespaces"
-linkTitle: "Service invocation namespaces"
+title: "How to: Service invocation across namespaces"
+linkTitle: "How to: Service invocation namespaces"
 weight: 1000
 description: "Call between services deployed to different namespaces"
 ---

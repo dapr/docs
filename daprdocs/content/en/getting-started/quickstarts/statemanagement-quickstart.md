@@ -532,13 +532,13 @@ cd state_management/go/sdk/order-processor
 Install the dependencies and build the application:
 
 ```bash
-go build app.go
+go build .
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components -- go run app.go
+dapr run --app-id order-processor --components-path ../../../components -- go run .
 ```
 
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
@@ -623,7 +623,7 @@ In the YAML file:
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
 
 ## Next steps
 

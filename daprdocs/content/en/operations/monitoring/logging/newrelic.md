@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Set-up New Relic for Dapr logging"
 linkTitle: "New Relic"
-weight: 2000
+weight: 3000
 description: "Set-up New Relic for Dapr logging"
 ---
 

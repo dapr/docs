@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Set up Fluentd, Elastic search and Kibana in Kubernetes"
 linkTitle: "FluentD"
-weight: 1000
+weight: 2000
 description: "How to install Fluentd, Elastic Search, and Kibana to search logs in Kubernetes"
 ---
 
@@ -32,25 +32,25 @@ description: "How to install Fluentd, Elastic Search, and Kibana to search logs 
     By default, the chart creates 3 replicas which must be on different nodes. If your cluster has fewer than 3 nodes, specify a smaller number of replicas.  For example, this sets the number of replicas to 1:
 
     ```bash
-    helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set replicas=1
+    helm install elasticsearch elastic/elasticsearch --version 7.17.3 -n dapr-monitoring --set replicas=1
     ```
 
     Otherwise:
 
     ```bash
-    helm install elasticsearch elastic/elasticsearch -n dapr-monitoring
+    helm install elasticsearch elastic/elasticsearch --version 7.17.3 -n dapr-monitoring
     ```
 
     If you are using minikube or simply want to disable persistent volumes for development purposes, you can do so by using the following command:
 
     ```bash
-    helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set persistence.enabled=false,replicas=1
+    helm install elasticsearch elastic/elasticsearch --version 7.17.3 -n dapr-monitoring --set persistence.enabled=false,replicas=1
     ```
 
 4. Install Kibana
 
     ```bash
-    helm install kibana elastic/kibana -n dapr-monitoring
+    helm install kibana elastic/kibana --version 7.17.3 -n dapr-monitoring
     ```
 
 5. Ensure that Elastic Search and Kibana are running in your Kubernetes cluster

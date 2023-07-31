@@ -23,6 +23,7 @@ Dapr implements the following CloudEvents fields when creating a message topic.
 - `specversion`
 - `type`
 - `traceparent`
+- `time`
 - `datacontenttype` (optional)
 
 The following example demonstrates an `orders` topic message sent by Dapr that includes a W3C `traceid` unique to the message, the `data` and the fields for the CloudEvent where the data content is serialized as JSON.
@@ -41,6 +42,7 @@ The following example demonstrates an `orders` topic message sent by Dapr that i
     "datacontenttype": "application/json; charset=utf-8",
     "source": "checkout",
     "type": "com.dapr.event.sent",
+    "time": "2020-09-23T06:23:21Z",
     "traceparent": "00-113ad9c4e42b27583ae98ba698d54255-e3743e35ff56f219-01"
 }
 ```

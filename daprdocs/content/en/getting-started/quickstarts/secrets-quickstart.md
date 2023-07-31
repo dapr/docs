@@ -11,6 +11,9 @@ Dapr provides a dedicated secrets API that allows developers to retrieve secrets
 1. Run a microservice with a secret store component.
 1. Retrieve secrets using the Dapr secrets API in the application code.
 
+<img src="/images/secretsmanagement-quickstart/secrets-mgmt-quickstart.png" width=1000 alt="Diagram showing secrets management of example service.">
+
+
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
@@ -72,8 +75,8 @@ Notice how the `order-processor` service below points to:
 DAPR_SECRET_STORE = 'localsecretstore'
 SECRET_NAME = 'secret'
 with DaprClient() as client:
-        secret = client.get_secret(store_name=DAPR_SECRET_STORE, key=SECRET_NAME)
-        logging.info('Fetched Secret: %s', secret.secret)
+    secret = client.get_secret(store_name=DAPR_SECRET_STORE, key=SECRET_NAME)
+    logging.info('Fetched Secret: %s', secret.secret)
 ```
 
 **`local-secret-store.yaml` component**
@@ -103,7 +106,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/python/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -325,7 +328,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/csharp/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/csharp/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -433,7 +436,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/java/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/java/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -485,13 +488,13 @@ cd secrets_management/go/sdk/order-processor
 Install the dependencies:
 
 ```bash
-go build app.go
+go build .
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
+dapr run --app-id order-processor --components-path ../../../components/ -- go run .
 ```
 
 #### Behind the scenes
@@ -505,12 +508,12 @@ Notice how the `order-processor` service below points to:
 
 ```go
 const DAPR_SECRET_STORE = "localsecretstore"
-	const SECRET_NAME = "secret"
-  // ...
-	secret, err := client.GetSecret(ctx, DAPR_SECRET_STORE, SECRET_NAME, nil)
-	if secret != nil {
-		fmt.Println("Fetched Secret: ", secret[SECRET_NAME])
-	}
+const SECRET_NAME = "secret"
+// ...
+secret, err := client.GetSecret(ctx, DAPR_SECRET_STORE, SECRET_NAME, nil)
+if secret != nil {
+    fmt.Println("Fetched Secret: ", secret[SECRET_NAME])
+}
 ```
 
 **`local-secret-store.yaml` component**
@@ -540,7 +543,7 @@ In the YAML file:
 
 **`secrets.json` file**
 
-`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/python/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/javascript/sdk/order-processor/secrets.json):
+`SECRET_NAME` is defined in the `secrets.json` file, located in [secrets_management/go/sdk/order-processor](https://github.com/dapr/quickstarts/tree/master/secrets_management/go/sdk/order-processor/secrets.json):
 
 ```json
 {
@@ -566,7 +569,7 @@ Order-processor output:
 
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
 
 ## Next steps
 

@@ -56,7 +56,7 @@ pip3 install -r requirements.txt
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 > **Note**: Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
@@ -70,7 +70,7 @@ def getOrder():
         'ContentType': 'application/json'}
 
 
-app.run(port=7001)
+app.run(port=8001)
 ```
 
 ### Step 4: Run `checkout` service
@@ -221,8 +221,8 @@ let axiosConfig = {
       "dapr-app-id": "order-processor"
   }
 };
-  const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , axiosConfig);
-  console.log("Order passed: " + res.config.data);
+const res = await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/orders`, order , axiosConfig);
+console.log("Order passed: " + res.config.data);
 ```
 
 ### Step 5: View the Service Invocation outputs
@@ -304,11 +304,13 @@ Run the `order-processor` service alongside a Dapr sidecar.
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
+Below is the working code block from the order processor's `Program.cs` file.
+
 ```csharp
-app.MapPost("/orders", async context => {
-    var data = await context.Request.ReadFromJsonAsync<Order>();
-    Console.WriteLine("Order received : " + data);
-    await context.Response.WriteAsync(data.ToString());
+app.MapPost("/orders", (Order order) =>
+{
+    Console.WriteLine("Order received : " + order);
+    return order.ToString();
 });
 ```
 
@@ -334,7 +336,7 @@ Run the `checkout` service alongside a Dapr sidecar.
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
-In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
+In the Program.cs file for the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
 ```csharp
 var client = new HttpClient();
@@ -535,13 +537,13 @@ cd service_invocation/go/http/order-processor
 Install the dependencies:
 
 ```bash
-go build app.go
+go build .
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run app.go
+dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 Each order is received via an HTTP POST request and processed by the
@@ -554,6 +556,7 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	log.Printf("Order received : %s", string(data))
+}
 ```
 
 ### Step 4: Run `checkout` service
@@ -568,13 +571,13 @@ cd service_invocation/go/http/checkout
 Install the dependencies:
 
 ```bash
-go build app.go
+go build .
 ```
 
 Run the `checkout` service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run app.go
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run .
 ```
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
@@ -626,7 +629,7 @@ Dapr invokes an application on any Dapr instance. In the code, the sidecar progr
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
 
-Join the discussion in our [discord channel](https://discord.gg/22ZtJrNe).
+Join the discussion in our [discord channel](https://discord.com/channels/778680217417809931/953427615916638238).
 
 ## Next Steps
 

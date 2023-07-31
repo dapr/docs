@@ -20,11 +20,9 @@ spec:
   type: configuration.azure.appconfig
   version: v1
   metadata:
-  - name: appConfigHost # appConfigHost should be used when 
-  # Azure Authentication mechanism is used.
+  - name: host # host should be used when Azure Authentication mechanism is used.
     value: <HOST>
-  - name: appConfigConnectionString # appConfigConnectionString should not be used when 
-  # Azure Authentication mechanism is used.
+  - name: connectionString # connectionString should not be used when Azure Authentication mechanism is used.
     value: <CONNECTIONSTRING>
   - name: maxRetries
     value: # Optional
@@ -41,6 +39,8 @@ spec:
     value: "[your_service_principal_app_id]"
   - name: azureCertificateFile # Optional
     value : "[pfx_certificate_file_fully_qualified_local_path]"
+  - name: subscribePollInterval # Optional
+    value: #Optional [Expected format example - 1s|1m|1h]
 
 ```
 
@@ -52,13 +52,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field                      | Required | Details | Example |
 |----------------------------|:--------:|---------|---------|
-| appConfigConnectionString  | Y*       | Connection String for the Azure App Configuration instance. No Default. Can be `secretKeyRef` to use a secret reference. *Mutally exclusive with appConfigHost field. *Not to be used when [Azure Authentication](https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/) is used  | `Endpoint=https://foo.azconfig.io;Id=osOX-l9-s0:sig;Secret=00000000000000000000000000000000000000000000`
-| appConfigHost              | N*       | Endpoint for the Azure App Configuration instance. No Default. *Mutally exclusive with appConfigConnectionString field. *To be used when [Azure Authentication](https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/) is used | `https://dapr.azconfig.io`
+| connectionString  | Y*       | Connection String for the Azure App Configuration instance. No Default. Can be `secretKeyRef` to use a secret reference. *Mutally exclusive with host field. *Not to be used when [Azure Authentication](https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/) is used  | `Endpoint=https://foo.azconfig.io;Id=osOX-l9-s0:sig;Secret=00000000000000000000000000000000000000000000`
+| host              | N*       | Endpoint for the Azure App Configuration instance. No Default. *Mutally exclusive with connectionString field. *To be used when [Azure Authentication](https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/) is used | `https://dapr.azconfig.io`
 | maxRetries                 | N        | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | retryDelay                 | N        | RetryDelay specifies the initial amount of delay to use before retrying an operation. The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay. Defaults to `4` seconds; `"-1"` disables delay between retries. | `4000000000`
 | maxRetryDelay              | N        | MaxRetryDelay specifies the maximum delay allowed before retrying an operation. Typically the value is greater than or equal to the value specified in RetryDelay. Defaults to `120` seconds; `"-1"` disables the limit | `120000000000`
+| subscribePollInterval      | N        | subscribePollInterval specifies the poll interval for polling the subscribed keys for any changes. Default polling interval is set to `24` hours.
 
-**Note**: either `appConfigHost` or `appConfigConnectionString` must be specified.
+**Note**: either `host` or `connectionString` must be specified.
 
 ## Authenticating with Connection String 
 
@@ -82,11 +83,25 @@ You need an Azure subscription to set up Azure App Configuration.
    - For your connection string: navigate to **Settings** > **Access Keys** and copy your Connection string.
 1. Add your host or your connection string to an `azappconfig.yaml` file that Dapr can apply.
      
-   Set the `appConfigHost` key to `[Endpoint]` or the `appConfigConnectionString` key to the values you saved earlier. 
+   Set the `host` key to `[Endpoint]` or the `connectionString` key to the values you saved earlier.
    
    {{% alert title="Note" color="primary" %}}
    In a production-grade application, follow [the secret management]({{< ref component-secrets.md >}}) instructions to securely manage your secrets.
    {{% /alert %}}
+
+## Azure App Configuration request metadata 
+
+In Azure App Configuration, you can use labels to define different values for the same key. For example, you can define a single key with different values for development and production. You can specify which label to load when connecting to App Configuration
+
+The Azure App Configuration store component supports the following optional `label` metadata property:
+
+`label`: The label of the configuration to retrieve. If not present, the configuration store returns the configuration for the specified key and a null label.
+
+The label can be populated using query parameters in the request URL:
+
+```bash
+GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<store-name>?key=<key name>&metadata.label=<label value>
+```
 
 ## Related links
 - [Basic schema for a Dapr component]({{< ref component-schema >}})

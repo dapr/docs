@@ -214,17 +214,17 @@ func main() {
 }
 ```
 
-This creates a gRPC server for your app on port 4000.
+This creates a gRPC server for your app on port 50001.
 
 4. Run your app
 
 To run locally, use the Dapr CLI:
 
 ```
-dapr run --app-id goapp --app-port 4000 --app-protocol grpc go run main.go
+dapr run --app-id goapp --app-port 50001 --app-protocol grpc go run main.go
 ```
 
-On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "4000` annotations in your pod spec template as mentioned above.
+On Kubernetes, set the required `dapr.io/app-protocol: "grpc"` and `dapr.io/app-port: "50001` annotations in your pod spec template as mentioned above.
 
 ## Other languages
 

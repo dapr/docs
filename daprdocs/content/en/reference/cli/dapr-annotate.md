@@ -41,7 +41,6 @@ dapr annotate [flags] CONFIG-FILE
 | `--env` | | | Environment variables to set (key value pairs, comma separated) |
 | `--graceful-shutdown-seconds` | | `-1` | The number of seconds to wait for the app to shutdown |
 | `--help, -h` | | | help for annotate |
-| `--http-stream-request-body` | | `false` | Enable streaming request body for HTTP |
 | `--listen-addresses` | | | The addresses for sidecar to listen on. To listen to all IPv4 addresses, use `0.0.0.0`. To listen to all IPv6 addresses, use `[::]`. |
 | `--liveness-probe-delay` | | `-1` | The delay for sidecar to use for the liveness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |
 | `--liveness-probe-period` | | `-1` | The period used by the sidecar for the liveness probe. Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). |

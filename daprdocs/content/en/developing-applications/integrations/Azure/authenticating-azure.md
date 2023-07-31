@@ -84,7 +84,7 @@ To start, create a new Azure AD application, which will also be used as Service 
 
 Prerequisites:
 
-- [Azure Subscription](https://azure.microsoft.com/free/)
+- Azure Subscription
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - OpenSSL (included by default on all Linux and macOS systems, as well as on WSL)

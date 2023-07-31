@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How-To: Observe metrics with Grafana"
-linkTitle: "Metrics dashboards with Grafana"
+linkTitle: "Grafana dashboards"
 weight: 5000
 description: "How to view Dapr metrics in a Grafana dashboard."
 ---
@@ -42,6 +42,7 @@ The `grafana-actor-dashboard.json` template shows Dapr Sidecar status, actor inv
 
    ```bash
    helm repo add grafana https://grafana.github.io/helm-charts
+   helm repo update
    ```
 
 1. Install the chart:
@@ -175,5 +176,5 @@ First you need to connect Prometheus as a data source to Grafana.
 ## Example
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8W-iBDNvCUM?start=2577" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>

@@ -268,8 +268,11 @@ has(event.data.important) && event.data.important == true
 Match deposits greater than $10,000:
 
 ```javascript
-event.type == "deposit" && event.data.amount > 10000
+event.type == "deposit" && int(event.data.amount) > 10000
 ```
+{{% alert title="Note" color="primary" %}}
+By default the numeric values ​​are written as double-precision floating-point. There are no automatic arithmetic conversions for numeric values. In this case, if `event.data.amount` is not cast as integer, the match is not performed. For more information, see the [CEL documentation](https://github.com/google/cel-spec/blob/master/doc/langdef.md).
+{{% /alert %}}
 
 Match multiple versions of a message:
 
@@ -447,7 +450,7 @@ Currently, comparisons to time (e.g. before or after "now") are not supported.
 Watch [this video](https://www.youtube.com/watch?v=QqJgRmbH82I&t=1063s) on how to use message routing with pub/sub:
 
 <p class="embed-responsive embed-responsive-16by9">
-<iframe width="688" height="430" src="https://www.youtube.com/embed/QqJgRmbH82I?start=1063" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="688" height="430" src="https://www.youtube-nocookie.com/embed/QqJgRmbH82I?start=1063" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>
 
 ## Next steps

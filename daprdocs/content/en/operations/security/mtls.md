@@ -295,7 +295,7 @@ You will experience potential downtime due to mismatching certificates until all
 ### Kubernetes video demo 
 Watch this video to show how to update mTLS certificates on Kubernetes
 
-<iframe width="1280" height="720" src="https://www.youtube.com/embed/_U9wJqq-H1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="1280" height="720" src="https://www.youtube-nocookie.com/embed/_U9wJqq-H1g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Set up monitoring for Dapr control plane mTLS certificate expiration
 
@@ -447,7 +447,7 @@ Tell the Sentry service where to load the certificates from using the `--issuer-
 
 The next examples creates root and issuer certs and loads them with the Sentry service.
 
-*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/getting-started/). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
+*Note: This example uses the step tool to create the certificates. You can install step tool from [here](https://smallstep.com/docs/step-cli/installation). Windows binaries available [here](https://github.com/smallstep/cli/releases)*
 
 Create the root certificate:
 
@@ -489,5 +489,5 @@ By default, system services will look for the credentials in `/var/run/dapr/cred
 Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&t=1400) on how to perform certificate rotation if your certicates are expiring.
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
 </div>

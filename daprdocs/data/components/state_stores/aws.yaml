@@ -6,6 +6,6 @@
   features:
     crud: true
     transactions: false
-    etag: false
+    etag: true
     ttl: true
     query: false

@@ -2,7 +2,7 @@
 type: docs
 title: "How-To: Set up Azure Monitor to search logs and collect metrics"
 linkTitle: "Azure Monitor"
-weight: 2000
+weight: 7000
 description: "Enable Dapr metrics and logs with Azure Monitor for Azure Kubernetes Service (AKS)"
 ---
 

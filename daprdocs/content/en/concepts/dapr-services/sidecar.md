@@ -8,7 +8,13 @@ description: "Overview of the Dapr sidecar process"
 
 Dapr uses a [sidecar pattern]({{< ref "concepts/overview.md#sidecar-architecture" >}}), meaning the Dapr APIs are run and exposed on a separate process, the Dapr sidecar, running alongside your application. The Dapr sidecar process is named `daprd` and is launched in different ways depending on the hosting environment.
 
-The Dapr sidecar exposes [building block APIs]({{<ref building-blocks-concept>}}) used by your application business logic, a [metadata API]({{<ref metadata_api>}}) for discoverability of capabiliites and to set attributes and a [health API]({{<ref sidecar-health>}}) to determine health status. 
+The Dapr sidecar exposes: 
+
+- [Building block APIs]({{<ref building-blocks-concept>}}) used by your application business logic
+- A [metadata API]({{<ref metadata_api>}}) for discoverability of capabilities and to set attributes
+- A [health API]({{<ref sidecar-health>}}) to determine health status and sidecar readiness and liveness
+
+The Dapr sidecar will reach readiness state once the application is accessible on its configured port. The application cannot access the Dapr components during application start up/initialization. 
 
 <img src="/images/overview-sidecar-apis.png" width=700>
 

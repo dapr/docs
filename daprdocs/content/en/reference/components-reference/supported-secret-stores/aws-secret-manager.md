@@ -2,7 +2,7 @@
 type: docs
 title: "AWS Secrets Manager"
 linkTitle: "AWS Secrets Manager"
-description: Detailed information on the  decret store component
+description: Detailed information on the  secret store component
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/aws-secret-manager/"
 ---

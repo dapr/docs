@@ -16,7 +16,7 @@ Even though the state store is a key/value store, the `value` might be a JSON do
 
 ## Querying the state
 
-Submit query requests via HTTP POST/PUT or gRPC. The body of the request is the JSON map with 3 _optional_ entries:
+Submit query requests via HTTP POST/PUT or gRPC. The body of the request is the JSON map with 3 entries:
 
 - `filter`
 - `sort`

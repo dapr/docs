@@ -7,3 +7,10 @@ daprdocs/resources/_gen
 .venv/
 .hugo_build.lock
 .dccache
+.DS_Store
+daprdocs/.DS_Store
+daprdocs/content/.DS_Store
+daprdocs/content/en/.DS_Store
+daprdocs/resources/.DS_Store
+daprdocs/static/.DS_Store
+daprdocs/static/presentations/.DS_Store

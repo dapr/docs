@@ -24,6 +24,8 @@ Dapr initialization includes:
 
 {{% alert title="Docker" color="primary" %}}
 The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{<ref self-hosted-no-docker.md>}})), the next steps in this guide assume the recommended Docker development environment.
+
+You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{<ref dapr-init.md>}}).
 {{% /alert %}}
 
 ### Step 1: Open an elevated terminal

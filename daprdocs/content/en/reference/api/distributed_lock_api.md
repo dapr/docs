@@ -21,7 +21,7 @@ POST http://localhost:<daprPort>/v1.0-alpha1/lock/<storename>
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md >}})
 
 #### Query Parameters
 
@@ -95,7 +95,7 @@ POST http://localhost:<daprPort>/v1.0-alpha1/unlock/<storename>
 Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
-`storename` | The `metadata.name` field component file. Refer to the [component schema] ({{< ref component-schema.md>}})
+`storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md >}})
 
 #### Query Parameters
 

@@ -54,17 +54,17 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
 | vaultAddr      | N | The address of the Vault server. Defaults to `"https://127.0.0.1:8200"` | `"https://127.0.0.1:8200"` |
-| caCert | N | Certificate Authority use only one of the options. The encoded cacerts to use | `"cacerts"` |
-| caPath | N | Certificate Authority use only one of the options. The path to a CA cert file |  `"path/to/cacert/file"` |
-| caPem | N | Certificate Authority use only one of the options. The encoded cacert pem to use | `"encodedpem"` |
+| caPem | N | The inlined contents of the CA certificate to use, in PEM format. If defined, takes precedence over `caPath` and `caCert`.  | See below |
+| caPath | N | The path to a folder holding the CA certificate file to use, in PEM format. If the folder contains multiple files, only the first file found will be used. If defined, takes precedence over `caCert`.  |  `"path/to/cacert/holding/folder"` |
+| caCert | N | The path to the CA certificate to use, in PEM format. | `""path/to/cacert.pem"` |
 | skipVerify | N | Skip TLS verification. Defaults to `"false"` | `"true"`, `"false"` |
-| tlsServerName | N | TLS config server name | `"tls-server"` |
+| tlsServerName | N | The name of the server requested during TLS handshake in order to support virtual hosting. This value is also used to verify the TLS certificate presented by Vault server. | `"tls-server"` |
 | vaultTokenMountPath | Y | Path to file containing token | `"path/to/file"` |
 | vaultToken | Y | [Token](https://learn.hashicorp.com/tutorials/vault/tokens) for authentication within Vault.  | `"tokenValue"` |
 | vaultKVPrefix | N | The prefix in vault. Defaults to `"dapr"` | `"dapr"`, `"myprefix"` |
 | vaultKVUsePrefix | N | If false, vaultKVPrefix is forced to be empty. If the value is not given or set to true, vaultKVPrefix is used when accessing the vault. Setting it to false is needed to be able to use the BulkGetSecret method of the store.  | `"true"`, `"false"` |
 | enginePath | N | The [engine](https://www.vaultproject.io/api-docs/secret/kv/kv-v2) path in vault. Defaults to `"secret"` | `"kv"`, `"any"` |
-| vaultValueType | N | Vault value type. `map` means to parse the value into `map[string]string`, `text` means to use the value as a string. Defaults to `"map"` | `"map"`, `"text"` |
+| vaultValueType | N | Vault value type. `map` means to parse the value into `map[string]string`, `text` means to use the value as a string. 'map' sets the `multipleKeyValuesPerSecret` behavior. `text` makes Vault behave as a secret store with name/value semantics.  Defaults to `"map"` | `"map"`, `"text"` |
 
 ## Setup Hashicorp Vault instance
 
@@ -79,6 +79,67 @@ For Kubernetes, you can use the Helm Chart: <https://github.com/hashicorp/vault-
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+
+## Multiple key-values per secret
+
+HashiCorp Vault supports multiple key-values in a secret. While this behavior is ultimately dependent on the underlying [secret engine](https://www.vaultproject.io/docs/secrets#secrets-engines) configured by `enginePath`, it may change the way you store and retrieve keys from Vault. For instance, multiple key-values in a secret is the behavior exposed in the `secret` engine, the default engine configured by the `enginePath` field.
+
+When retrieving secrets, a JSON payload is returned with the key names as fields and their respective values.
+
+Suppose you add a secret to your Vault setup as follows:
+
+```shell
+vault kv put secret/dapr/mysecret firstKey=aValue secondKey=anotherValue thirdKey=yetAnotherDistinctValue
+```
+
+In the example above, the secret is named `mysecret` and it has 3 key-values under it. 
+Observe that the secret is created under a `dapr` prefix, as this is the default value for the `vaultKVPrefix` flag.
+Retrieving it from Dapr would result in the following output:
+
+```shell
+$ curl http://localhost:3501/v1.0/secrets/my-hashicorp-vault/mysecret
+```
+
+```json
+{
+  "firstKey": "aValue",
+  "secondKey": "anotherValue",
+  "thirdKey": "yetAnotherDistinctValue"
+}
+```
+
+Notice that the name of the secret (`mysecret`) is not repeated in the result.
+
+
+## TLS Server verification 
+
+The fields `skipVerify`, `tlsServerName`, `caCert`, `caPath`, and `caPem` control if and how Dapr verifies the vault server's certificate while connecting using TLS/HTTPS.
+
+### Inline CA PEM caPem
+
+The `caPem` field value should be the contents of the PEM CA certificate you want to use. Given PEM certificates are made of multiple lines, defining that value might seem challenging at first. YAML allows for a few ways of [defining a multiline values](https://yaml-multiline.info/).
+
+Below is one way to define a `caPem` field.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: vault
+spec:
+  type: secretstores.hashicorp.vault
+  version: v1
+  metadata:
+  - name: vaultAddr
+    value: https://127.0.0.1:8200
+  - name: caPem
+    value: |-
+          -----BEGIN CERTIFICATE-----
+          << the rest of your PEM file content's here, indented appropriately. >>
+          -----END CERTIFICATE-----
+```
+
 ## Related links
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})

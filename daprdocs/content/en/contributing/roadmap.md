@@ -3,7 +3,7 @@ type: docs
 title: "Dapr Roadmap"
 linkTitle: "Roadmap"
 description: "The Dapr Roadmap is a tool to help with visibility into investments across the Dapr project"
-weight: 1100
+weight: 30
 no_list: true
 ---
 
