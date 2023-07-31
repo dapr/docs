@@ -33,7 +33,7 @@ spec:
     - name: maxOpenConns
       value: "<MAX_OPEN_CONNECTIONS>"
     - name: connMaxLifetime
-      value: "<CONNECTILN_MAX_LIFE_TIME>"
+      value: "<CONNECTION_MAX_LIFE_TIME>"
     - name: connMaxIdleTime
       value: "<CONNECTION_MAX_IDLE_TIME>"
     - name: direction
