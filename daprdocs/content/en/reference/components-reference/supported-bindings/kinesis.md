@@ -23,21 +23,21 @@ spec:
   version: v1
   metadata:
   - name: streamName
-    value: KINESIS_STREAM_NAME # Kinesis stream name
+    value: "KINESIS_STREAM_NAME" # Kinesis stream name
   - name: consumerName
-    value: KINESIS_CONSUMER_NAME # Kinesis consumer name
+    value: "KINESIS_CONSUMER_NAME" # Kinesis consumer name
   - name: mode
-    value: shared # shared - Shared throughput or extended - Extended/Enhanced fanout
+    value: "shared" # shared - Shared throughput or extended - Extended/Enhanced fanout
   - name: region
-    value: AWS_REGION #replace
+    value: "AWS_REGION" #replace
   - name: accessKey
-    value: AWS_ACCESS_KEY # replace
+    value: "AWS_ACCESS_KEY" # replace
   - name: secretKey
-    value: AWS_SECRET_KEY #replace
+    value: "AWS_SECRET_KEY" #replace
   - name: sessionToken
-    value: *****************
+    value: "*****************"
   - name: direction
-    value: input, output
+    value: "input, output"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).

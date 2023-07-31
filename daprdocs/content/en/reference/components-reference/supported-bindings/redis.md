@@ -22,13 +22,13 @@ spec:
   version: v1
   metadata:
   - name: redisHost
-    value: <address>:6379
+    value: "<address>:6379"
   - name: redisPassword
-    value: **************
+    value: "**************"
   - name: enableTLS
-    value: <bool>
+    value: "<bool>"
   - name: direction 
-    value: output
+    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}

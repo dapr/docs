@@ -40,7 +40,7 @@ spec:
 # - name: visibilityTimeout
 #   value: "30s"
 # - name: direction 
-#   value: input, output
+#   value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}

@@ -20,18 +20,18 @@ spec:
   type: bindings.huawei.obs
   version: v1
   - name: bucket
-    value: <your-bucket-name>
+    value: "<your-bucket-name>"
   - name: endpoint
-    value: <obs-bucket-endpoint>
+    value: "<obs-bucket-endpoint>"
   - name: accessKey
-    value: <your-access-key>
+    value: "<your-access-key>"
   - name: secretKey
-    value: <your-secret-key>
+    value: "<your-secret-key>"
   # optional fields
   - name: region
-    value: <your-bucket-region>
+    value: "<your-bucket-region>"
   - name: direction
-    value: <your-binding-direction>
+    value: "<your-binding-direction>"
 ```
 
 {{% alert title="Warning" color="warning" %}}

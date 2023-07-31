@@ -23,23 +23,23 @@ spec:
   version: v1
   metadata:
   - name: url
-    value: http://something.com
+    value: "http://something.com"
   - name: MTLSRootCA
-    value: /Users/somepath/root.pem # OPTIONAL Secret store ref, <path to root CA>, or <pem encoded string>
+    value: "/Users/somepath/root.pem" # OPTIONAL Secret store ref, <path to root CA>, or <pem encoded string>
   - name: MTLSClientCert
-    value: /Users/somepath/client.pem # OPTIONAL Secret store ref, <path to client cert>, or <pem encoded string>
+    value: "/Users/somepath/client.pem" # OPTIONAL Secret store ref, <path to client cert>, or <pem encoded string>
   - name: MTLSClientKey
-    value: /Users/somepath/client.key # OPTIONAL Secret store ref, <path to client key>, or <pem encoded string>
+    value: "/Users/somepath/client.key" # OPTIONAL Secret store ref, <path to client key>, or <pem encoded string>
   - name: MTLSRenegotiation
-    value: RenegotiateOnceAsClient # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
+    value: "RenegotiateOnceAsClient" # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
   - name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
     secretKeyRef:
       name: mysecret
-      key: mytoken
+      key: "mytoken"
   - name: securityTokenHeader
     value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
   - name: direction
-    value: output
+    value: "output"
 ```
 
 ## Spec metadata fields
@@ -53,7 +53,7 @@ spec:
 | `MTLSRenegotiation`  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
 | `securityToken`      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
 | `securityTokenHeader`| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
-| `direction`| N        | Output |The direction of the binding | `output` 
+| `direction`| N        | Output |The direction of the binding | `"output"` 
 
 ### How to configure MTLS related fields in Metadata
 The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be provided in three ways:

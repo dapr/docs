@@ -22,17 +22,17 @@ spec:
   version: v1
   metadata:
   - name: url
-    value: https://******.documents.azure.com:443/
+    value: "https://******.documents.azure.com:443/"
   - name: masterKey
-    value: *****
+    value: "*****"
   - name: database
-    value: db
+    value: "OrderDb"
   - name: collection
-    value: collection
+    value: "Orders"
   - name: partitionKey
-    value: message
+    value: "<message>"
   - name: direction
-    value: output
+    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -48,7 +48,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `database` | Y | Output | The name of the Cosmos DB database | `"OrderDb"` |
 | `collection` | Y | Output | The name of the container inside the database.  | `"Orders"` |
 | `partitionKey` | Y | Output | The name of the key to extract from the payload (document to be created) that is used as the partition key. This name must match the partition key specified upon creation of the Cosmos DB container. | `"OrderId"`, `"message"` |
-| `direction` | N | Output | The direction of the binding. | `output` |
+| `direction` | N | Output | The direction of the binding. | `"output"` |
 
 For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items).
 

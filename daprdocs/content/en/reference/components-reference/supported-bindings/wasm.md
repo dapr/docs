@@ -59,15 +59,15 @@ spec:
   - name: url
     value: "file://uppercase.wasm"
   - name: direction 
-    value: output
+    value: "output"
 ```
 
 ## Spec metadata fields
 
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
-| `url`   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
-| `direction`   | The direction of the binding | false     | `output` |
+| `url`   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `"file://hello.wasm"` |
+| `direction`   | The direction of the binding | false     | `"output"` |
 
 ## Binding support
 

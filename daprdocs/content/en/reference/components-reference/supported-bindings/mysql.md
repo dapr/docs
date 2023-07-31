@@ -25,19 +25,19 @@ spec:
   version: v1
   metadata:
     - name: url # Required, define DB connection in DSN format
-      value: <CONNECTION_STRING>
+      value: "<CONNECTION_STRING>"
     - name: pemPath # Optional
-      value: <PEM PATH>
+      value: "<PEM PATH>"
     - name: maxIdleConns
-      value: <MAX_IDLE_CONNECTIONS>
+      value: "<MAX_IDLE_CONNECTIONS>"
     - name: maxOpenConns
-      value: <MAX_OPEN_CONNECTIONS>
+      value: "<MAX_OPEN_CONNECTIONS>"
     - name: connMaxLifetime
-      value: <CONNECTILN_MAX_LIFE_TIME>
+      value: "<CONNECTILN_MAX_LIFE_TIME>"
     - name: connMaxIdleTime
-      value: <CONNECTION_MAX_IDLE_TIME>
+      value: "<CONNECTION_MAX_IDLE_TIME>"
     - name: direction
-      value: <DIRECTION_OF_BINDING>
+      value: "<DIRECTION_OF_BINDING>"
 ```
 
 {{% alert title="Warning" color="warning" %}}

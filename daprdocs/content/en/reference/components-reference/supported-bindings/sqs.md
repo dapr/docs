@@ -23,17 +23,17 @@ spec:
   version: v1
   metadata:
   - name: queueName
-    value: items
+    value: "items"
   - name: region
-    value: us-west-2
+    value: "us-west-2"
   - name: accessKey
-    value: *****************
+    value: "*****************"
   - name: secretKey
-    value: *****************
+    value: "*****************"
   - name: sessionToken
-    value: *****************
+    value: "*****************"
   - name: direction 
-    value: input, output
+    value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}

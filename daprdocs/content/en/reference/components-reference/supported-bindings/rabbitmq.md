@@ -22,35 +22,35 @@ spec:
   version: v1
   metadata:
   - name: queueName
-    value: queue1
+    value: "queue1"
   - name: host
-    value: amqp://[username][:password]@host.domain[:port]
+    value: "amqp://[username][:password]@host.domain[:port]"
   - name: durable
-    value: true
+    value: "true"
   - name: deleteWhenUnused
-    value: false
+    value: "false"
   - name: ttlInSeconds
-    value: 60
+    value: "60"
   - name: prefetchCount
-    value: 0
+    value: "0"
   - name: exclusive
-    value: false
+    value: "false"
   - name: maxPriority
-    value: 5
+    value: "5"
   - name: contentType
     value: "text/plain"
   - name: reconnectWaitInSeconds
-    value: 5
+    value: "5"
   - name: externalSasl
-    value: false
+    value: "false"
   - name: caCert
-    value: null
+    value: "null"
   - name: clientCert
-    value: null
+    value: "null"
   - name: clientKey
-    value: null
+    value: "null"
   - name: direction 
-    value: input, output
+    value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}

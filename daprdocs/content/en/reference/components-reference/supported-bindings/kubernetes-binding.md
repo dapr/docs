@@ -22,7 +22,7 @@ spec:
   version: v1
   metadata:
   - name: namespace
-    value: <NAMESPACE>
+    value: "<NAMESPACE>"
   - name: resyncPeriodInSec
     value: "<seconds>"
   - name: direction

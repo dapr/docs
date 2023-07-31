@@ -22,15 +22,15 @@ spec:
   version: v1
   metadata:
   - name: url # Required
-    value: <INFLUX-DB-URL>
+    value: "<INFLUX-DB-URL>"
   - name: token # Required
-    value: <TOKEN>
+    value: "<TOKEN>"
   - name: org # Required
-    value: <ORG>
+    value: "<ORG>"
   - name: bucket # Required
-    value: <BUCKET>
+    value: "<BUCKET>"
   - name: direction
-    value: <DIRECTION>
+    value: "<DIRECTION>"
 ```
 
 {{% alert title="Warning" color="warning" %}}

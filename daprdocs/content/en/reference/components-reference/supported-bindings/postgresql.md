@@ -23,9 +23,9 @@ spec:
   version: v1
   metadata:
   - name: url # Required
-    value: <CONNECTION_STRING>
+    value: "<CONNECTION_STRING>"
   - name: direction
-    value: <DIRECTION_OF_BINDING>
+    value: "<DIRECTION_OF_BINDING>"
 ```
 
 {{% alert title="Warning" color="warning" %}}

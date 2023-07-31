@@ -23,17 +23,17 @@ spec:
   version: v1
   metadata:
   - name: topicArn
-    value: mytopic
+    value: "mytopic"
   - name: region
-    value: us-west-2
+    value: "us-west-2"
   - name: accessKey
-    value: *****************
+    value: "*****************"
   - name: secretKey
-    value: *****************
+    value: "*****************"
   - name: sessionToken
-    value: *****************
+    value: "*****************"
   - name: direction 
-    value: output
+    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}

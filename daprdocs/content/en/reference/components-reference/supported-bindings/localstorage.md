@@ -22,9 +22,9 @@ spec:
   version: v1
   metadata:
   - name: rootPath
-    value: <string>
+    value: "<string>"
   - name: direction
-    value: <direction>
+    value: "<direction>"
 ```
 
 ## Spec metadata fields

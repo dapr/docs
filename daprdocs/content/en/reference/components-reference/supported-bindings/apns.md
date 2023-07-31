@@ -21,15 +21,15 @@ spec:
   version: v1
   metadata:
     - name: development
-      value: <bool>
+      value: "<bool>"
     - name: key-id
-      value: <APPLE_KEY_ID>
+      value: "<APPLE_KEY_ID>"
     - name: team-id
-      value: <APPLE_TEAM_ID>
+      value: "<APPLE_TEAM_ID>"
     - name: private-key
       secretKeyRef:
         name: <SECRET>
-        key: <SECRET-KEY-NAME>
+        key: "<SECRET-KEY-NAME>"
     - name: direction
       value: "output"
 ```
