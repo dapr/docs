@@ -18,7 +18,7 @@
   link: commercetools
   state: Alpha
   version: v1
-  since: "1.0"
+  since: "1.8"
   features:
     input: false
     output: true
