@@ -46,6 +46,9 @@ spec:
   # Optional Input Binding Metadata
   - name: eventSubscriptionName
     value: "[EventSubscriptionName]"
+  # Optional metadata
+  - name: direction
+    value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -66,6 +69,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `handshakePort` | Y | Input | The container port that the input binding listens on when receiving events on the webhook | `"9000"` |
 | `scope` | Y | Input | The identifier of the resource to which the event subscription needs to be created or updated. See the [scope section](#scope) for more details | `"/subscriptions/{subscriptionId}/"` |
 | `eventSubscriptionName` | N | Input | The name of the event subscription. Event subscription names must be between 3 and 64 characters long and should use alphanumeric letters only | `"name"` |
+| `direction` | N | Input/Output | The direction of the binding | `"input"`, `"output"`, `"input, output"` |
 
 ### Scope
 
