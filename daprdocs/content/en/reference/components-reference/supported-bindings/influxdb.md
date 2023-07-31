@@ -22,13 +22,15 @@ spec:
   version: v1
   metadata:
   - name: url # Required
-    value: <INFLUX-DB-URL>
+    value: "<INFLUX-DB-URL>"
   - name: token # Required
-    value: <TOKEN>
+    value: "<TOKEN>"
   - name: org # Required
-    value: <ORG>
+    value: "<ORG>"
   - name: bucket # Required
-    value: <BUCKET>
+    value: "<BUCKET>"
+  - name: direction
+    value: "<DIRECTION>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -39,10 +41,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| url  | Y | Output | The URL for the InfluxDB instance| `"http://localhost:8086"` |
-| token | Y | Output | The authorization token for InfluxDB | `"mytoken"` |
-| org | Y | Output | The InfluxDB organization | `"myorg"` |
-| bucket | Y | Output | Bucket name to write to | `"mybucket"` |
+| `url`  | Y | Output | The URL for the InfluxDB instance| `"http://localhost:8086"` |
+| `token` | Y | Output | The authorization token for InfluxDB | `"mytoken"` |
+| `org` | Y | Output | The InfluxDB organization | `"myorg"` |
+| `bucket` | Y | Output | Bucket name to write to | `"mybucket"` |
+| `direction` | N | Output | Direction of the binding | `"output"` |
 
 ## Binding support
 

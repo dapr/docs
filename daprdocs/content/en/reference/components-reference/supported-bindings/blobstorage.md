@@ -33,6 +33,8 @@ spec:
 #   value: <integer>
 # - name: publicAccessLevel
 #   value: <publicAccessLevel>
+# - name: direction
+#   value: "output"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -49,6 +51,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to Blob Storage. (In case of saving a file with binary content). Defaults to `false` | `true`, `false` |
 | `getBlobRetryCount` | N | Output | Specifies the maximum number of HTTP GET requests that will be made while reading from a RetryReader Defaults to `10` | `1`, `2`
 | `publicAccessLevel` | N | Output | Specifies whether data in the container may be accessed publicly and the level of access (only used if the container is created by Dapr). Defaults to `none` | `blob`, `container`, `none`
+| `direction` | N | Output | The direction of the binding. | `"output"`
 
 ### Azure Active Directory (AAD) authentication
 

@@ -55,6 +55,9 @@ spec:
     # Alternative to passing storageAccountKey
     - name: storageConnectionString
       value: "DefaultEndpointsProtocol=https;AccountName=<account>;AccountKey=<account-key>"
+    # Optional metadata
+    - name: direction
+      value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -78,6 +81,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `storageAccountKey`   | Y*  | Input | Storage account key for the checkpoint store account.<br>* When using Azure AD, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Input | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
 | `storageContainerName` | Y | Input | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
+| `direction` | N | Input/Output | The direction of the binding.  | `"input"`, `"output"`, `"input, output"`
 
 ### Azure Active Directory (AAD) authentication
 
