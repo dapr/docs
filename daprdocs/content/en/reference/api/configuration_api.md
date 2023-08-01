@@ -23,6 +23,7 @@ Parameter | Description
 `daprPort` | The Dapr port
 `storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
 
+
 #### Query Parameters
 
 If no query parameters are provided, all configuration items are returned.
@@ -84,6 +85,7 @@ Parameter | Description
 --------- | -----------
 `daprPort` | The Dapr port
 `storename` | The `metadata.name` field component file. Refer to the [component schema]({{< ref component-schema.md>}})
+
 
 #### Query Parameters
 
@@ -172,6 +174,10 @@ Code | Description
 
 #### Response Body
 
+
+JSON-encoded value
+
+=======
 ```
 {
     "ok" : true
@@ -181,6 +187,26 @@ Code | Description
 ### Example
 
 ```shell
+
+curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe'
+```
+> The above command returns the following JSON:
+
+In case of successful operation:
+
+```json
+{
+  "ok": true
+}
+```
+In case of unsuccessful operation:
+
+```json
+{
+  "ok": false,
+  "message": "<dapr returned error message>"
+}
+=======
 curl -X GET 'http://localhost:3500/v1.0-alpha1/configuration/mystore/bf3aa454-312d-403c-af95-6dec65058fa2/unsubscribe' 
 ```
 
