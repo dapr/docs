@@ -26,7 +26,7 @@ Dapr allows you to assign a global, unique ID for your app. This ID encapsulates
 ```bash
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
 
-dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 order-processor/app.py
+dapr run --app-id order-processor --app-port 8001  --app-protocol http --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
 
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
@@ -34,7 +34,7 @@ If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connecti
 ```bash
 dapr run  --app-id checkout --app-protocol https --dapr-http-port 3500 -- python3 checkout/app.py
 
-dapr run --app-port 8001 --app-id order-processor --app-protocol https --dapr-http-port 3501 -- python3 order-processor/app.py
+dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
 
 {{% /codetab %}}
@@ -44,7 +44,7 @@ dapr run --app-port 8001 --app-id order-processor --app-protocol https --dapr-ht
 ```bash
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 
-dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-id order-processor --app-port 5001  --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
@@ -52,7 +52,7 @@ If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connecti
 ```bash
 dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm start
 
-dapr run --app-port 5001 --app-id order-processor --dapr-http-port 3501 --app-protocol https -- npm start
+dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-protocol https -- npm start
 ```
 
 {{% /codetab %}}
@@ -62,7 +62,7 @@ dapr run --app-port 5001 --app-id order-processor --dapr-http-port 3501 --app-pr
 ```bash
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-id order-processor --app-port 7001 --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
@@ -70,7 +70,7 @@ If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connecti
 ```bash
 dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet run
 
-dapr run --app-port 7001 --app-id order-processor --dapr-http-port 3501 --app-protocol https -- dotnet run
+dapr run --app-id order-processor --app-port 7001 --dapr-http-port 3501 --app-protocol https -- dotnet run
 ```
 
 {{% /codetab %}}
@@ -98,7 +98,7 @@ dapr run --app-id order-processor --app-port 9001 --dapr-http-port 3501 --app-pr
 ```bash
 dapr run --app-id checkout --dapr-http-port 3500 -- go run .
 
-dapr run --app-port 6006 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-id order-processor --app-port 6006 --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
@@ -106,7 +106,7 @@ If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connecti
 ```bash
 dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- go run .
 
-dapr run --app-port 6006 --app-id order-processor --dapr-http-port 3501 --app-protocol https -- go run .
+dapr run --app-id order-processor --app-port 6006 --dapr-http-port 3501 --app-protocol https -- go run .
 ```
 
 {{% /codetab %}}
@@ -203,7 +203,7 @@ var main = function() {
 }
 
     //Invoke a service
-    const result = await axios.post('checkoutservice' , "checkout/" + orderId , axiosConfig);
+    const result = await axios.post('order-processor' , "orders/" + orderId , axiosConfig);
     console.log("Order requested: " + orderId);
     console.log("Result: " + result.config.data);
 
