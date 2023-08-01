@@ -23,16 +23,21 @@ spec:
     value: "https://oapi.dingtalk.com/robot/send?access_token=******"
   - name: secret
     value: "****************"
+  - name: direction
+    value: "input, output"
 ```
+
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
+
 ## Spec metadata fields
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
-| id                | Y        | Input/Output |unique id| `"test_webhook_id"`
-| url                | Y        | Input/Output |DingTalk's Webhook url | `"https://oapi.dingtalk.com/robot/send?access_token=******"`
-| secret                | N        | Input/Output |the secret of DingTalk's Webhook | `"****************"`
+| `id`                 | Y        | Input/Output |Unique id| `"test_webhook_id"`
+| `url`                | Y        | Input/Output |DingTalk's Webhook url | `"https://oapi.dingtalk.com/robot/send?access_token=******"`
+| `secret`             | N        | Input/Output |The secret of DingTalk's Webhook | `"****************"`
+| `direction`          | N        | Input/Output |The direction of the binding | `"input"`, `"output"`, `"input, output"`
 
 ## Binding support
 

@@ -43,6 +43,15 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | accessKeySecret    | Y        | The AlibabaCloud Access Key Secret to access this resource              | `"accessKeySecret"`  |
 | securityToken      | N        | The AlibabaCloud Security Token to use                                  | `"securityToken"`    |
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api.md#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.version_id` | Version for the given secret key
+`metadata.path` | (For bulk requests only) The path from the metadata. If not set, defaults to root path (all secrets).
+
 ## Create an AlibabaCloud OOS Parameter Store instance
 
 Setup AlibabaCloud OOS Parameter Store using the AlibabaCloud documentation: https://www.alibabacloud.com/help/en/doc-detail/186828.html.

@@ -6,4 +6,10 @@ weight: 60
 description: See and measure the message calls to components and between networked services
 ---
 
-This section includes guides for developers in the context of observability. See other sections for a [general overview of the observability concept]({{< ref observability-concept >}}) in Dapr and for [operations guidance on monitoring]({{< ref monitoring >}}).
+{{% alert title="More about Dapr Observability" color="primary" %}}
+ Learn more about how to use Dapr Observability Lock:
+ - Explore observability via any of the supporting [Dapr SDKs]({{< ref sdks >}}). 
+ - Review the [Observability API reference documentation]({{< ref health_api.md >}}).
+ - Read the [general overview of the observability concept]({{< ref observability-concept >}}) in Dapr.
+ - Learn the [operations perspective and guidance on monitoring]({{< ref monitoring >}}).
+{{% /alert %}}
