@@ -28,6 +28,8 @@ spec:
     value: "false"
   - name: tenant
     value: "public"
+  - name: authType
+    value: "token"
   - name: token
     value: "eyJrZXlJZCI6InB1bHNhci1wajU0cXd3ZHB6NGIiLCJhbGciOiJIUzI1NiJ9.eyJzd"
   - name: consumerID
@@ -73,7 +75,6 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 |--------------------|:--------:|---------|---------|
 | host               | Y  | Address of the Pulsar broker. Default is `"localhost:6650"` | `"localhost:6650"` OR `"http://pulsar-pj54qwwdpz4b-pulsar.ap-sg.public.pulsar.com:8080"`|
 | enableTLS          | N  | Enable TLS.  Default: `"false"` | `"true"`, `"false"` |
-| token              | N  | Enable Authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
 | tenant             | N  | The topic tenant within the instance. Tenants are essential to multi-tenancy in Pulsar, and spread across clusters.  Default: `"public"` | `"public"` |
 | consumerID         | N  | Used to set the subscription name or consumer ID.  | `"channel1"`
 | namespace          | N  | The administrative unit of the topic, which acts as a grouping mechanism for related topics.  Default: `"default"` | `"default"`
@@ -90,6 +91,14 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | processMode | N | Enable processing multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
 | subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
+| authType | N | One of `"none"`, `"token"` or `"oidc"`. The type of authentication mechanism to use. Defaults to `"none"`, unless `token` is defined in which case it defaults to `"token"`. | "oidc" |
+| token | N  | `authType: token`. Token used for authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
+| oidcTokenURL | N | `authType: oidc`. URL to request the OIDC client_credentials token from. Must use `https` protocol, as per the [OIDC spec](https://openid.net/specs/openid-connect-core-1_0.html) | "https://oauth.example.com/o/oauth2/token" |
+| oidcTokenCAPEM | N | `authType: oidc`. CA PEM certificate bundle to connect to the OIDC issuer. If not defined, the system's certificate pool will be used. | "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---" |
+| oidcClientID | N | `authType: oidc`. OIDC client ID. | "my-client-id" |
+| oidcClientSecret | N | `authType: oidc`. OIDC client secret. | "my-client-secret" |
+| oidcAudiences | N | `authType: oidc`. Comma separated list of audiences to request for. Must not be empty. | "my-audience-1,my-audience-2" |
+| oidcScopes | N | `authType: oidc`. Comma separated list of scopes to request. If empty, defaults to `"openid"`. If defined, `"openid"` must be present. | "openid,profile,email" |
 
 ### Enabling message delivery retries
 
