@@ -262,8 +262,6 @@ namespace EventService
 
 ```java
 //dependencies
-package com.service;
-
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -271,8 +269,14 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+//code
+@SpringBootApplication
 
 public class CheckoutServiceApplication {
 	private static final HttpClient httpClient = HttpClient.newBuilder()
@@ -280,15 +284,11 @@ public class CheckoutServiceApplication {
 			.connectTimeout(Duration.ofSeconds(10))
 			.build();
 
-	private static final String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");
-
-	public static void main(String[] args) throws InterruptedException, IOException {
-		String dapr_url = "http://localhost:" + DAPR_HTTP_PORT + "/orders";
-		for (int i=1; i<=20; i++) {
-			int orderId = i;
-			JSONObject obj = new JSONObject();
-			obj.put("orderId", orderId);
-
+	public static void main(String[] args) throws InterruptedException{
+		while(true) {
+			TimeUnit.MILLISECONDS.sleep(5000);
+			Random random = new Random();
+			int orderId = random.nextInt(1000-1) + 1;
 			HttpRequest request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(obj.toString()))
 					.uri(URI.create(dapr_url))
@@ -299,6 +299,9 @@ public class CheckoutServiceApplication {
 			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			System.out.println("Order passed: "+ orderId);
 			TimeUnit.MILLISECONDS.sleep(1000);
+
+			log.info("Order requested: " + orderId);
+			log.info("Result: " + result);
 		}
 	}
 }
@@ -309,25 +312,23 @@ public class CheckoutServiceApplication {
 {{% codetab %}}
 
 ```go
-//dependencies
-package main
 
+//dependencies
 import (
-	"fmt"
-	"io/ioutil"
+	"context"
 	"log"
-	"net/http"
-	"os"
-	"strconv"
-	"strings"
+	"math/rand"
 	"time"
+	"strconv"
 )
 
+//code
+type Order struct {
+	orderName string
+	orderNum  string
+}
+
 func main() {
-	daprHost := os.Getenv("DAPR_HOST")
-	if daprHost == "" {
-		daprHost = "http://localhost"
-	}
 	daprHttpPort := os.Getenv("DAPR_HTTP_PORT")
 	if daprHttpPort == "" {
 		daprHttpPort = "3500"
@@ -335,14 +336,16 @@ func main() {
 	client := &http.Client{
 		Timeout: 15 * time.Second,
 	}
-	for i := 1; i <= 20; i++ {
-		order := `{"orderId":` + strconv.Itoa(i) + "}"
-		req, err := http.NewRequest("POST", daprHost+":"+daprHttpPort+"/orders", strings.NewReader(order))
-		if err != nil {
-			log.Fatal(err.Error())
-		}
 
-		// Adding app id as part of the header
+	for i := 0; i < 10; i++ {
+		time.Sleep(5000)
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		
+        // Adding app id as part of the header
 		req.Header.Add("dapr-app-id", "order-processor")
 
 		// Invoking a service
@@ -350,15 +353,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-
-		// Read the response
-		result, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-		response.Body.Close()
-
-		fmt.Println("Order passed:", string(result))
+		result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get")
+		log.Println("Order requested: " + strconv.Itoa(orderId))
+		log.Println("Result: ")
+		log.Println(result)
 	}
 }
 ```
