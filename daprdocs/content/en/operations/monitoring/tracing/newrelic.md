@@ -101,7 +101,7 @@ And the exact same dashboard templates from Dapr can be imported to visualize Da
 
 ## New Relic Alerts
 
-All the data that is collected from Dapr, Kubernetes or any services that run on top of can be used to set-up alerts and notifications into the preferred channel of your choice. See [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence/new-relic-alerts/learn-alerts/alerts-ai-transition-guide-2022/).
+All the data that is collected from Dapr, Kubernetes or any services that run on top of can be used to set-up alerts and notifications into the preferred channel of your choice. See [Alerts and Applied Intelligence](https://docs.newrelic.com/docs/alerts-applied-intelligence/overview/).
 
 ## Related Links/References
 
