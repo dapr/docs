@@ -104,5 +104,5 @@ GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<store-name>?key=
 ```
 
 ## Related links
-- [Basic schemas for Dapr components and resources]({{< ref resource-specs >}})
+- [Basic schema for Dapr components]({{< ref component-schema.md >}})
 - [Configuration building block]({{< ref configuration-api-overview >}})
