@@ -52,8 +52,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field                      | Required | Details | Example |
 |----------------------------|:--------:|---------|---------|
-| connectionString  | Y*       | Connection String for the Azure App Configuration instance. No Default. Can be `secretKeyRef` to use a secret reference. *Mutally exclusive with host field. *Not to be used when [Azure Authentication](https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/) is used  | `Endpoint=https://foo.azconfig.io;Id=osOX-l9-s0:sig;Secret=00000000000000000000000000000000000000000000`
-| host              | N*       | Endpoint for the Azure App Configuration instance. No Default. *Mutally exclusive with connectionString field. *To be used when [Azure Authentication](https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/) is used | `https://dapr.azconfig.io`
+| connectionString  | Y*       | Connection String for the Azure App Configuration instance. No Default. Can be `secretKeyRef` to use a secret reference. *Mutally exclusive with host field. *Not to be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used  | `Endpoint=https://foo.azconfig.io;Id=osOX-l9-s0:sig;Secret=00000000000000000000000000000000000000000000`
+| host              | N*       | Endpoint for the Azure App Configuration instance. No Default. *Mutally exclusive with connectionString field. *To be used when [Azure Authentication]({{< ref "authenticating-azure.md" >}}) is used | `https://dapr.azconfig.io`
 | maxRetries                 | N        | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | retryDelay                 | N        | RetryDelay specifies the initial amount of delay to use before retrying an operation. The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay. Defaults to `4` seconds; `"-1"` disables delay between retries. | `4000000000`
 | maxRetryDelay              | N        | MaxRetryDelay specifies the maximum delay allowed before retrying an operation. Typically the value is greater than or equal to the value specified in RetryDelay. Defaults to `120` seconds; `"-1"` disables the limit | `120000000000`
@@ -104,5 +104,5 @@ GET curl http://localhost:<daprPort>/v1.0-alpha1/configuration/<store-name>?key=
 ```
 
 ## Related links
-- [Basic schema for a Dapr component]({{< ref component-schema >}})
+- [Basic schema for Dapr components]({{< ref component-schema.md >}})
 - [Configuration building block]({{< ref configuration-api-overview >}})
