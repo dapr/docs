@@ -269,41 +269,52 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.Duration;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 //code
 @SpringBootApplication
-
 public class CheckoutServiceApplication {
-	private static final HttpClient httpClient = HttpClient.newBuilder()
-			.version(HttpClient.Version.HTTP_2)
-			.connectTimeout(Duration.ofSeconds(10))
-			.build();
+    private static final HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
 
-	public static void main(String[] args) throws InterruptedException{
-		while(true) {
-			TimeUnit.MILLISECONDS.sleep(5000);
-			Random random = new Random();
-			int orderId = random.nextInt(1000-1) + 1;
-			HttpRequest request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(obj.toString()))
-					.uri(URI.create(dapr_url))
-					.header("Content-Type", "application/json")
-					.header("dapr-app-id", "order-processor")
-					.build();
+    // Helper method to invoke the Dapr service
+    private static HttpResponse<String> invokeDaprService(String dapr_url, JSONObject requestBody)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
+                .uri(URI.create(dapr_url))
+                .header("Content-Type", "application/json")
+                .header("dapr-app-id", "order-processor")
+                .build();
 
-			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-			System.out.println("Order passed: "+ orderId);
-			TimeUnit.MILLISECONDS.sleep(1000);
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
 
-			log.info("Order requested: " + orderId);
-			log.info("Result: " + result);
-		}
-	}
+    public static void main(String[] args) throws InterruptedException, IOException {
+        while (true) {
+            TimeUnit.MILLISECONDS.sleep(5000);
+            Random random = new Random();
+            int orderId = random.nextInt(1000 - 1) + 1;
+
+            // Create a JSON object to represent the request body
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("orderId", orderId);
+            // Add other fields to the requestBody JSON object as needed
+
+            // Invoke the Dapr service using the helper method
+            HttpResponse<String> response = invokeDaprService(dapr_url, requestBody);
+
+            System.out.println("Order passed: " + orderId);
+            TimeUnit.MILLISECONDS.sleep(1000);
+
+            log.info("Order requested: " + orderId);
+            log.info("Result: " + response.body());
+        }
+    }
 }
 ```
 
