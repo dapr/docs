@@ -1,16 +1,16 @@
 ---
 type: docs
 title: "HTTPEndpoint spec"
-linkTitle: "HTTPEndpoint spec"
-description: "The HTTPEndpoint resource spec"
-weight: 300
+linkTitle: "HTTPEndpoint"
+description: "The basic spec for a Dapr HTTPEndpoint resource"
+weight: 4000
 aliases:
   - "/operations/httpEndpoints/"
 ---
 
 The `HTTPEndpoint` is a Dapr resource that is used to enable the invocation of non-Dapr endpoints from a Dapr application.
 
-## HTTPEndpoint format
+## Format
 
 ```yaml
 apiVersion: dapr.io/v1alpha1

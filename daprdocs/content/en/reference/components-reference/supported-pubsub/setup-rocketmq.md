@@ -8,7 +8,7 @@ aliases:
 ---
 
 ## Component format
-To setup RocketMQ pubsub, create a component of type `pubsub.rocketmq`. See [this guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+To set up RocketMQ pub/sub, create a component of type `pubsub.rocketmq`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -25,6 +25,8 @@ spec:
       value: dapr-rocketmq-test-g-c
     - name: producerGroup 
       value: dapr-rocketmq-test-g-p
+    - name: consumerID
+      value: topic
     - name: nameSpace
       value: dapr-test
     - name: nameServer
@@ -47,6 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | instanceName                          |    N     | Instance name                                                | `time.Now().String()`                                       | `dapr-rocketmq-test`                                         |
 | consumerGroup                         |    N     | Consumer group name. Recommend. If `producerGroup` is `null`，`groupName` is used. |                                                             | `dapr-rocketmq-test-g-c `                                    |
 | producerGroup (consumerID)            |    N     | Producer group name. Recommended. If `producerGroup` is `null`，`consumerID` is used. If `consumerID` also is null, `groupName` is used. |                                                             | `dapr-rocketmq-test-g-p`                                     |
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | groupName                             |    N     | Consumer/Producer group name. **Depreciated**.               |                                                             | `dapr-rocketmq-test-g`                                       |
 | nameSpace                             |    N     | RocketMQ namespace                                           |                                                             | `dapr-rocketmq`                                              |
 | nameServerDomain                      |    N     | RocketMQ name server domain                                  |                                                             | `https://my-app.net:8080/nsaddr`                             |

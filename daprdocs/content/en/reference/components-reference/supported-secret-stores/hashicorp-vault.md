@@ -66,6 +66,14 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | enginePath | N | The [engine](https://www.vaultproject.io/api-docs/secret/kv/kv-v2) path in vault. Defaults to `"secret"` | `"kv"`, `"any"` |
 | vaultValueType | N | Vault value type. `map` means to parse the value into `map[string]string`, `text` means to use the value as a string. 'map' sets the `multipleKeyValuesPerSecret` behavior. `text` makes Vault behave as a secret store with name/value semantics.  Defaults to `"map"` | `"map"`, `"text"` |
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided to Hashicorp Vault secret store component:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.version_id` | Version for the given secret key.
+
 ## Setup Hashicorp Vault instance
 
 {{< tabs "Self-Hosted" "Kubernetes" >}}
