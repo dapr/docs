@@ -121,7 +121,7 @@ tinygo build -o router.wasm -scheduler=none --no-debug -target=wasi router.go`
 
 ### Wasm `guestConfig` example
 
-Here is an example of how to use `guestConfig` to pass configurations to wasm. In wasm code, you can use the function `handler.Host.GetConfig` defined in guest sdk to get the configuration. In the following example, the wasm middleware parses the executed `environment` from json config defined in the component.
+Here is an example of how to use `guestConfig` to pass configurations to Wasm. In Wasm code, you can use the function `handler.Host.GetConfig` defined in guest SDK to get the configuration. In the following example, the Wasm middleware parses the executed `environment` from JSON config defined in the component.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
