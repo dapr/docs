@@ -189,4 +189,7 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the following examples: 
+   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+   - [Java](todo)
