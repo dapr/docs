@@ -30,7 +30,25 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{< tabs ".NET" Python >}}
+{{< tabs Python ".NET" Java >}}
+
+{{% codetab %}}
+
+<!--python-->
+
+Define the workflow activities you'd like your workflow to perform. Activities are a function definition and can take inputs and outputs. The following example creates a counter (activity) called `hello_act` that notifies users of the current counter value. `hello_act` is a function derived from a class called `WorkflowActivityContext`.
+
+```python
+def hello_act(ctx: WorkflowActivityContext, input):
+    global counter
+    counter += input
+    print(f'New counter value is: {counter}!', flush=True)
+```
+
+[See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -102,21 +120,38 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 {{% codetab %}}
 
-<!--python-->
+<!--java-->
 
-Define the workflow activities you'd like your workflow to perform. Activities are a function definition and can take inputs and outputs. The following example creates a counter (activity) called `hello_act` that notifies users of the current counter value. `hello_act` is a function derived from a class called `WorkflowActivityContext`.
+Define the workflow activities you'd like your workflow to perform. 
 
-```python
-def hello_act(ctx: WorkflowActivityContext, input):
-    global counter
-    counter += input
-    print(f'New counter value is: {counter}!', flush=True)
+The activities called in the example below are:
+- `need`: Receive notification of a new order.
+
+### [activity]
+
+```java
+todo
 ```
 
-[See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+[See the full `todo` workflow activity example.](todo)
 
+### [activity]
+
+```java
+todo
+```
+[See the full `todo` workflow activity example.](todo)
+
+### [todo]
+
+```java
+todo
+```
+
+[See the full `todo` workflow activity example.](todo)
 
 {{% /codetab %}}
+
 
 {{< /tabs >}}
 
@@ -124,7 +159,28 @@ def hello_act(ctx: WorkflowActivityContext, input):
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs ".NET" Python >}}
+{{< tabs Python ".NET" Java >}}
+
+{{% codetab %}}
+
+<!--python-->
+
+The `hello_world_wf` function is derived from a class called `DaprWorkflowContext` with input and output parameter types. It also includes a `yield` statement that does the heavy lifting of the workflow and calls the workflow activities. 
+ 
+```python
+def hello_world_wf(ctx: DaprWorkflowContext, input):
+    print(f'{input}')
+    yield ctx.call_activity(hello_act, input=1)
+    yield ctx.call_activity(hello_act, input=10)
+    yield ctx.wait_for_external_event("event1")
+    yield ctx.call_activity(hello_act, input=100)
+    yield ctx.call_activity(hello_act, input=1000)
+```
+
+[See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
+
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -171,21 +227,15 @@ The `OrderProcessingWorkflow` class is derived from a base class called `Workflo
 
 {{% codetab %}}
 
-<!--python-->
+<!--java-->
 
-The `hello_world_wf` function is derived from a class called `DaprWorkflowContext` with input and output parameter types. It also includes a `yield` statement that does the heavy lifting of the workflow and calls the workflow activities. 
+Intro
  
-```python
-def hello_world_wf(ctx: DaprWorkflowContext, input):
-    print(f'{input}')
-    yield ctx.call_activity(hello_act, input=1)
-    yield ctx.call_activity(hello_act, input=10)
-    yield ctx.wait_for_external_event("event1")
-    yield ctx.call_activity(hello_act, input=100)
-    yield ctx.call_activity(hello_act, input=1000)
+```java
+todo
 ```
 
-[See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
+[See the `todo` workflow in context.](todo)
 
 
 {{% /codetab %}}
@@ -196,78 +246,7 @@ def hello_world_wf(ctx: DaprWorkflowContext, input):
 
 Finally, compose the application using the workflow.
 
-{{< tabs ".NET" Python >}}
-
-{{% codetab %}}
-
-<!--csharp-->
-
-[In the following `Program.cs` example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
-
-- A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
-- A builder with an extension method called `AddDaprWorkflow`
-  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
-- HTTP API calls
-  - One for submitting a new order
-  - One for checking the status of an existing order
-
-```csharp
-using Dapr.Workflow;
-//...
-
-// Dapr Workflows are registered as part of the service configuration
-builder.Services.AddDaprWorkflow(options =>
-{
-    // Note that it's also possible to register a lambda function as the workflow
-    // or activity implementation instead of a class.
-    options.RegisterWorkflow<OrderProcessingWorkflow>();
-
-    // These are the activities that get invoked by the workflow(s).
-    options.RegisterActivity<NotifyActivity>();
-    options.RegisterActivity<ReserveInventoryActivity>();
-    options.RegisterActivity<ProcessPaymentActivity>();
-});
-
-WebApplication app = builder.Build();
-
-// POST starts new order workflow instance
-app.MapPost("/orders", async (WorkflowEngineClient client, [FromBody] OrderPayload orderInfo) =>
-{
-    if (orderInfo?.Name == null)
-    {
-        return Results.BadRequest(new
-        {
-            message = "Order data was missing from the request",
-            example = new OrderPayload("Paperclips", 99.95),
-        });
-    }
-
-//...
-});
-
-// GET fetches state for order workflow to report status
-app.MapGet("/orders/{orderId}", async (string orderId, WorkflowEngineClient client) =>
-{
-    WorkflowState state = await client.GetWorkflowStateAsync(orderId, true);
-    if (!state.Exists)
-    {
-        return Results.NotFound($"No order with ID = '{orderId}' was found.");
-    }
-
-    var httpResponsePayload = new
-    {
-        details = state.ReadInputAs<OrderPayload>(),
-        status = state.RuntimeStatus.ToString(),
-        result = state.ReadOutputAs<OrderResult>(),
-    };
-
-//...
-}).WithName("GetOrderInfoEndpoint");
-
-app.Run();
-```
-
-{{% /codetab %}}
+{{< tabs Python ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -358,6 +337,91 @@ if __name__ == '__main__':
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--csharp-->
+
+[In the following `Program.cs` example](https://github.com/dapr/dotnet-sdk/blob/master/examples/Workflow/WorkflowConsoleApp/Program.cs), for a basic ASP.NET order processing application using the .NET SDK, your project code would include:
+
+- A NuGet package called `Dapr.Workflow` to receive the .NET SDK capabilities
+- A builder with an extension method called `AddDaprWorkflow`
+  - This will allow you to register workflows and workflow activities (tasks that workflows can schedule)
+- HTTP API calls
+  - One for submitting a new order
+  - One for checking the status of an existing order
+
+```csharp
+using Dapr.Workflow;
+//...
+
+// Dapr Workflows are registered as part of the service configuration
+builder.Services.AddDaprWorkflow(options =>
+{
+    // Note that it's also possible to register a lambda function as the workflow
+    // or activity implementation instead of a class.
+    options.RegisterWorkflow<OrderProcessingWorkflow>();
+
+    // These are the activities that get invoked by the workflow(s).
+    options.RegisterActivity<NotifyActivity>();
+    options.RegisterActivity<ReserveInventoryActivity>();
+    options.RegisterActivity<ProcessPaymentActivity>();
+});
+
+WebApplication app = builder.Build();
+
+// POST starts new order workflow instance
+app.MapPost("/orders", async (WorkflowEngineClient client, [FromBody] OrderPayload orderInfo) =>
+{
+    if (orderInfo?.Name == null)
+    {
+        return Results.BadRequest(new
+        {
+            message = "Order data was missing from the request",
+            example = new OrderPayload("Paperclips", 99.95),
+        });
+    }
+
+//...
+});
+
+// GET fetches state for order workflow to report status
+app.MapGet("/orders/{orderId}", async (string orderId, WorkflowEngineClient client) =>
+{
+    WorkflowState state = await client.GetWorkflowStateAsync(orderId, true);
+    if (!state.Exists)
+    {
+        return Results.NotFound($"No order with ID = '{orderId}' was found.");
+    }
+
+    var httpResponsePayload = new
+    {
+        details = state.ReadInputAs<OrderPayload>(),
+        status = state.RuntimeStatus.ToString(),
+        result = state.ReadOutputAs<OrderResult>(),
+    };
+
+//...
+}).WithName("GetOrderInfoEndpoint");
+
+app.Run();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--java-->
+
+[In the following example](todo), for a basic Java hello world application using the Java SDK, your project code would include:
+
+- A Java package called `todo` to receive the Java SDK capabilities.
+ 
+```java
+todo
+```
+
+{{% /codetab %}}
+
 
 {{< /tabs >}}
 
@@ -377,5 +441,6 @@ Now that you've authored a workflow, learn how to manage it.
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
-  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+  - [Java example](todo)

@@ -8,43 +8,7 @@ description: Manage and run workflows
 
 Now that you've [authored the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs ".NET" Python HTTP >}}
-
-<!--NET-->
-{{% codetab %}}
-
-Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
-
-```csharp
-string orderId = "exampleOrderId";
-string workflowComponent = "dapr";
-string workflowName = "OrderProcessingWorkflow";
-OrderPayload input = new OrderPayload("Paperclips", 99.95);
-Dictionary<string, string> workflowOptions; // This is an optional parameter
-
-// Start the workflow. This returns back a "StartWorkflowResponse" which contains the instance ID for the particular workflow instance.
-StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions);
-
-// Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
-GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
-
-// Terminate the workflow
-await daprClient.TerminateWorkflowAsync(orderId, workflowComponent);
-
-// Raise an event (an incoming purchase order) that your workflow will wait for. This returns the item waiting to be purchased.
-await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input);
-
-// Pause
-await daprClient.PauseWorkflowAsync(orderId, workflowComponent);
-
-// Resume
-await daprClient.ResumeWorkflowAsync(orderId, workflowComponent);
-
-// Purge
-await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
-```
-
-{{% /codetab %}}
+{{< tabs Python ".NET" Java HTTP >}}
 
 <!--Python-->
 {{% codetab %}}
@@ -91,6 +55,53 @@ d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
 # Terminate the workflow
 d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+```
+
+{{% /codetab %}}
+
+<!--NET-->
+{{% codetab %}}
+
+Manage your workflow within your code. In the `OrderProcessingWorkflow` example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code. You can now start, terminate, and get information about a running workflow:
+
+```csharp
+string orderId = "exampleOrderId";
+string workflowComponent = "dapr";
+string workflowName = "OrderProcessingWorkflow";
+OrderPayload input = new OrderPayload("Paperclips", 99.95);
+Dictionary<string, string> workflowOptions; // This is an optional parameter
+
+// Start the workflow. This returns back a "StartWorkflowResponse" which contains the instance ID for the particular workflow instance.
+StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions);
+
+// Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
+GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
+
+// Terminate the workflow
+await daprClient.TerminateWorkflowAsync(orderId, workflowComponent);
+
+// Raise an event (an incoming purchase order) that your workflow will wait for. This returns the item waiting to be purchased.
+await daprClient.RaiseWorkflowEventAsync(orderId, workflowComponent, workflowName, input);
+
+// Pause
+await daprClient.PauseWorkflowAsync(orderId, workflowComponent);
+
+// Resume
+await daprClient.ResumeWorkflowAsync(orderId, workflowComponent);
+
+// Purge
+await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
+```
+
+{{% /codetab %}}
+
+<!--Python-->
+{{% codetab %}}
+
+Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
+
+```java
+todo
 ```
 
 {{% /codetab %}}
@@ -172,6 +183,8 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 ## Next steps
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Try out the full SDK examples:
-  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
+  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+  - [Java example](todo)
+
 - [Workflow API reference]({{< ref workflow_api.md >}})
