@@ -312,7 +312,6 @@ public class CheckoutServiceApplication {
 {{% codetab %}}
 
 ```go
-
 //dependencies
 import (
 	"context"
