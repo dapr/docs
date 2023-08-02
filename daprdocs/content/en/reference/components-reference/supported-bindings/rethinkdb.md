@@ -15,7 +15,6 @@ To enable users to track change of the state of actors, this binding leverages R
 
 To setup RethinkDB statechange binding create a component of type `bindings.rethinkdb.statechange`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -26,17 +25,20 @@ spec:
   version: v1
   metadata:
   - name: address
-    value: <REPLACE-RETHINKDB-ADDRESS> # Required, e.g. 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).
+    value: "<REPLACE-RETHINKDB-ADDRESS>" # Required, e.g. 127.0.0.1:28015 or rethinkdb.default.svc.cluster.local:28015).
   - name: database
-    value: <REPLACE-RETHINKDB-DB-NAME> # Required, e.g. dapr (alpha-numerics only)
+    value: "<REPLACE-RETHINKDB-DB-NAME>" # Required, e.g. dapr (alpha-numerics only)
+  - name: direction 
+    value: "<DIRECTION-OF-RETHINKDB-BINDING>"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| address | Y | Input | Address of RethinkDB server | `"27.0.0.1:28015"`, `"rethinkdb.default.svc.cluster.local:28015"` |
-| database | Y | Input | RethinDB database name | `"dapr"` |
+| `address` | Y | Input | Address of RethinkDB server | `"27.0.0.1:28015"`, `"rethinkdb.default.svc.cluster.local:28015"` |
+| `database` | Y | Input | RethinDB database name | `"dapr"` |
+| `direction` | N | Input | Direction of the binding | `"input"` |
 
 ## Binding support
 
