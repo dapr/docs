@@ -48,7 +48,7 @@ You can find example code for making HTTP calls in a variety of languages here:
 * [dotnet](https://github.com/dev-wasm/dev-wasm-dotnet/tree/main/http)
 * [TypeScript](https://github.com/dev-wasm/dev-wasm-ts/tree/main/http)
 
-Note that if you just want to make an HTTP call, it is far simpler to use the [HTTP Binding](https://docs.dapr.io/reference/components-reference/supported-bindings/http/) but if you need to add your own logic, for example filtering or calling to different api endpoints, then it makes sense to use WebAssembly.
+Note that if you just want to make an HTTP call, it is simpler to use the [service invocation API]({{< ref howto-invoke-non-dapr-endpoints.md >}}). However if you need to add your own logic, for example filtering or calling to multiple API endpoints, then consider using WebAssembly.
 
 ## Component format
 
