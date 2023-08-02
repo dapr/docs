@@ -47,7 +47,7 @@ How to compile this is described later.
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
 | url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
-| guestConfig   | An optional configuration passed to WASM guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `enviroment=production`,`{"environment":"production"}` |
+| guestConfig   | An optional configuration passed to Wasm guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `enviroment=production`,`{"environment":"production"}` |
 
 ## Dapr configuration
 
