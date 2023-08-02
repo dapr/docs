@@ -231,7 +231,7 @@ The response body contains the following JSON:
 
 ### Get Embedding API
 
-The `get-embedding` operations returns a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
+The `get-embedding` operation returns a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
 To perform a `get-embedding` operation, invoke the Azure OpenAI binding with a `POST` method and the following JSON body:
 
 ```json
@@ -253,7 +253,7 @@ The data parameters are:
 
 {{< tabs Linux >}}
 
-  {{% codetab %}}
+{{% codetab %}}
   ```bash
 curl -d '{
     "data": {
@@ -262,9 +262,9 @@ curl -d '{
     },
     "operation": "get-embedding"
 }' \
-http://localhost:<darpr-port>/v1.0/bindings/<binding-name>
+http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
-  {{% /codetab %}}
+{{% /codetab %}}
 
 {{< /tabs >}}
 
