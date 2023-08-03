@@ -28,8 +28,6 @@ spec:
     value: "false"
   - name: tenant
     value: "public"
-  - name: authType
-    value: "token"
   - name: token
     value: "eyJrZXlJZCI6InB1bHNhci1wajU0cXd3ZHB6NGIiLCJhbGciOiJIUzI1NiJ9.eyJzd"
   - name: consumerID
@@ -91,14 +89,13 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | processMode | N | Enable processing multiple messages at once. Default: `"async"` | `"async"`, `"sync"`|
 | subscribeType | N | Pulsar supports four kinds of [subscription types](https://pulsar.apache.org/docs/3.0.x/concepts-messaging/#subscription-types). Default: `"shared"` | `"shared"`, `"exclusive"`, `"failover"`, `"key_shared"`|
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
-| authType | N | One of `"none"`, `"token"` or `"oidc"`. The type of authentication mechanism to use. Defaults to `"none"`, unless `token` is defined in which case it defaults to `"token"`. | "oidc" |
-| token | N  | `authType: token`. Token used for authentication.  | [How to create pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
-| oidcTokenURL | N | `authType: oidc`. URL to request the OIDC client_credentials token from. Must use `https` protocol, as per the [OIDC spec](https://openid.net/specs/openid-connect-core-1_0.html) | "https://oauth.example.com/o/oauth2/token" |
-| oidcTokenCAPEM | N | `authType: oidc`. CA PEM certificate bundle to connect to the OIDC issuer. If not defined, the system's certificate pool will be used. | "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---" |
-| oidcClientID | N | `authType: oidc`. OIDC client ID. | "my-client-id" |
-| oidcClientSecret | N | `authType: oidc`. OIDC client secret. | "my-client-secret" |
-| oidcAudiences | N | `authType: oidc`. Comma separated list of audiences to request for. Must not be empty. | "my-audience-1,my-audience-2" |
-| oidcScopes | N | `authType: oidc`. Comma separated list of scopes to request. If empty, defaults to `"openid"`. If defined, `"openid"` must be present. | "openid,profile,email" |
+| token | N  | Token used for authentication. | [How to create Pulsar token](https://pulsar.apache.org/docs/en/security-jwt/#generate-tokens)|
+| oauth2TokenURL | N | URL to request the OIDC client_credentials token from. Must not be empty. | 1"https://oauth.example.com/o/oauth2/token"` |
+| oauth2TokenCAPEM | N | CA PEM certificate bundle to connect to the OAuth2 issuer. If not defined, the system's certificate pool will be used. | `"---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"` |
+| oauth2ClientID | N | OIDC client ID. Must not be empty. | `"my-client-id"` |
+| oauth2ClientSecret | N | OIDC client secret. Must not be empty. | `"my-client-secret"` |
+| oauth2Audiences | N | Comma separated list of audiences to request for. Must not be empty. | `"my-audience-1,my-audience-2"` |
+| oauth2Scopes | N | Comma separated list of scopes to request. Must not be empty. | `"openid,profile,email"` |
 
 ### Enabling message delivery retries
 
@@ -135,6 +132,42 @@ curl -X POST http://localhost:3500/v1.0/publish/myPulsar/myTopic?metadata.delive
           "message": "Hi"
         }
       }'
+```
+
+### OIDC Authentication
+
+Since `v3.0`, [Pulsar supports OIDC authentication](https://pulsar.apache.org/docs/3.0.x/security-openid-connect/).
+To enable OIDC authentication, you need to provide the following OAuth2 parameters to the component spec.
+OAuth2 authentication cannot be used in combination with token authentication.
+It is recommended that you use a secret reference for the client secret.
+The pulsar OAuth2 authenticator is not specifically complaint with OIDC so it is your responsibility to ensure fields are compliant, i.e. the issuer URL must use the `https` protocol, the requested scopes include `openid`, etc.
+If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool will be used for connecting to the OAuth2 issuer if using `https`.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2TokenURL
+    value: https://oauth.example.com/o/oauth2/token
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
+  - name: oauth2ClientID
+    value: my-client-id
+  - name: oauth2ClientSecret
+    secretKeyRef:
+      name: pulsar-oauth2
+      key:  my-client-secret
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
 ```
 
 ### E2E Encryption
