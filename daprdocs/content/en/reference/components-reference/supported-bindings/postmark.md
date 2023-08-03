@@ -30,6 +30,8 @@ spec:
     value: "dave@dapr.io" # optional
   - name: subject
     value: "Hello!" # optional
+  - name: direction 
+    value: "output" # optional
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -39,13 +41,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| accountToken | Y | Output |  The Postmark account token, this should be considered a secret value | `"account token"` |
-| serverToken | Y | Output  | The Postmark server token, this should be considered a secret value | `"server token"` |
-| emailFrom | N | Output | If set this specifies the 'from' email address of the email message | `"me@exmaple.com"` |
-| emailTo | N | Output | If set this specifies the 'to' email address of the email message | `"me@example.com"` |
-| emailCc | N | Output | If set this specifies the 'cc' email address of the email message | `"me@example.com"` |
-| emailBcc | N | Output | If set this specifies the 'bcc' email address of the email message | `"me@example.com"` |
-| subject | N | Output | If set this specifies the subject of the email message | `"me@example.com"` |
+| `accountToken` | Y | Output |  The Postmark account token, this should be considered a secret value | `"account token"` |
+| `serverToken` | Y | Output  | The Postmark server token, this should be considered a secret value | `"server token"` |
+| `emailFrom` | N | Output | If set this specifies the 'from' email address of the email message | `"me@exmaple.com"` |
+| `emailTo` | N | Output | If set this specifies the 'to' email address of the email message | `"me@example.com"` |
+| `emailCc` | N | Output | If set this specifies the 'cc' email address of the email message | `"me@example.com"` |
+| `emailBcc` | N | Output | If set this specifies the 'bcc' email address of the email message | `"me@example.com"` |
+| `subject` | N | Output | If set this specifies the subject of the email message | `"me@example.com"` |
+| `direction` | N | Output | The direction of the binding | `"output"` |
 
 You can specify any of the optional metadata properties on the output binding request too (e.g. `emailFrom`, `emailTo`, `subject`, etc.)
 

@@ -223,7 +223,7 @@ Both of the handlers defined above also need to be mapped to configure the `dapr
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();
-}
+});
 ```
 
 {{% /codetab %}}

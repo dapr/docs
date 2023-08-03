@@ -8,7 +8,7 @@ description: "Configure resiliency policies for timeouts, retries, and circuit b
 
 Define timeouts, retries, and circuit breaker policies under `policies`. Each policy is given a name so you can refer to them from the `targets` section in the resiliency spec. 
 
-> Note: Dapr offers default retries for specific APIs. [See here]({{< ref "#override-default-retries" >}}) to learn how you can overwrite default retry logic with user defined retry policies.
+> Note: Dapr offers default retries for specific APIs. [See here]({{< ref "#overriding-default-retries" >}}) to learn how you can overwrite default retry logic with user defined retry policies.
 
 ## Timeouts
 
