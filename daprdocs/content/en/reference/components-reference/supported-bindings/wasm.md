@@ -102,7 +102,7 @@ spec:
     value: "https://github.com/vmware-labs/webassembly-language-runtimes/releases/download/ruby%2F3.2.0%2B20230215-1349da9/ruby-3.2.0-slim.wasm"
 ```
 
-Assuming that you started your Wasm Binding at port 3500, you'd run:
+Assuming that you wanted to start your Dapr at port 3500 with the Wasm Binding, you'd run:
 
 ```
 $ dapr run --app-id wasm --dapr-http-port 3500 --resources-path components
