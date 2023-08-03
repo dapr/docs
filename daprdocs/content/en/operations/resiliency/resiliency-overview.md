@@ -2,7 +2,7 @@
 type: docs
 title: "Overview"
 linkTitle: "Overview"
-weight: 4500
+weight: 100
 description: "Configure Dapr retries, timeouts, and circuit breakers"
 ---
 

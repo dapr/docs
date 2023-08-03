@@ -27,7 +27,7 @@ Maintaining this instrumentation code, which is not part of the core logic of th
 
 ## Observability for your application with Dapr
 
-When you leverage Dapr API building blocks to perform service-to-service calls and pub/sub messaging, Dapr offers an advantage with respect to [distributed tracing]({{< ref develop-tracing >}}). Since this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
+When you leverage Dapr API building blocks to perform service-to-service calls and pub/sub messaging, Dapr offers an advantage with respect to [distributed tracing]({{< ref tracing >}}). Since this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
 
 ### Distributed tracing
 
@@ -37,7 +37,7 @@ Dapr can be [configured to emit tracing data]({{< ref setup-tracing.md >}}) usin
 
 ### Automatic tracing context generation
 
-Dapr uses [W3C tracing]({{< ref w3c-tracing-overview >}}) specification for tracing context, included as part Open Telemetry (OTEL), to generate and propagate the context header for the application or propagate user-provided context headers. This means that you get tracing by default with Dapr.
+Dapr uses [W3C tracing]({{< ref tracing >}}) specification for tracing context, included as part Open Telemetry (OTEL), to generate and propagate the context header for the application or propagate user-provided context headers. This means that you get tracing by default with Dapr.
 
 ## Observability for the Dapr sidecar and control plane
 
@@ -54,7 +54,7 @@ Dapr generates [logs]({{< ref logs.md >}}) to:
 - Provide visibility into sidecar operation 
 - Help users identify issues and perform debugging
 
-Log events contain warning, error, info, and debug messages produced by Dapr system services. You can also configure Dapr to send logs to collectors, such as Open Telemetry Collector, [Fluentd]({{< ref fluentd.md >}}), [New Relic]({{< ref "operations/monitoring/logging/newrelic.md" >}}), [Azure Monitor]({{< ref azure-monitor.md >}}), and other observability tools, so that logs can be searched and analyzed to provide insights.
+Log events contain warning, error, info, and debug messages produced by Dapr system services. You can also configure Dapr to send logs to collectors, such as Open Telemetry Collector, [Fluentd]({{< ref fluentd.md >}}), [New Relic]({{< ref "operations/observability/logging/newrelic.md" >}}), [Azure Monitor]({{< ref azure-monitor.md >}}), and other observability tools, so that logs can be searched and analyzed to provide insights.
 
 ### Metrics
 
@@ -70,5 +70,5 @@ Conversely, Dapr can be configured to probe for the [health of your application]
 
 ## Next steps
 
-- [Learn more about observability in developing with Dapr]({{< ref develop-tracing >}})
+- [Learn more about observability in developing with Dapr]({{< ref tracing >}})
 - [Learn more about observability in operating with Dapr]({{< ref tracing >}})

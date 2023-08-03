@@ -17,6 +17,10 @@ Most observability tools support OTEL, including:
 - [Jaeger](https://www.jaegertracing.io/)
 - [SignalFX](https://www.signalfx.com/)
 
+The following diagram demonstrates how Dapr (using OTEL and Zipkin protocols) integrates with multiple observability tools.
+
+<img src="/images/observability-tracing.png" width=1000 alt="Distributed tracing with Dapr">
+
 ## Scenarios
 
 Tracing is used with service invocaton and pub/sub APIs. You can flow trace context between services that uses these APIs. There are two scenarios for how tracing is used:
