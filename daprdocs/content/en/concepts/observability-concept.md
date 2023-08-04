@@ -27,7 +27,7 @@ Maintaining this instrumentation code, which is not part of the core logic of th
 
 ## Observability for your application with Dapr
 
-When you leverage Dapr API building blocks to perform service-to-service calls and pub/sub messaging, Dapr offers an advantage with respect to [distributed tracing]({{< ref tracing >}}). Since this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
+When you leverage Dapr API building blocks to perform service-to-service calls, pub/sub messaging, and other APIs, Dapr offers an advantage with respect to [distributed tracing]({{< ref tracing >}}). Since this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
 
 ### Distributed tracing
 
