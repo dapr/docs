@@ -37,7 +37,7 @@ Dapr can be [configured to emit tracing data]({{< ref setup-tracing.md >}}) usin
 
 ### Automatic tracing context generation
 
-Dapr uses [W3C tracing]({{< ref tracing >}}) specification for tracing context, included as part Open Telemetry (OTEL), to generate and propagate the context header for the application or propagate user-provided context headers. This means that you get tracing by default with Dapr.
+Dapr uses the [W3C tracing]({{< ref tracing >}}) specification for tracing context, included as part Open Telemetry (OTEL), to generate and propagate the context header for the application or propagate user-provided context headers. This means that you get tracing by default with Dapr.
 
 ## Observability for the Dapr sidecar and control plane
 
