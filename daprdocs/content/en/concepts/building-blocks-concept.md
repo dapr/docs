@@ -6,7 +6,7 @@ weight: 200
 description: "Modular best practices accessible over standard HTTP or gRPC APIs"
 ---
 
-A [building block]({{< ref building-blocks >}}) is an HTTP or gRPC API that can be called from your code and uses one or more Dapr components. Dapr consists of a set of building blocks, with extensibility to add new building blocks. Dapr's building blocks:
+A [building block]({{< ref building-blocks >}}) is an HTTP or gRPC API that can be called from your code and uses one or more Dapr components. Dapr consists of a set of API building blocks, with extensibility to add new building blocks. Dapr's building blocks:
 - Address common challenges in building resilient, microservices applications 
 - Codify best practices and patterns
 

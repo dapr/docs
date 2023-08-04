@@ -27,7 +27,7 @@ Maintaining this instrumentation code, which is not part of the core logic of th
 
 ## Observability for your application with Dapr
 
-When you leverage Dapr API building blocks to perform service-to-service calls and pub/sub messaging, Dapr offers an advantage with respect to [distributed tracing]({{< ref tracing >}}). Since this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
+When you leverage Dapr API building blocks to perform service-to-service calls, pub/sub messaging, and other APIs, Dapr offers an advantage with respect to [distributed tracing]({{< ref tracing >}}). Since this inter-service communication flows through the Dapr runtime (or "sidecar"), Dapr is in a unique position to offload the burden of application-level instrumentation.
 
 ### Distributed tracing
 
@@ -37,7 +37,7 @@ Dapr can be [configured to emit tracing data]({{< ref setup-tracing.md >}}) usin
 
 ### Automatic tracing context generation
 
-Dapr uses [W3C tracing]({{< ref tracing >}}) specification for tracing context, included as part Open Telemetry (OTEL), to generate and propagate the context header for the application or propagate user-provided context headers. This means that you get tracing by default with Dapr.
+Dapr uses the [W3C tracing]({{< ref tracing >}}) specification for tracing context, included as part Open Telemetry (OTEL), to generate and propagate the context header for the application or propagate user-provided context headers. This means that you get tracing by default with Dapr.
 
 ## Observability for the Dapr sidecar and control plane
 
