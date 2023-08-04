@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Distributed tracing"
-linkTitle: "Distributed tracing"
-weight: 300
-description: "Use tracing to get visibility into your application"
+title: "Distributed tracing overview"
+linkTitle: "Overview"
+weight: 10
+description: "Overview on using tracing to get visibility into your application"
 ---
 
 Dapr uses the Open Telemetry (OTEL) and Zipkin protocols for distributed traces. OTEL is the industry standard and is the recommended trace protocol to use. 
@@ -16,6 +16,10 @@ Most observability tools support OTEL, including:
 - Instana
 - [Jaeger](https://www.jaegertracing.io/)
 - [SignalFX](https://www.signalfx.com/)
+
+The following diagram demonstrates how Dapr (using OTEL and Zipkin protocols) integrates with multiple observability tools.
+
+<img src="/images/observability-tracing.png" width=1000 alt="Distributed tracing with Dapr">
 
 ## Scenarios
 

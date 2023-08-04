@@ -226,7 +226,7 @@ To configure a tracing backend for Dapr visit [this]({{< ref "setup-tracing.md" 
 
 For metrics, Dapr exposes a Prometheus endpoint listening on port 9090 which can be scraped by Prometheus.
 
-To setup Prometheus, Grafana and other monitoring tools with Dapr, visit [this]({{< ref "monitoring" >}}) link.
+To setup Prometheus, Grafana and other monitoring tools with Dapr, visit [this]({{< ref "observability" >}}) link.
 
 ## Injector watchdog
 

@@ -2,14 +2,14 @@
 type: docs
 title: "Configure Dapr to send distributed tracing data"
 linkTitle: "Configure tracing"
-weight: 100
-description: "Configure Dapr to send distributed tracing data"
+weight: 30
+description: "Set up Dapr to send distributed tracing data"
 ---
 
-It is recommended to run Dapr with tracing enabled for any production
-scenario.  You can configure Dapr to send tracing and telemetry data
-to many observability tools based on your environment, whether it is running in
-the cloud or on-premises.
+{{% alert title="Note" color="primary" %}}
+It is recommended to run Dapr with tracing enabled for any production scenario. You can configure Dapr to send tracing and telemetry data to many observability tools based on your environment, whether it is running in the cloud or on-premises.
+{{% /alert %}}
+
 
 ## Configuration
 
@@ -69,3 +69,12 @@ turns on tracing for the sidecar.
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
+
+## Next steps
+
+Learn how to set up tracing with one of the following tools:
+- [OTEL Collector]({{< ref otel-collector >}})
+- [New Relic]({{< ref newrelic.md >}})
+- [Jaeger]({{< ref jaeger.md >}})
+- [Zipkin]({{< ref zipkin.md >}})
+- [Datadog]({{< ref datadog.md >}})
