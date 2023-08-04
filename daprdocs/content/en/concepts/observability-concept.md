@@ -54,7 +54,7 @@ Dapr generates [logs]({{< ref logs.md >}}) to:
 - Provide visibility into sidecar operation 
 - Help users identify issues and perform debugging
 
-Log events contain warning, error, info, and debug messages produced by Dapr system services. You can also configure Dapr to send logs to collectors, such as Open Telemetry Collector, [Fluentd]({{< ref fluentd.md >}}), [New Relic]({{< ref "operations/observability/logging/newrelic.md" >}}), [Azure Monitor]({{< ref azure-monitor.md >}}), and other observability tools, so that logs can be searched and analyzed to provide insights.
+Log events contain warning, error, info, and debug messages produced by Dapr system services. You can also configure Dapr to send logs to collectors, such as [Open Telemetry Collector]({{< ref otel-collector >}}), [Fluentd]({{< ref fluentd.md >}}), [New Relic]({{< ref "operations/observability/logging/newrelic.md" >}}), [Azure Monitor]({{< ref azure-monitor.md >}}), and other observability tools, so that logs can be searched and analyzed to provide insights.
 
 ### Metrics
 

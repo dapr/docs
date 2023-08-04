@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Policies"
+title: "Resiliency policies"
 linkTitle: "Policies"
 weight: 200
 description: "Configure resiliency policies for timeouts, retries, and circuit breakers"
