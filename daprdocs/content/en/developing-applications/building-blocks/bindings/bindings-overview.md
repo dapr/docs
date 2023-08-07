@@ -15,7 +15,7 @@ Using Dapr's bindings API, you can trigger your app with events coming in from e
 - Switch between bindings at runtime.
 - Build portable applications with environment-specific bindings set-up and no required code changes.
 
-For example, with bindings, your microservice can respond to incoming Twilio/SMS messages without:
+For example, with bindings, your application can respond to incoming Twilio/SMS messages without:
 
 - Adding or configuring a third-party Twilio SDK
 - Worrying about polling from Twilio (or using WebSockets, etc.)
@@ -23,7 +23,7 @@ For example, with bindings, your microservice can respond to incoming Twilio/SMS
 <img src="/images/binding-overview.png" width=1000 alt="Diagram showing bindings">
 
 In the above diagram:
-- The input binding triggers your application using the endpoint name (which matches your input binding component name) and the method. 
+- The input binding triggers a method on your application. 
 - Execute output binding operations on the component, such as `"create"`.
 
 Bindings are developed independently of Dapr runtime. You can [view and contribute to the bindings](https://github.com/dapr/components-contrib/tree/master/bindings).
