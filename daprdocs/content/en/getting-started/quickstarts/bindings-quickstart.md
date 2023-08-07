@@ -189,6 +189,8 @@ spec:
   metadata:
   - name: schedule
     value: "@every 10s" # valid cron schedule
+  - name: direction
+    value: "input" # direction of the cron binding
 ```
 
 **Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
@@ -216,6 +218,8 @@ spec:
   metadata:
   - name: url # Required
     value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+  - name: direction
+    value: "output" # direction of the postgresql binding
 ```
 
 In the YAML file:
@@ -391,6 +395,8 @@ spec:
   metadata:
   - name: schedule
     value: "@every 10s" # valid cron schedule
+  - name: direction
+    value: "input" # direction of the cron binding
 ```
 
 **Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
@@ -418,6 +424,8 @@ spec:
   metadata:
   - name: url # Required
     value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+  - name: direction
+    value: "output" # direction of the postgresql binding
 ```
 
 In the YAML file:
@@ -595,6 +603,8 @@ spec:
   metadata:
   - name: schedule
     value: "@every 10s" # valid cron schedule
+  - name: direction
+    value: "input" # direction of the cron binding
 ```
 
 **Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
@@ -622,6 +632,8 @@ spec:
   metadata:
   - name: url # Required
     value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+  - name: direction
+    value: "output" # direction of the postgresql binding
 ```
 
 In the YAML file:
@@ -805,6 +817,8 @@ spec:
   metadata:
   - name: schedule
     value: "@every 10s" # valid cron schedule
+  - name: direction
+    value: "input" # direction of the cron binding
 ```
 
 **Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
@@ -832,6 +846,8 @@ spec:
   metadata:
   - name: url # Required
     value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+  - name: direction
+    value: "output" # direction of the postgresql binding
 ```
 
 In the YAML file:
@@ -1017,6 +1033,8 @@ spec:
   metadata:
   - name: schedule
     value: "@every 10s" # valid cron schedule
+  - name: direction
+    value: "input" # direction of the cron binding
 ```
 
 **Note:** The `metadata` section of `binding-cron.yaml` contains a [Cron expression]({{< ref cron.md >}}) that specifies how often the binding is invoked.
@@ -1044,6 +1062,8 @@ spec:
   metadata:
   - name: url # Required
     value: "user=postgres password=docker host=localhost port=5432 dbname=orders pool_min_conns=1 pool_max_conns=10"
+  - name: direction
+    value: "output" # direction of the postgresql binding
 ```
 
 In the YAML file:
