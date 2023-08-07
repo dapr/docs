@@ -11,5 +11,4 @@ description: See and measure the message calls to components and between network
  - Explore observability via any of the supporting [Dapr SDKs]({{< ref sdks >}}). 
  - Review the [Observability API reference documentation]({{< ref health_api.md >}}).
  - Read the [general overview of the observability concept]({{< ref observability-concept >}}) in Dapr.
- - Learn the [operations perspective and guidance on monitoring]({{< ref monitoring >}}).
 {{% /alert %}}
