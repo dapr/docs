@@ -15,14 +15,18 @@ Using Dapr's bindings API, you can trigger your app with events coming in from e
 - Switch between bindings at runtime.
 - Build portable applications with environment-specific bindings set-up and no required code changes.
 
-For example, with bindings, your microservice can respond to incoming Twilio/SMS messages without:
+For example, with bindings, your application can respond to incoming Twilio/SMS messages without:
 
 - Adding or configuring a third-party Twilio SDK
 - Worrying about polling from Twilio (or using WebSockets, etc.)
 
-{{% alert title="Note" color="primary" %}}
+<img src="/images/binding-overview.png" width=1000 alt="Diagram showing bindings">
+
+In the above diagram:
+- The input binding triggers a method on your application. 
+- Execute output binding operations on the component, such as `"create"`.
+
 Bindings are developed independently of Dapr runtime. You can [view and contribute to the bindings](https://github.com/dapr/components-contrib/tree/master/bindings).
-{{% /alert %}}
 
 {{% alert title="Note" color="primary" %}}
 If you are using the HTTP Binding, then it is preferable to use [service invocation]({{< ref service_invocation_api.md >}}) instead. Read [How-To: Invoke Non-Dapr Endpoints using HTTP]({{< ref "howto-invoke-non-dapr-endpoints.md" >}}) for more information.
@@ -53,7 +57,12 @@ With output bindings, you can invoke external resources. An optional payload and
 To invoke an output binding:
 
 1. Define the component YAML that describes the binding type and its metadata (connection info, etc.).
-2. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload.
+1. Use the HTTP endpoint or gRPC method to invoke the binding with an optional payload.
+1. Specify an output operation. Output operations depend on the binding component you use, and can include:
+   - `"create"`
+   - `"update"`
+   - `"delete"`
+   - `"exec"` 
 
 Read the [Use output bindings to interface with external resources guide]({{< ref howto-bindings.md >}}) to get started with output bindings.
 
