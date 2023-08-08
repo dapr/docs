@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Invoke services using HTTP"
 linkTitle: "How-To: Invoke with HTTP"
 description: "Call between services using service invocation"
-weight: 2000
+weight: 20
 ---
 
 This article demonstrates how to deploy services each with an unique application ID for other services to discover and call endpoints on them using service invocation over HTTP.

@@ -2,7 +2,7 @@
 type: docs
 title: "Service invocation overview"
 linkTitle: "Overview"
-weight: 900
+weight: 10
 description: "Overview of the service invocation API building block"
 ---
 
