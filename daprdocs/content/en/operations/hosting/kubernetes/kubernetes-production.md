@@ -75,12 +75,15 @@ This will allow the sidecar garbage collector to free up memory when the memory 
 waiting to be double of the last amount of memory present in the heap when it was run and that is the default behavior 
 of the [garbage collector](https://tip.golang.org/doc/gc-guide#Memory_limit) used in Go, and that can lead to OOM Kill events.
 
-For example if you have set your memory limit to be 1000Mi as mentioned above, you can use the following annotations:
+For example, for an app with app-id `nodeapp`, if you have set your memory limit to be 1000Mi as mentioned above, you can use the following in your pod annotations:
 
 ```yaml
-annotations:  
-  dapr.io/sidecar-memory-limit: "1000Mi"   # your memory limit
-  dapr.io/env: "GOMEMLIMIT=900MiB"         # 90% of your memory limit. Also notice the suffix "MiB" instead of "Mi"
+  annotations:
+    dapr.io/enabled: "true"
+    dapr.io/app-id: "nodeapp"
+    # our daprd memory settings
+    dapr.io/sidecar-memory-limit: "1000Mi"   # your memory limit
+    dapr.io/env: "GOMEMLIMIT=900MiB"         # 90% of your memory limit. Also notice the suffix "MiB" instead of "Mi"
 ```
 
 Here we have set up the soft limit to be 90% as recommended on the link above (they recommend to leave 5-10% for other services).
