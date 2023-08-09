@@ -78,12 +78,14 @@ of the [garbage collector](https://tip.golang.org/doc/gc-guide#Memory_limit) use
 For example if you have set your memory limit to be 1000Mi as mentioned above, you can use the following annotations:
 
 ```yaml
-annotations:
+annotations:  
   dapr.io/sidecar-memory-limit: "1000Mi"   # your memory limit
   dapr.io/env: "GOMEMLIMIT=900MiB"         # 90% of your memory limit. Also notice the suffix "MiB" instead of "Mi"
 ```
 
 Here we have set up the soft limit to be 90% as recommended on the link above (they recommend to leave 5-10% for other services).
+
+`GOMEMLIMIT` environment variable [allows](https://pkg.go.dev/runtime) certain suffixes for the memory size: `B, KiB, MiB, GiB, and TiB.`
 
 ## Highly-available mode
 
