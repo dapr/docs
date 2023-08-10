@@ -68,7 +68,7 @@ Since Dapr is intended to do much of the I/O heavy lifting for your app, it's ex
 
 The CPU and memory limits above account for the fact that Dapr is intended to support a high number of I/O bound operations. It is strongly recommended that you use a monitoring tool to get a baseline for the sidecar (and app) containers and tune these settings based on those baselines.
 
-### Setting Soft Memory Limits to Dapr Sidecar
+### Setting soft memory limits on Dapr sidecar
 
 It is recommended to set soft memory limits to the sidecar when you have set up memory limits. 
 This will allow the sidecar garbage collector to free up memory when the memory usage is above the limit instead of 
