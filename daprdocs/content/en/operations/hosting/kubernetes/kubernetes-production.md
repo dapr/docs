@@ -86,7 +86,7 @@ For example, for an app with app-id `nodeapp`, if you have set your memory limit
     dapr.io/env: "GOMEMLIMIT=900MiB"         # 90% of your memory limit. Also notice the suffix "MiB" instead of "Mi"
 ```
 
-Here we have set up the soft limit to be 90% as recommended on the link above (they recommend to leave 5-10% for other services).
+In this example, the soft limit has been set to be 90% as recommended in [garbage collector tips](https://tip.golang.org/doc/gc-guide#Memory_limit) where it is recommend to leave 5-10% for other services.
 
 `GOMEMLIMIT` environment variable [allows](https://pkg.go.dev/runtime) certain suffixes for the memory size: `B, KiB, MiB, GiB, and TiB.`
 
