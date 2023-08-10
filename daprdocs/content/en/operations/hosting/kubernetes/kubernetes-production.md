@@ -88,7 +88,7 @@ For example, for an app with app-id `nodeapp`, if you have set your memory limit
 
 In this example, the soft limit has been set to be 90% as recommended in [garbage collector tips](https://tip.golang.org/doc/gc-guide#Memory_limit) where it is recommend to leave 5-10% for other services.
 
-`GOMEMLIMIT` environment variable [allows](https://pkg.go.dev/runtime) certain suffixes for the memory size: `B, KiB, MiB, GiB, and TiB.`
+The `GOMEMLIMIT` environment variable [allows](https://pkg.go.dev/runtime) certain suffixes for the memory size: `B, KiB, MiB, GiB, and TiB.`
 
 ## Highly-available mode
 
