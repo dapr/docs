@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
-| type               | Y        | The type of the account.   | `"serviceAccount"` |
+| type               | Y        | The type of the account.   | `"service_account"` |
 | project_id         | Y        | The project ID associated with this component. | `"project_id"` |
 | private_key_id     | N        | The private key ID  | `"privatekey"` |
 | client_email       | Y        | The client email address | `"client@example.com"` |
