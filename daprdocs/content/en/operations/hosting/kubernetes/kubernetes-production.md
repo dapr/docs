@@ -72,7 +72,7 @@ The CPU and memory limits above account for the fact that Dapr is intended to su
 
 It is recommended to set soft memory limits on the Dapr sidecar when you have set up memory limits. 
 This allows the sidecar garbage collector to free up memory when the memory usage is above the limit instead of 
-waiting to be double of the last amount of memory present in the heap when it was run and that is the default behavior 
+waiting to be double of the last amount of memory present in the heap when it was run which is the default behavior 
 of the [garbage collector](https://tip.golang.org/doc/gc-guide#Memory_limit) used in Go, and that can lead to OOM Kill events.
 
 For example, for an app with app-id `nodeapp`, if you have set your memory limit to be 1000Mi as mentioned above, you can use the following in your pod annotations:
