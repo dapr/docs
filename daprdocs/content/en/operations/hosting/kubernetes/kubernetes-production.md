@@ -70,7 +70,7 @@ The CPU and memory limits above account for the fact that Dapr is intended to su
 
 ### Setting soft memory limits on Dapr sidecar
 
-It is recommended to set soft memory limits to the sidecar when you have set up memory limits. 
+It is recommended to set soft memory limits on the Dapr sidecar when you have set up memory limits. 
 This will allow the sidecar garbage collector to free up memory when the memory usage is above the limit instead of 
 waiting to be double of the last amount of memory present in the heap when it was run and that is the default behavior 
 of the [garbage collector](https://tip.golang.org/doc/gc-guide#Memory_limit) used in Go, and that can lead to OOM Kill events.
