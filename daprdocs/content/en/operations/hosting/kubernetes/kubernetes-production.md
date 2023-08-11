@@ -68,6 +68,28 @@ Since Dapr is intended to do much of the I/O heavy lifting for your app, it's ex
 
 The CPU and memory limits above account for the fact that Dapr is intended to support a high number of I/O bound operations. It is strongly recommended that you use a monitoring tool to get a baseline for the sidecar (and app) containers and tune these settings based on those baselines.
 
+### Setting soft memory limits on Dapr sidecar
+
+It is recommended to set soft memory limits on the Dapr sidecar when you have set up memory limits. 
+This allows the sidecar garbage collector to free up memory when the memory usage is above the limit instead of 
+waiting to be double of the last amount of memory present in the heap when it was run, which is the default behavior 
+of the [garbage collector](https://tip.golang.org/doc/gc-guide#Memory_limit) used in Go, and can lead to OOM Kill events.
+
+For example, for an app with app-id `nodeapp`, if you have set your memory limit to be 1000Mi as mentioned above, you can use the following in your pod annotations:
+
+```yaml
+  annotations:
+    dapr.io/enabled: "true"
+    dapr.io/app-id: "nodeapp"
+    # our daprd memory settings
+    dapr.io/sidecar-memory-limit: "1000Mi"   # your memory limit
+    dapr.io/env: "GOMEMLIMIT=900MiB"         # 90% of your memory limit. Also notice the suffix "MiB" instead of "Mi"
+```
+
+In this example, the soft limit has been set to be 90% as recommended in [garbage collector tips](https://tip.golang.org/doc/gc-guide#Memory_limit) where it is recommend to leave 5-10% for other services.
+
+The `GOMEMLIMIT` environment variable [allows](https://pkg.go.dev/runtime) certain suffixes for the memory size: `B, KiB, MiB, GiB, and TiB.`
+
 ## Highly-available mode
 
 When deploying Dapr in a production-ready configuration, it is recommend to deploy with a highly available (HA) configuration of the control plane, which creates 3 replicas of each control plane pod in the dapr-system namespace. This configuration allows the Dapr control plane to retain 3 running instances and survive individual node failures and other outages.
