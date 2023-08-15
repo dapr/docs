@@ -321,6 +321,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```go
 package main
 
+import (
 	"encoding/json"
 	"fmt"
 	"log"
