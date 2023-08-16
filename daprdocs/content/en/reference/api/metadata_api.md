@@ -143,15 +143,13 @@ healthThreshold | integer | Max number of failed health probes before the app is
 
 ### Examples
 
-Note: This example is based on the Actor sample provided in the [Dapr SDK for Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor).
-
 ```shell
 curl http://localhost:3500/v1.0/metadata
 ```
 
 ```json
 {
-  "id": "demo-actor",
+  "id": "foo-app",
   "runtimeVersion": "1.12.0",
   "enabledFeatures": [
     "ServiceInvocationStreaming"
@@ -175,6 +173,20 @@ curl http://localhost:3500/v1.0/metadata
         "ETAG",
         "TRANSACTIONAL",
         "ACTOR"
+      ]
+    }
+  ],
+  "subscriptions": [
+    {
+      "pubsubname": "pubsub",
+      "topic": "orders",
+      "deadLetterTopic": "",
+      "metadata": null,
+      "rules": [
+          {
+              "match": "%!s(<nil>)",
+              "path": "orders"
+          }
       ]
     }
   ],
@@ -236,8 +248,6 @@ Code | Description
 
 ### Examples
 
-Note: This example is based on the Actor sample provided in the [Dapr SDK for Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor).
-
 Add a custom attribute to the metadata endpoint:
 
 ```shell
@@ -248,7 +258,7 @@ Get the metadata information to confirm your custom attribute was added:
 
 ```json
 {
-  "id": "demo-actor",
+  "id": "foo-app",
   "runtimeVersion": "1.12.0",
   "enabledFeatures": [
     "ServiceInvocationStreaming"
@@ -272,6 +282,20 @@ Get the metadata information to confirm your custom attribute was added:
         "ETAG",
         "TRANSACTIONAL",
         "ACTOR"
+      ]
+    }
+  ],
+  "subscriptions": [
+    {
+      "pubsubname": "pubsub",
+      "topic": "orders",
+      "deadLetterTopic": "",
+      "metadata": null,
+      "rules": [
+          {
+              "match": "%!s(<nil>)",
+              "path": "orders"
+          }
       ]
     }
   ],
