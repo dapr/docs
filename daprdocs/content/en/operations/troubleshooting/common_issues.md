@@ -273,3 +273,148 @@ kubectl config get-users
 ```
 
 You may learn more about webhooks [here](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
+
+## PubSub messages are not delivered to subscribers
+
+There are several reasons why a published message may not arrive at a subscriber. 
+
+First, always check the dapr logs when dapr is initializing, most common infrastructure problems will appear during the initialisation phase, so it is important to check the logs for errors and warnings. 
+
+If there are no errors during the initialization phase, the **absence** of a log message similar to `app is subscribed to the following topics: [..]` is an important hint that there is a problem, as no subscribers are established to receive any published messages.
+
+#### Validating the PubSub infrastructure is configured correctly
+
+If the PubSub component is newly provisioned (or this is your first-time experimenting with the Dapr PubSub capability), it is recommended that you validate the infrastructure is configured correctly.
+
+Validating pubsub infrastructure can be done by publishing a Canary message from one Dapr sidecar to another Dapr sidecar via a PubSub Topic. 
+
+<img src="../../../../static/images/pubsub-canary.png" alt="Diagram showing the publishing of a canary message between sidecars" width=1000>
+
+The Canary message will validate a happy-path exists between the sidecars. The happy-path is isolated from non-infrastructure factors which may cause a PubSub message to not deliver, i.e a serialization mismatch on the publisher App or subscriber App.
+
+A quickstart guide to validating PubSub infrastructure is below, but full instructions and options on Canary messages can be found here [Dapr Samples - PubSub Canary](https://github.com/dapr/samples) repository.
+
+### Quickstart for validating PubSub infrastructure using a Canary
+
+Given you have a PubSub component yaml in a folder called `components` and the pubsub component is named `my-pubsub`
+ 
+1. Run a dapr sidecar - This is the **Publisher**
+
+    ```bash
+    dapr run --resources-path components --dapr-http-port 3500
+    ```
+
+2. Run a second dapr sidecar - This is the **Subscriber**
+
+    For your convenience, a CLI argument is provided to automatically register a Canary subscriber against a given Topic : 
+    
+    `--canary-subscriber {pubsub-name}:{topic-name}`
+
+    ```bash
+    dapr run --resources-path components --canary-subscriber my-pubsub:my-topic
+    ```
+
+    The Dapr **Subscriber** will output a log message validating the Canary subcription 
+
+    ```bash
+    INFO[0000] canary subscription is enabled on the following topics: [my-topic] through pubsub=my-pubsub instance=90cccf2889fe scope=dapr.runtime.processor.pubsub type=log ver=edge
+    ```
+
+3. Via the **Publisher** sidecar, send the canary message via HTTP/GRPC APIs or SDK, with a CloudEvent field `type` set to `dapr-canary`
+
+    Example using PubSub HTTP API :
+
+    ```bash
+    curl http://localhost:3500/v1.0/publish/my-pubsub/my-topic?metadata.cloudevent.type=dapr.canary \
+      -H Content-Type:application/json \
+      -X POST
+    ```
+
+    If successful, the Dapr **Subscriber** will output a log message of the Canary being received.
+
+    ```bash
+    INFO[0000] 🐦 Canary received! -- CloudEvent Id ded547f3-cdff-4a3f-b140-d3f4eaefc324 instance=90cccf2889fe scope=dapr.runtime.processor.pubsub type=log ver=edge
+    ```
+
+    If you do see the log, then you have successfully validated the PubSub infrastructure.
+
+    If you do not see the log, then there is likely a problem with the PubSub infrastructure which will need investigating.
+
+
+### EXTENDED CANARY DOCS -- THESE COULD BE MOVED OUT OF THE SUPPORT FAQ TO A MORE SUITABLE SUITABLE 
+
+
+#### Sending canary messages
+
+- In order to send a canary message, the message MUST conform to the CloudEvent specifiction, and the `cloudevent.type` field MUST be set to  `dapr.canary`. The simplest way to render the canary message is by leveraging [dapr-generated CloudEvent](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-cloudevents/#dapr-generated-cloudevents-example) capability, this can be achieved with the following request : 
+
+    ```bash
+        curl http://localhost:3500/v1.0/publish/my-pubsub/my-topic?metadata.cloudevent.type=dapr.canary \
+          -H Content-Type:application/json \
+          -X POST
+    ```
+- The `cloudEvent.id` can be OPTIONALLY customised. The customised Id will be shown in the `Canary received` message in the logs: 
+  ```bash
+        curl http://localhost:3500/v1.0/publish/my-pubsub/my-topic?metadata.cloudevent.type=dapr.canary&metadata.cloudevent.id=my-custom-id \
+          -H Content-Type:application/json \
+          -X POST
+    ```
+    ```bash
+    INFO[0000] 🐦 Canary received! -- CloudEvent Id my-custom-id instance=90cccf2889fe scope=dapr.runtime.processor.pubsub type=log ver=edge
+    ```
+- A message payload/body is OPTIONAL
+- [Dapr Raw events](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-raw/#subscribing-to-raw-messages) are NOT supported at this time for triggering canary behaviour
+
+
+#### Receving canary messages
+
+There MUST be a canary-enabled subscriber, this can be achieved in 2 ways
+
+1. Subcription yaml
+
+    Add the `canary: true` property to ANY subscriber yaml :
+
+    ```yaml
+    apiVersion: dapr.io/v2alpha1
+    kind: Subscription
+    metadata:
+      name: order
+    spec:
+      topic: orders
+      routes:
+        default: /checkout
+      pubsubname: pubsub
+      canary: true
+    scopes:
+    - my-app
+    ```
+2. A convenient `dapr run` CLI argument is provided to automatically register a Canary subscription against a given Topic if you do not wish to use subscriber yaml. 
+
+    `--canary-subscriber {pubsub-name}:{topic-name}`
+
+    This convenience method creates an implict subscription in memory (it does not scaffold the yaml into the file system). The implicit subscription has the equivalent configuration of the following subcription yaml :
+
+    ```yaml
+    apiVersion: dapr.io/v2alpha1
+    kind: Subscription
+    metadata:
+      name: "dapr.auto-canary-subscriber"
+    spec:
+      topic: {topic-name}
+      routes:
+        default: /dapr-canary
+      pubsubname: {pubsub-name}
+      canary: true
+    scopes:
+    - {app-id}
+    ```
+
+#### App channel considerations
+
+Establishing an App Channel with your App (typically done by the `app-port` argument) is OPTIONAL for triggering canary behaviour.
+
+- Given the App Chanel IS established, canary messages can still be sent successfully providing the `cloudevent.type` field is set to  `dapr.canary` and the Subscriber yaml is configured with `canary: true`.
+  -  ANY message that NOT authored to the specification above will be treated as a normal message and will be delivered to the App via the App Channel.
+- Given the App Channel IS NOT established, canary messages can still be sent successfully, providing the `cloudevent.type` field is set to  `dapr.canary` and the Subscriber yaml is configured with `canary: true`
+  - ANY message that is NOT authored to the specification above will be dropped.
+
