@@ -75,6 +75,7 @@ Name                   | Type                                                   
 ----                   | ----                                                                  | -----------
 id                     | string                                                                | Application ID
 runtimeVersion         | string                                                                | Version of the Dapr runtime
+enabledFeatures        | string[]                                                              | List of features enabled by Dapr Configuration, see https://docs.dapr.io/operations/configuration/preview-features/
 actors                 | [Metadata API Response Registered Actor](#metadataapiresponseactor)[] | A json encoded array of registered actors metadata.
 extended.attributeName | string                                                                | List of custom attributes as key-value pairs, where key is the attribute name.
 components             | [Metadata API Response Component](#metadataapiresponsecomponent)[]    | A json encoded array of loaded components metadata.
@@ -111,14 +112,14 @@ Name            | Type   | Description
 pubsubname      | string | Name of the pub/sub.
 topic           | string | Topic name.
 metadata        | object | Metadata associated with the subscription.
-rules           | [Metadata API Response Subscription Rules](metadataapiresponsesubscriptionrules)[] | List of rules associated with the subscription.
+rules           | [Metadata API Response Subscription Rules](#metadataapiresponsesubscriptionrules)[] | List of rules associated with the subscription.
 deadLetterTopic | string | Dead letter topic name.
 
 <a id="metadataapiresponsesubscriptionrules"></a>**Metadata API Response Subscription Rules**
 
 Name    | Type   | Description
 ----    | ----   | -----------
-match   | string | CEL expression to match the message.
+match   | string | CEL expression to match the message, see https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-route-messages/#common-expression-language-cel
 path    | string | Path to route the message if the match expression is true.
 
 <a id="metadataapiresponseappconnectionproperties"></a>**Metadata API Response AppConnectionProperties**
@@ -149,7 +150,7 @@ curl http://localhost:3500/v1.0/metadata
 
 ```json
 {
-  "id": "foo-app",
+  "id": "myApp",
   "runtimeVersion": "1.12.0",
   "enabledFeatures": [
     "ServiceInvocationStreaming"
@@ -176,12 +177,19 @@ curl http://localhost:3500/v1.0/metadata
       ]
     }
   ],
+  "httpEndpoints": [
+    {
+      "name": "my-backend-api"
+    }
+  ],
   "subscriptions": [
     {
       "pubsubname": "pubsub",
       "topic": "orders",
       "deadLetterTopic": "",
-      "metadata": null,
+      "metadata": {
+        "ttlInSeconds": "30"
+      },
       "rules": [
           {
               "match": "%!s(<nil>)",
@@ -199,7 +207,12 @@ curl http://localhost:3500/v1.0/metadata
   "appConnectionProperties": {
     "port": 3000,
     "protocol": "http",
-    "channelAddress": "127.0.0.1"
+    "channelAddress": "127.0.0.1",
+    "health": {
+      "healthProbeInterval": "5s",
+      "healthProbeTimeout": "500ms",
+      "healthThreshold": 3
+    }
   }
 }
 ```
@@ -258,7 +271,7 @@ Get the metadata information to confirm your custom attribute was added:
 
 ```json
 {
-  "id": "foo-app",
+  "id": "myApp",
   "runtimeVersion": "1.12.0",
   "enabledFeatures": [
     "ServiceInvocationStreaming"
@@ -285,12 +298,19 @@ Get the metadata information to confirm your custom attribute was added:
       ]
     }
   ],
+  "httpEndpoints": [
+    {
+      "name": "my-backend-api"
+    }
+  ],
   "subscriptions": [
     {
       "pubsubname": "pubsub",
       "topic": "orders",
       "deadLetterTopic": "",
-      "metadata": null,
+      "metadata": {
+        "ttlInSeconds": "30"
+      },
       "rules": [
           {
               "match": "%!s(<nil>)",
@@ -309,7 +329,12 @@ Get the metadata information to confirm your custom attribute was added:
   "appConnectionProperties": {
     "port": 3000,
     "protocol": "http",
-    "channelAddress": "127.0.0.1"
+    "channelAddress": "127.0.0.1",
+    "health": {
+      "healthProbeInterval": "5s",
+      "healthProbeTimeout": "500ms",
+      "healthThreshold": 3
+    }
   }
 }
 ```
