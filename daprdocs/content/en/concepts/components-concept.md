@@ -19,6 +19,8 @@ As another example, the [pub/sub]({{< ref "pubsub-overview.md" >}}) building blo
 
 You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
 
+*Note: for components that read data, it is recommended to set the memory capacity of the Dapr process/container accordingly to avoid potential OOM panics*
+
 ## Component specification
 
 Each component has a specification (or spec) that it conforms to. Components are configured at design-time with a YAML file which is stored in either:
