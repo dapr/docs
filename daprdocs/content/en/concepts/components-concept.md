@@ -19,7 +19,9 @@ As another example, the [pub/sub]({{< ref "pubsub-overview.md" >}}) building blo
 
 You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
 
-*Note: For any component that returns data to the app, it is recommended to set the memory capacity of the Dapr process/container accordingly to avoid potential OOM panics*
+{{% alert title="Note" color="primary" %}} 
+For any component that returns data to the app, it is recommended to set the memory capacity of the Dapr process/container accordingly to avoid potential OOM panics.*
+{{% /alert %}}
 
 ## Component specification
 
