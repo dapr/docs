@@ -19,6 +19,10 @@ As another example, the [pub/sub]({{< ref "pubsub-overview.md" >}}) building blo
 
 You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
 
+{{% alert title="Note" color="primary" %}} 
+For any component that returns data to the app, it is recommended to set the memory capacity of the Dapr sidecar accordingly (process or container) to avoid potential OOM panics. For example in Docker use the `--memory` option. For Kubernetes, use the `dapr.io/sidecar-memory-limit` annotation. For processes this depends on the OS and/or process orchestration tools.*
+{{% /alert %}}
+
 ## Component specification
 
 Each component has a specification (or spec) that it conforms to. Components are configured at design-time with a YAML file which is stored in either:
