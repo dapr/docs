@@ -13,7 +13,7 @@ Most observability tools support OTEL, including:
 - [New Relic](https://newrelic.com)
 - [Azure Monitor](https://azure.microsoft.com/services/monitor/)
 - [Datadog](https://www.datadoghq.com)
-- Instana
+- [Zipkin](https://zipkin.io/)
 - [Jaeger](https://www.jaegertracing.io/)
 - [SignalFX](https://www.signalfx.com/)
 
