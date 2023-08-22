@@ -108,7 +108,7 @@ All Dapr pub/sub components support the at-least-once guarantee.
 
 ### Consumer groups and competing consumers pattern
 
-Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing conusmer pattern when replicas use the same `app-id` without explict consumer group overrides. 
+Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing consumer pattern when replicas use the same `app-id` without explict consumer group overrides. 
 
 When multiple instances of the same application (with same `app-id`) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
 
