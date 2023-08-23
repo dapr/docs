@@ -4,57 +4,62 @@ title: "Setup an Minikube cluster"
 linkTitle: "Minikube"
 weight: 1000
 description: >
-  How to setup Dapr on a Minikube cluster.
+  How to setup Dapr on a Minikube cluster
 ---
-
-# Set up a Minikube cluster
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/install/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/)
-- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
-
-> Note: For Windows, enable Virtualization in BIOS and [install Hyper-V](https://docs.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
+- Install:
+   - [Docker](https://docs.docker.com/install/)
+   - [kubectl](https://kubernetes.io/docs/tasks/tools/)
+   - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- 
+- For Windows:
+   - Enable Virtualization in BIOS 
+   - [Install Hyper-V](https://docs.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
 
 ## Start the Minikube cluster
 
-1. (optional) Set the default VM driver
+1. If applicable for your project, set the default VM.
 
-```bash
-minikube config set vm-driver [driver_name]
-```
+   ```bash
+   minikube config set vm-driver [driver_name]
+   ```
 
-> Note: See [DRIVERS](https://minikube.sigs.k8s.io/docs/reference/drivers/) for details on supported drivers and how to install plugins.
+{{% alert title="Note" color="warning" %}}
+See [the official Minikube documentation on drivers](https://minikube.sigs.k8s.io/docs/reference/drivers/) for details on supported drivers and how to install plugins.
+{{% /alert %}}
 
-2. Start the cluster
-Use 1.13.x or newer version of Kubernetes with `--kubernetes-version`
+1. Start the cluster.
+   - If necessary, specify version 1.13.x or newer of Kubernetes with `--kubernetes-version`
 
-```bash
-minikube start --cpus=4 --memory=4096
-```
+   ```bash
+   minikube start --cpus=4 --memory=4096
+   ```
 
-3. Enable dashboard and ingress addons
+1. Enable the Minikube dashboard and ingress add-ons.
 
-```bash
-# Enable dashboard
-minikube addons enable dashboard
+   ```bash
+   # Enable dashboard
+   minikube addons enable dashboard
+   
+   # Enable ingress
+   minikube addons enable ingress
+   ```
 
-# Enable ingress
-minikube addons enable ingress
-```
+## Install Helm v3 (optional)
 
-## (optional) Install Helm v3
+If you are using Helm, install the [Helm v3 client](https://helm.sh/docs/intro/install/).
 
-1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
+{{% alert title="Important" color="warning" %}}
+The latest Dapr Helm chart no longer supports Helm v2. [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+{{% /alert %}}
 
-> **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+## Troubleshooting
 
-### Troubleshooting
+The external IP address of load balancer is not shown from `kubectl get svc`.
 
-1. The external IP address of load balancer is not shown from `kubectl get svc`
-
-In Minikube, EXTERNAL-IP in `kubectl get svc` shows `<pending>` state for your service. In this case, you can run `minikube service [service_name]` to open your service without external IP address.
+In Minikube, `EXTERNAL-IP` in `kubectl get svc` shows `<pending>` state for your service. In this case, you can run `minikube service [service_name]` to open your service without external IP address.
 
 ```bash
 $ kubectl get svc
@@ -72,3 +77,9 @@ $ minikube service calculator-front-end
 |-----------|----------------------|-------------|---------------------------|
 🎉  Opening kubernetes service  default/calculator-front-end in default browser...
 ```
+
+## Related links
+- [Try out a Dapr quickstart]({{< ref quickstarts.md >}})
+- Learn how to [deploy Dapr on your cluster]({{< ref kubernetes-deploy.md >}})
+- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
+- [Kubernetes production guidelines]({{< ref kubernetes-production.md >}})

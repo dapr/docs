@@ -53,14 +53,6 @@ For information about:
 - Pulling your application images from a private registry, reference the [official Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). 
 - Using Azure Container Registry with Azure Kubernetes Service, reference the [AKS documentation](https://docs.microsoft.com/azure/aks/cluster-container-registry-integration).
 
-## Stopping the cluster in development
-
-In some Kubernetes clustering environments, the cluster can be stopped and then restarted to save on costs. For example, the app pods start before the Dapr sidecar injector pod runs, so no sidecars are injected to the apps. Since Kubernetes doesn't enable you to define dependencies, an operator performs a Kubernetes app rollout command on the apps to restart the pods after the sidecar injector pod is running.
-
-{{% alert title="Note" color="primary" %}}
-Typically, this is *not* done in production, as the cluster is always running.
-{{% /alert %}}
-
 ## Tutorials
 
 [Work through the Hello Kubernetes tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes) to learn more about getting started with Dapr on your Kubernetes cluster.
