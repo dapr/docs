@@ -53,4 +53,4 @@ This guide walks you through installing an Azure Kubernetes Service (AKS) cluste
 - Learn more about [the Dapr extension for AKS]({{< ref azure-kubernetes-service-extension >}})
    - [Install the Dapr extension for AKS](https://learn.microsoft.com/azure/aks/dapr)
    - [Configure the Dapr extension for AKS](https://learn.microsoft.com/azure/aks/dapr-settings)
-   - [Deploy and run workflows with the Dapr extension for AKS](https://learn.microsoft.com/en-us/azure/aks/dapr-workflow)
+   - [Deploy and run workflows with the Dapr extension for AKS](https://learn.microsoft.com/azure/aks/dapr-workflow)
