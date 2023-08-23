@@ -34,6 +34,8 @@ spec:
       value: "false"
     - name: backOffMaxRetries
       value: "0"
+    - name: direction
+      value: "input, output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -53,6 +55,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `clientCert`  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | See example below
 | `clientKey` | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | See example below
 | `backOffMaxRetries` | N | Input | The maximum number of retries to process the message before returning an error. Defaults to `"0"`, which means that no retries will be attempted. `"-1"` can be specified to indicate that messages should be retried indefinitely until they are successfully processed or the application is shutdown. The component will wait 5 seconds between retries. | `"3"`
+| `direction` | N | Input/Output | The direction of the binding | `"input"`, `"output"`, `"input, output"`
 
 ### Communication using TLS
 

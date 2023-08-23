@@ -1,10 +1,9 @@
 ---
 type: docs
-title: "W3C trace context"
+title: "W3C trace context overview"
 linkTitle: "W3C trace context"
-weight: 2000
-description: Background and scenarios for using W3C tracing with Dapr
-type: docs
+weight: 20
+description: Background and scenarios for using W3C tracing context and headers with Dapr
 ---
 
 Dapr uses the [Open Telemetry protocol](https://opentelemetry.io/), which in turn uses the [W3C trace context](https://www.w3.org/TR/trace-context/) for distributed tracing for both service invocation and pub/sub messaging. Dapr generates and propagates the trace context information, which can be sent to observability tools for visualization and querying.
