@@ -221,6 +221,21 @@ dapr-sidecar-injector-8555576b6f-29cqm   1/1       Running   0          40s
 dapr-sentry-9435776c7f-8f7yd             1/1       Running   0          40s
 ```
 
+### Uninstall Dapr on Kubernetes
+
+```bash
+helm uninstall dapr --namespace dapr-system
+```
+
+### More information
+
+- Read [the Kubernetes productions guidelines]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
+- [More details on Dapr Helm charts](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md)
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 ### Use Mariner-based images
 
 The default container images pulled on Kubernetes are based on [*distroless*](https://github.com/GoogleContainerTools/distroless).
@@ -228,6 +243,21 @@ The default container images pulled on Kubernetes are based on [*distroless*](ht
 Alternatively, you can use Dapr container images based on Mariner 2 (minimal distroless). [Mariner](https://github.com/microsoft/CBL-Mariner/), officially known as CBL-Mariner, is a free and open-source Linux distribution and container base image maintained by Microsoft. For some Dapr users, leveraging container images based on Mariner can help you meet compliance requirements.
 
 To use Mariner-based images for Dapr, you need to add `-mariner` to your Docker tags. For example, while `ghcr.io/dapr/dapr:latest` is the Docker image based on *distroless*, `ghcr.io/dapr/dapr:latest-mariner` is based on Mariner. Tags pinned to a specific version are also available, such as `{{% dapr-latest-version short="true" %}}-mariner`.
+
+{{< tabs "Dapr CLI" "Helm" >}}
+ <!-- Dapr CLI -->
+{{% codetab %}}
+
+In the Dapr CLI, you can switch to using Mariner-based images with the `--image-variant` flag.
+
+```sh
+dapr init --image-variant mariner
+```
+
+{{% /codetab %}}
+
+ <!-- Helm -->
+{{% codetab %}}
 
 With Kubernetes and Helm, you can use Mariner-based images by setting the `global.tag` option and adding `-mariner`. For example:
 
@@ -239,17 +269,6 @@ helm upgrade --install dapr dapr/dapr \
   --set global.tag={{% dapr-latest-version long="true" %}}-mariner \
   --wait
 ```
-
-### Uninstall Dapr on Kubernetes
-
-```bash
-helm uninstall dapr --namespace dapr-system
-```
-
-### More information
-
-- Read [the Kubernetes productions guidelines]({{< ref kubernetes-production.md >}}) for recommended Helm chart values for production setups
-- [More details on Dapr Helm charts](https://github.com/dapr/dapr/blob/master/charts/dapr/README.md)
 
 {{% /codetab %}}
 
