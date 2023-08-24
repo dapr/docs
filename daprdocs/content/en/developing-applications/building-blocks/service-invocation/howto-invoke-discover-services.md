@@ -262,14 +262,14 @@ namespace EventService
 
 ```java
 //dependencies
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -281,32 +281,25 @@ public class CheckoutServiceApplication {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    // Helper method to invoke the Dapr service
-    private static HttpResponse<String> invokeDaprService(String dapr_url, JSONObject requestBody)
-            throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
-                .uri(URI.create(dapr_url))
-                .header("Content-Type", "application/json")
-                .header("dapr-app-id", "order-processor")
-                .build();
-
-        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
     public static void main(String[] args) throws InterruptedException, IOException {
         while (true) {
             TimeUnit.MILLISECONDS.sleep(5000);
             Random random = new Random();
             int orderId = random.nextInt(1000 - 1) + 1;
 
-            // Create a JSON object to represent the request body
-            JSONObject requestBody = new JSONObject();
+            // Create a Map to represent the request body
+            Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("orderId", orderId);
-            // Add other fields to the requestBody JSON object as needed
+            // Add other fields to the requestBody Map as needed
 
-            // Invoke the Dapr service using the helper method
-            HttpResponse<String> response = invokeDaprService(dapr_url, requestBody);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofString(new JSONObject(requestBody).toString()))
+                    .uri(URI.create(dapr_url))
+                    .header("Content-Type", "application/json")
+                    .header("dapr-app-id", "order-processor")
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             System.out.println("Order passed: " + orderId);
             TimeUnit.MILLISECONDS.sleep(1000);
