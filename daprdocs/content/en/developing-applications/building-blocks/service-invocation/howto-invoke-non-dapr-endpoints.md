@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Invoke Non-Dapr Endpoints using HTTP"
 linkTitle: "How-To: Invoke Non-Dapr Endpoints"
 description: "Call Non-Dapr endpoints from Dapr applications using service invocation"
-weight: 2000
+weight: 40
 ---
 
 This article demonstrates how to call a non-Dapr endpoint using Dapr over HTTP.
