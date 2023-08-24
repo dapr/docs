@@ -6,7 +6,7 @@ description: "The basic spec for a Dapr Configuration resource"
 weight: 5000
 ---
 
-The `Configuration` is a Dapr resource that is used to configure the Dapr sidecar, control-plane, and others.
+The `Configuration` is a Dapr resource that is used to configure the Dapr sidecar, control plane, and others.
 
 ## Sidecar format
 
@@ -76,7 +76,7 @@ spec:
 | tracing            | N        | Turns on tracing for an application. | [Learn more about the `tracing` configuration.]({{< ref "configuration-overview.md#tracing" >}}) |
 
 
-## Control-plane format
+## Control plane format
 
 The `daprsystem` configuration file installed with Dapr applies global settings and is only set up when Dapr is deployed to Kubernetes. 
 

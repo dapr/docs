@@ -6,8 +6,6 @@ weight: 10000
 description: "Overview of how to get Dapr running on your Kubernetes cluster"
 ---
 
-## Dapr on Kubernetes
-
 Dapr can be configured to run on any supported versions of Kubernetes. To achieve this, Dapr begins by deploying the following Kubernetes services, which provide first-class integration to make running applications with Dapr easy.
 
 | Kubernetes services | Description |
@@ -47,7 +45,7 @@ For more information, check [Dapr annotations]({{< ref arguments-annotations-ove
 
 Dapr works seamlessly with any user application container image, regardless of its origin. Simply [initialize Dapr]({{< ref install-dapr-selfhost.md >}}) and add the [Dapr annotations]({{< ref arguments-annotations-overview.md >}}) to your Kubernetes definition to add the Dapr sidecar.
 
-The Dapr control-plane and sidecar images come from the [daprio Docker Hub](https://hub.docker.com/u/daprio) container registry, which is a public registry.
+The Dapr control plane and sidecar images come from the [daprio Docker Hub](https://hub.docker.com/u/daprio) container registry, which is a public registry.
 
 For information about:
 - Pulling your application images from a private registry, reference the [official Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). 
