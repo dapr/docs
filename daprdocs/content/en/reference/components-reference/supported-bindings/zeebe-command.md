@@ -21,23 +21,26 @@ spec:
   version: v1
   metadata:
   - name: gatewayAddr
-    value: <host>:<port>
+    value: "<host>:<port>"
   - name: gatewayKeepAlive
-    value: 45s
+    value: "45s"
   - name: usePlainTextConnection
-    value: true
+    value: "true"
   - name: caCertificatePath
-    value: /path/to/ca-cert
+    value: "/path/to/ca-cert"
+  - name: direction 
+    value: "output"
 ```
 
 ## Spec metadata fields
 
 | Field                   | Required | Binding support |  Details | Example |
 |-------------------------|:--------:|------------|-----|---------|
-| gatewayAddr             | Y | Output | Zeebe gateway address                                                                     | `localhost:26500` |
-| gatewayKeepAlive        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `45s` |
-| usePlainTextConnection  | N | Output | Whether to use a plain text connection or not                                             | `true,false` |
-| caCertificatePath       | N | Output | The path to the CA cert                                                                    | `/path/to/ca-cert` |
+| `gatewayAddr`             | Y | Output | Zeebe gateway address                                                                     | `"localhost:26500"` |
+| `gatewayKeepAlive`        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `"45s"` |
+| `usePlainTextConnection`  | N | Output | Whether to use a plain text connection or not                                             | `"true"`, `"false"` |
+| `caCertificatePath`       | N | Output | The path to the CA cert                                                                    | `"/path/to/ca-cert"` |
+| `direction`       | N | Output | The direction of the binding                                                                    | `"output"` |
 
 ## Binding support
 

@@ -32,6 +32,8 @@ Create a new binding component named `checkout`. Within the `metadata` section, 
 - The topic to which you'll publish the message
 - The broker
 
+When creating the binding component, [specify the supported `direction` of the binding]({{< ref "bindings_api.md#binding-direction-optional" >}}). 
+
 {{< tabs "Self-Hosted (CLI)" Kubernetes >}}
 
 {{% codetab %}}
@@ -59,7 +61,9 @@ spec:
   - name: publishTopic
     value: sample
   - name: authRequired
-    value: "false"
+    value: false
+  - name: direction
+    value: output
 ```
 
 {{% /codetab %}}
@@ -89,7 +93,9 @@ spec:
   - name: publishTopic
     value: sample
   - name: authRequired
-    value: "false"
+    value: false
+  - name: direction
+    value: output
 ```
 
 {{% /codetab %}}
