@@ -316,26 +316,24 @@ public class CheckoutServiceApplication {
 {{% codetab %}}
 
 ```go
-//dependencies
+package main
+
 import (
-	"context"
+	"fmt"
+	"io"
 	"log"
 	"math/rand"
+	"net/http"
+	"os"
 	"time"
-	"strconv"
 )
-
-//code
-type Order struct {
-	orderName string
-	orderNum  string
-}
 
 func main() {
 	daprHttpPort := os.Getenv("DAPR_HTTP_PORT")
 	if daprHttpPort == "" {
 		daprHttpPort = "3500"
 	}
+
 	client := &http.Client{
 		Timeout: 15 * time.Second,
 	}
@@ -343,23 +341,28 @@ func main() {
 	for i := 0; i < 10; i++ {
 		time.Sleep(5000)
 		orderId := rand.Intn(1000-1) + 1
-		client, err := dapr.NewClient()
+
+		url := fmt.Sprintf("http://localhost:%s/checkout/%v", daprHttpPort, orderId)
+		req, err := http.NewRequest(http.MethodGet, url, nil)
 		if err != nil {
 			panic(err)
 		}
-		
-        // Adding app id as part of the header
+
+		// Adding target app id as part of the header
 		req.Header.Add("dapr-app-id", "order-processor")
 
 		// Invoking a service
-		response, err := client.Do(req)
+		resp, err := client.Do(req)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		result, err := client.InvokeMethod(ctx, "checkout", "checkout/" + strconv.Itoa(orderId), "get")
-		log.Println("Order requested: " + strconv.Itoa(orderId))
-		log.Println("Result: ")
-		log.Println(result)
+
+		b, err := io.ReadAll(resp.Body)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(string(b))
 	}
 }
 ```
