@@ -6,9 +6,9 @@ weight: 60000
 description: "How to run Dapr apps on Kubernetes clusters with Windows nodes"
 ---
 
-Dapr supports running your Dapr microservices on Kubernetes clusters on:
-- Excusively Windows
-- Exclusively Linux
+Dapr supports running your microservices on Kubernetes clusters on:
+- Windows
+- Linux
 - A combination of both
 
 This is especially helpful during a piecemeal migration of a legacy application into a Dapr Kubernetes cluster.

@@ -13,10 +13,13 @@ description: >
    - [Docker](https://docs.docker.com/install/)
    - [kubectl](https://kubernetes.io/docs/tasks/tools/)
    - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
-- 
 - For Windows:
    - Enable Virtualization in BIOS 
    - [Install Hyper-V](https://docs.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
+
+{{% alert title="Note" color="primary" %}}
+See [the official Minikube documentation on drivers](https://minikube.sigs.k8s.io/docs/reference/drivers/) for details on supported drivers and how to install plugins.
+{{% /alert %}}
 
 ## Start the Minikube cluster
 
@@ -26,16 +29,11 @@ description: >
    minikube config set vm-driver [driver_name]
    ```
 
-{{% alert title="Note" color="warning" %}}
-See [the official Minikube documentation on drivers](https://minikube.sigs.k8s.io/docs/reference/drivers/) for details on supported drivers and how to install plugins.
-{{% /alert %}}
+1. Start the cluster. If necessary, specify version 1.13.x or newer of Kubernetes with `--kubernetes-version`
 
-1. Start the cluster.
-   - If necessary, specify version 1.13.x or newer of Kubernetes with `--kubernetes-version`
-
-   ```bash
-   minikube start --cpus=4 --memory=4096
-   ```
+    ```bash
+    minikube start --cpus=4 --memory=4096
+    ```
 
 1. Enable the Minikube dashboard and ingress add-ons.
 

@@ -6,8 +6,6 @@ weight: 30000
 description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smooth upgrade."
 ---
 
-## Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
-
 You can upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 {{% alert title="Note" color="primary" %}}
@@ -17,15 +15,16 @@ Refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-pa
 {{< tabs "Dapr CLI" "Helm" >}}
  <!-- Dapr CLI -->
 {{% codetab %}}
+## Upgrade using the Dapr CLI
+
+You can upgrade Dapr using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
 ### Prerequisites
 
 - [Install the Dapr CLI]({{< ref install-dapr-cli.md >}})
 - An existing [Kubernetes cluster running with Dapr]({{< ref cluster >}})
 
-### Upgrade using the Dapr CLI
-
-Upgrade your existing cluster to version {{% dapr-latest-version long="true" %}}:
+### Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
 
 ```bash
 dapr upgrade -k --runtime-version={{% dapr-latest-version long="true" %}}
@@ -59,13 +58,18 @@ The CustomResourceDefinition "configurations.dapr.io" is invalid: spec.preserveU
 
  <!-- Helm -->
 {{% codetab %}}
+## Upgrade using Helm
+
+You can upgrade Dapr using a Helm v3 chart.
+
+❗**Important:** The latest Dapr Helm chart no longer supports Helm v2. [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
 
 ### Prerequisites
 
 - [Install Helm v3](https://github.com/helm/helm/releases)
 - An existing [Kubernetes cluster running with Dapr]({{< ref cluster >}})
 
-### Upgrade using Helm
+### Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
 
 As of version 1.0.0 onwards, existing certificate values will automatically be reused when upgrading Dapr using Helm.
 

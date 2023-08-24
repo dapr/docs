@@ -131,9 +131,9 @@ dapr uninstall -k
  <!-- Helm -->
 {{% codetab %}}
 
-## Install with Helm (advanced)
+## Install with Helm
 
-You can install Dapr on Kubernetes using a Helm 3 chart.
+You can install Dapr on Kubernetes using a Helm v3 chart.
 
 ❗**Important:** The latest Dapr Helm chart no longer supports Helm v2. [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
 
