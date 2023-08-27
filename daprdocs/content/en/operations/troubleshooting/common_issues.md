@@ -94,7 +94,7 @@ There are some known cases where this might not properly work:
   
 - Make sure the kube api server can reach the following webhooks services:
   - [Sidecar Mutating Webhook Injector Service](https://github.com/dapr/dapr/blob/44235fe8e8799589bb393a3124d2564db2dd6885/charts/dapr/charts/dapr_sidecar_injector/templates/dapr_sidecar_injector_deployment.yaml#L157) at port __4000__ that is served from the sidecar injector.
-  - [CRD Conversion Webhook Service](https://github.com/dapr/dapr/blob/44235fe8e8799589bb393a3124d2564db2dd6885/charts/dapr/charts/dapr_operator/templates/dapr_operator_service.yaml#L28) at port __19443__ that is served from the operator.
+  - [Resource Conversion Webhook Service](https://github.com/dapr/dapr/blob/44235fe8e8799589bb393a3124d2564db2dd6885/charts/dapr/charts/dapr_operator/templates/dapr_operator_service.yaml#L28) at port __19443__ that is served from the operator.
   
   Check with your cluster administrators to setup allow ingress
   rules to the above ports, __4000__ and __19443__, in the cluster from the kube api servers. 

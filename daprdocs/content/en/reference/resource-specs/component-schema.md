@@ -6,7 +6,7 @@ weight: 1000
 description: "The basic spec for a Dapr component"
 ---
 
-Dapr defines and registers components using a [CustomResourceDefinition](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/). All components are defined as a CRD and can be applied to any hosting environment where Dapr is running, not just Kubernetes.
+Dapr defines and registers components using a [Resource Specifications](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/). All components are defined as a resource and can be applied to any hosting environment where Dapr is running, not just Kubernetes.
 
 ## Format
 
@@ -31,7 +31,7 @@ spec:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | apiVersion         | Y        | The version of the Dapr (and Kubernetes if applicable) API you are calling | `dapr.io/v1alpha1`
-| kind               | Y        | The type of CRD. For components is must always be `Component` | `Component`
+| kind               | Y        | The type of resource. For components is must always be `Component` | `Component`
 | **metadata**       | -        | **Information about the component registration** |
 | metadata.name      | Y        | The name of the component | `prod-statestore`
 | metadata.namespace | N        | The namespace for the component for hosting environments with namespaces | `myapp-namespace`
