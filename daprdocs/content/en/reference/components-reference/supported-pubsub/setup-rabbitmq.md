@@ -409,6 +409,24 @@ client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)),
 
 {{< /tabs >}}
 
+## Use quorum queues
+
+By default Dapr creates 'classic' queues. To create 'quorum' queues:
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: pubsub
+spec:
+  topic: checkout
+  routes: 
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    queueType: quorum
+```
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}}) in the Related links section
