@@ -18,6 +18,10 @@ Dapr's dedicated secrets building block API makes it easier for developers to co
 1. Retrieve secrets using the Dapr secrets API in the application code.
 1. Optionally, reference secrets in Dapr component files.
 
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=3bmNSSyIEIVSF-Ej&t=9931) demonstrates how Dapr secrets management works. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=3bmNSSyIEIVSF-Ej&amp;start=9931" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Features
 
 The secrets management API building block brings several features to your application.
