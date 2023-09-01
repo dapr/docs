@@ -9,7 +9,7 @@ aliases:
 no_list: true
 ---
 
-The following table lists secret stores supported, at various levels, by the Dapr secrets building block. [Learn how to set up different secret stores for Dapr secrets management.]({{< ref setup-secret-store.md >}})
+The following table lists secret stores supported by the Dapr secrets building block. [Learn how to set up different secret stores for Dapr secrets management.]({{< ref setup-secret-store.md >}})
 
 {{< partial "components/description.html" >}}
 
