@@ -1,10 +1,10 @@
 ---
 type: docs
-title: "Setup an Azure Kubernetes Service (AKS) cluster"
+title: "Set up an Azure Kubernetes Service (AKS) cluster"
 linkTitle: "Azure Kubernetes Service (AKS)"
 weight: 2000
 description: >
-  How to setup Dapr on an Azure Kubernetes Cluster
+  Learn how to set up an Azure Kubernetes Cluster
 ---
 
 This guide walks you through installing an Azure Kubernetes Service (AKS) cluster. If you need more information, refer to [Quickstart: Deploy an AKS cluster using the Azure CLI](https://docs.microsoft.com/azure/aks/kubernetes-walkthrough)

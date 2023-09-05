@@ -19,7 +19,7 @@ Both the Dapr CLI and the Dapr Helm chart automatically deploy with affinity for
 {{% codetab %}}
 ## Install with Dapr CLI
 
-You can install Dapr to a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
+You can install Dapr on a Kubernetes cluster using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
 ### Prerequisites
 

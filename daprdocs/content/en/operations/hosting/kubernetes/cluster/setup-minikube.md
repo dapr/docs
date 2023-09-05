@@ -1,10 +1,10 @@
 ---
 type: docs
-title: "Setup an Minikube cluster"
+title: "Set up a Minikube cluster"
 linkTitle: "Minikube"
 weight: 1000
 description: >
-  How to setup Dapr on a Minikube cluster
+  How to setup a Minikube cluster
 ---
 
 ## Prerequisites

@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "Setup a Google Kubernetes Engine (GKE) cluster"
+title: "Set up a Google Kubernetes Engine (GKE) cluster"
 linkTitle: "Google Kubernetes Engine (GKE)"
 weight: 3000
-description: "Setup a Google Kubernetes Engine cluster"
+description: "Set up a Google Kubernetes Engine cluster"
 ---
 
 ### Prerequisites
