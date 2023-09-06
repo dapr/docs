@@ -13,7 +13,7 @@ Publish and subscribe (pub/sub) enables microservices to communicate with each o
 
 An intermediary message broker copies each message from a publisher's input channel to an output channel for all subscribers interested in that message. This pattern is especially useful when you need to decouple microservices from one another.
 
-<img src="/images/pubsub-overview-pattern.png" width=1000>
+<img src="/images/pubsub-overview-pattern.png" width=1000 style="padding-bottom:25px;">
 
 <br></br>
 
@@ -32,15 +32,17 @@ When using pub/sub in Dapr:
 1. The pub/sub building block makes calls into a Dapr pub/sub component that encapsulates a specific message broker.
 1. To receive messages on a topic, Dapr subscribes to the pub/sub component on behalf of your service with a topic and delivers the messages to an endpoint on your service when they arrive.
 
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=FMg2Y7bRuljKism-&t=5384) demonstrates how Dapr pub/sub works. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=FMg2Y7bRuljKism-&amp;start=5384" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 In the diagram below, a "shipping" service and an "email" service have both subscribed to topics published by a "cart" service. Each service loads pub/sub component configuration files that point to the same pub/sub message broker component; for example: Redis Streams, NATS Streaming, Azure Service Bus, or GCP pub/sub.
 
-<img src="/images/pubsub-overview-components.png" width=1000>
-<br></br>
+<img src="/images/pubsub-overview-components.png" width=1000 style="padding-bottom:25px;">
 
 In the diagram below, the Dapr API posts an "order" topic from the publishing "cart" service to "order" endpoints on the "shipping" and "email" subscribing services.
 
-<img src="/images/pubsub-overview-publish-API.png" width=1000>
-<br></br>
+<img src="/images/pubsub-overview-publish-API.png" width=1000 style="padding-bottom:25px;">
 
 [View the complete list of pub/sub components that Dapr supports]({{< ref supported-pubsub >}}).
 
@@ -108,7 +110,7 @@ All Dapr pub/sub components support the at-least-once guarantee.
 
 ### Consumer groups and competing consumers pattern
 
-Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing conusmer pattern when replicas use the same `app-id` without explict consumer group overrides. 
+Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing consumer pattern when replicas use the same `app-id` without explict consumer group overrides. 
 
 When multiple instances of the same application (with same `app-id`) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
 
