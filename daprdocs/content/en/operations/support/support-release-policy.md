@@ -45,6 +45,7 @@ The table below shows the versions of Dapr releases that have been tested togeth
 
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
+| August 31st 2023 | 1.11.3</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Supported (current) | [v1.11.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.3) |
 | July 20th 2023 | 1.11.2</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Supported (current) | [v1.11.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.2) |
 | June 22nd 2023 | 1.11.1</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Supported (current) | [v1.11.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.1) |
 | June 12th 2023 | 1.11.0</br>  | 1.11.0 | Java 1.9.0 </br>Go 1.8.0 </br>PHP 1.1.0 </br>Python 1.10.0 </br>.NET 1.11.0 </br>JS 3.1.0 | 0.13.0 | Supported (current) | [v1.11.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.11.0) |
@@ -121,7 +122,7 @@ General guidance on upgrading can be found for [self hosted mode]({{< ref self-h
 | 1.8.0 to 1.8.6           |                   N/A |                    1.9.6 |
 | 1.9.0                    |                   N/A |                    1.9.6 |
 | 1.10.0                   |                   N/A |                   1.10.8 |
-| 1.11.0                   |                   N/A |                   1.11.2 |
+| 1.11.0                   |                   N/A |                   1.11.3 |
 
 
 ## Upgrade on Hosting platforms
