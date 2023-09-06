@@ -70,7 +70,7 @@ There are two ways to invoke a non-Dapr endpoint when communicating either to Da
     ```
 
 ### Using appId when calling Dapr enabled applications
-AppIDs are always used to call Dapr applications with the `appID` and `my-method. Read the [How-To: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}}) guide for more information. For example:
+AppIDs are always used to call Dapr applications with the `appID` and `my-method``. Read the [How-To: Invoke services using HTTP]({{< ref howto-invoke-discover-services.md >}}) guide for more information. For example:
 
 ```sh
 localhost:3500/v1.0/invoke/<appID>/method/<my-method>
