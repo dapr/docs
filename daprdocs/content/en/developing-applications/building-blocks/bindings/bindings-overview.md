@@ -20,7 +20,7 @@ For example, with bindings, your application can respond to incoming Twilio/SMS 
 - Adding or configuring a third-party Twilio SDK
 - Worrying about polling from Twilio (or using WebSockets, etc.)
 
-<img src="/images/binding-overview.png" width=1000 alt="Diagram showing bindings">
+<img src="/images/binding-overview.png" width=1000 alt="Diagram showing bindings" style="padding-bottom:25px;">
 
 In the above diagram:
 - The input binding triggers a method on your application. 
@@ -35,6 +35,10 @@ If you are using the HTTP Binding, then it is preferable to use [service invocat
 ## Input bindings
 
 With input bindings, you can trigger your application when an event from an external resource occurs. An optional payload and metadata may be sent with the request.
+
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=wlmAi7BJBWS8KNK7&t=8261) demonstrates how Dapr input binding works. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=wlmAi7BJBWS8KNK7&amp;start=8261" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>  
 
 To receive events from an input binding:
 
@@ -53,6 +57,10 @@ Read the [Create an event-driven app using input bindings guide]({{< ref howto-t
 ## Output bindings
 
 With output bindings, you can invoke external resources. An optional payload and metadata can be sent with the invocation request.
+
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=PoA4NEqL5mqNj6Il&t=7668) demonstrates how Dapr output binding works. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=PoA4NEqL5mqNj6Il&amp;start=7668" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>  
 
 To invoke an output binding:
 
