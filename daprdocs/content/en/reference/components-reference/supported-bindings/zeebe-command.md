@@ -44,6 +44,7 @@ spec:
 This component supports **output binding** with the following operations:
 
 - `topology`
+- `deploy-process`
 - `deploy-resource`
 - `create-instance`
 - `cancel-instance`
@@ -117,6 +118,10 @@ The response values are:
 - `partitionsCount` - how many partitions are spread across the cluster
 - `replicationFactor` - configured replication factor for this cluster
 - `gatewayVersion` - gateway version
+
+#### deploy-process
+
+Deprecated alias of 'deploy-resource'.
 
 #### deploy-resource
 
