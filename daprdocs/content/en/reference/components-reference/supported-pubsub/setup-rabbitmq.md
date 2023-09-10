@@ -62,6 +62,10 @@ spec:
     value: false
   - name: ttlInSeconds
     value: 60
+  - name: clientName
+    value: {podName}
+  - name: heartBeat
+    value: 10s
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -96,6 +100,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| clientName | N | RabbitMQ [client-provided connection name](https://www.rabbitmq.com/connections.html#client-provided-names), this a custom identifier. If set, the identifier will be mentioned in RabbitMQ server log entries and management UI. Can be set to {uuid}, {podName} or {appID} which will be replaced by Dapr runtime to the real value. | `"app1"`, `{uuid}`, `{podName}`, `{appID}`
+| heartBeat  | N | Defines the heartbeat interval with the server, detecting the aliveness of the peer TCP connection with the RabbitMQ server. Defaults to `10s` . | `"10s"`
 
 
 ## Communication using TLS
