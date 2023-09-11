@@ -19,11 +19,15 @@ Instead, you simply want to run them as local executables in self-hosted mode.  
 - Remember the resources folders and configuration files that each application refers to.
 - Recall all of the additional flags you used to tweak the `dapr run` command behavior (`--app-health-check-path`, `--dapr-grpc-port`, `--unix-domain-socket`, etc.)
 
+{{< tabs Self-hosted Kubernetes>}}
+
+{{% codetab %}}
+<!--selfhosted-->
 With Multi-App Run, you can start multiple applications in self-hosted mode using a single `dapr run -f` command using a template file. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
 
 ## Multi-App Run template file
 
-When you execute `dapr run -f .`, it uses the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
+When you execute `dapr run -f .`, it generates the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
 
 You can name template file with preferred name other than the default. For example `dapr run -f ./<your-preferred-file-name>.yaml`.
 
@@ -46,6 +50,47 @@ apps:
 ```
 
 For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--kubernetes-->
+With Multi-App Run, you can start multiple applications in a Kubernetes development or test environment using a single `dapr run -f -k` command using a template file. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
+
+## Multi-App Run template file
+
+When you execute `dapr run -f .`, Dapr generates the multi-app template file (named `dapr.yaml`) in the `.dapr/deploy` directory within each application. Each time you run `dapr run -f -k .`, the generated Kubernetes Deployment YAML file is overwritten. run all the applications.
+
+You can name template file with preferred name other than the default. For example `dapr run -f -k ./<your-preferred-file-name>.yaml`.
+
+The following example includes some of the template properties you can customize for your applications. In the example, you can simultaneously launch 2 applications with app IDs of `nodeapp` and `pythonapp`.
+
+```yaml
+version: 1
+common:
+apps:
+  - appID: nodeapp
+    appDirPath: ./nodeapp/
+    appPort: 3000
+    containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest
+    createService: true
+    env:
+      APP_PORT: 3000
+  - appID: pythonapp
+    appDirPath: ./pythonapp/
+    containerImage: ghcr.io/dapr/samples/hello-k8s-python:latest
+```
+
+> **Note:** 
+> - If the `containerImage` field is not specified, `dapr run -f -k` produces an error. 
+> - The `createService` field defines a basic service in Kubernetes (ClusterIP or LoadBalancer) that targets the `--app-port` specified in the template. If `createService` isn't specified, the application is not accessible from outside the cluster.
+
+For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 ## Locations for resources and configuration files
 
