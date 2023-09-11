@@ -86,6 +86,8 @@ apps:
     command: ["python3", "app.py"]
     appLogDestination: file # (optional), can be file, console or fileAndConsole. default is fileAndConsole.
     daprdLogDestination: file # (optional), can be file, console or fileAndConsole. default is file.
+    containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest # (optional) URI of the container image to be used when deploying to Kubernetes dev/test environment.
+    createService: true # (optional) Create a Kubernetes service for the application when deploying to dev/test environment.
   - appID: backend # optional
     appDirPath: .dapr/backend/ # REQUIRED
     appProtocol: grpc
@@ -145,6 +147,8 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 | `env`                    | N        | Map to environment variable; environment variables applied per application will overwrite environment variables shared across applications | `DEBUG`, `DAPR_HOST_ADD` |
 | `appLogDestination`                    | N        | Log destination for outputting app logs; Its value can be file, console or fileAndConsole. Default is fileAndConsole | `file`, `console`, `fileAndConsole` |
 | `daprdLogDestination`                    | N        | Log destination for outputting daprd logs; Its value can be file, console or fileAndConsole. Default is file | `file`, `console`, `fileAndConsole` |
+| `containerImage`| N | URI of the container image to be used when deploying to Kubernetes dev/test environment. | `ghcr.io/dapr/samples/hello-k8s-python:latest`
+| `createService`|  N | Create a Kubernetes service for the application when deploying to dev/test environment. | `true`, `false` |
 
 ## Next steps
 
