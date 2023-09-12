@@ -100,6 +100,14 @@ await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 
 Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
 
+- **raiseEvent**: Raise an event on a workflow
+- **getInstanceMetadata**: Get information on the status of the workflow
+- **waitForInstanceStart**: Pauses or suspends a workflow instance that can later be resumed
+- **waitForInstanceCompletion**: Resumes a paused workflow instance and waits for completion
+- **createTaskHub**
+- **deleteTaskHub**
+- **purgeInstance**: Removes all metadata related to a specific workflow
+
 ```java
 todo
 ```
