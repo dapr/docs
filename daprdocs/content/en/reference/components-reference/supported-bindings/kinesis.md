@@ -23,20 +23,21 @@ spec:
   version: v1
   metadata:
   - name: streamName
-    value: KINESIS_STREAM_NAME # Kinesis stream name
+    value: "KINESIS_STREAM_NAME" # Kinesis stream name
   - name: consumerName
-    value: KINESIS_CONSUMER_NAME # Kinesis consumer name
+    value: "KINESIS_CONSUMER_NAME" # Kinesis consumer name
   - name: mode
-    value: shared # shared - Shared throughput or extended - Extended/Enhanced fanout
+    value: "shared" # shared - Shared throughput or extended - Extended/Enhanced fanout
   - name: region
-    value: AWS_REGION #replace
+    value: "AWS_REGION" #replace
   - name: accessKey
-    value: AWS_ACCESS_KEY # replace
+    value: "AWS_ACCESS_KEY" # replace
   - name: secretKey
-    value: AWS_SECRET_KEY #replace
+    value: "AWS_SECRET_KEY" #replace
   - name: sessionToken
-    value: *****************
-
+    value: "*****************"
+  - name: direction
+    value: "input, output"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -46,13 +47,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| mode | N | Input| The Kinesis stream mode. `shared`- Shared throughput, `extended` - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html). Defaults to `"shared"` | `"shared"`, `"extended"` |
-| streamName | Y | Input/Output | The AWS Kinesis Stream Name | `"stream"` |
-| consumerName | Y | Input |  The AWS Kinesis Consumer Name | `"myconsumer"` |
-| region             | Y        | Output |  The specific AWS region the AWS Kinesis instance is deployed in | `"us-east-1"`       |
-| accessKey          | Y        | Output | The AWS Access Key to access this resource                              | `"key"`             |
-| secretKey          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
-| sessionToken       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
+| `mode` | N | Input| The Kinesis stream mode. `shared`- Shared throughput, `extended` - Extended/Enhanced fanout methods. More details are [here](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html). Defaults to `"shared"` | `"shared"`, `"extended"` |
+| `streamName` | Y | Input/Output | The AWS Kinesis Stream Name | `"stream"` |
+| `consumerName` | Y | Input |  The AWS Kinesis Consumer Name | `"myconsumer"` |
+| `region`             | Y        | Output |  The specific AWS region the AWS Kinesis instance is deployed in | `"us-east-1"`       |
+| `accessKey`          | Y        | Output | The AWS Access Key to access this resource                              | `"key"`             |
+| `secretKey`          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
+| `sessionToken`       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
+| `direction`       | N        | Input/Output | The direction of the binding                                            | `"input"`, `"output"`, `"input, output"`    |
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  

@@ -23,7 +23,9 @@ spec:
   version: v1
   metadata:
   - name: url # Required
-    value: <CONNECTION_STRING>
+    value: "<CONNECTION_STRING>"
+  - name: direction
+    value: "<DIRECTION_OF_BINDING>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -34,7 +36,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| url | Y | Output | PostgreSQL connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
+| `url` | Y | Output | PostgreSQL connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
+| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ### URL format
 
