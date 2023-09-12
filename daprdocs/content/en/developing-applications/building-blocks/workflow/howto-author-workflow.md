@@ -122,33 +122,36 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 <!--java-->
 
-Define the workflow activities you'd like your workflow to perform. 
-
-The activities called in the example below are:
-- `need`: Receive notification of a new order.
-
-### [activity]
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in an `ActivityWrapper` class for the `TaskActivityFactory`. In the following example, the activity wrapper and its constructor are defined:
 
 ```java
-todo
+public class ActivityWrapper<T extends WorkflowActivity> implements TaskActivityFactory {
+  private final Constructor<T> activityConstructor;
+  private final String name;
+
+  public ActivityWrapper(Class<T> clazz) {
+    this.name = clazz.getCanonicalName();
+    try {
+      this.activityConstructor = clazz.getDeclaredConstructor();
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException(
+          String.format("No constructor found for activity class '%s'.", this.name), e
+      );
+    }
+  }
 ```
 
-[See the full `todo` workflow activity example.](todo)
-
-### [activity]
+Register a workflow activity object:
 
 ```java
-todo
-```
-[See the full `todo` workflow activity example.](todo)
-
-### [todo]
-
-```java
-todo
+  public <T extends WorkflowActivity> void registerActivity(Class<T> clazz) {
+    this.builder = this.builder.addActivity(
+        new ActivityWrapper<>(clazz)
+    );
+  }
 ```
 
-[See the full `todo` workflow activity example.](todo)
+[See a full Java SDK workflow activity example.](https://github.com/dapr/java-sdk/blob/master/sdk-workflows/src/main/java/io/dapr/workflows)
 
 {{% /codetab %}}
 
