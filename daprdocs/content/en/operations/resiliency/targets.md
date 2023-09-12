@@ -2,8 +2,8 @@
 type: docs
 title: "Targets"
 linkTitle: "Targets"
-weight: 4500
-description: "Apply resiliency policies to apps, components and actors"
+weight: 300
+description: "Apply resiliency policies to targets including apps, components and actors"
 ---
 
 ### Targets

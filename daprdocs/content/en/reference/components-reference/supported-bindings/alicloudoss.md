@@ -28,6 +28,8 @@ spec:
     value: "[access-key]"
   - name: bucket
     value: "[bucket]"
+  - name: direction
+    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -42,6 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `accessKeyID` | Y | Output | Access key ID credential. |
 | `accessKey`   | Y | Output | Access key credential. |
 | `bucket`      | Y | Output | Name of the storage bucket. |
+| `direction`   | N | Output | Direction of the binding. | `"output"`
 
 ## Binding support
 

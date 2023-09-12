@@ -211,6 +211,21 @@ The Dapr threat model is below.
 
 ## Security audit
 
+### September 2023
+
+In September 2023, Dapr completed a security audit done by Ada Logics.
+
+The audit was a holistic security audit with the following goals:
+
+- Formalize a threat model of Dapr
+- Perform manual code review
+- Evaluate Daprs fuzzing suite against the formalized threat model
+- Carry out a SLSA review of Dapr.
+
+You can find the full report [here](/docs/Dapr-september-2023-security-audit-report.pdf).
+
+The audit found 7 issues none of which were of high or critical severity. One CVE was assigned from an issue in a 3rd-party dependency to Dapr Components Contrib
+
 ### June 2023
 
 In June 2023, Dapr completed a fuzzing audit done by Ada Logics.

@@ -658,6 +658,12 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 In order to tell Dapr that a message was processed successfully, return a `200 OK` response. If Dapr receives any other return status code than `200`, or if your app crashes, Dapr will attempt to redeliver the message following at-least-once semantics.
 
+## Demo video
+
+Watch [this demo video](https://youtu.be/1dqe1k-FXJQ?si=s3gvWxRxeOsmXuE1) to learn more about pub/sub messaging with Dapr.
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/1dqe1k-FXJQ?si=s3gvWxRxeOsmXuE1" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Next steps
 
 - Try the [pub/sub tutorial](https://github.com/dapr/quickstarts/tree/master/tutorials/pub-sub).
