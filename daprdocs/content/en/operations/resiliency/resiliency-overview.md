@@ -2,7 +2,7 @@
 type: docs
 title: "Overview"
 linkTitle: "Overview"
-weight: 4500
+weight: 100
 description: "Configure Dapr retries, timeouts, and circuit breakers"
 ---
 
@@ -19,6 +19,14 @@ Policies can then be applied to [targets]({{< ref "targets.md" >}}), which inclu
 - [Actors]({{< ref "targets.md#actors" >}})
 
 Additionally, resiliency policies can be [scoped to specific apps]({{< ref "component-scopes.md#application-access-to-components-with-scopes" >}}).
+
+## Demo video
+
+Learn more about [how to write resilient microservices with Dapr](https://youtu.be/uC-4Q5KFq98?si=JSUlCtcUNZLBM9rW).
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uC-4Q5KFq98?si=JSUlCtcUNZLBM9rW" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+## Resiliency policy structure
 
 Below is the general structure of a resiliency policy:
 
@@ -51,7 +59,7 @@ spec:
       # components and their applied policies here
 ```
 
-### Complete example policy
+## Complete example policy
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
