@@ -59,7 +59,7 @@ With Multi-App Run, you can start multiple applications in a Kubernetes developm
 
 ## Multi-App Run template file
 
-When you execute `dapr run -f .`, Dapr generates the multi-app template file (named `dapr.yaml`) in the `.dapr/deploy` directory within each application. Each time you run `dapr run -f -k .`, the generated Kubernetes Deployment YAML file is overwritten. run all the applications.
+When you execute `dapr run -f .`, Dapr generates the multi-app template file (named `dapr.yaml`) in the `.dapr/deploy` directory within each application. Each time you run `dapr run -f -k .`, the generated Kubernetes Deployment YAML file is overwritten. 
 
 You can name template file with preferred name other than the default. For example `dapr run -f -k ./<your-preferred-file-name>.yaml`.
 

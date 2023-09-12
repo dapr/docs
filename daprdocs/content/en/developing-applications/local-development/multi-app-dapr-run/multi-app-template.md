@@ -162,9 +162,9 @@ apps:
 
 The following rules apply for all the paths present in the template file:
  - If the path is absolute, it is used as is.
- - All relative paths under comman section should be provided relative to the template file path.
+ - All relative paths under command section should be provided relative to the template file path.
  - `appDirPath` under apps section should be provided relative to the template file path.
- - All relative paths under app section should be provided relative to the appDirPath.
+ - All relative paths under app section should be provided relative to the `appDirPath`.
 
 {{% /codetab %}}
 
@@ -198,9 +198,8 @@ apps:
 
 The following rules apply for all the paths present in the template file:
  - If the path is absolute, it is used as is.
- - All relative paths under comman section should be provided relative to the template file path.
  - `appDirPath` under apps section should be provided relative to the template file path.
- - All relative paths under app section should be provided relative to the appDirPath.
+ - All relative paths under app section should be provided relative to the `appDirPath`.
 
 {{% /codetab %}}
 
@@ -255,7 +254,11 @@ The properties for the Multi-App Run template align with the `dapr run` CLI flag
 
 {{< /table >}}
 
+## Next steps
 
+Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 {{% /codetab %}}
 
 {{% codetab %}}
@@ -301,12 +304,14 @@ The properties for the Multi-App Run template align with the `dapr run -k` CLI f
 
 {{< /table >}}
 
+## Next steps
+
+Watch [this video for an overview on Multi-App Run in Kubernetes](https://youtu.be/nWatANwaAik?si=O8XR-TUaiY0gclgO&t=1024):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/nWatANwaAik?si=O8XR-TUaiY0gclgO&amp;start=1024" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 {{% /codetab %}}
 
 {{< /tabs >}}
 
-## Next steps
 
-Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
