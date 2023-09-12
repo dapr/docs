@@ -14,7 +14,7 @@ This guide walks you through installing an Azure Kubernetes Service (AKS) cluste
 - Install:
    - [Docker](https://docs.docker.com/install/)
    - [kubectl](https://kubernetes.io/docs/tasks/tools/)
-   - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
+   - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 
 ## Deploy an AKS cluster
 
@@ -47,6 +47,13 @@ This guide walks you through installing an Azure Kubernetes Service (AKS) cluste
    ```bash
    az aks get-credentials -n [your_aks_cluster_name] -g [your_resource_group]
    ```
+
+## AKS Edge Essentials
+To create a single-machine K8s/K3s Linux-only cluster using Azure Kubernetes Service (AKS) Edge Essentials, you can follow the quickstart guide available at [AKS Edge Essentials quickstart guide](https://learn.microsoft.com/en-us/azure/aks/hybrid/aks-edge-quickstart). 
+
+{{% alert title="Note" color="primary" %}}
+AKS Edge Essentials does not come with a default storage class, which may cause issues when deploying Dapr. To avoid this, make sure to enable the **local-path-provisioner** storage class on the cluster before deploying Dapr. If you need more information, refer to [Local Path Provisioner on AKS EE](https://learn.microsoft.com/azure/aks/hybrid/aks-edge-howto-use-storage-local-path).
+{{% /alert %}}
 
 ## Related links
 
