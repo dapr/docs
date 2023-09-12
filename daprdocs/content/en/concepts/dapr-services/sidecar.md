@@ -49,25 +49,31 @@ For a detailed list of all available arguments run `daprd --help` or see this [t
    daprd --app-id myapp
    ```
 
-2. Specify the port your application is listening to
+1. Specify the port your application is listening to
 
    ```bash
    daprd --app-id --app-port 5000
    ```
 
-3. If you are using several custom resources and want to specify the location of the resource definition files, use the `--resources-path` argument:
+1. If you are using several custom resources and want to specify the location of the resource definition files, use the `--resources-path` argument:
 
    ```bash
    daprd --app-id myapp --resources-path <PATH-TO-RESOURCES-FILES>
    ```
 
-4. Enable collection of Prometheus metrics while running your app
+1. If you've organized your components and other resources (for example, resiliency policies, subscriptions, or configuration) into separate folders or a shared folder, you can specify multiple resource paths:
+
+   ```bash
+   daprd --app-id myapp --resources-path <PATH-1-TO-RESOURCES-FILES> --resources-path <PATH-2-TO-RESOURCES-FILES>
+   ```
+
+1. Enable collection of Prometheus metrics while running your app
 
    ```bash
    daprd --app-id myapp --enable-metrics
    ```
 
-5. Listen to IPv4 and IPv6 loopback only
+1. Listen to IPv4 and IPv6 loopback only
 
    ```bash
    daprd --app-id myapp --dapr-listen-addresses '127.0.0.1,[::1]'

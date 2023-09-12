@@ -20,12 +20,14 @@ spec:
   version: v1
   metadata:
   - name: url
-    value: wss://******.gremlin.cosmos.azure.com:443/
+    value: "wss://******.gremlin.cosmos.azure.com:443/"
   - name: masterKey
-    value: *****
+    value: "*****"
   - name: username
-    value: *****
-  ```
+    value: "*****"
+  - name: direction
+    value: "output"
+```
 
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -38,6 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `url` | Y | Output | The Cosmos DB url for Gremlin APIs | `"wss://******.gremlin.cosmos.azure.com:443/"` |
 | `masterKey` | Y | Output | The Cosmos DB account master key | `"masterKey"` |
 | `username` | Y | Output | The username of the Cosmos DB database | `"/dbs/<database_name>/colls/<graph_name>"` |
+| `direction` | N | Output | The direction of the binding | `"output"` |
 
 For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin](https://docs.microsoft.com/azure/cosmos-db/graph/create-graph-console).
 
