@@ -122,36 +122,27 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 <!--java-->
 
-Define the workflow activities you'd like your workflow to perform. Activities are wrapped in an `ActivityWrapper` class for the `TaskActivityFactory`. In the following example, the activity wrapper and its constructor are defined:
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in an wrapper class, which is called `OrchestrationWrapper` in the following exmaple. 
 
 ```java
-public class ActivityWrapper<T extends WorkflowActivity> implements TaskActivityFactory {
-  private final Constructor<T> activityConstructor;
+class OrchestratorWrapper<T extends Workflow> implements TaskOrchestrationFactory {
+  private final Constructor<T> workflowConstructor;
   private final String name;
 
-  public ActivityWrapper(Class<T> clazz) {
+  public OrchestratorWrapper(Class<T> clazz) {
     this.name = clazz.getCanonicalName();
     try {
-      this.activityConstructor = clazz.getDeclaredConstructor();
+      this.workflowConstructor = clazz.getDeclaredConstructor();
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(
-          String.format("No constructor found for activity class '%s'.", this.name), e
+          String.format("No constructor found for workflow class '%s'.", this.name), e
       );
     }
   }
+}
 ```
 
-Register a workflow activity object:
-
-```java
-  public <T extends WorkflowActivity> void registerActivity(Class<T> clazz) {
-    this.builder = this.builder.addActivity(
-        new ActivityWrapper<>(clazz)
-    );
-  }
-```
-
-[See a full Java SDK workflow activity example.](https://github.com/dapr/java-sdk/blob/master/sdk-workflows/src/main/java/io/dapr/workflows)
+[See a full Java SDK workflow activity example.](https://github.com/dapr/java-sdk/blob/master/sdk-workflows/src/main/java/io/dapr/workflows/runtime/OrchestratorWrapper.java)
 
 {{% /codetab %}}
 
@@ -232,13 +223,19 @@ The `OrderProcessingWorkflow` class is derived from a base class called `Workflo
 
 <!--java-->
 
-Intro
- 
+The `WorkflowActivity` interface executes the activity logic and returns a value to be serialized and returned to the caller. The following code registers a workflow activity object:
+
 ```java
-todo
+public <T extends Workflow> WorkflowRuntimeBuilder registerWorkflow(Class<T> clazz) {
+  this.builder = this.builder.addOrchestration(
+      new OrchestratorWrapper<>(clazz)
+  );
+
+  return this;
+}
 ```
 
-[See the `todo` workflow in context.](todo)
+[See the Java SDK workflow in context.](https://github.com/dapr/java-sdk/blob/master/sdk-workflows/src/main/java/io/dapr/workflows/runtime/WorkflowRuntimeBuilder.java)
 
 
 {{% /codetab %}}
@@ -415,12 +412,135 @@ app.Run();
 
 <!--java-->
 
-[In the following example](todo), for a basic Java hello world application using the Java SDK, your project code would include:
+[In the following example](https://github.com/dapr/java-sdk/blob/master/sdk-workflows/src/main/java/io/dapr/workflows/client/DaprWorkflowClient.java), for a basic Java application using workflows for Java SDK, your project code would include:
 
-- A Java package called `todo` to receive the Java SDK capabilities.
+- A Java package called `io.dapr.workflows.client` to receive the Java SDK client capabilities.
+- An import of `io.dapr.workflows.Workflow`
+- A wrapper extending `Workflow` and implementing tasks/activities
+- A declared `WorkflowRuntimeBuilder` builder
+- API calls. In the example below, these calls start and terminate the workflow.
  
 ```java
-todo
+package io.dapr.workflows.client;
+
+import com.microsoft.durabletask.DurableTaskClient;
+import com.microsoft.durabletask.DurableTaskGrpcClientBuilder;
+import io.dapr.utils.NetworkUtils;
+import io.dapr.workflows.Workflow;
+import io.grpc.ManagedChannel;
+
+import javax.annotation.Nullable;
+import java.util.concurrent.TimeUnit;
+
+public class DaprWorkflowClient implements AutoCloseable {
+
+  private DurableTaskClient innerClient;
+  private ManagedChannel grpcChannel;
+
+  /**
+   * Public constructor for DaprWorkflowClient. This layer constructs the GRPC Channel.
+   */
+  public DaprWorkflowClient() {
+    this(NetworkUtils.buildGrpcManagedChannel());
+  }
+
+  /**
+   * Private Constructor that passes a created DurableTaskClient and the new GRPC channel.
+   *
+   * @param grpcChannel ManagedChannel for GRPC channel.
+   */
+  private DaprWorkflowClient(ManagedChannel grpcChannel) {
+    this(createDurableTaskClient(grpcChannel), grpcChannel);
+  }
+
+  /**
+   * Private Constructor for DaprWorkflowClient.
+   *
+   * @param innerClient DurableTaskGrpcClient with GRPC Channel set up.
+   * @param grpcChannel ManagedChannel for instance variable setting.
+   *
+   */
+  private DaprWorkflowClient(DurableTaskClient innerClient, ManagedChannel grpcChannel) {
+    this.innerClient = innerClient;
+    this.grpcChannel = grpcChannel;
+  }
+
+  /**
+   * Static method to create the DurableTaskClient.
+   *
+   * @param grpcChannel ManagedChannel for GRPC.
+   * @return a new instance of a DurableTaskClient with a GRPC channel.
+   */
+  private static DurableTaskClient createDurableTaskClient(ManagedChannel grpcChannel) {
+    return new DurableTaskGrpcClientBuilder()
+        .grpcChannel(grpcChannel)
+        .build();
+  }
+
+  /**
+   * Schedules a new workflow using DurableTask client.
+   *
+   * @param <T> any Workflow type
+   * @param clazz Class extending Workflow to start an instance of.
+   * @return A String with the randomly-generated instance ID for new Workflow instance.
+   */
+  public <T extends Workflow> String scheduleNewWorkflow(Class<T> clazz) {
+    return this.innerClient.scheduleNewOrchestrationInstance(clazz.getCanonicalName());
+  }
+
+  /**
+   * Schedules a new workflow using DurableTask client.
+   *
+   * @param <T> any Workflow type
+   * @param clazz Class extending Workflow to start an instance of.
+   * @param input the input to pass to the scheduled orchestration instance. Must be serializable.
+   * @return A String with the randomly-generated instance ID for new Workflow instance.
+   */
+  public <T extends Workflow> String scheduleNewWorkflow(Class<T> clazz, Object input) {
+    return this.innerClient.scheduleNewOrchestrationInstance(clazz.getCanonicalName(), input);
+  }
+
+  /**
+   * Schedules a new workflow using DurableTask client.
+   *
+   * @param <T> any Workflow type
+   * @param clazz Class extending Workflow to start an instance of.
+   * @param input the input to pass to the scheduled orchestration instance. Must be serializable.
+   * @param instanceId the unique ID of the orchestration instance to schedule
+   * @return A String with the <code>instanceId</code> parameter value.
+   */
+  public <T extends Workflow> String scheduleNewWorkflow(Class<T> clazz, Object input, String instanceId) {
+    return this.innerClient.scheduleNewOrchestrationInstance(clazz.getCanonicalName(), input, instanceId);
+  }
+
+  /**
+   * Terminates the workflow associated with the provided instance id.
+   *
+   * @param workflowInstanceId Workflow instance id to terminate.
+   * @param output the optional output to set for the terminated orchestration instance.
+   */
+  public void terminateWorkflow(String workflowInstanceId, @Nullable Object output) {
+    this.innerClient.terminate(workflowInstanceId, output);
+  }
+
+  /**
+   * Closes the inner DurableTask client and shutdown the GRPC channel.
+   *
+   */
+  public void close() throws InterruptedException {
+    try {
+      if (this.innerClient != null) {
+        this.innerClient.close();
+        this.innerClient = null;
+      }
+    } finally {
+      if (this.grpcChannel != null && !this.grpcChannel.isShutdown()) {
+        this.grpcChannel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+        this.grpcChannel = null;
+      }
+    }
+  }
+}
 ```
 
 {{% /codetab %}}
