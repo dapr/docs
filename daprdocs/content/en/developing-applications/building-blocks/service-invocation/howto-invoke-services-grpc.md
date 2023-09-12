@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Invoke services using gRPC"
 linkTitle: "How-To: Invoke with gRPC"
 description: "Call between services using service invocation"
-weight: 3000
+weight: 30
 ---
 
 This article describe how to use Dapr to connect services using gRPC.
