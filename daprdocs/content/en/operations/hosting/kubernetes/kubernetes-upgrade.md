@@ -6,34 +6,37 @@ weight: 30000
 description: "Follow these steps to upgrade Dapr on Kubernetes and ensure a smooth upgrade."
 ---
 
-## Prerequisites
-
-- [Dapr CLI]({{< ref install-dapr-cli.md >}})
-- [Helm 3](https://github.com/helm/helm/releases) (if using Helm)
-
-## Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
-There are two ways to upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
+You can upgrade the Dapr control plane on a Kubernetes cluster using either the Dapr CLI or Helm.
 
 {{% alert title="Note" color="primary" %}}
-Refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-paths" >}}) for guidance on which versions of Dapr can be upgraded to which versions.
+Refer to the [Dapr version policy]({{< ref "support-release-policy.md#upgrade-paths" >}}) for guidance on Dapr's upgrade path.
 {{% /alert %}}
 
-### Dapr CLI
+{{< tabs "Dapr CLI" "Helm" >}}
+ <!-- Dapr CLI -->
+{{% codetab %}}
+## Upgrade using the Dapr CLI
 
-The example below shows how to upgrade to version {{% dapr-latest-version long="true" %}}:
+You can upgrade Dapr using the [Dapr CLI]({{< ref install-dapr-cli.md >}}).
 
-  ```bash
-  dapr upgrade -k --runtime-version={{% dapr-latest-version long="true" %}}
-  ```
+### Prerequisites
 
-You can provide all the available Helm chart configurations using the Dapr CLI.
-See [here](https://github.com/dapr/cli#supplying-helm-values) for more info.
+- [Install the Dapr CLI]({{< ref install-dapr-cli.md >}})
+- An existing [Kubernetes cluster running with Dapr]({{< ref cluster >}})
 
-#### Troubleshooting upgrade using the CLI
+### Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
+
+```bash
+dapr upgrade -k --runtime-version={{% dapr-latest-version long="true" %}}
+```
+
+[You can provide all the available Helm chart configurations using the Dapr CLI.](https://github.com/dapr/cli#supplying-helm-values)
+
+### Troubleshoot upgrading via the CLI
 
 There is a known issue running upgrades on clusters that may have previously had a version prior to 1.0.0-rc.2 installed on a cluster.
 
-Most users should not encounter this issue, but there are a few upgrade path edge cases that may leave an incompatible CustomResourceDefinition installed on your cluster. The error message for this case looks like this:
+While this issue is uncommon, a few upgrade path edge cases may leave an incompatible `CustomResourceDefinition` installed on your cluster. If this is your scenario, you may see an error message like the following:
 
 ```
 ❌  Failed to upgrade Dapr: Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
@@ -41,25 +44,38 @@ The CustomResourceDefinition "configurations.dapr.io" is invalid: spec.preserveU
 
 ```
 
-To resolve this issue please run the follow command to upgrade the CustomResourceDefinition to a compatible version:
+#### Solution
 
-```
-kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/5a15b3e0f093d2d0938b12f144c7047474a290fe/charts/dapr/crds/configuration.yaml
-```
+1. Run the following command to upgrade the `CustomResourceDefinition` to a compatible version:
 
-Then proceed with the `dapr upgrade --runtime-version {{% dapr-latest-version long="true" %}} -k` command as above.
+    ```sh
+    kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/5a15b3e0f093d2d0938b12f144c7047474a290fe/charts/dapr/crds/configuration.yaml
+    ```
 
-### Helm
+1. Proceed with the `dapr upgrade --runtime-version {{% dapr-latest-version long="true" %}} -k` command.
 
-From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive action since existing certificate values will automatically be re-used.
+{{% /codetab %}}
 
-1. Upgrade Dapr from 1.0.0 (or newer) to any [NEW VERSION] > 1.0.0:
+ <!-- Helm -->
+{{% codetab %}}
+## Upgrade using Helm
 
-   *Helm does not handle upgrading resources, so you need to perform that manually. resources are backward-compatible and should only be installed forward.*
+You can upgrade Dapr using a Helm v3 chart.
 
-   >Note: The Dapr version is included in the commands below.
+❗**Important:** The latest Dapr Helm chart no longer supports Helm v2. [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
 
-   For version {{% dapr-latest-version long="true" %}}:
+### Prerequisites
+
+- [Install Helm v3](https://github.com/helm/helm/releases)
+- An existing [Kubernetes cluster running with Dapr]({{< ref cluster >}})
+
+### Upgrade existing cluster to {{% dapr-latest-version long="true" %}}
+
+As of version 1.0.0 onwards, existing certificate values will automatically be reused when upgrading Dapr using Helm.
+
+> **Note** Helm does not handle upgrading resources, so you need to perform that manually. Resources are backward-compatible and should only be installed forward.
+
+1. Upgrade Dapr to version {{% dapr-latest-version long="true" %}}:
 
    ```bash
    kubectl replace -f https://raw.githubusercontent.com/dapr/dapr/v{{% dapr-latest-version long="true" %}}/charts/dapr/crds/components.yaml
@@ -76,9 +92,9 @@ From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive 
    ```bash
    helm upgrade dapr dapr/dapr --version {{% dapr-latest-version long="true" %}} --namespace dapr-system --wait
    ```
-   *If you're using a values file, remember to add the `--values` option when running the upgrade command.*
+   > If you're using a values file, remember to add the `--values` option when running the upgrade command.*
 
-2. Ensure all pods are running:
+1. Ensure all pods are running:
 
    ```bash
    kubectl get pods -n dapr-system -w
@@ -91,20 +107,23 @@ From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive 
    dapr-sidecar-injector-68f868668f-6xnbt   1/1     Running   0          41s
    ```
 
-3. Restart your application deployments to update the Dapr runtime:
+1. Restart your application deployments to update the Dapr runtime:
 
    ```bash
    kubectl rollout restart deploy/<DEPLOYMENT-NAME>
    ```
 
-4. All done!
+{{% /codetab %}}
 
-#### Upgrading existing Dapr to enable high availability mode
-
-Enabling HA mode in an existing Dapr deployment requires additional steps. Please refer to [this paragraph]({{< ref "kubernetes-production.md#enabling-high-availability-in-an-existing-dapr-deployment" >}}) for more details.
+{{< /tabs >}}
 
 
-## Next steps
+## Upgrade existing Dapr deployment to enable high availability mode
+
+[Enable high availability mode in an existing Dapr deployment with a few additional steps.]({{< ref "kubernetes-production.md#enabling-high-availability-in-an-existing-dapr-deployment" >}})
+
+## Related links
 
 - [Dapr on Kubernetes]({{< ref kubernetes-overview.md >}})
+- [More on upgrading Dapr with Helm]({{< ref "kubernetes-production.md#upgrade-dapr-with-helm" >}})
 - [Dapr production guidelines]({{< ref kubernetes-production.md >}})
