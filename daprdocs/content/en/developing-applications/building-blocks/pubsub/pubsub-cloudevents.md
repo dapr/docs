@@ -82,12 +82,12 @@ As another example of a v1.0 CloudEvent, the following shows data as XML content
 
 Dapr automatically generates several CloudEvent properties. You can replace these generated CloudEvent properties by providing the following optional metadata key/value:
 
-- `cloudevent-id`: overrides `id`
-- `cloudevent-source`: overrides `source`
-- `cloudevent-type`: overrides `type`
-- `cloudevent-traceid`: overrides `traceid`
-- `cloudevent-tracestate`: overrides `tracestate`
-- `cloudevent-traceparent`: overrides `traceparent`
+- `cloudevent.id`: overrides `id`
+- `cloudevent.source`: overrides `source`
+- `cloudevent.type`: overrides `type`
+- `cloudevent.traceid`: overrides `traceid`
+- `cloudevent.tracestate`: overrides `tracestate`
+- `cloudevent.traceparent`: overrides `traceparent`
 
 The ability to replace CloudEvents properties using these metadata properties applies to all pub/sub components.
 
@@ -106,7 +106,7 @@ with DaprClient() as client:
     result = client.publish_event(
         pubsub_name='order_pub_sub',
         topic_name='orders',
-        publish_metadata={'cloudevent-id: 'd99b228f-6c73-4e78-8c4d-3f80a043d317', cloudevent-source: 'payment'}
+        publish_metadata={'cloudevent.id: 'd99b228f-6c73-4e78-8c4d-3f80a043d317', cloudevent.source: 'payment'}
     )
 ```
 

@@ -223,7 +223,7 @@ Both of the handlers defined above also need to be mapped to configure the `dapr
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapSubscribeHandler();
-}
+});
 ```
 
 {{% /codetab %}}
@@ -321,6 +321,7 @@ app.listen(port, () => console.log(`consumer app listening on port ${port}!`))
 ```go
 package main
 
+import (
 	"encoding/json"
 	"fmt"
 	"log"
