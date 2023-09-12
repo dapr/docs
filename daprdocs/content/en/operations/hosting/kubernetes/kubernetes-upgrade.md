@@ -55,7 +55,7 @@ From version 1.0.0 onwards, upgrading Dapr using Helm is no longer a disruptive 
 
 1. Upgrade Dapr from 1.0.0 (or newer) to any [NEW VERSION] > 1.0.0:
 
-   *Helm does not handle upgrading CRDs, so you need to perform that manually. CRDs are backward-compatible and should only be installed forward.*
+   *Helm does not handle upgrading resources, so you need to perform that manually. resources are backward-compatible and should only be installed forward.*
 
    >Note: The Dapr version is included in the commands below.
 
