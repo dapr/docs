@@ -26,8 +26,6 @@ spec:
     value: "1234567890abcdef"
   - name: endpoint # Required
     value: "https://myopenai.openai.azure.com"
-  - name: deploymentId # Required
-    value: "my-model"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses `apiKey` as  a plain string. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -39,7 +37,6 @@ The above example uses `apiKey` as  a plain string. It is recommended to use a s
 |--------------------|:--------:|--------|---------|---------|
 | `endpoint` | Y | Output | Azure OpenAI service endpoint URL. | `"https://myopenai.openai.azure.com"` |
 | `apiKey` | Y* | Output | The access key of the Azure OpenAI service. Only required when not using Azure AD authentication. | `"1234567890abcdef"` |
-| `deploymentId` | Y | Output | The name of the model deployment. | `"my-model"` |
 | `azureTenantId` | Y* | Input | The tenant ID of the Azure OpenAI resource. Only required when `apiKey` is not provided.  | `"tenentID"` |
 | `azureClientId` | Y* | Input | The client ID that should be used by the binding to create or update the Azure OpenAI Subscription and to authenticate incoming messages. Only required when `apiKey` is not provided.| `"clientId"` |
 | `azureClientSecret` | Y* | Input | The client secret that should be used by the binding to create or update the Azure OpenAI Subscription and to authenticate incoming messages. Only required when `apiKey` is not provided. | `"clientSecret"` |
@@ -61,8 +58,6 @@ spec:
   metadata:
   - name: endpoint
     value: "https://myopenai.openai.azure.com"
-  - name: deploymentId
-    value: "my-model"
   - name: azureTenantId
     value: "***"
   - name: azureClientId
@@ -76,6 +71,7 @@ This component supports **output binding** with the following operations:
 
 - `completion` : [Completion API](#completion-api)
 - `chat-completion` : [Chat Completion API](#chat-completion-api)
+- `get-embedding` : [Embedding API](#get-embedding-api)
 
 ### Completion API
 
@@ -83,8 +79,9 @@ To call the completion API with a prompt, invoke the Azure OpenAI binding with a
 
 ```json
 {
-  "operation": "create",
+  "operation": "completion",
   "data": {
+    "deploymentId": "my-model",
     "prompt": "A dog is",
     "maxTokens":5
     }
@@ -93,6 +90,7 @@ To call the completion API with a prompt, invoke the Azure OpenAI binding with a
 
 The data parameters are:
 
+- `deploymentId` - string that specifies the model deployment ID to use.
 - `prompt` - string that specifies the prompt to generate completions for.
 - `maxTokens` - (optional) defines the max number of tokens to generate. Defaults to 16 for completion API.
 - `temperature` - (optional) defines the sampling temperature between 0 and 2. Higher values like 0.8 make the output more random, while lower values like 0.2 make it more focused and deterministic. Defaults to 1.0 for completion API.
@@ -107,7 +105,7 @@ Read more about the importance and usage of these parameters in the [Azure OpenA
 {{< tabs Linux >}}
   {{% codetab %}}
   ```bash
-  curl -d '{ "data": {"prompt": "A dog is ", "maxTokens":15}, "operation": "completion" }' \
+  curl -d '{ "data": {"deploymentId: "my-model" , "prompt": "A dog is ", "maxTokens":15}, "operation": "completion" }' \
         http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
   ```
   {{% /codetab %}}
@@ -142,6 +140,7 @@ To perform a chat-completion operation, invoke the Azure OpenAI binding with a `
 {
     "operation": "chat-completion",
     "data": {
+        "deploymentId": "my-model",
         "messages": [
             {
                 "role": "system",
@@ -161,6 +160,7 @@ To perform a chat-completion operation, invoke the Azure OpenAI binding with a `
 
 The data parameters are:
 
+- `deploymentId` - string that specifies the model deployment ID to use.
 - `messages` - array of messages that will be used to generate chat completions.
 Each message is of the form:
   - `role` - string that specifies the role of the message. Can be either `user`, `system` or `assistant`.
@@ -180,6 +180,7 @@ Each message is of the form:
   ```bash
 curl -d '{
     "data": {
+        "deploymentId": "my-model",
         "messages": [
             {
                 "role": "system",
@@ -226,6 +227,53 @@ The response body contains the following JSON:
   }
 ]
 
+```
+
+### Get Embedding API
+
+The `get-embedding` operation returns a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
+To perform a `get-embedding` operation, invoke the Azure OpenAI binding with a `POST` method and the following JSON body:
+
+```json
+{
+    "operation": "get-embedding",
+    "data": {
+        "deploymentId": "my-model",
+        "message": "The capital of France is Paris."
+    }
+}
+```
+
+The data parameters are:
+
+- `deploymentId` - string that specifies the model deployment ID to use.
+- `message` - string that specifies the text to embed.
+
+#### Example
+
+{{< tabs Linux >}}
+
+{{% codetab %}}
+  ```bash
+curl -d '{
+    "data": {
+        "deploymentId": "embeddings",
+        "message": "The capital of France is Paris."
+    },
+    "operation": "get-embedding"
+}' \
+http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
+  ```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+#### Response
+
+The response body contains the following JSON:
+
+```json
+[0.018574921,-0.00023652936,-0.0057790717,.... (1536 floats total for ada)]
 ```
 
 

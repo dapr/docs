@@ -26,6 +26,8 @@ spec:
     value: "[accessKey-secret]"
   - name: Endpoint
     value: "[endpoint]"
+  - name: direction
+    value: "output"
 ```
 
 ## Spec metadata fields
@@ -35,6 +37,7 @@ spec:
 | `AccessKeyID`    | Y | Output |  Access key ID credential. | 
 | `AccessKeySecret` | Y | Output | Access key credential secret |
 | `Endpoint`   | Y | Output | Alicloud SLS endpoint.  | 
+| `direction`   | N | Output | Direction of the binding.  | `"output"`
 
 ## Binding support
 

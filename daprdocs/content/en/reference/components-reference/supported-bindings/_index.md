@@ -9,8 +9,10 @@ aliases:
 no_list: true
 ---
 
-Every binding has its own unique set of properties. Click the name link to see the component YAML for each binding.
+The following table lists input and output bindings supported by the Dapr bindings building block. [Learn how to set up different input and output binding components for Dapr bindings.]({{< ref setup-bindings.md >}})
 
 {{< partial "components/description.html" >}}
+
+Every binding component has its own set of properties. Click the name link to see the component specification for each binding.
 
 {{< partial "components/bindings.html" >}}

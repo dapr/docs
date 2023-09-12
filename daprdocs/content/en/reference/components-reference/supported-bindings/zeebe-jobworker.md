@@ -21,53 +21,56 @@ spec:
   version: v1
   metadata:
   - name: gatewayAddr
-    value: <host>:<port>
+    value: "<host>:<port>"
   - name: gatewayKeepAlive
-    value: 45s
+    value: "45s"
   - name: usePlainTextConnection
-    value: true
+    value: "true"
   - name: caCertificatePath
-    value: /path/to/ca-cert
+    value: "/path/to/ca-cert"
   - name: workerName
-    value: products-worker
+    value: "products-worker"
   - name: workerTimeout
-    value: 5m
+    value: "5m"
   - name: requestTimeout
-    value: 15s
+    value: "15s"
   - name: jobType
-    value: fetch-products
+    value: "fetch-products"
   - name: maxJobsActive
-    value: 32
+    value: "32"
   - name: concurrency
-    value: 4
+    value: "4"
   - name: pollInterval
-    value: 100ms
+    value: "100ms"
   - name: pollThreshold
-    value: 0.3
+    value: "0.3"
   - name: fetchVariables
-    value: productId, productName, productKey
+    value: "productId, productName, productKey"
   - name: autocomplete
-    value: true  
+    value: "true"  
+  - name: direction 
+    value: "input"
 ```
 
 ## Spec metadata fields
 
 | Field                   | Required | Binding support |  Details | Example |
 |-------------------------|:--------:|------------|-----|---------|
-| gatewayAddr             | Y | Input | Zeebe gateway address                                                                                                            | `localhost:26500` |
-| gatewayKeepAlive        | N | Input | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds                                         | `45s` |
-| usePlainTextConnection  | N | Input | Whether to use a plain text connection or not                                                                                    | `true,false` |
-| caCertificatePath       | N | Input | The path to the CA cert                                                                                                          | `/path/to/ca-cert` |
-| workerName              | N | Input | The name of the worker activating the jobs, mostly used for logging purposes                                                     | `products-worker` |
-| workerTimeout           | N | Input | A job returned after this call will not be activated by another call until the timeout has been reached; defaults to 5 minutes   | `5m` |
-| requestTimeout          | N | Input | The request will be completed when at least one job is activated or after the requestTimeout. If the requestTimeout = 0, a default timeout is used. If the requestTimeout < 0, long polling is disabled and the request is completed immediately, even when no job is activated. Defaults to 10 seconds  | `30s` |
-| jobType                 | Y | Input | the job type, as defined in the BPMN process (e.g. `<zeebe:taskDefinition type="fetch-products" />`)                             | `fetch-products` |
-| maxJobsActive           | N | Input | Set the maximum number of jobs which will be activated for this worker at the same time. Defaults to 32                          | `32` |
-| concurrency             | N | Input | The maximum number of concurrent spawned goroutines to complete jobs. Defaults to 4                                              | `4` |
-| pollInterval            | N | Input | Set the maximal interval between polling for new jobs. Defaults to 100 milliseconds                                              | `100ms` |
-| pollThreshold           | N | Input | Set the threshold of buffered activated jobs before polling for new jobs, i.e. threshold * maxJobsActive. Defaults to 0.3        | `0.3` |
-| fetchVariables          | N | Input | A list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the scope of the job will be returned | `productId, productName, productKey` |
-| autocomplete            | N | Input | Indicates if a job should be autocompleted or not. If not set, all jobs will be auto-completed by default. Disable it if the worker should manually complete or fail the job with either a business error or an incident | `true,false` |
+| `gatewayAddr`             | Y | Input | Zeebe gateway address                                                                                                            | `"localhost:26500"` |
+| `gatewayKeepAlive`        | N | Input | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds                                         | `"45s"` |
+| `usePlainTextConnection`  | N | Input | Whether to use a plain text connection or not                                                                                    | `"true"`, `"false"` |
+| `caCertificatePath`       | N | Input | The path to the CA cert                                                                                                          | `"/path/to/ca-cert"` |
+| `workerName`              | N | Input | The name of the worker activating the jobs, mostly used for logging purposes                                                     | `"products-worker"` |
+| `workerTimeout`           | N | Input | A job returned after this call will not be activated by another call until the timeout has been reached; defaults to 5 minutes   | `"5m"` |
+| `requestTimeout`          | N | Input | The request will be completed when at least one job is activated or after the requestTimeout. If the requestTimeout = 0, a default timeout is used. If the requestTimeout < 0, long polling is disabled and the request is completed immediately, even when no job is activated. Defaults to 10 seconds  | `"30s"` |
+| `jobType`                 | Y | Input | the job type, as defined in the BPMN process (e.g. `<zeebe:taskDefinition type="fetch-products" />`)                             | `"fetch-products"` |
+| `maxJobsActive`           | N | Input | Set the maximum number of jobs which will be activated for this worker at the same time. Defaults to 32                          | `"32"` |
+| `concurrency`             | N | Input | The maximum number of concurrent spawned goroutines to complete jobs. Defaults to 4                                              | `"4"` |
+| `pollInterval`            | N | Input | Set the maximal interval between polling for new jobs. Defaults to 100 milliseconds                                              | `"100ms"` |
+| `pollThreshold`           | N | Input | Set the threshold of buffered activated jobs before polling for new jobs, i.e. threshold * maxJobsActive. Defaults to 0.3        | `"0.3"` |
+| `fetchVariables`          | N | Input | A list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the scope of the job will be returned | `"productId"`, `"productName"`, `"productKey"` |
+| `autocomplete`            | N | Input | Indicates if a job should be autocompleted or not. If not set, all jobs will be auto-completed by default. Disable it if the worker should manually complete or fail the job with either a business error or an incident | `"true"`, `"false"` |
+| `direction`            | N | Input | The direction of the binding | `"input"` |
 
 ## Binding support
 
