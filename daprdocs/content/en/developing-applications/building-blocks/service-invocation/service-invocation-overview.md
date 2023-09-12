@@ -2,13 +2,13 @@
 type: docs
 title: "Service invocation overview"
 linkTitle: "Overview"
-weight: 900
+weight: 10
 description: "Overview of the service invocation API building block"
 ---
 
 Using service invocation, your application can reliably and securely communicate with other applications using the standard [gRPC](https://grpc.io) or [HTTP](https://www.w3.org/Protocols/) protocols.
 
-In many microservice-based applications multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle problems like:
+In many microservice-based applications, multiple services need the ability to communicate with one another. This inter-service communication requires that application developers handle problems like:
 
 - **Service discovery.** How do I discover my different services?
 - **Standardizing API calls between services.** How do I invoke methods between services?
@@ -24,6 +24,10 @@ Dapr uses a sidecar architecture. To invoke an application using Dapr:
 - You use the `invoke` API on the Dapr instance. 
 - Each application communicates with its own instance of Dapr. 
 - The Dapr instances discover and communicate with each other.
+
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=mtLMrajE5wVXJYz8&t=3598) demonstrates how Dapr service invocation works. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=Flsd8PRlF8nYu693&amp;start=3598" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 The diagram below is an overview of how Dapr's service invocation works between two Dapr-ized applications.
 
@@ -61,7 +65,6 @@ In the event of call failures and transient errors, service invocation provides 
 
 By default, all calls between applications are traced and metrics are gathered to provide insights and diagnostics for applications. This is especially important in production scenarios, providing call graphs and metrics on the calls between your services. For more information read about [observability]({{< ref observability-concept.md >}}).
 
-
 ### Access control
 
 With access policies, applications can control:
@@ -83,7 +86,7 @@ Dapr provides round robin load balancing of service invocation requests with the
 
 The diagram below shows an example of how this works. If you have 1 instance of an application with app ID `FrontEnd` and 3 instances of application with app ID `Cart` and you call from `FrontEnd` app to `Cart` app, Dapr round robins' between the 3 instances. These instance can be on the same machine or on different machines. .
 
-<img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation">
+<img src="/images/service-invocation-mdns-round-robin.png" width=600 alt="Diagram showing the steps of service invocation" style="padding-bottom:25px;">
 
 **Note**: App ID is unique per _application_, not application instance. Regardless how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
@@ -97,7 +100,7 @@ Following the above call sequence, suppose you have the applications as describe
 
 The diagram below shows sequence 1-7 again on a local machine showing the API calls:
 
-<img src="/images/service-invocation-overview-example.png" width=800 />
+<img src="/images/service-invocation-overview-example.png" width=800 style="padding-bottom:25px;">
 
 1. The Node.js app has a Dapr app ID of `nodeapp`. The python app invokes the Node.js app's `neworder` method by POSTing `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`, which first goes to the python app's local Dapr sidecar.
 2. Dapr discovers the Node.js app's location using name resolution component (in this case mDNS while self-hosted) which runs on your local machine.
