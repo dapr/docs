@@ -26,6 +26,16 @@ spec:
   type: bindings.kitex
   version: v1
   metadata: 
+  - name: hostPorts
+    value: "127.0.0.1:8888"
+  - name: destService
+    value: "echo"
+  - name: methodName
+    value: "echo"
+  - name: version
+    value: "0.5.0"
+  - name: direction
+    value: "output"
 ```
 
 ## Spec metadata fields
@@ -38,10 +48,11 @@ The `InvokeRequest.Metadata` for `bindings.kitex` requires the client to fill in
 
 | Field       | Required | Binding support | Details                                                                                                 | Example            |
 |-------------|:--------:|--------|---------------------------------------------------------------------------------------------------------|--------------------|
-| hostPorts   |    Y     | Output | IP address and port information of the Kitex server (Thrift)                                        | `"127.0.0.1:8888"` |
-| destService |    Y     | Output | Service name of the Kitex server (Thrift)            | `"echo"`           |
-| methodName  |    Y     | Output | Method name under a specific service name of the Kitex server (Thrift) | `"echo"`           |
-| version     |    Y     | Output | Kitex version                                                                                           | `"0.5.0"`          |
+| `hostPorts`   |    Y     | Output | IP address and port information of the Kitex server (Thrift)                                        | `"127.0.0.1:8888"` |
+| `destService` |    Y     | Output | Service name of the Kitex server (Thrift)            | `"echo"`           |
+| `methodName`  |    Y     | Output | Method name under a specific service name of the Kitex server (Thrift) | `"echo"`           |
+| `version`     |    Y     | Output | Kitex version                                                                                           | `"0.5.0"`          |
+| `direction`     |    N     | Output | Direction of the binding                                                                                           | `"output"`          |
 
 
 ## Binding support
