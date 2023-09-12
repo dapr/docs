@@ -73,7 +73,7 @@ You can upgrade Dapr using a Helm v3 chart.
 
 As of version 1.0.0 onwards, existing certificate values will automatically be reused when upgrading Dapr using Helm.
 
-> **Note** Helm does not handle upgrading CRDs, so you need to perform that manually. CRDs are backward-compatible and should only be installed forward.
+> **Note** Helm does not handle upgrading resources, so you need to perform that manually. Resources are backward-compatible and should only be installed forward.
 
 1. Upgrade Dapr to version {{% dapr-latest-version long="true" %}}:
 
