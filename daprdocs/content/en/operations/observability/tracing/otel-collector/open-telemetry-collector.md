@@ -6,7 +6,7 @@ weight: 900
 description: "How to use Dapr to push trace events through the OpenTelemetry Collector."
 ---
 
-Dapr directly writes traces using the OpenTelemetry (OTEL) protocol as the **recommended** method. Run the Open Telemetry Collector on your hosting platform to send OTEL events to the observability tool that supports OTEL protocol. 
+Dapr directly writes traces using the OpenTelemetry (OTEL) protocol as the **recommended** method. For observability tools that support OTEL protocol, it is still recommended to use the OpenTelemetry Collector, since it allows your app to offload data quickly and includes other features, like retries, batching, and encryption. For more information, read the Open Telemetry [documentation](https://opentelemetry.io/docs/collector/#when-to-use-a-collector). 
 
 Dapr can also write traces using the Zipkin protocol. Previous to supporting the OTEL protocol, you use the Zipkin protocol with the [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) to send traces to observability tools such as AWS X-Ray, Google Cloud Operations Suite, and Azure Monitor. Both protocol approaches are valid, however OTEL is the recommended choice.
 
