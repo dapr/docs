@@ -62,11 +62,3 @@
   features:
     input: true
     output: true
-- component: Azure OpenAI
-  link: openai
-  state: Alpha
-  version: v1
-  since: "1.12"
-  features:
-    input: false
-    output: true

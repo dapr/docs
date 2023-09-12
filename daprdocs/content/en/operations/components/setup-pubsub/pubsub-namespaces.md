@@ -30,6 +30,10 @@ The table below shows which resources are deployed to which namespaces:
 | Python subscriber       | X           |             |
 | React UI publisher      |             | X           |
 
+{{% alert title="Note" color="primary" %}}
+All pub/sub components support limiting pub/sub topics to specific applications using [namespace or component scopes]({{< ref pubsub-scopes.md >}}). 
+{{% /alert %}}
+
 ## Pre-requisites
 
 * [Dapr installed on Kubernetes]({{< ref "kubernetes-deploy.md" >}}) in any namespace since Dapr works at the cluster level.

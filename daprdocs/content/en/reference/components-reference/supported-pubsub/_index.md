@@ -9,6 +9,8 @@ aliases:
 no_list: true
 ---
 
+The following table lists publish and subscribe brokers supported by the Dapr pub/sub building block. [Learn how to set up different brokers for Dapr publish and subscribe.]({{< ref setup-pubsub.md >}})
+
 {{< partial "components/description.html" >}}
 
 {{< partial "components/pubsub.html" >}}
