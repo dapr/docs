@@ -3,12 +3,12 @@ type: docs
 title: "How-To: Limit the secrets that can be read from secret stores"
 linkTitle: "Limit secret store access"
 weight: 3000
-description: "To limit the secrets to which the Dapr application has access, users can define secret scopes by augmenting existing configuration CRD with restrictive permissions."
+description: "To limit the secrets to which the Dapr application has access, users can define secret scopes by augmenting existing configuration resource with restrictive permissions."
 ---
 
 In addition to scoping which applications can access a given component, for example a secret store component (see [Scoping components]({{< ref "component-scopes.md">}})), a named secret store component itself can be scoped to one or more secrets for an application. By defining `allowedSecrets` and/or `deniedSecrets` list, applications can be restricted to access only specific secrets.
 
-Follow [these instructions]({{< ref "configuration-overview.md" >}}) to define a configuration CRD.
+Follow [these instructions]({{< ref "configuration-overview.md" >}}) to define a configuration resource.
 
 ## Configure secrets access
 
