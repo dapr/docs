@@ -19,12 +19,12 @@ Let's say you want to run several applications locally to test them together, si
 
 With Multi-App Run, you can start multiple applications in either self-hosted or Kubernetes mode using a template file and running a single command. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
 
-## Multi-App Run template file
-
 {{< tabs Self-hosted Kubernetes>}}
 
 {{% codetab %}}
 <!--selfhosted-->
+
+## Multi-App Run template file
 
 When you execute `dapr run -f .`, it generates the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
 
@@ -68,12 +68,37 @@ If you decide to add a `.dapr` directory in each application directory, with a `
 
 You can also name each app directory's `.dapr` directory something other than `.dapr`, such as, `webapp`, or `backend`. This helps if you'd like to be explicit about resource or application directory paths.
 
+## Logs
+
+The run template provides two log destination fields for each application and its associated daprd process:
+
+1. `appLogDestination` : This field configures the log destination for the application. The possible values are `console`, `file` and `fileAndConsole`. The default value is `fileAndConsole` where application logs are written to both console and to a file by default.
+
+1. `daprdLogDestination` : This field configures the log destination for the `daprd` process. The possible values are `console`, `file` and `fileAndConsole`. The default value is `file` where the `daprd` logs are written to a file by default.
+
+### Log file format
+
+Logs for application and `daprd` are captured in separate files. These log files are created automatically under `.dapr/logs` directory under each application directory (`appDirPath` in the template). These log file names follow the pattern seen below:
+
+- `<appID>_app_<timestamp>.log` (file name format for `app` log)
+- `<appID>_daprd_<timestamp>.log` (file name format for `daprd` log)
+
+Even if you've decided to rename your resources folder to something other than `.dapr`, the log files are written only to the `.dapr/logs` folder (created in the application directory).
+
+## Watch the demo
+
+Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 {{% /codetab %}}
 
 {{% codetab %}}
 <!--kubernetes-->
 
-When you execute `dapr run -f .`, Dapr generates the multi-app template file (named `dapr.yaml`) in the `.dapr/deploy` directory within each application. Each time you run `dapr run -f -k .`, the generated Kubernetes Deployment YAML file is overwritten. 
+## Multi-App Run template file
+
+When you execute `dapr run -f -k .`, Dapr generates the multi-app template file (named `dapr.yaml`) in the `.dapr/deploy` directory within each application. Each time you run `dapr run -f -k .`, the generated Kubernetes Deployment YAML file is overwritten. 
 
 You can name template file with preferred name other than the default. For example `dapr run -f -k ./<your-preferred-file-name>.yaml`.
 
@@ -101,10 +126,6 @@ apps:
 
 For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
 
-{{% /codetab %}}
-
-{{< /tabs >}}
-
 ## Logs
 
 The run template provides two log destination fields for each application and its associated daprd process:
@@ -123,20 +144,6 @@ Logs for application and `daprd` are captured in separate files. These log files
 Even if you've decided to rename your resources folder to something other than `.dapr`, the log files are written only to the `.dapr/logs` folder (created in the application directory).
 
 ## Watch the demo
-
-{{< tabs Self-hosted Kubernetes>}}
-
-{{% codetab %}}
-<!--selfhosted-->
-
-Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo?t=2456):
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s1p9MNl4VGo?start=2456" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-{{% /codetab %}}
-
-{{% codetab %}}
-<!--kubernetes-->
 
 Watch [this video for an overview on Multi-App Run in Kubernetes](https://youtu.be/nWatANwaAik?si=O8XR-TUaiY0gclgO&t=1024):
 
