@@ -77,7 +77,7 @@ Persists the change to the state for an actor as a multi-item transaction.
 
 #### TTL
 
-With the [`ActorStateTTL` feature enabled]]({{< ref
+With the [`ActorStateTTL` feature enabled]({{< ref
 "support-preview-features.md" >}}), actor clients can set the `ttlInSeconds`
 field in the transaction metadata to have the state expire after that many
 seconds. If the `ttlInSeconds` field is not set, the state will not expire.

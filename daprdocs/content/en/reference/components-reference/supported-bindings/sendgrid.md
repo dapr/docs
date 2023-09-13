@@ -35,6 +35,10 @@ spec:
     value: "jill@dapr.io" # optional
   - name: emailBcc
     value: "bob@dapr.io" # optional
+  - name: dynamicTemplateId
+    value: "d-123456789" # optional
+  - name: dynamicTemplateData
+    value: '{"customer":{"name":"John Smith"}}' # optional
   - name: apiKey
     value: "YOUR_API_KEY" # required, this is your SendGrid key
   - name: direction 
@@ -77,6 +81,21 @@ You can specify any of the optional metadata properties on the output binding re
     "subject": "An email from Dapr SendGrid binding"
   },
   "data": "<h1>Testing Dapr Bindings</h1>This is a test.<br>Bye!"
+}
+```
+
+## Dynamic templates
+If a dynamic template is used, a `dynamicTemplateId` needs to be provided and then the `dynamicTemplateData` is used:
+
+```json
+{
+  "operation": "create",
+  "metadata": {
+    "emailTo": "changeme@example.net",
+    "subject": "An template email from Dapr SendGrid binding",
+    "dynamicTemplateId": "d-123456789",
+    "dynamicTemplateData": "{\"customer\":{\"name\":\"John Smith\"}}"
+  }
 }
 ```
 
