@@ -27,7 +27,7 @@ spec:
     value: "amqp://[username][:password]@host.domain[:port]"
   - name: durable
     value: "true"
-  - name: deleteWhenUnused
+  - name: deletedWhenUnused
     value: "false"
   - name: ttlInSeconds
     value: "60"
@@ -66,7 +66,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `queueName` | Y | Input/Output |  The RabbitMQ queue name | `"myqueue"` |
 | `host` | Y | Input/Output | The RabbitMQ host address | `"amqp://[username][:password]@host.domain[:port]"` or with TLS: `"amqps://[username][:password]@host.domain[:port]"` |
 | `durable` | N | Output | Tells RabbitMQ to persist message in storage. Defaults to `"false"` | `"true"`, `"false"` |
-| `deleteWhenUnused` | N | Input/Output | Enables or disables auto-delete. Defaults to `"false"` | `"true"`, `"false"` |
+| `deletedWhenUnused` | N | Input/Output | Enables or disables auto-delete. Defaults to `"false"` | `"true"`, `"false"` |
 | `ttlInSeconds` | N | Output | Set the [default message time to live at RabbitMQ queue level](https://www.rabbitmq.com/ttl.html). If this parameter is omitted, messages won't expire, continuing to exist on the queue until processed. See [also](#specifying-a-ttl-per-message)  | `60` |
 | `prefetchCount` | N | Input | Set the [Channel Prefetch Setting (QoS)](https://www.rabbitmq.com/confirms.html#channel-qos-prefetch). If this parameter is omiited, QoS would set value to 0 as no limit | `0` |
 | `exclusive` | N | Input/Output | Determines whether the topic will be an exclusive topic or not. Defaults to `"false"` | `"true"`, `"false"` |
