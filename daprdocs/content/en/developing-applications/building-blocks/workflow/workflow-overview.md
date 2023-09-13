@@ -7,7 +7,7 @@ description: "Overview of Dapr Workflow"
 ---
 
 {{% alert title="Note" color="primary" %}}
-Dapr Workflow is currently in alpha.
+Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "#limitations" >}}).
 {{% /alert %}}
 
 Dapr workflow makes it easy for developers to write business logic and integrations in a reliable way. Since Dapr workflows are stateful, they support long-running and fault-tolerant applications, ideal for orchestrating microservices. Dapr workflow works seamlessly with other Dapr building blocks, such as service invocation, pub/sub, state management, and bindings.
@@ -104,6 +104,12 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 ### Start using workflows directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using  workflows, starting with [how to author a workflow]({{< ref howto-author-workflow.md >}}).
+
+## Limitations
+
+With Dapr Workflow in beta stage comes the following limitation(s):
+
+- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, you're not able to use NoSQL databases. Only SQL databases are supported. NoSQL database support is planned for future minor releases.
 
 ## Watch the demo
 

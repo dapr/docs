@@ -6,6 +6,10 @@ weight: 4000
 description: "The Dapr Workflow engine architecture"
 ---
 
+{{% alert title="Note" color="primary" %}}
+Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}).
+{{% /alert %}}
+
 [Dapr Workflows]({{< ref "workflow-overview.md" >}}) allow developers to define workflows using ordinary code in a variety of programming languages. The workflow engine runs inside of the Dapr sidecar and orchestrates workflow code deployed as part of your application. This article describes:
 
 - The architecture of the Dapr Workflow engine

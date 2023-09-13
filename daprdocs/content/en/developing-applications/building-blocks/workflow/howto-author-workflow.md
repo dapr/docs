@@ -6,6 +6,10 @@ weight: 5000
 description: "Learn how to develop and author workflows"
 ---
 
+{{% alert title="Note" color="primary" %}}
+Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}).
+{{% /alert %}}
+
 This article provides a high-level overview of how to author workflows that are executed by the Dapr Workflow engine.
 
 {{% alert title="Note" color="primary" %}}
