@@ -22,21 +22,24 @@ spec:
   version: v1
   metadata:
     - name: address
-      value: localhost:50000
+      value: "localhost:50000"
     - name: channel
-      value: queue1
+      value: "queue1"
+    - name: direction
+      value: "input, output"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Details                                                                                                                      | Example                                |
 |--------------------|:--------:|------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-| address            |    Y     | Address of the KubeMQ server                                                                                                 | `"localhost:50000"`                    |
-| channel            |    Y     | The Queue channel name                                                                                                       | `queue1`                               |
-| authToken          |    N     | Auth JWT token for connection. Check out [KubeMQ Authentication](https://docs.kubemq.io/learn/access-control/authentication) | `ew...`                                |
-| autoAcknowledged   |    N     | Sets if received queue message is automatically acknowledged                                                                 | `true` or `false` (default is `false`) |
-| pollMaxItems       |    N     | Sets the number of messages to poll on every connection                                                                      | `1`                                    |
-| pollTimeoutSeconds |    N     | Sets the time in seconds for each poll interval                                                                              | `3600`                                 |
+| `address`            |    Y     | Address of the KubeMQ server                                                                                                 | `"localhost:50000"`                    |
+| `channel`            |    Y     | The Queue channel name                                                                                                       | `"queue1"`                               |
+| `authToken`          |    N     | Auth JWT token for connection. Check out [KubeMQ Authentication](https://docs.kubemq.io/learn/access-control/authentication) | `"ew..."`                                |
+| `autoAcknowledged`   |    N     | Sets if received queue message is automatically acknowledged                                                                 | `"true"` or `"false"` (default is `"false"`) |
+| `pollMaxItems`       |    N     | Sets the number of messages to poll on every connection                                                                      | `"1"`                                    |
+| `pollTimeoutSeconds` |    N     | Sets the time in seconds for each poll interval                                                                              | `"3600"`                                 |
+| `direction` |    N     | The direction of the binding                                                                              | `"input"`, `"output"`, `"input, output"`                                 |
 
 ## Binding support
 
