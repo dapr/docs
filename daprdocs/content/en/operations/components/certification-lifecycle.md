@@ -48,6 +48,9 @@ All components start at the Alpha stage.
 - The component contains a record of the conformance test result reviewed and approved by Dapr maintainers with specific components-contrib version
 - Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases
 
+A component may skip the Beta stage and conformance test requirement per the discretion of the Maintainer if:
+- The component is a binding and the certification tests are comprehensive
+
 ### Stable
 
 - The component must have component [certification tests](#certification-tests) validating functionality and resiliency
