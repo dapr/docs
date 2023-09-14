@@ -104,6 +104,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | heartBeat  | N | Defines the heartbeat interval with the server, detecting the aliveness of the peer TCP connection with the RabbitMQ server. Defaults to `10s` . | `"10s"`
 
 
+
 ## Communication using TLS
 
 To configure communication using TLS, ensure that the RabbitMQ nodes have TLS enabled and provide the `caCert`, `clientCert`, `clientKey` metadata in the component configuration. For example:
