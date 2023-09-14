@@ -22,3 +22,6 @@ description: "List of current alpha and beta APIs"
 | ------------------ | ---- | ---- | ----------- | ------------- | ------------------ |
 | Workflow    |  [Workflow proto](https://github.com/dapr/dapr/blob/5aba3c9aa4ea9b3f388df125f9c66495b43c5c9e/dapr/proto/runtime/v1/dapr.proto#L151)    | `/v1.0-beta1/workflow` | The workflow API enables you to define long running, persistent processes or data flows.	 | [Workflow API]({{< ref "workflow-overview.md" >}}) | v1.10 |
 
+## Related links
+
+[Learn more about the Alpha, Beta, and Stable lifecycle stages.]({{< ref "certification-lifecycle.md#certification-levels" >}})
