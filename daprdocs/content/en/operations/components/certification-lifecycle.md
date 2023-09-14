@@ -53,7 +53,6 @@ A component may skip the Beta stage and conformance test requirement per the dis
 - The component is a binding
 - The certification tests are comprehensive
 {{% /alert %}}
-- The component is a binding and the certification tests are comprehensive
 
 ### Stable
 
