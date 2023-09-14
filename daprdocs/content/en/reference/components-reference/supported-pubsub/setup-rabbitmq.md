@@ -60,6 +60,8 @@ spec:
     value: fanout
   - name: saslExternal
     value: false
+  - name: ttlInSeconds
+    value: 60
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -90,9 +92,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxLenBytes      | N        | Maximum length in bytes of a queue and its dead letter queue (if dead letter enabled). If both `maxLen` and `maxLenBytes` are set then both will apply; whichever limit is hit first will be enforced.  Defaults to no limit. | `"1048576"` |
 | exchangeKind      | N        | Exchange kind of the rabbitmq exchange.  Defaults to `"fanout"`. | `"fanout"`,`"topic"` |
 | saslExternal      | N        | With TLS, should the username be taken from an additional field (for example, CN). See [RabbitMQ Authentication Mechanisms](https://www.rabbitmq.com/access-control.html#mechanisms).  Defaults to `"false"`. | `"true"`, `"false"` |
-| caCert | Required for using TLS | Input/Output | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
-| clientCert  | Required for using TLS | Input/Output | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
-| clientKey | Required for using TLS | Input/Output | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| ttlInSeconds      | N        | Set message TTL at the component level, which can be overwritten by message level TTL per request. | `"60"` |
+| caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
+| clientKey | Required for using TLS  | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
 
 
 ## Communication using TLS
@@ -426,6 +429,14 @@ spec:
   metadata:
     queueType: quorum
 ```
+
+## Time-to-live
+
+You can set a time-to-live (TTL) value at either the message or component level. Set default component-level TTL using the component spec `ttlInSeconds` field in your component. 
+
+{{% alert title="Note" color="primary" %}}
+If you set both component-level and message-level TTL, the default component-level TTL is ignored in favor of the message-level TTL.
+{{% /alert %}}
 
 ## Related links
 
