@@ -9,59 +9,74 @@ aliases:
 weight: 10000
 ---
 
-Certain Azure components for Dapr offer support for the *common Azure authentication layer*, which enables applications to access data stored in Azure resources by authenticating with Azure Active Directory (Azure AD). Thanks to this:
-- Administrators can leverage all the benefits of fine-tuned permissions with Role-Based Access Control (RBAC).
-- Applications running on Azure services such as Azure Container Apps, Azure Kubernetes Service, Azure VMs, or any other Azure platform services can leverage [Managed Service Identities (MSI)](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview).
+Most Azure components for Dapr support authenticating with Azure AD (Azure Active Directory). Thanks to this:
 
+- Administrators can leverage all the benefits of fine-tuned permissions with Azure Role-Based Access Control (RBAC).
+- Applications running on Azure services such as Azure Container Apps, Azure Kubernetes Service, Azure VMs, or any other Azure platform services can leverage [Managed Identities (MI)](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) and [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview). These offer the ability to authenticate your applications without having to manage sensitive credentials.
 
 ## About authentication with Azure AD
 
 Azure AD is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services.
 
-Azure AD is built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Key Vault, Cosmos DB, etc. 
+Azure AD is built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Service Bus, Azure Key Vault, Azure Cosmos DB, Azure Database for Postgres, Azure SQL, etc. 
 
 > In Azure terminology, an application is also called a "Service Principal".
 
-Some Azure components offer alternative authentication methods, such as systems based on "master keys" or "shared keys". Although both master keys and shared keys are valid and supported by Dapr, you should authenticate your Dapr components using Azure AD. Using Azure AD offers benefits like the following.
+Some Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens". Although these are valid and supported by Dapr, you should authenticate your Dapr components using Azure AD whenever possible to take advantage of many benefits, including:
 
-### Managed Service Identities
+- [Managed Identities and Workload Identity](#managed-identities-and-workload-identity)
+- [Role-Based Access Control](#role-based-access-control)
+- [Auditing](#auditing)
+- [(Optional) Authentication using certificates](#optional-authentication-using-certificates)
 
-With Managed Service Identities (MSI), your application can authenticate with Azure AD and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service, an identity for your application can be assigned at the infrastructure level.  
+### Managed Identities and Workload Identity
 
-Once using MSI, your code doesn't have to deal with credentials, which:
+With Managed Identities (MI), your application can authenticate with Azure AD and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
+
+Once using MI, your code doesn't have to deal with credentials, which:
+
 - Removes the challenge of managing credentials safely
 - Allows greater separation of concerns between development and operations teams
 - Reduces the number of people with access to credentials
 - Simplifies operational aspects–especially when multiple environments are used
 
-### Role-based Access Control
+Applications running on Azure Kubernetes Service can similarly leverage [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) to automatically provide an identity to individual pods.
 
-When using Role-Based Access Control (RBAC) with supported services, permissions given to an application can be fine-tuned. For example, you can restrict access to a subset of data or make it read-only.
+### Role-Based Access Control
+
+When using Azure Role-Based Access Control (RBAC) with supported services, permissions given to an application can be fine-tuned. For example, you can restrict access to a subset of data or make the access read-only.
 
 ### Auditing
 
-Using Azure AD provides an improved auditing experience for access.
+Using Azure AD provides an improved auditing experience for access. Tenant administrators can consult audit logs to track authentication requests.
 
-### (Optional) Authenticate using certificates
+### (Optional) Authentication using certificates
 
-While Azure AD allows you to use MSI or RBAC, you still have the option to authenticate using certificates.
+While Azure AD allows you to use MI, you still have the option to authenticate using certificates.
 
 ## Support for other Azure environments
 
-By default, Dapr components are configured to interact with Azure resources in the "public cloud". If your application is deployed to another cloud, such as Azure China, Azure Government, or Azure Germany, you can enable that for supported components by setting the `azureEnvironment` metadata property to one of the supported values:
+By default, Dapr components are configured to interact with Azure resources in the "public cloud". If your application is deployed to another cloud, such as Azure China or Azure Government ("sovereign clouds"), you can enable that for supported components by setting the `azureEnvironment` metadata property to one of the supported values:
 
-- Azure public cloud (default): `"AZUREPUBLICCLOUD"`
-- Azure China: `"AZURECHINACLOUD"`
-- Azure Government: `"AZUREUSGOVERNMENTCLOUD"`
-- Azure Germany: `"AZUREGERMANCLOUD"`
+- Azure public cloud (default): `"AzurePublicCloud"`
+- Azure China: `"AzureChinaCloud"`
+- Azure Government: `"AzureUSGovernmentCloud"`
+
+> Support for sovereign clouds is experimental.
 
 ## Credentials metadata fields
 
-To authenticate with Azure AD, you will need to add the following credentials as values in the metadata for your [Dapr component]({{< ref "#example-usage-in-a-dapr-component" >}}). 
+To authenticate with Azure AD, you will need to add the following credentials as values in the metadata for your [Dapr component](#example-usage-in-a-dapr-component).
 
 ### Metadata options
 
-Depending on how you've passed credentials to your Dapr services, you have multiple metadata options. 
+Depending on how you've passed credentials to your Dapr services, you have multiple metadata options.
+
+- [Using client credentials](#authenticating-using-client-credentials)
+- [Using a certificate](#authenticating-using-a-certificate)
+- [Using Managed Identities (MI)](#authenticating-with-managed-identities-mi)
+- [Using Workload Identity on AKS](#authenticating-with-workload-identity-on-aks)
+- [Using Azure CLI credentials (development-only)](#authenticating-using-azure-cli-credentials-development-only)
 
 #### Authenticating using client credentials
 
@@ -73,7 +88,7 @@ Depending on how you've passed credentials to your Dapr services, you have multi
 
 When running on Kubernetes, you can also use references to Kubernetes secrets for any or all of the values above.
 
-#### Authenticating using a PFX certificate
+#### Authenticating using a certificate
 
 | Field | Required | Details | Example |
 |--------|--------|--------|--------|
@@ -85,27 +100,30 @@ When running on Kubernetes, you can also use references to Kubernetes secrets fo
 
 When running on Kubernetes, you can also use references to Kubernetes secrets for any or all of the values above.
 
-#### Authenticating with Managed Service Identities (MSI)
+#### Authenticating with Managed Identities (MI)
 
 | Field           | Required | Details                    | Example                                  |
 |-----------------|----------|----------------------------|------------------------------------------|
 | `azureClientId` | N        | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
 
-Using MSI, you're not required to specify any value, although you may pass `azureClientId` if needed.
+Using Managed Identities, the `azureClientId` field is generally recommended. The field is optional when using a system-assigned identity, but may be required when using user-assigned identities.
 
-### Aliases
+#### Authenticating with Workload Identity on AKS
 
-For backwards-compatibility reasons, the following values in the metadata are supported as aliases. Their use is discouraged.
+When running on Azure Kubernetes Service (AKS), you can authenticate components using Workload Identity. Refer to the Azure AKS documentation on [enabling Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) for your Kubernetes resources.
 
-| Metadata key               | Aliases (supported but deprecated) |
-|----------------------------|------------------------------------|
-| `azureTenantId`            | `spnTenantId`, `tenantId`          |
-| `azureClientId`            | `spnClientId`, `clientId`          |
-| `azureClientSecret`        | `spnClientSecret`, `clientSecret`  |
-| `azureCertificate`         | `spnCertificate`                   |
-| `azureCertificateFile`     | `spnCertificateFile`               |
-| `azureCertificatePassword` | `spnCertificatePassword`           |
+#### Authenticating using Azure CLI credentials (development-only)
 
+> **Important:** This authentication method is recommended for **development only**.
+
+This authentication method can be useful while developing on a local machine. You will need:
+
+- The [Azure CLI installed](https://learn.microsoft.com/cli/azure/install-azure-cli)
+- Have successfully authenticated using the `az login` command
+
+When Dapr is running on a host where there are credentials available for the Azure CLI, components can use those to authenticate automatically if no other authentication method is configuration.
+
+Using this authentication method does not require setting any metadata option.
 
 ### Example usage in a Dapr component
 

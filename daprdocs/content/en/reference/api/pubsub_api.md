@@ -179,7 +179,7 @@ Example:
     "topic": "newOrder",
     "route": "/orders",
     "metadata": {
-      "rawPayload": "true",
+      "rawPayload": "true"
     }
   }
 ]

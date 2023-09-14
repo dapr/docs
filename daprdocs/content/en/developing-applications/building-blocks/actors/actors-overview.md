@@ -20,7 +20,11 @@ Dapr includes a runtime that specifically implements the [Virtual Actor pattern]
 
 Every actor is defined as an instance of an actor type, identical to the way an object is an instance of a class. For example, there may be an actor type that implements the functionality of a calculator and there could be many actors of that type that are distributed on various nodes across a cluster. Each such actor is uniquely identified by an actor ID.
 
-<img src="/images/actor_background_game_example.png" width=400>
+<img src="/images/actor_background_game_example.png" width=400 style="padding-bottom:25px;">
+
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&t=10797) demonstrates how actors in Dapr work. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=dWNgtsp61f3Sjq0n&amp;start=10797" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Actor types and IDs
 
@@ -108,6 +112,10 @@ Actors can schedule periodic work on themselves by registering either timers or 
 The functionality of timers and reminders is very similar. The main difference is that Dapr actor runtime is not retaining any information about timers after deactivation, while persisting the information about reminders using Dapr actor state provider.
 
 This distinction allows users to trade off between light-weight but stateless timers vs. more resource-demanding but stateful reminders.
+
+[The following overview video and demo](https://www.youtube.com/live/0y7ne6teHT4?si=2_xX6mkU3UCy2Plr&t=6607) demonstrates how actor timers and reminders work. 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0y7ne6teHT4?si=73VqYUUvNfFw3x5_&amp;start=12184" title="YouTube video player" style="padding-bottom:25px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 - [Learn more about actor timers.]({{< ref "actors-features-concepts.md#timers" >}})
 - [Learn more about actor reminders.]({{< ref "actors-features-concepts.md#reminders" >}})

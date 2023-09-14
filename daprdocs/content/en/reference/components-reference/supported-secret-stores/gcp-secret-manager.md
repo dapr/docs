@@ -50,7 +50,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 
 | Field              | Required | Details                        | Example             |
 |--------------------|:--------:|--------------------------------|---------------------|
-| type               | Y        | The type of the account.   | `"serviceAccount"` |
+| type               | Y        | The type of the account.   | `"service_account"` |
 | project_id         | Y        | The project ID associated with this component. | `"project_id"` |
 | private_key_id     | N        | The private key ID  | `"privatekey"` |
 | client_email       | Y        | The client email address | `"client@example.com"` |
@@ -60,6 +60,14 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | auth_provider_x509_cert_url | N | The certificate URL for the auth provider | `"https://www.googleapis.com/oauth2/v1/certs"` |
 | client_x509_cert_url | N | The certificate URL for the client | `"https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com"`|
 | private_key | Y | The private key for authentication | `"privateKey"` |
+
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided to the GCP Secret Manager component:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.version_id` | Version for the given secret key.
 
 ## Setup GCP Secret Manager instance
 

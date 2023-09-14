@@ -7,8 +7,17 @@ aliases:
   - "/operations/components/setup-pubsub/supported-pubsub/setup-nats-streaming/"
 ---
 
+## ⚠️ Deprecation notice
+
+{{% alert title="Warning" color="warning" %}}
+This component is **deprecated** because the [NATS Streaming Server](hhttps://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan) was deprecated in June 2023 and no longer receives updates. Users are encouraged to switch to using [JetStream]({{< ref setup-jetstream >}} as an alternative.
+
+This component will be **removed in the Dapr v1.13 release.
+{{% /alert %}}
+
 ## Component format
-To set up NATS Streaming pub/sub, create a component of type `pubsub.natsstreaming`. See [the how-to guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pubsub configuration.
+
+To set up NATS Streaming pub/sub, create a component of type `pubsub.natsstreaming`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -25,6 +34,8 @@ spec:
     value: "clusterId"
   - name: concurrencyMode
     value: parallel
+  - name: consumerID # Optional. If not supplied, runtime will create one.
+    value: "channel1" 
     # below are subscription configuration.
   - name: subscriptionType
     value: <REPLACE-WITH-SUBSCRIPTION-TYPE> # Required. Allowed values: topic, queue.
@@ -55,10 +66,6 @@ spec:
 The above example uses secrets as plain strings. It is recommended to [use a secret store for the secrets]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-{{% alert title="Warning" color="warning" %}}
-NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-server/#warning--deprecation-notice-warning). Consider using [NATS JetStream]({{< ref setup-jetstream >}}) going forward.
-{{% /alert %}}
-
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
@@ -66,6 +73,7 @@ NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-s
 | natsURL            | Y  | NATS server address URL   | "`nats://localhost:4222`"|
 | natsStreamingClusterID  | Y  | NATS cluster ID   |`"clusterId"`|
 | subscriptionType   | Y | Subscription type. Allowed values `"topic"`, `"queue"` | `"topic"` |
+| consumerID        |    N     | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | ackWaitTime        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"300ms"`|
 | maxInFlight        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"25"` |
 | durableSubscriptionName | N | [Durable subscriptions](https://docs.nats.io/developing-with-nats-streaming/durables) identification name. | `"my-durable"`|

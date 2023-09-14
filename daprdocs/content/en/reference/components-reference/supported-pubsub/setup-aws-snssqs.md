@@ -9,7 +9,18 @@ aliases:
 
 ## Component format
 
-To setup AWS SNS/SQS for pub/sub, create a component of type `pubsub.snssqs`. [Learn more on how to create and apply a pubsub configuration]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}).
+To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. 
+
+By default, the AWS SNS/SQS component:
+- Generates the SNS topics
+- Provisions the SQS queues
+- Configures a subscription of the queues to the topics
+
+{{% alert title="Note" color="primary" %}}
+If you only have a publisher and no subscriber, only the SNS topics are created. 
+
+However, if you have a subscriber, SNS, SQS, and the dynamic or static subscription thereof are generated.
+{{% /alert %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -17,7 +28,7 @@ kind: Component
 metadata:
   name: snssqs-pubsub
 spec:
-  type: pubsub.snssqs
+  type: pubsub.aws.snssqs
   version: v1
   metadata:
     - name: accessKey
@@ -26,9 +37,11 @@ spec:
       value: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
     - name: region
       value: "us-east-1"
+    # - name: consumerID # Optional. If not supplied, runtime will create one.
+    #   value: "channel1"
     # - name: endpoint # Optional. 
     #   value: "http://localhost:4566"
-    # - name: sessionToken  # Optional (mandatory if using AssignedRole, i.e. temporary accessKey and secretKey)
+    # - name: sessionToken  # Optional (mandatory if using AssignedRole; for example, temporary accessKey and secretKey)
     #   value: "TOKEN"
     # - name: messageVisibilityTimeout # Optional
     #   value: 10
@@ -59,7 +72,7 @@ spec:
 ```
 
 {{% alert title="Warning" color="warning" %}}
-The above example uses secrets as plain strings. It is recommended to use [a secret store for the secrets]]({{< ref component-secrets.md >}}).
+The above example uses secrets as plain strings. It is recommended to use [a secret store for the secrets]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
 ## Spec metadata fields
@@ -69,6 +82,7 @@ The above example uses secrets as plain strings. It is recommended to use [a sec
 | accessKey          | Y  | ID of the AWS account/role with appropriate permissions to SNS and SQS (see below) | `"AKIAIOSFODNN7EXAMPLE"`
 | secretKey          | Y  | Secret for the AWS user/role. If using an `AssumeRole` access, you will also need to provide a `sessionToken` |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | Y  | The AWS region where the SNS/SQS assets are located or be created in. See [this page](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/?p=ugi&l=na) for valid regions. Ensure that SNS and SQS are available in that region | `"us-east-1"`
+| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. | `"channel1"`
 | endpoint          | N  | AWS endpoint for the component to use. Only used for local development with, for example, [localstack](https://github.com/localstack/localstack). The `endpoint` is unncessary when running against production AWS | `"http://localhost:4566"`
 | sessionToken      | N  | AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
 | messageReceiveLimit | N  | Number of times a message is received, after processing of that message fails, that once reached, results in removing of that message from the queue. If `sqsDeadLettersQueueName` is specified, `messageReceiveLimit` is the number of times a message is received, after processing of that message fails, that once reached, results in moving of the message to the SQS dead-letters queue. Default: `10` | `10`
@@ -143,7 +157,7 @@ kind: Component
 metadata:
   name: snssqs-pubsub
 spec:
-  type: pubsub.snssqs
+  type: pubsub.aws.snssqs
   version: v1
   metadata:
     - name: accessKey
@@ -242,7 +256,7 @@ In order to run in AWS, create or assign an IAM user with permissions to the SNS
 
 Plug the `AWS account ID` and `AWS account secret` into the `accessKey` and `secretKey` in the component metadata, using Kubernetes secrets and `secretKeyRef`.
 
-Alternatively, let's say you want to provision the SNS and SQS assets using your own tool of choice (e.g. Terraform) while preventing Dapr from doing so dynamically. You need to enable `disableEntityManagement` and assign your Dapr-using application with an IAM Role, with a policy like:
+Alternatively, let's say you want to provision the SNS and SQS assets using your own tool of choice (for example, Terraform) while preventing Dapr from doing so dynamically. You need to enable `disableEntityManagement` and assign your Dapr-using application with an IAM Role, with a policy like:
 
 ```json
 {

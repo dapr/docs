@@ -9,10 +9,12 @@ aliases:
 no_list: true
 ---
 
+The following table lists state stores supported, at various levels, by the Dapr state management building block. [Learn how to set up different state stores for Dapr state management.]({{< ref setup-state-store.md >}})
+
 {{< partial "components/description.html" >}}
 
-The following stores are supported, at various levels, by the Dapr state management building block:
-
-> State stores can be used for actors if it supports both transactional operations and etag.
+{{% alert title="Note" color="primary" %}}
+State stores can be used for actors if it supports both transactional operations and ETag.
+{{% /alert %}}
 
 {{< partial "components/state-stores.html" >}}

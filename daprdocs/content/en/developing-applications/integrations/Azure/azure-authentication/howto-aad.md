@@ -62,6 +62,7 @@ Save the output values returned; you'll need them for Dapr to authenticate with 
 ```
 
 When adding the returned values to your Dapr component's metadata:
+
 - `appId` is the value for `azureClientId`
 - `password` is the value for `azureClientSecret` (this was randomly-generated)
 - `tenant` is the value for `azureTenantId`
@@ -93,11 +94,12 @@ Save the output values returned; you'll need them for Dapr to authenticate with 
 ```
 
 When adding the returned values to your Dapr component's metadata:
+
 - `appId` is the value for `azureClientId`
 - `tenant` is the value for `azureTenantId`
 - `fileWithCertAndPrivateKey` indicates the location of the self-signed PFX certificate and private key. Use the contents of that file as `azureCertificate` (or write it to a file on the server and use `azureCertificateFile`)
 
-> **Note:** While the generated file has the `.pem` extension, it contains a certificate and private key encoded as _PFX (PKCS#12)_.
+> **Note:** While the generated file has the `.pem` extension, it contains a certificate and private key encoded as PFX (PKCS#12).
 
 {{% /codetab %}}
 
@@ -122,26 +124,13 @@ Expected output:
 Service Principal ID: 1d0ccf05-5427-4b5e-8eb4-005ac5f9f163
 ```
 
-The returned value above is the **Service Principal ID**, which is different from the Azure AD application ID (client ID). 
-
-**The Service Principal ID** is:
-- Defined within an Azure tenant
-- Used to grant access to Azure resources to an application
-
+The returned value above is the **Service Principal ID**, which is different from the Azure AD application ID (client ID). The Service Principal ID is defined within an Azure tenant and used to grant access to Azure resources to an application  
 You'll use the Service Principal ID to grant permissions to an application to access Azure resources. 
 
 Meanwhile, **the client ID** is used by your application to authenticate. You'll use the client ID in Dapr manifests to configure authentication with Azure services.
 
 Keep in mind that the Service Principal that was just created does not have access to any Azure resource by default. Access will need to be granted to each resource as needed, as documented in the docs for the components.
 
-{{% alert title="Note" color="primary" %}}
-This step is different from the [official Azure documentation](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli). The short-hand commands included in the official documentation creates a Service Principal that has broad `read-write` access to all Azure resources in your subscription, which:
-
-- Grants your Service Principal more access than you likely desire. 
-- Applies _only_ to the Azure management plane (Azure Resource Manager, or ARM), which is irrelevant for Dapr components, which are designed to interact with the data plane of various services.
-
-{{% /alert %}}
-
 ## Next steps
 
-{{< button text="Use MSI >>" page="howto-msi.md" >}}
+{{< button text="Use Managed Identities >>" page="howto-mi.md" >}}

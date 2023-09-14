@@ -21,6 +21,10 @@ Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
 loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
 see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm modules.
+It is also possible to fetch the Wasm binary from a remote URL. In this case,
+the URL must point exactly to one Wasm binary. For example:
+- `http://example.com/rewrite.wasm`, or 
+- `https://example.com/rewrite.wasm`. 
 
 ## Component format
 
@@ -35,6 +39,8 @@ spec:
   metadata:
   - name: url
     value: "file://router.wasm"
+  - guestConfig
+    value: {"environment":"production"}
 ```
 
 ## Spec metadata fields
@@ -44,7 +50,8 @@ How to compile this is described later.
 
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
-| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
+| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
+| guestConfig   | An optional configuration passed to Wasm guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `enviroment=production`,`{"environment":"production"}` |
 
 ## Dapr configuration
 
@@ -114,6 +121,49 @@ If using TinyGo, compile as shown below and set the spec metadata field named
 
 ```bash
 tinygo build -o router.wasm -scheduler=none --no-debug -target=wasi router.go`
+```
+
+### Wasm `guestConfig` example
+
+Here is an example of how to use `guestConfig` to pass configurations to Wasm. In Wasm code, you can use the function `handler.Host.GetConfig` defined in guest SDK to get the configuration. In the following example, the Wasm middleware parses the executed `environment` from JSON config defined in the component.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: wasm
+spec:
+  type: middleware.http.wasm
+  version: v1
+  metadata:
+  - name: url
+    value: "file://router.wasm"
+  - guestConfig
+    value: {"environment":"production"}
+```
+Here's an example in TinyGo:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"github.com/http-wasm/http-wasm-guest-tinygo/handler"
+	"github.com/http-wasm/http-wasm-guest-tinygo/handler/api"
+)
+
+type Config struct {
+	Environment string `json:"environment"`
+}
+
+func main() {
+	// get config bytes, which is the value of guestConfig defined in the component.
+	configBytes := handler.Host.GetConfig()
+	
+	config := Config{}
+	json.Unmarshal(configBytes, &config)
+	handler.Host.Log(api.LogLevelInfo, "Config environment: "+config.Environment)
+}
 ```
 
 

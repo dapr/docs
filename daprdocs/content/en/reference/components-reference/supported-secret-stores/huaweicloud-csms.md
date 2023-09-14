@@ -40,6 +40,15 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | accessKey       |    Y     | The HuaweiCloud Access Key to access this resource               | `"accessKey"`       |
 | secretAccessKey |    Y     | The HuaweiCloud Secret Access Key to access this resource        | `"secretAccessKey"` |
 
+## Optional per-request metadata properties
+
+The following [optional query parameters]({{< ref "secrets_api#query-parameters" >}}) can be provided when retrieving secrets from this secret store:
+
+Query Parameter | Description
+--------- | -----------
+`metadata.version_id` | Version for the given secret key.
+
+
 ## Setup HuaweiCloud Cloud Secret Management Service (CSMS) instance
 
 Setup HuaweiCloud Cloud Secret Management Service (CSMS) using the HuaweiCloud documentation: https://support.huaweicloud.com/intl/en-us/usermanual-dew/dew_01_9993.html.

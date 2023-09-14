@@ -77,9 +77,9 @@
     query: false
 - component: In-memory
   link: setup-inmemory
-  state: Developer-only
+  state: Stable
   version: v1
-  since: "1.8"
+  since: "1.9"
   features:
     crud: true
     transactions: true

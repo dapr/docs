@@ -1,6 +1,6 @@
 - component: In-memory
   link: setup-inmemory
-  state: Beta
+  state: Stable
   version: v1
   since: "1.7"
   features:
@@ -48,9 +48,9 @@
     bulkSubscribe: false
 - component: NATS Streaming
   link: setup-nats-streaming
-  state: Beta
+  state: Deprecated
   version: v1
-  since: "1.0"
+  since: "1.11"
   features:
     bulkPublish: false
     bulkSubscribe: false

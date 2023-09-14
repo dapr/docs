@@ -22,31 +22,33 @@ spec:
   version: v1
   metadata:
   - name: bucket
-    value: mybucket
+    value: "mybucket"
   - name: type
-    value: service_account
+    value: "service_account"
   - name: project_id
-    value: project_111
+    value: "project_111"
   - name: private_key_id
-    value: *************
+    value: "*************"
   - name: client_email
-    value: name@domain.com
+    value: "name@domain.com"
   - name: client_id
-    value: '1111111111111111'
+    value: "1111111111111111"
   - name: auth_uri
-    value: https://accounts.google.com/o/oauth2/auth
+    value: "https://accounts.google.com/o/oauth2/auth"
   - name: token_uri
-    value: https://oauth2.googleapis.com/token
+    value: "https://oauth2.googleapis.com/token"
   - name: auth_provider_x509_cert_url
-    value: https://www.googleapis.com/oauth2/v1/certs
+    value: "https://www.googleapis.com/oauth2/v1/certs"
   - name: client_x509_cert_url
-    value: https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com
+    value: "https://www.googleapis.com/robot/v1/metadata/x509/<project-name>.iam.gserviceaccount.com"
   - name: private_key
-    value: PRIVATE KEY
+    value: "PRIVATE KEY"
   - name: decodeBase64
-    value: <bool>
+    value: "<bool>"
   - name: encodeBase64
-    value: <bool>
+    value: "<bool>"
+  - name: direction
+    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -57,19 +59,20 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| bucket | Y | Output | The bucket name | `"mybucket"` |
-| type | Y | Output | Tge GCP credentials type | `"service_account"` |
-| project_id     | Y | Output | GCP project id| `projectId`
-| private_key_id | Y | Output | GCP private key id | `"privateKeyId"`
-| private_key    | Y | Output | GCP credentials private key. Replace with x509 cert | `12345-12345`
-| client_email   | Y | Output | GCP client email  | `"client@email.com"`
-| client_id      | Y |  Output | GCP client id | `0123456789-0123456789`
-| auth_uri       | Y | Output | Google account OAuth endpoint | `https://accounts.google.com/o/oauth2/auth`
-| token_uri      | Y | Output | Google account token uri | `https://oauth2.googleapis.com/token`
-| auth_provider_x509_cert_url | Y | Output | GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
-| client_x509_cert_url | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
-| decodeBase64 | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
-| encodeBase64 | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+| `bucket` | Y | Output | The bucket name | `"mybucket"` |
+| `type` | Y | Output | Tge GCP credentials type | `"service_account"` |
+| `project_id`     | Y | Output | GCP project id| `projectId`
+| `private_key_id` | Y | Output | GCP private key id | `"privateKeyId"`
+| `private_key`    | Y | Output | GCP credentials private key. Replace with x509 cert | `12345-12345`
+| `client_email`   | Y | Output | GCP client email  | `"client@email.com"`
+| `client_id`      | Y |  Output | GCP client id | `0123456789-0123456789`
+| `auth_uri`       | Y | Output | Google account OAuth endpoint | `https://accounts.google.com/o/oauth2/auth`
+| `token_uri`      | Y | Output | Google account token uri | `https://oauth2.googleapis.com/token`
+| `auth_provider_x509_cert_url` | Y | Output | GCP credentials cert url | `https://www.googleapis.com/oauth2/v1/certs`
+| `client_x509_cert_url` | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
+| `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+| `encodeBase64` | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
+| `direction` | N | Output | The direction of the binding.  | `"output"`
 
 ## Binding support
 
