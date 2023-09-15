@@ -11,13 +11,17 @@ Dapr uses a modular design where functionality is delivered as a component. Each
 You can contribute implementations and extend Dapr's component interfaces capabilities via:
 
 - The [components-contrib repository](https://github.com/dapr/components-contrib)
-- [Pluggable components]({{<ref "components-concept.md#built-in-and-pluggable-components" >}}).
+- [Pluggable components]({{< ref "components-concept.md#built-in-and-pluggable-components" >}}).
 
 A building block can use any combination of components. For example, the [actors]({{< ref "actors-overview.md" >}}) and the [state management]({{< ref "state-management-overview.md" >}}) building blocks both use [state components](https://github.com/dapr/components-contrib/tree/master/state).
 
 As another example, the [pub/sub]({{< ref "pubsub-overview.md" >}}) building block uses [pub/sub components](https://github.com/dapr/components-contrib/tree/master/pubsub).
 
 You can get a list of current components available in the hosting environment using the `dapr components` CLI command.
+
+{{% alert title="Note" color="primary" %}} 
+For any component that returns data to the app, it is recommended to set the memory capacity of the Dapr sidecar accordingly (process or container) to avoid potential OOM panics. For example in Docker use the `--memory` option. For Kubernetes, use the `dapr.io/sidecar-memory-limit` annotation. For processes this depends on the OS and/or process orchestration tools.*
+{{% /alert %}}
 
 ## Component specification
 

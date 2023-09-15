@@ -76,7 +76,7 @@ spec:
       value: "false"
 ```
 
-## Further reading
+## Related links
 - [Components concept]({{< ref components-concept.md >}})
 - [Reference secrets in component definitions]({{< ref component-secrets.md >}})
 - [Supported state stores]({{< ref supported-state-stores >}})

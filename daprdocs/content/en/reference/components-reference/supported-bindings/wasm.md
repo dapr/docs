@@ -36,6 +36,10 @@ Wasm binaries are loaded from a URL. For example, the URL `file://rewrite.wasm`
 loads `rewrite.wasm` from the current directory of the process. On Kubernetes,
 see [How to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts.md >}})
 to configure a filesystem mount that can contain Wasm binaries.
+It is also possible to fetch the Wasm binary from a remote URL. In this case,
+the URL must point exactly to one Wasm binary. For example:
+- `http://example.com/rewrite.wasm`, or 
+- `https://example.com/rewrite.wasm`. 
 
 Dapr uses [wazero](https://wazero.io) to run these binaries, because it has no
 dependencies. This allows use of WebAssembly with no installation process
@@ -69,14 +73,16 @@ spec:
   metadata:
   - name: url
     value: "file://uppercase.wasm"
+  - name: direction 
+    value: "output"
 ```
 
 ## Spec metadata fields
 
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
-| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm` |
-
+| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
+| `direction`   | The direction of the binding | false     | `"output"` |
 
 ## Binding support
 
@@ -91,18 +97,39 @@ pass metadata properties with each request:
 
 - `args` any CLI arguments, comma-separated. This excludes the program name.
 
-For example, if the binding `url` was a Ruby interpreter, such as from
-[webassembly-language-runtimes](https://github.com/vmware-labs/webassembly-language-runtimes/releases/tag/ruby%2F3.2.0%2B20230215-1349da9),
-the following request would respond back with "Hello, salaboy":
+For example, consider binding the `url` to a Ruby interpreter, such as from
+[webassembly-language-runtimes](https://github.com/vmware-labs/webassembly-language-runtimes/releases/tag/ruby%2F3.2.0%2B20230215-1349da9):
 
-```json
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: wasm
+spec:
+  type: bindings.wasm
+  version: v1
+  metadata:
+  - name: url
+    value: "https://github.com/vmware-labs/webassembly-language-runtimes/releases/download/ruby%2F3.2.0%2B20230215-1349da9/ruby-3.2.0-slim.wasm"
+```
+
+Assuming that you wanted to start your Dapr at port 3500 with the Wasm Binding, you'd run:
+
+```
+$ dapr run --app-id wasm --dapr-http-port 3500 --resources-path components
+```
+
+The following request responds `Hello "salaboy"`:
+
+```sh
+$ curl -X POST http://localhost:3500/v1.0/bindings/wasm -d'
 {
   "operation": "execute",
   "metadata": {
-    "args": "-ne,'print \"Hello, \"; print'"
+    "args": "-ne,print \"Hello \"; print"
   },
   "data": "salaboy"
-}
+}'
 ```
 
 ## Related links
