@@ -414,7 +414,7 @@ client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)),
 
 ## Use quorum queues
 
-By default, Dapr creates `classic` queues. To create `quorum` queues, add the following metadata to your subscription:
+By default, Dapr creates `classic` queues. To create `quorum` queues, add the following metadata to your pub/sub [subscription]({{< ref subscription-schema.md >}})
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
