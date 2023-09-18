@@ -7,19 +7,19 @@ description: "Use Dapr API in a Kubernetes Job context"
 type: docs
 ---
 
-# Kubernetes Job
+The Dapr sidecar is designed to be a long running process. In the context of a [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) this behavior can block your job completion.
 
-The Dapr sidecar is designed to be a long running process, in the context of a [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) this behaviour can block your job completion.
-To address this issue the Dapr sidecar has an endpoint to `Shutdown` the sidecar.
+To address this issue, the Dapr sidecar has an endpoint to `Shutdown` the sidecar.
 
-When running a basic [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) you will need to call the `/shutdown` endpoint for the sidecar to gracefully stop and the job will be considered `Completed`.
+When running a basic [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/), you need to call the `/shutdown` endpoint for the sidecar to gracefully stop and the job to be considered `Completed`.
 
-When a job is finished without calling `Shutdown`, your job will be in a `NotReady` state with only the `daprd` container running endlessly.
+When a job is finished without calling `Shutdown`, your job is in a `NotReady` state with only the `daprd` container running endlessly.
 
-Stopping the dapr sidecar will cause its readiness and liveness probes to fail in your container because the dapr sidecar was shutdown.
+Stopping the Dapr sidecar causes its readiness and liveness probes to fail in your container.
+
 To prevent Kubernetes from trying to restart your job, set your job's `restartPolicy` to `Never`.
 
-Be sure to use the *POST* HTTP verb when calling the shutdown HTTP API.
+Be sure to use the *POST* HTTP verb when calling the shutdown HTTP API. For example:
 
 ```yaml
 apiVersion: batch/v1
@@ -40,7 +40,7 @@ spec:
       restartPolicy: Never
 ```
 
-You can also call the `Shutdown` from any of the Dapr SDKs
+You can also call the `Shutdown` from any of the Dapr SDKs. For example, for the Go SDK:
 
 ```go
 package main
@@ -63,3 +63,8 @@ func main() {
   // Job
 }
 ```
+
+## Related links
+
+- [Deploy Dapr on Kubernetes]({{< ref kubernetes-deploy.md >}})
+- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
