@@ -122,7 +122,7 @@ To enable OIDC authentication, you need to provide the following OAuth2 paramete
 OAuth2 authentication cannot be used in combination with token authentication.
 It is recommended that you use a secret reference for the client secret.
 The pulsar OAuth2 authenticator is not specifically complaint with OIDC so it is your responsibility to ensure fields are compliant. For example, the issuer URL must use the `https` protocol, the requested scopes include `openid`, etc.
-If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool will be used for connecting to the OAuth2 issuer if using `https`.
+If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool is used for connecting to the OAuth2 issuer if using `https`.
 
 | Field  | Required | Details | Example |
 |--------|:--------:|---------|---------|
