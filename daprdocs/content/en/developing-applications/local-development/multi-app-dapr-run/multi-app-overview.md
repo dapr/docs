@@ -98,9 +98,29 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 ## Multi-App Run template file
 
-When you execute `dapr run -f -k .`, Dapr generates the multi-app template file (named `dapr.yaml`) in the `.dapr/deploy` directory within each application. Each time you run `dapr run -f -k .`, the generated Kubernetes Deployment YAML file is overwritten. 
+Generate the multi-app template file (`dapr.yaml`) by running one of the following commands:
 
-You can name template file with preferred name other than the default. For example `dapr run -f -k ./<your-preferred-file-name>.yaml`.
+```bash
+dapr run -k -f .
+```
+
+Or
+
+```bash
+dapr run -k -f dapr.yaml
+```
+
+The necessary default service and deployment definitions for Kubernetes are generated within the `.dapr/deploy` folder for each app in the `dapr.yaml` template. 
+
+If the `createService` field is present in the `dapr.yaml` template and set to `true`, then the `service.yaml` file(s):
+- Generate in the `.dapr/deploy` folder of each app in the multi-app run template
+- Are used to deploy the applications in a dev/test environment in K8s 
+
+You can name the template file with any preferred name other than the default. For example:
+
+```bash
+dapr run -k -f ./<your-preferred-file-name>.yaml
+```
 
 The following example includes some of the template properties you can customize for your applications. In the example, you can simultaneously launch 2 applications with app IDs of `nodeapp` and `pythonapp`.
 
@@ -121,7 +141,7 @@ apps:
 ```
 
 > **Note:** 
-> - If the `containerImage` field is not specified, `dapr run -f -k` produces an error. 
+> - If the `containerImage` field is not specified, `dapr run -k -f` produces an error. 
 > - The `createService` field defines a basic service in Kubernetes (ClusterIP or LoadBalancer) that targets the `--app-port` specified in the template. If `createService` isn't specified, the application is not accessible from outside the cluster.
 
 For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
