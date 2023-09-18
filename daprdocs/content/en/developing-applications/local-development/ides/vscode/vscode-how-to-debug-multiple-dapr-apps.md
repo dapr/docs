@@ -176,7 +176,7 @@ Below are the supported parameters for VS Code tasks. These parameters are equiv
 | `appProtocol` | Tells Dapr which protocol your application is using. Valid options are `http`, `grpc`, `https`, `grpcs`, `h2c`. Default is `http`. | No | `"appProtocol": "http"`
 | `args` | Sets a list of arguments to pass on to the Dapr app	 | No | "args": []
 | `componentsPath` | Path for components directory. If empty, components will not be loaded. | No | `"componentsPath": "./components"`
-| `config` | Tells Dapr which Configuration CRD to use | No | `"config": "./config"`
+| `config` | Tells Dapr which Configuration resource to use | No | `"config": "./config"`
 | `controlPlaneAddress` | Address for a Dapr control plane | No | `"controlPlaneAddress": "http://localhost:1366/"`
 | `enableProfiling` | Enable profiling	 | No | `"enableProfiling": false`
 | `enableMtls` | Enables automatic mTLS for daprd to daprd communication channels | No | `"enableMtls": false`
