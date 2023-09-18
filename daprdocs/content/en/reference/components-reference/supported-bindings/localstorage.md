@@ -22,14 +22,17 @@ spec:
   version: v1
   metadata:
   - name: rootPath
-    value: <string>
+    value: "<string>"
+  - name: direction
+    value: "<direction>"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| rootPath | Y | Input / Output | The root path anchor to which files can be read / saved | `"/temp/files"` |
+| `rootPath` | Y | Input / Output | The root path anchor to which files can be read / saved | `"/temp/files"` |
+| `direction` | N | Input / Output | The direction of the binding | `"output"` |
 
 ## Binding support
 
