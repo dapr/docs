@@ -126,7 +126,7 @@ If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool wi
 
 | Field  | Required | Details | Example |
 |--------|:--------:|---------|---------|
-| oauth2TokenURL | N | URL to request the OIDC client_credentials token from. Must not be empty. | 1"https://oauth.example.com/o/oauth2/token"` |
+| oauth2TokenURL | N | URL to request the OIDC client_credentials token from. Must not be empty. | "https://oauth.example.com/o/oauth2/token"` |
 | oauth2TokenCAPEM | N | CA PEM certificate bundle to connect to the OAuth2 issuer. If not defined, the system's certificate pool will be used. | `"---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"` |
 | oauth2ClientID | N | OIDC client ID. Must not be empty. | `"my-client-id"` |
 | oauth2ClientSecret | N | OIDC client secret. Must not be empty. | `"my-client-secret"` |
