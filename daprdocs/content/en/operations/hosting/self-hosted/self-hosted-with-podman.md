@@ -15,7 +15,7 @@ This article provides guidance on running Dapr with Podman on a Windows/Linux/ma
 
 ## Initialize Dapr environment
 
-To initialize the Dapr control-plane containers and create a default configuration file, run:
+To initialize the Dapr control plane containers and create a default configuration file, run:
 
 ```bash
 dapr init --container-runtime podman
