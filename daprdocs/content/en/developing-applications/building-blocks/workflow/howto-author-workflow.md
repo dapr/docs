@@ -126,7 +126,7 @@ public class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
 
 <!--java-->
 
-Define the workflow activities you'd like your workflow to perform. Activities are wrapped in an wrapper class, which is called `OrchestrationWrapper` in the following exmaple. 
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in a wrapper class, which is called `OrchestrationWrapper` in the following exmaple. 
 
 ```java
 class OrchestratorWrapper<T extends Workflow> implements TaskOrchestrationFactory {

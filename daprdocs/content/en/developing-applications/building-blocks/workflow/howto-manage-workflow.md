@@ -79,7 +79,7 @@ Dictionary<string, string> workflowOptions; // This is an optional parameter
 StartWorkflowResponse startResponse = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, input, workflowOptions);
 
 // Get information on the workflow. This response contains information such as the status of the workflow, when it started, and more!
-GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
+GetWorkflowResponse getResponse = await daprClient.GetWorkflowAsync(orderId, workflowComponent, eventName);
 
 // Terminate the workflow
 await daprClient.TerminateWorkflowAsync(orderId, workflowComponent);
@@ -93,7 +93,7 @@ await daprClient.PauseWorkflowAsync(orderId, workflowComponent);
 // Resume
 await daprClient.ResumeWorkflowAsync(orderId, workflowComponent);
 
-// Purge
+// Purge the workflow, removing all inbox and history information from associated instance
 await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 ```
 
