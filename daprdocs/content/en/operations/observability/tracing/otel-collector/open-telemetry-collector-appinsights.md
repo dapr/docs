@@ -1,42 +1,47 @@
 ---
 type: docs
-title: "Using OpenTelemetry Collector to collect traces to send to AppInsights"
-linkTitle: "Using the OpenTelemetry for Azure AppInsights"
+title: "Using OpenTelemetry Collector to collect traces to send to App Insights"
+linkTitle: "Using the OpenTelemetry for Azure App Insights"
 weight: 1000
 description: "How to push trace events to Azure Application Insights, using the OpenTelemetry Collector."
 ---
 
-Dapr integrates with [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example using Dapr to push trace events to Azure Application Insights, using the OpenTelemetry Collector.
+Dapr integrates with [OpenTelemetry (OTEL) Collector](https://github.com/open-telemetry/opentelemetry-collector) using the Zipkin API. This guide walks through an example using Dapr to push trace events to Azure Application Insights, using the OpenTelemetry Collector.
 
-## Requirements
+## Prerequisites
 
-A installation of Dapr on Kubernetes.
+- [Install Dapr on Kubernetes]({{< ref kubernetes >}})
+- [Set up an App Insights resource](https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource) and make note of your App Insights instrumentation key.
 
-## How to configure distributed tracing with Application Insights
+## Set up OTEL Collector to push to your App Insights instance
 
-### Setup Application Insights
+To push events to your App Insights instance, install the OTEL Collector to your Kubernetes cluster.
 
-1. First, you'll need an Azure account. See instructions [here](https://azure.microsoft.com/free/) to apply for a **free** Azure account.
-2. Follow instructions [here](https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource) to create a new Application Insights resource.
-3. Get the Application Insights Intrumentation key from your Application Insights page.
+1. Check out the [`open-telemetry-collector-appinsights.yaml`](/docs/open-telemetry-collector/open-telemetry-collector-appinsights.yaml) file. 
 
-### Run OpenTelemetry Collector to push to your Application Insights instance
+1. Replace the `<INSTRUMENTATION-KEY>` placeholder with your App Insights instrumentation key.
 
-Install the OpenTelemetry Collector to your Kubernetes cluster to push events to your Application Insights instance
+1. Apply the configuration with: 
 
-1. Check out the file [open-telemetry-collector-appinsights.yaml](/docs/open-telemetry-collector/open-telemetry-collector-appinsights.yaml) and replace the `<INSTRUMENTATION-KEY>` placeholder with your Application Insights Instrumentation Key.
+   ```sh 
+   kubectl apply -f open-telemetry-collector-appinsights.yaml
+   ```
 
-2. Apply the configuration with `kubectl apply -f open-telemetry-collector-appinsights.yaml`.
+## Set up Dapr to send trace to OTEL Collector
 
-Next, set up both a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.
+Set up a Dapr configuration file to turn on tracing and deploy a tracing exporter component that uses the OpenTelemetry Collector.
 
-1. Create a collector-config.yaml file with this [content](/docs/open-telemetry-collector/collector-config.yaml)
+1. Use this [`collector-config.yaml`](/docs/open-telemetry-collector/collector-config.yaml) file to create your own configuration.
 
-2. Apply the configuration with `kubectl apply -f collector-config.yaml`.
+1. Apply the configuration with: 
 
-### Deploy your app with tracing
+   ```sh
+   kubectl apply -f collector-config.yaml
+   ```
 
-When running in Kubernetes mode, apply the `appconfig` configuration by adding a `dapr.io/config` annotation to the container that you want to participate in the distributed tracing, as shown in the following example:
+## Deploy your app with tracing
+
+Apply the `appconfig` configuration by adding a `dapr.io/config` annotation to the container that you want to participate in the distributed tracing, as shown in the following example:
 
 ```yaml
 apiVersion: apps/v1
@@ -55,18 +60,24 @@ spec:
         dapr.io/config: "appconfig"
 ```
 
-Some of the quickstarts such as [distributed calculator](https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator) already configure these settings, so if you are using those no additional settings are needed.
+{{% alert title="Note" color="primary" %}}
+If you are using one of the Dapr tutorials, such as [distributed calculator](https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator), the `appconfig` configuration is already configured, so no additional settings are needed.
+{{% /alert %}}
 
-That's it! There's no need include any SDKs or instrument your application code. Dapr automatically handles the distributed tracing for you.
+You can register multiple tracing exporters at the same time, and the tracing logs are forwarded to all registered exporters.
 
-> **NOTE**: You can register multiple tracing exporters at the same time, and the tracing logs are forwarded to all registered exporters.
+That's it! There's no need to include any SDKs or instrument your application code. Dapr automatically handles the distributed tracing for you.
 
-Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your Application Insights resource. You can also use the **Application Map** to examine the topology of your services, as shown below:
+## View traces 
+
+Deploy and run some applications. After a few minutes, you should see tracing logs appearing in your App Insights resource. You can also use the **Application Map** to examine the topology of your services, as shown below:
 
 ![Application map](/images/open-telemetry-app-insights.png)
 
-> **NOTE**: Only operations going through Dapr API exposed by Dapr sidecar (e.g. service invocation or event publishing) are displayed in Application Map topology.
+{{% alert title="Note" color="primary" %}}
+Only operations going through Dapr API exposed by Dapr sidecar (for example, service invocation or event publishing) are displayed in Application Map topology.
+{{% /alert %}}
 
 ## Related links
-* Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability/README.md)
-* How to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
+- Try out the [observability quickstart](https://github.com/dapr/quickstarts/tree/master/tutorials/observability/README.md)
+- Learn how to set [tracing configuration options]({{< ref "configuration-overview.md#tracing" >}})
