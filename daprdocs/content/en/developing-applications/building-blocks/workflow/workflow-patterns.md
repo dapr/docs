@@ -688,7 +688,8 @@ await daprClient.RaiseWorkflowEventAsync(
 <!--java-->
 
 ```java
-todo
+System.out.println("**SendExternalMessage: RestartEvent**");
+client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 ```
 
 {{% /codetab %}}
@@ -709,4 +710,4 @@ External events don't have to be directly triggered by humans. They can also be 
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-   - [Java](todo)
+   - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

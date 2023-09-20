@@ -95,10 +95,10 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 
 | Quickstart/tutorial | Description |
 | ------------------- | ----------- |
-| [Workflow quickstart]({{< ref workflow-quickstart.md >}}) | Run a .NET workflow application with four workflow activities to see Dapr Workflow in action  |
+| [Workflow quickstart]({{< ref workflow-quickstart.md >}}) | Run a workflow application with four workflow activities to see Dapr Workflow in action  |
 | [Workflow Python SDK example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow) | Learn how to create a Dapr Workflow and invoke it using the Python `DaprClient` package. |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
-| [Workflow Java SDK example](todo) | Learn how to create a Dapr Workflow and invoke it using the Java `need` package. |
+| [Workflow Java SDK example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows) | Learn how to create a Dapr Workflow and invoke it using the Java `io.dapr.workflows` package. |
 
 
 ### Start using workflows directly in your app
@@ -128,3 +128,4 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
 - Try out the full SDK examples:
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
