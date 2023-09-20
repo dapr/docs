@@ -109,7 +109,8 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 With Dapr Workflow in beta stage comes the following limitation(s):
 
-- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, you're not able to use NoSQL databases. Only SQL databases are supported. NoSQL database support is planned for future minor releases.
+- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, you're not able to use NoSQL databases. Only SQL databases are supported in the latest release. 
+- **Application instances:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, only a maximum of 2 application instances is supported. 
 
 ## Watch the demo
 
