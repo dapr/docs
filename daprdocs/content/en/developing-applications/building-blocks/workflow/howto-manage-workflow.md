@@ -102,18 +102,64 @@ await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 <!--Python-->
 {{% codetab %}}
 
-Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
+Manage your workflow within your code. [In the workflow example from the Java SDK](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowClient.java), the workflow is registered in the code using the following APIs:
 
-- **raiseEvent**: Raise an event on a workflow
-- **getInstanceMetadata**: Get information on the status of the workflow
+- **scheduleNewWorkflow**: Starts a new workflow instance
+- **getInstanceState**: Get information on the status of the workflow
 - **waitForInstanceStart**: Pauses or suspends a workflow instance that can later be resumed
-- **waitForInstanceCompletion**: Resumes a paused workflow instance and waits for completion
-- **createTaskHub**
-- **deleteTaskHub**
+- **raiseEvent**: Raises events/tasks for the running workflow instance
+- **waitForInstanceCompletion**: Waits for the workflow to complete its tasks
+- **purgeInstance**: Removes all metadata related to a specific workflow instance
+- **terminateWorkflow**: Terminates the workflow
 - **purgeInstance**: Removes all metadata related to a specific workflow
 
 ```java
-todo
+package io.dapr.examples.workflows;
+
+import io.dapr.workflows.client.DaprWorkflowClient;
+import io.dapr.workflows.client.WorkflowInstanceStatus;
+
+// ...
+public class DemoWorkflowClient {
+
+  // ...
+  public static void main(String[] args) throws InterruptedException {
+    DaprWorkflowClient client = new DaprWorkflowClient();
+
+    try (client) {
+      // Start a workflow
+      String instanceId = client.scheduleNewWorkflow(DemoWorkflow.class, "input data");
+      
+      // Get status information on the workflow
+      WorkflowInstanceStatus workflowMetadata = client.getInstanceState(instanceId, true);
+
+      // Wait or pause for the workflow instance start
+      try {
+        WorkflowInstanceStatus waitForInstanceStartResult =
+            client.waitForInstanceStart(instanceId, Duration.ofSeconds(60), true);
+      }
+
+      // Raise an event for the workflow; you can raise several events in parallel
+      client.raiseEvent(instanceId, "TestEvent", "TestEventPayload");
+      client.raiseEvent(instanceId, "event1", "TestEvent 1 Payload");
+      client.raiseEvent(instanceId, "event2", "TestEvent 2 Payload");
+      client.raiseEvent(instanceId, "event3", "TestEvent 3 Payload");
+
+      // Wait for workflow to complete running through tasks
+      try {
+        WorkflowInstanceStatus waitForInstanceCompletionResult =
+            client.waitForInstanceCompletion(instanceId, Duration.ofSeconds(60), true);
+      } 
+
+      // Purge the workflow instance, removing all metadata associated with it
+      boolean purgeResult = client.purgeInstance(instanceId);
+
+      // Terminate the workflow instance
+      client.terminateWorkflow(instanceToTerminateId, null);
+
+    System.exit(0);
+  }
+}
 ```
 
 {{% /codetab %}}
@@ -197,6 +243,6 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
-  - [Java example](todo)
+  - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
 
 - [Workflow API reference]({{< ref workflow_api.md >}})
