@@ -85,7 +85,7 @@ You can use the following SDKs to author a workflow.
 | - | - |
 | Python | [dapr-ext-workflow](https://github.com/dapr/python-sdk/tree/master/ext/dapr-ext-workflow) |
 | .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
-| Java | need |
+| Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
 
 ## Try out workflows
 
