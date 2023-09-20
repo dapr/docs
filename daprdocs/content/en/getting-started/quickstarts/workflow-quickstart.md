@@ -23,7 +23,7 @@ In this guide, you'll:
 
 {{< tabs "Python" ".NET" "Java" >}}
 
-<!-- Python -->
+ <!-- Python -->
 {{% codetab %}}
 
 The `order-processor` console app starts and manages the `order_processing_workflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
@@ -103,7 +103,19 @@ Expected output:
 
 If you have Zipkin configured for Dapr locally on your machine, you can view the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`).
 
-<img src="/images/workflow-trace-spans-zipkin-python.png" width=900 style="padding-bottom:15px;">
+### (Optional) Step 4: View in Zipkin
+
+If you have Zipkin configured for Dapr locally on your machine, you can 
+
+Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+View the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`). 
+
+<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
 
 ### What happened?
 
@@ -337,7 +349,15 @@ Expected output:
 
 ### (Optional) Step 4: View in Zipkin
 
-If you have Zipkin configured for Dapr locally on your machine, you can view the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`).
+If you have Zipkin configured for Dapr locally on your machine, you can 
+
+Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+View the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`). 
 
 <img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
 
@@ -492,13 +512,23 @@ The `Activities` directory holds the four workflow activities used by the workfl
 - `ProcessPaymentActivity.cs`
 - `UpdateInventoryActivity.cs`
 
+## Watch the demo
+
+Watch [this video to walk through the Dapr Workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=2564" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 {{% /codetab %}}
 
  <!-- Java -->
 {{% codetab %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
-- 
+- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow
+- `RequestApprovalActivity`: Requests approval for processing payment
+- `ReserveInventoryActivity`: Checks the state store to ensure that there is enough inventory for the purchase
+- `ProcessPaymentActivity`: Processes and authorizes the payment
+- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value
 
 
 ### Step 1: Pre-requisites
@@ -507,9 +537,10 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - Java JDK 11 (or greater):
-  - [Oracle JDK](https://www.oracle.com/java/technologies/downloads), or
-  - OpenJDK
-- [Apache Maven](https://maven.apache.org/install.html), version 3.x.
+    - [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
+    - [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
+    - [OpenJDK 11](https://jdk.java.net/11/)
+- [Apache Maven](https://maven.apache.org/install.html) version 3.x.
 <!-- IGNORE_LINKS -->
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 <!-- END_IGNORE -->
@@ -522,10 +553,16 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `order-processor` directory:
+Navigate to the `order-processor` directory:
 
 ```bash
-need
+cd workflows/java/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+mvn clean install
 ```
 
 ### Step 3: Run the order processor app
@@ -533,7 +570,7 @@ need
 In the terminal, start the order processor app alongside a Dapr sidecar:
 
 ```bash
-need
+dapr run --app-id WorkflowConsoleApp --resources-path ../../../components/ --dapr-grpc-port 50001 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar io.dapr.quickstarts.workflows.WorkflowConsoleApp
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
@@ -541,29 +578,64 @@ This starts the `order-processor` app with unique workflow ID and runs the workf
 Expected output:
 
 ```
-need
+== APP == *** Welcome to the Dapr Workflow console app sample!
+== APP == *** Using this app, you can place orders that start workflows.
+== APP == Start workflow runtime
+== APP == Sep 20, 2023 3:23:05 PM com.microsoft.durabletask.DurableTaskGrpcWorker startAndBlock
+== APP == INFO: Durable Task worker is connecting to sidecar at 127.0.0.1:50001.
+
+== APP == ==========Begin the purchase of item:==========
+== APP == Starting order workflow, purchasing 10 of cars
+
+== APP == scheduled new workflow instance of OrderProcessingWorkflow with instance ID: edceba90-9c45-4be8-ad40-60d16e060797
+== APP == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Starting Workflow: io.dapr.quickstarts.workflows.OrderProcessingWorkflow
+== APP == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Instance ID(order ID): edceba90-9c45-4be8-ad40-60d16e060797
+== APP == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Current Orchestration Time: 2023-09-20T19:23:09.755Z
+== APP == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Received Order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP == workflow instance edceba90-9c45-4be8-ad40-60d16e060797 started
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - Reserving inventory for order 'edceba90-9c45-4be8-ad40-60d16e060797' of 10 cars
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - There are 100 cars available for purchase
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - Reserved inventory for order 'edceba90-9c45-4be8-ad40-60d16e060797' of 10 cars
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Requesting approval for order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Approved requesting approval for order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: edceba90-9c45-4be8-ad40-60d16e060797 for 10 cars at $150000
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID 'edceba90-9c45-4be8-ad40-60d16e060797' processed successfully
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order 'edceba90-9c45-4be8-ad40-60d16e060797' of 10 cars
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'edceba90-9c45-4be8-ad40-60d16e060797': there are now 90 cars left in stock
+== APP == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : edceba90-9c45-4be8-ad40-60d16e060797
+
+== APP == workflow instance edceba90-9c45-4be8-ad40-60d16e060797 completed, out is: {"processed":true}
 ```
 
 ### (Optional) Step 4: View in Zipkin
 
-If you have Zipkin configured for Dapr locally on your machine, you can view the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`).
+If you have Zipkin configured for Dapr locally on your machine, you can 
+
+Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+View the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`). 
 
 <img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
 
 ### What happened?
 
-When you ran `need`:
+When you ran `dapr run`:
 
-1. A unique order ID for the workflow is generated (in the above example, `need`) and the workflow is scheduled.
-1. The `need` workflow activity sends a notification saying an order for 10 cars has been received.
-1. The `need` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
-1. Your workflow starts and notifies you of its status.
-1. The `need` workflow activity begins processing payment for order `need` and confirms if successful.
-1. The `need` workflow activity updates the inventory with the current available cars after the order has been processed.
-1. The `need` workflow activity sends a notification saying that order `need` has completed.
+1. A unique order ID for the workflow is generated (in the above example, `edceba90-9c45-4be8-ad40-60d16e060797`) and the workflow is scheduled.
+1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
+1. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+1. Once approved, your workflow starts and notifies you of its status.
+1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `edceba90-9c45-4be8-ad40-60d16e060797` and confirms if successful.
+1. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+1. The `NotifyActivity` workflow activity sends a notification saying that order `edceba90-9c45-4be8-ad40-60d16e060797` has completed.
 1. The workflow terminates as completed.
 
-#### `order-processor/... need` 
+#### `order-processor/WorkflowConsoleApp.java` 
 
 In the application's program file:
 - The unique workflow order ID is generated
@@ -572,32 +644,225 @@ In the application's program file:
 - The workflow and the workflow activities it invokes are registered
 
 ```java
-need
+package io.dapr.quickstarts.workflows;
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.workflows.client.DaprWorkflowClient;
+
+public class WorkflowConsoleApp {
+
+  private static final String STATE_STORE_NAME = "statestore-actors";
+
+  // ...
+  public static void main(String[] args) throws Exception {
+    System.out.println("*** Welcome to the Dapr Workflow console app sample!");
+    System.out.println("*** Using this app, you can place orders that start workflows.");
+    // Wait for the sidecar to become available
+    Thread.sleep(5 * 1000);
+
+    // Register the OrderProcessingWorkflow and its activities with the builder.
+    WorkflowRuntimeBuilder builder = new WorkflowRuntimeBuilder().registerWorkflow(OrderProcessingWorkflow.class);
+    builder.registerActivity(NotifyActivity.class);
+    builder.registerActivity(ProcessPaymentActivity.class);
+    builder.registerActivity(RequestApprovalActivity.class);
+    builder.registerActivity(ReserveInventoryActivity.class);
+    builder.registerActivity(UpdateInventoryActivity.class);
+
+    // Build the workflow runtime
+    try (WorkflowRuntime runtime = builder.build()) {
+      System.out.println("Start workflow runtime");
+      runtime.start(false);
+    }
+
+    InventoryItem inventory = prepareInventoryAndOrder();
+
+    DaprWorkflowClient workflowClient = new DaprWorkflowClient();
+    try (workflowClient) {
+      executeWorkflow(workflowClient, inventory);
+    }
+
+  }
+
+  // Start the workflow runtime, pulling and executing tasks
+  private static void executeWorkflow(DaprWorkflowClient workflowClient, InventoryItem inventory) {
+    System.out.println("==========Begin the purchase of item:==========");
+    String itemName = inventory.getName();
+    int orderQuantity = inventory.getQuantity();
+    int totalcost = orderQuantity * inventory.getPerItemCost();
+    OrderPayload order = new OrderPayload();
+    order.setItemName(itemName);
+    order.setQuantity(orderQuantity);
+    order.setTotalCost(totalcost);
+    System.out.println("Starting order workflow, purchasing " + orderQuantity + " of " + itemName);
+
+    String instanceId = workflowClient.scheduleNewWorkflow(OrderProcessingWorkflow.class, order);
+    System.out.printf("scheduled new workflow instance of OrderProcessingWorkflow with instance ID: %s%n",
+        instanceId);
+
+    // Check workflow instance start status
+    try {
+      workflowClient.waitForInstanceStart(instanceId, Duration.ofSeconds(10), false);
+      System.out.printf("workflow instance %s started%n", instanceId);
+    } catch (TimeoutException e) {
+      System.out.printf("workflow instance %s did not start within 10 seconds%n", instanceId);
+      return;
+    }
+
+    // Check workflow instance complete status
+    try {
+      WorkflowInstanceStatus workflowStatus = workflowClient.waitForInstanceCompletion(instanceId,
+          Duration.ofSeconds(30),
+          true);
+      if (workflowStatus != null) {
+        System.out.printf("workflow instance %s completed, out is: %s %n", instanceId,
+            workflowStatus.getSerializedOutput());
+      } else {
+        System.out.printf("workflow instance %s not found%n", instanceId);
+      }
+    } catch (TimeoutException e) {
+      System.out.printf("workflow instance %s did not complete within 30 seconds%n", instanceId);
+    }
+
+  }
+
+  private static InventoryItem prepareInventoryAndOrder() {
+    // prepare 100 cars in inventory
+    InventoryItem inventory = new InventoryItem();
+    inventory.setName("cars");
+    inventory.setPerItemCost(15000);
+    inventory.setQuantity(100);
+    DaprClient daprClient = new DaprClientBuilder().build();
+    restockInventory(daprClient, inventory);
+
+    // prepare order for 10 cars
+    InventoryItem order = new InventoryItem();
+    order.setName("cars");
+    order.setPerItemCost(15000);
+    order.setQuantity(10);
+    return order;
+  }
+
+  private static void restockInventory(DaprClient daprClient, InventoryItem inventory) {
+    String key = inventory.getName();
+    daprClient.saveState(STATE_STORE_NAME, key, inventory).block();
+  }
+}
 ```
 
-#### `order-processor/... need`
+#### `OrderProcessingWorkflow.java`
 
-In `need`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
+In `OrderProcessingWorkflow.java`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
 
 ```java
-need
+package io.dapr.quickstarts.workflows;
+import io.dapr.workflows.Workflow;
+
+public class OrderProcessingWorkflow extends Workflow {
+
+  @Override
+  public WorkflowStub create() {
+    return ctx -> {
+      Logger logger = ctx.getLogger();
+      String orderId = ctx.getInstanceId();
+      logger.info("Starting Workflow: " + ctx.getName());
+      logger.info("Instance ID(order ID): " + orderId);
+      logger.info("Current Orchestration Time: " + ctx.getCurrentInstant());
+
+      OrderPayload order = ctx.getInput(OrderPayload.class);
+      logger.info("Received Order: " + order.toString());
+      OrderResult orderResult = new OrderResult();
+      orderResult.setProcessed(false);
+
+      // Notify the user that an order has come through
+      Notification notification = new Notification();
+      notification.setMessage("Received Order: " + order.toString());
+      ctx.callActivity(NotifyActivity.class.getName(), notification).await();
+
+      // Determine if there is enough of the item available for purchase by checking
+      // the inventory
+      InventoryRequest inventoryRequest = new InventoryRequest();
+      inventoryRequest.setRequestId(orderId);
+      inventoryRequest.setItemName(order.getItemName());
+      inventoryRequest.setQuantity(order.getQuantity());
+      InventoryResult inventoryResult = ctx.callActivity(ReserveInventoryActivity.class.getName(),
+          inventoryRequest, InventoryResult.class).await();
+
+      // If there is insufficient inventory, fail and let the user know
+      if (!inventoryResult.isSuccess()) {
+        notification.setMessage("Insufficient inventory for order : " + order.getItemName());
+        ctx.callActivity(NotifyActivity.class.getName(), notification).await();
+        ctx.complete(orderResult);
+        return;
+      }
+
+      // Require orders over a certain threshold to be approved
+      if (order.getTotalCost() > 5000) {
+        ApprovalResult approvalResult = ctx.callActivity(RequestApprovalActivity.class.getName(),
+            order, ApprovalResult.class).await();
+        if (approvalResult != ApprovalResult.Approved) {
+          notification.setMessage("Order " + order.getItemName() + " was not approved.");
+          ctx.callActivity(NotifyActivity.class.getName(), notification).await();
+          ctx.complete(orderResult);
+          return;
+        }
+      }
+
+      // There is enough inventory available so the user can purchase the item(s).
+      // Process their payment
+      PaymentRequest paymentRequest = new PaymentRequest();
+      paymentRequest.setRequestId(orderId);
+      paymentRequest.setItemBeingPurchased(order.getItemName());
+      paymentRequest.setQuantity(order.getQuantity());
+      paymentRequest.setAmount(order.getTotalCost());
+      boolean isOK = ctx.callActivity(ProcessPaymentActivity.class.getName(),
+          paymentRequest, boolean.class).await();
+      if (!isOK) {
+        notification.setMessage("Payment failed for order : " + orderId);
+        ctx.callActivity(NotifyActivity.class.getName(), notification).await();
+        ctx.complete(orderResult);
+        return;
+      }
+
+      inventoryResult = ctx.callActivity(UpdateInventoryActivity.class.getName(),
+          inventoryRequest, InventoryResult.class).await();
+      if (!inventoryResult.isSuccess()) {
+        // If there is an error updating the inventory, refund the user
+        // paymentRequest.setAmount(-1 * paymentRequest.getAmount());
+        // ctx.callActivity(ProcessPaymentActivity.class.getName(),
+        // paymentRequest).await();
+
+        // Let users know their payment processing failed
+        notification.setMessage("Order failed to update inventory! : " + orderId);
+        ctx.callActivity(NotifyActivity.class.getName(), notification).await();
+        ctx.complete(orderResult);
+        return;
+      }
+
+      // Let user know their order was processed
+      notification.setMessage("Order completed! : " + orderId);
+      ctx.callActivity(NotifyActivity.class.getName(), notification).await();
+
+      // Complete the workflow with order result is processed
+      orderResult.setProcessed(true);
+      ctx.complete(orderResult);
+    };
+  }
+
+}
 ```
 
-#### `order-processor/... need` directory
+#### `activities` directory
 
 The `Activities` directory holds the four workflow activities used by the workflow, defined in the following files:
-- `need`
+- [`NotifyActivity.java`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/NotifyActivity.java)
+- [`RequestApprovalActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/RequestApprovalActivity.java)
+- [`ReserveInventoryActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/ReserveInventoryActivity.java)
+- [`ProcessPaymentActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/ProcessPaymentActivity.java)
+- [`UpdateInventoryActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/UpdateInventoryActivity.java)
 
 {{% /codetab %}}
 
 {{< /tabs >}}
-
-## Watch the demo
-
-Watch [this video to walk through the Dapr Workflow .NET demo](https://youtu.be/BxiKpEmchgQ?t=2564):
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxiKpEmchgQ?start=2564" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 
 ## Tell us what you think!
 We're continuously working to improve our Quickstart examples and value your feedback. Did you find this Quickstart helpful? Do you have suggestions for improvement?
