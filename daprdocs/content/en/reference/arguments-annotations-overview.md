@@ -17,7 +17,7 @@ This table is meant to help users understand the equivalent options for running 
 | `--app-port` | `--app-port` | `-p` | `dapr.io/app-port` | This parameter tells Dapr which port your application is listening on |
 | `--components-path`  | `--components-path` | `-d` | not supported | **Deprecated** in favor of `--resources-path` |
 | `--resources-path`  | `--resources-path` | `-d` | not supported | Path for components directory. If empty, components will not be loaded. |
-| `--config`  | `--config` | `-c` | `dapr.io/config` | Tells Dapr which Configuration CRD to use |
+| `--config`  | `--config` | `-c` | `dapr.io/config` | Tells Dapr which Configuration resource to use |
 | `--control-plane-address` | not supported | | not supported | Address for a Dapr control plane |
 | `--dapr-grpc-port` | `--dapr-grpc-port` | | not supported | gRPC port for the Dapr API to listen on (default "50001") |
 | `--dapr-http-port` | `--dapr-http-port` | | not supported | The HTTP port for the Dapr API |

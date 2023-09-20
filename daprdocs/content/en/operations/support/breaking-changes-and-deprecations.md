@@ -15,7 +15,7 @@ Breaking changes are defined as a change to any of the following that cause comp
 - Default configuration value
 - Command line argument
 - Published metric
-- Kubernetes CRD template
+- Kubernetes resource template
 - Publicly accessible API
 - Publicly visible SDK interface, method, class, or attribute
 

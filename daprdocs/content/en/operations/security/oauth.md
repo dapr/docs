@@ -24,7 +24,7 @@ Different authorization servers provide different application registration exper
 * [Slack](https://api.slack.com/docs/oauth)
 * [Twitter](http://apps.twitter.com/)
 <!-- END_IGNORE -->
-To figure the Dapr OAuth middleware, you'll need to collect the following information:
+To configure the Dapr OAuth middleware, you'll need to collect the following information:
 
 * Client ID (see [here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/))
 * Client secret (see [here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/))

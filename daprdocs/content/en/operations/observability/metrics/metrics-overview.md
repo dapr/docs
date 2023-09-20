@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Configure metrics"
-linkTitle: "Configure metrics"
+linkTitle: "Overview"
 weight: 4000
 description: "Enable or disable Dapr metrics "
 ---
