@@ -1,40 +1,52 @@
 ---
 type: docs
-title: "Setup a Google Kubernetes Engine (GKE) cluster"
+title: "Set up a Google Kubernetes Engine (GKE) cluster"
 linkTitle: "Google Kubernetes Engine (GKE)"
 weight: 3000
-description: "Setup a Google Kubernetes Engine cluster"
+description: "Set up a Google Kubernetes Engine cluster"
 ---
 
 ### Prerequisites
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/)
-- [Google Cloud SDK](https://cloud.google.com/sdk)
+- Install: 
+   - [kubectl](https://kubernetes.io/docs/tasks/tools/)
+   - [Google Cloud SDK](https://cloud.google.com/sdk)
 
 ## Create a new cluster
+
+Create a GKE cluster by running the following:
+
 ```bash
 $ gcloud services enable container.googleapis.com && \
   gcloud container clusters create $CLUSTER_NAME \
   --zone $ZONE \
   --project $PROJECT_ID
 ```
-For more options refer to the [Google Cloud SDK docs](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create), or instead create a cluster through the [Cloud Console](https://console.cloud.google.com/kubernetes) for a more interactive experience.
+For more options:
+- Refer to the [Google Cloud SDK docs](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create).
+- Create a cluster through the [Cloud Console](https://console.cloud.google.com/kubernetes) for a more interactive experience.
 
-{{% alert title="For private GKE clusters" color="warning" %}}
-Sidecar injection will not work for private clusters without extra steps. An automatically created firewall rule for master access does not open port 4000. This is needed for Dapr sidecar injection.
+## Sidecar injection for private GKE clusters
 
-To review the relevant firewall rule:
+_**Sidecar injection for private clusters requires extra steps.**_
+
+In private GKE clusters, an automatically created firewall rule for master access doesn't open port 4000, which Dapr needs for sidecar injection.
+
+Review the relevant firewall rule:
+
 ```bash
 $ gcloud compute firewall-rules list --filter="name~gke-${CLUSTER_NAME}-[0-9a-z]*-master"
 ```
 
-To replace the existing rule and allow kubernetes master access to port 4000:
+Replace the existing rule and allow Kubernetes master access to port 4000:
+
 ```bash
 $ gcloud compute firewall-rules update <firewall-rule-name> --allow tcp:10250,tcp:443,tcp:4000
 ```
-{{% /alert %}}
 
 ## Retrieve your credentials for `kubectl`
+
+Run the following command to retrieve your credentials:
 
 ```bash
 $ gcloud container clusters get-credentials $CLUSTER_NAME \
@@ -42,14 +54,33 @@ $ gcloud container clusters get-credentials $CLUSTER_NAME \
     --project $PROJECT_ID
 ```
 
-## (optional) Install Helm v3
+## Install Helm v3 (optional)
 
-1. [Install Helm v3 client](https://helm.sh/docs/intro/install/)
+If you are using Helm, install the [Helm v3 client](https://helm.sh/docs/intro/install/).
 
-> **Note:** The latest Dapr helm chart no longer supports Helm v2. Please migrate from helm v2 to helm v3 by following [this guide](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+{{% alert title="Important" color="warning" %}}
+The latest Dapr Helm chart no longer supports Helm v2. [Migrate from Helm v2 to Helm v3](https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/).
+{{% /alert %}}
 
-2. In case you need permissions  the kubernetes dashboard (i.e. configmaps is forbidden: User "system:serviceaccount:kube-system:kubernetes-dashboard" cannot list configmaps in the namespace "default", etc.) execute this command
+## Troubleshooting
+
+### Kubernetes dashboard permissions
+
+Let's say you receive an error message similar to the following: 
+
+```
+configmaps is forbidden: User "system:serviceaccount:kube-system:kubernetes-dashboard" cannot list configmaps in the namespace "default"
+``` 
+
+Execute this command:
 
 ```bash
 kubectl create clusterrolebinding kubernetes-dashboard -n kube-system --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 ```
+
+## Related links
+- [Learn more about GKE clusters](https://cloud.google.com/kubernetes-engine/docs)
+- [Try out a Dapr quickstart]({{< ref quickstarts.md >}})
+- Learn how to [deploy Dapr on your cluster]({{< ref kubernetes-deploy.md >}})
+- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
+- [Kubernetes production guidelines]({{< ref kubernetes-production.md >}})

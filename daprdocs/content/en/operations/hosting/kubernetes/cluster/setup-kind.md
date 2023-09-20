@@ -4,108 +4,117 @@ title: "Set up a KiND cluster"
 linkTitle: "KiND"
 weight: 1100
 description: >
-  How to set up Dapr on a KiND cluster.
+  How to set up a KiND cluster
 ---
-
-# Set up a KiND cluster
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/install/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/)
-
-> Note: For Windows, enable Virtualization in BIOS and [install Hyper-V](https://docs.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
+- Install:
+   - [Docker](https://docs.docker.com/install/)
+   - [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- For Windows:
+   - Enable Virtualization in BIOS
+   - [Install Hyper-V](https://docs.microsoft.com/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
 
 ## Install and configure KiND
 
-Make sure you follow one of the [Installation](https://kind.sigs.k8s.io/docs/user/quick-start) options for KiND.
+[Refer to the KiND documentation to install.](https://kind.sigs.k8s.io/docs/user/quick-start)
 
-In case you are using Docker Desktop, double-check that you have performed the recommended [settings](https://kind.sigs.k8s.io/docs/user/quick-start#settings-for-docker-desktop) (4 CPUs and 8 GiB of RAM available to Docker Engine).
+If you are using Docker Desktop, verify that you have [the recommended settings](https://kind.sigs.k8s.io/docs/user/quick-start#settings-for-docker-desktop).
 
 ## Configure and create the KiND cluster
 
 1. Create a file named `kind-cluster-config.yaml`, and paste the following:
-```yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
-  kubeadmConfigPatches:
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true"
-  extraPortMappings:
-  - containerPort: 80
-    hostPort: 8081
-    protocol: TCP
-  - containerPort: 443
-    hostPort: 8443
-    protocol: TCP
-- role: worker
-- role: worker
-```
 
-This is going to request KiND to spin up a kubernetes cluster comprised of a control plane and two worker nodes. It also allows for future setup of ingresses and exposes container ports to the host machine.
+   ```yaml
+   kind: Cluster
+   apiVersion: kind.x-k8s.io/v1alpha4
+   nodes:
+   - role: control-plane
+     kubeadmConfigPatches:
+     - |
+       kind: InitConfiguration
+       nodeRegistration:
+         kubeletExtraArgs:
+           node-labels: "ingress-ready=true"
+     extraPortMappings:
+     - containerPort: 80
+       hostPort: 8081
+       protocol: TCP
+     - containerPort: 443
+       hostPort: 8443
+       protocol: TCP
+   - role: worker
+   - role: worker
+   ```
 
-2. Run the `kind create cluster` providing the cluster configuration file:
+   This cluster configuration:
+   - Requests KiND to spin up a Kubernetes cluster comprised of a control plane and two worker nodes. 
+   - Allows for future setup of ingresses.
+   - Exposes container ports to the host machine.
 
-```bash
-kind create cluster --config kind-cluster-config.yaml
-```
+1. Run the `kind create cluster` command, providing the cluster configuration file:
 
-Wait until the cluster is created, the output should look like this:
+   ```bash
+   kind create cluster --config kind-cluster-config.yaml
+   ```
 
-```md
-Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.21.1) 🖼
- ✓ Preparing nodes 📦 📦 📦
- ✓ Writing configuration 📜
- ✓ Starting control-plane 🕹️
- ✓ Installing CNI 🔌
- ✓ Installing StorageClass 💾
- ✓ Joining worker nodes 🚜
-Set kubectl context to "kind-kind"
-You can now use your cluster with:
+   **Expected output**
 
-kubectl cluster-info --context kind-kind
+   ```md
+   Creating cluster "kind" ...
+    ✓ Ensuring node image (kindest/node:v1.21.1) 🖼
+    ✓ Preparing nodes 📦 📦 📦
+    ✓ Writing configuration 📜
+    ✓ Starting control-plane 🕹️
+    ✓ Installing CNI 🔌
+    ✓ Installing StorageClass 💾
+    ✓ Joining worker nodes 🚜
+   Set kubectl context to "kind-kind"
+   You can now use your cluster with:
+   
+   kubectl cluster-info --context kind-kind
+   
+   Thanks for using kind! 😊
+   ```
 
-Thanks for using kind! 😊
-```
+## Initialize and run Dapr
 
-## Dapr
+1. Initialize Dapr in Kubernetes.
 
-1. Initialize Dapr:
-```bash
-dapr init --kubernetes
-```
+   ```bash
+   dapr init --kubernetes
+   ```
 
-Once Dapr finishes initializing its core components are ready to be used on the cluster. 
+   Once Dapr finishes initializing, you can use its core components on the cluster. 
 
-To verify the status of these components run:
-```bash
-dapr status -k
-```
-the output should look like this:
+1. Verify the status of the Dapr components:
 
-```md
-  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED
-  dapr-sentry            dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
-  dapr-operator          dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
-  dapr-sidecar-injector  dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
-  dapr-dashboard         dapr-system  True     Running  1         0.9.0    53s  2021-12-10 09:27.17
-  dapr-placement-server  dapr-system  True     Running  1         1.5.1    52s  2021-12-10 09:27.18
-```
+   ```bash
+   dapr status -k
+   ```
 
-2. Forward a port to [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/):
+   **Expected output**
 
-```bash
-dapr dashboard -k -p 9999
-```
+   ```md
+     NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED
+     dapr-sentry            dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
+     dapr-operator          dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
+     dapr-sidecar-injector  dapr-system  True     Running  1         1.5.1    53s  2021-12-10 09:27.17
+     dapr-dashboard         dapr-system  True     Running  1         0.9.0    53s  2021-12-10 09:27.17
+     dapr-placement-server  dapr-system  True     Running  1         1.5.1    52s  2021-12-10 09:27.18
+   ```
 
-So that you can validate that the setup finished successfully by navigating to `http://localhost:9999`.
+1. Forward a port to [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/):
 
-## Next steps
+   ```bash
+   dapr dashboard -k -p 9999
+   ```
+
+1. Navigate to `http://localhost:9999` to validate a successful setup.
+
+## Related links
 - [Try out a Dapr quickstart]({{< ref quickstarts.md >}})
-
+- Learn how to [deploy Dapr on your cluster]({{< ref kubernetes-deploy.md >}})
+- [Upgrade Dapr on Kubernetes]({{< ref kubernetes-upgrade.md >}})
+- [Kubernetes production guidelines]({{< ref kubernetes-production.md >}})
