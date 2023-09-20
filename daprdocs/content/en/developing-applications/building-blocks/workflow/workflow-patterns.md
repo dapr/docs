@@ -109,7 +109,21 @@ catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
 <!--java-->
 
 ```java
-todo
+public static void main(String[] args) throws InterruptedException {
+  DaprWorkflowClient client = new DaprWorkflowClient();
+
+  try (client) {
+    client.raiseEvent(instanceId, "TestEvent", "TestEventPayload");
+
+    System.out.println(separatorStr);
+    System.out.println("** Registering parallel Events to be captured by allOf(t1,t2,t3) **");
+    client.raiseEvent(instanceId, "event1", "TestEvent 1 Payload");
+    client.raiseEvent(instanceId, "event2", "TestEvent 2 Payload");
+    client.raiseEvent(instanceId, "event3", "TestEvent 3 Payload");
+    System.out.printf("Events raised for workflow with instanceId: %s\n", instanceId);
+
+  }
+}
 ```
 
 {{% /codetab %}}
@@ -211,7 +225,47 @@ await context.CallActivityAsync("PostResults", sum);
 <!--java-->
 
 ```java
-todo
+public static void main(String[] args) throws InterruptedException {
+  DaprWorkflowClient client = new DaprWorkflowClient();
+
+  try (client) {
+
+    System.out.println(separatorStr);
+    System.out.println("**SendExternalMessage**");
+    client.raiseEvent(instanceId, "TestEvent", "TestEventPayload");
+
+    // Get events to process in parallel
+    System.out.println(separatorStr);
+    System.out.println("** Registering parallel Events to be captured by allOf(t1,t2,t3) **");
+    client.raiseEvent(instanceId, "event1", "TestEvent 1 Payload");
+    client.raiseEvent(instanceId, "event2", "TestEvent 2 Payload");
+    client.raiseEvent(instanceId, "event3", "TestEvent 3 Payload");
+    System.out.printf("Events raised for workflow with instanceId: %s\n", instanceId);
+
+    // Register the raised events to be captured
+    System.out.println(separatorStr);
+    System.out.println("** Registering Event to be captured by anyOf(t1,t2,t3) **");
+    client.raiseEvent(instanceId, "e2", "event 2 Payload");
+    System.out.printf("Event raised for workflow with instanceId: %s\n", instanceId);
+
+    // Wait for all tasks to complete and aggregate results
+    System.out.println(separatorStr);
+    System.out.println("**WaitForInstanceCompletion**");
+    try {
+      WorkflowInstanceStatus waitForInstanceCompletionResult =
+          client.waitForInstanceCompletion(instanceId, Duration.ofSeconds(60), true);
+      System.out.printf("Result: %s%n", waitForInstanceCompletionResult);
+    } catch (TimeoutException ex) {
+      System.out.printf("waitForInstanceCompletion has an exception:%s%n", ex);
+    }
+
+    System.out.println(separatorStr);
+    System.out.println("**purgeInstance**");
+    boolean purgeResult = client.purgeInstance(instanceId);
+    System.out.printf("purgeResult: %s%n", purgeResult);
+
+  }
+}
 ```
 
 {{% /codetab %}}
@@ -552,7 +606,43 @@ public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderP
 <!--java-->
 
 ```java
-todo
+public static void main(String[] args) throws InterruptedException {
+    DaprWorkflowClient client = new DaprWorkflowClient();
+
+    try (client) {
+      String eventInstanceId = client.scheduleNewWorkflow(DemoWorkflow.class);
+      System.out.printf("Started new workflow instance with random ID: %s%n", eventInstanceId);
+      client.raiseEvent(eventInstanceId, "TestException", null);
+      System.out.printf("Event raised for workflow with instanceId: %s\n", eventInstanceId);
+
+      System.out.println(separatorStr);
+      String instanceToTerminateId = "terminateMe";
+      client.scheduleNewWorkflow(DemoWorkflow.class, null, instanceToTerminateId);
+      System.out.printf("Started new workflow instance with specified ID: %s%n", instanceToTerminateId);
+
+      TimeUnit.SECONDS.sleep(5);
+      System.out.println("Terminate this workflow instance manually before the timeout is reached");
+      client.terminateWorkflow(instanceToTerminateId, null);
+      System.out.println(separatorStr);
+
+      String restartingInstanceId = "restarting";
+      client.scheduleNewWorkflow(DemoWorkflow.class, null, restartingInstanceId);
+      System.out.printf("Started new  workflow instance with ID: %s%n", restartingInstanceId);
+      System.out.println("Sleeping 30 seconds to restart the workflow");
+      TimeUnit.SECONDS.sleep(30);
+
+      System.out.println("**SendExternalMessage: RestartEvent**");
+      client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
+
+      System.out.println("Sleeping 30 seconds to terminate the eternal workflow");
+      TimeUnit.SECONDS.sleep(30);
+      client.terminateWorkflow(restartingInstanceId, null);
+    }
+
+    System.out.println("Exiting DemoWorkflowClient.");
+    System.exit(0);
+
+}
 ```
 
 {{% /codetab %}}
