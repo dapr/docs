@@ -26,7 +26,7 @@ With Multi-App Run, you can start multiple applications in either self-hosted or
 
 ## Multi-App Run template file
 
-When you execute `dapr run -f .`, it generates the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
+When you execute `dapr run -f .`, it starts the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
 
 You can name template file with preferred name other than the default. For example `dapr run -f ./<your-preferred-file-name>.yaml`.
 
@@ -98,23 +98,15 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 ## Multi-App Run template file
 
-Generate the multi-app template file (`dapr.yaml`) by running one of the following commands:
-
-```bash
-dapr run -k -f .
-```
-
-Or
-
-```bash
-dapr run -k -f dapr.yaml
-```
+When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` multi-app run template file will start in Kubernetes default namespace. 
 
 The necessary default service and deployment definitions for Kubernetes are generated within the `.dapr/deploy` folder for each app in the `dapr.yaml` template. 
 
-If the `createService` field is present in the `dapr.yaml` template and set to `true`, then the `service.yaml` file(s):
-- Generate in the `.dapr/deploy` folder of each app in the multi-app run template
-- Are used to deploy the applications in a dev/test environment in K8s 
+If the `createService` field is set to `true` in the `dapr.yaml` template for an app, then the `service.yaml` file is generated in the `.dapr/deploy` folder of the app.
+
+Otherwise, only the `deployment.yaml` file is generated for each app that has the `containerImage` field set.
+
+The files `service.yaml` and `deployment.yaml` are used to deploy the applications in `default` namespace in Kubernetes. This feature is specifically targeted only for running multiple apps in a dev/test environment in Kubernetes.
 
 You can name the template file with any preferred name other than the default. For example:
 
