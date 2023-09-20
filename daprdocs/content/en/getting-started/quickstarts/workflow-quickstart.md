@@ -7,7 +7,7 @@ description: Get started with the Dapr Workflow building block
 ---
 
 {{% alert title="Note" color="primary" %}}
-Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}).
+Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}). 
 {{% /alert %}}
 
 Let's take a look at the Dapr [Workflow building block]({{< ref workflow >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs. 
@@ -537,7 +537,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - Java JDK 11 (or greater):
-    - [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
+    - [Microsoft JDK 11](https://docs.microsoft.com/java/openjdk/download#openjdk-11)
     - [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
     - [OpenJDK 11](https://jdk.java.net/11/)
 - [Apache Maven](https://maven.apache.org/install.html) version 3.x.
