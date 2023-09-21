@@ -389,7 +389,7 @@ dotnet build
 Run the `order-processor` subscriber service alongside a Dapr sidecar.
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components --app-port 7005 -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../components --app-port 7006 -- dotnet run
 ```
 
 In the `order-processor` subscriber, we're subscribing to the Redis instance called `orderpubsub` [(as defined in the `pubsub.yaml` component)]({{< ref "#pubsubyaml-component-file" >}}) and topic `orders`. This enables your app code to talk to the Redis component instance through the Dapr sidecar.
