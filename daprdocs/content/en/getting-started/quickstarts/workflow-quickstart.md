@@ -101,12 +101,6 @@ Expected output:
 
 ### (Optional) Step 4: View in Zipkin
 
-If you have Zipkin configured for Dapr locally on your machine, you can view the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`).
-
-### (Optional) Step 4: View in Zipkin
-
-If you have Zipkin configured for Dapr locally on your machine, you can 
-
 Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
 
 ```
@@ -348,8 +342,6 @@ Expected output:
 ```
 
 ### (Optional) Step 4: View in Zipkin
-
-If you have Zipkin configured for Dapr locally on your machine, you can 
 
 Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
 
@@ -609,8 +601,6 @@ Expected output:
 ```
 
 ### (Optional) Step 4: View in Zipkin
-
-If you have Zipkin configured for Dapr locally on your machine, you can 
 
 Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
 
