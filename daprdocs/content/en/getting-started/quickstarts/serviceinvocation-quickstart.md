@@ -112,7 +112,7 @@ Exited App successfully
 
 Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
@@ -128,7 +128,7 @@ apps:
     command: ["python3", "app.py"]
 ```
 
-#### `order-processor` service
+##### `order-processor` service
 
 The `order-processor` service receives the call from the `checkout` service: 
 
@@ -247,7 +247,7 @@ Exited App successfully
 
 Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
@@ -263,7 +263,7 @@ apps:
     command: ["npm", "start"]
 ```
 
-#### `order-processor` service
+##### `order-processor` service
 
 The `order-processor` service receives the call from the `checkout` service: 
 
@@ -274,7 +274,7 @@ app.post('/orders', (req, res) => {
 });
 ```
 
-#### `checkout` service
+##### `checkout` service
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
@@ -377,7 +377,7 @@ Exited App successfully
 
 Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
@@ -393,7 +393,7 @@ apps:
     command: ["dotnet", "run"]
 ```
 
-#### `order-processor` service
+##### `order-processor` service
 
 The `order-processor` service receives the call from the `checkout` service: 
 
@@ -405,7 +405,7 @@ app.MapPost("/orders", (Order order) =>
 });
 ```
 
-#### `checkout` service
+##### `checkout` service
 
 In the Program.cs file for the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
@@ -511,7 +511,7 @@ Exited App successfully
 
 Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
@@ -527,7 +527,7 @@ apps:
     command: ["java", "-jar", "target/CheckoutService-0.0.1-SNAPSHOT.jar"]
 ```
 
-#### `order-processor` service
+##### `order-processor` service
 
 The `order-processor` service receives the call from the `checkout` service: 
 
@@ -538,7 +538,7 @@ public String processOrders(@RequestBody Order body) {
     }
 ```
 
-#### `checkout` service
+##### `checkout` service
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 
@@ -640,7 +640,7 @@ Exited App successfully
 
 Running `dapr run -f .` in this Quickstart started both the [subscriber]({{< ref "#order-processor-service" >}}) and [publisher]({{< ref "#checkout-service" >}}) applications using the `dapr.yaml` Multi-App Run template file.
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 Running the [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) with `dapr run -f .` starts all applications in your project. In this Quickstart, the `dapr.yaml` file contains the following:
 
@@ -656,7 +656,7 @@ apps:
     command: ["go", "run", "."]
 ```
 
-#### `order-processor` service
+##### `order-processor` service
 
 In the `order-processor` service, each order is received via an HTTP POST request and processed by the `getOrder` function.
 
@@ -670,7 +670,7 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-#### `checkout` service
+##### `checkout` service
 
 In the `checkout` service, you'll notice there's no need to rewrite your app code to use Dapr's service invocation. You can enable service invocation by simply adding the `dapr-app-id` header, which specifies the ID of the target service.
 

@@ -102,7 +102,7 @@ Order-processor output:
 == APP == INFO:root:Deleting Order: {'orderId': '4'}
 ```
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 When you run `dapr init`, Dapr creates a default [Multi-App Run template file]({{< ref multi-app-dapr-run >}}) named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
 
@@ -116,7 +116,7 @@ apps:
     command: ["dotnet", "run"]
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr also creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -239,7 +239,7 @@ Order-processor output:
 == APP == Deleting Order:  { orderId: 5 }
 ```
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 When you run `dapr init`, Dapr creates a default Multi-App Run template file named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
 
@@ -253,7 +253,7 @@ apps:
     command: ["dotnet", "run"]
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -370,7 +370,7 @@ Order-processor output:
 == APP == Deleting Order: Order { orderId = 5 }
 ```
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 When you run `dapr init`, Dapr creates a default Multi-App Run template file named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
 
@@ -384,7 +384,7 @@ apps:
     command: ["dotnet", "run"]
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -506,7 +506,7 @@ Order-processor output:
 == APP == INFO:root:Deleting Order: {'orderId': '4'}
 ```
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 When you run `dapr init`, Dapr creates a default Multi-App Run template file named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
 
@@ -520,7 +520,7 @@ apps:
     command: ["dotnet", "run"]
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -638,7 +638,7 @@ Order-processor output:
 == APP == 2022/04/01 09:16:03 Deleting Order: {"orderId":5}
 ```
 
-#### `dapr.yaml` Multi-App Run template file
+##### `dapr.yaml` Multi-App Run template file
 
 When you run `dapr init`, Dapr creates a default Multi-App Run template file named `dapr.yaml`. Running `dapr run -f` starts all applications in your project. In this sample, the `dapr.yaml` file contains the following:
 
@@ -652,7 +652,7 @@ apps:
     command: ["dotnet", "run"]
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -776,7 +776,7 @@ Order-processor output:
 == APP == INFO:root:Deleting Order: {'orderId': '4'}
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -898,7 +898,7 @@ Order-processor output:
 == APP == Deleting Order:  { orderId: 5 }
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -1015,7 +1015,7 @@ Order-processor output:
 == APP == Deleting Order: Order { orderId = 5 }
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -1137,7 +1137,7 @@ Order-processor output:
 == APP == INFO:root:Deleting Order: {'orderId': '4'}
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
@@ -1255,7 +1255,7 @@ Order-processor output:
 == APP == 2022/04/01 09:16:03 Deleting Order: {"orderId":5}
 ```
 
-#### `statestore.yaml` component file
+##### `statestore.yaml` component file
 
 When you run `dapr init`, Dapr creates a default Redis `statestore.yaml` and runs a Redis container on your local machine, located:
 
