@@ -45,7 +45,7 @@ appId | string  | app id.
 actorTypes | json string array | List of actor types it hosts.
 updatedAt | timestamp | Timestamp of the actor registered/updated.
 
-## Examples
+### Examples
 
 ```shell
  curl localhost:8080/placement/state
@@ -54,11 +54,24 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 ```json
 {
 	"hostList": [{
-		"name": "198.18.0.1:49347",
-		"appId": "actor",
-		"actorTypes": ["testActorType"],
-		"updatedAt": 1690274322325260000
-	}],
+			"name": "198.18.0.1:49347",
+			"appId": "actor1",
+			"actorTypes": ["testActorType1", "testActorType3"],
+			"updatedAt": 1690274322325260000
+		},
+		{
+			"name": "198.18.0.2:49347",
+			"appId": "actor2",
+			"actorTypes": ["testActorType2"],
+			"updatedAt": 1690274322325260000
+		},
+		{
+			"name": "198.18.0.3:49347",
+			"appId": "actor2",
+			"actorTypes": ["testActorType2"],
+			"updatedAt": 1690274322325260000
+		}
+	],
 	"tableVersion": 1
 }
 ```
