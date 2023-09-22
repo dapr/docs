@@ -48,12 +48,6 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/python/sdk/order-processor
 ```
 
-Install the dependencies:
-
-```bash
-pip3 install -r requirements.txt
-```
-
 Run the `order-processor` service alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}).
 
 ```bash
@@ -175,17 +169,6 @@ In a terminal window, navigate to the `order-processor` directory.
 ```bash
 cd state_management/javascript/sdk/order-processor
 ```
-
-Install dependencies, which will include the `@dapr/dapr` package from the JavaScript SDK:
-
-```bash
-npm install
-```
-
-Verify you have the following files included in the service directory:
-
-- `package.json`
-- `package-lock.json`
 
 Run the `order-processor` service alongside a Dapr sidecar.
 
@@ -311,13 +294,6 @@ In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
 cd state_management/csharp/sdk/order-processor
-```
-
-Recall NuGet packages:
-
-```bash
-dotnet restore
-dotnet build
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
@@ -447,12 +423,6 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/java/sdk/order-processor
 ```
 
-Install the dependencies:
-
-```bash
-mvn clean install
-```
-
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
@@ -578,12 +548,6 @@ In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
 cd state_management/go/sdk/order-processor
-```
-
-Install the dependencies and build the application:
-
-```bash
-go build .
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
