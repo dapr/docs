@@ -105,11 +105,11 @@ When you run `dapr init`, Dapr creates a default [Multi-App Run template file]({
 ```yml
 version: 1
 common:
-  resourcesPath: ../../../resources/
+  resourcesPath: ../../resources/
 apps:
   - appID: order-processor
     appDirPath: ./order-processor/
-    command: ["dotnet", "run"]
+    command: ["python3" , "app.py"]
 ```
 
 ##### `statestore.yaml` component file
@@ -242,11 +242,11 @@ When you run `dapr init`, Dapr creates a default Multi-App Run template file nam
 ```yml
 version: 1
 common:
-  resourcesPath: ../../../resources/
+  resourcesPath: ../../resources/
 apps:
   - appID: order-processor
     appDirPath: ./order-processor/
-    command: ["dotnet", "run"]
+    command: ["npm", "run", "start"]
 ```
 
 ##### `statestore.yaml` component file
@@ -509,11 +509,11 @@ When you run `dapr init`, Dapr creates a default Multi-App Run template file nam
 ```yml
 version: 1
 common:
-  resourcesPath: ../../../resources/
+  resourcesPath: ../../resources/
 apps:
   - appID: order-processor
     appDirPath: ./order-processor/
-    command: ["dotnet", "run"]
+    command: ["java", "-jar", "target/OrderProcessingService-0.0.1-SNAPSHOT.jar"]
 ```
 
 ##### `statestore.yaml` component file
@@ -641,11 +641,11 @@ When you run `dapr init`, Dapr creates a default Multi-App Run template file nam
 ```yml
 version: 1
 common:
-  resourcesPath: ../../../resources/
+  resourcesPath: ../../resources/
 apps:
   - appID: order-processor
     appDirPath: ./order-processor/
-    command: ["dotnet", "run"]
+    command: ["go", "run", "."]
 ```
 
 ##### `statestore.yaml` component file
