@@ -6,14 +6,12 @@ weight: 1000
 description: Run multiple applications with one CLI command
 ---
 
-Let's say you want to run several applications locally to test them together, similar to a production scenario. Until Multi-App Run, you'd have to:
+Let's say you want to run several applications locally to test them together, similar to a production scenario. Multi-App Run allows you to start and stop a set of applications simultaneously, either:
+- Locally/self-hosted with processes, or 
+- By building container images and deploying to a Kubernetes cluster
+   - You can use a local Kubernetes cluster (KiND) or one deploy to a Cloud (AKS, EKS, and GKE).
 
-- Run multiple `dapr run` commands
-- Keep track of all ports opened (you cannot have duplicate ports for different applications).
-- Remember the resources folders and configuration files that each application refers to.
-- Recall all of the additional flags you used to tweak the `dapr run` command behavior (`--app-health-check-path`, `--dapr-grpc-port`, `--unix-domain-socket`, etc.)
-
-With Multi-App Run, you can start multiple applications in either self-hosted or Kubernetes mode using a template file and running a single command. The template file describes how to start multiple applications as if you had run many separate CLI `run`commands. By default, this template file is called `dapr.yaml`. 
+The Multi-App Run template file describes how to start multiple applications as if you had run many separate CLI `run` commands. By default, this template file is called `dapr.yaml`. 
 
 {{< tabs Self-hosted Kubernetes>}}
 
@@ -96,7 +94,7 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 > **Note:** Multi-App Run in Kubernetes is currently a preview feature only supported in Linux/MacOS.
 
-When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` multi-app run template file will start in Kubernetes default namespace. 
+When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` multi-app run template file starts in Kubernetes default namespace. 
 
 The necessary default service and deployment definitions for Kubernetes are generated within the `.dapr/deploy` folder for each app in the `dapr.yaml` template. 
 
