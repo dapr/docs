@@ -6,6 +6,10 @@ weight: 1000
 description: Run multiple applications with one CLI command
 ---
 
+{{% alert title="Note" color="primary" %}}
+ Multi-App Run for **Kubernetes** is currently a preview feature only supported in Linux/MacOS.
+{{% /alert %}}
+
 Let's say you want to run several applications locally to test them together, similar to a production scenario. Multi-App Run allows you to start and stop a set of applications simultaneously, either:
 - Locally/self-hosted with processes, or 
 - By building container images and deploying to a Kubernetes cluster
@@ -92,9 +96,9 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 ## Multi-App Run template file
 
-> **Note:** Multi-App Run in Kubernetes is currently a preview feature only supported in Linux/MacOS.
+When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` Multi-App Run template file starts in Kubernetes default namespace. 
 
-When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` multi-app run template file starts in Kubernetes default namespace. 
+> **Note:** Currently, the Multi-App Run template can only start applications in the default Kubernetes namespace.
 
 The necessary default service and deployment definitions for Kubernetes are generated within the `.dapr/deploy` folder for each app in the `dapr.yaml` template. 
 
