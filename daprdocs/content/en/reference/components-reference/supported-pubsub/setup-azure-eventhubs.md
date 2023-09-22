@@ -140,7 +140,7 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 
 ## Configuring Checkpoint Frequency
 
-When subscribing to a topic, you can configure the checkpointing frequency in a partition by setting the metadata in the HTTP or gRPC subscribe request as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#http-request-2). It will enable checkpointing after the configured number of events within a partition event sequence. It can be disabled by setting the frequency to `0`.  Learn more about Checkpointing [here](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#checkpointing).
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by setting the metadata in the HTTP or gRPC subscribe request as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#http-request-2). It will enable checkpointing after the configured number of events within a partition event sequence. It can be disabled by setting the frequency to `0`.  Learn more about Checkpointing [here](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
 
 Note: In case of BulkSubscribe, the checkpointing will occur after the configured number of batches, instead of events. 
 
