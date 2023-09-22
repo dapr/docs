@@ -21,10 +21,6 @@ You can try out this pub/sub quickstart by either:
 
 ## Run using Multi-App Run
 
-{{% alert title="Note" color="primary" %}}
- [Multi-App Run]({{< ref multi-app-dapr-run >}}) is currently a preview feature only supported in Linux/MacOS. 
-{{% /alert %}}
-
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}

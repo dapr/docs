@@ -18,10 +18,6 @@ Learn more about Dapr's methods for service invocation in the [overview article]
 
 ## Run using Multi-App Run
 
-{{% alert title="Note" color="primary" %}}
- [Multi-App Run]({{< ref multi-app-dapr-run >}}) is currently a preview feature only supported in Linux/MacOS. 
-{{% /alert %}}
-
 Select your preferred language before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}

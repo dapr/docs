@@ -16,10 +16,6 @@ While this sample uses Redis, you can swap it out for any one of the [supported 
 
 ## Run using Multi-App Run
 
-{{% alert title="Note" color="primary" %}}
- [Multi-App Run]({{< ref multi-app-dapr-run >}}) is currently a preview feature only supported in Linux/MacOS. 
-{{% /alert %}}
-
 Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
 
 {{< tabs "Python" "JavaScript" ".NET" "Java" "Go" >}}
