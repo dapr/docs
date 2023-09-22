@@ -57,7 +57,7 @@ The API call will provide a response similar to this:
 Terminate a running workflow instance with the given name and instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflow/<workflowComponentName>/<instanceId>/terminate
+POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 
 ### URL parameters
@@ -144,7 +144,7 @@ None.
 Resume a paused workflow instance.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflow/<workflowComponentName>/<instanceId>/resume
+POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/resume
 ```
 
 ### URL parameters
