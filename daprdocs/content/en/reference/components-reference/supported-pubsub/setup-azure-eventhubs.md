@@ -117,13 +117,36 @@ spec:
       value: "myeventhubstoragecontainer"
 ```
 
-## Sending multiple messages
+## Sending and receiving multiple messages
 
-Azure Event Hubs supports sending multiple messages in a single operation. To set the metadata for bulk operations, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
+Azure Eventhubs supports sending and receiving multiple messages in a single operation using the bulk pub/sub API.
+
+### Configuring bulk publish
+
+To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}}).
 
 | Metadata | Default |
 |----------|---------|
 | `metadata.maxBulkPubBytes` | `1000000` |
+
+### Configuring bulk subscribe
+
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+
+| Configuration | Default |
+|---------------|---------|
+| `maxMessagesCount` | `100` |
+| `maxAwaitDurationMs` | `10000` |
+
+## Configuring Checkpoint Frequency
+
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by setting the metadata in the HTTP or gRPC subscribe request as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#http-request-2). It will enable checkpointing after the configured number of events within a partition event sequence. It can be disabled by setting the frequency to `0`.  Learn more about Checkpointing [here](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#checkpointing).
+
+Note: In case of BulkSubscribe, the checkpointing will occur after the configured number of batches, instead of events. 
+
+| Metadata | Default |
+| -------- | ------- |
+| `metadata.checkPointFrequencyPerPartition` | `1` |
 
 ## Create an Azure Event Hub
 
