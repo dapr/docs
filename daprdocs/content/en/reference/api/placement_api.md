@@ -45,7 +45,7 @@ appId | string  | app id.
 actorTypes | json string array | List of actor types it hosts.
 updatedAt | timestamp | Timestamp of the actor registered/updated.
 
-### Examples
+## Examples
 
 ```shell
  curl localhost:8080/placement/state
