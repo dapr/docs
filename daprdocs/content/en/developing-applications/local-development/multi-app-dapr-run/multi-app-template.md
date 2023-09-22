@@ -7,7 +7,7 @@ description: Unpack the Multi-App Run template file and its properties
 ---
 
 {{% alert title="Note" color="primary" %}}
- Multi-App Run is currently a preview feature only supported in Linux/MacOS.
+ Multi-App Run for Kubernetes is currently a preview feature only supported in Linux/MacOS.
 {{% /alert %}}
 
 The Multi-App Run template file is a YAML file that you can use to run multiple applications at once. In this guide, you'll learn how to:

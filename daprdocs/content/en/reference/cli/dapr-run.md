@@ -23,6 +23,7 @@ dapr run [flags] [command]
 
 | Name                           | Environment Variable | Default                                                                            | Description                                                                                          |
 | ------------------------------ | -------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `--kubernetes`, `-k`             |            |                                                                                    | Running Dapr on Kubernetes, and used for [Multi-App Run template files on Kubernetes]({{< ref multi-app-dapr-run >}}).                                                            |
 | `--app-id`, `-a`               | `APP_ID`             |                                                                                    | The id for your application, used for service discovery. Cannot contain dots.                        |
 | `--app-max-concurrency`        |                      | `unlimited`                                                                        | The concurrency level of the application; default is unlimited                                       |
 | `--app-port`, `-p`             | `APP_PORT`           |                                                                                    | The port your application is listening on                                                            |
