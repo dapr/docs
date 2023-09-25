@@ -50,6 +50,7 @@ dapr run [flags] [command]
 | `--unix-domain-socket`, `-u`   |                      |                                                                                    |  Path to a unix domain socket dir mount. If specified, communication with the Dapr sidecar uses unix domain sockets for lower latency and greater throughput when compared to using TCP ports. Not available on Windows. |
 | `--dapr-http-max-request-size` |                      | `4`                                                                                | Max size of the request body in MB. |
 | `--dapr-http-read-buffer-size` |                      | `4`                                                                                | Max size of the HTTP read buffer in KB. This also limits the maximum size of HTTP headers. The default 4 KB |
+| `--kubernetes`, `-k`             |            |                                                                                    | Running Dapr on Kubernetes, and used for [Multi-App Run template files on Kubernetes]({{< ref multi-app-dapr-run >}}).                                                            |
 | `--components-path`, `-d`      |                      | Linux/Mac: `$HOME/.dapr/components` <br/>Windows: `%USERPROFILE%\.dapr\components` | **Deprecated** in favor of `--resources-path`                                                      |
 
 ### Examples
@@ -81,4 +82,10 @@ dapr run --app-id myapp --app-port 3000 --enable-api-logging  -- node myapp.js
 
 # Pass multiple resource paths
 dapr run --app-id myapp --resources-path path1 --resources-path path2
+
+# Run the multi-app run template file
+dapr run -f dapr.yaml
+
+# Run the multi-app run template file on Kubernetes
+dapr run -k -f dapr.yaml
 ```
