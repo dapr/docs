@@ -6,6 +6,10 @@ weight: 2000
 description: "Learn more about the Dapr Workflow features and concepts"
 ---
 
+{{% alert title="Note" color="primary" %}}
+Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}).
+{{% /alert %}}
+
 Now that you've learned about the [workflow building block]({{< ref workflow-overview.md >}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages. 
 
 {{% alert title="Note" color="primary" %}}
