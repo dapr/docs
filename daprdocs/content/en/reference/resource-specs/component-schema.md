@@ -37,7 +37,7 @@ scopes:
 |--------------------|:--------:|---------|---------|
 | apiVersion         | Y        | The version of the Dapr (and Kubernetes if applicable) API you are calling | `dapr.io/v1alpha1`
 | kind               | Y        | The type of resource. For components is must always be `Component` | `Component`
-| auth               | N        | The authentication details for the component |
+| auth               | N        | The name of a secret store where `secretKeyRef` in the metadata lookup the name of secrets used in the component | `appsecretstore`
 | scopes             | N        | The applications the component is limited to, specified by their app IDs | `order-processor`, `checkout`  
 | **metadata**       | -        | **Information about the component registration** |
 | metadata.name      | Y        | The name of the component | `prod-statestore`
