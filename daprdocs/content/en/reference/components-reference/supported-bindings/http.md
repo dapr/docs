@@ -38,7 +38,7 @@ spec:
       key: "mytoken"
   - name: securityTokenHeader
     value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
-  - name: direction
+  - name: direction # OPTIONAL
     value: "output"
   - name: errorIfNot2XX
     value: "false" # OPTIONAL
