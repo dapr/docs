@@ -8,7 +8,9 @@ weight: 1200
 
 Dapr has an HTTP API `/placement/state` for placement service that exposes placement table information. The API is exposed on the sidecar on the same port as the healthz. This is an unauthenticated endpoint, and is disabled by default. 
 
-You need to set `DAPR_PLACEMENT_METADATA_ENABLED` environment or `metadata-enabled` command line args to true to enable it. If you are using helm, set `dapr_placement.metadataEnabled` to true.
+To enable the placement metadata in self-hosted mode you can either set`DAPR_PLACEMENT_METADATA_ENABLED` environment variable or `metadata-enabled` command line args on the Placement service to `true` to. See [how to run the Placement service in self-hosted mode]({{< ref "self-hosted-no-docker/#enable-actors >}}).
+
+If you are using Helm for deployment of the Placement service on Kubernetes then to enable the placement metadata, set `dapr_placement.metadataEnabled` to `true`.
 
 ## Usecase
 
