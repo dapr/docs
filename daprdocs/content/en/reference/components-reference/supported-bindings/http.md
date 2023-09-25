@@ -38,8 +38,10 @@ spec:
       key: "mytoken"
   - name: securityTokenHeader
     value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
-  - name: direction
+  - name: direction # OPTIONAL
     value: "output"
+  - name: errorIfNot2XX
+    value: "false" # OPTIONAL
 ```
 
 ## Spec metadata fields
@@ -54,6 +56,7 @@ spec:
 | `securityToken`      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
 | `securityTokenHeader`| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
 | `direction`| N        | Output |The direction of the binding | `"output"` 
+| `errorIfNot2XX`| N        | Output |If a binding error should be thrown when the response is not in the 2xx range. Defaults to `true` | `false`, `true` 
 
 ### How to configure MTLS related fields in Metadata
 The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be provided in three ways:
