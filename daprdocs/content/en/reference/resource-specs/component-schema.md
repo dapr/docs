@@ -14,6 +14,7 @@ Dapr defines and registers components using a [resource specifications](https://
 apiVersion: dapr.io/v1alpha1
 kind: Component
 auth: 
+ secretstore: [SECRET-STORE-NAME]
 metadata:
   name: [COMPONENT-NAME]
   namespace: [COMPONENT-NAMESPACE]
