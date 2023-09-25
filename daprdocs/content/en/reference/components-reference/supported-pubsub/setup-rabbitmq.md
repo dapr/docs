@@ -418,6 +418,24 @@ client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)),
 
 {{< /tabs >}}
 
+## Use quorum queues
+
+By default, Dapr creates `classic` queues. To create `quorum` queues, add the following metadata to your pub/sub [subscription]({{< ref subscription-schema.md >}})
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: pubsub
+spec:
+  topic: checkout
+  routes: 
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    queueType: quorum
+```
+
 ## Time-to-live
 
 You can set a time-to-live (TTL) value at either the message or component level. Set default component-level TTL using the component spec `ttlInSeconds` field in your component. 
