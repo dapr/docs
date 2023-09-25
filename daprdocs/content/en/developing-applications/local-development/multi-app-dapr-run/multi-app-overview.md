@@ -7,7 +7,7 @@ description: Run multiple applications with one CLI command
 ---
 
 {{% alert title="Note" color="primary" %}}
- Multi-App Run for **Kubernetes** is currently a preview feature only supported in Linux/MacOS.
+ Multi-App Run for **Kubernetes** is currently a preview feature.
 {{% /alert %}}
 
 Let's say you want to run several applications locally to test them together, similar to a production scenario. Multi-App Run allows you to start and stop a set of applications simultaneously, either:
