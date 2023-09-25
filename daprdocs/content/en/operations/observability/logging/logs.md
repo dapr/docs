@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "Logs"
-linkTitle: "Logs"
+linkTitle: "Overview"
 weight: 1000
 description: "Understand Dapr logging"
 ---
