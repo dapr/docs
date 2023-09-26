@@ -14,7 +14,7 @@ With Dapr's outbox support, you can notify subscribers when an application's sta
 
 ## Requirements
 
-The outbox feature can be used with using any [transactional state store]({{< ref supported-state-stores >}}) supported by Dapr. All [Dapr pub/sub brokers]({{< ref supported-pubsub >}}) are supported with the outbox feature.
+The outbox feature can be used with using any [transactional state store]({{< ref supported-state-stores >}}) supported by Dapr. All [pub/sub brokers]({{< ref supported-pubsub >}}) are supported with the outbox feature.
 
 *Note: Message brokers that work with the competing consumer pattern are encouraged to reduce the chances of duplicate events*
 
