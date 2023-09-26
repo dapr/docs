@@ -12,6 +12,14 @@ An example scenario for using the outbox pattern is writing a new user record to
 
 With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
 
+The diagram below is an overview of how the outbox feature works:
+
+1) Service A saves/updates state to the state store using a transaction.
+2) A message is written to the broker under the same transaction. When the message is successfully delivered to the message broker the transaction completes ensuring the state and message are transacted together.
+3) The message broker delivers the message topic to any subscribers, in this case Service B.
+
+<img src="/images/state-management-outbox.png" width=800 alt="Diagram showing the steps of the outbox pattern">
+
 ## Requirements
 
 The outbox feature can be used with using any [transactional state store]({{< ref supported-state-stores >}}) supported by Dapr. All [pub/sub brokers]({{< ref supported-pubsub >}}) are supported with the outbox feature.
