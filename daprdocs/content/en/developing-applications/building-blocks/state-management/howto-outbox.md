@@ -8,7 +8,7 @@ description: "Commit a single transaction across a state store and pub/sub messa
 
 The transactional outbox pattern is a well known powerful design pattern for sending notifications about a change in a system's state using a single transaction that spans across the database and message broker used to deliver the notification. Developers are faced with many difficult technical challanges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that end up supporting a combination of one or two databases and message brokers at most.
 
-With Dapr's outbox support, developers can notify subscribers when a system's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
+With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
 
 ## Requirements
 
@@ -48,7 +48,7 @@ spec:
 | Name                | Required    | Default Value | Description                                            |
 | --------------------|-------------|---------------|------------------------------------------------------- |
 | outboxPublishPubsub | Yes         | N/A           | Sets the name of the pub/sub to use when publishing state changes
-| outboxPublishTopic  | Yes         | N/A           | Sets the topic to send the state changes to on the pub/sub configured with `outboxPublishPubsub`
+| outboxPublishTopic  | Yes         | N/A           | Sets the topic to send the state changes to on the pub/sub configured with `outboxPublishPubsub`. The message body will be a state transaction item for an insert or update operation
 | outboxPubsub        | No          | `outboxPublishPubsub`           | Sets the pub/sub to use for Dapr to coordinate the state and pub/sub transactions. If not set, the pub/sub configured with `outboxPublishPubsub` is used. This is useful if you want to separate the pub/sub used to send the state changes from the one used to coordinate the transaction
 | outboxDiscardWhenMissingState  | No         | `false`           | By setting `outboxDiscardWhenMissingState` to `true`, Dapr will discard the transaction if it cannot find the state in the database and not retry again
 
