@@ -28,15 +28,13 @@ To enable the outbox feature, add the following required and optional fields on 
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: mydb
+  name: mysql-outbox
 spec:
-  type: state.redis
+  type: state.mysql
   version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: connectionString
+    value: "<CONNECTION STRING>"
   - name: outboxPublishPubsub # Required
     value: "mypubsub"
   - name: outboxPublishTopic # Required
@@ -60,38 +58,34 @@ spec:
 
 If you want to use the same state store for sending both outbox and non-outbox messages, simply define two state store components that connect to the same state store, where one has the outbox feature and the other does not.
 
-#### Redis state store without outbox
+#### MySQL state store without outbox
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: mydb
+  name: mysql
 spec:
-  type: state.redis
+  type: state.mysql
   version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: connectionString
+    value: "<CONNECTION STRING>"
 ```
 
-#### Redis state store with outbox
+#### MySQL state store with outbox
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: mydb-outbox
+  name: mysql-outbox
 spec:
-  type: state.redis
+  type: state.mysql
   version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: connectionString
+    value: "<CONNECTION STRING>"
   - name: outboxPublishPubsub # Required
     value: "mypubsub"
   - name: outboxPublishTopic # Required
