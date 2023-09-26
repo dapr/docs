@@ -49,7 +49,7 @@ spec:
 
 | Name                | Required    | Default Value | Description                                            |
 | --------------------|-------------|---------------|------------------------------------------------------- |
-| outboxPublishPubsub | Yes         | N/A           | Sets the name of the pub/sub to use when publishing state changes
+| outboxPublishPubsub | Yes         | N/A           | Sets the name of the pub/sub component to  deliver the notifications when publishing state changes
 | outboxPublishTopic  | Yes         | N/A           | Sets the topic to send the state changes to on the pub/sub configured with `outboxPublishPubsub`
 | outboxPubsub        | No          | `outboxPublishPubsub`           | Sets the pub/sub to use for Dapr to coordinate the state and pub/sub transactions. If not set, the pub/sub configured with `outboxPublishPubsub` is used. This is useful if you want to separate the pub/sub used to send the state changes from the one used to coordinate the transaction
 | outboxDiscardWhenMissingState  | No         | `false`           | By setting `outboxDiscardWhenMissingState` to `true`, Dapr will discard the transaction if it cannot find the state in the database and not retry again
