@@ -95,3 +95,10 @@ spec:
   - name: outboxPublishTopic # Required
     value: "newOrder"
 ```
+
+## Demo
+
+Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe width="360" height="315" src="https://youtu.be/rTovKpG0rhY?t=1338" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
