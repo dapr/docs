@@ -6,7 +6,9 @@ weight: 400
 description: "Commit a single transaction across a state store and pub/sub message broker"
 ---
 
-The transactional outbox pattern is a well known powerful design pattern for sending notifications about a change in a system's state using a single transaction that spans across the database and message broker used to deliver the notification. Developers are faced with many difficult technical challanges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that end up supporting a combination of one or two databases and message brokers at most.
+The transactional outbox pattern is a well known design pattern for sending notifications about a change in an application's state using a single transaction that spans across the database and the message broker used to deliver the notification. Developers are faced with many difficult technical challenges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that end up supporting a combination of one or two databases and message brokers at most.
+
+An example scenario for using the outbox pattern is writing a new user record to an account database and then sending a notification message that the account was successfully created. The user only wants to receive a message if this was successful.
 
 With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
 
@@ -47,7 +49,7 @@ spec:
 
 | Name                | Required    | Default Value | Description                                            |
 | --------------------|-------------|---------------|------------------------------------------------------- |
-| outboxPublishPubsub | Yes         | N/A           | Sets the name of the pub/sub to use when publishing state changes
+| outboxPublishPubsub | Yes         | N/A           | Sets the name of the pub/sub component to deliver the notifications when publishing state changes
 | outboxPublishTopic  | Yes         | N/A           | Sets the topic to send the state changes to on the pub/sub configured with `outboxPublishPubsub`. The message body will be a state transaction item for an insert or update operation
 | outboxPubsub        | No          | `outboxPublishPubsub`           | Sets the pub/sub to use for Dapr to coordinate the state and pub/sub transactions. If not set, the pub/sub configured with `outboxPublishPubsub` is used. This is useful if you want to separate the pub/sub used to send the state changes from the one used to coordinate the transaction
 | outboxDiscardWhenMissingState  | No         | `false`           | By setting `outboxDiscardWhenMissingState` to `true`, Dapr will discard the transaction if it cannot find the state in the database and not retry again
