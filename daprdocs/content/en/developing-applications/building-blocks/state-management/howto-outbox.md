@@ -6,7 +6,9 @@ weight: 400
 description: "Commit a single transaction across a state store and pub/sub message broker"
 ---
 
-The transactional outbox pattern is a well known powerful design pattern for sending notifications about a change in a system's state using a single transaction that spans across the database and message broker used to deliver the notification. Developers are faced with many difficult technical challanges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that end up supporting a combination of one or two databases and message brokers at most.
+The transactional outbox pattern is a well known design pattern for sending notifications about a change in an application's state using a single transaction that spans across the database and the message broker used to deliver the notification. Developers are faced with many difficult technical challenges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that end up supporting a combination of one or two databases and message brokers at most.
+
+An example scenario for using the outbox pattern is writing a new user record to an account database and then sending a notification message that the account was successfully created. The user only wants to receive a message if this was successful.
 
 With Dapr's outbox support, developers can notify subscribers when a system's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
 
