@@ -58,7 +58,7 @@ spec:
 
 ### Combining outbox and non-outbox messages on the same state store
 
-If you want to use the same state store for sending both outbox and non-outbox messages, simply define two state store components, where one has the outbox feature and the other does not.
+If you want to use the same state store for sending both outbox and non-outbox messages, simply define two state store components that connect to the same state store, where one has the outbox feature and the other does not.
 
 #### Redis state store without outbox
 
