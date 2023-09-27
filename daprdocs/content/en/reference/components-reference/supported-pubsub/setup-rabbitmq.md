@@ -62,6 +62,10 @@ spec:
     value: false
   - name: ttlInSeconds
     value: 60
+  - name: clientName
+    value: {podName}
+  - name: heartBeat
+    value: 10s
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -96,6 +100,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | caCert | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert  | Required for using TLS | TLS client certificate in PEM format. Must be used with `clientKey`. | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientKey | Required for using TLS  | TLS client key in PEM format. Must be used with `clientCert`. Can be `secretKeyRef` to use a secret reference. | `"-----BEGIN RSA PRIVATE KEY-----\n<base64-encoded PKCS8>\n-----END RSA PRIVATE KEY-----"`
+| clientName | N | This RabbitMQ [client-provided connection name](https://www.rabbitmq.com/connections.html#client-provided-names) is a custom identifier. If set, the identifier is mentioned in RabbitMQ server log entries and management UI. Can be set to {uuid}, {podName}, or {appID}, which is replaced by Dapr runtime to the real value. | `"app1"`, `{uuid}`, `{podName}`, `{appID}`
+| heartBeat  | N | Defines the heartbeat interval with the server, detecting the aliveness of the peer TCP connection with the RabbitMQ server. Defaults to `10s` . | `"10s"`
 
 
 ## Communication using TLS
@@ -411,6 +417,24 @@ client.PublishEvent(ctx, PUBSUB_NAME, TOPIC_NAME, []byte(strconv.Itoa(orderId)),
 {{% /codetab %}}
 
 {{< /tabs >}}
+
+## Use quorum queues
+
+By default, Dapr creates `classic` queues. To create `quorum` queues, add the following metadata to your pub/sub [subscription]({{< ref subscription-schema.md >}})
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: pubsub
+spec:
+  topic: checkout
+  routes: 
+    default: /orders
+  pubsubname: order-pub-sub
+  metadata:
+    queueType: quorum
+```
 
 ## Time-to-live
 
