@@ -30,8 +30,8 @@ data:
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter
       # for full lists of trace exporters that you can use, and how to
       # configure them.
-      jaeger:
-        endpoint: "jaeger-collector.observability.svc.cluster.local:14250"
+      otlp/jaeger:
+        endpoint: "jaeger-collector.observability.svc.cluster.local:4317"
         tls:
           insecure: true
     service:
@@ -40,7 +40,7 @@ data:
         traces:
           receivers: [otlp]
           # List your exporter here.
-          exporters: [jaeger,logging]
+          exporters: [otlp/jaeger,logging]
 ---
 apiVersion: v1
 kind: Service
