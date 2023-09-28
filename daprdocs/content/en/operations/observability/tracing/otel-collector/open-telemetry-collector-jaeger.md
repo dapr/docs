@@ -74,7 +74,7 @@ To push traces to your Jaeger instance, install the OpenTelemetry Collector on y
 
 1. Download and inspect the [`open-telemetry-collector-jaeger.yaml`](/docs/open-telemetry-collector/open-telemetry-collector-jaeger.yaml) file.
 
-1. In the data section of the `otel-collector-conf` ConfigMap, update the `jaeger.endpoint` value to reflect the endpoint of your Jaeger collector Kubernetes service object.
+1. In the data section of the `otel-collector-conf` ConfigMap, update the `otlp/jaeger.endpoint` value to reflect the endpoint of your Jaeger collector Kubernetes service object.
 
 1. Deploy the OpenTelemetry Collector into the same namespace where your Dapr-enabled applications are running:
 
