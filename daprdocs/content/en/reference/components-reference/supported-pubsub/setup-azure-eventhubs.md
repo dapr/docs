@@ -123,7 +123,7 @@ Azure Eventhubs supports sending and receiving multiple messages in a single ope
 
 ### Configuring bulk publish
 
-To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}}).
+To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata, [as documented in the API reference]({{< ref pubsub_api >}}).
 
 | Metadata | Default |
 |----------|---------|
@@ -131,18 +131,22 @@ To set the metadata for bulk publish operation, set the query parameters on the 
 
 ### Configuring bulk subscribe
 
-When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details. Learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details and to learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
 
 | Configuration | Default |
 |---------------|---------|
 | `maxMessagesCount` | `100` |
 | `maxAwaitDurationMs` | `10000` |
 
-## Configuring Checkpoint Frequency
+## Configuring checkpoint frequency
 
-When subscribing to a topic, you can configure the checkpointing frequency in a partition by setting the metadata in the HTTP or gRPC subscribe request as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#http-request-2). It will enable checkpointing after the configured number of events within a partition event sequence. It can be disabled by setting the frequency to `0`.  Learn more about Checkpointing [here](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request ]({{< ref "pubsub_api.md#http-request-2" >}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. Disable checkpointing by setting the frequency to `0`.  
 
-Note: In case of BulkSubscribe, the checkpointing will occur after the configured number of batches, instead of events. 
+[Learn more about checkpointing](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
+
+{{% alert title="Note" color="primary" %}}
+When subscribing to a topic using `BulkSubscribe`, you configure the checkpointing to occur after the specified number of _batches,_ instead of events. 
+{{% /alert %}}
 
 | Metadata | Default |
 | -------- | ------- |
