@@ -144,13 +144,32 @@ When subscribing to a topic, you can configure the checkpointing frequency in a 
 
 [Learn more about checkpointing](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
 
-{{% alert title="Note" color="primary" %}}
-When subscribing to a topic using `BulkSubscribe`, you configure the checkpointing to occur after the specified number of _batches,_ instead of events. 
-{{% /alert %}}
-
 | Metadata | Default |
 | -------- | ------- |
 | `metadata.checkPointFrequencyPerPartition` | `1` |
+
+Following example shows a sample subscription file for [Declarative subscription]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) using `checkPointFrequencyPerPartition` metadata. Similarly, you can also pass the metadata in [Programmatic subscriptions]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) as well.
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: order-pub-sub
+spec:
+  topic: orders
+  routes: 
+    default: /checkout
+  pubsubname: order-pub-sub
+  metadata:
+    checkPointFrequencyPerPartition: 1
+scopes:
+- orderprocessing
+- checkout
+```
+
+{{% alert title="Note" color="primary" %}}
+When subscribing to a topic using `BulkSubscribe`, you configure the checkpointing to occur after the specified number of _batches,_ instead of events, where _batch_ means the collection of events received in a single request.
+{{% /alert %}}
 
 ## Create an Azure Event Hub
 
