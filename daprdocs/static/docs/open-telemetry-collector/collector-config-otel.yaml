@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: tracing
+  namespace: default # Your app namespace
+spec:
+  tracing:
+    samplingRate: "1"
+    stdout: true
+    otel:
+      endpointAddress: "otel-collector.default.svc.cluster.local:4317"
+      isSecure: false
+      protocol: grpc 
