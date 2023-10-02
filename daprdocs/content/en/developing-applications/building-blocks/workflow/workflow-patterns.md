@@ -464,7 +464,41 @@ public override async Task<object> RunAsync(WorkflowContext context, MyEntitySta
 <!--java-->
 
 ```java
-todo
+public class MonitorWorkflow extends Workflow {
+
+  @Override
+  public WorkflowStub create() {
+    return ctx -> {
+
+      Duration nextSleepInterval;
+
+      var status = ctx.callActivity(DemoWorkflowStatusActivity.class.getName(), DemoStatusActivityOutput.class).await();
+      var isHealthy = status.getIsHealthy();
+
+      if (isHealthy) {
+        // Check less frequently when in a healthy state
+        nextSleepInterval = Duration.ofMinutes(60);
+      } else {
+
+        ctx.callActivity(DemoWorkflowAlertActivity.class.getName()).await();
+
+        // Check more frequently when in an unhealthy state
+        nextSleepInterval = Duration.ofMinutes(5);
+      }
+
+      // Put the workflow to sleep until the determined time
+      // Note: ctx.createTimer() method is not supported in the Java SDK yet
+      try {
+        TimeUnit.SECONDS.sleep(nextSleepInterval.getSeconds());
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+
+      // Restart from the beginning with the updated state
+      ctx.continueAsNew();
+    }
+  }
+}
 ```
 
 {{% /codetab %}}
