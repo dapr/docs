@@ -6,7 +6,9 @@ weight: 400
 description: "Commit a single transaction across a state store and pub/sub message broker"
 ---
 
-The transactional outbox pattern is a well known design pattern for sending notifications about a change in an application's state using a single transaction that spans across the database and the message broker used to deliver the notification. Developers are faced with many difficult technical challenges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that end up supporting a combination of one or two databases and message brokers at most.
+The transactional outbox pattern is a well known design pattern for sending notifications regarding changes in an application's state. The transactional outbox pattern uses a single transaction that spans across the database and the message broker delivering the notification. 
+
+Developers are faced with many difficult technical challenges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that, at most, support a combination of one or two databases and message brokers.
 
 An example scenario for using the outbox pattern is writing a new user record to an account database and then sending a notification message that the account was successfully created. The user only wants to receive a message if this was successful.
 
