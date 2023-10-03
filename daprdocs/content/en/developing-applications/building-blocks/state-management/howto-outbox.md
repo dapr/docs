@@ -10,7 +10,9 @@ The transactional outbox pattern is a well known design pattern for sending noti
 
 Developers are faced with many difficult technical challenges when trying to implement this pattern on their own, which often involves writing error-prone central coordination managers that, at most, support a combination of one or two databases and message brokers.
 
-An example scenario for using the outbox pattern is writing a new user record to an account database and then sending a notification message that the account was successfully created. The user only wants to receive a message if this was successful.
+For example, you can use the outbox pattern to:  
+1. Write a new user record to an account database. 
+1. Send a notification message that the account was successfully created. 
 
 With Dapr's outbox support, you can notify subscribers when an application's state is created or updated when calling Dapr's [transactions API]({{< ref "state_api.md#state-transactions" >}}).
 
