@@ -117,13 +117,59 @@ spec:
       value: "myeventhubstoragecontainer"
 ```
 
-## Sending multiple messages
+## Sending and receiving multiple messages
 
-Azure Event Hubs supports sending multiple messages in a single operation. To set the metadata for bulk operations, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref pubsub_api >}})
+Azure Eventhubs supports sending and receiving multiple messages in a single operation using the bulk pub/sub API.
+
+### Configuring bulk publish
+
+To set the metadata for bulk publish operation, set the query parameters on the HTTP request or the gRPC metadata, [as documented in the API reference]({{< ref pubsub_api >}}).
 
 | Metadata | Default |
 |----------|---------|
 | `metadata.maxBulkPubBytes` | `1000000` |
+
+### Configuring bulk subscribe
+
+When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to [Subscribing messages in bulk]({{< ref "pubsub-bulk#subscribing-messages-in-bulk" >}}) for more details and to learn more about [the bulk subscribe API]({{< ref pubsub-bulk.md >}}).
+
+| Configuration | Default |
+|---------------|---------|
+| `maxMessagesCount` | `100` |
+| `maxAwaitDurationMs` | `10000` |
+
+## Configuring checkpoint frequency
+
+When subscribing to a topic, you can configure the checkpointing frequency in a partition by [setting the metadata in the HTTP or gRPC subscribe request ]({{< ref "pubsub_api.md#http-request-2" >}}). This metadata enables checkpointing after the configured number of events within a partition event sequence. Disable checkpointing by setting the frequency to `0`.  
+
+[Learn more about checkpointing](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#checkpointing).
+
+| Metadata | Default |
+| -------- | ------- |
+| `metadata.checkPointFrequencyPerPartition` | `1` |
+
+Following example shows a sample subscription file for [Declarative subscription]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) using `checkPointFrequencyPerPartition` metadata. Similarly, you can also pass the metadata in [Programmatic subscriptions]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) as well.
+
+```yaml
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: order-pub-sub
+spec:
+  topic: orders
+  routes: 
+    default: /checkout
+  pubsubname: order-pub-sub
+  metadata:
+    checkPointFrequencyPerPartition: 1
+scopes:
+- orderprocessing
+- checkout
+```
+
+{{% alert title="Note" color="primary" %}}
+When subscribing to a topic using `BulkSubscribe`, you configure the checkpointing to occur after the specified number of _batches,_ instead of events, where _batch_ means the collection of events received in a single request.
+{{% /alert %}}
 
 ## Create an Azure Event Hub
 
