@@ -6,7 +6,7 @@ weight: 300
 description: "Debug Dapr apps locally which are part of a docker compose deployment"
 ---
 
-The goal of this article is to demonstrate a way to debug one or more daprised applications (via your IDE, locally) while the remaining integrated with the other applications that have deployed in the docker compose environment.
+The goal of this article is to demonstrate a way to debug one or more daprised applications (via your IDE, locally) while remaining integrated with the other applications that have deployed in the docker compose environment.
 
 Let's take the minimal example of a docker compose file which contains just two services :
 - `nodeapp` - your app
