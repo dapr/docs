@@ -35,7 +35,7 @@ The configuration spec is fixed to v1.3.0 of the Consul API
 | Field        | Required | Type | Details  | Examples |
 |--------------|:--------:|-----:|:---------|----------|
 | clusterDomain       | N        | `string` | The cluster domain to be used for resolved addresses. This field is mutually exclusive with the `template` file.| `cluster.local`
-| template | N        | `string` | A template string to be parsed when addresses are resolved using [text/template](https://pkg.go.dev/text/template#Template) . The template will be populated by the fields in the [ResolveRequest](https://github.com/dapr/components-contrib/blob/v1.12.0-rc.3/nameresolution/requests.go#L20) struct. This field is mutually exclusive with `clusterDomain` field. | `{{.ID}}-{{.Data.region}}.{{.Namespace}}.internal:{{.Port}}`
+| template | N        | `string` | A template string to be parsed when addresses are resolved using [text/template](https://pkg.go.dev/text/template#Template) . The template will be populated by the fields in the [ResolveRequest](https://github.com/dapr/components-contrib/blob/release-{{% dapr-latest-version short="true" %}}/nameresolution/requests.go#L20) struct. This field is mutually exclusive with `clusterDomain` field. | `{{.ID}}-{{.Data.region}}.{{.Namespace}}.internal:{{.Port}}`
 
 
 ## Related links
