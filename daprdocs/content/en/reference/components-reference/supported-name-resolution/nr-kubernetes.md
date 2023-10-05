@@ -20,8 +20,8 @@ spec:
   nameResolution:
     component: "kubernetes"
     configuration:
-      "clusterDomain": "cluster.local"  # Mutually exclusive with the template field
-      "template": "{{.ID}}-{{.Data.region}}.internal:{{.Port}}" # Mutually exclusive with the clusterDomain field
+      clusterDomain: "cluster.local"  # Mutually exclusive with the template field
+      template: "{{.ID}}-{{.Data.region}}.internal:{{.Port}}" # Mutually exclusive with the clusterDomain field
 ```
 
 ## Behaviour
