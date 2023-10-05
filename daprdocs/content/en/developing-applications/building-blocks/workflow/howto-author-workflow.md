@@ -399,7 +399,7 @@ builder.Services.AddDaprWorkflow(options =>
 WebApplication app = builder.Build();
 
 // POST starts new order workflow instance
-app.MapPost("/orders", async (WorkflowEngineClient client, [FromBody] OrderPayload orderInfo) =>
+app.MapPost("/orders", async (DaprWorkflowClient client, [FromBody] OrderPayload orderInfo) =>
 {
     if (orderInfo?.Name == null)
     {
@@ -414,7 +414,7 @@ app.MapPost("/orders", async (WorkflowEngineClient client, [FromBody] OrderPaylo
 });
 
 // GET fetches state for order workflow to report status
-app.MapGet("/orders/{orderId}", async (string orderId, WorkflowEngineClient client) =>
+app.MapGet("/orders/{orderId}", async (string orderId, DaprWorkflowClient client) =>
 {
     WorkflowState state = await client.GetWorkflowStateAsync(orderId, true);
     if (!state.Exists)
