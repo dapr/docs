@@ -10,7 +10,7 @@ description: Get started with the Dapr Workflow building block
 Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}). 
 {{% /alert %}}
 
-Let's take a look at the Dapr [Workflow building block]({{< ref workflow >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs. 
+Let's take a look at the Dapr [Workflow building block]({{< ref workflow-overview.md >}}). In this Quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management APIs. 
 
 In this guide, you'll:
 
