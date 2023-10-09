@@ -6,7 +6,7 @@ weight: 15
 description: "List of Dapr bot capabilities."
 ---
 
-Dapr bot is a GitHub script that helps with common tasks in the Dapr organization. It is set up individually for each repository ([example](https://github.com/dapr/dapr/blob/master/.github/workflows/dapr-bot.yml)) and can be configured to run on specific events. This reference covers the Dapr bot capabilities from the `dapr` and `components-contrib` repositories only.
+Dapr bot is triggered by a list of commands that helps with common tasks in the Dapr organization. It is set up individually for each repository ([example](https://github.com/dapr/dapr/blob/master/.github/workflows/dapr-bot.yml)) and can be configured to run on specific events. Below is a list of commands and the list of repositories they are implemented on.
 
 ## Command reference
 
