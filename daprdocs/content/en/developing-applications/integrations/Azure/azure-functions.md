@@ -16,6 +16,4 @@ Dapr integrates with the [Azure Functions runtime](https://learn.microsoft.com/a
 
 The extension combines the two for serverless and event-driven apps. 
 
-Try out the [Dapr Functions extension](https://learn.microsoft.com/azure/azure-functions/functions-bindings-dapr) samples.
-
 {{< button text="Try out the Dapr extension for Azure Functions" link="https://learn.microsoft.com/azure/azure-functions/functions-bindings-dapr" >}}
