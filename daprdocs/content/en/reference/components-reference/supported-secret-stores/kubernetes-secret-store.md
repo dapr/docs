@@ -32,7 +32,12 @@ spec:
 ```
 
 ## Spec metadata fields
-For the Kubernetes secret store component, there are no metadata attributes.
+
+| Field              | Required |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| `defaultNamespace` | N | Default namespace to retrieve secrets from | `"default-ns"` |
+| `kubeconfigPath` | N | The path to the kubeconfig file. If not specified, the binding will use the default in-cluster config value | `"/path/to/kubeconfig"`
+
 
 ## Optional per-request metadata properties
 
