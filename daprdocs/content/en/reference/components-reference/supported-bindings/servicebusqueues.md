@@ -56,7 +56,7 @@ spec:
   #   value: "5"
   # - name: publishInitialRetryIntervalInMs # Optional
   #   value: "500"
-  # - name: direction 
+  # - name: direction
   #   value: "input, output"
 ```
 {{% alert title="Warning" color="warning" %}}
@@ -128,6 +128,44 @@ This component supports both **input and output** binding interfaces.
 This component supports **output binding** with the following operations:
 
 - `create`: publishes a message to the specified queue
+
+## Message metadata
+
+Azure Service Bus messages extend the Dapr message format with additional contextual metadata. Some metadata fields are set by Azure Service Bus itself (read-only) and others can be set by the client when publishing a message through `Invoke` binding call with `create` operation.
+
+### Sending a message with metadata
+
+To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#metadata).
+
+- `metadata.MessageId`
+- `metadata.CorrelationId`
+- `metadata.SessionId`
+- `metadata.Label`
+- `metadata.ReplyTo`
+- `metadata.PartitionKey`
+- `metadata.To`
+- `metadata.ContentType`
+- `metadata.ScheduledEnqueueTimeUtc`
+- `metadata.ReplyToSessionId`
+
+> **Note:** The `metadata.MessageId` property does not set the `id` property of the cloud event returned by Dapr and should be treated in isolation.
+
+> **Note:** The `metadata.ScheduledEnqueueTimeUtc` property supports the [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) timestamp formats.
+
+### Receiving a message with metadata
+
+When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
+In addition to the [settable metadata listed above](#sending-a-message-with-metadata), you can also access the following read-only message metadata.
+
+- `metadata.DeliveryCount`
+- `metadata.LockedUntilUtc`
+- `metadata.LockToken`
+- `metadata.EnqueuedTimeUtc`
+- `metadata.SequenceNumber`
+
+To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+
+> Note: that all times are populated by the server and are not adjusted for clock skews.
 
 ## Specifying a TTL per message
 
