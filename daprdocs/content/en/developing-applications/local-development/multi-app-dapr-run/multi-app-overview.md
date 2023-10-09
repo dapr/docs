@@ -11,11 +11,11 @@ description: Run multiple applications with one CLI command
 {{% /alert %}}
 
 Let's say you want to run several applications locally to test them together, similar to a production scenario. Multi-App Run allows you to start and stop a set of applications simultaneously, either:
-- Locally/self-hosted with processes, or 
+- Locally/self-hosted with processes, or
 - By building container images and deploying to a Kubernetes cluster
    - You can use a local Kubernetes cluster (KiND) or one deploy to a Cloud (AKS, EKS, and GKE).
 
-The Multi-App Run template file describes how to start multiple applications as if you had run many separate CLI `run` commands. By default, this template file is called `dapr.yaml`. 
+The Multi-App Run template file describes how to start multiple applications as if you had run many separate CLI `run` commands. By default, this template file is called `dapr.yaml`.
 
 {{< tabs Self-hosted Kubernetes>}}
 
@@ -24,7 +24,7 @@ The Multi-App Run template file describes how to start multiple applications as 
 
 ## Multi-App Run template file
 
-When you execute `dapr run -f .`, it starts the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications. 
+When you execute `dapr run -f .`, it starts the multi-app template file (named `dapr.yaml`) present in the current directory to run all the applications.
 
 You can name template file with preferred name other than the default. For example `dapr run -f ./<your-preferred-file-name>.yaml`.
 
@@ -41,7 +41,7 @@ apps:
   - appID: emit-metrics
     appDirPath: ../apps/emit-metrics/
     daprHTTPPort: 3511
-    env: 
+    env:
       DAPR_HOST_ADD: localhost
     command: ["go","run", "app.go"]
 ```
@@ -50,7 +50,7 @@ For a more in-depth example and explanation of the template properties, see [Mul
 
 ## Locations for resources and configuration files
 
-You have options on where to place your applications' resources and configuration files when using Multi-App Run.  
+You have options on where to place your applications' resources and configuration files when using Multi-App Run.
 
 ### Point to one file location (with convention)
 
@@ -96,11 +96,11 @@ Watch [this video for an overview on Multi-App Run](https://youtu.be/s1p9MNl4VGo
 
 ## Multi-App Run template file
 
-When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` Multi-App Run template file starts in Kubernetes default namespace. 
+When you execute `dapr run -k -f .` or `dapr run -k -f dapr.yaml`, the applications defined in the `dapr.yaml` Multi-App Run template file starts in Kubernetes default namespace.
 
 > **Note:** Currently, the Multi-App Run template can only start applications in the default Kubernetes namespace.
 
-The necessary default service and deployment definitions for Kubernetes are generated within the `.dapr/deploy` folder for each app in the `dapr.yaml` template. 
+The necessary default service and deployment definitions for Kubernetes are generated within the `.dapr/deploy` folder for each app in the `dapr.yaml` template.
 
 If the `createService` field is set to `true` in the `dapr.yaml` template for an app, then the `service.yaml` file is generated in the `.dapr/deploy` folder of the app.
 
@@ -132,8 +132,8 @@ apps:
     containerImage: ghcr.io/dapr/samples/hello-k8s-python:latest
 ```
 
-> **Note:** 
-> - If the `containerImage` field is not specified, `dapr run -k -f` produces an error. 
+> **Note:**
+> - If the `containerImage` field is not specified, `dapr run -k -f` produces an error.
 > - The `createService` field defines a basic service in Kubernetes (ClusterIP or LoadBalancer) that targets the `--app-port` specified in the template. If `createService` isn't specified, the application is not accessible from outside the cluster.
 
 For a more in-depth example and explanation of the template properties, see [Multi-app template]({{< ref multi-app-template.md >}}).
