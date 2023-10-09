@@ -219,7 +219,7 @@ namespace CheckoutService.controller
 Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the subscriber application:
 
 ```bash
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl dotnet run
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-protocol https dotnet run
 ```
 
 {{% /codetab %}}
@@ -465,7 +465,7 @@ namespace EventService
 Navigate to the directory containing the above code, then run the following command to launch both a Dapr sidecar and the publisher application:
 
 ```bash
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl dotnet run
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-protocol https dotnet run
 ```
 
 {{% /codetab %}}
