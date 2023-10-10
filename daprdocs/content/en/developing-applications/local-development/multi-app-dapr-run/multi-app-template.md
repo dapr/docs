@@ -156,7 +156,7 @@ apps:
     appPort: 3000
     unixDomainSocket: "/tmp/test-socket"
     env:
-      - DEBUG: false
+      DEBUG: false
     command: ["./backend"]
 ```
 
@@ -193,7 +193,7 @@ apps:
     appPort: 3000
     unixDomainSocket: "/tmp/test-socket"
     env:
-      - DEBUG: false
+      DEBUG: false
 ```
 
 The following rules apply for all the paths present in the template file:
