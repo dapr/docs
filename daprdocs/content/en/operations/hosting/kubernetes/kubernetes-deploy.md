@@ -201,7 +201,7 @@ helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 kubectl create namespace dapr-system
 # Install the Dapr dashboard
-helm install dapr dapr/dapr-dashboard --namespace dapr-system
+helm install dapr-dashboard dapr/dapr-dashboard --namespace dapr-system
 ```
 
 ### Verify installation

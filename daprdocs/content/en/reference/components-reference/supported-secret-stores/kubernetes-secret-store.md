@@ -32,7 +32,12 @@ spec:
 ```
 
 ## Spec metadata fields
-For the Kubernetes secret store component, there are no metadata attributes.
+
+| Field              | Required |  Details | Example |
+|--------------------|:--------:|------------|-----|---------|
+| `defaultNamespace` | N | Default namespace to retrieve secrets from. If unset, the `namespace` must be specified in each request metadata or via environment variable `NAMESPACE` | `"default-ns"` |
+| `kubeconfigPath` | N | The path to the kubeconfig file. If not specified, the store uses the default in-cluster config value | `"/path/to/kubeconfig"`
+
 
 ## Optional per-request metadata properties
 
