@@ -45,7 +45,7 @@
 - component: etcd
   link: setup-etcd
   state: Beta
-  version: v1
+  version: v2
   since: "1.11"
   features:
     crud: true
