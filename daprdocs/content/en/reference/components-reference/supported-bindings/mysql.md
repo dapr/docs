@@ -64,7 +64,7 @@ If your server requires SSL your connection string must end of `&tls=custom` for
 "<user>:<password>@tcp(<server>:3306)/<database>?allowNativePasswords=true&tls=custom"
 ```
 
-> You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using Azure Database for MySQL see the Azure [documentation on SSL database connections](https://learn.microsoft.com/azure/mysql/single-server/how-to-configure-ssl), for information on how to download the required certificate. The connection to MySQL will require a minimum TLS version of 1.2.
+> You must replace the `<PEM PATH>` with a full path to the PEM file. If you are using Azure Database for MySQL see the Azure [documentation on SSL database connections](https://learn.microsoft.com/azure/mysql/single-server/how-to-configure-ssl), for information on how to download the required certificate. The connection to MySQL requires a minimum TLS version of 1.2.
 
 ### Multiple statements
 
