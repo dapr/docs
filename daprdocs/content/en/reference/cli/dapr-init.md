@@ -44,6 +44,9 @@ dapr init [flags]
 |        N/A            | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
 |        N/A            | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set| |
 |  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
+|  `--dev`  |              |          | Creates Redis and Zipkin deployments when run in Kubernetes. |
+
+
 ### Examples
 
 #### Self hosted environment

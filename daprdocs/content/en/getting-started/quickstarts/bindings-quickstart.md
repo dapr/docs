@@ -11,7 +11,7 @@ Let's take a look at Dapr's [Bindings building block]({{< ref bindings >}}). Usi
 - Trigger your app with events coming in from external systems.
 - Interface with external systems.
 
-In this Quickstart, you will schedule a batch script to run every 10 seconds using an input [Cron]({{< ref cron.md >}}) binding. The script processes a JSON file and outputs data to a SQL database using the [PostgreSQL]({{< ref postgresql.md >}}) Dapr binding.
+In this Quickstart, you schedule a batch script to run every 10 seconds using an input [Cron]({{< ref cron.md >}}) binding. The script processes a JSON file and outputs data to a SQL database using the [PostgreSQL]({{< ref postgresql.md >}}) Dapr binding. 
 
 <img src="/images/bindings-quickstart/bindings-quickstart.png" width=800 style="padding-bottom:15px;">
 
