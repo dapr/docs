@@ -55,6 +55,7 @@ Note that you can not use secret just for username/password. If you use secret, 
 | `maxOpenConns` | N | Output | The max open connections. Integer greater than 0 | `"10"` |
 | `connMaxLifetime` | N | Output | The max connection lifetime. Duration string | `"12s"` |
 | `connMaxIdleTime` | N | Output | The max connection idel time. Duration string | `"12s"` |
+| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ### SSL connection
 
