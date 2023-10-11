@@ -65,7 +65,11 @@ curl -X GET 'http://localhost:3500/v1.0/configuration/mystore?key=myConfigKey'
 > The above command returns the following JSON:
 
 ```json
-[{"key":"myConfigKey","value":"myConfigValue"}]
+{
+    "myConfigKey": {
+        "value":"myConfigValue"
+    }
+}
 ```
 
 ## Subscribe Configuration
