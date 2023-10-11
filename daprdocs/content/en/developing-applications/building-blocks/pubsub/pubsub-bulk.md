@@ -477,7 +477,7 @@ When talking about event publish/subscribe, there are two kind of network transf
 1. From/To *App* To/From *Dapr*.
 2. From/To *Dapr* To/From *Pubsub Broker*.
 
-And, these are the opportunities where optimization is possible for multiple Single calls v/s Bulk. Here, optimization means that Bulk calls are sent, which reduce number of overall calls and thus increased throughput ad better latency.
+These are the opportunities where optimization is possible. When optimized, a Bulk requests are, which reduce number of overall calls and thus increase throughput and provide better latency.
 
 On enabling Bulk Publish and/or Bulk Subscribe, Point 1 i.e. From/To *App* To/From *Dapr* is optimized for All components (depending on whether either one of Bulk Publish/ Bulk Subscribe OR Both are enabled).
 
