@@ -94,6 +94,21 @@ The diagram below shows an example of how this works. If you have 1 instance of 
 
 Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment, including Kubernetes or self-hosted.
 
+### Streaming for HTTP service invocation
+
+You can handle data as a stream in HTTP service invocation. This can offer improvements in performance and memory utilization when using Dapr to invoke another service using HTTP with large request or response bodies.
+
+The diagram below demonstrates the six steps of data flow. 
+
+<img src="/images/service-invocation-simple.webp" width=600 alt="Diagram showing the steps of service invocation described in the table below" />
+
+1. Request: "App A" to "Dapr sidecar A"
+1. Request: "Dapr sidecar A" to "Dapr sidecar B"
+1. Request: "Dapr sidecar B" to "App B"
+1. Response: "App B" to "Dapr sidecar B"
+1. Response: "Dapr sidecar B" to "Dapr sidecar A"
+1. Response: "Dapr sidecar A" to "App A"
+
 ## Example Architecture
 
 Following the above call sequence, suppose you have the applications as described in the [Hello World tutorial](https://github.com/dapr/quickstarts/blob/master/tutorials/hello-world/README.md), where a python app invokes a node.js app. In such a scenario, the python app would be "Service A" , and a Node.js app would be "Service B".

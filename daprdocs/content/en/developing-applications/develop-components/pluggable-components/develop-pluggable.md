@@ -14,19 +14,21 @@ In order to implement a pluggable component, you need to implement a gRPC servic
 
 ### Find the proto definition file
 
-Proto definitions are provided for each supported service interface (state store, pub/sub, bindings).
+Proto definitions are provided for each supported service interface (state store, pub/sub, bindings, secret stores).
 
 Currently, the following component APIs are supported:
 
 - State stores
 - Pub/sub
 - Bindings
+- Secret stores
 
 |  Component  |    Type    | gRPC definition  |                       Built-in Reference Implementation                        | Docs                                                                                                                                                                  |
 | :---------: | :--------: | :--------------: | :----------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| State Store |  `state`   |  [state.proto]   |  [Redis](https://github.com/dapr/components-contrib/tree/master/state/redis)   | [concept]({{< ref "state-management-overview" >}}), [howto]({{< ref "howto-get-save-state" >}}), [api spec]({{< ref "state_api" >}})                                        |
-|   Pub/sub   |  `pubsub`  |  [pubsub.proto]  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{< ref "pubsub-overview" >}}), [howto]({{< ref "howto-publish-subscribe" >}}), [api spec]({{< ref "pubsub_api" >}})                                              |
-|  Bindings   | `bindings` | [bindings.proto] | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{< ref "bindings-overview" >}}), [input howto]({{< ref "howto-triggers" >}}), [output howto]({{< ref "howto-bindings" >}}), [api spec]({{< ref "bindings_api" >}}) |
+| State Store |  `state`   |  [state.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/state.proto)   |  [Redis](https://github.com/dapr/components-contrib/tree/master/state/redis)   | [concept]({{< ref "state-management-overview" >}}), [howto]({{< ref "howto-get-save-state" >}}), [api spec]({{< ref "state_api" >}})                                        |
+|   Pub/sub   |  `pubsub`  |  [pubsub.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/pubsub.proto)  |  [Redis](https://github.com/dapr/components-contrib/tree/master/pubsub/redis)  | [concept]({{< ref "pubsub-overview" >}}), [howto]({{< ref "howto-publish-subscribe" >}}), [api spec]({{< ref "pubsub_api" >}})                                              |
+|  Bindings   | `bindings` | [bindings.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/bindings.proto) | [Kafka](https://github.com/dapr/components-contrib/tree/master/bindings/kafka) | [concept]({{< ref "bindings-overview" >}}), [input howto]({{< ref "howto-triggers" >}}), [output howto]({{< ref "howto-bindings" >}}), [api spec]({{< ref "bindings_api" >}}) |
+|  Secret Store   | `secretstores` | [secretstore.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/secretstore.proto) | [Hashicorp/Vault](https://github.com/dapr/components-contrib/blob/master/secretstores/hashicorp/vault/vault.go) | [concept]({{< ref "secrets-overview" >}}), [howto-secrets]({{< ref "howto-secrets" >}}), [api spec]({{< ref "secrets_api" >}}) |
 
 Below is a snippet of the gRPC service definition for pluggable component state stores ([state.proto]):
 
@@ -95,11 +97,15 @@ Provide a concrete implementation of the desired service. Each component has a g
    
 - **Pub/sub**
 
-   Pluggable pub/sub components only have a single core service interface defined ([pubsub.proto]). They have no optional service interfaces.
+   Pluggable pub/sub components only have a single core service interface defined [pubsub.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/pubsub.proto). They have no optional service interfaces.
  
 - **Bindings**
 
-   Pluggable input and output bindings have a single core service definition on [bindings.proto]. They have no optional service interfaces.
+   Pluggable input and output bindings have a single core service definition on [bindings.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/bindings.proto). They have no optional service interfaces.
+
+- **Secret Store**
+
+   Pluggable Secret store have a single core service definition on [secretstore.proto](https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/secretstore.proto). They have no optional service interfaces.
 
 After generating the above state store example's service scaffolding code using gRPC and protocol buffers tools, you can define concrete implementations for the 9 methods defined under `service StateStore`, along with code to initialize and communicate with your dependencies.
 

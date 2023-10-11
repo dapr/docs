@@ -79,6 +79,52 @@ localhost:3500/v1.0/invoke/<appID>/method/<my-method>
 curl http://localhost:3602/v1.0/invoke/orderprocessor/method/checkout
 ```
 
+## TLS authentication
+
+Using the [HTTPEndpoint resource]({{< ref httpendpoints-schema.md >}}) allows you to use any combination of a root certificate, client certificate and private key according to the authentication requirements of the remote endpoint.
+
+### Example using root certificate
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: HTTPEndpoint
+metadata:
+  name: "external-http-endpoint-tls"
+spec:
+  baseUrl: https://service-invocation-external:443
+  headers:
+  - name: "Accept-Language"
+    value: "en-US"
+  clientTLS:
+    rootCA:
+      secretKeyRef:
+        name: dapr-tls-client
+        key: ca.crt
+```
+
+### Example using client certificate and private key
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: HTTPEndpoint
+metadata:
+  name: "external-http-endpoint-tls"
+spec:
+  baseUrl: https://service-invocation-external:443
+  headers:
+  - name: "Accept-Language"
+    value: "en-US"
+  clientTLS:
+    certificate:
+      secretKeyRef:
+        name: dapr-tls-client
+        key: tls.crt
+    privateKey:
+      secretKeyRef:
+        name: dapr-tls-key
+        key: tls.key
+```
+
 ## Related Links
 
 - [HTTPEndpoint reference]({{< ref httpendpoints-schema.md >}})

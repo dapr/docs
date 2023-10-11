@@ -7,13 +7,7 @@ aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-postgresql/"
 ---
 
-This component allows using PostgreSQL (Postgres) as state store for Dapr.
-
-## Create a Dapr component
-
-Create a file called `postgresql.yaml`, paste the following and replace the `<CONNECTION STRING>` value with your connection string. The connection string is a standard PostgreSQL connection string. For example, `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string.
-
-If you want to also configure PostgreSQL to store actors, add the `actorStateStore` option as in the example below.
+This component allows using PostgreSQL (Postgres) as state store for Dapr. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -24,42 +18,72 @@ spec:
   type: state.postgresql
   version: v1
   metadata:
-  # Connection string
-  - name: connectionString
-    value: "<CONNECTION STRING>"
-  # Timeout for database operations, in seconds (optional)
-  #- name: timeoutInSeconds
-  #  value: 20
-  # Name of the table where to store the state (optional)
-  #- name: tableName
-  #  value: "state"
-  # Name of the table where to store metadata used by Dapr (optional)
-  #- name: metadataTableName
-  #  value: "dapr_metadata"
-  # Cleanup interval in seconds, to remove expired rows (optional)
-  #- name: cleanupIntervalInSeconds
-  #  value: 3600
-  # Max idle time for connections before they're closed (optional)
-  #- name: connectionMaxIdleTime
-  #  value: 0
-  # Uncomment this if you wish to use PostgreSQL as a state store for actors (optional)
-  #- name: actorStateStore
-  #  value: "true"
+    # Connection string
+    - name: connectionString
+      value: "<CONNECTION STRING>"
+    # Timeout for database operations, in seconds (optional)
+    #- name: timeoutInSeconds
+    #  value: 20
+    # Name of the table where to store the state (optional)
+    #- name: tableName
+    #  value: "state"
+    # Name of the table where to store metadata used by Dapr (optional)
+    #- name: metadataTableName
+    #  value: "dapr_metadata"
+    # Cleanup interval in seconds, to remove expired rows (optional)
+    #- name: cleanupIntervalInSeconds
+    #  value: 3600
+    # Maximum number of connections pooled by this component (optional)
+    #- name: maxConns
+    #  value: 0
+    # Max idle time for connections before they're closed (optional)
+    #- name: connectionMaxIdleTime
+    #  value: 0
+    # Controls the default mode for executing queries. (optional)
+    #- name: queryExecMode
+    #  value: ""
+    # Uncomment this if you wish to use PostgreSQL as a state store for actors (optional)
+    #- name: actorStateStore
+    #  value: "true"
 ```
+
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
 ## Spec metadata fields
 
+### Authenticate using a connection string
+
+The following metadata options are **required** to authenticate using a PostgreSQL connection string.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `connectionString` | Y | The connection string for the PostgreSQL database. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string. | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=my_db"`
+
+### Authenticate using Azure AD
+
+Authenticating with Azure AD is supported with Azure Database for PostgreSQL. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Azure AD. | `"true"` |
+| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain the user, which corresponds to the name of the user created inside PostgreSQL that maps to the Azure AD identity; this is often the name of the corresponding principal (e.g. the name of the Azure AD application). This connection string should not contain any password.  | `"host=mydb.postgres.database.azure.com user=myapplication port=5432 database=my_db sslmode=require"` |
+| `azureTenantId` | N | ID of the Azure AD tenant | `"cd4b2887-304c-…"` |
+| `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-…"` |
+| `azureClientSecret` | N | Client secret (application password) | `"Ecy3X…"` |
+
+### Other metadata options
+
 | Field | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString` | Y | The connection string for the PostgreSQL database | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=dapr_test"`
 | `timeoutInSeconds` | N | Timeout, in seconds, for all database operations. Defaults to `20` | `30`
 | `tableName` | N | Name of the table where the data is stored. Defaults to `state`. Can optionally have the schema name as prefix, such as `public.state` | `"state"`, `"public.state"`
 | `metadataTableName` | N | Name of the table Dapr uses to store a few metadata properties. Defaults to `dapr_metadata`. Can optionally have the schema name as prefix, such as `public.dapr_metadata` | `"dapr_metadata"`, `"public.dapr_metadata"`
 | `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (i.e. 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `maxConns` | N | Maximum number of connections pooled by this component. Set to 0 or lower to use the default value, which is the greater of 4 or the number of CPUs. | `"4"`
 | `connectionMaxIdleTime` | N | Max idle time before unused connections are automatically closed in the connection pool. By default, there's no value and this is left to the database driver to choose. | `"5m"`
+| `queryExecMode` | N | Controls the default mode for executing queries. By default Dapr uses the extended protocol and automatically prepares and caches prepared statements. However, this may be incompatible with proxies such as PGBouncer. In this case it may be preferrable to use `exec` or `simple_protocol`. | `"simple_protocol"`
 | `actorStateStore` | N | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup PostgreSQL
@@ -70,20 +94,21 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 1. Run an instance of PostgreSQL. You can run a local instance of PostgreSQL in Docker CE with the following command:
 
-     This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".
-
      ```bash
      docker run -p 5432:5432 -e POSTGRES_PASSWORD=example postgres
      ```
+
+     > This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".
 
 2. Create a database for state data.
 Either the default "postgres" database can be used, or create a new database for storing state data.
 
     To create a new database in PostgreSQL, run the following SQL command:
 
-    ```SQL
-    CREATE DATABASE dapr_test;
+    ```sql
+    CREATE DATABASE my_dapr;
     ```
+  
 {{% /codetab %}}
 
 {{% /tabs %}}
