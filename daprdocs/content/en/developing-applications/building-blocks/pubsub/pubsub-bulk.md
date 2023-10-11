@@ -481,7 +481,11 @@ These are the opportunities where optimization is possible. When optimized, a Bu
 
 On enabling Bulk Publish and/or Bulk Subscribe, the communication between the App and Dapr sidecar (Point 1 above) is optimized for **all components**.
 
-But, optimization of Point 2 i.e. From/To *Dapr* To/From *Pubsub Broker* would depend on a number of factors, i.e. if Broker inherently supports Bulk Publish/Subscribe and if Dapr component is updated to support Batching. Currently, following components are updated to support this level of optimization:
+Optimization from Dapr sidecar to the pub/sub broker would depend on a number of factors, for example:
+- If the broker inherently supports Bulk pub/sub
+- If the Dapr component is updated to support the use of bulk APIs provided by the broker. 
+
+Currently, the following components are updated to support this level of optimization:
 <table width="100%">
     <tr>
         <th>Component</th>
