@@ -475,7 +475,7 @@ public class BulkMessageController : ControllerBase
 
 When talking about event publish/subscribe, there are two kind of network transfers involved.
 1. From/To *App* To/From *Dapr*.
-2. From/To *Dapr* To/From *Pubsub Broker*.
+1. From/To *Dapr* To/From *Pubsub Broker*.
 
 These are the opportunities where optimization is possible. When optimized, a Bulk requests are, which reduce number of overall calls and thus increase throughput and provide better latency.
 
