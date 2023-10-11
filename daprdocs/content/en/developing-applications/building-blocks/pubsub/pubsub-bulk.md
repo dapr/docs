@@ -302,10 +302,10 @@ In the example above, `bulkSubscribe` is _optional_. If you use `bulkSubscribe`,
 - `enabled` is mandatory and enables or disables bulk subscriptions on this topic
 - You can optionally configure the max number of messages (`maxMessagesCount`) delivered in a bulk message. 
 Default value of `maxMessagesCount` for components not supporting bulk subscribe is 100 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}). 
-If a component supports bulk subscribe, then default value for this parameter can be found in that component doc. Please refer [Supported components]({{< ref pubsub-bulk >}}).
+If a component supports bulk subscribe, then default value for this parameter can be found in that component doc.
 - You can optionally provide the max duration to wait (`maxAwaitDurationMs`) before a bulk message is sent to the app.
 Default value of `maxAwaitDurationMs` for components not supporting bulk subscribe is 1000 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}). 
-If a component supports bulk subscribe, then default value for this parameter can be found in that component doc. Please refer [Supported components]({{< ref pubsub-bulk >}}).
+If a component supports bulk subscribe, then default value for this parameter can be found in that component doc.
 
 The application receives an `EntryId` associated with each entry (individual message) in the bulk message. This `EntryId` must be used by the app to communicate the status of that particular entry. If the app fails to notify on an `EntryId` status, it's considered a `RETRY`.
 
@@ -473,9 +473,41 @@ public class BulkMessageController : ControllerBase
 {{< /tabs >}}
 ## How components handle publishing and subscribing to bulk messages
 
-Some pub/sub brokers support sending and receiving multiple messages in a single request. When a component supports bulk publish or subscribe operations, Dapr runtime uses them to further optimize the communication between the Dapr sidecar and the underlying pub/sub broker. 
+For event publish/subscribe, two kinds of network transfers are involved.
+1. From/To *App* To/From *Dapr*.
+1. From/To *Dapr* To/From *Pubsub Broker*.
 
-For components that do not have bulk publish or subscribe support, Dapr runtime uses the regular publish and subscribe APIs to send and receive messages one by one. This is still more efficient than directly using the regular publish or subscribe APIs, because applications can still send/receive multiple messages in a single request to/from Dapr.
+These are the opportunities where optimization is possible. When optimized, a Bulk requests are, which reduce number of overall calls and thus increase throughput and provide better latency.
+
+On enabling Bulk Publish and/or Bulk Subscribe, the communication between the App and Dapr sidecar (Point 1 above) is optimized for **all components**.
+
+Optimization from Dapr sidecar to the pub/sub broker would depend on a number of factors, for example:
+- If the broker inherently supports Bulk pub/sub
+- If the Dapr component is updated to support the use of bulk APIs provided by the broker. 
+
+Currently, the following components are updated to support this level of optimization:
+<table width="100%">
+    <tr>
+        <th>Component</th>
+        <th>Bulk Publish</th>
+        <th>Bulk Subscribe</th>
+    </tr>
+    <tr>
+        <td>Kafka</td>
+        <td>Yes</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>Azure Servicebus</td>
+        <td>Yes</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>Azure Eventhubs</td>
+        <td>Yes</td>
+        <td>Yes</td>
+    </tr>
+</table>
 
 ## Demos
 
