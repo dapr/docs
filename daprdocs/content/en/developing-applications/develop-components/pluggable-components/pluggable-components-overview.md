@@ -63,7 +63,3 @@ In contrast, pluggable components require additional steps before they can commu
 
 - [Implement a pluggable component]({{< ref develop-pluggable.md >}})
 - [Pluggable component registration]({{< ref "pluggable-components-registration" >}})
-
-[state.proto]: https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/state.proto
-[pubsub.proto]: https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/pubsub.proto
-[bindings.proto]: https://github.com/dapr/dapr/blob/master/dapr/proto/components/v1/bindings.proto
