@@ -46,7 +46,7 @@
   link: setup-etcd
   state: Beta
   version: v2
-  since: "1.11"
+  since: "1.12"
   features:
     crud: true
     transactions: true
