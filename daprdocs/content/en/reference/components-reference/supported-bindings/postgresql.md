@@ -25,8 +25,6 @@ spec:
     # Connection string
     - name: connectionString
       value: "<CONNECTION STRING>"
-    - name: direction
-      value: "<DIRECTION_OF_BINDING>"
 ```
 
 {{% alert title="Warning" color="warning" %}}

@@ -40,8 +40,6 @@ spec:
     #    key: "mytoken"
     #- name: securityTokenHeader
     #  value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
-    #- name: direction
-    #  value: "output"
 ```
 
 ## Spec metadata fields
@@ -56,7 +54,6 @@ spec:
 | `MTLSRenegotiation`  | N | Output | Type of mTLS renegotiation to be used | `RenegotiateOnceAsClient`
 | `securityToken`      | N | Output | The value of a token to be added to a HTTP request as a header. Used together with `securityTokenHeader` |
 | `securityTokenHeader` | N | Output | The name of the header for `securityToken` on a HTTP request |
-| `direction`           | N | Output |The direction of the binding | `"output"`
 
 ### How to configure mTLS-related fields in metadata
 

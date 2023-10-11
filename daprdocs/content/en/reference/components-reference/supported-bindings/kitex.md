@@ -34,13 +34,12 @@ spec:
     value: "echo"
   - name: version
     value: "0.5.0"
-  - name: direction
-    value: "output"
 ```
 
 ## Spec metadata fields
 
 The `InvokeRequest.Metadata` for `bindings.kitex` requires the client to fill in four required items when making a call: 
+
 - `hostPorts`
 - `destService`
 - `methodName`
@@ -52,8 +51,6 @@ The `InvokeRequest.Metadata` for `bindings.kitex` requires the client to fill in
 | `destService` |    Y     | Output | Service name of the Kitex server (Thrift)            | `"echo"`           |
 | `methodName`  |    Y     | Output | Method name under a specific service name of the Kitex server (Thrift) | `"echo"`           |
 | `version`     |    Y     | Output | Kitex version                                                                                           | `"0.5.0"`          |
-| `direction`     |    N     | Output | Direction of the binding                                                                                           | `"output"`          |
-
 
 ## Binding support
 

@@ -29,8 +29,6 @@ spec:
     value: "<ORG>"
   - name: bucket # Required
     value: "<BUCKET>"
-  - name: direction
-    value: "<DIRECTION>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -45,7 +43,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `token` | Y | Output | The authorization token for InfluxDB | `"mytoken"` |
 | `org` | Y | Output | The InfluxDB organization | `"myorg"` |
 | `bucket` | Y | Output | Bucket name to write to | `"mybucket"` |
-| `direction` | N | Output | Direction of the binding | `"output"` |
 
 ## Binding support
 
