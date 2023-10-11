@@ -102,8 +102,6 @@ SELECT * FROM mytable WHERE user_key = 'something';
 SELECT * FROM mytable WHERE user_key = ?;
 ```
 
-> [Relevant XKCD](https://xkcd.com/327/)
-
 ### exec
 
 The `exec` operation can be used for DDL operations (like table creation), as well as `INSERT`, `UPDATE`, `DELETE` operations which return only metadata (e.g. number of affected rows).
