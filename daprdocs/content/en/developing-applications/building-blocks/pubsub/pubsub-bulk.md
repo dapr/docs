@@ -473,7 +473,7 @@ public class BulkMessageController : ControllerBase
 {{< /tabs >}}
 ## How components handle publishing and subscribing to bulk messages
 
-When talking about event publish/subscribe, there are two kind of network transfers involved.
+For event publish/subscribe, two kinds of network transfers are involved.
 1. From/To *App* To/From *Dapr*.
 1. From/To *Dapr* To/From *Pubsub Broker*.
 
