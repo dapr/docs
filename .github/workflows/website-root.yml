@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - v1.11
+      - v1.13
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - v1.11
+      - v1.13
 
 concurrency:
   # Cancel the previously triggered build for only PR build.
