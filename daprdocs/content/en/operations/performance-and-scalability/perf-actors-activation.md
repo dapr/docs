@@ -19,7 +19,7 @@ For applications using actors in Dapr there are two aspects to be considered. Fi
 * Sidecar Injector (control plane)
 * Sentry (optional, control plane)
 
-## Performance summary for Dapr v1.0
+## Performance summary for Dapr v1.12
 
 The actors API in Dapr sidecar will identify which hosts are registered for a given actor type and route the request to the appropriate host for a given actor ID. The host runs an instance of the application and uses the Dapr SDK (.Net, Java, Python or PHP) to handle actors requests via HTTP.
 
@@ -40,17 +40,14 @@ Test parameters:
 * Sidecar limited to 0.5 vCPU
 * mTLS enabled
 * Sidecar telemetry enabled (tracing with a sampling rate of 0.1)
-* Payload of an empty JSON object: `{}`
 
 ### Results
 
-* The actual throughput was ~500 qps.
-* The tp90 latency was ~3ms.
-* The tp99 latency was ~6.2ms.
-* Dapr app consumed ~523m CPU and ~304.7Mb of Memory
-* Dapr sidecar consumed 2m CPU and ~18.2Mb of Memory
+* The requested throughput was 500 qps.
+* The actual throughput was 500 qps.
+* The tp90 latency was ~3.2ms.
+* The tp99 latency was ~7ms.
+* Dapr app consumed ~339m CPU and ~336Mb of Memory
+* Dapr sidecar consumed 93m CPU and ~60Mb of Memory
 * No app restarts
 * No sidecar restarts
-
-## Related links
-* For more information see [overview of Dapr on Kubernetes]({{< ref kubernetes-overview.md >}})

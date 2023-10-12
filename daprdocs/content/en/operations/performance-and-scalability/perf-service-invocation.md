@@ -29,7 +29,7 @@ For more information see [overview of Dapr in self-hosted mode]({{< ref self-hos
 
 For more information see [overview of Dapr on Kubernetes]({{< ref kubernetes-overview.md >}}).
 
-## Performance summary for Dapr v1.0
+## Performance summary for Dapr v1.12
 
 The service invocation API is a reverse proxy with built-in service discovery to connect to other services. This includes tracing, metrics, mTLS for in-transit encryption of traffic, together with resiliency in the form of retries for network partitions and connection errors.
 
@@ -59,10 +59,10 @@ When running in a highly available production setup, the Dapr control plane cons
 
 | Component  | vCPU | Memory
 | ------------- | ------------- | -------------
-| Operator  | 0.001  | 12.5 Mb
-| Sentry  | 0.005  | 13.6 Mb
-| Sidecar Injector  | 0.002  | 14.6 Mb
-| Placement | 0.001  | 20.9 Mb
+| Operator  | 0.003  | 18 Mb
+| Sentry  | 0.01  | 33 Mb
+| Sidecar Injector  | 0.008  | 17 Mb
+| Placement | 0.005  | 25 Mb
 
 There are a number of variants that affect the CPU and memory consumption for each of the system components. These variants are shown in the table below.
 
@@ -75,18 +75,10 @@ There are a number of variants that affect the CPU and memory consumption for ea
 
 ### Data plane performance
 
-The Dapr sidecar uses 0.48 vCPU and 23Mb per 1000 requests per second.
-End-to-end, the Dapr sidecars (client and server) add ~1.40 ms to the 90th percentile latency, and ~2.10 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
-
-This performance is on par or better than commonly used service meshes.
-
-### Latency
-
 In the test setup, requests went through the Dapr sidecar both on the client side (serving requests from the load tester tool) and the server side (the target app).
 mTLS and telemetry (tracing with a sampling rate of 0.1) and metrics were enabled on the Dapr test, and disabled for the baseline test.
 
-<img src="/images/perf_invocation_p90.png" alt="Latency for 90th percentile">
+The Dapr sidecar uses 0.45 vCPU and 38Mb per 1000 requests per second.
+End-to-end, the Dapr sidecars (client and server) add ~1.20 ms to the 90th percentile latency, and ~2.50 ms to the 99th percentile latency. End-to-end here is a call from one app to another app receiving a response. This is shown by steps 1-7 in [this diagram]({{< ref service-invocation-overview.md >}}).
 
-<br>
-
-<img src="/images/perf_invocation_p99.png" alt="Latency for 99th percentile">
+This performance is on par or better than commonly used service meshes.
