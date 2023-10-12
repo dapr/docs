@@ -186,6 +186,9 @@ url_latest_version = "https://docs.dapr.io"
   version = "v1.11"
   url = "https://v1-11.docs.dapr.io"
 [[params.versions]]
+  version = "v1.11"
+  url = "https://v1-11.docs.dapr.io"
+[[params.versions]]
   version = "v1.10"
   url = "https://v1-10.docs.dapr.io"
 [[params.versions]]
