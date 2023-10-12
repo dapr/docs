@@ -106,7 +106,7 @@ with DaprClient() as client:
     result = client.publish_event(
         pubsub_name='order_pub_sub',
         topic_name='orders',
-        publish_metadata={'cloudevent.id: 'd99b228f-6c73-4e78-8c4d-3f80a043d317', cloudevent.source: 'payment'}
+        publish_metadata={'cloudevent.id': 'd99b228f-6c73-4e78-8c4d-3f80a043d317', 'cloudevent.source': 'payment'}
     )
 ```
 
