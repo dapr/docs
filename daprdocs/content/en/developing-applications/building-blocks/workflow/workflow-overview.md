@@ -109,8 +109,9 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 With Dapr Workflow in beta stage comes the following limitation(s):
 
-- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, you're not able to use NoSQL databases. Only SQL databases are supported in the latest release. 
-- **Application instances:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, only a maximum of 2 application instances is supported. 
+- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, using the NoSQL databases as a state store results in limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
+
+- **Horizontal scaling:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, if you scale out Dapr sidecars or your application pods to more than 2, then the concurrency of the workflow execution drops. It is recommended to test with 1 or 2 instances, and no more than 2.
 
 ## Watch the demo
 
