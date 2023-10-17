@@ -63,10 +63,6 @@ When you create an application with workflow code and run it with Dapr, you can 
 
 [Learn more about how manage a workflow using HTTP calls.]({{< ref workflow_api.md >}})
 
-### Manage other workflow runtimes with workflow components
-
-You can call other workflow runtimes (for example, Temporal and Netflix Conductor) by writing your own workflow component. 
-
 ## Workflow patterns
 
 Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflow. 
