@@ -63,10 +63,6 @@ When you create an application with workflow code and run it with Dapr, you can 
 
 [Learn more about how manage a workflow using HTTP calls.]({{< ref workflow_api.md >}})
 
-### Manage other workflow runtimes with workflow components
-
-You can call other workflow runtimes (for example, Temporal and Netflix Conductor) by writing your own workflow component. 
-
 ## Workflow patterns
 
 Dapr Workflow simplifies complex, stateful coordination requirements in microservice architectures. The following sections describe several application patterns that can benefit from Dapr Workflow. 
@@ -109,8 +105,9 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 
 With Dapr Workflow in beta stage comes the following limitation(s):
 
-- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, you're not able to use NoSQL databases. Only SQL databases are supported in the latest release. 
-- **Application instances:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, only a maximum of 2 application instances is supported. 
+- **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, using the NoSQL databases as a state store results in limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
+
+- **Horizontal scaling:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, if you scale out Dapr sidecars or your application pods to more than 2, then the concurrency of the workflow execution drops. It is recommended to test with 1 or 2 instances, and no more than 2.
 
 ## Watch the demo
 
