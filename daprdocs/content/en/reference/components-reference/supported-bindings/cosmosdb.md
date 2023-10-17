@@ -11,7 +11,6 @@ aliases:
 
 To setup Azure Cosmos DB binding create a component of type `bindings.azure.cosmosdb`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -31,8 +30,6 @@ spec:
     value: "Orders"
   - name: partitionKey
     value: "<message>"
-  - name: direction
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -48,7 +45,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `database` | Y | Output | The name of the Cosmos DB database | `"OrderDb"` |
 | `collection` | Y | Output | The name of the container inside the database.  | `"Orders"` |
 | `partitionKey` | Y | Output | The name of the key to extract from the payload (document to be created) that is used as the partition key. This name must match the partition key specified upon creation of the Cosmos DB container. | `"OrderId"`, `"message"` |
-| `direction` | N | Output | The direction of the binding. | `"output"` |
 
 For more information see [Azure Cosmos DB resource model](https://docs.microsoft.com/azure/cosmos-db/account-databases-containers-items).
 

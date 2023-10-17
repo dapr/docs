@@ -36,8 +36,6 @@ spec:
       value: "<CONNECTION_MAX_LIFE_TIME>"
     - name: connMaxIdleTime
       value: "<CONNECTION_MAX_IDLE_TIME>"
-    - name: direction
-      value: "<DIRECTION_OF_BINDING>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -55,7 +53,6 @@ Note that you can not use secret just for username/password. If you use secret, 
 | `maxOpenConns` | N | Output | The max open connections. Integer greater than 0 | `"10"` |
 | `connMaxLifetime` | N | Output | The max connection lifetime. Duration string | `"12s"` |
 | `connMaxIdleTime` | N | Output | The max connection idel time. Duration string | `"12s"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ### SSL connection
 
@@ -192,6 +189,5 @@ The `close` operation can be used to explicitly close the DB connection and retu
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})

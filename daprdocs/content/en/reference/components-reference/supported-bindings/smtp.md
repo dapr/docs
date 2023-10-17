@@ -43,8 +43,6 @@ spec:
     value: "subject"
   - name: priority
     value: "[value 1-5]"
-  - name: direction 
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -66,7 +64,6 @@ The example configuration shown above, contain a username and password as plain-
 | `emailBcc` | N | Output | If set, this specifies email address to BCC in. See [also](#example-request) | `"me@example.com"` |
 | `subject` | N | Output | If set, this specifies the subject of the email message. See [also](#example-request) | `"subject of mail"` |
 | `priority` | N | Output | If set, this specifies the priority (X-Priority) of the email message, from 1 (lowest) to 5 (highest) (default value: 3). See [also](#example-request) | `"1"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ## Binding support
 

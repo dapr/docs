@@ -11,8 +11,6 @@ aliases:
 
 To setup Twilio SMS binding create a component of type `bindings.twilio.sms`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -30,8 +28,6 @@ spec:
     value: "*****************"
   - name: authToken # required.
     value: "*****************"
-  - name: direction 
-    value: "output"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -45,7 +41,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `fromNumber` | Y | Output | The sender phone number | `"222-222-2222"` |
 | `accountSid` | Y | Output | The Twilio account SID | `"account sid"` |
 | `authToken` | Y | Output | The Twilio auth token | `"auth token"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ## Binding support
 
