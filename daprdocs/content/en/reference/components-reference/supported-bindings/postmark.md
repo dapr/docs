@@ -30,8 +30,6 @@ spec:
     value: "dave@dapr.io" # optional
   - name: subject
     value: "Hello!" # optional
-  - name: direction 
-    value: "output" # optional
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -48,7 +46,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `emailCc` | N | Output | If set this specifies the 'cc' email address of the email message | `"me@example.com"` |
 | `emailBcc` | N | Output | If set this specifies the 'bcc' email address of the email message | `"me@example.com"` |
 | `subject` | N | Output | If set this specifies the subject of the email message | `"me@example.com"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 You can specify any of the optional metadata properties on the output binding request too (e.g. `emailFrom`, `emailTo`, `subject`, etc.)
 

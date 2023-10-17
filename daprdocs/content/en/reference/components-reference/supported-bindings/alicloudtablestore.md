@@ -32,8 +32,6 @@ spec:
     value: "[table]"
   - name: endpoint
     value: "[endpoint]"
-  - name: direction
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -49,13 +47,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `accessKey`   | Y | Output | Access key credential. |
 | `instanceName`      | Y | Output | Name of the instance. |
 | `tableName`      | Y | Output | Name of the table. |
-| `direction`      | N | Output | Direction of the binding. | `"output"`
 
 ## Binding support
 
 This component supports **output binding** with the following operations:
-- `create`: [Create object](#create-object)
 
+- `create`: [Create object](#create-object)
 
 ### Create object
 

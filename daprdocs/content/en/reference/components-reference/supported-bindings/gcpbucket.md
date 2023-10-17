@@ -47,8 +47,6 @@ spec:
     value: "<bool>"
   - name: encodeBase64
     value: "<bool>"
-  - name: direction
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -72,7 +70,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `client_x509_cert_url` | Y | Output | GCP credentials project x509 cert url | `https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com`
 | `decodeBase64` | N | Output | Configuration to decode base64 file content before saving to bucket storage. (In case of saving a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
 | `encodeBase64` | N | Output | Configuration to encode base64 file content before return the content. (In case of opening a file with binary content). `true` is the only allowed positive value. Other positive variations like `"True", "1"` are not acceptable. Defaults to `false` | `true`, `false` |
-| `direction` | N | Output | The direction of the binding.  | `"output"`
 
 ## Binding support
 

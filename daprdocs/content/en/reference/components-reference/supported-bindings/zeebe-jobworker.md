@@ -47,10 +47,10 @@ spec:
   - name: fetchVariables
     value: "productId, productName, productKey"
   - name: autocomplete
-    value: "true"  
+    value: "true"
   - name: retryBackOff
-    value: "30s"  
-  - name: direction 
+    value: "30s"
+  - name: direction
     value: "input"
 ```
 
