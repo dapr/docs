@@ -112,7 +112,7 @@ Authenticating with Azure AD is supported with Azure Database for PostgreSQL. Al
 3. Create a TRIGGER on configuration table. An example function to create a TRIGGER is as follows:
 
    ```sh
-   CREATE OR REPLACE FUNCTION configuration_event() RETURNS TRIGGER AS $$
+   CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
        DECLARE 
            data json;
            notification json;
