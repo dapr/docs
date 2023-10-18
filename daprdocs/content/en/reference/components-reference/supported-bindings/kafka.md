@@ -46,7 +46,7 @@ spec:
   - name: maxMessageBytes # Optional.
     value: "1024"
   - name: version # Optional.
-    value: "1.0.0"
+    value: "2.0.0"
   - name: direction
     value: "input, output"
 ```
