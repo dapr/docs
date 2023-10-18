@@ -109,4 +109,4 @@ spec:
 Watch [this video for an overview of the outbox pattern](https://youtu.be/rTovKpG0rhY?t=1338):
 
 <div class="embed-responsive embed-responsive-16by9">
-<iframe width="360" height="315" src="https://youtu.be/rTovKpG0rhY?t=1338" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="360" height="315" src="https://www.youtube.com/embed/rTovKpG0rhY?si=1xlS54vcdYnLLtOL&amp;start=1338" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
