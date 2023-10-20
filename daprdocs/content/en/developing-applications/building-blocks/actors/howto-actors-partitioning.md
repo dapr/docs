@@ -57,7 +57,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-[See the .NET SDK documentation on registring actors]({{< ref "dotnet-actors-usage.md#registring-actors" >}}).
+[See the .NET SDK documentation on registering actors]({{< ref "dotnet-actors-usage.md#registring-actors" >}}).
 
 {{% /codetab %}}
 

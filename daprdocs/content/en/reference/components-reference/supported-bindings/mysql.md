@@ -52,7 +52,7 @@ Note that you can not use secret just for username/password. If you use secret, 
 | `maxIdleConns` | N | Output | The max idle connections. Integer greater than 0 | `"10"` |
 | `maxOpenConns` | N | Output | The max open connections. Integer greater than 0 | `"10"` |
 | `connMaxLifetime` | N | Output | The max connection lifetime. Duration string | `"12s"` |
-| `connMaxIdleTime` | N | Output | The max connection idel time. Duration string | `"12s"` |
+| `connMaxIdleTime` | N | Output | The max connection idle time. Duration string | `"12s"` |
 
 ### SSL connection
 
