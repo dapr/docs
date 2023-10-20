@@ -14,7 +14,7 @@ The Multi-App Run template file is a YAML file that you can use to run multiple 
 - Use the multi-app template
 - View started applications
 - Stop the multi-app template
-- Stucture the multi-app template file
+- Structure the multi-app template file
 
 ## Use the multi-app template
 

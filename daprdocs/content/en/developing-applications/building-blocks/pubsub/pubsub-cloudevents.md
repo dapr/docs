@@ -160,7 +160,7 @@ The JSON payload then reflects the new `source` and `id` values:
 ```
 
 {{% alert title="Important" color="warning" %}}
-While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Telementry for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}})  
+While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Teleentry for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}})  
 
 {{% /alert %}}
 
