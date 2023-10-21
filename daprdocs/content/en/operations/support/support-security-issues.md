@@ -12,4 +12,4 @@ The Dapr organization and team makes security a central focus of how we operate 
 
 To report a security issue, please privately email the [Dapr Maintainers (dapr@dapr.io)](mailto:dapr@dapr.io?subject=[Security%20Disclosure]:%20ISSUE%20TITLE)
 
-The Dapr maintainers will triage and respond ASAP and then patch and send an annoucement within 30 days.
+The Dapr maintainers will triage and respond ASAP and then patch and send an announcement within 30 days.

@@ -25,7 +25,7 @@ While Dapr's built-in components come [included with the runtime](https://github
 1. Pluggable components need to be started and ready to take requests _before_ Dapr itself is started.
 2. The [Unix Domain Socket][uds] file used for the pluggable component communication need to be made accessible to both Dapr and pluggable component.
 
-In standalone mode, pluggable components run as processes or containers. On Kubernetes, pluggable components run as containers and are automatically injected to the application's pod by Dapr's sidecar injector, allowing customization via the standard [Kubernets Container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#container-v1-core).
+In standalone mode, pluggable components run as processes or containers. On Kubernetes, pluggable components run as containers and are automatically injected to the application's pod by Dapr's sidecar injector, allowing customization via the standard [Kubernetes Container spec](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#container-v1-core).
 
 This also changes the approach to share [Unix Domain Socket][uds] files between Dapr and pluggable components.
 

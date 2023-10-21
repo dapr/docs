@@ -54,7 +54,7 @@ The baseline test included direct, non-encrypted traffic, without telemetry, dir
 
 ### Control plane performance
 
-The Dapr control plane uses a total of 0.009 vCPU and 61.6 Mb when running in non-HA mode, meaning a single replica per system compoment.
+The Dapr control plane uses a total of 0.009 vCPU and 61.6 Mb when running in non-HA mode, meaning a single replica per system component.
 When running in a highly available production setup, the Dapr control plane consumes ~0.02 vCPU and 185 Mb.
 
 | Component  | vCPU | Memory
