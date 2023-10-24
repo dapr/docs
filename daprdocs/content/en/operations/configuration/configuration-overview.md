@@ -50,6 +50,7 @@ The following configuration settings can be applied to Dapr application sidecars
 - [Metrics](#metrics)
 - [Logging](#logging)
 - [Middleware](#middleware)
+- [Workflow](#workflow)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
 - [Access Control allow lists for service invocation API](#access-control-allow-lists-for-service-invocation-api)
@@ -183,6 +184,29 @@ The following table lists the properties for HTTP handlers:
 
 See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
 
+#### Workflow
+
+The workflow section can be used to configure how Dapr workflows work in the Dapr Runtime.
+
+The `workflow` section under the `Configuration` spec contains the following properties:
+
+```yml
+workflow:
+  maxConcurrentWorkflows: 100
+  maxConcurrentActivities: 100
+```
+
+The following table lists the properties for workflow:
+
+| Property     | Type   | Description |
+|--------------|--------|-------------|
+| `maxConcurrentWorkflows` | integer | The maximum number of concurrent workflow functions that can be invoked concurrently at any given time per sidecar. Default: `100`. |
+| `maxConcurrentActivities` | integer | The maximum number of concurrent activity functions that can be invoked concurrently at any given time per sidecar. Default: `100`. |
+
+{{% alert title="Note" color="primary" %}}
+The `maxConcurrentWorkflows` and `maxConcurrentActivities` properties are used to control concurrent function invocation. They do not control the number of workflow instances that can be created, nor do they limit the number of workflow instances that can be in a running state at any given time. They also cannot be used to limit specific workflow or activity functions. Rather, these settings are primarily intended for controlling overall thread and CPU usage in workflow applications. See [Workflow architecture]({{< ref "workflow-architecture.md" >}}) for more information about workflow execution.
+{{% /alert %}}
+
 #### Scope secret store access
 
 See the [Scoping secrets]({{< ref "secret-scope.md" >}}) guide for information and examples on how to scope secrets to an application.
@@ -267,6 +291,9 @@ spec:
           - name: /op2/*
             httpVerb: ["*"]
             action: allow
+  workflow:
+    maxConcurrentWorkflows: 100
+    maxConcurrentActivities: 100
 ```
 
 ## Control plane configuration
