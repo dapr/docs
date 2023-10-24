@@ -566,7 +566,7 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
-The above example will return a `BulkStateItem` with the serialized format of the value you saved to state. If you would prefer that the value be deserialized by the SDK across each of your bulk response items, you can instead use the following:
+The above example returns a `BulkStateItem` with the serialized format of the value you saved to state. If you prefer that the value be deserialized by the SDK across each of your bulk response items, you can instead use the following:
 
 ```csharp
 //dependencies
