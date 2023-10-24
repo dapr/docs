@@ -65,11 +65,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 Access an App Configuration instance using its connection string, which is available in the Azure portal. Since connection strings contain credential information, you should treat them as secrets and [use a secret store]({{< ref component-secrets.md >}}).
 
-## Authenticating with Azure AD
+## Authenticating with Microsoft Entra ID
 
-The Azure App Configuration configuration store component also supports authentication with Azure AD. Before you enable this component:
+The Azure App Configuration configuration store component also supports authentication with Microsoft Entra ID. Before you enable this component:
 - Read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
-- Create an Azure AD application (also called Service Principal). 
+- Create an Microsoft Entra ID application (also called Service Principal). 
 - Alternatively, create a managed identity for your application platform.
 
 ## Set up Azure App Configuration
