@@ -30,8 +30,6 @@ spec:
   # optional fields
   - name: region
     value: "<your-bucket-region>"
-  - name: direction
-    value: "<your-binding-direction>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -47,7 +45,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `accessKey` | Y | Output | The Huawei Access Key (AK) to access this resource | `"************"` |
 | `secretKey` | Y | Output | The Huawei Secret Key (SK) to access this resource | `"************"` |
 | `region` | N | Output | The specific Huawei region of the bucket | `"cn-north-4"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ## Binding support
 

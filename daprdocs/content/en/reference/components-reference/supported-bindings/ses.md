@@ -40,8 +40,6 @@ spec:
     value: "bcc@example.com"
   - name: subject
     value: "subject"
-  - name: direction 
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -61,7 +59,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `emailCc` | N | Output | If set, this specifies the email address to CC in. See [also](#example-request) | `"me@example.com"` |
 | `emailBcc` | N | Output | If set, this specifies email address to BCC in. See [also](#example-request) | `"me@example.com"` |
 | `subject` | N | Output | If set, this specifies the subject of the email message. See [also](#example-request) | `"subject of mail"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  

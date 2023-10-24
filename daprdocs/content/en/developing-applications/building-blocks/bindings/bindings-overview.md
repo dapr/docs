@@ -76,14 +76,14 @@ Read the [Use output bindings to interface with external resources guide]({{< re
 
 ## Binding directions (optional)
 
-You can provide the `direction` metadata field to indicate the direction(s) supported by the binding component. In doing so, the Dapr sidecar avoids the `"wait for the app to become ready"` state reducing the lifecycle dependency between the Dapr sidecar and the application:
+You can provide the `direction` metadata field to indicate the direction(s) supported by the binding component. In doing so, the Dapr sidecar avoids the `"wait for the app to become ready"` state, reducing the lifecycle dependency between the Dapr sidecar and the application:
 
 - `"input"`
 - `"output"`
 - `"input, output"`
 
 {{% alert title="Note" color="primary" %}}
-It is highly recommended that all bindings should include the `direction` property.
+It is highly recommended that all input bindings should include the `direction` property.
 {{% /alert %}}
 
 [See a full example of the bindings `direction` metadata.]({{< ref "bindings_api.md#binding-direction-optional" >}})

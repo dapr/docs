@@ -11,8 +11,6 @@ aliases:
 
 To setup commercetools GraphQL binding create a component of type `bindings.commercetools`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -34,9 +32,8 @@ spec:
     value: "*****************"
   - name: scopes # required.
     value: "<project-scopes>"
-  - name: direction
-    value: "output"
 ```
+
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
@@ -51,7 +48,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `clientID` | Y | Output | The commercetools client ID for the project |  |
 | `clientSecret` | Y | Output | The commercetools client secret for the project |  |
 | `scopes` | Y | Output | The commercetools scopes for the project | `"manage_project:project-key"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 For more information see [commercetools - Creating an API Client](https://docs.commercetools.com/getting-started/create-api-client#create-an-api-client) and [commercetools - Regions](https://docs.commercetools.com/api/general-concepts#regions).
 
@@ -60,7 +56,6 @@ For more information see [commercetools - Creating an API Client](https://docs.c
 This component supports **output binding** with the following operations:
 
 - `create`
-
 
 ## Related links
 
