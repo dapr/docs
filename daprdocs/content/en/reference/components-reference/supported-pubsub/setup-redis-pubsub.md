@@ -11,6 +11,10 @@ aliases:
 
 To set up Redis Streams pub/sub, create a component of type `pubsub.redis`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
+{{% alert title="Limitations" color="warning" %}}
+Before using Redis for pub/sub, make sure you're familiar with [Redis limitations regarding transactions](https://redis.io/docs/interact/transactions/#what-about-rollbacks).
+{{% /alert %}}
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component

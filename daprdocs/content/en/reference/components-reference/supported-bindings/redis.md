@@ -11,6 +11,9 @@ aliases:
 
 To setup Redis binding create a component of type `bindings.redis`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
+{{% alert title="Limitations" color="warning" %}}
+Before using Redis for bindings, make sure you're familiar with [Redis limitations regarding transactions](https://redis.io/docs/interact/transactions/#what-about-rollbacks).
+{{% /alert %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
