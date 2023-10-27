@@ -9,10 +9,6 @@ description: Detailed information on the Redis lock component
 
 To set up the Redis lock, create a component of type `lock.redis`. See [this guide]({{< ref "howto-use-distributed-lock" >}}) on how to create a lock.
 
-{{% alert title="Limitations" color="warning" %}}
-Before using Redis for distributed locks, make sure you're familiar with [Redis limitations regarding transactions](https://redis.io/docs/interact/transactions/#what-about-rollbacks).
-{{% /alert %}}
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
