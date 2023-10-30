@@ -192,19 +192,19 @@ The `workflow` section under the `Configuration` spec contains the following pro
 
 ```yml
 workflow:
-  maxConcurrentWorkflows: 100
-  maxConcurrentActivities: 100
+  maxConcurrentWorkflowInvocations: 100
+  maxConcurrentActivityInvocations: 100
 ```
 
 The following table lists the properties for workflow:
 
 | Property     | Type   | Description |
 |--------------|--------|-------------|
-| `maxConcurrentWorkflows` | integer | The maximum number of concurrent workflow functions that can be invoked concurrently at any given time per sidecar. Default: `100`. |
-| `maxConcurrentActivities` | integer | The maximum number of concurrent activity functions that can be invoked concurrently at any given time per sidecar. Default: `100`. |
+| `maxConcurrentWorkflowInvocations` | integer | The maximum number of concurrent workflow functions that can be invoked concurrently at any given time per sidecar. Default: `100`. |
+| `maxConcurrentActivityInvocations` | integer | The maximum number of concurrent activity functions that can be invoked concurrently at any given time per sidecar. Default: `100`. |
 
 {{% alert title="Note" color="primary" %}}
-The `maxConcurrentWorkflows` and `maxConcurrentActivities` properties are used to control concurrent function invocation. They do not control the number of workflow instances that can be created, nor do they limit the number of workflow instances that can be in a running state at any given time. They also cannot be used to limit specific workflow or activity functions. Rather, these settings are primarily intended for controlling overall thread and CPU usage in workflow applications. See [Workflow architecture]({{< ref "workflow-architecture.md" >}}) for more information about workflow execution.
+The `maxConcurrentWorkflowInvocations` and `maxConcurrentActivityInvocations` properties are primarily intended for controlling overall thread and CPU usage in workflow applications by limiting the amount of workflow code that runs on a given replica at any given point in time. Any workflow or activity invocations scheduled beyond these limits will be blocked until the current number of concurrent invocations decreases below the configured limits. See [Workflow architecture]({{< ref "workflow-architecture.md" >}}) for more information about workflow execution.
 {{% /alert %}}
 
 #### Scope secret store access
@@ -292,8 +292,8 @@ spec:
             httpVerb: ["*"]
             action: allow
   workflow:
-    maxConcurrentWorkflows: 100
-    maxConcurrentActivities: 100
+    maxConcurrentWorkflowInvocations: 100
+    maxConcurrentActivityInvocations: 100
 ```
 
 ## Control plane configuration
