@@ -25,7 +25,7 @@ spec:
   - name: maxIdleConnections
     value: <REPLACE-WITH-MAX-IDLE-CONNECTIONS> # Optional. default: "2"
   - name: timeout
-    value: <REPLACE-WITH-TIMEOUT> # Optional. default: "1000ms"
+    value: <REPLACE-WITH-TIMEOUT> # Optional. default: "1000"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -38,7 +38,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | hosts              | Y        | Comma delimited endpoints | `"memcached.default.svc.cluster.local:11211"`
 | maxIdleConnections | N        | The max number of idle connections. Defaults to `"2"` | `"3"`
-| timeout            | N        | The timeout for the calls. Defaults to `"1000ms"` | `"1000ms"`
+| timeout            | N        | The timeout for the calls in milliseconds. Defaults to `"1000"` | `"1000"`
 
 ## Setup Memcached
 
