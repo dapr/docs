@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "How to: Generate a new Azure AD application and Service Principal"
-linkTitle: "How to: Generate Azure AD and Service Principal"
+title: "How to: Generate a new Microsoft Entra ID application and Service Principal"
+linkTitle: "How to: Generate Microsoft Entra ID and Service Principal"
 weight: 30000
-description: "Learn how to generate an Azure Active Directory and use it as a Service Principal"
+description: "Learn how to generate an Microsoft Entra ID and use it as a Service Principal"
 ---
 
 ## Prerequisites
@@ -23,9 +23,9 @@ az login
 az account set -s [your subscription id]
 ```
 
-### Create an Azure AD application
+### Create an Microsoft Entra ID application
 
-Create the Azure AD application with:
+Create the Microsoft Entra ID application with:
 
 ```sh
 # Friendly name for the application / Service Principal
@@ -107,7 +107,7 @@ When adding the returned values to your Dapr component's metadata:
 
 ### Create a Service Principal
 
-Once you have created an Azure AD application, create a Service Principal for that application. With this Service Principal, you can grant it access to Azure resources. 
+Once you have created an Microsoft Entra ID application, create a Service Principal for that application. With this Service Principal, you can grant it access to Azure resources. 
 
 To create the Service Principal, run the following command:
 
@@ -124,7 +124,7 @@ Expected output:
 Service Principal ID: 1d0ccf05-5427-4b5e-8eb4-005ac5f9f163
 ```
 
-The returned value above is the **Service Principal ID**, which is different from the Azure AD application ID (client ID). The Service Principal ID is defined within an Azure tenant and used to grant access to Azure resources to an application  
+The returned value above is the **Service Principal ID**, which is different from the Microsoft Entra ID application ID (client ID). The Service Principal ID is defined within an Azure tenant and used to grant access to Azure resources to an application  
 You'll use the Service Principal ID to grant permissions to an application to access Azure resources. 
 
 Meanwhile, **the client ID** is used by your application to authenticate. You'll use the client ID in Dapr manifests to configure authentication with Azure services.

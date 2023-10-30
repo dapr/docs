@@ -10,7 +10,7 @@ description: "Learn how to use Managed Identities"
 
 Using Managed Identities (MI), authentication happens automatically by virtue of your application running on top of an Azure service that has an assigned identity. 
 
-For example, let's say you enable a managed service identity for an Azure VM, Azure Container App, or an Azure Kubernetes Service cluster. When you do, an Azure AD application is created for you and automatically assigned to the service. Your Dapr services can then leverage that identity to authenticate with Azure AD, transparently and without you having to specify any credentials.
+For example, let's say you enable a managed service identity for an Azure VM, Azure Container App, or an Azure Kubernetes Service cluster. When you do, an Microsoft Entra ID application is created for you and automatically assigned to the service. Your Dapr services can then leverage that identity to authenticate with Microsoft Entra ID, transparently and without you having to specify any credentials.
 
 To get started with managed identities, you need to assign an identity to a new or existing Azure resource. The instructions depend on the service use. Check the following official documentation for the most appropriate instructions:
 
