@@ -23,7 +23,209 @@ This example uses the Dapr SDK, which leverages gRPC and is **strongly** recomme
 
 Currently, you can experience the cryptography API using the Go SDK.
 
-{{< tabs "Go" >}}
+{{< tabs "JavaScript" "Go" >}}
+
+ <!-- JavaScript -->
+{{% codetab %}}
+
+> This quickstart includes a JavaScript application called `crypto-quickstart`.
+
+### Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest Node.js installed](https://nodejs.org/download/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+- [OpenSSL](https://www.openssl.org/source/) available on your system
+
+### Step 1: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/cryptography)
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+In the terminal, from the root directory, navigate to the cryptography sample.
+
+```bash
+cd cryptography/javascript/sdk
+```
+
+Navigate into the folder with the source code:
+
+```bash
+cd ./crypto-quickstart
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+### Step 2: Run the application with Dapr
+
+The application code defines two required keys:
+
+- Private RSA key 
+- A 256-bit symmetric (AES) key
+
+Generate two keys, an RSA key and and AES key using OpenSSL and write these to two files:
+
+```bash
+mkdir -p keys
+# Generate a private RSA key, 4096-bit keys
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-private-key.pem
+# Generate a 256-bit key for AES
+openssl rand -out keys/symmetric-key-256 32
+```
+
+Run the Go service app with Dapr:
+
+```bash
+dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- npm start
+```
+
+**Expected output**
+
+```
+== APP == 2023-10-25T14:30:50.435Z INFO [GRPCClient, GRPCClient] Opening connection to 127.0.0.1:58173
+== APP == == Encrypting message using buffers
+== APP == Encrypted the message, got 856 bytes
+== APP == == Decrypting message using buffers
+== APP == Decrypted the message, got 24 bytes
+== APP == The secret is "passw0rd"
+== APP == == Encrypting message using streams
+== APP == Encrypting federico-di-dio-photography-Q4g0Q-eVVEg-unsplash.jpg to encrypted.out
+== APP == Encrypted the message to encrypted.out
+== APP == == Decrypting message using streams
+== APP == Decrypting encrypted.out to decrypted.out.jpg
+== APP == Decrypted the message to decrypted.out.jpg
+```
+
+### What happened?
+
+#### `local-storage.yaml`
+
+Earlier, you created a directory inside `crypto-quickstarts` called `keys`. In [the `local-storage` component YAML](https://github.com/dapr/quickstarts/tree/master/cryptography/components/local-storage.yaml), the `path` metadata maps to the newly created `keys` directory.
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: localstorage
+spec:
+  type: crypto.dapr.localstorage
+  version: v1
+  metadata:
+    - name: path
+      # Path is relative to the folder where the example is located
+      value: ./keys
+```
+
+#### `index.mjs`
+
+[The application file](https://github.com/dapr/quickstarts/blob/master/cryptography/javascript/sdk/crypto-quickstart/index.mjs) encrypts and decrypts messages and files using the RSA and AES keys that you generated. The application creates a new Dapr SDK client:
+
+```javascript
+async function start() {
+  const client = new DaprClient({
+    daprHost,
+    daprPort,
+    communicationProtocol: CommunicationProtocolEnum.GRPC,
+  });
+
+  // Encrypt and decrypt a message from a buffer
+  await encryptDecryptBuffer(client);
+
+  // Encrypt and decrypt a message using streams
+  await encryptDecryptStream(client);
+}
+```
+
+##### Encrypting and decrypting a string using the RSA key
+
+Once the client is created, the application encrypts a message:
+
+```javascript
+async function encryptDecryptBuffer(client) {
+  // Message to encrypt
+  const plaintext = `The secret is "passw0rd"`
+
+  // First, encrypt the message
+  console.log("== Encrypting message using buffers");
+
+  const encrypted = await client.crypto.encrypt(plaintext, {
+    componentName: "localstorage",
+    keyName: "rsa-private-key.pem",
+    keyWrapAlgorithm: "RSA",
+  });
+
+  console.log("Encrypted the message, got", encrypted.length, "bytes");
+```
+
+The application then decrypts the message:
+
+```javascript
+  // Decrypt the message
+  console.log("== Decrypting message using buffers");
+  const decrypted = await client.crypto.decrypt(encrypted, {
+    componentName: "localstorage",
+  });
+
+  console.log("Decrypted the message, got", decrypted.length, "bytes");
+  console.log(decrypted.toString("utf8"));
+
+  // ...
+}
+``` 
+
+##### Encrypt and decrpyt a large file using the AES key
+
+Next, the application encrypts a large image file:
+
+```javascript
+async function encryptDecryptStream(client) {
+  // First, encrypt the message
+  console.log("== Encrypting message using streams");
+  console.log("Encrypting", testFileName, "to encrypted.out");
+
+  await pipeline(
+    createReadStream(testFileName),
+    await client.crypto.encrypt({
+      componentName: "localstorage",
+      keyName: "symmetric-key-256",
+      keyWrapAlgorithm: "A256KW",
+    }),
+    createWriteStream("encrypted.out"),
+  );
+
+  console.log("Encrypted the message to encrypted.out");
+```
+
+The application then decrypts the large image file:
+
+```javascript
+  // Decrypt the message
+  console.log("== Decrypting message using streams");
+  console.log("Decrypting encrypted.out to decrypted.out.jpg");
+  await pipeline(
+    createReadStream("encrypted.out"),
+    await client.crypto.decrypt({
+      componentName: "localstorage",
+    }),
+    createWriteStream("decrypted.out.jpg"),
+  );
+
+  console.log("Decrypted the message to decrypted.out.jpg");
+}
+```
+
+{{% /codetab %}}
 
  <!-- Go -->
 {{% codetab %}}

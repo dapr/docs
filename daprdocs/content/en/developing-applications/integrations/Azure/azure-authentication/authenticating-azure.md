@@ -2,27 +2,27 @@
 type: docs
 title: "Authenticating to Azure"
 linkTitle: "Overview"
-description: "How to authenticate Azure components using Azure AD and/or Managed Identities"
+description: "How to authenticate Azure components using Microsoft Entra ID and/or Managed Identities"
 aliases:
   - "/operations/components/setup-secret-store/supported-secret-stores/azure-keyvault-managed-identity/"
   - "/reference/components-reference/supported-secret-stores/azure-keyvault-managed-identity/"
 weight: 10000
 ---
 
-Most Azure components for Dapr support authenticating with Azure AD (Azure Active Directory). Thanks to this:
+Most Azure components for Dapr support authenticating with Microsoft Entra ID. Thanks to this:
 
 - Administrators can leverage all the benefits of fine-tuned permissions with Azure Role-Based Access Control (RBAC).
 - Applications running on Azure services such as Azure Container Apps, Azure Kubernetes Service, Azure VMs, or any other Azure platform services can leverage [Managed Identities (MI)](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) and [Workload Identity](https://learn.microsoft.com/azure/aks/workload-identity-overview). These offer the ability to authenticate your applications without having to manage sensitive credentials.
 
-## About authentication with Azure AD
+## About authentication with Microsoft Entra ID
 
-Azure AD is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services.
+Microsoft Entra ID is Azure's identity and access management (IAM) solution, which is used to authenticate and authorize users and services.
 
-Azure AD is built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Service Bus, Azure Key Vault, Azure Cosmos DB, Azure Database for Postgres, Azure SQL, etc. 
+Microsoft Entra ID is built on top of open standards such OAuth 2.0, which allows services (applications) to obtain access tokens to make requests to Azure services, including Azure Storage, Azure Service Bus, Azure Key Vault, Azure Cosmos DB, Azure Database for Postgres, Azure SQL, etc. 
 
 > In Azure terminology, an application is also called a "Service Principal".
 
-Some Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens". Although these are valid and supported by Dapr, you should authenticate your Dapr components using Azure AD whenever possible to take advantage of many benefits, including:
+Some Azure components offer alternative authentication methods, such as systems based on "shared keys" or "access tokens". Although these are valid and supported by Dapr, you should authenticate your Dapr components using Microsoft Entra ID whenever possible to take advantage of many benefits, including:
 
 - [Managed Identities and Workload Identity](#managed-identities-and-workload-identity)
 - [Role-Based Access Control](#role-based-access-control)
@@ -31,7 +31,7 @@ Some Azure components offer alternative authentication methods, such as systems 
 
 ### Managed Identities and Workload Identity
 
-With Managed Identities (MI), your application can authenticate with Azure AD and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
+With Managed Identities (MI), your application can authenticate with Microsoft Entra ID and obtain an access token to make requests to Azure services. When your application is running on a supported Azure service (such as Azure VMs, Azure Container Apps, Azure Web Apps, etc), an identity for your application can be assigned at the infrastructure level.
 
 Once using MI, your code doesn't have to deal with credentials, which:
 
@@ -48,11 +48,11 @@ When using Azure Role-Based Access Control (RBAC) with supported services, permi
 
 ### Auditing
 
-Using Azure AD provides an improved auditing experience for access. Tenant administrators can consult audit logs to track authentication requests.
+Using Microsoft Entra ID provides an improved auditing experience for access. Tenant administrators can consult audit logs to track authentication requests.
 
 ### (Optional) Authentication using certificates
 
-While Azure AD allows you to use MI, you still have the option to authenticate using certificates.
+While Microsoft Entra ID allows you to use MI, you still have the option to authenticate using certificates.
 
 ## Support for other Azure environments
 
@@ -66,7 +66,7 @@ By default, Dapr components are configured to interact with Azure resources in t
 
 ## Credentials metadata fields
 
-To authenticate with Azure AD, you will need to add the following credentials as values in the metadata for your [Dapr component](#example-usage-in-a-dapr-component).
+To authenticate with Microsoft Entra ID, you will need to add the following credentials as values in the metadata for your [Dapr component](#example-usage-in-a-dapr-component).
 
 ### Metadata options
 
@@ -82,7 +82,7 @@ Depending on how you've passed credentials to your Dapr services, you have multi
 
 | Field               | Required | Details                              | Example                                      |
 |---------------------|----------|--------------------------------------|----------------------------------------------|
-| `azureTenantId`     | Y        | ID of the Azure AD tenant            | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"`     |
+| `azureTenantId`     | Y        | ID of the Microsoft Entra ID tenant            | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"`     |
 | `azureClientId`     | Y        | Client ID (application ID)           | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"`     |
 | `azureClientSecret` | Y        | Client secret (application password) | `"Ecy3XG7zVZK3/vl/a2NSB+a1zXLa8RnMum/IgD0E"` |
 
@@ -92,7 +92,7 @@ When running on Kubernetes, you can also use references to Kubernetes secrets fo
 
 | Field | Required | Details | Example |
 |--------|--------|--------|--------|
-| `azureTenantId` | Y | ID of the Azure AD tenant | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"` |
+| `azureTenantId` | Y | ID of the Microsoft Entra ID tenant | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"` |
 | `azureClientId` | Y | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
 | `azureCertificate` | One of `azureCertificate` and `azureCertificateFile` | Certificate and private key (in PFX/PKCS#12 format) | `"-----BEGIN PRIVATE KEY-----\n MIIEvgI... \n -----END PRIVATE KEY----- \n -----BEGIN CERTIFICATE----- \n MIICoTC... \n -----END CERTIFICATE-----` |
 | `azureCertificateFile` | One of `azureCertificate` and `azureCertificateFile` | Path to the PFX/PKCS#12 file containing the certificate and private key | `"/path/to/file.pem"` |
@@ -127,7 +127,7 @@ Using this authentication method does not require setting any metadata option.
 
 ### Example usage in a Dapr component
 
-In this example, you will set up an Azure Key Vault secret store component that uses Azure AD to authenticate.
+In this example, you will set up an Azure Key Vault secret store component that uses Microsoft Entra ID to authenticate.
 
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
@@ -279,11 +279,11 @@ To use a **certificate**:
 
 ## Next steps
 
-{{< button text="Generate a new Azure AD application and Service Principal >>" page="howto-aad.md" >}}
+{{< button text="Generate a new Microsoft Entra ID application and Service Principal >>" page="howto-aad.md" >}}
 
 ## References
 
-- [Azure AD app credential: Azure CLI reference](https://docs.microsoft.com/cli/azure/ad/app/credential)
+- [Microsoft Entra ID app credential: Azure CLI reference](https://docs.microsoft.com/cli/azure/ad/app/credential)
 - [Azure Managed Service Identity (MSI) overview](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
 - [Secrets building block]({{< ref secrets >}})
 - [How-To: Retrieve a secret]({{< ref "howto-secrets.md" >}})
