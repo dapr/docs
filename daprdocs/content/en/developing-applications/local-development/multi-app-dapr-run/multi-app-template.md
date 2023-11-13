@@ -93,7 +93,7 @@ Stop the multi-app run template anytime with either of the following commands:
 ```cmd
 # the template file needs to be called `dapr.yaml` by default if a directory path is given
 
-dapr stop -f
+dapr stop -f <dir_path>
 ```
 or:
 
