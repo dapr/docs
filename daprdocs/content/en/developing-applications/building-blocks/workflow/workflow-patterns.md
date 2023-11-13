@@ -115,42 +115,42 @@ public class ChainWorkflow extends Workflow {
         return ctx -> {
             StringBuilder sb = new StringBuilder();
             String wfInput = ctx.getInput(String.class);
-            String result1 = ctx.callActivity("event1", wfInput, String.class).await();
-            String result2 = ctx.callActivity("event2", result1, String.class).await();
-            String result3 = ctx.callActivity("event3", result2, String.class).await();
+            String result1 = ctx.callActivity("Step1", wfInput, String.class).await();
+            String result2 = ctx.callActivity("Step2", result1, String.class).await();
+            String result3 = ctx.callActivity("Step3", result2, String.class).await();
             String result = sb.append(result1).append(',').append(result2).append(',').append(result3).toString();
             ctx.complete(result);
         };
     }
 }
 
-    class Event1 implements WorkflowActivity {
+    class Step1 implements WorkflowActivity {
 
         @Override
         public Object run(WorkflowActivityContext ctx) {
-            Logger logger = LoggerFactory.getLogger(Event1.class);
+            Logger logger = LoggerFactory.getLogger(Step1.class);
             logger.info("Starting Activity: " + ctx.getName());
             // Do some work
             return null;
         }
     }
 
-    class Event2 implements WorkflowActivity {
+    class Step2 implements WorkflowActivity {
 
         @Override
         public Object run(WorkflowActivityContext ctx) {
-            Logger logger = LoggerFactory.getLogger(Event2.class);
+            Logger logger = LoggerFactory.getLogger(Step2.class);
             logger.info("Starting Activity: " + ctx.getName());
             // Do some work
             return null;
         }
     }
 
-    class Event3 implements WorkflowActivity {
+    class Step3 implements WorkflowActivity {
 
         @Override
         public Object run(WorkflowActivityContext ctx) {
-            Logger logger = LoggerFactory.getLogger(Event3.class);
+            Logger logger = LoggerFactory.getLogger(Step3.class);
             logger.info("Starting Activity: " + ctx.getName());
             // Do some work
             return null;
