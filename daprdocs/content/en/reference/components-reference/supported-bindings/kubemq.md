@@ -51,7 +51,9 @@ This component supports both **input and output** binding interfaces.
 {{< tabs "Self-Hosted" "Kubernetes">}}
 
 {{% codetab %}}
+<!-- IGNORE_LINKS -->
 1. Obtain KubeMQ Key by visiting [https://account.kubemq.io/auth/signup](https://account.kubemq.io/auth/signup) and register for a key.
+<!-- END_IGNORE -->
 2. Wait for an email confirmation with your Key
 
 You can run a KubeMQ broker with Docker:
