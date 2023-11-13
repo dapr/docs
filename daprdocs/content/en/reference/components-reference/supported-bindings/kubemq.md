@@ -66,7 +66,9 @@ You can then interact with the server using the client port: `localhost:50000`
 {{% /codetab %}}
 
 {{% codetab %}}
+<!-- IGNORE_LINKS -->
 1. Obtain KubeMQ Key by visiting [https://account.kubemq.io/auth/signup](https://account.kubemq.io/auth/signup) and register for a key.
+<!-- END_IGNORE -->
 2. Wait for an email confirmation with your Key
 
 Then Run the following kubectl commands:
