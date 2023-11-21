@@ -72,7 +72,7 @@ Next, stop any existing compose sessions you may have started, and run the follo
 
 `docker compose -f compose.yml -f compose.debug.yml up`
 
-You should now find that the dapr sidecar and your debugging app will have bi-directional communication with each other as if they were running together as normal in the docker compose environment.
+You should now find that the dapr sidecar and your debugging app will have bi-directional communication with each other as if they were running together as normal in the Docker compose environment.
 
 **Note** : It's important to highlight that the `nodeapp` service in the docker compose environment is actually still running, however it has been removed from the docker network so it is effectively orphaned as nothing can communicate to it.
 
