@@ -90,9 +90,9 @@ This component supports **output binding** with the following operations:
 
 - `create`: publishes a message on the Event Grid topic
 
-## Azure AD credentials
+## Microsoft Entra ID credentials
 
-The Azure Event Grid binding requires an Azure AD application and service principal for two reasons:
+The Azure Event Grid binding requires an Microsoft Entra ID application and service principal for two reasons:
 
 - Creating an [event subscription](https://docs.microsoft.com/azure/event-grid/concepts#event-subscriptions) when Dapr is started (and updating it if the Dapr configuration changes)
 - Authenticating messages delivered by Event Hubs to your application.
@@ -106,7 +106,7 @@ Requirements:
 - [Microsoft.Graph module for PowerShell](https://learn.microsoft.com/powershell/microsoftgraph/installation) for PowerShell installed:  
   `Install-Module Microsoft.Graph -Scope CurrentUser -Repository PSGallery -Force`
 
-For the first purpose, you will need to [create an Azure Service Principal](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal). After creating it, take note of the Azure AD application's **clientID** (a UUID), and run the following script with the Azure CLI:
+For the first purpose, you will need to [create an Azure Service Principal](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal). After creating it, take note of the Microsoft Entra ID application's **clientID** (a UUID), and run the following script with the Azure CLI:
 
 ```bash
 # Set the client ID of the app you created
@@ -140,7 +140,7 @@ Connect-MgGraph -Scopes "Application.Read.All","Application.ReadWrite.All"
 ./setup-eventgrid-sp.ps1 $clientId
 ```
 
-> Note: if your directory does not have a Service Principal for the application "Microsoft.EventGrid", you may need to run the command `Connect-MgGraph` and sign in as an admin for the Azure AD tenant (this is related to permissions on the Azure AD directory, and not the Azure subscription). Otherwise, please ask your tenant's admin to sign in and run this PowerShell command: `New-MgServicePrincipal -AppId "4962773b-9cdb-44cf-a8bf-237846a00ab7"` (the UUID is a constant)
+> Note: if your directory does not have a Service Principal for the application "Microsoft.EventGrid", you may need to run the command `Connect-MgGraph` and sign in as an admin for the Microsoft Entra ID tenant (this is related to permissions on the Microsoft Entra ID directory, and not the Azure subscription). Otherwise, please ask your tenant's admin to sign in and run this PowerShell command: `New-MgServicePrincipal -AppId "4962773b-9cdb-44cf-a8bf-237846a00ab7"` (the UUID is a constant)
 
 ### Testing locally
 

@@ -23,10 +23,10 @@ spec:
   version: v1
   metadata:
     # Either connectionString or eventHubNamespace is required
-    # Use connectionString when *not* using Azure AD
+    # Use connectionString when *not* using Microsoft Entra ID
     - name: connectionString
       value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
-    # Use eventHubNamespace when using Azure AD
+    # Use eventHubNamespace when using Microsoft Entra ID
     - name: eventHubNamespace
       value: "namespace"
     - name: consumerID # Optional. If not supplied, the runtime will create one.
@@ -62,11 +62,11 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString`    | Y*  | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
-| `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"` 
+| `connectionString`    | Y*  | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
+| `eventHubNamespace` | Y* | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"` 
 | `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
 | `storageAccountName`  | Y  | Storage account name to use for the checkpoint store. |`"myeventhubstorage"`
-| `storageAccountKey`   | Y*  | Storage account key for the checkpoint store account.<br>* When using Azure AD, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
+| `storageAccountKey`   | Y*  | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
 | `storageContainerName` | Y | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
 | `enableEntityManagement` | N | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
@@ -75,9 +75,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `partitionCount` | N | Number of partitions for the new Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"2"`
 | `messageRetentionInDays` | N | Number of days to retain messages for in the newly created Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"90"`
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Event Hubs pub/sub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Event Hubs pub/sub component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 
@@ -110,7 +110,7 @@ spec:
       value: "1"
     - name: messageRetentionInDays
     # Checkpoint store attributes
-    # In this case, we're using Azure AD to access the storage account too
+    # In this case, we're using Microsoft Entra ID to access the storage account too
     - name: storageAccountName
       value: "myeventhubstorage"
     - name: storageContainerName
@@ -191,7 +191,7 @@ When entity management is enabled in the metadata, as long as the application ha
 
 The Evet Hub name is the `topic` field in the incoming request to publish or subscribe to, while the consumer group name is the name of the Dapr app which subscribes to a given Event Hub. For example, a Dapr app running on Kubernetes with name `dapr.io/app-id: "myapp"` requires an Event Hubs consumer group named `myapp`.
 
-Entity management is only possible when using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) and not using a connection string.
+Entity management is only possible when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) and not using a connection string.
 
 > Dapr passes the name of the consumer group to the Event Hub, so this is not supplied in the metadata.
 

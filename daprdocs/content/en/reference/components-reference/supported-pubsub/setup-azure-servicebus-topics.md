@@ -26,7 +26,7 @@ spec:
   type: pubsub.azure.servicebus.topics
   version: v1
   metadata:
-  # Required when not using Azure AD Authentication
+  # Required when not using Microsoft Entra ID Authentication
   - name: connectionString
     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
   # - name: consumerID # Optional: defaults to the app's own ID
@@ -73,8 +73,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Azure AD authentication. | See example above
-| `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
+| `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Microsoft Entra ID authentication. | See example above
+| `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
 | `consumerID`         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. (`appID`) value. |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
@@ -92,9 +92,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `publishMaxRetries` | N  | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
 | `publishInitialRetryIntervalInMs` | N  | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Service Bus Topics pubsub component supports authentication using all Azure Active Directory mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Topics pubsub component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 

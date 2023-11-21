@@ -36,14 +36,14 @@ The above example uses `apiKey` as  a plain string. It is recommended to use a s
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
 | `endpoint` | Y | Output | Azure OpenAI service endpoint URL. | `"https://myopenai.openai.azure.com"` |
-| `apiKey` | Y* | Output | The access key of the Azure OpenAI service. Only required when not using Azure AD authentication. | `"1234567890abcdef"` |
+| `apiKey` | Y* | Output | The access key of the Azure OpenAI service. Only required when not using Microsoft Entra ID authentication. | `"1234567890abcdef"` |
 | `azureTenantId` | Y* | Input | The tenant ID of the Azure OpenAI resource. Only required when `apiKey` is not provided.  | `"tenentID"` |
 | `azureClientId` | Y* | Input | The client ID that should be used by the binding to create or update the Azure OpenAI Subscription and to authenticate incoming messages. Only required when `apiKey` is not provided.| `"clientId"` |
 | `azureClientSecret` | Y* | Input | The client secret that should be used by the binding to create or update the Azure OpenAI Subscription and to authenticate incoming messages. Only required when `apiKey` is not provided. | `"clientSecret"` |
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure OpenAI binding component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure OpenAI binding component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 

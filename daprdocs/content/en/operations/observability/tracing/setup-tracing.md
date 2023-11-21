@@ -75,6 +75,6 @@ turns on tracing for the sidecar.
 Learn how to set up tracing with one of the following tools:
 - [OTEL Collector]({{< ref otel-collector >}})
 - [New Relic]({{< ref newrelic.md >}})
-- [Jaeger]({{< ref jaeger.md >}})
+- [Jaeger]({{< ref open-telemetry-collector-jaeger.md >}})
 - [Zipkin]({{< ref zipkin.md >}})
 - [Datadog]({{< ref datadog.md >}})
