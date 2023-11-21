@@ -24,7 +24,7 @@ dapr mtls renew-certificate [flags]
 | Name           | Environment Variable | Default           | Description                                 |
 | -------------- | -------------------- | ----------------- | ------------------------------------------- |
 | `--help`, `-h` |                      |                   | help for renew-certificate
-| `--kubernetes`, `-k` |                      | `false` | supprted platform|                             |
+| `--kubernetes`, `-k` |                      | `false` | supported platform|                             |
 | `--valid-until`  |                      | 365 days |  Validity for newly created certificates |
 | `--restart`  |                      | false |  Restarts Dapr control plane services (Sentry service, Operator service and Placement server) |
 | `--timeout`  |                      | 300 sec |  The timeout for the certificate renewal process |

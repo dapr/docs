@@ -28,10 +28,10 @@ spec:
     - name: consumerGroup
       value: "myapp"
     # Either connectionString or eventHubNamespace is required
-    # Use connectionString when *not* using Azure AD
+    # Use connectionString when *not* using Microsoft Entra ID
     - name: connectionString
       value: "Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"
-    # Use eventHubNamespace when using Azure AD
+    # Use eventHubNamespace when using Microsoft Entra ID
     - name: eventHubNamespace
       value: "namespace"
     - name: enableEntityManagement
@@ -68,9 +68,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| `eventHub` | Y* | Input/Output | The name of the Event Hubs hub ("topic"). Required if using Azure AD authentication or if the connection string doesn't contain an `EntityPath` value | `mytopic` |
-| `connectionString`    | Y*  | Input/Output | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
-| `eventHubNamespace` | Y* | Input/Output | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Azure AD Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"`
+| `eventHub` | Y* | Input/Output | The name of the Event Hubs hub ("topic"). Required if using Microsoft Entra ID authentication or if the connection string doesn't contain an `EntityPath` value | `mytopic` |
+| `connectionString`    | Y*  | Input/Output | Connection string for the Event Hub or the Event Hub namespace.<br>* Mutally exclusive with `eventHubNamespace` field.<br>* Required when not using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={EventHub}"` or `"Endpoint=sb://{EventHubNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key}"`
+| `eventHubNamespace` | Y* | Input/Output | The Event Hub Namespace name.<br>* Mutally exclusive with `connectionString` field.<br>* Required when using [Microsoft Entra ID Authentication]({{< ref "authenticating-azure.md" >}}) | `"namespace"`
 | `enableEntityManagement` | N | Input/Output | Boolean value to allow management of the EventHub namespace and storage account. Default: `false` | `"true", "false"`
 | `resourceGroupName` | N | Input/Output | Name of the resource group the Event Hub namespace is part of. Required when entity management is enabled | `"test-rg"`
 | `subscriptionID` | N | Input/Output | Azure subscription ID value. Required when entity management is enabled | `"azure subscription id"`
@@ -78,14 +78,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `messageRetentionInDays` | N | Input/Output | Number of days to retain messages for in the newly created Event Hub namespace. Used only when entity management is enabled. Default: `"1"` | `"90"`
 | `consumerGroup` | Y | Input | The name of the [Event Hubs Consumer Group](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#consumer-groups) to listen on | `"group1"` |
 | `storageAccountName`  | Y  | Input | Storage account name to use for the checkpoint store. |`"myeventhubstorage"`
-| `storageAccountKey`   | Y*  | Input | Storage account key for the checkpoint store account.<br>* When using Azure AD, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
+| `storageAccountKey`   | Y*  | Input | Storage account key for the checkpoint store account.<br>* When using Microsoft Entra ID, it's possible to omit this if the service principal has access to the storage account too. | `"112233445566778899"`
 | `storageConnectionString`   | Y*  | Input | Connection string for the checkpoint store, alternative to specifying `storageAccountKey` | `"DefaultEndpointsProtocol=https;AccountName=myeventhubstorage;AccountKey=<account-key>"`
 | `storageContainerName` | Y | Input | Storage container name for the storage account name.  | `"myeventhubstoragecontainer"`
 | `direction` | N | Input/Output | The direction of the binding.  | `"input"`, `"output"`, `"input, output"`
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Event Hubs pub/sub component supports authentication using all Azure Active Directory mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Event Hubs pub/sub component supports authentication using all Microsoft Entra ID mechanisms. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 ## Binding support
 

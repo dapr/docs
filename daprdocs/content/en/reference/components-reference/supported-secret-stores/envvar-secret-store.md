@@ -41,7 +41,7 @@ spec:
 For security reasons, this component cannot be used to access these environment variables:
 
 - `APP_API_TOKEN`
-- Any variable whose name begines with the `DAPR_` prefix
+- Any variable whose name begins with the `DAPR_` prefix
 
 ## Related Links
 - [Secrets building block]({{< ref secrets >}})

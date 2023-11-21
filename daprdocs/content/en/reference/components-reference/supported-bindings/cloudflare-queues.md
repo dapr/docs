@@ -46,9 +46,6 @@ spec:
     # URL of the Worker (required if the Worker has been pre-created outside of Dapr)
     - name: workerUrl
       value: ""
-    # Direction of the binding
-    - name: direction
-      value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -64,7 +61,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `cfAccountID` | Y/N | Output | Cloudflare account ID. Required to have Dapr manage the worker. | `"456789abcdef8b5588f3d134f74ac"def`
 | `cfAPIToken` | Y/N | Output | API token for Cloudflare. Required to have Dapr manage the Worker. | `"secret-key"`
 | `workerUrl` | Y/N | Output | URL of the Worker. Required if the Worker has been pre-provisioned outside of Dapr. | `"https://mydaprqueue.mydomain.workers.dev"`
-| `direction` | N | Output | Direction of the binding. | `"output"`
 
 > When you configure Dapr to create your Worker for you, you may need to set a longer value for the `initTimeout` property of the component, to allow enough time for the Worker script to be deployed. For example: `initTimeout: "120s"`
 
