@@ -9,7 +9,7 @@ aliases:
 
 ## Alternative
 
-The [service invocation API]({{< ref service_invocation_api.md >}}) allows for the invocation of non-Dapr HTTP endpoints and is the recommended approach. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
+The [service invocation API]({{< ref service_invocation_api.md >}}) allows invoking non-Dapr HTTP endpoints and is the recommended approach. Read ["How-To: Invoke Non-Dapr Endpoints using HTTP"]({{< ref howto-invoke-non-dapr-endpoints.md >}}) for more information.
 
 ## Setup Dapr component
 
@@ -22,69 +22,70 @@ spec:
   type: bindings.http
   version: v1
   metadata:
-  - name: url
-    value: "http://something.com"
-  - name: MTLSRootCA
-    value: "/Users/somepath/root.pem" # OPTIONAL Secret store ref, <path to root CA>, or <pem encoded string>
-  - name: MTLSClientCert
-    value: "/Users/somepath/client.pem" # OPTIONAL Secret store ref, <path to client cert>, or <pem encoded string>
-  - name: MTLSClientKey
-    value: "/Users/somepath/client.key" # OPTIONAL Secret store ref, <path to client key>, or <pem encoded string>
-  - name: MTLSRenegotiation
-    value: "RenegotiateOnceAsClient" # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
-  - name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
-    secretKeyRef:
-      name: mysecret
-      key: "mytoken"
-  - name: securityTokenHeader
-    value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
-  - name: direction # OPTIONAL
-    value: "output"
-  - name: errorIfNot2XX
-    value: "false" # OPTIONAL
+    - name: url
+      value: "http://something.com"
+    #- name: maxResponseBodySize
+    #  value: "100Mi" # OPTIONAL maximum amount of data to read from a response
+    #- name: MTLSRootCA
+    #  value: "/Users/somepath/root.pem" # OPTIONAL path to root CA or PEM-encoded string
+    #- name: MTLSClientCert
+    #  value: "/Users/somepath/client.pem" # OPTIONAL path to client cert or PEM-encoded string
+    #- name: MTLSClientKey
+    #  value: "/Users/somepath/client.key" # OPTIONAL path to client key or PEM-encoded string
+    #- name: MTLSRenegotiation
+    #  value: "RenegotiateOnceAsClient" # OPTIONAL one of: RenegotiateNever, RenegotiateOnceAsClient, RenegotiateFreelyAsClient
+    #- name: securityToken # OPTIONAL <token to include as a header on HTTP requests>
+    #  secretKeyRef:
+    #    name: mysecret
+    #    key: "mytoken"
+    #- name: securityTokenHeader
+    #  value: "Authorization: Bearer" # OPTIONAL <header name for the security token>
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|--------|---------|
-| `url`                | Y        | Output |The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers`
-| `MTLSRootCA`         | N        | Output |Secret store reference, path to root ca certificate, or pem encoded string |
-| `MTLSClientCert`     | N        | Output |Secret store reference, path to client certificate, or pem encoded string  |
-| `MTLSClientKey`      | N        | Output |Secret store reference, path client private key, or pem encoded string |
-| `MTLSRenegotiation`  | N        | Output |Type of TLS renegotiation to be used | `RenegotiateOnceAsClient`
-| `securityToken`      | N        | Output |The value of a token to be added to an HTTP request as a header. Used together with `securityTokenHeader` |
-| `securityTokenHeader`| N        | Output |The name of the header for `securityToken` on an HTTP request that | 
-| `direction`| N        | Output |The direction of the binding | `"output"` 
-| `errorIfNot2XX`| N        | Output |If a binding error should be thrown when the response is not in the 2xx range. Defaults to `true` | `false`, `true` 
+| `url`                | Y | Output | The base URL of the HTTP endpoint to invoke | `http://host:port/path`, `http://myservice:8000/customers` |
+| `maxResponseBodySize`| N | Output | Maximum length of the response to read. A whole number is interpreted as bytes; units such as `Ki, Mi, Gi` (SI) or `k | M | G` (decimal) can be added for convenience. The default value is `100Mi` | "1Gi", "100Mi", "20Ki", "200" (bytes) |
+| `MTLSRootCA`         | N | Output | Path to root CA certificate or PEM-encoded string |
+| `MTLSClientCert`     | N | Output | Path to client certificate or PEM-encoded string  |
+| `MTLSClientKey`      | N | Output | Path client private key or PEM-encoded string |
+| `MTLSRenegotiation`  | N | Output | Type of mTLS renegotiation to be used | `RenegotiateOnceAsClient`
+| `securityToken`      | N | Output | The value of a token to be added to a HTTP request as a header. Used together with `securityTokenHeader` |
+| `securityTokenHeader` | N | Output | The name of the header for `securityToken` on a HTTP request |
 
-### How to configure MTLS related fields in Metadata
+### How to configure mTLS-related fields in metadata
+
 The values for **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** can be provided in three ways:
-1. Secret store reference
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  name: <NAME>
-spec:
-  type: bindings.http
-  version: v1
-  metadata:
-  - name: url
-    value: http://something.com
-  - name: MTLSRootCA
-    secretKeyRef:
-      name: mysecret
-      key: myrootca
-auth:
-  secretStore: <NAME_OF_SECRET_STORE_COMPONENT>
-```
-2. Path to the file: The absolute path to the file can be provided as a value for the field.
-3. PEM encoded string: The PEM encoded string can also be provided as a value for the field.
+
+- Secret store reference:
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: <NAME>
+    spec:
+      type: bindings.http
+      version: v1
+      metadata:
+      - name: url
+        value: http://something.com
+      - name: MTLSRootCA
+        secretKeyRef:
+          name: mysecret
+          key: myrootca
+    auth:
+      secretStore: <NAME_OF_SECRET_STORE_COMPONENT>
+    ```
+
+- Path to the file: the absolute path to the file can be provided as a value for the field.
+- PEM encoded string: the PEM-encoded string can also be provided as a value for the field.
 
 {{% alert title="Note" color="primary" %}}
-Metadata fields **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** are used to configure TLS(m) authentication.
-To use mTLS authentication, you must provide all three fields. See [mTLS]({{< ref "#using-mtls-or-enabling-client-tls-authentication-along-with-https" >}}) for more details. You can also provide only **MTLSRootCA**, to enable **HTTPS** connection. See [HTTPS]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}) section for more details.
+Metadata fields **MTLSRootCA**, **MTLSClientCert** and **MTLSClientKey** are used to configure (m)TLS authentication.
+To use mTLS authentication, you must provide all three fields. See [mTLS]({{< ref "#using-mtls-or-enabling-client-tls-authentication-along-with-https" >}}) for more details. You can also provide only **MTLSRootCA**, to enable **HTTPS** connection with a certificate signed by a custom CA. See [HTTPS]({{< ref "#install-the-ssl-certificate-in-the-sidecar" >}}) section for more details.
 {{% /alert %}}
 
 
@@ -110,8 +111,8 @@ All of the operations above support the following metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| path               | N        | The path to append to the base URL. Used for accessing specific URIs     | `"/1234"`, `"/search?lastName=Jones"`
-| Headers*           | N        | Any fields that have a capital first letter are sent as request headers  | `"Content-Type"`, `"Accept"`
+| `path`               | N        | The path to append to the base URL. Used for accessing specific URIs.     | `"/1234"`, `"/search?lastName=Jones"`
+| Field with a capitalized first letter  | N        | Any fields that have a capital first letter are sent as request headers  | `"Content-Type"`, `"Accept"`
 
 #### Retrieving data
 
@@ -140,9 +141,9 @@ The response body contains the data returned by the HTTP endpoint.  The `data` f
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| statusCode         | Y        | The [HTTP status code](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) | `200`, `404`, `503`
-| status             | Y        | The status description | `"200 OK"`, `"201 Created"`
-| Headers*           | N        | Any fields that have a capital first letter are sent as request headers  | `"Content-Type"`
+| `statusCode`         | Y        | The [HTTP status code](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) | `200`, `404`, `503` |
+| `status`             | Y        | The status description | `"200 OK"`, `"201 Created"` |
+| Field with a capitalized first letter           | N        | Any fields that have a capital first letter are sent as request headers  | `"Content-Type"` |
 
 #### Example
 
@@ -171,14 +172,14 @@ curl -d '{ "operation": "get" }' \
 {{< tabs Windows Linux >}}
 
 {{% codetab %}}
-```bash
+```sh
 curl -d "{ \"operation\": \"get\", \"metadata\": { \"path\": \"/things/1234\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
-```bash
+```sh
 curl -d '{ "operation": "get", "metadata": { "path": "/things/1234" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
@@ -213,14 +214,14 @@ For example, the default content type is `application/json; charset=utf-8`. This
 {{< tabs Windows Linux >}}
 
 {{% codetab %}}
-```bash
+```sh
 curl -d "{ \"operation\": \"post\", \"data\": \"YOUR_BASE_64_CONTENT\", \"metadata\": { \"path\": \"/things\" } }" \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
 {{% /codetab %}}
 
 {{% codetab %}}
-```bash
+```sh
 curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "path": "/things" } }' \
       http://localhost:<dapr-port>/v1.0/bindings/<binding-name>
 ```
@@ -232,9 +233,8 @@ curl -d '{ "operation": "post", "data": "YOUR_BASE_64_CONTENT", "metadata": { "p
 
 The HTTP binding can also be used with HTTPS endpoints by configuring the Dapr sidecar to trust the server's SSL certificate.
 
-
 1. Update the binding URL to use `https` instead of `http`.
-1. Refer [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}}), to install the SSL certificate in the sidecar.
+1. If you need to add a custom TLS certificate, refer [How-To: Install certificates in the Dapr sidecar]({{< ref install-certificates >}}), to install the TLS certificates in the sidecar.
 
 ### Example
 
@@ -254,13 +254,12 @@ spec:
     value: https://my-secured-website.com # Use HTTPS
 ```
 
-#### Install the SSL certificate in the sidecar
-
+#### Install the TLS certificate in the sidecar
 
 {{< tabs Self-Hosted Kubernetes >}}
 
 {{% codetab %}}
-When the sidecar is not running inside a container, the SSL certificate can be directly installed on the host operating system.
+When the sidecar is not running inside a container, the TLS certificate can be directly installed on the host operating system.
 
 Below is an example when the sidecar is running as a container. The SSL certificate is located on the host computer at `/tmp/ssl/cert.pem`.
 
@@ -289,7 +288,7 @@ services:
 
 {{% codetab %}}
 
-The sidecar can read the SSL certificate from a variety of sources. See [How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts >}}) for more. In this example, we store the SSL certificate as a Kubernetes secret.
+The sidecar can read the TLS certificate from a variety of sources. See [How-to: Mount Pod volumes to the Dapr sidecar]({{< ref kubernetes-volume-mounts >}}) for more. In this example, we store the TLS certificate as a Kubernetes secret.
 
 ```bash
 kubectl create secret generic myapp-cert --from-file /tmp/ssl/cert.pem
@@ -357,23 +356,25 @@ HTTPS binding support can also be configured using the **MTLSRootCA** metadata o
 {{% /alert %}}
 
 ## Using mTLS or enabling client TLS authentication along with HTTPS
+
 You can configure the HTTP binding to use mTLS or client TLS authentication along with HTTPS by providing the `MTLSRootCA`, `MTLSClientCert`, and `MTLSClientKey` metadata fields in the binding component.
 
-These fields can be passed as a file path or as a pem encoded string. 
+These fields can be passed as a file path or as a pem encoded string:
+
 - If the file path is provided, the file is read and the contents are used. 
-- If the pem encoded string is provided, the string is used as is.
+- If the PEM-encoded string is provided, the string is used as is.
+
 When these fields are configured, the Dapr sidecar uses the provided certificate to authenticate itself with the server during the TLS handshake process.
 
-If the remote server is enforcing TLS renegotiation, you also need to set the metadata field `MTLSRenegotiation`. This field accepts one of following options: 
+If the remote server is enforcing TLS renegotiation, you also need to set the metadata field `MTLSRenegotiation`. This field accepts one of following options:
+
 - `RenegotiateNever`
 - `RenegotiateOnceAsClient`
-- `RenegotiateFreelyAsClient`. 
+- `RenegotiateFreelyAsClient`
 
 For more details see [the Go `RenegotiationSupport` documentation](https://pkg.go.dev/crypto/tls#RenegotiationSupport).
 
-### When to use:
 You can use this when the server with which the HTTP binding is configured to communicate requires mTLS or client TLS authentication.
-
 
 ## Related links
 

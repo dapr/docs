@@ -26,6 +26,19 @@ spec:
     secretKeyRef:
       name: <REPLACE-WITH-SECRET-NAME>
       key: <REPLACE-WITH-SECRET-KEY>
+  clientTLS:
+    rootCA:
+      secretKeyRef:
+        name: <REPLACE-WITH-SECRET-NAME>
+        key: <REPLACE-WITH-SECRET-KEY>
+    certificate:
+      secretKeyRef:
+        name: <REPLACE-WITH-SECRET-NAME>
+        key: <REPLACE-WITH-SECRET-KEY>
+    privateKey:
+      secretKeyRef:
+        name: <REPLACE-WITH-SECRET-NAME>
+        key: <REPLACE-WITH-SECRET-KEY>
 scopes: # Optional
   - <REPLACE-WITH-SCOPED-APPIDS>
 auth: # Optional
@@ -38,6 +51,7 @@ auth: # Optional
 |--------------------|:--------:|---------|---------|
 | baseUrl            | Y        | Base URL of the non-Dapr endpoint | `"https://api.github.com"`, `"http://api.github.com"`
 | headers            | N        | HTTP request headers for service invocation | `name: "Accept-Language" value: "en-US"` <br/> `name: "Authorization" secretKeyRef.name: "my-secret" secretKeyRef.key: "myGithubToken" `
+| clientTLS          | N        | Enables TLS authentication to an endpoint with any standard combination of root certificate, client certificate and private key
 
 ## Related links
 

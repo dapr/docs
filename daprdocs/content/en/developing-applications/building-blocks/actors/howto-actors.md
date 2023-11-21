@@ -26,7 +26,7 @@ Alternatively, you can use [Dapr SDKs to use actors]({{< ref "developing-applica
 
 ## Save state with actors
 
-You can interact with Dapr via HTTP/gRPC endpoints to save state reliably using the Dapr actor state mangement capabaility.
+You can interact with Dapr via HTTP/gRPC endpoints to save state reliably using the Dapr actor state management capabaility.
 
 To use actors, your state store must support multi-item transactions. This means your state store component must implement the `TransactionalStore` interface. 
 

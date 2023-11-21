@@ -42,7 +42,7 @@ spec:
 Common values for `issuer` include:
 
 - Auth0: `https://{domain}`, where `{domain}` is the domain of your Auth0 application
-- Azure AD: `https://login.microsoftonline.com/{tenant}/v2.0`, where `{tenant}` should be replaced with the tenant ID of your application, as a UUID
+- Microsoft Entra ID: `https://login.microsoftonline.com/{tenant}/v2.0`, where `{tenant}` should be replaced with the tenant ID of your application, as a UUID
 - Google: `https://accounts.google.com`
 - Salesforce (Force.com): `https://login.salesforce.com`
 

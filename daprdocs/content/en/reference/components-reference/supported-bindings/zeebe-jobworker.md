@@ -47,8 +47,10 @@ spec:
   - name: fetchVariables
     value: "productId, productName, productKey"
   - name: autocomplete
-    value: "true"  
-  - name: direction 
+    value: "true"
+  - name: retryBackOff
+    value: "30s"
+  - name: direction
     value: "input"
 ```
 
@@ -70,6 +72,7 @@ spec:
 | `pollThreshold`           | N | Input | Set the threshold of buffered activated jobs before polling for new jobs, i.e. threshold * maxJobsActive. Defaults to 0.3        | `"0.3"` |
 | `fetchVariables`          | N | Input | A list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the scope of the job will be returned | `"productId"`, `"productName"`, `"productKey"` |
 | `autocomplete`            | N | Input | Indicates if a job should be autocompleted or not. If not set, all jobs will be auto-completed by default. Disable it if the worker should manually complete or fail the job with either a business error or an incident | `"true"`, `"false"` |
+| `retryBackOff`            | N | Input | The back-off timeout for the next retry if a job fails                                                                           | `15s` |
 | `direction`            | N | Input | The direction of the binding | `"input"` |
 
 ## Binding support
@@ -121,6 +124,7 @@ original data type so that it can be converted back to the equivalent data type 
 | X-Zeebe-Worker                     | string    | The name of the worker which activated this job                                                 |
 | X-Zeebe-Retries                    | int32     | The amount of retries left to this job (should always be positive)                              |
 | X-Zeebe-Deadline                   | int64     | When the job can be activated again, sent as a UNIX epoch timestamp                             |
+| X-Zeebe-Autocomplete               | bool      | The autocomplete status that is defined in the binding metadata                                 |
 
 ## Related links
 

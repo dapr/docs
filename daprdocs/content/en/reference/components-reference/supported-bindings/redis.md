@@ -11,7 +11,6 @@ aliases:
 
 To setup Redis binding create a component of type `bindings.redis`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -27,8 +26,6 @@ spec:
     value: "**************"
   - name: enableTLS
     value: "<bool>"
-  - name: direction 
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -61,7 +58,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `minIdleConns`        | N | Output        | Minimum number of idle connections to keep open in order to avoid the performance degradation associated with creating new connections. Defaults to `"0"`. | `"2"`
 | `idleCheckFrequency`        | N | Output        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | `idleTimeout`        | N | Output        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
-| `direction`        | N | Output        | Direction of the binding. | `"output"`
 
 ## Binding support
 
@@ -226,6 +222,5 @@ The Dapr CLI automatically deploys a local redis instance in self hosted mode as
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})

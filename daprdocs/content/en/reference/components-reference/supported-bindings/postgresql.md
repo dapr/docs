@@ -22,10 +22,9 @@ spec:
   type: bindings.postgresql
   version: v1
   metadata:
-  - name: url # Required
-    value: "<CONNECTION_STRING>"
-  - name: direction
-    value: "<DIRECTION_OF_BINDING>"
+    # Connection string
+    - name: connectionString
+      value: "<CONNECTION STRING>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -34,25 +33,48 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Spec metadata fields
 
-| Field              | Required | Binding support |  Details | Example |
-|--------------------|:--------:|------------|-----|---------|
-| `url` | Y | Output | PostgreSQL connection string See [here](#url-format) for more details | `"user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
+### Authenticate using a connection string
+
+The following metadata options are **required** to authenticate using a PostgreSQL connection string.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `connectionString` | Y | The connection string for the PostgreSQL database. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string. | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=my_db"`
+
+### Authenticate using Microsoft Entra ID
+
+Authenticating with Microsoft Entra ID is supported with Azure Database for PostgreSQL. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Microsoft Entra ID. | `"true"` |
+| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain the user, which corresponds to the name of the user created inside PostgreSQL that maps to the Microsoft Entra ID identity; this is often the name of the corresponding principal (e.g. the name of the Microsoft Entra ID application). This connection string should not contain any password.  | `"host=mydb.postgres.database.azure.com user=myapplication port=5432 database=my_db sslmode=require"` |
+| `azureTenantId` | N | ID of the Microsoft Entra ID tenant | `"cd4b2887-304c-…"` |
+| `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-…"` |
+| `azureClientSecret` | N | Client secret (application password) | `"Ecy3X…"` |
+
+### Other metadata options
+
+| Field | Required | Binding support |Details | Example |
+|--------------------|:--------:|-----|---|---------|
+| `maxConns` | N | Output | Maximum number of connections pooled by this component. Set to 0 or lower to use the default value, which is the greater of 4 or the number of CPUs. | `"4"`
+| `connectionMaxIdleTime` | N | Output | Max idle time before unused connections are automatically closed in the connection pool. By default, there's no value and this is left to the database driver to choose. | `"5m"`
+| `queryExecMode` | N | Output | Controls the default mode for executing queries. By default Dapr uses the extended protocol and automatically prepares and caches prepared statements. However, this may be incompatible with proxies such as PGBouncer. In this case it may be preferrable to use `exec` or `simple_protocol`. | `"simple_protocol"`
 
 ### URL format
 
-The PostgreSQL binding uses [pgx connection pool](https://github.com/jackc/pgx) internally so the `url` parameter can be any valid connection string, either in a `DSN` or `URL` format:
+The PostgreSQL binding uses [pgx connection pool](https://github.com/jackc/pgx) internally so the `connectionString` parameter can be any valid connection string, either in a `DSN` or `URL` format:
 
 **Example DSN**
 
 ```shell
-user=dapr password=secret host=dapr.example.com port=5432 dbname=dapr sslmode=verify-ca
+user=dapr password=secret host=dapr.example.com port=5432 dbname=my_dapr sslmode=verify-ca
 ```
 
 **Example URL**
 
 ```shell
-postgres://dapr:secret@dapr.example.com:5432/dapr?sslmode=verify-ca
+postgres://dapr:secret@dapr.example.com:5432/my_dapr?sslmode=verify-ca
 ```
 
 Both methods also support connection pool configuration variables:
@@ -72,9 +94,26 @@ This component supports **output binding** with the following operations:
 - `query`
 - `close`
 
+### Parametrized queries
+
+This binding supports parametrized queries, which allow separating the SQL query itself from user-supplied values. The usage of parametrized queries is **strongly recommended** for security reasons, as they prevent [SQL Injection attacks](https://owasp.org/www-community/attacks/SQL_Injection).
+
+For example:
+
+```sql
+-- ❌ WRONG! Includes values in the query and is vulnerable to SQL Injection attacks.
+SELECT * FROM mytable WHERE user_key = 'something';
+
+-- ✅ GOOD! Uses parametrized queries.
+-- This will be executed with parameters ["something"]
+SELECT * FROM mytable WHERE user_key = $1;
+```
+
 ### exec
 
 The `exec` operation can be used for DDL operations (like table creation), as well as `INSERT`, `UPDATE`, `DELETE` operations which return only metadata (e.g. number of affected rows).
+
+The `params` property is a string containing a JSON-encoded array of parameters.
 
 **Request**
 
@@ -82,7 +121,8 @@ The `exec` operation can be used for DDL operations (like table creation), as we
 {
   "operation": "exec",
   "metadata": {
-    "sql": "INSERT INTO foo (id, c1, ts) VALUES (1, 'demo', '2020-09-24T11:45:05Z07:00')"
+    "sql": "INSERT INTO foo (id, c1, ts) VALUES ($1, $2, $3)",
+    "params": "[1, \"demo\", \"2020-09-24T11:45:05Z07:00\"]"
   }
 }
 ```
@@ -97,7 +137,7 @@ The `exec` operation can be used for DDL operations (like table creation), as we
     "start-time": "2020-09-24T11:13:46.405097Z",
     "end-time": "2020-09-24T11:13:46.414519Z",
     "rows-affected": "1",
-    "sql": "INSERT INTO foo (id, c1, ts) VALUES (1, 'demo', '2020-09-24T11:45:05Z07:00')"
+    "sql": "INSERT INTO foo (id, c1, ts) VALUES ($1, $2, $3)"
   }
 }
 ```
@@ -106,13 +146,16 @@ The `exec` operation can be used for DDL operations (like table creation), as we
 
 The `query` operation is used for `SELECT` statements, which returns the metadata along with data in a form of an array of row values.
 
+The `params` property is a string containing a JSON-encoded array of parameters.
+
 **Request**
 
 ```json
 {
   "operation": "query",
   "metadata": {
-    "sql": "SELECT * FROM foo WHERE id < 3"
+    "sql": "SELECT * FROM foo WHERE id < $1",
+    "params": "[3]"
   }
 }
 ```
@@ -126,7 +169,7 @@ The `query` operation is used for `SELECT` statements, which returns the metadat
     "duration": "432µs",
     "start-time": "2020-09-24T11:13:46.405097Z",
     "end-time": "2020-09-24T11:13:46.420566Z",
-    "sql": "SELECT * FROM foo WHERE id < 3"
+    "sql": "SELECT * FROM foo WHERE id < $1"
   },
   "data": "[
     [0,\"test-0\",\"2020-09-24T04:13:46Z\"],
@@ -138,7 +181,7 @@ The `query` operation is used for `SELECT` statements, which returns the metadat
 
 ### close
 
-Finally, the `close` operation can be used to explicitly close the DB connection and return it to the pool. This operation doesn't have any response.
+The `close` operation can be used to explicitly close the DB connection and return it to the pool. This operation doesn't have any response.
 
 **Request**
 
@@ -147,8 +190,6 @@ Finally, the `close` operation can be used to explicitly close the DB connection
   "operation": "close"
 }
 ```
-
-> Note, the PostgreSQL binding itself doesn't prevent SQL injection, like with any database application, validate the input before executing query.
 
 ## Related links
 

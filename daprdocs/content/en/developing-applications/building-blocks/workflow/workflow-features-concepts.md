@@ -6,6 +6,10 @@ weight: 2000
 description: "Learn more about the Dapr Workflow features and concepts"
 ---
 
+{{% alert title="Note" color="primary" %}}
+Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-version cli="true" %}}]({{< ref "workflow-overview.md#limitations" >}}).
+{{% /alert %}}
+
 Now that you've learned about the [workflow building block]({{< ref workflow-overview.md >}}) at a high level, let's deep dive into the features and concepts included with the Dapr Workflow engine and SDKs. Dapr Workflow exposes several core features and concepts which are common across all supported languages. 
 
 {{% alert title="Note" color="primary" %}}
@@ -158,7 +162,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -171,11 +175,22 @@ string randomString = GetRandomString();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```java
+// DON'T DO THIS!
+Instant currentTime = Instant.now();
+UUID newIdentifier = UUID.randomUUID();
+string randomString = GetRandomString();
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" >}}
+{{< tabs ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -184,6 +199,17 @@ Do this:
 DateTime currentTime = context.CurrentUtcDateTime;
 Guid newIdentifier = context.NewGuid();
 string randomString = await context.CallActivityAsync<string>("GetRandomString");
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```java
+// Do this!!
+Instant currentTime = context.getCurrentInstant();
+Guid newIdentifier = context.NewGuid();
+String randomString = context.callActivity(GetRandomString.class.getName(), String.class).await();
 ```
 
 {{% /codetab %}}
@@ -198,19 +224,57 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
+{{< tabs ".NET" Java >}}
+
+{{% codetab %}}
+
 ```csharp
 // DON'T DO THIS!
 string configuration = Environment.GetEnvironmentVariable("MY_CONFIGURATION")!;
 string data = await new HttpClient().GetStringAsync("https://example.com/api/data");
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```java
+// DON'T DO THIS!
+String configuration = System.getenv("MY_CONFIGURATION");
+
+HttpRequest request = HttpRequest.newBuilder().uri(new URI("https://postman-echo.com/post")).GET().build();
+HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 Do this:
+
+{{< tabs ".NET" Java >}}
+
+{{% codetab %}}
 
 ```csharp
 // Do this!!
 string configuation = workflowInput.Configuration; // imaginary workflow input argument
 string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://example.com/api/data");
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```java
+// Do this!!
+String configuation = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
+String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data", String.class).await();
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 #### Workflow functions must execute only on the workflow dispatch thread.  
 The implementation of each language SDK requires that all workflow function operations operate on the same thread (goroutine, etc.) that the function was scheduled on. Workflow functions must never:
@@ -221,19 +285,57 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
+{{< tabs ".NET" Java >}}
+
+{{% codetab %}}
+
 ```csharp
 // DON'T DO THIS!
 Task t = Task.Run(() => context.CallActivityAsync("DoSomething"));
 await context.CreateTimer(5000).ConfigureAwait(false);
 ```
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```java
+// DON'T DO THIS!
+new Thread(() -> {
+    ctx.callActivity(DoSomethingActivity.class.getName()).await();
+}).start();
+ctx.createTimer(Duration.ofSeconds(5)).await();
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 Do this:
+
+{{< tabs ".NET" Java >}}
+
+{{% codetab %}}
 
 ```csharp
 // Do this!!
 Task t = context.CallActivityAsync("DoSomething");
 await context.CreateTimer(5000).ConfigureAwait(true);
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```java
+// Do this!!
+ctx.callActivity(DoSomethingActivity.class.getName()).await();
+ctx.createTimer(Duration.ofSeconds(5)).await();
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 ### Updating workflow code
 

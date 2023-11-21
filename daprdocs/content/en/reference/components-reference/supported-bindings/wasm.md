@@ -45,6 +45,17 @@ Dapr uses [wazero](https://wazero.io) to run these binaries, because it has no
 dependencies. This allows use of WebAssembly with no installation process
 except Dapr itself.
 
+The Wasm output binding supports making HTTP client calls using the [wasi-http](https://github.com/WebAssembly/wasi-http) specification.
+You can find example code for making HTTP calls in a variety of languages here:
+* [Golang](https://github.com/dev-wasm/dev-wasm-go/tree/main/http)
+* [C](https://github.com/dev-wasm/dev-wasm-c/tree/main/http)
+* [.NET](https://github.com/dev-wasm/dev-wasm-dotnet/tree/main/http)
+* [TypeScript](https://github.com/dev-wasm/dev-wasm-ts/tree/main/http)
+
+{{% alert title="Note" color="primary" %}}
+If you just want to make an HTTP call, it is simpler to use the [service invocation API]({{< ref howto-invoke-non-dapr-endpoints.md >}}). However, if you need to add your own logic - for example, filtering or calling to multiple API endpoints - consider using Wasm.
+{{% /alert %}}
+
 ## Component format
 
 To configure a Wasm binding, create a component of type
@@ -60,18 +71,15 @@ spec:
   type: bindings.wasm
   version: v1
   metadata:
-  - name: url
-    value: "file://uppercase.wasm"
-  - name: direction 
-    value: "output"
+    - name: url
+      value: "file://uppercase.wasm"
 ```
 
 ## Spec metadata fields
 
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
-| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
-| `direction`   | The direction of the binding | false     | `"output"` |
+| `url`   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
 
 ## Binding support
 

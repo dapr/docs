@@ -11,7 +11,7 @@ description: "Use scopes to limit pub/sub topics to specific applications"
 [Namespaces or component scopes]({{< ref component-scopes.md >}}) can be used to limit component access to particular applications. These application scopes added to a component limit only the applications with specific IDs to be able to use the component.
 
 In addition to this general component scope, the following can be limited for pub/sub components:
-- Which topics which can be used (published or subscribed)
+- Which topics can be used (published or subscribed)
 - Which applications are allowed to publish to specific topics
 - Which applications are allowed to subscribe to specific topics
 
@@ -33,6 +33,9 @@ To use this topic scoping three metadata properties can be set for a pub/sub com
   - A comma-separated list of allowed topics for all applications.
   - If `allowedTopics` is not set (default behavior), all topics are valid. `subscriptionScopes` and `publishingScopes` still take place if present.
   - `publishingScopes` or `subscriptionScopes` can be used in conjunction with `allowedTopics` to add granular limitations
+- `spec.metadata.protectedTopics`
+  - A comma-separated list of protected topics for all applications.
+  - If a topic is marked as protected then an application must be explicitly granted publish or subscribe permissions through `publishingScopes` or `subscriptionScopes` to publish/subscribe to it.
 
 These metadata properties can be used for all pub/sub components. The following examples use Redis as pub/sub component.
 
@@ -151,6 +154,50 @@ The table below shows which application is allowed to subscribe to the topics:
 | app1 |   |   |   |
 | app2 | X |   |   |
 | app3 | X | X |   |
+
+## Example 4: Mark topics as protected
+
+If your topic involves sensitive data, each new application must be explicitly listed in the `publishingScopes` and `subscriptionScopes` to ensure it cannot read from or write to that topic. Alternatively, you can designate the topic as 'protected' (using `protectedTopics`) and grant access only to specific applications that genuinely require it.
+
+Here is an example of three applications and three topics, two of which are protected:
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: "localhost:6379"
+  - name: redisPassword
+    value: ""
+  - name: protectedTopics
+    value: "A,B"
+  - name: publishingScopes
+    value: "app1=A,B;app2=B"
+  - name: subscriptionScopes
+    value: "app1=A,B;app2=B"
+```
+
+In the example above, topics A and B are marked as protected. As a result, even though `app3` is not listed under `publishingScopes` or `subscriptionScopes`, it cannot interact with these topics.
+
+The table below shows which application is allowed to publish into the topics:
+
+|      | A | B | C |
+|------|---|---|---|
+| app1 | X | X |   |
+| app2 |   | X |   |
+| app3 |   |   | X |
+
+The table below shows which application is allowed to subscribe to the topics:
+
+|      | A | B | C |
+|------|---|---|---|
+| app1 | X | X |   |
+| app2 |   | X |   |
+| app3 |   |   | X |
 
 
 ## Demo

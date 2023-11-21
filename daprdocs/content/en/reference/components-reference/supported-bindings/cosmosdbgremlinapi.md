@@ -9,7 +9,6 @@ description: "Detailed documentation on the Azure Cosmos DB (Gremlin API) bindin
 
 To setup an Azure Cosmos DB (Gremlin API) binding create a component of type `bindings.azure.cosmosdb.gremlinapi`. See [this guide]({{< ref "howto-bindings.md#1-create-a-binding" >}}) on how to create and apply a binding configuration.
 
-
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -25,8 +24,6 @@ spec:
     value: "*****"
   - name: username
     value: "*****"
-  - name: direction
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -40,7 +37,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `url` | Y | Output | The Cosmos DB url for Gremlin APIs | `"wss://******.gremlin.cosmos.azure.com:443/"` |
 | `masterKey` | Y | Output | The Cosmos DB account master key | `"masterKey"` |
 | `username` | Y | Output | The username of the Cosmos DB database | `"/dbs/<database_name>/colls/<graph_name>"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 For more information see [Quickstart: Azure Cosmos Graph DB using Gremlin](https://docs.microsoft.com/azure/cosmos-db/graph/create-graph-console).
 
