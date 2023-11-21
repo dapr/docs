@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Debugging dapr Apps running in Docker Compose"
+title: "Debugging Dapr Apps running in Docker Compose"
 linkTitle: "Debugging Docker Compose"
 weight: 300
 description: "Debug Dapr apps locally which are part of a docker compose deployment"
