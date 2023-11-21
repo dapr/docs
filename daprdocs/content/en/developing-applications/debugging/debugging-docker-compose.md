@@ -38,7 +38,7 @@ networks:
   hello-dapr
 ```
 
-When you run this docker file with `docker compose -f compose.yml up` this will deploy to docker and run as normal.
+When you run this docker file with `docker compose -f compose.yml up` this will deploy to Docker and run as normal.
 
 But how do we debug the `nodeapp` while still integrated to the running dapr sidecar process, and anything else that you may have deployed via the docker compose file? 
 
