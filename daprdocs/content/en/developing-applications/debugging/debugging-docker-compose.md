@@ -40,7 +40,7 @@ networks:
 
 When you run this docker file with `docker compose -f compose.yml up` this will deploy to Docker and run as normal.
 
-But how do we debug the `nodeapp` while still integrated to the running dapr sidecar process, and anything else that you may have deployed via the docker compose file? 
+But how do we debug the `nodeapp` while still integrated to the running dapr sidecar process, and anything else that you may have deployed via the Docker compose file? 
 
 Lets start by introducing a *second* docker compose file called `compose.debug.yml`. This second compose file will augment with the first compose file when the `up` command is ran.
 
