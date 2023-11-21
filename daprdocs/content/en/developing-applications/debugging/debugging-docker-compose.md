@@ -76,4 +76,7 @@ You should now find that the dapr sidecar and your debugging app will have bi-di
 
 **Note** : It's important to highlight that the `nodeapp` service in the docker compose environment is actually still running, however it has been removed from the docker network so it is effectively orphaned as nothing can communicate to it.
 
+**Demo**
+Watch this video on how to debug local Dapr apps with Docker Compose
 
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/nWatANwaAik?start=1738" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
