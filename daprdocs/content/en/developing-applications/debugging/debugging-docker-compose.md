@@ -3,7 +3,7 @@ type: docs
 title: "Debugging Dapr Apps running in Docker Compose"
 linkTitle: "Debugging Docker Compose"
 weight: 300
-description: "Debug Dapr apps locally which are part of a docker compose deployment"
+description: "Debug Dapr apps locally which are part of a Docker Compose deployment"
 ---
 
 The goal of this article is to demonstrate a way to debug one or more daprised applications (via your IDE, locally) while remaining integrated with the other applications that have deployed in the docker compose environment.
