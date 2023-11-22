@@ -28,7 +28,7 @@ jobs:
           HUGO_ENV: production
           HUGO_VERSION: "0.100.2"
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_BAY_0E9E0E81E }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_V1_10 }}
           skip_deploy_on_missing_secrets: true
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
