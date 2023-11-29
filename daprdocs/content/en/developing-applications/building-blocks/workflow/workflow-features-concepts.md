@@ -117,7 +117,7 @@ Workflows support durable retry policies for activities and child workflows. Wor
 - Workflow retry policies are durable and maintain their state across application restarts, whereas Dapr Resiliency policies are not durable and must be re-applied after application restarts.
 - Workflow retry policies are triggered by unhandled errors/exceptions in activities and child workflows, whereas Dapr Resiliency policies are triggered by operation timeouts and connectivity faults.
 
-Retries are internally implemented using durable timers. This means that workflows can be safely unloaded from memory while waiting for a retry to fire, conserving system resources. This also means that delays between retries can be arbitrarily long, including minutes, hours, or even days.
+Retries are internally implemented using Actor reminders. This means that workflows can be safely unloaded from memory while waiting for a retry to fire, conserving system resources. This also means that delays between retries can be arbitrarily long, including minutes, hours, or even days.
 
 {{% alert title="Note" color="primary" %}}
 The actions performed by a retry policy are saved into a workflow's history. Care must be taken not to change the behavior of a retry policy after a workflow has already been executed. Otherwise, the workflow may behave unexpectedly when replayed. See the notes on [updating workflow code]({{< ref "#updating-workflow-code" >}}) for more information.
