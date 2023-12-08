@@ -162,7 +162,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -186,11 +186,19 @@ string randomString = GetRandomString();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -214,6 +222,14 @@ String randomString = context.callActivity(GetRandomString.class.getName(), Stri
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// Do this!!
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -224,7 +240,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -247,11 +263,19 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -273,6 +297,14 @@ String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// Do this!!
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -285,7 +317,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -308,11 +340,19 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -330,6 +370,14 @@ await context.CreateTimer(5000).ConfigureAwait(true);
 // Do this!!
 ctx.callActivity(DoSomethingActivity.class.getName()).await();
 ctx.createTimer(Duration.ofSeconds(5)).await();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// Do this!!
 ```
 
 {{% /codetab %}}

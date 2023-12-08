@@ -25,7 +25,7 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -160,6 +160,15 @@ public class ChainWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
@@ -186,7 +195,7 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -275,6 +284,15 @@ public class FaninoutWorkflow extends Workflow {
         };
     }
 }
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--go-->
+
+```go
+
 ```
 
 {{% /codetab %}}
@@ -379,7 +397,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -512,6 +530,15 @@ public class MonitorWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
@@ -540,7 +567,7 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -682,11 +709,20 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -725,6 +761,14 @@ await daprClient.RaiseWorkflowEventAsync(
 ```java
 System.out.println("**SendExternalMessage: RestartEvent**");
 client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--go-->
+
+```go
 ```
 
 {{% /codetab %}}

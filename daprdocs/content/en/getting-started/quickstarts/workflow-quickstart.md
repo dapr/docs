@@ -21,7 +21,7 @@ In this guide, you'll:
 <img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
 
 
-{{< tabs "Python" ".NET" "Java" >}}
+{{< tabs "Python" ".NET" "Java" "Go" >}}
 
  <!-- Python -->
 {{% codetab %}}
@@ -851,6 +851,112 @@ The `Activities` directory holds the four workflow activities used by the workfl
 - [`UpdateInventoryActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/UpdateInventoryActivity.java)
 
 {{% /codetab %}}
+
+ <!-- Go -->
+{{% codetab %}}
+
+The `order-processor` console app starts and manages the `order_processing_workflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
+
+- `notify_activity`: Utilizes a logger to print out messages throughout the workflow. These messages notify you when:
+   - You have insufficient inventory
+   - Your payment couldn't be processed, etc.
+- `process_payment_activity`: Processes and authorizes the payment.
+- `verify_inventory_activity`: Checks the state store to ensure there is enough inventory present for purchase.
+- `update_inventory_activity`: Removes the requested items from the state store and updates the store with the new remaining inventory value.
+- `request_approval_activity`: Seeks approval from the manager if payment is greater than 50,000 USD.
+
+### Step 1: Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest version of Go](https://go.dev/dl/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 2: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+In a new terminal window, navigate to the `order-processor` directory:
+
+```bash
+cd workflows/go/sdk/order-processor
+```
+
+Install the Dapr Go SDK dependencies:
+
+```bash
+go build .
+```
+
+### Step 3: Run the order processor app
+
+In the terminal, start the order processor app alongside a Dapr sidecar:
+
+```bash
+dapr run 
+```
+
+This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
+
+Expected output:
+
+```bash
+need
+```
+
+### (Optional) Step 4: View in Zipkin
+
+Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+View the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`). 
+
+<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
+
+### What happened?
+
+When you ran `dapr run`:
+
+1. A unique order ID for the workflow is generated (in the above example, `f4e1926e-3721-478d-be8a-f5bebd1995da`) and the workflow is scheduled.
+1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
+1. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+1. Your workflow starts and notifies you of its status.
+1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `f4e1926e-3721-478d-be8a-f5bebd1995da` and confirms if successful.
+1. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+1. The `NotifyActivity` workflow activity sends a notification saying that order `f4e1926e-3721-478d-be8a-f5bebd1995da` has completed.
+1. The workflow terminates as completed.
+
+#### `order-processor/app.go` 
+
+In the application's program file:
+- The unique workflow order ID is generated
+- The workflow is scheduled
+- The workflow status is retrieved
+- The workflow and the workflow activities it invokes are registered
+
+```go
+need
+```
+
+#### `order-processor/workflow.go`
+
+In `workflow.go`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
+
+```go
+need 
+```
+{{% /codetab %}}
+
 
 {{< /tabs >}}
 

@@ -73,16 +73,6 @@ Learn more about [different types of workflow patterns]({{< ref workflow-pattern
 
 The Dapr Workflow _authoring SDKs_ are language-specific SDKs that contain types and functions to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr Workflow engine running in the Dapr sidecar via a gRPC stream.
 
-### Supported SDKs
-
-You can use the following SDKs to author a workflow.
-
-| Language stack | Package |
-| - | - |
-| Python | [dapr-ext-workflow](https://github.com/dapr/python-sdk/tree/master/ext/dapr-ext-workflow) |
-| .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
-| Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
-
 ## Try out workflows
 
 ### Quickstarts and tutorials
@@ -102,8 +92,6 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using  workflows, starting with [how to author a workflow]({{< ref howto-author-workflow.md >}}).
 
 ## Limitations
-
-With Dapr Workflow in beta stage comes the following limitation(s):
 
 - **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, using the NoSQL databases as a state store results in limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
 

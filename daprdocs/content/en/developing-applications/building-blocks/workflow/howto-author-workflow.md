@@ -34,7 +34,7 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -165,6 +165,19 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--go-->
+
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the public `DemoWorkflowActivity` class, which implements the workflow activities. 
+
+```go
+
+```
+
+[See the Go SDK workflow activity example in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowActivity.java)
+
+{{% /codetab %}}
 
 {{< /tabs >}}
 
@@ -172,7 +185,7 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -269,13 +282,27 @@ public class DemoWorkflowWorker {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--go-->
+
+Next, register the workflow with the `WorkflowRuntimeBuilder` and start the workflow runtime.
+
+```go
+
+```
+
+[See the Go SDK workflow in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowWorker.java)
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Write the application
 
 Finally, compose the application using the workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -484,6 +511,25 @@ public class DemoWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--go-->
+
+[As in the following example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflow.java), a hello-world application using the Go SDK and Dapr Workflow would include:
+
+- A Go package called `todo` to receive the Go SDK client capabilities.
+- An import of `todo`
+- The `DemoWorkflow` class which extends `Workflow`
+- Creating the workflow with input and output.
+- API calls. In the example below, these calls start and call the workflow activities.
+ 
+```go
+
+```
+
+[See the full Go SDK workflow example in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflow.java)
+
+{{% /codetab %}}
 
 {{< /tabs >}}
 
@@ -506,3 +552,4 @@ Now that you've authored a workflow, learn how to manage it.
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+  - [Go example](todo)
