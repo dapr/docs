@@ -28,8 +28,6 @@ spec:
     value: "true"
   - name: caCertificatePath
     value: "/path/to/ca-cert"
-  - name: direction 
-    value: "output"
 ```
 
 ## Spec metadata fields
@@ -40,7 +38,6 @@ spec:
 | `gatewayKeepAlive`        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `"45s"` |
 | `usePlainTextConnection`  | N | Output | Whether to use a plain text connection or not                                             | `"true"`, `"false"` |
 | `caCertificatePath`       | N | Output | The path to the CA cert                                                                    | `"/path/to/ca-cert"` |
-| `direction`       | N | Output | The direction of the binding                                                                    | `"output"` |
 
 ## Binding support
 

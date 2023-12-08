@@ -10,9 +10,9 @@ aliases:
 ## ⚠️ Deprecation notice
 
 {{% alert title="Warning" color="warning" %}}
-This component is **deprecated** because the [NATS Streaming Server](hhttps://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan) was deprecated in June 2023 and no longer receives updates. Users are encouraged to switch to using [JetStream]({{< ref setup-jetstream >}} as an alternative.
+This component is **deprecated** because the [NATS Streaming Server](https://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan) was deprecated in June 2023 and no longer receives updates. Users are encouraged to switch to using [JetStream]({{< ref setup-jetstream >}}) as an alternative.
 
-This component will be **removed in the Dapr v1.13 release.
+This component will be **removed in the Dapr v1.13 release**.
 {{% /alert %}}
 
 ## Component format

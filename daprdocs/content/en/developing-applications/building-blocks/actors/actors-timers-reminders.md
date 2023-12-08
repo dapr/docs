@@ -137,7 +137,7 @@ Refer [api spec]({{< ref "actors_api.md#invoke-reminder" >}}) for more details.
 
 ## Error handling
 
-When an actor's method completes successfully, the runtime will contineu to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message in the Dapr sidecar logs, without retrying. 
+When an actor's method completes successfully, the runtime will continue to invoke the method at the specified timer or reminder schedule. However, if the method throws an exception, the runtime catches it and logs the error message in the Dapr sidecar logs, without retrying. 
 
 To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB. 
 

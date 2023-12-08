@@ -52,7 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
 | `accountName` | Y | Input/Output | The name of the Azure Storage account | `"account1"` |
-| `accountKey` | Y* | Input/Output | The access key of the Azure Storage account. Only required when not using Azure AD authentication. | `"access-key"` |
+| `accountKey` | Y* | Input/Output | The access key of the Azure Storage account. Only required when not using Microsoft Entra ID authentication. | `"access-key"` |
 | `queueName` | Y | Input/Output | The name of the Azure Storage queue | `"myqueue"` |
 | `pollingInterval` | N | Output | Set the interval to poll Azure Storage Queues for new messages, as a Go duration value. Default: `"10s"` | `"30s"` |
 | `ttlInSeconds` | N | Output | Parameter to set the default message time to live. If this parameter is omitted, messages will expire after 10 minutes. See [also](#specifying-a-ttl-per-message) | `"60"` |
@@ -62,9 +62,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `visibilityTimeout` | N | Input | Allows setting a custom queue visibility timeout to avoid immediate retrying of recently failed messages. Defaults to 30 seconds. | `"100s"` |
 | `direction` | N | Input/Output | Direction of the binding. | `"input"`, `"output"`, `"input, output"` |
 
-### Azure Active Directory (Azure AD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Storage Queue binding component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
+The Azure Storage Queue binding component supports authentication using all Microsoft Entra ID mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Microsoft Entra ID authentication mechanism.
 
 ## Binding support
 
