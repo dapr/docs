@@ -12,7 +12,7 @@ Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-v
 
 Now that you've [authored the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs Python ".NET" Java HTTP >}}
+{{< tabs Python JavaScript ".NET" Java HTTP >}}
 
 <!--Python-->
 {{% codetab %}}
@@ -59,6 +59,24 @@ d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
 # Terminate the workflow
 d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+```
+
+{{% /codetab %}}
+
+<!--JavaScript-->
+{{% codetab %}}
+
+Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
+- **start_workflow**: Start an instance of a workflow
+- **get_workflow**: Get information on the status of the workflow
+- **pause_workflow**: Pauses or suspends a workflow instance that can later be resumed
+- **resume_workflow**: Resumes a paused workflow instance
+- **raise_workflow_event**: Raise an event on a workflow
+- **purge_workflow**: Removes all metadata related to a specific workflow instance
+- **terminate_workflow**: Terminate or stop a particular instance of a workflow
+
+```javascript
+
 ```
 
 {{% /codetab %}}
@@ -242,6 +260,7 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
+  - [JavaScript example](todo)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
 

@@ -34,7 +34,7 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -50,6 +50,21 @@ def hello_act(ctx: WorkflowActivityContext, input):
 ```
 
 [See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+Define the workflow activities you'd like your workflow to perform. Activities are a function definition and can take inputs and outputs. The following example creates a counter (activity) called `hello_act` that notifies users of the current counter value. `hello_act` is a function derived from a class called `WorkflowActivityContext`.
+
+```javascript
+
+```
+
+[See the workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
 
 
 {{% /codetab %}}
@@ -172,7 +187,7 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -188,6 +203,21 @@ def hello_world_wf(ctx: DaprWorkflowContext, input):
     yield ctx.wait_for_external_event("event1")
     yield ctx.call_activity(hello_act, input=100)
     yield ctx.call_activity(hello_act, input=1000)
+```
+
+[See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+The `hello_world_wf` function is derived from a class called `DaprWorkflowContext` with input and output parameter types. It also includes a `yield` statement that does the heavy lifting of the workflow and calls the workflow activities. 
+ 
+```javascript
+
 ```
 
 [See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
@@ -275,7 +305,7 @@ public class DemoWorkflowWorker {
 
 Finally, compose the application using the workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -363,6 +393,25 @@ if __name__ == '__main__':
     main()
 ```
 
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+[In the following example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py), for a basic JavaScript hello world application using the Go SDK, your project code would include:
+
+- A JavaScript package called `todo` to receive the Go SDK capabilities.
+- A builder with extensions called:
+  - `WorkflowRuntime`: Allows you to register workflows and workflow activities
+  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
+  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
+- API calls. In the example below, these calls start, pause, resume, purge, and terminate the workflow.
+ 
+```go
+
+```
 
 {{% /codetab %}}
 
@@ -504,5 +553,6 @@ Now that you've authored a workflow, learn how to manage it.
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [JavaScript example](todo)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

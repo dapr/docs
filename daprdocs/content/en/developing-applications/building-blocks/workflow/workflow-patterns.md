@@ -25,7 +25,7 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -69,6 +69,15 @@ def error_handler(ctx, error):
 ```
 
 > **Note** Workflow retry policies will be available in a future version of the Python SDK.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+
+```
 
 {{% /codetab %}}
 
@@ -186,7 +195,7 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -224,6 +233,15 @@ def process_work_item(ctx, work_item: int) -> int:
 
 def process_results(ctx, final_result: int):
     print(f'Final result: {final_result}.')
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+
 ```
 
 {{% /codetab %}}
@@ -379,7 +397,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -425,6 +443,17 @@ def check_status(ctx, _) -> str:
 def send_alert(ctx, message: str):
     print(f'*** Alert: {message}')
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+
+```
+
+> This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
 
 {{% /codetab %}}
 
@@ -540,7 +569,7 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -597,6 +626,15 @@ def send_approval_request(_, order: Order) -> None:
 
 def place_order(_, order: Order) -> None:
     print(f'*** Placing order: {order}')
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+
 ```
 
 {{% /codetab %}}
@@ -686,7 +724,7 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -701,6 +739,15 @@ with DaprClient() as d:
         workflow_component="dapr",
         event_name="approval_received",
         event_data=asdict(Approval("Jane Doe")))
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+// Raise the workflow event to the waiting workflow
 ```
 
 {{% /codetab %}}
@@ -744,5 +791,6 @@ External events don't have to be directly triggered by humans. They can also be 
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [JavaScript](todo)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

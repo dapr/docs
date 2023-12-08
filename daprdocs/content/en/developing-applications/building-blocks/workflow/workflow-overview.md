@@ -73,16 +73,6 @@ Learn more about [different types of workflow patterns]({{< ref workflow-pattern
 
 The Dapr Workflow _authoring SDKs_ are language-specific SDKs that contain types and functions to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr Workflow engine running in the Dapr sidecar via a gRPC stream.
 
-### Supported SDKs
-
-You can use the following SDKs to author a workflow.
-
-| Language stack | Package |
-| - | - |
-| Python | [dapr-ext-workflow](https://github.com/dapr/python-sdk/tree/master/ext/dapr-ext-workflow) |
-| .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
-| Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
-
 ## Try out workflows
 
 ### Quickstarts and tutorials
@@ -93,17 +83,15 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 | ------------------- | ----------- |
 | [Workflow quickstart]({{< ref workflow-quickstart.md >}}) | Run a workflow application with four workflow activities to see Dapr Workflow in action  |
 | [Workflow Python SDK example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow) | Learn how to create a Dapr Workflow and invoke it using the Python `DaprClient` package. |
+| [Workflow JavaScript SDK example](todo) | Learn how to create a Dapr Workflow and invoke it using the JavaScript `todo` package. |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
 | [Workflow Java SDK example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows) | Learn how to create a Dapr Workflow and invoke it using the Java `io.dapr.workflows` package. |
-
 
 ### Start using workflows directly in your app
 
 Want to skip the quickstarts? Not a problem. You can try out the workflow building block directly in your application. After [Dapr is installed]({{< ref install-dapr-cli.md >}}), you can begin using  workflows, starting with [how to author a workflow]({{< ref howto-author-workflow.md >}}).
 
 ## Limitations
-
-With Dapr Workflow in beta stage comes the following limitation(s):
 
 - **State stores:** For the {{% dapr-latest-version cli="true" %}} beta release of Dapr Workflow, using the NoSQL databases as a state store results in limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
 
@@ -123,6 +111,7 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
 
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
-  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [JavaScript example](todo)
+  - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

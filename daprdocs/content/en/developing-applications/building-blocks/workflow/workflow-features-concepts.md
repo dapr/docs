@@ -162,7 +162,15 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs JavaScript ".NET" Java >}}
+
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -190,7 +198,15 @@ string randomString = GetRandomString();
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs JavaScript ".NET" Java >}}
+
+{{% codetab %}}
+
+```javascript
+// Do this!!
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -224,7 +240,14 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs JavaScript ".NET" Java >}}
+
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+```
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -251,7 +274,15 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs JavaScript ".NET" Java >}}
+
+{{% codetab %}}
+
+```javascript
+// Do this!!
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -285,7 +316,14 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs JavaScript ".NET" Java >}}
+
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+```
+{{% /codetab %}}
 
 {{% codetab %}}
 
@@ -312,7 +350,15 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs JavaScript ".NET" Java >}}
+
+{{% codetab %}}
+
+```javascript
+// Do this!!
+```
+
+{{% /codetab %}}
 
 {{% codetab %}}
 
