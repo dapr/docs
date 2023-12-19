@@ -8,7 +8,9 @@ description: "Information on Dapr errors and how to handle them"
 
 # Dapr Error Handling: Understanding the Error Models
 
-Initially, Dapr followed the standard gRPC error model. However, to provide more detailed and informative error messages, Dapr is transitioning to a richer error model as defined by gRPC.
+Initially, Dapr followed the standard gRPC error model. However, to provide more detailed and informative error messages, Dapr is gradually transitioning to a richer error model as defined by gRPC. 
+
+> Not all Dapr errors have been converted to the richer gRPC error model.
 
 ### Standard gRPC Error Model
 
@@ -24,6 +26,7 @@ ERROR:
 ### Richer gRPC Error Model
 
 The richer error model enhances the standard model by providing additional context and details about the error. This model includes the standard error code and message, along with a Details section that can contain various types of information, such as ErrorInfo, ResourceInfo, and BadRequest details.
+
 
 **Example of a Richer gRPC Error Response:**
 ```
