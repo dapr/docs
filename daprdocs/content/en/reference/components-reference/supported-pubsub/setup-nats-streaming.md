@@ -67,7 +67,7 @@ NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-s
 | natsStreamingClusterID  | Y  | NATS cluster ID   |`"clusterId"`|
 | subscriptionType   | Y | Subscription type. Allowed values `"topic"`, `"queue"` | `"topic"` |
 | ackWaitTime        | N | See [here](https://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan/acknowledgements) | `"300ms"`|
-| maxInFlight        | N | See [here](hhttps://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan/acknowledgements) | `"25"` |
+| maxInFlight        | N | See [here](https://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan/acknowledgements) | `"25"` |
 | durableSubscriptionName | N | [Durable subscriptions](https://nats-io.gitbook.io/legacy-nats-docs/nats-streaming-server-aka-stan/developing-with-stan/durable-subscriptions) identification name. | `"my-durable"`|
 | deliverNew         | N | Subscription Options. Only one can be used. Deliver new messages only  | `"true"`, `"false"` |
 | startAtSequence    | N | Subscription Options. Only one can be used. Sets the desired start sequence position and state  | `"100000"`, `"230420"` |
