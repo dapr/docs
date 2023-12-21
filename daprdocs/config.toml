@@ -167,6 +167,7 @@ version_menu = "v1.8"
 version = "v1.8"
 archived_version = true
 url_latest_version = "https://docs.dapr.io"
+allow_search_indexing = false
 
 [[params.versions]]
   version = "v1.10 (preview)"
