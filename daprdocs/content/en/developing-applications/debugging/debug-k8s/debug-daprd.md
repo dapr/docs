@@ -87,6 +87,56 @@ Forwarding from [::1]:40000 -> 40000
 
 All done. Now you can point to port 40000 and start a remote debug session to daprd from your favorite IDE.
 
+## Commonly used `kubectl` commands
+
+Use the following common `kubectl` commands when debugging daprd and applications running on Kubernetes.
+
+Get all pods, events, and services: 
+
+```bash
+kubectl get all
+kubectl get all --n <namespace>
+kubectl get all --all-namespaces
+```
+
+Get each specifically:
+
+```bash
+kubectl get pods
+```
+
+```bash
+kubectl get events --n <namespace>
+kubectl get events --sort-by=.metadata.creationTimestamp --n <namespace>
+```
+
+```bash
+kubectl get services
+```
+
+Check logs:
+
+```bash
+kubectl logs <podId> daprd
+kubectl logs <podId> <myAppContainerName>
+kuebctl logs <deploymentId> daprd
+kubectl logs <deploymentId> <myAppContainerName>
+```
+
+```bash
+kubectl describe pod <podId>
+kubectl describe deploy <deployId>
+kubectl describe replicaset <replicasetId>
+```
+
+Restart a pod by running the following command: 
+
+```bash
+kubectl delete pod <podId>
+```
+
+This causes the `replicaset` controller to restart the pod after the delete.
+
 ## Watch the demo
 
 See the presentation on troubleshooting Dapr on Kubernetes in the [Dapr Community Call #36](https://youtu.be/pniLPRbuLD8?si=bGid7oYSp9cThtiI&t=838). 
