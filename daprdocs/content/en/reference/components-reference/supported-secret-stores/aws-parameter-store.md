@@ -30,6 +30,8 @@ spec:
     value: "[aws_secret_key]"
   - name: sessionToken
     value: "[aws_session_token]"
+  - name: prefix
+    value: "[secret_name]"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
