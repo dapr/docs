@@ -107,10 +107,16 @@ Lock components are used as a distributed lock to provide mutually exclusive acc
 
 ### Workflows
 
-A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines a reliable business process or data flow. Workflow components are workflow runtimes (or engines) that run the business logic written for that workflow and store their state into a state store.  
+A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines a reliable business process or data flow. Workflow components are workflow runtimes (or engines) that run the business logic written for that workflow and store their state into a state store.
 
 <!--- [List of supported workflows]()
 - [Workflow implementations](https://github.com/dapr/components-contrib/tree/master/workflows)-->
+
+#### Workflow Backends
+
+Workflow supports configuration of various backends as components. Currently, the supported backends include `actor` and `sqlite`.
+
+- [List of supported workflow backends]({{< ref supported-workflow-backends >}})
 
 ### Cryptography
 
