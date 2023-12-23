@@ -15,7 +15,7 @@ Now that you've read about [Cryptography as a Dapr building block]({{< ref crypt
 
 ## Encrypt
 
-{{< tabs "JavaScript" "Go" >}}
+{{< tabs "JavaScript" "Go", "C#" >}}
 
 {{% codetab %}}
 
@@ -136,6 +136,29 @@ if err != nil {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!-- C# -- >
+Using the Dapr SDK in your project, you can encrypt data in an array of bytes. To encrypt a string, encode it first to an array of bytes with UTF-8 or another such encoding with `Encoding.UTF8.GetBytes(plainTextString)`.
+
+```csharp
+// When passing data, `encrypt` returns an array of bytes with the encrypted value
+const string componentName = "azurekeyvault";
+const string keyName = "myKey";
+
+var encryptedBytes = await client.EncryptAsync(componentName, plainTextBytes, KeyWrapAlgorithm.Rsa, keyName, DataEncryptionCipher.AesGcm, cancellationToken);
+```
+
+The APIs can also be used with streams to encrypt the data more efficiently. The example below encrypts
+a file using `FileStream` to an array of bytes:
+
+```csharp
+await using var fs = new FileStream("myfile.txt", FileMode.Open);
+var encryptedBytes = await client.EncryptAsync(componentName, fs, KeyWrapAlgorithm.Rsa, keyName, DataEncryptionCipher.AesGcm, cancellationToken);
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -182,6 +205,25 @@ out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
 	// Only required option is the component name
 	ComponentName: "mycryptocomponent",
 })
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!-- C# -->
+
+To decrypt a file, use the `DecryptAsync` method and pass it either a byte array or a stream.
+
+```csharp
+const string componentName = "azurekeyvault";
+const string keyName = "myKey";
+
+var decryptedBytes = await client.DecryptAsync(componentName, encryptedBytes, keyName, cancellationToken);
+
+// `DecryptAsync` can also accept a stream like a `FileStream` or `MemoryStream`
+await using var memoryStream = new MemoryStream(encryptedBytes);
+var decryptedBytesFromStream = await client.DecryptAsync(componentName, memoryStream, keyName, cancellationToken);
 ```
 
 {{% /codetab %}}
