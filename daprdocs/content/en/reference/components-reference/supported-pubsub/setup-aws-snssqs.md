@@ -9,15 +9,16 @@ aliases:
 
 ## Component format
 
-To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`. 
+To set up AWS SNS/SQS pub/sub, create a component of type `pubsub.aws.snssqs`.
 
 By default, the AWS SNS/SQS component:
+
 - Generates the SNS topics
 - Provisions the SQS queues
 - Configures a subscription of the queues to the topics
 
 {{% alert title="Note" color="primary" %}}
-If you only have a publisher and no subscriber, only the SNS topics are created. 
+If you only have a publisher and no subscriber, only the SNS topics are created.
 
 However, if you have a subscriber, SNS, SQS, and the dynamic or static subscription thereof are generated.
 {{% /alert %}}
@@ -83,7 +84,7 @@ The above example uses secrets as plain strings. It is recommended to use [a sec
 | secretKey          | Y  | Secret for the AWS user/role. If using an `AssumeRole` access, you will also need to provide a `sessionToken` |`"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
 | region             | Y  | The AWS region where the SNS/SQS assets are located or be created in. See [this page](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/?p=ugi&l=na) for valid regions. Ensure that SNS and SQS are available in that region | `"us-east-1"`
 | consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. | `"channel1"`
-| endpoint          | N  | AWS endpoint for the component to use. Only used for local development with, for example, [localstack](https://github.com/localstack/localstack). The `endpoint` is unncessary when running against production AWS | `"http://localhost:4566"`
+| endpoint          | N  | AWS endpoint for the component to use. Only used for local development with, for example, [localstack](https://github.com/localstack/localstack). The `endpoint` is unnecessary when running against production AWS | `"http://localhost:4566"`
 | sessionToken      | N  | AWS session token to use.  A session token is only required if you are using temporary security credentials | `"TOKEN"`
 | messageReceiveLimit | N  | Number of times a message is received, after processing of that message fails, that once reached, results in removing of that message from the queue. If `sqsDeadLettersQueueName` is specified, `messageReceiveLimit` is the number of times a message is received, after processing of that message fails, that once reached, results in moving of the message to the SQS dead-letters queue. Default: `10` | `10`
 | sqsDeadLettersQueueName | N  | Name of the dead letters queue for this application | `"myapp-dlq"`
@@ -133,6 +134,22 @@ When configuring the PubSub component with SQS dead-letter queues, the metadata 
 When running the Dapr sidecar (`daprd`) with your application on EKS (AWS Kubernetes) node/pod already attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec.  
 {{% /alert %}}
 
+#### SNS/SQS Contention with Dapr
+
+Fundamentally, SNS aggregates messages from multiple publisher topics into a single SQS queue by creating SQS subscriptions to those topics. As a subscriber, the SNS/SQS pub/sub component consumes messages from that sole SQS queue.
+
+However, like any SQS consumer, the component cannot selectively retrieve the messages published to the SNS topics to which it is specifically subscribed. This can result in the component receiving messages originating from topics without associated handlers. Typically, this occurs during:
+
+- **Component initialization:** If infrastructure subscriptions are ready before component subscription handlers, or
+- **Shutdown:** If component handlers are removed before infrastructure subscriptions.
+
+Since this issue affects any SQS consumer of multiple SNS topics, the component cannot prevent consuming messages from topics lacking handlers. When this happens, the component logs an error indicating such messages were erroneously retrieved.
+
+In these situations, the unhandled messages would reappear in SQS with their [receive count](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html#sqs-receive-count) decremented after each pull. Thus, there is a risk that an unhandled message could exceed its `messageReceiveLimit` and be lost.
+
+{{% alert title="Important" color="warning" %}}
+Consider potential contention scenarios when using SNS/SQS with Dapr, and configure `messageReceiveLimit` appropriately. It is highly recommended to use SQS dead-letter queues by setting `sqsDeadLettersQueueName` to prevent losing messages.
+{{% /alert %}}
 
 ## Create an SNS/SQS instance
 

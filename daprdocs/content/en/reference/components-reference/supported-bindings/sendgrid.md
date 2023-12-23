@@ -41,8 +41,6 @@ spec:
     value: '{"customer":{"name":"John Smith"}}' # optional
   - name: apiKey
     value: "YOUR_API_KEY" # required, this is your SendGrid key
-  - name: direction 
-    value: "output"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -61,7 +59,6 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `emailCc` | N | Output | If set this specifies the 'cc' email address of the email message. Only a single email address is allowed. Optional field, see [below](#example-request-payload) | `"me@example.com"` |
 | `emailBcc` | N | Output | If set this specifies the 'bcc' email address of the email message. Only a single email address is allowed. Optional field, see [below](#example-request-payload) | `"me@example.com"` |
 | `subject` | N | Output | If set this specifies the subject of the email message. Optional field, see [below](#example-request-payload) | `"subject of the email"` |
-| `direction` | N | Output | The direction of the binding | `"output"` |
 
 ## Binding support
 

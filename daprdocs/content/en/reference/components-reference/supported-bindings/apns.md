@@ -30,8 +30,6 @@ spec:
       secretKeyRef:
         name: <SECRET>
         key: "<SECRET-KEY-NAME>"
-    - name: direction
-      value: "output"
 ```
 ## Spec metadata fields
 
@@ -41,14 +39,15 @@ spec:
 | `key-id` | Y | Output | The identifier for the private key from the Apple Developer Portal | `"private-key-id`" |
 | `team-id` | Y | Output | The identifier for the organization or author from the Apple Developer Portal | `"team-id"` |
 | `private-key` | Y | Output| Is a PKCS #8-formatted private key. It is intended that the private key is stored in the secret store and not exposed directly in the configuration. See [here](#private-key) for more details | `"pem file"` |
-| `direction` | N | Output| The direction of the binding. | `"output"` |
 
 ### Private key
+
 The APNS binding needs a cryptographic private key in order to generate authentication tokens for the APNS service.
 The private key can be generated from the Apple Developer Portal and is provided as a PKCS #8 file with the private key stored in PEM format.
 The private key should be stored in the Dapr secret store and not stored directly in the binding's configuration file.
 
 A sample configuration file for the APNS binding is shown below:
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -68,7 +67,9 @@ spec:
       name: apns-secrets
       key: private-key
 ```
+
 If using Kubernetes, a sample secret configuration may look like this:
+
 ```yaml
 apiVersion: v1
 kind: Secret

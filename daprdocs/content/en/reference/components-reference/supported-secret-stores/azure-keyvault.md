@@ -36,11 +36,11 @@ spec:
     value : "[pfx_certificate_file_fully_qualified_local_path]"
 ```
 
-## Authenticating with Azure AD
+## Authenticating with Microsoft Entra ID
 
-The Azure Key Vault secret store component supports authentication with Azure AD only. Before you enable this component:
+The Azure Key Vault secret store component supports authentication with Microsoft Entra ID only. Before you enable this component:
 1. Read the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
-1. Create an Azure AD application (also called Service Principal). 
+1. Create an Microsoft Entra ID application (also called Service Principal). 
 1. Alternatively, create a managed identity for your application platform.
 
 ## Spec metadata fields
@@ -70,7 +70,7 @@ Query Parameter | Description
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [jq](https://stedolan.github.io/jq/download/)
 - You are using bash or zsh shell
-- You've created an Azure AD application (Service Principal) per the instructions in [Authenticating to Azure]({{< ref authenticating-azure.md >}}). You will need the following values:
+- You've created an Microsoft Entra ID application (Service Principal) per the instructions in [Authenticating to Azure]({{< ref authenticating-azure.md >}}). You will need the following values:
 
    | Value | Description |
    | ----- | ----------- |
@@ -113,7 +113,7 @@ Query Parameter | Description
     --location "${LOCATION}"
   ```
 
-1. Using RBAC, assign a role to the Azure AD application so it can access the Key Vault.  
+1. Using RBAC, assign a role to the Microsoft Entra ID application so it can access the Key Vault.  
   In this case, assign the "Key Vault Secrets User" role, which has the "Get secrets" permission over Azure Key Vault.
 
   ```sh
@@ -133,7 +133,7 @@ Other less restrictive roles, like "Key Vault Secrets Officer" and "Key Vault Ad
 
 #### Using a client secret
 
-To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory. Use the following template, filling in [the Azure AD application you created]({{< ref authenticating-azure.md >}}):
+To use a **client secret**, create a file called `azurekeyvault.yaml` in the components directory. Use the following template, filling in [the Microsoft Entra ID application you created]({{< ref authenticating-azure.md >}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -156,7 +156,7 @@ spec:
 
 #### Using a certificate 
 
-If you want to use a **certificate** saved on the local disk instead, use the following template. Fill in the details of [the Azure AD application you created]({{< ref authenticating-azure.md >}}):
+If you want to use a **certificate** saved on the local disk instead, use the following template. Fill in the details of [the Microsoft Entra ID application you created]({{< ref authenticating-azure.md >}}):
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -179,7 +179,7 @@ spec:
 {{% /codetab %}}
 
 {{% codetab %}}
-In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Azure AD application you created]({{< ref authenticating-azure.md >}}).
+In Kubernetes, you store the client secret or the certificate into the Kubernetes Secret Store and then refer to those in the YAML file. Before you start, you need the details of [the Microsoft Entra ID application you created]({{< ref authenticating-azure.md >}}).
 
 #### Using a client secret
 
@@ -298,11 +298,11 @@ In Kubernetes, you store the client secret or the certificate into the Kubernete
     kubectl apply -f azurekeyvault.yaml
     ```
 1. Create and assign a managed identity at the pod-level via either:
-   - [Azure AD workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) (preferred method)
-   - [Azure AD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
+   - [Microsoft Entra ID workload identity](https://learn.microsoft.com/azure/aks/workload-identity-overview) (preferred method)
+   - [Microsoft Entra ID pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#create-a-pod-identity)  
 
 
-   **Important**: While both Azure AD pod identity and workload identity are in preview, currently Azure AD Workload Identity is planned for general availability (stable state).
+   **Important**: While both Microsoft Entra ID pod identity and workload identity are in preview, currently Microsoft Entra ID Workload Identity is planned for general availability (stable state).
 
 1. After creating a workload identity, give it `read` permissions:
    - [On your desired KeyVault instance](https://docs.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-cli#assign-the-access-policy)
@@ -319,11 +319,11 @@ In Kubernetes, you store the client secret or the certificate into the Kubernete
        aadpodidbinding: $POD_IDENTITY_NAME
    ```
 
-#### Using Azure managed identity directly vs. via Azure AD workload identity
+#### Using Azure managed identity directly vs. via Microsoft Entra ID workload identity
 
 When using **managed identity directly**, you can have multiple identities associated with an app, requiring `azureClientId` to specify which identity should be used. 
 
-However, when using **managed identity via Azure AD workload identity**, `azureClientId` is not necessary and has no effect. The Azure identity to be used is inferred from the service account tied to an Azure identity via the Azure federated identity.
+However, when using **managed identity via Microsoft Entra ID workload identity**, `azureClientId` is not necessary and has no effect. The Azure identity to be used is inferred from the service account tied to an Azure identity via the Azure federated identity.
 
 {{% /codetab %}}
 

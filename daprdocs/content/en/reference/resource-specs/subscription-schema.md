@@ -21,18 +21,17 @@ kind: Subscription
 metadata:
   name: <REPLACE-WITH-NAME>
 spec:
-  version: v2alpha1
   topic: <REPLACE-WITH-TOPIC-NAME> # Required
   routes: # Required
   - rules:
-    - match: <REPLACE-WITH-EVENT-TYPE>
+    - match: <REPLACE-WITH-CEL-FILTER>
       path: <REPLACE-WITH-PATH>
   pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
-  deadlettertopic: <REPLACE-WITH-TOPIC-NAME> # Optional
-  bulksubscribe: # Optional
-  - enabled: <REPLACE-WITH-TOPIC-NAME> 
-  - maxmessages: <REPLACE-WITH-TOPIC-NAME>
-  - maxawaitduration: <REPLACE-WITH-TOPIC-NAME>
+  deadLetterTopic: <REPLACE-WITH-DEADLETTERTOPIC-NAME> # Optional
+  bulkSubscribe: # Optional
+  - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
+  - maxMessagesCount: <REPLACE-WITH-VALUE>
+  - maxAwaitDurationMs: <REPLACE-WITH-VALUE>
 scopes:
 - <REPLACE-WITH-SCOPED-APPIDS>
 ```
@@ -42,10 +41,10 @@ scopes:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | topic | Y | The name of the topic to which your component subscribes. | `orders` |
-| routes | Y | The routes configuration for this topic, including specifying the condition for sending a message to a specific path. Includes the following fields: <br><ul><li>match: _Optional._ The CEL expression used to match the event. If not specified, the route is considered the default. </li><li>path: The path for events that match this rule. </li></ul>The endpoint to which all topic messages are sent. | `match: event.type == "widget"` <br>`path: /widgets` |
+| routes | Y | The routes configuration for this topic, including specifying the condition for sending a message to a specific path. Includes the following fields: <br><ul><li>match: The CEL expression used to match the event. If not specified, the route is considered the default. </li><li>path: The path for events that match this rule. </li></ul>The endpoint to which all topic messages are sent. | `match: event.type == "widget"` <br>`path: /widgets` |
 | pubsubname | N | The name of your pub/sub component. | `pubsub` |
-| deadlettertopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
-| bulksubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
+| deadLetterTopic | N | The name of the dead letter topic that forwards undeliverable messages. | `poisonMessages` |
+| bulkSubscribe | N | Enable bulk subscribe properties. | `true`, `false` |
 
 
 ## `v1alpha1` format
@@ -58,15 +57,14 @@ kind: Subscription
 metadata:
   name: <REPLACE-WITH-RESOURCE-NAME>
 spec:
-  version: v1alpha1
   topic: <REPLACE-WITH-TOPIC-NAME> # Required
   route: <REPLACE-WITH-ROUTE-NAME> # Required
   pubsubname: <REPLACE-WITH-PUBSUB-NAME> # Required
   deadLetterTopic: <REPLACE-WITH-DEAD-LETTER-TOPIC-NAME> # Optional
   bulkSubscribe: # Optional
   - enabled: <REPLACE-WITH-BOOLEAN-VALUE>
-  - maxmessages: <REPLACE-WITH-VALUE>
-  - maxawaitduration: <REPLACE-WITH-VALUE>
+  - maxMessagesCount: <REPLACE-WITH-VALUE>
+  - maxAwaitDurationMs: <REPLACE-WITH-VALUE>
 scopes:
 - <REPLACE-WITH-SCOPED-APPIDS>
 ```

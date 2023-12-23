@@ -44,7 +44,7 @@ The `allowedSecrets` and `deniedSecrets` list values take priorty over the `defa
 |----- | ------- | -----------| ----------| ------------
 | 1 - Only default access  | deny/allow | empty | empty | deny/allow
 | 2 - Default deny with allowed list | deny | ["s1"] | empty | only "s1" can be accessed
-| 3 - Default allow with deneied list | allow | empty | ["s1"] | only "s1" cannot be accessed
+| 3 - Default allow with denied list | allow | empty | ["s1"] | only "s1" cannot be accessed
 | 4 - Default allow with allowed list  | allow | ["s1"] | empty | only "s1" can be accessed
 | 5 - Default deny with denied list  | deny | empty | ["s1"] | deny
 | 6 - Default deny/allow with both lists  | deny/allow | ["s1"] | ["s2"] | only "s1" can be accessed
@@ -69,7 +69,7 @@ spec:
         defaultAccess: deny
 ```
 
-For applications that need to be deined access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview >}}), and add the following annotation to the application pod.
+For applications that need to be denied access to the Kubernetes secret store, follow [these instructions]({{< ref kubernetes-overview >}}), and add the following annotation to the application pod.
 
 ```yaml
 dapr.io/config: appconfig

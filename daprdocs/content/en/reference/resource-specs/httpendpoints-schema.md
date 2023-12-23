@@ -18,7 +18,6 @@ kind: HTTPEndpoint
 metadata:
   name: <NAME>  
 spec:
-  version: v1alpha1
   baseUrl: <REPLACE-WITH-BASEURL> # Required. Use "http://" or "https://" prefix.
   headers: # Optional
   - name: <REPLACE-WITH-A-HEADER-NAME>

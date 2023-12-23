@@ -10,6 +10,7 @@ aliases:
 ## Component format
 
 To setup Redis configuration store create a component of type `configuration.redis`. See [this guide]({{< ref "howto-manage-configuration.md#configure-a-dapr-configuration-store" >}}) on how to create and apply a configuration store configuration.
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
