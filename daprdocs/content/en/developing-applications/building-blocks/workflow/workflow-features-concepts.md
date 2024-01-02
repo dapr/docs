@@ -411,4 +411,8 @@ To work around these constraints:
 - [Try out Dapr Workflow using the quickstart]({{< ref workflow-quickstart.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the following examples: 
+   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+   - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go example](todo)

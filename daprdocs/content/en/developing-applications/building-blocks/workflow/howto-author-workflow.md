@@ -169,13 +169,40 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 <!--go-->
 
-Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the public `DemoWorkflowActivity` class, which implements the workflow activities. 
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the public `callActivityOptions` class, which implements the workflow activities. 
 
 ```go
+type ActivityContext struct {
+	ctx task.ActivityContext
+}
 
+func (wfac *ActivityContext) GetInput(v interface{}) error {
+	return wfac.ctx.GetInput(&v)
+}
+
+func (wfac *ActivityContext) Context() context.Context {
+	return wfac.ctx.Context()
+}
+
+type callActivityOption func(*callActivityOptions) error
+
+type callActivityOptions struct {
+	rawInput *wrapperspb.StringValue
+}
+
+func WithActivityInput(input any) callActivityOption {
+	return func(opt *callActivityOptions) error {
+		data, err := marshalData(input)
+		if err != nil {
+			return err
+		}
+		opt.rawInput = wrapperspb.String(string(data))
+		return nil
+	}
+}
 ```
 
-[See the Go SDK workflow activity example in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowActivity.java)
+[See the Go SDK workflow activity example in context.](todo)
 
 {{% /codetab %}}
 
@@ -289,10 +316,61 @@ public class DemoWorkflowWorker {
 Next, register the workflow with the `WorkflowRuntimeBuilder` and start the workflow runtime.
 
 ```go
+package workflow
 
+// Register workflow
+func (wr *WorkflowRuntime) RegisterWorkflow(w Workflow) error {
+	wrappedOrchestration := wrapWorkflow(w)
+
+	// get decorator for workflow
+	name, err := getDecorator(w)
+	if err != nil {
+		return fmt.Errorf("failed to get workflow decorator: %v", err)
+	}
+
+	err = wr.tasks.AddOrchestratorN(name, wrappedOrchestration)
+	return err
+}
+
+// Activity wrapper
+func wrapActivity(a Activity) task.Activity {
+	return func(ctx task.ActivityContext) (any, error) {
+		aCtx := ActivityContext{ctx: ctx}
+
+		return a(aCtx)
+	}
+}
+
+// Register wrapped activity
+func (wr *WorkflowRuntime) RegisterActivity(a Activity) error {
+	wrappedActivity := wrapActivity(a)
+
+	// get decorator for activity
+	name, err := getDecorator(a)
+	if err != nil {
+		return fmt.Errorf("failed to get activity decorator: %v", err)
+	}
+
+	err = wr.tasks.AddActivityN(name, wrappedActivity)
+	return err
+}
+
+// Start workflow runtime
+func (wr *WorkflowRuntime) Start() error {
+	// go func start
+	go func() {
+		err := wr.client.StartWorkItemListener(context.Background(), wr.tasks)
+		if err != nil {
+			log.Fatalf("failed to start work stream: %v", err)
+		}
+	}()
+	<-wr.quit
+
+	return nil
+}
 ```
 
-[See the Go SDK workflow in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowWorker.java)
+[See the Go SDK workflow in context.](todo)
 
 {{% /codetab %}}
 
@@ -515,7 +593,7 @@ public class DemoWorkflow extends Workflow {
 
 <!--go-->
 
-[As in the following example](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflow.java), a hello-world application using the Go SDK and Dapr Workflow would include:
+[As in the following example](todo), a hello-world application using the Go SDK and Dapr Workflow would include:
 
 - A Go package called `todo` to receive the Go SDK client capabilities.
 - An import of `todo`
@@ -527,7 +605,7 @@ public class DemoWorkflow extends Workflow {
 
 ```
 
-[See the full Go SDK workflow example in context.](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflow.java)
+[See the full Go SDK workflow example in context.](todo)
 
 {{% /codetab %}}
 

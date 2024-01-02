@@ -790,3 +790,4 @@ External events don't have to be directly triggered by humans. They can also be 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go example](todo)
