@@ -172,6 +172,41 @@ az cosmosdb sql role assignment create \
   --role-definition-id "$ROLE_ID"
 ```
 
+## Optimizing Cosmos DB for bulk operation write performance
+
+If you are building a system that will only ever read data from Cosmos DB via key (`id`), which is the default Dapr behavior when using the state management API or actors, there are ways you can optimize Cosmos DB for improved write speeds. This is done by excluding all paths from indexing. By default, Cosmos DB will index all fields inside of a document. On systems that are write-heavy and run little-to-no queries on values within a document, this indexing policy slows down the time it takes to write or update a document in Cosmos DB. This is exacerbated in high-volume systems. For example, the default Terraform definition for a Cosmos SQL container indexing reads as follows:
+
+```tf
+indexing_policy {
+  indexing_mode = "consistent"
+
+  included_path {
+    path = "/*"
+  }
+}
+```
+
+It is possible to force Cosmos DB to only index the `id` and `partitionKey` fields by excluding all other fields from indexing. This can be done by updating the above to read as follows:
+
+```tf
+indexing_policy {
+  # This could also be set to "none" if you are using the container purely as a key-value store. This may be applicable if your container is only going to be used as a distributed cache.
+  indexing_mode = "consistent" 
+
+  # Note that included_path has been replaced with excluded_path
+  excluded_path {
+    path = "/*"
+  }
+}
+```
+
+---
+**NOTE**
+
+This optimization comes at the cost of queries against fields inside of documents within the state store. This would likely impact any stored procedures or SQL queries defined and executed. It is only recommended that this optimization be applied if you are using the Dapr State Management API or Dapr Actors to interact with Cosmos DB.
+
+---
+
 ## Related links
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
