@@ -2,11 +2,8 @@
 type: docs
 title: "How to: Author middleware components"
 linkTitle: "Middleware components"
-weight: 200
+weight: 100
 description: "Learn how to develop middleware components"
-aliases:
-  - /developing-applications/middleware/middleware-overview/
-  - /concepts/middleware-concept/
 ---
 
 Dapr allows custom processing pipelines to be defined by chaining a series of middleware components. In this guide, you'll learn how to create a middleware component. To learn how to configure an existing middleware component, see [Configure middleware components]({{< ref middleware.md >}})
