@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How to: Author middleware components"
-linkTitle: "Middleware components"
+linkTitle: "How to: Author middleware"
 weight: 100
 description: "Learn how to develop middleware components"
 ---
