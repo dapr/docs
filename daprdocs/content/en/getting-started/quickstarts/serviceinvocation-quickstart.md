@@ -57,6 +57,7 @@ With the following command, simultaneously run the following services alongside 
 ```bash
 dapr run -f .
 ```
+> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{< ref "#dapryaml-multi-app-run-template-file" >}}) file before running `dapr run -f .`
 
 **Expected output**
 
