@@ -1,0 +1,31 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Ubuntu",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"features": {
+		"ghcr.io/devcontainers/features/go:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/hugo:1": {
+			"extended": true,
+			"version": "latest"
+		}
+	},
+	"customizations": {
+		"vscode": {
+		  "extensions": [
+			"streetsidesoftware.code-spell-checker",
+			"tamasfe.even-better-toml",
+			"davidanson.vscode-markdownlint",
+        	"budparr.language-hugo-vscode"
+			],
+		  "settings": {	
+			"git.alwaysSignOff": true
+		  }
+		}
+	  },
+	  "forwardPorts": [1313],
+	  "postAttachCommand": "git config --global --add safe.directory '*'"
+}
