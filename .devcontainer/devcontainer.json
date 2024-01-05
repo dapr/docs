@@ -11,6 +11,11 @@
 		"ghcr.io/devcontainers/features/hugo:1": {
 			"extended": true,
 			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": true,
+			"version": "lts",
+			"nvmVersion": "latest"
 		}
 	},
 	"customizations": {
@@ -27,5 +32,5 @@
 		}
 	  },
 	  "forwardPorts": [1313],
-	  "postAttachCommand": "git config --global --add safe.directory '*'"
+	  "postAttachCommand": "bash scripts/init-container.sh"
 }
