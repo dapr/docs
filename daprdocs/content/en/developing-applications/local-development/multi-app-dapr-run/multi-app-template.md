@@ -162,9 +162,9 @@ apps:
 
 The following rules apply for all the paths present in the template file:
  - If the path is absolute, it is used as is.
- - All relative paths under command section should be provided relative to the template file path.
+ - All relative paths under common section should be provided relative to the template file path.
  - `appDirPath` under apps section should be provided relative to the template file path.
- - All relative paths under app section should be provided relative to the `appDirPath`.
+ - All other relative paths under apps section should be provided relative to the `appDirPath`.
 
 {{% /codetab %}}
 
