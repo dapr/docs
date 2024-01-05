@@ -29,19 +29,42 @@ The Dapr docs are built using [Hugo](https://gohugo.io/) with the [Docsy](https:
 
 The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, and theme configurations.
 
-## Pre-requisites
+## Setup with a devcontainer
+
+This repository comes with a [devcontainer](/.devcontainer/devcontainer.json) configuration that will automatically install all the required dependencies and tools to build and run the docs.
+
+This devcontainer can be used to develop locally with VSCode or via GitHub Codespaces completely in the browser.
+
+### Pre-requisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [VSCode](https://code.visualstudio.com/download)
+
+### Environment setup
+
+1. [Fork](https://github.com/dapr/docs/fork) and clone this repository.
+
+2. Open the forked repository in VS Code
+
+```sh
+code .
+```
+
+3. When prompted, click "Reopen in Container" to open the repository in the devcontainer.
+
+Continue with the [Run local server](#run-local-server) steps.
+
+## Setup without a devcontainer
+
+### Pre-requisites
 
 - [Hugo extended version](https://gohugo.io/getting-started/installing)
 - [Node.js](https://nodejs.org/en/)
 
-## Environment setup
+### Environment setup
 
 1. Ensure pre-requisites are installed
-2. Clone this repository
-
-```sh
-git clone https://github.com/dapr/docs.git
-```
+2. [Fork](https://github.com/dapr/docs/fork) and clone this repository.
 
 3. Change to daprdocs directory:
 
@@ -63,7 +86,7 @@ npm install
 
 ## Run local server
 
-1. Make sure you're still in the `daprdocs` directory
+1. Make sure you're in the `daprdocs` directory
 2. Run
 
 ```sh
@@ -72,10 +95,9 @@ hugo server
 
 3. Navigate to `http://localhost:1313/`
 
-
 ## Update docs
 
-1. Fork repo into your account
+1. Ensure you are in your forked repo
 1. Create new branch
 1. Commit and push changes to forked branch
 1. Submit pull request from downstream branch to the upstream branch for the correct version you are targeting
