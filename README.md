@@ -31,7 +31,7 @@ The [daprdocs](./daprdocs) directory contains the hugo project, markdown files, 
 
 ## Setup with a devcontainer
 
-This repository comes with a [devcontainer](/.devcontainer/devcontainer.json) configuration that will automatically install all the required dependencies and tools to build and run the docs.
+This repository comes with a [devcontainer](/.devcontainer/devcontainer.json) configuration that automatically installs all the required dependencies and tools to build and run the docs.
 
 This devcontainer can be used to develop locally with VSCode or via GitHub Codespaces completely in the browser.
 
