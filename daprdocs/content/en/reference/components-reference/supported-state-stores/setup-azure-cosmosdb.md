@@ -200,12 +200,11 @@ indexing_policy {
 }
 ```
 
----
-**NOTE**
+{{% alert title="Note" color="primary" %}}
 
-This optimization comes at the cost of queries against fields inside of documents within the state store. This would likely impact any stored procedures or SQL queries defined and executed. It is only recommended that this optimization be applied if you are using the Dapr State Management API or Dapr Actors to interact with Cosmos DB.
+This optimization comes at the cost of queries against fields inside of documents within the state store. This would likely impact any stored procedures or SQL queries defined and executed. It is only recommended that this optimization be applied only if you are using the Dapr State Management API or Dapr Actors to interact with Cosmos DB.
 
----
+{{% /alert %}}
 
 ## Related links
 
