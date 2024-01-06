@@ -98,10 +98,10 @@ hugo server
 ## Update docs
 
 1. Ensure you are in your forked repo
-1. Create new branch
-1. Commit and push changes to forked branch
-1. Submit pull request from downstream branch to the upstream branch for the correct version you are targeting
-1. Staging site will automatically get created and linked to PR to review and test
+2. Create new branch
+3. Commit and push changes to forked branch
+4. Submit pull request from downstream branch to the upstream branch for the correct version you are targeting
+5. Staging site will automatically get created and linked to PR to review and test
 
 ## Code of Conduct
 
