@@ -81,13 +81,13 @@ async function start() {
     {
       entryID: "entry-2",
       contentType: "application/cloudevents+json",
-      event: { 
+      event: {
         specversion: "1.0",
         source: "/some/source",
         type: "example",
-        id: "1234", 
-        data: "foo message 2", 
-        datacontenttype: "text/plain" 
+        id: "1234",
+        data: "foo message 2",
+        datacontenttype: "text/plain"
       },
     },
     {
@@ -115,7 +115,7 @@ using System.Collections.Generic;
 using Dapr.Client;
 
 const string PubsubName = "my-pubsub-name";
-const string TopicName = "topic-a";        
+const string TopicName = "topic-a";
 IReadOnlyList<object> BulkPublishData = new List<object>() {
     new { Id = "17", Amount = 10m },
     new { Id = "18", Amount = 20m },
@@ -130,10 +130,10 @@ if (res == null) {
 }
 if (res.FailedEntries.Count > 0)
 {
-    Console.WriteLine("Some events failed to be published!");   
+    Console.WriteLine("Some events failed to be published!");
     foreach (var failedEntry in res.FailedEntries)
     {
-        Console.WriteLine("EntryId: " + failedEntry.Entry.EntryId + " Error message: " + 
+        Console.WriteLine("EntryId: " + failedEntry.Entry.EntryId + " Error message: " +
                           failedEntry.ErrorMessage);
     }
 }
@@ -205,7 +205,7 @@ func main() {
         {
             "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
             "event":  {
-                "message": "second JSON message"   
+                "message": "second JSON message"
             },
             "contentType": "application/json"
         }
@@ -236,7 +236,7 @@ curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/my-pubsub-name/topic
         {
             "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
             "event":  {
-                "message": "second JSON message"   
+                "message": "second JSON message"
             },
             "contentType": "application/json"
         },
@@ -258,7 +258,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
         {
             "entryId": "b1f40bd6-4af2-11ed-b878-0242ac120002",
             "event":  {
-                "message": "second JSON message"   
+                "message": "second JSON message"
             },
             "contentType": "application/json"
         },
@@ -271,7 +271,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' -Uri 'http://loca
 
 ## Subscribing messages in bulk
 
-The bulk subscribe API allows you to subscribe multiple messages from a topic in a single request. 
+The bulk subscribe API allows you to subscribe multiple messages from a topic in a single request.
 As we know from [How to: Publish & Subscribe to topics]({{< ref howto-publish-subscribe.md >}}), there are two ways to subscribe to topic(s):
 
 - **Declaratively** - subscriptions are defined in an external file.
@@ -286,7 +286,7 @@ metadata:
   name: order-pub-sub
 spec:
   topic: orders
-  routes: 
+  routes:
     default: /checkout
   pubsubname: order-pub-sub
   bulkSubscribe:
@@ -300,12 +300,12 @@ scopes:
 
 In the example above, `bulkSubscribe` is _optional_. If you use `bulkSubscribe`, then:
 - `enabled` is mandatory and enables or disables bulk subscriptions on this topic
-- You can optionally configure the max number of messages (`maxMessagesCount`) delivered in a bulk message. 
-Default value of `maxMessagesCount` for components not supporting bulk subscribe is 100 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}). 
-If a component supports bulk subscribe, then default value for this parameter can be found in that component doc. Please refer [Supported components]({{< ref pubsub-bulk >}}).
+- You can optionally configure the max number of messages (`maxMessagesCount`) delivered in a bulk message.
+Default value of `maxMessagesCount` for components not supporting bulk subscribe is 100 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}).
+If a component supports bulk subscribe, then default value for this parameter can be found in that component doc.
 - You can optionally provide the max duration to wait (`maxAwaitDurationMs`) before a bulk message is sent to the app.
-Default value of `maxAwaitDurationMs` for components not supporting bulk subscribe is 1000 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}). 
-If a component supports bulk subscribe, then default value for this parameter can be found in that component doc. Please refer [Supported components]({{< ref pubsub-bulk >}}).
+Default value of `maxAwaitDurationMs` for components not supporting bulk subscribe is 1000 i.e. for default bulk events between App and Dapr. Please refer [How components handle publishing and subscribing to bulk messages]({{< ref pubsub-bulk >}}).
+If a component supports bulk subscribe, then default value for this parameter can be found in that component doc.
 
 The application receives an `EntryId` associated with each entry (individual message) in the bulk message. This `EntryId` must be used by the app to communicate the status of that particular entry. If the app fails to notify on an `EntryId` status, it's considered a `RETRY`.
 
@@ -313,16 +313,16 @@ A JSON-encoded payload body with the processing status against each entry needs 
 
 ```json
 {
-  "statuses": 
-  [ 
+  "statuses":
+  [
     {
     "entryId": "<entryId1>",
     "status": "<status>"
-    }, 
+    },
     {
     "entryId": "<entryId2>",
     "status": "<status>"
-    } 
+    }
   ]
 }
 ```
@@ -473,9 +473,25 @@ public class BulkMessageController : ControllerBase
 {{< /tabs >}}
 ## How components handle publishing and subscribing to bulk messages
 
-Some pub/sub brokers support sending and receiving multiple messages in a single request. When a component supports bulk publish or subscribe operations, Dapr runtime uses them to further optimize the communication between the Dapr sidecar and the underlying pub/sub broker. 
+For event publish/subscribe, two kinds of network transfers are involved.
+1. From/To *App* To/From *Dapr*.
+1. From/To *Dapr* To/From *Pubsub Broker*.
 
-For components that do not have bulk publish or subscribe support, Dapr runtime uses the regular publish and subscribe APIs to send and receive messages one by one. This is still more efficient than directly using the regular publish or subscribe APIs, because applications can still send/receive multiple messages in a single request to/from Dapr.
+These are the opportunities where optimization is possible. When optimized, Bulk requests are made, which reduce the overall number of calls and thus increases throughput and provides better latency.
+
+On enabling Bulk Publish and/or Bulk Subscribe, the communication between the App and Dapr sidecar (Point 1 above) is optimized for **all components**.
+
+Optimization from Dapr sidecar to the pub/sub broker depends on a number of factors, for example:
+- Broker must inherently support Bulk pub/sub
+- The Dapr component must be updated to support the use of bulk APIs provided by the broker
+
+Currently, the following components are updated to support this level of optimization:
+
+| Component              | Bulk Publish | Bulk Subscribe |
+|:--------------------:|:--------:|--------|
+| Kafka                 | Yes       | Yes |
+| Azure Servicebus      | Yes       | Yes |
+| Azure Eventhubs       | Yes       | Yes |
 
 ## Demos
 

@@ -11,7 +11,7 @@ aliases:
 
 To set up Azure Service Bus Queues pub/sub, create a component of type `pubsub.azure.servicebus.queues`. See the [pub/sub broker component file]({{< ref setup-pubsub.md >}}) to learn how ConsumerID is automatically generated. Read the [How-to: Publish and Subscribe guide]({{< ref "howto-publish-subscribe.md#step-1-setup-the-pubsub-component" >}}) on how to create and apply a pub/sub configuration.
 
-> This component uses queues on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).  
+> This component uses queues on Azure Service Bus; see the official documentation for the differences between [topics and queues](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions).
 > For using topics, see the [Azure Service Bus Topics pubsub component]({{< ref "setup-azure-servicebus-topics" >}}).
 
 ### Connection String Authentication
@@ -25,7 +25,7 @@ spec:
   type: pubsub.azure.servicebus.queues
   version: v1
   metadata:
-  # Required when not using Azure AD Authentication
+  # Required when not using Microsoft Entra ID Authentication
   - name: connectionString
     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"
   # - name: consumerID # Optional
@@ -70,9 +70,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Azure AD authentication. | See example above
+| `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Microsoft Entra ID authentication. | See example above
 | `consumerID`       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
-| `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
+| `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
 | `lockRenewalInSec`      | N  | Defines the frequency at which buffered message locks will be renewed. Default: `20`. | `20`
@@ -89,9 +89,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `publishMaxRetries` | N  | The max number of retries for when Azure Service Bus responds with "too busy" in order to throttle messages. Defaults: `5` | `5`
 | `publishInitialRetryIntervalInMs` | N  | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `500` | `500`
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Service Bus Queues pubsub component supports authentication using all Azure Active Directory mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Queues pubsub component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 
@@ -122,7 +122,7 @@ Azure Service Bus messages extend the Dapr message format with additional contex
 
 ### Sending a message with metadata
 
-To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here](https://docs.dapr.io/reference/api/pubsub_api/#metadata).
+To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref "pubsub_api.md#metadata" >}}).
 
 - `metadata.MessageId`
 - `metadata.CorrelationId`
@@ -135,13 +135,14 @@ To set Azure Service Bus metadata when sending a message, set the query paramete
 - `metadata.ScheduledEnqueueTimeUtc`
 - `metadata.ReplyToSessionId`
 
-> **Note:** The `metadata.MessageId` property does not set the `id` property of the cloud event returned by Dapr and should be treated in isolation.
-
-> **Note:** The `metadata.ScheduledEnqueueTimeUtc` property supports the [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) timestamp formats.
+{{% alert title="Note" color="primary" %}}
+- The `metadata.MessageId` property does not set the `id` property of the cloud event returned by Dapr and should be treated in isolation.
+- The `metadata.ScheduledEnqueueTimeUtc` property supports the [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) timestamp formats.
+{{% /alert %}}
 
 ### Receiving a message with metadata
 
-When Dapr calls your application, it will attach Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
+When Dapr calls your application, it attaches Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
 In addition to the [settable metadata listed above](#sending-a-message-with-metadata), you can also access the following read-only message metadata.
 
 - `metadata.DeliveryCount`
@@ -152,7 +153,9 @@ In addition to the [settable metadata listed above](#sending-a-message-with-meta
 
 To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
 
-> Note: that all times are populated by the server and are not adjusted for clock skews.
+{{% alert title="Note" color="primary" %}}
+All times are populated by the server and are not adjusted for clock skews.
+{{% /alert %}}
 
 ## Sending and receiving multiple messages
 

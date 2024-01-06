@@ -28,8 +28,6 @@ spec:
     value: "true"
   - name: caCertificatePath
     value: "/path/to/ca-cert"
-  - name: direction 
-    value: "output"
 ```
 
 ## Spec metadata fields
@@ -40,7 +38,6 @@ spec:
 | `gatewayKeepAlive`        | N | Output | Sets how often keep alive messages should be sent to the gateway. Defaults to 45 seconds  | `"45s"` |
 | `usePlainTextConnection`  | N | Output | Whether to use a plain text connection or not                                             | `"true"`, `"false"` |
 | `caCertificatePath`       | N | Output | The path to the CA cert                                                                    | `"/path/to/ca-cert"` |
-| `direction`       | N | Output | The direction of the binding                                                                    | `"output"` |
 
 ## Binding support
 
@@ -48,6 +45,7 @@ This component supports **output binding** with the following operations:
 
 - `topology`
 - `deploy-process`
+- `deploy-resource`
 - `create-instance`
 - `cancel-instance`
 - `set-variables`
@@ -123,9 +121,13 @@ The response values are:
 
 #### deploy-process
 
-The `deploy-process` operation deploys a single process to Zeebe.
+Deprecated alias of 'deploy-resource'.
 
-To perform a `deploy-process` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
+#### deploy-resource
+
+The `deploy-resource` operation deploys a single resource to Zeebe. A resource can be a process (BPMN) or a decision and a decision requirement (DMN).
+
+To perform a `deploy-resource` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
 
 ```json
 {
@@ -133,41 +135,105 @@ To perform a `deploy-process` operation, invoke the Zeebe command binding with a
   "metadata": {
     "fileName": "products-process.bpmn"
   },
-  "operation": "deploy-process"
+  "operation": "deploy-resource"
 }
 ```
 
 The metadata parameters are:
 
-- `fileName` - the name of the process file
+- `fileName` - the name of the resource file
 
 ##### Response
 
 The binding returns a JSON with the following response:
 
+{{< tabs "BPMN" "DMN" >}}
+
+{{% codetab %}}
+
 ```json
 {
-  "key": 2251799813687320,
-  "processes": [
+  "key": 2251799813685252,
+  "deployments": [
     {
-      "bpmnProcessId": "products-process",
-      "version": 3,
-      "processDefinitionKey": 2251799813685895,
-      "resourceName": "products-process.bpmn"
+      "Metadata": {
+        "Process": {
+          "bpmnProcessId": "products-process",
+          "version": 2,
+          "processDefinitionKey": 2251799813685251,
+          "resourceName": "products-process.bpmn"
+        }
+      }
     }
   ]
 }
 ```
 
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```json
+{
+  "key": 2251799813685253,
+  "deployments": [
+    {
+      "Metadata": {
+        "Decision": {
+          "dmnDecisionId": "products-approval",
+          "dmnDecisionName": "Products approval",
+          "version": 1,
+          "decisionKey": 2251799813685252,
+          "dmnDecisionRequirementsId": "Definitions_0c98xne",
+          "decisionRequirementsKey": 2251799813685251
+        }
+      }
+    },
+    {
+      "Metadata": {
+        "DecisionRequirements": {
+          "dmnDecisionRequirementsId": "Definitions_0c98xne",
+          "dmnDecisionRequirementsName": "DRD",
+          "version": 1,
+          "decisionRequirementsKey": 2251799813685251,
+          "resourceName": "products-approval.dmn"
+        }
+      }
+    }
+  ]
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 The response values are:
 
 - `key` - the unique key identifying the deployment
-- `processes` - a list of deployed processes
-    - `bpmnProcessId` - the bpmn process ID, as parsed during deployment; together with the version forms a unique identifier for a specific
-      process definition
-    - `version` - the assigned process version
-    - `processDefinitionKey` - the assigned key, which acts as a unique identifier for this process
-    - `resourceName` - the resource name from which this process was parsed
+- `deployments` - a list of deployed resources, e.g. processes
+    - `metadata` - deployment metadata, each deployment has only one metadata
+        - `process`- metadata of a deployed process
+            - `bpmnProcessId` - the bpmn process ID, as parsed during deployment; together with the version forms a unique identifier for a specific
+              process definition
+            - `version` - the assigned process version
+            - `processDefinitionKey` - the assigned key, which acts as a unique identifier for this process
+            - `resourceName` - the resource name from which this process was parsed
+        - `decision` - metadata of a deployed decision
+            - `dmnDecisionId` - the dmn decision ID, as parsed during deployment; together with the versions forms a unique identifier for a specific 
+              decision
+            - `dmnDecisionName` - the dmn name of the decision, as parsed during deployment
+            - `version` - the assigned decision version
+            - `decisionKey` - the assigned decision key, which acts as a unique identifier for this decision
+            - `dmnDecisionRequirementsId` - the dmn ID of the decision requirements graph that this decision is part of, as parsed during deployment
+            - `decisionRequirementsKey` - the assigned key of the decision requirements graph that this decision is part of
+        - `decisionRequirements` -  metadata of a deployed decision requirements
+            - `dmnDecisionRequirementsId` - the dmn decision requirements ID, as parsed during deployment; together with the versions forms a unique 
+              identifier for a specific decision
+            - `dmnDecisionRequirementsName` - the dmn name of the decision requirements, as parsed during deployment
+            - `version` - the assigned decision requirements version
+            - `decisionRequirementsKey` - the assigned decision requirements key, which acts as a unique identifier for this decision requirements
+            - `resourceName` - the resource name from which this decision requirements was parsed
 
 #### create-instance
 
@@ -176,9 +242,18 @@ specified either using its unique key (as returned by the `deploy-process` opera
 
 Note that only processes with none start events can be started through this command.
 
-##### By BPMN process ID
+Typically, process creation and execution are decoupled. This means that the command creates a new process instance and immediately responds with 
+the process instance id. The execution of the process occurs after the response is sent. However, there are use cases that need to collect the results 
+of a process when its execution is complete. By defining the `withResult` property, the command allows to "synchronously" execute processes and receive
+the results via a set of variables. The response is sent when the process execution is complete.
+
+For more information please visit the [official documentation](https://docs.camunda.io/docs/components/concepts/process-instance-creation/).
 
 To perform a `create-instance` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
+
+{{< tabs "By BPMN process ID" "By process definition key" "Synchronous execution" >}}
+
+{{% codetab %}}
 
 ```json
 {
@@ -194,19 +269,9 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 }
 ```
 
-The data parameters are:
+{{% /codetab %}}
 
-- `bpmnProcessId` - the BPMN process ID of the process definition to instantiate
-- `version` - (optional, default: latest version) the version of the process to instantiate
-- `variables` - (optional) JSON document that will instantiate the variables for the root variable scope of the
-  process instance; it must be a JSON object, as variables will be mapped in a
-  key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and
-  "b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a
-  valid argument, as the root of the JSON document is an array and not an object
-
-##### By process definition key
-
-To perform a `create-instance` operation, invoke the Zeebe command binding with a `POST` method, and the following JSON body:
+{{% codetab %}}
 
 ```json
 {
@@ -222,14 +287,46 @@ To perform a `create-instance` operation, invoke the Zeebe command binding with 
 }
 ```
 
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```json
+{
+  "data": {
+    "bpmnProcessId": "products-process",
+    "variables": {
+      "productId": "some-product-id",
+      "productName": "some-product-name",
+      "productKey": "some-product-key"
+    },
+    "withResult": true,
+    "requestTimeout": "30s",
+    "fetchVariables": ["productId"]
+  },
+  "operation": "create-instance"
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 The data parameters are:
 
+- `bpmnProcessId` - the BPMN process ID of the process definition to instantiate
 - `processDefinitionKey` - the unique key identifying the process definition to instantiate
+- `version` - (optional, default: latest version) the version of the process to instantiate
 - `variables` - (optional) JSON document that will instantiate the variables for the root variable scope of the
   process instance; it must be a JSON object, as variables will be mapped in a
   key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and
   "b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a
   valid argument, as the root of the JSON document is an array and not an object
+- `withResult` - (optional, default: false) if set to true, the process will be instantiated and executed synchronously
+- `requestTimeout` - (optional, only used if withResult=true) timeout the request will be closed if the process is not completed before the 
+  requestTimeout.	If requestTimeout = 0, uses the generic requestTimeout configured in the gateway.
+- `fetchVariables` - (optional, only used if withResult=true) list of names of variables to be included in `variables` property of the response.
+	If empty, all visible variables in the root scope will be returned.
 
 ##### Response
 
@@ -240,7 +337,8 @@ The binding returns a JSON with the following response:
   "processDefinitionKey": 2251799813685895,
   "bpmnProcessId": "products-process",
   "version": 3,
-  "processInstanceKey": 2251799813687851
+  "processInstanceKey": 2251799813687851,
+  "variables": "{\"productId\":\"some-product-id\"}"
 }
 ```
 
@@ -250,6 +348,8 @@ The response values are:
 - `bpmnProcessId` - the BPMN process ID of the process definition which was used to create the process instance
 - `version` - the version of the process definition which was used to create the process instance
 - `processInstanceKey` - the unique identifier of the created process instance
+- `variables` - (optional, only if withResult=true was used in the request) JSON document consists of visible variables in the root scope; 
+  returned as a serialized JSON document
 
 #### cancel-instance
 
@@ -262,7 +362,6 @@ To perform a `cancel-instance` operation, invoke the Zeebe command binding with 
   "data": {
     "processInstanceKey": 2251799813687851
   },
-  "metadata": {},
   "operation": "cancel-instance"
 }
 ```
@@ -291,7 +390,6 @@ To perform a `set-variables` operation, invoke the Zeebe command binding with a 
       "productKey": "some-product-key"
     }
   },
-  "metadata": {},
   "operation": "set-variables"
 }
 ```
@@ -334,7 +432,6 @@ To perform a `resolve-incident` operation, invoke the Zeebe command binding with
   "data": {
     "incidentKey": 2251799813686123
   },
-  "metadata": {},
   "operation": "resolve-incident"
 }
 ```
@@ -355,14 +452,17 @@ To perform a `publish-message` operation, invoke the Zeebe command binding with 
 
 ```json
 {
-  "messageName": "",
-  "correlationKey": "2",
-  "timeToLive": "1m",
-  "variables": {
-    "productId": "some-product-id",
-    "productName": "some-product-name",
-    "productKey": "some-product-key"
-  }
+  "data": {
+    "messageName": "product-message",
+    "correlationKey": "2",
+    "timeToLive": "1m",
+    "variables": {
+      "productId": "some-product-id",
+      "productName": "some-product-name",
+      "productKey": "some-product-key"
+    },
+  },  
+  "operation": "publish-message"
 }
 ```
 
@@ -408,9 +508,9 @@ To perform a `activate-jobs` operation, invoke the Zeebe command binding with a 
       "productId",
       "productName",
       "productKey"
-    ]
+    ],
+    "requestTimeout": "30s"
   },
-  "metadata": {},
   "operation": "activate-jobs"
 }
 ```
@@ -423,6 +523,8 @@ The data parameters are:
 - `workerName` - (optional, default: `default`) the name of the worker activating the jobs, mostly used for logging purposes
 - `fetchVariables` - (optional) a list of variables to fetch as the job variables; if empty, all visible variables at the time of activation for the
   scope of the job will be returned
+- `requestTimeout` - (optional) the request will be completed when at least one job is activated or after the requestTimeout. If the requestTimeout = 0,
+  a default timeout is used. If the requestTimeout < 0, long polling is disabled and the request is completed immediately, even when no job is activated.
 
 ##### Response
 
@@ -431,7 +533,19 @@ The binding returns a JSON with the following response:
 ```json
 [
   {
-
+    "key": 2251799813685267,
+    "type": "fetch-products",
+    "processInstanceKey": 2251799813685260,
+    "bpmnProcessId": "products",
+    "processDefinitionVersion": 1,
+    "processDefinitionKey": 2251799813685249,
+    "elementId": "Activity_test",
+    "elementInstanceKey": 2251799813685266,
+    "customHeaders": "{\"process-header-1\":\"1\",\"process-header-2\":\"2\"}",
+    "worker": "test", 
+    "retries": 1,
+    "deadline": 1694091934039,
+    "variables":"{\"productId\":\"some-product-id\"}"
   }
 ]
 ```
@@ -450,7 +564,7 @@ The response values are:
 - `worker` - the name of the worker which activated this job
 - `retries` - the amount of retries left to this job (should always be positive)
 - `deadline` - when the job can be activated again, sent as a UNIX epoch timestamp
-- `variables` - JSON document, computed at activation time, consisting of all visible variables to the task scope
+- `variables` - computed at activation time, consisting of all visible variables to the task scope; returned as a serialized JSON document
 
 #### complete-job
 
@@ -468,7 +582,6 @@ To perform a `complete-job` operation, invoke the Zeebe command binding with a `
       "productKey": "some-product-key"
     }
   },
-  "metadata": {},
   "operation": "complete-job"
 }
 ```
@@ -495,9 +608,14 @@ To perform a `fail-job` operation, invoke the Zeebe command binding with a `POST
   "data": {
     "jobKey": 2251799813685739,
     "retries": 5,
-    "errorMessage": "some error occurred"
+    "errorMessage": "some error occurred",
+    "retryBackOff": "30s",
+    "variables": {
+      "productId": "some-product-id",
+      "productName": "some-product-name",
+      "productKey": "some-product-key"
+    }
   },
-  "metadata": {},
   "operation": "fail-job"
 }
 ```
@@ -506,8 +624,14 @@ The data parameters are:
 
 - `jobKey` - the unique job identifier, as obtained when activating the job
 - `retries` - the amount of retries the job should have left
-- `errorMessage ` - (optional) an message describing why the job failed this is particularly useful if a job runs out of retries and an
+- `errorMessage ` - (optional) a message describing why the job failed this is particularly useful if a job runs out of retries and an
   incident is raised, as it this message can help explain why an incident was raised
+- `retryBackOff` - (optional) the back-off timeout for the next retry
+- `variables` - (optional) JSON document that will instantiate the variables at the local scope of the
+	job's associated task; it must be a JSON object, as variables will be mapped in a
+	key-value fashion. e.g. { "a": 1, "b": 2 } will create two variables, named "a" and
+	"b" respectively, with their associated values. [{ "a": 1, "b": 2 }] would not be a
+	valid argument, as the root of the JSON document is an array and not an object.
 
 ##### Response
 
@@ -526,7 +650,6 @@ To perform a `update-job-retries` operation, invoke the Zeebe command binding wi
     "jobKey": 2251799813686172,
     "retries": 10
   },
-  "metadata": {},
   "operation": "update-job-retries"
 }
 ```
@@ -554,7 +677,6 @@ To perform a `throw-error` operation, invoke the Zeebe command binding with a `P
     "errorCode": "product-fetch-error",
     "errorMessage": "The product could not be fetched"
   },
-  "metadata": {},
   "operation": "throw-error"
 }
 ```

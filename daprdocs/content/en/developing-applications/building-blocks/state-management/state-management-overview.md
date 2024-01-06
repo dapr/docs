@@ -116,6 +116,10 @@ Dapr enables states to be:
 
 For more details read [How-To: Share state between applications]({{< ref howto-share-state.md >}}),
 
+### Enabling the outbox pattern
+
+Dapr enables developers to use the outbox pattern for achieving a single transaction across a transactional state store and any message broker. For more information, read [How to enable transactional outbox messaging]({{< ref howto-outbox.md >}})
+
 ### Querying state
 
 There are two ways to query the state:

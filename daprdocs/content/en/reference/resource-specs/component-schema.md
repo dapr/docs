@@ -13,6 +13,8 @@ Dapr defines and registers components using a [resource specifications](https://
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
+auth: 
+ secretstore: [SECRET-STORE-NAME]
 metadata:
   name: [COMPONENT-NAME]
   namespace: [COMPONENT-NAMESPACE]
@@ -24,6 +26,9 @@ spec:
   metadata:
   - name: [METADATA-NAME]
     value: [METADATA-VALUE]
+scopes:
+  - [APPID]
+  - [APPID]
 ```
 
 ## Spec fields
@@ -32,6 +37,8 @@ spec:
 |--------------------|:--------:|---------|---------|
 | apiVersion         | Y        | The version of the Dapr (and Kubernetes if applicable) API you are calling | `dapr.io/v1alpha1`
 | kind               | Y        | The type of resource. For components is must always be `Component` | `Component`
+| auth               | N        | The name of a secret store where `secretKeyRef` in the metadata lookup the name of secrets used in the component | See [How-to: Reference secrets in components]({{< ref component-secrets >}})
+| scopes             | N        | The applications the component is limited to, specified by their app IDs | `order-processor`, `checkout`  
 | **metadata**       | -        | **Information about the component registration** |
 | metadata.name      | Y        | The name of the component | `prod-statestore`
 | metadata.namespace | N        | The namespace for the component for hosting environments with namespaces | `myapp-namespace`
@@ -41,6 +48,7 @@ spec:
 | spec.initTimeout   | N        | The timeout duration for the initialization of the component. Default is 5s  | `5m`, `1h`, `20s`
 | spec.ignoreErrors  | N        | Tells the Dapr sidecar to continue initialization if the component fails to load. Default is false  | `false`
 | **spec.metadata**  | -        | **A key/value pair of component specific configuration. See your component definition for fields**|
+| spec.metadata.name | Y        | The name of the component-specific property and its value | `- name: secretsFile` <br>   `value: secrets.json`
 
 ### Templated metadata values
 

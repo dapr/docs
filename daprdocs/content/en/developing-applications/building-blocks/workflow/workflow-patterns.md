@@ -25,42 +25,7 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs ".NET" Python >}}
-
-{{% codetab %}}
-<!--dotnet-->
-
-```csharp
-// Expotential backoff retry policy that survives long outages
-var retryOptions = new WorkflowTaskOptions
-{
-    RetryPolicy = new WorkflowRetryPolicy(
-        firstRetryInterval: TimeSpan.FromMinutes(1),
-        backoffCoefficient: 2.0,
-        maxRetryInterval: TimeSpan.FromHours(1),
-        maxNumberOfAttempts: 10),
-};
-
-try
-{
-    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryOptions);
-    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryOptions);
-    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryOptions);
-    return string.Join(", ", result4);
-}
-catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
-{
-    // Retries expired - apply custom compensation logic
-    await context.CallActivityAsync<long[]>("MyCompensation", options: retryOptions);
-    throw;
-}
-```
-
-{{% alert title="Note" color="primary" %}}
-In the example above, `"Step1"`, `"Step2"`, `"Step3"`, and `"MyCompensation"` represent workflow activities, which are functions in your code that actually implement the steps of the workflow. For brevity, these activity implementations are left out of this example.
-{{% /alert %}}
-
-{{% /codetab %}}
+{{< tabs Python ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -103,9 +68,95 @@ def error_handler(ctx, error):
     # Do some compensating work
 ```
 
-{{% alert title="Note" color="primary" %}}
-Workflow retry policies will be available in a future version of the Python SDK.
-{{% /alert %}}
+> **Note** Workflow retry policies will be available in a future version of the Python SDK.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--dotnet-->
+
+```csharp
+// Expotential backoff retry policy that survives long outages
+var retryOptions = new WorkflowTaskOptions
+{
+    RetryPolicy = new WorkflowRetryPolicy(
+        firstRetryInterval: TimeSpan.FromMinutes(1),
+        backoffCoefficient: 2.0,
+        maxRetryInterval: TimeSpan.FromHours(1),
+        maxNumberOfAttempts: 10),
+};
+
+try
+{
+    var result1 = await context.CallActivityAsync<string>("Step1", wfInput, retryOptions);
+    var result2 = await context.CallActivityAsync<byte[]>("Step2", result1, retryOptions);
+    var result3 = await context.CallActivityAsync<long[]>("Step3", result2, retryOptions);
+    return string.Join(", ", result4);
+}
+catch (TaskFailedException) // Task failures are surfaced as TaskFailedException
+{
+    // Retries expired - apply custom compensation logic
+    await context.CallActivityAsync<long[]>("MyCompensation", options: retryOptions);
+    throw;
+}
+```
+
+> **Note** In the example above, `"Step1"`, `"Step2"`, `"Step3"`, and `"MyCompensation"` represent workflow activities, which are functions in your code that actually implement the steps of the workflow. For brevity, these activity implementations are left out of this example.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--java-->
+
+```java
+public class ChainWorkflow extends Workflow {
+    @Override
+    public WorkflowStub create() {
+        return ctx -> {
+            StringBuilder sb = new StringBuilder();
+            String wfInput = ctx.getInput(String.class);
+            String result1 = ctx.callActivity("Step1", wfInput, String.class).await();
+            String result2 = ctx.callActivity("Step2", result1, String.class).await();
+            String result3 = ctx.callActivity("Step3", result2, String.class).await();
+            String result = sb.append(result1).append(',').append(result2).append(',').append(result3).toString();
+            ctx.complete(result);
+        };
+    }
+}
+
+    class Step1 implements WorkflowActivity {
+
+        @Override
+        public Object run(WorkflowActivityContext ctx) {
+            Logger logger = LoggerFactory.getLogger(Step1.class);
+            logger.info("Starting Activity: " + ctx.getName());
+            // Do some work
+            return null;
+        }
+    }
+
+    class Step2 implements WorkflowActivity {
+
+        @Override
+        public Object run(WorkflowActivityContext ctx) {
+            Logger logger = LoggerFactory.getLogger(Step2.class);
+            logger.info("Starting Activity: " + ctx.getName());
+            // Do some work
+            return null;
+        }
+    }
+
+    class Step3 implements WorkflowActivity {
+
+        @Override
+        public Object run(WorkflowActivityContext ctx) {
+            Logger logger = LoggerFactory.getLogger(Step3.class);
+            logger.info("Starting Activity: " + ctx.getName());
+            // Do some work
+            return null;
+        }
+    }
+```
 
 {{% /codetab %}}
 
@@ -135,32 +186,7 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs ".NET" Python >}}
-
-{{% codetab %}}
-<!--dotnet-->
-
-```csharp
-// Get a list of N work items to process in parallel.
-object[] workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
-
-// Schedule the parallel tasks, but don't wait for them to complete yet.
-var parallelTasks = new List<Task<int>>(workBatch.Length);
-for (int i = 0; i < workBatch.Length; i++)
-{
-    Task<int> task = context.CallActivityAsync<int>("ProcessWorkItem", workBatch[i]);
-    parallelTasks.Add(task);
-}
-
-// Everything is scheduled. Wait here until all parallel tasks have completed.
-await Task.WhenAll(parallelTasks);
-
-// Aggregate all N outputs and publish the result.
-int sum = parallelTasks.Sum(t => t.Result);
-await context.CallActivityAsync("PostResults", sum);
-```
-
-{{% /codetab %}}
+{{< tabs Python ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -202,6 +228,57 @@ def process_results(ctx, final_result: int):
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--dotnet-->
+
+```csharp
+// Get a list of N work items to process in parallel.
+object[] workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
+
+// Schedule the parallel tasks, but don't wait for them to complete yet.
+var parallelTasks = new List<Task<int>>(workBatch.Length);
+for (int i = 0; i < workBatch.Length; i++)
+{
+    Task<int> task = context.CallActivityAsync<int>("ProcessWorkItem", workBatch[i]);
+    parallelTasks.Add(task);
+}
+
+// Everything is scheduled. Wait here until all parallel tasks have completed.
+await Task.WhenAll(parallelTasks);
+
+// Aggregate all N outputs and publish the result.
+int sum = parallelTasks.Sum(t => t.Result);
+await context.CallActivityAsync("PostResults", sum);
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--java-->
+
+```java
+public class FaninoutWorkflow extends Workflow {
+    @Override
+    public WorkflowStub create() {
+        return ctx -> {
+            // Get a list of N work items to process in parallel.
+            Object[] workBatch = ctx.callActivity("GetWorkBatch", Object[].class).await();
+            // Schedule the parallel tasks, but don't wait for them to complete yet.
+            List<Task<Integer>> tasks = Arrays.stream(workBatch)
+                    .map(workItem -> ctx.callActivity("ProcessWorkItem", workItem, int.class))
+                    .collect(Collectors.toList());
+            // Everything is scheduled. Wait here until all parallel tasks have completed.
+            List<Integer> results = ctx.allOf(tasks).await();
+            // Aggregate all N outputs and publish the result.
+            int sum = results.stream().mapToInt(Integer::intValue).sum();
+            ctx.complete(sum);
+        };
+    }
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 The key takeaways from this example are:
@@ -233,7 +310,7 @@ The Dapr workflow HTTP API supports the asynchronous request-reply pattern out-o
 The following `curl` commands illustrate how the workflow APIs support this pattern.
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
+curl -X POST http://localhost:3500/v1.0-beta1/workflows/dapr/OrderProcessingWorkflow/start?instanceID=12345678 -d '{"Name":"Paperclips","Quantity":1,"TotalCost":9.95}'
 ```
 
 The previous command will result in the following response JSON:
@@ -245,7 +322,7 @@ The previous command will result in the following response JSON:
 The HTTP client can then construct the status query URL using the workflow instance ID and poll it repeatedly until it sees the "COMPLETE", "FAILURE", or "TERMINATED" status in the payload.
 
 ```bash
-curl http://localhost:3500/v1.0-alpha1/workflows/dapr/12345678
+curl http://localhost:3500/v1.0-beta1/workflows/dapr/12345678
 ```
 
 The following is an example of what an in-progress workflow status might look like.
@@ -302,48 +379,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs ".NET" Python >}}
-
-{{% codetab %}}
-<!--dotnet-->
-
-```csharp
-public override async Task<object> RunAsync(WorkflowContext context, MyEntityState myEntityState)
-{
-    TimeSpan nextSleepInterval;
-
-    var status = await context.CallActivityAsync<string>("GetStatus");
-    if (status == "healthy")
-    {
-        myEntityState.IsHealthy = true;
-
-        // Check less frequently when in a healthy state
-        nextSleepInterval = TimeSpan.FromMinutes(60);
-    }
-    else
-    {
-        if (myEntityState.IsHealthy)
-        {
-            myEntityState.IsHealthy = false;
-            await context.CallActivityAsync("SendAlert", myEntityState);
-        }
-
-        // Check more frequently when in an unhealthy state
-        nextSleepInterval = TimeSpan.FromMinutes(5);
-    }
-
-    // Put the workflow to sleep until the determined time
-    await context.CreateTimer(nextSleepInterval);
-
-    // Restart from the beginning with the updated state
-    context.ContinueAsNew(myEntityState);
-    return null;
-}
-```
-
-> This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
-
-{{% /codetab %}}
+{{< tabs Python ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -392,6 +428,90 @@ def send_alert(ctx, message: str):
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--dotnet-->
+
+```csharp
+public override async Task<object> RunAsync(WorkflowContext context, MyEntityState myEntityState)
+{
+    TimeSpan nextSleepInterval;
+
+    var status = await context.CallActivityAsync<string>("GetStatus");
+    if (status == "healthy")
+    {
+        myEntityState.IsHealthy = true;
+
+        // Check less frequently when in a healthy state
+        nextSleepInterval = TimeSpan.FromMinutes(60);
+    }
+    else
+    {
+        if (myEntityState.IsHealthy)
+        {
+            myEntityState.IsHealthy = false;
+            await context.CallActivityAsync("SendAlert", myEntityState);
+        }
+
+        // Check more frequently when in an unhealthy state
+        nextSleepInterval = TimeSpan.FromMinutes(5);
+    }
+
+    // Put the workflow to sleep until the determined time
+    await context.CreateTimer(nextSleepInterval);
+
+    // Restart from the beginning with the updated state
+    context.ContinueAsNew(myEntityState);
+    return null;
+}
+```
+
+> This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--java-->
+
+```java
+public class MonitorWorkflow extends Workflow {
+
+  @Override
+  public WorkflowStub create() {
+    return ctx -> {
+
+      Duration nextSleepInterval;
+
+      var status = ctx.callActivity(DemoWorkflowStatusActivity.class.getName(), DemoStatusActivityOutput.class).await();
+      var isHealthy = status.getIsHealthy();
+
+      if (isHealthy) {
+        // Check less frequently when in a healthy state
+        nextSleepInterval = Duration.ofMinutes(60);
+      } else {
+
+        ctx.callActivity(DemoWorkflowAlertActivity.class.getName()).await();
+
+        // Check more frequently when in an unhealthy state
+        nextSleepInterval = Duration.ofMinutes(5);
+      }
+
+      // Put the workflow to sleep until the determined time
+      // Note: ctx.createTimer() method is not supported in the Java SDK yet
+      try {
+        TimeUnit.SECONDS.sleep(nextSleepInterval.getSeconds());
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+
+      // Restart from the beginning with the updated state
+      ctx.continueAsNew();
+    }
+  }
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
@@ -420,53 +540,7 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs ".NET" Python >}}
-
-{{% codetab %}}
-<!--dotnet-->
-
-```csharp
-public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
-{
-    // ...(other steps)...
-
-    // Require orders over a certain threshold to be approved
-    if (order.TotalCost > OrderApprovalThreshold)
-    {
-        try
-        {
-            // Request human approval for this order
-            await context.CallActivityAsync(nameof(RequestApprovalActivity), order);
-
-            // Pause and wait for a human to approve the order
-            ApprovalResult approvalResult = await context.WaitForExternalEventAsync<ApprovalResult>(
-                eventName: "ManagerApproval",
-                timeout: TimeSpan.FromDays(3));
-            if (approvalResult == ApprovalResult.Rejected)
-            {
-                // The order was rejected, end the workflow here
-                return new OrderResult(Processed: false);
-            }
-        }
-        catch (TaskCanceledException)
-        {
-            // An approval timeout results in automatic order cancellation
-            return new OrderResult(Processed: false);
-        }
-    }
-
-    // ...(other steps)...
-
-    // End the workflow with a success result
-    return new OrderResult(Processed: true);
-}
-```
-
-{{% alert title="Note" color="primary" %}}
-In the example above, `RequestApprovalActivity` is the name of a workflow activity to invoke and `ApprovalResult` is an enumeration defined by the workflow app. For brevity, these definitions were left out of the example code.
-{{% /alert %}}
-
-{{% /codetab %}}
+{{< tabs Python ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -527,25 +601,92 @@ def place_order(_, order: Order) -> None:
 
 {{% /codetab %}}
 
-{{< /tabs >}}
-
-The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
-
-{{< tabs ".NET" Python >}}
-
 {{% codetab %}}
 <!--dotnet-->
 
 ```csharp
-// Raise the workflow event to the waiting workflow
-await daprClient.RaiseWorkflowEventAsync(
-    instanceId: orderId,
-    workflowComponent: "dapr",
-    eventName: "ManagerApproval",
-    eventData: ApprovalResult.Approved);
+public override async Task<OrderResult> RunAsync(WorkflowContext context, OrderPayload order)
+{
+    // ...(other steps)...
+
+    // Require orders over a certain threshold to be approved
+    if (order.TotalCost > OrderApprovalThreshold)
+    {
+        try
+        {
+            // Request human approval for this order
+            await context.CallActivityAsync(nameof(RequestApprovalActivity), order);
+
+            // Pause and wait for a human to approve the order
+            ApprovalResult approvalResult = await context.WaitForExternalEventAsync<ApprovalResult>(
+                eventName: "ManagerApproval",
+                timeout: TimeSpan.FromDays(3));
+            if (approvalResult == ApprovalResult.Rejected)
+            {
+                // The order was rejected, end the workflow here
+                return new OrderResult(Processed: false);
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            // An approval timeout results in automatic order cancellation
+            return new OrderResult(Processed: false);
+        }
+    }
+
+    // ...(other steps)...
+
+    // End the workflow with a success result
+    return new OrderResult(Processed: true);
+}
+```
+
+> **Note** In the example above, `RequestApprovalActivity` is the name of a workflow activity to invoke and `ApprovalResult` is an enumeration defined by the workflow app. For brevity, these definitions were left out of the example code.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--java-->
+
+```java
+public class ExternalSystemInteractionWorkflow extends Workflow {
+    @Override
+    public WorkflowStub create() {
+        return ctx -> {
+            // ...other steps...
+            Integer orderCost = ctx.getInput(int.class);
+            // Require orders over a certain threshold to be approved
+            if (orderCost > ORDER_APPROVAL_THRESHOLD) {
+                try {
+                    // Request human approval for this order
+                    ctx.callActivity("RequestApprovalActivity", orderCost, Void.class).await();
+                    // Pause and wait for a human to approve the order
+                    boolean approved = ctx.waitForExternalEvent("ManagerApproval", Duration.ofDays(3), boolean.class).await();
+                    if (!approved) {
+                        // The order was rejected, end the workflow here
+                        ctx.complete("Process reject");
+                    }
+                } catch (TaskCanceledException e) {
+                    // An approval timeout results in automatic order cancellation
+                    ctx.complete("Process cancel");
+                }
+            }
+            // ...other steps...
+
+            // End the workflow with a success result
+            ctx.complete("Process approved");
+        };
+    }
+}
 ```
 
 {{% /codetab %}}
+
+{{< /tabs >}}
+
+The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
+
+{{< tabs Python ".NET" Java >}}
 
 {{% codetab %}}
 <!--python-->
@@ -564,6 +705,30 @@ with DaprClient() as d:
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--dotnet-->
+
+```csharp
+// Raise the workflow event to the waiting workflow
+await daprClient.RaiseWorkflowEventAsync(
+    instanceId: orderId,
+    workflowComponent: "dapr",
+    eventName: "ManagerApproval",
+    eventData: ApprovalResult.Approved);
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--java-->
+
+```java
+System.out.println("**SendExternalMessage: RestartEvent**");
+client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
@@ -577,4 +742,7 @@ External events don't have to be directly triggered by humans. They can also be 
 - [Try out Dapr Workflows using the quickstart]({{< ref workflow-quickstart.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the following examples: 
+   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+   - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

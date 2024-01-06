@@ -46,7 +46,7 @@ spec:
   - name: maxMessageBytes # Optional.
     value: "1024"
   - name: version # Optional.
-    value: "1.0.0"
+    value: "2.0.0"
   - name: direction
     value: "input, output"
 ```
@@ -74,6 +74,7 @@ spec:
 | `oidcScopes` | N | Input/Output | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | `"openid,kafka-prod"` |
 | `version` | N | Input/Output | Kafka cluster version. Defaults to 2.0.0. Please note that this needs to be mandatorily set to `1.0.0` for EventHubs with Kafka. | `"1.0.0"` |
 | `direction` | N | Input/Output | The direction of the binding. | `"input"`, `"output"`, `"input, output"` |
+| `oidcExtensions` | N | Input/Output | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |
 
 #### Note
 The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.

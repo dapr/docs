@@ -16,7 +16,7 @@ The main difference between the two flows is that the `Authorization Code Grant 
 
 Different authorization servers provide different application registration experiences. Here are some samples:
 <!-- IGNORE_LINKS -->
-* [Azure AAD](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-oauth-code)
+* [Microsoft Entra ID](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-oauth-code)
 * [Facebook](https://developers.facebook.com/apps)
 * [Fitbit](https://dev.fitbit.com/build/reference/web-api/oauth2/)
 * [GitHub](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
@@ -24,7 +24,7 @@ Different authorization servers provide different application registration exper
 * [Slack](https://api.slack.com/docs/oauth)
 * [Twitter](http://apps.twitter.com/)
 <!-- END_IGNORE -->
-To figure the Dapr OAuth middleware, you'll need to collect the following information:
+To configure the Dapr OAuth middleware, you'll need to collect the following information:
 
 * Client ID (see [here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/))
 * Client secret (see [here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/))
@@ -37,7 +37,7 @@ Authorization/Token URLs of some of the popular authorization servers:
 <!-- IGNORE_LINKS -->
 | Server  | Authorization URL | Token URL |
 |---------|-------------------|-----------|
-|Azure AAD|<https://login.microsoftonline.com/{tenant}/oauth2/authorize>|<https://login.microsoftonline.com/{tenant}/oauth2/token>|
+|Microsoft Entra ID|<https://login.microsoftonline.com/{tenant}/oauth2/authorize>|<https://login.microsoftonline.com/{tenant}/oauth2/token>|
 |GitHub|<https://github.com/login/oauth/authorize>|<https://github.com/login/oauth/access_token>|
 |Google|<https://accounts.google.com/o/oauth2/v2/auth>|<https://accounts.google.com/o/oauth2/token> <https://www.googleapis.com/oauth2/v4/token>|
 |Twitter|<https://api.twitter.com/oauth/authorize>|<https://api.twitter.com/oauth2/token>|

@@ -3,7 +3,7 @@ type: docs
 title: "Error codes returned by APIs"
 linkTitle: "Error codes"
 description: "Detailed reference of the Dapr API error codes"
-weight: 1200
+weight: 1300
 ---
 
 For http calls made to Dapr runtime, when an error is encountered, an error json is returned in http response body. The json contains an error code and an descriptive error message, e.g.

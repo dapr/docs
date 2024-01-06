@@ -32,12 +32,12 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets, as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-## Authenticating with Azure AD
+## Authenticating with Microsoft Entra ID
 
-The Azure Key Vault cryptography component supports authentication with Azure AD only. Before you enable this component:
+The Azure Key Vault cryptography component supports authentication with Microsoft Entra ID only. Before you enable this component:
 
 1. Read the [Authenticating to Azure]({{< ref "authenticating-azure.md" >}}) document.
-1. Create an [Azure AD application]({{< ref "howto-aad.md" >}}) (also called a Service Principal).
+1. Create an [Microsoft Entra ID application]({{< ref "howto-aad.md" >}}) (also called a Service Principal).
 1. Alternatively, create a [managed identity]({{< ref "howto-mi.md" >}}) for your application platform.
 
 ## Spec metadata fields

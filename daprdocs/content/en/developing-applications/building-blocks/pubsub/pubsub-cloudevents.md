@@ -106,7 +106,7 @@ with DaprClient() as client:
     result = client.publish_event(
         pubsub_name='order_pub_sub',
         topic_name='orders',
-        publish_metadata={'cloudevent.id: 'd99b228f-6c73-4e78-8c4d-3f80a043d317', cloudevent.source: 'payment'}
+        publish_metadata={'cloudevent.id': 'd99b228f-6c73-4e78-8c4d-3f80a043d317', 'cloudevent.source': 'payment'}
     )
 ```
 
@@ -160,7 +160,7 @@ The JSON payload then reflects the new `source` and `id` values:
 ```
 
 {{% alert title="Important" color="warning" %}}
-While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Telementry for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}})  
+While you can replace `traceid`/`traceparent` and `tracestate`, doing this may interfere with tracing events and report inconsistent results in tracing tools. It's recommended to use Open Telemetry for distributed traces. [Learn more about distributed tracing.]({{< ref tracing-overview.md >}})  
 
 {{% /alert %}}
 

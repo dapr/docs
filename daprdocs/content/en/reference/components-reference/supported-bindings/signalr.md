@@ -25,8 +25,6 @@ spec:
     value: "Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"
   - name: hub  # Optional
     value: "<hub name>"
-  - name: direction 
-    value: "<direction of binding>"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -39,15 +37,14 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|------------|-----|---------|
 | `connectionString` | Y | Output | The Azure SignalR connection string | `"Endpoint=https://<your-azure-signalr>.service.signalr.net;AccessKey=<your-access-key>;Version=1.0;"` |
 | `hub` | N | Output | Defines the hub in which the message will be send. The hub can be dynamically defined as a metadata value when publishing to an output binding (key is "hub") | `"myhub"` |
-| `endpoint` | N | Output | Endpoint of Azure SignalR; required if not included in the `connectionString` or if using Azure AD | `"https://<your-azure-signalr>.service.signalr.net"`
+| `endpoint` | N | Output | Endpoint of Azure SignalR; required if not included in the `connectionString` or if using Microsoft Entra ID | `"https://<your-azure-signalr>.service.signalr.net"`
 | `accessKey` | N | Output | Access key | `"your-access-key"`
-| `direction` | N | Output | The direction of the binding | `"output"`
 
-### Azure Active Directory (Azure AD) authentication
+### Microsoft Entra ID authentication
 
-The Azure SignalR binding component supports authentication using all Azure Active Directory mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Azure AD authentication mechanism.
+The Azure SignalR binding component supports authentication using all Microsoft Entra ID mechanisms. See the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}) to learn more about the relevant component metadata fields based on your choice of Microsoft Entra ID authentication mechanism.
 
-You have two options to authenticate this component with Azure AD:
+You have two options to authenticate this component with Microsoft Entra ID:
 
 - Pass individual metadata keys:
   - `endpoint` for the endpoint
@@ -55,7 +52,7 @@ You have two options to authenticate this component with Azure AD:
 - Pass a connection string with `AuthType=aad` specified:
   - System-assigned managed identity: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;Version=1.0;`
   - User-assigned managed identity: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;ClientId=<clientid>;Version=1.0;`
-  - Azure AD application: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;ClientId=<clientid>;ClientSecret=<clientsecret>;TenantId=<tenantid>;Version=1.0;`  
+  - Microsoft Entra ID application: `Endpoint=https://<servicename>.service.signalr.net;AuthType=aad;ClientId=<clientid>;ClientSecret=<clientsecret>;TenantId=<tenantid>;Version=1.0;`  
   Note that you cannot use a connection string if your application's ClientSecret contains a `;` character.
 
 ## Binding support

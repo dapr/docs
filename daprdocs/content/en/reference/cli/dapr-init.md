@@ -44,21 +44,40 @@ dapr init [flags]
 |        N/A            | DAPR_HELM_REPO_USERNAME | A username for a private Helm chart | The username required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set|
 |        N/A            | DAPR_HELM_REPO_PASSWORD | A password for a private Helm chart  |The password required to access the private Dapr Helm chart. If it can be accessed publicly, this env variable does not need to be set| |
 |  `--container-runtime`  |              |    `docker`      | Used to pass in a different container runtime other than Docker. Supported container runtimes are: `docker`, `podman` |
+|  `--dev`  |              |          | Creates Redis and Zipkin deployments when run in Kubernetes. |
+
+
 ### Examples
 
-#### Self hosted environment
+{{< tabs "Self-hosted" "Kubernetes" >}}
 
-Install Dapr by pulling container images for Placement, Redis and Zipkin. By default these images are pulled from Docker Hub. To switch to Dapr Github container registry as the default registry, set the `DAPR_DEFAULT_IMAGE_REGISTRY` environment variable value to be `GHCR`. To switch back to Docker Hub as default registry, unset this environment variable. 
+{{% codetab %}}
+
+**Install**
+
+Install Dapr by pulling container images for Placement, Redis, and Zipkin. By default, these images are pulled from Docker Hub. 
 
 ```bash
 dapr init
 ```
 
+Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}), without Docker.
+
+```bash
+dapr init -s
+```
+
+> To switch to Dapr Github container registry as the default registry, set the `DAPR_DEFAULT_IMAGE_REGISTRY` environment variable value to be `GHCR`. To switch back to Docker Hub as default registry, unset this environment variable. 
+
+**Specify a runtime version**
+
 You can also specify a specific runtime version. Be default, the latest version is used.
 
 ```bash
-dapr init --runtime-version 1.4.0
+dapr init --runtime-version 1.13.0
 ```
+
+**Install with image variant**
 
 You can also install Dapr with a particular image variant, for example: [mariner]({{< ref "kubernetes-deploy.md#using-mariner-based-images" >}}).
 
@@ -66,11 +85,7 @@ You can also install Dapr with a particular image variant, for example: [mariner
 dapr init --image-variant mariner
 ```
 
-Dapr can also run [Slim self-hosted mode]({{< ref self-hosted-no-docker.md >}}) without Docker.
-
-```bash
-dapr init -s
-```
+**Use Dapr Installer Bundle**
 
 In an offline or airgap environment, you can [download a Dapr Installer Bundle](https://github.com/dapr/installer-bundle/releases) and use this to install Dapr instead of pulling images from the network.
 
@@ -84,17 +99,17 @@ Dapr can also run in slim self-hosted mode without Docker in an airgap environme
 dapr init -s --from-dir <path-to-installer-bundle-directory>
 ```
 
-You can also specify a private registry to pull container images from. These images need to be published to private registries as shown below to enable Dapr CLI to pull them successfully via the `dapr init` command - 
+**Specify private registry**
+
+You can also specify a private registry to pull container images from. These images need to be published to private registries as shown below to enable Dapr CLI to pull them successfully via the `dapr init` command:
 
 1. Dapr runtime container image(dapr) (Used to run Placement) - dapr/dapr:<version>
 2. Redis container image(rejson)   - dapr/3rdparty/rejson
 3. Zipkin container image(zipkin)  - dapr/3rdparty/zipkin
 
-> All the required images used by Dapr needs to be under the`dapr` path.
+All the required images used by Dapr needs to be under the `dapr` path. The 3rd party images have to be published under `dapr/3rdparty` path.
 
-> The 3rd party images have to be published under `dapr/3rdparty` path.
-
-> image-registry uri follows this format - `docker.io/<username>`
+`image-registry` uri follows the `docker.io/<username>` format.
 
 ```bash
 dapr init --image-registry docker.io/username
@@ -111,7 +126,37 @@ You can specify a different container runtime while setting up Dapr. If you omit
 dapr init --container-runtime podman
 ```
 
-#### Kubernetes environment
+**Use Docker network**
+
+You can deploy local containers into Docker networks, which is useful for deploying into separate networks or when using Docker Compose for local development to deploy applications.
+
+Create the Docker network.
+
+```bash
+docker network create mynet
+```
+
+Initialize Dapr and specify the created Docker network.
+
+```bash
+dapr init --network mynet
+```
+
+Verify all containers are running in the specified network.
+
+```bash
+docker ps 
+```
+
+Uninstall Dapr from that Docker network.
+
+```bash
+dapr uninstall --all --network mynet
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
 
 ```bash
 dapr init -k
@@ -146,3 +191,7 @@ Scenario 2 : dapr image hosted under a new/different directory in private regist
 ```bash
 dapr init -k --image-registry docker.io/username/<directory-name>
 ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}

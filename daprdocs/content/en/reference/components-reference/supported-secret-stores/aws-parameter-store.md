@@ -30,6 +30,8 @@ spec:
     value: "[aws_secret_key]"
   - name: sessionToken
     value: "[aws_session_token]"
+  - name: prefix
+    value: "[secret_name]"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a local secret store such as [Kubernetes secret store]({{< ref kubernetes-secret-store.md >}}) or a [local file]({{< ref file-secret-store.md >}}) to bootstrap secure key storage.
@@ -43,6 +45,7 @@ The above example uses secrets as plain strings. It is recommended to use a loca
 | accessKey          | Y        | The AWS Access Key to access this resource                              | `"key"`             |
 | secretKey          | Y        | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
 | sessionToken       | N        | The AWS session token to use                                            | `"sessionToken"`    |
+| prefix             | N        | Allows you to specify more than one SSM parameter store secret store component. | `"prefix"` |
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  

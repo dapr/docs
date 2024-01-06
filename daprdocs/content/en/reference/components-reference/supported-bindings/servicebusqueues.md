@@ -56,7 +56,7 @@ spec:
   #   value: "5"
   # - name: publishInitialRetryIntervalInMs # Optional
   #   value: "500"
-  # - name: direction 
+  # - name: direction
   #   value: "input, output"
 ```
 {{% alert title="Warning" color="warning" %}}
@@ -67,10 +67,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|-----------------|----------|---------|
-| `connectionString` | Y | Input/Output | The Service Bus connection string. Required unless using Azure AD authentication. | `"Endpoint=sb://************"` |
+| `connectionString` | Y | Input/Output | The Service Bus connection string. Required unless using Microsoft Entra ID authentication. | `"Endpoint=sb://************"` |
 | `queueName` | Y | Input/Output | The Service Bus queue name. Queue names are case-insensitive and will always be forced to lowercase. | `"queuename"` |
 | `timeoutInSec` | N | Input/Output | Timeout for all invocations to the Azure Service Bus endpoint, in seconds. *Note that this option impacts network calls and it's unrelated to the TTL applies to messages*. Default: `"60"` | `"60"` |
-| `namespaceName`| N | Input/Output | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
+| `namespaceName`| N | Input/Output | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
 | `disableEntityManagement` | N | Input/Output | When set to true, queues and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | `lockDurationInSec`     | N | Input/Output | Defines the length in seconds that a message will be locked for before expiring. Used during subscription creation only. Default set by server. | `"30"`
 | `autoDeleteOnIdleInSec` | N  | Input/Output | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Default: `"0"` (disabled) | `"3600"`
@@ -90,9 +90,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `publishInitialRetryIntervalInMs` | N  | Output | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `"500"` | `"500"`
 | `direction` | N  | Input/Output | The direction of the binding | `"input"`, `"output"`, `"input, output"`
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Service Bus Queues binding component supports authentication using all Azure Active Directory mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Queues binding component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 
@@ -128,6 +128,47 @@ This component supports both **input and output** binding interfaces.
 This component supports **output binding** with the following operations:
 
 - `create`: publishes a message to the specified queue
+
+## Message metadata
+
+Azure Service Bus messages extend the Dapr message format with additional contextual metadata. Some metadata fields are set by Azure Service Bus itself (read-only) and others can be set by the client when publishing a message through `Invoke` binding call with `create` operation.
+
+### Sending a message with metadata
+
+To set Azure Service Bus metadata when sending a message, set the query parameters on the HTTP request or the gRPC metadata as documented [here]({{< ref "bindings_api.md" >}}).
+
+- `metadata.MessageId`
+- `metadata.CorrelationId`
+- `metadata.SessionId`
+- `metadata.Label`
+- `metadata.ReplyTo`
+- `metadata.PartitionKey`
+- `metadata.To`
+- `metadata.ContentType`
+- `metadata.ScheduledEnqueueTimeUtc`
+- `metadata.ReplyToSessionId`
+
+{{% alert title="Note" color="primary" %}}
+- The `metadata.MessageId` property does not set the `id` property of the cloud event returned by Dapr and should be treated in isolation.
+- The `metadata.ScheduledEnqueueTimeUtc` property supports the [RFC1123](https://www.rfc-editor.org/rfc/rfc1123) and [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) timestamp formats.
+{{% /alert %}}
+
+### Receiving a message with metadata
+
+When Dapr calls your application, it attaches Azure Service Bus message metadata to the request using either HTTP headers or gRPC metadata.
+In addition to the [settable metadata listed above](#sending-a-message-with-metadata), you can also access the following read-only message metadata.
+
+- `metadata.DeliveryCount`
+- `metadata.LockedUntilUtc`
+- `metadata.LockToken`
+- `metadata.EnqueuedTimeUtc`
+- `metadata.SequenceNumber`
+
+To find out more details on the purpose of any of these metadata properties, please refer to [the official Azure Service Bus documentation](https://docs.microsoft.com/rest/api/servicebus/message-headers-and-properties#message-headers).
+
+{{% alert title="Note" color="primary" %}}
+All times are populated by the server and are not adjusted for clock skews.
+{{% /alert %}}
 
 ## Specifying a TTL per message
 

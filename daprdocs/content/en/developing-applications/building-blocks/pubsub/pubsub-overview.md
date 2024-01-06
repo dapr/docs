@@ -96,6 +96,10 @@ For more information on message routing, read [Dapr pub/sub API reference]({{< r
 
 Sometimes, messages can't be processed because of a variety of possible issues, such as erroneous conditions within the producer or consumer application or an unexpected state change that causes an issue with your application code. Dapr allows developers to set dead letter topics to deal with messages that cannot be delivered to an application. This feature is available on all pub/sub components and prevents consumer applications from endlessly retrying a failed message. For more information, read about [dead letter topics]({{< ref "pubsub-deadletter.md">}})
 
+### Enabling the outbox pattern
+
+Dapr enables developers to use the outbox pattern for achieving a single transaction across a transactional state store and any message broker. For more information, read [How to enable transactional outbox messaging]({{< ref howto-outbox.md >}})
+
 ### Namespace consumer groups
 
 Dapr solves multi-tenancy at-scale with [namespaces for consumer groups]({{< ref howto-namespace >}}). Simply include the `"{namespace}"` value in your component metadata for consumer groups to allow multiple namespaces with applications of the same `app-id` to publish and subscribe to the same message broker.
@@ -110,7 +114,7 @@ All Dapr pub/sub components support the at-least-once guarantee.
 
 ### Consumer groups and competing consumers pattern
 
-Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing consumer pattern when replicas use the same `app-id` without explict consumer group overrides. 
+Dapr handles the burden of dealing with consumer groups and the competing consumers pattern. In the competing consumers pattern, multiple application instances using a single consumer group compete for the message. Dapr enforces the competing consumer pattern when replicas use the same `app-id` without explicit consumer group overrides. 
 
 When multiple instances of the same application (with same `app-id`) subscribe to a topic, Dapr delivers each message to *only one instance of **that** application*. This concept is illustrated in the diagram below.
 
