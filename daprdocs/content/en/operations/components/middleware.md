@@ -17,7 +17,7 @@ With Dapr, you can define custom processing pipelines by chaining a series of mi
 
 In this guide, you learn how to configure middleware using its component YAML. To learn how to create middleware components, see the [Author middleware components how-to guides.]({{< ref develop-middleware.md >}}) 
 
-## Configure API middleware pipelines (sidecar to sidecar)
+## Configure API middleware pipelines
 
 When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default, the pipeline consists of the [tracing]({{< ref tracing-overview.md >}}) and CORS middlewares. Additional middlewares, configured by a Dapr [Configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. The pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, secrets, configuration, distributed lock, etc.
 
@@ -48,7 +48,7 @@ spec:
 
 As with other components, supported middleware components can be found in the [supported Middleware reference guide]({{< ref supported-middleware >}}) and in the [`dapr/components-contrib` repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
 
-## Configure app middleware (sidecar to app)
+## Configure app middleware
 
 You can also use any middleware component when making service-to-service invocation calls. For example, to add token validation in a zero-trust environment, to transform a request for a specific app endpoint, or to apply OAuth policies.
 

@@ -24,6 +24,10 @@ spec:
   metadata:
   - name: maxRequestsPerSecond
     value: 10
+  - name: pipelineType
+    value: httpPipeline
+  - name: priority
+    value: 1
 ```
 
 ## Spec metadata fields
@@ -31,6 +35,8 @@ spec:
 | Field | Details | Example |
 |-------|---------|---------|
 | `maxRequestsPerSecond` | The maximum requests per second by remote IP.<br>The component looks at the `X-Forwarded-For` and `X-Real-IP` headers to determine the caller's IP. | `10`
+| `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
 
 Once the limit is reached, the requests will fail with HTTP Status code *429: Too Many Requests*.
 
@@ -42,19 +48,7 @@ Alternatively, the [max concurrency setting]({{< ref control-concurrency.md >}})
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: ratelimit
-      type: middleware.http.ratelimit
-```
+You can apply the middleware configuration directly in the middleware component. See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
 
 ## Related links
 

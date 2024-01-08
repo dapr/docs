@@ -36,6 +36,10 @@ spec:
     value: "authorization"
   - name: forceHTTPS
     value: "false"
+  - name: pipelineType
+    value: "httpPipeline"
+  - name: priority
+    value: "1"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -46,30 +50,20 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field | Details | Example |
 |-------|---------|---------|
-| clientId | The client ID of your application that is created as part of a credential hosted by a OAuth-enabled platform
-| clientSecret | The client secret of your application that is created as part of a credential hosted by a OAuth-enabled platform
-| scopes | A list of space-delimited, case-sensitive strings of [scopes](https://tools.ietf.org/html/rfc6749#section-3.3) which are typically used for authorization in the application | `"https://www.googleapis.com/auth/userinfo.email"`
-| authURL | The endpoint of the OAuth2 authorization server | `"https://accounts.google.com/o/oauth2/v2/auth"`
-| tokenURL | The endpoint is used by the client to obtain an access token by presenting its authorization grant or refresh token | `"https://accounts.google.com/o/oauth2/token"`
-| redirectURL | The URL of your web application that the authorization server should redirect to once the user has authenticated | `"https://myapp.com"`
-| authHeaderName | The authorization header name to forward to your application | `"authorization"`
+| `clientId` | The client ID of your application that is created as part of a credential hosted by a OAuth-enabled platform
+| `clientSecret` | The client secret of your application that is created as part of a credential hosted by a OAuth-enabled platform
+| `scopes` | A list of space-delimited, case-sensitive strings of [scopes](https://tools.ietf.org/html/rfc6749#section-3.3) which are typically used for authorization in the application | `"https://www.googleapis.com/auth/userinfo.email"`
+| `authURL` | The endpoint of the OAuth2 authorization server | `"https://accounts.google.com/o/oauth2/v2/auth"`
+| `tokenURL` | The endpoint is used by the client to obtain an access token by presenting its authorization grant or refresh token | `"https://accounts.google.com/o/oauth2/token"`
+| `redirectURL` | The URL of your web application that the authorization server should redirect to once the user has authenticated | `"https://myapp.com"`
+| `authHeaderName` | The authorization header name to forward to your application | `"authorization"`
 | forceHTTPS | If true, enforces the use of TLS/SSL | `"true"`,`"false"`                                           |
+| `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: oauth2
-      type: middleware.http.oauth2
-```
+You can apply the middleware configuration directly in the middleware component. See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
 
 ## Related links
 

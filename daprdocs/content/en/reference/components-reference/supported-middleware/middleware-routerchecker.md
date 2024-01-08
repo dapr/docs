@@ -24,6 +24,10 @@ spec:
   metadata:
   - name: rule
     value: "^[A-Za-z0-9/._-]+$"
+  - name: pipelineType
+    value: "httpPipeline"
+  - name: priority
+    value: "1"
 ```
 
 In this example, the above definition would result in the following PASS/FAIL cases:
@@ -47,22 +51,12 @@ FAIL /v1.0/invoke/demo.default/method/"$(curl
 | Field | Details | Example |
 |-------|---------|---------|
 | rule | the regexp expression to be used by the HTTP request RouterChecker | `^[A-Za-z0-9/._-]+$`|
+| `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
 
 ## Dapr configuration
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
-
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: routerchecker 
-      type: middleware.http.routerchecker
-```
+You can apply the middleware configuration directly in the middleware component. See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
 
 ## Related links
 
