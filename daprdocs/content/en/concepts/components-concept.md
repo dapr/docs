@@ -54,11 +54,11 @@ For more information read [Pluggable components overview]({{< ref "pluggable-com
 
 ## Hot Reloading
 
-With the [`HotReload` feature enabled]({{< ref "support-preview-features.md" >}}), Components are able to be "hot reloaded" at runtime.
+With the [`HotReload` feature enabled]({{< ref "support-preview-features.md" >}}), components are able to be "hot reloaded" at runtime.
 This means that you can update component configuration without restarting the Dapr runtime.
-Component reloading happens when a Component resource is created, updated, or deleted, either in the Kubernetes API or in Self Hosted mode when a file is changed in the `resources` directory.
+Component reloading happens when a component resource is created, updated, or deleted, either in the Kubernetes API or in Self Hosted mode when a file is changed in the `resources` directory.
 When a component is updated, the Component is first closed, and then reinitialized using the new configuration.
-There will be a short period of time where the component is unavailable during the duration of the reload until the component is reinitialized.
+There is a short period of time where the component is unavailable during the duration of the reload until the component is reinitialized.
 
 ## Available component types
 
