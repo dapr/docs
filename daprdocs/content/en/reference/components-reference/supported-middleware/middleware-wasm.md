@@ -57,7 +57,7 @@ How to compile this is described later.
 | `url`   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
 | `guestConfig`   | An optional configuration passed to Wasm guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `environment=production`,`{"environment":"production"}` |
 | `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 
 ## Dapr configuration
 

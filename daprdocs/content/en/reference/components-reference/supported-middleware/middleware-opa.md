@@ -70,11 +70,11 @@ spec:
             [_, payload, _] := io.jwt.decode(jwt)
         }
 
-    # Configure middleware pipelines
+    # Pipeline settings for middleware components
     - name: pipelineType
       value: "httpPipeline"
     - name: priority
-      value: "1"
+      value: "3"
 ```
 
 You can prototype and experiment with policies using the [official OPA playground](https://play.openpolicyagent.org). For example, [you can find the example policy above here](https://play.openpolicyagent.org/p/oRIDSo6OwE).
@@ -88,7 +88,7 @@ You can prototype and experiment with policies using the [official OPA playgroun
 | `readBody`   | If set to `true` (the default value), the body of each request is read fully in-memory and can be used to make policy decisions. If your policy doesn't depend on inspecting the request body, consider disabling this (setting to `false`) for significant performance improvements. | `"false"`
 | `includedHeaders` | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`
 | `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`, `"2"`, `"3"`
 
 ## Dapr configuration
 

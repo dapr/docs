@@ -39,7 +39,7 @@ spec:
   - name: pipelineType
     value: "httpPipeline"
   - name: priority
-    value: "1"
+    value: "2"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -59,7 +59,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `authHeaderName` | The authorization header name to forward to your application | `"authorization"`
 | forceHTTPS | If true, enforces the use of TLS/SSL | `"true"`,`"false"`                                           |
 | `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`, `"2"`
 
 ## Dapr configuration
 

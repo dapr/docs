@@ -56,7 +56,7 @@ spec:
 | `isolationRules` | JSON array of sentinel isolation rules | [isolation rule](https://github.com/alibaba/sentinel-golang/blob/master/core/isolation/rule.go)
 | `systemRules` | JSON array of sentinel system rules | [system rule](https://github.com/alibaba/sentinel-golang/blob/master/core/system/rule.go)
 | `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 
 Once the limit is reached, the request will return *HTTP Status code 429: Too Many Requests*.
 

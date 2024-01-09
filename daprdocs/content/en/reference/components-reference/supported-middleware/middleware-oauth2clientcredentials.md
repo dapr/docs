@@ -52,7 +52,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `endpointParamsQuery` | Specifies additional parameters for requests to the token endpoint | `true`
 | `authStyle` | Optionally specifies how the endpoint wants the client ID & client secret sent. See the table of possible values below | `0`
 | `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. | `"1"`
+| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 
 
 ### Possible values for `authStyle`
