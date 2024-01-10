@@ -64,7 +64,7 @@ Continue with the [Run local server](#run-local-server) steps.
 ### Environment setup
 
 1. Ensure pre-requisites are installed.
-2. [Fork](https://github.com/dapr/docs/fork) and clone this repository.
+1. [Fork](https://github.com/dapr/docs/fork) and clone this repository.
 
 3. Change to daprdocs directory:
 
