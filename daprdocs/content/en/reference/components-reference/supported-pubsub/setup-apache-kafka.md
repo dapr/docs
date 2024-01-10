@@ -368,7 +368,14 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correla
 You can configure pub/sub to publish or consume data encoded using [Avro binary serialization](https://avro.apache.org/docs/), leveraging an [Apache Schema Registry](https://developer.confluent.io/courses/apache-kafka/schema-registry/) (for example, [Confluent Schema Registry](https://developer.confluent.io/courses/apache-kafka/schema-registry/), [Apicurio](https://www.apicur.io/registry/)).
 
 ### Configuration
-- The kafka pubsub component metadata must at least have the schema registry URL defined, and API key/secret if applicable.
+
+{{% alert title="Important" color="warning" %}}
+Currently, only message value serialization/deserialization is supported. Since cloud events are not supported, the `rawPayload=true` metadata must be passed.
+{{% /alert %}}
+
+When configuring the Kafka pub/sub component metadata, you must define:
+- The schema registry URL 
+- The API key/secret, if applicable
 
 Schema subjects are automatically derived from topic names, using the standard naming convention. For example, for a topic named `my-topic`, the schema subject will be `my-topic-value`.
   - e.g. given topic `my-topic`, the schema subject will be `my-topic-value`
