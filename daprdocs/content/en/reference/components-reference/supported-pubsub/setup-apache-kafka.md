@@ -377,7 +377,7 @@ Schema subjects are automatically derived from topic names, using the standard n
   - Date/Datetime fields must be passed as their [Epoch Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) equivalent (rather than typical Iso8601)
   - E.g.
     - `2024-01-10T04:36:05.986Z` should be passed as `1704861365986`. Number of milliseconds since Jan 1st, 1970
-    - `2024-01-10` should be passed as `19732`. Number of days since Jan 1st, 1970
+- `2024-01-10` should be passed as `19732` (the number of days since Jan 1st, 1970)
 
 ### Publishing Avro messages
 In order to indicate to the Kafka pub/sub component that the message should be using Avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
