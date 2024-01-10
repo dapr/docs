@@ -380,7 +380,7 @@ Schema subjects are automatically derived from topic names, using the standard n
     - `2024-01-10` should be passed as `19732`. Number of days since Jan 1st, 1970
 
 ### Publishing Avro messages
-- In order to indicate to the kafka pubsub component that the message should be using avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
+In order to indicate to the Kafka pub/sub component that the message should be using Avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
 
 {{< tabs curl "Python SDK">}}
 
