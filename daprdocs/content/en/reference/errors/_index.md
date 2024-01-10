@@ -1,22 +1,24 @@
 ---
 type: docs
-title: Dapr Errors
-linkTitle: "Dapr Errors"
+title: Dapr errors
+linkTitle: "Dapr errors"
 weight: 700
 description: "Information on Dapr errors and how to handle them"
 ---
 
-# Dapr Error Handling: Understanding the Error Models
+## Dapr Error Handling: Understanding the Error Models
 
 Initially, Dapr followed the standard gRPC error model. However, to provide more detailed and informative error messages, Dapr is gradually transitioning to a richer error model as defined by gRPC. 
 
-> Not all Dapr errors have been converted to the richer gRPC error model.
+{{% alert title="Note" color="primary" %}}
+Not all Dapr errors have been converted to the richer gRPC error model.
+{{% /alert %}}
 
 ### Standard gRPC Error Model
 
 The [standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model) is a straightforward approach to error reporting gRPC. Each error response includes an error code and an error message. The error codes are standardized and reflect common error conditions. 
 
-Example of a Standard gRPC Error Response:
+**Example of a Standard gRPC Error Response:**
 ```
 ERROR:
   Code: InvalidArgument
@@ -25,7 +27,7 @@ ERROR:
 
 ### Richer gRPC Error Model
 
-The richer error model enhances the standard model by providing additional context and details about the error. This model includes the standard error code and message, along with a Details section that can contain various types of information, such as ErrorInfo, ResourceInfo, and BadRequest details.
+The richer error model enhances the standard model by providing additional context and details about the error. This model includes the standard error code and message, along with a `Details` section that can contain various types of information, such as `ErrorInfo`, `ResourceInfo`, and `BadRequest` details.
 
 
 **Example of a Richer gRPC Error Response:**
@@ -55,7 +57,7 @@ ERROR:
     	}
 ```
 
-For HTTP clients, Dapr translates the gRPC error model to a similar structure in JSON format. The response includes an errorCode, a message, and a details array that mirrors the structure found in the richer gRPC model.
+For HTTP clients, Dapr translates the gRPC error model to a similar structure in JSON format. The response includes an `errorCode`, a `message`, and a `details` array that mirrors the structure found in the richer gRPC model.
 
 **Example of an HTTP Error Response:**
 ```json
