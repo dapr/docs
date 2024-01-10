@@ -379,7 +379,7 @@ When configuring the Kafka pub/sub component metadata, you must define:
 
 Schema subjects are automatically derived from topic names, using the standard naming convention. For example, for a topic named `my-topic`, the schema subject will be `my-topic-value`.
   - e.g. given topic `my-topic`, the schema subject will be `my-topic-value`
-- When interacting with the message payload within the service, it will be in JSON format. The payload will be transparently serialized/deserialized within the Dapr component.
+When interacting with the message payload within the service, it will be in JSON format. The payload will be transparently serialized/deserialized within the Dapr component.
   - Date/Datetime fields must be passed as their [Epoch Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) equivalent (rather than typical Iso8601)
 - `2024-01-10T04:36:05.986Z` should be passed as `1704861365986` (the number of milliseconds since Jan 1st, 1970)
 - `2024-01-10` should be passed as `19732` (the number of days since Jan 1st, 1970)
