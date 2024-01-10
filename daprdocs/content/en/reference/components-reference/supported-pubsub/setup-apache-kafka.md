@@ -415,7 +415,7 @@ with DaprClient() as d:
 
 
 ### Subscribing to Avro topics
-- In order to indicate to the kafka pubsub component that the message should be deserialized using avro, the `valueSchemaType` metadata must be set to `Avro` in the subscription metadata.
+In order to indicate to the Kafka pub/sub component that the message should be deserialized using Avro, the `valueSchemaType` metadata must be set to `Avro` in the subscription metadata.
 
 {{< tabs "Python (FastAPI)" >}}
 
