@@ -369,7 +369,6 @@ You can configure pub/sub to publish or consume data encoded using [Avro binary 
 
 ### Configuration
 - The kafka pubsub component metadata must at least have the schema registry URL defined, and API key/secret if applicable.
-- Cloud events are not supported. Therefore, the `rawPayload=true` metadata must be passed.
 
 Schema subjects are automatically derived from topic names, using the standard naming convention. For example, for a topic named `my-topic`, the schema subject will be `my-topic-value`.
   - e.g. given topic `my-topic`, the schema subject will be `my-topic-value`
