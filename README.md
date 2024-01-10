@@ -50,7 +50,7 @@ This devcontainer can be used to develop locally with VSCode or via GitHub Codes
 code .
 ```
 
-3. When prompted, click "Reopen in Container" to open the repository in the devcontainer.
+1. When prompted, click "Reopen in Container" to open the repository in the devcontainer.
 
 Continue with the [Run local server](#run-local-server) steps.
 
