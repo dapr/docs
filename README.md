@@ -44,7 +44,7 @@ This devcontainer can be used to develop locally with VSCode or via GitHub Codes
 
 1. [Fork](https://github.com/dapr/docs/fork) and clone this repository.
 
-2. Open the forked repository in VS Code
+1. Open the forked repository in VS Code
 
 ```sh
 code .
