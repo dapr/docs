@@ -11,7 +11,7 @@ The Dapr sidecar needs to be restarted in order to pick up the latest version of
 How this is done depends on the hosting environment.
 
 {{% alert title="Note" color="primary" %}}
-Dapr can be made to "hot reload" components where updates will be picked up automatically without needing a restart.
+Dapr can be made to "hot reload" components, where updates are picked up automatically without needing a restart.
 This is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
 All component types are supported for hot reloading.
 This feature is currently in preview.
