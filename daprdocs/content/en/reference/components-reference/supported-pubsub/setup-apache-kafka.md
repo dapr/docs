@@ -301,7 +301,11 @@ auth:
 
 ## Consuming from multiple topics
 
-When consuming from multiple topics using a single pub/sub component, there is no guarantee about how the consumers in your consumer group are balanced across the topic partitions. For instance, if you are subscribing to two topics with 10 partitions per topic and you have 20 replicas of your service consuming from the two topics, then there is no guarantee that 10 will be assigned to the first topic and 10 to the second topic. It could be possible that more than 10 are assigned to the first topic and subsequently less than 10 assigned to the second topic. This can result in idle consumers listening to the first topic and over-extended consumers on the second topic, or vice versa. This same beheaviour can be observed when using auto-scalers such as HPA or KEDA.
+When consuming from multiple topics using a single pub/sub component, there is no guarantee about how the consumers in your consumer group are balanced across the topic partitions. 
+
+For instance, let's say you are subscribing to two topics with 10 partitions per topic and you have 20 replicas of your service consuming from the two topics. There is no guarantee that 10 will be assigned to the first topic and 10 to the second topic. Instead, the partitions could be divided unequally, with more than 10 assigned to the first topic and the rest assigned to the second topic. 
+
+This can result in idle consumers listening to the first topic and over-extended consumers on the second topic, or vice versa. This same behavior can be observed when using auto-scalers such as HPA or KEDA.
 
 If you run into this particular issue, it is recommended that you configure a single pub/sub component per topic with uniquely defined consumer groups per component. This guarantees that all replicas of your service are fully allocated to the unique consumer group, where each consumer group targets one specific topic.
 
