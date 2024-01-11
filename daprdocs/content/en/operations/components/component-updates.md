@@ -8,7 +8,7 @@ description: "Updating deployed components used by applications"
 
 When making an update to an existing deployed component used by an application, Dapr does not update the component automatically unless the `HotReload` feature gate is enabled.
 The Dapr sidecar needs to be restarted in order to pick up the latest version of the component.
-How this done depends on the hosting environment.
+How this is done depends on the hosting environment.
 
 {{% alert title="Note" color="primary" %}}
 Dapr can be made to "hot reload" components where updates will be picked up automatically without needing a restart.
@@ -21,12 +21,12 @@ This feature is currently in preview.
 
 When running in Kubernetes, the process of updating a component involves two steps:
 
-1. Applying the new component YAML to the desired namespace
-2. (Unless the [`HotReload` feature gate is enabled]({{< ref "support-preview-features.md" >}})), perform a [rollout restart operation](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#updating-resources) on your deployments to pick up the latest component
+1. Apply the new component YAML to the desired namespace
+1. Unless the [`HotReload` feature gate is enabled]({{< ref "support-preview-features.md" >}}), perform a [rollout restart operation](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#updating-resources) on your deployments to pick up the latest component
 
 ## Self Hosted
 
-Unless the [`HotReload` feature gate is enabled]({{< ref "support-preview-features.md" >}}), the process of updating a component involves a single step of stopping the `daprd` process and starting it again to pick up the latest component.
+Unless the [`HotReload` feature gate is enabled]({{< ref "support-preview-features.md" >}}), the process of updating a component involves a single step of stopping and restarting the `daprd` process to pick up the latest component.
 
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})
