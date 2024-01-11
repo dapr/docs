@@ -253,7 +253,7 @@ async function start() {
         }
     });
     await server.binding.receive('checkout', async (orderId) => console.log(`Received Message: ${JSON.stringify(orderId)}`));
-    await server.startServer();
+    await server.start();
 }
 
 ```
