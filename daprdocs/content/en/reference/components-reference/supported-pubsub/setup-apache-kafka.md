@@ -426,13 +426,11 @@ In order to indicate to the Kafka pub/sub component that the message should be d
 {{% codetab %}}
 
 ```python
-from dapr.ext.fastapi import DaprApp
 from fastapi import APIRouter, Body, Response, status
 import json
 import sys
 
 app = FastAPI()
-dapr_app = DaprApp(app)
 
 router = APIRouter()
 
