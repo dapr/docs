@@ -450,9 +450,10 @@ def subscribe():
 def my_topic_subscriber(event_data=Body()):
     print(event_data, flush=True)
       return Response(status_code=status.HTTP_200_OK)
-```
 
 app.include_router(router)
+
+```
 
 {{% /codetab %}}
 
