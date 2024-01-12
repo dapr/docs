@@ -16,7 +16,7 @@ Not all Dapr errors have been converted to the richer gRPC error model.
 
 ### Standard gRPC Error Model
 
-The [standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model) is a straightforward approach to error reporting gRPC. Each error response includes an error code and an error message. The error codes are standardized and reflect common error conditions. 
+The [standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model) is an approach to error reporting in gRPC. Each error response includes an error code and an error message. The error codes are standardized and reflect common error conditions. 
 
 **Example of a Standard gRPC Error Response:**
 ```
