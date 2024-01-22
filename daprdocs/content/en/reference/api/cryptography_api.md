@@ -7,7 +7,7 @@ weight: 1300
 ---
 
 Dapr provides cross-platform and cross-language support for encryption and decryption support via the 
-Cryptography building block. Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke these capabilities using
+cryptography building block. Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke these capabilities using
 the HTTP API endpoints below.
 
 ## Encrypt Payload
