@@ -102,7 +102,7 @@ details the required and optional headers to set with every decryption request.
 
 #### Response Body
 The response to a decryption request will have its content type header to set `application/octet-stream` as it will 
-return an array of bytes representing the decrypted payload.
+returns an array of bytes representing the decrypted payload.
 
 #### Response Codes
 | Code | Description                                                             |
