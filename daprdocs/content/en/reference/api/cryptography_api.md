@@ -52,7 +52,7 @@ will return an array of bytes with the encrypted payload.
 |------|-------------------------------------------------------------------------|
 | 200  | OK                                                                      |
 | 400  | Crypto provider not found                                               |
-| 500  | Request formatted correctly, error in dapr code or underlying component |
+| 500  | Request formatted correctly, error in Dapr code or underlying component |
 
 ### Examples
 ```shell
