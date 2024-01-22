@@ -6,7 +6,7 @@ description: "Detailed documentation on the cryptography API"
 weight: 1300
 ---
 
-Dapr provides native, cross-platform, and cross-language support for encryption and decryption support via the 
+Dapr provides cross-platform and cross-language support for encryption and decryption support via the 
 Cryptography building block. Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke these capabilities using
 the gRPC API endpoints below.
 
