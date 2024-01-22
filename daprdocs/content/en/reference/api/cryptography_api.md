@@ -45,7 +45,7 @@ encryption request.
 
 #### Response Body
 The response to an encryption request will have its content type header set to `application/octet-stream` as it
-will return an array of bytes with the encrypted payload.
+returns an array of bytes with the encrypted payload.
 
 #### Response Codes
 | Code | Description                                                             |
