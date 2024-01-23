@@ -6,7 +6,7 @@ weight: 700
 description: "Information on Dapr errors and how to handle them"
 ---
 
-## Dapr Error Handling: Understanding the Error Models
+## Error handling: Understanding errors model and reporting
 
 Initially, errors followed the [Standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model). However, to provide more detailed and informative error messages, an enhanced error model has been defined which aligns with the gRPC [Richer error model](https://grpc.io/docs/guides/error/#richer-error-model). 
 
@@ -59,7 +59,7 @@ ERROR:
 
 For HTTP clients, Dapr translates the gRPC error model to a similar structure in JSON format. The response includes an `errorCode`, a `message`, and a `details` array that mirrors the structure found in the richer gRPC model.
 
-**Example of an HTTP Error Response:**
+**Example of an HTTP error response:**
 ```json
 {
     "errorCode": "ERR_MALFORMED_REQUEST",
