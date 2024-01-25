@@ -16,7 +16,7 @@ Not all Dapr errors have been converted to the richer gRPC error model.
 
 ### Standard gRPC Error Model
 
-The [standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model) is an approach to error reporting in gRPC. Each error response includes an error code and an error message. The error codes are standardized and reflect common error conditions. 
+The [Standard gRPC error model](https://grpc.io/docs/guides/error/#standard-error-model) is an approach to error reporting in gRPC. Each error response includes an error code and an error message. The error codes are standardized and reflect common error conditions. 
 
 **Example of a Standard gRPC Error Response:**
 ```
@@ -27,7 +27,7 @@ ERROR:
 
 ### Richer gRPC Error Model
 
-The richer error model enhances the standard model by providing additional context and details about the error. This model includes the standard error code and message, along with a `Details` section that can contain various types of information, such as `ErrorInfo`, `ResourceInfo`, and `BadRequest` details.
+The [Richer gRPC error model](https://grpc.io/docs/guides/error/#richer-error-model) extends the standard error model by providing additional context and details about the error. This model includes the standard error `code` and `message`, along with a `details` section that can contain various types of information, such as `ErrorInfo`, `ResourceInfo`, and `BadRequest` details.
 
 
 **Example of a Richer gRPC Error Response:**
