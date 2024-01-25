@@ -76,16 +76,20 @@ def error_handler(ctx, error):
 <!--javascript-->
 
 ```javascript
-import WorkflowClient from "../client/WorkflowClient";
-import WorkflowActivityContext from "../runtime/WorkflowActivityContext";
-import WorkflowContext from "../runtime/WorkflowContext";
-import WorkflowRuntime from "../runtime/WorkflowRuntime";
-import { TWorkflow } from "../types/Workflow.type";
+import { DaprWorkflowClient, WorkflowActivityContext, WorkflowContext, WorkflowRuntime, TWorkflow } from "@dapr/dapr";
 
-(async () => {
-  const grpcEndpoint = "localhost:4001";
-  const workflowClient = new WorkflowClient(grpcEndpoint);
-  const workflowRuntime = new WorkflowRuntime(grpcEndpoint);
+async function start() {
+  // Update the gRPC client and worker to use a local address and port
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
 
   const hello = async (_: WorkflowActivityContext, name: string) => {
     return `Hello ${name}!`;
@@ -96,7 +100,7 @@ import { TWorkflow } from "../types/Workflow.type";
 
     const result1 = yield ctx.callActivity(hello, "Tokyo");
     cities.push(result1);
-    const result2 = yield ctx.callActivity(hello, "Seattle"); // Correct the spelling of "Seattle"
+    const result2 = yield ctx.callActivity(hello, "Seattle");
     cities.push(result2);
     const result3 = yield ctx.callActivity(hello, "London");
     cities.push(result3);
@@ -129,7 +133,15 @@ import { TWorkflow } from "../types/Workflow.type";
 
   await workflowRuntime.stop();
   await workflowClient.stop();
-})();
+
+  // stop the dapr side car
+  process.exit(0);
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
 {{% /codetab %}}
@@ -294,19 +306,28 @@ def process_results(ctx, final_result: int):
 <!--javascript-->
 
 ```javascript
-import { Task } from "kaibocai-durabletask-js/task/task";
-import WorkflowClient from "../client/WorkflowClient";
-import WorkflowActivityContext from "../runtime/WorkflowActivityContext";
-import WorkflowContext from "../runtime/WorkflowContext";
-import WorkflowRuntime from "../runtime/WorkflowRuntime";
-import { TWorkflow } from "../types/Workflow.type";
+import {
+  Task,
+  DaprWorkflowClient,
+  WorkflowActivityContext,
+  WorkflowContext,
+  WorkflowRuntime,
+  TWorkflow,
+} from "@dapr/dapr";
 
 // Wrap the entire code in an immediately-invoked async function
-(async () => {
+async function start() {
   // Update the gRPC client and worker to use a local address and port
-  const grpcServerAddress = "localhost:4001";
-  const workflowClient: WorkflowClient = new WorkflowClient(grpcServerAddress);
-  const workflowRuntime: WorkflowRuntime = new WorkflowRuntime(grpcServerAddress);
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
 
   function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -332,6 +353,8 @@ import { TWorkflow } from "../types/Workflow.type";
     await sleep(sleepTime);
 
     // Return a result for the given work item, which is also a random number in this case
+    // For more information about random numbers in workflow please check
+    // https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-code-constraints?tabs=csharp#random-numbers
     return Math.floor(Math.random() * 11);
   }
 
@@ -374,7 +397,15 @@ import { TWorkflow } from "../types/Workflow.type";
   // stop worker and client
   await workflowRuntime.stop();
   await workflowClient.stop();
-})();
+
+  // stop the dapr side car
+  process.exit(0);
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
 {{% /codetab %}}
@@ -767,16 +798,18 @@ def place_order(_, order: Order) -> None:
 <!--javascript-->
 
 ```javascript
-import { Task } from "kaibocai-durabletask-js/task/task";
-import WorkflowClient from "../client/WorkflowClient";
-import WorkflowActivityContext from "../runtime/WorkflowActivityContext";
-import WorkflowContext from "../runtime/WorkflowContext";
-import WorkflowRuntime from "../runtime/WorkflowRuntime";
-import { TWorkflow } from "../types/Workflow.type";
+import {
+  Task,
+  DaprWorkflowClient,
+  WorkflowActivityContext,
+  WorkflowContext,
+  WorkflowRuntime,
+  TWorkflow,
+} from "@dapr/dapr";
 import * as readlineSync from "readline-sync";
 
 // Wrap the entire code in an immediately-invoked async function
-(async () => {
+async function start() {
   class Order {
     cost: number;
     product: string;
@@ -793,11 +826,18 @@ import * as readlineSync from "readline-sync";
   }
 
   // Update the gRPC client and worker to use a local address and port
-  const grpcServerAddress = "localhost:4001";
-  let workflowClient: WorkflowClient = new WorkflowClient(grpcServerAddress);
-  let workflowRuntime: WorkflowRuntime = new WorkflowRuntime(grpcServerAddress);
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
 
-  //Activity function that sends an approval request to the manager
+  // Activity function that sends an approval request to the manager
   const sendApprovalRequest = async (_: WorkflowActivityContext, order: Order) => {
     // Simulate some work that takes an amount of time
     await sleep(3000);
@@ -858,12 +898,8 @@ import * as readlineSync from "readline-sync";
     const id = await workflowClient.scheduleNewWorkflow(purchaseOrderWorkflow, order);
     console.log(`Orchestration scheduled with ID: ${id}`);
 
-    if (readlineSync.keyInYN("Press [Y] to approve the order... Y/yes, N/no")) {
-      const approvalEvent = { approver: approver };
-      await workflowClient.raiseEvent(id, "approval_received", approvalEvent);
-    } else {
-      return "Order rejected";
-    }
+    // prompt for approval asynchronously
+    promptForApproval(approver, workflowClient, id);
 
     // Wait for orchestration completion
     const state = await workflowClient.waitForWorkflowCompletion(id, undefined, timeout + 2);
@@ -876,7 +912,24 @@ import * as readlineSync from "readline-sync";
   // stop worker and client
   await workflowRuntime.stop();
   await workflowClient.stop();
-})();
+
+  // stop the dapr side car
+  process.exit(0);
+}
+
+async function promptForApproval(approver: string, workflowClient: DaprWorkflowClient, id: string) {
+  if (readlineSync.keyInYN("Press [Y] to approve the order... Y/yes, N/no")) {
+    const approvalEvent = { approver: approver };
+    await workflowClient.raiseEvent(id, "approval_received", approvalEvent);
+  } else {
+    return "Order rejected";
+  }
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
 {{% /codetab %}}
