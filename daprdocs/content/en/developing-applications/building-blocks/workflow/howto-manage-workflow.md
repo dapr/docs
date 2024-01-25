@@ -313,7 +313,7 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
-  - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/src/workflow)
+  - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
 
