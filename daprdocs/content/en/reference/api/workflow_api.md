@@ -57,8 +57,15 @@ The API call will provide a response similar to this:
 Terminate a running workflow instance with the given name and instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate
+POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate[?non_recursive=false]
 ```
+
+{{% alert title="Note" color="primary" %}}
+ Terminating a workflow will terminate all of the child workflows created by the workflow instance. This can be disabled by setting the query parameter `non_recursive` to `true`. 
+ 
+ Terminating a workflow will have no effect on any in-flight activity executions that were started by the terminated instance. 
+
+{{% /alert %}}
 
 ### URL parameters
 
@@ -66,6 +73,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`non_recursive` | (Optional) Boolean to determine if Dapr should not recursively terminate child workflows created by the workflow instance, default value is false.
 
 ### HTTP response codes
 
@@ -171,8 +179,13 @@ None.
 Purge the workflow state from your state store with the workflow's instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/purge
+POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/purge[?non_recursive=false]
 ```
+
+{{% alert title="Note" color="primary" %}}
+ Purging a workflow will purge all of the child workflows created by the workflow instance. This can be disabled by setting the query parameter `non_recursive` to `true`.
+
+{{% /alert %}}
 
 ### URL parameters
 
@@ -180,6 +193,7 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
+`non_recursive` | (Optional) Boolean to determine if Dapr should not recursively purge child workflows created by the workflow instance, default value is false.
 
 ### HTTP response codes
 
