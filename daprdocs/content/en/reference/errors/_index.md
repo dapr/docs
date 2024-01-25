@@ -92,3 +92,8 @@ For HTTP clients, Dapr translates the gRPC error model to a similar structure in
 ```
 
 You can find the specification of all the possible status details [here](https://github.com/googleapis/googleapis/blob/master/google/rpc/error_details.proto).
+
+## Related Links
+
+- [Authoring error codes](https://github.com/dapr/dapr/tree/master/pkg/api/errors)
+- [Using error codes in the Go SDK](https://docs.dapr.io/developing-applications/sdks/go/go-client/#error-handling)
