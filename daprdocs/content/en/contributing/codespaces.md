@@ -30,6 +30,7 @@ If you haven't already forked the repo, creating the Codespace will also create 
 - [dapr/dapr](https://github.com/dapr/dapr)
 - [dapr/components-contrib](https://github.com/dapr/components-contrib)
 - [dapr/cli](https://github.com/dapr/cli)
+- [dapr/docs](https://github.com/dapr/docs)
 - [dapr/python-sdk](https://github.com/dapr/python-sdk)
 
 ## Developing Dapr Components in a Codespace
