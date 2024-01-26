@@ -86,3 +86,4 @@ Watch this [demo video of the Cryptography API from the Dapr Community Call #83]
 ## Related links
 - [Cryptography overview]({{< ref cryptography-overview.md >}})
 - [Cryptography component specs]({{< ref supported-cryptography >}})
+- [Cryptography API reference doc]({{< ref cryptography_api >}})
