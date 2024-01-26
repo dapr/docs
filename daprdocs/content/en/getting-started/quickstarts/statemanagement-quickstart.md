@@ -48,6 +48,12 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/python/sdk/order-processor
 ```
 
+Install the dependencies:
+
+```bash
+pip3 install -r requirements.txt 
+```
+
 Run the `order-processor` service alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}).
 
 ```bash
@@ -163,12 +169,26 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
+Install the dependencies for the `order-processor` app:
+
+```bash
+cd ./order-processor
+npm install
+cd ..
+```
+
 ### Step 2: Manipulate service state
 
 In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
 cd state_management/javascript/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+npm install
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
@@ -295,6 +315,13 @@ In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
 cd state_management/csharp/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+dotnet restore
+dotnet build
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
@@ -555,6 +582,12 @@ In a terminal window, navigate to the `order-processor` directory.
 
 ```bash
 cd state_management/go/sdk/order-processor
+```
+
+Install the dependencies:
+
+```bash
+go build .
 ```
 
 Run the `order-processor` service alongside a Dapr sidecar.
