@@ -10,6 +10,9 @@ Dapr provides cross-platform and cross-language support for encryption and decry
 cryptography building block. Besides the [language specific SDKs]({{<ref sdks>}}), a developer can invoke these capabilities using
 the HTTP API endpoints below.
 
+> The HTTP APIs are intended for development and testing only. For production scenarios, the use of the SDKs is strongly
+> recommended as they implement the gRPC APIs providing higher performance and capability than the HTTP APIs.
+
 ## Encrypt Payload
 
 This endpoint lets you encrypt a value provided as a byte array using a specified key and crypto component.
