@@ -878,7 +878,7 @@ with DaprClient() as client:
 
 ### Step 5: View the Pub/sub outputs
 
-Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
+The publisher sends orders to the Dapr sidecar while the subscriber receives them.
 
 Publisher output:
 
