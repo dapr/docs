@@ -135,9 +135,13 @@ ls $HOME/.dapr
 {{% /codetab %}}
 
 {{% codetab %}}
-
+Powershell
 ```powershell
-explorer "%USERPROFILE%\.dapr\"
+explorer "$env:USERPROFILE.dapr"
+```
+command line
+```cmd
+explorer "%USERPROFILE%.dapr"
 ```
 
 **Result:**
