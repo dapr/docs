@@ -201,7 +201,7 @@ const randomString = getRandomString();
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -245,7 +245,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -290,7 +290,7 @@ fetch('https://postman-echo.com/get')
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
