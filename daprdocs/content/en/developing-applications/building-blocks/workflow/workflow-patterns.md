@@ -614,10 +614,27 @@ def send_alert(ctx, message: str):
 <!--javascript-->
 
 ```javascript
+const statusMonitorWorkflow: TWorkflow = async function* (ctx: WorkflowContext): any {
+    let duration;
+    const status = yield ctx.callActivity(checkStatusActivity);
+    if (status === "healthy") {
+      // Check less frequently when in a healthy state
+      // set duration to 1 hour
+      duration = 60 * 60;
+    } else {
+      yield ctx.callActivity(alertActivity, "job unhealthy");
+      // Check more frequently when in an unhealthy state
+      // set duration to 5 minutes
+      duration = 5 * 60;
+    }
 
+    // Put the workflow to sleep until the determined time
+    ctx.createTimer(duration);
+
+    // Restart from the beginning with the updated state
+    ctx.continueAsNew();
+  };
 ```
-
-> This example assumes you have a predefined `MyEntityState` class with a boolean `IsHealthy` property.
 
 {{% /codetab %}}
 
