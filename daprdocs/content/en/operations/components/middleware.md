@@ -6,13 +6,16 @@ weight: 2000
 description: "Customize processing pipelines using middleware components"
 ---
 
-{{% alert title="Note" color="primary" %}}
-Configuring middleware components using a [configuration file]({{< ref configuration-schema.md >}}) is **no longer recommended**. Middleware components are treated just like any other [component]({{< ref components-concept.md >}}), with a YAML file that is placed into the application resources folder.
-{{% /alert %}}
+With Dapr, you can define custom processing middleware pipelines. In this guide, you learn about:
 
-With Dapr, you can define custom processing middleware pipelines. Dapr offers two middleware pipeline types:
+- The two types of middleware pipelines.
+- The two methods you can use to configure middleware.
 
-#### `httpPipeline`
+## Middleware pipelines
+
+Dapr offers two middleware pipeline types: `httpPipeline` and `appHttpPipeline`. 
+
+### `httpPipeline`
 
 This pipeline applies to all Dapr API endpoints, including state, pub/sub, service invocation, bindings, secrets, configuration, distributed lock, etc. In this pipeline, a request:
 
@@ -21,7 +24,7 @@ This pipeline applies to all Dapr API endpoints, including state, pub/sub, servi
 
 <img src="/images/middleware.png" width="800" alt="Diagram showing the flow of a request and a response through the middlewares, as described in the paragraph above" />
 
-#### `appHttpPipeline`
+### `appHttpPipeline`
 
 You can also use any middleware component when making service-to-service invocation calls. For example, to add token validation in a zero-trust environment, to transform a request for a specific app endpoint, or to apply OAuth policies.
 
@@ -29,7 +32,16 @@ Service-to-service invocation middleware components apply to all **outgoing** ca
 
 <img src="/images/app-middleware.png" width="800" alt="Diagram showing the flow of a service invocation request. Requests from the callee Dapr sidecar to the callee application go through the app middleware pipeline as described in the paragraph above." />
 
-## Using middleware components
+## Configure middleware
+
+Dapr offers two ways for you to configure middleware:
+
+- **Recommended:** Using the middleware component, just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref configuration-schema.md >}}).
+
+### Using middleware components
+
+> Configuring middleware pipelines using the middleware component **is the recommended method**.
 
 In your middleware component, you can set the pipeline type and priority metadata  options, both of which are required for the component to be enabled in a pipeline. 
 
@@ -56,11 +68,11 @@ spec:
     value: 1 
 ```
 
-## Using middleware components with Dapr Configuration
+### Using middleware components with configuration
 
-Setting middleware pipelines using Dapr Configuration is **not recommended**.
+Setting middleware pipelines using [a Dapr configuration file]({{< ref configuration-schema.md >}}) is **no longer recommended**.
 
-### API middleware pipelines
+#### API middleware pipelines
 
 When launched, a Dapr sidecar constructs a middleware processing pipeline for incoming HTTP calls. By default, the pipeline consists of the [tracing]({{< ref tracing-overview.md >}}) and CORS middlewares. Additional middlewares, configured by a Dapr [Configuration]({{< ref configuration-concept.md >}}), can be added to the pipeline in the order they are defined. 
 
@@ -90,7 +102,7 @@ spec:
 
 As with other components, supported middleware components can be found in the [supported Middleware reference guide]({{< ref supported-middleware >}}) and in the [`dapr/components-contrib` repo](https://github.com/dapr/components-contrib/tree/master/middleware/http).
 
-### App middleware pipelines
+#### App middleware pipelines
 
 Any middleware component that can be used as HTTP middleware can also be applied to service-to-service invocation calls as a middleware component using the `appHttpPipeline` configuration. 
 

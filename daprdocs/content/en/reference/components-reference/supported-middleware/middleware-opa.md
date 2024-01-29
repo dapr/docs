@@ -81,18 +81,21 @@ You can prototype and experiment with policies using the [official OPA playgroun
 
 ## Spec metadata fields
 
-| Field  | Details | Example |
-|--------|---------|---------|
-| `rego` | The Rego policy language | See above |
-| `defaultStatus`   | The status code to return for denied responses | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
-| `readBody`   | If set to `true` (the default value), the body of each request is read fully in-memory and can be used to make policy decisions. If your policy doesn't depend on inspecting the request body, consider disabling this (setting to `false`) for significant performance improvements. | `"false"`
-| `includedHeaders` | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`
-| `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`, `"2"`, `"3"`
+| Field | Required? | Details | Example |
+|-------|-----------|---------|---------|
+| `rego` |  | The Rego policy language | See above |
+| `defaultStatus` |  | The status code to return for denied responses | `"https://accounts.google.com"`, `"https://login.salesforce.com"`
+| `readBody` |  | If set to `true` (the default value), the body of each request is read fully in-memory and can be used to make policy decisions. If your policy doesn't depend on inspecting the request body, consider disabling this (setting to `false`) for significant performance improvements. | `"false"`
+| `includedHeaders` |  | A comma-separated set of case-insensitive headers to include in the request input. Request headers are not passed to the policy by default. Include to receive incoming request headers in the input | `"x-my-custom-header, x-jwt-header"`
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32.  | `"1"`, `"2"`, `"3"`
 
-## Dapr configuration
+## Configure
 
-You can apply the middleware configuration directly in the middleware component. See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
+You can configure middleware using the following methods:
+
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
 
 ## Input
 

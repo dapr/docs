@@ -29,14 +29,17 @@ spec:
 
 ## Spec metadata fields
 
-| Field | Details | Example |
-|-------|---------|---------|
-| `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
+| Field | Required? | Details | Example |
+|-------|-----------|---------|---------|
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 
-## Dapr configuration
+## Configure
 
-You can apply the middleware configuration directly in the middleware component. See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
+You can configure middleware using the following methods:
+
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
 
 ## Related links
 

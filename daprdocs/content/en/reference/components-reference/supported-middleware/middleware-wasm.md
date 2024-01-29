@@ -52,16 +52,19 @@ spec:
 Minimally, a user must specify a Wasm binary implements the [http-handler](https://http-wasm.io/http-handler/).
 How to compile this is described later.
 
-| Field | Details                                                        | Required | Example        |
-|-------|----------------------------------------------------------------|----------|----------------|
-| `url`   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
-| `guestConfig`   | An optional configuration passed to Wasm guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `environment=production`,`{"environment":"production"}` |
-| `pipelineType` | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
-| `priority` | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) should be arranged and executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
+| Field | Required? | Details                                                        | Required | Example        |
+|-------|-----------|----------------------------------------------------------------|----------|----------------|
+| `url`   |  | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
+| `guestConfig` |  | An optional configuration passed to Wasm guests. Users can pass an arbitrary string to be parsed by the guest code. | false     | `environment=production`,`{"environment":"production"}` |
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 
-## Dapr configuration
+## Configure
 
-You can apply the middleware configuration directly in the middleware component. See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
+You can configure middleware using the following methods:
+
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
 
 {{% alert title="Note" color="primary" %}}
 WebAssembly middleware uses more resources than native middleware. This result in a resource constraint faster than the same logic in native code. Production usage should [Control max concurrency]({{< ref control-concurrency.md >}}).
