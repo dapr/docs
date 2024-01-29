@@ -69,8 +69,8 @@ spec:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | brokers             | Y | A comma-separated list of Kafka brokers. | `"localhost:9092,dapr-kafka.myapp.svc.cluster.local:9093"`
-| consumerGroup       | N | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. | `"group1"`
-| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
+| consumerGroup       | N | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead. | `"group1"`
+| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead. | `"channel1"`
 | clientID            | N | A user-provided string sent with every request to the Kafka brokers for logging, debugging, and auditing purposes. Defaults to `"namespace.appID"` for Kubernetes mode or `"appID"` for Self-Hosted mode. | `"my-namespace.my-dapr-app"`, `"my-dapr-app"`
 | authRequired        | N | *Deprecated* Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"`
 | authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"`
@@ -313,6 +313,44 @@ spec:
       key: caCert
 auth:
   secretStore: <SECRET_STORE_NAME>
+```
+
+## Consuming from multiple topics
+
+When consuming from multiple topics using a single pub/sub component, there is no guarantee about how the consumers in your consumer group are balanced across the topic partitions. 
+
+For instance, let's say you are subscribing to two topics with 10 partitions per topic and you have 20 replicas of your service consuming from the two topics. There is no guarantee that 10 will be assigned to the first topic and 10 to the second topic. Instead, the partitions could be divided unequally, with more than 10 assigned to the first topic and the rest assigned to the second topic. 
+
+This can result in idle consumers listening to the first topic and over-extended consumers on the second topic, or vice versa. This same behavior can be observed when using auto-scalers such as HPA or KEDA.
+
+If you run into this particular issue, it is recommended that you configure a single pub/sub component per topic with uniquely defined consumer groups per component. This guarantees that all replicas of your service are fully allocated to the unique consumer group, where each consumer group targets one specific topic.
+
+For example, you may define two Dapr components with the following configuration:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-topic-one
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: consumerGroup
+    value: "{appID}-topic-one"
+```
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-topic-two
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: consumerGroup
+    value: "{appID}-topic-two"
 ```
 
 ## Sending and receiving multiple messages
