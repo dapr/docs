@@ -293,6 +293,8 @@ tasks.
 
 It's possible to go further and limit the degree of concurrency using simple, language-specific constructs.
 
+{{< tabs ".NET" >}}
+
 {{% codetab %}}
 <!-- .NET -->
 ```csharp
@@ -340,6 +342,10 @@ var result = await Task.WhenAllWithLimitAsync(parallelTasks, 5);
 int sum = result.Sum(t => t);
 await context.CallActivityAsync("PostResults, sum);
 ```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Async HTTP APIs
 
