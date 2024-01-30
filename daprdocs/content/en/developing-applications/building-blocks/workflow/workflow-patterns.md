@@ -287,7 +287,59 @@ The key takeaways from this example are:
 - The number of parallel tasks can be static or dynamic
 - The workflow itself is capable of aggregating the results of parallel executions
 
-While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only 40 complete before the process crashes, the workflow restarts itself automatically and only schedules the remaining 60 tasks.
+Furthermore,the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only 40 
+complete before the process crashes, the workflow restarts itself automatically and only schedules the remaining 60
+tasks.
+
+It's possible to go further and limit the degree of concurrency using simple, language-specific constructs.
+
+{{% codetab %}}
+<!-- .NET -->
+```csharp
+public static class TaskExtensions
+{
+  public static async Task<IEnumerable<T>> WhenAllWithLimitAsync<T>(this IEnumerable<T>> tasks, int maxDegreeOfParallelism)
+  {
+    var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+    var tasksWithSemaphore = new List<Task<T>>();
+    
+    foreach(var task in tasks)
+    {
+      //Wait for the semaphore to become available
+      await semaphore.WaitAsync();
+      
+      //Start a new task that runs the original task and releases the semaphore when done
+      tasksWithSemaphore.Add(task.ContinueWith(t => 
+      {
+        //Release the semaphore
+        semaphore.Release();
+        return t.Result;
+      }));
+    }
+    
+    //Wait for all the tasks to complete
+    await Task.WhenAll(tasksWithSemaphore);
+  }
+}
+
+//Revisiting the earlier example...
+// Get a list of N work items to process in parallel.
+object[] workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
+
+// Schedule the parallel tasks, but don't wait for them to complete yet.
+var parallelTasks = new List<Task<int>>(workBatch.Length);
+for (int i = 0; i < workBatch.Length; i++)
+{
+    Task<int> task = context.CallActivityAsync<int>("ProcessWorkItem", workBatch[i]);
+    parallelTasks.Add(task);
+}
+
+// This is where we diverge from the previous example and use our new extension method above
+var result = await Task.WhenAllWithLimitAsync(parallelTasks, 5);
+
+int sum = result.Sum(t => t);
+await context.CallActivityAsync("PostResults, sum);
+```
 
 ## Async HTTP APIs
 
