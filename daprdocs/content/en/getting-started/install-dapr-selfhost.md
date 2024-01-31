@@ -142,7 +142,7 @@ explorer "$env:USERPROFILE\.dapr"
 
 If using command line, run: 
 ```cmd
-explorer "%USERPROFILE%.dapr"
+explorer "%USERPROFILE%\.dapr"
 ```
 
 **Result:**
