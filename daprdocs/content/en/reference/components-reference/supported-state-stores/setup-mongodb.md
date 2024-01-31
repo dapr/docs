@@ -47,20 +47,23 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
-If you wish to use MongoDB as an actor store, append the following to the yaml.
+### Actor state store and transactions support
+
+For using as an actor state store or to leverage transactions, MongoDB must be running in a [Replica Set](https://www.mongodb.com/docs/manual/replication/).
+
+If you wish to use MongoDB as an actor store, add this metadata option to your Component YAML:
 
 ```yaml
   - name: actorStateStore
     value: "true"
 ```
 
-
 ## Spec metadata fields
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| server             | Y<sup>*</sup> | The server to connect to, when using DNS SRV record | `"server.example.com"`
-| host               | Y<sup>*</sup> | The host to connect to | `"mongo-mongodb.default.svc.cluster.local:27017"`
+| server             | Y<sup>1</sup> | The server to connect to, when using DNS SRV record | `"server.example.com"`
+| host               | Y<sup>1</sup> | The host to connect to | `"mongo-mongodb.default.svc.cluster.local:27017"`
 | username           | N        | The username of the user to connect with (applicable in conjunction with `host`) | `"admin"`
 | password           | N        | The password of the user (applicable in conjunction with `host`) | `"password"`
 | databaseName       | N        | The name of the database to use. Defaults to `"daprStore"` | `"daprStore"`
@@ -68,11 +71,11 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 | writeConcern       | N        | The write concern to use | `"majority"`
 | readConcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
 | operationTimeout   | N        | The timeout for the operation. Defaults to `"5s"` | `"5s"`
-| params             | N<sup>**</sup> | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
+| params             | N<sup>2</sup> | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
 
-> <sup>[*]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr will return an error.
+> <sup>[1]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr will return an error.
 
-> <sup>[**]</sup> The `params` field accepts a query string that specifies connection specific options as `<name>=<value>` pairs, separated by `"&"` and prefixed with `"?"`. e.g. to use "daprStore" db as authentication database and enabling SSL/TLS in connection, specify params as `"?authSource=daprStore&ssl=true"`. See [the mongodb manual](https://docs.mongodb.com/manual/reference/connection-string/#std-label-connections-connection-options) for the list of available options and their use cases.
+> <sup>[2]</sup> The `params` field accepts a query string that specifies connection specific options as `<name>=<value>` pairs, separated by `&` and prefixed with `?`. e.g. to use "daprStore" db as authentication database and enabling SSL/TLS in connection, specify params as `?authSource=daprStore&ssl=true`. See [the mongodb manual](https://docs.mongodb.com/manual/reference/connection-string/#std-label-connections-connection-options) for the list of available options and their use cases.
 
 ## Setup MongoDB
 
@@ -81,11 +84,11 @@ If you wish to use MongoDB as an actor store, append the following to the yaml.
 {{% codetab %}}
 You can run MongoDB locally using Docker:
 
-```
+```sh
 docker run --name some-mongo -d mongo
 ```
 
-You can then interact with the server using `localhost:27017`.
+You can then interact with the server at `localhost:27017`.
 
 If you do not specify a `databaseName` value in your component definition, make sure to create a database named `daprStore`.
 
@@ -94,7 +97,7 @@ If you do not specify a `databaseName` value in your component definition, make 
 {{% codetab %}}
 The easiest way to install MongoDB on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/mongodb):
 
-```
+```sh
 helm install mongo stable/mongodb
 ```
 
@@ -103,8 +106,9 @@ To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`
 
 For example, if installing using the example above, the MongoDB host address would be:
 
-`mongo-mongodb.default.svc.cluster.local:27017`
-
+```text
+mongo-mongodb.default.svc.cluster.local:27017
+```
 
 Follow the on-screen instructions to get the root password for MongoDB.
 The username is `admin` by default.
@@ -117,6 +121,7 @@ The username is `admin` by default.
 This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) for records stored with Dapr. When storing data using Dapr, you can set the `ttlInSeconds` metadata property to indicate when the data should be considered "expired".
 
 ## Related links
+
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - Read [this guide]({{< ref "howto-get-save-state.md#step-2-save-and-retrieve-a-single-state" >}}) for instructions on configuring state store components
 - [State management building block]({{< ref state-management >}})
