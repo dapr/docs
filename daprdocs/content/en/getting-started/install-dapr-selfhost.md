@@ -139,7 +139,8 @@ You can verify using either PowerShell or command line. If using PowerShell, run
 ```powershell
 explorer "$env:USERPROFILE.dapr"
 ```
-command line
+
+If using command line, run: 
 ```cmd
 explorer "%USERPROFILE%.dapr"
 ```
