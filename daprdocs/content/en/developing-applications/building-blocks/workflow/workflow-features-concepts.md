@@ -268,6 +268,8 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
 ```javascript
 // DON'T DO THIS!
 // Accessing an Environment Variable (Node.js)
