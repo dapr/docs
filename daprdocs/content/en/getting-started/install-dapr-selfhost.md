@@ -135,9 +135,14 @@ ls $HOME/.dapr
 {{% /codetab %}}
 
 {{% codetab %}}
-
+You can verify using either PowerShell or command line. If using PowerShell, run:
 ```powershell
-explorer "%USERPROFILE%\.dapr\"
+explorer "$env:USERPROFILE\.dapr"
+```
+
+If using command line, run: 
+```cmd
+explorer "%USERPROFILE%\.dapr"
 ```
 
 **Result:**
