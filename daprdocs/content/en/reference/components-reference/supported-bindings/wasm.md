@@ -71,18 +71,15 @@ spec:
   type: bindings.wasm
   version: v1
   metadata:
-  - name: url
-    value: "file://uppercase.wasm"
-  - name: direction 
-    value: "output"
+    - name: url
+      value: "file://uppercase.wasm"
 ```
 
 ## Spec metadata fields
 
 | Field | Details                                                        | Required | Example        |
 |-------|----------------------------------------------------------------|----------|----------------|
-| url   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
-| `direction`   | The direction of the binding | false     | `"output"` |
+| `url`   | The URL of the resource including the Wasm binary to instantiate. The supported schemes include `file://`, `http://`, and `https://`. The path of a `file://` URL is relative to the Dapr process unless it begins with `/`. | true     | `file://hello.wasm`, `https://example.com/hello.wasm` |
 
 ## Binding support
 

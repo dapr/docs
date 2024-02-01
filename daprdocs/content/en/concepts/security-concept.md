@@ -81,7 +81,7 @@ The diagram below shows how the Sentry system service issues certificates for ap
 
 ### Preventing IP addresses on Dapr
 
-To prevent Dapr sidecars from being called on any IP address (especially in production environments such as Kubernetes), Dapr restricts its listening IP addresses only to `localhost`. Use the [dapr-listen-addresses]({{<ref arguments-annotations-overview>}}) setting you need to enable other addresses.
+To prevent Dapr sidecars from being called on any IP address (especially in production environments such as Kubernetes), Dapr restricts its listening IP addresses to `localhost`. Use the [dapr-listen-addresses]({{<ref arguments-annotations-overview>}}) setting if you need to enable access from external addresses.
 
 ## Secure Dapr to application communication
 

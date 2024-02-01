@@ -45,7 +45,7 @@ dapr init
 
 #### Example: create a Java Dev Container for Dapr
 
-This is an exmaple of creating a Dev Container for creating Java apps that use Dapr, based on the [official Java 17 Dev Container image](https://github.com/devcontainers/images/tree/main/src/java).
+This is an example of creating a Dev Container for creating Java apps that use Dapr, based on the [official Java 17 Dev Container image](https://github.com/devcontainers/images/tree/main/src/java).
 
 Place this in a file called `.devcontainer/devcontainer.json` in your project:
 

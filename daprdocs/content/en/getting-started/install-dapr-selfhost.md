@@ -23,9 +23,9 @@ Dapr initialization includes:
 1. Running a **Dapr placement service container instance** for local actor support.
 
 {{% alert title="Docker" color="primary" %}}
-The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{<ref self-hosted-no-docker.md>}})), the next steps in this guide assume the recommended Docker development environment.
+The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{< ref self-hosted-no-docker.md >}})), the next steps in this guide assume the recommended Docker development environment.
 
-You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{<ref dapr-init.md>}}).
+You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{< ref dapr-init.md >}}).
 {{% /alert %}}
 
 ### Step 1: Open an elevated terminal
@@ -54,11 +54,34 @@ Run Windows Terminal or command prompt as administrator.
 
 ### Step 2: Run the init CLI command
 
+{{< tabs "Linux/MacOS" "Windows">}}
+
+{{% codetab %}}
+
 Install the latest Dapr runtime binaries:
 
 ```bash
 dapr init
 ```
+
+**If you are installing on Mac OS Silicon with Docker,** you may need to perform the following workaround to enable `dapr init` to talk to Docker without using Kubernetes.
+1. Navigate to **Docker Desktop** > **Settings** > **Advanced**.
+1. Select the **Enable default Docker socket** checkbox.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Install the latest Dapr runtime binaries:
+
+```bash
+dapr init
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
 
 ### Step 3: Verify Dapr version
 
@@ -112,9 +135,14 @@ ls $HOME/.dapr
 {{% /codetab %}}
 
 {{% codetab %}}
-
+You can verify using either PowerShell or command line. If using PowerShell, run:
 ```powershell
-explorer "%USERPROFILE%\.dapr\"
+explorer "$env:USERPROFILE\.dapr"
+```
+
+If using command line, run: 
+```cmd
+explorer "%USERPROFILE%\.dapr"
 ```
 
 **Result:**

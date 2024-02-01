@@ -37,7 +37,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `accountName`        | Y        | The storage account name | `"mystorageaccount"`.
-| `accountKey`         | Y (unless using Azure AD) | Primary or secondary storage key | `"key"`
+| `accountKey`         | Y (unless using Microsoft Entra ID) | Primary or secondary storage key | `"key"`
 | `containerName`      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
 | `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"`, `"AZUREGERMANCLOUD"`
 | `endpoint` | N | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10000"` 
@@ -60,9 +60,9 @@ In order to setup Azure Blob Storage as a state store, you will need the followi
 - **accountKey**: Primary or secondary storage account key.
 - **containerName**: The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist.
 
-### Authenticating with Azure AD
+### Authenticating with Microsoft Entra ID
 
-This component supports authentication with Azure AD as an alternative to use account keys. Whenever possible, it is recommended that you use  Azure AD for authentication in production systems, to take advantage of better security, fine-tuned access control, and the ability to use managed identities for apps running on Azure.
+This component supports authentication with Microsoft Entra ID as an alternative to use account keys. Whenever possible, it is recommended that you use  Microsoft Entra ID for authentication in production systems, to take advantage of better security, fine-tuned access control, and the ability to use managed identities for apps running on Azure.
 
 > The following scripts are optimized for a bash or zsh shell and require the following apps installed:
 >
@@ -71,7 +71,7 @@ This component supports authentication with Azure AD as an alternative to use ac
 >
 > You must also be authenticated with Azure in your Azure CLI.
 
-1. To get started with using Azure AD for authenticating the Blob Storage state store component, make sure you've created an Azure AD application and a Service Principal as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.  
+1. To get started with using Microsoft Entra ID for authenticating the Blob Storage state store component, make sure you've created an Microsoft Entra ID application and a Service Principal as explained in the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.  
   Once done, set a variable with the ID of the Service Principal that you created:
 
   ```sh
@@ -96,7 +96,7 @@ This component supports authentication with Azure AD as an alternative to use ac
     --scope "${RG_ID}/providers/Microsoft.Storage/storageAccounts/${STORAGE_ACCOUNT_NAME}"
   ```
 
-When authenticating your component using Azure AD, the `accountKey` field is not required. Instead, please specify the required credentials in the component's metadata (if any) according to the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
+When authenticating your component using Microsoft Entra ID, the `accountKey` field is not required. Instead, please specify the required credentials in the component's metadata (if any) according to the [Authenticating to Azure]({{< ref authenticating-azure.md >}}) document.
 
 For example:
 

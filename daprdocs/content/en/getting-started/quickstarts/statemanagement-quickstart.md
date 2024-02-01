@@ -48,11 +48,18 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/python/sdk/order-processor
 ```
 
+Install the dependencies:
+
+```bash
+pip3 install -r requirements.txt 
+```
+
 Run the `order-processor` service alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}).
 
 ```bash
-dapr run -f
+dapr run -f .
 ```
+> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{< ref "#dapryaml-multi-app-run-template-file" >}}) file before running `dapr run -f .`
 
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
 
@@ -162,6 +169,14 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
+Install the dependencies for the `order-processor` app:
+
+```bash
+cd ./order-processor
+npm install
+cd ..
+```
+
 ### Step 2: Manipulate service state
 
 In a terminal window, navigate to the `order-processor` directory.
@@ -170,10 +185,16 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/javascript/sdk/order-processor
 ```
 
+Install the dependencies:
+
+```bash
+npm install
+```
+
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run -f
+dapr run -f .
 ```
 
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
@@ -296,10 +317,17 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/csharp/sdk/order-processor
 ```
 
+Install the dependencies:
+
+```bash
+dotnet restore
+dotnet build
+```
+
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run -f
+dapr run -f .
 ```
 
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
@@ -423,10 +451,16 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/java/sdk/order-processor
 ```
 
+Install the dependencies:
+
+```bash
+mvn clean install
+```
+
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run -f
+dapr run -f .
 ```
 
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.
@@ -550,10 +584,16 @@ In a terminal window, navigate to the `order-processor` directory.
 cd state_management/go/sdk/order-processor
 ```
 
+Install the dependencies:
+
+```bash
+go build .
+```
+
 Run the `order-processor` service alongside a Dapr sidecar.
 
 ```bash
-dapr run -f
+dapr run -f .
 ```
 
 The `order-processor` service writes, reads, and deletes an `orderId` key/value pair to the `statestore` instance [defined in the `statestore.yaml` component]({{< ref "#statestoreyaml-component-file" >}}). As soon as the service starts, it performs a loop.

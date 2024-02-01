@@ -23,16 +23,13 @@ spec:
   metadata:
   - name: rootPath
     value: "<string>"
-  - name: direction
-    value: "<direction>"
 ```
 
 ## Spec metadata fields
 
 | Field              | Required | Binding support | Details | Example |
 |--------------------|:--------:|--------|---------|---------|
-| `rootPath` | Y | Input / Output | The root path anchor to which files can be read / saved | `"/temp/files"` |
-| `direction` | N | Input / Output | The direction of the binding | `"output"` |
+| `rootPath` | Y | Output | The root path anchor to which files can be read / saved | `"/temp/files"` |
 
 ## Binding support
 
@@ -265,6 +262,5 @@ By default the Local Storage output binding auto generates a UUID as the file na
 
 - [Basic schema for a Dapr component]({{< ref component-schema >}})
 - [Bindings building block]({{< ref bindings >}})
-- [How-To: Trigger application with input binding]({{< ref howto-triggers.md >}})
 - [How-To: Use bindings to interface with external resources]({{< ref howto-bindings.md >}})
 - [Bindings API reference]({{< ref bindings_api.md >}})
