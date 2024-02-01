@@ -162,7 +162,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java Go >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -188,8 +188,20 @@ string randomString = GetRandomString();
 
 {{% codetab %}}
 
+```javascript
+// DON'T DO THIS!
+const currentTime = new Date();
+const newIdentifier = uuidv4();
+const randomString = getRandomString();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```go
 // DON'T DO THIS!
+
 ```
 
 {{% /codetab %}}
@@ -198,7 +210,7 @@ string randomString = GetRandomString();
 
 Do this:
 
-{{< tabs ".NET" Java Go >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -224,10 +236,21 @@ String randomString = context.callActivity(GetRandomString.class.getName(), Stri
 
 {{% codetab %}}
 
-```go
+```javascript
 // Do this!!
+const currentTime = context.getCurrentUtcDateTime();
+const randomString = yield context.callActivity(getRandomString);
 ```
 
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
+```go
+// Do this!!
+
+```
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -240,7 +263,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java Go >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -265,6 +288,25 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% codetab %}}
 
+```javascript
+// DON'T DO THIS!
+// Accessing an Environment Variable (Node.js)
+const configuration = process.env.MY_CONFIGURATION;
+
+fetch('https://postman-echo.com/get')
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```go
 // DON'T DO THIS!
 ```
@@ -275,7 +317,7 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 Do this:
 
-{{< tabs ".NET" Java Go >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -299,12 +341,22 @@ String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data
 
 {{% codetab %}}
 
+```javascript
+// Do this!!
+const configuation = workflowInput.getConfiguration(); // imaginary workflow input argument
+const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data");
+```
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
 ```go
 // Do this!!
 ```
 
 {{% /codetab %}}
-
 {{< /tabs >}}
 
 
