@@ -51,6 +51,20 @@ From the root of the Quickstarts directory, navigate into the pub/sub directory:
 cd pub_sub/python/sdk
 ```
 
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./checkout
+pip3 install -r requirements.txt
+cd ..
+cd ./order-processor
+pip3 install -r requirements.txt
+cd ..
+cd ./order-processor-fastapi
+pip3 install -r requirements.txt
+cd ..
+```
+
 ### Step 3: Run the publisher and subscriber
 
 With the following command, simultaneously run the following services alongside their own Dapr sidecars:
@@ -215,6 +229,17 @@ From the root of the Quickstarts directory, navigate into the pub/sub directory:
 cd pub_sub/javascript/sdk
 ```
 
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+npm install
+cd ..
+cd ./checkout
+npm install
+cd ..
+```
+
 ### Step 3: Run the publisher and subscriber
 
 With the following command, simultaneously run the following services alongside their own Dapr sidecars:
@@ -350,6 +375,18 @@ From the root of the Quickstarts directory, navigate into the pub/sub directory:
 
 ```bash
 cd pub_sub/csharp/sdk
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+dotnet restore
+dotnet build
+cd ../checkout
+dotnet restore
+dotnet build
+cd ..
 ```
 
 ### Step 3: Run the publisher and subscriber
@@ -495,6 +532,17 @@ From the root of the Quickstarts directory, navigate into the pub/sub directory:
 
 ```bash
 cd pub_sub/java/sdk
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+mvn clean install
+cd ..
+cd ./checkout
+mvn clean install
+cd ..
 ```
 
 ### Step 3: Run the publisher and subscriber
@@ -645,6 +693,16 @@ From the root of the Quickstarts directory, navigate into the pub/sub directory:
 
 ```bash
 cd pub_sub/go/sdk
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+go build .
+cd ../checkout
+go build .
+cd ..
 ```
 
 ### Step 3: Run the publisher and subscriber
@@ -878,7 +936,7 @@ with DaprClient() as client:
 
 ### Step 5: View the Pub/sub outputs
 
-Notice, as specified in the code above, the publisher pushes a random number to the Dapr sidecar while the subscriber receives it.
+The publisher sends orders to the Dapr sidecar while the subscriber receives them.
 
 Publisher output:
 
