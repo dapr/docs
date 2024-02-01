@@ -162,7 +162,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -186,11 +186,22 @@ string randomString = GetRandomString();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+const currentTime = new Date();
+const newIdentifier = uuidv4();
+const randomString = getRandomString();
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -214,6 +225,16 @@ String randomString = context.callActivity(GetRandomString.class.getName(), Stri
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// Do this!!
+const currentTime = context.getCurrentUtcDateTime();
+const randomString = yield context.callActivity(getRandomString);
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -224,7 +245,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -247,11 +268,31 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+// Accessing an Environment Variable (Node.js)
+const configuration = process.env.MY_CONFIGURATION;
+
+fetch('https://postman-echo.com/get')
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -269,6 +310,16 @@ string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://e
 // Do this!!
 String configuation = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
 String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data", String.class).await();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```javascript
+// Do this!!
+const configuation = workflowInput.getConfiguration(); // imaginary workflow input argument
+const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data");
 ```
 
 {{% /codetab %}}
