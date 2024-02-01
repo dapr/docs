@@ -855,15 +855,16 @@ The `Activities` directory holds the four workflow activities used by the workfl
  <!-- Go -->
 {{% codetab %}}
 
-The `order-processor` console app starts and manages the `order_processing_workflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
 
-- `notify_activity`: Utilizes a logger to print out messages throughout the workflow. These messages notify you when:
-   - You have insufficient inventory
-   - Your payment couldn't be processed, etc.
-- `process_payment_activity`: Processes and authorizes the payment.
-- `verify_inventory_activity`: Checks the state store to ensure there is enough inventory present for purchase.
-- `update_inventory_activity`: Removes the requested items from the state store and updates the store with the new remaining inventory value.
-- `request_approval_activity`: Seeks approval from the manager if payment is greater than 50,000 USD.
+The `order-processor` console app starts and manages the `OrderProcessingWorkflow`, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
+
+- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow. These messages notify you when:
+  - You have insufficient inventory
+  - Your payment couldn't be processed, etc.
+- `ProcessPaymentActivity`: Processes and authorizes the payment.
+- `VerifyInventoryActivity`: Checks the state store to ensure there is enough inventory present for purchase.
+- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value.
+- `RequestApprovalActivity`: Seeks approval from the manager if payment is greater than 50,000 USD.
 
 ### Step 1: Pre-requisites
 
@@ -900,7 +901,7 @@ go build .
 In the terminal, start the order processor app alongside a Dapr sidecar:
 
 ```bash
-dapr run 
+dapr run -f .
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
@@ -908,7 +909,32 @@ This starts the `order-processor` app with unique workflow ID and runs the workf
 Expected output:
 
 ```bash
-need
+== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+== APP - order-processor == *** Using this app, you can place orders that start workflows.
+== APP - order-processor == dapr client initializing for: 127.0.0.1:50056
+== APP - order-processor == adding base stock item: paperclip
+== APP - order-processor == 2024/02/01 12:59:52 work item listener started
+== APP - order-processor == INFO: 2024/02/01 12:59:52 starting background processor
+== APP - order-processor == adding base stock item: cars
+== APP - order-processor == adding base stock item: computers
+== APP - order-processor == ==========Begin the purchase of item:==========
+== APP - order-processor == NotifyActivity: Received order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 cars - $150000
+== APP - order-processor == VerifyInventoryActivity: Verifying inventory for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 of 10 cars
+== APP - order-processor == VerifyInventoryActivity: There are 100 cars available for purchase
+== APP - order-processor == RequestApprovalActivity: Requesting approval for payment of 150000USD for 10 cars
+== APP - order-processor == NotifyActivity: Payment for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 has been approved!
+== APP - order-processor == ProcessPaymentActivity: 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 - cars (150000USD)
+== APP - order-processor == UpdateInventoryActivity: Checking Inventory for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 * cars
+== APP - order-processor == UpdateInventoryActivity: There are now 90 cars left in stock
+== APP - order-processor == NotifyActivity: Order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 has completed!
+== APP - order-processor == Workflow completed - result: COMPLETED
+== APP - order-processor == Purchase of item is complete
+```
+
+Stop the Dapr workflow with `CTRL+C` or:
+
+```bash
+dapr stop -f .
 ```
 
 ### (Optional) Step 4: View in Zipkin
@@ -927,16 +953,16 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 When you ran `dapr run`:
 
-1. A unique order ID for the workflow is generated (in the above example, `f4e1926e-3721-478d-be8a-f5bebd1995da`) and the workflow is scheduled.
+1. A unique order ID for the workflow is generated (in the above example, `48ee83b7-5d80-48d5-97f9-6b372f5480a5`) and the workflow is scheduled.
 1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
 1. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 1. Your workflow starts and notifies you of its status.
-1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `f4e1926e-3721-478d-be8a-f5bebd1995da` and confirms if successful.
+1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `48ee83b7-5d80-48d5-97f9-6b372f5480a5` and confirms if successful.
 1. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-1. The `NotifyActivity` workflow activity sends a notification saying that order `f4e1926e-3721-478d-be8a-f5bebd1995da` has completed.
+1. The `NotifyActivity` workflow activity sends a notification saying that order `48ee83b7-5d80-48d5-97f9-6b372f5480a5` has completed.
 1. The workflow terminates as completed.
 
-#### `order-processor/app.go` 
+#### `order-processor/main.go` 
 
 In the application's program file:
 - The unique workflow order ID is generated
@@ -945,15 +971,302 @@ In the application's program file:
 - The workflow and the workflow activities it invokes are registered
 
 ```go
-need
+func main() {
+	fmt.Println("*** Welcome to the Dapr Workflow console app sample!")
+	fmt.Println("*** Using this app, you can place orders that start workflows.")
+
+  // ...
+
+  // Register workflow and activities
+	if err := w.RegisterWorkflow(OrderProcessingWorkflow); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(NotifyActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(RequestApprovalActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(VerifyInventoryActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(ProcessPaymentActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(UpdateInventoryActivity); err != nil {
+		log.Fatal(err)
+	}
+
+  // Build and start workflow runtime, pulling and executing tasks
+	if err := w.Start(); err != nil {
+		log.Fatal(err)
+	}
+
+	daprClient, err := client.NewClient()
+	if err != nil {
+		log.Fatalf("failed to initialise dapr client: %v", err)
+	}
+	wfClient, err := workflow.NewClient(workflow.WithDaprClient(daprClient))
+	if err != nil {
+		log.Fatalf("failed to initialise workflow client: %v", err)
+	}
+
+  // Check inventory
+	inventory := []InventoryItem{
+		{ItemName: "paperclip", PerItemCost: 5, Quantity: 100},
+		{ItemName: "cars", PerItemCost: 15000, Quantity: 100},
+		{ItemName: "computers", PerItemCost: 500, Quantity: 100},
+	}
+	if err := restockInventory(daprClient, inventory); err != nil {
+		log.Fatalf("failed to restock: %v", err)
+	}
+
+	fmt.Println("==========Begin the purchase of item:==========")
+
+	itemName := defaultItemName
+	orderQuantity := 10
+
+	totalCost := inventory[1].PerItemCost * orderQuantity
+
+	orderPayload := OrderPayload{
+		ItemName:  itemName,
+		Quantity:  orderQuantity,
+		TotalCost: totalCost,
+	}
+
+  // Start workflow events, like receiving order, verifying inventory, and processing payment 
+	id, err := wfClient.ScheduleNewWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+
+	// ...
+
+  // Notification that workflow has completed or failed
+	for {
+		timeDelta := time.Since(startTime)
+		metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
+		if err != nil {
+			log.Fatalf("failed to fetch workflow: %v", err)
+		}
+		if (metadata.RuntimeStatus == workflow.StatusCompleted) || (metadata.RuntimeStatus == workflow.StatusFailed) || (metadata.RuntimeStatus == workflow.StatusTerminated) {
+			fmt.Printf("Workflow completed - result: %v\n", metadata.RuntimeStatus.String())
+			break
+		}
+		if timeDelta.Seconds() >= 10 {
+			metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
+			if err != nil {
+				log.Fatalf("failed to fetch workflow: %v", err)
+			}
+			if totalCost > 50000 && !approvalSought && ((metadata.RuntimeStatus != workflow.StatusCompleted) || (metadata.RuntimeStatus != workflow.StatusFailed) || (metadata.RuntimeStatus != workflow.StatusTerminated)) {
+				approvalSought = true
+				promptForApproval(id)
+			}
+		}
+		// Sleep to not DoS the dapr dev instance
+		time.Sleep(time.Second)
+	}
+
+	fmt.Println("Purchase of item is complete")
+}
+
+// Request approval (RequestApprovalActivity)
+func promptForApproval(id string) {
+	wfClient, err := workflow.NewClient()
+	if err != nil {
+		log.Fatalf("failed to initialise wfClient: %v", err)
+	}
+	if err := wfClient.RaiseEvent(context.Background(), id, "manager_approval"); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Update inventory for remaining stock (UpdateInventoryActivity)
+func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
+	for _, item := range inventory {
+		itemSerialized, err := json.Marshal(item)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("adding base stock item: %s\n", item.ItemName)
+		if err := daprClient.SaveState(context.Background(), stateStoreName, item.ItemName, itemSerialized, nil); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 ```
 
 #### `order-processor/workflow.go`
 
-In `workflow.go`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
+In `main.go`, the workflow is defined as a method with all of its associated tasks (determined by workflow activities).
 
 ```go
-need 
+// OrderProcessingWorkflow is the main workflow for orchestrating activities in the order process.
+func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	orderID := ctx.InstanceID()
+	var orderPayload OrderPayload
+	if err := ctx.GetInput(&orderPayload); err != nil {
+		return nil, err
+	}
+	if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Received order %s for %d %s - $%d", orderID, orderPayload.Quantity, orderPayload.ItemName, orderPayload.TotalCost)})).Await(nil); err != nil {
+		return OrderResult{Processed: false}, err
+	}
+
+	var verifyInventoryResult InventoryResult
+	if err := ctx.CallActivity(VerifyInventoryActivity, workflow.ActivityInput(InventoryRequest{
+		RequestID: orderID,
+		ItemName:  orderPayload.ItemName,
+		Quantity:  orderPayload.Quantity,
+	})).Await(&verifyInventoryResult); err != nil {
+		return OrderResult{Processed: false}, err
+	}
+
+	if !verifyInventoryResult.Success {
+		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Insufficient inventory for %s", orderPayload.ItemName)})).Await(nil); err != nil {
+			return OrderResult{Processed: false}, err
+		}
+	}
+
+	if orderPayload.TotalCost > 50000 {
+		var approvalRequired ApprovalRequired
+		if err := ctx.CallActivity(RequestApprovalActivity, workflow.ActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
+			return OrderResult{Processed: false}, err
+		}
+		if err := ctx.WaitForExternalEvent("manager_approval", time.Second*200).Await(nil); err != nil {
+			return OrderResult{Processed: false}, err
+		}
+		// TODO: Confirm timeout flow - this will be in the form of an error.
+		if approvalRequired.Approval {
+			if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been approved!", orderID)})).Await(nil); err != nil {
+				log.Printf("failed to notify of a successful order: %v\n", err)
+			}
+		} else {
+			if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been rejected!", orderID)})).Await(nil); err != nil {
+				log.Printf("failed to notify of an unsuccessful order :%v\n", err)
+			}
+			return OrderResult{Processed: false}, nil
+		}
+	}
+	if err := ctx.CallActivity(ProcessPaymentActivity, workflow.ActivityInput(PaymentRequest{
+		RequestID:          orderID,
+		ItemBeingPurchased: orderPayload.ItemName,
+		Amount:             orderPayload.TotalCost,
+		Quantity:           orderPayload.Quantity,
+	})).Await(nil); err != nil {
+		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
+			log.Printf("failed to notify of a failed order: %v", err)
+		}
+		return OrderResult{Processed: false}, err
+	}
+	if err := ctx.CallActivity(UpdateInventoryActivity, workflow.ActivityInput(PaymentRequest{RequestID: orderID, ItemBeingPurchased: orderPayload.ItemName, Amount: orderPayload.TotalCost, Quantity: orderPayload.Quantity})).Await(nil); err != nil {
+		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
+			log.Printf("failed to notify of a failed order: %v", err)
+		}
+		return OrderResult{Processed: false}, err
+	}
+
+	if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s has completed!", orderID)})).Await(nil); err != nil {
+		log.Printf("failed to notify of a successful order: %v", err)
+	}
+	return OrderResult{Processed: true}, nil
+}
+
+// NotifyActivity outputs a notification message
+func NotifyActivity(ctx workflow.ActivityContext) (any, error) {
+	var input Notification
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("NotifyActivity: %s\n", input.Message)
+	return nil, nil
+}
+
+// ProcessPaymentActivity is used to process a payment
+func ProcessPaymentActivity(ctx workflow.ActivityContext) (any, error) {
+	var input PaymentRequest
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("ProcessPaymentActivity: %s for %d - %s (%dUSD)\n", input.RequestID, input.Quantity, input.ItemBeingPurchased, input.Amount)
+	return nil, nil
+}
+
+// VerifyInventoryActivity is used to verify if an item is available in the inventory
+func VerifyInventoryActivity(ctx workflow.ActivityContext) (any, error) {
+	var input InventoryRequest
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	fmt.Printf("VerifyInventoryActivity: Verifying inventory for order %s of %d %s\n", input.RequestID, input.Quantity, input.ItemName)
+	dClient, err := client.NewClient()
+	if err != nil {
+		return nil, err
+	}
+	item, err := dClient.GetState(context.Background(), stateStoreName, input.ItemName, nil)
+	if err != nil {
+		return nil, err
+	}
+	if item == nil {
+		return InventoryResult{
+			Success:       false,
+			InventoryItem: InventoryItem{},
+		}, nil
+	}
+	var result InventoryItem
+	if err := json.Unmarshal(item.Value, &result); err != nil {
+		log.Fatalf("failed to parse inventory result %v", err)
+	}
+	fmt.Printf("VerifyInventoryActivity: There are %d %s available for purchase\n", result.Quantity, result.ItemName)
+	if result.Quantity >= input.Quantity {
+		return InventoryResult{Success: true, InventoryItem: result}, nil
+	}
+	return InventoryResult{Success: false, InventoryItem: InventoryItem{}}, nil
+}
+
+// UpdateInventoryActivity modifies the inventory.
+func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
+	var input PaymentRequest
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	fmt.Printf("UpdateInventoryActivity: Checking Inventory for order %s for %d * %s\n", input.RequestID, input.Quantity, input.ItemBeingPurchased)
+	dClient, err := client.NewClient()
+	if err != nil {
+		return nil, err
+	}
+	item, err := dClient.GetState(context.Background(), stateStoreName, input.ItemBeingPurchased, nil)
+	if err != nil {
+		return nil, err
+	}
+	var result InventoryItem
+	err = json.Unmarshal(item.Value, &result)
+	if err != nil {
+		return nil, err
+	}
+	newQuantity := result.Quantity - input.Quantity
+	if newQuantity < 0 {
+		return nil, fmt.Errorf("insufficient inventory for: %s", input.ItemBeingPurchased)
+	}
+	result.Quantity = newQuantity
+	newState, err := json.Marshal(result)
+	if err != nil {
+		log.Fatalf("failed to marshal new state: %v", err)
+	}
+	dClient.SaveState(context.Background(), stateStoreName, input.ItemBeingPurchased, newState, nil)
+	fmt.Printf("UpdateInventoryActivity: There are now %d %s left in stock\n", result.Quantity, result.ItemName)
+	return InventoryResult{Success: true, InventoryItem: result}, nil
+}
+
+// RequestApprovalActivity requests approval for the order
+func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
+	var input OrderPayload
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	fmt.Printf("RequestApprovalActivity: Requesting approval for payment of %dUSD for %d %s\n", input.TotalCost, input.Quantity, input.ItemName)
+	return ApprovalRequired{Approval: true}, nil
+} 
 ```
 {{% /codetab %}}
 
