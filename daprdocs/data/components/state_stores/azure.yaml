@@ -1,8 +1,8 @@
 - component: Azure Blob Storage
   link: setup-azure-blobstorage
   state: Stable
-  version: v1
-  since: "1.0"
+  version: v2
+  since: "1.13"
   features:
     crud: true
     transactions: false
