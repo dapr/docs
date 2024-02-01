@@ -169,7 +169,7 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 <!--go-->
 
-Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the public `callActivityOptions` class, which implements the workflow activities. 
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the public `callActivityOptions` method, which implements the workflow activities. 
 
 ```go
 type ActivityContext struct {
@@ -190,13 +190,22 @@ type callActivityOptions struct {
 	rawInput *wrapperspb.StringValue
 }
 
-func WithActivityInput(input any) callActivityOption {
-	return func(opt *callActivityOptions) error {
+// ActivityInput is an option to pass a JSON-serializable input
+func ActivityInput(input any) callActivityOption {
+	return func(opts *callActivityOptions) error {
 		data, err := marshalData(input)
 		if err != nil {
 			return err
 		}
-		opt.rawInput = wrapperspb.String(string(data))
+		opts.rawInput = wrapperspb.String(string(data))
+		return nil
+	}
+}
+
+// ActivityRawInput is an option to pass a byte slice as an input
+func ActivityRawInput(input string) callActivityOption {
+	return func(opts *callActivityOptions) error {
+		opts.rawInput = wrapperspb.String(input)
 		return nil
 	}
 }
@@ -313,22 +322,22 @@ public class DemoWorkflowWorker {
 
 <!--go-->
 
-Next, register the workflow with the `WorkflowRuntimeBuilder` and start the workflow runtime.
+Next, register the workflow and workflow activities and start the workflow runtime.
 
 ```go
 package workflow
 
-// Register workflow
-func (wr *WorkflowRuntime) RegisterWorkflow(w Workflow) error {
+// RegisterWorkflow adds a workflow function to the registry
+func (ww *WorkflowWorker) RegisterWorkflow(w Workflow) error {
 	wrappedOrchestration := wrapWorkflow(w)
 
-	// get decorator for workflow
-	name, err := getDecorator(w)
+	// get the function name for the passed workflow
+	name, err := getFunctionName(w)
 	if err != nil {
 		return fmt.Errorf("failed to get workflow decorator: %v", err)
 	}
 
-	err = wr.tasks.AddOrchestratorN(name, wrappedOrchestration)
+	err = ww.tasks.AddOrchestratorN(name, wrappedOrchestration)
 	return err
 }
 
@@ -341,31 +350,29 @@ func wrapActivity(a Activity) task.Activity {
 	}
 }
 
-// Register wrapped activity
-func (wr *WorkflowRuntime) RegisterActivity(a Activity) error {
+// RegisterActivity adds an activity function to the registry
+func (ww *WorkflowWorker) RegisterActivity(a Activity) error {
 	wrappedActivity := wrapActivity(a)
 
-	// get decorator for activity
-	name, err := getDecorator(a)
+	// get the function name for the passed activity
+	name, err := getFunctionName(a)
 	if err != nil {
 		return fmt.Errorf("failed to get activity decorator: %v", err)
 	}
 
-	err = wr.tasks.AddActivityN(name, wrappedActivity)
+	err = ww.tasks.AddActivityN(name, wrappedActivity)
 	return err
 }
 
-// Start workflow runtime
-func (wr *WorkflowRuntime) Start() error {
-	// go func start
-	go func() {
-		err := wr.client.StartWorkItemListener(context.Background(), wr.tasks)
-		if err != nil {
-			log.Fatalf("failed to start work stream: %v", err)
-		}
-	}()
-	<-wr.quit
-
+// Start initialises a non-blocking worker to handle workflows and activities registered
+// prior to this being called.
+func (ww *WorkflowWorker) Start() error {
+	ctx, cancel := context.WithCancel(context.Background())
+	ww.cancel = cancel
+	if err := ww.client.StartWorkItemListener(ctx, ww.tasks); err != nil {
+		return fmt.Errorf("failed to start work stream: %v", err)
+	}
+	log.Println("work item listener started")
 	return nil
 }
 ```

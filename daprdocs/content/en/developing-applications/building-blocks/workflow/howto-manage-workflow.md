@@ -178,47 +178,67 @@ Manage your workflow within your code. [In the workflow example from the Go SDK]
 - **TerminateWorkflow**: Terminates the workflow
 
 ```go
-	// StartWorkflowAlpha1 starts a workflow.
-	StartWorkflowAlpha1(ctx context.Context, req *StartWorkflowRequest) (*StartWorkflowResponse, error)
+// Start workflow
+type StartWorkflowRequest struct {
+	InstanceID        string // Optional instance identifier
+	WorkflowComponent string
+	WorkflowName      string
+	Options           map[string]string // Optional metadata
+	Input             any               // Optional input
+	SendRawInput      bool              // Set to True in order to disable serialization on the input
+}
 
-	// GetWorkflowAlpha1 gets a workflow.
-	GetWorkflowAlpha1(ctx context.Context, req *GetWorkflowRequest) (*GetWorkflowResponse, error)
+type StartWorkflowResponse struct {
+	InstanceID string
+}
 
-	// PurgeWorkflowAlpha1 purges a workflow.
-	PurgeWorkflowAlpha1(ctx context.Context, req *PurgeWorkflowRequest) error
+// Get the workflow status
+type GetWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
 
-	// TerminateWorkflowAlpha1 terminates a workflow.
-	TerminateWorkflowAlpha1(ctx context.Context, req *TerminateWorkflowRequest) error
+type GetWorkflowResponse struct {
+	InstanceID    string
+	WorkflowName  string
+	CreatedAt     time.Time
+	LastUpdatedAt time.Time
+	RuntimeStatus string
+	Properties    map[string]string
+}
 
-	// PauseWorkflowAlpha1 pauses a workflow.
-	PauseWorkflowAlpha1(ctx context.Context, req *PauseWorkflowRequest) error
+// Purge workflow
+type PurgeWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
 
-	// ResumeWorkflowAlpha1 resumes a workflow.
-	ResumeWorkflowAlpha1(ctx context.Context, req *ResumeWorkflowRequest) error
+// Terminate workflow
+type TerminateWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
 
-	// RaiseEventWorkflowAlpha1 raises an event for a workflow.
-	RaiseEventWorkflowAlpha1(ctx context.Context, req *RaiseEventWorkflowRequest) error
+// Pause workflow
+type PauseWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
 
-	// StartWorkflowBeta1 starts a workflow.
-	StartWorkflowBeta1(ctx context.Context, req *StartWorkflowRequest) (*StartWorkflowResponse, error)
+// Resume workflow
+type ResumeWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
 
-	// GetWorkflowBeta1 gets a workflow.
-	GetWorkflowBeta1(ctx context.Context, req *GetWorkflowRequest) (*GetWorkflowResponse, error)
-
-	// PurgeWorkflowBeta1 purges a workflow.
-	PurgeWorkflowBeta1(ctx context.Context, req *PurgeWorkflowRequest) error
-
-	// TerminateWorkflowBeta1 terminates a workflow.
-	TerminateWorkflowBeta1(ctx context.Context, req *TerminateWorkflowRequest) error
-
-	// PauseWorkflowBeta1 pauses a workflow.
-	PauseWorkflowBeta1(ctx context.Context, req *PauseWorkflowRequest) error
-
-	// ResumeWorkflowBeta1 resumes a workflow.
-	ResumeWorkflowBeta1(ctx context.Context, req *ResumeWorkflowRequest) error
-
-	// RaiseEventWorkflowBeta1 raises an event for a workflow.
-	RaiseEventWorkflowBeta1(ctx context.Context, req *RaiseEventWorkflowRequest) error
+// Raise an event for the running workflow
+type RaiseEventWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+	EventName         string
+	EventData         any
+	SendRawData       bool // Set to True in order to disable serialization on the data
+}
 ```
 
 {{% /codetab %}}
