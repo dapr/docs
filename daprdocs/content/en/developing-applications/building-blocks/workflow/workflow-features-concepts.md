@@ -97,9 +97,7 @@ Child workflows have many benefits:
 
 The return value of a child workflow is its output. If a child workflow fails with an exception, then that exception is surfaced to the parent workflow, just like it is when an activity task fails with an exception. Child workflows also support automatic retry policies.
 
-{{% alert title="Note" color="primary" %}}
-Because child workflows are independent of their parents, terminating a parent workflow does not affect any child workflows. You must terminate each child workflow independently using its instance ID.
-{{% /alert %}}
+Terminating a parent workflow terminates all of the child workflows created by the workflow instance. You can disable this by setting the query parameter `non_recursive` to `true` while sending the terminate request to the parent workflow. See [the terminate workflow api]({{< ref "workflow_api.md#terminate-workflow-request" >}}) for more information.
 
 ## Durable timers
 
