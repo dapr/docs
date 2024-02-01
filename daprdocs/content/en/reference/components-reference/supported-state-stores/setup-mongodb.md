@@ -95,23 +95,7 @@ If you do not specify a `databaseName` value in your component definition, make 
 {{% /codetab %}}
 
 {{% codetab %}}
-The easiest way to install MongoDB on Kubernetes is by using the [Helm chart](https://github.com/helm/charts/tree/master/stable/mongodb):
-
-```sh
-helm install mongo stable/mongodb
-```
-
-This installs MongoDB into the `default` namespace.
-To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.
-
-For example, if installing using the example above, the MongoDB host address would be:
-
-```text
-mongo-mongodb.default.svc.cluster.local:27017
-```
-
-Follow the on-screen instructions to get the root password for MongoDB.
-The username is `admin` by default.
+You can conveniently install MongoDB on Kubernetes using the [Helm chart packaged by Bitnami](https://github.com/bitnami/charts/tree/main/bitnami/mongodb/). Please refer to the documentation for the Helm chart for deploying MongoDB, both as a standalone server, and with a Replica Set (required for using transactions and actors).
 {{% /codetab %}}
 
 {{< /tabs >}}
