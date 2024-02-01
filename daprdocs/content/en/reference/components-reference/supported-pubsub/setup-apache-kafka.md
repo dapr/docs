@@ -113,7 +113,17 @@ The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Ka
 
 Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. With the added authentication methods, the `authRequired` field has
 been deprecated from the v1.6 release and instead the `authType` field should be used. If `authRequired` is set to `true`, Dapr will attempt to configure `authType` correctly
-based on the value of `saslPassword`. This are the valid values for `authType`: `none`, `password`, `certificate`, `mtls`, `oidc` and `awsiam`. Note this is authentication only; authorization is still configured within Kafka except for `awsiam` which can also drive authorization decisions configured in AWS IAM.
+based on the value of `saslPassword`. The valid values for `authType` are: 
+- `none`
+- `password`
+- `certificate`
+- `mtls`
+- `oidc` 
+- `awsiam`
+
+{{% alert title="Note" color="primary" %}}
+`authType` is _authentication_ only. _Authorization_ is still configured within Kafka, except for `awsiam`, which can also drive authorization decisions configured in AWS IAM.
+{{% /alert %}}
 
 #### None
 
