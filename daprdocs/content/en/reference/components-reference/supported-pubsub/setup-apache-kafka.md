@@ -285,7 +285,9 @@ spec:
 #### AWS IAM
 
 Authenticating with AWS IAM is supported with AWS Managed Streaming for Apache Kafka (MSK). Setting `authType` to `awsiam` uses AWS SDK to generate auth tokens to authenticate.
-Note the only required metadata field is `awsRegion`, if no `awsAccessKey` and `awsSecretKey` are provided you can use AWS IAM roles for service accounts to have passwordless authentication to your Kafka cluster.
+{{% alert title="Note" color="primary" %}}
+The only required metadata field is `awsRegion`. If no `awsAccessKey` and `awsSecretKey` are provided, you can use AWS IAM roles for service accounts to have password-less authentication to your Kafka cluster.
+{{% /alert %}}
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
