@@ -103,7 +103,7 @@ spec:
             "orders/": "orders/.+"
 ```
 
-When this configuration is applied, a recorded metric with the `method` label of `orders/a746dhsk293972nz` will be replaced with `orders/`.
+When this configuration is applied, a recorded metric with the `method` label of `orders/a746dhsk293972nz` is replaced with `orders/`.
 
 Using regular expressions to reduce metrics cardinality is considered legacy. We encourage all users to set `spec.metrics.http.increasedCardinality` to `false` instead, which is simpler to configure and offers better performance.
 
