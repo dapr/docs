@@ -36,7 +36,7 @@ spec:
 
 ## Spec configuration fields
 
-When using the SQLite component as name resolver, the `spec.nameResolution.configuration` dictionary contains these options:
+When using the SQLite name resolver component, the `spec.nameResolution.configuration` dictionary contains these options:
 
 | Field        | Required | Type | Details  | Examples |
 |--------------|:--------:|-----:|:---------|----------|
