@@ -49,7 +49,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ### Actor state store and transactions support
 
-For using as an actor state store or to leverage transactions, MongoDB must be running in a [Replica Set](https://www.mongodb.com/docs/manual/replication/).
+When using as an actor state store or to leverage transactions, MongoDB must be running in a [Replica Set](https://www.mongodb.com/docs/manual/replication/).
 
 If you wish to use MongoDB as an actor store, add this metadata option to your Component YAML:
 
@@ -73,7 +73,7 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 | operationTimeout   | N        | The timeout for the operation. Defaults to `"5s"` | `"5s"`
 | params             | N<sup>2</sup> | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
 
-> <sup>[1]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr will return an error.
+> <sup>[1]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr returns an error.
 
 > <sup>[2]</sup> The `params` field accepts a query string that specifies connection specific options as `<name>=<value>` pairs, separated by `&` and prefixed with `?`. e.g. to use "daprStore" db as authentication database and enabling SSL/TLS in connection, specify params as `?authSource=daprStore&ssl=true`. See [the mongodb manual](https://docs.mongodb.com/manual/reference/connection-string/#std-label-connections-connection-options) for the list of available options and their use cases.
 
