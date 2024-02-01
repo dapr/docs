@@ -96,7 +96,7 @@ spec:
 | awsAccessKey | N  | AWS access key associated with an IAM account. | `"accessKey"`
 | awsSecretKey | N  | The secret key associated with the access key. | `"secretKey"`
 | awsSessionToken | N  | AWS session token to use. A session token is only required if you are using temporary security credentials. | `"sessionToken"`
-| awsIamRoleArn | N  | IAM role that has access to MSK. This is another option to authenticate with MSK aside from the AWS Credentials. | `"arn:aws:iam::123456789:role/mskRole"`
+| awsIamRoleArn | N  | IAM role that has access to AWS Managed Streaming for Apache Kafka (MSK). This is another option to authenticate with MSK aside from the AWS Credentials. | `"arn:aws:iam::123456789:role/mskRole"`
 | awsStsSessionName | N  | Represents the session name for assuming a role. | `"MSKSASLDefaultSession"`
 | schemaRegistryURL | N | Required when using Schema Registry Avro serialization/deserialization. The Schema Registry URL. | `http://localhost:8081` |
 | schemaRegistryAPIKey | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Key. | `XYAXXAZ` |
