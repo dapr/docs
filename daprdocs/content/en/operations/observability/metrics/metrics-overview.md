@@ -10,7 +10,7 @@ By default, each Dapr system process emits Go runtime/process metrics and has th
 
 ## Prometheus endpoint
 
-The Dapr sidecars exposes a [Prometheus](https://prometheus.io/)-compatible metrics endpoint that you can scrape to gain a greater understanding of how Dapr is behaving.
+The Dapr sidecar exposes a [Prometheus](https://prometheus.io/)-compatible metrics endpoint that you can scrape to gain a greater understanding of how Dapr is behaving.
 
 ## Configuring metrics using the CLI
 
