@@ -209,7 +209,7 @@ spec:
       connectionString: "/home/user/.dapr/nr.db"
 ```
 
-See [the Name Resolution spec documentation]({{< ref supported-name-resolution >}}) to learn more about how to configure name resolution per component.
+See [the Name Resolution spec documentation]({{< ref supported-name-resolution >}}) and the [Configuration YAML documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
 
 #### Scope secret store access
 
