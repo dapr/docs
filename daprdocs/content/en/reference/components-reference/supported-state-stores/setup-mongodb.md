@@ -95,6 +95,12 @@ In order to use the MongoDB state store for transactions and as an actor state s
 
 {{% codetab %}}
 You can conveniently install MongoDB on Kubernetes using the [Helm chart packaged by Bitnami](https://github.com/bitnami/charts/tree/main/bitnami/mongodb/). Refer to the documentation for the Helm chart for deploying MongoDB, both as a standalone server, and with a Replica Set (required for using transactions and actors).
+This installs MongoDB into the `default` namespace.
+To interact with MongoDB, find the service with: `kubectl get svc mongo-mongodb`.
+For example, if installing using the Helm defaults above, the MongoDB host address would be:
+`mongo-mongodb.default.svc.cluster.local:27017`
+Follow the on-screen instructions to get the root password for MongoDB.
+The username is typically `admin` by default.
 {{% /codetab %}}
 
 {{< /tabs >}}
