@@ -46,7 +46,8 @@ When using the SQLite name resolver component, the `spec.nameResolution.configur
 | `tableName` | N | `string` | Name of the table where the data is stored. If the table does not exists, the table is created by Dapr.  Defaults to `hosts`. | `"hosts"` |
 | `metadataTableName` | N | `string` | Name of the table used by Dapr to store metadata for the component. Defaults to `metadata`. | `"metadata"` |
 | `cleanupInterval` | N | [Go duration](https://pkg.go.dev/time#ParseDuration) (as a `string`) | Interval to remove stale records from the database. Default: `1h` (1 hour) | `"10m"` |
-| `busyTimeout` | N | [Go duration](https://pkg.go.dev/time#ParseDuration) (as a `string`) | Interval to wait in case the SQLite database is currently busy serving another request, before returning a "database busy" error. Default: `800ms` (800 milliseconds) | `"100ms"` |
+| `busyTimeout` | N | [Go duration](https://pkg.go.dev/time#ParseDuration) (as a `string`) | Interval to wait in case the SQLite database is currently busy serving another request, before returning a "database busy" error. This is an advanced setting.
+ - `busyTimeout` controls how locking works in SQLite. With SQLite, writes are exclusive, so every time any app is writing the database is locked. If another app tries to write, it waits up to `busyTimeout` before returning the "database busy" error. However the `timeout` setting controls the timeout for the entire operation. For example if the query "hangs", after the database has acquired the lock (so after busy timeout is cleared), then `timeout` comes into effect. Default: `800ms` (800 milliseconds) | `"100ms"` |
 | `disableWAL` | N | `bool` | If set to true, disables Write-Ahead Logging for journaling of the SQLite database. This is for advanced scenarios only | `true`, `false` |
 
 ## Related links
