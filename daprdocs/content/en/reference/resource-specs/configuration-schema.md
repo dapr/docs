@@ -46,6 +46,11 @@ spec:
     handlers:
       - name: <HANDLER-NAME>
         type: <HANDLER-TYPE>
+  nameResolution:
+    component: "sqlite"
+    version: "v1"
+    configuration:
+      connectionString: "/home/user/.dapr/nr.db"
   secrets:
     scopes:
       - storeName: <NAME-OF-SCOPED-STORE>
