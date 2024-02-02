@@ -94,7 +94,7 @@ In order to use the MongoDB state store for transactions and as an actor state s
 {{% /codetab %}}
 
 {{% codetab %}}
-You can conveniently install MongoDB on Kubernetes using the [Helm chart packaged by Bitnami](https://github.com/bitnami/charts/tree/main/bitnami/mongodb/). Please refer to the documentation for the Helm chart for deploying MongoDB, both as a standalone server, and with a Replica Set (required for using transactions and actors).
+You can conveniently install MongoDB on Kubernetes using the [Helm chart packaged by Bitnami](https://github.com/bitnami/charts/tree/main/bitnami/mongodb/). Refer to the documentation for the Helm chart for deploying MongoDB, both as a standalone server, and with a Replica Set (required for using transactions and actors).
 {{% /codetab %}}
 
 {{< /tabs >}}
