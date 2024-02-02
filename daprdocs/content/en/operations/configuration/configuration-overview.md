@@ -106,21 +106,27 @@ The `metrics` section under the `Configuration` spec contains the following prop
 ```yml
 metrics:
   enabled: true
+  rules: []
+  http:
+    increasedCardinality: true
 ```
 
 The following table lists the properties for metrics:
 
 | Property     | Type   | Description |
 |--------------|--------|-------------|
-| `enabled` | boolean | Whether metrics should to be enabled. |
-| `rules`   | boolean | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a`regex`expression to apply to the metrics path. |
+| `enabled` | boolean | When set to true, the default, enables metrics collection and the metrics endpoint. |
+| `rules`   | array | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a `regex` expression to apply to the metrics path. |
+| `http.increasedCardinality` | boolean | When set to true, in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br>In Dapr 1.13 the default value is `true` (to preserve the behavior of Dapr <= 1.12), but will change to `false` in Dapr 1.14. |
 
-To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}), you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
+To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`.
+
+Using rules, you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
 
 ```yml
-metric:
-    enabled: true
-    rules:
+metrics:
+  enabled: true
+  rules:
     - name: dapr_runtime_service_invocation_req_sent_total
       labels:
       - name: method
