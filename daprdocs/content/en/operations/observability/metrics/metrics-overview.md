@@ -84,7 +84,7 @@ Setting `spec.metrics.http.increasedCardinality` to `false` is **recommended** t
 
 You can set regular expressions for every metric exposed by the Dapr sidecar to "transform" their values. [See a list of all Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).
 
-The following example shows how to apply a regular expression for the label `method` in the metric `dapr_runtime_service_invocation_req_sent_total`:
+The name of the rule must match the name of the metric that is transformed. The following example shows how to apply a regular expression for the label `method` in the metric `dapr_runtime_service_invocation_req_sent_total`:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
