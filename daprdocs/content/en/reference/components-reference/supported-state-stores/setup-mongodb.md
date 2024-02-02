@@ -90,7 +90,7 @@ docker run --name some-mongo -d mongo
 
 You can then interact with the server at `localhost:27017`. If you do not specify a `databaseName` value in your component definition, make sure to create a database named `daprStore`.
 
-In order to use the MongoDB state store for transactions and as an actor state store, you will need to run MongoDB as a Replica Set. Please refer to [the official documentation](https://www.mongodb.com/compatibility/deploying-a-mongodb-cluster-with-docker) for how to create a 3-node Replica Set using Docker.
+In order to use the MongoDB state store for transactions and as an actor state store, you need to run MongoDB as a Replica Set. Refer to [the official documentation](https://www.mongodb.com/compatibility/deploying-a-mongodb-cluster-with-docker) for how to create a 3-node Replica Set using Docker.
 {{% /codetab %}}
 
 {{% codetab %}}
