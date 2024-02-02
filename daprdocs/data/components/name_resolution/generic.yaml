@@ -3,3 +3,8 @@
   state: Alpha
   version: v1
   since: "1.2"
+- component: SQLite
+  link: nr-sqlite
+  state: Alpha
+  version: v1
+  since: "1.13"
