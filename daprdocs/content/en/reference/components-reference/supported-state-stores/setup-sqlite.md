@@ -56,7 +56,7 @@ spec:
 | `metadataTableName` | N | Name of the table used by Dapr to store metadata for the component. Defaults to `metadata`. | `"metadata"` |
 | `cleanupInterval` | N | Interval, as a [Go duration](https://pkg.go.dev/time#ParseDuration), to clean up rows with an expired TTL. Setting this to values <=0 disables the periodic cleanup. Default: `0` (i.e. disabled) | `"2h"`, `"30m"`, `-1` |
 | `busyTimeout` | N | Interval, as a [Go duration](https://pkg.go.dev/time#ParseDuration), to wait in case the SQLite database is currently busy serving another request, before returning a "database busy" error. Default: `2s` | `"100ms"`, `"5s"` |
-| `disableWAL` | N | If set to true, disables Write-Ahead Logging for journaling of the SQLite database. You should set this to `false` if the database is stored on a network file system (e.g. a folder mounted as a SMB or NFS share). This option is ignored for read-only or in-memory databases. | `"true"`, `"false"` |
+| `disableWAL` | N | If set to true, disables Write-Ahead Logging for journaling of the SQLite database. You should set this to `false` if the database is stored on a network file system (for example, a folder mounted as a SMB or NFS share). This option is ignored for read-only or in-memory databases. | `"true"`, `"false"` |
 | `actorStateStore` | N | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"` |
 
 The **`connectionString`** parameter configures how to open the SQLite database.
