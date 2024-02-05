@@ -82,7 +82,7 @@ You can use the following SDKs to author a workflow.
 | Python | [dapr-ext-workflow](https://github.com/dapr/python-sdk/tree/master/ext/dapr-ext-workflow) |
 | .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
 | Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
-| Go | [workflow](todo) |
+| Go | [workflow](https://github.com/dapr/go-sdk/tree/main/client/workflow.go) |
 
 ## Try out workflows
 
@@ -96,7 +96,7 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 | [Workflow Python SDK example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow) | Learn how to create a Dapr Workflow and invoke it using the Python `DaprClient` package. |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
 | [Workflow Java SDK example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows) | Learn how to create a Dapr Workflow and invoke it using the Java `io.dapr.workflows` package. |
-| [Workflow Go SDK example](todo) | Learn how to create a Dapr Workflow and invoke it using the Go `workflow` package. |
+| [Workflow Go SDK example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md) | Learn how to create a Dapr Workflow and invoke it using the Go `workflow` package. |
 
 
 ### Start using workflows directly in your app
@@ -126,4 +126,4 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
-  - [Go example](todo)
+  - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)

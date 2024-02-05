@@ -197,4 +197,4 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
-   - [Go example](todo)
+   - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
