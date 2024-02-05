@@ -131,10 +131,10 @@ This state store supports [Time-To-Live (TTL)]({{< ref state-store-ttl.md >}}) f
 
 Because PostgreSQL doesn't have built-in support for TTLs, this is implemented in Dapr by adding a column in the state table indicating when the data is to be considered "expired". Records that are "expired" are not returned to the caller, even if they're still physically stored in the database. A background "garbage collector" periodically scans the state table for expired rows and deletes them.
 
-The interval at which the deletion of expired records happens is set with the `cleanupInterval` metadata property, which defaults to 3600 seconds (that is, 1 hour).
+You can set the deletion interval of expired records with the `cleanupInterval` metadata property, which defaults to 3600 seconds (that is, 1 hour).
 
-- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupInterval` to a smaller value, for example `5m` (5 minutes).
-- If you do not plan to use TTLs with Dapr and the PostgreSQL state store, you should consider setting `cleanupInterval` to a value <= 0 (e.g. `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
+- Longer intervals require less frequent scans for expired rows, but can require storing expired records for longer, potentially requiring more storage space. If you plan to store many records in your state table, with short TTLs, consider setting `cleanupInterval` to a smaller value; for example, `5m` (5 minutes).
+- If you do not plan to use TTLs with Dapr and the PostgreSQL state store, you should consider setting `cleanupInterval` to a value <= 0 (for example, `0` or `-1`) to disable the periodic cleanup and reduce the load on the database.
 
 The column in the state table where the expiration date for records is stored in, `expiredate`, **does not have an index by default**, so each periodic cleanup must perform a full-table scan. If you have a table with a very large number of records, and only some of them use a TTL, you may find it useful to create an index on that column. Assuming that your state table name is `state` (the default), you can use this query:
 
