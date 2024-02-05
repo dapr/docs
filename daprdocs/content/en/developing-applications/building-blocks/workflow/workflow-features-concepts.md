@@ -334,14 +334,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs JavaScript ".NET" Java >}}
-
-{{% codetab %}}
-
-```javascript
-// DON'T DO THIS!
-```
-{{% /codetab %}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -364,19 +357,17 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guarantee that asynchronous functions are deterministic.
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs JavaScript ".NET" Java >}}
-
-{{% codetab %}}
-
-```javascript
-// Do this!!
-```
-
-{{% /codetab %}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -395,6 +386,12 @@ await context.CreateTimer(5000).ConfigureAwait(true);
 ctx.callActivity(DoSomethingActivity.class.getName()).await();
 ctx.createTimer(Duration.ofSeconds(5)).await();
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
 
 {{% /codetab %}}
 
