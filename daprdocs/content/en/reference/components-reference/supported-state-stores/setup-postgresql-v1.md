@@ -110,7 +110,7 @@ Authenticating with Microsoft Entra ID is supported with Azure Database for Post
 
      > This example does not describe a production configuration because it sets the password in plain text and the user name is left as the PostgreSQL default of "postgres".
 
-2. Create a database for state data.  
+1. Create a database for state data.  
     Either the default "postgres" database can be used, or create a new database for storing state data.
 
     To create a new database in PostgreSQL, run the following SQL command:
