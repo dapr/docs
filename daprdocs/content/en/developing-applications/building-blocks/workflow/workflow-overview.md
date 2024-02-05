@@ -41,7 +41,7 @@ With Dapr Workflow, you can write activities and then orchestrate those activiti
 
 ### Child workflows
 
-In addition to activities, you can write workflows to schedule other workflows as child workflows. A child workflow is independent of the parent workflow that started it and support automatic retry policies.
+In addition to activities, you can write workflows to schedule other workflows as child workflows. A child workflow has its own instance ID, history, and status that is independent of the parent workflow that started it, except for the fact that terminating the parent workflow terminates all of the child workflows created by it. Child workflow also supports automatic retry policies.
 
 [Learn more about child workflows.]({{< ref "workflow-features-concepts.md#child-workflows" >}})
 

@@ -69,11 +69,11 @@ spec:
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | brokers             | Y | A comma-separated list of Kafka brokers. | `"localhost:9092,dapr-kafka.myapp.svc.cluster.local:9093"`
-| consumerGroup       | N | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. | `"group1"`
-| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | `"channel1"`
+| consumerGroup       | N | A kafka consumer group to listen on. Each record published to a topic is delivered to one consumer within each consumer group subscribed to the topic. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead. | `"group1"`
+| consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead. | `"channel1"`
 | clientID            | N | A user-provided string sent with every request to the Kafka brokers for logging, debugging, and auditing purposes. Defaults to `"namespace.appID"` for Kubernetes mode or `"appID"` for Self-Hosted mode. | `"my-namespace.my-dapr-app"`, `"my-dapr-app"`
 | authRequired        | N | *Deprecated* Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"`
-| authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"`
+| authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, `oidc` or `awsiam` | `"password"`, `"none"`
 | saslUsername        | N | The SASL username used for authentication. Only required if `authType` is set to `"password"`. | `"adminuser"`
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authType is set to `"password"`. | `""`, `"KeFg23!"`
 | saslMechanism      | N | The SASL Authentication Mechanism you wish to use. Only required if `authType` is set to `"password"`. Defaults to `PLAINTEXT` | `"SHA-512", "SHA-256", "PLAINTEXT"`
@@ -92,6 +92,12 @@ spec:
 | oidcClientSecret | N | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
 | oidcScopes | N | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | `"openid,kafka-prod"` |
 | oidcExtensions | N | Input/Output | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |
+| awsRegion | N | The AWS region where the Kafka cluster is deployed to. Required when `authType` is set to `awsiam` | `us-west-1` |
+| awsAccessKey | N  | AWS access key associated with an IAM account. | `"accessKey"`
+| awsSecretKey | N  | The secret key associated with the access key. | `"secretKey"`
+| awsSessionToken | N  | AWS session token to use. A session token is only required if you are using temporary security credentials. | `"sessionToken"`
+| awsIamRoleArn | N  | IAM role that has access to AWS Managed Streaming for Apache Kafka (MSK). This is another option to authenticate with MSK aside from the AWS Credentials. | `"arn:aws:iam::123456789:role/mskRole"`
+| awsStsSessionName | N  | Represents the session name for assuming a role. | `"MSKSASLDefaultSession"`
 | schemaRegistryURL | N | Required when using Schema Registry Avro serialization/deserialization. The Schema Registry URL. | `http://localhost:8081` |
 | schemaRegistryAPIKey | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Key. | `XYAXXAZ` |
 | schemaRegistryAPISecret | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret. | `ABCDEFGMEADFF` |
@@ -107,7 +113,17 @@ The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Ka
 
 Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. With the added authentication methods, the `authRequired` field has
 been deprecated from the v1.6 release and instead the `authType` field should be used. If `authRequired` is set to `true`, Dapr will attempt to configure `authType` correctly
-based on the value of `saslPassword`. There are four valid values for `authType`: `none`, `password`, `certificate`, `mtls`, and `oidc`. Note this is authentication only; authorization is still configured within Kafka.
+based on the value of `saslPassword`. The valid values for `authType` are: 
+- `none`
+- `password`
+- `certificate`
+- `mtls`
+- `oidc` 
+- `awsiam`
+
+{{% alert title="Note" color="primary" %}}
+`authType` is _authentication_ only. _Authorization_ is still configured within Kafka, except for `awsiam`, which can also drive authorization decisions configured in AWS IAM.
+{{% /alert %}}
 
 #### None
 
@@ -276,6 +292,44 @@ spec:
     value: 0.10.2.0
 ```
 
+#### AWS IAM
+
+Authenticating with AWS IAM is supported with MSK. Setting `authType` to `awsiam` uses AWS SDK to generate auth tokens to authenticate.
+{{% alert title="Note" color="primary" %}}
+The only required metadata field is `awsRegion`. If no `awsAccessKey` and `awsSecretKey` are provided, you can use AWS IAM roles for service accounts to have password-less authentication to your Kafka cluster.
+{{% /alert %}}
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-awsiam
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: brokers # Required. Kafka broker connection setting
+    value: "dapr-kafka.myapp.svc.cluster.local:9092"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "my-dapr-app-id"
+  - name: authType # Required.
+    value: "awsiam"
+  - name: awsRegion # Required.
+    value: "us-west-1"
+  - name: awsAccessKey # Optional.
+    value: <AWS_ACCESS_KEY>
+  - name: awsSecretKey # Optional.
+    value: <AWS_SECRET_KEY>
+  - name: awsSessionToken # Optional.
+    value: <AWS_SESSION_KEY>
+  - name: awsIamRoleArn # Optional.
+    value: "arn:aws:iam::123456789:role/mskRole"
+  - name: awsStsSessionName # Optional.
+    value: "MSKSASLDefaultSession"
+```
+
 ### Communication using TLS
 
 By default TLS is enabled to secure the transport layer to Kafka. To disable TLS, set `disableTls` to `true`. When TLS is enabled, you can
@@ -313,6 +367,44 @@ spec:
       key: caCert
 auth:
   secretStore: <SECRET_STORE_NAME>
+```
+
+## Consuming from multiple topics
+
+When consuming from multiple topics using a single pub/sub component, there is no guarantee about how the consumers in your consumer group are balanced across the topic partitions. 
+
+For instance, let's say you are subscribing to two topics with 10 partitions per topic and you have 20 replicas of your service consuming from the two topics. There is no guarantee that 10 will be assigned to the first topic and 10 to the second topic. Instead, the partitions could be divided unequally, with more than 10 assigned to the first topic and the rest assigned to the second topic. 
+
+This can result in idle consumers listening to the first topic and over-extended consumers on the second topic, or vice versa. This same behavior can be observed when using auto-scalers such as HPA or KEDA.
+
+If you run into this particular issue, it is recommended that you configure a single pub/sub component per topic with uniquely defined consumer groups per component. This guarantees that all replicas of your service are fully allocated to the unique consumer group, where each consumer group targets one specific topic.
+
+For example, you may define two Dapr components with the following configuration:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-topic-one
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: consumerGroup
+    value: "{appID}-topic-one"
+```
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-topic-two
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: consumerGroup
+    value: "{appID}-topic-two"
 ```
 
 ## Sending and receiving multiple messages

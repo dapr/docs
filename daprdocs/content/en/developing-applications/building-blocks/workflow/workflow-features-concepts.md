@@ -97,9 +97,7 @@ Child workflows have many benefits:
 
 The return value of a child workflow is its output. If a child workflow fails with an exception, then that exception is surfaced to the parent workflow, just like it is when an activity task fails with an exception. Child workflows also support automatic retry policies.
 
-{{% alert title="Note" color="primary" %}}
-Because child workflows are independent of their parents, terminating a parent workflow does not affect any child workflows. You must terminate each child workflow independently using its instance ID.
-{{% /alert %}}
+Terminating a parent workflow terminates all of the child workflows created by the workflow instance. You can disable this by setting the query parameter `non_recursive` to `true` while sending the terminate request to the parent workflow. See [the terminate workflow api]({{< ref "workflow_api.md#terminate-workflow-request" >}}) for more information.
 
 ## Durable timers
 
@@ -162,15 +160,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs JavaScript ".NET" Java >}}
-
-{{% codetab %}}
-
-```javascript
-// DON'T DO THIS!
-```
-
-{{% /codetab %}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -194,19 +184,22 @@ string randomString = GetRandomString();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+const currentTime = new Date();
+const newIdentifier = uuidv4();
+const randomString = getRandomString();
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs JavaScript ".NET" Java >}}
-
-{{% codetab %}}
-
-```javascript
-// Do this!!
-```
-
-{{% /codetab %}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -230,6 +223,16 @@ String randomString = context.callActivity(GetRandomString.class.getName(), Stri
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// Do this!!
+const currentTime = context.getCurrentUtcDateTime();
+const randomString = yield context.callActivity(getRandomString);
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -240,14 +243,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs JavaScript ".NET" Java >}}
-
-{{% codetab %}}
-
-```javascript
-// DON'T DO THIS!
-```
-{{% /codetab %}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -270,19 +266,31 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+// Accessing an Environment Variable (Node.js)
+const configuration = process.env.MY_CONFIGURATION;
+
+fetch('https://postman-echo.com/get')
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs JavaScript ".NET" Java >}}
-
-{{% codetab %}}
-
-```javascript
-// Do this!!
-```
-
-{{% /codetab %}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -300,6 +308,16 @@ string data = await context.CallActivityAsync<string>("MakeHttpCall", "https://e
 // Do this!!
 String configuation = ctx.getInput(InputType.class).getConfiguration(); // imaginary workflow input argument
 String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data", String.class).await();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```javascript
+// Do this!!
+const configuation = workflowInput.getConfiguration(); // imaginary workflow input argument
+const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data");
 ```
 
 {{% /codetab %}}
