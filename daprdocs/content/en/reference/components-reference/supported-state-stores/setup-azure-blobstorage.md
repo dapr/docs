@@ -36,7 +36,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 ## Versioning
 
-Dapr has 2 versions of the Azure Blob Storage state store component: `v1` and `v2`. It is recommended to use `v2`, as `v1` is deprecated.
+Dapr has 2 versions of the Azure Blob Storage state store component: `v1` and `v2`. It is recommended to use `v2` for all new applications. `v1` is considered legacy and is preserved for compatibility with existing applications only.
 
 In `v1`, a longstanding implementation issue was identified, where the [key prefix]({{< ref howto-share-state.md >}}) was incorrectly stripped by the component, essentially behaving as if `keyPrefix` was always set to `none`.  
 The updated `v2` of the component fixes the incorrect behavior and makes the state store correctly respect the `keyPrefix` property.
