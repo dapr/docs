@@ -73,6 +73,17 @@ Learn more about [different types of workflow patterns]({{< ref workflow-pattern
 
 The Dapr Workflow _authoring SDKs_ are language-specific SDKs that contain types and functions to implement workflow logic. The workflow logic lives in your application and is orchestrated by the Dapr Workflow engine running in the Dapr sidecar via a gRPC stream.
 
+### Supported SDKs
+
+You can use the following SDKs to author a workflow.
+
+| Language stack | Package |
+| - | - |
+| Python | [dapr-ext-workflow](https://github.com/dapr/python-sdk/tree/master/ext/dapr-ext-workflow) |
+| JavaScript | [DaprWorkflowClient](https://github.com/dapr/js-sdk/blob/main/src/workflow/client/DaprWorkflowClient.ts) |
+| .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
+| Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
+
 ## Try out workflows
 
 ### Quickstarts and tutorials
