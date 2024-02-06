@@ -151,6 +151,15 @@ Learn more about [external system interaction.]({{< ref "workflow-patterns.md#ex
 
 ## Limitations
 
+### Purging
+
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is typically used for workflows that have run to a `COMPLETED` or `TERMINATED` state. 
+
+There are other times you may choose to purge a workflow history and reuse a workflow instance with new inputs, like: 
+
+- `CONTINUED_AS_NEW` state
+- A `FAILED` workflow instance
+
 ### Workflow determinism and code restraints 
 
 To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
