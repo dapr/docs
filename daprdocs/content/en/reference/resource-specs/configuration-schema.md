@@ -47,8 +47,8 @@ spec:
       - name: <HANDLER-NAME>
         type: <HANDLER-TYPE>
   nameResolution:
-    component: "sqlite"
-    version: "v1"
+    component: <NAME-OF-NAME-RESOLUTION-COMPONENT>
+    version: <NAME-RESOLUTION-COMPONENT-VERSION>
     configuration:
       connectionString: "/home/user/.dapr/nr.db"
   secrets:

@@ -190,11 +190,11 @@ The following table lists the properties for HTTP handlers:
 
 See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
 
-#### Name resolution
+#### Name resolution component
 
-You can set name resolution within the Configuration YAML. Set the `spec.nameResolution.component` property to `"sqlite"`, then pass configuration options in the `spec.nameResolution.configuration` dictionary.
+You can set name resolution component to use within the configuration YAML. For example, to set the `spec.nameResolution.component` property to `"sqlite"`, pass configuration options in the `spec.nameResolution.configuration` dictionary as shown below.
 
-This is the basic example of a Configuration resource:
+This is the basic example of a configuration resource:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -209,7 +209,9 @@ spec:
       connectionString: "/home/user/.dapr/nr.db"
 ```
 
-See [the Name Resolution spec documentation]({{< ref supported-name-resolution >}}) and the [Configuration YAML documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
+For more information, see:
+- [The name resolution component documentation]({{< ref supported-name-resolution >}}) for more examples.
+- - [The Configuration YAML documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
 
 #### Scope secret store access
 

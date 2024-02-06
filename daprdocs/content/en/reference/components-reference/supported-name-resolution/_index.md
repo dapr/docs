@@ -7,9 +7,9 @@ description: The supported name resolution providers to enable Dapr service invo
 no_list: true
 ---
 
-Name resolution is configured via the [Dapr Configuration]({{< ref configuration-overview.md >}}). 
-
 The following components provide name resolution for the service invocation building block.
+
+Name resolution components are configured via the [configuration]({{< ref configuration-overview.md >}}).
 
 {{< partial "components/description.html" >}}
 
