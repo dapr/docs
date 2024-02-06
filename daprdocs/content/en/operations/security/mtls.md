@@ -491,3 +491,52 @@ Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&
 <div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
 </div>
+
+### Sentry Token Validators
+
+Sentry can be configured to enable extra token validators beyond the Kubernetes bound Service Account validator, or replace the `insecure` validator enabled by default in self hosted mode.
+These are useful for joining extra non-Kubernetes clients to the Dapr cluster running in Kubernetes mode, or replacing the insecure "allow all" validator in self hosted mode to enable proper identity validation.
+The only token validator currently supported is the `jwks` validator.
+
+### JWKS
+
+The `jwks` validator enables Sentry to validate JWT tokens using a JWKS endpoint.
+The contents of the token _must_ contain the `sub` claim which matches the SPIFFE identity of the Dapr client, in the same Dapr format `spiffe://<trust-domain>/ns/<namespace>/<app-id>`.
+The audience of the token must by the SPIFFE ID of the Sentry identity, e.g. `spiffe://cluster.local/ns/dapr-system/dapr-sentry`.
+Other basic JWT rules regarding signature, expiry etc. apply.
+
+The `jwks` validator can accept either a remote source to fetch the public key list or a static array for public keys.
+
+```yaml
+kind: Configuration
+apiVersion: dapr.io/v1alpha1
+metadata:
+  name: sentryconfig
+spec:
+  mtls:
+    enabled: true
+    tokenValidators:
+      - name: jwks
+        options:
+          minRefreshInterval: 2m
+          requestTimeout: 1m
+          source: "https://localhost:1234/"
+          caCertificate: "<optional ca certificate bundle string>"
+```
+
+```yaml
+kind: Configuration
+apiVersion: dapr.io/v1alpha1
+metadata:
+  name: sentryconfig
+spec:
+  mtls:
+    enabled: true
+    tokenValidators:
+      - name: jwks
+        options:
+          minRefreshInterval: 2m
+          requestTimeout: 1m
+          source: |
+            {"keys":[ "12345.." ]}
+```

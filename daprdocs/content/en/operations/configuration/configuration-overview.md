@@ -294,6 +294,9 @@ The `mtls` section contains properties for mTLS.
 | `enabled`          | bool   | If true, enables mTLS for communication between services and apps in the cluster.
 | `allowedClockSkew` | string | Allowed tolerance when checking the expiration of TLS certificates, to allow for clock skew. Follows the format used by [Go's time.ParseDuration](https://pkg.go.dev/time#ParseDuration). Default is `15m` (15 minutes).
 | `workloadCertTTL`  | string | How long a certificate TLS issued by Dapr is valid for. Follows the format used by [Go's time.ParseDuration](https://pkg.go.dev/time#ParseDuration). Default is `24h` (24 hours).
+| `sentryAddress`  | string | Hostname port address for connecting to the Sentry server. |
+| `controlPlaneTrustDomain` | string | Trust domain for the control plane. This is used to verify connection to control plane services. |
+| `tokenValidators` | array | Additional Sentry token validators to use for authenticating certificate requests. |
 
 See the [mTLS how-to]({{< ref "mtls.md" >}}) and [security concepts]({{< ref "security-concept.md" >}}) for more information.
 
