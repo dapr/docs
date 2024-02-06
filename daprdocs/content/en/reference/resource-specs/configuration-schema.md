@@ -50,7 +50,7 @@ spec:
     component: <NAME-OF-NAME-RESOLUTION-COMPONENT>
     version: <NAME-RESOLUTION-COMPONENT-VERSION>
     configuration:
-      connectionString: "/home/user/.dapr/nr.db"
+     <NAME-RESOLUTION-COMPONENT-METADATA-CONFIGURATION>
   secrets:
     scopes:
       - storeName: <NAME-OF-SCOPED-STORE>
