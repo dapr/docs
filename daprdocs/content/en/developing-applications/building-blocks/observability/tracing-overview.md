@@ -8,7 +8,7 @@ description: "Use tracing to get visibility into your application"
 
 Dapr uses the Open Telemetry (OTEL) and Zipkin protocols for distributed traces. OTEL is the industry standard and is the recommended trace protocol to use. 
 
- Most observability tools support OTEL. For example [Google Cloud Operations](https://cloud.google.com/products/operations), [New Relic](https://newrelic.com), [Azure Monitor](https://azure.microsoft.com/services/monitor/), [Datadog](https://www.datadoghq.com), Instana, [Jaeger](https://www.jaegertracing.io/), and [SignalFX](https://www.splunk.com/about-splunk/acquisitions/signalfx.html).
+ Most observability tools support OTEL. For example [Google Cloud Operations](https://cloud.google.com/products/operations), [New Relic](https://newrelic.com), [Azure Monitor](https://azure.microsoft.com/services/monitor/), [Datadog](https://www.datadoghq.com), Instana, [Jaeger](https://www.jaegertracing.io/), and [Splunk](https://docs.splunk.com/observability).
 
 ## Scenarios
 Tracing is used with service invocaton and pub/sub APIs. You can flow trace context between services that uses these APIs. 
