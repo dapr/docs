@@ -9,6 +9,8 @@ no_list: true
 
 The following components provide name resolution for the service invocation building block.
 
+Name resolution components are configured via the [configuration]({{< ref configuration-overview.md >}}).
+
 {{< partial "components/description.html" >}}
 
 {{< partial "components/name-resolution.html" >}}
