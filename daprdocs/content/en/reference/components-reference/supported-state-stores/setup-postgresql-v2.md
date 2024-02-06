@@ -9,7 +9,7 @@ aliases:
 ---
 
 {{% alert title="Note" color="primary" %}}
-This is the v2 of the PostgreSQL state store component, which contains some improvements to performance and reliability.
+This is the v2 of the PostgreSQL state store component, which contains some improvements to performance and reliability. New applications are encouraged to use v2.
 
 The PostgreSQL v2 state store component is not compatible with the [v1 component]({{< ref setup-postgresql-v1.md >}}), and data cannot be migrated between the two components. The v2 component does not offer support for state store query APIs.
 
