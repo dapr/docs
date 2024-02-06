@@ -66,9 +66,9 @@ NATS Streaming has been [deprecated](https://github.com/nats-io/nats-streaming-s
 | natsURL            | Y  | NATS server address URL   | "`nats://localhost:4222`"|
 | natsStreamingClusterID  | Y  | NATS cluster ID   |`"clusterId"`|
 | subscriptionType   | Y | Subscription type. Allowed values `"topic"`, `"queue"` | `"topic"` |
-| ackWaitTime        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"300ms"`|
-| maxInFlight        | N | See [here](https://docs.nats.io/developing-with-nats-streaming/acks#acknowledgements) | `"25"` |
-| durableSubscriptionName | N | [Durable subscriptions](https://docs.nats.io/developing-with-nats-streaming/durables) identification name. | `"my-durable"`|
+| ackWaitTime        | N | See [here](https://docs.nats.io/using-nats/developer) | `"300ms"`|
+| maxInFlight        | N | See [here](https://docs.nats.io/using-nats/developer) | `"25"` |
+| durableSubscriptionName | N | [Durable subscriptions](https://docs.nats.io/using-nats/developer) identification name. | `"my-durable"`|
 | deliverNew         | N | Subscription Options. Only one can be used. Deliver new messages only  | `"true"`, `"false"` |
 | startAtSequence    | N | Subscription Options. Only one can be used. Sets the desired start sequence position and state  | `"100000"`, `"230420"` |
 | startWithLastReceived | N | Subscription Options. Only one can be used. Sets the start position to last received. | `"true"`, `"false"` |
