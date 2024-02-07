@@ -235,7 +235,7 @@ The API call will provide a JSON response similar to this:
 
 Parameter | Description
 --------- | -----------
-`runtimeStatus` | The status of the workflow instance. Values include: `RUNNING`, `TERMINATED`, `PAUSED`  
+`runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
 
 ## Component format
 

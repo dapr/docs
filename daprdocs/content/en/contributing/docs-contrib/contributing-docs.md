@@ -8,6 +8,8 @@ description: Get started with contributing to the Dapr docs
 
 In this guide, you'll learn how to contribute to the [Dapr docs repository](https://github.com/dapr/docs). Since Dapr docs are published to [docs.dapr.io](https://docs.dapr.io), you must make sure your contributions compile and publish correctly.
 
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uPYuXcaEs-c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Prerequisites
 
 Before contributing to the Dapr docs: 

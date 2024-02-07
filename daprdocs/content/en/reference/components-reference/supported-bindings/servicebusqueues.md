@@ -67,10 +67,10 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|-----------------|----------|---------|
-| `connectionString` | Y | Input/Output | The Service Bus connection string. Required unless using Azure AD authentication. | `"Endpoint=sb://************"` |
+| `connectionString` | Y | Input/Output | The Service Bus connection string. Required unless using Microsoft Entra ID authentication. | `"Endpoint=sb://************"` |
 | `queueName` | Y | Input/Output | The Service Bus queue name. Queue names are case-insensitive and will always be forced to lowercase. | `"queuename"` |
 | `timeoutInSec` | N | Input/Output | Timeout for all invocations to the Azure Service Bus endpoint, in seconds. *Note that this option impacts network calls and it's unrelated to the TTL applies to messages*. Default: `"60"` | `"60"` |
-| `namespaceName`| N | Input/Output | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Azure AD authentication. | `"namespace.servicebus.windows.net"` |
+| `namespaceName`| N | Input/Output | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
 | `disableEntityManagement` | N | Input/Output | When set to true, queues and subscriptions do not get created automatically. Default: `"false"` | `"true"`, `"false"`
 | `lockDurationInSec`     | N | Input/Output | Defines the length in seconds that a message will be locked for before expiring. Used during subscription creation only. Default set by server. | `"30"`
 | `autoDeleteOnIdleInSec` | N  | Input/Output | Time in seconds to wait before auto deleting idle subscriptions. Used during subscription creation only. Default: `"0"` (disabled) | `"3600"`
@@ -90,9 +90,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | `publishInitialRetryIntervalInMs` | N  | Output | Time in milliseconds for the initial exponential backoff when Azure Service Bus throttle messages. Defaults: `"500"` | `"500"`
 | `direction` | N  | Input/Output | The direction of the binding | `"input"`, `"output"`, `"input, output"`
 
-### Azure Active Directory (AAD) authentication
+### Microsoft Entra ID authentication
 
-The Azure Service Bus Queues binding component supports authentication using all Azure Active Directory mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of AAD authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
+The Azure Service Bus Queues binding component supports authentication using all Microsoft Entra ID mechanisms, including Managed Identities. For further information and the relevant component metadata fields to provide depending on the choice of Microsoft Entra ID authentication mechanism, see the [docs for authenticating to Azure]({{< ref authenticating-azure.md >}}).
 
 #### Example Configuration
 

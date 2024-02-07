@@ -28,7 +28,7 @@ spec:
       value: |
         Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;
 
-    # Authenticate with Azure AD (Azure SQL only)
+    # Authenticate with Microsoft Entra ID (Azure SQL only)
     # "useAzureAD" be set to "true"
     - name: useAzureAD
       value: true
@@ -75,15 +75,15 @@ The following metadata options are **required** to authenticate using SQL Server
 |--------|:--------:|---------|---------|
 | `connectionString` | Y | The connection string used to connect.<br>If the connection string contains the database, it must already exist. Otherwise, if the database is omitted, a default database named "Dapr" is created.  | `"Server=myServerName\myInstanceName;Database=myDataBase;User Id=myUsername;Password=myPassword;"` |
 
-### Authenticate using Azure AD
+### Authenticate using Microsoft Entra ID
 
-Authenticating with Azure AD is supported with Azure SQL only. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
+Authenticating with Microsoft Entra ID is supported with Azure SQL only. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
 
 | Field  | Required | Details | Example |
 |--------|:--------:|---------|---------|
-| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Azure AD. | `"true"` |
+| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Microsoft Entra ID. | `"true"` |
 | `connectionString` | Y | The connection string or URL of the Azure SQL database, **without credentials**.<br>If the connection string contains the database, it must already exist. Otherwise, if the database is omitted, a default database named "Dapr" is created.  | `"sqlserver://myServerName.database.windows.net:1433?database=myDataBase"` |
-| `azureTenantId` | N | ID of the Azure AD tenant | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"` |
+| `azureTenantId` | N | ID of the Microsoft Entra ID tenant | `"cd4b2887-304c-47e1-b4d5-65447fdd542b"` |
 | `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
 | `azureClientSecret` | N | Client secret (application password) | `"Ecy3XG7zVZK3/vl/a2NSB+a1zXLa8RnMum/IgD0E"` |
 

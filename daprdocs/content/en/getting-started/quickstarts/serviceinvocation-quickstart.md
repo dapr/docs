@@ -48,6 +48,16 @@ From the root of the Quickstart clone directory, navigate to the quickstart dire
 cd service_invocation/python/http
 ```
 
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+pip3 install -r requirements.txt
+cd ../checkout
+pip3 install -r requirements.txt
+cd ..
+```
+
 ### Step 3: Run the `order-processor` and `checkout` services
 
 With the following command, simultaneously run the following services alongside their own Dapr sidecars:
@@ -57,6 +67,7 @@ With the following command, simultaneously run the following services alongside 
 ```bash
 dapr run -f .
 ```
+> **Note**: Since Python3.exe is not defined in Windows, you may need to change  `python3` to `python` in the  [`dapr.yaml`]({{< ref "#dapryaml-multi-app-run-template-file" >}}) file before running `dapr run -f .`
 
 **Expected output**
 
@@ -181,6 +192,16 @@ From the root of the Quickstart clone directory, navigate to the quickstart dire
 
 ```bash
 cd service_invocation/javascript/http
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+npm install
+cd ../checkout
+npm install
+cd ..
 ```
 
 ### Step 3: Run the `order-processor` and `checkout` services
@@ -311,6 +332,18 @@ From the root of the Quickstart clone directory, navigate to the quickstart dire
 
 ```bash
 cd service_invocation/csharp/http
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+dotnet restore
+dotnet build
+cd ../checkout
+dotnet restore
+dotnet build
+cd ..
 ```
 
 ### Step 3: Run the `order-processor` and `checkout` services
@@ -447,6 +480,16 @@ From the root of the Quickstart clone directory, navigate to the quickstart dire
 cd service_invocation/java/http
 ```
 
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+mvn clean install
+cd ../checkout
+mvn clean install
+cd ..
+```
+
 ### Step 3: Run the `order-processor` and `checkout` services
 
 With the following command, simultaneously run the following services alongside their own Dapr sidecars:
@@ -574,6 +617,16 @@ From the root of the Quickstart clone directory, navigate to the quickstart dire
 
 ```bash
 cd service_invocation/go/http
+```
+
+Install the dependencies for the `order-processor` and `checkout` apps:
+
+```bash
+cd ./order-processor
+go build .
+cd ../checkout
+go build .
+cd ..
 ```
 
 ### Step 3: Run the `order-processor` and `checkout` services
