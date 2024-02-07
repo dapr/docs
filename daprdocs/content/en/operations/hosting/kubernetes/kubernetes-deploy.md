@@ -72,6 +72,51 @@ The `-k` flag initializes Dapr on the Kubernetes cluster in your current context
     dapr dashboard -k -n <your-namespace>
     ```
 
+
+ #### Install Dapr from the offical Dapr Helm chart (with development flag)
+
+Adding the `--dev` flag initializes Dapr on the Kubernetes cluster on your current context with the addition of Redis and Zipkin deployments.
+
+The steps are similar to the above, save for the inclusion of the `--dev` flag being appended to the init command like so:
+
+ ```bash
+ dapr init -k --dev
+ ```
+
+The expected output will be:
+
+```bash
+⌛  Making the jump to hyperspace...
+ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+
+ℹ️  Container images will be pulled from Docker Hub
+✅  Deploying the Dapr control plane with latest version to your cluster...
+✅  Deploying the Dapr dashboard with latest version to your cluster...
+✅  Deploying the Dapr Redis with latest version to your cluster...
+✅  Deploying the Dapr Zipkin with latest version to your cluster...
+ℹ️  Applying "statestore" component to Kubernetes "default" namespace.
+ℹ️  Applying "pubsub" component to Kubernetes "default" namespace.
+ℹ️  Applying "appconfig" zipkin configuration to Kubernetes "default" namespace.
+✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
+ ```
+
+After a short period of time (or using the `--wait` flag and specifying an amount of time to wait) you should be able to check that the Redis and Zipkin components have been stood up correctly.
+
+```bash
+kubectl get pods --namespace default
+```
+
+Expected Output:
+
+```bash
+NAME                              READY   STATUS    RESTARTS   AGE
+dapr-dev-zipkin-bfb4b45bb-sttz7   1/1     Running   0          159m
+dapr-dev-redis-master-0           1/1     Running   0          159m
+dapr-dev-redis-replicas-0         1/1     Running   0          159m
+dapr-dev-redis-replicas-1         1/1     Running   0          159m
+dapr-dev-redis-replicas-2         1/1     Running   0          158m 
+ ```
+
 #### Install Dapr from a private Dapr Helm chart
 
 Installing Dapr from a private Helm chart can be helpful for when you:

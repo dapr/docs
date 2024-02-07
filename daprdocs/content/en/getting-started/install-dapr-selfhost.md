@@ -10,6 +10,8 @@ aliases:
 
 Now that you've [installed the Dapr CLI]({{<ref install-dapr-cli.md>}}), use the CLI to initialize Dapr on your local machine.
 
+To initialize dapr in your local (or remote) kubernetes cluster. [How to initialize dapr with redis and zipkin]({{<ref kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag>}})
+
 Dapr runs as a sidecar alongside your application. In self-hosted mode, this means it is a process on your local machine. By initializing Dapr, you:
 
 - Fetch and install the Dapr sidecar binaries locally.
