@@ -46,6 +46,11 @@ spec:
     handlers:
       - name: <HANDLER-NAME>
         type: <HANDLER-TYPE>
+  nameResolution:
+    component: <NAME-OF-NAME-RESOLUTION-COMPONENT>
+    version: <NAME-RESOLUTION-COMPONENT-VERSION>
+    configuration:
+     <NAME-RESOLUTION-COMPONENT-METADATA-CONFIGURATION>
   secrets:
     scopes:
       - storeName: <NAME-OF-SCOPED-STORE>
