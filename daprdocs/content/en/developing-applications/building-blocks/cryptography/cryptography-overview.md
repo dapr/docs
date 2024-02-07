@@ -45,7 +45,7 @@ While both HTTP and gRPC are supported in the alpha release, using the gRPC APIs
 
 ### Cryptographic components
 
-The Dapr cryptography building block incldues two kinds of components:
+The Dapr cryptography building block includes two kinds of components:
 
 - **Components that allow interacting with management services or vaults ("key vaults").**   
    Similar to how Dapr offers an "abstraction layer" on top of various secret stores or state stores, these components allow interacting with various key vaults such as Azure Key Vault (with more coming in future Dapr releases). With these components, cryptographic operations on the private keys are performed within the vaults and Dapr never sees your private keys.
@@ -86,3 +86,4 @@ Watch this [demo video of the Cryptography API from the Dapr Community Call #83]
 ## Related links
 - [Cryptography overview]({{< ref cryptography-overview.md >}})
 - [Cryptography component specs]({{< ref supported-cryptography >}})
+- [Cryptography API reference doc]({{< ref cryptography_api >}})

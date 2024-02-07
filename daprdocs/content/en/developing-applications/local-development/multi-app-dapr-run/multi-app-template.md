@@ -14,7 +14,7 @@ The Multi-App Run template file is a YAML file that you can use to run multiple 
 - Use the multi-app template
 - View started applications
 - Stop the multi-app template
-- Stucture the multi-app template file
+- Structure the multi-app template file
 
 ## Use the multi-app template
 
@@ -93,7 +93,7 @@ Stop the multi-app run template anytime with either of the following commands:
 ```cmd
 # the template file needs to be called `dapr.yaml` by default if a directory path is given
 
-dapr stop -f
+dapr stop -f <dir_path>
 ```
 or:
 
@@ -162,9 +162,9 @@ apps:
 
 The following rules apply for all the paths present in the template file:
  - If the path is absolute, it is used as is.
- - All relative paths under command section should be provided relative to the template file path.
+ - All relative paths under common section should be provided relative to the template file path.
  - `appDirPath` under apps section should be provided relative to the template file path.
- - All relative paths under app section should be provided relative to the `appDirPath`.
+ - All other relative paths under apps section should be provided relative to the `appDirPath`.
 
 {{% /codetab %}}
 

@@ -31,7 +31,7 @@ spec:
       value: 403
 
     # `readBody` controls whether the middleware reads the entire request body in-memory and make it
-    # availble for policy decisions.
+    # available for policy decisions.
     - name: readBody
       value: "false"
 

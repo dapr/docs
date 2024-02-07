@@ -60,7 +60,7 @@ To rotate the configured token in self-hosted, update the `DAPR_API_TOKEN` envir
 
 ### Kubernetes
 
-To rotate the configured token in Kubernates, update the previously-created secret with the new token in each namespace. You can do that using `kubectl patch` command, but a simpler way to update these in each namespace is by using a manifest:
+To rotate the configured token in Kubernetes, update the previously-created secret with the new token in each namespace. You can do that using `kubectl patch` command, but a simpler way to update these in each namespace is by using a manifest:
 
 ```yaml
 apiVersion: v1

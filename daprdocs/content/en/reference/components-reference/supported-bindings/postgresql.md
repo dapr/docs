@@ -41,15 +41,15 @@ The following metadata options are **required** to authenticate using a PostgreS
 |--------|:--------:|---------|---------|
 | `connectionString` | Y | The connection string for the PostgreSQL database. See the PostgreSQL [documentation on database connections](https://www.postgresql.org/docs/current/libpq-connect.html) for information on how to define a connection string. | `"host=localhost user=postgres password=example port=5432 connect_timeout=10 database=my_db"`
 
-### Authenticate using Azure AD
+### Authenticate using Microsoft Entra ID
 
-Authenticating with Azure AD is supported with Azure Database for PostgreSQL. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
+Authenticating with Microsoft Entra ID is supported with Azure Database for PostgreSQL. All authentication methods supported by Dapr can be used, including client credentials ("service principal") and Managed Identity.
 
 | Field  | Required | Details | Example |
 |--------|:--------:|---------|---------|
-| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Azure AD. | `"true"` |
-| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain the user, which corresponds to the name of the user created inside PostgreSQL that maps to the Azure AD identity; this is often the name of the corresponding principal (e.g. the name of the Azure AD application). This connection string should not contain any password.  | `"host=mydb.postgres.database.azure.com user=myapplication port=5432 database=my_db sslmode=require"` |
-| `azureTenantId` | N | ID of the Azure AD tenant | `"cd4b2887-304c-…"` |
+| `useAzureAD` | Y | Must be set to `true` to enable the component to retrieve access tokens from Microsoft Entra ID. | `"true"` |
+| `connectionString` | Y | The connection string for the PostgreSQL database.<br>This must contain the user, which corresponds to the name of the user created inside PostgreSQL that maps to the Microsoft Entra ID identity; this is often the name of the corresponding principal (e.g. the name of the Microsoft Entra ID application). This connection string should not contain any password.  | `"host=mydb.postgres.database.azure.com user=myapplication port=5432 database=my_db sslmode=require"` |
+| `azureTenantId` | N | ID of the Microsoft Entra ID tenant | `"cd4b2887-304c-…"` |
 | `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-…"` |
 | `azureClientSecret` | N | Client secret (application password) | `"Ecy3X…"` |
 

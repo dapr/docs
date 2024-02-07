@@ -296,7 +296,7 @@ To use Mariner-based images for Dapr, you need to add `-mariner` to your Docker 
 In the Dapr CLI, you can switch to using Mariner-based images with the `--image-variant` flag.
 
 ```sh
-dapr init --image-variant mariner
+dapr init -k --image-variant mariner
 ```
 
 {{% /codetab %}}

@@ -11,6 +11,10 @@ aliases:
 
 To setup Redis state store create a component of type `state.redis`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.
 
+{{% alert title="Limitations" color="warning" %}}
+Before using Redis and the Transactions API, make sure you're familiar with [Redis limitations regarding transactions](https://redis.io/docs/interact/transactions/#what-about-rollbacks).
+{{% /alert %}}
+
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
@@ -26,18 +30,14 @@ spec:
     value: <PASSWORD>
   - name: enableTLS
     value: <bool> # Optional. Allowed: true, false.
-  - name: failover
-    value: <bool> # Optional. Allowed: true, false.
-  - name: sentinelMasterName
-    value: <string> # Optional
   - name: maxRetries
     value: # Optional
   - name: maxRetryBackoff
     value: # Optional
   - name: failover
-    value: # Optional
+    value: <bool> # Optional. Allowed: true, false.
   - name: sentinelMasterName
-    value: # Optional
+    value: <string> # Optional
   - name: redeliverInterval
     value: # Optional
   - name: processingTimeout

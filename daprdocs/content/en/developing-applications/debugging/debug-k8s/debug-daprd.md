@@ -11,7 +11,7 @@ description: "How to debug the Dapr sidecar (daprd) on your Kubernetes cluster"
 
 Sometimes it is necessary to understand what's going on in the Dapr sidecar (daprd), which runs as a sidecar next to your application, especially when you diagnose your Dapr application and wonder if there's something wrong in Dapr itself. Additionally, you may be developing a new feature for Dapr on Kubernetes and want to debug your code.
 
-his guide will cover how to use built-in Dapr debugging to debug the Dapr sidecar in your Kubernetes pods.
+This guide covers how to use built-in Dapr debugging to debug the Dapr sidecar in your Kubernetes pods. To learn how to view logs and troubleshoot Dapr in Kubernetes, see the [Configure and view Dapr logs guide]({{< ref "logs-troubleshooting.md#logs-in-kubernetes-mode" >}})
 
 ## Pre-requisites
 
@@ -86,6 +86,62 @@ Forwarding from [::1]:40000 -> 40000
 ```
 
 All done. Now you can point to port 40000 and start a remote debug session to daprd from your favorite IDE.
+
+## Commonly used `kubectl` commands
+
+Use the following common `kubectl` commands when debugging daprd and applications running on Kubernetes.
+
+Get all pods, events, and services: 
+
+```bash
+kubectl get all
+kubectl get all --n <namespace>
+kubectl get all --all-namespaces
+```
+
+Get each specifically:
+
+```bash
+kubectl get pods
+```
+
+```bash
+kubectl get events --n <namespace>
+kubectl get events --sort-by=.metadata.creationTimestamp --n <namespace>
+```
+
+```bash
+kubectl get services
+```
+
+Check logs:
+
+```bash
+kubectl logs <podId> daprd
+kubectl logs <podId> <myAppContainerName>
+kuebctl logs <deploymentId> daprd
+kubectl logs <deploymentId> <myAppContainerName>
+```
+
+```bash
+kubectl describe pod <podId>
+kubectl describe deploy <deployId>
+kubectl describe replicaset <replicasetId>
+```
+
+Restart a pod by running the following command: 
+
+```bash
+kubectl delete pod <podId>
+```
+
+This causes the `replicaset` controller to restart the pod after the delete.
+
+## Watch the demo
+
+See the presentation on troubleshooting Dapr on Kubernetes in the [Dapr Community Call #36](https://youtu.be/pniLPRbuLD8?si=bGid7oYSp9cThtiI&t=838). 
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/pniLPRbuLD8?si=bGid7oYSp9cThtiI&amp;start=838" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Related links
 
