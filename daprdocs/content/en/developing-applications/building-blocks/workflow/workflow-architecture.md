@@ -15,6 +15,7 @@ Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-v
 - The architecture of the Dapr Workflow engine
 - How the workflow engine interacts with application code
 - How the workflow engine fits into the overall Dapr architecture
+- How different workflow backend can work with workflow engine
 
 For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{< ref "workflow-overview.md" >}}).
 
@@ -172,6 +173,29 @@ Also, the Dapr Workflow engine requires that all instances of each workflow app 
 {{% /alert %}}
 
 Workflows don't control the specifics of how load is distributed across the cluster. For example, if a workflow schedules 10 activity tasks to run in parallel, all 10 tasks may run on as many as 10 different compute nodes or as few as a single compute node. The actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
+
+## Workflow backend
+
+The workflow backend is responsible for orchestrating and preserving the state of workflows. At any given time, only one backend can be supported. The workflow backend can be configured as a component, similar to any other component in Dapr. Users are required to specify the type of workflow backend and provide the configuration specific to that backend.
+
+For instance, the following sample demonstrates how to define a SQLite backend component. Please note that as of now, SQLite backend is not supported. Dapr workflow currently supports only the actor backend by default, and users are not required to define an actor backend component to use it.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: sqlitebackend
+spec:
+  type: workflowbackend.sqlite
+  version: v1
+  metadata:
+    - name: filePath
+      value: "file::memory:"
+    - name: orchestrationLockTimeout
+      value: "130000000000ms"
+    - name: activityLockTimeout
+      value: "130000000000ms"
+```
 
 ## Workflow latency
 
