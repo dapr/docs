@@ -12,7 +12,7 @@ Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-v
 
 Now that you've [authored the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs Python ".NET" Java HTTP >}}
+{{< tabs Python JavaScript ".NET" Java HTTP >}}
 
 <!--Python-->
 {{% codetab %}}
@@ -59,6 +59,77 @@ d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
 
 # Terminate the workflow
 d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
+```
+
+{{% /codetab %}}
+
+<!--JavaScript-->
+{{% codetab %}}
+
+Manage your workflow within your code. In the workflow example from the [Author a workflow]({{< ref "howto-author-workflow.md#write-the-application" >}}) guide, the workflow is registered in the code using the following APIs:
+- **client.workflow.start**: Start an instance of a workflow
+- **client.workflow.get**: Get information on the status of the workflow
+- **client.workflow.pause**: Pauses or suspends a workflow instance that can later be resumed
+- **client.workflow.resume**: Resumes a paused workflow instance
+- **client.workflow.purge**: Removes all metadata related to a specific workflow instance
+- **client.workflow.terminate**: Terminate or stop a particular instance of a workflow
+
+```javascript
+import { DaprClient } from "@dapr/dapr";
+
+async function printWorkflowStatus(client: DaprClient, instanceId: string) {
+  const workflow = await client.workflow.get(instanceId);
+  console.log(
+    `Workflow ${workflow.workflowName}, created at ${workflow.createdAt.toUTCString()}, has status ${
+      workflow.runtimeStatus
+    }`,
+  );
+  console.log(`Additional properties: ${JSON.stringify(workflow.properties)}`);
+  console.log("--------------------------------------------------\n\n");
+}
+
+async function start() {
+  const client = new DaprClient();
+
+  // Start a new workflow instance
+  const instanceId = await client.workflow.start("OrderProcessingWorkflow", {
+    Name: "Paperclips",
+    TotalCost: 99.95,
+    Quantity: 4,
+  });
+  console.log(`Started workflow instance ${instanceId}`);
+  await printWorkflowStatus(client, instanceId);
+
+  // Pause a workflow instance
+  await client.workflow.pause(instanceId);
+  console.log(`Paused workflow instance ${instanceId}`);
+  await printWorkflowStatus(client, instanceId);
+
+  // Resume a workflow instance
+  await client.workflow.resume(instanceId);
+  console.log(`Resumed workflow instance ${instanceId}`);
+  await printWorkflowStatus(client, instanceId);
+
+  // Terminate a workflow instance
+  await client.workflow.terminate(instanceId);
+  console.log(`Terminated workflow instance ${instanceId}`);
+  await printWorkflowStatus(client, instanceId);
+
+  // Wait for the workflow to complete, 30 seconds!
+  await new Promise((resolve) => setTimeout(resolve, 30000));
+  await printWorkflowStatus(client, instanceId);
+
+  // Purge a workflow instance
+  await client.workflow.purge(instanceId);
+  console.log(`Purged workflow instance ${instanceId}`);
+  // This will throw an error because the workflow instance no longer exists.
+  await printWorkflowStatus(client, instanceId);
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
 {{% /codetab %}}
@@ -242,6 +313,7 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py)
+  - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
 

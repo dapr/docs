@@ -334,7 +334,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -357,11 +357,17 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guarantee that asynchronous functions are deterministic.
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript >}}
 
 {{% codetab %}}
 
@@ -380,6 +386,12 @@ await context.CreateTimer(5000).ConfigureAwait(true);
 ctx.callActivity(DoSomethingActivity.class.getName()).await();
 ctx.createTimer(Duration.ofSeconds(5)).await();
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
 
 {{% /codetab %}}
 
@@ -412,4 +424,8 @@ To work around these constraints:
 - [Try out Dapr Workflow using the quickstart]({{< ref workflow-quickstart.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the following examples: 
+   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
+   - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+   - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
