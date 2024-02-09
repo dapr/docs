@@ -14,7 +14,7 @@ Let's say you enable a managed service identity using an Azure KeyVault secrets 
 
 > Dapr supports both system-assigned and user-assigned identities.
 
-In your component YAML, the [`azureClientId` property]({{< ref "authenticating-azure.md#authenticating-with-managed-identities-mi" >}}) only needs to be set if using user-assigned identity. Otherwise, you can omit this property for system-managed identity to be used by default.
+In your component YAML, the [`azureClientId` property]({{< ref "authenticating-azure.md#authenticating-with-managed-identities-mi" >}}) only needs to be set if using user-assigned identity. Otherwise this property can be omitted and system-managed identity will be used by default.
 
 ## System-assigned
 
