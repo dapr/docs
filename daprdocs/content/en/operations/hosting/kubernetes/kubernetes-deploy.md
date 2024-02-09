@@ -77,13 +77,13 @@ The `-k` flag initializes Dapr on the Kubernetes cluster in your current context
 
 Adding the `--dev` flag initializes Dapr on the Kubernetes cluster on your current context with the addition of Redis and Zipkin deployments.
 
-The steps are similar to the above, save for the inclusion of the `--dev` flag being appended to the init command like so:
+The steps are similar to the above, save for the inclusion of the `--dev` flag being appended to the init command:
 
  ```bash
  dapr init -k --dev
  ```
 
-The expected output will be:
+Expected output:
 
 ```bash
 ⌛  Making the jump to hyperspace...
@@ -100,13 +100,13 @@ The expected output will be:
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
  ```
 
-After a short period of time (or using the `--wait` flag and specifying an amount of time to wait) you should be able to check that the Redis and Zipkin components have been stood up correctly.
+After a short period of time (or using the `--wait` flag and specifying an amount of time to wait) you can check that the Redis and Zipkin components have been deployed to the cluster.
 
 ```bash
 kubectl get pods --namespace default
 ```
 
-Expected Output:
+Expected output:
 
 ```bash
 NAME                              READY   STATUS    RESTARTS   AGE
