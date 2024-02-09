@@ -153,7 +153,7 @@ Learn more about [external system interaction.]({{< ref "workflow-patterns.md#ex
 
 ## Purging
 
-Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is typically used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
 
 Learn more in [the workflow API reference guide]({{< ref workflow_api.md >}}).
 
