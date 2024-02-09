@@ -63,6 +63,8 @@ You can use the following two techniques to write workflows that may need to sch
 
 1. **Use the _continue-as-new_ API**:  
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+   
+    > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
 1. **Use child workflows**:  
     Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
@@ -149,16 +151,13 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 Learn more about [external system interaction.]({{< ref "workflow-patterns.md#external-system-interaction" >}})
 
+## Purging
+
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is typically used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+
+Learn more in [the workflow API reference guide]({{< ref workflow_api.md >}}).
+
 ## Limitations
-
-### Purging
-
-Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is typically used for workflows that have run to a `COMPLETED` or `TERMINATED` state. 
-
-There are other times you may choose to purge a workflow history and reuse a workflow instance with new inputs, like: 
-
-- `CONTINUED_AS_NEW` state
-- A `FAILED` workflow instance
 
 ### Workflow determinism and code restraints 
 
