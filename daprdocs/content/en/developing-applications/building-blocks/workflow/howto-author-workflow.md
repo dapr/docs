@@ -34,7 +34,7 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -50,6 +50,37 @@ def hello_act(ctx: WorkflowActivityContext, input):
 ```
 
 [See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the `WorkflowActivityContext` class, which implements the workflow activities. 
+
+```javascript
+export default class WorkflowActivityContext {
+  private readonly _innerContext: ActivityContext;
+  constructor(innerContext: ActivityContext) {
+    if (!innerContext) {
+      throw new Error("ActivityContext cannot be undefined");
+    }
+    this._innerContext = innerContext;
+  }
+
+  public getWorkflowInstanceId(): string {
+    return this._innerContext.orchestrationId;
+  }
+
+  public getWorkflowActivityId(): number {
+    return this._innerContext.taskId;
+  }
+}
+```
+
+[See the workflow activity in context.](https://github.com/dapr/js-sdk/blob/main/src/workflow/runtime/WorkflowActivityContext.ts)
 
 
 {{% /codetab %}}
@@ -172,7 +203,7 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -191,6 +222,51 @@ def hello_world_wf(ctx: DaprWorkflowContext, input):
 ```
 
 [See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+Next, register the workflow with the `WorkflowRuntime` class and start the workflow runtime.
+ 
+```javascript
+export default class WorkflowRuntime {
+
+  //..
+  // Register workflow implementation for handling orchestrations
+  public registerWorkflow(workflow: TWorkflow): WorkflowRuntime {
+    const name = getFunctionName(workflow);
+    const workflowWrapper = (ctx: OrchestrationContext, input: any): any => {
+      const workflowContext = new WorkflowContext(ctx);
+      return workflow(workflowContext, input);
+    };
+    this.worker.addNamedOrchestrator(name, workflowWrapper);
+    return this;
+  }
+
+  // Register workflow activities
+  public registerActivity(fn: TWorkflowActivity<TInput, TOutput>): WorkflowRuntime {
+    const name = getFunctionName(fn);
+    const activityWrapper = (ctx: ActivityContext, intput: TInput): TOutput => {
+      const wfActivityContext = new WorkflowActivityContext(ctx);
+      return fn(wfActivityContext, intput);
+    };
+    this.worker.addNamedActivity(name, activityWrapper);
+    return this;
+  }
+
+  // Start the workflow runtime processing items and block.
+  public async start() {
+    await this.worker.start();
+  }
+
+}
+```
+
+[See the `WorkflowRuntime` in context.](https://github.com/dapr/js-sdk/blob/main/src/workflow/runtime/WorkflowRuntime.ts)
 
 
 {{% /codetab %}}
@@ -275,7 +351,7 @@ public class DemoWorkflowWorker {
 
 Finally, compose the application using the workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java >}}
 
 {{% codetab %}}
 
@@ -363,6 +439,153 @@ if __name__ == '__main__':
     main()
 ```
 
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+[The following example](https://github.com/dapr/js-sdk/blob/main/src/workflow/client/DaprWorkflowClient.ts) is a basic JavaScript application using the JavaScript SDK. As in this example, your project code would include:
+
+- A builder with extensions called:
+  - `WorkflowRuntime`: Allows you to register workflows and workflow activities
+  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
+  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
+- API calls. In the example below, these calls start, terminate, get status, pause, resume, raise event, and purge the workflow.
+ 
+```javascript
+import { TaskHubGrpcClient } from "@microsoft/durabletask-js";
+import { WorkflowState } from "./WorkflowState";
+import { generateApiTokenClientInterceptors, generateEndpoint, getDaprApiToken } from "../internal/index";
+import { TWorkflow } from "../../types/workflow/Workflow.type";
+import { getFunctionName } from "../internal";
+import { WorkflowClientOptions } from "../../types/workflow/WorkflowClientOption";
+
+/** DaprWorkflowClient class defines client operations for managing workflow instances. */
+
+export default class DaprWorkflowClient {
+  private readonly _innerClient: TaskHubGrpcClient;
+
+  /** Initialize a new instance of the DaprWorkflowClient.
+   */
+  constructor(options: Partial<WorkflowClientOptions> = {}) {
+    const grpcEndpoint = generateEndpoint(options);
+    options.daprApiToken = getDaprApiToken(options);
+    this._innerClient = this.buildInnerClient(grpcEndpoint.endpoint, options);
+  }
+
+  private buildInnerClient(hostAddress: string, options: Partial<WorkflowClientOptions>): TaskHubGrpcClient {
+    let innerOptions = options?.grpcOptions;
+    if (options.daprApiToken !== undefined && options.daprApiToken !== "") {
+      innerOptions = {
+        ...innerOptions,
+        interceptors: [generateApiTokenClientInterceptors(options), ...(innerOptions?.interceptors ?? [])],
+      };
+    }
+    return new TaskHubGrpcClient(hostAddress, innerOptions);
+  }
+
+  /**
+   * Schedule a new workflow using the DurableTask client.
+   */
+  public async scheduleNewWorkflow(
+    workflow: TWorkflow | string,
+    input?: any,
+    instanceId?: string,
+    startAt?: Date,
+  ): Promise<string> {
+    if (typeof workflow === "string") {
+      return await this._innerClient.scheduleNewOrchestration(workflow, input, instanceId, startAt);
+    }
+    return await this._innerClient.scheduleNewOrchestration(getFunctionName(workflow), input, instanceId, startAt);
+  }
+
+  /**
+   * Terminate the workflow associated with the provided instance id.
+   *
+   * @param {string} workflowInstanceId - Workflow instance id to terminate.
+   * @param {any} output - The optional output to set for the terminated workflow instance.
+   */
+  public async terminateWorkflow(workflowInstanceId: string, output: any) {
+    await this._innerClient.terminateOrchestration(workflowInstanceId, output);
+  }
+
+  /**
+   * Fetch workflow instance metadata from the configured durable store.
+   */
+  public async getWorkflowState(
+    workflowInstanceId: string,
+    getInputsAndOutputs: boolean,
+  ): Promise<WorkflowState | undefined> {
+    const state = await this._innerClient.getOrchestrationState(workflowInstanceId, getInputsAndOutputs);
+    if (state !== undefined) {
+      return new WorkflowState(state);
+    }
+  }
+
+  /**
+   * Waits for a workflow to start running
+   */
+  public async waitForWorkflowStart(
+    workflowInstanceId: string,
+    fetchPayloads = true,
+    timeoutInSeconds = 60,
+  ): Promise<WorkflowState | undefined> {
+    const state = await this._innerClient.waitForOrchestrationStart(
+      workflowInstanceId,
+      fetchPayloads,
+      timeoutInSeconds,
+    );
+    if (state !== undefined) {
+      return new WorkflowState(state);
+    }
+  }
+
+  /**
+   * Waits for a workflow to complete running
+   */
+  public async waitForWorkflowCompletion(
+    workflowInstanceId: string,
+    fetchPayloads = true,
+    timeoutInSeconds = 60,
+  ): Promise<WorkflowState | undefined> {
+    const state = await this._innerClient.waitForOrchestrationCompletion(
+      workflowInstanceId,
+      fetchPayloads,
+      timeoutInSeconds,
+    );
+    if (state != undefined) {
+      return new WorkflowState(state);
+    }
+  }
+
+  /**
+   * Sends an event notification message to an awaiting workflow instance
+   */
+  public async raiseEvent(workflowInstanceId: string, eventName: string, eventPayload?: any) {
+    this._innerClient.raiseOrchestrationEvent(workflowInstanceId, eventName, eventPayload);
+  }
+
+  /**
+   * Purges the workflow instance state from the workflow state store.
+   */
+  public async purgeWorkflow(workflowInstanceId: string): Promise<boolean> {
+    const purgeResult = await this._innerClient.purgeOrchestration(workflowInstanceId);
+    if (purgeResult !== undefined) {
+      return purgeResult.deletedInstanceCount > 0;
+    }
+    return false;
+  }
+
+  /**
+   * Closes the inner DurableTask client and shutdown the GRPC channel.
+   */
+  public async stop() {
+    await this._innerClient.stop();
+  }
+}
+```
 
 {{% /codetab %}}
 
@@ -504,5 +727,6 @@ Now that you've authored a workflow, learn how to manage it.
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)

@@ -50,6 +50,7 @@ The following configuration settings can be applied to Dapr application sidecars
 - [Metrics](#metrics)
 - [Logging](#logging)
 - [Middleware](#middleware)
+- [Name resolution](#name-resolution)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
 - [Access Control allow lists for service invocation API](#access-control-allow-lists-for-service-invocation-api)
@@ -188,6 +189,29 @@ The following table lists the properties for HTTP handlers:
 | `type`     | string | Type of middleware component
 
 See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
+
+#### Name resolution component
+
+You can set name resolution component to use within the configuration YAML. For example, to set the `spec.nameResolution.component` property to `"sqlite"`, pass configuration options in the `spec.nameResolution.configuration` dictionary as shown below.
+
+This is the basic example of a configuration resource:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration 
+metadata:
+  name: appconfig
+spec:
+  nameResolution:
+    component: "sqlite"
+    version: "v1"
+    configuration:
+      connectionString: "/home/user/.dapr/nr.db"
+```
+
+For more information, see:
+- [The name resolution component documentation]({{< ref supported-name-resolution >}}) for more examples.
+- - [The Configuration YAML documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
 
 #### Scope secret store access
 
