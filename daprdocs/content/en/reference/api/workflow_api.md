@@ -57,12 +57,12 @@ The API call will provide a response similar to this:
 Terminate a running workflow instance with the given name and instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate[?non_recursive=false]
+POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 
 {{% alert title="Note" color="primary" %}}
- Terminating a workflow terminates all of the child workflows created by the workflow instance. You can disable this by setting the query parameter `non_recursive` to `true`. 
- 
+ Terminating a workflow terminates all of the child workflows created by the workflow instance.
+
 Terminating a workflow has no effect on any in-flight activity executions that were started by the terminated instance. 
 
 {{% /alert %}}
@@ -73,7 +73,6 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
-`non_recursive` | (Optional) Boolean to determine if Dapr should not recursively terminate child workflows created by the workflow instance. Default value is `false`.
 
 ### HTTP response codes
 
@@ -179,11 +178,11 @@ None.
 Purge the workflow state from your state store with the workflow's instance ID.
 
 ```
-POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/purge[?non_recursive=false]
+POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/purge
 ```
 
 {{% alert title="Note" color="primary" %}}
- Purging a workflow purges all of the child workflows created by the workflow instance. You can disable this by setting the query parameter `non_recursive` to `true`.
+ Purging a workflow purges all of the child workflows created by the workflow instance.
 
 {{% /alert %}}
 
@@ -193,7 +192,6 @@ Parameter | Description
 --------- | -----------
 `workflowComponentName` | Use `dapr` for Dapr Workflows
 `instanceId` | Unique value created for each run of a specific workflow
-`non_recursive` | (Optional) Boolean to determine if Dapr should not recursively purge child workflows created by the workflow instance. Default value is `false`.
 
 ### HTTP response codes
 
