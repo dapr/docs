@@ -162,7 +162,7 @@ dapr uninstall --all --network mynet
 dapr init -k
 ```
 
-Using the `--dev` flag will initialize dapr in dev mode which includes Zipkin and Redis.
+Using the `--dev` flag initializes Dapr in dev mode, which includes Zipkin and Redis.
 ```bash
 dapr init -k --dev
 ```
