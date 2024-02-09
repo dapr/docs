@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "SQLite name resolution provider"
+title: "SQLite"
 linkTitle: "SQLite"
 description: Detailed information on the SQLite name resolution component
 ---
