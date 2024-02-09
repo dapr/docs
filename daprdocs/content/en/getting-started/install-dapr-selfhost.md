@@ -10,7 +10,9 @@ aliases:
 
 Now that you've [installed the Dapr CLI]({{<ref install-dapr-cli.md>}}), use the CLI to initialize Dapr on your local machine.
 
+{{% alert title="Kubernetes Development Environment" color="primary" %}}
 To initialize Dapr in your local (or remote) kubernetes cluster for development including the Redis and Zipkin containers listed above see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag">}})
+{{% /alert %}}
 
 Dapr runs as a sidecar alongside your application. In self-hosted mode, this means it is a process on your local machine. By initializing Dapr, you:
 
