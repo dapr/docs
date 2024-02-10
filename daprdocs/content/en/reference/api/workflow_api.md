@@ -174,6 +174,10 @@ Purge the workflow state from your state store with the workflow's instance ID.
 POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/purge
 ```
 
+{{% alert title="Note" color="primary" %}}
+Only `COMPLETED`, `FAILED`, or `TERMINATED` workflows can be purged.
+{{% /alert %}}
+
 ### URL parameters
 
 Parameter | Description
