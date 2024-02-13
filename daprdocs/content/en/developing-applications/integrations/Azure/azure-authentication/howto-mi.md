@@ -51,10 +51,10 @@ After assigning a system-managed identity to your Azure resource, you'll have cr
 
 From the returned values, take note of the **`principalId`** value, which is [the Service Principal ID created for your identity]({{< ref "howto-aad.md#create-a-service-principal" >}}). Use that to grant access permissions for your Azure resources component to access the identity.
 
-{{% alert title="System-assigned identities in Azure Container Apps" color="primary" %}}
+{{% alert title="Managed identities in Azure Container Apps" color="primary" %}}
 Every container app has a completely different system-managed identity, making it very unmanageable to handle the required role assignments across multiple apps. 
 
-Instead, it's strongly recommended use a user-assigned identity and attach this to all the apps that should load the component. Then, you should scope the component to those same apps.
+Instead, it's _strongly recommended_ to use a user-assigned identity and attach this to all the apps that should load the component. Then, you should scope the component to those same apps.
 {{% /alert %}}
 
 ## Set up identities in your component
