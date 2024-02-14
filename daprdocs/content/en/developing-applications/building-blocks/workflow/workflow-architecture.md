@@ -176,7 +176,9 @@ Workflows don't control the specifics of how load is distributed across the clus
 
 ## Workflow backend
 
-The workflow backend is responsible for orchestrating and preserving the state of workflows. At any given time, only one backend can be supported. The workflow backend can be configured as a component, similar to any other component in Dapr. Users are required to specify the type of workflow backend and provide the configuration specific to that backend.
+The workflow backend is responsible for orchestrating and preserving the state of workflows. At any given time, only one backend can be supported. You can configure the workflow backend as a component, similar to any other component in Dapr. Configuration requires:  
+1. Specifying the type of workflow backend. 
+1. Providing the configuration specific to that backend.
 
 For instance, the following sample demonstrates how to define a SQLite backend component. Please note that as of now, SQLite backend is not supported. Dapr workflow currently supports only the actor backend by default, and users are not required to define an actor backend component to use it.
 
