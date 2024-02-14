@@ -276,6 +276,11 @@ The response body contains the following JSON:
 [0.018574921,-0.00023652936,-0.0057790717,.... (1536 floats total for ada)]
 ```
 
+## Learn more about the Azure OpenAI output binding
+
+Watch [the following Community Call presentation](https://youtu.be/rTovKpG0rhY?si=g7hZTQSpSEXz4pV1&t=80) to learn more about the Azure OpenAI output binding.
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/rTovKpG0rhY?si=XP1S-80SIg1ptJuG&amp;start=80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Related links
 
