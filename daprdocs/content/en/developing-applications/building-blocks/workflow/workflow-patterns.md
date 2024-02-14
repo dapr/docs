@@ -164,7 +164,49 @@ public class ChainWorkflow extends Workflow {
 <!--go-->
 
 ```go
-
+func TaskChainWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	var result1 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result1); err != nil {
+		return nil, err
+	}
+	var result2 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result2); err != nil {
+		return nil, err
+	}
+	var result3 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result3); err != nil {
+		return nil, err
+	}
+	return []int{result1, result2, result3}, nil
+}
+func Step1(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 1: Received input: %s", input)
+	return input + 1, nil
+}
+func Step2(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 2: Received input: %s", input)
+	return input * 2, nil
+}
+func Step3(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 3: Received input: %s", input)
+	return int(math.Pow(float64(input), 2)), nil
+}
 ```
 
 {{% /codetab %}}
