@@ -10,10 +10,6 @@ aliases:
 
 Now that you've [installed the Dapr CLI]({{<ref install-dapr-cli.md>}}), use the CLI to initialize Dapr on your local machine.
 
-{{% alert title="Kubernetes Development Environment" color="primary" %}}
-To initialize Dapr in your local or remote Kubernetes cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag">}})
-{{% /alert %}}
-
 Dapr runs as a sidecar alongside your application. In self-hosted mode, this means it is a process on your local machine. By initializing Dapr, you:
 
 - Fetch and install the Dapr sidecar binaries locally.
@@ -25,6 +21,10 @@ Dapr initialization includes:
 1. Running a **Zipkin container instance** for observability.
 1. Creating a **default components folder** with component definitions for the above.
 1. Running a **Dapr placement service container instance** for local actor support.
+
+{{% alert title="Kubernetes Development Environment" color="primary" %}}
+To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag">}})
+{{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
 The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{< ref self-hosted-no-docker.md >}})), the next steps in this guide assume the recommended Docker development environment.
