@@ -15,7 +15,7 @@ Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-v
 - The architecture of the Dapr Workflow engine
 - How the workflow engine interacts with application code
 - How the workflow engine fits into the overall Dapr architecture
-- How different workflow backend can work with workflow engine
+- How different workflow backends can work with workflow engine
 
 For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{< ref "workflow-overview.md" >}}).
 
