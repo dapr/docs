@@ -151,7 +151,7 @@ Learn more about [external system interaction.]({{< ref "workflow-patterns.md#ex
 
 Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/microsoft/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/microsoft/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
 
-By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/microsoft/durabletask-go/tree/main/backend/sqlite)(to be released) could be an option for backend for local development and testing.
+By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/microsoft/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
 
 The backend implementation is largely decoupled from the workflow core engine or the programming model that you see. The backend primarily impacts:
 - How workflow state is stored 
