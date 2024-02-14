@@ -97,9 +97,7 @@ Child workflows have many benefits:
 
 The return value of a child workflow is its output. If a child workflow fails with an exception, then that exception is surfaced to the parent workflow, just like it is when an activity task fails with an exception. Child workflows also support automatic retry policies.
 
-{{% alert title="Note" color="primary" %}}
-Because child workflows are independent of their parents, terminating a parent workflow does not affect any child workflows. You must terminate each child workflow independently using its instance ID.
-{{% /alert %}}
+Terminating a parent workflow terminates all of the child workflows created by the workflow instance. See [the terminate workflow api]({{< ref "workflow_api.md#terminate-workflow-request" >}}) for more information.
 
 ## Durable timers
 
@@ -369,7 +367,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs ".NET" Java Go >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -394,17 +392,22 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% codetab %}}
 
+Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guarantee that asynchronous functions are deterministic.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```go
 // DON'T DO THIS!
 ```
-
 {{% /codetab %}}
 
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java Go >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -423,6 +426,12 @@ await context.CreateTimer(5000).ConfigureAwait(true);
 ctx.callActivity(DoSomethingActivity.class.getName()).await();
 ctx.createTimer(Duration.ofSeconds(5)).await();
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
 
 {{% /codetab %}}
 
@@ -465,6 +474,7 @@ To work around these constraints:
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
-   - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
+   - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
