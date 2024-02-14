@@ -786,7 +786,51 @@ public class MonitorWorkflow extends Workflow {
 <!--go-->
 
 ```go
-
+type JobStatus struct {
+	JobID     string `json:"job_id"`
+	IsHealthy bool   `json:"is_healthy"`
+}
+func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var sleepInterval time.Duration
+	var job JobStatus
+	if err := ctx.GetInput(&job); err != nil {
+		return "", err
+	}
+	var status string
+	if err := ctx.CallActivity(CheckStatus, workflow.ActivityInput(job)).Await(&status); err != nil {
+		return "", err
+	}
+	if status == "healthy" {
+		job.IsHealthy = true
+		sleepInterval = time.Second * 60
+	} else {
+		if job.IsHealthy {
+			job.IsHealthy = false
+			err := ctx.CallActivity(SendAlert, workflow.ActivityInput(fmt.Sprintf("Job '%s' is unhealthy!", job.JobID))).Await(nil)
+			if err != nil {
+				return "", err
+			}
+		}
+		sleepInterval = time.Second * 5
+	}
+	if err := ctx.CreateTimer(sleepInterval).Await(nil); err != nil {
+		return "", err
+	}
+	ctx.ContinueAsNew(job, false)
+	return "", nil
+}
+func CheckStatus(ctx workflow.ActivityContext) (any, error) {
+	statuses := []string{"healthy", "unhealthy"}
+	return statuses[rand.Intn(1)], nil
+}
+func SendAlert(ctx workflow.ActivityContext) (any, error) {
+	var message string
+	if err := ctx.GetInput(&message); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Alert: %s", message)
+	return "", nil
+}
 ```
 
 {{% /codetab %}}
@@ -1105,7 +1149,55 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 <!--go-->
 
 ```go
-
+type Order struct {
+	Cost     float64 `json:"cost"`
+	Product  string  `json:"product"`
+	Quantity int     `json:"quantity"`
+}
+type Approval struct {
+	Approver string `json:"approver"`
+}
+func PurchaseOrderWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	// Orders under $1000 are auto-approved
+	if order.Cost < 1000 {
+		return "Auto-approved", nil
+	}
+	// Orders of $1000 or more require manager approval
+	if err := ctx.CallActivity(SendApprovalRequest, workflow.ActivityInput(order)).Await(nil); err != nil {
+		return "", err
+	}
+	// Approvals must be received within 24 hours or they will be cancelled
+	var approval Approval
+	if err := ctx.WaitForExternalEvent("approval_received", time.Hour*24).Await(&approval); err != nil {
+		// Assuming that a timeout has taken place - in any case; an error.
+		return "error/cancelled", err
+	}
+	// The order was approved
+	if err := ctx.CallActivity(PlaceOrder, workflow.ActivityInput(order)).Await(nil); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("Approved by %s", approval.Approver), nil
+}
+func SendApprovalRequest(ctx workflow.ActivityContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Sending approval request for order: %v\n", order)
+	return "", nil
+}
+func PlaceOrder(ctx workflow.ActivityContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Placing order: %v", order)
+	return "", nil
+}
 ```
 
 {{% /codetab %}}
@@ -1137,7 +1229,11 @@ with DaprClient() as d:
 <!--javascript-->
 
 ```javascript
-// Raise the workflow event to the waiting workflow
+import { DaprClient } from "@dapr/dapr";
+
+  public async raiseEvent(workflowInstanceId: string, eventName: string, eventPayload?: any) {
+    this._innerClient.raiseOrchestrationEvent(workflowInstanceId, eventName, eventPayload);
+  }
 ```
 
 {{% /codetab %}}
@@ -1170,6 +1266,24 @@ client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 <!--go-->
 
 ```go
+func raiseEvent() {
+  daprClient, err := client.NewClient()
+  if err != nil {
+    log.Fatalf("failed to initialize the client")
+  }
+  err = daprClient.RaiseEventWorkflowBeta1(context.Background(), &client.RaiseEventWorkflowRequest{
+    InstanceID: "instance_id",
+    WorkflowComponent: "dapr",
+    EventName: "approval_received",
+    EventData: Approval{
+      Approver: "Jane Doe",
+    },
+  })
+  if err != nil {
+    log.Fatalf("failed to raise event on workflow")
+  }
+  log.Println("raised an event on specified workflow")
+}
 ```
 
 {{% /codetab %}}
