@@ -180,23 +180,16 @@ The workflow backend is responsible for orchestrating and preserving the state o
 1. Specifying the type of workflow backend. 
 1. Providing the configuration specific to that backend.
 
-For instance, the following sample demonstrates how to define a SQLite backend component. Please note that as of now, SQLite backend is not supported. Dapr workflow currently supports only the actor backend by default, and users are not required to define an actor backend component to use it.
+For instance, the following sample demonstrates how to define a actor backend component. Dapr workflow currently supports only the actor backend by default, and users are not required to define an actor backend component to use it.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sqlitebackend
+  name: actorbackend
 spec:
-  type: workflowbackend.sqlite
+  type: workflowbackend.actor
   version: v1
-  metadata:
-    - name: filePath
-      value: "file::memory:"
-    - name: orchestrationLockTimeout
-      value: "130000000000ms"
-    - name: activityLockTimeout
-      value: "130000000000ms"
 ```
 
 ## Workflow latency
