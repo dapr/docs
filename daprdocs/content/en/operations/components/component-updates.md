@@ -44,7 +44,7 @@ That is, the behaviour is the same as when the sidecar loads components on boot.
 All components are supported for hot reloading except for the following types.
 Any create, update, or deletion of these component types will be ignored by the sidecar with a restart required to pick up changes.
 - [Actor State Stores]({{< ref "state_api.md#configuring-state-store-for-actors" >}})
-- Workflow Backends - TODO: @joshvanl waiting on https://github.com/dapr/docs/issues/3924
+- [Workflow Backends]({{< ref "workflow-architecture.md#workflow-backend" >}})
 
 ## Further reading
 - [Components concept]({{< ref components-concept.md >}})
