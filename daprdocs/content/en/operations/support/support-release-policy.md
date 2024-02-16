@@ -91,6 +91,14 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Mar 25th 2022 | 1.6.1</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Unsupported |  |
 | Jan 25th 2022 | 1.6.0</br>   | 1.6.0 | Java 1.4.0 </br>Go 1.3.1 </br>PHP 1.1.0 </br>Python 1.5.0 </br>.NET 1.6.0 </br>JS 2.0.0 | 0.9.0 | Unsupported |  |
 
+## SDK forward and backward compatibility
+
+**Forward compatibility**  
+Newer Dapr SDKs support the latest version of Dapr runtime and two previous versions (N-2). 
+
+**Backward compatibility**  
+With non-breaking changes, the current SDK version and three previous three versions (N-3)are supported for a newer Dapr runtime version.
+
 ## Upgrade paths
 
 After the 1.0 release of the runtime there may be situations where it is necessary to explicitly upgrade through an additional release to reach the desired target. For example, an upgrade from v1.0 to v1.2 may need to pass through v1.1.
