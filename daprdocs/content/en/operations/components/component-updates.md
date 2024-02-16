@@ -30,19 +30,19 @@ Dapr can be made to "hot reload" components whereby component updates are picked
 This means creating, updating, or deleting a component manifest will be reflected in the Dapr sidecar during runtime.
 
 {{% alert title="Updating Components" color="warning" %}}
-When a component is updated it will be first closed, then re-initialized using the new configuration.
-This will cause the component to be unavailable for a short period of time during this process.
+When a component is updated it is first closed, and then re-initialized using the new configuration.
+This causes the component to be unavailable for a short period of time during this process.
 {{% /alert %}}
 
 {{% alert title="Initialization Errors" color="warning" %}}
-If the initialization processes errors when a component is created or updated through hot reloading, the Dapr sidecar will respect the component field [`spec.ignoreErrors`]({{< ref component-schema.md>}}).
+If the initialization processes errors when a component is created or updated through hot reloading, the Dapr sidecar respects the component field [`spec.ignoreErrors`]({{< ref component-schema.md>}}).
 That is, the behaviour is the same as when the sidecar loads components on boot.
-- `spec.ignoreErrors=false` (*default*): the sidecar will gracefully shutdown.
-- `spec.ignoreErrors=true`: the sidecar will continue to run with neither the old or new component configuration registered.
+- `spec.ignoreErrors=false` (*default*): the sidecar gracefully shuts down.
+- `spec.ignoreErrors=true`: the sidecar continues to run with neither the old or new component configuration registered.
 {{% /alert %}}
 
 All components are supported for hot reloading except for the following types.
-Any create, update, or deletion of these component types will be ignored by the sidecar with a restart required to pick up changes.
+Any create, update, or deletion of these component types is ignored by the sidecar with a restart required to pick up changes.
 - [Actor State Stores]({{< ref "state_api.md#configuring-state-store-for-actors" >}})
 - [Workflow Backends]({{< ref "workflow-architecture.md#workflow-backend" >}})
 
