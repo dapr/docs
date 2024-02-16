@@ -63,6 +63,8 @@ You can use the following two techniques to write workflows that may need to sch
 
 1. **Use the _continue-as-new_ API**:  
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+   
+    > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
 1. **Use child workflows**:  
     Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
@@ -148,6 +150,12 @@ External events have a _name_ and a _payload_ and are delivered to a single work
 Workflows can also wait for multiple external event signals of the same name, in which case they are dispatched to the corresponding workflow tasks in a first-in, first-out (FIFO) manner. If a workflow receives an external event signal but has not yet created a "wait for external event" task, the event will be saved into the workflow's history and consumed immediately after the workflow requests the event.
 
 Learn more about [external system interaction.]({{< ref "workflow-patterns.md#external-system-interaction" >}})
+
+## Purging
+
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+
+Learn more in [the workflow API reference guide]({{< ref workflow_api.md >}}).
 
 ## Limitations
 

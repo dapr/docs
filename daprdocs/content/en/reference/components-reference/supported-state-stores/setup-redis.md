@@ -30,18 +30,14 @@ spec:
     value: <PASSWORD>
   - name: enableTLS
     value: <bool> # Optional. Allowed: true, false.
-  - name: failover
-    value: <bool> # Optional. Allowed: true, false.
-  - name: sentinelMasterName
-    value: <string> # Optional
   - name: maxRetries
     value: # Optional
   - name: maxRetryBackoff
     value: # Optional
   - name: failover
-    value: # Optional
+    value: <bool> # Optional. Allowed: true, false.
   - name: sentinelMasterName
-    value: # Optional
+    value: <string> # Optional
   - name: redeliverInterval
     value: # Optional
   - name: processingTimeout
