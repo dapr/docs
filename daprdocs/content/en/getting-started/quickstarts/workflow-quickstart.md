@@ -271,10 +271,12 @@ In `workflow.py`, the workflow is defined as a class with all of its associated 
 {{% codetab %}}
 
 The `order-processor` console app starts and manages the lifecycle of an order processing workflow that stores and retrieves data in a state store. The workflow consists of four workflow activities, or tasks:
-- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow
-- `ReserveInventoryActivity`: Checks the state store to ensure that there is enough inventory for the purchase
-- `ProcessPaymentActivity`: Processes and authorizes the payment
-- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value
+
+- `notifyActivity`: Utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient inventory, their payment couldn't be processed, and more.
+- `reserveInventoryActivity`: Checks the state store to ensure that there is enough inventory present for purchase.
+- `requestApprovalActivity`: Requests approval for orders over a certain threshold
+- `processPaymentActivity`: Processes and authorizes the payment.
+- `updateInventoryActivity`: Updates the state store with the new remaining inventory value.
 
 
 ### Step 1: Pre-requisites
@@ -301,12 +303,21 @@ In a new terminal window, navigate to the `order-processor` directory:
 cd workflows/javascript/sdk/order-processor
 ```
 
-### Step 3: Run the order processor app
-
-In the terminal, start the order processor app alongside a Dapr sidecar:
+Install the dependencies:
 
 ```bash
-dapr run 
+cd ./javascript/sdk
+npm install
+npm run build
+cd ..
+```
+
+### Step 3: Run the order processor app
+
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+
+```bash
+dapr run -f .
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
@@ -315,6 +326,66 @@ Expected output:
 
 ```
 
+== APP - workflowApp == == APP == Orchestration scheduled with ID: 0c332155-1e02-453a-a333-28cfc7777642
+== APP - workflowApp == == APP == Waiting 30 seconds for instance 0c332155-1e02-453a-a333-28cfc7777642 to complete...
+== APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 0 history event...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, EXECUTIONSTARTED=1]
+== APP - workflowApp == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
+== APP - workflowApp == == APP == Received "Activity Request" work item
+== APP - workflowApp == == APP == Received order 0c332155-1e02-453a-a333-28cfc7777642 for 10 item1 at a total cost of 100
+== APP - workflowApp == == APP == Activity notifyActivity completed with output undefined (0 chars)
+== APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 3 history event...
+== APP - workflowApp == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
+== APP - workflowApp == == APP == Received "Activity Request" work item
+== APP - workflowApp == == APP == Reserving inventory for 0c332155-1e02-453a-a333-28cfc7777642 of 10 item1
+== APP - workflowApp == == APP == 2024-02-16T03:15:59.498Z INFO [HTTPClient, HTTPClient] Sidecar Started
+== APP - workflowApp == == APP == There are 100 item1 in stock
+== APP - workflowApp == == APP == Activity reserveInventoryActivity completed with output {"success":true,"inventoryItem":{"perItemCost":100,"quantity":100,"itemName":"item1"}} (86 chars)
+== APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 6 history event...
+== APP - workflowApp == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
+== APP - workflowApp == == APP == Received "Activity Request" work item
+== APP - workflowApp == == APP == Processing payment for order item1
+== APP - workflowApp == == APP == Payment of 100 for 10 item1 processed successfully
+== APP - workflowApp == == APP == Activity processPaymentActivity completed with output true (4 chars)
+== APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 9 history event...
+== APP - workflowApp == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
+== APP - workflowApp == == APP == Received "Activity Request" work item
+== APP - workflowApp == == APP == Updating inventory for 0c332155-1e02-453a-a333-28cfc7777642 of 10 item1
+== APP - workflowApp == == APP == Inventory updated for 0c332155-1e02-453a-a333-28cfc7777642, there are now 90 item1 in stock
+== APP - workflowApp == == APP == Activity updateInventoryActivity completed with output {"success":true,"inventoryItem":{"perItemCost":100,"quantity":90,"itemName":"item1"}} (85 chars)
+== APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 12 history event...
+== APP - workflowApp == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
+== APP - workflowApp == == APP == Received "Activity Request" work item
+== APP - workflowApp == == APP == order 0c332155-1e02-453a-a333-28cfc7777642 processed successfully!
+== APP - workflowApp == == APP == Activity notifyActivity completed with output undefined (0 chars)
+== APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 15 history event...
+== APP - workflowApp == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - workflowApp == == APP == Order 0c332155-1e02-453a-a333-28cfc7777642 processed successfully!
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Orchestration completed with status COMPLETED
+== APP - workflowApp == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
+== APP - workflowApp == time="2024-02-15T21:15:59.5589687-06:00" level=info msg="0c332155-1e02-453a-a333-28cfc7777642: 'orderProcessingWorkflow' completed with a COMPLETED status." app_id=activity-sequence-workflow instance=kaibocai-devbox scope=wfengine.backend type=log ver=1.12.4
+== APP - workflowApp == == APP == Instance 0c332155-1e02-453a-a333-28cfc7777642 completed
 ```
 
 ### (Optional) Step 4: View in Zipkin
@@ -333,38 +404,97 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 When you ran `dapr run `:
 
-1. A unique order ID for the workflow is generated (in the above example, `6d2abcc9`) and the workflow is scheduled.
-1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
-1. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+1. A unique order ID for the workflow is generated (in the above example, `0c332155-1e02-453a-a333-28cfc7777642`) and the workflow is scheduled.
+1. The `notifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
+1. The `reserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 1. Your workflow starts and notifies you of its status.
-1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `6d2abcc9` and confirms if successful.
-1. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-1. The `NotifyActivity` workflow activity sends a notification saying that order `6d2abcc9` has completed.
+1. The `processPaymentActivity` workflow activity begins processing payment for order `6d2abcc9` and confirms if successful.
+1. The `updateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+1. The `notifyActivity` workflow activity sends a notification saying that order `0c332155-1e02-453a-a333-28cfc7777642` has completed.
 1. The workflow terminates as completed.
 
-#### `order-processor/index.js` 
+#### `order-processor/workflowApp.ts` 
 
-In the application's program file:
+In the application file:
 - The unique workflow order ID is generated
 - The workflow is scheduled
 - The workflow status is retrieved
 - The workflow and the workflow activities it invokes are registered
 
 ```javascript
+import { DaprWorkflowClient, WorkflowRuntime, DaprClient } from "@dapr/dapr-dev";
+import { InventoryItem, OrderPayload } from "./model";
+import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, reserveInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
 
+async function start() {
+  // Update the gRPC client and worker to use a local address and port
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
+
+  const daprClient = new DaprClient();
+  const storeName = "statestore";
+
+  const inventory = new InventoryItem("item1", 100, 100);
+  const key = inventory.itemName;
+
+  await daprClient.state.save(storeName, [
+    {
+      key: key,
+      value: inventory,
+    }
+  ]);
+
+  const order = new OrderPayload("item1", 100, 10);
+
+  workflowRuntime
+  .registerWorkflow(orderProcessingWorkflow)
+  .registerActivity(notifyActivity)
+  .registerActivity(reserveInventoryActivity)
+  .registerActivity(requestApprovalActivity)
+  .registerActivity(processPaymentActivity)
+  .registerActivity(updateInventoryActivity);
+
+  // Wrap the worker startup in a try-catch block to handle any errors during startup
+  try {
+    await workflowRuntime.start();
+    console.log("Workflow runtime started successfully");
+  } catch (error) {
+    console.error("Error starting workflow runtime:", error);
+  }
+
+  // Schedule a new orchestration
+  try {
+    const id = await workflowClient.scheduleNewWorkflow(orderProcessingWorkflow, order);
+    console.log(`Orchestration scheduled with ID: ${id}`);
+
+    // Wait for orchestration completion
+    const state = await workflowClient.waitForWorkflowCompletion(id, undefined, 30);
+
+    console.log(`Orchestration completed! Result: ${state?.serializedOutput}`);
+  } catch (error) {
+    console.error("Error scheduling or waiting for orchestration:", error);
+  }
+
+  await workflowRuntime.stop();
+  await workflowClient.stop();
+
+  // Stop the Dapr sidecar
+  process.exit(0);
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
-
-#### `order-processor/Workflows/OrderProcessingWorkflow.js`
-
-In `OrderProcessingWorkflow.js`, the workflow is defined as a class with all of its associated tasks (determined by workflow activities).
-
-```javascript
-
-```
-
-#### `order-processor/Activities` directory
-
-The `Activities` directory holds the four workflow activities used by the workflow, defined in the following files:
 
 {{% /codetab %}}
 
