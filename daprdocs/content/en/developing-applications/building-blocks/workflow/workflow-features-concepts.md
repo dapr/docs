@@ -147,6 +147,18 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 Learn more about [external system interaction.]({{< ref "workflow-patterns.md#external-system-interaction" >}})
 
+## Workflow backend
+
+Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/microsoft/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/microsoft/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
+
+By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/microsoft/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
+
+The backend implementation is largely decoupled from the workflow core engine or the programming model that you see. The backend primarily impacts:
+- How workflow state is stored 
+- How workflow execution is coordinated across replicas
+
+In that sense, it's similar to Dapr's state store abstraction, except designed specifically for workflow. All APIs and programming model features are the same, regardless of which backend is used.
+
 ## Limitations
 
 ### Workflow determinism and code restraints 
