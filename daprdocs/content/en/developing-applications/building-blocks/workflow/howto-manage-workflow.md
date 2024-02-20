@@ -173,7 +173,7 @@ await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 <!--Java-->
 {{% codetab %}}
 
-Manage your workflow within your code. [In the workflow example from the Java SDK](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowClient.java), the workflow is registered in the code using the following APIs:
+Manage your workflow within your code. [In the workflow example from the Java SDK](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/), the workflow is registered in the code using the following APIs:
 
 - **scheduleNewWorkflow**: Starts a new workflow instance
 - **getInstanceState**: Get information on the status of the workflow
@@ -394,6 +394,6 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
-  - [Go example](todo)
+  - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow)
 
 - [Workflow API reference]({{< ref workflow_api.md >}})
