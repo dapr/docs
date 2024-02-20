@@ -238,7 +238,7 @@ public class DemoWorkflowClient {
 <!--Go-->
 {{% codetab %}}
 
-Manage your workflow within your code. [In the workflow example from the Go SDK](todo), the workflow is registered in the code using the following APIs:
+Manage your workflow within your code. [In the workflow example from the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/workflow), the workflow is registered in the code using the following APIs:
 
 - **StartWorkflow**: Starts a new workflow instance
 - **GetWorkflow**: Get information on the status of the workflow
