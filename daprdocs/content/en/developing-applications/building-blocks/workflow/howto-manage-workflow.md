@@ -12,7 +12,7 @@ Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-v
 
 Now that you've [authored the workflow and its activities in your application]({{< ref howto-author-workflow.md >}}), you can start, terminate, and get information about the workflow using HTTP API calls. For more information, read the [workflow API reference]({{< ref workflow_api.md >}}).
 
-{{< tabs Python JavaScript ".NET" Java HTTP >}}
+{{< tabs Python JavaScript ".NET" Java Go HTTP >}}
 
 <!--Python-->
 {{% codetab %}}
@@ -170,10 +170,10 @@ await daprClient.PurgeWorkflowAsync(orderId, workflowComponent);
 
 {{% /codetab %}}
 
-<!--Python-->
+<!--Java-->
 {{% codetab %}}
 
-Manage your workflow within your code. [In the workflow example from the Java SDK](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/DemoWorkflowClient.java), the workflow is registered in the code using the following APIs:
+Manage your workflow within your code. [In the workflow example from the Java SDK](https://github.com/dapr/java-sdk/blob/master/examples/src/main/java/io/dapr/examples/workflows/), the workflow is registered in the code using the following APIs:
 
 - **scheduleNewWorkflow**: Starts a new workflow instance
 - **getInstanceState**: Get information on the status of the workflow
@@ -235,6 +235,84 @@ public class DemoWorkflowClient {
 
 {{% /codetab %}}
 
+<!--Go-->
+{{% codetab %}}
+
+Manage your workflow within your code. [In the workflow example from the Go SDK](https://github.com/dapr/go-sdk/tree/main/examples/workflow), the workflow is registered in the code using the following APIs:
+
+- **StartWorkflow**: Starts a new workflow instance
+- **GetWorkflow**: Get information on the status of the workflow
+- **PauseWorkflow**: Pauses or suspends a workflow instance that can later be resumed
+- **RaiseEventWorkflow**: Raises events/tasks for the running workflow instance
+- **ResumeWorkflow**: Waits for the workflow to complete its tasks
+- **PurgeWorkflow**: Removes all metadata related to a specific workflow instance
+- **TerminateWorkflow**: Terminates the workflow
+
+```go
+// Start workflow
+type StartWorkflowRequest struct {
+	InstanceID        string // Optional instance identifier
+	WorkflowComponent string
+	WorkflowName      string
+	Options           map[string]string // Optional metadata
+	Input             any               // Optional input
+	SendRawInput      bool              // Set to True in order to disable serialization on the input
+}
+
+type StartWorkflowResponse struct {
+	InstanceID string
+}
+
+// Get the workflow status
+type GetWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
+
+type GetWorkflowResponse struct {
+	InstanceID    string
+	WorkflowName  string
+	CreatedAt     time.Time
+	LastUpdatedAt time.Time
+	RuntimeStatus string
+	Properties    map[string]string
+}
+
+// Purge workflow
+type PurgeWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
+
+// Terminate workflow
+type TerminateWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
+
+// Pause workflow
+type PauseWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
+
+// Resume workflow
+type ResumeWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+}
+
+// Raise an event for the running workflow
+type RaiseEventWorkflowRequest struct {
+	InstanceID        string
+	WorkflowComponent string
+	EventName         string
+	EventData         any
+	SendRawData       bool // Set to True in order to disable serialization on the data
+}
+```
+
+{{% /codetab %}}
 
 <!--HTTP-->
 {{% codetab %}}
@@ -316,5 +394,6 @@ Learn more about these HTTP calls in the [workflow API reference guide]({{< ref 
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+  - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow)
 
 - [Workflow API reference]({{< ref workflow_api.md >}})
