@@ -766,8 +766,7 @@ public class DemoWorkflow extends Workflow {
 [As in the following example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md), a hello-world application using the Go SDK and Dapr Workflow would include:
 
 - A Go package called `client` to receive the Go SDK client capabilities.
-- An import of `workflow`
-- The `DemoWorkflow` class which extends `Workflow`
+- The `TestWorkflow` method
 - Creating the workflow with input and output.
 - API calls. In the example below, these calls start and call the workflow activities.
  
@@ -987,9 +986,6 @@ func main() {
 
 	fmt.Println("workflow purged")
 
-	// WFClient
-	// TODO: Expand client validation
-
 	stage = 0
 	fmt.Println("workflow client test")
 
@@ -1017,9 +1013,6 @@ func main() {
 	}
 
 	fmt.Printf("[wfclient] stage: %d\n", stage)
-
-	// TODO: WaitForWorkflowStart
-	// TODO: WaitForWorkflowCompletion
 
 	// raise event
 
