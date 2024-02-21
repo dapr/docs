@@ -7,10 +7,6 @@ aliases:
   - "/operations/components/setup-state-store/supported-state-stores/setup-azure-cosmosdb/"
 ---
 
-{{% alert title="Important" color="warning" %}}
-[Dapr's stable certification]({{< ref "certification-lifecycle.md#stable" >}}) is independent of any vendor. While the Azure Cosmos DB component is tested and stable, Dapr can't guarantee that the vendor will support it. 
-{{% /alert %}}
-
 ## Component format
 
 To setup Azure Cosmos DB state store create a component of type `state.azure.cosmosdb`. See [this guide]({{< ref "howto-get-save-state.md#step-1-setup-a-state-store" >}}) on how to create and apply a state store configuration.

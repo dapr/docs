@@ -63,7 +63,9 @@ A component may skip the Beta stage and conformance test requirement per the dis
 - A maintainer will address component security, core functionality and test issues according to the Dapr support policy and issue a patch release that includes the patched stable component
 
 {{% alert title="Note" color="primary" %}}
-Stable components undergo thorough testing before being moved to stable state. While Dapr may deem a component as "stable", Dapr can't guarantee that the vendor will support it. See [Azure CosmosDB state store component]({{< ref setup-azure-cosmosdb.md >}}) as an example.
+While Dapr claims a component is stable, it is based on Dapr's tests and not a guarantee of support by any specific vendor. 
+
+Dapr tests guarantee the stability of a component independent of a third party vendor's stability status. This is because the meaning of stable (or alpha and beta) can vary for each vendor. 
 {{% /alert %}}
 
 ### Previous Generally Available (GA) components
