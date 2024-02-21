@@ -20,8 +20,8 @@ In this guide, you'll:
 
 <img src="/images/workflow-quickstart-overview.png" width=800 style="padding-bottom:15px;">
 
-
-{{< tabs "Python" "JavaScript" ".NET" "Java" >}}
+Select your preferred language-specific Dapr SDK before proceeding with the Quickstart.
+{{< tabs "Python" "JavaScript" ".NET" "Java" Go >}}
 
  <!-- Python -->
 {{% codetab %}}
@@ -68,13 +68,11 @@ pip3 install -r requirements.txt
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
 
 ```bash
-dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
+dapr run -f .
 ```
-
-> **Note:** Since Python3.exe is not defined in Windows, you may need to use `python app.py` instead of `python3 app.py`.
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
 
@@ -404,10 +402,10 @@ cd workflows/csharp/sdk/order-processor
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
 
 ```bash
-dapr run --app-id order-processor dotnet run
+dapr run -f .
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
@@ -660,10 +658,10 @@ mvn clean install
 
 ### Step 3: Run the order processor app
 
-In the terminal, start the order processor app alongside a Dapr sidecar:
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
 
 ```bash
-dapr run --app-id WorkflowConsoleApp --resources-path ../../../components/ --dapr-grpc-port 50001 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar io.dapr.quickstarts.workflows.WorkflowConsoleApp
+dapr run -f .
 ```
 
 This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
@@ -952,6 +950,250 @@ The `Activities` directory holds the four workflow activities used by the workfl
 - [`UpdateInventoryActivity`](https://github.com/dapr/quickstarts/tree/master/workflows/java/sdk/order-processor/src/main/java/io/dapr/quickstarts/workflows/activities/UpdateInventoryActivity.java)
 
 {{% /codetab %}}
+
+ <!-- Go -->
+{{% codetab %}}
+
+
+The `order-processor` console app starts and manages the `OrderProcessingWorkflow` workflow, which simulates purchasing items from a store. The workflow consists of five unique workflow activities, or tasks:
+
+- `NotifyActivity`: Utilizes a logger to print out messages throughout the workflow. These messages notify you when:
+  - You have insufficient inventory
+  - Your payment couldn't be processed, etc.
+- `ProcessPaymentActivity`: Processes and authorizes the payment.
+- `VerifyInventoryActivity`: Checks the state store to ensure there is enough inventory present for purchase.
+- `UpdateInventoryActivity`: Removes the requested items from the state store and updates the store with the new remaining inventory value.
+- `RequestApprovalActivity`: Seeks approval from the manager if payment is greater than 50,000 USD.
+
+### Step 1: Pre-requisites
+
+For this example, you will need:
+
+- [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
+- [Latest version of Go](https://go.dev/dl/).
+<!-- IGNORE_LINKS -->
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+<!-- END_IGNORE -->
+
+### Step 2: Set up the environment
+
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+
+```bash
+git clone https://github.com/dapr/quickstarts.git
+```
+
+In a new terminal window, navigate to the `order-processor` directory:
+
+```bash
+cd workflows/go/sdk/order-processor
+```
+
+### Step 3: Run the order processor app
+
+In the terminal, start the order processor app alongside a Dapr sidecar using [Multi-App Run]({{< ref multi-app-dapr-run >}}):
+
+```bash
+dapr run -f .
+```
+
+This starts the `order-processor` app with unique workflow ID and runs the workflow activities. 
+
+Expected output:
+
+```bash
+== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+== APP - order-processor == *** Using this app, you can place orders that start workflows.
+== APP - order-processor == dapr client initializing for: 127.0.0.1:50056
+== APP - order-processor == adding base stock item: paperclip
+== APP - order-processor == 2024/02/01 12:59:52 work item listener started
+== APP - order-processor == INFO: 2024/02/01 12:59:52 starting background processor
+== APP - order-processor == adding base stock item: cars
+== APP - order-processor == adding base stock item: computers
+== APP - order-processor == ==========Begin the purchase of item:==========
+== APP - order-processor == NotifyActivity: Received order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 cars - $150000
+== APP - order-processor == VerifyInventoryActivity: Verifying inventory for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 of 10 cars
+== APP - order-processor == VerifyInventoryActivity: There are 100 cars available for purchase
+== APP - order-processor == RequestApprovalActivity: Requesting approval for payment of 150000USD for 10 cars
+== APP - order-processor == NotifyActivity: Payment for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 has been approved!
+== APP - order-processor == ProcessPaymentActivity: 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 - cars (150000USD)
+== APP - order-processor == UpdateInventoryActivity: Checking Inventory for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 * cars
+== APP - order-processor == UpdateInventoryActivity: There are now 90 cars left in stock
+== APP - order-processor == NotifyActivity: Order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 has completed!
+== APP - order-processor == Workflow completed - result: COMPLETED
+== APP - order-processor == Purchase of item is complete
+```
+
+Stop the Dapr workflow with `CTRL+C` or:
+
+```bash
+dapr stop -f .
+```
+
+### (Optional) Step 4: View in Zipkin
+
+Running `dapr init` launches the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) Docker container. If the container has stopped running, launch the Zipkin Docker container with the following command:
+
+```
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+View the workflow trace spans in the Zipkin web UI (typically at `http://localhost:9411/zipkin/`). 
+
+<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
+
+### What happened?
+
+When you ran `dapr run`:
+
+1. A unique order ID for the workflow is generated (in the above example, `48ee83b7-5d80-48d5-97f9-6b372f5480a5`) and the workflow is scheduled.
+1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
+1. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+1. Your workflow starts and notifies you of its status.
+1. The `ProcessPaymentActivity` workflow activity begins processing payment for order `48ee83b7-5d80-48d5-97f9-6b372f5480a5` and confirms if successful.
+1. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+1. The `NotifyActivity` workflow activity sends a notification saying that order `48ee83b7-5d80-48d5-97f9-6b372f5480a5` has completed.
+1. The workflow terminates as completed.
+
+#### `order-processor/main.go` 
+
+In the application's program file:
+- The unique workflow order ID is generated
+- The workflow is scheduled
+- The workflow status is retrieved
+- The workflow and the workflow activities it invokes are registered
+
+```go
+func main() {
+	fmt.Println("*** Welcome to the Dapr Workflow console app sample!")
+	fmt.Println("*** Using this app, you can place orders that start workflows.")
+
+  // ...
+
+  // Register workflow and activities
+	if err := w.RegisterWorkflow(OrderProcessingWorkflow); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(NotifyActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(RequestApprovalActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(VerifyInventoryActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(ProcessPaymentActivity); err != nil {
+		log.Fatal(err)
+	}
+	if err := w.RegisterActivity(UpdateInventoryActivity); err != nil {
+		log.Fatal(err)
+	}
+
+  // Build and start workflow runtime, pulling and executing tasks
+	if err := w.Start(); err != nil {
+		log.Fatal(err)
+	}
+
+	daprClient, err := client.NewClient()
+	if err != nil {
+		log.Fatalf("failed to initialise dapr client: %v", err)
+	}
+	wfClient, err := workflow.NewClient(workflow.WithDaprClient(daprClient))
+	if err != nil {
+		log.Fatalf("failed to initialise workflow client: %v", err)
+	}
+
+  // Check inventory
+	inventory := []InventoryItem{
+		{ItemName: "paperclip", PerItemCost: 5, Quantity: 100},
+		{ItemName: "cars", PerItemCost: 15000, Quantity: 100},
+		{ItemName: "computers", PerItemCost: 500, Quantity: 100},
+	}
+	if err := restockInventory(daprClient, inventory); err != nil {
+		log.Fatalf("failed to restock: %v", err)
+	}
+
+	fmt.Println("==========Begin the purchase of item:==========")
+
+	itemName := defaultItemName
+	orderQuantity := 10
+
+	totalCost := inventory[1].PerItemCost * orderQuantity
+
+	orderPayload := OrderPayload{
+		ItemName:  itemName,
+		Quantity:  orderQuantity,
+		TotalCost: totalCost,
+	}
+
+  // Start workflow events, like receiving order, verifying inventory, and processing payment 
+	id, err := wfClient.ScheduleNewWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+
+	// ...
+
+  // Notification that workflow has completed or failed
+	for {
+		timeDelta := time.Since(startTime)
+		metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
+		if err != nil {
+			log.Fatalf("failed to fetch workflow: %v", err)
+		}
+		if (metadata.RuntimeStatus == workflow.StatusCompleted) || (metadata.RuntimeStatus == workflow.StatusFailed) || (metadata.RuntimeStatus == workflow.StatusTerminated) {
+			fmt.Printf("Workflow completed - result: %v\n", metadata.RuntimeStatus.String())
+			break
+		}
+		if timeDelta.Seconds() >= 10 {
+			metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
+			if err != nil {
+				log.Fatalf("failed to fetch workflow: %v", err)
+			}
+			if totalCost > 50000 && !approvalSought && ((metadata.RuntimeStatus != workflow.StatusCompleted) || (metadata.RuntimeStatus != workflow.StatusFailed) || (metadata.RuntimeStatus != workflow.StatusTerminated)) {
+				approvalSought = true
+				promptForApproval(id)
+			}
+		}
+		// Sleep to not DoS the dapr dev instance
+		time.Sleep(time.Second)
+	}
+
+	fmt.Println("Purchase of item is complete")
+}
+
+// Request approval (RequestApprovalActivity)
+func promptForApproval(id string) {
+	wfClient, err := workflow.NewClient()
+	if err != nil {
+		log.Fatalf("failed to initialise wfClient: %v", err)
+	}
+	if err := wfClient.RaiseEvent(context.Background(), id, "manager_approval"); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// Update inventory for remaining stock (UpdateInventoryActivity)
+func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
+	for _, item := range inventory {
+		itemSerialized, err := json.Marshal(item)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("adding base stock item: %s\n", item.ItemName)
+		if err := daprClient.SaveState(context.Background(), stateStoreName, item.ItemName, itemSerialized, nil); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+```
+
+Meanwhile, the `OrderProcessingWorkflow` and its activities are defined as methods in [`workflow.go`](https://github.com/dapr/quickstarts/workflows/go/sdk/order-processor/workflow.go)
+
+{{% /codetab %}}
+
 
 {{< /tabs >}}
 

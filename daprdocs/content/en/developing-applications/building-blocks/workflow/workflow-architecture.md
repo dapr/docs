@@ -217,3 +217,4 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
    - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
