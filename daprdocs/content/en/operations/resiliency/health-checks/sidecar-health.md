@@ -13,6 +13,10 @@ Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint](
 
 In this guide, you learn how the Dapr `/healthz` endpoint integrate with health probes from the application hosting platform (for example, Kubernetes). 
 
+The following diagram demonstrates how Dapr checks for outbound health connections from the sidecar using `v1.0/healthz/outbound`, as shown by the green boundary lines. With this behavior, Dapr waits for a successful response from `v1.0/healthz/outbound`, rather than waiting for the Dapr HTTP port to be available. This provides a more explict implementation that is better isolated from accidental change.
+
+<img src="/images/security-mTLS-dapr-system-services.png" width="800" alt="Diagram of Dapr services interacting" />
+
 When deploying Dapr to a hosting platform like Kubernetes, the Dapr health endpoint is automatically configured for you.
 
 {{% alert title="Note" color="primary" %}}
