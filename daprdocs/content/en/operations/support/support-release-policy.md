@@ -94,7 +94,7 @@ The table below shows the versions of Dapr releases that have been tested togeth
 ## SDK compatibility
 The SDKs and runtime are committed to non-breaking changes other than those required for security issues.  All breaking changes are announced if required in the release notes. 
 
-**Forward compatibility**  
+**SDK and runtime forward compatibility**  
 Newer Dapr SDKs support the latest version of Dapr runtime and two previous versions (N-2). 
 
 **Backward compatibility**  
