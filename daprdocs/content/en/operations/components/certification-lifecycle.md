@@ -63,7 +63,7 @@ A component may skip the Beta stage and conformance test requirement per the dis
 - A maintainer will address component security, core functionality and test issues according to the Dapr support policy and issue a patch release that includes the patched stable component
 
 {{% alert title="Note" color="primary" %}}
-While Dapr claims a component is stable, it is based on Dapr's tests and not a guarantee of support by any specific vendor. 
+Stable Dapr components are based on Dapr certification and conformance tests and are not a guarantee of support by any specific vendor, where the vendor's SDK is used as part of the component.
 
 Dapr tests guarantee the stability of a component independent of a third party vendor's stability status. This is because the meaning of stable (or alpha and beta) can vary for each vendor. 
 {{% /alert %}}
