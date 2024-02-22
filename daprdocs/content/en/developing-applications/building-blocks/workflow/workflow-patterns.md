@@ -25,7 +25,7 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs Python JavaScript ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -234,6 +234,57 @@ public class ChainWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+func TaskChainWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	var result1 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result1); err != nil {
+		return nil, err
+	}
+	var result2 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result2); err != nil {
+		return nil, err
+	}
+	var result3 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result3); err != nil {
+		return nil, err
+	}
+	return []int{result1, result2, result3}, nil
+}
+func Step1(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 1: Received input: %s", input)
+	return input + 1, nil
+}
+func Step2(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 2: Received input: %s", input)
+	return input * 2, nil
+}
+func Step3(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 3: Received input: %s", input)
+	return int(math.Pow(float64(input), 2)), nil
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
@@ -260,7 +311,7 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs Python JavaScript ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -461,6 +512,72 @@ public class FaninoutWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+func BatchProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return 0, err
+	}
+	var workBatch []int
+	if err := ctx.CallActivity(GetWorkBatch, workflow.ActivityInput(input)).Await(&workBatch); err != nil {
+		return 0, err
+	}
+	parallelTasks := workflow.NewTaskSlice(len(workBatch))
+	for i, workItem := range workBatch {
+		parallelTasks[i] = ctx.CallActivity(ProcessWorkItem, workflow.ActivityInput(workItem))
+	}
+	var outputs int
+	for _, task := range parallelTasks {
+		var output int
+		err := task.Await(&output)
+		if err == nil {
+			outputs += output
+		} else {
+			return 0, err
+		}
+	}
+	if err := ctx.CallActivity(ProcessResults, workflow.ActivityInput(outputs)).Await(nil); err != nil {
+		return 0, err
+	}
+	return 0, nil
+}
+func GetWorkBatch(ctx workflow.ActivityContext) (any, error) {
+	var batchSize int
+	if err := ctx.GetInput(&batchSize); err != nil {
+		return 0, err
+	}
+	batch := make([]int, batchSize)
+	for i := 0; i < batchSize; i++ {
+		batch[i] = i
+	}
+	return batch, nil
+}
+func ProcessWorkItem(ctx workflow.ActivityContext) (any, error) {
+	var workItem int
+	if err := ctx.GetInput(&workItem); err != nil {
+		return 0, err
+	}
+	fmt.Printf("Processing work item: %d\n", workItem)
+	time.Sleep(time.Second * 5)
+	result := workItem * 2
+	fmt.Printf("Work item %d processed. Result: %d\n", workItem, result)
+	return result, nil
+}
+func ProcessResults(ctx workflow.ActivityContext) (any, error) {
+	var finalResult int
+	if err := ctx.GetInput(&finalResult); err != nil {
+		return 0, err
+	}
+	fmt.Printf("Final result: %d\n", finalResult)
+	return finalResult, nil
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 The key takeaways from this example are:
@@ -561,7 +678,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs Python JavaScript ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -722,6 +839,59 @@ public class MonitorWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+type JobStatus struct {
+	JobID     string `json:"job_id"`
+	IsHealthy bool   `json:"is_healthy"`
+}
+func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var sleepInterval time.Duration
+	var job JobStatus
+	if err := ctx.GetInput(&job); err != nil {
+		return "", err
+	}
+	var status string
+	if err := ctx.CallActivity(CheckStatus, workflow.ActivityInput(job)).Await(&status); err != nil {
+		return "", err
+	}
+	if status == "healthy" {
+		job.IsHealthy = true
+		sleepInterval = time.Second * 60
+	} else {
+		if job.IsHealthy {
+			job.IsHealthy = false
+			err := ctx.CallActivity(SendAlert, workflow.ActivityInput(fmt.Sprintf("Job '%s' is unhealthy!", job.JobID))).Await(nil)
+			if err != nil {
+				return "", err
+			}
+		}
+		sleepInterval = time.Second * 5
+	}
+	if err := ctx.CreateTimer(sleepInterval).Await(nil); err != nil {
+		return "", err
+	}
+	ctx.ContinueAsNew(job, false)
+	return "", nil
+}
+func CheckStatus(ctx workflow.ActivityContext) (any, error) {
+	statuses := []string{"healthy", "unhealthy"}
+	return statuses[rand.Intn(1)], nil
+}
+func SendAlert(ctx workflow.ActivityContext) (any, error) {
+	var message string
+	if err := ctx.GetInput(&message); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Alert: %s", message)
+	return "", nil
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 A workflow implementing the monitor pattern can loop forever or it can terminate itself gracefully by not calling _continue-as-new_.
@@ -750,7 +920,7 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs Python JavaScript ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -1032,11 +1202,68 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+type Order struct {
+	Cost     float64 `json:"cost"`
+	Product  string  `json:"product"`
+	Quantity int     `json:"quantity"`
+}
+type Approval struct {
+	Approver string `json:"approver"`
+}
+func PurchaseOrderWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	// Orders under $1000 are auto-approved
+	if order.Cost < 1000 {
+		return "Auto-approved", nil
+	}
+	// Orders of $1000 or more require manager approval
+	if err := ctx.CallActivity(SendApprovalRequest, workflow.ActivityInput(order)).Await(nil); err != nil {
+		return "", err
+	}
+	// Approvals must be received within 24 hours or they will be cancelled
+	var approval Approval
+	if err := ctx.WaitForExternalEvent("approval_received", time.Hour*24).Await(&approval); err != nil {
+		// Assuming that a timeout has taken place - in any case; an error.
+		return "error/cancelled", err
+	}
+	// The order was approved
+	if err := ctx.CallActivity(PlaceOrder, workflow.ActivityInput(order)).Await(nil); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("Approved by %s", approval.Approver), nil
+}
+func SendApprovalRequest(ctx workflow.ActivityContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Sending approval request for order: %v\n", order)
+	return "", nil
+}
+func PlaceOrder(ctx workflow.ActivityContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Placing order: %v", order)
+	return "", nil
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
-{{< tabs Python JavaScript ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -1059,7 +1286,11 @@ with DaprClient() as d:
 <!--javascript-->
 
 ```javascript
-// Raise the workflow event to the waiting workflow
+import { DaprClient } from "@dapr/dapr";
+
+  public async raiseEvent(workflowInstanceId: string, eventName: string, eventPayload?: any) {
+    this._innerClient.raiseOrchestrationEvent(workflowInstanceId, eventName, eventPayload);
+  }
 ```
 
 {{% /codetab %}}
@@ -1088,6 +1319,32 @@ client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+func raiseEvent() {
+  daprClient, err := client.NewClient()
+  if err != nil {
+    log.Fatalf("failed to initialize the client")
+  }
+  err = daprClient.RaiseEventWorkflowBeta1(context.Background(), &client.RaiseEventWorkflowRequest{
+    InstanceID: "instance_id",
+    WorkflowComponent: "dapr",
+    EventName: "approval_received",
+    EventData: Approval{
+      Approver: "Jane Doe",
+    },
+  })
+  if err != nil {
+    log.Fatalf("failed to raise event on workflow")
+  }
+  log.Println("raised an event on specified workflow")
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
@@ -1106,3 +1363,4 @@ External events don't have to be directly triggered by humans. They can also be 
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
