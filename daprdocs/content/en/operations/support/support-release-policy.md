@@ -97,7 +97,7 @@ The SDKs and runtime are committed to non-breaking changes other than those requ
 **SDK and runtime forward compatibility**  
 Newer Dapr SDKs support the latest version of Dapr runtime and two previous versions (N-2). 
 
-**Backward compatibility**  
+**SDK and runtime backward compatibility**  
 With non-breaking changes, the current SDK version and three previous three versions (N-3)are supported for a newer Dapr runtime version.
 
 ## Upgrade paths
