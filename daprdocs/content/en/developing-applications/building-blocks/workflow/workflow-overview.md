@@ -83,6 +83,7 @@ You can use the following SDKs to author a workflow.
 | JavaScript | [DaprWorkflowClient](https://github.com/dapr/js-sdk/blob/main/src/workflow/client/DaprWorkflowClient.ts) |
 | .NET | [Dapr.Workflow](https://www.nuget.org/profiles/dapr.io) |
 | Java | [io.dapr.workflows](https://dapr.github.io/java-sdk/io/dapr/workflows/package-summary.html) |
+| Go | [workflow](https://github.com/dapr/go-sdk/tree/main/client/workflow.go) |
 
 ## Try out workflows
 
@@ -97,6 +98,7 @@ Want to put workflows to the test? Walk through the following quickstart and tut
 | [Workflow JavaScript SDK example](https://github.com/dapr/js-sdk/tree/main/examples/workflow) | Learn how to create a Dapr Workflow and invoke it using the JavaScript SDK. |
 | [Workflow .NET SDK example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow) | Learn how to create a Dapr Workflow and invoke it using ASP.NET Core web APIs. |
 | [Workflow Java SDK example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows) | Learn how to create a Dapr Workflow and invoke it using the Java `io.dapr.workflows` package. |
+| [Workflow Go SDK example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md) | Learn how to create a Dapr Workflow and invoke it using the Go `workflow` package. |
 
 ### Start using workflows directly in your app
 
@@ -105,7 +107,6 @@ Want to skip the quickstarts? Not a problem. You can try out the workflow buildi
 ## Limitations
 
 - **State stores:** As of the 1.12.0 beta release of Dapr Workflow, using the NoSQL databases as a state store results in limitations around storing internal states. For example, CosmosDB has a maximum single operation item limit of only 100 states in a single request.
-
 - **Horizontal scaling:** As of the 1.12.0 beta release of Dapr Workflow, if you scale out Dapr sidecars or your application pods to more than 2, then the concurrency of the workflow execution drops. It is recommended to test with 1 or 2 instances, and no more than 2.
 
 ## Watch the demo
@@ -126,3 +127,4 @@ Watch [this video for an overview on Dapr Workflow](https://youtu.be/s1p9MNl4VGo
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+  - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
