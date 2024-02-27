@@ -113,7 +113,7 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 ### What happened?
 
-When you ran `dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py`:
+When you ran `dapr run -f .`:
 
 1. A unique order ID for the workflow is generated (in the above example, `f4e1926e-3721-478d-be8a-f5bebd1995da`) and the workflow is scheduled.
 1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
@@ -325,7 +325,6 @@ This starts the `order-processor` app with unique workflow ID and runs the workf
 Expected output:
 
 ```
-
 == APP - workflowApp == == APP == Orchestration scheduled with ID: 0c332155-1e02-453a-a333-28cfc7777642
 == APP - workflowApp == == APP == Waiting 30 seconds for instance 0c332155-1e02-453a-a333-28cfc7777642 to complete...
 == APP - workflowApp == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
@@ -402,7 +401,7 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 ### What happened?
 
-When you ran `dapr run `:
+When you ran `dapr run -f .`:
 
 1. A unique order ID for the workflow is generated (in the above example, `0c332155-1e02-453a-a333-28cfc7777642`) and the workflow is scheduled.
 1. The `notifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
@@ -428,16 +427,8 @@ import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, reques
 
 async function start() {
   // Update the gRPC client and worker to use a local address and port
-  const daprHost = "localhost";
-  const daprPort = "50001";
-  const workflowClient = new DaprWorkflowClient({
-    daprHost,
-    daprPort,
-  });
-  const workflowRuntime = new WorkflowRuntime({
-    daprHost,
-    daprPort,
-  });
+  const workflowClient = new DaprWorkflowClient();
+  const workflowWorker = new WorkflowRuntime();
 
   const daprClient = new DaprClient();
   const storeName = "statestore";
@@ -454,7 +445,7 @@ async function start() {
 
   const order = new OrderPayload("item1", 100, 10);
 
-  workflowRuntime
+  workflowWorker
   .registerWorkflow(orderProcessingWorkflow)
   .registerActivity(notifyActivity)
   .registerActivity(reserveInventoryActivity)
@@ -464,7 +455,7 @@ async function start() {
 
   // Wrap the worker startup in a try-catch block to handle any errors during startup
   try {
-    await workflowRuntime.start();
+    await workflowWorker.start();
     console.log("Workflow runtime started successfully");
   } catch (error) {
     console.error("Error starting workflow runtime:", error);
@@ -481,13 +472,11 @@ async function start() {
     console.log(`Orchestration completed! Result: ${state?.serializedOutput}`);
   } catch (error) {
     console.error("Error scheduling or waiting for orchestration:", error);
+    throw error;
   }
 
-  await workflowRuntime.stop();
+  await workflowWorker.stop();
   await workflowClient.stop();
-
-  // Stop the Dapr sidecar
-  process.exit(0);
 }
 
 start().catch((e) => {
@@ -586,7 +575,7 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 ### What happened?
 
-When you ran `dapr run --app-id order-processor dotnet run`:
+When you ran `dapr run -f .`:
 
 1. A unique order ID for the workflow is generated (in the above example, `6d2abcc9`) and the workflow is scheduled.
 1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
@@ -845,7 +834,7 @@ View the workflow trace spans in the Zipkin web UI (typically at `http://localho
 
 ### What happened?
 
-When you ran `dapr run`:
+When you ran `dapr run -f .`:
 
 1. A unique order ID for the workflow is generated (in the above example, `edceba90-9c45-4be8-ad40-60d16e060797`) and the workflow is scheduled.
 1. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
