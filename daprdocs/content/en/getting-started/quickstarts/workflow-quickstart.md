@@ -407,7 +407,7 @@ When you ran `dapr run -f .`:
 1. The `notifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
 1. The `reserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 1. Your workflow starts and notifies you of its status.
-1. The `processPaymentActivity` workflow activity begins processing payment for order `6d2abcc9` and confirms if successful.
+1. The `processPaymentActivity` workflow activity begins processing payment for order `0c332155-1e02-453a-a333-28cfc7777642` and confirms if successful.
 1. The `updateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
 1. The `notifyActivity` workflow activity sends a notification saying that order `0c332155-1e02-453a-a333-28cfc7777642` has completed.
 1. The workflow terminates as completed.
