@@ -6,6 +6,24 @@ weight: 1000
 description: "Common issues and problems faced when running Dapr applications"
 ---
 
+This guide covers common issues you may encounter while installing and running Dapr.
+
+## Dapr can't connect to Docker when installing the Dapr CLI
+
+When installing and initializing the Dapr CLI, if you see the following error message after running `dapr init`:
+
+```bash
+⌛  Making the jump to hyperspace...
+❌  could not connect to docker. docker may not be installed or running
+```
+
+Troubleshoot the error by ensuring:
+
+1. [The correct containers are running.]({{< ref "install-dapr-selfhost.md#step-4-verify-containers-are-running" >}})
+1. In Docker Desktop, verify the **Allow the default Docker socket to be used (requires password)** option is selected.
+
+   <img src="/images/docker-desktop-setting.png" width=800 style="padding-bottom:15px;">
+
 ## I don't see the Dapr sidecar injected to my pod
 
 There could be several reasons to why a sidecar will not be injected into a pod.
