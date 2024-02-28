@@ -89,14 +89,14 @@ kubectl rollout restart deployment/<deployment-name> --namespace <namespace-name
 
 ## Authenticating requests from Dapr
 
-Once app token authentication is configured in Dapr, all requests *coming from Dapr* include the token.
+Once app token authentication is configured using the environment variable or Kubernetes secret `app-api-token`, the Dapr sidecar always includes the HTTP header/gRPC metadata `dapr-api-token: <token>` in the calls to the app. From the app side, ensure you are authenticating using the `dapr-api-token` value, even though you set `app-api-token` to enable API authentication.
 
 ### HTTP
 
-In case of HTTP, in your code look for the HTTP header `dapr-api-token` in incoming requests:
+In your code, look for the HTTP header `dapr-api-token` in incoming requests:
 
 ```text
-dapr-api-token: <token>
+a-api-token: <token>
 ```
 
 ### gRPC
