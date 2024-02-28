@@ -60,6 +60,19 @@ targets: # Required
 | policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> <br> [See more examples with all of the built-in policies]({{< ref policies.md >}}) | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
 | targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. <br>[See more examples in the resiliency targets guide]({{< ref targets.md >}})  | `apps` <br>`components`<br>`actors` |
 
+## Recommended policy values
+
+| Resiliency outbound policy | Recommended value |
+|----------------------------|-------------------|
+| Timeouts |  | 
+| Retries |  | 
+| Circuit breakers |  | 
+
+| Resiliency inbound policy | Recommended value |
+|---------------------------|-------------------|
+| Timeouts |  | 
+| Retries |  | 
+| Circuit breakers |  | 
 
 ## Related links
 [Learn more about resiliency policies and targets]({{< ref resiliency-overview.md >}})
