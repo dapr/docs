@@ -172,7 +172,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java JavaScript >}}
+{{< tabs ".NET" Java JavaScript Go>}}
 
 {{% codetab %}}
 
@@ -207,11 +207,20 @@ const randomString = getRandomString();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+const currentTime = time.Now()
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java JavaScript >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -245,6 +254,14 @@ const randomString = yield context.callActivity(getRandomString);
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+const currentTime = ctx.CurrentUTCDateTime()
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -255,7 +272,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java JavaScript >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -298,11 +315,20 @@ fetch('https://postman-echo.com/get')
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java JavaScript >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -346,7 +372,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs ".NET" Java JavaScript >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -375,11 +401,24 @@ Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guaran
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+go func() {
+  err := ctx.CallActivity(DoSomething).Await(nil)
+}()
+err := ctx.CreateTimer(time.Second).Await(nil)
+```
+
+{{% /codetab %}}
+
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java JavaScript >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -404,6 +443,16 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 {{% codetab %}}
 
 Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// Do this!
+task := ctx.CallActivity(DoSomething)
+task.Await(nil)
+```
 
 {{% /codetab %}}
 
