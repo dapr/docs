@@ -6,17 +6,17 @@ description: "Detailed documentation on the health API"
 weight: 1000
 ---
 
-Dapr provides health checking probes that can be used as readiness or liveness of Dapr. 
+Dapr provides health checking probes that can be used as readiness or liveness of Dapr and for initialization readiness from SDKs. 
 
 ## Get Dapr health state
 
 Gets the health state for Dapr by either:
-- Waiting for a specific health check against `v1.0/healthz/outbound`; or
-- Waiting for the Dapr HTTP port to become available
+- Check for sidecar health
+- Check for the sidecar health, including component readiness, used during initialization.
 
 ### Wait for Dapr HTTP port to become available
 
-With this behavior, Dapr waits for the Dapr HTTP port to become available to 
+Wait for all components to be initialized, the Dapr HTTP port to be available _and_ the app channel is initialized. For example, this endpoint is used with Kubernetes liveness probes.
 
 #### HTTP Request
 
@@ -45,9 +45,9 @@ curl -i http://localhost:3500/v1.0/healthz
 
 ### Wait for specific health check against `/outbound` path
 
-With this behavior, Dapr waits for a successful response from `v1.0/healthz/outbound`, rather than waiting for the Dapr HTTP port to be available. This provides a more explict implementation that is better isolated from accidental change.
+Wait for all components to be initialized, the Dapr HTTP port to be available, however the app channel is not yet established. This endpoint enables your application to perform calls on the Dapr sidecar APIs before the app channel is initalized, for example reading secrets with the secrets API. For example used in the Dapr SDKs `waitForSidecar` method (for example .NET and Java SDKs) to check sidecar is initialized correctly ready for any calls.
 
-For example, [in the .NET SDK,](https://github.com/dapr/dotnet-sdk/blob/17f849b17505b9a61be1e7bd3e69586718b9fdd3/src/Dapr.Client/DaprClientGrpc.cs#L1758-L1785) if the ordering of a Dapr runtime init ever changed (accidentally or deliberately), and the Dapr HTTP port was open _before_ all components were initialized, this would cause a break in behavior.
+For example, the [Java SDK](https://docs.dapr.io/developing-applications/sdks/java/java-client/#wait-for-sidecar) and [the .NET SDK](https://github.com/dapr/dotnet-sdk/blob/17f849b17505b9a61be1e7bd3e69586718b9fdd3/src/Dapr.Client/DaprClientGrpc.cs#L1758-L1785) uses this endpoint for initialization. 
 
 #### HTTP Request
 
