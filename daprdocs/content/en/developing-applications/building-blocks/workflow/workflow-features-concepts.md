@@ -172,7 +172,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java JavaScript Go>}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -310,7 +310,14 @@ fetch('https://postman-echo.com/get')
   .catch(error => {
     console.error('Error:', error);
   });
+```
 
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
 ```
 
 {{% /codetab %}}
@@ -360,6 +367,14 @@ const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data"
 
 {{% /codetab %}}
 
+
+{{% codetab %}}
+
+```go
+// Do this!!
+```
+
+{{% /codetab %}}
 {{< /tabs >}}
 
 
@@ -412,6 +427,7 @@ err := ctx.CreateTimer(time.Second).Await(nil)
 ```
 
 {{% /codetab %}}
+
 
 
 {{< /tabs >}}
@@ -487,6 +503,7 @@ To work around these constraints:
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
-   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
+   - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
