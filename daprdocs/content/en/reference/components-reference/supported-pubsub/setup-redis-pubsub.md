@@ -44,7 +44,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | consumerID         | N        | The consumer group ID   | `"myGroup"`
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redeliver. Can use either be Go duration string (for example "ms", "s", "m") or milliseconds number. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`, `"5000"`
-| processingTimeout  | N        | The amount time that a message must be pending before attempting to redeliver it. Can use either seconds or milliseconds. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`, `"600000"`
+| processingTimeout  | N        | The amount time that a message must be pending before attempting to redeliver it. Can use either be Go duration string ( for example "ms", "s", "m") or milliseconds number. Defaults to `"15s"`. `"0"` disables redelivery. | `"60s"`, `"600000"`
 | queueDepth         | N        | The size of the message queue for processing. Defaults to `"100"`. | `"1000"`
 | concurrency        | N        | The number of concurrent workers that are processing messages. Defaults to `"10"`. | `"15"`
 | redisType        | N        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
