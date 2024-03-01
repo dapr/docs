@@ -49,6 +49,11 @@ With this behavior, Dapr waits for a successful response from `v1.0/healthz/outb
 
 For example, [in the .NET SDK,](https://github.com/dapr/dotnet-sdk/blob/17f849b17505b9a61be1e7bd3e69586718b9fdd3/src/Dapr.Client/DaprClientGrpc.cs#L1758-L1785) if the ordering of a Dapr runtime init ever changed (accidentally or deliberately), and the Dapr HTTP port was open _before_ all components were initialized, this would cause a break in behavior.
 
+Currently supported in the:
+- [.NET SDK](https://github.com/dapr/dotnet-sdk/blob/17f849b17505b9a61be1e7bd3e69586718b9fdd3/src/Dapr.Client/DaprClientGrpc.cs#L1758-L1785)
+- [Java SDK](https://github.com/dapr/java-sdk/blob/2f5947392a33bc7911e6669601ddb9e8b59b58fe/sdk/src/main/java/io/dapr/client/DaprClientHttp.java#L143-L165)
+- [Python SDK](https://github.com/dapr/python-sdk/blob/0b7aafdab1d4fade424b1b6c9569329ad10bb516/dapr/clients/http/client.py#L52)
+
 #### HTTP Request
 
 ```
