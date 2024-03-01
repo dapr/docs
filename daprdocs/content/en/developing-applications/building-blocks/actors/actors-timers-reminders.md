@@ -148,7 +148,7 @@ If an invocation of the method fails, the timer is not removed. Timers are only 
 
 ## Reminder data serialization format
 
-Actor reminder data is serialized to JSON by default. In Dapr v1.13 onwards supports a protobuf serialization format for reminders data which, depending on throughput and size of the payload, can result in significant performance improvements, giving developers a higher throughput and lower latency. Another benefit is storing smaller data in the actor underlying database, which can result in cost optimizations when using some cloud databases. A restriction with using protobuf serialization is that the reminder data can no longer be queried. 
+Actor reminder data is serialized to JSON by default. Dapr v1.13 onwards supports a protobuf serialization format for reminders data which, depending on throughput and size of the payload, can result in significant performance improvements, giving developers a higher throughput and lower latency. Another benefit is storing smaller data in the actor underlying database, which can result in cost optimizations when using some cloud databases. A restriction with using protobuf serialization is that the reminder data can no longer be queried. 
 
 {{% alert title="Note" color="primary" %}}
 Protobuf serialization will become the default format in Dapr 1.14
