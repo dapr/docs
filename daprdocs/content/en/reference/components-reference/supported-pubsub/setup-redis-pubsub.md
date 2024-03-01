@@ -43,8 +43,8 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | consumerID         | N        | The consumer group ID   | `"myGroup"`
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
-| redeliverInterval  | N        | The interval in milliseconds between checking for pending messages to redeliver. Defaults to `"60000"`. `"0"` disables redelivery. | `"5000"`
-| processingTimeout  | N        | The amount time in milliseconds that a message must be pending before attempting to redeliver it. Defaults to `"15000"`. `"0"` disables redelivery. | `"600000"`
+| redeliverInterval  | N        | The interval between checking for pending messages to redeliver. Can use either seconds or milliseconds. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`, `"5000"`
+| processingTimeout  | N        | The amount time that a message must be pending before attempting to redeliver it. Can use either seconds or milliseconds. Defaults to `"15s"`. `"0"` disables redelivery. | `"30s"`, `"600000"`
 | queueDepth         | N        | The size of the message queue for processing. Defaults to `"100"`. | `"1000"`
 | concurrency        | N        | The number of concurrent workers that are processing messages. Defaults to `"10"`. | `"15"`
 | redisType        | N        | The type of redis. There are two valid values, one is `"node"` for single node mode, the other is `"cluster"` for redis cluster mode. Defaults to `"node"`. | `"cluster"`
