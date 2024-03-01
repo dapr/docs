@@ -318,18 +318,11 @@ fetch('https://postman-echo.com/get')
 
 ```go
 // DON'T DO THIS!
+resp, err := http.Get("http://example.com/api/data")
 ```
 
 {{% /codetab %}}
 
-{{% codetab %}}
-
-```go
-// DON'T DO THIS!
-
-```
-
-{{% /codetab %}}
 
 {{< /tabs >}}
 
@@ -372,6 +365,8 @@ const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data"
 
 ```go
 // Do this!!
+err := ctx.CallActivity(MakeHttpCallActivity, workflow.ActivityInput("https://example.com/api/data")).Await(&output)
+
 ```
 
 {{% /codetab %}}
