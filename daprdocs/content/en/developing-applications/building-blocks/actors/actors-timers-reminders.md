@@ -158,7 +158,7 @@ If you use protobuf serialization in Dapr v1.13 and need to downgrade to an earl
 
 ### Enabling protobuf serialization on Kubernetes
 
-To use protobuf serialization for actor reminders on Kubernetes, use the following helm value:
+To use protobuf serialization for actor reminders on Kubernetes, use the following Helm value:
 
 ```
 --set dapr_placement.maxActorApiLevel=20
