@@ -23,7 +23,7 @@ After running Dapr using the Dapr CLI, you'll:
 ### Step 1: Run the Dapr sidecar
 
 The [`dapr run`]({{< ref dapr-run.md >}}) command normally runs your application and a Dapr sidecar. In this case, 
-it will only run the sidecar since you will interact with the state management API directly.
+it only runs the sidecar since you are interacting with the state management API directly.
 
 Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 
