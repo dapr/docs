@@ -90,9 +90,13 @@ The diagram below shows an example of how this works. If you have 1 instance of 
 
 **Note**: App ID is unique per _application_, not application instance. Regardless how many instances of that application exist (due to scaling), all of them will share the same app ID.
 
-### Pluggable service discovery
+### Swappable service discovery
 
-Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable service discovery and service invocation, Dapr uses pluggable [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster. Self-hosted machines can use the mDNS name resolution component. The Consul name resolution component can be used in any hosting environment, including Kubernetes or self-hosted.
+Dapr can run on a variety of [hosting platforms]({{< ref hosting >}}). To enable swappable service discovery with service invocation, Dapr uses [name resolution components]({{< ref supported-name-resolution >}}). For example, the Kubernetes name resolution component uses the Kubernetes DNS service to resolve the location of other applications running in the cluster.  
+
+Self-hosted machines can use the mDNS name resolution component. As an alternative, you can use the SQLite name resolution component to run Dapr on single-node environments and for local development scenarios. Dapr sidecars that are part of the cluster store their information in a SQLite database on the local machine.
+
+The Consul name resolution component is particularly suited to multi-machine deployments and can be used in any hosting environment, including Kubernetes, multiple VMs, or self-hosted.
 
 ### Streaming for HTTP service invocation
 
