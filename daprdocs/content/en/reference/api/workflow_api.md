@@ -182,8 +182,7 @@ POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanc
 ```
 
 {{% alert title="Note" color="primary" %}}
- Purging a workflow purges all of the child workflows created by the workflow instance.
-
+Only `COMPLETED`, `FAILED`, or `TERMINATED` workflows can be purged.
 {{% /alert %}}
 
 ### URL parameters
@@ -247,7 +246,7 @@ The API call will provide a JSON response similar to this:
 
 Parameter | Description
 --------- | -----------
-`runtimeStatus` | The status of the workflow instance. Values include: `RUNNING`, `TERMINATED`, `PAUSED`  
+`runtimeStatus` | The status of the workflow instance. Values include: `"RUNNING"`, `"COMPLETED"`, `"CONTINUED_AS_NEW"`, `"FAILED"`, `"CANCELED"`, `"TERMINATED"`, `"PENDING"`, `"SUSPENDED"`  
 
 ## Component format
 
