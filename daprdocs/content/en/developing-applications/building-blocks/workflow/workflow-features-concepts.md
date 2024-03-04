@@ -63,6 +63,8 @@ You can use the following two techniques to write workflows that may need to sch
 
 1. **Use the _continue-as-new_ API**:  
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+   
+    > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
 1. **Use child workflows**:  
     Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
@@ -158,6 +160,12 @@ The backend implementation is largely decoupled from the workflow core engine or
 - How workflow execution is coordinated across replicas
 
 In that sense, it's similar to Dapr's state store abstraction, except designed specifically for workflow. All APIs and programming model features are the same, regardless of which backend is used.
+
+## Purging
+
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+
+Learn more in [the workflow API reference guide]({{< ref workflow_api.md >}}).
 
 ## Limitations
 
