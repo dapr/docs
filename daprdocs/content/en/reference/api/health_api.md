@@ -47,12 +47,12 @@ curl -i http://localhost:3500/v1.0/healthz
 
 Wait for all components to be initialized, the Dapr HTTP port to be available, however the app channel is not yet established. This endpoint enables your application to perform calls on the Dapr sidecar APIs before the app channel is initalized, for example reading secrets with the secrets API. For example used in the Dapr SDKs `waitForSidecar` method (for example .NET and Java SDKs) to check sidecar is initialized correctly ready for any calls.
 
-For example, the [Java SDK](https://docs.dapr.io/developing-applications/sdks/java/java-client/#wait-for-sidecar) and [the .NET SDK](https://github.com/dapr/dotnet-sdk/blob/17f849b17505b9a61be1e7bd3e69586718b9fdd3/src/Dapr.Client/DaprClientGrpc.cs#L1758-L1785) uses this endpoint for initialization. 
+For example, the [Java SDK]({{< ref "java-client.md#wait-for-sidecar" >}}) and [the .NET SDK]({{< ref "dotnet-client.md#wait-for-sidecar" >}}) uses this endpoint for initialization. 
 
-Currently supported in the:
-- [.NET SDK](https://github.com/dapr/dotnet-sdk/blob/17f849b17505b9a61be1e7bd3e69586718b9fdd3/src/Dapr.Client/DaprClientGrpc.cs#L1758-L1785)
-- [Java SDK](https://github.com/dapr/java-sdk/blob/2f5947392a33bc7911e6669601ddb9e8b59b58fe/sdk/src/main/java/io/dapr/client/DaprClientHttp.java#L143-L165)
-- [Python SDK](https://github.com/dapr/python-sdk/blob/0b7aafdab1d4fade424b1b6c9569329ad10bb516/dapr/clients/http/client.py#L52)
+Currently, the `v1.0/healthz/outbound` endpoint is supported in the:
+- [.NET SDK]({{< ref "dotnet-client.md#wait-for-sidecar" >}})
+- [Java SDK]({{< ref "java-client.md#wait-for-sidecar" >}})
+- [Python SDK]({{< ref "python-client.md#health-timeout" >}})
 
 #### HTTP Request
 
