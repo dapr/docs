@@ -94,7 +94,8 @@ metadata:
 spec:
   metrics:
     enabled: true
-    increasedCardinality: true
+    http:
+      increasedCardinality: true
     rules:
       - name: dapr_runtime_service_invocation_req_sent_total
         labels:
