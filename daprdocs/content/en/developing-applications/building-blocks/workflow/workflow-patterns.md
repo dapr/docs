@@ -823,9 +823,8 @@ public class MonitorWorkflow extends Workflow {
       }
 
       // Put the workflow to sleep until the determined time
-      // Note: ctx.createTimer() method is not supported in the Java SDK yet
       try {
-        TimeUnit.SECONDS.sleep(nextSleepInterval.getSeconds());
+        ctx.createTimer(nextSleepInterval);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
