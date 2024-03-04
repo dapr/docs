@@ -3,10 +3,11 @@ type: docs
 title: "Use the Dapr API"
 linkTitle: "Use the Dapr API"
 weight: 30
-description: "Run a Dapr sidecar and try out the state API"
+description: "Run a Dapr sidecar and try out the state management API"
 ---
 
-In this guide, you'll simulate an application by running the sidecar and calling the API directly. After running Dapr using the Dapr CLI, you'll:
+In this guide, you'll simulate an application by running the sidecar and calling the state management API directly. 
+After running Dapr using the Dapr CLI, you'll:
 
 - Save a state object.
 - Read/get the state object.
@@ -21,7 +22,8 @@ In this guide, you'll simulate an application by running the sidecar and calling
 
 ### Step 1: Run the Dapr sidecar
 
-The [`dapr run`]({{< ref dapr-run.md >}}) command launches an application, together with a sidecar.
+The [`dapr run`]({{< ref dapr-run.md >}}) command normally runs your application and a Dapr sidecar. In this case, 
+it only runs the sidecar since you are interacting with the state management API directly.
 
 Launch a Dapr sidecar that will listen on port 3500 for a blank application named `myapp`:
 

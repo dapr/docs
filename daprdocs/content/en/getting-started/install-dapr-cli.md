@@ -15,6 +15,11 @@ You'll use the Dapr CLI as the main tool for various Dapr-related tasks. You can
 
 The Dapr CLI works with both [self-hosted]({{< ref self-hosted >}}) and [Kubernetes]({{< ref Kubernetes >}}) environments.
 
+{{% alert title="Before you begin" color="primary" %}}
+In Docker Desktop's advanced options, verify you've allowed the default Docker socket to be used.
+   <img src="/images/docker-desktop-setting.png" width=800 style="padding-bottom:15px;">
+{{% /alert %}}
+
 ### Step 1: Install the Dapr CLI
 
 {{< tabs Linux Windows MacOS Binaries>}}
