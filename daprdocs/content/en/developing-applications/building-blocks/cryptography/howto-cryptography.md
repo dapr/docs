@@ -6,16 +6,16 @@ weight: 2000
 description: "Learn how to encrypt and decrypt files"
 ---
 
-Now that you've read about [Cryptography as a Dapr building block]({{< ref cryptography-overview.md >}}), let's walk through using the cryptography APIs with the SDKs.  
+Now that you've read about [Cryptography as a Dapr building block]({{< ref cryptography-overview.md >}}), let's walk through using the cryptography APIs with the SDKs.
 
 {{% alert title="Note" color="primary" %}}
-  Dapr cryptography is currently in alpha.
+Dapr cryptography is currently in alpha.
 
 {{% /alert %}}
 
 ## Encrypt
 
-{{< tabs "JavaScript" "Go" >}}
+{{< tabs "JavaScript" "Go" ".NET" >}}
 
 {{% codetab %}}
 
@@ -136,12 +136,32 @@ if err != nil {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!-- .NET -->
+Using the Dapr SDK in your project, with the gRPC APIs, you can encrypt data in a string or a byte array:
+
+```csharp
+using var client = new DaprClientBuilder().Build();
+
+const string componentName = "azurekeyvault"; //Change this to match your cryptography component
+const string keyName = "myKey"; //Change this to match the name of the key in your cryptographic store
+
+const string plainText = "This is the value we're going to encrypt today";
+
+//Encode the string to a UTF-8 byte array and encrypt it
+var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+var encryptedBytesResult = await client.EncryptAsync(componentName, plaintextBytes, keyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa));
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
 ## Decrypt
 
-{{< tabs "JavaScript" "Go" >}}
+{{< tabs "JavaScript" "Go" ".NET" >}}
 
 {{% codetab %}}
 
@@ -182,6 +202,29 @@ out, err := sdkClient.Decrypt(context.Background(), rf, dapr.EncryptOptions{
 	// Only required option is the component name
 	ComponentName: "mycryptocomponent",
 })
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!-- .NET -->
+To decrypt a string, use the 'DecryptAsync' gRPC API in your project.
+
+In the following example, we'll take a byte array (such as from the example above) and decrypt it to a UTF-8 encoded string.
+
+```csharp
+public async Task<string> DecryptBytesAsync(byte[] encryptedBytes)
+{
+  using var client = new DaprClientBuilder().Build();
+
+  const string componentName = "azurekeyvault"; //Change this to match your cryptography component
+  const string keyName = "myKey"; //Change this to match the name of the key in your cryptographic store
+
+  var decryptedBytes = await client.DecryptAsync(componentName, encryptedBytes, keyName);
+  var decryptedString = Encoding.UTF8.GetString(decryptedBytes.ToArray());
+  return decryptedString;
+}
 ```
 
 {{% /codetab %}}
