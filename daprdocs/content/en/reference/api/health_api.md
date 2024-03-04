@@ -53,6 +53,7 @@ Currently, the `v1.0/healthz/outbound` endpoint is supported in the:
 - [.NET SDK]({{< ref "dotnet-client.md#wait-for-sidecar" >}})
 - [Java SDK]({{< ref "java-client.md#wait-for-sidecar" >}})
 - [Python SDK]({{< ref "python-client.md#health-timeout" >}})
+- [JavaScript SDK](https://github.com/dapr/js-sdk/blob/4189a3d2ad6897406abd766f4ccbf2300c8f8852/src/interfaces/Client/IClientHealth.ts#L14)
 
 #### HTTP Request
 
