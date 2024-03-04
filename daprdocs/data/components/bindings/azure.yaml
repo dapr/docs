@@ -14,6 +14,14 @@
   features:
     input: true
     output: true
+- component: Azure OpenAI
+  link: openai
+  state: Alpha
+  version: v1
+  since: "1.11"
+  features:
+    input: true
+    output: true
 - component: Azure SignalR
   link: signalr
   state: Alpha
