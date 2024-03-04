@@ -211,7 +211,7 @@ const randomString = getRandomString();
 
 ```go
 // DON'T DO THIS!
-
+const currentTime = time.Now()
 ```
 
 {{% /codetab %}}
@@ -254,13 +254,12 @@ const randomString = yield context.callActivity(getRandomString);
 
 {{% /codetab %}}
 
-
 {{% codetab %}}
 
 ```go
-// Do this!!
-
+const currentTime = ctx.CurrentUTCDateTime()
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -319,9 +318,11 @@ fetch('https://postman-echo.com/get')
 
 ```go
 // DON'T DO THIS!
+resp, err := http.Get("http://example.com/api/data")
 ```
 
 {{% /codetab %}}
+
 
 {{< /tabs >}}
 
@@ -364,6 +365,8 @@ const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data"
 
 ```go
 // Do this!!
+err := ctx.CallActivity(MakeHttpCallActivity, workflow.ActivityInput("https://example.com/api/data")).Await(&output)
+
 ```
 
 {{% /codetab %}}
@@ -412,8 +415,15 @@ Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guaran
 
 ```go
 // DON'T DO THIS!
+go func() {
+  err := ctx.CallActivity(DoSomething).Await(nil)
+}()
+err := ctx.CreateTimer(time.Second).Await(nil)
 ```
+
 {{% /codetab %}}
+
+
 
 {{< /tabs >}}
 
@@ -450,7 +460,9 @@ Since the Node.js runtime doesn't guarantee that asynchronous functions are dete
 {{% codetab %}}
 
 ```go
-// Do this!!
+// Do this!
+task := ctx.CallActivity(DoSomething)
+task.Await(nil)
 ```
 
 {{% /codetab %}}
