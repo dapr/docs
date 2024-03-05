@@ -170,11 +170,14 @@ url_latest_version = "https://docs.dapr.io"
 allow_search_indexing = false
 
 [[params.versions]]
-  version = "v1.13 (preview)" 
-  url = "https://v1-13.docs.dapr.io"
+  version = "v1.14 (preview)"
+  url = "https://v1-14.docs.dapr.io"
 [[params.versions]]
-  version = "v1.12 (latest)" 
+  version = "v1.13 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.12"
+  url = "https://v1-12.docs.dapr.io"
 [[params.versions]]
   version = "v1.11"
   url = "https://v1-11.docs.dapr.io"
