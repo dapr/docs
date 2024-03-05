@@ -63,6 +63,8 @@ You can use the following two techniques to write workflows that may need to sch
 
 1. **Use the _continue-as-new_ API**:  
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+   
+    > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
 1. **Use child workflows**:  
     Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
@@ -97,9 +99,7 @@ Child workflows have many benefits:
 
 The return value of a child workflow is its output. If a child workflow fails with an exception, then that exception is surfaced to the parent workflow, just like it is when an activity task fails with an exception. Child workflows also support automatic retry policies.
 
-{{% alert title="Note" color="primary" %}}
-Because child workflows are independent of their parents, terminating a parent workflow does not affect any child workflows. You must terminate each child workflow independently using its instance ID.
-{{% /alert %}}
+Terminating a parent workflow terminates all of the child workflows created by the workflow instance. See [the terminate workflow api]({{< ref "workflow_api.md#terminate-workflow-request" >}}) for more information.
 
 ## Durable timers
 
@@ -149,6 +149,24 @@ Workflows can also wait for multiple external event signals of the same name, in
 
 Learn more about [external system interaction.]({{< ref "workflow-patterns.md#external-system-interaction" >}})
 
+## Workflow backend
+
+Dapr Workflow relies on the Durable Task Framework for Go (a.k.a. [durabletask-go](https://github.com/microsoft/durabletask-go)) as the core engine for executing workflows. This engine is designed to support multiple backend implementations. For example, the [durabletask-go](https://github.com/microsoft/durabletask-go) repo includes a SQLite implementation and the Dapr repo includes an Actors implementation. 
+
+By default, Dapr Workflow supports the Actors backend, which is stable and scalable. However, you can choose a different backend supported in Dapr Workflow. For example, [SQLite](https://github.com/microsoft/durabletask-go/tree/main/backend/sqlite)(TBD future release) could be an option for backend for local development and testing.
+
+The backend implementation is largely decoupled from the workflow core engine or the programming model that you see. The backend primarily impacts:
+- How workflow state is stored 
+- How workflow execution is coordinated across replicas
+
+In that sense, it's similar to Dapr's state store abstraction, except designed specifically for workflow. All APIs and programming model features are the same, regardless of which backend is used.
+
+## Purging
+
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+
+Learn more in [the workflow API reference guide]({{< ref workflow_api.md >}}).
+
 ## Limitations
 
 ### Workflow determinism and code restraints 
@@ -162,7 +180,7 @@ APIs that generate random numbers, random UUIDs, or the current date are _non-de
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -186,11 +204,31 @@ string randomString = GetRandomString();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+const currentTime = new Date();
+const newIdentifier = uuidv4();
+const randomString = getRandomString();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+const currentTime = time.Now()
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -214,6 +252,24 @@ String randomString = context.callActivity(GetRandomString.class.getName(), Stri
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// Do this!!
+const currentTime = context.getCurrentUtcDateTime();
+const randomString = yield context.callActivity(getRandomString);
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+const currentTime = ctx.CurrentUTCDateTime()
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 
@@ -224,7 +280,7 @@ Instead, workflows should interact with external state _indirectly_ using workfl
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -247,11 +303,40 @@ HttpResponse<String> response = HttpClient.newBuilder().build().send(request, Ht
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// DON'T DO THIS!
+// Accessing an Environment Variable (Node.js)
+const configuration = process.env.MY_CONFIGURATION;
+
+fetch('https://postman-echo.com/get')
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+resp, err := http.Get("http://example.com/api/data")
+```
+
+{{% /codetab %}}
+
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -273,6 +358,26 @@ String data = ctx.callActivity(MakeHttpCall.class, "https://example.com/api/data
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+```javascript
+// Do this!!
+const configuation = workflowInput.getConfiguration(); // imaginary workflow input argument
+const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data");
+```
+
+{{% /codetab %}}
+
+
+{{% codetab %}}
+
+```go
+// Do this!!
+err := ctx.CallActivity(MakeHttpCallActivity, workflow.ActivityInput("https://example.com/api/data")).Await(&output)
+
+```
+
+{{% /codetab %}}
 {{< /tabs >}}
 
 
@@ -285,7 +390,7 @@ Failure to follow this rule could result in undefined behavior. Any background p
 
 For example, instead of this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -308,11 +413,31 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guarantee that asynchronous functions are deterministic.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// DON'T DO THIS!
+go func() {
+  err := ctx.CallActivity(DoSomething).Await(nil)
+}()
+err := ctx.CreateTimer(time.Second).Await(nil)
+```
+
+{{% /codetab %}}
+
+
+
 {{< /tabs >}}
 
 Do this:
 
-{{< tabs ".NET" Java >}}
+{{< tabs ".NET" Java JavaScript Go >}}
 
 {{% codetab %}}
 
@@ -330,6 +455,22 @@ await context.CreateTimer(5000).ConfigureAwait(true);
 // Do this!!
 ctx.callActivity(DoSomethingActivity.class.getName()).await();
 ctx.createTimer(Duration.ofSeconds(5)).await();
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// Do this!
+task := ctx.CallActivity(DoSomething)
+task.Await(nil)
 ```
 
 {{% /codetab %}}
@@ -363,4 +504,9 @@ To work around these constraints:
 - [Try out Dapr Workflow using the quickstart]({{< ref workflow-quickstart.md >}})
 - [Workflow overview]({{< ref workflow-overview.md >}})
 - [Workflow API reference]({{< ref workflow_api.md >}})
-- [Try out the .NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+- Try out the following examples: 
+   - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
+   - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
+   - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)

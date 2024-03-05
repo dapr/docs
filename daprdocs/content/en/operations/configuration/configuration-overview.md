@@ -50,6 +50,7 @@ The following configuration settings can be applied to Dapr application sidecars
 - [Metrics](#metrics)
 - [Logging](#logging)
 - [Middleware](#middleware)
+- [Name resolution](#name-resolution)
 - [Scope secret store access](#scope-secret-store-access)
 - [Access Control allow lists for building block APIs](#access-control-allow-lists-for-building-block-apis)
 - [Access Control allow lists for service invocation API](#access-control-allow-lists-for-service-invocation-api)
@@ -106,21 +107,27 @@ The `metrics` section under the `Configuration` spec contains the following prop
 ```yml
 metrics:
   enabled: true
+  rules: []
+  http:
+    increasedCardinality: true
 ```
 
 The following table lists the properties for metrics:
 
 | Property     | Type   | Description |
 |--------------|--------|-------------|
-| `enabled` | boolean | Whether metrics should to be enabled. |
-| `rules`   | boolean | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a`regex`expression to apply to the metrics path. |
+| `enabled` | boolean | When set to true, the default, enables metrics collection and the metrics endpoint. |
+| `rules`   | array | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a `regex` expression to apply to the metrics path. |
+| `http.increasedCardinality` | boolean | When set to true, in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br>In Dapr 1.13 the default value is `true` (to preserve the behavior of Dapr <= 1.12), but will change to `false` in Dapr 1.14. |
 
-To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}), you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
+To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`.
+
+Using rules, you can set regular expressions for every metric exposed by the Dapr sidecar. For example:
 
 ```yml
-metric:
-    enabled: true
-    rules:
+metrics:
+  enabled: true
+  rules:
     - name: dapr_runtime_service_invocation_req_sent_total
       labels:
       - name: method
@@ -182,6 +189,29 @@ The following table lists the properties for HTTP handlers:
 | `type`     | string | Type of middleware component
 
 See [Middleware pipelines]({{< ref "middleware.md" >}}) for more information
+
+#### Name resolution component
+
+You can set name resolution component to use within the configuration YAML. For example, to set the `spec.nameResolution.component` property to `"sqlite"`, pass configuration options in the `spec.nameResolution.configuration` dictionary as shown below.
+
+This is the basic example of a configuration resource:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration 
+metadata:
+  name: appconfig
+spec:
+  nameResolution:
+    component: "sqlite"
+    version: "v1"
+    configuration:
+      connectionString: "/home/user/.dapr/nr.db"
+```
+
+For more information, see:
+- [The name resolution component documentation]({{< ref supported-name-resolution >}}) for more examples.
+- - [The Configuration YAML documentation]({{< ref configuration-schema.md >}}) to learn more about how to configure name resolution per component.
 
 #### Scope secret store access
 
@@ -288,6 +318,9 @@ The `mtls` section contains properties for mTLS.
 | `enabled`          | bool   | If true, enables mTLS for communication between services and apps in the cluster.
 | `allowedClockSkew` | string | Allowed tolerance when checking the expiration of TLS certificates, to allow for clock skew. Follows the format used by [Go's time.ParseDuration](https://pkg.go.dev/time#ParseDuration). Default is `15m` (15 minutes).
 | `workloadCertTTL`  | string | How long a certificate TLS issued by Dapr is valid for. Follows the format used by [Go's time.ParseDuration](https://pkg.go.dev/time#ParseDuration). Default is `24h` (24 hours).
+| `sentryAddress`  | string | Hostname port address for connecting to the Sentry server. |
+| `controlPlaneTrustDomain` | string | Trust domain for the control plane. This is used to verify connection to control plane services. |
+| `tokenValidators` | array | Additional Sentry token validators to use for authenticating certificate requests. |
 
 See the [mTLS how-to]({{< ref "mtls.md" >}}) and [security concepts]({{< ref "security-concept.md" >}}) for more information.
 

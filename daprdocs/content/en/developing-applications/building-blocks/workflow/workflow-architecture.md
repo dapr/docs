@@ -15,6 +15,7 @@ Dapr Workflow is currently in beta. [See known limitations for {{% dapr-latest-v
 - The architecture of the Dapr Workflow engine
 - How the workflow engine interacts with application code
 - How the workflow engine fits into the overall Dapr architecture
+- How different workflow backends can work with workflow engine
 
 For more information on how to author Dapr Workflows in your application, see [How to: Author a workflow]({{< ref "workflow-overview.md" >}}).
 
@@ -145,6 +146,8 @@ Different state store implementations may implicitly put restrictions on the typ
 
 Similarly, if a state store imposes restrictions on the size of a batch transaction, that may limit the number of parallel actions that can be scheduled by a workflow.
 
+Workflow state can be purged from a state store, including all its history. Each Dapr SDK exposes APIs for purging all metadata related to specific workflow instances.
+
 ## Workflow scalability
 
 Because Dapr Workflows are internally implemented using actors, Dapr Workflows have the same scalability characteristics as actors. The placement service:
@@ -173,6 +176,24 @@ Also, the Dapr Workflow engine requires that all instances of each workflow app 
 
 Workflows don't control the specifics of how load is distributed across the cluster. For example, if a workflow schedules 10 activity tasks to run in parallel, all 10 tasks may run on as many as 10 different compute nodes or as few as a single compute node. The actual scale behavior is determined by the actor placement service, which manages the distribution of the actors that represent each of the workflow's tasks.
 
+## Workflow backend
+
+The workflow backend is responsible for orchestrating and preserving the state of workflows. At any given time, only one backend can be supported. You can configure the workflow backend as a component, similar to any other component in Dapr. Configuration requires:  
+1. Specifying the type of workflow backend. 
+1. Providing the configuration specific to that backend.
+
+For instance, the following sample demonstrates how to define a actor backend component. Dapr workflow currently supports only the actor backend by default, and users are not required to define an actor backend component to use it.
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: actorbackend
+spec:
+  type: workflowbackend.actor
+  version: v1
+```
+
 ## Workflow latency
 
 In order to provide guarantees around durability and resiliency, Dapr Workflows frequently write to the state store and rely on reminders to drive execution. Dapr Workflows therefore may not be appropriate for latency-sensitive workloads. Expected sources of high latency include:
@@ -195,5 +216,7 @@ See the [Reminder usage and execution guarantees section]({{< ref "workflow-arch
 - [Try out the Workflow quickstart]({{< ref workflow-quickstart.md >}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)

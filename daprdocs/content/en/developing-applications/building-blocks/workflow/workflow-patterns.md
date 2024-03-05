@@ -25,7 +25,7 @@ While the pattern is simple, there are many complexities hidden in the implement
 
 Dapr Workflow solves these complexities by allowing you to implement the task chaining pattern concisely as a simple function in the programming language of your choice, as shown in the following example.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -69,6 +69,80 @@ def error_handler(ctx, error):
 ```
 
 > **Note** Workflow retry policies will be available in a future version of the Python SDK.
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+import { DaprWorkflowClient, WorkflowActivityContext, WorkflowContext, WorkflowRuntime, TWorkflow } from "@dapr/dapr";
+
+async function start() {
+  // Update the gRPC client and worker to use a local address and port
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
+
+  const hello = async (_: WorkflowActivityContext, name: string) => {
+    return `Hello ${name}!`;
+  };
+
+  const sequence: TWorkflow = async function* (ctx: WorkflowContext): any {
+    const cities: string[] = [];
+
+    const result1 = yield ctx.callActivity(hello, "Tokyo");
+    cities.push(result1);
+    const result2 = yield ctx.callActivity(hello, "Seattle");
+    cities.push(result2);
+    const result3 = yield ctx.callActivity(hello, "London");
+    cities.push(result3);
+
+    return cities;
+  };
+
+  workflowRuntime.registerWorkflow(sequence).registerActivity(hello);
+
+  // Wrap the worker startup in a try-catch block to handle any errors during startup
+  try {
+    await workflowRuntime.start();
+    console.log("Workflow runtime started successfully");
+  } catch (error) {
+    console.error("Error starting workflow runtime:", error);
+  }
+
+  // Schedule a new orchestration
+  try {
+    const id = await workflowClient.scheduleNewWorkflow(sequence);
+    console.log(`Orchestration scheduled with ID: ${id}`);
+
+    // Wait for orchestration completion
+    const state = await workflowClient.waitForWorkflowCompletion(id, undefined, 30);
+
+    console.log(`Orchestration completed! Result: ${state?.serializedOutput}`);
+  } catch (error) {
+    console.error("Error scheduling or waiting for orchestration:", error);
+  }
+
+  await workflowRuntime.stop();
+  await workflowClient.stop();
+
+  // stop the dapr side car
+  process.exit(0);
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
+```
 
 {{% /codetab %}}
 
@@ -160,6 +234,57 @@ public class ChainWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+func TaskChainWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	var result1 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result1); err != nil {
+		return nil, err
+	}
+	var result2 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result2); err != nil {
+		return nil, err
+	}
+	var result3 int
+	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result3); err != nil {
+		return nil, err
+	}
+	return []int{result1, result2, result3}, nil
+}
+func Step1(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 1: Received input: %s", input)
+	return input + 1, nil
+}
+func Step2(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 2: Received input: %s", input)
+	return input * 2, nil
+}
+func Step3(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	fmt.Printf("Step 3: Received input: %s", input)
+	return int(math.Pow(float64(input), 2)), nil
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 As you can see, the workflow is expressed as a simple series of statements in the programming language of your choice. This allows any engineer in the organization to quickly understand the end-to-end flow without necessarily needing to understand the end-to-end system architecture.
@@ -186,7 +311,7 @@ In addition to the challenges mentioned in [the previous pattern]({{< ref "workf
 
 Dapr Workflows provides a way to express the fan-out/fan-in pattern as a simple function, as shown in the following example:
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -224,6 +349,114 @@ def process_work_item(ctx, work_item: int) -> int:
 
 def process_results(ctx, final_result: int):
     print(f'Final result: {final_result}.')
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+import {
+  Task,
+  DaprWorkflowClient,
+  WorkflowActivityContext,
+  WorkflowContext,
+  WorkflowRuntime,
+  TWorkflow,
+} from "@dapr/dapr";
+
+// Wrap the entire code in an immediately-invoked async function
+async function start() {
+  // Update the gRPC client and worker to use a local address and port
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
+
+  function getRandomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  async function getWorkItemsActivity(_: WorkflowActivityContext): Promise<string[]> {
+    const count: number = getRandomInt(2, 10);
+    console.log(`generating ${count} work items...`);
+
+    const workItems: string[] = Array.from({ length: count }, (_, i) => `work item ${i}`);
+    return workItems;
+  }
+
+  function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async function processWorkItemActivity(context: WorkflowActivityContext, item: string): Promise<number> {
+    console.log(`processing work item: ${item}`);
+
+    // Simulate some work that takes a variable amount of time
+    const sleepTime = Math.random() * 5000;
+    await sleep(sleepTime);
+
+    // Return a result for the given work item, which is also a random number in this case
+    // For more information about random numbers in workflow please check
+    // https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-code-constraints?tabs=csharp#random-numbers
+    return Math.floor(Math.random() * 11);
+  }
+
+  const workflow: TWorkflow = async function* (ctx: WorkflowContext): any {
+    const tasks: Task<any>[] = [];
+    const workItems = yield ctx.callActivity(getWorkItemsActivity);
+    for (const workItem of workItems) {
+      tasks.push(ctx.callActivity(processWorkItemActivity, workItem));
+    }
+    const results: number[] = yield ctx.whenAll(tasks);
+    const sum: number = results.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    return sum;
+  };
+
+  workflowRuntime.registerWorkflow(workflow);
+  workflowRuntime.registerActivity(getWorkItemsActivity);
+  workflowRuntime.registerActivity(processWorkItemActivity);
+
+  // Wrap the worker startup in a try-catch block to handle any errors during startup
+  try {
+    await workflowRuntime.start();
+    console.log("Worker started successfully");
+  } catch (error) {
+    console.error("Error starting worker:", error);
+  }
+
+  // Schedule a new orchestration
+  try {
+    const id = await workflowClient.scheduleNewWorkflow(workflow);
+    console.log(`Orchestration scheduled with ID: ${id}`);
+
+    // Wait for orchestration completion
+    const state = await workflowClient.waitForWorkflowCompletion(id, undefined, 30);
+
+    console.log(`Orchestration completed! Result: ${state?.serializedOutput}`);
+  } catch (error) {
+    console.error("Error scheduling or waiting for orchestration:", error);
+  }
+
+  // stop worker and client
+  await workflowRuntime.stop();
+  await workflowClient.stop();
+
+  // stop the dapr side car
+  process.exit(0);
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
 {{% /codetab %}}
@@ -274,6 +507,72 @@ public class FaninoutWorkflow extends Workflow {
             ctx.complete(sum);
         };
     }
+}
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--go-->
+
+```go
+func BatchProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return 0, err
+	}
+	var workBatch []int
+	if err := ctx.CallActivity(GetWorkBatch, workflow.ActivityInput(input)).Await(&workBatch); err != nil {
+		return 0, err
+	}
+	parallelTasks := workflow.NewTaskSlice(len(workBatch))
+	for i, workItem := range workBatch {
+		parallelTasks[i] = ctx.CallActivity(ProcessWorkItem, workflow.ActivityInput(workItem))
+	}
+	var outputs int
+	for _, task := range parallelTasks {
+		var output int
+		err := task.Await(&output)
+		if err == nil {
+			outputs += output
+		} else {
+			return 0, err
+		}
+	}
+	if err := ctx.CallActivity(ProcessResults, workflow.ActivityInput(outputs)).Await(nil); err != nil {
+		return 0, err
+	}
+	return 0, nil
+}
+func GetWorkBatch(ctx workflow.ActivityContext) (any, error) {
+	var batchSize int
+	if err := ctx.GetInput(&batchSize); err != nil {
+		return 0, err
+	}
+	batch := make([]int, batchSize)
+	for i := 0; i < batchSize; i++ {
+		batch[i] = i
+	}
+	return batch, nil
+}
+func ProcessWorkItem(ctx workflow.ActivityContext) (any, error) {
+	var workItem int
+	if err := ctx.GetInput(&workItem); err != nil {
+		return 0, err
+	}
+	fmt.Printf("Processing work item: %d\n", workItem)
+	time.Sleep(time.Second * 5)
+	result := workItem * 2
+	fmt.Printf("Work item %d processed. Result: %d\n", workItem, result)
+	return result, nil
+}
+func ProcessResults(ctx workflow.ActivityContext) (any, error) {
+	var finalResult int
+	if err := ctx.GetInput(&finalResult); err != nil {
+		return 0, err
+	}
+	fmt.Printf("Final result: %d\n", finalResult)
+	return finalResult, nil
 }
 ```
 
@@ -379,7 +678,7 @@ Depending on the business needs, there may be a single monitor or there may be m
 
 Dapr Workflow supports this pattern natively by allowing you to implement _eternal workflows_. Rather than writing infinite while-loops ([which is an anti-pattern]({{< ref "workflow-features-concepts.md#infinite-loops-and-eternal-workflows" >}})), Dapr Workflow exposes a _continue-as-new_ API that workflow authors can use to restart a workflow function from the beginning with a new input.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -424,6 +723,34 @@ def check_status(ctx, _) -> str:
 
 def send_alert(ctx, message: str):
     print(f'*** Alert: {message}')
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+const statusMonitorWorkflow: TWorkflow = async function* (ctx: WorkflowContext): any {
+    let duration;
+    const status = yield ctx.callActivity(checkStatusActivity);
+    if (status === "healthy") {
+      // Check less frequently when in a healthy state
+      // set duration to 1 hour
+      duration = 60 * 60;
+    } else {
+      yield ctx.callActivity(alertActivity, "job unhealthy");
+      // Check more frequently when in an unhealthy state
+      // set duration to 5 minutes
+      duration = 5 * 60;
+    }
+
+    // Put the workflow to sleep until the determined time
+    ctx.createTimer(duration);
+
+    // Restart from the beginning with the updated state
+    ctx.continueAsNew();
+  };
 ```
 
 {{% /codetab %}}
@@ -496,9 +823,8 @@ public class MonitorWorkflow extends Workflow {
       }
 
       // Put the workflow to sleep until the determined time
-      // Note: ctx.createTimer() method is not supported in the Java SDK yet
       try {
-        TimeUnit.SECONDS.sleep(nextSleepInterval.getSeconds());
+        ctx.createTimer(nextSleepInterval);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
@@ -507,6 +833,59 @@ public class MonitorWorkflow extends Workflow {
       ctx.continueAsNew();
     }
   }
+}
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--go-->
+
+```go
+type JobStatus struct {
+	JobID     string `json:"job_id"`
+	IsHealthy bool   `json:"is_healthy"`
+}
+func StatusMonitorWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var sleepInterval time.Duration
+	var job JobStatus
+	if err := ctx.GetInput(&job); err != nil {
+		return "", err
+	}
+	var status string
+	if err := ctx.CallActivity(CheckStatus, workflow.ActivityInput(job)).Await(&status); err != nil {
+		return "", err
+	}
+	if status == "healthy" {
+		job.IsHealthy = true
+		sleepInterval = time.Second * 60
+	} else {
+		if job.IsHealthy {
+			job.IsHealthy = false
+			err := ctx.CallActivity(SendAlert, workflow.ActivityInput(fmt.Sprintf("Job '%s' is unhealthy!", job.JobID))).Await(nil)
+			if err != nil {
+				return "", err
+			}
+		}
+		sleepInterval = time.Second * 5
+	}
+	if err := ctx.CreateTimer(sleepInterval).Await(nil); err != nil {
+		return "", err
+	}
+	ctx.ContinueAsNew(job, false)
+	return "", nil
+}
+func CheckStatus(ctx workflow.ActivityContext) (any, error) {
+	statuses := []string{"healthy", "unhealthy"}
+	return statuses[rand.Intn(1)], nil
+}
+func SendAlert(ctx workflow.ActivityContext) (any, error) {
+	var message string
+	if err := ctx.GetInput(&message); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Alert: %s", message)
+	return "", nil
 }
 ```
 
@@ -540,7 +919,7 @@ The following diagram illustrates this flow.
 
 The following example code shows how this pattern can be implemented using Dapr Workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -597,6 +976,146 @@ def send_approval_request(_, order: Order) -> None:
 
 def place_order(_, order: Order) -> None:
     print(f'*** Placing order: {order}')
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+import {
+  Task,
+  DaprWorkflowClient,
+  WorkflowActivityContext,
+  WorkflowContext,
+  WorkflowRuntime,
+  TWorkflow,
+} from "@dapr/dapr";
+import * as readlineSync from "readline-sync";
+
+// Wrap the entire code in an immediately-invoked async function
+async function start() {
+  class Order {
+    cost: number;
+    product: string;
+    quantity: number;
+    constructor(cost: number, product: string, quantity: number) {
+      this.cost = cost;
+      this.product = product;
+      this.quantity = quantity;
+    }
+  }
+
+  function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // Update the gRPC client and worker to use a local address and port
+  const daprHost = "localhost";
+  const daprPort = "50001";
+  const workflowClient = new DaprWorkflowClient({
+    daprHost,
+    daprPort,
+  });
+  const workflowRuntime = new WorkflowRuntime({
+    daprHost,
+    daprPort,
+  });
+
+  // Activity function that sends an approval request to the manager
+  const sendApprovalRequest = async (_: WorkflowActivityContext, order: Order) => {
+    // Simulate some work that takes an amount of time
+    await sleep(3000);
+    console.log(`Sending approval request for order: ${order.product}`);
+  };
+
+  // Activity function that places an order
+  const placeOrder = async (_: WorkflowActivityContext, order: Order) => {
+    console.log(`Placing order: ${order.product}`);
+  };
+
+  // Orchestrator function that represents a purchase order workflow
+  const purchaseOrderWorkflow: TWorkflow = async function* (ctx: WorkflowContext, order: Order): any {
+    // Orders under $1000 are auto-approved
+    if (order.cost < 1000) {
+      return "Auto-approved";
+    }
+
+    // Orders of $1000 or more require manager approval
+    yield ctx.callActivity(sendApprovalRequest, order);
+
+    // Approvals must be received within 24 hours or they will be cancled.
+    const tasks: Task<any>[] = [];
+    const approvalEvent = ctx.waitForExternalEvent("approval_received");
+    const timeoutEvent = ctx.createTimer(24 * 60 * 60);
+    tasks.push(approvalEvent);
+    tasks.push(timeoutEvent);
+    const winner = ctx.whenAny(tasks);
+
+    if (winner == timeoutEvent) {
+      return "Cancelled";
+    }
+
+    yield ctx.callActivity(placeOrder, order);
+    const approvalDetails = approvalEvent.getResult();
+    return `Approved by ${approvalDetails.approver}`;
+  };
+
+  workflowRuntime
+    .registerWorkflow(purchaseOrderWorkflow)
+    .registerActivity(sendApprovalRequest)
+    .registerActivity(placeOrder);
+
+  // Wrap the worker startup in a try-catch block to handle any errors during startup
+  try {
+    await workflowRuntime.start();
+    console.log("Worker started successfully");
+  } catch (error) {
+    console.error("Error starting worker:", error);
+  }
+
+  // Schedule a new orchestration
+  try {
+    const cost = readlineSync.questionInt("Cost of your order:");
+    const approver = readlineSync.question("Approver of your order:");
+    const timeout = readlineSync.questionInt("Timeout for your order in seconds:");
+    const order = new Order(cost, "MyProduct", 1);
+    const id = await workflowClient.scheduleNewWorkflow(purchaseOrderWorkflow, order);
+    console.log(`Orchestration scheduled with ID: ${id}`);
+
+    // prompt for approval asynchronously
+    promptForApproval(approver, workflowClient, id);
+
+    // Wait for orchestration completion
+    const state = await workflowClient.waitForWorkflowCompletion(id, undefined, timeout + 2);
+
+    console.log(`Orchestration completed! Result: ${state?.serializedOutput}`);
+  } catch (error) {
+    console.error("Error scheduling or waiting for orchestration:", error);
+  }
+
+  // stop worker and client
+  await workflowRuntime.stop();
+  await workflowClient.stop();
+
+  // stop the dapr side car
+  process.exit(0);
+}
+
+async function promptForApproval(approver: string, workflowClient: DaprWorkflowClient, id: string) {
+  if (readlineSync.keyInYN("Press [Y] to approve the order... Y/yes, N/no")) {
+    const approvalEvent = { approver: approver };
+    await workflowClient.raiseEvent(id, "approval_received", approvalEvent);
+  } else {
+    return "Order rejected";
+  }
+}
+
+start().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
 {{% /codetab %}}
@@ -682,11 +1201,68 @@ public class ExternalSystemInteractionWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+type Order struct {
+	Cost     float64 `json:"cost"`
+	Product  string  `json:"product"`
+	Quantity int     `json:"quantity"`
+}
+type Approval struct {
+	Approver string `json:"approver"`
+}
+func PurchaseOrderWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	// Orders under $1000 are auto-approved
+	if order.Cost < 1000 {
+		return "Auto-approved", nil
+	}
+	// Orders of $1000 or more require manager approval
+	if err := ctx.CallActivity(SendApprovalRequest, workflow.ActivityInput(order)).Await(nil); err != nil {
+		return "", err
+	}
+	// Approvals must be received within 24 hours or they will be cancelled
+	var approval Approval
+	if err := ctx.WaitForExternalEvent("approval_received", time.Hour*24).Await(&approval); err != nil {
+		// Assuming that a timeout has taken place - in any case; an error.
+		return "error/cancelled", err
+	}
+	// The order was approved
+	if err := ctx.CallActivity(PlaceOrder, workflow.ActivityInput(order)).Await(nil); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("Approved by %s", approval.Approver), nil
+}
+func SendApprovalRequest(ctx workflow.ActivityContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Sending approval request for order: %v\n", order)
+	return "", nil
+}
+func PlaceOrder(ctx workflow.ActivityContext) (any, error) {
+	var order Order
+	if err := ctx.GetInput(&order); err != nil {
+		return "", err
+	}
+	fmt.Printf("*** Placing order: %v", order)
+	return "", nil
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 The code that delivers the event to resume the workflow execution is external to the workflow. Workflow events can be delivered to a waiting workflow instance using the [raise event]({{< ref "howto-manage-workflow.md#raise-an-event" >}}) workflow management API, as shown in the following example:
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 <!--python-->
@@ -701,6 +1277,19 @@ with DaprClient() as d:
         workflow_component="dapr",
         event_name="approval_received",
         event_data=asdict(Approval("Jane Doe")))
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--javascript-->
+
+```javascript
+import { DaprClient } from "@dapr/dapr";
+
+  public async raiseEvent(workflowInstanceId: string, eventName: string, eventPayload?: any) {
+    this._innerClient.raiseOrchestrationEvent(workflowInstanceId, eventName, eventPayload);
+  }
 ```
 
 {{% /codetab %}}
@@ -729,6 +1318,32 @@ client.raiseEvent(restartingInstanceId, "RestartEvent", "RestartEventPayload");
 
 {{% /codetab %}}
 
+{{% codetab %}}
+<!--go-->
+
+```go
+func raiseEvent() {
+  daprClient, err := client.NewClient()
+  if err != nil {
+    log.Fatalf("failed to initialize the client")
+  }
+  err = daprClient.RaiseEventWorkflowBeta1(context.Background(), &client.RaiseEventWorkflowRequest{
+    InstanceID: "instance_id",
+    WorkflowComponent: "dapr",
+    EventName: "approval_received",
+    EventData: Approval{
+      Approver: "Jane Doe",
+    },
+  })
+  if err != nil {
+    log.Fatalf("failed to raise event on workflow")
+  }
+  log.Println("raised an event on specified workflow")
+}
+```
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 External events don't have to be directly triggered by humans. They can also be triggered by other systems. For example, a workflow may need to pause and wait for a payment to be received. In this case, a payment system might publish an event to a pub/sub topic on receipt of a payment, and a listener on that topic can raise an event to the workflow using the raise event workflow API.
@@ -744,5 +1359,7 @@ External events don't have to be directly triggered by humans. They can also be 
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the following examples: 
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+   - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+   - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
