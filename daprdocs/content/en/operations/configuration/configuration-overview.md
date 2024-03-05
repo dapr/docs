@@ -89,11 +89,12 @@ set `samplingRate : "0"` in the configuration. The valid range of samplingRate i
 The OpenTelemetry (otel) endpoint can also be configured via an environment variables. The presence of the OTEL_EXPORTER_OTLP_ENDPOINT environment variable
 turns on tracing for the sidecar.
 
-| Environment Variable | Description |
-|----------------------|-------------|
+| Environment Variable | Description                                                     |
+|----------------------|-----------------------------------------------------------------|
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
-| `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`)       |
+| `OTEL_SERVICE_NAME` | Optional override to specify the service name used in traces    |
 
 See [Observability distributed tracing]({{< ref "tracing-overview.md" >}}) for more information.
 
