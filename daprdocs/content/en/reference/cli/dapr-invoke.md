@@ -12,6 +12,7 @@ Invoke a method on a given Dapr application.
 ### Supported platforms
 
 - [Self-Hosted]({{< ref self-hosted >}})
+- [Kubernetes]({{< ref kubernetes >}})
 
 ### Usage
 
@@ -24,6 +25,8 @@ dapr invoke [flags]
 | Name                | Environment Variable | Default | Description                                           |
 | ------------------- | -------------------- | ------- | ----------------------------------------------------- |
 | `--app-id`, `-a`    | `APP_ID`             |         | The application id to invoke                          |
+| `--help`, `-h`      |                      |         | Print this help message                               |
+| `--kubernetes`, `-k`|                      | false   | Invoke this method on an app in a Kubernetes cluster  |
 | `--help`, `-h`      |                      |         | Print this help message                               |
 | `--method`, `-m`    |                      |         | The method to invoke                                  |
 | `--data`, `-d`      |                      |         | The JSON serialized data string (optional)            |
@@ -38,4 +41,10 @@ dapr invoke --app-id target --method sample --data '{"key":"value"}'
 
 # Invoke a sample method on target app with GET Verb
 dapr invoke --app-id target --method sample --verb GET
+
+# Invoke a sample method on target app with POST Verb in Kubernetes mode
+dapr invoke --kubernetes --app-id target --method sample --data '{"key":"value"}'
+
+# Invoke a sample method on target app with GET Verb in Kubernetes mode
+dapr invoke -k --app-id target --method sample --verb GET
 ```
