@@ -45,6 +45,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 2.0.0
   - name: disableTls # Optional. Disable TLS. This is not safe for production!! You should read the `Mutual TLS` section for how to use TLS.
@@ -81,6 +85,8 @@ spec:
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
 | consumeRetryEnabled | N | Disable consume retry by setting `"false"` | `"true"`, `"false"` |
+| heartbeatInterval   | N | The interval between heartbeats to the consumer coordinator. Defaults to 3s. | `5s` |
+| sessionTimeout      | N | The maximum time between heartbeats before the consumer is considered inactive and will timeout. Defaults to 10s. | `30s` |
 | version               | N | Kafka cluster version. Defaults to 2.0.0. Note that this must be set to `1.0.0` if you are using Azure EventHubs with Kafka. | `0.10.2.0` |
 | caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
 | clientCert | N | Client certificate, required for `authType` `mtls`. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
@@ -150,6 +156,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
   - name: disableTls
@@ -189,6 +199,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
   - name: caCert
@@ -236,6 +250,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
 ```
@@ -288,6 +306,10 @@ spec:
     value: 1024
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
 ```
@@ -357,6 +379,10 @@ spec:
     value: "certificate"
   - name: consumeRetryInterval # Optional.
     value: 200ms
+  - name: heartbeatInterval # Optional.
+    value: 5s
+  - name: sessionTimeout # Optional.
+    value: 15s
   - name: version # Optional.
     value: 0.10.2.0
   - name: maxMessageBytes # Optional.
