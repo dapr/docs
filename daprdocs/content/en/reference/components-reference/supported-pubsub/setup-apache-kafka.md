@@ -85,7 +85,7 @@ spec:
 | maxMessageBytes     | N | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `2048`
 | consumeRetryInterval | N | The interval between retries when attempting to consume topics. Treats numbers without suffix as milliseconds. Defaults to 100ms. | `200ms` |
 | consumeRetryEnabled | N | Disable consume retry by setting `"false"` | `"true"`, `"false"` |
-| heartbeatInterval   | N | The interval between heartbeats to the consumer coordinator. Defaults to 3s. | `5s` |
+| heartbeatInterval   | N | The interval between heartbeats to the consumer coordinator. The value should be at most a 1/3 of `sessionTimeout`'s value. Defaults to 3s. | `5s` |
 | sessionTimeout      | N | The maximum time between heartbeats before the consumer is considered inactive and will timeout. Defaults to 10s. | `30s` |
 | version               | N | Kafka cluster version. Defaults to 2.0.0. Note that this must be set to `1.0.0` if you are using Azure EventHubs with Kafka. | `0.10.2.0` |
 | caCert | N | Certificate authority certificate, required for using TLS. Can be `secretKeyRef` to use a secret reference | `"-----BEGIN CERTIFICATE-----\n<base64-encoded DER>\n-----END CERTIFICATE-----"`
