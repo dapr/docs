@@ -32,7 +32,7 @@ Set the requisite Microsoft Entra ID role assignments or custom permissions to y
 You can set up a managed identity to a new or existing Azure resource. The instructions depend on the service use. Check the following official documentation for the most appropriate instructions:
 
 - [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/use-managed-identity)
-- [Azure Container Apps (ACA)](https://learn.microsoft.com/azure/container-apps/dapr-overview?tabs=bicep1%2Cyaml#using-managed-identity)
+- [Azure Container Apps (ACA)](https://learn.microsoft.com/azure/container-apps/dapr-components?tabs=yaml#using-managed-identity)
 - [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity) (including Azure Web Apps and Azure Functions)
 - [Azure Virtual Machines (VM)](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vm)
 - [Azure Virtual Machines Scale Sets (VMSS)](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vmss)

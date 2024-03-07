@@ -63,6 +63,8 @@ You can use the following two techniques to write workflows that may need to sch
 
 1. **Use the _continue-as-new_ API**:  
     Each workflow SDK exposes a _continue-as-new_ API that workflows can invoke to restart themselves with a new input and history. The _continue-as-new_ API is especially ideal for implementing "eternal workflows", like monitoring agents, which would otherwise be implemented using a `while (true)`-like construct. Using _continue-as-new_ is a great way to keep the workflow history size small.
+   
+    > The _continue-as-new_ API truncates the existing history, replacing it with a new history.
 
 1. **Use child workflows**:  
     Each workflow SDK exposes an API for creating child workflows. A child workflow behaves like any other workflow, except that it's scheduled by a parent workflow. Child workflows have:
@@ -159,6 +161,12 @@ The backend implementation is largely decoupled from the workflow core engine or
 
 In that sense, it's similar to Dapr's state store abstraction, except designed specifically for workflow. All APIs and programming model features are the same, regardless of which backend is used.
 
+## Purging
+
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+
+Learn more in [the workflow API reference guide]({{< ref workflow_api.md >}}).
+
 ## Limitations
 
 ### Workflow determinism and code restraints 
@@ -211,7 +219,7 @@ const randomString = getRandomString();
 
 ```go
 // DON'T DO THIS!
-
+const currentTime = time.Now()
 ```
 
 {{% /codetab %}}
@@ -254,13 +262,12 @@ const randomString = yield context.callActivity(getRandomString);
 
 {{% /codetab %}}
 
-
 {{% codetab %}}
 
 ```go
-// Do this!!
-
+const currentTime = ctx.CurrentUTCDateTime()
 ```
+
 {{% /codetab %}}
 
 {{< /tabs >}}
@@ -319,9 +326,11 @@ fetch('https://postman-echo.com/get')
 
 ```go
 // DON'T DO THIS!
+resp, err := http.Get("http://example.com/api/data")
 ```
 
 {{% /codetab %}}
+
 
 {{< /tabs >}}
 
@@ -364,6 +373,8 @@ const data = yield ctx.callActivity(makeHttpCall, "https://example.com/api/data"
 
 ```go
 // Do this!!
+err := ctx.CallActivity(MakeHttpCallActivity, workflow.ActivityInput("https://example.com/api/data")).Await(&output)
+
 ```
 
 {{% /codetab %}}
@@ -412,8 +423,15 @@ Don't declare JavaScript workflow as `async`. The Node.js runtime doesn't guaran
 
 ```go
 // DON'T DO THIS!
+go func() {
+  err := ctx.CallActivity(DoSomething).Await(nil)
+}()
+err := ctx.CreateTimer(time.Second).Await(nil)
 ```
+
 {{% /codetab %}}
+
+
 
 {{< /tabs >}}
 
@@ -450,7 +468,9 @@ Since the Node.js runtime doesn't guarantee that asynchronous functions are dete
 {{% codetab %}}
 
 ```go
-// Do this!!
+// Do this!
+task := ctx.CallActivity(DoSomething)
+task.Await(nil)
 ```
 
 {{% /codetab %}}
