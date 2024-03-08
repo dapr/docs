@@ -18,7 +18,9 @@ metadata:
   name: <NAME>
 spec:
   type: state.azure.blobstorage
-  version: v1
+  # Supports v1 and v2. Users should always use v2 by default. There is no
+  # migration path from v1 to v2, see `versioning` below.
+  version: v2
   metadata:
   - name: accountName
     value: "[your_account_name]"
@@ -32,21 +34,32 @@ spec:
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
 {{% /alert %}}
 
+## Versioning
+
+Dapr has 2 versions of the Azure Blob Storage state store component: `v1` and `v2`. It is recommended to use `v2` for all new applications. `v1` is considered legacy and is preserved for compatibility with existing applications only.
+
+In `v1`, a longstanding implementation issue was identified, where the [key prefix]({{< ref howto-share-state.md >}}) was incorrectly stripped by the component, essentially behaving as if `keyPrefix` was always set to `none`.  
+The updated `v2` of the component fixes the incorrect behavior and makes the state store correctly respect the `keyPrefix` property.
+
+While `v1` and `v2` have the same metadata fields, they are otherwise incompatible, with no automatic data migration path for `v1` to `v2`.
+
+If you are using `v1` of this component, you should continue to use `v1` until you create a new state store.
+
 ## Spec metadata fields
 
-| Field              | Required | Details | Example |
+| Field             | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| `accountName`        | Y        | The storage account name | `"mystorageaccount"`.
-| `accountKey`         | Y (unless using Microsoft Entra ID) | Primary or secondary storage key | `"key"`
-| `containerName`      | Y         | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist  | `"container"`
-| `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"`, `"AZUREGERMANCLOUD"`
+| `accountName` | Y | The storage account name | `"mystorageaccount"`. |
+| `accountKey` | Y (unless using Microsoft Entra ID) | Primary or secondary storage key | `"key"` |
+| `containerName` | Y | The name of the container to be used for Dapr state. The container will be created for you if it doesn't exist | `"container"` |
+| `azureEnvironment` | N | Optional name for the Azure environment if using a different Azure cloud | `"AZUREPUBLICCLOUD"` (default value), `"AZURECHINACLOUD"`, `"AZUREUSGOVERNMENTCLOUD"` |
 | `endpoint` | N | Optional custom endpoint URL. This is useful when using the [Azurite emulator](https://github.com/Azure/azurite) or when using custom domains for Azure Storage (although this is not officially supported). The endpoint must be the full base URL, including the protocol (`http://` or `https://`), the IP or FQDN, and optional port. | `"http://127.0.0.1:10000"` 
-| `ContentType`        | N        | The blob's content type | `"text/plain"`
-| `ContentMD5`         | N        | The blob's MD5 hash | `"vZGKbMRDAnMs4BIwlXaRvQ=="`
-| `ContentEncoding`    | N        | The blob's content encoding | `"UTF-8"`
-| `ContentLanguage`    | N        | The blob's content language | `"en-us"`
-| `ContentDisposition` | N        | The blob's content disposition. Conveys additional information about how to process the response payload | `"attachment"`
-| `CacheControl`       | N        | The blob's cache control | `"no-cache"`
+| `ContentType` | N | The blob's content type | `"text/plain"` |
+| `ContentMD5` | N | The blob's MD5 hash | `"vZGKbMRDAnMs4BIwlXaRvQ=="` |
+| `ContentEncoding` | N | The blob's content encoding | `"UTF-8"` |
+| `ContentLanguage` | N | The blob's content language | `"en-us"` |
+| `ContentDisposition` | N | The blob's content disposition. Conveys additional information about how to process the response payload | `"attachment"` |
+| `CacheControl`| N | The blob's cache control | `"no-cache"` |
 
 ## Setup Azure Blob Storage
 

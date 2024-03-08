@@ -106,7 +106,7 @@ When running on Kubernetes, you can also use references to Kubernetes secrets fo
 |-----------------|----------|----------------------------|------------------------------------------|
 | `azureClientId` | N        | Client ID (application ID) | `"c7dd251f-811f-4ba2-a905-acd4d3f8f08b"` |
 
-Using Managed Identities, the `azureClientId` field is generally recommended. The field is optional when using a system-assigned identity, but may be required when using user-assigned identities.
+[Using Managed Identities]({{< ref howto-mi.md >}}), the `azureClientId` field is generally recommended. The field is optional when using a system-assigned identity, but may be required when using user-assigned identities.
 
 #### Authenticating with Workload Identity on AKS
 

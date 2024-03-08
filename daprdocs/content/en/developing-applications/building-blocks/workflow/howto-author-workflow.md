@@ -34,7 +34,7 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 [Workflow activities]({{< ref "workflow-features-concepts.md#workflow-activites" >}}) are the basic unit of work in a workflow and are the tasks that get orchestrated in the business process.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -50,6 +50,37 @@ def hello_act(ctx: WorkflowActivityContext, input):
 ```
 
 [See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+Define the workflow activities you'd like your workflow to perform. Activities are wrapped in the `WorkflowActivityContext` class, which implements the workflow activities. 
+
+```javascript
+export default class WorkflowActivityContext {
+  private readonly _innerContext: ActivityContext;
+  constructor(innerContext: ActivityContext) {
+    if (!innerContext) {
+      throw new Error("ActivityContext cannot be undefined");
+    }
+    this._innerContext = innerContext;
+  }
+
+  public getWorkflowInstanceId(): string {
+    return this._innerContext.orchestrationId;
+  }
+
+  public getWorkflowActivityId(): number {
+    return this._innerContext.taskId;
+  }
+}
+```
+
+[See the workflow activity in context.](https://github.com/dapr/js-sdk/blob/main/src/workflow/runtime/WorkflowActivityContext.ts)
 
 
 {{% /codetab %}}
@@ -165,6 +196,27 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--go-->
+
+Define each workflow activity you'd like your workflow to perform. The Activity input can be unmarshalled from the context with `ctx.GetInput`. Activities should be defined as taking a `ctx workflow.ActivityContext` parameter and returning an interface and error.
+ 
+```go
+func TestActivity(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+	
+	// Do something here
+	return "result", nil
+}
+```
+
+[See the Go SDK workflow activity example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
+
+{{% /codetab %}}
 
 {{< /tabs >}}
 
@@ -172,7 +224,7 @@ public class DemoWorkflowActivity implements WorkflowActivity {
 
 Next, register and call the activites in a workflow. 
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -191,6 +243,51 @@ def hello_world_wf(ctx: DaprWorkflowContext, input):
 ```
 
 [See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
+
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+Next, register the workflow with the `WorkflowRuntime` class and start the workflow runtime.
+ 
+```javascript
+export default class WorkflowRuntime {
+
+  //..
+  // Register workflow implementation for handling orchestrations
+  public registerWorkflow(workflow: TWorkflow): WorkflowRuntime {
+    const name = getFunctionName(workflow);
+    const workflowWrapper = (ctx: OrchestrationContext, input: any): any => {
+      const workflowContext = new WorkflowContext(ctx);
+      return workflow(workflowContext, input);
+    };
+    this.worker.addNamedOrchestrator(name, workflowWrapper);
+    return this;
+  }
+
+  // Register workflow activities
+  public registerActivity(fn: TWorkflowActivity<TInput, TOutput>): WorkflowRuntime {
+    const name = getFunctionName(fn);
+    const activityWrapper = (ctx: ActivityContext, intput: TInput): TOutput => {
+      const wfActivityContext = new WorkflowActivityContext(ctx);
+      return fn(wfActivityContext, intput);
+    };
+    this.worker.addNamedActivity(name, activityWrapper);
+    return this;
+  }
+
+  // Start the workflow runtime processing items and block.
+  public async start() {
+    await this.worker.start();
+  }
+
+}
+```
+
+[See the `WorkflowRuntime` in context.](https://github.com/dapr/js-sdk/blob/main/src/workflow/runtime/WorkflowRuntime.ts)
 
 
 {{% /codetab %}}
@@ -269,13 +366,44 @@ public class DemoWorkflowWorker {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--go-->
+
+Define your workflow function with the parameter `ctx *workflow.WorkflowContext` and return any and error. Invoke your defined activities from within your workflow.
+
+```go
+func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	var output string
+	if err := ctx.CallActivity(TestActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+		return nil, err
+	}
+	if err := ctx.WaitForExternalEvent("testEvent", time.Second*60).Await(&output); err != nil {
+		return nil, err
+	}
+	
+	if err := ctx.CreateTimer(time.Second).Await(nil); err != nil {
+		return nil, nil
+	}
+	return output, nil
+}
+```
+
+[See the Go SDK workflow in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
+
+{{% /codetab %}}
+
 {{< /tabs >}}
 
 ## Write the application
 
 Finally, compose the application using the workflow.
 
-{{< tabs Python ".NET" Java >}}
+{{< tabs Python JavaScript ".NET" Java Go >}}
 
 {{% codetab %}}
 
@@ -363,6 +491,153 @@ if __name__ == '__main__':
     main()
 ```
 
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+<!--javascript-->
+
+[The following example](https://github.com/dapr/js-sdk/blob/main/src/workflow/client/DaprWorkflowClient.ts) is a basic JavaScript application using the JavaScript SDK. As in this example, your project code would include:
+
+- A builder with extensions called:
+  - `WorkflowRuntime`: Allows you to register workflows and workflow activities
+  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
+  - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
+- API calls. In the example below, these calls start, terminate, get status, pause, resume, raise event, and purge the workflow.
+ 
+```javascript
+import { TaskHubGrpcClient } from "@microsoft/durabletask-js";
+import { WorkflowState } from "./WorkflowState";
+import { generateApiTokenClientInterceptors, generateEndpoint, getDaprApiToken } from "../internal/index";
+import { TWorkflow } from "../../types/workflow/Workflow.type";
+import { getFunctionName } from "../internal";
+import { WorkflowClientOptions } from "../../types/workflow/WorkflowClientOption";
+
+/** DaprWorkflowClient class defines client operations for managing workflow instances. */
+
+export default class DaprWorkflowClient {
+  private readonly _innerClient: TaskHubGrpcClient;
+
+  /** Initialize a new instance of the DaprWorkflowClient.
+   */
+  constructor(options: Partial<WorkflowClientOptions> = {}) {
+    const grpcEndpoint = generateEndpoint(options);
+    options.daprApiToken = getDaprApiToken(options);
+    this._innerClient = this.buildInnerClient(grpcEndpoint.endpoint, options);
+  }
+
+  private buildInnerClient(hostAddress: string, options: Partial<WorkflowClientOptions>): TaskHubGrpcClient {
+    let innerOptions = options?.grpcOptions;
+    if (options.daprApiToken !== undefined && options.daprApiToken !== "") {
+      innerOptions = {
+        ...innerOptions,
+        interceptors: [generateApiTokenClientInterceptors(options), ...(innerOptions?.interceptors ?? [])],
+      };
+    }
+    return new TaskHubGrpcClient(hostAddress, innerOptions);
+  }
+
+  /**
+   * Schedule a new workflow using the DurableTask client.
+   */
+  public async scheduleNewWorkflow(
+    workflow: TWorkflow | string,
+    input?: any,
+    instanceId?: string,
+    startAt?: Date,
+  ): Promise<string> {
+    if (typeof workflow === "string") {
+      return await this._innerClient.scheduleNewOrchestration(workflow, input, instanceId, startAt);
+    }
+    return await this._innerClient.scheduleNewOrchestration(getFunctionName(workflow), input, instanceId, startAt);
+  }
+
+  /**
+   * Terminate the workflow associated with the provided instance id.
+   *
+   * @param {string} workflowInstanceId - Workflow instance id to terminate.
+   * @param {any} output - The optional output to set for the terminated workflow instance.
+   */
+  public async terminateWorkflow(workflowInstanceId: string, output: any) {
+    await this._innerClient.terminateOrchestration(workflowInstanceId, output);
+  }
+
+  /**
+   * Fetch workflow instance metadata from the configured durable store.
+   */
+  public async getWorkflowState(
+    workflowInstanceId: string,
+    getInputsAndOutputs: boolean,
+  ): Promise<WorkflowState | undefined> {
+    const state = await this._innerClient.getOrchestrationState(workflowInstanceId, getInputsAndOutputs);
+    if (state !== undefined) {
+      return new WorkflowState(state);
+    }
+  }
+
+  /**
+   * Waits for a workflow to start running
+   */
+  public async waitForWorkflowStart(
+    workflowInstanceId: string,
+    fetchPayloads = true,
+    timeoutInSeconds = 60,
+  ): Promise<WorkflowState | undefined> {
+    const state = await this._innerClient.waitForOrchestrationStart(
+      workflowInstanceId,
+      fetchPayloads,
+      timeoutInSeconds,
+    );
+    if (state !== undefined) {
+      return new WorkflowState(state);
+    }
+  }
+
+  /**
+   * Waits for a workflow to complete running
+   */
+  public async waitForWorkflowCompletion(
+    workflowInstanceId: string,
+    fetchPayloads = true,
+    timeoutInSeconds = 60,
+  ): Promise<WorkflowState | undefined> {
+    const state = await this._innerClient.waitForOrchestrationCompletion(
+      workflowInstanceId,
+      fetchPayloads,
+      timeoutInSeconds,
+    );
+    if (state != undefined) {
+      return new WorkflowState(state);
+    }
+  }
+
+  /**
+   * Sends an event notification message to an awaiting workflow instance
+   */
+  public async raiseEvent(workflowInstanceId: string, eventName: string, eventPayload?: any) {
+    this._innerClient.raiseOrchestrationEvent(workflowInstanceId, eventName, eventPayload);
+  }
+
+  /**
+   * Purges the workflow instance state from the workflow state store.
+   */
+  public async purgeWorkflow(workflowInstanceId: string): Promise<boolean> {
+    const purgeResult = await this._innerClient.purgeOrchestration(workflowInstanceId);
+    if (purgeResult !== undefined) {
+      return purgeResult.deletedInstanceCount > 0;
+    }
+    return false;
+  }
+
+  /**
+   * Closes the inner DurableTask client and shutdown the GRPC channel.
+   */
+  public async stop() {
+    await this._innerClient.stop();
+  }
+}
+```
 
 {{% /codetab %}}
 
@@ -484,6 +759,336 @@ public class DemoWorkflow extends Workflow {
 
 {{% /codetab %}}
 
+{{% codetab %}}
+
+<!--go-->
+
+[As in the following example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md), a hello-world application using the Go SDK and Dapr Workflow would include:
+
+- A Go package called `client` to receive the Go SDK client capabilities.
+- The `TestWorkflow` method
+- Creating the workflow with input and output.
+- API calls. In the example below, these calls start and call the workflow activities.
+ 
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/dapr/go-sdk/client"
+	"github.com/dapr/go-sdk/workflow"
+)
+
+var stage = 0
+
+const (
+	workflowComponent = "dapr"
+)
+
+func main() {
+	w, err := workflow.NewWorker()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Worker initialized")
+
+	if err := w.RegisterWorkflow(TestWorkflow); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("TestWorkflow registered")
+
+	if err := w.RegisterActivity(TestActivity); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("TestActivity registered")
+
+	// Start workflow runner
+	if err := w.Start(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("runner started")
+
+	daprClient, err := client.NewClient()
+	if err != nil {
+		log.Fatalf("failed to intialise client: %v", err)
+	}
+	defer daprClient.Close()
+	ctx := context.Background()
+
+	// Start workflow test
+	respStart, err := daprClient.StartWorkflowBeta1(ctx, &client.StartWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+		WorkflowName:      "TestWorkflow",
+		Options:           nil,
+		Input:             1,
+		SendRawInput:      false,
+	})
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+	fmt.Printf("workflow started with id: %v\n", respStart.InstanceID)
+
+	// Pause workflow test
+	err = daprClient.PauseWorkflowBeta1(ctx, &client.PauseWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+
+	if err != nil {
+		log.Fatalf("failed to pause workflow: %v", err)
+	}
+
+	respGet, err := daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil {
+		log.Fatalf("failed to get workflow: %v", err)
+	}
+
+	if respGet.RuntimeStatus != workflow.StatusSuspended.String() {
+		log.Fatalf("workflow not paused: %v", respGet.RuntimeStatus)
+	}
+
+	fmt.Printf("workflow paused\n")
+
+	// Resume workflow test
+	err = daprClient.ResumeWorkflowBeta1(ctx, &client.ResumeWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+
+	if err != nil {
+		log.Fatalf("failed to resume workflow: %v", err)
+	}
+
+	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil {
+		log.Fatalf("failed to get workflow: %v", err)
+	}
+
+	if respGet.RuntimeStatus != workflow.StatusRunning.String() {
+		log.Fatalf("workflow not running")
+	}
+
+	fmt.Println("workflow resumed")
+
+	fmt.Printf("stage: %d\n", stage)
+
+	// Raise Event Test
+
+	err = daprClient.RaiseEventWorkflowBeta1(ctx, &client.RaiseEventWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+		EventName:         "testEvent",
+		EventData:         "testData",
+		SendRawData:       false,
+	})
+
+	if err != nil {
+		fmt.Printf("failed to raise event: %v", err)
+	}
+
+	fmt.Println("workflow event raised")
+
+	time.Sleep(time.Second) // allow workflow to advance
+
+	fmt.Printf("stage: %d\n", stage)
+
+	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil {
+		log.Fatalf("failed to get workflow: %v", err)
+	}
+
+	fmt.Printf("workflow status: %v\n", respGet.RuntimeStatus)
+
+	// Purge workflow test
+	err = daprClient.PurgeWorkflowBeta1(ctx, &client.PurgeWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil {
+		log.Fatalf("failed to purge workflow: %v", err)
+	}
+
+	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil && respGet != nil {
+		log.Fatal("failed to purge workflow")
+	}
+
+	fmt.Println("workflow purged")
+
+	fmt.Printf("stage: %d\n", stage)
+
+	// Terminate workflow test
+	respStart, err = daprClient.StartWorkflowBeta1(ctx, &client.StartWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+		WorkflowName:      "TestWorkflow",
+		Options:           nil,
+		Input:             1,
+		SendRawInput:      false,
+	})
+	if err != nil {
+		log.Fatalf("failed to start workflow: %v", err)
+	}
+
+	fmt.Printf("workflow started with id: %s\n", respStart.InstanceID)
+
+	err = daprClient.TerminateWorkflowBeta1(ctx, &client.TerminateWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil {
+		log.Fatalf("failed to terminate workflow: %v", err)
+	}
+
+	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err != nil {
+		log.Fatalf("failed to get workflow: %v", err)
+	}
+	if respGet.RuntimeStatus != workflow.StatusTerminated.String() {
+		log.Fatal("failed to terminate workflow")
+	}
+
+	fmt.Println("workflow terminated")
+
+	err = daprClient.PurgeWorkflowBeta1(ctx, &client.PurgeWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+
+	respGet, err = daprClient.GetWorkflowBeta1(ctx, &client.GetWorkflowRequest{
+		InstanceID:        "a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9",
+		WorkflowComponent: workflowComponent,
+	})
+	if err == nil || respGet != nil {
+		log.Fatalf("failed to purge workflow: %v", err)
+	}
+
+	fmt.Println("workflow purged")
+
+	stage = 0
+	fmt.Println("workflow client test")
+
+	wfClient, err := workflow.NewClient()
+	if err != nil {
+		log.Fatalf("[wfclient] faield to initialize: %v", err)
+	}
+
+	id, err := wfClient.ScheduleNewWorkflow(ctx, "TestWorkflow", workflow.WithInstanceID("a7a4168d-3a1c-41da-8a4f-e7f6d9c718d9"), workflow.WithInput(1))
+	if err != nil {
+		log.Fatalf("[wfclient] failed to start workflow: %v", err)
+	}
+
+	fmt.Printf("[wfclient] started workflow with id: %s\n", id)
+
+	metadata, err := wfClient.FetchWorkflowMetadata(ctx, id)
+	if err != nil {
+		log.Fatalf("[wfclient] failed to get worfklow: %v", err)
+	}
+
+	fmt.Printf("[wfclient] workflow status: %v\n", metadata.RuntimeStatus.String())
+
+	if stage != 1 {
+		log.Fatalf("Workflow assertion failed while validating the wfclient. Stage 1 expected, current: %d", stage)
+	}
+
+	fmt.Printf("[wfclient] stage: %d\n", stage)
+
+	// raise event
+
+	if err := wfClient.RaiseEvent(ctx, id, "testEvent", workflow.WithEventPayload("testData")); err != nil {
+		log.Fatalf("[wfclient] failed to raise event: %v", err)
+	}
+
+	fmt.Println("[wfclient] event raised")
+
+	// Sleep to allow the workflow to advance
+	time.Sleep(time.Second)
+
+	if stage != 2 {
+		log.Fatalf("Workflow assertion failed while validating the wfclient. Stage 2 expected, current: %d", stage)
+	}
+
+	fmt.Printf("[wfclient] stage: %d\n", stage)
+
+	// stop workflow
+	if err := wfClient.TerminateWorkflow(ctx, id); err != nil {
+		log.Fatalf("[wfclient] failed to terminate workflow: %v", err)
+	}
+
+	fmt.Println("[wfclient] workflow terminated")
+
+	if err := wfClient.PurgeWorkflow(ctx, id); err != nil {
+		log.Fatalf("[wfclient] failed to purge workflow: %v", err)
+	}
+
+	fmt.Println("[wfclient] workflow purged")
+
+	// stop workflow runtime
+	if err := w.Shutdown(); err != nil {
+		log.Fatalf("failed to shutdown runtime: %v", err)
+	}
+
+	fmt.Println("workflow worker successfully shutdown")
+}
+
+func TestWorkflow(ctx *workflow.WorkflowContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return nil, err
+	}
+	var output string
+	if err := ctx.CallActivity(TestActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+		return nil, err
+	}
+
+	err := ctx.WaitForExternalEvent("testEvent", time.Second*60).Await(&output)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := ctx.CallActivity(TestActivity, workflow.ActivityInput(input)).Await(&output); err != nil {
+		return nil, err
+	}
+
+	return output, nil
+}
+
+func TestActivity(ctx workflow.ActivityContext) (any, error) {
+	var input int
+	if err := ctx.GetInput(&input); err != nil {
+		return "", err
+	}
+
+	stage += input
+
+	return fmt.Sprintf("Stage: %d", stage), nil
+}
+```
+
+[See the full Go SDK workflow example in context.](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
+
+{{% /codetab %}}
 
 {{< /tabs >}}
 
@@ -504,5 +1109,7 @@ Now that you've authored a workflow, learn how to manage it.
 - [Workflow API reference]({{< ref workflow_api.md >}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
+  - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
+  - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)

@@ -119,7 +119,7 @@ dapr-dev-redis-replicas-2         1/1     Running   0          158m
 
 #### Install Dapr from a private Dapr Helm chart
 
-Installing Dapr from a private Helm chart can be helpful for when you:
+Installing [Dapr from a private Helm chart](#install-dapr-from-an-official-dapr-helm-chart) can be helpful for when you:
 - Need more granular control of the Dapr Helm chart
 - Have a custom Dapr deployment
 - Pull Helm charts from trusted registries that are managed and maintained by your organization

@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "mDNS name resolution provider spec"
+title: "mDNS"
 linkTitle: "mDNS"
 description: Detailed information on the mDNS name resolution component
 ---

@@ -566,6 +566,33 @@ To launch a Dapr sidecar for the above example application, run a command simila
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
 ```
 
+The above example returns a `BulkStateItem` with the serialized format of the value you saved to state. If you prefer that the value be deserialized by the SDK across each of your bulk response items, you can instead use the following:
+
+```csharp
+//dependencies
+using Dapr.Client;
+//code
+namespace EventService
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            string DAPR_STORE_NAME = "statestore";
+            //Using Dapr SDK to retrieve multiple states
+            using var client = new DaprClientBuilder().Build();
+            IReadOnlyList<BulkStateItem<Widget>> mulitpleStateResult = await client.GetBulkStateAsync<Widget>(DAPR_STORE_NAME, new List<string> { "widget_1", "widget_2" }, parallelism: 1);
+        }
+    }
+
+    class Widget
+    {
+        string Size { get; set; }
+        string Color { get; set; }        
+    }
+}
+```
+
 {{% /codetab %}}
 
 {{% codetab %}}

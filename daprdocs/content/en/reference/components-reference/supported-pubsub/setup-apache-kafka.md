@@ -49,6 +49,17 @@ spec:
     value: 2.0.0
   - name: disableTls # Optional. Disable TLS. This is not safe for production!! You should read the `Mutual TLS` section for how to use TLS.
     value: "true"
+  - name: schemaRegistryURL # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry URL.
+    value: http://localhost:8081
+  - name: schemaRegistryAPIKey # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry API Key.
+    value: XYAXXAZ
+  - name: schemaRegistryAPISecret # Optional. When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret.
+    value: "ABCDEFGMEADFF"
+  - name: schemaCachingEnabled # Optional. When using Schema Registry Avro serialization/deserialization. Enables caching for schemas.
+    value: true
+  - name: schemaLatestVersionCacheTTL # Optional. When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available.
+    value: 5m
+  
 ```
 
 > For details on using `secretKeyRef`, see the guide on [how to reference secrets in components]({{< ref component-secrets.md >}}).
@@ -62,7 +73,7 @@ spec:
 | consumerID       | N | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. If a value for `consumerGroup` is provided, any value for `consumerID` is ignored - a combination of the consumer group and a random unique identifier will be set for the `consumerID` instead. | `"channel1"`
 | clientID            | N | A user-provided string sent with every request to the Kafka brokers for logging, debugging, and auditing purposes. Defaults to `"namespace.appID"` for Kubernetes mode or `"appID"` for Self-Hosted mode. | `"my-namespace.my-dapr-app"`, `"my-dapr-app"`
 | authRequired        | N | *Deprecated* Enable [SASL](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) authentication with the Kafka brokers. | `"true"`, `"false"`
-| authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, or `oidc` | `"password"`, `"none"`
+| authType            | Y | Configure or disable authentication. Supported values: `none`, `password`, `mtls`, `oidc` or `awsiam` | `"password"`, `"none"`
 | saslUsername        | N | The SASL username used for authentication. Only required if `authType` is set to `"password"`. | `"adminuser"`
 | saslPassword        | N | The SASL password used for authentication. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}). Only required if `authType is set to `"password"`. | `""`, `"KeFg23!"`
 | saslMechanism      | N | The SASL Authentication Mechanism you wish to use. Only required if `authType` is set to `"password"`. Defaults to `PLAINTEXT` | `"SHA-512", "SHA-256", "PLAINTEXT"`
@@ -81,6 +92,17 @@ spec:
 | oidcClientSecret | N | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
 | oidcScopes | N | Comma-delimited list of OAuth2/OIDC scopes to request with the access token. Recommended when `authType` is set to `oidc`. Defaults to `"openid"` | `"openid,kafka-prod"` |
 | oidcExtensions | N | Input/Output | String containing a JSON-encoded dictionary of OAuth2/OIDC extensions to request with the access token | `{"cluster":"kafka","poolid":"kafkapool"}` |
+| awsRegion | N | The AWS region where the Kafka cluster is deployed to. Required when `authType` is set to `awsiam` | `us-west-1` |
+| awsAccessKey | N  | AWS access key associated with an IAM account. | `"accessKey"`
+| awsSecretKey | N  | The secret key associated with the access key. | `"secretKey"`
+| awsSessionToken | N  | AWS session token to use. A session token is only required if you are using temporary security credentials. | `"sessionToken"`
+| awsIamRoleArn | N  | IAM role that has access to AWS Managed Streaming for Apache Kafka (MSK). This is another option to authenticate with MSK aside from the AWS Credentials. | `"arn:aws:iam::123456789:role/mskRole"`
+| awsStsSessionName | N  | Represents the session name for assuming a role. | `"MSKSASLDefaultSession"`
+| schemaRegistryURL | N | Required when using Schema Registry Avro serialization/deserialization. The Schema Registry URL. | `http://localhost:8081` |
+| schemaRegistryAPIKey | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Key. | `XYAXXAZ` |
+| schemaRegistryAPISecret | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret. | `ABCDEFGMEADFF` |
+| schemaCachingEnabled | N | When using Schema Registry Avro serialization/deserialization. Enables caching for schemas. Default is `true` | `true` |
+| schemaLatestVersionCacheTTL | N | When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available. Default is 5 min | `5m` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
@@ -91,7 +113,17 @@ The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Ka
 
 Kafka supports a variety of authentication schemes and Dapr supports several: SASL password, mTLS, OIDC/OAuth2. With the added authentication methods, the `authRequired` field has
 been deprecated from the v1.6 release and instead the `authType` field should be used. If `authRequired` is set to `true`, Dapr will attempt to configure `authType` correctly
-based on the value of `saslPassword`. There are four valid values for `authType`: `none`, `password`, `certificate`, `mtls`, and `oidc`. Note this is authentication only; authorization is still configured within Kafka.
+based on the value of `saslPassword`. The valid values for `authType` are: 
+- `none`
+- `password`
+- `certificate`
+- `mtls`
+- `oidc` 
+- `awsiam`
+
+{{% alert title="Note" color="primary" %}}
+`authType` is _authentication_ only. _Authorization_ is still configured within Kafka, except for `awsiam`, which can also drive authorization decisions configured in AWS IAM.
+{{% /alert %}}
 
 #### None
 
@@ -260,6 +292,44 @@ spec:
     value: 0.10.2.0
 ```
 
+#### AWS IAM
+
+Authenticating with AWS IAM is supported with MSK. Setting `authType` to `awsiam` uses AWS SDK to generate auth tokens to authenticate.
+{{% alert title="Note" color="primary" %}}
+The only required metadata field is `awsRegion`. If no `awsAccessKey` and `awsSecretKey` are provided, you can use AWS IAM roles for service accounts to have password-less authentication to your Kafka cluster.
+{{% /alert %}}
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: kafka-pubsub-awsiam
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+  - name: brokers # Required. Kafka broker connection setting
+    value: "dapr-kafka.myapp.svc.cluster.local:9092"
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "my-dapr-app-id"
+  - name: authType # Required.
+    value: "awsiam"
+  - name: awsRegion # Required.
+    value: "us-west-1"
+  - name: awsAccessKey # Optional.
+    value: <AWS_ACCESS_KEY>
+  - name: awsSecretKey # Optional.
+    value: <AWS_SECRET_KEY>
+  - name: awsSessionToken # Optional.
+    value: <AWS_SESSION_KEY>
+  - name: awsIamRoleArn # Optional.
+    value: "arn:aws:iam::123456789:role/mskRole"
+  - name: awsStsSessionName # Optional.
+    value: "MSKSASLDefaultSession"
+```
+
 ### Communication using TLS
 
 By default TLS is enabled to secure the transport layer to Kafka. To disable TLS, set `disableTls` to `true`. When TLS is enabled, you can
@@ -385,6 +455,103 @@ curl -X POST http://localhost:3500/v1.0/publish/myKafka/myTopic?metadata.correla
         }
       }'
 ```
+
+## Avro Schema Registry serialization/deserialization
+You can configure pub/sub to publish or consume data encoded using [Avro binary serialization](https://avro.apache.org/docs/), leveraging an [Apache Schema Registry](https://developer.confluent.io/courses/apache-kafka/schema-registry/) (for example, [Confluent Schema Registry](https://developer.confluent.io/courses/apache-kafka/schema-registry/), [Apicurio](https://www.apicur.io/registry/)).
+
+### Configuration
+
+{{% alert title="Important" color="warning" %}}
+Currently, only message value serialization/deserialization is supported. Since cloud events are not supported, the `rawPayload=true` metadata must be passed.
+{{% /alert %}}
+
+When configuring the Kafka pub/sub component metadata, you must define:
+- The schema registry URL 
+- The API key/secret, if applicable
+
+Schema subjects are automatically derived from topic names, using the standard naming convention. For example, for a topic named `my-topic`, the schema subject will be `my-topic-value`.
+When interacting with the message payload within the service, it is in JSON format. The payload is transparently serialized/deserialized within the Dapr component.
+Date/Datetime fields must be passed as their [Epoch Unix timestamp](https://en.wikipedia.org/wiki/Unix_time) equivalent (rather than typical Iso8601). For example:
+- `2024-01-10T04:36:05.986Z` should be passed as `1704861365986` (the number of milliseconds since Jan 1st, 1970)
+- `2024-01-10` should be passed as `19732` (the number of days since Jan 1st, 1970)
+
+### Publishing Avro messages
+In order to indicate to the Kafka pub/sub component that the message should be using Avro serialization, the `valueSchemaType` metadata must be set to `Avro`.
+
+{{< tabs curl "Python SDK">}}
+
+{{% codetab %}}
+```bash
+curl -X "POST" http://localhost:3500/v1.0/publish/pubsub/my-topic?metadata.rawPayload=true&metadata.valueSchemaType=Avro -H "Content-Type: application/json" -d '{"order_number": "345", "created_date": 1704861365986}'
+```
+{{% /codetab %}}
+
+{{% codetab %}}
+```python
+from dapr.clients import DaprClient
+
+with DaprClient() as d:
+    req_data = {
+        'order_number': '345',
+        'created_date': 1704861365986
+    }
+    # Create a typed message with content type and body
+    resp = d.publish_event(
+        pubsub_name='pubsub',
+        topic_name='my-topic',
+        data=json.dumps(req_data),
+        publish_metadata={'rawPayload': 'true', 'valueSchemaType': 'Avro'}
+    )
+    # Print the request
+    print(req_data, flush=True)
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+
+### Subscribing to Avro topics
+In order to indicate to the Kafka pub/sub component that the message should be deserialized using Avro, the `valueSchemaType` metadata must be set to `Avro` in the subscription metadata.
+
+{{< tabs "Python (FastAPI)" >}}
+
+{{% codetab %}}
+
+```python
+from fastapi import APIRouter, Body, Response, status
+import json
+import sys
+
+app = FastAPI()
+
+router = APIRouter()
+
+
+@router.get('/dapr/subscribe')
+def subscribe():
+    subscriptions = [{'pubsubname': 'pubsub',
+                      'topic': 'my-topic',
+                      'route': 'my_topic_subscriber',
+                      'metadata': {
+                          'rawPayload': 'true',
+                          'valueSchemaType': 'Avro',
+                      } }]
+    return subscriptions
+
+@router.post('/my_topic_subscriber')
+def my_topic_subscriber(event_data=Body()):
+    print(event_data, flush=True)
+      return Response(status_code=status.HTTP_200_OK)
+
+app.include_router(router)
+
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}} 
+
+
 
 ## Create a Kafka instance
 

@@ -60,6 +60,13 @@ Terminate a running workflow instance with the given name and instance ID.
 POST http://localhost:3500/v1.0-beta1/workflows/<workflowComponentName>/<instanceId>/terminate
 ```
 
+{{% alert title="Note" color="primary" %}}
+ Terminating a workflow terminates all of the child workflows created by the workflow instance.
+
+Terminating a workflow has no effect on any in-flight activity executions that were started by the terminated instance. 
+
+{{% /alert %}}
+
 ### URL parameters
 
 Parameter | Description

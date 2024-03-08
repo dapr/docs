@@ -27,8 +27,17 @@ spec:
     stdout: true
     otel:
       endpointAddress: <REPLACE-WITH-ENDPOINT-ADDRESS>
-      isSecure: false
+      isSecure: <TRUE-OR-FALSE>
       protocol: <HTTP-OR-GRPC>
+  metrics:
+    enabled: <TRUE-OR-FALSE>
+    rules:
+      - name: <METRIC-NAME>
+        labels:
+          - name: <LABEL-NAME>
+            regex: {}
+    http:
+      increasedCardinality: <TRUE-OR-FALSE>
   httpPipeline: # for incoming http calls
     handlers:
       - name: <HANDLER-NAME>
@@ -37,6 +46,11 @@ spec:
     handlers:
       - name: <HANDLER-NAME>
         type: <HANDLER-TYPE>
+  nameResolution:
+    component: <NAME-OF-NAME-RESOLUTION-COMPONENT>
+    version: <NAME-RESOLUTION-COMPONENT-VERSION>
+    configuration:
+     <NAME-RESOLUTION-COMPONENT-METADATA-CONFIGURATION>
   secrets:
     scopes:
       - storeName: <NAME-OF-SCOPED-STORE>

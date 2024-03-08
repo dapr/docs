@@ -141,8 +141,8 @@
     etag: true
     ttl: true
     query: false
-- component: PostgreSQL
-  link: setup-postgresql
+- component: PostgreSQL v1
+  link: setup-postgresql-v1
   state: Stable
   version: v1
   since: "1.0"
@@ -152,6 +152,17 @@
     etag: true
     ttl: true
     query: true
+- component: PostgreSQL v2
+  link: setup-postgresql-v2
+  state: Stable
+  version: v2
+  since: "1.13"
+  features:
+    crud: true
+    transactions: true
+    etag: true
+    ttl: true
+    query: false
 - component: Redis
   link: setup-redis
   state: Stable

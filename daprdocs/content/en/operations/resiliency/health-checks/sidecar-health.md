@@ -8,18 +8,50 @@ description: Dapr sidecar health checks
 
 Dapr provides a way to determine its health using an [HTTP `/healthz` endpoint]({{< ref health_api.md >}}). With this endpoint, the *daprd* process, or sidecar, can be:
 
-- Probed for its health
-- Determined for readiness and liveness
+- Probed for its overall health
+- Probed for Dapr sidecar readiness during initialization
+- Determined for readiness and liveness with Kubernetes
 
-In this guide, you learn how the Dapr `/healthz` endpoint integrate with health probes from the application hosting platform (for example, Kubernetes). 
-
-When deploying Dapr to a hosting platform like Kubernetes, the Dapr health endpoint is automatically configured for you.
+In this guide, you learn how the Dapr `/healthz` endpoint integrates with health probes from the application hosting platform (for example, Kubernetes) as well as the Dapr SDKs. 
 
 {{% alert title="Note" color="primary" %}}
 Dapr actors also have a health API endpoint where Dapr probes the application for a response to a signal from Dapr that the actor application is healthy and running. See [actor health API]({{< ref "actors_api.md#health-check" >}}).
 {{% /alert %}} 
 
+The following diagram shows the steps when a Dapr sidecar starts, the healthz endpoint and when the app channel is initialized.  
+
+<img src="/images/healthz-outbound.png" width="800" alt="Diagram of Dapr checking oubound health connections." />
+
+## Outbound health endpoint
+
+As shown by the red boundary lines in the diagram above, the `v1.0/healthz/` endpoint is used to wait for when:
+- All components are initialized;
+- The Dapr HTTP port is available; _and,_
+- The app channel is initialized. 
+
+This is used to check the complete initialization of the Dapr sidecar and its health. 
+
+Setting the `DAPR_HEALTH_TIMEOUT` environment variable lets you control the health timeout, which, for example, can be important in different environments with higher latency.
+
+On the other hand, as shown by the green boundary lines in the diagram above, the `v1.0/healthz/outbound` endpoint returns successfully when:
+- All the components are initialized;
+- The Dapr HTTP port is available; _but,_ 
+- The app channel is not yet established. 
+
+In the Dapr SDKs, the `waitForSidecar`/`wait_until_ready` method (depending on [which SDK you use]({{< ref "#sdks-supporting-outbound-health-endpoint" >}})) is used for this specific check with the `v1.0/healthz/outbound` endpoint. Using this behavior, instead of waiting for the app channel to be available (see: red boundary lines) with the `v1.0/healthz/` endpoint, Dapr waits for a successful response from `v1.0/healthz/outbound`. This approach enables your application to perform calls on the Dapr sidecar APIs before the app channel is initalized - for example, reading secrets with the secrets API.
+
+If you are using the `waitForSidecar`/`wait_until_ready` method on the SDKs, then the correct initialization is performed. Otherwise, you can call the `v1.0/healthz/outbound` endpoint during initalization, and if successesful, you can call the Dapr sidecar APIs.
+
+### SDKs supporting outbound health endpoint
+Currently, the `v1.0/healthz/outbound` endpoint is supported in the:
+- [.NET SDK]({{< ref "dotnet-client.md#wait-for-sidecar" >}})
+- [Java SDK]({{< ref "java-client.md#wait-for-sidecar" >}})
+- [Python SDK]({{< ref "python-client.md#health-timeout" >}})
+- [JavaScript SDK](https://github.com/dapr/js-sdk/blob/4189a3d2ad6897406abd766f4ccbf2300c8f8852/src/interfaces/Client/IClientHealth.ts#L14)
+
+
 ## Health endpoint: Integration with Kubernetes
+When deploying Dapr to a hosting platform like Kubernetes, the Dapr health endpoint is automatically configured for you.
 
 Kubernetes uses *readiness* and *liveness* probes to determines the health of the container.
 
