@@ -4,7 +4,6 @@ title: "How To: Use secret scoping"
 linkTitle: "How To: Use secret scoping"
 weight: 3000
 description: "Use scoping to limit the secrets that can be read by your application from secret stores"
-type: docs
 ---
 
 Once you [configure a secret store for your application]({{< ref setup-secret-store >}}), *any* secret defined within that store is accessible by default from the Dapr application. 
