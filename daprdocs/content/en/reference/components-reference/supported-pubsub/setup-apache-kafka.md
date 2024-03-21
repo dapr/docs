@@ -463,7 +463,7 @@ You can configure pub/sub to publish or consume data encoded using [Avro binary 
 
 {{% alert title="Important" color="warning" %}}
 Currently, only message value serialization/deserialization is supported. Since cloud events are not supported, the `rawPayload=true` metadata must be passed when publishing Avro messages.
-Please note that `rawPayload=true` should NOT be set for consumers as the message value, while properly deserialized into json will be wrapped into a CloudEvent.
+Please note that `rawPayload=true` should NOT be set for consumers, as the message value will be wrapped into a CloudEvent and base64-encoded. Leaving `rawPayload` as default, will send the Avro-decoded message to the application.
 {{% /alert %}}
 
 When configuring the Kafka pub/sub component metadata, you must define:
