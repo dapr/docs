@@ -10,6 +10,7 @@
         <th>Description</th>
         <th>Status</th>
         <th>Component version</th>
+        <th>Since runtime version</th>
     </tr>
     {{ range sort $components "component" }}
     <tr>
@@ -18,6 +19,7 @@
         <td>{{ .description | markdownify}}</td>
         <td>{{ .state }}</td>
         <td>{{ .version }}</td>
+        <td>{{ .since }}</td>
     </tr>
     {{ end }}
 </table>

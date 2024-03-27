@@ -24,18 +24,24 @@ spec:
       value: "<your token audience; i.e. the application's client ID>"
     - name: issuer
       value: "<your token issuer, e.g. 'https://accounts.google.com'>"
+    - name: pipelineType
+      value: "httpPipeline"
 
     # Optional values
+    - name: priority
+      value: "1"
     - name: jwksURL
       value: "<JWKS URL, e.g. 'https://accounts.google.com/.well-known/openid-configuration'>"
 ```
 
 ## Spec metadata fields
 
-| Field | Required | Details | Example |
-|-------|:--------:|---------|---------|
+| Field | Required? | Details | Example |
+|-------|-----------|---------|---------|
 | `audience` | Y | The audience expected in the tokens. Usually, this corresponds to the client ID of your application that is created as part of a credential hosted by a OpenID Connect platform. | 
 | `issuer` | Y | The issuer authority, which is the value expected in the issuer claim in the tokens. | `"https://accounts.google.com"`
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32. | `"1"`
 | `jwksURL` | N | Address of the JWKS (JWK Set containing the public keys for verifying tokens). If empty, will try to fetch the URL set in the OpenID Configuration document `<issuer>/.well-known/openid-configuration`.  | `"https://accounts.google.com/.well-known/openid-configuration"`
 
 Common values for `issuer` include:
@@ -45,21 +51,14 @@ Common values for `issuer` include:
 - Google: `https://accounts.google.com`
 - Salesforce (Force.com): `https://login.salesforce.com`
 
-## Dapr configuration
+## Configure
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md">}}).
+You can configure middleware using the following methods:
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: bearer-token
-      type: middleware.http.bearer
-```
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
+
+See [how to apply middleware pipeline configurations]({{< ref "middleware.md" >}}).
 
 ## Related links
 

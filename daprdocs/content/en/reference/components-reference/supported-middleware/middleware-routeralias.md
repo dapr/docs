@@ -29,31 +29,28 @@ spec:
           "/hello/activity/{id}/info": "/v1.0/invoke/srv.default/method/hello/activity/info",
           "/hello/activity/{id}/user": "/v1.0/invoke/srv.default/method/hello/activity/user"
         }
+    - name: pipelineType
+      value: httpPipeline
+    - name: priority
+      value: 1
 ```
 
 In the example above, an incoming HTTP request for `/mall/activity/info?id=123` is transformed into `/v1.0/invoke/srv.default/method/mall/activity/info?id=123`.
 
 # Spec metadata fields
 
-| Field | Details | Example |
-|-------|---------|---------|
-| `routes` | String containing a JSON-encoded or YAML-encoded dictionary. Each key in the dictionary is the incoming path, and the value is the path it's converted to. | See example above |
+| Field | Required? | Details | Example |
+|-------|-----------|---------|---------|
+| `routes` |  | String containing a JSON-encoded or YAML-encoded dictionary. Each key in the dictionary is the incoming path, and the value is the path it's converted to. | See example above |
+| `pipelineType` | Y | For configuring middleware pipelines. One of the two types of middleware pipeline so you can configure your middleware for either sidecar-to-sidecar communication (`appHttpPipeline`) or sidecar-to-app communication (`httpPipeline`). | `"httpPipeline"`, `"appHttpPipeline"`
+| `priority` | N | For configuring middleware pipeline ordering. The order in which [middleware components]({{< ref middleware.md >}}) are executed. Integer from -MaxInt32 to +MaxInt32.  | `"1"`
 
-## Dapr configuration
+## Configure
 
-To be applied, the middleware must be referenced in [configuration]({{< ref configuration-concept.md >}}). See [middleware pipelines]({{< ref "middleware.md#customize-processing-pipeline">}}).
+You can configure middleware using the following methods:
 
-```yaml
-apiVersion: dapr.io/v1alpha1
-kind: Configuration
-metadata:
-  name: appconfig
-spec:
-  httpPipeline:
-    handlers:
-    - name: routeralias 
-      type: middleware.http.routeralias
-```
+- **Recommended:** Using [the middleware component]({{< ref "middleware.md#using-middleware-components" >}}), just like any other [component]({{< ref components-concept.md >}}), with a YAML file placed into the application resources folder.
+- Using a [configuration file]({{< ref "middleware.md#using-middleware-components-with-configuration" >}}).
 
 ## Related links
 
