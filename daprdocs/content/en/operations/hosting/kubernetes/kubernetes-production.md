@@ -10,15 +10,14 @@ description: "Best practices for deploying Dapr to a Kubernetes cluster in a pro
 
 Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/). 
 
-Use the following resource settings as a starting point. Requirements vary depending on cluster size, number of pods, and other factors. Perform individual testing to find the right values for your environment.
+Use the following resource settings as a starting point. Requirements vary depending on cluster size, number of pods, and other factors. Perform individual testing to find the right values for your environment. In production, it's recommended to not add memory limits to the Dapr control plane components to avoid `OOMKilled` pod statuses.
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
-| **Operator**  | Limit: 1, Request: 100m | Limit: 200Mi, Request: 100Mi
-| **Sidecar Injector** | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
-| **Sentry**    | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
-| **Placement** | Limit: 1, Request: 250m  | Limit: 150Mi, Request: 75Mi
-| **Dashboard** | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
+| **Operator**  | Limit: 1, Request: 100m | Request: 100Mi
+| **Sidecar Injector** | Limit: 1, Request: 100m  | Request: 30Mi
+| **Sentry**    | Limit: 1, Request: 100m  | Request: 30Mi
+| **Placement** | Limit: 1, Request: 250m  | Request: 75Mi
 
 {{% alert title="Note" color="primary" %}}
 For more information, refer to the Kubernetes documentation on [CPU and Memory resource units and their meaning](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
