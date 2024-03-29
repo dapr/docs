@@ -125,6 +125,7 @@ original data type so that it can be converted back to the equivalent data type 
 | X-Zeebe-Retries                    | int32     | The amount of retries left to this job (should always be positive)                              |
 | X-Zeebe-Deadline                   | int64     | When the job can be activated again, sent as a UNIX epoch timestamp                             |
 | X-Zeebe-Autocomplete               | bool      | The autocomplete status that is defined in the binding metadata                                 |
+| X-Zeebe-Form-Key                   | string    | The form key in case the worker is configured to listen for user tasks                          |
 
 ## Related links
 
