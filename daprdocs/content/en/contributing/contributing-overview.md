@@ -26,6 +26,8 @@ See the [Dapr community repository](https://github.com/dapr/community) for more 
 
 5. **SDKs**: Dapr SDKs provide libraries for various programming languages to interact with Dapr. You can contribute by improving SDK functionalities, fixing bugs, or adding support for new features. Please see the [contribution guidelines]({{< ref sdk-contrib >}}) for specific SDKs.
 
+6. **CLI**: Dapr cli sets up Dapr on a local dev machine or a Kubernetes cluster for launching and managing Dapr instances. Contributions to the CLI repository include adding new features, fixing bugs, improving usability, and ensuring compatibility with the latest Dapr releases. Please see the [Development Guide](https://github.com/dapr/cli/blob/master/docs/development/development.md) for help in getting started with developing the Dapr cli. 
+
 ## Issues
 
 ### Issue types
