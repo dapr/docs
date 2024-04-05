@@ -53,6 +53,19 @@ Authenticating with Microsoft Entra ID is supported with Azure Database for Post
 | `azureClientId` | N | Client ID (application ID) | `"c7dd251f-811f-…"` |
 | `azureClientSecret` | N | Client secret (application password) | `"Ecy3X…"` |
 
+### Authenticate using AWS IAM
+
+Authenticating with AWS IAM is supported with all versions of PostgreSQL type components.
+The user specified in the connection string must be an AWS IAM enabled user granted the `rds_iam` database role.
+Authentication is based on the AWS authentication configuration file, or the AccessKey/SecretKey provided.
+The AWS authentication token will be dynamically rotated before it's expiration time with AWS.
+
+| Field  | Required | Details | Example |
+|--------|:--------:|---------|---------|
+| `awsRegion` | Y | The AWS Region where the AWS Relational Database Service is deployed to. | `"us-east-1"`
+| `accessKey` | Y | AWS access key associated with an IAM account | `"AKIAIOSFODNN7EXAMPLE"`
+| `secretKey` | Y | The secret key associated with the access key. | `"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"`
+
 ### Other metadata options
 
 | Field | Required | Binding support |Details | Example |
