@@ -46,7 +46,7 @@ The table below shows the versions of Dapr releases that have been tested togeth
 | Release date | Runtime     | CLI  | SDKs  | Dashboard  | Status | Release notes |
 |--------------------|:--------:|:--------|---------|---------|---------|------------|
 | April 3rd 2024 | 1.13.2</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported (current) | [v1.13.2 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.2) |
-| March 26th 2024 | 1.13.1</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported (current) | [v1.13.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.0) |
+| March 26th 2024 | 1.13.1</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported (current) | [v1.13.1 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.1) |
 | March 6th 2024 | 1.13.0</br>  | 1.13.0 | Java 1.11.0 </br>Go 1.10.0 </br>PHP 1.2.0 </br>Python 1.13.0 </br>.NET 1.13.0 </br>JS 3.3.0 | 0.14.0 | Supported (current) | [v1.13.0 release notes](https://github.com/dapr/dapr/releases/tag/v1.13.0) |
 | January 17th 2024 | 1.12.4</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.1 </br>PHP 1.2.0 </br>Python 1.12.0 </br>.NET 1.12.0 </br>JS 3.2.0 | 0.14.0 | Supported (current) | [v1.12.4 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.4) |
 | January 2nd 2024 | 1.12.3</br>  | 1.12.0 | Java 1.10.0 </br>Go 1.9.1 </br>PHP 1.2.0 </br>Python 1.12.0 </br>.NET 1.12.0 </br>JS 3.2.0 | 0.14.0 | Supported (current) | [v1.12.3 release notes](https://github.com/dapr/dapr/releases/tag/v1.12.3) |
