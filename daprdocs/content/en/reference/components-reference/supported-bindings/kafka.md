@@ -96,6 +96,11 @@ spec:
 | `schemaRegistryAPISecret` | N | When using Schema Registry Avro serialization/deserialization. The Schema Registry credentials API Secret. | `ABCDEFGMEADFF` |
 | `schemaCachingEnabled` | N | When using Schema Registry Avro serialization/deserialization. Enables caching for schemas. Default is `true` | `true` |
 | `schemaLatestVersionCacheTTL` | N | When using Schema Registry Avro serialization/deserialization. The TTL for schema caching when publishing a message with latest schema available. Default is 5 min | `5m` |
+| `clientConnectionTopicMetadataRefreshInterval` | N | Input/Output | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
+| `clientConnectionKeepAliveInterval` | N | Input/Output | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
+| `consumerFetchDefault` | N | Input/Output | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
+| `heartbeatInterval` | N | Input/Output | The interval between heartbeats to the consumer coordinator for the client connection. Default is `"3s"`. | `"5s"` |
+| `sessionTimeout` | N | Input/Output | The maximum time between heartbeats before the consumer is considered inactive and will timeout. Default is `"10s"`. | `"20s"` |
 
 #### Note
 The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
