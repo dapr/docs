@@ -10,7 +10,7 @@ weight: 2000
 
 [Diagrid Conductor](https://www.diagrid.io/conductor) quickly and securely connects to all your Kubernetes clusters running Dapr and Daprized applications, delivering operational excellence, security & reliability, and insights & collaboration.
 
-**Automated Dapr Management**
+**Automated Dapr management**
 
 One-click installation, upgrade and patching of Dapr with selective application update and automated rollback means you’re always up to date.
 
