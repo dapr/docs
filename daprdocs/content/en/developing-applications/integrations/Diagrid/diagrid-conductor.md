@@ -2,7 +2,7 @@
 type: docs
 title: "Conductor: Enterprise Dapr for Kubernetes"
 linkTitle: "Diagrid Conductor"
-description: "Automate operations, enforce security best practices, improve uptime, and elevate insights across all your Dapr clusters"
+description: "Automate operations, enforce security best practices, improve uptime, and elevate insights across your Dapr clusters"
 weight: 2000
 ---
 
