@@ -18,7 +18,7 @@ One-click installation, upgrade and patching of Dapr with selective application 
 
 Be informed and apply production best practices, with continuous checking to prevent misconfigurations, increasing security, reliability and performance.
 
-**Resource Usage Reporting & Tracking**
+**Resource usage reporting  and tracking**
 
 By studying past resource behavior, recommend application resource optimization usage leading to significant cost savings on CPU and memory.
 
