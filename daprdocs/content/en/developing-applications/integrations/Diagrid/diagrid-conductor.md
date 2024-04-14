@@ -14,7 +14,7 @@ weight: 2000
 
 One-click installation, upgrade and patching of Dapr with selective application update and automated rollback means you’re always up to date.
 
-**Advisor: Automated best-practices**
+**Advisor: Discover and automate best practices**
 
 Be informed and apply production best practices, with continuous checking to prevent misconfigurations, increasing security, reliability and performance.
 
