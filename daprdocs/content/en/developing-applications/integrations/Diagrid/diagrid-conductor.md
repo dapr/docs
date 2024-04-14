@@ -22,7 +22,7 @@ Be informed and apply production best practices, with continuous checking to pre
 
 By studying past resource behavior, recommend application resource optimization usage leading to significant cost savings on CPU and memory.
 
-**Application Visualizer**
+**Application visualizer**
 
 The application graph facilitates collaboration between dev and ops by providing a dynamic overview of your services and infrastructure components.
 
