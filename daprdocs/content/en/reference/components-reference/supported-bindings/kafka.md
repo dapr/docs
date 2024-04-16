@@ -82,8 +82,6 @@ spec:
 | `saslMechanism` | N | Input/Output | The SASL authentication mechanism you'd like to use. Only required if `authtype` is set to `"password"`. If not provided, defaults to `PLAINTEXT`, which could cause a break for some services, like Amazon Managed Service for Kafka. | `"SHA-512", "SHA-256", "PLAINTEXT"` |
 | `initialOffset`   | N | Input | The initial offset to use if no offset was previously committed. Should be "newest" or "oldest". Defaults to "newest". | `"oldest"` |
 | `maxMessageBytes` | N | Input/Output | The maximum size in bytes allowed for a single Kafka message. Defaults to 1024. | `"2048"` |
-| `heartbeatInterval` | N | Input | The interval between heartbeats to the consumer coordinator. The value should be set to at most a 1/3 of `sessionTimeout`'s value. Defaults to 3s. | `5s` |
-| `sessionTimeout`    | N | Input | The maximum time between heartbeats before the consumer is considered inactive and will timeout. Defaults to 10s. | `30s` |
 | `oidcTokenEndpoint` | N | Input/Output | Full URL to an OAuth2 identity provider access token endpoint. Required when `authType` is set to `oidc` | "https://identity.example.com/v1/token" |
 | `oidcClientID` | N | Input/Output | The OAuth2 client ID that has been provisioned in the identity provider. Required when `authType` is set to `oidc` | `"dapr-kafka"` |
 | `oidcClientSecret` | N | Input/Output | The OAuth2 client secret that has been provisioned in the identity provider: Required when `authType` is set to `oidc` | `"KeFg23!"` |
@@ -99,8 +97,8 @@ spec:
 | `clientConnectionTopicMetadataRefreshInterval` | N | Input/Output | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | `clientConnectionKeepAliveInterval` | N | Input/Output | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
 | `consumerFetchDefault` | N | Input/Output | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
-| `heartbeatInterval` | N | Input/Output | The interval between heartbeats to the consumer coordinator for the client connection. Default is `"3s"`. | `"5s"` |
-| `sessionTimeout` | N | Input/Output | The maximum time between heartbeats before the consumer is considered inactive and will timeout. Default is `"10s"`. | `"20s"` |
+| `heartbeatInterval` | N | Input | The interval between heartbeats to the consumer coordinator. The value should be set to at most a 1/3 of `sessionTimeout`'s value. Defaults to `"3s"`. | `"5s"` |
+| `sessionTimeout` | N | Input | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer will be removed and initiate a rebalance. Defaults to `"10s"`. | `"20s"` |
 
 #### Note
 The metadata `version` must be set to `1.0.0` when using Azure EventHubs with Kafka.
