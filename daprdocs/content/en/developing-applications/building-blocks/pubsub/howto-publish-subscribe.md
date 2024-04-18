@@ -184,6 +184,13 @@ The example above shows an event subscription to topic `orders`, for the pubsub 
 
 Place `subscription.yaml` in the same directory as your `pubsub.yaml` component. When Dapr starts up, it loads subscriptions along with the components.
 
+{{% alert title="Note" color="primary" %}}
+Dapr can be made to "hot reload" declarative subscriptions whereby updates are picked up automatically without needing a restart.
+This is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
+In-flight messages between Dapr and your application will be unaffected during hot reload events to prevent re-processing or loss of unprocessed messages.
+This feature is currently in preview.
+{{% /alert %}}
+
 Below are code examples that leverage Dapr SDKs to subscribe to the topic you defined in `subscription.yaml`.
 
 {{< tabs Dotnet Java Python Go JavaScript>}}

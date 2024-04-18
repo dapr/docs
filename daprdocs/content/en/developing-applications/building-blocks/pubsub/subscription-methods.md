@@ -19,6 +19,13 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 
 ### Declarative subscriptions
 
+{{% alert title="Note" color="primary" %}}
+Dapr can be made to "hot reload" declarative subscriptions whereby updates are picked up automatically without needing a restart.
+This is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
+In-flight messages between Dapr and your application will be unaffected during hot reload events to prevent re-processing or loss of unprocessed messages.
+This feature is currently in preview.
+{{% /alert %}}
+
 You can subscribe declaratively to a topic using an external component file. This example uses a YAML component file named `subscription.yaml`:
 
 ```yaml
