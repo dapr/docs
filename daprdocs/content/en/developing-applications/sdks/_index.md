@@ -24,7 +24,7 @@ Select your [preferred language below]({{< ref "#sdk-languages" >}}) to learn mo
 |----------|:------|:----------:|:-----------:|:---------:|:---------:|
 | [.NET]({{< ref dotnet >}}) | Stable | ✔ |  [ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore) | ✔ | ✔ |
 | [Python]({{< ref python >}}) | Stable | ✔ | [gRPC]({{< ref python-grpc.md >}}) <br />[FastAPI]({{< ref python-fastapi.md >}})<br />[Flask]({{< ref python-flask.md >}})| ✔ | ✔ |
-| [Java]({{< ref java >}}) | Stable | ✔ | Spring Boot | ✔ | ✔ |
+| [Java]({{< ref java >}}) | Stable | ✔ | Spring Boot  <br /> Quarkus| ✔ | ✔ |
 | [Go]({{< ref go >}}) | Stable | ✔ | ✔ | ✔ | ✔ |
 | [PHP]({{< ref php >}}) | Stable | ✔ | ✔ | ✔ | |
 | [Javascript]({{< ref js >}}) | Stable| ✔ | | ✔ | ✔  |
