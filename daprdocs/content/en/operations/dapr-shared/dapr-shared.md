@@ -28,7 +28,7 @@ By default, when Dapr is installed into a Kubernetes Cluster, the Dapr Control P
 
 <img src="/images/dapr-shared/sidecar.png" width=800 style="padding-bottom:15px;">
 
-While sidecars are the default strategy, there are some use cases that require other approaches. For example, you want to decouple the lifecycle of your workloads from the Dapr APIs. A typical example of this is Functions, or function as a service runtimes, which might automatically downscale your idle workloads to free up resources. For such cases, keeping the Dapr APIs and all the Dapr async functionalities (such as subscriptions) might be required. Dapr Shared was created exactly for this kind of scenario.
+While sidecars are Dapr's default deployment strategy, some use cases require other approaches. Let's say you want to decouple the lifecycle of your workloads from the Dapr APIs. A typical example of this is functions, or function-as-a-service runtimes, which might automatically downscale your idle workloads to free up resources. For such cases, keeping the Dapr APIs and all the Dapr async functionalities (such as subscriptions) separate might be required. 
 
 Dapr Shared extends the Dapr sidecar model with two new deployment strategies: DaemonSet and Deployment.
 
