@@ -30,7 +30,7 @@ By default, when Dapr is installed into a Kubernetes Cluster, the Dapr Control P
 
 While sidecars are Dapr's default deployment strategy, some use cases require other approaches. Let's say you want to decouple the lifecycle of your workloads from the Dapr APIs. A typical example of this is functions, or function-as-a-service runtimes, which might automatically downscale your idle workloads to free up resources. For such cases, keeping the Dapr APIs and all the Dapr async functionalities (such as subscriptions) separate might be required. 
 
-Dapr Shared extends the Dapr sidecar model with two new deployment strategies: DaemonSet and Deployment.
+Dapr Shared was created exactly for this kind of scenario, extending the Dapr sidecar model with two new deployment strategies: `DaemonSet` and `Deployment`.
 
 No matter which strategy you choose, it is important to understand that in most use cases you will have one instance of Dapr Shared (Helm Release) per service (app-id). This means that if you have an application composed by three microservices, each service is recommended to have it's own Dapr Shared instance. Check the step-by-step tutorial using Kubernetes KinD here, to see an application using Dapr Shared.
 
