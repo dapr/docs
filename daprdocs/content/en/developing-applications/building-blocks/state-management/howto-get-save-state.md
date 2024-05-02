@@ -537,7 +537,7 @@ Try getting state again. Note that no value is returned.
 
 Below are code examples that leverage Dapr SDKs for saving and retrieving multiple states.
 
-{{< tabs Dotnet Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
@@ -656,6 +656,53 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 {{% codetab %}}
 
+```go
+// dependencies
+import (
+	"context"
+	"log"
+	"math/rand"
+	"strconv"
+	"time"
+
+	dapr "github.com/dapr/go-sdk/client"
+)
+
+// code
+func main() {
+	const STATE_STORE_NAME = "statestore"
+	rand.Seed(time.Now().UnixMicro())
+	for i := 0; i < 10; i++ {
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+		err = client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId)), nil)
+		if err != nil {
+			panic(err)
+		}
+		keys := []string{"key1", "key2", "key3"}
+        items, err := client.GetBulkState(ctx, store, keys, nil, 100)
+
+		log.Println("Result after get:", string(result.Value))
+		time.Sleep(2 * time.Second)
+	}
+} 
+```
+
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
 ```javascript
 //dependencies
 import { DaprClient, HttpMethod, CommunicationProtocolEnum } from '@dapr/dapr'; 
@@ -738,7 +785,7 @@ State transactions require a state store that supports multi-item transactions. 
 
 Below are code examples that leverage Dapr SDKs for performing state transactions.
 
-{{< tabs Dotnet Java Python Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
+{{< tabs Dotnet Java Python Go Javascript "HTTP API (Bash)" "HTTP API (PowerShell)">}}
 
 {{% codetab %}}
 
@@ -887,6 +934,74 @@ To launch a Dapr sidecar for the above example application, run a command simila
 
 ```bash
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 -- python3 OrderProcessingService.py
+```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+
+```go
+// dependencies
+import (
+	"context"
+	"log"
+	"math/rand"
+	"strconv"
+	"time"
+
+	dapr "github.com/dapr/go-sdk/client"
+)
+
+// code
+func main() {
+	const STATE_STORE_NAME = "statestore"
+	rand.Seed(time.Now().UnixMicro())
+	for i := 0; i < 10; i++ {
+		orderId := rand.Intn(1000-1) + 1
+		client, err := dapr.NewClient()
+		if err != nil {
+			panic(err)
+		}
+		defer client.Close()
+		ctx := context.Background()
+		err = client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId)), nil)
+		if err != nil {
+			panic(err)
+		}
+		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_1", nil)
+		if err != nil {
+			panic(err)
+		}
+
+        ops := make([]*dapr.StateOperation, 0)
+
+        op1 := &dapr.StateOperation{
+            Type: dapr.StateOperationTypeUpsert,
+            Item: &dapr.SetStateItem{
+                Key:   "key1",
+                Value: []byte(data),
+            },
+        }
+        op2 := &dapr.StateOperation{
+            Type: dapr.StateOperationTypeDelete,
+            Item: &dapr.SetStateItem{
+                Key:   "key2",
+            },
+        }
+        ops = append(ops, op1, op2)
+        meta := map[string]string{}
+        err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
+
+		log.Println("Result after get:", string(result.Value))
+		time.Sleep(2 * time.Second)
+	}
+}
+```
+
+To launch a Dapr sidecar for the above example application, run a command similar to the following:
+
+```bash
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 go run OrderProcessingService.go
 ```
 
 {{% /codetab %}}
