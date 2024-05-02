@@ -207,9 +207,15 @@ For example, if installing using the example above, the RabbitMQ server client a
 
 ## Use topic exchange to route messages
 
-Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages.
-Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
-The routing key is defined by the `routingKey` metadata. For example, if an app is configured with a routing key `keyA`:
+Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages. In order to route messages using topic exchange, you must set the following metadata:
+
+- **`routingKey`:**  
+   Messages with a routing key are routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
+
+- **`queueName`:**  
+   If you don't set the `queueName`, only one queue is created, and all routing keys will route to that queue. This means all subscribers will bind to that queue, which won't give the desired results.
+
+For example, if an app is configured with a routing key `keyA` and `queueName` of `queue-A`:
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
@@ -223,6 +229,7 @@ spec:
   pubsubname: pubsub
   metadata:
     routingKey: keyA
+    queueName: queue-A
 ```
 
 It will receive messages with routing key `keyA`, and messages with other routing keys are not received.
