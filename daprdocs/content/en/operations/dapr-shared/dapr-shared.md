@@ -63,4 +63,4 @@ If you want to get started with Dapr Shared, you can easily create a new Dapr Sh
 ```
 helm install my-shared-instance oci://registry-1.docker.io/daprio/dapr-shared-chart --set shared.appId=<DAPR_APP_ID> --set shared.remoteURL=<REMOTE_URL> --set shared.remotePort=<REMOTE_PORT>
 ```
-
+## Next steps
