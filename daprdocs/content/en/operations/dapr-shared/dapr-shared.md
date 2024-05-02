@@ -7,7 +7,7 @@ description: "Learn more about using other deployment strategies for Dapr"
 
 ---
 
-By default, Dapr automatically inject a sidecar to enable the Dapr APIs for your applications, but sometimes this approach (using sidecars) might not be optimal for your use cases. 
+By default, Dapr automatically injects a sidecar to enable the Dapr APIs for your applications. However, using sidecars might not be optimal for your specific use case. 
 
 Dapr Shared enable differenet deployment strategies to create Dapr Applications using Kubernetes `Daemonset` or `Deployment`. 
 
