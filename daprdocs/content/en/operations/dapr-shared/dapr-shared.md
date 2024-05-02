@@ -9,7 +9,7 @@ description: "Learn more about using other deployment strategies for Dapr"
 
 By default, Dapr automatically injects a sidecar to enable the Dapr APIs for your applications. However, using sidecars might not be optimal for your specific use case. 
 
-Dapr Shared enable differenet deployment strategies to create Dapr Applications using Kubernetes `Daemonset` or `Deployment`. 
+Dapr Shared enables different deployment strategies to create Dapr applications using Kubernetes `Daemonset` or `Deployment`. 
 
 By running daprd as a Kubernetes `DaemonSet` resource, the daprd container will be running in each Kubernetes Node, reducing the network hops between the applications and Dapr. You can also choose to run Dapr Shared as a Kubernetes `Deployment`, in which case, the Kubernetes scheduler will decide in which node the Dapr Shared instance will run.
 
