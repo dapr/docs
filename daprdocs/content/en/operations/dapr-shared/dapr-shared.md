@@ -54,7 +54,7 @@ Kubernetes Deployments in the other hand, are installed once per cluster and the
 
 ## Getting Started with Dapr Shared
 
-{{% alert title="Install Dapr before using Dapr Shared" color="primary" %}}
+{{% alert title="Prerequisites" color="primary" %}}
 Before installing Dapr Shared, please ensure you have Dapr installed in your cluster.
 {{% /alert %}}
 
