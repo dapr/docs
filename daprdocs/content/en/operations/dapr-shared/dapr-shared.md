@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Different Deployment Strategies (Dapr Shared)"
+title: "Dapr Shared"
 linkTitle: "Dapr Shared"
 weight: 20000
 description: "Learn more about using other deployment strategies for Dapr"
