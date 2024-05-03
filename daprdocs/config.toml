@@ -105,37 +105,45 @@ id = "G-60C6Q1ETC1"
     lang = "en"
 
   [[module.mounts]]
-    source = "../translations/docs-zh/content/zh-hans"
+    source = "../translations/docs-zh/translated_content/zh_CN/docs"
     target = "content"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/contributing"
-    target = "content/contributing/docs-contrib/docs-templates"
+    source = "../translations/docs-zh/translated_content/zh_CN/contributing"
+    target = "content/contributing/sdk-contrib/"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_python"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_python"
     target = "content/developing-applications/sdks/python"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_php"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_php"
     target = "content/developing-applications/sdks/php"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_dotnet"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_dotnet"
     target = "content/developing-applications/sdks/dotnet"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_java"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_java"
     target = "content/developing-applications/sdks/java"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_go"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_go"
     target = "content/developing-applications/sdks/go"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_js"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_js"
     target = "content/developing-applications/sdks/js"
     lang = "zh-hans"       
+  [[module.mounts]]
+    source = "../translations/docs-zh/translated_content/zh_CN/pluggable-components/dotnet"
+    target = "content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-dotnet"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/translated_content/zh_CN/pluggable-components/go"
+    target = "content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-go"
+    lang = "zh-hans"  
 
 # Markdown Engine - Allow inline html
 [markup]
@@ -180,20 +188,23 @@ offlineSearch = false
 github_repo = "https://github.com/dapr/docs"
 github_project_repo = "https://github.com/dapr/dapr"
 github_subdir = "daprdocs"
-github_branch = "v1.12"
+github_branch = "v1.13"
 
 # Versioning
-version_menu = "v1.12 (latest)"
-version = "v1.12"
+version_menu = "v1.13 (latest)"
+version = "v1.13"
 archived_version = false
 url_latest_version = "https://docs.dapr.io"
 
 [[params.versions]]
-  version = "v1.13 (preview)"
-  url = "https://v1-13.docs.dapr.io"
+  version = "v1.14 (preview)"
+  url = "https://v1-14.docs.dapr.io"
 [[params.versions]]
-  version = "v1.12 (latest)"
+  version = "v1.13 (latest)"
   url = "#"
+[[params.versions]]
+  version = "v1.12"
+  url = "https://v1-12.docs.dapr.io"
 [[params.versions]]
   version = "v1.11"
   url = "https://v1-11.docs.dapr.io"
@@ -209,18 +220,6 @@ url_latest_version = "https://docs.dapr.io"
 [[params.versions]]
   version = "v1.7"
   url = "https://v1-7.docs.dapr.io"
-[[params.versions]]
-  version = "v1.6"
-  url = "https://v1-6.docs.dapr.io"
-[[params.versions]]
-  version = "v1.5"
-  url = "https://v1-5.docs.dapr.io"
-[[params.versions]]
-  version = "v1.4"
-  url = "https://v1-4.docs.dapr.io"
-[[params.versions]]
-  version = "v1.3"
-  url = "https://v1-3.docs.dapr.io"
 
 # UI Customization
 [params.ui]

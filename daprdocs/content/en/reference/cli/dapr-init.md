@@ -162,6 +162,12 @@ dapr uninstall --all --network mynet
 dapr init -k
 ```
 
+Using the `--dev` flag initializes Dapr in dev mode, which includes Zipkin and Redis.
+```bash
+dapr init -k --dev
+```
+
+
 You can wait for the installation to complete its deployment with the `--wait` flag.
 The default timeout is 300s (5 min), but can be customized with the `--timeout` flag.
 
