@@ -248,11 +248,11 @@ func TaskChainWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		return nil, err
 	}
 	var result2 int
-	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result2); err != nil {
+	if err := ctx.CallActivity(Step2, workflow.ActivityInput(input)).Await(&result2); err != nil {
 		return nil, err
 	}
 	var result3 int
-	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result3); err != nil {
+	if err := ctx.CallActivity(Step3, workflow.ActivityInput(input)).Await(&result3); err != nil {
 		return nil, err
 	}
 	return []int{result1, result2, result3}, nil

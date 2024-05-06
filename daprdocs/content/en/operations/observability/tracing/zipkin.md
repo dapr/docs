@@ -4,7 +4,6 @@ title: "How-To: Set up Zipkin for distributed tracing"
 linkTitle: "Zipkin"
 weight: 4000
 description: "Set up Zipkin for distributed tracing"
-type: docs
 ---
 
 ## Configure self hosted mode
