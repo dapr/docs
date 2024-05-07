@@ -685,7 +685,7 @@ func main() {
 			panic(err)
 		}
 		keys := []string{"key1", "key2", "key3"}
-        items, err := client.GetBulkState(ctx, store, keys, nil, 100)
+        items, err := client.GetBulkState(ctx, STATE_STORE_NAME, keys, nil, 100)
 
 		log.Println("Result after get:", string(result.Value))
 		time.Sleep(2 * time.Second)
@@ -942,6 +942,8 @@ dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-g
 
 ```go
 // dependencies
+package main
+
 import (
 	"context"
 	"log"
@@ -974,18 +976,21 @@ func main() {
 		}
 
         ops := make([]*dapr.StateOperation, 0)
+        data1 := "data1"
+        data2 := "data2"
 
         op1 := &dapr.StateOperation{
             Type: dapr.StateOperationTypeUpsert,
             Item: &dapr.SetStateItem{
                 Key:   "key1",
-                Value: []byte(data),
+                Value: []byte(data1),
             },
         }
         op2 := &dapr.StateOperation{
             Type: dapr.StateOperationTypeDelete,
             Item: &dapr.SetStateItem{
                 Key:   "key2",
+                Value: []byte(data2),
             },
         }
         ops = append(ops, op1, op2)
