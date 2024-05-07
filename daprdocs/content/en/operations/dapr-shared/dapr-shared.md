@@ -42,7 +42,7 @@ With Kubernetes `DaemonSet`, you can define workloads that need to be deployed o
 <img src="/images/dapr-shared/daemonset.png" width=800 style="padding-bottom:15px;">
 
 {{% alert title="Dapr Shared DaemonSet resources" color="primary" %}}
-Note that DaemonSet, because it installs one instance per node, will consume more overall resources in your cluster.
+Since `DaemonSet` installs one instance per node, it will consume more overall resources in your cluster.
 {{% /alert %}}
 
 
