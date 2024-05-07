@@ -37,7 +37,7 @@ No matter which strategy you choose, it is important to understand that in most 
 
 ### `DeamonSet` strategy
 
-Kubernetes `DaemonSets` allows you to define workloads that need to be deployed once per node in the cluster. This enables workloads that are running in the same node to communicate with local daprd APIs, no matter where the `Kubernetes Scheduler` schedules your workload.
+With Kubernetes `DaemonSet`, you can define workloads that need to be deployed once per node in the cluster. This enables workloads that are running in the same node to communicate with local daprd APIs, no matter where the Kubernetes `Scheduler` schedules your workload.
 
 <img src="/images/dapr-shared/daemonset.png" width=800 style="padding-bottom:15px;">
 
