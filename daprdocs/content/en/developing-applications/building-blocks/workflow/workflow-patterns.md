@@ -595,28 +595,6 @@ It's possible to go further and limit the degree of concurrency using simple, la
 {{% codetab %}}
 <!-- .NET -->
 ```csharp
-public static class TaskExtensions
-{
-  public static async Task<IEnumerable<T>> WhenAllWithLimitAsync<T>(this IEnumerable<Task<T>>> tasks, string activityName, int maxDegreeOfParallelism)
-  {
-    var results = new List<T>();
-    var inFlight = new HashSet<Task<T>>();
-    foreach (var task in tasks)
-    {
-      if (inFlight.Count > maxParallelism)
-      {
-        var finishedTask = await Task.WhenAny(inFlight);
-        results.Add(finishedTask.Result);
-        inFlight.Remove(finishedTask);
-      }
-
-      inFlight.Add(context.CallActivityAsync<int>(task))
-    }
-
-    //Wait for all the remaining tasks to complete
-    await Task.WhenAll(inFlight);
-  }
-}
 
 //Revisiting the earlier example...
 // Get a list of N work items to process in parallel.
