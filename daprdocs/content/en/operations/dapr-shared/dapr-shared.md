@@ -35,7 +35,7 @@ Dapr Shared was created exactly for this kind of scenario, extending the Dapr si
 No matter which strategy you choose, it is important to understand that in most use cases you will have one instance of Dapr Shared (Helm Release) per service (app-id). This means that if you have an application composed by three microservices, each service is recommended to have it's own Dapr Shared instance. Check the step-by-step tutorial using Kubernetes KinD here, to see an application using Dapr Shared.
 
 
-### Dapr Shared: DeamonSet strategy
+### `DeamonSet` strategy
 
 Kubernetes `DaemonSets` allows you to define workloads that need to be deployed once per node in the cluster. This enables workloads that are running in the same node to communicate with local daprd APIs, no matter where the `Kubernetes Scheduler` schedules your workload.
 
