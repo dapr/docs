@@ -995,7 +995,7 @@ func main() {
         }
         ops = append(ops, op1, op2)
         meta := map[string]string{}
-        err := testClient.ExecuteStateTransaction(ctx, store, meta, ops)
+        err = client.ExecuteStateTransaction(ctx, STATE_STORE_NAME, meta, ops)
 
 		log.Println("Result after get:", string(result.Value))
 		time.Sleep(2 * time.Second)
