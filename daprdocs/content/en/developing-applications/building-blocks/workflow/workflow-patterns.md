@@ -614,6 +614,7 @@ foreach(var workItem in workBatch)
 
   inFlightTasks.Add(context.CallActivityAsync<int>("ProcessWorkItem", workItem));
 }
+results.AddRange(await Task.WhenAll(inFlightTasks));
 
 var sum = results.Sum(t => t);
 await context.CallActivityAsync("PostResults", sum);
