@@ -597,7 +597,7 @@ It's possible to go further and limit the degree of concurrency using simple, la
 ```csharp
 public static class TaskExtensions
 {
-  public static async Task<IEnumerable<T>> WhenAllWithLimitAsync<T>(this IEnumerable<Task<T>>> tasks, int maxDegreeOfParallelism)
+  public static async Task<IEnumerable<T>> WhenAllWithLimitAsync<T>(this IEnumerable<Task<T>>> tasks, string activityName, int maxDegreeOfParallelism)
   {
     var results = new List<T>();
     var inFlight = new HashSet<Task<T>>();
@@ -610,7 +610,7 @@ public static class TaskExtensions
         inFlight.Remove(finishedTask);
       }
 
-      inFlight.Add(context.CallActivityAsync(task))
+      inFlight.Add(context.CallActivityAsync<int>(task))
     }
 
     //Wait for all the remaining tasks to complete
@@ -622,18 +622,22 @@ public static class TaskExtensions
 // Get a list of N work items to process in parallel.
 object[] workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
 
-// Schedule the parallel tasks, but don't wait for them to complete yet
-var parallelTasks = new List<Task<int>>();
-foreach (var workItem in workBatch)
+const int MaxParallelism = 5;
+var results = new List<int>();
+var inFlightTasks = new HashSet<Task<int>>();
+foreach(var workItem in workBatch)
 {
-  var task = context.CallActivityAsync<int>("ProcessWorkItem", workItem);
-  parallelTasks.Add(task);
+  if (inFlightTasks.Count > MaxParallelism)
+  {
+    var finishedTask = await Task.WhenAny(inFlightTasks);
+    results.Add(finishedTask.Result);
+    inFlightTasks.Remove(finishedTask);
+  }
+
+  inFlightTasks.Add(context.CallActivityAsync<int>("ProcessWorkItem", workItem));
 }
 
-// This is where we diverge from the previous example and use our new extension method above to limit concurrency to 5 tasks at a time
-var result = await Task.WhenAllWithLimitAsync(parallelTasks, 5);
-
-var sum = result.Sum(t => t);
+var sum = results.Sum(t => t);
 await context.CallActivityAsync("PostResults", sum);
 ```
 
