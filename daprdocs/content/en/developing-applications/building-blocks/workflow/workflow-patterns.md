@@ -605,7 +605,7 @@ var results = new List<int>();
 var inFlightTasks = new HashSet<Task<int>>();
 foreach(var workItem in workBatch)
 {
-  if (inFlightTasks.Count > MaxParallelism)
+  if (inFlightTasks.Count >= MaxParallelism)
   {
     var finishedTask = await Task.WhenAny(inFlightTasks);
     results.Add(finishedTask.Result);
