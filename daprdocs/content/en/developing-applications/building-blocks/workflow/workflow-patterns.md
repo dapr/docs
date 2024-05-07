@@ -588,7 +588,7 @@ The key takeaways from this example are:
 
 Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only 40 complete before the process crashes, the workflow restarts itself automatically and only schedules the remaining 60 tasks.
 
-It's possible to go further and limit the degree of concurrency using simple, language-specific constructs.
+It's possible to go further and limit the degree of concurrency using simple, language-specific constructs. The sample code below illustrates how to restrict the degree of fan-out to just 5 concurrent activity executions:
 
 {{< tabs ".NET" >}}
 
