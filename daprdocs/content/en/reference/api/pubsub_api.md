@@ -177,7 +177,14 @@ Example:
   {
     "pubsubname": "pubsub",
     "topic": "newOrder",
-    "route": "/orders",
+    "route": {
+      "rules": [
+        {
+          "match": "event.type == order",
+          "path": "/orders"
+        }
+      ]
+    },
     "metadata": {
       "rawPayload": "true"
     }
