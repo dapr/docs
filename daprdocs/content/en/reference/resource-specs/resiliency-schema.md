@@ -60,19 +60,13 @@ targets: # Required
 | policies | Y | The configuration of resiliency policies, including: <br><ul><li>`timeouts`</li><li>`retries`</li><li>`circuitBreakers`</li></ul> <br> [See more examples with all of the built-in policies]({{< ref policies.md >}}) | timeout: `general`<br>retry: `retryForever`<br>circuit breaker: `simpleCB` |
 | targets | Y | The configuration for the applications, actors, or components that use the resiliency policies. <br>[See more examples in the resiliency targets guide]({{< ref targets.md >}})  | `apps` <br>`components`<br>`actors` |
 
-## Recommended policy values
+## Component-specific retry policies
 
-| Resiliency outbound policy | Recommended value |
-|----------------------------|-------------------|
-| Timeouts |  | 
-| Retries |  | 
-| Circuit breakers |  | 
+Some components have a component-specific retries, built into either:  
+- The SDK used by the component, or 
+- The service that a component interacts with. 
 
-| Resiliency inbound policy | Recommended value |
-|---------------------------|-------------------|
-| Timeouts |  | 
-| Retries |  | 
-| Circuit breakers |  | 
+In case the component you're using has component-specific retries default, these are considered first in preference to the Dapr resiliency policy.
 
 ## Related links
 [Learn more about resiliency policies and targets]({{< ref resiliency-overview.md >}})
