@@ -52,6 +52,12 @@ You would use Dapr Workflow when you need to define and orchestrate complex work
 
 [Learn more about Dapr Workflow and how to use workflows in your application.]({{< ref workflow-overview.md >}})
 
+## Actor types and actor IDs
+
+Actors are uniquely defined as an instance of an actor type, similar to how, in .NET, an object is an instance of a class. For example, you might have an actor type that implements the functionality of a calculator. There could be many actors of that type distributed across various nodes in a cluster.
+
+Each actor is uniquely identified by an actor ID.
+
 ## Features
 
 ### Actor lifetime
