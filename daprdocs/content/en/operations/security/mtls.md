@@ -14,7 +14,7 @@ For detailed information on mTLS, read the [security concepts section]({{< ref "
 
 If custom certificates have not been provided, Dapr automatically creates and persist self-signed certs valid for one year.
 In Kubernetes, the certs are persisted to a secret that resides in the namespace of the Dapr system pods, accessible only to them.
-In self hosted mode, the certs are persisted to disk.
+In self-hosted mode, the certs are persisted to disk.
 
 ## Control plane Sentry service configuration
 The mTLS settings reside in a Dapr control plane configuration file. For example when you deploy the Dapr control plane to Kubernetes this configuration file is automatically created and then you can edit this. The following file shows the available settings for mTLS in a configuration resource, deployed in the `daprsystem` namespace:
@@ -32,7 +32,7 @@ spec:
     allowedClockSkew: "15m"
 ```
 
-The file here shows the default `daprsystem` configuration settings. The examples below show you how to change and apply this configuration to the control plane Sentry service either in Kubernetes and self hosted modes.
+The file here shows the default `daprsystem` configuration settings. The examples below show you how to change and apply this configuration to the control plane Sentry service either in Kubernetes and self-hosted modes.
 
 ## Kubernetes
 
@@ -491,3 +491,67 @@ Watch this [video](https://www.youtube.com/watch?v=Hkcx9kBDrAc&feature=youtu.be&
 <div class="embed-responsive embed-responsive-16by9">
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Hkcx9kBDrAc?start=1400"></iframe>
 </div>
+
+## Sentry Token Validators
+
+Tokens are often used for authentication and authorization purposes.
+Token validators are components responsible for verifying the validity and authenticity of these tokens.
+For example in Kubernetes environments, a common approach to token validation is through the Kubernetes bound service account mechanism.
+This validator checks bound service account tokens against Kubernetes to ensure their legitimacy.
+
+Sentry service can be configured to:
+- Enable extra token validators beyond the Kubernetes bound Service Account validator
+- Replace the `insecure` validator enabled by default in self hosted mode
+
+Sentry token validators are used for joining extra non-Kubernetes clients to the Dapr cluster running in Kubernetes mode, or replace the insecure "allow all" validator in self hosted mode to enable proper identity validation.
+It is not expected that you will need to configure a token validator unless you are using an exotic deployment scenario.
+
+> The only token validator currently supported is the `jwks` validator.
+
+### JWKS
+
+The `jwks` validator enables Sentry service to validate JWT tokens using a JWKS endpoint.
+The contents of the token _must_ contain the `sub` claim which matches the SPIFFE identity of the Dapr client, in the same Dapr format `spiffe://<trust-domain>/ns/<namespace>/<app-id>`.
+The audience of the token must by the SPIFFE ID of the Sentry identity, For example, `spiffe://cluster.local/ns/dapr-system/dapr-sentry`.
+Other basic JWT rules regarding signature, expiry etc. apply.
+
+The `jwks` validator can accept either a remote source to fetch the public key list or a static array for public keys.
+
+The configuration below enables the `jwks` token validator with a remote source.
+This remote source uses HTTPS so the `caCertificate` field contains the root of trust for the remote source.
+
+```yaml
+kind: Configuration
+apiVersion: dapr.io/v1alpha1
+metadata:
+  name: sentryconfig
+spec:
+  mtls:
+    enabled: true
+    tokenValidators:
+      - name: jwks
+        options:
+          minRefreshInterval: 2m
+          requestTimeout: 1m
+          source: "https://localhost:1234/"
+          caCertificate: "<optional ca certificate bundle string>"
+```
+
+The configuration below enables the `jwks` token validator with a static array of public keys.
+
+```yaml
+kind: Configuration
+apiVersion: dapr.io/v1alpha1
+metadata:
+  name: sentryconfig
+spec:
+  mtls:
+    enabled: true
+    tokenValidators:
+      - name: jwks
+        options:
+          minRefreshInterval: 2m
+          requestTimeout: 1m
+          source: |
+            {"keys":[ "12345.." ]}
+```

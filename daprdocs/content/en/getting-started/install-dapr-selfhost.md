@@ -27,7 +27,7 @@ To initialize Dapr in your local or remote **Kubernetes** cluster for developmen
 {{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
-The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{< ref self-hosted-no-docker.md >}})), the next steps in this guide assume the recommended Docker development environment.
+The recommended development environment requires [Docker](https://docs.docker.com/install/). While you can [initialize Dapr without a dependency on Docker]({{< ref self-hosted-no-docker.md >}}), the next steps in this guide assume the recommended Docker development environment.
 
 You can also install [Podman](https://podman.io/) in place of Docker. Read more about [initializing Dapr using Podman]({{< ref dapr-init.md >}}).
 {{% /alert %}}
@@ -70,7 +70,7 @@ dapr init
 
 **If you are installing on Mac OS Silicon with Docker,** you may need to perform the following workaround to enable `dapr init` to talk to Docker without using Kubernetes.
 1. Navigate to **Docker Desktop** > **Settings** > **Advanced**.
-1. Select the **Enable default Docker socket** checkbox.
+1. Select the **Allow the default Docker socket to be used (requires password)** checkbox.
 
 {{% /codetab %}}
 
@@ -86,6 +86,7 @@ dapr init
 
 {{< /tabs >}}
 
+[See the troubleshooting guide if you encounter any error messages regarding Docker not being installed or running.]({{< ref "common_issues.md#dapr-cant-connect-to-docker-when-installing-the-dapr-cli" >}})
 
 ### Step 3: Verify Dapr version
 
