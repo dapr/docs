@@ -90,7 +90,7 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 You can run a single MongoDB instance locally using Docker:
 
 ```sh
-docker run --name some-mongo -d mongo
+docker run --name some-mongo -d -p 27017:27017 mongo
 ```
 
 You can then interact with the server at `localhost:27017`. If you do not specify a `databaseName` value in your component definition, make sure to create a database named `daprStore`.
