@@ -74,6 +74,9 @@ spec:
     value: <int> # Optional
   - name: queryIndexes
     value: <string> # Optional
+  # Uncomment this if you wish to use Redis as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -119,6 +122,7 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 | ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600`
 | queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
+| actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup Redis
 
