@@ -54,7 +54,7 @@ You would use Dapr Workflow when you need to define and orchestrate complex work
 
 ## Actor types and actor IDs
 
-Actors are uniquely defined as an instance of an actor type, similar to how, in .NET, an object is an instance of a class. For example, you might have an actor type that implements the functionality of a calculator. There could be many actors of that type distributed across various nodes in a cluster.
+Actors are uniquely defined as an instance of an actor type, similar to how an object is an instance of a class. For example, you might have an actor type that implements the functionality of a calculator. There could be many actors of that type distributed across various nodes in a cluster.
 
 Each actor is uniquely identified by an actor ID. An actor ID can be _any_ string value you choose. If you do not provide an actor ID, Dapr generates a random numerical string for you as an ID in the Dapr SDKs.
 
