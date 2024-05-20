@@ -686,9 +686,12 @@ func main() {
 		}
 		keys := []string{"key1", "key2", "key3"}
         items, err := client.GetBulkState(ctx, STATE_STORE_NAME, keys, nil, 100)
-
-		log.Println("Result after get:", string(result.Value))
-		time.Sleep(2 * time.Second)
+		if err != nil {
+			panic(err)
+		}
+		for _, item := range items {
+			log.Println("Item from GetBulkState:", string(item.Value))
+		}
 	}
 } 
 ```
