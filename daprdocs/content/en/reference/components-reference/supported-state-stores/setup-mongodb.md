@@ -41,6 +41,10 @@ spec:
     value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "5s"
   - name: params
     value: <REPLACE-WITH-ADDITIONAL-PARAMETERS> # Optional. Example: "?authSource=daprStore&ssl=true"
+  # Uncomment this if you wish to use MongoDB as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
+
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -72,6 +76,7 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 | readConcern        | N        | The read concern to use  | `"majority"`, `"local"`,`"available"`, `"linearizable"`, `"snapshot"`
 | operationTimeout   | N        | The timeout for the operation. Defaults to `"5s"` | `"5s"`
 | params             | N<sup>2</sup> | Additional parameters to use | `"?authSource=daprStore&ssl=true"`
+| actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 > <sup>[1]</sup> The `server` and `host` fields are mutually exclusive. If neither or both are set, Dapr returns an error.
 
@@ -85,7 +90,7 @@ If you wish to use MongoDB as an actor store, add this metadata option to your C
 You can run a single MongoDB instance locally using Docker:
 
 ```sh
-docker run --name some-mongo -d mongo
+docker run --name some-mongo -d -p 27017:27017 mongo
 ```
 
 You can then interact with the server at `localhost:27017`. If you do not specify a `databaseName` value in your component definition, make sure to create a database named `daprStore`.
