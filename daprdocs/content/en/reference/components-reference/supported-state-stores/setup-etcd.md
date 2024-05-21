@@ -34,6 +34,9 @@ spec:
     value: <CERT> # Optional. Required if tlsEnable is `true`.
   - name: key
     value: <KEY> # Optional. Required if tlsEnable is `true`.
+  # Uncomment this if you wish to use Etcd as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -59,6 +62,7 @@ If you are using `v1`, you should continue to use `v1` until you create a new Et
 | `ca`               | N        | CA certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIC9TCCA..."`
 | `cert`             | N        | TLS certificate for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN CERTIFICATE-----\nMIIDUTCC..."`
 | `key`              | N        | TLS key for connecting to Etcd, PEM-encoded. Can be `secretKeyRef` to use a [secret reference]({{< ref component-secrets.md >}}).| `"-----BEGIN PRIVATE KEY-----\nMIIEpAIB..."`
+| `actorStateStore`    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup Etcd
 
