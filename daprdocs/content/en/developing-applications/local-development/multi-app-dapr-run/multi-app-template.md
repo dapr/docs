@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "q"
+title: "How to: Use the Multi-App Run template file"
 linkTitle: "How to: Use the Multi-App Run template"
 weight: 2000
 description: Unpack the Multi-App Run template file and its properties
