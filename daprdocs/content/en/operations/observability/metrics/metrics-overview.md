@@ -80,6 +80,14 @@ The default value of `spec.metrics.http.increasedCardinality` is `true` in Dapr 
 
 Setting `spec.metrics.http.increasedCardinality` to `false` is **recommended** to all Dapr users, to reduce resource consumption. The pre-1.13 behavior, which is used when the option is `true`, is considered legacy and is only maintained for users who have special requirements around backwards-compatibility.
 
+## HTTP Metrics Path Normalization 
+
+Path normalization allows you to manage and control the cardinality of HTTP metrics in Dapr.
+
+This new configuration is opt-in and can be enabled with a new option for the Dapr Configuration resource `spec.metrics.http.pathNormalization.enabled`. When set to `true`, it enables path normalization, which standardizes specified paths for both ingress and egress paths. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.
+
+When combined with the `increasedCardinality` flag set to `false` (default in 1.14), non-matched paths are transformed into a catch-all bucket to control and limit cardinality, preventing unbounded path growth. Conversely, when `increasedCardinality` is `true`, non-matched paths are passed through as they normally would be, allowing for potentially higher cardinality but preserving the original path data.
+
 ## Transform metrics with regular expressions
 
 You can set regular expressions for every metric exposed by the Dapr sidecar to "transform" their values. [See a list of all Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).

@@ -38,6 +38,12 @@ spec:
             regex: {}
     http:
       increasedCardinality: <TRUE-OR-FALSE>
+      pathNormalization: 
+        enabled: <TRUE-OR-FALSE>
+        ingress:
+        - <PATH-A>
+        egress:
+        - <PATH-B>
   httpPipeline: # for incoming http calls
     handlers:
       - name: <HANDLER-NAME>
