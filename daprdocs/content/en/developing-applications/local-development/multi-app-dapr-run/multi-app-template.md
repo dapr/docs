@@ -42,7 +42,7 @@ dapr run -f <dir_path>
 <!--kubernetes-->
 
 ```cmd
-dapr run -f -k <dir_path>
+dapr run -f <dir_path> -k 
 ```
 {{% /codetab %}}
 
@@ -67,7 +67,7 @@ dapr run -f ./path/to/<your-preferred-file-name>.yaml
 <!--kubernetes-->
 
 ```cmd
-dapr run -f -k ./path/to/<your-preferred-file-name>.yaml
+dapr run -f ./path/to/<your-preferred-file-name>.yaml -k 
 ```
 {{% /codetab %}}
 
@@ -77,9 +77,26 @@ dapr run -f -k ./path/to/<your-preferred-file-name>.yaml
 
 Once the multi-app template is running, you can view the started applications with the following command:
 
+{{< tabs Self-hosted Kubernetes>}}
+
+{{% codetab %}}
+<!--selfhosted-->
+
 ```cmd
 dapr list
 ```
+
+{{% /codetab %}}
+
+{{% codetab %}}
+<!--kubernetes-->
+
+```cmd
+dapr list -k 
+```
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ## Stop the multi-app template
 
@@ -109,12 +126,12 @@ dapr stop -f ./path/to/<your-preferred-file-name>.yaml
 ```cmd
 # the template file needs to be called `dapr.yaml` by default if a directory path is given
 
-dapr stop -f -k
+dapr stop -f <dir_path> -k
 ```
 or:
 
 ```cmd
-dapr stop -f -k ./path/to/<your-preferred-file-name>.yaml
+dapr stop -f ./path/to/<your-preferred-file-name>.yaml -k 
 ```
 
 {{% /codetab %}}
