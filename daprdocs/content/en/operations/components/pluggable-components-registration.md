@@ -52,7 +52,7 @@ Since you are running Dapr in the same host as the component, verify that this f
 
 ### Component discovery and multiplexing
 
-A pluggable component accessible through a [Unix Domain Socket][UDS] (UDS) can host multiple distinct component APIs . During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
+A pluggable component accessible through a [Unix Domain Socket][UDS] (UDS) can host multiple distinct component APIs. During the components' initial discovery process, Dapr uses reflection to enumerate all the component APIs behind a UDS. The `my-component` pluggable component in the example above can contain both state store (`state`) and a pub/sub (`pubsub`) component APIs.
 
 Typically, a pluggable component implements a single component API for packaging and deployment. However, at the expense of increasing its dependencies and broadening its security attack surface, a pluggable component can have multiple component APIs implemented. This could be done to ease the deployment and monitoring burden. Best practice for isolation, fault tolerance, and security is a single component API implementation for each pluggable component.
 
