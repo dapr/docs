@@ -87,8 +87,9 @@ For more information, read [about the subscriptions in Subscription Methods]({{<
 ### Reloading topic subscriptions
 
 To reload topic subscriptions that are defined programmatically or declaratively, the Dapr sidecar needs to be restarted.
-The Dapr sidecar can be made to dynamically reload updated declarative topic subscriptions without restarting by enabling the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
+The Dapr sidecar can be made to dynamically reload changed declarative topic subscriptions without restarting by enabling the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
 Hot reloading of topic subscriptions is currently a preview feature.
+In-flight messages are unaffected when reloading a subscription.
 
 ### Message routing
 
