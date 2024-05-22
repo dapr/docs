@@ -41,7 +41,7 @@ Applications can also use the secrets API to access secrets from a Kubernetes se
 - The Helm defaults, or
 - `dapr init -k`
 
-If you are using another secret store, you can disable (not configure) the Dapr Kubernetes secret store by setting `disable-builtin-k8s-secret-store` to `true` through the Helm settings. The default is `false`.
+If you are using another secret store, you can disable (not configure) the Dapr Kubernetes secret store by adding the annotation `dapr.io/disable-builtin-k8s-secret-store: "true"` to the deployment.yaml file. The default is `false`.
 
 In the example below, the application retrieves the same secret "mysecret" from a Kubernetes secret store.
 

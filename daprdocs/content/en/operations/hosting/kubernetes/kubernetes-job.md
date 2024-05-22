@@ -4,7 +4,6 @@ title: "Running Dapr with a Kubernetes Job"
 linkTitle: "Kubernetes Jobs"
 weight: 70000
 description: "Use Dapr API in a Kubernetes Job context"
-type: docs
 ---
 
 The Dapr sidecar is designed to be a long running process. In the context of a [Kubernetes Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) this behavior can block your job completion.
