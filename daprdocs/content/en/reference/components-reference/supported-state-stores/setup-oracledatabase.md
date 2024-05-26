@@ -28,6 +28,9 @@ spec:
     value: "<FULL PATH TO DIRECTORY WITH ORACLE WALLET CONTENTS >"  # Optional, no default
   - name: tableName
     value: "<NAME OF DATABASE TABLE TO STORE STATE IN >" # Optional, defaults to STATE
+  # Uncomment this if you wish to use Oracle Database as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -40,6 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | connectionString   | Y        | The connection string for Oracle Database | `"oracle://user/password@host:port/servicename"` for example `"oracle://demo:demo@localhost:1521/xe"` or for Autonomous Database `"oracle://states_schema:State12345pw@adb.us-ashburn-1.oraclecloud.com:1522/k8j2agsqjsw_daprdb_low.adb.oraclecloud.com"`
 | oracleWalletLocation    | N         | Location of the contents of an Oracle Wallet file (required to connect to Autonomous Database on OCI)| `"/home/app/state/Wallet_daprDB/"`
 | tableName    | N         | Name of the database table in which this instance of the state store records the data default `"STATE"`| `"MY_APP_STATE_STORE"`
+| actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## What Happens at Runtime?
 When the state store component initializes, it connects to the Oracle Database and checks if a table with the name specified with `tableName` exists. If it does not, it creates this table (with columns Key, Value, Binary_YN, ETag, Creation_Time, Update_Time, Expiration_time). 
