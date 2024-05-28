@@ -177,7 +177,7 @@ Example:
   {
     "pubsubname": "pubsub",
     "topic": "newOrder",
-    "route": {
+    "routes": {
       "rules": [
         {
           "match": "event.type == order",
