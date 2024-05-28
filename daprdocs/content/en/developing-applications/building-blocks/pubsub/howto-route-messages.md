@@ -40,7 +40,7 @@ scopes:
 
 In the programmatic approach, the `routes` structure is returned instead of `route`. The JSON structure matches the declarative YAML:
 
-{{< tabs Python Node "C#" Go PHP>}}
+{{< tabs Python JavaScript ".NET" Go PHP>}}
 
 {{% codetab %}}
 ```python
