@@ -21,7 +21,7 @@ The examples below demonstrate pub/sub messaging between a `checkout` app and an
 
 {{% alert title="Note" color="primary" %}}
 This feature is currently in preview.
-Dapr can be made to "hot reload" declarative subscriptions, whereby updates are picked up automatically without needing a restart..
+Dapr can be made to "hot reload" declarative subscriptions, whereby updates are picked up automatically without needing a restart.
 This is enabled by via the [`HotReload` feature gate]({{< ref "support-preview-features.md" >}}).
 To prevent reprocessing or loss of unprocessed messages, in-flight messages between Dapr and your application are unaffected during hot reload events.
 {{% /alert %}}
