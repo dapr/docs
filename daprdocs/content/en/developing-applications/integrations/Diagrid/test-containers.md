@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "How to: Integrate using Diagrid's Testcontainers Dapr Module"
-linkTitle: "Diagrid Testcontainers"
+title: "How to: Integrate using Testcontainers Dapr Module"
+linkTitle: "Dapr Testcontainers"
 weight: 3000
 description: "Use the Dapr Testcontainer module from your Java application"
 ---
 
-You can use the Testcontainers Dapr Module provided by Diagrid to set up Dapr locally in your Java applications. Simply add the following dependency to your Mave project:
+You can use the Testcontainers Dapr Module provided by Diagrid to set up Dapr locally for your Java applications. Simply add the following dependency to your Maven project:
 
 ```xml
 <dependency>
