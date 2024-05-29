@@ -13,7 +13,7 @@ We welcome community members giving presentations on Dapr and spreading the word
 {{% alert color="primary" %}}
 If you're using the PowerPoint template with MacOS, please install the Space Grotesk font to ensure the text is rendered properly:
 ```sh
-brew install --cask homebrew/cask-fonts/font-space-grotesk
+brew install --cask font-space-grotesk
 ```
 {{% /alert %}}
 
