@@ -54,7 +54,7 @@ Each of these building block APIs is independent, meaning that you can use any n
 | [**Distributed lock**]({{< ref "distributed-lock-api-overview.md" >}})  | The distributed lock API enables your application to acquire a lock for any resource that gives it exclusive access until either the lock is released by the application, or a lease timeout occurs. 
 | [**Workflows**]({{< ref "workflow-overview.md" >}}) | The workflow API can be combined with other Dapr building blocks to define long running, persistent processes or data flows that span multiple microservices using Dapr workflows or workflow components. 
 | [**Cryptography**]({{< ref "cryptography-overview.md" >}}) | The cryptography API provides an abstraction layer on top of security infrastructure such as key vaults. It contains APIs that allow you to perform cryptographic operations, such as encrypting and decrypting messages, without exposing keys to your applications.
-| [**Distributed Scheduler**]({{< ref "distributed-scheduler-overview.md" >}}) | The distributed scheduler API is a scalable way to schedule and orchestrate jobs across a distributed computing environment at specific times or intervals.
+| [**Scheduler**]({{< ref "scheduler-overview.md" >}}) | The scheduler API is a scalable way to schedule and orchestrate jobs across a distributed computing environment at specific times or intervals.
 
 ### Cross-cutting APIs
 

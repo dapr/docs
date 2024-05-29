@@ -3,7 +3,7 @@ type: docs
 title: "How-To: Set up a scheduler"
 linkTitle: "How-To: Set up a scheduler"
 weight: 2000
-description: "Learn how to use the distributed scheduler API to schedule jobs"
+description: "Learn how to use the scheduler API to schedule jobs"
 ---
 
 <!-- Introductory paragraph  

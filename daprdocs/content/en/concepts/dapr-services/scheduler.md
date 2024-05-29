@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Dapr Distributed Scheduler control plane service overview"
-linkTitle: "Distributed Scheduler"
-description: "Overview of the Dapr distributed scheduler process"
+title: "Dapr Scheduler control plane service overview"
+linkTitle: "Scheduler"
+description: "Overview of the Dapr scheduler process"
 ---
 
 Need.
