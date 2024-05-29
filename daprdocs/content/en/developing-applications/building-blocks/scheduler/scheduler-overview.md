@@ -16,7 +16,7 @@ The Scheduler API works as an orchestrator for scheduling jobs in the future,  e
 
 The Scheduler consists of two parts that work together to seamlessly schedule jobs across all of Dapr's API building blocks:
 - The Scheduler building block
-- [The Scheduler control plane service]({{< ref scheduler.md >}})
+- [The Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 
 This article covers the Scheduler API building block.
 
@@ -55,5 +55,5 @@ You can try out the Scheduler building block directly in your application. After
 ## Next steps
 
 - [Learn how to use the scheduler in your environment]({{< ref howto-use-scheduler.md >}})
-- [Learn more about the Scheduler control plane service]({{< ref scheduler.md >}})
+- [Learn more about the Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 - [Scheduler API reference]({{< ref scheduler_api.md >}})
