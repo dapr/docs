@@ -184,7 +184,7 @@ Example:
           "path": "/orders"
         }
       ]
-      default: /otherorders
+      "default" : "/otherorders"
     },
     "metadata": {
       "rawPayload": "true"
