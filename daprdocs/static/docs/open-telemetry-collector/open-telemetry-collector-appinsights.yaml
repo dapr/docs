@@ -17,8 +17,8 @@ data:
       zpages:
         endpoint: :55679
     exporters:
-      logging:
-        loglevel: debug
+      debug:
+        verbosity: basic
       azuremonitor:
         endpoint: "https://dc.services.visualstudio.com/v2/track"
         instrumentation_key: "<INSTRUMENTATION-KEY>"
@@ -33,7 +33,7 @@ data:
       pipelines:
         traces:
           receivers: [zipkin]
-          exporters: [azuremonitor,logging]
+          exporters: [azuremonitor,debug]
 ---
 apiVersion: v1
 kind: Service
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: otel-collector
-        image: otel/opentelemetry-collector-contrib:0.77.0
+        image: otel/opentelemetry-collector-contrib:0.101.0
         command:
           - "/otelcol-contrib"
           - "--config=/conf/otel-collector-config.yaml"
