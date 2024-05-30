@@ -1,6 +1,7 @@
 name: Azure Static Web App v1.14
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - v1.14
