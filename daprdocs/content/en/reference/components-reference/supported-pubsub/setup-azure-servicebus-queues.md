@@ -182,15 +182,15 @@ When subscribing to a topic, you can configure `bulkSubscribe` options. Refer to
 Follow the instructions [here](https://learn.microsoft.com/azure/service-bus-messaging/service-bus-quickstart-portal) on setting up Azure Service Bus Queues.
 
 {{% alert title="Note" color="primary" %}}
-Your queue will need to have the same name as the Topic you are publishing to with Dapr. E.g. if you are publishing to the pubsb "myPubsub" on the topic "orders" your queue must be named "orders".
+Your queue must have the same name as the Topic you are publishing to with Dapr. E.g. if you are publishing to the pubsb "myPubsub" on the topic "orders" your queue must be named "orders".
 If you are using a Shared access policy to connect to the queue that policy must have the ability to "Manage" the queue. To work with a dead-letter queue the policy must live on the Service Bus Namespace that contains both the main queue and the dead-letter queue.
 {{% /alert %}}
 
 ### Retry policy and dead-letter queues
 
-An Azure ServiceBus Queue has a dead-letter quue by default. If you do not modify it the message will be retried the "Max delivery count" number of times (defaults to 10, can be set up to 2000). These retries will happen with very little delay before the message is put in the dead-letter queue.
+An Azure ServiceBus Queue has a dead-letter queue by default. By default the messages are retried the "Max delivery count" number of times (defaults to 10, can be set up to 2000). These retries happen very rapidly and the message is put in the dead-letter queue if no success is returned.
 
-Since Dapr Pubsub has its own dead-letter queue -concept you can use this instead if you need control over retry-policy and you need to subscribe to the dead-letter queue (you probably should). Set up a separate queue as that dead-letter queue in the same namespace, and a resilience component that defines how to retry on input. Then subscribe to that queue (topic) to get the failed messages and deal with them.
+Dapr Pubsub has its own dead-letter queue -concept you can use instead. This lets you control the retry-policy and you can subscribe to the dead-letter queue through Dapr. Set up a separate queue as that dead-letter queue in the Azure Service Bus Namespace, and a resilience component that defines how to retry. You can subscribe to that (topic) to get the failed messages and deal with them. E.g. setting up a dead-letter queue `orders-dlq` in the subscription and a resilience lets your subscribe to the topic `orders-dlq` to handle failed messages.
 
 ## Related links
 
