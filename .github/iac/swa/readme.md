@@ -7,7 +7,7 @@ This folder contains a template and infrastructure as code to recreate and recon
 
 ## Prerequisites
 
-1) Active Azure Subscription with `Contributed` or `Owner` access to create resources
+1) Active Azure Subscription with `Contributor` or `Owner` access to create resources
 2) [Azure Developer CLI](https://aka.ms/azd)
 
 ## Deploy Static Web App
@@ -16,9 +16,16 @@ This folder contains a template and infrastructure as code to recreate and recon
 
 In a new terminal:
 
+Bash/sh/zsh:
 ```bash
 export AZURE_RESOURCE_GROUP=rg-dapr-docs-test
 export IDENTITY_RESOURCE_GROUP=rg-my-identities
+```
+
+PowerShell
+```PowerShell
+setx AZURE_RESOURCE_GROUP "rg-dapr-docs-test"
+setx IDENTITY_RESOURCE_GROUP "rg-my-identities"
 ```
 
 This assumes you have an existing [user-assigned managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-manage-user-assigned-managed-identities?pivots=identity-mi-methods-azp) (see L39 in `./infra/main.bicep` to use or modify name) in a resource group that you can reference as the runtime identity of this static web app.  We recommend storing this in a different resource group from your application, to keep the permissions and lifecycles separate of your identity and your web app.  We also recommend narrowly limiting who has access to view, contribute or own this identity, and also only apply it to single resource scopes, not to entire resource groups or subscriptions, to avoid elevation of priviledges.    
