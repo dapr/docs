@@ -6,6 +6,6 @@ weight: 7000
 description: "Use the Dapr Kubernetes Operator to manage the Dapr control plane"
 ---
 
-The Dapr Kubernetes Operator manages the lifecycle for Dapr and its components. Use the operator to automate the tasks required when operating Dapr in Kubernetes mode. 
+You can use the Dapr Kubernetes Operator to manage the Dapr control plane. Use the operator to automate the tasks required to manage the lifecycle of Dapr control plane in Kubernetes mode. 
  
 {{< button text="Install and use the Dapr Kubernetes Operator" link="https://github.com/dapr/dapr-kubernetes-operator" >}}
