@@ -190,7 +190,9 @@ If you are using a Shared access policy to connect to the queue that policy must
 
 An Azure ServiceBus Queue has a dead-letter queue by default. By default the messages are retried the "Max delivery count" number of times (defaults to 10, can be set up to 2000). These retries happen very rapidly and the message is put in the dead-letter queue if no success is returned.
 
-Dapr Pubsub has its own dead-letter queue -concept you can use instead. This lets you control the retry-policy and you can subscribe to the dead-letter queue through Dapr. Set up a separate queue as that dead-letter queue in the Azure Service Bus Namespace, and a resilience component that defines how to retry. You can subscribe to that (topic) to get the failed messages and deal with them. E.g. setting up a dead-letter queue `orders-dlq` in the subscription and a resilience lets your subscribe to the topic `orders-dlq` to handle failed messages.
+Dapr Pubsub has its own dead-letter queue -concept you can use instead. This lets you control the retry-policy and you can subscribe to the dead-letter queue through Dapr. Set up a separate queue as that dead-letter queue in the Azure Service Bus Namespace, and a resilience policy that defines how to retry. You can subscribe to that (topic) to get the failed messages and deal with them. E.g. setting up a dead-letter queue `orders-dlq` in the subscription and a resilience lets your subscribe to the topic `orders-dlq` to handle failed messages.
+
+For more details on setting up dead-letter queues, see the [dead-letter article]({{< ref pubsub-deadletter >}}).
 
 ## Related links
 
