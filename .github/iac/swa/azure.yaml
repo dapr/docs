@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: swa-deploy-dapr-docs
+metadata:
+  template: swa-deploy-dapr-docs@0.0.1-beta
+#hooks:
+    # postprovision:
+    #   windows:
+    #     shell: pwsh
+    #     run: ./scripts/deploy.ps1
+    #     interactive: true
+    #     continueOnError: false
+    #   posix:
+    #     shell: sh
+    #     run: ./scripts/deploy.sh
+    #     interactive: true
+    #     continueOnError: false
+    # predeploy:
+    #   windows:
+    #     shell: pwsh
+    #     run:  cd ./app/frontend;npm install;npm run build
+    #     interactive: true
+    #     continueOnError: false
+    #   posix:
+    #     shell: sh
+    #     run:  cd ./app/frontend;npm install;npm run build
+    #     interactive: true
+    #     continueOnError: false
