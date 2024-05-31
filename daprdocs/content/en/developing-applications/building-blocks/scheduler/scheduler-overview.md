@@ -18,7 +18,7 @@ The Scheduler consists of two parts that work together to seamlessly schedule jo
 - The Scheduler building block
 - [The Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 
-This article covers the Scheduler API building block.
+<img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing basics of the Scheduler control plane and the Scheduler API">
 
 ## How it works
 
