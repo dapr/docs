@@ -95,6 +95,26 @@ For a new Dapr deployment, HA mode can be set with both:
 
 For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enabling-high-availability-in-an-existing-dapr-deployment" >}}).
 
+## High Priority Class Name
+
+In some scenarios, there might be memory and/or cpu pressure on nodes and the Dapr control plane pods might get selected
+for eviction. To prevent this, you can set a high priority class name for the Dapr control plane pods. This will ensure that
+the Dapr control plane pods are not evicted unless all other pods with lower priority are evicted.
+
+More information on Protecting Missiong-Critical Pods can be found [here](https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass/).
+
+There are two default critical priority classes in Kubernetes:
+- system-cluster-critical
+- system-node-critical
+
+We recommend to set the priorityClassName to `system-cluster-critical` for the Dapr control plane pods.  
+
+For a new Dapr deployment, `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
+
+For a new Dapr deployment, HA mode can be set with both:
+- The [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}), and
+- [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}})
+
 ## Deploy Dapr with Helm
 
 [Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
