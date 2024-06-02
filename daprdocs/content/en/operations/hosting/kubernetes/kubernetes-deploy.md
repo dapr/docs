@@ -136,7 +136,7 @@ export DAPR_HELM_REPO_PASSWORD="passwd_xxx"
 You can run Dapr with three replicas of each control plane pod in the `dapr-system` namespace for [production scenarios]({{< ref kubernetes-production.md >}}).
 
 ```bash
-dapr init -k --enable-ha=true --set global.priorityClassName=system-cluster-critical
+dapr init -k --enable-ha=true
 ```
 
 #### Install in custom namespace
@@ -220,7 +220,7 @@ You can install Dapr on Kubernetes using a Helm v3 chart.
     --wait
     ```
 
-   To install in **high availability** mode and **critical** priority class:
+   To install in **high availability** mode:
 
     ```bash
     helm upgrade --install dapr dapr/dapr \
@@ -228,7 +228,6 @@ You can install Dapr on Kubernetes using a Helm v3 chart.
     --namespace dapr-system \
     --create-namespace \
     --set global.ha.enabled=true \
-    --set global.priorityClassName=system-cluster-critical \
     --wait
     ```
 

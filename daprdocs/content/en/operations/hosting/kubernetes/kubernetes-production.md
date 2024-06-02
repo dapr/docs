@@ -95,25 +95,48 @@ For a new Dapr deployment, HA mode can be set with both:
 
 For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enabling-high-availability-in-an-existing-dapr-deployment" >}}).
 
-## High Priority Class Name
+## Cluster Critical Priority Class Name
 
 In some scenarios, there might be memory and/or cpu pressure on nodes and the Dapr control plane pods might get selected
-for eviction. To prevent this, you can set a high priority class name for the Dapr control plane pods. This will ensure that
+for eviction. To help preventing this, you can set a critical priority class name for the Dapr control plane pods. This will ensure that
 the Dapr control plane pods are not evicted unless all other pods with lower priority are evicted.
 
 More information on Protecting Missiong-Critical Pods can be found [here](https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass/).
 
-There are two default critical priority classes in Kubernetes:
+There are two built-in critical priority classes in Kubernetes:
 - system-cluster-critical
-- system-node-critical
+- system-node-critical (highest priority)
 
 We recommend to set the priorityClassName to `system-cluster-critical` for the Dapr control plane pods.  
 
 For a new Dapr deployment, `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
 
 For a new Dapr deployment, HA mode can be set with both:
-- The [Dapr CLI]({{< ref "kubernetes-deploy.md#install-in-highly-available-mode" >}}), and
+- The 
 - [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}})
+
+#### Dapr version < 1.14
+
+For versions of Dapr < 1.14, it is recommended that you add a `ResourceQuota` to the `dapr-system` namespace to prevent 
+problems scheduling pods [if the cluster has been configured](https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default ) 
+with limitations on which pods can be assigned these high priority classes.
+
+If you have dapr installed in namespace `dapr-system`, you can create a `ResourceQuota` with the following content:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: system-critical-quota
+  namespace: dapr-system
+spec:
+  scopeSelector:
+    matchExpressions:
+      - operator : In
+        scopeName: PriorityClass
+        values: [system-cluster-critical]
+```
+
 
 ## Deploy Dapr with Helm
 
