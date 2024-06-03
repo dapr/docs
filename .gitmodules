@@ -29,3 +29,6 @@
 [submodule "sdkdocs/pluggable-components/go"]
 	path = sdkdocs/pluggable-components/go
 	url = https://github.com/dapr-sandbox/components-go-sdk
+[submodule "sdkdocs/rust"]
+	path = sdkdocs/rust
+	url = https://github.com/dapr/rust-sdk.git
