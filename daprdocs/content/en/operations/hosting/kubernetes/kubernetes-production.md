@@ -98,7 +98,7 @@ For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({
 ## Cluster Critical Priority Class Name
 
 In some scenarios, nodes may have memory and/or cpu pressure and the Dapr control plane pods might get selected
-for eviction. To help preventing this, you can set a critical priority class name for the Dapr control plane pods. This will ensure that
+for eviction. To prevent this, you can set a critical priority class name for the Dapr control plane pods. This ensures that
 the Dapr control plane pods are not evicted unless all other pods with lower priority are evicted.
 
 More information on Protecting Missiong-Critical Pods can be found [here](https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass/).
