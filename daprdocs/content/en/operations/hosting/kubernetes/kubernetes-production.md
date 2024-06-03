@@ -120,7 +120,7 @@ For versions of Dapr < 1.14, it's recommended that you add a `ResourceQuota` to 
 problems associated with scheduling pods [where the cluster may be configured](https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default ) 
 with limitations on which pods can be assigned high priority classes.
 
-If you have dapr installed in namespace `dapr-system`, you can create a `ResourceQuota` with the following content:
+If you have Dapr installed in namespace `dapr-system`, you can create a `ResourceQuota` with the following content:
 
 ```yaml
 apiVersion: v1
