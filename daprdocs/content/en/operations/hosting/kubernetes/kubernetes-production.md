@@ -105,7 +105,7 @@ Learn more about [Protecting Mission-Critical Pods](https://kubernetes.io/blog/2
 
 There are two built-in critical priority classes in Kubernetes:
 - `system-cluster-critical`
-- system-node-critical (highest priority)
+- `system-node-critical` (highest priority)
 
 We recommend to set the priorityClassName to `system-cluster-critical` for the Dapr control plane pods.  
 
