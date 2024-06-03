@@ -104,7 +104,7 @@ the Dapr control plane pods are not evicted unless all other pods with lower pri
 Learn more about [Protecting Mission-Critical Pods](https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass/).
 
 There are two built-in critical priority classes in Kubernetes:
-- system-cluster-critical
+- `system-cluster-critical`
 - system-node-critical (highest priority)
 
 We recommend to set the priorityClassName to `system-cluster-critical` for the Dapr control plane pods.  
