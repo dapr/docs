@@ -6,18 +6,10 @@ weight: 2000
 description: "Learn how to use the scheduler API to schedule jobs"
 ---
 
-<!-- Introductory paragraph  
-Required. Light intro that briefly describes what the how-to will cover and any default Dapr characteristics. Link off to the appropriate concept or overview docs to provide context. -->
+Now that you've learned what the [Dapr scheduler building block]({{< ref scheduler-overview.md >}}) provides, learn how it can work in your environment. The below code example loosely describes an application that schedules and orchestrates an application.
 
 <!-- 
 Include a diagram or image, if possible. 
--->
-
-<!--
-If applicable, link to the related quickstart in a shortcode note or alert with text like:
-
- If you haven't already, [try out the <topic> quickstart](link) for a quick walk-through on how to use <topic>.
-
 -->
 
 <!-- 
@@ -34,7 +26,5 @@ Each H2 step should start with a verb/action word.
 
 ## Next steps
 
-<!--
-Link to related pages and examples. For example, the building block overview, the related tutorial, API reference, etc.
--->
-
+- [Learn more about the Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
+- [Scheduler API reference]({{< ref scheduler_api.md >}})

@@ -42,11 +42,16 @@ The Scheduler service enables the scheduling of jobs to scale across multiple re
 
 ### Scheduler reminders
 
-The [Dapr Workflow building block]({{< ref workflow-overview.md >}}) is built on top of Actor Reminders. The Scheduler building block improves the performance and scale of actor reminders, which present scale limitation issues. 
+Actors have actor reminders, but present some limitations involving scalability. Make reminders more scalable by using `ScheduleReminders`. 
 
 ### Store job details separately from user-associated data
 
-If a user would like to store their user associated data in a specific state store of their choosing, then they can provision a state store using the Dapr State Management Building Block and set `jobStateStore ` as `true` in the state store component’s metadata section. Having the `jobStateStore` set to `true` means that their user associate data will be stored in the state store of their choosing, but their job details will still be stored in the embedded etcd. If the `jobStateStore` is not configured, then the embedded etcd will be used to store both the job details and the user associated data.
+If you'd like to store your user-associated data in a specific state store of your choosing, then you can:
+
+1. Provision a state store using the [Dapr state management building block]({{< ref howto-get-save-state.md >}}).
+1. Set `jobStateStore ` as `true` in the state store component’s metadata section. 
+
+Setting the `jobStateStore` to `true` indicates that your user-associated data is stored in the state store of your choosing, but the job details are still stored in the embedded `etcd`. If the `jobStateStore` is not configured, then the embedded `etcd` is used to store _both_ the job details and the user-associated data.
 
 ## Try out the Scheduler
 
