@@ -103,6 +103,14 @@ id = "G-60C6Q1ETC1"
     source = "../sdkdocs/js/daprdocs/content/en/js-sdk-contributing"
     target = "content/contributing/sdk-contrib/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/rust/daprdocs/content/en/rust-sdk-docs"
+    target = "content/developing-applications/sdks/rust"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/rust/daprdocs/content/en/rust-sdk-contributing"
+    target = "content/contributing/sdks-contrib"
+    lang = "en"
 
   [[module.mounts]]
     source = "../translations/docs-zh/translated_content/zh_CN/docs"
