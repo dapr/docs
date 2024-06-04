@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: State Management"
 linkTitle: "State Management"
-weight: 72
+weight: 74
 description: "Get started with Dapr's State Management building block"
 ---
 

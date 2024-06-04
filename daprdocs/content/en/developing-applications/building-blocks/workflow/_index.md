@@ -2,7 +2,7 @@
 type: docs
 title: "Workflow"
 linkTitle: "Workflow"
-weight: 100
+weight: 30
 description: "Orchestrate logic across various microservices" 
 ---
 
