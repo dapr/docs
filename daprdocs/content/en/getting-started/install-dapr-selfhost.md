@@ -24,7 +24,7 @@ Dapr initialization includes:
 1. Running a **Dapr scheduler service container instance** for job orchestration.
 
 {{% alert title="Kubernetes Development Environment" color="primary" %}}
-To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag">}})
+To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag" >}})
 {{% /alert %}}
 
 {{% alert title="Docker" color="primary" %}}
