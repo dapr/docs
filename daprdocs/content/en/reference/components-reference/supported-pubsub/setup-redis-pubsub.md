@@ -41,7 +41,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | redisHost          | Y        | Connection-string for the redis host. If `"redisType"` is `"cluster"` it can be multiple hosts separated by commas or just a single host   | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | Y        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
-| consumerID         | N        | The consumer group ID   | `"myGroup"`
+| consumerID         | N        | The consumer group ID.  | Can be set to string value (`"myGroup"`) or string format value (`"{podName}"`, `"{namespace}"`).
 | enableTLS          | N        | If the Redis instance supports TLS with public certificates, can be configured to be enabled or disabled. Defaults to `"false"` | `"true"`, `"false"`
 | redeliverInterval  | N        | The interval between checking for pending messages to redeliver. Can use either be Go duration string (for example "ms", "s", "m") or milliseconds number. Defaults to `"60s"`. `"0"` disables redelivery. | `"30s"`, `"5000"`
 | processingTimeout  | N        | The amount time that a message must be pending before attempting to redeliver it. Can use either be Go duration string ( for example "ms", "s", "m") or milliseconds number. Defaults to `"15s"`. `"0"` disables redelivery. | `"60s"`, `"600000"`

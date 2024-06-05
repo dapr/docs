@@ -75,7 +75,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | `connectionString`   | Y  | Shared access policy connection string for the Service Bus. Required unless using Microsoft Entra ID authentication. | See example above
 | `namespaceName`| N | Parameter to set the address of the Service Bus namespace, as a fully-qualified domain name. Required if using Microsoft Entra ID authentication. | `"namespace.servicebus.windows.net"` |
-| `consumerID`         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. (`appID`) value. |
+| `consumerID`         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. (`appID`) value. | Can be set to string value (`"myGroup"`) or string format value (`"{podName}"`, `"{namespace}"`, or `"{identifier}"`).
 | `timeoutInSec`       | N  | Timeout for sending messages and for management operations. Default: `60` |`30`
 | `handlerTimeoutInSec`| N  |  Timeout for invoking the app's handler. Default: `60` | `30`
 | `lockRenewalInSec`      | N  | Defines the frequency at which buffered message locks will be renewed. Default: `20`. | `20`
