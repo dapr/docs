@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Dapr Shared"
+title: "Deploy Dapr per-node or per-cluster with Dapr Shared"
 linkTitle: "Dapr Shared"
 weight: 20000
 description: "Learn more about using Dapr Shared as an alternative deployment to sidecars"
