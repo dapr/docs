@@ -58,7 +58,7 @@ Kubernetes `Deployments` are installed once per cluster. Based on available reso
 Before installing Dapr Shared, make ensure you have [Dapr installed in your cluster]({{< ref "kubernetes-deploy.md" >}}).
 {{% /alert %}}
 
-If you want to get started with Dapr Shared, you can easily create a new Dapr Shared instance by installing the official Helm Chart:
+If you want to get started with Dapr Shared, you can create a new Dapr Shared instance by installing the official Helm Chart:
 
 ```
 helm install my-shared-instance oci://registry-1.docker.io/daprio/dapr-shared-chart --set shared.appId=<DAPR_APP_ID> --set shared.remoteURL=<REMOTE_URL> --set shared.remotePort=<REMOTE_PORT>
