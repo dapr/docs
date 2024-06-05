@@ -32,7 +32,9 @@ While sidecars are Dapr's default deployment strategy, some use cases require ot
 
 Dapr Shared was created for these scenario, extending the Dapr sidecar model with two new deployment approaches: `DaemonSet` and `Deployment`.
 
-No matter which strategy you choose, it is important to understand that in most use cases you will have one instance of Dapr Shared (Helm Release) per service (app-id). This means that if you have an application composed by three microservices, each service is recommended to have it's own Dapr Shared instance. Check the step-by-step tutorial using Kubernetes KinD here, to see an application using Dapr Shared.
+{{% alert title="Important" color="primary" %}}
+No matter which strategy you choose, it is important to understand that in most use cases, you will have one instance of Dapr Shared (Helm release) per service (app-id). This means that if you have an application composed of three microservices, each service is recommended to have its own Dapr Shared instance. Check the step-by-step tutorial using Kubernetes KinD to see an application using Dapr Shared.
+{{% /alert %}}
 
 
 ### `DeamonSet` strategy
