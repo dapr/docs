@@ -38,8 +38,7 @@ spec:
             regex: {}
     http:
       increasedCardinality: <TRUE-OR-FALSE>
-      pathNormalization: 
-        enabled: <TRUE-OR-FALSE>
+      pathMatching: 
         ingress:
         - <PATH-A>
         egress:
