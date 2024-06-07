@@ -31,7 +31,7 @@ spec:
   - name: password
     value: password  
   - name: consumerID
-    value: myapp
+    value: channel1
   - name: durable
     value: false
   - name: deletedWhenUnused
@@ -81,7 +81,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | hostname | N* | The RabbitMQ hostname. *Mutally exclusive with connectionString field | `localhost` |
 | username | N* | The RabbitMQ username. *Mutally exclusive with connectionString field | `username` |
 | password | N* | The RabbitMQ password. *Mutally exclusive with connectionString field | `password` |
-| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (`"myapp"`) or string format value (`"{podName}"`, `"{namespace}"`).
+| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`
