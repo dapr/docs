@@ -43,7 +43,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
 | `url`    | Y  | Address of the MQTT broker. Can be `secretKeyRef` to use a secret reference. <br> Use the **`tcp://`** URI scheme for non-TLS communication. <br> Use the **`ssl://`** URI scheme for TLS communication. | `"tcp://[username][:password]@host.domain[:port]"`
-| `consumerID` | N | The client ID used to connect to the MQTT broker. Defaults to the Dapr app ID. | `"myMqttClientApp"`
+| `consumerID` | N | The client ID used to connect to the MQTT broker. Defaults to the Dapr app ID. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | `retain` | N  | Defines whether the message is saved by the broker as the last known good value for a specified topic. Defaults to `"false"`. | `"true"`, `"false"`
 | `cleanSession` | N | Sets the `clean_session` flag in the connection message to the MQTT broker if `"true"` ([more info](http://www.steves-internet-guide.com/mqtt-clean-sessions-example/)). Defaults to `"false"`. | `"true"`, `"false"`
 | `caCert` | Required for using TLS | Certificate Authority (CA) certificate in PEM format for verifying server TLS certificates. | See example below
