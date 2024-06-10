@@ -169,14 +169,6 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-Install the dependencies for the `order-processor` app:
-
-```bash
-cd ./order-processor
-npm install
-cd ..
-```
-
 ### Step 2: Manipulate service state
 
 In a terminal window, navigate to the `order-processor` directory.
