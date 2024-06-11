@@ -64,13 +64,6 @@ The component is unavailable for a short period of time during reload and reinit
 
 The following are the component types provided by Dapr:
 
-### State stores
-
-State store components are data stores (databases, files, memory) that store key-value pairs as part of the [state management]({{< ref "state-management-overview.md" >}}) building block.
-
-- [List of state stores]({{< ref supported-state-stores >}})
-- [State store implementations](https://github.com/dapr/components-contrib/tree/master/state)
-
 ### Name resolution
 
 Name resolution components are used with the [service invocation]({{< ref "service-invocation-overview.md" >}}) building block to integrate with the hosting environment and provide service-to-service discovery. For example, the Kubernetes name resolution component integrates with the Kubernetes DNS service, self-hosted uses mDNS and clusters of VMs can use the Consul name resolution component.
@@ -84,6 +77,20 @@ Pub/sub broker components are message brokers that can pass messages to/from ser
 
 - [List of pub/sub brokers]({{< ref supported-pubsub >}})
 - [Pub/sub broker implementations](https://github.com/dapr/components-contrib/tree/master/pubsub)
+
+### Workflows
+
+A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines a reliable business process or data flow. Workflow components are workflow runtimes (or engines) that run the business logic written for that workflow and store their state into a state store.  
+
+<!--- [List of supported workflows]()
+- [Workflow implementations](https://github.com/dapr/components-contrib/tree/master/workflows)-->
+
+### State stores
+
+State store components are data stores (databases, files, memory) that store key-value pairs as part of the [state management]({{< ref "state-management-overview.md" >}}) building block.
+
+- [List of state stores]({{< ref supported-state-stores >}})
+- [State store implementations](https://github.com/dapr/components-contrib/tree/master/state)
 
 ### Bindings
 
@@ -112,13 +119,6 @@ Lock components are used as a distributed lock to provide mutually exclusive acc
 
 - [List of supported locks]({{< ref supported-locks >}})
 - [Lock implementations](https://github.com/dapr/components-contrib/tree/master/lock)
-
-### Workflows
-
-A [workflow]({{< ref workflow-overview.md >}}) is custom application logic that defines a reliable business process or data flow. Workflow components are workflow runtimes (or engines) that run the business logic written for that workflow and store their state into a state store.  
-
-<!--- [List of supported workflows]()
-- [Workflow implementations](https://github.com/dapr/components-contrib/tree/master/workflows)-->
 
 ### Cryptography
 
