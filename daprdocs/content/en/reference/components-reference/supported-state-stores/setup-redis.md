@@ -119,7 +119,6 @@ If you wish to use Redis as an actor store, append the following to the yaml.
 | minIdleConns       | N        | Minimum number of idle connections to keep open in order to avoid the performance degradation associated with creating new connections. Defaults to `"0"`. | `"2"`
 | idleCheckFrequency        | N        | Frequency of idle checks made by idle connections reaper. Default is `"1m"`. `"-1"` disables idle connections reaper. | `"-1"`
 | idleTimeout        | N        | Amount of time after which the client closes idle connections. Should be less than server's timeout. Default is `"5m"`. `"-1"` disables idle timeout check. | `"10m"`
-| actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 | ttlInSeconds       | N         | Allows specifying a default Time-to-live (TTL) in seconds that will be applied to every state store request unless TTL is explicitly defined via the [request metadata]({{< ref "state-store-ttl.md" >}}). | `600`
 | queryIndexes       | N         | Indexing schemas for querying JSON objects | see [Querying JSON objects](#querying-json-objects)
 | actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
