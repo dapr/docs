@@ -54,6 +54,12 @@ You would use Dapr Workflow when you need to define and orchestrate complex work
 
 ## Features
 
+### Namespaced actors
+
+Dapr supports namespaced actors. For example, with Dapr's multi-tenant placement service, sidecars belonging to a tenant named "Tenant A" won't receive placement information for "Tenant B". This means that multiple tenants can have actor types with the same name. 
+
+[Learn more about namespaced actors and how they work.]({{< ref namespaced-actors.md >}})
+
 ### Actor lifetime
 
 Since Dapr actors are virtual, they do not need to be explicitly created or destroyed. The Dapr actor runtime:

@@ -10,6 +10,10 @@ Dapr has an HTTP API `/placement/state` for placement service that exposes place
 
 To enable the placement metadata in self-hosted mode you can either set`DAPR_PLACEMENT_METADATA_ENABLED` environment variable or `metadata-enabled` command line args on the Placement service to `true` to. See [how to run the Placement service in self-hosted mode]({{< ref "self-hosted-no-docker.md#enable-actors" >}}).
 
+{{% alert title="Important" color="warning" %}}
+When running placement in [multi-tenant mode]({{< ref namespaced-actors.md >}}), disable the `metadata-enabled` command line args to prevent different namespaces from seeing each other's data.
+{{% /alert %}}
+
 If you are using Helm for deployment of the Placement service on Kubernetes then to enable the placement metadata, set `dapr_placement.metadataEnabled` to `true`.
 
 ## Usecase

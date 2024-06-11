@@ -2,7 +2,7 @@
 type: docs
 title: "How-to: Enable and use actor reentrancy in Dapr"
 linkTitle: "How-To: Actor reentrancy"
-weight: 70
+weight: 80
 description: Learn more about actor reentrancy
 ---
 
