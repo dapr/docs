@@ -3,7 +3,7 @@ type: docs
 title: "State store component specs"
 linkTitle: "State stores"
 description: "The supported state stores that interface with Dapr"
-weight: 1000
+weight: 4000
 aliases:
   - "/operations/components/setup-state-store/supported-state-stores/"
 no_list: true

@@ -3,7 +3,7 @@ type: docs
 title: "Bindings API reference"
 linkTitle: "Bindings API"
 description: "Detailed documentation on the bindings API"
-weight: 400
+weight: 500
 ---
 
 Dapr provides bi-directional binding capabilities for applications and a consistent approach to interacting with different cloud/on-premise services or systems.

@@ -2,7 +2,7 @@
 type: docs
 title: "Bindings component specs"
 linkTitle: "Bindings"
-weight: 3000
+weight: 4000
 description: The supported external bindings that interface with Dapr
 aliases:
   - "/operations/components/setup-bindings/supported-bindings/"

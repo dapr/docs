@@ -2,7 +2,7 @@
 type: docs
 title: "State management"
 linkTitle: "State management"
-weight: 20
+weight: 40
 description: Create long running stateful services
 ---
 
