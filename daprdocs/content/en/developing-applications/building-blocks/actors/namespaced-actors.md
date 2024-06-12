@@ -12,14 +12,6 @@ Namespaced actors use the multi-tenant placement service. With this service, in 
 
 In order for multiple tenants to have actor types and/or IDs with the same name, every namespace should have its own state store. Otherwise, apps in different namespaces with the same actor type and/or ID may overwrite each other's data in the state store.
 
-## Example
-
-In the following example...
-
-<!-- need example? ok to use from placement API? --> 
-
-## Migrating data to a new namespace
-
 If you're moving to a new namespace and starting to use a new state store, make sure you migrate your data.
 
 ## Backwards compatibilty
