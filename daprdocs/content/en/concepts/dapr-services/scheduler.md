@@ -9,26 +9,11 @@ The Dapr Scheduler service is used to schedule and orchestrate jobs within your 
 
 ## Self-hosted mode
 
-
+The scheduler service Docker container is started automatically as part of `dapr init`. It can also be run manually as a process if you are running in [slim-init mode]({{< ref self-hosted-no-docker.md >}}).
 
 ## Kubernetes mode
 
-
-
-## Scheduler
-
-### Usecase:
-
-### HTTP Request
-
-### HTTP Response Codes
-
-Code | Description
----- | -----------
-200  | Job scheduling information returned
-500  | Scheduler could not return the scheduler information
-
-### HTTP Response Body
+The scheduler service is deployed as part of `dapr init -k`, or via the Dapr Helm charts. For more information on running Dapr on Kubernetes, visit the [Kubernetes hosting page]({{< ref kubernetes >}}).
 
 
 ### Examples
