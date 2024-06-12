@@ -59,25 +59,29 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 
 ```json
 {
-	"hostList": [{
-			"name": "198.18.0.1:49347",
-			"appId": "actor1",
-			"actorTypes": ["testActorType1", "testActorType3"],
-			"updatedAt": 1690274322325260000
-		},
-		{
-			"name": "198.18.0.2:49347",
-			"appId": "actor2",
-			"actorTypes": ["testActorType2"],
-			"updatedAt": 1690274322325260000
-		},
-		{
-			"name": "198.18.0.3:49347",
-			"appId": "actor2",
-			"actorTypes": ["testActorType2"],
-			"updatedAt": 1690274322325260000
-		}
-	],
-	"tableVersion": 1
+    "hostList": [{
+            "name": "198.18.0.1:49347",
+            "namespace": "ns1",
+            "appId": "actor1",
+            "actorTypes": ["testActorType1", "testActorType3"],
+            "updatedAt": 1690274322325260000
+        },
+        {
+            "name": "198.18.0.2:49347",
+                        "namespace": "ns2",
+            "appId": "actor2",
+            "actorTypes": ["testActorType2"],
+            "updatedAt": 1690274322325260000
+        },
+        {
+            "name": "198.18.0.3:49347",
+                        "namespace": "ns2",
+            "appId": "actor2",
+            "actorTypes": ["testActorType2"],
+            "updatedAt": 1690274322325260000
+        }
+    ],
+    "tableVersion": 1,
+    "apiLevel": 20
 }
 ```
