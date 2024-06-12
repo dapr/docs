@@ -6,9 +6,9 @@ weight: 40
 description: "Learn about the multi-tenant placement service in actors"
 ---
 
-Namespaced actors use the multi-tenant placement service. For example, sidecars belonging to "Tenant A" don't receive placement information meant for "Tenant B". 
+Namespaced actors use the multi-tenant placement service. With this service, in a scenario where each tenant has its own namespace, sidecars belonging to a tenant named "Tenant A" won't receive placement information for "Tenant B". 
 
-<!-- need diagram --> 
+<img src="/images/multi-tenancy-overview.png" width=900>
 
 In order for multiple tenants to have actor types and/or IDs with the same name, every namespace should have its own state store. Otherwise, apps in different namespaces with the same actor type and/or ID may overwrite each other's data in the state store.
 
@@ -25,7 +25,6 @@ If you're moving to a new namespace and starting to use a new state store, make 
 ## Backwards compatibilty
 
 Namespaced actors are backwards compatible for deployments that use mTLS, because the sidecar's namespace is inferred from the Spiffe ID, allowing for multi-tenancy out-of-the-box.
-When mTLS is not enabled we default to what is explained below.
 
 <img src="/images/namespaced-actors-with-mtls.png" width=900>
 
