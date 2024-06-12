@@ -5,7 +5,7 @@ linkTitle: "Placement"
 description: "Overview of the Dapr placement service"
 ---
 
-The Dapr Placement service is used to calculate and distribute distributed hash tables for the location of [Dapr actors]({{< ref actors >}}) running in [self-hosted mode]({{< ref self-hosted >}}) or on [Kubernetes]({{< ref kubernetes >}}). Grouped by namespace, the hash tables map actor types to pods or processes so a Dapr application can communicate with the actor. Anytime a Dapr application activates a Dapr actor, the placement updates the hash tables with the latest actor locations.
+The Dapr Placement service is used to calculate and distribute distributed hash tables for the location of [Dapr actors]({{< ref actors >}}) running in [self-hosted mode]({{< ref self-hosted >}}) or on [Kubernetes]({{< ref kubernetes >}}). Grouped by namespace, the hash tables map actor types to pods or processes so a Dapr application can communicate with the actor. Anytime a Dapr application activates a Dapr actor, the placement service updates the hash tables with the latest actor locations.
 
 ## Self-hosted mode
 
@@ -67,7 +67,7 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
 {
     "hostList": [{
             "name": "198.18.0.1:49347",
-                        "namespace": "ns1",
+            "namespace": "ns1",
             "appId": "actor1",
             "actorTypes": ["testActorType1", "testActorType3"],
             "updatedAt": 1690274322325260000
@@ -87,7 +87,8 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
             "updatedAt": 1690274322325260000
         }
     ],
-    "tableVersion": 1
+    "tableVersion": 1,
+    "apiLevel": 20
 }
 ```
 

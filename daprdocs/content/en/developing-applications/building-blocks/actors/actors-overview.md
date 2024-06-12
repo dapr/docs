@@ -56,7 +56,7 @@ You would use Dapr Workflow when you need to define and orchestrate complex work
 
 ### Namespaced actors
 
-Dapr supports namespaced actors. For example, with Dapr's multi-tenant placement service, sidecars belonging to a tenant named "Tenant A" won't receive placement information for "Tenant B". This means that multiple tenants can have actor types with the same name. 
+Dapr supports namespaced actors. For example, with Dapr's multi-tenant placement service, where each tenant has its own namespace, sidecars belonging to a tenant named "Tenant A" won't receive placement information for "Tenant B". This means that multiple tenants can have actor types with the same name. 
 
 [Learn more about namespaced actors and how they work.]({{< ref namespaced-actors.md >}})
 

@@ -24,15 +24,8 @@ If you're moving to a new namespace and starting to use a new state store, make 
 
 ## Backwards compatibilty
 
-Namespaced actors are backwards compatible, allowing you to block newer sidecar versions from seeing the actor types within older sidecar versions.
-
-Depending on whether mTLS is enabled, the namespace is either:
-- Verified through Spiffe ID (mTLS enabled), or
-- Accepted as-is (mTLS not enabled)
-
-### With mTLS enabled
-
-Let's say you've enabled mTLS. As soon as the placement server is updated, the sidecars in namespace X (A, B, and C) can see each other’s actor types, and no others. The same is true for sidecars D, E, and F in namespace Y.
+Namespaced actors are backwards compatible for deployments that use mTLS, because the sidecar's namespace is inferred from the Spiffe ID, allowing for multi-tenancy out-of-the-box.
+When mTLS is not enabled we default to what is explained below.
 
 <img src="/images/namespaced-actors-with-mtls.png" width=900>
 
@@ -44,7 +37,7 @@ Sidecars C, E, and F, however, can see each other’s actor-types.
 
 <img src="/images/namespaced-actors-without-mtls.png" width=900>
 
-For older sidecars that don't use mTLS, the placement service uses a special “empty” namespace. When these sidecars connect to a new placement service, they only get the actor types hosted on other old sidecars in the empty namespace that are not on mTLS.
+For pre-v1.14 sidecars that don't use mTLS, the placement service uses a special “empty” namespace. When these sidecars connect to a new placement service, they only get the actor types hosted on other pre-v1.14 sidecars in the empty namespace that are not on mTLS.
 
 <img src="/images/empty-namespace.png" width=900>
 
