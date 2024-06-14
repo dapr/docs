@@ -6,7 +6,7 @@ description: "Detailed documentation on the Placement API"
 weight: 1200
 ---
 
-Dapr has an HTTP API `/placement/state` for placement service that exposes placement table information. The API is exposed on the sidecar on the same port as the healthz. This is an unauthenticated endpoint, and is disabled by default. 
+Dapr has an HTTP API `/placement/state` for Placement service that exposes placement table information. The API is exposed on the sidecar on the same port as the healthz. This is an unauthenticated endpoint, and is disabled by default. 
 
 To enable the placement metadata in self-hosted mode you can either set`DAPR_PLACEMENT_METADATA_ENABLED` environment variable or `metadata-enabled` command line args on the Placement service to `true` to. See [how to run the Placement service in self-hosted mode]({{< ref "self-hosted-no-docker.md#enable-actors" >}}).
 
@@ -68,14 +68,14 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
         },
         {
             "name": "198.18.0.2:49347",
-                        "namespace": "ns2",
+            "namespace": "ns2",
             "appId": "actor2",
             "actorTypes": ["testActorType2"],
             "updatedAt": 1690274322325260000
         },
         {
             "name": "198.18.0.3:49347",
-                        "namespace": "ns2",
+            "namespace": "ns2",
             "appId": "actor2",
             "actorTypes": ["testActorType2"],
             "updatedAt": 1690274322325260000
