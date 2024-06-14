@@ -3,7 +3,7 @@ type: docs
 title: "Workflow API reference"
 linkTitle: "Workflow API"
 description: "Detailed documentation on the workflow API"
-weight: 900
+weight: 300
 ---
 
 {{% alert title="Note" color="primary" %}}

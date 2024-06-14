@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: Actors"
 linkTitle: "Actors"
-weight: 75
+weight: 76
 description: "Get started with Dapr's Actors building block"
 ---
 

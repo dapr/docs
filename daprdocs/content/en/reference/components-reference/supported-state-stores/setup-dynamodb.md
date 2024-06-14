@@ -36,6 +36,9 @@ spec:
     value: "expiresAt" # Optional
   - name: partitionKey
     value: "ContractID" # Optional
+  # Uncomment this if you wish to use AWS DynamoDB as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -58,6 +61,7 @@ In order to use DynamoDB as a Dapr state store, the table must have a primary ke
 | sessionToken      | N  |AWS session token to use.  A session token is only required if you are using temporary security credentials. | `"TOKEN"`
 | ttlAttributeName  | N  |The table attribute name which should be used for TTL. | `"expiresAt"`
 | partitionKey      | N  |The table primary key or partition key attribute name. This field is used to replace the default primary key attribute name `"key"`. See the section [Partition Keys]({{< ref "setup-dynamodb.md#partition-keys" >}}).  | `"ContractID"`
+| actorStateStore      | N  | Consider this state store for actors. Defaults to "false" | `"true"`, `"false"`
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  

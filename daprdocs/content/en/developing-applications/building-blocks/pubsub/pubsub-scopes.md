@@ -69,17 +69,17 @@ The table below shows which applications are allowed to publish into the topics:
 
 |      | topic1 | topic2 | topic3 |
 |------|--------|--------|--------|
-| app1 | X      |        |        |
-| app2 |        | X      | X      |
+| app1 | ✅     |        |        |
+| app2 |        | ✅     | ✅     |
 | app3 |        |        |        |
 
 The table below shows which applications are allowed to subscribe to the topics:
 
 |      | topic1 | topic2 | topic3 |
 |------|--------|--------|--------|
-| app1 | X      | X      | X      |
+| app1 | ✅     | ✅     | ✅     |
 | app2 |        |        |        |
-| app3 | X      |        |        |
+| app3 | ✅     |        |        |
 
 > Note: If an application is not listed (e.g. app1 in subscriptionScopes) it is allowed to subscribe to all topics. Because `allowedTopics` is not used and app1 does not have any subscription scopes, it can also use additional topics not listed above.
 
@@ -143,17 +143,17 @@ The table below shows which application is allowed to publish into the topics:
 
 |      | A | B | C |
 |------|---|---|---|
-| app1 | X |   |   |
-| app2 | X | X |   |
-| app3 | X | X |   |
+| app1 | ✅ |   |   |
+| app2 | ✅ | ✅ |   |
+| app3 | ✅ | ✅ |   |
 
 The table below shows which application is allowed to subscribe to the topics:
 
 |      | A | B | C |
 |------|---|---|---|
 | app1 |   |   |   |
-| app2 | X |   |   |
-| app3 | X | X |   |
+| app2 | ✅ |   |   |
+| app3 | ✅ | ✅ |   |
 
 ## Example 4: Mark topics as protected
 
@@ -187,17 +187,17 @@ The table below shows which application is allowed to publish into the topics:
 
 |      | A | B | C |
 |------|---|---|---|
-| app1 | X | X |   |
-| app2 |   | X |   |
-| app3 |   |   | X |
+| app1 | ✅ | ✅ |   |
+| app2 |   | ✅ |   |
+| app3 |   |   | ✅ |
 
 The table below shows which application is allowed to subscribe to the topics:
 
 |      | A | B | C |
 |------|---|---|---|
-| app1 | X | X |   |
-| app2 |   | X |   |
-| app3 |   |   | X |
+| app1 | ✅ | ✅ |   |
+| app2 |   | ✅ |   |
+| app3 |   |   | ✅ |
 
 
 ## Demo

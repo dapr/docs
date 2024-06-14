@@ -21,7 +21,10 @@ metadata:
 spec:
   type: state.in-memory
   version: v1
-  metadata: []
+  metadata: 
+  # Uncomment this if you wish to use In-memory as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 > Note: While in-memory does not require any specific metadata for the component to work, `spec.metadata` is a required field.
