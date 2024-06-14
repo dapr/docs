@@ -81,7 +81,6 @@ updatedAt | timestamp | Timestamp of the actor registered/updated.
             "updatedAt": 1690274322325260000
         }
     ],
-    "tableVersion": 1,
-    "apiLevel": 20
+    "tableVersion": 1
 }
 ```
