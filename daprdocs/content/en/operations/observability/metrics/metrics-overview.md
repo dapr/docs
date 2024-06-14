@@ -84,9 +84,84 @@ Setting `spec.metrics.http.increasedCardinality` to `false` is **recommended** t
 
 Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. For details on how to set the cardinality in configuration see ({{< ref "configuration-overview.md#metrics" >}})  
 
-This configuration is opt-in and is enabled via the Dapr configuration `spec.metrics.http.pathMatching.enabled` setting. When set to `true`, it enables path matching, which standardizes specified paths for both ingress and egress paths. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.  
+This configuration is opt-in and is enabled via the Dapr configuration `spec.metrics.http.pathMatching`. When defined with ingress or egress paths, it enables path matching, which standardizes specified paths for both ingress and egress metrics. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.  
 
-When `spec.metrics.http.pathMatching` is combined with the `increasedCardinality` flag set to `false` (which is the default in v1.14), non-matched paths are transformed into a catch-all bucket to control and limit cardinality, preventing unbounded path growth. Conversely, when `increasedCardinality` is `true`, non-matched paths are passed through as they normally would be, allowing for potentially higher cardinality but preserving the original path data.  
+When `spec.metrics.http.pathMatching` is combined with the `increasedCardinality` flag set to `false` (which is the default in v1.14), non-matched paths are transformed into a catch-all bucket to control and limit cardinality, preventing unbounded path growth. Conversely, when `increasedCardinality` is `true`, non-matched paths are passed through as they normally would be, allowing for potentially higher cardinality but preserving the original path data. 
+
+### Examples of Path Matching in HTTP Metrics
+
+Here are some examples demonstrating how to use the Path Matching API in Dapr for managing HTTP metrics. These examples illustrate the effects of different configurations on the `dapr_http_server_request_count` metric, showcasing combinations of low and high cardinality, with and without path matching.
+
+- Low Cardinality Without Path Matching
+
+Configuration:
+
+```yaml
+http:
+  increasedCardinality: false
+```
+
+Metrics:
+```
+dapr_http_server_request_count{app_id="order-service",method="InvokeService/order-service",status="200"} 5
+```
+
+- Low Cardinality With Path Matching
+
+Configuration:
+```yaml
+http:
+  increasedCardinality: false
+  pathMatching:
+    ingress:
+    - /orders/{orderID}
+    egress:
+    - /orders/{orderID}
+```
+
+Metrics:
+```
+# matched paths
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 4
+# unmatched paths
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/",status="200"} 1
+```
+
+- High Cardinality Without Path Matching
+
+Configuration:
+```yaml
+http:
+  increasedCardinality: true
+```
+
+Metrics:
+```
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/1234",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/12345",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/123456",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/1234567",status="200"} 1
+```
+
+- High Cardinality With Path Matching
+
+Configuration:
+```yaml
+http:
+  increasedCardinality: true
+  ingress:
+    - /orders/{orderID}
+    egress:
+    - /orders/{orderID}
+```
+
+Metrics:
+```
+dapr_http_server_request_count{app_id="order-service",method="POST",path="/orders",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 5
+```
+
+These examples highlight how path matching can significantly influence the granularity and manageability of your HTTP metrics in Dapr.
 
 ## Transform metrics with regular expressions
 
