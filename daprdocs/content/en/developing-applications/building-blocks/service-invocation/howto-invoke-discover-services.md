@@ -247,7 +247,7 @@ namespace EventService
                var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
                var httpClient = DaprClient.CreateInvokeHttpClient();
-               await httpClient.PostAsJsonAsync($"http://order-processor/orders", content);               
+               await httpClient.PostAsJsonAsync("http://order-processor/orders", content);               
                Console.WriteLine("Order requested: " + orderId);
                Console.WriteLine("Result: " + result);
    	    }
