@@ -3,7 +3,7 @@ type: docs
 title: "State management API reference"
 linkTitle: "State management API"
 description: "Detailed documentation on the state management API"
-weight: 200
+weight: 400
 ---
 
 ## Component file
