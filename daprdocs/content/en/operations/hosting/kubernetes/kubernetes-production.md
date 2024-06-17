@@ -109,7 +109,7 @@ There are two built-in critical priority classes in Kubernetes:
 
 It's recommended to set the `priorityClassName` to `system-cluster-critical` for the Dapr control plane pods.  
 
-For a new Dapr deployment, `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
+For a new Dapr control plane deployment, the `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
 
 For a new Dapr deployment, this priority class can be set with both the Dapr CLI and Helm charts, 
 using the helm `--set global.priorityClassName=system-cluster-critical` argument.
