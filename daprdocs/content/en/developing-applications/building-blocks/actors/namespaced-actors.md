@@ -57,7 +57,7 @@ spec:
   - name: endpoints
     value: localhost:2379
   - name: keyPrefixPath
-    value: namespace1
+    value: namespace-actorA
   - name: actorStateStore
     value: "true"
 ```
