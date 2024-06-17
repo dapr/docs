@@ -36,7 +36,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Request formatted correctly, error in dapr code or Scheduler control plane service
 
 ### Response content
 
@@ -65,7 +65,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Request formatted correctly, error in dapr code or Scheduler control plane service
 
 ### Response content
 
@@ -94,7 +94,7 @@ Code | Description
 ---- | -----------
 `202`  | Accepted
 `400`  | Request was malformed
-`500`  | Request formatted correctly, error in dapr code or underlying component
+`500`  | Request formatted correctly, error in dapr code or Scheduler control plane service
 
 ### Response content
 
