@@ -24,7 +24,7 @@ Dapr allows you to assign a global, unique ID for your app. This ID encapsulates
 {{% codetab %}}
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
 
 dapr run --app-id order-processor --app-port 8001  --app-protocol http --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
@@ -32,7 +32,7 @@ dapr run --app-id order-processor --app-port 8001  --app-protocol http --dapr-ht
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --app-protocol https --dapr-http-port 3500 -- python3 checkout/app.py
+dapr run --app-id checkout --app-protocol https --dapr-http-port 3500 -- python3 checkout/app.py
 
 dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
@@ -42,7 +42,7 @@ dapr run --app-id order-processor --app-port 8001 --app-protocol https --dapr-ht
 {{% codetab %}}
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 
 dapr run --app-id order-processor --app-port 5001  --app-protocol http --dapr-http-port 3501 -- npm start
 ```
@@ -50,7 +50,7 @@ dapr run --app-id order-processor --app-port 5001  --app-protocol http --dapr-ht
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm start
+dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- npm start
 
 dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-protocol https -- npm start
 ```
@@ -60,7 +60,7 @@ dapr run --app-id order-processor --app-port 5001 --dapr-http-port 3501 --app-pr
 {{% codetab %}}
 
 ```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 
 dapr run --app-id order-processor --app-port 7001 --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
@@ -68,7 +68,7 @@ dapr run --app-id order-processor --app-port 7001 --app-protocol http --dapr-htt
 If your app uses a TLS, you can tell Dapr to invoke your app over a TLS connection by setting `--app-protocol https`:
 
 ```bash
-dapr run  --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet run
+dapr run --app-id checkout --dapr-http-port 3500 --app-protocol https -- dotnet run
 
 dapr run --app-id order-processor --app-port 7001 --dapr-http-port 3501 --app-protocol https -- dotnet run
 ```
