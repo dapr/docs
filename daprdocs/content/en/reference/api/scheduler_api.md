@@ -50,7 +50,7 @@ The API call will provide a response similar to this:
 Get a job's data with its given name.
 
 ```
-GET http://localhost:3500/v1.0-alpha1/scheduler/job/<name>
+GET http://localhost:3500/v1.0-alpha1/job/<name>
 ```
 
 ### URL parameters
@@ -79,7 +79,7 @@ The API call will provide a response similar to this:
 Delete a job you've created and scheduled with its given name.
 
 ```
-DELETE http://localhost:3500/v1.0-alpha1/scheduler/job/<name>
+DELETE http://localhost:3500/v1.0-alpha1/job/<name>
 ```
 
 ### URL parameters
