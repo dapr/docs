@@ -17,7 +17,7 @@ With the Scheduler API, you can orchestrate jobs and tasks in your environment.
 Schedule a job with the given name.
 
 ```
-POST http://localhost:3500/v1.0-alpha1/scheduler/job/schedule/<name>
+POST http://localhost:3500/v1.0-alpha1/job/schedule/<name>
 ```
 
 ### URL parameters
