@@ -203,7 +203,7 @@ A JSON object with the following fields:
 | `dueTime` | Specifies the time after which the reminder is invoked. Its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration)
 | `period` | Specifies the period between different invocations. Its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration) or ISO 8601 duration format with optional recurrence.
 | `ttl` | Sets time at or interval after which the timer or reminder will be expired and deleted. Its format should be [time.ParseDuration format](https://pkg.go.dev/time#ParseDuration), RFC3339 date format, or ISO 8601 duration format.
-| `data` |  A string value and can be any related content. Content is returned when the reminder expires. 
+| `data` |  A string value and can be any related content. Content is returned when the reminder expires. For example this may be useful for returning a URL or anything related to the content.
 
 `period` field supports `time.Duration` format and ISO 8601 format with some limitations. For `period`, only duration format of ISO 8601 duration `Rn/PnYnMnWnDTnHnMnS` is supported. `Rn/` specifies that the reminder will be invoked `n` number of times. 
 
