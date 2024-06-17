@@ -2,7 +2,7 @@
 type: docs
 title: "Quickstart: State Management"
 linkTitle: "State Management"
-weight: 72
+weight: 74
 description: "Get started with Dapr's State Management building block"
 ---
 
@@ -167,14 +167,6 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
-```
-
-Install the dependencies for the `order-processor` app:
-
-```bash
-cd ./order-processor
-npm install
-cd ..
 ```
 
 ### Step 2: Manipulate service state

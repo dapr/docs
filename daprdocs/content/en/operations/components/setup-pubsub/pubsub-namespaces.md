@@ -23,12 +23,12 @@ The table below shows which resources are deployed to which namespaces:
 
 | Resource                | namespace-a | namespace-b |
 |------------------------ |-------------|-------------|
-| Redis master            | X           |             |
-| Redis replicas          | X           |             |
-| Dapr's PubSub component | X           | X           |
-| Node subscriber         | X           |             |
-| Python subscriber       | X           |             |
-| React UI publisher      |             | X           |
+| Redis master            | ✅         | ❌          |
+| Redis replicas          | ✅         | ❌          |
+| Dapr's PubSub component | ✅         | ✅          |
+| Node subscriber         | ✅         | ❌          |
+| Python subscriber       | ✅         | ❌          |
+| React UI publisher      | ❌         | ✅          |
 
 {{% alert title="Note" color="primary" %}}
 All pub/sub components support limiting pub/sub topics to specific applications using [namespace or component scopes]({{< ref pubsub-scopes.md >}}). 

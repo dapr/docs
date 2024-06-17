@@ -2,7 +2,7 @@
 type: docs
 title: "Lock component specs"
 linkTitle: "Locks"
-weight: 6000
+weight: 7000
 description: The supported locks that interface with Dapr
 no_list: true
 ---

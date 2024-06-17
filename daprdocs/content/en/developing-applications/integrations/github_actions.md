@@ -2,7 +2,7 @@
 type: docs
 weight: 5000
 title: "How to: Use the Dapr CLI in a GitHub Actions workflow"
-linkTitle: "How to: GitHub Actions"
+linkTitle: "GitHub Actions"
 description: "Add the Dapr CLI to your GitHub Actions to deploy and manage Dapr in your environments."
 ---
 

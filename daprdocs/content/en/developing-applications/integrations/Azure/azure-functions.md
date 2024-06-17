@@ -6,9 +6,6 @@ description: "Access Dapr capabilities from your Azure Functions runtime applica
 weight: 3000
 ---
 
-{{% alert title="Note" color="primary" %}}
-The Dapr extension for Azure Functions is currently in preview.
-{{% /alert %}}
 
 Dapr integrates with the [Azure Functions runtime](https://learn.microsoft.com/azure/azure-functions/functions-overview) via an extension that lets a function seamlessly interact with Dapr. 
 - **Azure Functions** provides an event-driven programming model.
