@@ -3,7 +3,7 @@ type: docs
 title: "Distributed Lock API reference"
 linkTitle: "Distributed Lock API"
 description: "Detailed documentation on the distributed lock API"
-weight: 800
+weight: 900
 ---
 
 ## Lock

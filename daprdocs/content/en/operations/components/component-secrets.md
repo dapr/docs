@@ -75,15 +75,14 @@ spec:
   type: bindings.azure.servicebusqueues
   version: v1
   metadata:
-  -name: connectionString
-   secretKeyRef:
+  - name: connectionString
+    secretKeyRef:
       name: asbNsConnString
       key: asbNsConnString
-  -name: queueName
-   value: servicec-inputq
+  - name: queueName
+    value: servicec-inputq
 auth:
   secretStore: <SECRET_STORE_NAME>
-
 ```
 The above "Secret is a string" case yaml tells Dapr to extract a connection string named `asbNsConnstring` from the defined `secretStore` and assign the value to the `connectionString` field in the component since there is no key embedded in the "secret" from the `secretStore` because it is a plain string. This requires the secret `name` and secret `key` to be identical.
 
@@ -95,7 +94,7 @@ The following example shows you how to create a Kubernetes secret to hold the co
 
 1. First, create the Kubernetes secret:
     ```bash
-     kubectl create secret generic eventhubs-secret --from-literal=connectionString=*********
+    kubectl create secret generic eventhubs-secret --from-literal=connectionString=*********
     ```
 
 2. Next, reference the secret in your binding:

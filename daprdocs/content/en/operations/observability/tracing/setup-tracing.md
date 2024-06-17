@@ -20,7 +20,7 @@ spec:
   tracing:
     samplingRate: "1"
     otel: 
-      endpointAddress: "https://..."
+      endpointAddress: "myendpoint.cluster.local:4317"
     zipkin:
       endpointAddress: "https://..."
     
@@ -32,10 +32,10 @@ The following table lists the properties for tracing:
 |--------------|--------|-------------|
 | `samplingRate` | string | Set sampling rate for tracing to be enabled or disabled.
 | `stdout` | bool | True write more verbose information to the traces
-| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address. 
+| `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) target hostname and optionally port. If this is used, you do not need to specify the 'zipkin' section.
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted.
 | `otel.protocol` | string | Set to `http` or `grpc` protocol.
-| `zipkin.endpointAddress` | string | Set the Zipkin server address. If this is used, you do not need to specify the `otel` section.
+| `zipkin.endpointAddress` | string | Set the Zipkin server URL. If this is used, you do not need to specify the `otel` section.
 
 To enable tracing, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (every span is sampled), and sends trace using OTEL protocol to the OTEL server at localhost:4317
 
@@ -66,7 +66,7 @@ turns on tracing for the sidecar.
 
 | Environment Variable | Description |
 |----------------------|-------------|
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server address, turns on tracing |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | Sets the Open Telemetry (OTEL) server hostname and optionally port, turns on tracing |
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
 
