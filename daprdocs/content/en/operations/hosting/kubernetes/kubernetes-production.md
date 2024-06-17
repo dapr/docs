@@ -111,7 +111,7 @@ It's recommended to set the `priorityClassName` to `system-cluster-critical` for
 
 For a new Dapr control plane deployment, the `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
 
-For a new Dapr deployment, this priority class can be set with both the Dapr CLI and Helm charts, 
+This priority class can be set with both the Dapr CLI and Helm charts, 
 using the helm `--set global.priorityClassName=system-cluster-critical` argument.
 
 #### Dapr version < 1.14
