@@ -6,12 +6,11 @@ weight: 40
 description: "Learn about namespaced actors"
 ---
 
-Namespaced actors use the multi-tenant Placement service. With this service, in a scenario where each tenant has its own namespace, sidecars belonging to a tenant named "Tenant A" won't receive placement information for "Tenant B". 
 
 Namespacing in Dapr provides isolation, and thus multi-tenancy. With namespacing, the same actor type can be deployed into different namespaces. Instances of actors can call across these namespaces. 
 
 {{% alert title="Note" color="primary" %}}
-Note that the namespace is not part of the actor name (that is an actor id), namespace is used for the isolation of the deployed actor services.
+Each namespaced actor deployment must use its own separate state store, especially if the same actor type is used across namespaces. In other words, no namespace information is written as part of the actor record, and hence separate state stores are required for each namespace. See [Configuring actor state stores for namespacing]({{< ref "#configuring-actor-state-stores-for-namespacing" >}}) section for examples.
 {{% /alert %}}
 
 ## Creating and configuring namespaces
@@ -41,7 +40,9 @@ Then, deploy your actor applications into this namespace (in the example, `names
 
 ## Configuring actor state stores for namespacing
 
-While you could use different physical databases for each actor namespace, some state store components provide a way to logically separate data by table, prefix, collection, and more. This allows you to use the same physical database for multiple namespaces, as long as you provide the logical separation in the Dapr component definition.
+Each namespaced actor deployment **must** use its own separate state store. While you could use different physical databases for each actor namespace, some state store components provide a way to logically separate data by table, prefix, collection, and more. This allows you to use the same physical database for multiple namespaces, as long as you provide the logical separation in the Dapr component definition.
+
+Some examples are provided below.
 
 ### Example 1: By a prefix in etcd
 
@@ -100,9 +101,23 @@ spec:
     value: "true"
   - name: redisDB
     value: "1"
+  - name: redisPassword
+    secretKeyRef:
+      name: redis-secret
+      key:  redis-password
+  - name: actorStateStore
+    value: "true"
+  - name: redisDB
+    value: "1"
+auth:
+  secretStore: <SECRET_STORE_NAME>
 ```
 
 Check your [state store component specs]({{< ref supported-state-stores.md >}}) to see what it provides.
+
+{{% alert title="Note" color="primary" %}}
+Namespaced actors use the multi-tenant Placement service. With this control plane service where each application deployment has its own namespace, sidecars belonging to an application in namespace "ActorA" won't receive placement information for an application in namespace "ActorB".
+{{% /alert %}}
 
 ## Next steps
 - [Learn more about the Dapr Placement service]({{< ref placement.md >}})
