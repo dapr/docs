@@ -6,7 +6,9 @@ weight: 700
 description: How Dapr provides namespacing and isolation
 ---
 
-Dapr namespacing provides isolation and multi-tenancy. Dapr supports namespaced service invocation, components, pub/sub, and actors in both self-hosted mode and on Kubernetes. 
+Dapr namespacing provides isolation and multi-tenancy across many capabilities, giving greater security. Typically applications and components are deployed to namespaces to provide isolation in a given environment, such as Kubernetes. 
+
+Dapr supports namespacing in service invocation calls between applications, when accessing components, sending pub/sub messages in consumer groups, and with actors type deployments as examples. Namespacing isolation is supported in both self-hosted and Kubernetes modes. 
 
 To get started, create and configure your namespace.
 
