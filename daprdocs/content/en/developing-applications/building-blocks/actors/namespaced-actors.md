@@ -7,7 +7,7 @@ description: "Learn about namespaced actors"
 ---
 
 
-Namespacing in Dapr provides isolation, and thus multi-tenancy. With namespacing, the same actor type can be deployed into different namespaces. Instances of actors can call across these namespaces. 
+Namespacing in Dapr provides isolation, and thus multi-tenancy. With actor namespacing, the same actor type can be deployed into different namespaces. You can call instances of these actors in the same namespace. 
 
 {{% alert title="Note" color="primary" %}}
 Each namespaced actor deployment must use its own separate state store, especially if the same actor type is used across namespaces. In other words, no namespace information is written as part of the actor record, and hence separate state stores are required for each namespace. See [Configuring actor state stores for namespacing]({{< ref "#configuring-actor-state-stores-for-namespacing" >}}) section for examples.

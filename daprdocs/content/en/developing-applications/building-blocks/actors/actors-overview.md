@@ -56,7 +56,7 @@ You would use Dapr Workflow when you need to define and orchestrate complex work
 
 ### Namespaced actors
 
-Dapr supports namespaced actors. An actor type can be deployed into different namespaces. Instances of each actor type can call across namespaces. 
+Dapr supports namespaced actors. An actor type can be deployed into different namespaces. You can call instances of these actors in the same namespace. 
  
 [Learn more about namespaced actors and how they work.]({{< ref namespaced-actors.md >}})
 
