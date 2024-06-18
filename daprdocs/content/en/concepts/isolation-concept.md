@@ -38,6 +38,8 @@ Then deploy your applications into this namespace.
 Learn how to use namespacing throughout Dapr:
 
 - [Service Invocation namespaces]({{< ref service-invocation-namespaces.md >}})
-- [Scope pub/sub topic access]({{< ref pubsub-scopes.md >}})
-- [Scope components to one or more applications]({{< ref component-scopes.md >}})
+- [How to: Set up pub/sub namespace consumer groups]({{< ref howto-namespace.md >}})
+- Components:
+  - [How to: Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
+  - [Scope components to one or more applications]({{< ref component-scopes.md >}})
 - [Namespaced actors](todo)
