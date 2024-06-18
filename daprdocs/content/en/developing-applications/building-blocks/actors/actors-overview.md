@@ -60,6 +60,12 @@ Each actor is uniquely identified by an actor ID. An actor ID can be _any_ strin
 
 ## Features
 
+### Namespaced actors
+
+Dapr supports namespaced actors. An actor type can be deployed into different namespaces. You can call instances of these actors in the same namespace. 
+ 
+[Learn more about namespaced actors and how they work.]({{< ref namespaced-actors.md >}})
+
 ### Actor lifetime
 
 Since Dapr actors are virtual, they do not need to be explicitly created or destroyed. The Dapr actor runtime:
