@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "General Dapr FAQ"
-linkTitle: "FAQs"
+title: "General Dapr questions and answers"
+linkTitle: "General questions"
 weight: 100
 description: "Common questions asked about Dapr"
 ---
