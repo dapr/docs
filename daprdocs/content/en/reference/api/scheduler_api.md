@@ -43,6 +43,15 @@ Code | Description
 The API call will provide a response similar to this:
 
 ```json
+{
+  "job": {
+      "data": {
+          "@type": "type.googleapis.com/google.type.Expr",
+          "expression": "cassie87"
+      },
+      "dueTime": "30s"
+  }
+}
 ```
 
 ## Get job data
@@ -72,7 +81,14 @@ Code | Description
 The API call will provide a response similar to this:
 
 ```json
-
+{
+  "name":"test1",
+  "dueTime":"30s",
+  "data": {
+     "@type":"type.googleapis.com/google.type.Expr",
+     "expression":"expression1"
+   }
+}                                    
 ```
 ## Delete a job
 
@@ -98,11 +114,7 @@ Code | Description
 
 ### Response content
 
-The API call will provide a response similar to this:
-
-```json
-
-```
+None.
 
 ## Next steps
 
