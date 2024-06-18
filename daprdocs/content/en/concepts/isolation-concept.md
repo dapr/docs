@@ -42,4 +42,4 @@ Learn how to use namespacing throughout Dapr:
 - Components:
   - [How to: Configure pub/sub components with multiple namespaces]({{< ref pubsub-namespaces.md >}})
   - [Scope components to one or more applications]({{< ref component-scopes.md >}})
-- [Namespaced actors](todo)
+- [Namespaced actors]({{< ref namespaced-actors.md >}})
