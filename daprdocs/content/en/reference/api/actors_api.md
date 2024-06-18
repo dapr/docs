@@ -239,7 +239,7 @@ To configure the reminder to fire only once, the period should be set to empty s
 }
 ```
 
-When you specify the repitiion number in both `period` and `ttl`, the timer/reminder will be stopped when either condition is met. The following example has a timer with a `period` of 3 seconds (in ISO 8601 duration format) and a `ttl` of 20 seconds. This timer fires immediately after registration, then every 3 seconds after that for the duration of 20 seconds.
+When you specify the repetition number in both `period` and `ttl`, the timer/reminder is stopped when either condition is met. The following example has a timer with a `period` of 3 seconds (in ISO 8601 duration format) and a `ttl` of 20 seconds. This timer fires immediately after registration, then every 3 seconds after that for the duration of 20 seconds, after which it never fires again since the `ttl` was met
 
 ```json
 {
