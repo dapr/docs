@@ -3,7 +3,7 @@ type: docs
 title: "Pub/sub API reference"
 linkTitle: "Pub/Sub API"
 description: "Detailed documentation on the pub/sub API"
-weight: 300
+weight: 200
 ---
 
 ## Publish a message to a given topic
@@ -177,7 +177,15 @@ Example:
   {
     "pubsubname": "pubsub",
     "topic": "newOrder",
-    "route": "/orders",
+    "routes": {
+      "rules": [
+        {
+          "match": "event.type == order",
+          "path": "/orders"
+        }
+      ]
+      "default" : "/otherorders"
+    },
     "metadata": {
       "rawPayload": "true"
     }
@@ -197,7 +205,7 @@ Parameter | Description
 
 ### Provide route(s) for Dapr to deliver topic events
 
-In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response.
+In order to deliver topic events, a `POST` call will be made to user code with the route specified in the subscription response. Under `routes`, you can provide [rules that match a certain condition to a specific path when a message topic is received.]({{< ref "howto-route-messages.md" >}}) You can also provide a default route for any rules that do not have a specific match.
 
 The following example illustrates this point, considering a subscription for topic `newOrder` with route `orders` on port 3000: `POST http://localhost:3000/orders`
 
