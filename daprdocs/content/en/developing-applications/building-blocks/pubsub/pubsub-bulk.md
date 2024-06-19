@@ -22,7 +22,7 @@ The bulk publish operation also does not guarantee any ordering of messages.
 
 ### Example
 
-{{< tabs Java JavaScript .NET Python Go "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
+{{< tabs Java JavaScript ".NET" Python Go "HTTP API (Bash)" "HTTP API (PowerShell)" >}}
 
 {{% codetab %}}
 
