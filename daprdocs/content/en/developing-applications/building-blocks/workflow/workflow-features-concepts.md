@@ -48,7 +48,7 @@ This "replay" behavior continues until the workflow function completes or fails 
 Using this replay technique, a workflow is able to resume execution from any "await" point as if it had never been unloaded from memory. Even the values of local variables from previous runs can be restored without the workflow engine knowing anything about what data they stored. This ability to restore state makes Dapr Workflows _durable_ and _fault tolerant_.
 
 {{% alert title="Note" color="primary" %}}
-The workflow replay behavior described here requires that workflow function code be _deterministic_. Deterministic workflow functions take the exact same actions when provided the exact same inputs. [Learn more about the limitations around deterministic workflow code.]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-constraints" >}})
+The workflow replay behavior described here requires that workflow function code be _deterministic_. Deterministic workflow functions take the exact same actions when provided the exact same inputs. [Learn more about the limitations around deterministic workflow code.]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-restraints" >}})
 {{% /alert %}}
 
 
@@ -75,9 +75,9 @@ You can use the following two techniques to write workflows that may need to sch
 
 ### Updating workflow code
 
-Because workflows are long-running and durable, updating workflow code must be done with extreme care. As discussed in the [workflow determinism]({{< ref "#workflow-determinism-and-code-constraints" >}}) limitation section, workflow code must be deterministic. Updates to workflow code must preserve this determinism if there are any non-completed workflow instances in the system. Otherwise, updates to workflow code can result in runtime failures the next time those workflows execute.
+Because workflows are long-running and durable, updating workflow code must be done with extreme care. As discussed in the [workflow determinism]({{< ref "#workflow-determinism-and-code-restraints" >}}) limitation section, workflow code must be deterministic. Updates to workflow code must preserve this determinism if there are any non-completed workflow instances in the system. Otherwise, updates to workflow code can result in runtime failures the next time those workflows execute.
 
-[See known limitations]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-constraints" >}})
+[See known limitations]({{< ref "workflow-features-concepts.md#workflow-determinism-and-code-restraints" >}})
 
 ## Workflow activities
 
