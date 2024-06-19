@@ -17,4 +17,4 @@ The scheduler service is deployed as part of `dapr init -k`, or via the Dapr Hel
 
 ## Related links
 
-[Learn more about the Scheduler API.]({{< ref scheduler_api.md >}})
+[Learn more about the Jobs API.]({{< ref jobs_api.md >}})
