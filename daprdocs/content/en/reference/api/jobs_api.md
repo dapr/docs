@@ -1,0 +1,133 @@
+---
+type: docs
+title: "Jobs API reference"
+linkTitle: "Jobs API"
+description: "Detailed documentation on the jobs API"
+weight: 1300
+---
+
+{{% alert title="Note" color="primary" %}}
+Jobs is currently in alpha.
+{{% /alert %}}
+
+With the jobs API, you can schedule jobs and tasks in the future.
+
+## Schedule a job
+
+Schedule a job with a name.
+
+```
+$ curl -X POST \
+  http://localhost:3500/v1.0-alpha1/job/schedule/<name> \
+  -H "Content-Type: application/json" \
+    -H 'dapr-app-id: <id>' \
+  -d '{
+        "job": {
+            "data": {
+                "@type": "type.googleapis.com/google.type.Expr",
+                "expression": "<expression>"
+            },
+            "dueTime": "30s"
+        }
+    }'
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`name` | Name of the job you're scheduling
+`data` | A string value and can be any related content. Content is returned when the reminder expires. For example, this may be useful for returning a URL or anything related to the content.
+`dueTime` | Specifies the time after which the jobs are invoked. Its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration)
+
+### Request body
+
+```json
+{
+  "job": {
+      "data": {
+          "@type": "type.googleapis.com/google.type.Expr",
+          "expression": "cassie87"
+      },
+      "dueTime": "30s"
+  }
+}
+```
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Request formatted correctly, error in dapr code or Scheduler control plane service
+
+### Response content
+
+The returned response is empty. 
+
+## Get job data
+
+Get a job with its name.
+
+```
+$ curl -X GET http://localhost:3500/v1.0-alpha1/job/<name> -H "Content-Type: application/json" -H 'dapr-app-id: <id>'
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`name` | Name of the job you're scheduling
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Request formatted correctly, error in dapr code or Scheduler control plane service
+
+### Response content
+
+The returned response is JSON containing the `name` of the job, the `dueTime` and  the`data`.
+
+```json
+{
+  "name":"test1",
+  "dueTime":"30s",
+  "data": {
+     "@type":"type.googleapis.com/google.type.Expr",
+     "expression":"expression1"
+   }
+}                                    
+```
+## Delete a job
+
+Delete a named job.
+
+```
+$ curl -X DELETE http://localhost:3500/v1.0-alpha1/job/<name> -H "Content-Type: application/json" -H 'dapr-app-id: <id>'
+```
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+`name` | Name of the job you're scheduling
+
+### HTTP response codes
+
+Code | Description
+---- | -----------
+`202`  | Accepted
+`400`  | Request was malformed
+`500`  | Request formatted correctly, error in dapr code or Scheduler control plane service
+
+### Response content
+
+None.
+
+## Next steps
+
+[Jobs API overview]({{< ref jobs-overview.md >}})

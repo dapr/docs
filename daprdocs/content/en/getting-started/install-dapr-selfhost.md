@@ -21,7 +21,7 @@ Dapr initialization includes:
 1. Running a **Zipkin container instance** for observability.
 1. Creating a **default components folder** with component definitions for the above.
 1. Running a **Dapr placement service container instance** for local actor support.
-1. Running a **Dapr scheduler service container instance** for job orchestration.
+1. Running a **Dapr scheduler service container instance** for job scheduling.
 
 {{% alert title="Kubernetes Development Environment" color="primary" %}}
 To initialize Dapr in your local or remote **Kubernetes** cluster for development (including the Redis and Zipkin containers listed above), see [how to initialize Dapr for development on Kubernetes]({{<ref "kubernetes-deploy.md#install-dapr-from-the-official-dapr-helm-chart-with-development-flag" >}})
