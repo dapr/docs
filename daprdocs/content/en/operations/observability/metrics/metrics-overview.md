@@ -103,7 +103,7 @@ http:
 
 Metrics:
 ```
-dapr_http_server_request_count{app_id="order-service",method="InvokeService/order-service",status="200"} 5
+dapr_http_server_request_count{app_id="order-service",method="GET", path="",status="200"} 5
 ```
 
 - Low Cardinality With Path Matching
@@ -113,9 +113,6 @@ Configuration:
 http:
   increasedCardinality: false
   pathMatching:
-    ingress:
-    - /orders/{orderID}
-    egress:
     - /orders/{orderID}
 ```
 
@@ -124,7 +121,7 @@ Metrics:
 # matched paths
 dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 4
 # unmatched paths
-dapr_http_server_request_count{app_id="order-service",method="GET",path="/",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="GET",path="",status="200"} 1
 ```
 
 - High Cardinality Without Path Matching
@@ -149,9 +146,7 @@ Configuration:
 ```yaml
 http:
   increasedCardinality: true
-  ingress:
-    - /orders/{orderID}
-    egress:
+  pathMatching:
     - /orders/{orderID}
 ```
 
