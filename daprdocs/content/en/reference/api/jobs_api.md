@@ -17,19 +17,7 @@ With the jobs API, you can schedule jobs and tasks in the future.
 Schedule a job with a name.
 
 ```
-$ curl -X POST \
-  http://localhost:3500/v1.0-alpha1/job/schedule/<name> \
-  -H "Content-Type: application/json" \
-    -H 'dapr-app-id: <id>' \
-  -d '{
-        "job": {
-            "data": {
-                "@type": "type.googleapis.com/google.type.Expr",
-                "expression": "<expression>"
-            },
-            "dueTime": "30s"
-        }
-    }'
+POST http://localhost:3500/v1.0-alpha1/jobs/<name>
 ```
 
 ### URL parameters
@@ -47,7 +35,7 @@ Parameter | Description
   "job": {
       "data": {
           "@type": "type.googleapis.com/google.type.Expr",
-          "expression": "cassie87"
+          "expression": "<expression>"
       },
       "dueTime": "30s"
   }
@@ -64,14 +52,31 @@ Code | Description
 
 ### Response content
 
-The returned response is empty. 
+The following example curl command creates a job, naming the job `test1` and specifying the `dueTime` and the `data`.
+
+```bash
+$ curl -X POST \
+  http://localhost:3500/v1.0-alpha1/jobs/test1 \
+  -H "Content-Type: application/json" \
+    -H 'dapr-app-id: sub' \
+  -d '{
+        "job": {
+            "data": {
+                "@type": "type.googleapis.com/google.type.Expr",
+                "expression": "expression1"
+            },
+            "dueTime": "30s"
+        }
+    }'
+```
+
 
 ## Get job data
 
 Get a job with its name.
 
 ```
-$ curl -X GET http://localhost:3500/v1.0-alpha1/job/<name> -H "Content-Type: application/json" -H 'dapr-app-id: <id>'
+GET http://localhost:3500/v1.0-alpha1/jobs/<name>
 ```
 
 ### URL parameters
@@ -90,7 +95,11 @@ Code | Description
 
 ### Response content
 
-The returned response is JSON containing the `name` of the job, the `dueTime` and  the`data`.
+After running the following example curl command, the returned response is JSON containing the `name` of the job, the `dueTime`, and the `data`.
+
+```bash
+$ curl -X GET http://localhost:3500/v1.0-alpha1/job/test1 -H "Content-Type: application/json" -H 'dapr-app-id: sub'
+```
 
 ```json
 {
@@ -107,7 +116,7 @@ The returned response is JSON containing the `name` of the job, the `dueTime` an
 Delete a named job.
 
 ```
-$ curl -X DELETE http://localhost:3500/v1.0-alpha1/job/<name> -H "Content-Type: application/json" -H 'dapr-app-id: <id>'
+DELETE http://localhost:3500/v1.0-alpha1/jobs/<name> 
 ```
 
 ### URL parameters
@@ -126,7 +135,12 @@ Code | Description
 
 ### Response content
 
-None.
+In the following example curl command, the job named `test1` with app-id `sub` will be deleted
+
+```bash
+$ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/test -H "Content-Type: application/json" -H 'dapr-app-id: sub'
+```
+
 
 ## Next steps
 
