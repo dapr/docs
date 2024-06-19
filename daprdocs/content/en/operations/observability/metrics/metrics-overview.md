@@ -84,7 +84,7 @@ Setting `spec.metrics.http.increasedCardinality` to `false` is **recommended** t
 
 Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. For details on how to set the cardinality in configuration see ({{< ref "configuration-overview.md#metrics" >}})  
 
-This configuration is opt-in and is enabled via the Dapr configuration `spec.metrics.http.pathMatching`. When defined with ingress or egress paths, it enables path matching, which standardizes specified paths for both ingress and egress metrics. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.  
+This configuration is opt-in and is enabled via the Dapr configuration `spec.metrics.http.pathMatching`. When defined, it enables path matching, which standardizes specified paths for both metrics paths. This reduces the number of unique metrics paths, making metrics more manageable and reducing resource consumption in a controlled way.  
 
 When `spec.metrics.http.pathMatching` is combined with the `increasedCardinality` flag set to `false` (which is the default in v1.14), non-matched paths are transformed into a catch-all bucket to control and limit cardinality, preventing unbounded path growth. Conversely, when `increasedCardinality` is `true`, non-matched paths are passed through as they normally would be, allowing for potentially higher cardinality but preserving the original path data. 
 

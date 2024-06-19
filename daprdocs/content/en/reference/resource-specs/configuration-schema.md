@@ -39,9 +39,7 @@ spec:
     http:
       increasedCardinality: <TRUE-OR-FALSE>
       pathMatching: 
-        ingress:
         - <PATH-A>
-        egress:
         - <PATH-B>
   httpPipeline: # for incoming http calls
     handlers:
