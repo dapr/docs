@@ -408,7 +408,7 @@ Using CLI:
 dapr invoke --app-id checkout --method checkout/100
 ```
 
-You can also append a query string or a fragment to the end of the URL and Dapr will pass it through unchanged. This means that if you need to passsome additional arguments in your service invocation that aren't part of a payload or the path, you can do so by appending a `?` to the end of the URL followed by the key/value pairs separated by `=` signs and delimited by `&` as in the following example:
+You can also append a query string or a fragment to the end of the URL and Dapr will pass it through unchanged. This means that if you need to pass some additional arguments in your service invocation that aren't part of a payload or the path, you can do so by appending a `?` to the end of the URL, followed by the key/value pairs separated by `=` signs and delimited by `&`. For example:
 
 ```bash
 curl 'http://dapr-app-id:checkout@localhost:3602/checkout/100?basket=1234&key=abc` -X POST
