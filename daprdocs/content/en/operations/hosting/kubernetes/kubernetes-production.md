@@ -95,6 +95,48 @@ For a new Dapr deployment, HA mode can be set with both:
 
 For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enabling-high-availability-in-an-existing-dapr-deployment" >}}).
 
+## Setting cluster critical priority class name for control plane services
+
+In some scenarios, nodes may have memory and/or cpu pressure and the Dapr control plane pods might get selected
+for eviction. To prevent this, you can set a critical priority class name for the Dapr control plane pods. This ensures that
+the Dapr control plane pods are not evicted unless all other pods with lower priority are evicted.
+
+Learn more about [Protecting Mission-Critical Pods](https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass/).
+
+There are two built-in critical priority classes in Kubernetes:
+- `system-cluster-critical`
+- `system-node-critical` (highest priority)
+
+It's recommended to set the `priorityClassName` to `system-cluster-critical` for the Dapr control plane pods.  
+
+For a new Dapr control plane deployment, the `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
+
+This priority class can be set with both the Dapr CLI and Helm charts, 
+using the helm `--set global.priorityClassName=system-cluster-critical` argument.
+
+#### Dapr version < 1.14
+
+For versions of Dapr below v1.14, it's recommended that you add a `ResourceQuota` to the Dapr control plane namespace. This prevents 
+problems associated with scheduling pods [where the cluster may be configured](https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default ) 
+with limitations on which pods can be assigned high priority classes. For v1.14 onwards the Helm chart adds this automatically.
+
+If you have Dapr installed in namespace `dapr-system`, you can create a `ResourceQuota` with the following content:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dapr-system-critical-quota
+  namespace: dapr-system
+spec:
+  scopeSelector:
+    matchExpressions:
+      - operator : In
+        scopeName: PriorityClass
+        values: [system-cluster-critical]
+```
+
+
 ## Deploy Dapr with Helm
 
 [Visit the full guide on deploying Dapr with Helm]({{< ref "kubernetes-deploy.md#install-with-helm-advanced" >}}).
