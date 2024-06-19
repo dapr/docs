@@ -71,7 +71,7 @@ See a [full API reference]({{< ref secrets_api.md >}}).
 
 Now that you've set up the local secret store, call Dapr to get the secrets from your application code. Below are code examples that leverage Dapr SDKs for retrieving a secret.
 
-{{< tabs .NET Java Python Go JavaScript>}}
+{{< tabs ".NET" Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
