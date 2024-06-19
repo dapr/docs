@@ -116,7 +116,7 @@ using the helm `--set global.priorityClassName=system-cluster-critical` argument
 
 #### Dapr version < 1.14
 
-For versions of Dapr < 1.14, it's recommended that you add a `ResourceQuota` to the Dapr control plane namespace. This prevents 
+For versions of Dapr below v1.14, it's recommended that you add a `ResourceQuota` to the Dapr control plane namespace. This prevents 
 problems associated with scheduling pods [where the cluster may be configured](https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default ) 
 with limitations on which pods can be assigned high priority classes.
 
