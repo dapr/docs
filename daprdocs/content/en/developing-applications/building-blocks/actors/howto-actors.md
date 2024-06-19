@@ -2,7 +2,7 @@
 type: docs
 title: "How-to: Interact with virtual actors using scripting"
 linkTitle: "How-To: Interact with virtual actors"
-weight: 60
+weight: 70
 description: Invoke the actor method for state management
 ---
 

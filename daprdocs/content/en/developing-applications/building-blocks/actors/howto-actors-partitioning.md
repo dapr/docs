@@ -2,7 +2,7 @@
 type: docs
 title: "How to: Enable partitioning of actor reminders"
 linkTitle: "How to: Partition reminders"
-weight: 50
+weight: 60
 description: "Enable actor reminders partitioning for your application"
 aliases:
   - "/developing-applications/building-blocks/actors/actors-background"

@@ -28,6 +28,9 @@ spec:
     value: <REPLACE-WITH-DATABASE>
   - name: collection
     value: <REPLACE-WITH-COLLECTION>
+  # Uncomment this if you wish to use Azure Cosmos DB as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -49,7 +52,7 @@ If you wish to use Cosmos DB as an actor store, append the following to the yam
 | masterKey          | Y*        | The key to authenticate to the Cosmos DB account. Only required when not using Microsoft Entra ID authentication. | `"key"`
 | database           | Y        | The name of the database  | `"db"`
 | collection         | Y        | The name of the collection (container) | `"collection"`
-| actorStateStore    | N         | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
+| actorStateStore    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ### Microsoft Entra ID authentication
 
@@ -172,7 +175,9 @@ az cosmosdb sql role assignment create \
   --role-definition-id "$ROLE_ID"
 ```
 
-## Optimizing Cosmos DB for bulk operation write performance
+## Optimizations
+
+### Optimizing Cosmos DB for bulk operation write performance
 
 If you are building a system that only ever reads data from Cosmos DB via key (`id`), which is the default Dapr behavior when using the state management API or actors, there are ways you can optimize Cosmos DB for improved write speeds. This is done by excluding all paths from indexing. By default, Cosmos DB indexes all fields inside of a document. On systems that are write-heavy and run little-to-no queries on values within a document, this indexing policy slows down the time it takes to write or update a document in Cosmos DB. This is exacerbated in high-volume systems.
 
@@ -205,6 +210,18 @@ indexing_policy {
 {{% alert title="Note" color="primary" %}}
 
 This optimization comes at the cost of queries against fields inside of documents within the state store. This would likely impact any stored procedures or SQL queries defined and executed. It is only recommended that this optimization be applied only if you are using the Dapr State Management API or Dapr Actors to interact with Cosmos DB.
+
+{{% /alert %}}
+
+### Optimizing Cosmos DB for cost savings
+
+If you intend to use Cosmos DB only as a key-value pair, it may be in your interest to consider converting your state object to JSON and compressing it before persisting it to state, and subsequently decompressing it when reading it out of state. This is because Cosmos DB bills your usage based on the maximum number of RU/s used in a given time period (typically each hour). Furthermore, RU usage is calculated as 1 RU per 1 KB of data you read or write. Compression helps by reducing the size of the data stored in Cosmos DB and subsequently reducing RU usage.
+
+This savings is particularly significant for Dapr actors. While the Dapr State Management API does a base64 encoding of your object before saving, Dapr actor state is saved as raw, formatted JSON. This means multiple lines with indentations for formatting. Compressing can signficantly reduce the size of actor state objects. For example, if you have an actor state object that is 75KB in size when the actor is hydrated, you will use 75 RU/s to read that object out of state. If you then modify the state object and it grows to 100KB, you will use 100 RU/s to write that object to Cosmos DB, totalling 175 RU/s for the I/O operation. Let's say your actors are concurrently handling 1000 requests per second, you will need at least 175,000 RU/s to meet that load. With effective compression, the size reduction can be in the region of 90%, which means you will only need in the region of 17,500 RU/s to meet the load.
+
+{{% alert title="Note" color="primary" %}}
+
+This particular optimization only makes sense if you are saving large objects to state. The performance and memory tradeoff for performing the compression and decompression on either end need to make sense for your use case. Furthermore, once the data is saved to state, it is not human readable, nor is it queryable. You should only adopt this optimization if you are saving large state objects as key-value pairs.
 
 {{% /alert %}}
 

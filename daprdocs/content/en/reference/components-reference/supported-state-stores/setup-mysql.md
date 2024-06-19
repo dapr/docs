@@ -35,6 +35,9 @@ spec:
     value: "<PEM PATH>"
   - name: pemContents # Required if pemPath not provided. Pem value.
     value: "<PEM CONTENTS>"    
+# Uncomment this if you wish to use MySQL & MariaDB as a state store for actors (optional)
+  #- name: actorStateStore
+  #  value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
@@ -59,6 +62,7 @@ If you wish to use MySQL as an actor store, append the following to the yaml.
 | `pemPath`            | N        | Full path to the PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemContents is not provided. Cannot be used in K8s environment | `"/path/to/file.pem"`, `"C:\path\to\file.pem"` |
 | `pemContents`        | N        | Contents of PEM file to use for [enforced SSL Connection](#enforced-ssl-connection) required if pemPath is not provided. Can be used in K8s environment | `"pem value"` |
 | `cleanupIntervalInSeconds` | N | Interval, in seconds, to clean up rows with an expired TTL. Default: `3600` (that is 1 hour). Setting this to values <=0 disables the periodic cleanup. | `1800`, `-1`
+| `actorStateStore`    | N        | Consider this state store for actors. Defaults to `"false"` | `"true"`, `"false"`
 
 ## Setup MySQL
 
