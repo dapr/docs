@@ -212,7 +212,11 @@ A JSON object with the following fields:
 
 If `Rn/` is not specified, the reminder will run an infinite number of times until deleted.
 
-The following specifies a `dueTime` of 3 seconds and a period of 7 seconds.
+If only `ttl` and `dueTime` are set, the reminder will be accepted. However, only the `dueTime` takes effect. For example, the reminder triggers at `dueTime`, and `ttl` is ignored.
+
+If `ttl`, `dueTime`, and `period` are set, the reminder first fires at `dueTime`, then repeatedly fires and expires according to `period` and `ttl`.
+
+The following example specifies a `dueTime` of 3 seconds and a period of 7 seconds.
 
 ```json
 {
