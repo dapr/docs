@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr and service meshes"
 linkTitle: "Service meshes"
-weight: 900
+weight: 200
 description: >
   How Dapr compares to and works with service meshes
 ---
