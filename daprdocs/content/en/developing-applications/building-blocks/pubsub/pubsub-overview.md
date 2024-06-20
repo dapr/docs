@@ -75,11 +75,12 @@ In principle, Dapr considers a message successfully delivered once the subscribe
 
 ### Receiving messages with topic subscriptions
 
-Dapr applications can subscribe to published topics via two methods that support the same features: declarative and programmatic.
+Dapr applications can subscribe to published topics via three methods that support the same features: declarative and programmatic.
 
 | Subscription method | Description |
 | ------------------- | ----------- |
 | **Declarative** | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
+| **Streaming** | Subscription is defined in the **user code**. Streaming subscriptions are dynamic in that they allow for adding or removing subscriptions at runtime. |
 | **Programmatic** | Subscription is defined in the **user code**. The programmatic approach implements the subscription in your code. |
 
 For more information, read [about the subscriptions in Subscription Methods]({{< ref subscription-methods.md >}}).

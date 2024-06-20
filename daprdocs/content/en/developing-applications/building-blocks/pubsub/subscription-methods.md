@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Declarative and programmatic subscription methods"
+title: "Declarative, streaming and programmatic subscription methods"
 linkTitle: "Subscription methods"
 weight: 3000
 description: "Learn more about the methods by which Dapr allows you to subscribe to topics."
@@ -8,12 +8,13 @@ description: "Learn more about the methods by which Dapr allows you to subscribe
 
 ## Pub/sub API subscription methods
 
-Dapr applications can subscribe to published topics via two methods that support the same features: declarative and programmatic.
+Dapr applications can subscribe to published topics via three methods that support the same features: declarative and programmatic.
 
 | Subscription method | Description |
 | ------------------- | ----------- |
 | [**Declarative**]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
-| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the subscription in your code. |
+| [**Streaming**]({{< ref "subscription-methods.md#streaming-subscriptions" >}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic in that they allow for adding or removing subscriptions at runtime. Doesn't require an app to be configured. |
+| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the static subscription in your code. |
 
 The examples below demonstrate pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr pub/sub component used first declaratively, then programmatically.
 
@@ -191,6 +192,118 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 {{< /tabs >}}
 
 The `/checkout` endpoint matches the `route` defined in the subscriptions and this is where Dapr sends all topic messages to.
+
+### Streaming subscriptions
+
+Streaming subscriptions are subscriptions defined in application code which can be dynamically stopped and started at runtime.
+Messages are pulled by the application from Dapr meaning no endpoint is needed to subscribe to a topic, and is possible to subscribe without any app configured on the sidecar at all.
+Any number of PubSubs and topics can be subscribed to at once.
+As messages are sent to the given message handler code, there is no concept of routes or bulk subscriptions.
+
+> **Note:** Only a single PubSub/Topic pair per application may be subscribed at a time.
+
+In the example below we show the different ways to stream subscribe to a topic.
+
+{{< tabs Go>}}
+
+{{% codetab %}}
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/dapr/go-sdk/client"
+)
+
+func main() {
+	cl, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	sub, err := cl.Subscribe(context.Background(), client.SubscriptionOptions{
+		PubsubName: "pubsub",
+		Topic:      "orders",
+	})
+	if err != nil {
+		panic(err)
+	}
+	// Close must always be called.
+	defer sub.Close()
+
+	for {
+		msg, err := sub.Receive()
+		if err != nil {
+			panic(err)
+		}
+
+		// Process the event
+
+		// We _MUST_ always signal the result of processing the message, else the
+		// message will not be considered as processed and will be redelivered or
+		// dead lettered.
+		// msg.Retry()
+		// msg.Drop()
+		if err := msg.Success(); err != nil {
+			panic(err)
+		}
+	}
+}
+```
+
+or
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/dapr/go-sdk/client"
+	"github.com/dapr/go-sdk/service/common"
+)
+
+func main() {
+	cl, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stop, err := cl.SubscribeWithHandler(context.Background(),
+		client.SubscriptionOptions{
+			PubsubName: "pubsub",
+			Topic:      "orders",
+		},
+		eventHandler,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// Stop must always be called.
+	defer stop()
+
+	<-make(chan struct{})
+}
+
+func eventHandler(e *common.TopicEvent) common.SubscriptionResponseStatus {
+	// Process message here
+    // common.SubscriptionResponseStatusRetry
+    // common.SubscriptionResponseStatusDrop
+			common.SubscriptionResponseStatusDrop, status)
+	}
+
+	return common.SubscriptionResponseStatusSuccess
+}
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
 
 ### Programmatic subscriptions
 
