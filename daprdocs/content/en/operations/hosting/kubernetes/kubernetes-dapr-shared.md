@@ -81,4 +81,4 @@ If you are not using the SDKs you can still send HTTP or gRCP requests to those 
 
 ## Next steps
 
-Check the [`Hello Kubernetes with Dapr Shared`]() tutorial.
+Check the [`Hello Kubernetes with Dapr Shared`](https://github.com/dapr/dapr-shared/blob/main/docs/tutorial/README.md) tutorial.
