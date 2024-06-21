@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Declarative, streaming and programmatic subscription methods"
+title: "Declarative, streaming, and programmatic subscription methods"
 linkTitle: "Subscription methods"
 weight: 3000
 description: "Learn more about the methods by which Dapr allows you to subscribe to topics."
@@ -13,7 +13,7 @@ Dapr applications can subscribe to published topics via three methods that suppo
 | Subscription method | Description |
 | ------------------- | ----------- |
 | [**Declarative**]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
-| [**Streaming**]({{< ref "subscription-methods.md#streaming-subscriptions" >}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic in that they allow for adding or removing subscriptions at runtime. Doesn't require an app to be configured. |
+| [**Streaming**]({{< ref "subscription-methods.md#streaming-subscriptions" >}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. Doesn't require an app to be configured. |
 | [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the static subscription in your code. |
 
 The examples below demonstrate pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr pub/sub component used first declaratively, then programmatically.
@@ -195,14 +195,14 @@ The `/checkout` endpoint matches the `route` defined in the subscriptions and th
 
 ### Streaming subscriptions
 
-Streaming subscriptions are subscriptions defined in application code which can be dynamically stopped and started at runtime.
-Messages are pulled by the application from Dapr meaning no endpoint is needed to subscribe to a topic, and is possible to subscribe without any app configured on the sidecar at all.
-Any number of PubSubs and topics can be subscribed to at once.
+Streaming subscriptions are subscriptions defined in application code that can be dynamically stopped and started at runtime.
+Messages are pulled by the application from Dapr. This means no endpoint is needed to subscribe to a topic, and it's possible to subscribe without any app configured on the sidecar at all.
+Any number of pubsubs and topics can be subscribed to at once.
 As messages are sent to the given message handler code, there is no concept of routes or bulk subscriptions.
 
-> **Note:** Only a single PubSub/Topic pair per application may be subscribed at a time.
+> **Note:** Only a single pubsub/topic pair per application may be subscribed at a time.
 
-In the example below we show the different ways to stream subscribe to a topic.
+The example below shows the different ways to stream subscribe to a topic.
 
 {{< tabs Go>}}
 

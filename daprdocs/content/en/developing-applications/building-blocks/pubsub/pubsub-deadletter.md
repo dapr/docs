@@ -123,4 +123,4 @@ Watch [this video for an overview of the dead letter topics](https://youtu.be/wL
 ## Next steps
 
 - For more information on resiliency policies, read [Resiliency overview]({{< ref resiliency-overview.md >}}).
-- For more information on topic subscriptions, read [Declarative, streaming and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
+- For more information on topic subscriptions, read [Declarative, streaming, and programmatic subscription methods]({{< ref "pubsub-overview.md#message-subscription" >}}).
