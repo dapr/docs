@@ -25,10 +25,10 @@ spec:
     value: service_account
   - name: projectId
     value: <PROJECT_ID> # replace
-  - name: endpoint # Optional. 
+  - name: endpoint # Optional.
     value: "http://localhost:8085"
   - name: consumerID # Optional - defaults to the app's own ID
-    value: <CONSUMER_ID> 
+    value: <CONSUMER_ID>
   - name: identityProjectId
     value: <IDENTITY_PROJECT_ID> # replace
   - name: privateKeyId
@@ -50,7 +50,7 @@ spec:
   - name: disableEntityManagement
     value: "false"
   - name: enableMessageOrdering
-    value: "false"  
+    value: "false"
   - name: orderingKey # Optional
     value: <ORDERING_KEY>
   - name: maxReconnectionAttempts # Optional
@@ -61,6 +61,12 @@ spec:
     value: <EXISTING_PUBSUB_TOPIC>
   - name: maxDeliveryAttempts # Optional
     value: 5
+  - name: maxOutstandingMessages # Optional
+    value: 1000
+  - name: maxOutstandingBytes # Optional
+    value: 1000000000
+  - name: maxConcurrentConnections # Optional
+    value: 10
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -90,6 +96,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | deadLetterTopic | N  | Name of the GCP Pub/Sub Topic. This topic **must** exist before using this component.  | `"myapp-dlq"`
 | maxDeliveryAttempts | N  | Maximum number of attempts to deliver the message. If `deadLetterTopic` is specified, `maxDeliveryAttempts` is the maximum number of attempts for failed processing of messages. Once that number is reached, the message will be moved to the dead-letter topic. Default: `5` | `5`
 | type           | N | **DEPRECATED** GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
+| maxOutstandingMessages | N | Maximum number of outstanding messages a given [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connection can have. Default: `1000` | `50`
+| maxOutstandingBytes | N | Maximum number of outstanding bytes a given [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connection can have. Default: `1000000000` | `1000000000`
+| maxConcurrentConnections | N | Maximum number of concurrent [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connections to be maintained. Default: `10` | `2`
 
 
 
