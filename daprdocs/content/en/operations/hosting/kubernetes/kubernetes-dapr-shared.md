@@ -2,7 +2,7 @@
 type: docs
 title: "Deploy Dapr per-node or per-cluster with Dapr Shared"
 linkTitle: "Dapr Shared"
-weight: 20000
+weight: 50000
 description: "Learn more about using Dapr Shared as an alternative deployment to sidecars"
 
 ---
@@ -17,7 +17,6 @@ Dapr Shared enables two alternative deployment strategies to create Dapr applica
 {{% alert title="Dapr Shared deployments" color="primary" %}}
 For each Dapr application, you need to deploy the Dapr Shared chart using different `shared.appId`s.
 {{% /alert %}}
-
 
 
 
@@ -63,6 +62,23 @@ Before installing Dapr Shared, make ensure you have [Dapr installed in your clus
 If you want to get started with Dapr Shared, you can create a new Dapr Shared instance by installing the official Helm Chart:
 
 ```
-helm install my-shared-instance oci://registry-1.docker.io/daprio/dapr-shared-chart --set shared.appId=<DAPR_APP_ID> --set shared.remoteURL=<REMOTE_URL> --set shared.remotePort=<REMOTE_PORT>
+helm install my-shared-instance oci://registry-1.docker.io/daprio/dapr-shared-chart --set shared.appId=<DAPR_APP_ID> --set shared.remoteURL=<REMOTE_URL> --set shared.remotePort=<REMOTE_PORT> --set shared.strategy=deployment
 ```
+
+Your Dapr-enabled applications can now make use of the Dapr Shared instance by pointing the Dapr SDKs or sending request to `my-shared-instance-dapr` Kubernetes service exposed by the Dapr Shared instance. Notice that `my-shared-instance` is the Helm Chart release name. 
+
+If you are using the Dapr SDKs you can set the following environment variables for your application to connect to the Dapr Shared instance (in this case running on the `default` namespace): 
+
+```
+        env:
+        - name: DAPR_HTTP_ENDPOINT
+          value: http://my-shared-instance-dapr.default.svc.cluster.local:3500
+        - name: DAPR_GRPC_ENDPOINT
+          value: http://my-shared-instance-dapr.default.svc.cluster.local:50001 
+```
+
+If you are not using the SDKs you can still send HTTP or gRCP requests to those endpoints. 
+
 ## Next steps
+
+Check the [`Hello Kubernetes with Dapr Shared`]() tutorial.
