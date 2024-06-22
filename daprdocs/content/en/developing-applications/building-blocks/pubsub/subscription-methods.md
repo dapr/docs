@@ -8,13 +8,13 @@ description: "Learn more about the methods by which Dapr allows you to subscribe
 
 ## Pub/sub API subscription methods
 
-Dapr applications can subscribe to published topics via three methods that support the same features: declarative and programmatic.
+Dapr applications can subscribe to published topics via three methods that support the same features: declarative, streaming and programmatic.
 
 | Subscription method | Description |
 | ------------------- | ----------- |
 | [**Declarative**]({{< ref "subscription-methods.md#declarative-subscriptions" >}}) | Subscription is defined in an **external file**. The declarative approach removes the Dapr dependency from your code and allows for existing applications to subscribe to topics, without having to change code. |
-| [**Streaming**]({{< ref "subscription-methods.md#streaming-subscriptions" >}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. Doesn't require an app to be configured. |
-| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the static subscription in your code. |
+| [**Streaming**]({{< ref "subscription-methods.md#streaming-subscriptions" >}}) | Subscription is defined in the **application code**. Streaming subscriptions are dynamic, meaning they allow for adding or removing subscriptions at runtime. They do not require a subscription endpoint in your application (that is required by both programmatic and declarative subscriptions), making them easy to configure in code. Streaming subscriptions also do not require an app to be configured with the sidecar to receive messages. |
+| [**Programmatic**]({{< ref "subscription-methods.md#programmatic-subscriptions" >}}) | Subscription is defined in the **application code**. The programmatic approach implements the static subscription and requires an endpoint in your code. |
 
 The examples below demonstrate pub/sub messaging between a `checkout` app and an `orderprocessing` app via the `orders` topic. The examples demonstrate the same Dapr pub/sub component used first declaratively, then programmatically.
 
