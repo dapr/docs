@@ -45,7 +45,7 @@ identifiers for further details, but cannot do the same for proprietary identifi
 
 ## Security Contacts
 
-The people who should have access to read your security report are listed in [`maintainers.csv`](/maintainers.csv).
+The people who should have access to read your security report are listed in [`maintainers.md`](https://github.com/dapr/community/blob/master/MAINTAINERS.md).
 
 ## Reporting Process
 
