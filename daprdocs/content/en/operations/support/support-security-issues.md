@@ -28,7 +28,7 @@ caution!
 
 We do not accept reports which amount to copy and pasted output from a vulnerability
 scanning tool **unless** work has specifically been done to confirm that a vulnerability
-reported by the tool _actually exists_ in Dapr, including CLI, SDKs, components-contrib
+reported by the tool _actually exists_ in Dapr, including the CLI, Dapr SDKs, the components-contrib repo,
 or any other repo under the Dapr org.
 
 We make use of these tools ourselves and try to act on the output they produce; they
