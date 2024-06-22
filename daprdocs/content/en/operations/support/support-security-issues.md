@@ -58,7 +58,7 @@ The people who should have access to read your security report are listed in [`m
 ## Response
 
 Response times could be affected by weekends, holidays, breaks or time zone
-differences. That said, the maintainers team will endeavour to reply as
+differences. That said, the maintainers team endeavours to reply as
 soon as possible, ideally within 3 working days.
 
 If the team concludes that the reported issue is indeed a security
