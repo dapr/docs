@@ -10,7 +10,7 @@ The Dapr project and maintainers make security a central focus of how we operate
 
 ## Covered Repositories and Issues
 
-When we say "a security vulnerability in Dapr" we mean a security issue
+When we say "a security vulnerability in Dapr", this means a security issue
 in any repository under the [dapr GitHub organization](https://github.com/dapr/).
 
 This reporting process is intended only for security issues in the Dapr
