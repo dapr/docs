@@ -6,7 +6,7 @@ weight: 3000
 description: "How to report a security concern or vulnerability to the Dapr maintainers."
 ---
 
-The Dapr project and maintainers make security a central focus of how we operate and design our software. From the Dapr binaries to the GitHub release processes, we take numerous steps to ensure user applications and data is secure. For more information on how security is built-in to Dapr, visit the [security page]({{< ref security-concept.md >}}).
+The Dapr project and maintainers make security a central focus of how we operate and design our software. From the Dapr binaries to the GitHub release processes, we take numerous steps to ensure user applications and data is secure. For more information on Dapr security features, visit the [security page]({{< ref security-concept.md >}}).
 
 ## Covered Repositories and Issues
 
