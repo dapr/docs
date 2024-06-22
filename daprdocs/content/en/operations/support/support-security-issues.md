@@ -20,7 +20,7 @@ issues which do not affect security.
 If the issue cannot be fixed by a change to one of the covered
 repositories above, then it's recommended to create a GitHub issue in the appropriate repo or raise a question in Discord.
 
-All that said, **if you're unsure** please reach out using this process before
+**If you're unsure,** err on the side of caution and reach out using the reporting process before
 raising your issue through GitHub, Discord, or another channel. 
 
 ### Explicitly Not Covered: Vulnerability Scanner Reports
