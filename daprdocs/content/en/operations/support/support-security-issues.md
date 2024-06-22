@@ -22,7 +22,6 @@ repositories above, then it's recommended to create a GitHub issue in the approp
 
 All that said, **if you're unsure** please reach out using this process before
 raising your issue through GitHub, Discord, or another channel. 
-caution!
 
 ### Explicitly Not Covered: Vulnerability Scanner Reports
 
