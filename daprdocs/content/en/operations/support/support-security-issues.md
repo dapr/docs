@@ -63,7 +63,7 @@ soon as possible, ideally within 3 working days.
 
 If the team concludes that the reported issue is indeed a security
 vulnerability in a Dapr project, at least two members of the maintainers
-team will discuss the next steps together as soon as possible, ideally
+team discuss the next steps together as soon as possible, ideally
 within 24 hours.
 
 As soon as the team decides that the report is of a genuine vulnerability,
