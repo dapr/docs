@@ -67,7 +67,7 @@ team will discuss the next steps together as soon as possible, ideally
 within 24 hours.
 
 As soon as the team decides that the report is of a genuine vulnerability,
-one of the team will respond to the reporter acknowledging the issue and
+one of the team responds to the reporter acknowledging the issue and
 establishing a disclosure timeline, which should be as soon as possible.
 
 Triage, response, patching and announcement should all happen within 30 days.
