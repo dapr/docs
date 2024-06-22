@@ -126,7 +126,7 @@ ctx = metadata.AppendToOutgoingContext(ctx, "dapr-app-id", "server")
 
 All languages supported by gRPC allow for adding metadata. Here are a few examples:
 
-{{< tabs Java Dotnet Python JavaScript Ruby "C++">}}
+{{< tabs Java ".NET" Python JavaScript Ruby "C++">}}
 
 {{% codetab %}}
 ```java
@@ -249,7 +249,7 @@ When using Dapr to proxy streaming RPC calls using gRPC, you must set an additio
 
 For example:
 
-{{< tabs Go Java Dotnet Python JavaScript Ruby "C++">}}
+{{< tabs Go Java ".NET" Python JavaScript Ruby "C++">}}
 
 {{% codetab %}}
 ```go

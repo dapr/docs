@@ -1,7 +1,7 @@
 ---
 type: docs
 title: "How to: Autoscale a Dapr app with KEDA"
-linkTitle: "How to: Autoscale with KEDA"
+linkTitle: "KEDA"
 description: "How to configure your Dapr application to autoscale using KEDA"
 weight: 3000
 ---
