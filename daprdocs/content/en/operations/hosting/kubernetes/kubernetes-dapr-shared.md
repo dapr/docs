@@ -49,7 +49,7 @@ Since `DaemonSet` installs one instance per node, it consume more overall resour
 
 ### `Deployment` strategy
 
-Kubernetes `Deployments` are installed once per cluster. Based on available resources, the Kubernetes `Scheduler` decides in which node the workload is scheduled. For Dapr Shared, this means that your workload and the Dapr instance might be located on separate nodes, which can introduce considerable network latency with the trade of of reduce resource usage.
+Kubernetes `Deployments` are installed once per cluster. Based on available resources, the Kubernetes `Scheduler` decides on which node the workload is scheduled. For Dapr Shared, this means that your workload and the Dapr instance might be located on separate nodes, which can introduce considerable network latency with the trade-off of reduce resource usage.
 
 <img src="/images/dapr-shared/deployment.png" width=800 style="padding-bottom:15px;">
 
