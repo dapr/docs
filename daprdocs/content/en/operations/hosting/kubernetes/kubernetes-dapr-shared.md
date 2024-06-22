@@ -77,7 +77,7 @@ If you are using the Dapr SDKs you can set the following environment variables f
           value: http://my-shared-instance-dapr.default.svc.cluster.local:50001 
 ```
 
-If you are not using the SDKs you can still send HTTP or gRCP requests to those endpoints. 
+If you are not using the SDKs you can send HTTP or gRCP requests to those endpoints. 
 
 ## Next steps
 
