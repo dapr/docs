@@ -36,7 +36,7 @@ can be useful! We tend to find, however, that when these reports are sent to our
 mailing list they almost always represent false positives, since these tools tend to check
 for the presence of a library without considering how the library is used in context.
 
-If we receive a report which seems to simply be a vulnerability list from a scanner we
+If we receive a report which seems to simply be a vulnerability list from a scanner, we
 reserve the right to ignore it.
 
 This applies especially when tools produce vulnerability identifiers which are not publicly
