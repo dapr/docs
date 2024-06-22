@@ -18,7 +18,7 @@ project itself, and doesn't apply to applications _using_ Dapr or to
 issues which do not affect security.
 
 If the issue cannot be fixed by a change to one of the covered
-repositories above, then it recommended to create a GitHub issue in the appropriate repo or a question in Discord.
+repositories above, then it's recommended to create a GitHub issue in the appropriate repo or raise a question in Discord.
 
 All that said, **if you're unsure** please reach out using this process before
 raising your issue through another channel. We'd rather err on the side of
