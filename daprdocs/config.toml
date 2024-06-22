@@ -103,39 +103,55 @@ id = "G-60C6Q1ETC1"
     source = "../sdkdocs/js/daprdocs/content/en/js-sdk-contributing"
     target = "content/contributing/sdk-contrib/"
     lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/rust/daprdocs/content/en/rust-sdk-docs"
+    target = "content/developing-applications/sdks/rust"
+    lang = "en"
+  [[module.mounts]]
+    source = "../sdkdocs/rust/daprdocs/content/en/rust-sdk-contributing"
+    target = "content/contributing/sdks-contrib"
+    lang = "en"
 
   [[module.mounts]]
-    source = "../translations/docs-zh/content/zh-hans"
+    source = "../translations/docs-zh/translated_content/zh_CN/docs"
     target = "content"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/contributing"
-    target = "content/contributing/docs-contrib/docs-templates"
+    source = "../translations/docs-zh/translated_content/zh_CN/contributing"
+    target = "content/contributing/sdk-contrib/"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_python"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_python"
     target = "content/developing-applications/sdks/python"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_php"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_php"
     target = "content/developing-applications/sdks/php"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_dotnet"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_dotnet"
     target = "content/developing-applications/sdks/dotnet"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_java"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_java"
     target = "content/developing-applications/sdks/java"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_go"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_go"
     target = "content/developing-applications/sdks/go"
     lang = "zh-hans"
   [[module.mounts]]
-    source = "../translations/docs-zh/content/sdks_js"
+    source = "../translations/docs-zh/translated_content/zh_CN/sdks_js"
     target = "content/developing-applications/sdks/js"
     lang = "zh-hans"       
+  [[module.mounts]]
+    source = "../translations/docs-zh/translated_content/zh_CN/pluggable-components/dotnet"
+    target = "content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-dotnet"
+    lang = "zh-hans"
+  [[module.mounts]]
+    source = "../translations/docs-zh/translated_content/zh_CN/pluggable-components/go"
+    target = "content/developing-applications/develop-components/pluggable-components/pluggable-components-sdks/pluggable-components-go"
+    lang = "zh-hans"  
 
 # Markdown Engine - Allow inline html
 [markup]

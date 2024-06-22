@@ -126,6 +126,21 @@ Dapr has its HTTP health endpoint `/v1.0/healthz` on port 3500. This can be used
       failureThreshold: 3
 ```
 
+## Delay graceful shutdown
+
+Dapr accepts a [`dapr.io/block-shutdown-duration` annotation or `--dapr-block-shutdown-duration` CLI flag]({{< ref arguments-annotations-overview.md >}}), which delays the full shutdown procedure for the specified duration, or until the app reports as unhealthy, whichever is sooner. 
+
+During this period, all subscriptions and input bindings are closed. This is useful for applications that need to use the Dapr APIs as part of their own shutdown procedure. 
+
+Applicable annotations or CLI flags include:
+
+- `--dapr-graceful-shutdown-seconds`/`dapr.io/graceful-shutdown-seconds`
+- `--dapr-block-shutdown-duration`/`dapr.io/block-shutdown-duration`
+- `--dapr-graceful-shutdown-seconds`/`dapr.io/graceful-shutdown-seconds`
+- `--dapr-block-shutdown-duration`/`dapr.io/block-shutdown-duration`
+
+Learn more about these and how to use them in the [Annotations and arguments guide.]({{< ref arguments-annotations-overview.md >}})
+
 ## Related links
 
 - [Endpoint health API]({{< ref health_api.md >}})

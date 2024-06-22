@@ -40,7 +40,7 @@ spec:
   - name: azureCertificateFile # Optional
     value : "[pfx_certificate_file_fully_qualified_local_path]"
   - name: subscribePollInterval # Optional
-    value: #Optional [Expected format example - 30s]
+    value: #Optional [Expected format example - 24h]
 
 ```
 
@@ -57,7 +57,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | maxRetries                 | N        | Maximum number of retries before giving up. Defaults to `3` | `5`, `10`
 | retryDelay                 | N        | RetryDelay specifies the initial amount of delay to use before retrying an operation. The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay. Defaults to `4` seconds; `"-1"` disables delay between retries. | `4s`
 | maxRetryDelay              | N        | MaxRetryDelay specifies the maximum delay allowed before retrying an operation. Typically the value is greater than or equal to the value specified in RetryDelay. Defaults to `120` seconds; `"-1"` disables the limit | `120s`
-| subscribePollInterval      | N        | subscribePollInterval specifies the poll interval in nanoseconds for polling the subscribed keys for any changes. This will be updated in the future to Go Time format. Default polling interval is set to `24` hours. | `30s`
+| subscribePollInterval      | N        | subscribePollInterval specifies the poll interval in nanoseconds for polling the subscribed keys for any changes. This will be updated in the future to Go Time format. Default polling interval is set to `24` hours. | `24h`
 
 **Note**: either `host` or `connectionString` must be specified.
 

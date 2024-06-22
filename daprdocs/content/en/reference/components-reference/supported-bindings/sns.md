@@ -26,6 +26,8 @@ spec:
     value: "mytopic"
   - name: region
     value: "us-west-2"
+  - name: endpoint
+    value: "sns.us-west-2.amazonaws.com"
   - name: accessKey
     value: "*****************"
   - name: secretKey
@@ -42,11 +44,12 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Binding support |  Details | Example |
 |--------------------|:--------:|------------|-----|---------|
-| `topicArn` | Y | Output | The SNS topic name | `"arn:::topicarn"` |
-| `region`             | Y        | Output |  The specific AWS region | `"us-east-1"`       |
-| `accessKey`          | Y        | Output | The AWS Access Key to access this resource                              | `"key"`             |
-| `secretKey`          | Y        | Output | The AWS Secret Access Key to access this resource                       | `"secretAccessKey"` |
-| `sessionToken`       | N        | Output | The AWS session token to use                                            | `"sessionToken"`    |
+| `topicArn`           | Y        | Output | The SNS topic name                                                    | `"arn:::topicarn"`               |
+| `region`             | Y        | Output | The specific AWS region                                               | `"us-east-1"`                    |
+| `endpoint`           | N        | Output | The specific AWS endpoint                                             | `"sns.us-east-1.amazonaws.com"`  |
+| `accessKey`          | Y        | Output | The AWS Access Key to access this resource                            | `"key"`                          |
+| `secretKey`          | Y        | Output | The AWS Secret Access Key to access this resource                     | `"secretAccessKey"`              |
+| `sessionToken`       | N        | Output | The AWS session token to use                                          | `"sessionToken"`                 |
 
 {{% alert title="Important" color="warning" %}}
 When running the Dapr sidecar (daprd) with your application on EKS (AWS Kubernetes), if you're using a node/pod that has already been attached to an IAM policy defining access to AWS resources, you **must not** provide AWS access-key, secret-key, and tokens in the definition of the component spec you're using.  

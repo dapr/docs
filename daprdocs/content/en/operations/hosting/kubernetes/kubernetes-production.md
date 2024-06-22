@@ -10,15 +10,14 @@ description: "Best practices for deploying Dapr to a Kubernetes cluster in a pro
 
 Dapr support for Kubernetes is aligned with [Kubernetes Version Skew Policy](https://kubernetes.io/releases/version-skew-policy/). 
 
-Use the following resource settings as a starting point. Requirements vary depending on cluster size, number of pods, and other factors. Perform individual testing to find the right values for your environment.
+Use the following resource settings as a starting point. Requirements vary depending on cluster size, number of pods, and other factors. Perform individual testing to find the right values for your environment. In production, it's recommended to not add memory limits to the Dapr control plane components to avoid `OOMKilled` pod statuses.
 
 | Deployment  | CPU | Memory
 |-------------|-----|-------
-| **Operator**  | Limit: 1, Request: 100m | Limit: 200Mi, Request: 100Mi
-| **Sidecar Injector** | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
-| **Sentry**    | Limit: 1, Request: 100m  | Limit: 200Mi, Request: 30Mi
-| **Placement** | Limit: 1, Request: 250m  | Limit: 150Mi, Request: 75Mi
-| **Dashboard** | Limit: 200m, Request: 50m  | Limit: 200Mi, Request: 20Mi
+| **Operator**  | Limit: 1, Request: 100m | Request: 100Mi
+| **Sidecar Injector** | Limit: 1, Request: 100m  | Request: 30Mi
+| **Sentry**    | Limit: 1, Request: 100m  | Request: 30Mi
+| **Placement** | Limit: 1, Request: 250m  | Request: 75Mi
 
 {{% alert title="Note" color="primary" %}}
 For more information, refer to the Kubernetes documentation on [CPU and Memory resource units and their meaning](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
@@ -95,6 +94,48 @@ For a new Dapr deployment, HA mode can be set with both:
 - [Helm charts]({{< ref "kubernetes-deploy.md#add-and-install-dapr-helm-chart" >}})
 
 For an existing Dapr deployment, [you can enable HA mode in a few extra steps]({{< ref "#enabling-high-availability-in-an-existing-dapr-deployment" >}}).
+
+## Setting cluster critical priority class name for control plane services
+
+In some scenarios, nodes may have memory and/or cpu pressure and the Dapr control plane pods might get selected
+for eviction. To prevent this, you can set a critical priority class name for the Dapr control plane pods. This ensures that
+the Dapr control plane pods are not evicted unless all other pods with lower priority are evicted.
+
+Learn more about [Protecting Mission-Critical Pods](https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass/).
+
+There are two built-in critical priority classes in Kubernetes:
+- `system-cluster-critical`
+- `system-node-critical` (highest priority)
+
+It's recommended to set the `priorityClassName` to `system-cluster-critical` for the Dapr control plane pods.  
+
+For a new Dapr control plane deployment, the `system-cluster-critical` priority class mode can be set via the helm value `global.priorityClassName`.
+
+This priority class can be set with both the Dapr CLI and Helm charts, 
+using the helm `--set global.priorityClassName=system-cluster-critical` argument.
+
+#### Dapr version < 1.14
+
+For versions of Dapr below v1.14, it's recommended that you add a `ResourceQuota` to the Dapr control plane namespace. This prevents 
+problems associated with scheduling pods [where the cluster may be configured](https://kubernetes.io/docs/concepts/policy/resource-quotas/#limit-priority-class-consumption-by-default ) 
+with limitations on which pods can be assigned high priority classes. For v1.14 onwards the Helm chart adds this automatically.
+
+If you have Dapr installed in namespace `dapr-system`, you can create a `ResourceQuota` with the following content:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dapr-system-critical-quota
+  namespace: dapr-system
+spec:
+  scopeSelector:
+    matchExpressions:
+      - operator : In
+        scopeName: PriorityClass
+        values: [system-cluster-critical]
+```
+
 
 ## Deploy Dapr with Helm
 

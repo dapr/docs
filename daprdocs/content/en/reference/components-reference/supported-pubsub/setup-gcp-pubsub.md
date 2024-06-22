@@ -25,10 +25,10 @@ spec:
     value: service_account
   - name: projectId
     value: <PROJECT_ID> # replace
-  - name: endpoint # Optional. 
+  - name: endpoint # Optional.
     value: "http://localhost:8085"
   - name: consumerID # Optional - defaults to the app's own ID
-    value: <CONSUMER_ID> 
+    value: <CONSUMER_ID>
   - name: identityProjectId
     value: <IDENTITY_PROJECT_ID> # replace
   - name: privateKeyId
@@ -50,7 +50,7 @@ spec:
   - name: disableEntityManagement
     value: "false"
   - name: enableMessageOrdering
-    value: "false"  
+    value: "false"
   - name: orderingKey # Optional
     value: <ORDERING_KEY>
   - name: maxReconnectionAttempts # Optional
@@ -61,6 +61,12 @@ spec:
     value: <EXISTING_PUBSUB_TOPIC>
   - name: maxDeliveryAttempts # Optional
     value: 5
+  - name: maxOutstandingMessages # Optional
+    value: 1000
+  - name: maxOutstandingBytes # Optional
+    value: 1000000000
+  - name: maxConcurrentConnections # Optional
+    value: 10
 ```
 {{% alert title="Warning" color="warning" %}}
 The above example uses secrets as plain strings. It is recommended to use a secret store for the secrets as described [here]({{< ref component-secrets.md >}}).
@@ -72,7 +78,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 |--------------------|:--------:|---------|---------|
 | projectId     | Y | GCP project id| `myproject-123`
 | endpoint       | N  | GCP endpoint for the component to use. Only used for local development (for example) with [GCP Pub/Sub Emulator](https://cloud.google.com/pubsub/docs/emulator). The `endpoint` is unnecessary when running against the GCP production API. | `"http://localhost:8085"`
-| `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID |
+| `consumerID`         | N        | The Consumer ID organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. The `consumerID`, along with the `topic` provided as part of the request, are used to build the Pub/Sub subscription ID | Can be set to string value (such as `"channel1"`) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | identityProjectId | N | If the GCP pubsub project is different from the identity project, specify the identity project using this attribute  | `"myproject-123"`
 | privateKeyId | N | If using explicit credentials, this field should contain the `private_key_id` field from the service account json document | `"my-private-key"`
 | privateKey    | N |  If using explicit credentials, this field should contain the `private_key` field from the service account json | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBgkqhkiG9w0B`
@@ -90,6 +96,9 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | deadLetterTopic | N  | Name of the GCP Pub/Sub Topic. This topic **must** exist before using this component.  | `"myapp-dlq"`
 | maxDeliveryAttempts | N  | Maximum number of attempts to deliver the message. If `deadLetterTopic` is specified, `maxDeliveryAttempts` is the maximum number of attempts for failed processing of messages. Once that number is reached, the message will be moved to the dead-letter topic. Default: `5` | `5`
 | type           | N | **DEPRECATED** GCP credentials type. Only `service_account` is supported. Defaults to `service_account`  | `service_account`
+| maxOutstandingMessages | N | Maximum number of outstanding messages a given [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connection can have. Default: `1000` | `50`
+| maxOutstandingBytes | N | Maximum number of outstanding bytes a given [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connection can have. Default: `1000000000` | `1000000000`
+| maxConcurrentConnections | N | Maximum number of concurrent [streaming-pull](https://cloud.google.com/pubsub/docs/pull#streamingpull_api) connections to be maintained. Default: `10` | `2`
 
 
 

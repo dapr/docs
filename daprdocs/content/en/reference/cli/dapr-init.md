@@ -71,10 +71,10 @@ dapr init -s
 
 **Specify a runtime version**
 
-You can also specify a specific runtime version. Be default, the latest version is used.
+You can also specify a specific runtime version. By default, the latest version is used.
 
 ```bash
-dapr init --runtime-version 1.13.0
+dapr init --runtime-version 1.13.4
 ```
 
 **Install with image variant**

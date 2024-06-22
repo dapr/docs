@@ -248,11 +248,11 @@ func TaskChainWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		return nil, err
 	}
 	var result2 int
-	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result2); err != nil {
+	if err := ctx.CallActivity(Step2, workflow.ActivityInput(input)).Await(&result2); err != nil {
 		return nil, err
 	}
 	var result3 int
-	if err := ctx.CallActivity(Step1, workflow.ActivityInput(input)).Await(&result3); err != nil {
+	if err := ctx.CallActivity(Step3, workflow.ActivityInput(input)).Await(&result3); err != nil {
 		return nil, err
 	}
 	return []int{result1, result2, result3}, nil
@@ -586,7 +586,45 @@ The key takeaways from this example are:
 - The number of parallel tasks can be static or dynamic
 - The workflow itself is capable of aggregating the results of parallel executions
 
-While not shown in the example, it's possible to go further and limit the degree of concurrency using simple, language-specific constructs. Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only 40 complete before the process crashes, the workflow restarts itself automatically and only schedules the remaining 60 tasks.
+Furthermore, the execution of the workflow is durable. If a workflow starts 100 parallel task executions and only 40 complete before the process crashes, the workflow restarts itself automatically and only schedules the remaining 60 tasks.
+
+It's possible to go further and limit the degree of concurrency using simple, language-specific constructs. The sample code below illustrates how to restrict the degree of fan-out to just 5 concurrent activity executions:
+
+{{< tabs ".NET" >}}
+
+{{% codetab %}}
+<!-- .NET -->
+```csharp
+
+//Revisiting the earlier example...
+// Get a list of N work items to process in parallel.
+object[] workBatch = await context.CallActivityAsync<object[]>("GetWorkBatch", null);
+
+const int MaxParallelism = 5;
+var results = new List<int>();
+var inFlightTasks = new HashSet<Task<int>>();
+foreach(var workItem in workBatch)
+{
+  if (inFlightTasks.Count >= MaxParallelism)
+  {
+    var finishedTask = await Task.WhenAny(inFlightTasks);
+    results.Add(finishedTask.Result);
+    inFlightTasks.Remove(finishedTask);
+  }
+
+  inFlightTasks.Add(context.CallActivityAsync<int>("ProcessWorkItem", workItem));
+}
+results.AddRange(await Task.WhenAll(inFlightTasks));
+
+var sum = results.Sum(t => t);
+await context.CallActivityAsync("PostResults", sum);
+```
+
+{{% /codetab %}}
+
+{{< /tabs >}}
+
+Limiting the degree of concurrency in this way can be useful for limiting contention against shared resources. For example, if the activities need to call into external resources that have their own concurrency limits, like a databases or external APIs, it can be useful to ensure that no more than a specified number of activities call that resource concurrently.
 
 ## Async HTTP APIs
 

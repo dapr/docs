@@ -1,10 +1,9 @@
 ---
 type: docs
 title: "How to: Use the gRPC interface in your Dapr application"
-linkTitle: "How to: gRPC interface"
+linkTitle: "gRPC interface"
 weight: 6000
 description: "Use the Dapr gRPC API in your application"
-type: docs
 ---
 
 Dapr implements both an HTTP and a gRPC API for local calls. [gRPC](https://grpc.io/) is useful for low-latency, high performance scenarios and has language integration using the proto clients.

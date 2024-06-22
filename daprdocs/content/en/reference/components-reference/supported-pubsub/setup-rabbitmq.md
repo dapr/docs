@@ -31,7 +31,7 @@ spec:
   - name: password
     value: password  
   - name: consumerID
-    value: myapp
+    value: channel1
   - name: durable
     value: false
   - name: deletedWhenUnused
@@ -81,7 +81,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 | hostname | N* | The RabbitMQ hostname. *Mutally exclusive with connectionString field | `localhost` |
 | username | N* | The RabbitMQ username. *Mutally exclusive with connectionString field | `username` |
 | password | N* | The RabbitMQ password. *Mutally exclusive with connectionString field | `password` |
-| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. |
+| consumerID         | N        | Consumer ID (consumer tag) organizes one or more consumers into a group. Consumers with the same consumer ID work as one virtual consumer; for example, a message is processed only once by one of the consumers in the group. If the `consumerID` is not provided, the Dapr runtime set it to the Dapr application ID (`appID`) value. | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{< ref "component-schema.md#templated-metadata-values" >}})
 | durable            | N        | Whether or not to use [durable](https://www.rabbitmq.com/queues.html#durability) queues. Defaults to `"false"`  | `"true"`, `"false"`
 | deletedWhenUnused  | N        | Whether or not the queue should be configured to [auto-delete](https://www.rabbitmq.com/queues.html) Defaults to `"true"` | `"true"`, `"false"`
 | autoAck  | N        | Whether or not the queue consumer should [auto-ack](https://www.rabbitmq.com/confirms.html) messages. Defaults to `"false"` | `"true"`, `"false"`
@@ -207,9 +207,15 @@ For example, if installing using the example above, the RabbitMQ server client a
 
 ## Use topic exchange to route messages
 
-Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages.
-Messages with a `routing key` will be routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
-The routing key is defined by the `routingKey` metadata. For example, if an app is configured with a routing key `keyA`:
+Setting `exchangeKind` to `"topic"` uses the topic exchanges, which are commonly used for the multicast routing of messages. In order to route messages using topic exchange, you must set the following metadata:
+
+- **`routingKey`:**  
+   Messages with a routing key are routed to one or many queues based on the `routing key` defined in the metadata when subscribing.
+
+- **`queueName`:**  
+   If you don't set the `queueName`, only one queue is created, and all routing keys will route to that queue. This means all subscribers will bind to that queue, which won't give the desired results.
+
+For example, if an app is configured with a routing key `keyA` and `queueName` of `queue-A`:
 
 ```yaml
 apiVersion: dapr.io/v2alpha1
@@ -223,6 +229,7 @@ spec:
   pubsubname: pubsub
   metadata:
     routingKey: keyA
+    queueName: queue-A
 ```
 
 It will receive messages with routing key `keyA`, and messages with other routing keys are not received.

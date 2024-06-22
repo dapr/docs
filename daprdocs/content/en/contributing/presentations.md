@@ -10,6 +10,13 @@ We welcome community members giving presentations on Dapr and spreading the word
 
 {{< button text="Download the Dapr Presentation Deck" link="/presentations/dapr-slidedeck.pptx.zip" >}}
 
+{{% alert color="primary" %}}
+If you're using the PowerPoint template with MacOS, please install the Space Grotesk font to ensure the text is rendered properly:
+```sh
+brew install --cask font-space-grotesk
+```
+{{% /alert %}}
+
 ## Giving a Dapr presentation
 
 - Begin by downloading the [Dapr Presentation Deck](/presentations/dapr-slidedeck.pptx.zip). This contains slides and diagrams needed to give a Dapr presentation.

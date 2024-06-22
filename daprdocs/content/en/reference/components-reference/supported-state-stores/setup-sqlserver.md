@@ -52,6 +52,9 @@ spec:
       value: ""
     - name: cleanupIntervalInSeconds
       value: "3600"
+   # Uncomment this if you wish to use Microsoft SQL Server as a state store for actors (optional)
+   #- name: actorStateStore
+   #  value: "true"
 ```
 
 {{% alert title="Warning" color="warning" %}}
