@@ -8,7 +8,7 @@ description: "How to report a security concern or vulnerability to the Dapr main
 
 The Dapr project and maintainers make security a central focus of how we operate and design our software. From the Dapr binaries to the GitHub release processes, we take numerous steps to ensure user applications and data is secure. For more information on Dapr security features, visit the [security page]({{< ref security-concept.md >}}).
 
-## Covered Repositories and Issues
+## Repositories and issues covered
 
 When we say "a security vulnerability in Dapr", this means a security issue
 in any repository under the [dapr GitHub organization](https://github.com/dapr/).
