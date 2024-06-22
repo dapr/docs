@@ -110,8 +110,8 @@ spec:
 | clientConnectionTopicMetadataRefreshInterval | N | The interval for the client connection's topic metadata to be refreshed with the broker as a Go duration. Defaults to `9m`. | `"4m"` |
 | clientConnectionKeepAliveInterval | N | The maximum time for the client connection to be kept alive with the broker, as a Go duration, before closing the connection. A zero value (default) means keeping alive indefinitely. | `"4m"` |
 | consumerFetchDefault | N | The default number of message bytes to fetch from the broker in each request. Default is `"1048576"` bytes. | `"2097152"` |
-| heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. The value should be set to at most a 1/3 of `sessionTimeout`'s value. Defaults to "3s". | `"5s"` |
-| sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer will be removed and initiate a rebalance. Defaults to "10s". | `"20s"` |
+| heartbeatInterval | N | The interval between heartbeats to the consumer coordinator. At most, the value should be set to a 1/3 of the `sessionTimeout` value. Defaults to "3s". | `"5s"` |
+| sessionTimeout | N | The timeout used to detect client failures when using Kafka’s group management facility. If the broker fails to receive any heartbeats from the consumer before the expiration of this session timeout, then the consumer is removed and initiates a rebalance. Defaults to "10s". | `"20s"` |
 
 The `secretKeyRef` above is referencing  a [kubernetes secrets store]({{< ref kubernetes-secret-store.md >}}) to access the tls information. Visit [here]({{< ref setup-secret-store.md >}}) to learn more about how to configure a secret store component.
 
