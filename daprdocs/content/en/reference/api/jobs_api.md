@@ -73,7 +73,7 @@ $ curl -X POST \
 
 ## Get job data
 
-Get a job with its name.
+Get a job from its name.
 
 ```
 GET http://localhost:3500/v1.0-alpha1/jobs/<name>
