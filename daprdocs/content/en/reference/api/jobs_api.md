@@ -138,7 +138,7 @@ Code | Description
 In the following example curl command, the job named `test1` with app-id `sub` will be deleted
 
 ```bash
-$ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/test -H "Content-Type: application/json" -H 'dapr-app-id: sub'
+$ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json" -H 'dapr-app-id: hansolo'
 ```
 
 
