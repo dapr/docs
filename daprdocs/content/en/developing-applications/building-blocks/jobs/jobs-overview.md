@@ -57,6 +57,6 @@ You can try out the jobs API in your application. After [Dapr is installed]({{< 
 
 ## Next steps
 
-- [Learn how to use jobs in your environment]({{< ref howto-schedule-jobs.md >}})
+- [Learn how to use the jobs API]({{< ref howto-schedule-jobs.md >}})
 - [Learn more about the Scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 - [Jobs API reference]({{< ref jobs_api.md >}})
