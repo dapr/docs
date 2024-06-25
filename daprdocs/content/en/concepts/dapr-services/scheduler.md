@@ -2,7 +2,7 @@
 type: docs
 title: "Dapr Scheduler control plane service overview"
 linkTitle: "Scheduler"
-description: "Overview of the Dapr scheduler process"
+description: "Overview of the Dapr scheduler service"
 ---
 
 The Dapr Scheduler service is used to schedule jobs, running in [self-hosted mode]({{< ref self-hosted >}}) or on [Kubernetes]({{< ref kubernetes >}}).  
