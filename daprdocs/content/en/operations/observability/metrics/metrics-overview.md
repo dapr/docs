@@ -101,6 +101,7 @@ Configuration:
 http:
   increasedCardinality: true
 ```
+
 Metrics generated:
 ```
 dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/1",status="200"} 1
