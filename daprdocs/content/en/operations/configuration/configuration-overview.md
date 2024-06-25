@@ -129,11 +129,9 @@ The following table lists the properties for metrics:
 |--------------|--------|-------------|
 | `enabled` | boolean | When set to true, the default, enables metrics collection and the metrics endpoint. |
 | `rules`   | array | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a `regex` expression to apply to the metrics path. |
-| `http.increasedCardinality` | boolean | When set to `true` (default), in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br>Is it recommended that if you have many applications and many endpoints, you considered setting this value to `false` and then using`http.pathMatching` to enable metrics for specific endpoints that are relevant for monitoring purposes.
+| `http.increasedCardinality` | boolean | When set to `true` (default), in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br> To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`.|
 | `http.pathMatching` | array | 	Array of paths for path matching, allowing users to define matching paths to manage cardinality. |
-| `http.excludeVerbs` | boolean | When set to true (default is false), the Dapr HTTP server will ignore each request HTTP verb when building the method metric label. |
-
-To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`.
+| `http.excludeVerbs` | boolean | When set to true (default is false), the Dapr HTTP server ignores each request HTTP verb when building the method metric label. |
 
 To further help managing cardinality, path matching allows specified paths matched according to defined patterns, reducing the number of unique metrics paths and thus controlling metric cardinality. This feature is particularly useful for applications with dynamic URLs, ensuring that metrics remain meaningful and manageable without excessive memory consumption. 
 
