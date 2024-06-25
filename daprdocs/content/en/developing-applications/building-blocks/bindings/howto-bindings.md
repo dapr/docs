@@ -106,7 +106,7 @@ spec:
 
 The code examples below leverage Dapr SDKs to invoke the output bindings endpoint on a running Dapr instance. 
 
-{{< tabs Dotnet Java Python Go JavaScript>}}
+{{< tabs ".NET" Java Python Go JavaScript>}}
 
 {{% codetab %}}
 
