@@ -57,8 +57,7 @@ The following example curl command creates a job, naming the job `jobforjabba` a
 ```bash
 $ curl -X POST \
   http://localhost:3500/v1.0-alpha1/jobs/jobforjabba \
-  -H "Content-Type: application/json" \
-  -H 'dapr-app-id: hansolo' \
+  -H "Content-Type: application/json" 
   -d '{
         "job": {
             "data": {
@@ -98,7 +97,7 @@ Code | Description
 After running the following example curl command, the returned response is JSON containing the `name` of the job, the `dueTime`, and the `data`.
 
 ```bash
-$ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json" -H 'dapr-app-id: hansolo'
+$ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json" 
 ```
 
 ```json
@@ -138,7 +137,7 @@ Code | Description
 In the following example curl command, the job named `test1` with app-id `sub` will be deleted
 
 ```bash
-$ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json" -H 'dapr-app-id: hansolo'
+$ curl -X DELETE http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json" 
 ```
 
 
