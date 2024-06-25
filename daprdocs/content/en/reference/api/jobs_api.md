@@ -7,7 +7,7 @@ weight: 1300
 ---
 
 {{% alert title="Note" color="primary" %}}
-Jobs is currently in alpha.
+The jobs API is currently in alpha.
 {{% /alert %}}
 
 With the jobs API, you can schedule jobs and tasks in the future.
