@@ -6,7 +6,7 @@ weight: 2000
 description: "Learn how to use the jobs API to schedule jobs"
 ---
 
-Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The below code example describes an application that schedules and orchestrates XXXX.
+Now that you've learned what the [jobs building block]({{< ref jobs-overview.md >}}) provides, let's look at an example of how to use the API. The code example below describes an application that schedules and orchestrates ***TBD***.
 
 <!-- 
 Include a diagram or image, if possible. 
