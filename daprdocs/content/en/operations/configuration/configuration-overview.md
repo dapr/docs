@@ -126,7 +126,7 @@ The following table lists the properties for metrics:
 |--------------|--------|-------------|
 | `enabled` | boolean | When set to true, the default, enables metrics collection and the metrics endpoint. |
 | `rules`   | array | Named rule to filter metrics. Each rule contains a set of `labels` to filter on and a `regex` expression to apply to the metrics path. |
-| `http.increasedCardinality` | boolean | When set to true, in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br>In Dapr 1.13 the default value is `true` (to preserve the behavior of Dapr <= 1.12), but will change to `false` in Dapr 1.14. |
+| `http.increasedCardinality` | boolean | When set to `true` (default), in the Dapr HTTP server each request path causes the creation of a new "bucket" of metrics. This can cause issues, including excessive memory consumption, when there many different requested endpoints (such as when interacting with RESTful APIs).<br>Is it recommended that is you have many applications and many endpoints, you considered setting this value to `false` and then using`http.pathMatching` to enable metrics for specific endpoints.
 | `http.pathMatching` | object | 	Configuration object for path matching, allowing users to define matching paths to manage cardinality. |
 
 To mitigate high memory usage and egress costs associated with [high cardinality metrics]({{< ref "metrics-overview.md#high-cardinality-metrics" >}}) with the HTTP server, you should set the `metrics.http.increasedCardinality` property to `false`.
