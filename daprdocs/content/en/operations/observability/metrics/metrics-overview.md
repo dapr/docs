@@ -166,6 +166,47 @@ With low cardinality and path matching configured, we get the best of both world
 
 These examples demonstrate Dapr's Path Matching API for efficient HTTP metric management. By adjusting cardinality and utilizing path matching, users can fine-tune metric granularity to balance detail and resource efficiency.
 
+## HTTP metrics exclude verbs
+
+The `excludeVerbs` option allows you to exclude specific HTTP verbs from being reported in the metrics. This can be useful in high-performance applications where memory savings are critical.
+
+### Examples of excluding HTTP verbs in metrics
+
+Here are some examples demonstrating how to exclude HTTP verbs in Dapr for managing HTTP metrics.
+
+#### Default - Include HTTP verbs
+
+Configuration:
+```yaml
+http:
+  excludeVerbs: false
+```
+
+Metrics generated:
+```
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="POST",path="/orders",status="200"} 1
+```
+
+In this example, the HTTP method is included in the metrics, resulting in a separate metric for each request to the `/orders` endpoint.
+
+#### Exclude HTTP verbs
+
+Configuration:
+```yaml
+http:
+  excludeVerbs: true
+```
+
+Metrics generated:
+```
+dapr_http_server_request_count{app_id="order-service",method="",path="/orders",status="200"} 1
+```
+
+In this example, the HTTP method is excluded from the metrics, resulting in a single metric for all requests to the `/orders` endpoint.
+
+
+
 ## Transform metrics with regular expressions
 
 You can set regular expressions for every metric exposed by the Dapr sidecar to "transform" their values. [See a list of all Dapr metrics](https://github.com/dapr/dapr/blob/master/docs/development/dapr-metrics.md).
