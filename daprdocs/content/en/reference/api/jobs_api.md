@@ -98,7 +98,7 @@ Code | Description
 After running the following example curl command, the returned response is JSON containing the `name` of the job, the `dueTime`, and the `data`.
 
 ```bash
-$ curl -X GET http://localhost:3500/v1.0-alpha1/job/test1 -H "Content-Type: application/json" -H 'dapr-app-id: sub'
+$ curl -X GET http://localhost:3500/v1.0-alpha1/jobs/jobforjabba -H "Content-Type: application/json" -H 'dapr-app-id: hansolo'
 ```
 
 ```json
