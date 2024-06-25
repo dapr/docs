@@ -56,7 +56,7 @@ The following example curl command creates a job, naming the job `jobforjabba` a
 
 ```bash
 $ curl -X POST \
-  http://localhost:3500/v1.0-alpha1/jobs/test1 \
+  http://localhost:3500/v1.0-alpha1/jobs/jobforjabba \
   -H "Content-Type: application/json" \
     -H 'dapr-app-id: sub' \
   -d '{
