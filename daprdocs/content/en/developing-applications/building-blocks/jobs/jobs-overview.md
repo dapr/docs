@@ -26,7 +26,7 @@ Use jobs with [service invocation]({{< ref service-invocation-overview.md >}}) t
 
 
 Jobs consist of:
-- The jobs building block
+- The jobs API building block
 - [The scheduler control plane service]({{< ref "concepts/dapr-services/scheduler.md" >}})
 
 <img src="/images/scheduler/scheduler-architecture.png" alt="Diagram showing basics of the Scheduler control plane and the Scheduler API">
