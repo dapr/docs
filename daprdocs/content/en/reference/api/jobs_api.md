@@ -52,7 +52,7 @@ Code | Description
 
 ### Response content
 
-The following example curl command creates a job, naming the job `test1` and specifying the `dueTime` and the `data`.
+The following example curl command creates a job, naming the job `jobforjabba` and specifying the `dueTime` and the `data`.
 
 ```bash
 $ curl -X POST \
