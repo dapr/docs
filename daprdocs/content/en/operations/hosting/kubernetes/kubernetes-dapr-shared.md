@@ -69,7 +69,7 @@ Your Dapr-enabled applications can now make use of the Dapr Shared instance by p
 
 > The `my-shared-instance` above is the Helm Chart release name. 
 
-If you are using the Dapr SDKs you can set the following environment variables for your application to connect to the Dapr Shared instance (in this case running on the `default` namespace): 
+If you are using the Dapr SDKs, you can set the following environment variables for your application to connect to the Dapr Shared instance (in this case, running on the `default` namespace): 
 
 ```
         env:
