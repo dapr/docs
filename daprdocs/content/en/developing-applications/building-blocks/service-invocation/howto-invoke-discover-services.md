@@ -247,7 +247,9 @@ namespace EventService
                var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
                var httpClient = DaprClient.CreateInvokeHttpClient();
-               await httpClient.PostAsJsonAsync("http://order-processor/orders", content);               
+               var response = await httpClient.PostAsJsonAsync("http://order-processor/orders", content);               
+               var result = await response.Content.ReadAsStringAsync();
+               
                Console.WriteLine("Order requested: " + orderId);
                Console.WriteLine("Result: " + result);
    	    }
@@ -406,6 +408,14 @@ Using CLI:
 
 ```bash
 dapr invoke --app-id checkout --method checkout/100
+```
+
+#### Including a query string in the URL
+
+You can also append a query string or a fragment to the end of the URL and Dapr will pass it through unchanged. This means that if you need to pass some additional arguments in your service invocation that aren't part of a payload or the path, you can do so by appending a `?` to the end of the URL, followed by the key/value pairs separated by `=` signs and delimited by `&`. For example:
+
+```bash
+curl 'http://dapr-app-id:checkout@localhost:3602/checkout/100?basket=1234&key=abc` -X POST
 ```
 
 ### Namespaces
