@@ -22,7 +22,7 @@ For each Dapr application, you need to deploy the Dapr Shared chart using differ
 
 ## Why Dapr Shared?
 
-By default, when Dapr is installed into a Kubernetes cluster, the Dapr control plane injects a Dapr as sidecar to applications annotated with Dapr annotations ( `dapr.io/enabled: "true"`). Sidecars have many advantages including improved resiliency since there is an instance per application and all communication between the application and the sidecar happens without involving the network.
+By default, when Dapr is installed into a Kubernetes cluster, the Dapr control plane injects Dapr as a sidecar to applications annotated with Dapr annotations ( `dapr.io/enabled: "true"`). Sidecars offer many advantages, including improved resiliency, since there is an instance per application and all communication between the application and the sidecar happens without involving the network.
 
 
 <img src="/images/dapr-shared/sidecar.png" width=800 style="padding-bottom:15px;">
