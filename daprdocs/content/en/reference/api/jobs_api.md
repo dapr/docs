@@ -123,7 +123,7 @@ DELETE http://localhost:3500/v1.0-alpha1/jobs/<name>
 
 Parameter | Description
 --------- | -----------
-`name` | Name of the job you're scheduling
+`name` | Name of the job you're deleting
 
 ### HTTP response codes
 
