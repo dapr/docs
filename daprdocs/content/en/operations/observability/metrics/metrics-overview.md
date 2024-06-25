@@ -70,17 +70,9 @@ spec:
     enabled: false
 ```
 
-## High cardinality metrics
+## Optimizing HTTP metrics reporting with path matching
 
-When invoking Dapr using HTTP, the legacy behavior (and current default as of Dapr 1.13) is to create a separate "bucket" for each requested method. When working with RESTful APIs, this can cause very high cardinality, with potential negative impact on memory usage and CPU.
-
-Dapr 1.13 introduces a new option for the Dapr Configuration resource `spec.metrics.http.increasedCardinality`: when set to `false`, it reports metrics for the HTTP server for each "abstract" method (for example, requesting from a state store) instead of creating a "bucket" for each concrete request path.
-
-The default value of `spec.metrics.http.increasedCardinality` is `true` in Dapr 1.13, to maintain the same behavior as Dapr 1.12 and older. However, the value will change to `false` (low-cardinality metrics by default) in Dapr 1.14.
-
-Setting `spec.metrics.http.increasedCardinality` to `false` is **recommended** to reduce resource consumption especially when the number of applications and their endpoints grow in number.
-
-## HTTP metrics path matching 
+When invoking Dapr using HTTP metrics are created for each requested method by default. This can result in a high number of metrics, known as high cardinality, which can impact memory usage and CPU.
 
 Path matching allows you to manage and control the cardinality of HTTP metrics in Dapr. This is an aggregation of metrics, so rather than having a metric for each event, you can reduce the number of metrics events and report an overall number.  For details on how to set the cardinality in configuration see ({{< ref "configuration-overview.md#metrics" >}})  
 
@@ -90,9 +82,62 @@ When `spec.metrics.http.pathMatching` is combined with the `increasedCardinality
 
 ### Examples of Path Matching in HTTP Metrics
 
-Here are some examples demonstrating how to use the Path Matching API in Dapr for managing HTTP metrics. On each example we have the metrics collected from sequential requests to the `/orders` endpoint with different order IDs. 
+Here are some examples demonstrating how to use the Path Matching API in Dapr for managing HTTP metrics. On each example we have the metrics collected from 5 HTTP requests to the `/orders` endpoint with different order IDs. By adjusting cardinality and utilizing path matching, you can fine-tune metric granularity to balance detail and resource efficiency.
 
-These examples illustrate the cardinality of the metrics, highlighting that high cardinality configurations result in many entries, which correspond to higher memory usage for handling metrics. For simplicity, we will focus on a single metric: `dapr_http_server_request_count`.
+These examples illustrate the cardinality of the metrics, highlighting that high cardinality configurations result in many entries, which correspond to higher memory usage for handling metrics. For simplicity, we will focus on a single metric: `dapr_http_server_request_count`. 
+
+#### Low cardinality with path matching (Recommendation)
+
+Configuration:
+```yaml
+http:
+  increasedCardinality: false
+  pathMatching:
+    - /orders/{orderID}
+```
+
+Metrics generated:
+```
+# matched paths
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 5
+# unmatched paths
+dapr_http_server_request_count{app_id="order-service",method="GET",path="",status="200"} 1
+```
+
+With low cardinality and path matching configured, we get the best of both worlds by grouping the metrics for the important endpoints without compromising the cardinality. This approach helps avoid high memory usage and potential security issues.
+
+#### Low cardinality without path matching
+
+Configuration:
+
+```yaml
+http:
+  increasedCardinality: false
+```
+Metrics generated:
+```
+dapr_http_server_request_count{app_id="order-service",method="GET", path="",status="200"} 5
+```
+
+In low cardinality mode, the path, which is the main source of unbounded cardinality, is dropped. This results in metrics that primarily indicate the number of requests made to the service for a given HTTP method, but without any information about the paths invoked. 
+
+
+#### High cardinality with path matching
+
+Configuration:
+```yaml
+http:
+  increasedCardinality: true
+  pathMatching:
+    - /orders/{orderID}
+```
+
+Metrics generated:
+```
+dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 5
+```
+
+This example results from the same HTTP requests as the example above, but with path matching configured for the path `/orders/{orderID}`. By using path matching, we achieve reduced cardinality by grouping the metrics based on the matched path.
 
 #### High Cardinality without path matching
 
@@ -113,61 +158,8 @@ dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders
 
 For each request, a new metric is created with the request path. This process continues for every request made to a new order ID, resulting in unbounded cardinality since the IDs are ever-growing.
 
-#### High cardinality with path matching
 
-Configuration:
-```yaml
-http:
-  increasedCardinality: true
-  pathMatching:
-    - /orders/{orderID}
-```
-
-Metrics generated:
-```
-dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 5
-```
-
-This example results from the same HTTP requests as the example above, but with path matching configured for the path `/orders/{orderID}`. By using path matching, we achieve reduced cardinality by grouping the metrics based on the matched path.
-
-#### Low cardinality without path matching
-
-Configuration:
-
-```yaml
-http:
-  increasedCardinality: false
-```
-Metrics generated:
-```
-dapr_http_server_request_count{app_id="order-service",method="GET", path="",status="200"} 5
-```
-
-In low cardinality mode, the path, which is the main source of unbounded cardinality, is dropped. This results in metrics that primarily indicate the number of requests made to the service for a given HTTP method, but with less detailed information about the specific paths. 
-
-#### Low cardinality with path matching
-
-Configuration:
-```yaml
-http:
-  increasedCardinality: false
-  pathMatching:
-    - /orders/{orderID}
-```
-
-Metrics generated:
-```
-# matched paths
-dapr_http_server_request_count{app_id="order-service",method="GET",path="/orders/{orderID}",status="200"} 5
-# unmatched paths
-dapr_http_server_request_count{app_id="order-service",method="GET",path="",status="200"} 1
-```
-
-With low cardinality and path matching configured, we get the best of both worlds by grouping the metrics for the important endpoints without compromising the cardinality. This approach helps avoid high memory usage and potential security issues.
-
-These examples demonstrate Dapr's Path Matching API for efficient HTTP metric management. By adjusting cardinality and utilizing path matching, users can fine-tune metric granularity to balance detail and resource efficiency.
-
-## HTTP metrics exclude verbs
+### HTTP metrics exclude verbs
 
 The `excludeVerbs` option allows you to exclude specific HTTP verbs from being reported in the metrics. This can be useful in high-performance applications where memory savings are critical.
 
@@ -201,7 +193,7 @@ http:
 
 Metrics generated:
 ```
-dapr_http_server_request_count{app_id="order-service",method="",path="/orders",status="200"} 1
+dapr_http_server_request_count{app_id="order-service",method="",path="/orders",status="200"} 2
 ```
 
 In this example, the HTTP method is excluded from the metrics, resulting in a single metric for all requests to the `/orders` endpoint.
