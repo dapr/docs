@@ -26,7 +26,7 @@ Parameter | Description
 --------- | -----------
 `name` | Name of the job you're scheduling
 `data` | A string value and can be any related content. Content is returned when the reminder expires. For example, this may be useful for returning a URL or anything related to the content.
-`dueTime` | Specifies the time after which the jobs are invoked. Its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration)
+`dueTime` | Specifies the time after which this job is invoked. Its format should be [time.ParseDuration](https://pkg.go.dev/time#ParseDuration)
 
 ### Request body
 
