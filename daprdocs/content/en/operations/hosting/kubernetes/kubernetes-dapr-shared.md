@@ -83,4 +83,5 @@ If you are not using the SDKs, you can send HTTP or gRPC requests to those endpo
 
 ## Next steps
 
-Check the [Hello Kubernetes with Dapr Shared](https://github.com/dapr/dapr-shared/blob/main/docs/tutorial/README.md) tutorial.
+- Try the [Hello Kubernetes tutorial with Dapr Shared](https://github.com/dapr/dapr-shared/blob/main/docs/tutorial/README.md).
+- Read more in the [Dapr Shared repo](https://github.com/dapr/dapr-shared/blob/main/README.md)
