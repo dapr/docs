@@ -33,7 +33,7 @@ Jobs consist of:
 
 ## How it works
 
-The Jobs API is a job orchestrator, not the executor which run the job. The design guarantees *at least once* job execution with a bias towards durability and horizontal scaling over precision. This means:
+The jobs API is a job scheduler, not the executor which runs the job. The design guarantees *at least once* job execution with a bias towards durability and horizontal scaling over precision. This means:
 - **Guaranteed:** A job is never invoked *before* the schedule time is due.
 - **Not guaranteed:** A ceiling time on when the job is invoked *after* the due time is reached.
 
