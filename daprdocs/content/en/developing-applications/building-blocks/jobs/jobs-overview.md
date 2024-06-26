@@ -49,7 +49,7 @@ The Scheduler service enables the scheduling of jobs to scale across multiple re
 
 ### Actor reminders
 
-Actors have actor reminders, but present some limitations involving scalability. Make reminders scalable by using `SchedulerReminders`. 
+Actors have actor reminders, but present some limitations involving scalability using the Placement service implementation. You can make reminders more scalable by using [`SchedulerReminders`]({{< ref support-preview-features.md >}}).  This is set in the configuration for your actor application. 
 
 ## Try out the jobs API
 
