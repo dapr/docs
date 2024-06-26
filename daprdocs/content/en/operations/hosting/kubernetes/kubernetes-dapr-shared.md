@@ -38,7 +38,7 @@ No matter which deployment approach you choose, it is important to understand th
 
 ### `DeamonSet`(Per-node)
 
-With Kubernetes `DaemonSet`, you can define workloads that need to be deployed once per node in the cluster. This enables workloads that are running on the same node to communicate with local Dapr APIs, no matter where the Kubernetes `Scheduler` schedules your workload.
+With Kubernetes `DaemonSet`, you can define applications that need to be deployed once per node in the cluster. This enables applications that are running on the same node to communicate with local Dapr APIs, no matter where the Kubernetes `Scheduler` schedules your workload.
 
 <img src="/images/dapr-shared/daemonset.png" width=800 style="padding-bottom:15px;">
 
